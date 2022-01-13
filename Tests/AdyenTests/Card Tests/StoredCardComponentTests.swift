@@ -54,7 +54,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryYear: "22",
                                              holderName: "holderName")
         let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
-        CardPublicKeyProvider.cachedCardPublicKey = Dummy.publicKey
+        PublicKeyProvider.cachedCardPublicKey = Dummy.publicKey
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -107,13 +107,13 @@ class StoredCardComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
-        let cardPublicKeyProvider = CardPublicKeyProviderMock()
-        cardPublicKeyProvider.onFetch = { completion in
-            cardPublicKeyProviderExpectation.fulfill()
+        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
+        let publicKeyProvider = PublicKeyProviderMock()
+        publicKeyProvider.onFetch = { completion in
+            publicKeyProviderExpectation.fulfill()
             completion(.success(Dummy.publicKey))
         }
-        sut.storedCardAlertManager.cardPublicKeyProvider = cardPublicKeyProvider
+        sut.storedCardAlertManager.publicKeyProvider = publicKeyProvider
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -166,13 +166,13 @@ class StoredCardComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
-        let cardPublicKeyProvider = CardPublicKeyProviderMock()
-        cardPublicKeyProvider.onFetch = { completion in
-            cardPublicKeyProviderExpectation.fulfill()
+        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
+        let publicKeyProvider = PublicKeyProviderMock()
+        publicKeyProvider.onFetch = { completion in
+            publicKeyProviderExpectation.fulfill()
             completion(.failure(Dummy.error))
         }
-        sut.storedCardAlertManager.cardPublicKeyProvider = cardPublicKeyProvider
+        sut.storedCardAlertManager.publicKeyProvider = publicKeyProvider
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 

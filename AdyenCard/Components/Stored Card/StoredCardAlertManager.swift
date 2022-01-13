@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,7 +16,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIC
     private let paymentMethod: StoredCardPaymentMethod
     private let amount: Amount?
 
-    internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
+    internal var publicKeyProvider: AnyPublicKeyProvider
     internal var completionHandler: Completion<Result<CardDetails, Error>>?
     internal var localizationParameters: LocalizationParameters?
     
@@ -27,7 +27,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIC
         self.paymentMethod = paymentMethod
         self.amount = amount
         
-        self.cardPublicKeyProvider = CardPublicKeyProvider(apiContext: apiContext)
+        self.publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
     }
     
     // MARK: - CVC length
@@ -102,7 +102,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIC
     private typealias CardKeyCompletion = (_ cardPublicKey: String) -> Void
     
     private func fetchCardPublicKey(successHandler: @escaping CardKeyCompletion) {
-        cardPublicKeyProvider.fetch { [weak self] in
+        publicKeyProvider.fetch { [weak self] in
             self?.handle(result: $0, successHandler: successHandler)
         }
     }

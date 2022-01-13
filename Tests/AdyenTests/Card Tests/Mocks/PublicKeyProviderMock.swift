@@ -6,7 +6,7 @@
 
 @testable import AdyenCard
 
-final class CardPublicKeyProviderMock: AnyCardPublicKeyProvider {
+final class PublicKeyProviderMock: AnyPublicKeyProvider {
     
     let apiContext: APIContext = Dummy.context
 

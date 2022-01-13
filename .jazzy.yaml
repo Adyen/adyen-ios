@@ -322,3 +322,6 @@ custom_categories:
       - SecuredViewController
       - Localizable
       - LocalizationParameters
+      - AnyPublicKeyProvider
+      - PublicKeyProvider
+      - PublicKeyConsumer

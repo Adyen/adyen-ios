@@ -19,7 +19,7 @@ extension CardComponent {
         
         cardViewController.startLoading()
 
-        fetchCardPublicKey(discardError: false) { [weak self] in
+        fetchCardPublicKey(notifyingDelegateOnFailure: true) { [weak self] in
             self?.submitEncryptedCardData(cardPublicKey: $0)
         }
     }
@@ -61,7 +61,8 @@ extension CardComponent: TrackableComponent {
     /// :nodoc:
     public func viewDidLoad(viewController: UIViewController) {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, context: apiContext)
-        fetchCardPublicKey(discardError: true) { _ in /* Do nothing, to just cache the card public key value */ }
+        // just cache the public key value
+        fetchCardPublicKey(notifyingDelegateOnFailure: false)
     }
 }
 

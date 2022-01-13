@@ -15,7 +15,7 @@ import UIKit
  - SeeAlso:
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
-public class CardComponent: CardPublicKeyConsumer,
+public class CardComponent: PublicKeyConsumer,
     PresentableComponent,
     Localizable,
     LoadingComponent {
@@ -33,7 +33,8 @@ public class CardComponent: CardPublicKeyConsumer,
 
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
-    internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
+    /// :nodoc:
+    public var publicKeyProvider: AnyPublicKeyProvider
 
     internal let binInfoProvider: AnyBinInfoProvider
     
@@ -82,16 +83,16 @@ public class CardComponent: CardPublicKeyConsumer,
                             configuration: Configuration = Configuration(),
                             shopperInformation: PrefilledShopperInformation? = nil,
                             style: FormComponentStyle = FormComponentStyle()) {
-        let cardPublicKeyProvider = CardPublicKeyProvider(apiContext: apiContext)
+        let publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: apiContext),
-                                              cardPublicKeyProvider: cardPublicKeyProvider,
+                                              publicKeyProvider: publicKeyProvider,
                                               minBinLength: Constant.privateBinLength)
         self.init(paymentMethod: paymentMethod,
                   apiContext: apiContext,
                   configuration: configuration,
                   shopperInformation: shopperInformation,
                   style: style,
-                  cardPublicKeyProvider: cardPublicKeyProvider,
+                  publicKeyProvider: publicKeyProvider,
                   binProvider: binInfoProvider)
     }
     
@@ -104,21 +105,21 @@ public class CardComponent: CardPublicKeyConsumer,
     ///   - configuration: The Card component configuration.
     ///   - shopperInformation: The shopper's information.
     ///   - style: The Component's UI style.
-    ///   - cardPublicKeyProvider: The card public key provider
+    ///   - publicKeyProvider: The public key provider
     ///   - binProvider: Any object capable to provide a BinInfo.
     internal init(paymentMethod: AnyCardPaymentMethod,
                   apiContext: APIContext,
                   configuration: Configuration,
                   shopperInformation: PrefilledShopperInformation? = nil,
                   style: FormComponentStyle,
-                  cardPublicKeyProvider: AnyCardPublicKeyProvider,
+                  publicKeyProvider: AnyPublicKeyProvider,
                   binProvider: AnyBinInfoProvider) {
         self.cardPaymentMethod = paymentMethod
         self.apiContext = apiContext
         self.configuration = configuration
         self.shopperInformation = shopperInformation
         self.style = style
-        self.cardPublicKeyProvider = cardPublicKeyProvider
+        self.publicKeyProvider = publicKeyProvider
         self.binInfoProvider = binProvider
 
         let paymentMethodCardTypes = paymentMethod.brands.compactMap(CardType.init)

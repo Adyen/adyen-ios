@@ -12,7 +12,7 @@ import UIKit
 
 /// A component that provides a form for gift card payments.
 public final class GiftCardComponent: PartialPaymentComponent,
-    CardPublicKeyConsumer,
+    PublicKeyConsumer,
     PresentableComponent,
     Localizable,
     LoadingComponent,
@@ -25,7 +25,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     private let giftCardPaymentMethod: GiftCardPaymentMethod
 
     /// :nodoc:
-    internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
+    public var publicKeyProvider: AnyPublicKeyProvider
 
     /// The gift card payment method.
     public var paymentMethod: PaymentMethod { giftCardPaymentMethod }
@@ -55,7 +55,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         self.giftCardPaymentMethod = paymentMethod
         self.style = style
         self.apiContext = apiContext
-        self.cardPublicKeyProvider = CardPublicKeyProvider(apiContext: apiContext)
+        self.publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
     }
 
     // MARK: - Presentable Component Protocol
@@ -164,7 +164,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
         startLoading()
 
-        fetchCardPublicKey(discardError: false) { [weak self] cardPublicKey in
+        fetchCardPublicKey(notifyingDelegateOnFailure: true) { [weak self] cardPublicKey in
             guard let self = self else { return }
             self.createPaymentData(order: self.order,
                                    cardPublicKey: cardPublicKey)

@@ -9,7 +9,7 @@ import AdyenEncryption
 import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
-public final class ACHDirectDebitComponent: PaymentComponent, PresentableComponent, Localizable, TrackableComponent, LoadingComponent {
+public final class ACHDirectDebitComponent: PaymentComponent, PresentableComponent, Localizable, LoadingComponent, PublicKeyConsumer {
     
     private enum ViewIdentifier {
         static let headerItem = "headerItem"
@@ -47,6 +47,9 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     public let shopperInformation: PrefilledShopperInformation?
     
     /// :nodoc:
+    public var publicKeyProvider: AnyPublicKeyProvider
+    
+    /// :nodoc:
     private var defaultCountryCode: String {
         payment?.countryCode ?? Locale.current.regionCode ?? "US"
     }
@@ -72,7 +75,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         self.localizationParameters = localizationParameters
         self.shopperInformation = shopperInformation
         self.style = style
-        
+        self.publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
     }
     
     /// :nodoc:
@@ -215,4 +218,15 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
 
         return formViewController
     }()
+}
+
+/// :nodoc:
+extension ACHDirectDebitComponent: TrackableComponent {
+    
+    /// :nodoc:
+    public func viewDidLoad(viewController: UIViewController) {
+        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        // just cache the public key value
+        fetchCardPublicKey(notifyingDelegateOnFailure: false)
+    }
 }

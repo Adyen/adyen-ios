@@ -9,26 +9,26 @@ import XCTest
 
 class CardBrandProviderTests: XCTestCase {
 
-    var cardPublicKeyProvider: CardPublicKeyProviderMock!
+    var publicKeyProvider: PublicKeyProviderMock!
     var apiClientMock: APIClientMock!
     var sut: BinInfoProvider!
 
     override func setUp() {
-        cardPublicKeyProvider = CardPublicKeyProviderMock()
+        publicKeyProvider = PublicKeyProviderMock()
         apiClientMock = APIClientMock()
         sut = BinInfoProvider(apiClient: apiClientMock,
-                              cardPublicKeyProvider: cardPublicKeyProvider,
+                              publicKeyProvider: publicKeyProvider,
                               minBinLength: 11)
     }
 
     override func tearDown() {
-        cardPublicKeyProvider = nil
+        publicKeyProvider = nil
         apiClientMock = nil
         sut = nil
     }
 
     func testLocalCardTypeFetch() {
-        cardPublicKeyProvider.onFetch = {
+        publicKeyProvider.onFetch = {
             XCTFail("Should not call APIClient")
             $0(.success(Dummy.publicKey))
         }
@@ -42,7 +42,7 @@ class CardBrandProviderTests: XCTestCase {
     }
 
     func testRemoteCardTypeFetch() {
-        cardPublicKeyProvider.onFetch = { $0(.success(Dummy.publicKey)) }
+        publicKeyProvider.onFetch = { $0(.success(Dummy.publicKey)) }
         let mockedBrands = [CardBrand(type: .solo)]
         apiClientMock.mockedResults = [.success(BinLookupResponse(brands: mockedBrands))]
 
@@ -52,7 +52,7 @@ class CardBrandProviderTests: XCTestCase {
     }
 
     func testLocalCardTypeFetchWhenPublicKeyFailure() {
-        cardPublicKeyProvider.onFetch = { $0(.failure(Dummy.error)) }
+        publicKeyProvider.onFetch = { $0(.failure(Dummy.error)) }
         apiClientMock.onExecute = { XCTFail("Should not call APIClient") }
         sut.provide(for: "56", supportedTypes: [.masterCard, .visa, .maestro]) { result in
             XCTAssertEqual(result.brands!.map(\.type), [.maestro])
@@ -60,7 +60,7 @@ class CardBrandProviderTests: XCTestCase {
     }
 
     func testRemoteCardTypeFetchWhenPublicKeyFailure() {
-        cardPublicKeyProvider.onFetch = { $0(.failure(Dummy.error)) }
+        publicKeyProvider.onFetch = { $0(.failure(Dummy.error)) }
         apiClientMock.onExecute = { XCTFail("Should not call APIClient") }
 
         sut.provide(for: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro]) { result in
