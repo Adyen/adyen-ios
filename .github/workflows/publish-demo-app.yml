@@ -10,7 +10,7 @@ on:
         required: true
 jobs:
 
-  Update:
+  Publish:
     runs-on: macos-11
     steps:
     - uses: actions/checkout@v2
