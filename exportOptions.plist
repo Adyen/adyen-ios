@@ -12,8 +12,8 @@
 	  <string>Apple Distribution: Adyen B.V. (B2NYSS5932)</string>
     <key>provisioningProfiles</key>
     <dict>
-      <key>com.adyen.AdyenUIHost</key>
-      <string>Checkout Demo Distribution</string>
+      <key>com.adyen.CheckoutDemoUIKit</key>
+      <string>Checkout Demo UIKit Distribution</string>
     </dict>
 </dict>
 </plist>
