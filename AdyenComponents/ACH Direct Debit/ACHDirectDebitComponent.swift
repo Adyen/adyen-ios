@@ -90,19 +90,32 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     }
     
     private func didSelectSubmitButton() {
-        guard formViewController.validate() else {
-            return
-        }
+        guard formViewController.validate() else { return }
         
-//        cardViewController.startLoading()
-//
-//        fetchCardPublicKey(discardError: false) { [weak self] in
-//            self?.submitEncryptedCardData(cardPublicKey: $0)
-//        }
-//        payButton.showsActivityIndicator = true
-//        formViewController.view.isUserInteractionEnabled = false
-//
-//        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: amountToPay, order: order))
+        startLoading()
+        
+        fetchCardPublicKey(notifyingDelegateOnFailure: true) { [weak self] publicKey in
+            self?.submitEncryptedData(publicKey: publicKey)
+        }
+    }
+    
+    private func submitEncryptedData(publicKey: String) {
+        do {
+            let encryptedBankAccountNumber = try BankDetailsEncryptor.encrypt(accountNumber: bankAccountNumberItem.value,
+                                                                              with: publicKey)
+            let encryptedBankRoutingNumber = try BankDetailsEncryptor.encrypt(routingNumber: bankRoutingNumberItem.value,
+                                                                              with: publicKey)
+            
+            let details = ACHDirectDebitDetails(paymentMethod: achDirectDebitPaymentMethod,
+                                                holderName: holderNameItem.value,
+                                                encryptedBankAccountNumber: encryptedBankAccountNumber,
+                                                encryptedBankRoutingNumber: encryptedBankRoutingNumber,
+                                                billingAddress: billingAddressItem.value)
+            
+            submit(data: PaymentComponentData(paymentMethodDetails: details, amount: amountToPay, order: order))
+        } catch {
+            delegate?.didFail(with: error, from: self)
+        }
     }
     
     // MARK: - Form Items

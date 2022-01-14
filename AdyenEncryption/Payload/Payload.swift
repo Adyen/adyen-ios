@@ -15,7 +15,3 @@ extension Payload {
         try JSONEncoder().encode(self)
     }
 }
-
-internal struct GenericPayload<T: Encodable>: Payload {
-    internal var value: T
-}

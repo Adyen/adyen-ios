@@ -303,6 +303,7 @@ custom_categories:
   - name: Encryption
     children:
       - CardEncryptor
+      - BankDetailsEncryptor
       - Card
       - EncryptedCard
       - EncryptionError

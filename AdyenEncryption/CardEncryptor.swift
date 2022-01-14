@@ -195,7 +195,7 @@ extension CardEncryptor {
         /// Indicates an error when trying to encrypt empty or invalid expiry year.
         case invalidSecureCode
 
-        /// Indicates an error when trying to encrypt empty or invalid expiry year.
+        /// Indicates an error when trying to encrypt empty or invalid card number.
         case invalidNumber
 
         /// Indicates an error when trying to encrypt empty value.

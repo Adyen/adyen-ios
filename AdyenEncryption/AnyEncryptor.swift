@@ -23,15 +23,3 @@ extension AnyEncryptor {
                       header: .defaultHeader).compactRepresentation
     }
 }
-
-/// A type that provides static methods for encrypting generic values.
-public enum Encryptor: AnyEncryptor {
-    
-    /// Encrypts the given encodable value and returns the encrypted result.
-    /// - Parameters:
-    ///   - value: Encodable value to encrypt.
-    /// - Returns: The JWE encrypted value as a `string`.
-    public static func encrypt<T: Encodable>(_ value: T, with publicKey: String) throws -> String {
-        try encrypt(GenericPayload(value: value), with: publicKey)
-    }
-}

@@ -79,9 +79,11 @@
 		A0414C1D278C275C00DF3FE9 /* ACHDirectDebitComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C1C278C275C00DF3FE9 /* ACHDirectDebitComponent.swift */; };
 		A0414C1F278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C1E278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift */; };
 		A0414C21278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C20278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift */; };
-		A0414C29278F2D2900DF3FE9 /* Encryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C28278F2D2900DF3FE9 /* Encryptor.swift */; };
+		A0414C29278F2D2900DF3FE9 /* AnyEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C28278F2D2900DF3FE9 /* AnyEncryptor.swift */; };
 		A0414C2E2790420B00DF3FE9 /* PublicKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C2D2790420B00DF3FE9 /* PublicKeyProvider.swift */; };
 		A0414C302790429A00DF3FE9 /* PublicKeyConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C2F2790429A00DF3FE9 /* PublicKeyConsumer.swift */; };
+		A0414C322791C9BB00DF3FE9 /* BankPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C312791C9BB00DF3FE9 /* BankPayload.swift */; };
+		A0414C342791D9EC00DF3FE9 /* BankDetailsEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C332791D9EC00DF3FE9 /* BankDetailsEncryptor.swift */; };
 		A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */; };
 		A07355D7276B350F00530562 /* ActionViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07355D6276B350F00530562 /* ActionViewDelegateMock.swift */; };
 		A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */; };
@@ -1011,9 +1013,11 @@
 		A0414C1C278C275C00DF3FE9 /* ACHDirectDebitComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitComponent.swift; sourceTree = "<group>"; };
 		A0414C1E278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitPaymentMethod.swift; sourceTree = "<group>"; };
 		A0414C20278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitDetails.swift; sourceTree = "<group>"; };
-		A0414C28278F2D2900DF3FE9 /* Encryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryptor.swift; sourceTree = "<group>"; };
+		A0414C28278F2D2900DF3FE9 /* AnyEncryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyEncryptor.swift; sourceTree = "<group>"; };
 		A0414C2D2790420B00DF3FE9 /* PublicKeyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyProvider.swift; sourceTree = "<group>"; };
 		A0414C2F2790429A00DF3FE9 /* PublicKeyConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyConsumer.swift; sourceTree = "<group>"; };
+		A0414C312791C9BB00DF3FE9 /* BankPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankPayload.swift; sourceTree = "<group>"; };
+		A0414C332791D9EC00DF3FE9 /* BankDetailsEncryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankDetailsEncryptor.swift; sourceTree = "<group>"; };
 		A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponentTests.swift; sourceTree = "<group>"; };
 		A07355D6276B350F00530562 /* ActionViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionViewDelegateMock.swift; sourceTree = "<group>"; };
 		A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatter.swift; sourceTree = "<group>"; };
@@ -2661,6 +2665,7 @@
 			children = (
 				E9E3DAF822241D6000697074 /* CardPayload.swift */,
 				E74517CA25FBA2A5000BDCCF /* BinPayload.swift */,
+				A0414C312791C9BB00DF3FE9 /* BankPayload.swift */,
 				E745185C25FBDDC7000BDCCF /* Payload.swift */,
 			);
 			path = Payload;
@@ -3305,8 +3310,9 @@
 				E74517C025FBA275000BDCCF /* Payload */,
 				E745178325FB82F3000BDCCF /* Model */,
 				E736498025277B7500AB76AE /* Extensions */,
-				A0414C28278F2D2900DF3FE9 /* Encryptor.swift */,
+				A0414C28278F2D2900DF3FE9 /* AnyEncryptor.swift */,
 				E9E3DAF922241D6000697074 /* CardEncryptor.swift */,
+				A0414C332791D9EC00DF3FE9 /* BankDetailsEncryptor.swift */,
 				F92326AE25A3669E002C5BC4 /* AdyenEncryption.h */,
 				F92326AF25A3669E002C5BC4 /* Info.plist */,
 			);
@@ -5415,16 +5421,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0414C29278F2D2900DF3FE9 /* Encryptor.swift in Sources */,
+				A0414C29278F2D2900DF3FE9 /* AnyEncryptor.swift in Sources */,
 				F92326BE25A366D9002C5BC4 /* CardEncryptor.swift in Sources */,
 				F92326E625A366EC002C5BC4 /* StringExtension.swift in Sources */,
 				F92326E825A366EC002C5BC4 /* IntegerExtension.swift in Sources */,
 				E74517CB25FBA2A5000BDCCF /* BinPayload.swift in Sources */,
 				F9F1A98B26CD0F640005CB1D /* JSONWebEncryption.swift in Sources */,
+				A0414C322791C9BB00DF3FE9 /* BankPayload.swift in Sources */,
 				F92326E725A366EC002C5BC4 /* DataExtension.swift in Sources */,
 				E745185D25FBDDC7000BDCCF /* Payload.swift in Sources */,
 				E74517A425FB834C000BDCCF /* EncryptedCard.swift in Sources */,
 				F9F1A98F26CD15C30005CB1D /* RSAOAEP256Algorithm.swift in Sources */,
+				A0414C342791D9EC00DF3FE9 /* BankDetailsEncryptor.swift in Sources */,
 				F9F1A98926CD0CCF0005CB1D /* CommonCryptoHelpers.swift in Sources */,
 				E745179925FB8340000BDCCF /* Card.swift in Sources */,
 				F92326BD25A366D9002C5BC4 /* CardPayload.swift in Sources */,
