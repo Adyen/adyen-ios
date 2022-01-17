@@ -1,13 +1,5 @@
 name: Publish Demo App
-on:
-  workflow_dispatch:
-    inputs:
-      AppleIdUserName:
-        description: 'Apple Id username'
-        required: true
-      AppleIdPassword:
-        description: 'App specific password'
-        required: true
+on: [workflow_dispatch]
 jobs:
 
   Publish:
@@ -57,7 +49,19 @@ jobs:
         # apply provisioning profile
         mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
         cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-
-    - name: Publish Demo App
+    - name: Configure Demo App
+      env:
+        CLIENT_KEY: ${{ secrets.DEMO_APP_TEST_ENV_CLIENT_KEY }}
+        DEMO_SERVER_API_KEY: ${{ secrets.DEMO_SERVER_TEST_ENV_API_KEY }}
       run: |
-        ./Scripts/publish-demo-app.sh ${{ github.event.inputs.AppleIdUserName }} ${{ github.event.inputs.AppleIdPassword }}
+        # client Key
+        sed -i '' "s/static let clientKey.*$/static let clientKey = \"$CLIENT_KEY\"/g" ./Demo/Configuration.swift
+
+        # demo server API key
+        sed -i '' "s/static let demoServerAPIKey.*$/static let demoServerAPIKey = \"$DEMO_SERVER_API_KEY\"/g" ./Demo/Configuration.swift
+    - name: Publish Demo App
+      env:
+        APPLE_ID_USERNAME: ${{ secrets.APPLE_ID_USERNAME }}
+        APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+      run: |
+        ./Scripts/publish-demo-app.sh "$APPLE_ID_USERNAME" "$APPLE_APP_SPECIFIC_PASSWORD"
