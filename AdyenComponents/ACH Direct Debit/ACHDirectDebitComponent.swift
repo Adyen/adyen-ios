@@ -32,6 +32,9 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
 
     /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
+    
+    /// Component configuration
+    public let configuration: Configuration
 
     /// :nodoc:
     public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
@@ -53,7 +56,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     
     /// :nodoc:
     private var defaultCountryCode: String {
-        payment?.countryCode ?? Locale.current.regionCode ?? "US"
+        payment?.countryCode ?? configuration.billingAddressCountryCodes.first ?? "US"
     }
     
     private let achDirectDebitPaymentMethod: ACHDirectDebitPaymentMethod
@@ -62,16 +65,19 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     
     /// Initializes the ACH Direct Debit component.
     /// - Parameters:
+    ///   - configuration: Configuration for the component.
     ///   - paymentMethod: The ACH Direct Debit payment method.
     ///   - apiContext: The component's API context.
     ///   - shopperInformation: The shopper's information.
     ///   - localizationParameters: The localization parameters.
     ///   - style: The component's style.
-    public init(paymentMethod: ACHDirectDebitPaymentMethod,
+    public init(configuration: Configuration,
+                paymentMethod: ACHDirectDebitPaymentMethod,
                 apiContext: APIContext,
                 shopperInformation: PrefilledShopperInformation? = nil,
                 localizationParameters: LocalizationParameters? = nil,
                 style: FormComponentStyle) {
+        self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
         self.apiContext = apiContext
         self.localizationParameters = localizationParameters
@@ -192,11 +198,16 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                      postfix: ViewIdentifier.billingAddressItem)
 
-        let initialCountry = shopperInformation?.billingAddress?.country ?? defaultCountryCode
+        var initialCountry = defaultCountryCode
+        if let prefillCountryCode = shopperInformation?.billingAddress?.country,
+           configuration.billingAddressCountryCodes.contains(prefillCountryCode) {
+            initialCountry = prefillCountryCode
+        }
         let item = FormAddressItem(initialCountry: initialCountry,
                                    style: style.addressStyle,
                                    localizationParameters: localizationParameters,
-                                   identifier: identifier)
+                                   identifier: identifier,
+                                   supportedCountryCodes: configuration.billingAddressCountryCodes)
         shopperInformation?.billingAddress.map { item.value = $0 }
         item.style.backgroundColor = UIColor.Adyen.lightGray
         return item
@@ -227,7 +238,9 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         formViewController.append(bankAccountNumberItem)
         formViewController.append(bankRoutingNumberItem)
         formViewController.append(FormSpacerItem())
-        formViewController.append(billingAddressItem)
+        if configuration.showsBillingAddress {
+            formViewController.append(billingAddressItem)
+        }
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         formViewController.append(payButton)
 
@@ -243,5 +256,26 @@ extension ACHDirectDebitComponent: TrackableComponent {
         Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, context: apiContext)
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
+    }
+}
+
+extension ACHDirectDebitComponent {
+    
+    /// Configuration for the ACH Direct Debit Component
+    public struct Configuration {
+        
+        /// Determines whether the billing address should be displayed or not.
+        /// Defaults to `true`.
+        public var showsBillingAddress: Bool
+        
+        /// List of ISO country codes that is supported for the billing address.
+        /// Defaults to ["US", "PR"].
+        public var billingAddressCountryCodes: [String]
+        
+        public init(showsBillingAddress: Bool = true,
+                    billingAddressCountryCodes: [String] = ["US", "PR"]) {
+            self.showsBillingAddress = showsBillingAddress
+            self.billingAddressCountryCodes = billingAddressCountryCodes
+        }
     }
 }

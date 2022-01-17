@@ -214,7 +214,8 @@ internal final class ComponentManager {
     }
     
     private func createACHDirectDebitComponent(_ paymentMethod: ACHDirectDebitPaymentMethod) -> ACHDirectDebitComponent {
-        ACHDirectDebitComponent(paymentMethod: paymentMethod,
+        ACHDirectDebitComponent(configuration: ACHDirectDebitComponent.Configuration(),
+                                paymentMethod: paymentMethod,
                                 apiContext: apiContext,
                                 shopperInformation: configuration.shopper,
                                 localizationParameters: configuration.localizationParameters,
