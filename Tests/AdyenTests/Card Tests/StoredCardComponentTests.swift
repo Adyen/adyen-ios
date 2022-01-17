@@ -54,7 +54,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryYear: "22",
                                              holderName: "holderName")
         let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
-        PublicKeyProvider.cachedCardPublicKey = Dummy.publicKey
+        PublicKeyProvider.cachedPublicKey = Dummy.publicKey
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment

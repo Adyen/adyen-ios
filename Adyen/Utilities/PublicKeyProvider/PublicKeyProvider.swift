@@ -7,16 +7,19 @@
 import AdyenNetworking
 import Foundation
 
+/// :nodoc:
 /// Interface to fetch the client public key.
 public protocol AnyPublicKeyProvider: AnyObject {
     
     /// :nodoc:
     typealias CompletionHandler = (Result<String, Error>) -> Void
     
+    /// :nodoc:
     /// Fetches the client public key with a closure for success and failure.
     func fetch(completion: @escaping CompletionHandler)
 }
 
+/// :nodoc:
 /// `PublicKeyProvider` is used to fetch the client public key that is needed for encrypting data.
 public final class PublicKeyProvider: AnyPublicKeyProvider {
 

@@ -11,13 +11,6 @@ public protocol PublicKeyConsumer: PaymentComponent {
 
     /// Provider for fetching the public key.
     var publicKeyProvider: AnyPublicKeyProvider { get set }
-    
-    /// Convenient way to fetch the client public key with a closure for the success case
-    /// and an option to notify the delegate on the failure case.
-    /// - Parameters:
-    ///   - notifyingDelegateOnFailure: If `true`, notifies the `PaymentComponentDelegate` on failure.
-    ///   - successHandler: The block that is called when fetching was successful. Contains the public key.
-    func fetchCardPublicKey(notifyingDelegateOnFailure: Bool, successHandler: PublicKeySuccessHandler?)
 }
 
 /// :nodoc:
@@ -25,6 +18,12 @@ extension PublicKeyConsumer {
     /// :nodoc:
     public typealias PublicKeySuccessHandler = (_ publicKey: String) -> Void
 
+    /// :nodoc:
+    /// Convenient way to fetch the client public key with a closure for the success case
+    /// and an option to notify the delegate on the failure case.
+    /// - Parameters:
+    ///   - notifyingDelegateOnFailure: If `true`, notifies the `PaymentComponentDelegate` on failure.
+    ///   - successHandler: The block that is called when fetching was successful. Contains the public key.
     public func fetchCardPublicKey(notifyingDelegateOnFailure: Bool, successHandler: PublicKeySuccessHandler? = nil) {
         publicKeyProvider.fetch { [weak self] result in
             guard let self = self else { return }

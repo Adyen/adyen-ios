@@ -22,7 +22,7 @@ class PublicKeyProviderTests: XCTestCase {
         var baseApiClient = APIClientMock()
         var apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
         var sut = PublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: ""))
-        PublicKeyProvider.cachedCardPublicKey = nil
+        PublicKeyProvider.cachedPublicKey = nil
 
         baseApiClient.mockedResults = [.success(ClientKeyResponse(cardPublicKey: "test_public_key"))]
 

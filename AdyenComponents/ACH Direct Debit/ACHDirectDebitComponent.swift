@@ -5,7 +5,9 @@
 //
 
 import Adyen
-import AdyenEncryption
+#if canImport(AdyenEncryption)
+    import AdyenEncryption
+#endif
 import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.

@@ -6,13 +6,11 @@
 
 import Foundation
 
-/// Defines the interface to encrypt given data with JWE Encryption.
-internal protocol AnyEncryptor {
-    static func encrypt(_ payload: Payload, with publicKey: String) throws -> String
-}
+internal protocol AnyEncryptor {}
 
 extension AnyEncryptor {
     
+    /// Helper function to encrypt a payload data with JWE.
     static func encrypt(_ payload: Payload, with publicKey: String) throws -> String {
         let tokens = publicKey.components(separatedBy: "|")
         guard tokens.count == 2 else { throw EncryptionError.invalidKey }
