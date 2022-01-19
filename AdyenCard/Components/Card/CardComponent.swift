@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 /**
- /// A component that provides a form for card payments.
+  A component that provides a form for card payments.
 
  - SeeAlso:
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)

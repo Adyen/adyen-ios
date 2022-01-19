@@ -92,7 +92,11 @@ internal final class IntegrationExample: APIClientAware {
 
         presenter?.dismiss { [weak self] in
             // Payment is unsuccessful. Add your code here.
-            self?.presentAlert(with: error)
+            if let componentError = (error as? ComponentError), componentError == ComponentError.cancelled {
+                self?.presentAlert(withTitle: "Cancelled")
+            } else {
+                self?.presentAlert(with: error)
+            }
         }
     }
 
