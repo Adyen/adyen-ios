@@ -17,6 +17,8 @@ import AdyenWeChatPayInternal
 
 /// Action component to handle WeChat Pay SDK action.
 public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
+
+    private static let universalLink = "https://www.adyen.com/"
     
     /// :nodoc:
     public let apiContext: APIContext
@@ -53,7 +55,7 @@ public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionC
             WXApi.handleOpen(url, delegate: self)
         }
         
-        WXApi.registerApp(action.sdkData.appIdentifier)
+        WXApi.registerApp(action.sdkData.appIdentifier, universalLink: WeChatPaySDKActionComponent.universalLink)
         WXApi.send(PayReq(actionData: action.sdkData))
         
         delegate?.didOpenExternalApplication(self)
@@ -62,7 +64,7 @@ public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionC
     /// Checks if the current device supports WeChat Pay.
     public static func isDeviceSupported() -> Bool {
         assertWeChatPayAppSchemeConfigured()
-        WXApi.registerApp("")
+        WXApi.registerApp("", universalLink: WeChatPaySDKActionComponent.universalLink)
         return WXApi.isWXAppInstalled() && WXApi.isWXAppSupport()
     }
     
