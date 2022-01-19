@@ -8,15 +8,13 @@ import Adyen
 import Foundation
 import PassKit
 
-// MARK: - PKPaymentAuthorizationViewControllerDelegate
-
 /// :nodoc:
 extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     
     /// :nodoc:
     public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
         dismiss { [weak self] in
-            guard let self = self else { return }
+            guard let self = self, self.success == false else { return }
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
     }
