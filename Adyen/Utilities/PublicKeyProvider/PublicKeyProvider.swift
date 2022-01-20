@@ -37,7 +37,8 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
     }
 
     /// :nodoc:
-    public init(apiClient: AnyRetryAPIClient, request: ClientKeyRequest) {
+    /// For testing only
+    internal init(apiClient: AnyRetryAPIClient, request: ClientKeyRequest) {
         self.retryApiClient = apiClient
         self.request = request
     }

@@ -52,7 +52,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     public let shopperInformation: PrefilledShopperInformation?
     
     /// :nodoc:
-    public var publicKeyProvider: AnyPublicKeyProvider
+    public let publicKeyProvider: AnyPublicKeyProvider
     
     /// :nodoc:
     private var defaultCountryCode: String {
@@ -68,17 +68,32 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     ///   - configuration: Configuration for the component.
     ///   - paymentMethod: The ACH Direct Debit payment method.
     ///   - apiContext: The component's API context.
-    ///   - publicKeyProvider: The public key provider
     ///   - shopperInformation: The shopper's information.
     ///   - localizationParameters: The localization parameters.
     ///   - style: The component's style.
-    public init(configuration: Configuration,
-                paymentMethod: ACHDirectDebitPaymentMethod,
-                apiContext: APIContext,
-                publicKeyProvider: AnyPublicKeyProvider,
-                shopperInformation: PrefilledShopperInformation? = nil,
-                localizationParameters: LocalizationParameters? = nil,
-                style: FormComponentStyle) {
+    public convenience init(configuration: Configuration,
+                            paymentMethod: ACHDirectDebitPaymentMethod,
+                            apiContext: APIContext,
+                            shopperInformation: PrefilledShopperInformation? = nil,
+                            localizationParameters: LocalizationParameters? = nil,
+                            style: FormComponentStyle) {
+        self.init(configuration: configuration,
+                  paymentMethod: paymentMethod,
+                  apiContext: apiContext,
+                  publicKeyProvider: PublicKeyProvider(apiContext: apiContext),
+                  shopperInformation: shopperInformation,
+                  localizationParameters: localizationParameters,
+                  style: style)
+    }
+    
+    /// :nodoc:
+    internal init(configuration: Configuration,
+                  paymentMethod: ACHDirectDebitPaymentMethod,
+                  apiContext: APIContext,
+                  publicKeyProvider: AnyPublicKeyProvider,
+                  shopperInformation: PrefilledShopperInformation? = nil,
+                  localizationParameters: LocalizationParameters? = nil,
+                  style: FormComponentStyle) {
         self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
         self.apiContext = apiContext

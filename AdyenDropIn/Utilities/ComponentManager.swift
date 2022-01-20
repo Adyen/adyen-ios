@@ -217,7 +217,6 @@ internal final class ComponentManager {
         ACHDirectDebitComponent(configuration: ACHDirectDebitComponent.Configuration(),
                                 paymentMethod: paymentMethod,
                                 apiContext: apiContext,
-                                publicKeyProvider: PublicKeyProvider(apiContext: apiContext),
                                 shopperInformation: configuration.shopper,
                                 localizationParameters: configuration.localizationParameters,
                                 style: style.formComponent)

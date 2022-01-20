@@ -10,7 +10,7 @@ import Foundation
 public protocol PublicKeyConsumer: PaymentComponent {
 
     /// Provider for fetching the public key.
-    var publicKeyProvider: AnyPublicKeyProvider { get set }
+    var publicKeyProvider: AnyPublicKeyProvider { get }
 }
 
 /// :nodoc:

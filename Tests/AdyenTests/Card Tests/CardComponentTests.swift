@@ -413,16 +413,21 @@ class CardComponentTests: XCTestCase {
 
     func testFormViewControllerDelegate() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
-        let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context)
-
+        
         let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
         let publicKeyProvider = PublicKeyProviderMock()
         publicKeyProvider.onFetch = { completion in
             publicKeyProviderExpectation.fulfill()
             completion(.success("key"))
         }
-        sut.publicKeyProvider = publicKeyProvider
+        
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: CardComponent.Configuration(),
+                                shopperInformation: nil,
+                                style: FormComponentStyle(),
+                                publicKeyProvider: publicKeyProvider,
+                                binProvider: BinInfoProviderMock())
 
         sut.viewDidLoad(viewController: sut.cardViewController)
 

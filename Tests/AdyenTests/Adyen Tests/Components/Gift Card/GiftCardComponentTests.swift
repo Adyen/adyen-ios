@@ -43,7 +43,8 @@ class GiftCardComponentTests: XCTestCase {
     override func setUp() {
         super.setUp()
         paymentMethod = GiftCardPaymentMethod(type: "testType", name: "testName", brand: "testBrand")
-        sut = GiftCardComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
+        publicKeyProvider = PublicKeyProviderMock()
+        sut = GiftCardComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, publicKeyProvider: publicKeyProvider)
         sut.payment = nil // Missing Payment object
         delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
@@ -51,8 +52,6 @@ class GiftCardComponentTests: XCTestCase {
         sut.partialPaymentDelegate = partialPaymentDelegate
         readyToSubmitPaymentComponentDelegate = ReadyToSubmitPaymentComponentDelegateMock()
         sut.readyToSubmitComponentDelegate = readyToSubmitPaymentComponentDelegate
-        publicKeyProvider = PublicKeyProviderMock()
-        sut.publicKeyProvider = publicKeyProvider
     }
 
     func testCheckBalanceFailure() throws {
