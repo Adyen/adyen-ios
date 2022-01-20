@@ -10,7 +10,7 @@ internal struct BankPayload: Payload {
     
     private var accountNumber: String?
     private var routingNumber: String?
-    private var timestamp = ISO8601DateFormatter().string(from: Date())
+    private let timestamp = ISO8601DateFormatter().string(from: Date())
     
     private enum CodingKeys: String, CodingKey {
         case accountNumber = "bankAccountNumber"
