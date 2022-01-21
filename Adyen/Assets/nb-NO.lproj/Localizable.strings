@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Ugyldig sorteringskode";
 "adyen.bacs.paymentButton.title" = "Bekreft og betal";
 "adyen.bacs.downloadMandate" = "Last ned instruksjoner for direktebelastning (DDI/ mandat)";
+"adyen.ach.bankAccount.title" = "Bankkonto";
+"adyen.ach.accountHolderNameField.title" = "Kontoholders navn";
+"adyen.ach.accountHolderNameField.invalid" = "Ugyldig navn på kontoholder";
+"adyen.ach.accountNumberField.title" = "Kontonummer";
+"adyen.ach.accountNumberField.invalid" = "Ugyldig kontonummer";
+"adyen.ach.accountLocationField.title" = "ABA-dirigeringsnummer";
+"adyen.ach.accountLocationField.invalid" = "Ugyldig ABA-dirigeringsnummer";

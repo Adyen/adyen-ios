@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Ongeldige bankcode";
 "adyen.bacs.paymentButton.title" = "Bevestigen en betalen";
 "adyen.bacs.downloadMandate" = "Download uw machtiging automatische incasso";
+"adyen.ach.bankAccount.title" = "Bankrekening";
+"adyen.ach.accountHolderNameField.title" = "Naam rekeninghouder";
+"adyen.ach.accountHolderNameField.invalid" = "Ongeldige naam rekeninghouder";
+"adyen.ach.accountNumberField.title" = "Rekeningnummer";
+"adyen.ach.accountNumberField.invalid" = "Ongeldig rekeningnummer";
+"adyen.ach.accountLocationField.title" = "Routingnummer (ABA)";
+"adyen.ach.accountLocationField.invalid" = "Ongeldig routingnummer (ABA)";

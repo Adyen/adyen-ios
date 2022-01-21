@@ -11,15 +11,15 @@ import XCTest
 class FormCardNumberItemTests: XCTestCase {
 
     var apiClient: APIClientMock!
-    var publicKeyProvider: CardPublicKeyProviderMock!
+    var publicKeyProvider: PublicKeyProviderMock!
     let supportedCardTypes: [CardType] = [.visa, .masterCard, .americanExpress, .chinaUnionPay, .maestro]
     var cardBrandProvider: BinInfoProvider!
 
     override func setUp() {
         apiClient = APIClientMock()
-        publicKeyProvider = CardPublicKeyProviderMock()
+        publicKeyProvider = PublicKeyProviderMock()
         cardBrandProvider = BinInfoProvider(apiClient: apiClient,
-                                            cardPublicKeyProvider: publicKeyProvider,
+                                            publicKeyProvider: publicKeyProvider,
                                             minBinLength: 11)
     }
 

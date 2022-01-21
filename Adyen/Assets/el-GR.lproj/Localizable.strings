@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Μη έγκυρος κωδικός τράπεζας";
 "adyen.bacs.paymentButton.title" = "Επιβεβαίωση και πληρωμή";
 "adyen.bacs.downloadMandate" = "Κατεβάστε την Εντολή Άμεσης Χρέωσης (DDI/Εντολή)";
+"adyen.ach.bankAccount.title" = "Τραπεζικός λογαριασμός";
+"adyen.ach.accountHolderNameField.title" = "Όνομα κατόχου λογαριασμού";
+"adyen.ach.accountHolderNameField.invalid" = "Μη έγκυρο όνομα κατόχου λογαριασμού";
+"adyen.ach.accountNumberField.title" = "Αριθμός λογαριασμού";
+"adyen.ach.accountNumberField.invalid" = "Μη έγκυρος αριθμός λογαριασμού";
+"adyen.ach.accountLocationField.title" = "Αριθμός δρομολόγησης ABA";
+"adyen.ach.accountLocationField.invalid" = "Μη έγκυρος αριθμός δρομολόγησης ABA";

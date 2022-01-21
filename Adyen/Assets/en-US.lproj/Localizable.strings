@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Invalid sort code";
 "adyen.bacs.paymentButton.title" = "Confirm and pay";
 "adyen.bacs.downloadMandate" = "Download your Direct Debit Instruction (DDI / Mandate)";
+"adyen.ach.bankAccount.title" = "Bank account";
+"adyen.ach.accountHolderNameField.title" = "Account holder name";
+"adyen.ach.accountHolderNameField.invalid" = "Invalid account holder name";
+"adyen.ach.accountNumberField.title" = "Account number";
+"adyen.ach.accountNumberField.invalid" = "Invalid account number";
+"adyen.ach.accountLocationField.title" = "ABA routing number";
+"adyen.ach.accountLocationField.invalid" = "Invalid ABA routing number";

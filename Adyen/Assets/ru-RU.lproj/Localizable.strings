@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Неверный код банка";
 "adyen.bacs.paymentButton.title" = "Подтвердить и оплатить";
 "adyen.bacs.downloadMandate" = "Загрузить распоряжение прямого дебетования (DDI / поручение)";
+"adyen.ach.bankAccount.title" = "Банковский счет";
+"adyen.ach.accountHolderNameField.title" = "Имя владельца карты";
+"adyen.ach.accountHolderNameField.invalid" = "Недействительное имя владельца карты";
+"adyen.ach.accountNumberField.title" = "Номер счета";
+"adyen.ach.accountNumberField.invalid" = "Недействительный номер счета";
+"adyen.ach.accountLocationField.title" = "Маршрутный номер ABA";
+"adyen.ach.accountLocationField.invalid" = "Недействительный маршрутный номер ABA";

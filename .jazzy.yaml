@@ -64,6 +64,7 @@ custom_categories:
       - ApplePayPaymentMethod
       - SEPADirectDebitPaymentMethod
       - BACSDirectDebitPaymentMethod
+      - ACHDirectDebitPaymentMethod
       - QiwiWalletPaymentMethod
       - AffirmPaymentMethod
       - AwaitPaymentMethod
@@ -175,6 +176,12 @@ custom_categories:
       - BACSDirectDebitPaymentMethod
       - BACSDirectDebitComponent
       - BACSDirectDebitDetails
+      
+  - name: ACH Direct Debit Component
+    children:
+      - ACHDirectDebitPaymentMethod
+      - ACHDirectDebitComponent
+      - ACHDirectDebitDetails
 
   - name: Qiwi Wallet Component
     children:
@@ -296,6 +303,7 @@ custom_categories:
   - name: Encryption
     children:
       - CardEncryptor
+      - BankDetailsEncryptor
       - Card
       - EncryptedCard
       - EncryptionError
@@ -315,3 +323,6 @@ custom_categories:
       - SecuredViewController
       - Localizable
       - LocalizationParameters
+      - AnyPublicKeyProvider
+      - PublicKeyProvider
+      - PublicKeyConsumer

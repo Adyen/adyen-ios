@@ -23,22 +23,22 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
 
     private var binLookupService: BinLookupService?
     
-    private let cardPublicKeyProvider: AnyCardPublicKeyProvider
+    private let publicKeyProvider: AnyPublicKeyProvider
 
     private let fallbackCardTypeProvider: AnyBinInfoProvider
     
     /// Create a new instance of CardTypeProvider.
     /// - Parameters:
     ///   - apiContext: The API context,
-    ///   - cardPublicKeyProvider: Any instance of `AnyCardPublicKeyProvider`.
+    ///   - publicKeyProvider: Any instance of `AnyPublicKeyProvider`.
     ///   - fallbackCardTypeProvider: Any instance of `AnyCardBrandProvider` to be used as a fallback
     ///   if API not available or BIN too short.
     internal init(apiClient: APIClientProtocol,
-                  cardPublicKeyProvider: AnyCardPublicKeyProvider,
+                  publicKeyProvider: AnyPublicKeyProvider,
                   fallbackCardTypeProvider: AnyBinInfoProvider = FallbackBinInfoProvider(),
                   minBinLength: Int) {
         self.apiClient = apiClient
-        self.cardPublicKeyProvider = cardPublicKeyProvider
+        self.publicKeyProvider = publicKeyProvider
         self.fallbackCardTypeProvider = fallbackCardTypeProvider
         self.minBinLength = minBinLength
     }
@@ -74,7 +74,7 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
         if let service = binLookupService {
             useService(service)
         } else {
-            cardPublicKeyProvider.fetch { [weak self] result in
+            publicKeyProvider.fetch { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case let .success(publicKey):

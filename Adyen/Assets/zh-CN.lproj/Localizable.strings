@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "无效的分类代码";
 "adyen.bacs.paymentButton.title" = "确认并支付";
 "adyen.bacs.downloadMandate" = "下载您的直接借记指示（DDI/委托）";
+"adyen.ach.bankAccount.title" = "银行账户";
+"adyen.ach.accountHolderNameField.title" = "账户持有人姓名";
+"adyen.ach.accountHolderNameField.invalid" = "无效的账户持有人姓名";
+"adyen.ach.accountNumberField.title" = "账号";
+"adyen.ach.accountNumberField.invalid" = "无效的账号";
+"adyen.ach.accountLocationField.title" = "ABA 路由电汇编码";
+"adyen.ach.accountLocationField.invalid" = "无效的 ABA 路由电汇编码";

@@ -301,6 +301,20 @@ public struct LocalizationKey {
     public static let bacsPaymentButtonTitle = LocalizationKey(key: "adyen.bacs.paymentButton.title")
     /// Download your Direct Debit Instruction (DDI / Mandate)
     public static let bacsDownloadMandate = LocalizationKey(key: "adyen.bacs.downloadMandate")
+    /// Bank account
+    public static let achBankAccountTitle = LocalizationKey(key: "adyen.ach.bankAccount.title")
+    /// Account holder name
+    public static let achAccountHolderNameFieldTitle = LocalizationKey(key: "adyen.ach.accountHolderNameField.title")
+    /// Invalid account holder name
+    public static let achAccountHolderNameFieldInvalid = LocalizationKey(key: "adyen.ach.accountHolderNameField.invalid")
+    /// Account number
+    public static let achAccountNumberFieldTitle = LocalizationKey(key: "adyen.ach.accountNumberField.title")
+    /// Invalid account number
+    public static let achAccountNumberFieldInvalid = LocalizationKey(key: "adyen.ach.accountNumberField.invalid")
+    /// ABA routing number
+    public static let achAccountLocationFieldTitle = LocalizationKey(key: "adyen.ach.accountLocationField.title")
+    /// Invalid ABA routing number
+    public static let achAccountLocationFieldInvalid = LocalizationKey(key: "adyen.ach.accountLocationField.invalid")
     
     internal let key: String
     

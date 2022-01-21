@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -213,6 +213,15 @@ internal final class ComponentManager {
         return bacsDirectDebitComponent
     }
     
+    private func createACHDirectDebitComponent(_ paymentMethod: ACHDirectDebitPaymentMethod) -> ACHDirectDebitComponent {
+        ACHDirectDebitComponent(configuration: ACHDirectDebitComponent.Configuration(),
+                                paymentMethod: paymentMethod,
+                                apiContext: apiContext,
+                                shopperInformation: configuration.shopper,
+                                localizationParameters: configuration.localizationParameters,
+                                style: style.formComponent)
+    }
+    
     private func createQiwiWalletComponent(_ paymentMethod: QiwiWalletPaymentMethod) -> QiwiWalletComponent {
         QiwiWalletComponent(paymentMethod: paymentMethod,
                             apiContext: apiContext,
@@ -285,6 +294,11 @@ extension ComponentManager: PaymentComponentBuilder {
     /// :nodoc:
     internal func build(paymentMethod: BACSDirectDebitPaymentMethod) -> PaymentComponent? {
         createBACSDirectDebit(paymentMethod)
+    }
+    
+    /// :nodoc:
+    internal func build(paymentMethod: ACHDirectDebitPaymentMethod) -> PaymentComponent? {
+        createACHDirectDebitComponent(paymentMethod)
     }
     
     /// :nodoc:

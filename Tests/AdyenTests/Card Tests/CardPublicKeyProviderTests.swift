@@ -1,5 +1,5 @@
 //
-//  CardPublicKeyProviderTests.swift
+//  PublicKeyProviderTests.swift
 //  AdyenTests
 //
 //  Created by Mohamed Eldoheiri on 8/17/20.
@@ -11,7 +11,7 @@
 import AdyenNetworking
 import XCTest
 
-class CardPublicKeyProviderTests: XCTestCase {
+class PublicKeyProviderTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
@@ -21,12 +21,12 @@ class CardPublicKeyProviderTests: XCTestCase {
     func testMultipleFetchCallsAndOneRequestDispatched() throws {
         var baseApiClient = APIClientMock()
         var apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
-        var sut = CardPublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: ""))
-        CardPublicKeyProvider.cachedCardPublicKey = nil
+        var sut = PublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: ""))
+        PublicKeyProvider.cachedPublicKey = nil
 
         baseApiClient.mockedResults = [.success(ClientKeyResponse(cardPublicKey: "test_public_key"))]
 
-        let fetchExpectation = expectation(description: "CardPublicKeyProvider.fetch() completion handler must be called.")
+        let fetchExpectation = expectation(description: "PublicKeyProvider.fetch() completion handler must be called.")
         fetchExpectation.expectedFulfillmentCount = 10
         (0...9).forEach { _ in
             sut.fetch { result in
@@ -48,9 +48,9 @@ class CardPublicKeyProviderTests: XCTestCase {
 
         baseApiClient = APIClientMock()
         apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
-        sut = CardPublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: ""))
+        sut = PublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: ""))
 
-        let secondFetchExpectation = expectation(description: "second CardPublicKeyProvider.fetch() completion handler must be called.")
+        let secondFetchExpectation = expectation(description: "second PublicKeyProvider.fetch() completion handler must be called.")
         sut.fetch { result in
             switch result {
             case let .success(key):

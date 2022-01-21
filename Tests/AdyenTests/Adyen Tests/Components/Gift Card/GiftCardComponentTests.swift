@@ -18,7 +18,7 @@ class GiftCardComponentTests: XCTestCase {
 
     var delegateMock: PaymentComponentDelegateMock!
 
-    var cardPublicKeyProvider: CardPublicKeyProviderMock!
+    var publicKeyProvider: PublicKeyProviderMock!
 
     var sut: GiftCardComponent!
 
@@ -43,7 +43,8 @@ class GiftCardComponentTests: XCTestCase {
     override func setUp() {
         super.setUp()
         paymentMethod = GiftCardPaymentMethod(type: "testType", name: "testName", brand: "testBrand")
-        sut = GiftCardComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
+        publicKeyProvider = PublicKeyProviderMock()
+        sut = GiftCardComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, publicKeyProvider: publicKeyProvider)
         sut.payment = nil // Missing Payment object
         delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
@@ -51,16 +52,14 @@ class GiftCardComponentTests: XCTestCase {
         sut.partialPaymentDelegate = partialPaymentDelegate
         readyToSubmitPaymentComponentDelegate = ReadyToSubmitPaymentComponentDelegateMock()
         sut.readyToSubmitComponentDelegate = readyToSubmitPaymentComponentDelegate
-        cardPublicKeyProvider = CardPublicKeyProviderMock()
-        sut.cardPublicKeyProvider = cardPublicKeyProvider
     }
 
     func testCheckBalanceFailure() throws {
 
-        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
-        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
-        cardPublicKeyProvider.onFetch = { completion in
-            cardPublicKeyProviderExpectation.fulfill()
+        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
+        publicKeyProviderExpectation.expectedFulfillmentCount = 2
+        publicKeyProvider.onFetch = { completion in
+            publicKeyProviderExpectation.fulfill()
             completion(.success(Dummy.publicKey))
         }
 
@@ -99,10 +98,10 @@ class GiftCardComponentTests: XCTestCase {
 
     func testBalanceAndTransactionLimitCurrencyMismatch() throws {
 
-        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
-        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
-        cardPublicKeyProvider.onFetch = { completion in
-            cardPublicKeyProviderExpectation.fulfill()
+        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
+        publicKeyProviderExpectation.expectedFulfillmentCount = 2
+        publicKeyProvider.onFetch = { completion in
+            publicKeyProviderExpectation.fulfill()
             completion(.success(Dummy.publicKey))
         }
 
@@ -139,10 +138,10 @@ class GiftCardComponentTests: XCTestCase {
 
     func testPaymentAndBalanceCurrencyMissmatch() throws {
 
-        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
-        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
-        cardPublicKeyProvider.onFetch = { completion in
-            cardPublicKeyProviderExpectation.fulfill()
+        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
+        publicKeyProviderExpectation.expectedFulfillmentCount = 2
+        publicKeyProvider.onFetch = { completion in
+            publicKeyProviderExpectation.fulfill()
             completion(.success(Dummy.publicKey))
         }
 
@@ -179,10 +178,10 @@ class GiftCardComponentTests: XCTestCase {
 
     func testZeroBalance() throws {
 
-        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
-        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
-        cardPublicKeyProvider.onFetch = { completion in
-            cardPublicKeyProviderExpectation.fulfill()
+        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
+        publicKeyProviderExpectation.expectedFulfillmentCount = 2
+        publicKeyProvider.onFetch = { completion in
+            publicKeyProviderExpectation.fulfill()
             completion(.success(Dummy.publicKey))
         }
 
@@ -219,10 +218,10 @@ class GiftCardComponentTests: XCTestCase {
 
     func testMissingPaymentObject() throws {
 
-        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
-        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
-        cardPublicKeyProvider.onFetch = { completion in
-            cardPublicKeyProviderExpectation.fulfill()
+        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
+        publicKeyProviderExpectation.expectedFulfillmentCount = 2
+        publicKeyProvider.onFetch = { completion in
+            publicKeyProviderExpectation.fulfill()
             completion(.success(Dummy.publicKey))
         }
 
@@ -259,10 +258,10 @@ class GiftCardComponentTests: XCTestCase {
 
     func testEnoughBalanceIsAvailableWithNilReadyToSubmitDelegate() throws {
 
-        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
-        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
-        cardPublicKeyProvider.onFetch = { completion in
-            cardPublicKeyProviderExpectation.fulfill()
+        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
+        publicKeyProviderExpectation.expectedFulfillmentCount = 2
+        publicKeyProvider.onFetch = { completion in
+            publicKeyProviderExpectation.fulfill()
             completion(.success(Dummy.publicKey))
         }
 
@@ -312,10 +311,10 @@ class GiftCardComponentTests: XCTestCase {
 
     func testEnoughBalanceIsAvailableWithReadyToSubmitDelegate() throws {
 
-        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
-        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
-        cardPublicKeyProvider.onFetch = { completion in
-            cardPublicKeyProviderExpectation.fulfill()
+        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
+        publicKeyProviderExpectation.expectedFulfillmentCount = 2
+        publicKeyProvider.onFetch = { completion in
+            publicKeyProviderExpectation.fulfill()
             completion(.success(Dummy.publicKey))
         }
 
@@ -366,10 +365,10 @@ class GiftCardComponentTests: XCTestCase {
 
     func testNotAvailableBalanceRequestOrderSuccess() throws {
 
-        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
-        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
-        cardPublicKeyProvider.onFetch = { completion in
-            cardPublicKeyProviderExpectation.fulfill()
+        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
+        publicKeyProviderExpectation.expectedFulfillmentCount = 2
+        publicKeyProvider.onFetch = { completion in
+            publicKeyProviderExpectation.fulfill()
             completion(.success(Dummy.publicKey))
         }
 
@@ -424,10 +423,10 @@ class GiftCardComponentTests: XCTestCase {
 
     func testNotAvailableBalanceOrderAlreadyExists() throws {
 
-        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
-        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
-        cardPublicKeyProvider.onFetch = { completion in
-            cardPublicKeyProviderExpectation.fulfill()
+        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
+        publicKeyProviderExpectation.expectedFulfillmentCount = 2
+        publicKeyProvider.onFetch = { completion in
+            publicKeyProviderExpectation.fulfill()
             completion(.success(Dummy.publicKey))
         }
 
@@ -481,10 +480,10 @@ class GiftCardComponentTests: XCTestCase {
 
     func testNotAvailableBalanceRequestOrderFailure() throws {
 
-        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
-        cardPublicKeyProviderExpectation.expectedFulfillmentCount = 2
-        cardPublicKeyProvider.onFetch = { completion in
-            cardPublicKeyProviderExpectation.fulfill()
+        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
+        publicKeyProviderExpectation.expectedFulfillmentCount = 2
+        publicKeyProvider.onFetch = { completion in
+            publicKeyProviderExpectation.fulfill()
             completion(.success(Dummy.publicKey))
         }
 

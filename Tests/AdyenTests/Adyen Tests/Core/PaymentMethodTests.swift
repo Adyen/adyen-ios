@@ -544,8 +544,9 @@ class PaymentMethodTests: XCTestCase {
     // MARK: - ACH Direct Debit
 
     func testDecodingACHDirectDebitPaymentMethod() throws {
-        let paymentMethod = try Coder.decode(achDirectDebit) as AnyPaymentMethod
-        XCTAssertNil(paymentMethod.value)
+        let paymentMethod = try Coder.decode(achDirectDebit) as ACHDirectDebitPaymentMethod
+        XCTAssertEqual(paymentMethod.type, "ach")
+        XCTAssertEqual(paymentMethod.name, "ACH Direct Debit")
     }
 }
 

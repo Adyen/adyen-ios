@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Sort code non valido";
 "adyen.bacs.paymentButton.title" = "Conferma e paga";
 "adyen.bacs.downloadMandate" = "Scarica le Istruzioni per l'addebito diretto (DDI / Mandato)";
+"adyen.ach.bankAccount.title" = "Conto bancario";
+"adyen.ach.accountHolderNameField.title" = "Nome del titolare del conto";
+"adyen.ach.accountHolderNameField.invalid" = "Nome del titolare del conto non valido";
+"adyen.ach.accountNumberField.title" = "Numero di conto";
+"adyen.ach.accountNumberField.invalid" = "Numero di conto non valido";
+"adyen.ach.accountLocationField.title" = "Codice ABA";
+"adyen.ach.accountLocationField.invalid" = "Codice ABA non valido";

@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "رمز تعريف بنك غير صحيح";
 "adyen.bacs.paymentButton.title" = "تأكيد ودفع";
 "adyen.bacs.downloadMandate" = "تنزيل تعليمات الخصم المباشر (تعليمات / تفويض DDI)";
+"adyen.ach.bankAccount.title" = "الحساب البنكي";
+"adyen.ach.accountHolderNameField.title" = "اسم صاحب الحساب";
+"adyen.ach.accountHolderNameField.invalid" = "اسم صاحب حساب غير صحيح";
+"adyen.ach.accountNumberField.title" = "رقم الحساب";
+"adyen.ach.accountNumberField.invalid" = "رقم حساب غير صحيح";
+"adyen.ach.accountLocationField.title" = "رقم توجيه ABA";
+"adyen.ach.accountLocationField.invalid" = "رقم توجيه ABA غير صحيح";

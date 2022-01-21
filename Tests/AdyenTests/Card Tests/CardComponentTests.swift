@@ -302,7 +302,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: .init(),
                                 style: .init(),
-                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -413,16 +413,21 @@ class CardComponentTests: XCTestCase {
 
     func testFormViewControllerDelegate() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
-        let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context)
-
-        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
-        let cardPublicKeyProvider = CardPublicKeyProviderMock()
-        cardPublicKeyProvider.onFetch = { completion in
-            cardPublicKeyProviderExpectation.fulfill()
+        
+        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
+        let publicKeyProvider = PublicKeyProviderMock()
+        publicKeyProvider.onFetch = { completion in
+            publicKeyProviderExpectation.fulfill()
             completion(.success("key"))
         }
-        sut.cardPublicKeyProvider = cardPublicKeyProvider
+        
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: CardComponent.Configuration(),
+                                shopperInformation: nil,
+                                style: FormComponentStyle(),
+                                publicKeyProvider: publicKeyProvider,
+                                binProvider: BinInfoProviderMock())
 
         sut.viewDidLoad(viewController: sut.cardViewController)
 
@@ -644,7 +649,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 style: FormComponentStyle(),
-                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: BinInfoProviderMock())
 
         let delegate = PaymentComponentDelegateMock()
@@ -922,7 +927,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 style: .init(),
-                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: BinInfoProviderMock())
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -979,7 +984,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 style: .init(),
-                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -1038,7 +1043,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 style: .init(),
-                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -1260,7 +1265,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 style: .init(),
-                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -1304,7 +1309,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 style: .init(),
-                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -1342,7 +1347,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 style: .init(),
-                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
