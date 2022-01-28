@@ -12,7 +12,7 @@ import PassKit
 public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, Localizable, FinalizableComponent {
 
     /// :nodoc:
-    internal var success: Bool = false
+    internal var state: State = .initiated
     
     /// :nodoc:
     private let payment: Payment
@@ -110,21 +110,9 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     /// Finalizes ApplePay payment after being processed by payment provider.
     /// - Parameter success: The status of the payment.
-    public func didFinalize(with success: Bool) {
-        self.success = success
-        paymentAuthorizationCompletion?(success ? .success : .failure)
-        paymentAuthorizationCompletion = nil
-    }
+    public func didFinalize(with success: Bool) { }
 
     // MARK: - Private
-
-    internal func dismiss(completion: (() -> Void)?) {
-        paymentAuthorizationViewController?.dismiss(animated: true) { [weak self] in
-            guard let self = self else { return }
-            self.paymentAuthorizationViewController = nil
-            completion?()
-        }
-    }
     
     private func getPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController {
         if paymentAuthorizationViewController == nil {
@@ -132,7 +120,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
             let request = configuration.createPaymentRequest(payment: payment, supportedNetworks: supportedNetworks)
             paymentAuthorizationViewController = ApplePayComponent.createPaymentAuthorizationViewController(from: request)
             paymentAuthorizationViewController?.delegate = self
-            paymentAuthorizationCompletion = nil
+            state = .initiated
         }
         return paymentAuthorizationViewController!
     }
@@ -153,6 +141,12 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 }
 
 extension ApplePayComponent {
+
+    internal enum State {
+        case initiated
+        case paymentInProgress
+        case error(Swift.Error)
+    }
 
     /// Describes the error that can occur during Apple Pay payment.
     public enum Error: Swift.Error, LocalizedError {
@@ -177,6 +171,8 @@ extension ApplePayComponent {
         /// Indicates that the currency code is invalid.
         case invalidCurrencyCode
 
+        case invalidToken
+
         /// :nodoc:
         public var errorDescription: String? {
             switch self {
@@ -194,6 +190,8 @@ extension ApplePayComponent {
                 return "The country code is invalid."
             case .invalidCurrencyCode:
                 return "The currency code is invalid."
+            case .invalidToken:
+                return "The Apple Pay token is invalid. Make sure you are using physical device, not a Simulator."
             }
         }
     }

@@ -13,9 +13,13 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     
     /// :nodoc:
     public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-        dismiss { [weak self] in
-            guard let self = self, self.success == false else { return }
+        switch state {
+        case .initiated:
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
+        case .paymentInProgress:
+            break // viewController should be dissmissed when API call is proccessed
+        case let .error(error):
+            self.delegate?.didFail(with: error, from: self)
         }
     }
     
@@ -23,7 +27,13 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
                                                    didAuthorizePayment payment: PKPayment,
                                                    completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
-        paymentAuthorizationCompletion = completion
+        guard payment.token.paymentData.isEmpty == false else {
+            completion(.failure)
+            state = .error(Error.invalidToken)
+            return
+        }
+
+        state = .paymentInProgress
         let token = payment.token.paymentData.base64EncodedString()
         let network = payment.token.paymentMethod.network?.rawValue ?? ""
         let billingContact = payment.billingContact
@@ -35,6 +45,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
                                       shippingContact: shippingContact)
         
         submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.amountToPay, order: order))
+        completion(.success)
     }
 }
 

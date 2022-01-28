@@ -12,19 +12,21 @@ import UIKit
 
 // :nodoc:
 internal final class PreApplePayComponent: Localizable, PresentableComponent, FinalizableComponent, PaymentComponent {
-    
+
+    private var applePayComponent: ApplePayComponent?
+
+    private let configuration: ApplePayComponent.Configuration
+
+    private let payment: Payment
+
+    private let applePayPaymentMethod: ApplePayPaymentMethod
+
+    /// :nodoc:
+    internal var paymentMethod: PaymentMethod { applePayPaymentMethod }
+
     /// :nodoc:
     internal let apiContext: APIContext
-    
-    /// :nodoc:
-    internal let paymentMethod: PaymentMethod
-    
-    /// :nodoc:
-    private var payment: Payment? { _payment }
-    
-    /// :nodoc:
-    private let _payment: Payment
-    
+
     /// :nodoc:
     internal weak var delegate: PaymentComponentDelegate?
     
@@ -32,17 +34,14 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     internal var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
-    internal weak var presentationDelegate: PresentationDelegate?
-    
-    /// :nodoc:
-    fileprivate let applePayComponent: ApplePayComponent
+    internal weak var navigationDelegate: NavigationDelegate?
     
     /// :nodoc:
     internal let style: ApplePayStyle
     
     /// :nodoc:
     internal lazy var viewController: UIViewController = {
-        let view = PreApplePayView(model: createModel(with: _payment.amount))
+        let view = PreApplePayView(model: createModel(with: payment.amount))
         let viewController = ADYViewController(view: view, title: "Apple Pay")
         view.delegate = self
         
@@ -59,20 +58,16 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
                   configuration: ApplePayComponent.Configuration,
                   style: ApplePayStyle) throws {
         self.apiContext = apiContext
-        self._payment = payment
-        self.paymentMethod = paymentMethod
+        self.payment = payment
+        self.applePayPaymentMethod = paymentMethod
         self.style = style
-
-        self.applePayComponent = try ApplePayComponent(paymentMethod: paymentMethod,
-                                                       apiContext: apiContext,
-                                                       payment: payment,
-                                                       configuration: configuration)
-        self.applePayComponent.delegate = self
+        self.configuration = configuration
+        applePayComponent = try createApplePayComponent()
     }
     
     /// :nodoc
     internal func didFinalize(with success: Bool) {
-        applePayComponent.didFinalize(with: success)
+        applePayComponent = nil
     }
     
     /// :nodoc:
@@ -90,6 +85,8 @@ extension PreApplePayComponent: PaymentComponentDelegate {
     
     internal func didFail(with error: Error, from component: PaymentComponent) {
         delegate?.didFail(with: error, from: self)
+        navigationDelegate?.dismiss()
+        applePayComponent = nil
     }
     
 }
@@ -98,7 +95,35 @@ extension PreApplePayComponent: PreApplePayViewDelegate {
     
     /// :nodoc:
     internal func pay() {
-        presentationDelegate?.present(component: applePayComponent)
+        let component: ApplePayComponent
+        if let applePayComponent = applePayComponent {
+            component = applePayComponent
+        } else {
+            do {
+                component = try createApplePayComponent()
+                applePayComponent = component
+            } catch {
+                delegate?.didFail(with: error, from: self)
+                return
+            }
+        }
+
+        navigationDelegate?.present(component: component)
+    }
+
+    private func createApplePayComponent() throws -> ApplePayComponent {
+        let applePayComponent = try ApplePayComponent(paymentMethod: applePayPaymentMethod,
+                                                       apiContext: apiContext,
+                                                       payment: payment,
+                                                       configuration: configuration)
+        applePayComponent.delegate = self
+        return applePayComponent
     }
     
+}
+
+internal protocol NavigationDelegate: PresentationDelegate {
+
+    func dismiss()
+
 }

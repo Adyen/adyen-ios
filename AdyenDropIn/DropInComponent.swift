@@ -267,7 +267,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
         (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
-        (component as? PreApplePayComponent)?.presentationDelegate = self
+        (component as? PreApplePayComponent)?.navigationDelegate = self
         
         component._isDropIn = true
         component.payment = configuration.payment
