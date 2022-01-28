@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -24,7 +24,9 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         textField.allowsEditingActions = false
         
         observe(item.$currentBrand) { [weak self] _ in
-            self?.updateValidationStatus(forced: true)
+            guard let self = self else { return }
+            self.updateValidationStatus(forced: true)
+            self.notifyDelegateOfMaxLengthIfNeeded()
         }
         
         observe(item.$detectedBrandLogos) { [weak self] newValue in

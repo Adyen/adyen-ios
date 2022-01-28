@@ -17,10 +17,16 @@ public final class CardNumberValidator: Validator {
     /// Indicates whether the detected brand is supported or not.
     private let isEnteredBrandSupported: Bool
     
+    /// Length of the card number if available.
+    private let panLength: Int?
+    
     /// :nodoc:
-    public init(isLuhnCheckEnabled: Bool, isEnteredBrandSupported: Bool) {
+    public init(isLuhnCheckEnabled: Bool,
+                isEnteredBrandSupported: Bool,
+                panLength: Int? = nil) {
         self.isLuhnCheckEnabled = isLuhnCheckEnabled
         self.isEnteredBrandSupported = isEnteredBrandSupported
+        self.panLength = panLength
     }
     
     /// :nodoc:
@@ -34,7 +40,7 @@ public final class CardNumberValidator: Validator {
     
     /// :nodoc:
     public func maximumLength(for value: String) -> Int {
-        19
+        panLength ?? 19
     }
     
     // MARK: - Private
