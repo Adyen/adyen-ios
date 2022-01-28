@@ -721,6 +721,7 @@ class CardComponentTests: XCTestCase {
         // focus should change with pan length set
         newResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress, panLength: 15)])
         sut.cardViewController.update(binInfo: newResponse)
+        cardNumberItemView?.becomeFirstResponder()
         
         XCTAssertTrue(cardNumberItemView!.isFirstResponder)
         
