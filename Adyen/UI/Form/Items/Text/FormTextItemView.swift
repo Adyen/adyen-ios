@@ -174,11 +174,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     
     @objc private func textDidChange(textField: UITextField) {
         textField.text = item.textDidChange(value: textField.text ?? "")
-        
-        let maximumLength = item.validator?.maximumLength(for: item.value) ?? .max
-        if item.value.count == maximumLength {
-            delegate?.didReachMaximumLength(in: self)
-        }
+        notifyDelegateOfMaxLengthIfNeeded()
     }
     
     // MARK: - Validation
@@ -284,6 +280,14 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
             hideAlertLabel(true)
             isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
             titleLabel.textColor = defaultTitleColor
+        }
+    }
+    
+    /// :nodoc:
+    public func notifyDelegateOfMaxLengthIfNeeded() {
+        let maximumLength = item.validator?.maximumLength(for: item.value) ?? .max
+        if item.value.count == maximumLength {
+            delegate?.didReachMaximumLength(in: self)
         }
     }
 

@@ -268,29 +268,11 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
         self.populate(textItemView: nameItemView!, with: "test")
         self.populate(textItemView: accountNumberItemView!, with: "123456789")
-        self.populate(textItemView: routingNumberItemView!, with: "1122334455")
+        self.populate(textItemView: routingNumberItemView!, with: "121000358")
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
         
         wait(for: [expectation], timeout: 5)
-    }
-    
-    func testFormViewControllerDelegate() {
-//        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
-//        let sut = CardComponent(paymentMethod: method,
-//                                apiContext: Dummy.context)
-//
-//        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
-//        let publicKeyProvider = PublicKeyProviderMock()
-//        publicKeyProvider.onFetch = { completion in
-//            publicKeyProviderExpectation.fulfill()
-//            completion(.success("key"))
-//        }
-//        sut.publicKeyProvider = publicKeyProvider
-//
-//        sut.viewDidLoad(viewController: sut.cardViewController)
-//
-//        waitForExpectations(timeout: 10, handler: nil)
     }
     
 }
