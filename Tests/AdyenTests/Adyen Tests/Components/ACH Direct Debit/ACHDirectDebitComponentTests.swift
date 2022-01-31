@@ -275,22 +275,4 @@ class ACHDirectDebitComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 5)
     }
     
-    func testFormViewControllerDelegate() {
-//        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
-//        let sut = CardComponent(paymentMethod: method,
-//                                apiContext: Dummy.context)
-//
-//        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
-//        let publicKeyProvider = PublicKeyProviderMock()
-//        publicKeyProvider.onFetch = { completion in
-//            publicKeyProviderExpectation.fulfill()
-//            completion(.success("key"))
-//        }
-//        sut.publicKeyProvider = publicKeyProvider
-//
-//        sut.viewDidLoad(viewController: sut.cardViewController)
-//
-//        waitForExpectations(timeout: 10, handler: nil)
-    }
-    
 }
