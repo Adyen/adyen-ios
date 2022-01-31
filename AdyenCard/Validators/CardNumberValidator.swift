@@ -11,6 +11,10 @@ import Foundation
 /// The input is expected to be sanitized.
 public final class CardNumberValidator: Validator {
     
+    private enum Constants {
+        static let maxPanLength = 19
+    }
+    
     /// Indicates whether to validate for luhn check
     private let isLuhnCheckEnabled: Bool
     
@@ -40,7 +44,7 @@ public final class CardNumberValidator: Validator {
     
     /// :nodoc:
     public func maximumLength(for value: String) -> Int {
-        panLength ?? 19
+        panLength ?? Constants.maxPanLength
     }
     
     // MARK: - Private
