@@ -268,7 +268,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
         self.populate(textItemView: nameItemView!, with: "test")
         self.populate(textItemView: accountNumberItemView!, with: "123456789")
-        self.populate(textItemView: routingNumberItemView!, with: "1122334455")
+        self.populate(textItemView: routingNumberItemView!, with: "121000358")
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
         
