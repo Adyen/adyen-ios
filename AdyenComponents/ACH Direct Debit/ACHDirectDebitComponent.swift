@@ -289,6 +289,12 @@ extension ACHDirectDebitComponent {
         /// Defaults to ["US", "PR"].
         public var billingAddressCountryCodes: [String]
         
+        /// Initializes the configuration for ACH Direct Debit Component.
+        /// - Parameters:
+        ///   - showsBillingAddress: Determines whether the billing address should be displayed or not.
+        ///   Defaults to `true`.
+        ///   - billingAddressCountryCodes: ISO country codes that is supported for the billing address.
+        ///   Defaults to ["US", "PR"].
         public init(showsBillingAddress: Bool = true,
                     billingAddressCountryCodes: [String] = ["US", "PR"]) {
             self.showsBillingAddress = showsBillingAddress

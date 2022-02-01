@@ -70,6 +70,10 @@ extension CardComponent {
 
         /// Installments options to present to the user.
         public var installmentConfiguration: InstallmentConfiguration?
+        
+        /// List of ISO country codes that is supported for the billing address.
+        /// When nil, all countries are provided.
+        public var billingAddressCountryCodes: [String]?
 
         /// Configuration of Card component.
         /// - Parameters:
@@ -86,6 +90,8 @@ extension CardComponent {
         ///   - storedCardConfiguration: Stored card configuration.
         ///   - allowedCardTypes: The enforced list of allowed card types.
         ///   - installmentConfiguration: Configuration for installments. Defaults to `nil`.
+        ///   - billingAddressCountryCodes: List of ISO country codes that is supported for the billing address.
+        ///   Defaults to `nil`, which equals to all countries.
         public init(showsHolderNameField: Bool = false,
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,
@@ -94,7 +100,8 @@ extension CardComponent {
                     billingAddressMode: AddressFormType = .none,
                     storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
                     allowedCardTypes: [CardType]? = nil,
-                    installmentConfiguration: InstallmentConfiguration? = nil) {
+                    installmentConfiguration: InstallmentConfiguration? = nil,
+                    billingAddressCountryCodes: [String]? = nil) {
             self.showsHolderNameField = showsHolderNameField
             self.showsSecurityCodeField = showsSecurityCodeField
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
@@ -104,6 +111,7 @@ extension CardComponent {
             self.koreanAuthenticationMode = koreanAuthenticationMode
             self.socialSecurityNumberMode = socialSecurityNumberMode
             self.installmentConfiguration = installmentConfiguration
+            self.billingAddressCountryCodes = billingAddressCountryCodes
         }
 
         internal func bcmcConfiguration() -> Configuration {
