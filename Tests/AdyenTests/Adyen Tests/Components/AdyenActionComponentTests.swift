@@ -108,22 +108,6 @@ class AdyenActionComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testWeChatAction() {
-        let sut = AdyenActionComponent(apiContext: Dummy.context)
-
-        let sdkAction = try! JSONDecoder().decode(SDKAction.self, from: weChatActionResponse.data(using: .utf8)!)
-        sut.handle(Action.sdk(sdkAction))
-
-        let waitExpectation = expectation(description: "Expect weChatPaySDKActionComponent to be initiated")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-
-            XCTAssertNotNil(sut.currentActionComponent as? WeChatPaySDKActionComponent)
-            waitExpectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 15, handler: nil)
-    }
-
     func test3DSAction() {
         let sut = AdyenActionComponent(apiContext: Dummy.context)
         let action = try! JSONDecoder().decode(ThreeDS2Action.self, from: threeDSFingerprintAction.data(using: .utf8)!)
