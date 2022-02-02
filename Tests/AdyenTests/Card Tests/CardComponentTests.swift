@@ -1850,6 +1850,69 @@ class CardComponentTests: XCTestCase {
         let postalCode = postalCodeView.item.value
         XCTAssertTrue(postalCode.isEmpty)
     }
+    
+    func testAddressWithSupportedCountries() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .full
+        config.billingAddressCountryCodes = ["UK"]
+        
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config)
+        
+        sut.payment = .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .seconds(1))
+
+        let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
+        
+        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.supportedCountryCodes, ["UK"])
+        XCTAssertEqual(countryItemView?.inputControl.label, "United Kingdom")
+    }
+    
+    func testAddressWithSupportedCountriesWithMatchingPrefill() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .full
+        config.billingAddressCountryCodes = ["US", "JP"]
+        
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config, shopperInformation: shopperInformation)
+        
+        sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .seconds(1))
+
+        let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
+        
+        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.supportedCountryCodes, ["US", "JP"])
+        XCTAssertEqual(countryItemView?.inputControl.label, "United States")
+    }
+    
+    func testAddressWithSupportedCountriesWithNonMatchingPrefill() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .full
+        config.billingAddressCountryCodes = ["UK"]
+        
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config, shopperInformation: shopperInformation)
+        
+        sut.payment = .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .seconds(1))
+
+        let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
+        
+        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.supportedCountryCodes, ["UK"])
+        XCTAssertEqual(countryItemView?.inputControl.label, "United Kingdom")
+    }
 
     // MARK: - Private
 

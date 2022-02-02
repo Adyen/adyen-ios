@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -48,11 +48,25 @@ extension CardViewController {
         internal lazy var billingAddressItem: FormAddressItem = {
             let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "billingAddress")
 
-            let initialCountry = shopperInformation?.billingAddress?.country ?? defaultCountryCode
-            let item = FormAddressItem(initialCountry: initialCountry,
+            // check and match the initial country from shopper prefill info
+            // with the supported countries
+            let initialCountry: String?
+            if let countryCodes = configuration.billingAddressCountryCodes, !countryCodes.isEmpty {
+                if let prefillCountryCode = shopperInformation?.billingAddress?.country,
+                   countryCodes.contains(prefillCountryCode) {
+                    initialCountry = prefillCountryCode
+                } else {
+                    initialCountry = countryCodes.first
+                }
+            } else {
+                initialCountry = shopperInformation?.billingAddress?.country
+            }
+            
+            let item = FormAddressItem(initialCountry: initialCountry ?? defaultCountryCode,
                                        style: formStyle.addressStyle,
                                        localizationParameters: localizationParameters,
-                                       identifier: identifier)
+                                       identifier: identifier,
+                                       supportedCountryCodes: configuration.billingAddressCountryCodes)
             shopperInformation?.billingAddress.map { item.value = $0 }
             item.style.backgroundColor = UIColor.Adyen.lightGray
             return item
