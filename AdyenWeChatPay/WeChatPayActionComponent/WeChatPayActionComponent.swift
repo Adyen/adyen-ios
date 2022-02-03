@@ -108,5 +108,32 @@ import Foundation
             sign = actionData.signature
         }
     }
+#else
+
+    /// Action component to handle WeChat Pay SDK action.
+    public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
+
+        /// :nodoc:
+        public let apiContext: APIContext
+
+        /// :nodoc:
+        public weak var delegate: ActionComponentDelegate?
+
+        /// :nodoc:
+        public init(apiContext: APIContext) {
+            self.apiContext = apiContext
+        }
+
+        /// :nodoc:
+        public func handle(_ action: WeChatPaySDKAction) {
+            assertionFailure("WeChatPaySDKActionComponent can only work on a real device.")
+        }
+
+        /// Checks if the current device supports WeChat Pay.
+        public static func isDeviceSupported() -> Bool {
+            false
+        }
+
+    }
 
 #endif
