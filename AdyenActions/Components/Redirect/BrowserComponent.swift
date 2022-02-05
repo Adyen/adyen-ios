@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -55,7 +55,7 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     /// - SFSafariViewController deliberately closed by user and current app still in foreground;
     /// - SFSafariViewController finished due to a successful redirect to an external app and current app no longer in foreground.
     private func finish() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(25)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
             if UIApplication.shared.applicationState == .active {
                 self.delegate?.didCancel()
             } else {
