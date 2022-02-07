@@ -198,6 +198,9 @@
                 <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen28BACSDirectDebitPaymentMethodV">BACSDirectDebitPaymentMethod</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen27ACHDirectDebitPaymentMethodV">ACHDirectDebitPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen23QiwiWalletPaymentMethodV">QiwiWalletPaymentMethod</a>
               </li>
               <li class="nav-group-task">
@@ -332,6 +335,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/RedirectDetails.html">RedirectDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/WeChatPaySDKActionComponent.html">WeChatPaySDKActionComponent</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/WeChatPaySDKActionComponent.html">WeChatPaySDKActionComponent</a>
@@ -488,6 +494,20 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/BACSDirectDebitDetails.html">BACSDirectDebitDetails</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="ACH%20Direct%20Debit%20Component.html">ACH Direct Debit Component</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ACHDirectDebitComponent.html">ACHDirectDebitComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ACHDirectDebitComponent/Configuration.html">– Configuration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ACHDirectDebitDetails.html">ACHDirectDebitDetails</a>
               </li>
             </ul>
           </li>
@@ -756,6 +776,12 @@
                 <a class="nav-group-task-link" href="Enums/CardEncryptor/Error.html">– Error</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/BankDetailsEncryptor.html">BankDetailsEncryptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/BankDetailsEncryptor/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/Card.html">Card</a>
               </li>
               <li class="nav-group-task">
@@ -863,7 +889,7 @@ pod 'Adyen/WeChatPay'     // WeChat Pay Component.
 pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
 </code></pre>
 
-<p>:warning: <em><code>Adyen/WeChatPay</code> module doesn&rsquo;t support arm64 simulator for M1 Mac devices.</em></p>
+<p>:warning: <em><code>Adyen/AdyenWeChatPay</code> and <code>AdyenWeChatPayInternal</code> modules doesn&rsquo;t support any simulators and can only be tested on a real device.</em></p>
 <h3 id='carthage' class='heading'>Carthage</h3>
 
 <ol>
@@ -881,10 +907,11 @@ pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
 <li><code>AdyenActions</code>:  action components.</li>
 <li><code>AdyenEncryption</code>: encryption.</li>
 <li><code>AdyenWeChatPay</code>: WeChat Pay component.</li>
+<li><code>AdyenWeChatPayInternal</code>: WeChat Pay component.</li>
 <li><code>AdyenSwiftUI</code>: SwiftUI apps specific module.</li>
 </ul>
 
-<p>:warning: <em><code>AdyenWeChatPay</code> module doesn&rsquo;t support arm64 simulator for M1 Mac devices.</em></p>
+<p>:warning: <em><code>AdyenWeChatPay</code> and <code>AdyenWeChatPayInternal</code> modules doesn&rsquo;t support any simulators and can only be tested on a real device.</em></p>
 <h3 id='swift-package-manager' class='heading'>Swift Package Manager</h3>
 
 <ol>
@@ -911,7 +938,7 @@ The <code>AdyenSwiftUI</code> module needs to be explicitly added to use the Swi
 
 <p>:warning: <em>Swift Package Manager for Xcode 12.0 and 12.1 has a <a href="https://bugs.swift.org/browse/SR-13343">know issue</a> when it comes to importing a dependency that in turn depend on a binary dependencies. A workaround is described <a href="https://forums.swift.org/t/swiftpm-binarytarget-dependency-and-code-signing/38953">here</a>.</em></p>
 
-<p>:warning: <em><code>AdyenWeChatPay</code> Module doesn&rsquo;t support  <code>arm64</code> Simulator builds, because of a limitation in the underlying <code>libWeChatSDK.a</code> static library dependency. <code>arm64</code> needs to be excluded as described <a href="https://github.com/Adyen/adyen-ios/issues/291">here</a> or exclude <code>AdyenWeChatPay</code> from your dependencies, to be able to make <code>Any Simulator</code> builds .</em></p>
+<p>:warning: <em><code>AdyenWeChatPay</code> and <code>AdyenWeChatPayInternal</code> modules doesn&rsquo;t support any simulators and can only be tested on a real device.</em></p>
 <h2 id='drop-in' class='heading'>Drop-in</h2>
 
 <p>The <a href="https://adyen.github.io/adyen-ios/Docs/Classes/DropInComponent.html">Drop-in</a> handles the presentation of available payment methods and the subsequent entry of a customer&rsquo;s payment details. It is initialized with the response of <a href="https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/paymentMethods"><code>/paymentMethods</code></a>, and provides everything you need to make an API call to <a href="https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/payments"><code>/payments</code></a> and <a href="https://docs.adyen.com/api-explorer/#/PaymentSetupAndVerificationService/v46/paymentsDetails"><code>/payments/details</code></a>.</p>
@@ -1115,7 +1142,7 @@ For example, to change the section header titles and form field titles in the Dr
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2022 <a class="link" href="https://adyen.com" target="_blank" rel="external noopener">Adyen</a>. All rights reserved. (Last updated: 2022-01-03)</p>
+      <p>&copy; 2022 <a class="link" href="https://adyen.com" target="_blank" rel="external noopener">Adyen</a>. All rights reserved. (Last updated: 2022-02-07)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
