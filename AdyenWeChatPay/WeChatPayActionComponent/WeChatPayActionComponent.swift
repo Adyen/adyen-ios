@@ -110,6 +110,7 @@ import Foundation
     }
 #else
 
+    /// :nodoc:
     /// Action component to handle WeChat Pay SDK action.
     public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
 
