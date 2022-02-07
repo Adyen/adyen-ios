@@ -102,7 +102,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     
     /// :nodoc:
     public var viewController: UIViewController {
-        getPaymentAuthorizationViewController()
+        createPaymentAuthorizationViewController()
     }
     
     /// :nodoc:
@@ -126,13 +126,14 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         }
     }
     
-    private func getPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController {
+    private func createPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController {
         if paymentAuthorizationViewController == nil {
             let supportedNetworks = applePayPaymentMethod.supportedNetworks
             let request = configuration.createPaymentRequest(payment: payment, supportedNetworks: supportedNetworks)
             paymentAuthorizationViewController = ApplePayComponent.createPaymentAuthorizationViewController(from: request)
             paymentAuthorizationViewController?.delegate = self
             paymentAuthorizationCompletion = nil
+            success = false
         }
         return paymentAuthorizationViewController!
     }
