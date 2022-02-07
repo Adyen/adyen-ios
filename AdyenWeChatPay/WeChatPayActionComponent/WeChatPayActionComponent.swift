@@ -126,7 +126,7 @@ import Foundation
 
         /// :nodoc:
         public func handle(_ action: WeChatPaySDKAction) {
-            assertionFailure("WeChatPaySDKActionComponent can only work on a real device.")
+            AdyenAssertion.assertionFailure(message: "WeChatPaySDKActionComponent can only work on a real device.")
         }
 
         /// Checks if the current device supports WeChat Pay.
