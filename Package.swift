@@ -57,7 +57,7 @@ let package = Package(
         .package(
             name: "AdyenWeChatPayInternal",
             url: "https://github.com/Adyen/adyen-wechatpay-ios",
-            .exact(Version(1, 0, 0))
+            .exact(Version(2, 1, 0))
         )
     ],
     targets: [
