@@ -178,6 +178,9 @@ extension ApplePayComponent {
         /// Indicates that the currency code is invalid.
         case invalidCurrencyCode
 
+        /// Indicates that the token was generated incorrectly.
+        case invalidToken
+
         /// :nodoc:
         public var errorDescription: String? {
             switch self {
@@ -195,6 +198,8 @@ extension ApplePayComponent {
                 return "The country code is invalid."
             case .invalidCurrencyCode:
                 return "The currency code is invalid."
+            case .invalidToken:
+                return "The Apple Pay token is invalid. Make sure you are using physical device, not a Simulator."
             }
         }
     }
