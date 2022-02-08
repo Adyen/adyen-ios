@@ -199,6 +199,9 @@
                 <a class="nav-group-task-link" href="../../Payment%20Methods.html#/s:5Adyen28BACSDirectDebitPaymentMethodV">BACSDirectDebitPaymentMethod</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Payment%20Methods.html#/s:5Adyen27ACHDirectDebitPaymentMethodV">ACHDirectDebitPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../../Payment%20Methods.html#/s:5Adyen23QiwiWalletPaymentMethodV">QiwiWalletPaymentMethod</a>
               </li>
               <li class="nav-group-task">
@@ -493,6 +496,20 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../../ACH%20Direct%20Debit%20Component.html">ACH Direct Debit Component</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Classes/ACHDirectDebitComponent.html">ACHDirectDebitComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Classes/ACHDirectDebitComponent/Configuration.html">– Configuration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/ACHDirectDebitDetails.html">ACHDirectDebitDetails</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a class="nav-group-name-link" href="../../Qiwi%20Wallet%20Component.html">Qiwi Wallet Component</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
@@ -755,6 +772,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../../Enums/CardEncryptor/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Enums/BankDetailsEncryptor.html">BankDetailsEncryptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Enums/BankDetailsEncryptor/Error.html">– Error</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../../Structs/Card.html">Card</a>
@@ -1087,9 +1110,37 @@ Use this property to enforce a custom collection of card types.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen13CardComponentC13ConfigurationV20showsHolderNameField0e18StorePaymentMethodH00e12SecurityCodeH024koreanAuthenticationMode06sociall6NumberP0014billingAddressP006storedbD007allowedB5Types011installmentD0AESb_S2bAC0H10VisibilityOApC0T8FormTypeOAA06StoredbD0VSayAA0B4TypeOGSgAA011InstallmentD0VSgtcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(showsHolderNameField:showsStorePaymentMethodField:showsSecurityCodeField:koreanAuthenticationMode:socialSecurityNumberMode:billingAddressMode:storedCardConfiguration:allowedCardTypes:installmentConfiguration:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen13CardComponentC13ConfigurationV20showsHolderNameField0e18StorePaymentMethodH00e12SecurityCodeH024koreanAuthenticationMode06sociall6NumberP0014billingAddressP006storedbD007allowedB5Types011installmentD0AESb_S2bAC0H10VisibilityOApC0T8FormTypeOAA06StoredbD0VSayAA0B4TypeOGSgAA011InstallmentD0VSgtcfc">init(showsHolderNameField:<wbr>showsStorePaymentMethodField:<wbr>showsSecurityCodeField:<wbr>koreanAuthenticationMode:<wbr>socialSecurityNumberMode:<wbr>billingAddressMode:<wbr>storedCardConfiguration:<wbr>allowedCardTypes:<wbr>installmentConfiguration:<wbr>)</a>
+                    <a name="/s:5Adyen13CardComponentC13ConfigurationV26billingAddressCountryCodesSaySSGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/billingAddressCountryCodes" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardComponentC13ConfigurationV26billingAddressCountryCodesSaySSGSgvp">billingAddressCountryCodes</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>List of ISO country codes that is supported for the billing address.
+When nil, all countries are provided.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">billingAddressCountryCodes</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen13CardComponentC13ConfigurationV20showsHolderNameField0e18StorePaymentMethodH00e12SecurityCodeH024koreanAuthenticationMode06sociall6NumberP0014billingAddressP006storedbD007allowedB5Types011installmentD00sT12CountryCodesAESb_S2bAC0H10VisibilityOAqC0T8FormTypeOAA06StoredbD0VSayAA0B4TypeOGSgAA011InstallmentD0VSgSaySSGSgtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(showsHolderNameField:showsStorePaymentMethodField:showsSecurityCodeField:koreanAuthenticationMode:socialSecurityNumberMode:billingAddressMode:storedCardConfiguration:allowedCardTypes:installmentConfiguration:billingAddressCountryCodes:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13CardComponentC13ConfigurationV20showsHolderNameField0e18StorePaymentMethodH00e12SecurityCodeH024koreanAuthenticationMode06sociall6NumberP0014billingAddressP006storedbD007allowedB5Types011installmentD00sT12CountryCodesAESb_S2bAC0H10VisibilityOAqC0T8FormTypeOAA06StoredbD0VSayAA0B4TypeOGSgAA011InstallmentD0VSgSaySSGSgtcfc">init(showsHolderNameField:<wbr>showsStorePaymentMethodField:<wbr>showsSecurityCodeField:<wbr>koreanAuthenticationMode:<wbr>socialSecurityNumberMode:<wbr>billingAddressMode:<wbr>storedCardConfiguration:<wbr>allowedCardTypes:<wbr>installmentConfiguration:<wbr>billingAddressCountryCodes:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1112,7 +1163,8 @@ Use this property to enforce a custom collection of card types.</p>
             <span class="nv">billingAddressMode</span><span class="p">:</span> <span class="kt"><a href="../../Classes/CardComponent/AddressFormType.html">AddressFormType</a></span> <span class="o">=</span> <span class="o">.</span><span class="k">none</span><span class="p">,</span>
             <span class="nv">storedCardConfiguration</span><span class="p">:</span> <span class="kt"><a href="../../Structs/StoredCardConfiguration.html">StoredCardConfiguration</a></span> <span class="o">=</span> <span class="kt"><a href="../../Structs/StoredCardConfiguration.html">StoredCardConfiguration</a></span><span class="p">(),</span>
             <span class="nv">allowedCardTypes</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../../Enums/CardType.html">CardType</a></span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
-            <span class="nv">installmentConfiguration</span><span class="p">:</span> <span class="kt"><a href="../../Structs/InstallmentConfiguration.html">InstallmentConfiguration</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+            <span class="nv">installmentConfiguration</span><span class="p">:</span> <span class="kt"><a href="../../Structs/InstallmentConfiguration.html">InstallmentConfiguration</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+            <span class="nv">billingAddressCountryCodes</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -1221,6 +1273,19 @@ Defaults to none.</p>
                                 </div>
                               </td>
                             </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>billingAddressCountryCodes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>List of ISO country codes that is supported for the billing address.
+Defaults to <code>nil</code>, which equals to all countries.</p>
+                                </div>
+                              </td>
+                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -1235,7 +1300,7 @@ Defaults to none.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2022 <a class="link" href="https://adyen.com" target="_blank" rel="external noopener">Adyen</a>. All rights reserved. (Last updated: 2022-01-03)</p>
+      <p>&copy; 2022 <a class="link" href="https://adyen.com" target="_blank" rel="external noopener">Adyen</a>. All rights reserved. (Last updated: 2022-02-08)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
