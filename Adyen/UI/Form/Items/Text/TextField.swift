@@ -52,9 +52,9 @@ public final class TextField: UITextField {
     override public func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         switch action {
         case #selector(UIResponderStandardEditActions.paste(_:)):
-            return true
+            return super.canPerformAction(action, withSender: sender)
         default:
-            return allowsEditingActions
+            return allowsEditingActions && super.canPerformAction(action, withSender: sender)
         }
     }
 }
