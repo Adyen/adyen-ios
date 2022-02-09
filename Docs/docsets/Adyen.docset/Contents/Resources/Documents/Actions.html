@@ -169,10 +169,10 @@
                 <a class="nav-group-task-link" href="Structs/StoredBCMCPaymentMethod.html">StoredBCMCPaymentMethod</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/StoredPayPalPaymentMethod.html">StoredPayPalPaymentMethod</a>
+                <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen23StoredBLIKPaymentMethodV">StoredBLIKPaymentMethod</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen23StoredBLIKPaymentMethodV">StoredBLIKPaymentMethod</a>
+                <a class="nav-group-task-link" href="Structs/StoredPayPalPaymentMethod.html">StoredPayPalPaymentMethod</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/AnyCardPaymentMethod.html">AnyCardPaymentMethod</a>
@@ -197,6 +197,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen28BACSDirectDebitPaymentMethodV">BACSDirectDebitPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen27ACHDirectDebitPaymentMethodV">ACHDirectDebitPaymentMethod</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen23QiwiWalletPaymentMethodV">QiwiWalletPaymentMethod</a>
@@ -276,13 +279,19 @@
                 <a class="nav-group-task-link" href="Classes/DokuVoucherAction.html">DokuVoucherAction</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/MultibancoVoucherAction.html">MultibancoVoucherAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/BoletoVoucherAction.html">BoletoVoucherAction</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/EContextATMVoucherAction.html">EContextATMVoucherAction</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/EContextStoresVoucherAction.html">EContextStoresVoucherAction</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/MultibancoVoucherAction.html">MultibancoVoucherAction</a>
+                <a class="nav-group-task-link" href="Classes/OXXOVoucherAction.html">OXXOVoucherAction</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/QRCodeAction.html">QRCodeAction</a>
@@ -292,12 +301,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/WeChatPaySDKAction.html">WeChatPaySDKAction</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/BoletoVoucherAction.html">BoletoVoucherAction</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/OXXOVoucherAction.html">OXXOVoucherAction</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/DocumentAction.html">DocumentAction</a>
@@ -489,6 +492,20 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/BACSDirectDebitDetails.html">BACSDirectDebitDetails</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="ACH%20Direct%20Debit%20Component.html">ACH Direct Debit Component</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ACHDirectDebitComponent.html">ACHDirectDebitComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ACHDirectDebitComponent/Configuration.html">– Configuration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ACHDirectDebitDetails.html">ACHDirectDebitDetails</a>
               </li>
             </ul>
           </li>
@@ -755,6 +772,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/CardEncryptor/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/BankDetailsEncryptor.html">BankDetailsEncryptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/BankDetailsEncryptor/Error.html">– Error</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/Card.html">Card</a>
@@ -1085,6 +1108,62 @@ and potentially a challenge or a fallback to 3DS1.</p>
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:5Adyen23MultibancoVoucherActionC"></a>
+                    <a name="//apple_ref/swift/Class/MultibancoVoucherAction" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen23MultibancoVoucherActionC">MultibancoVoucherAction</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Describes an action in which a Multibanco voucher is presented to the shopper.</p>
+
+                        <a href="Classes/MultibancoVoucherAction.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">MultibancoVoucherAction</span> <span class="p">:</span> <span class="kt"><a href="Classes/GenericVoucherAction.html">GenericVoucherAction</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen19BoletoVoucherActionC"></a>
+                    <a name="//apple_ref/swift/Class/BoletoVoucherAction" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen19BoletoVoucherActionC">BoletoVoucherAction</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Describes an action in which a Boleto voucher is presented to the shopper.</p>
+
+                        <a href="Classes/BoletoVoucherAction.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">BoletoVoucherAction</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt"><a href="Protocols/AnyVoucherAction.html">AnyVoucherAction</a></span><span class="p">,</span> <span class="kt">DownloadableVoucher</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:5Adyen24EContextATMVoucherActionC"></a>
                     <a name="//apple_ref/swift/Class/EContextATMVoucherAction" class="dashAnchor"></a>
                     <a class="token" href="#/s:5Adyen24EContextATMVoucherActionC">EContextATMVoucherAction</a>
@@ -1142,9 +1221,9 @@ and potentially a challenge or a fallback to 3DS1.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen23MultibancoVoucherActionC"></a>
-                    <a name="//apple_ref/swift/Class/MultibancoVoucherAction" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen23MultibancoVoucherActionC">MultibancoVoucherAction</a>
+                    <a name="/s:5Adyen17OXXOVoucherActionC"></a>
+                    <a name="//apple_ref/swift/Class/OXXOVoucherAction" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen17OXXOVoucherActionC">OXXOVoucherAction</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1152,15 +1231,17 @@ and potentially a challenge or a fallback to 3DS1.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Describes an action in which a Multibanco voucher is presented to the shopper.</p>
+                        <p>Describes an action in which an OXXO voucher is presented to the shopper.</p>
 
-                        <a href="Classes/MultibancoVoucherAction.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/OXXOVoucherAction.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">MultibancoVoucherAction</span> <span class="p">:</span> <span class="kt"><a href="Classes/GenericVoucherAction.html">GenericVoucherAction</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">OXXOVoucherAction</span><span class="p">:</span> <span class="kt"><a href="Classes/GenericVoucherAction.html">GenericVoucherAction</a></span><span class="p">,</span>
+    <span class="kt">DownloadableVoucher</span><span class="p">,</span>
+    <span class="kt">InstructionAwareVoucherAction</span></code></pre>
 
                         </div>
                       </div>
@@ -1254,64 +1335,6 @@ and potentially a challenge or a fallback to 3DS1.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen19BoletoVoucherActionC"></a>
-                    <a name="//apple_ref/swift/Class/BoletoVoucherAction" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen19BoletoVoucherActionC">BoletoVoucherAction</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Describes an action in which a Boleto voucher is presented to the shopper.</p>
-
-                        <a href="Classes/BoletoVoucherAction.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">BoletoVoucherAction</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt"><a href="Protocols/AnyVoucherAction.html">AnyVoucherAction</a></span><span class="p">,</span> <span class="kt">DownloadableVoucher</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:5Adyen17OXXOVoucherActionC"></a>
-                    <a name="//apple_ref/swift/Class/OXXOVoucherAction" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen17OXXOVoucherActionC">OXXOVoucherAction</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Describes an action in which an OXXO voucher is presented to the shopper.</p>
-
-                        <a href="Classes/OXXOVoucherAction.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">OXXOVoucherAction</span><span class="p">:</span> <span class="kt"><a href="Classes/GenericVoucherAction.html">GenericVoucherAction</a></span><span class="p">,</span>
-    <span class="kt">DownloadableVoucher</span><span class="p">,</span>
-    <span class="kt">InstructionAwareVoucherAction</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
                     <a name="/s:5Adyen14DocumentActionV"></a>
                     <a name="//apple_ref/swift/Struct/DocumentAction" class="dashAnchor"></a>
                     <a class="token" href="#/s:5Adyen14DocumentActionV">DocumentAction</a>
@@ -1374,7 +1397,7 @@ download the document after payment.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2022 <a class="link" href="https://adyen.com" target="_blank" rel="external noopener">Adyen</a>. All rights reserved. (Last updated: 2022-01-03)</p>
+      <p>&copy; 2022 <a class="link" href="https://adyen.com" target="_blank" rel="external noopener">Adyen</a>. All rights reserved. (Last updated: 2022-02-09)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
