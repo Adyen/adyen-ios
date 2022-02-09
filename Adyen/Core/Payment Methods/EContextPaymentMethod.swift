@@ -35,5 +35,5 @@ public struct EContextPaymentMethod: PaymentMethod {
     }
 }
 
-/// An  7eleven payment method.
+/// A 7eleven payment method.
 public typealias SevenElevenPaymentMethod = EContextPaymentMethod
