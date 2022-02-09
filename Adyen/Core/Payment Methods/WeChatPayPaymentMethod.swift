@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// An WeChat Pay payment method.
+/// A WeChat Pay payment method.
 public struct WeChatPayPaymentMethod: PaymentMethod {
     
     /// :nodoc:
