@@ -65,7 +65,7 @@ custom_categories:
       
   - name: Instant payment methods
     children:
-      - GenericPaymentMethod
+      - InstantPaymentMethod
       - MultibancoPaymentMethod
       - OXXOPaymentMethod
       
