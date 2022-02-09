@@ -6,8 +6,8 @@
 
 import Foundation
 
-/// An Multibanco payment method.
-public struct MultibancoPaymentMethod: PaymentMethod {
+/// A generic payment method.
+public struct GenericPaymentMethod: PaymentMethod {
 
     /// :nodoc:
     public let type: String
@@ -25,3 +25,9 @@ public struct MultibancoPaymentMethod: PaymentMethod {
         case name
     }
 }
+
+/// A payment method for OXXO.
+public typealias OXXOPaymentMethod = GenericPaymentMethod
+
+/// A  payment method for Multibanco.
+public typealias MultibancoPaymentMethod = GenericPaymentMethod

@@ -45,37 +45,29 @@ custom_categories:
       - ProgressViewStyle
       - ApplePayStyle
 
-  - name: Payment Methods
+  - name: Basic Payment Methods
     children:
       - PaymentMethod
       - PaymentMethods
       - StoredPaymentMethod
+      - IssuerListPaymentMethod
+      - AwaitPaymentMethod
+      - VoucherPaymentMethod
+      - QRCodePaymentMethod
+      - DocumentPaymentMethod
+      
+  - name: Stored payment methods
+    children:
+      - StoredPayPalPaymentMethod
       - StoredCardPaymentMethod
       - StoredBCMCPaymentMethod
       - StoredBLIKPaymentMethod
-      - StoredPayPalPaymentMethod
-      - AnyCardPaymentMethod
-      - CardPaymentMethod
-      - BCMCPaymentMethod
-      - IssuerListPaymentMethod
-      - ApplePayPaymentMethod
-      - SEPADirectDebitPaymentMethod
-      - BACSDirectDebitPaymentMethod
-      - ACHDirectDebitPaymentMethod
-      - QiwiWalletPaymentMethod
-      - AffirmPaymentMethod
-      - AwaitPaymentMethod
-      - MBWayPaymentMethod
-      - BLIKPaymentMethod
-      - VoucherPaymentMethod
-      - DokuPaymentMethod
-      - OXXOPaymentMethod
-      - EContextPaymentMethod
-      - SevenElevenPaymentMethod
-      - QRCodePaymentMethod
-      - WeChatPayPaymentMethod
+      
+  - name: Instant payment methods
+    children:
+      - GenericPaymentMethod
       - MultibancoPaymentMethod
-      - DocumentPaymentMethod
+      - OXXOPaymentMethod
       
   - name: Actions
     children:
