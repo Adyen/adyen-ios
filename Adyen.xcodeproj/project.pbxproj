@@ -555,7 +555,7 @@
 		F973A91A2791C3B0005AA753 /* AdyenActions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9175F8C2594986900D653BE /* AdyenActions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F973A91E2791CBC0005AA753 /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = F973A91D2791CBC0005AA753 /* Adyen3DS2 */; };
 		F97842D526C2746500677458 /* OXXOVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97842D426C2746500677458 /* OXXOVoucherAction.swift */; };
-		F97842D726C2758E00677458 /* GenericPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97842D626C2758E00677458 /* GenericPaymentMethod.swift */; };
+		F97842D726C2758E00677458 /* InstantPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97842D626C2758E00677458 /* InstantPaymentMethod.swift */; };
 		F97842D926C3D55200677458 /* OXXOShareableVoucherViewProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97842D826C3D55200677458 /* OXXOShareableVoucherViewProviderTests.swift */; };
 		F9789C6E23F18EBD000B4B2B /* WeChatPayActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6D23F18EBD000B4B2B /* WeChatPayActionComponent.swift */; };
 		F9789C7523F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */; };
@@ -1485,7 +1485,7 @@
 		F970143825D139BE007E74D9 /* VoucherComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherComponentStyle.swift; sourceTree = "<group>"; };
 		F9780B6424338DFE00CC6C73 /* RedirectComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectComponent.swift; sourceTree = "<group>"; };
 		F97842D426C2746500677458 /* OXXOVoucherAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OXXOVoucherAction.swift; sourceTree = "<group>"; };
-		F97842D626C2758E00677458 /* GenericPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericPaymentMethod.swift; sourceTree = "<group>"; };
+		F97842D626C2758E00677458 /* InstantPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantPaymentMethod.swift; sourceTree = "<group>"; };
 		F97842D826C3D55200677458 /* OXXOShareableVoucherViewProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OXXOShareableVoucherViewProviderTests.swift; sourceTree = "<group>"; };
 		F9789C6723F18048000B4B2B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
 		F9789C6923F18057000B4B2B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
@@ -2195,7 +2195,7 @@
 				E788A4EE2658030100089448 /* DisplayInformation.swift */,
 				F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */,
 				E788A3B1265565DF00089448 /* EContextPaymentMethod.swift */,
-				F97842D626C2758E00677458 /* GenericPaymentMethod.swift */,
+				F97842D626C2758E00677458 /* InstantPaymentMethod.swift */,
 				E7763A1025F02BD20046371E /* GiftCardPaymentMethod.swift */,
 				E278EB4222AA5EC800497FD5 /* IssuerListPaymentMethod.swift */,
 				F9D644DD24D2D9950059CBE3 /* MBWayPaymentMethod.swift */,
@@ -4997,7 +4997,7 @@
 				E7085D7D262EEF6200D0153B /* AllRegions.swift in Sources */,
 				F919DF9124E682480027976E /* ClientKeyResponse.swift in Sources */,
 				F97C81AF25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift in Sources */,
-				F97842D726C2758E00677458 /* GenericPaymentMethod.swift in Sources */,
+				F97842D726C2758E00677458 /* InstantPaymentMethod.swift in Sources */,
 				F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */,
 				E788A4EF2658030100089448 /* DisplayInformation.swift in Sources */,
 			);

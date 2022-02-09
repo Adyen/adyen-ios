@@ -368,7 +368,7 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     /// :nodoc:
-    internal func build(paymentMethod: GenericPaymentMethod) -> PaymentComponent? {
+    internal func build(paymentMethod: InstantPaymentMethod) -> PaymentComponent? {
         InstantPaymentComponent(paymentMethod: paymentMethod,
                                 paymentData: nil,
                                 apiContext: apiContext)

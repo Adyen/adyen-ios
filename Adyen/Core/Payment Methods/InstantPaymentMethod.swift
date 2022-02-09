@@ -6,8 +6,8 @@
 
 import Foundation
 
-/// A generic payment method.
-public struct GenericPaymentMethod: PaymentMethod {
+/// A payment method that does not require any handling and could be submitted directly.
+public struct InstantPaymentMethod: PaymentMethod {
 
     /// :nodoc:
     public let type: String
@@ -27,7 +27,7 @@ public struct GenericPaymentMethod: PaymentMethod {
 }
 
 /// A payment method for OXXO.
-public typealias OXXOPaymentMethod = GenericPaymentMethod
+public typealias OXXOPaymentMethod = InstantPaymentMethod
 
 /// A  payment method for Multibanco.
-public typealias MultibancoPaymentMethod = GenericPaymentMethod
+public typealias MultibancoPaymentMethod = InstantPaymentMethod

@@ -88,8 +88,8 @@ internal enum AnyPaymentMethod: Decodable {
     case econtextOnline(EContextPaymentMethod)
     case boleto(BoletoPaymentMethod)
     case affirm(AffirmPaymentMethod)
-    case oxxo(GenericPaymentMethod)
-    case multibanco(GenericPaymentMethod)
+    case oxxo(InstantPaymentMethod)
+    case multibanco(InstantPaymentMethod)
     
     case none
     

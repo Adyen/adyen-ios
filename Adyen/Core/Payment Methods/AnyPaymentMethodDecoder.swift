@@ -316,12 +316,12 @@ private struct AffirmPaymentMethodDecoder: PaymentMethodDecoder {
 
 private struct OXXOPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
-        .oxxo(try GenericPaymentMethod(from: decoder))
+        .oxxo(try InstantPaymentMethod(from: decoder))
     }
 }
 
 private struct MultibancoPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
-        .multibanco(try GenericPaymentMethod(from: decoder))
+        .multibanco(try InstantPaymentMethod(from: decoder))
     }
 }
