@@ -7,7 +7,6 @@
 import Foundation
 
 /// Provides a placeholder for payment methods that don't need any payment detail to be filled.
-/// :nodoc:
 public final class InstantPaymentComponent: PaymentComponent {
     
     /// :nodoc:
@@ -40,7 +39,6 @@ public final class InstantPaymentComponent: PaymentComponent {
 }
 
 /// Describes a payment details that contains nothing but the payment method type name.
-/// :nodoc:
 public struct InstantPaymentDetails: PaymentMethodDetails {
 
     /// The payment method type name.

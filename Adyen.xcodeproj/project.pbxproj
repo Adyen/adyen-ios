@@ -246,6 +246,7 @@
 		E7451A052600EC8D000BDCCF /* CardComponentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7451A042600EC8D000BDCCF /* CardComponentConfiguration.swift */; };
 		E7451A112600EDE0000BDCCF /* StoredCardConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7451A102600EDE0000BDCCF /* StoredCardConfiguration.swift */; };
 		E745256925C1C9E1006A941F /* AdyenActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6F23F1924B000B4B2B /* AdyenActionComponent.swift */; };
+		E746E67127B3FA700076BB71 /* InstantComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = E746E67027B3FA700076BB71 /* InstantComponents.swift */; };
 		E7484C2723B9FDF000CCF74F /* SlideInPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */; };
 		E749FD1E23CF4998000D18BA /* NavigationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E749FD1D23CF4998000D18BA /* NavigationStyle.swift */; };
 		E74CE3DF26727EB1008231D2 /* DropInDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74CE3DE26727EB1008231D2 /* DropInDelegateMock.swift */; };
@@ -1208,6 +1209,7 @@
 		E745185C25FBDDC7000BDCCF /* Payload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payload.swift; sourceTree = "<group>"; };
 		E7451A042600EC8D000BDCCF /* CardComponentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentConfiguration.swift; sourceTree = "<group>"; };
 		E7451A102600EDE0000BDCCF /* StoredCardConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCardConfiguration.swift; sourceTree = "<group>"; };
+		E746E67027B3FA700076BB71 /* InstantComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantComponents.swift; sourceTree = "<group>"; };
 		E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideInPresentationAnimator.swift; sourceTree = "<group>"; };
 		E749FD1D23CF4998000D18BA /* NavigationStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStyle.swift; sourceTree = "<group>"; };
 		E74CE3DE26727EB1008231D2 /* DropInDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInDelegateMock.swift; sourceTree = "<group>"; };
@@ -2662,6 +2664,14 @@
 			path = Payload;
 			sourceTree = "<group>";
 		};
+		E746E66F27B3FA540076BB71 /* Instant */ = {
+			isa = PBXGroup;
+			children = (
+				E746E67027B3FA700076BB71 /* InstantComponents.swift */,
+			);
+			path = Instant;
+			sourceTree = "<group>";
+		};
 		E7484C2523B9FDC400CCF74F /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -3137,6 +3147,7 @@
 				F97C836E25BF03C500D7F85C /* Doku */,
 				F9175E58259393E800D653BE /* Info.plist */,
 				E28098BC220DBA9D0087928F /* Issuer List */,
+				E746E66F27B3FA540076BB71 /* Instant */,
 				F9D644DA24D2D9340059CBE3 /* MB Way */,
 				F926D52D23F5A2EC00D058D3 /* Qiwi Wallet */,
 				E28098B4220DA79C0087928F /* SEPA Direct Debit */,
@@ -5289,6 +5300,7 @@
 				5A15D589264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift in Sources */,
 				F9175E8A259394E100D653BE /* SEPADirectDebitDetails.swift in Sources */,
 				F9175EAA259394FF00D653BE /* ApplePayComponentExtensions.swift in Sources */,
+				E746E67127B3FA700076BB71 /* InstantComponents.swift in Sources */,
 				C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */,
 				F9175ED22593951800D653BE /* MBWayComponent.swift in Sources */,
 				F9175E9B259394F200D653BE /* IssuerListComponent.swift in Sources */,

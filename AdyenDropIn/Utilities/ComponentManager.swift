@@ -366,13 +366,6 @@ extension ComponentManager: PaymentComponentBuilder {
                         shopperInformation: configuration.shopper,
                         style: style.formComponent)
     }
-
-    /// :nodoc:
-    internal func build(paymentMethod: InstantPaymentMethod) -> PaymentComponent? {
-        InstantPaymentComponent(paymentMethod: paymentMethod,
-                                paymentData: nil,
-                                apiContext: apiContext)
-    }
     
     /// :nodoc:
     internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
