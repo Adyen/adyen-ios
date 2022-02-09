@@ -118,12 +118,10 @@ internal enum AnyPaymentMethodDecoder {
         .econtextATM: EContextATMPaymentMethodDecoder(),
         .econtextOnline: EContextOnlinePaymentMethodDecoder(),
         .boleto: BoletoPaymentMethodDecoder(),
-        .affirm: AffirmPaymentMethodDecoder(),
-        .oxxo: OXXOPaymentMethodDecoder(),
-        .multibanco: MultibancoPaymentMethodDecoder()
+        .affirm: AffirmPaymentMethodDecoder()
     ]
     
-    private static var defaultDecoder: PaymentMethodDecoder = RedirectPaymentMethodDecoder()
+    private static var defaultDecoder: PaymentMethodDecoder = InstantPaymentMethodDecoder()
     
     internal static func decode(from decoder: Decoder) -> AnyPaymentMethod {
         do {
@@ -217,17 +215,17 @@ private struct PayPalPaymentMethodDecoder: PaymentMethodDecoder {
         if isStored {
             return .storedPayPal(try StoredPayPalPaymentMethod(from: decoder))
         } else {
-            return try RedirectPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
+            return .instant(try InstantPaymentMethod(from: decoder))
         }
     }
 }
 
-private struct RedirectPaymentMethodDecoder: PaymentMethodDecoder {
+private struct InstantPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         if isStored {
-            return .storedRedirect(try StoredRedirectPaymentMethod(from: decoder))
+            return .storedInstant(try StoredInstantPaymentMethod(from: decoder))
         } else {
-            return .redirect(try RedirectPaymentMethod(from: decoder))
+            return .instant(try InstantPaymentMethod(from: decoder))
         }
     }
 }
@@ -311,17 +309,5 @@ private struct BoletoPaymentMethodDecoder: PaymentMethodDecoder {
 private struct AffirmPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         .affirm(try AffirmPaymentMethod(from: decoder))
-    }
-}
-
-private struct OXXOPaymentMethodDecoder: PaymentMethodDecoder {
-    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
-        .oxxo(try InstantPaymentMethod(from: decoder))
-    }
-}
-
-private struct MultibancoPaymentMethodDecoder: PaymentMethodDecoder {
-    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
-        .multibanco(try InstantPaymentMethod(from: decoder))
     }
 }

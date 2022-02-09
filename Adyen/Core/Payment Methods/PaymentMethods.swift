@@ -63,18 +63,18 @@ public struct PaymentMethods: Decodable {
 }
 
 internal enum AnyPaymentMethod: Decodable {
+    case storedInstant(StoredInstantPaymentMethod)
     case storedCard(StoredCardPaymentMethod)
     case storedPayPal(StoredPayPalPaymentMethod)
     case storedBCMC(StoredBCMCPaymentMethod)
-    case storedRedirect(StoredRedirectPaymentMethod)
     case storedBlik(StoredBLIKPaymentMethod)
-    
+
+    case instant(PaymentMethod)
     case card(AnyCardPaymentMethod)
     case issuerList(IssuerListPaymentMethod)
     case sepaDirectDebit(SEPADirectDebitPaymentMethod)
     case bacsDirectDebit(BACSDirectDebitPaymentMethod)
     case achDirectDebit(ACHDirectDebitPaymentMethod)
-    case redirect(RedirectPaymentMethod)
     case applePay(ApplePayPaymentMethod)
     case qiwiWallet(QiwiWalletPaymentMethod)
     case weChatPay(WeChatPayPaymentMethod)
@@ -88,8 +88,6 @@ internal enum AnyPaymentMethod: Decodable {
     case econtextOnline(EContextPaymentMethod)
     case boleto(BoletoPaymentMethod)
     case affirm(AffirmPaymentMethod)
-    case oxxo(InstantPaymentMethod)
-    case multibanco(InstantPaymentMethod)
     
     case none
     
@@ -101,7 +99,9 @@ internal enum AnyPaymentMethod: Decodable {
             return paymentMethod
         case let .storedBCMC(paymentMethod):
             return paymentMethod
-        case let .storedRedirect(paymentMethod):
+        case let .instant(paymentMethod):
+            return paymentMethod
+        case let .storedInstant(paymentMethod):
             return paymentMethod
         case let .card(paymentMethod):
             return paymentMethod
@@ -112,8 +112,6 @@ internal enum AnyPaymentMethod: Decodable {
         case let .bacsDirectDebit(paymentMethod):
             return paymentMethod
         case let .achDirectDebit(paymentMethod):
-            return paymentMethod
-        case let .redirect(paymentMethod):
             return paymentMethod
         case let .applePay(paymentMethod):
             return paymentMethod
@@ -142,10 +140,6 @@ internal enum AnyPaymentMethod: Decodable {
         case let .boleto(paymentMethod):
             return paymentMethod
         case let .affirm(paymentMethod):
-            return paymentMethod
-        case let .oxxo(paymentMethod):
-            return paymentMethod
-        case let .multibanco(paymentMethod):
             return paymentMethod
         case .none:
             return nil

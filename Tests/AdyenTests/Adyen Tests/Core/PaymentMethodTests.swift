@@ -84,7 +84,7 @@ class PaymentMethodTests: XCTestCase {
         
         XCTAssertTrue(paymentMethods.stored[2] is StoredPayPalPaymentMethod)
         XCTAssertEqual((paymentMethods.stored[2] as! StoredPayPalPaymentMethod).displayInformation.subtitle, "example@shopper.com")
-        XCTAssertTrue(paymentMethods.stored[3] is StoredRedirectPaymentMethod)
+        XCTAssertTrue(paymentMethods.stored[3] is StoredInstantPaymentMethod)
         XCTAssertTrue(paymentMethods.stored[4] is StoredBCMCPaymentMethod)
         
         XCTAssertTrue(paymentMethods.stored[5] is StoredCardPaymentMethod)

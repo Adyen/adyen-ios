@@ -6,20 +6,30 @@
 
 import Foundation
 
-/// A payment method that does not require any handling and could be submitted directly.
-public struct InstantPaymentMethod: PaymentMethod {
+
+public struct StoredInstantPaymentMethod: StoredPaymentMethod {
 
     public let type: String
 
     public let name: String
 
+    public let identifier: String
+
+    /// :nodoc:
+    public let supportedShopperInteractions: [ShopperInteraction]
+    
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
-
+    
+    // MARK: - Decoding
+    
     private enum CodingKeys: String, CodingKey {
         case type
         case name
+        case identifier = "id"
+        case supportedShopperInteractions
     }
+    
 }

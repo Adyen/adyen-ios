@@ -144,7 +144,7 @@
 		E216D3CF221AFC3A0013CBCF /* IBANSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216D3CE221AFC3A0013CBCF /* IBANSpecification.swift */; };
 		E21895E422A7CC4D001B6EE0 /* FormSplitItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21895E322A7CC4D001B6EE0 /* FormSplitItem.swift */; };
 		E21895E622A7CC56001B6EE0 /* FormSplitItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21895E522A7CC56001B6EE0 /* FormSplitItemView.swift */; };
-		E224088722AFA3A80058923E /* RedirectPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E224088622AFA3A80058923E /* RedirectPaymentMethod.swift */; };
+		E224088722AFA3A80058923E /* StoredInstantPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E224088622AFA3A80058923E /* StoredInstantPaymentMethod.swift */; };
 		E224088D22B0FD220058923E /* StoredPayPalPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E224088C22B0FD220058923E /* StoredPayPalPaymentMethod.swift */; };
 		E226F54B229803130013A463 /* DropInComponentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E226F54A229803130013A463 /* DropInComponentDelegate.swift */; };
 		E2289B3C23D0BBB1002844BF /* ListSectionHeaderStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2289B3B23D0BBB1002844BF /* ListSectionHeaderStyle.swift */; };
@@ -1078,7 +1078,7 @@
 		E216D3CE221AFC3A0013CBCF /* IBANSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBANSpecification.swift; sourceTree = "<group>"; };
 		E21895E322A7CC4D001B6EE0 /* FormSplitItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSplitItem.swift; sourceTree = "<group>"; };
 		E21895E522A7CC56001B6EE0 /* FormSplitItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSplitItemView.swift; sourceTree = "<group>"; };
-		E224088622AFA3A80058923E /* RedirectPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectPaymentMethod.swift; sourceTree = "<group>"; };
+		E224088622AFA3A80058923E /* StoredInstantPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredInstantPaymentMethod.swift; sourceTree = "<group>"; };
 		E224088C22B0FD220058923E /* StoredPayPalPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPayPalPaymentMethod.swift; sourceTree = "<group>"; };
 		E226F53922969A950013A463 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		E226F53B22969B530013A463 /* RedirectAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectAction.swift; sourceTree = "<group>"; };
@@ -2204,7 +2204,7 @@
 				E262128E22A90D8800F2B133 /* PaymentMethod.swift */,
 				E9B36C9C223FDE4F00EAA368 /* PaymentMethods.swift */,
 				F926D52B23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift */,
-				E224088622AFA3A80058923E /* RedirectPaymentMethod.swift */,
+				E224088622AFA3A80058923E /* StoredInstantPaymentMethod.swift */,
 				E278EB4422AA5ED600497FD5 /* SEPADirectDebitPaymentMethod.swift */,
 				C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */,
 				A0414C1E278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift */,
@@ -4848,7 +4848,7 @@
 				C9D8EBA2274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift in Sources */,
 				F9FE25B42625ECE7001874BB /* CustomDisplayablePaymentMethod.swift in Sources */,
 				E216D3CF221AFC3A0013CBCF /* IBANSpecification.swift in Sources */,
-				E224088722AFA3A80058923E /* RedirectPaymentMethod.swift in Sources */,
+				E224088722AFA3A80058923E /* StoredInstantPaymentMethod.swift in Sources */,
 				E262128F22A90D8800F2B133 /* PaymentMethod.swift in Sources */,
 				F95A789325C41BB20032CF7E /* NSTextAlignmentHelpers.swift in Sources */,
 				F919DF8F24E682250027976E /* ClientKeyRequest.swift in Sources */,

@@ -63,12 +63,6 @@ custom_categories:
       - StoredBCMCPaymentMethod
       - StoredBLIKPaymentMethod
       
-  - name: Instant payment methods
-    children:
-      - InstantPaymentMethod
-      - MultibancoPaymentMethod
-      - OXXOPaymentMethod
-      
   - name: Actions
     children:
       - Action
@@ -223,6 +217,15 @@ custom_categories:
       - MOLPayDetails
       - IdealDetails
       - IssuerListDetails
+      
+  - name: Instant Payment Component
+    children:
+      - InstantPaymentMethod
+      - InstantComponents
+      - MultibancoPaymentMethod
+      - MultibancoComponent
+      - OXXOPaymentMethod
+      - OXXOComponent
       
   - name: EContext Component
     children:
