@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "은행 식별 코드가 유효하지 않습니다";
 "adyen.bacs.paymentButton.title" = "확인 및 결제";
 "adyen.bacs.downloadMandate" = "자동 이체 안내(DDI/필수) 다운로드";
+"adyen.ach.bankAccount.title" = "은행 계좌";
+"adyen.ach.accountHolderNameField.title" = "계좌 소유자 이름";
+"adyen.ach.accountHolderNameField.invalid" = "유효하지 않은 계좌 소유자 이름";
+"adyen.ach.accountNumberField.title" = "계좌 번호";
+"adyen.ach.accountNumberField.invalid" = "유효하지 않은 계좌 번호";
+"adyen.ach.accountLocationField.title" = "ABA 라우팅 번호";
+"adyen.ach.accountLocationField.invalid" = "유효하지 않은 ABA 라우팅 번호";

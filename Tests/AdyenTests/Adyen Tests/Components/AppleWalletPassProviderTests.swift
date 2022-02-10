@@ -26,7 +26,7 @@ class AppleWalletPassProviderTests: XCTestCase {
 
         baseApiClient.mockedResults = [.success(try! AppleWalletPassResponse(passBase64String: "123".data(using: .utf8)!.base64EncodedString()))]
 
-        let fetchExpectation = expectation(description: "CardPublicKeyProvider.fetch() completion handler must be called.")
+        let fetchExpectation = expectation(description: "PublicKeyProvider.fetch() completion handler must be called.")
         fetchExpectation.expectedFulfillmentCount = 10
         (0...9).forEach { _ in
             sut.provide(with: "token") { result in
@@ -46,7 +46,7 @@ class AppleWalletPassProviderTests: XCTestCase {
 
         // Subsequent fetch calls should get the cached key value without making any requests
 
-        let secondFetchExpectation = expectation(description: "second CardPublicKeyProvider.fetch() completion handler must be called.")
+        let secondFetchExpectation = expectation(description: "second PublicKeyProvider.fetch() completion handler must be called.")
         sut.provide(with: "token") { result in
             switch result {
             case let .success(key):

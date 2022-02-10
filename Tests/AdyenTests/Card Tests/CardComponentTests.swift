@@ -302,7 +302,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: .init(),
                                 style: .init(),
-                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -413,16 +413,21 @@ class CardComponentTests: XCTestCase {
 
     func testFormViewControllerDelegate() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
-        let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context)
-
-        let cardPublicKeyProviderExpectation = expectation(description: "Expect cardPublicKeyProvider to be called.")
-        let cardPublicKeyProvider = CardPublicKeyProviderMock()
-        cardPublicKeyProvider.onFetch = { completion in
-            cardPublicKeyProviderExpectation.fulfill()
+        
+        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
+        let publicKeyProvider = PublicKeyProviderMock()
+        publicKeyProvider.onFetch = { completion in
+            publicKeyProviderExpectation.fulfill()
             completion(.success("key"))
         }
-        sut.cardPublicKeyProvider = cardPublicKeyProvider
+        
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: CardComponent.Configuration(),
+                                shopperInformation: nil,
+                                style: FormComponentStyle(),
+                                publicKeyProvider: publicKeyProvider,
+                                binProvider: BinInfoProviderMock())
 
         sut.viewDidLoad(viewController: sut.cardViewController)
 
@@ -644,7 +649,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 style: FormComponentStyle(),
-                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: BinInfoProviderMock())
 
         let delegate = PaymentComponentDelegateMock()
@@ -688,6 +693,56 @@ class CardComponentTests: XCTestCase {
         tapSubmitButton(on: view)
 
         waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func testCardNumberShouldPassFocusToDate() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context)
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
+        let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+        
+        // no focus change without panglength till max (19)
+        
+        var newResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress)])
+        sut.cardViewController.update(binInfo: newResponse)
+        cardNumberItemView?.becomeFirstResponder()
+        
+        XCTAssertTrue(cardNumberItemView!.isFirstResponder)
+        
+        populate(textItemView: cardNumberItemView, with: Dummy.amexCard.number!)
+        wait(for: .seconds(1))
+        
+        XCTAssertTrue(cardNumberItemView!.isFirstResponder)
+        XCTAssertFalse(expiryDateItemView!.isFirstResponder)
+        
+        // focus should change with pan length set
+        newResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress, panLength: 15)])
+        sut.cardViewController.update(binInfo: newResponse)
+        cardNumberItemView?.becomeFirstResponder()
+        
+        XCTAssertTrue(cardNumberItemView!.isFirstResponder)
+        
+        populate(textItemView: cardNumberItemView, with: Dummy.amexCard.number!)
+        wait(for: .seconds(1))
+        
+        XCTAssertFalse(cardNumberItemView!.isFirstResponder)
+        XCTAssertTrue(expiryDateItemView!.isFirstResponder)
+
+        // focus should also change when reaching default max length 19
+        newResponse = BinLookupResponse(brands: [CardBrand(type: .maestro)])
+        sut.cardViewController.update(binInfo: newResponse)
+        cardNumberItemView?.becomeFirstResponder()
+        
+        XCTAssertTrue(cardNumberItemView!.isFirstResponder)
+        
+        populate(textItemView: cardNumberItemView, with: "6771830000000000006")
+        wait(for: .seconds(1))
+        
+        XCTAssertFalse(cardNumberItemView!.isFirstResponder)
+        XCTAssertTrue(expiryDateItemView!.isFirstResponder)
     }
 
     func testDateShouldPassFocusToCVC() {
@@ -922,7 +977,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 style: .init(),
-                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: BinInfoProviderMock())
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -979,7 +1034,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 style: .init(),
-                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -1038,7 +1093,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 style: .init(),
-                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -1260,7 +1315,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 style: .init(),
-                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -1304,7 +1359,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 style: .init(),
-                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -1342,7 +1397,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 style: .init(),
-                                cardPublicKeyProvider: CardPublicKeyProviderMock(),
+                                publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -1794,6 +1849,69 @@ class CardComponentTests: XCTestCase {
         let postalCodeView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.zipCode))
         let postalCode = postalCodeView.item.value
         XCTAssertTrue(postalCode.isEmpty)
+    }
+    
+    func testAddressWithSupportedCountries() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .full
+        config.billingAddressCountryCodes = ["UK"]
+        
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config)
+        
+        sut.payment = .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .seconds(1))
+
+        let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
+        
+        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.supportedCountryCodes, ["UK"])
+        XCTAssertEqual(countryItemView?.inputControl.label, "United Kingdom")
+    }
+    
+    func testAddressWithSupportedCountriesWithMatchingPrefill() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .full
+        config.billingAddressCountryCodes = ["US", "JP"]
+        
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config, shopperInformation: shopperInformation)
+        
+        sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .seconds(1))
+
+        let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
+        
+        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.supportedCountryCodes, ["US", "JP"])
+        XCTAssertEqual(countryItemView?.inputControl.label, "United States")
+    }
+    
+    func testAddressWithSupportedCountriesWithNonMatchingPrefill() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        var config = CardComponent.Configuration()
+        config.billingAddressMode = .full
+        config.billingAddressCountryCodes = ["UK"]
+        
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config, shopperInformation: shopperInformation)
+        
+        sut.payment = .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .seconds(1))
+
+        let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
+        
+        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.supportedCountryCodes, ["UK"])
+        XCTAssertEqual(countryItemView?.inputControl.label, "United Kingdom")
     }
 
     // MARK: - Private

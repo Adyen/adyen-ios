@@ -49,13 +49,14 @@ public class RegionRepository {
     /// - Parameters:
     ///   - locale: The locale for translation.
     ///   - callback: The callback to receive countries.
+    @available(*, deprecated, message: "This method will no longer be available.")
     public func getCountries(locale: String, callback: @escaping (([Region]) -> Void)) {
         let url = self.url(for: ["countries", locale])
         if let cachedValue = RegionRepository.cache.object(forKey: url as NSURL) as? [Region] {
             return callback(cachedValue)
         }
         let locale = NSLocale(localeIdentifier: locale)
-        loadResource(from: url, fallbackOption: RegionRepository.localCountryFallback(for: locale), callback: callback)
+        loadResource(from: url, fallbackOption: RegionRepository.regions(from: locale), callback: callback)
     }
 
     /// Request list of states or provinces for selected country, translated to a selected language.
@@ -63,6 +64,7 @@ public class RegionRepository {
     ///   - countryCode: The country code.
     ///   - locale: The locale for translation.
     ///   - callback: The callback to receive countries.
+    @available(*, deprecated, message: "This method will no longer be available.")
     public func getSubRegions(for countryCode: String, locale: String, callback: @escaping (([Region]) -> Void)) {
         let url = self.url(for: ["states", countryCode, locale])
         if let cachedValue = RegionRepository.cache.object(forKey: url as NSURL) as? [Region] {
@@ -106,14 +108,14 @@ public class RegionRepository {
         dataTask = nil
     }
 
-    internal static func localCountryFallback(for locale: NSLocale) -> [Region] {
-        NSLocale.isoCountryCodes.map { countryCode in
+    internal static func regions(from locale: NSLocale, countryCodes: [String]? = nil) -> [Region] {
+        (countryCodes ?? NSLocale.isoCountryCodes).map { countryCode in
             Region(identifier: countryCode,
                    name: locale.displayName(forKey: .countryCode, value: countryCode) ?? countryCode)
         }
     }
 
-    internal static func localRegionFallback(for countryCode: String, locale: NSLocale) -> [Region]? {
+    internal static func subRegions(for countryCode: String) -> [Region]? {
         allRegions[countryCode]
     }
 

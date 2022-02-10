@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Neplatný kód Sort";
 "adyen.bacs.paymentButton.title" = "Potvrdit a zaplatit";
 "adyen.bacs.downloadMandate" = "Stáhněte si pokyny k přímému inkasu (DDI / podpisové právo)";
+"adyen.ach.bankAccount.title" = "Bankovní účet";
+"adyen.ach.accountHolderNameField.title" = "Jméno držitele účtu";
+"adyen.ach.accountHolderNameField.invalid" = "Neplatné jméno držitele účtu";
+"adyen.ach.accountNumberField.title" = "Číslo účtu";
+"adyen.ach.accountNumberField.invalid" = "Neplatné číslo účtu";
+"adyen.ach.accountLocationField.title" = "Směrovací tranzitní číslo ABA";
+"adyen.ach.accountLocationField.invalid" = "Neplatné směrovací tranzitní číslo ABA";

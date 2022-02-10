@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -12,7 +12,7 @@ import UIKit
 
 /// A component that provides a form for gift card payments.
 public final class GiftCardComponent: PartialPaymentComponent,
-    CardPublicKeyConsumer,
+    PublicKeyConsumer,
     PresentableComponent,
     Localizable,
     LoadingComponent,
@@ -25,7 +25,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     private let giftCardPaymentMethod: GiftCardPaymentMethod
 
     /// :nodoc:
-    internal var cardPublicKeyProvider: AnyCardPublicKeyProvider
+    public let publicKeyProvider: AnyPublicKeyProvider
 
     /// The gift card payment method.
     public var paymentMethod: PaymentMethod { giftCardPaymentMethod }
@@ -49,13 +49,23 @@ public final class GiftCardComponent: PartialPaymentComponent,
     ///   -  clientKey: The client key that corresponds to the web service user you will use for initiating the payment.
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
     ///   -  style: The Component's UI style.
-    public init(paymentMethod: GiftCardPaymentMethod,
-                apiContext: APIContext,
-                style: FormComponentStyle = FormComponentStyle()) {
+    public convenience init(paymentMethod: GiftCardPaymentMethod,
+                            apiContext: APIContext,
+                            style: FormComponentStyle = FormComponentStyle()) {
+        self.init(paymentMethod: paymentMethod,
+                  apiContext: apiContext,
+                  style: style,
+                  publicKeyProvider: PublicKeyProvider(apiContext: apiContext))
+    }
+    
+    internal init(paymentMethod: GiftCardPaymentMethod,
+                  apiContext: APIContext,
+                  style: FormComponentStyle = FormComponentStyle(),
+                  publicKeyProvider: AnyPublicKeyProvider) {
         self.giftCardPaymentMethod = paymentMethod
         self.style = style
         self.apiContext = apiContext
-        self.cardPublicKeyProvider = CardPublicKeyProvider(apiContext: apiContext)
+        self.publicKeyProvider = publicKeyProvider
     }
 
     // MARK: - Presentable Component Protocol
@@ -164,7 +174,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
         startLoading()
 
-        fetchCardPublicKey(discardError: false) { [weak self] cardPublicKey in
+        fetchCardPublicKey(notifyingDelegateOnFailure: true) { [weak self] cardPublicKey in
             guard let self = self else { return }
             self.createPaymentData(order: self.order,
                                    cardPublicKey: cardPublicKey)

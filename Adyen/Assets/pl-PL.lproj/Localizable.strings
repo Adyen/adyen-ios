@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Nieprawidłowy numer rozliczeniowy SORT";
 "adyen.bacs.paymentButton.title" = "Potwierdź i zapłać";
 "adyen.bacs.downloadMandate" = "Pobierz dyspozycję polecenia zapłaty (DDI/upoważnienie)";
+"adyen.ach.bankAccount.title" = "Rachunek bankowy";
+"adyen.ach.accountHolderNameField.title" = "Imię i nazwisko posiadacza rachunku";
+"adyen.ach.accountHolderNameField.invalid" = "Nieprawidłowe imię i nazwisko posiadacza rachunku";
+"adyen.ach.accountNumberField.title" = "Numer rachunku";
+"adyen.ach.accountNumberField.invalid" = "Nieprawidłowy numer rachunku";
+"adyen.ach.accountLocationField.title" = "Kod bankowy ABA Routing Number";
+"adyen.ach.accountLocationField.invalid" = "Nieprawidłowy kod bankowy ABA Routing Number";

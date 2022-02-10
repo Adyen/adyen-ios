@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Érvénytelen banki azonosító";
 "adyen.bacs.paymentButton.title" = "Megerősítés és fizetés";
 "adyen.bacs.downloadMandate" = "Beszedési megbízási utasítás (meghatalmazás) letöltése";
+"adyen.ach.bankAccount.title" = "Bankszámla";
+"adyen.ach.accountHolderNameField.title" = "Számlatulajdonos neve";
+"adyen.ach.accountHolderNameField.invalid" = "A számlatulajdonos neve érvénytelen";
+"adyen.ach.accountNumberField.title" = "Számlaszám";
+"adyen.ach.accountNumberField.invalid" = "Érvénytelen számlaszám";
+"adyen.ach.accountLocationField.title" = "ABA-irányítószám";
+"adyen.ach.accountLocationField.invalid" = "Érvénytelen ABA-irányítószám";

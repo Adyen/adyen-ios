@@ -40,6 +40,9 @@ public struct CardBrand: Decodable {
     /// Indicates whether to show social security number field or not.
     internal let showsSocialSecurityNumber: Bool
     
+    /// The length of the PAN of the card brand.
+    internal let panLength: Int?
+    
     private enum Constants {
         static let plccText = "plcc"
         static let cbccText = "cbcc"
@@ -59,13 +62,15 @@ public struct CardBrand: Decodable {
                   cvcPolicy: RequirementPolicy = .required,
                   expiryDatePolicy: RequirementPolicy = .required,
                   isLuhnCheckEnabled: Bool = true,
-                  showSocialSecurityNumber: Bool = false) {
+                  showSocialSecurityNumber: Bool = false,
+                  panLength: Int? = nil) {
         self.type = type
         self.isSupported = isSupported
         self.cvcPolicy = cvcPolicy
         self.expiryDatePolicy = expiryDatePolicy
         self.isLuhnCheckEnabled = isLuhnCheckEnabled
         self.showsSocialSecurityNumber = showSocialSecurityNumber
+        self.panLength = panLength
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -75,6 +80,7 @@ public struct CardBrand: Decodable {
         case isLuhnCheckEnabled = "enableLuhnCheck"
         case showsSocialSecurityNumber = "showSocialSecurityNumber"
         case expiryDatePolicy
+        case panLength
     }
     
     internal var isCVCOptional: Bool {

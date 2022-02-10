@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "ソートコードが無効です";
 "adyen.bacs.paymentButton.title" = "確認して支払う";
 "adyen.bacs.downloadMandate" = "自動引き落としの説明 (DDI/委任状) をダウンロードする";
+"adyen.ach.bankAccount.title" = "銀行口座";
+"adyen.ach.accountHolderNameField.title" = "口座名義";
+"adyen.ach.accountHolderNameField.invalid" = "無効な口座名義";
+"adyen.ach.accountNumberField.title" = "口座番号";
+"adyen.ach.accountNumberField.invalid" = "口座番号の入力間違い";
+"adyen.ach.accountLocationField.title" = "ABAナンバー";
+"adyen.ach.accountLocationField.invalid" = "無効なABAナンバー";

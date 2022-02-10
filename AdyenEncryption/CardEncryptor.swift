@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 /// An object that provides static methods for encrypting card information and retrieving public keys from the server.
-public enum CardEncryptor {
+public enum CardEncryptor: AnyEncryptor {
     
     // MARK: - Card Encryption
     
@@ -167,16 +167,6 @@ public enum CardEncryptor {
             .add(expiryYear: card.expiryYear)
         return try encrypt(payload, with: publicKey)
     }
-
-    private static func encrypt(_ payload: Payload, with publicKey: String) throws -> String {
-        let tokens = publicKey.components(separatedBy: "|")
-        guard tokens.count == 2 else { throw EncryptionError.invalidKey }
-        let secKey = try createSecKey(fromModulus: tokens[1], exponent: tokens[0])
-        return try JSONWebEncryptionGenerator()
-            .generate(withPayload: payload.jsonData(),
-                      publicRSAKey: secKey,
-                      header: .defaultHeader).compactRepresentation
-    }
 }
 
 extension CardEncryptor {
@@ -199,13 +189,13 @@ extension CardEncryptor {
         /// Indicates an error when trying to encrypt empty or invalid expiry year.
         case invalidExpiryYear
 
-        /// Indicates an error when trying to encrypt empty or invalid expiry year.
+        /// Indicates an error when trying to encrypt empty or invalid expiry month.
         case invalidExpiryMonth
 
-        /// Indicates an error when trying to encrypt empty or invalid expiry year.
+        /// Indicates an error when trying to encrypt empty or invalid security code.
         case invalidSecureCode
 
-        /// Indicates an error when trying to encrypt empty or invalid expiry year.
+        /// Indicates an error when trying to encrypt empty or invalid card number.
         case invalidNumber
 
         /// Indicates an error when trying to encrypt empty value.

@@ -73,6 +73,7 @@ internal enum AnyPaymentMethod: Decodable {
     case issuerList(IssuerListPaymentMethod)
     case sepaDirectDebit(SEPADirectDebitPaymentMethod)
     case bacsDirectDebit(BACSDirectDebitPaymentMethod)
+    case achDirectDebit(ACHDirectDebitPaymentMethod)
     case redirect(RedirectPaymentMethod)
     case applePay(ApplePayPaymentMethod)
     case qiwiWallet(QiwiWalletPaymentMethod)
@@ -109,6 +110,8 @@ internal enum AnyPaymentMethod: Decodable {
         case let .sepaDirectDebit(paymentMethod):
             return paymentMethod
         case let .bacsDirectDebit(paymentMethod):
+            return paymentMethod
+        case let .achDirectDebit(paymentMethod):
             return paymentMethod
         case let .redirect(paymentMethod):
             return paymentMethod

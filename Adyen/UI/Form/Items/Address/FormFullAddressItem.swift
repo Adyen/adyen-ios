@@ -30,6 +30,8 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     override public var subitems: [FormItem] { items }
     
+    internal let supportedCountryCodes: [String]?
+    
     override public var title: String? {
         didSet {
             headerItem.text = title ?? ""
@@ -42,12 +44,15 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     ///   - style: The `FormSplitItemView` UI style.
     ///   - localizationParameters: The localization parameters
     ///   - identifier: The item identifier
+    ///   - supportedCountryCodes: Supported country codes. If `nil`, all country codes are listed.
     public init(initialCountry: String,
                 style: AddressStyle,
                 localizationParameters: LocalizationParameters? = nil,
-                identifier: String? = nil) {
+                identifier: String? = nil,
+                supportedCountryCodes: [String]? = nil) {
         self.initialCountry = initialCountry
         self.localizationParameters = localizationParameters
+        self.supportedCountryCodes = supportedCountryCodes
         super.init(value: PostalAddress(), style: style)
 
         self.identifier = identifier
@@ -68,7 +73,8 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     internal lazy var countrySelectItem: FormRegionPickerItem = {
         let locale = Locale(identifier: localizationParameters?.locale ?? Locale.current.identifier)
-        let countries = RegionRepository.localCountryFallback(for: locale as NSLocale).sorted { $0.name < $1.name }
+        let countries = RegionRepository.regions(from: locale as NSLocale,
+                                                 countryCodes: supportedCountryCodes).sorted { $0.name < $1.name }
         let defaultCountry = countries.first { $0.identifier == initialCountry } ?? countries[0]
         let item = FormRegionPickerItem(preselectedValue: defaultCountry,
                                         selectableValues: countries,
@@ -81,7 +87,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     // MARK: - Private
     
     private func update(for countryCode: String) {
-        let subRegions = RegionRepository.localRegionFallback(for: countryCode, locale: NSLocale.current as NSLocale)
+        let subRegions = RegionRepository.subRegions(for: countryCode)
         let viewModel = AddressViewModel[countryCode]
         
         items = [FormSpacerItem(),

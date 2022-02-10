@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Ogiltigt clearingnummer";
 "adyen.bacs.paymentButton.title" = "Bekräfta och betala";
 "adyen.bacs.downloadMandate" = "Ladda ner din instruktion för autogiro/direktdebitering (DDI / Mandate)";
+"adyen.ach.bankAccount.title" = "Bankkonto";
+"adyen.ach.accountHolderNameField.title" = "Kontoinnehavarens namn";
+"adyen.ach.accountHolderNameField.invalid" = "Kontoinnehavarens namn är ogiltigt";
+"adyen.ach.accountNumberField.title" = "Kontonummer";
+"adyen.ach.accountNumberField.invalid" = "Ogiltigt kontonummer";
+"adyen.ach.accountLocationField.title" = "ABA-nummer";
+"adyen.ach.accountLocationField.invalid" = "Ogiltigt ABA-nummer";

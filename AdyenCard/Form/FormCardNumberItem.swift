@@ -117,7 +117,8 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
         }
         
         validator = CardNumberValidator(isLuhnCheckEnabled: currentBrand?.isLuhnCheckEnabled ?? true,
-                                        isEnteredBrandSupported: isBrandSupported)
+                                        isEnteredBrandSupported: isBrandSupported,
+                                        panLength: currentBrand?.panLength)
         self.currentBrand = currentBrand
     }
     

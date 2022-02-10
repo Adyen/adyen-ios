@@ -27,8 +27,6 @@ custom_categories:
       - CornerRounding
       - ToolbarMode
       - FormComponentStyle
-      - FormHeaderStyle
-      - FormFooterStyle
       - FormTextItemStyle
       - FormToggleItemStyle
       - FormButtonItemStyle
@@ -54,7 +52,6 @@ custom_categories:
       - StoredPaymentMethod
       - StoredCardPaymentMethod
       - StoredBCMCPaymentMethod
-      - StoredPayPalPaymentMethod
       - StoredBLIKPaymentMethod
       - StoredPayPalPaymentMethod
       - AnyCardPaymentMethod
@@ -64,6 +61,7 @@ custom_categories:
       - ApplePayPaymentMethod
       - SEPADirectDebitPaymentMethod
       - BACSDirectDebitPaymentMethod
+      - ACHDirectDebitPaymentMethod
       - QiwiWalletPaymentMethod
       - AffirmPaymentMethod
       - AwaitPaymentMethod
@@ -90,17 +88,14 @@ custom_categories:
       - GenericVoucherAction
       - VoucherAction
       - DokuVoucherAction
-      - EContextATMVoucherAction
-      - EContextStoresVoucherAction
       - MultibancoVoucherAction
-      - QRCodeAction
-      - SDKAction
-      - WeChatPaySDKAction
       - BoletoVoucherAction
-      - DokuVoucherAction
       - EContextATMVoucherAction
       - EContextStoresVoucherAction
       - OXXOVoucherAction
+      - QRCodeAction
+      - SDKAction
+      - WeChatPaySDKAction
       - DocumentAction
       - AppleWalletError
       
@@ -175,6 +170,12 @@ custom_categories:
       - BACSDirectDebitPaymentMethod
       - BACSDirectDebitComponent
       - BACSDirectDebitDetails
+      
+  - name: ACH Direct Debit Component
+    children:
+      - ACHDirectDebitPaymentMethod
+      - ACHDirectDebitComponent
+      - ACHDirectDebitDetails
 
   - name: Qiwi Wallet Component
     children:
@@ -258,7 +259,6 @@ custom_categories:
       - ActionComponent
       - FinalizableComponent
       - PaymentAwareComponent
-      - PartialPaymentComponent
       - PartialPaymentError
       - Details
       - AdditionalDetails
@@ -279,14 +279,12 @@ custom_categories:
       - Payment
       - Amount
       - Balance
-      - PaymentOrder
       - ShopperName
       - PostalAddress
       - ShopperInteraction
       - DisplayInformation
       - CardFundingSource
       - BrowserInfo
-      - ShopperName
       - ShopperInformation
       - PrefilledShopperInformation
       - PartialPaymentOrder
@@ -296,6 +294,7 @@ custom_categories:
   - name: Encryption
     children:
       - CardEncryptor
+      - BankDetailsEncryptor
       - Card
       - EncryptedCard
       - EncryptionError
@@ -310,7 +309,6 @@ custom_categories:
       - Validator
       - DateValidator
       - LengthValidator
-      - Environment
       - LogoURLProvider
       - SecuredViewController
       - Localizable

@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "El código de sucursal no es válido";
 "adyen.bacs.paymentButton.title" = "Confirmar y pagar";
 "adyen.bacs.downloadMandate" = "Descargue su instrucción de débito directo (IDD/mandato)";
+"adyen.ach.bankAccount.title" = "Cuenta bancaria";
+"adyen.ach.accountHolderNameField.title" = "Nombre del titular de la cuenta";
+"adyen.ach.accountHolderNameField.invalid" = "El nombre del titular de la cuenta no es válido";
+"adyen.ach.accountNumberField.title" = "Número de cuenta";
+"adyen.ach.accountNumberField.invalid" = "Número de cuenta no válido";
+"adyen.ach.accountLocationField.title" = "Número de ruta ABA";
+"adyen.ach.accountLocationField.invalid" = "El número de ruta ABA no es válido";

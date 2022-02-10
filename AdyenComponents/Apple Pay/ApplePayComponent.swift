@@ -10,6 +10,9 @@ import PassKit
 
 /// A component that handles Apple Pay payments.
 public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, Localizable, FinalizableComponent {
+
+    /// :nodoc:
+    internal var success: Bool = false
     
     /// :nodoc:
     private let payment: Payment
@@ -25,7 +28,11 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     /// Apple Pay component configuration.
     internal let configuration: Configuration
+
+    /// :nodoc:
     internal var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
+
+    /// :nodoc:
     internal var paymentAuthorizationCompletion: ((PKPaymentAuthorizationStatus) -> Void)?
     
     /// The delegate of the component.
@@ -95,7 +102,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     
     /// :nodoc:
     public var viewController: UIViewController {
-        getPaymentAuthorizationViewController()
+        createPaymentAuthorizationViewController()
     }
     
     /// :nodoc:
@@ -104,7 +111,9 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// Finalizes ApplePay payment after being processed by payment provider.
     /// - Parameter success: The status of the payment.
     public func didFinalize(with success: Bool) {
+        self.success = success
         paymentAuthorizationCompletion?(success ? .success : .failure)
+        paymentAuthorizationCompletion = nil
     }
 
     // MARK: - Private
@@ -117,13 +126,14 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         }
     }
     
-    private func getPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController {
+    private func createPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController {
         if paymentAuthorizationViewController == nil {
             let supportedNetworks = applePayPaymentMethod.supportedNetworks
             let request = configuration.createPaymentRequest(payment: payment, supportedNetworks: supportedNetworks)
             paymentAuthorizationViewController = ApplePayComponent.createPaymentAuthorizationViewController(from: request)
             paymentAuthorizationViewController?.delegate = self
             paymentAuthorizationCompletion = nil
+            success = false
         }
         return paymentAuthorizationViewController!
     }
@@ -168,6 +178,9 @@ extension ApplePayComponent {
         /// Indicates that the currency code is invalid.
         case invalidCurrencyCode
 
+        /// Indicates that the token was generated incorrectly.
+        case invalidToken
+
         /// :nodoc:
         public var errorDescription: String? {
             switch self {
@@ -185,6 +198,8 @@ extension ApplePayComponent {
                 return "The country code is invalid."
             case .invalidCurrencyCode:
                 return "The currency code is invalid."
+            case .invalidToken:
+                return "The Apple Pay token is invalid. Make sure you are using physical device, not a Simulator."
             }
         }
     }

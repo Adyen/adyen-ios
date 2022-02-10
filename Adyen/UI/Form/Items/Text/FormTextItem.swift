@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -65,10 +65,8 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
     /// :nodoc:
     @discardableResult
     internal func textDidChange(value: String) -> String {
-        var sanitizedValue = formatter?.sanitizedValue(for: value) ?? value
-        let maxLength = validator?.maximumLength(for: sanitizedValue) ?? .max
-        sanitizedValue = sanitizedValue.adyen.truncate(to: maxLength)
-
+        let sanitizedValue = formatter?.sanitizedValue(for: value) ?? value
+        
         publisher.wrappedValue = sanitizedValue
         formattedValue = formatter?.formattedValue(for: value) ?? value
         return formattedValue

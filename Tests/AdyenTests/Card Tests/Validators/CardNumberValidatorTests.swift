@@ -25,6 +25,18 @@ class CardNumberValidatorTests: XCTestCase {
         }
     }
     
+    func testMaxLength() {
+        var validator = CardNumberValidator(isLuhnCheckEnabled: true, isEnteredBrandSupported: true)
+        
+        XCTAssertEqual(validator.maximumLength(for: ""), 19)
+        XCTAssertEqual(validator.maximumLength(for: "124123124512"), 19)
+        
+        validator = CardNumberValidator(isLuhnCheckEnabled: true, isEnteredBrandSupported: true, panLength: 16)
+        
+        XCTAssertEqual(validator.maximumLength(for: ""), 16)
+        XCTAssertEqual(validator.maximumLength(for: "124123124512"), 16)
+    }
+    
     func testUnsupportedCard() {
         let validator = CardNumberValidator(isLuhnCheckEnabled: true, isEnteredBrandSupported: false)
         

@@ -52,7 +52,7 @@ class FormTextItemViewTests: XCTestCase {
         
         validator.handleMaximumLength = { _ in 6 }
         
-        sut.textField.text = "123456H"
+        sut.textField.text = "123456"
         sut.textField.sendActions(for: .editingChanged)
         
         wait(for: [didReachMaximumLengthExpectation,

@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Cod de identificare bancară incorect";
 "adyen.bacs.paymentButton.title" = "Confirmați și plătiți";
 "adyen.bacs.downloadMandate" = "Descărcați instrucțiunile de debitare directă (DDI/mandat)";
+"adyen.ach.bankAccount.title" = "Cont bancar";
+"adyen.ach.accountHolderNameField.title" = "Numele titularului de cont";
+"adyen.ach.accountHolderNameField.invalid" = "Numele titularului de cont este incorect";
+"adyen.ach.accountNumberField.title" = "Număr de cont";
+"adyen.ach.accountNumberField.invalid" = "Numărul de cont este incorect";
+"adyen.ach.accountLocationField.title" = "Număr de direcționare ABA";
+"adyen.ach.accountLocationField.invalid" = "Număr de direcționare ABA incorect";

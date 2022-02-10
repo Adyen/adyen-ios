@@ -145,3 +145,10 @@
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Código de classificação inválido";
 "adyen.bacs.paymentButton.title" = "Confirmar e pagar";
 "adyen.bacs.downloadMandate" = "Baixar instrução de débito direto (DDI)";
+"adyen.ach.bankAccount.title" = "Conta bancária";
+"adyen.ach.accountHolderNameField.title" = "Nome do titular da conta";
+"adyen.ach.accountHolderNameField.invalid" = "Nome do titular da conta inválido";
+"adyen.ach.accountNumberField.title" = "Número da conta";
+"adyen.ach.accountNumberField.invalid" = "Número de conta inválido";
+"adyen.ach.accountLocationField.title" = "Número de roteamento ABA";
+"adyen.ach.accountLocationField.invalid" = "Número de roteamento ABA inválido";
