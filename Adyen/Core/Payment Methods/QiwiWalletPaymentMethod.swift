@@ -16,7 +16,6 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
     public let name: String
     
     /// Qiwi Wallet details.
-    /// :nodoc:
     public let phoneExtensions: [PhoneExtension]
     
     /// Initializes the Qiwi Wallet payment method.
@@ -70,15 +69,12 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
 public struct PhoneExtension: Decodable, Equatable {
     
     /// The phone extension.
-    /// :nodoc:
     public let value: String
     
     /// The ISO country code.
-    /// :nodoc:
     public let countryCode: String
     
     /// The full country name.
-    /// :nodoc:
     public var countryDisplayName: String {
         Locale.current.localizedString(forRegionCode: countryCode) ?? ""
     }

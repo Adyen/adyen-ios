@@ -2185,34 +2185,28 @@
 		E278EB3C22AA5E8700497FD5 /* Payment Methods */ = {
 			isa = PBXGroup;
 			children = (
+				E746E67327B429DF0076BB71 /* Abstract */,
 				C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */,
-				F9D5753023828EBB009C18B5 /* AnyCardPaymentMethod.swift */,
-				F9D5751723799BB0009C18B5 /* AnyPaymentMethodDecoder.swift */,
+				A0414C1E278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift */,
 				E95E24BF22C2593900973184 /* ApplePayPaymentMethod.swift */,
+				C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */,
 				F9D5751B237C0EA0009C18B5 /* BCMCPaymentMethod.swift */,
 				E700A72C2549E2F00012B64C /* BLIKPaymentMethod.swift */,
 				5A988BF5265675ED0007F4C0 /* BoletoPaymentMethod.swift */,
 				E278EB4022AA5EBD00497FD5 /* CardPaymentMethod.swift */,
-				F9FE25B32625ECE7001874BB /* CustomDisplayablePaymentMethod.swift */,
-				E788A4EE2658030100089448 /* DisplayInformation.swift */,
 				F97C837825BF047600D7F85C /* DokuPaymentMethod.swift */,
 				E788A3B1265565DF00089448 /* EContextPaymentMethod.swift */,
-				F97842D626C2758E00677458 /* InstantPaymentMethod.swift */,
 				E7763A1025F02BD20046371E /* GiftCardPaymentMethod.swift */,
+				F97842D626C2758E00677458 /* InstantPaymentMethod.swift */,
 				E278EB4222AA5EC800497FD5 /* IssuerListPaymentMethod.swift */,
 				F9D644DD24D2D9950059CBE3 /* MBWayPaymentMethod.swift */,
-				E262128E22A90D8800F2B133 /* PaymentMethod.swift */,
-				E9B36C9C223FDE4F00EAA368 /* PaymentMethods.swift */,
-				F926D52B23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift */,
-				E224088622AFA3A80058923E /* StoredInstantPaymentMethod.swift */,
 				E278EB4422AA5ED600497FD5 /* SEPADirectDebitPaymentMethod.swift */,
-				C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */,
-				A0414C1E278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift */,
-				E27BFD8F22B114DC00692E0D /* ShopperInteraction.swift */,
+				E224088622AFA3A80058923E /* StoredInstantPaymentMethod.swift */,
 				F9D57529237C6084009C18B5 /* StoredBCMCPaymentMethod.swift */,
 				E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */,
 				E224088C22B0FD220058923E /* StoredPayPalPaymentMethod.swift */,
 				F9620D9E23C7457F005209FC /* WeChatPayPaymentMethod.swift */,
+				F926D52B23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift */,
 			);
 			path = "Payment Methods";
 			sourceTree = "<group>";
@@ -2672,6 +2666,26 @@
 			path = Instant;
 			sourceTree = "<group>";
 		};
+		E746E67227B429100076BB71 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E27BFD8F22B114DC00692E0D /* ShopperInteraction.swift */,
+				E788A4EE2658030100089448 /* DisplayInformation.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E746E67327B429DF0076BB71 /* Abstract */ = {
+			isa = PBXGroup;
+			children = (
+				F9D5751723799BB0009C18B5 /* AnyPaymentMethodDecoder.swift */,
+				F9D5753023828EBB009C18B5 /* AnyCardPaymentMethod.swift */,
+				F9FE25B32625ECE7001874BB /* CustomDisplayablePaymentMethod.swift */,
+				E9B36C9C223FDE4F00EAA368 /* PaymentMethods.swift */,
+			);
+			path = Abstract;
+			sourceTree = "<group>";
+		};
 		E7484C2523B9FDC400CCF74F /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -2971,6 +2985,7 @@
 		E9B36C96223FBD1C00EAA368 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				E746E67227B429100076BB71 /* Models */,
 				E788A4ED2658027D00089448 /* Errors */,
 				F926D51C23F4214500D058D3 /* Core Protocols */,
 				E278EB3C22AA5E8700497FD5 /* Payment Methods */,
@@ -3326,6 +3341,7 @@
 		F926D51C23F4214500D058D3 /* Core Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				E262128E22A90D8800F2B133 /* PaymentMethod.swift */,
 				E2028F5B2227F1930007FF8B /* Details.swift */,
 				F9620DB123C75886005209FC /* PaymentComponentBuilder.swift */,
 				F9FE25D52626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift */,

@@ -15,25 +15,18 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
     public let type: String = PaymentMethodType.bcmc.rawValue
     
     /// :nodoc:
+    public var name: String { storedCardPaymentMethod.name }
+
     public var identifier: String { storedCardPaymentMethod.identifier }
     
-    /// :nodoc:
-    public var name: String { storedCardPaymentMethod.name }
-    
-    /// :nodoc:
     public var displayInformation: DisplayInformation {
         storedCardPaymentMethod.displayInformation
     }
-    
-    /// Display information for the payment method, adapted for displaying in a list.
-    ///
-    /// - Parameters:
-    ///   - parameters: The localization parameters.
+
     public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         storedCardPaymentMethod.localizedDisplayInformation(using: parameters)
     }
     
-    /// :nodoc:
     public var supportedShopperInteractions: [ShopperInteraction] {
         storedCardPaymentMethod.supportedShopperInteractions
     }

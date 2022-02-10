@@ -34,3 +34,13 @@ public struct DokuPaymentMethod: PaymentMethod {
         case name
     }
 }
+
+/// A Doku Wallet payment method.
+public typealias DokuWalletPaymentMethod = DokuPaymentMethod
+
+/// A Doku Alfamart payment method.
+public typealias AlfamartPaymentMethod = DokuPaymentMethod
+
+/// A Doku Indomaret payment method.
+public typealias IndomaretPaymentMethod = DokuPaymentMethod
+

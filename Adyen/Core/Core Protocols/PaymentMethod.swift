@@ -30,13 +30,11 @@ public protocol PaymentMethod: Decodable {
 
 /// :nodoc:
 public extension PaymentMethod {
-    
-    /// :nodoc:
+
     var displayInformation: DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: type)
     }
-    
-    /// :nodoc:
+
     func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: type)
     }

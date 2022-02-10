@@ -6,7 +6,7 @@
 
 import Foundation
 
-
+/// A sored payment method that does not require any handling and could be submitted directly.
 public struct StoredInstantPaymentMethod: StoredPaymentMethod {
 
     public let type: String
@@ -15,7 +15,6 @@ public struct StoredInstantPaymentMethod: StoredPaymentMethod {
 
     public let identifier: String
 
-    /// :nodoc:
     public let supportedShopperInteractions: [ShopperInteraction]
     
     /// :nodoc:
