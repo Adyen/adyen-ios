@@ -6,6 +6,7 @@
 
 @testable import Adyen
 import XCTest
+import AdyenComponents
 
 class PaymentMethodTests: XCTestCase {
     
@@ -122,7 +123,7 @@ class PaymentMethodTests: XCTestCase {
         
         XCTAssertTrue(paymentMethods.regular[1] is IssuerListPaymentMethod)
         XCTAssertTrue(paymentMethods.regular[2] is SEPADirectDebitPaymentMethod)
-        XCTAssertTrue(paymentMethods.regular[3] is RedirectPaymentMethod)
+        XCTAssertTrue(paymentMethods.regular[3] is InstantPaymentMethod)
         
         // Unknown redirect
         XCTAssertEqual(paymentMethods.regular[3].type, "unknown")
@@ -139,17 +140,17 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethods.regular[5].name, "Apple Pay")
         
         // PayPal
-        XCTAssertTrue(paymentMethods.regular[6] is RedirectPaymentMethod)
+        XCTAssertTrue(paymentMethods.regular[6] is InstantPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[6].type, "paypal")
         XCTAssertEqual(paymentMethods.regular[6].name, "PayPal")
         
         // GiroPay
-        XCTAssertTrue(paymentMethods.regular[7] is RedirectPaymentMethod)
+        XCTAssertTrue(paymentMethods.regular[7] is InstantPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[7].type, "giropay")
         XCTAssertEqual(paymentMethods.regular[7].name, "GiroPay")
 
         // GiroPay with non optional details
-        XCTAssertTrue(paymentMethods.regular[8] is RedirectPaymentMethod)
+        XCTAssertTrue(paymentMethods.regular[8] is InstantPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[8].type, "giropay")
         XCTAssertEqual(paymentMethods.regular[8].name, "GiroPay with non optional details")
         
@@ -220,54 +221,54 @@ class PaymentMethodTests: XCTestCase {
                                     identifier: "efefew",
                                     supportedShopperInteractions: [.shopperNotPresent]))
         XCTAssertFalse(StoredPayPalPaymentMethod(type: "payPal",
-                                                 identifier: "12334",
                                                  name: "payPal",
+                                                 identifier: "12334",
                                                  supportedShopperInteractions: [.shopperPresent],
                                                  emailAddress: "email") ==
-                RedirectPaymentMethod(type: "payPal", name: "payPal"))
+                       InstantPaymentMethod(type: "payPal", name: "payPal"))
         XCTAssertTrue(StoredPayPalPaymentMethod(type: "payPal",
-                                                identifier: "12334",
                                                 name: "payPal",
+                                                identifier: "12334",
                                                 supportedShopperInteractions: [.shopperPresent],
                                                 emailAddress: "email") ==
                 StoredPayPalPaymentMethod(type: "payPal",
-                                          identifier: "12334",
                                           name: "payPal",
+                                          identifier: "12334",
                                           supportedShopperInteractions: [.shopperPresent],
                                           emailAddress: "email"))
         XCTAssertFalse(StoredPayPalPaymentMethod(type: "payPal",
-                                                 identifier: "XXX",
                                                  name: "payPal",
+                                                 identifier: "XXX",
                                                  supportedShopperInteractions: [.shopperPresent],
                                                  emailAddress: "email") ==
                 StoredPayPalPaymentMethod(type: "payPal",
-                                          identifier: "12334",
                                           name: "payPal",
+                                          identifier: "12334",
                                           supportedShopperInteractions: [.shopperPresent],
                                           emailAddress: "email"))
         XCTAssertFalse(StoredPayPalPaymentMethod(type: "payPalx",
-                                                 identifier: "XXX",
                                                  name: "payPal",
+                                                 identifier: "XXX",
                                                  supportedShopperInteractions: [.shopperPresent],
                                                  emailAddress: "email") ==
                 StoredPayPalPaymentMethod(type: "payPal",
-                                          identifier: "12334",
                                           name: "payPal",
+                                          identifier: "12334",
                                           supportedShopperInteractions: [.shopperPresent],
                                           emailAddress: "email"))
         XCTAssertFalse(StoredPayPalPaymentMethod(type: "payPal",
-                                                 identifier: "XXX",
                                                  name: "payPal",
+                                                 identifier: "XXX",
                                                  supportedShopperInteractions: [.shopperPresent],
                                                  emailAddress: "email") ==
                 StoredPayPalPaymentMethod(type: "payPal",
-                                          identifier: "12334",
                                           name: "payPal",
+                                          identifier: "12334",
                                           supportedShopperInteractions: [.shopperNotPresent],
                                           emailAddress: "email"))
         XCTAssertFalse(StoredPayPalPaymentMethod(type: "payPal",
-                                                 identifier: "payPal_id",
                                                  name: "payPal",
+                                                 identifier: "payPal_id",
                                                  supportedShopperInteractions: [.shopperPresent],
                                                  emailAddress: "email") ==
                 StoredBLIKPaymentMethod(type: "payPal",
@@ -424,7 +425,7 @@ class PaymentMethodTests: XCTestCase {
     // MARK: - GiroPay
     
     func testDecodingGiropayPaymentMethod() throws {
-        let paymentMethod = try Coder.decode(giroPayDictionaryWithOptionalDetails) as RedirectPaymentMethod
+        let paymentMethod = try Coder.decode(giroPayDictionaryWithOptionalDetails) as InstantPaymentMethod
         XCTAssertEqual(paymentMethod.type, "giropay")
         XCTAssertEqual(paymentMethod.name, "GiroPay")
     }

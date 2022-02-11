@@ -436,8 +436,8 @@ class CardComponentTests: XCTestCase {
 
     func testStoredCardPaymentWithNoPayment() {
         let method = StoredCardPaymentMethod(type: "type",
-                                             identifier: "id",
                                              name: "name",
+                                             identifier: "id",
                                              fundingSource: .credit,
                                              supportedShopperInteractions: [.shopperPresent],
                                              brand: "brand",
@@ -459,8 +459,8 @@ class CardComponentTests: XCTestCase {
 
     func testStoredCardPaymentWithPayment() {
         let method = StoredCardPaymentMethod(type: "type",
-                                             identifier: "id",
                                              name: "name",
+                                             identifier: "id",
                                              fundingSource: .credit,
                                              supportedShopperInteractions: [.shopperPresent],
                                              brand: "brand",
@@ -483,8 +483,8 @@ class CardComponentTests: XCTestCase {
 
     func testStoredCardPaymentWithNoCVV() {
         let method = StoredCardPaymentMethod(type: "type",
-                                             identifier: "id",
                                              name: "name",
+                                             identifier: "id",
                                              fundingSource: .credit,
                                              supportedShopperInteractions: [.shopperPresent],
                                              brand: "brand",
@@ -510,8 +510,8 @@ class CardComponentTests: XCTestCase {
 
     func testStoredCardPaymentWithNoCVVAndNoPayment() {
         let method = StoredCardPaymentMethod(type: "type",
-                                             identifier: "id",
                                              name: "name",
+                                             identifier: "id",
                                              fundingSource: .credit,
                                              supportedShopperInteractions: [.shopperPresent],
                                              brand: "brand",
@@ -536,8 +536,8 @@ class CardComponentTests: XCTestCase {
 
     func testOneClickPayment() {
         let method = StoredCardPaymentMethod(type: "type",
-                                             identifier: "id",
                                              name: "name",
+                                             identifier: "id",
                                              fundingSource: .credit,
                                              supportedShopperInteractions: [.shopperPresent],
                                              brand: "brand",
