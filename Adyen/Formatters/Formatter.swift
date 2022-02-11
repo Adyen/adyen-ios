@@ -17,10 +17,14 @@ public protocol Formatter: Sanitizer {
     
 }
 
+/// Sanitizes (removes any illegal character)  string values.
+
 public protocol Sanitizer {
+
     /// Sanitizes (removes any illegal character) the given value.
     ///
     /// - Parameter value: The value to be sanitized.
     /// - Returns: The given value without any illegal characters.
     func sanitizedValue(for value: String) -> String
+
 }
