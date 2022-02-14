@@ -67,12 +67,6 @@ public protocol PaymentComponentBuilder: APIContextAware {
     /// Builds a certain `PaymentComponent` based on a `AffirmPaymentMethod`.
     func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent?
     
-    /// Builds a certain `PaymentComponent` based on a `OXXOPaymentMethod`, as a default case.
-    func build(paymentMethod: OXXOPaymentMethod) -> PaymentComponent?
-    
-    /// Builds a certain `PaymentComponent` based on a `MultibancoPaymentMethod`, as a default case.
-    func build(paymentMethod: MultibancoPaymentMethod) -> PaymentComponent?
-    
     /// Builds a certain `PaymentComponent` based on any `PaymentMethod`, as a default case.
     func build(paymentMethod: PaymentMethod) -> PaymentComponent?
     

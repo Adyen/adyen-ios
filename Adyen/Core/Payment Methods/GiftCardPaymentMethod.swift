@@ -15,7 +15,7 @@ public struct GiftCardPaymentMethod: PaymentMethod {
     /// :nodoc:
     public let name: String
 
-    /// :nodoc:
+    /// The brand of the stored card, in this case its a constant `"bcmc"`.
     public let brand: String
 
     /// :nodoc:
@@ -23,12 +23,10 @@ public struct GiftCardPaymentMethod: PaymentMethod {
         builder.build(paymentMethod: self)
     }
 
-    /// :nodoc:
     public var displayInformation: DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: brand)
     }
 
-    /// :nodoc:
     public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: brand)
     }

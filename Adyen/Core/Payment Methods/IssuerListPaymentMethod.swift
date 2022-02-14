@@ -8,11 +8,9 @@ import Foundation
 
 /// An issuer list payment method, such as iDEAL or Open Banking.
 public struct IssuerListPaymentMethod: PaymentMethod {
-    
-    /// :nodoc:
+
     public let type: String
-    
-    /// :nodoc:
+
     public let name: String
     
     /// The available issuers.

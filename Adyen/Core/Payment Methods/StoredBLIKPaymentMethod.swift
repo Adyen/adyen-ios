@@ -15,10 +15,8 @@ public struct StoredBLIKPaymentMethod: StoredPaymentMethod {
     /// :nodoc:
     public let name: String
 
-    /// :nodoc:
     public let identifier: String
 
-    /// :nodoc:
     public let supportedShopperInteractions: [ShopperInteraction]
 
     /// :nodoc:
