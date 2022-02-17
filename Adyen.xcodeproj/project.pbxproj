@@ -114,6 +114,8 @@
 		C93B01B92760B06300D311A1 /* BACSConfirmationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93B01B82760B06300D311A1 /* BACSConfirmationPresenter.swift */; };
 		C9454C37276A340B0086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9454C35276A33A00086C218 /* BACSDirectDebitPresentationDelegate.swift */; };
 		C9454C38276A34150086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9454C35276A33A00086C218 /* BACSDirectDebitPresentationDelegate.swift */; };
+		C94632BE27BA6985003DD81F /* AnalyticsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94632BD27BA6985003DD81F /* AnalyticsProvider.swift */; };
+		C94632C227BAA81F003DD81F /* TelemetryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94632C127BAA81F003DD81F /* TelemetryRequest.swift */; };
 		C95903DE275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */; };
 		C96688BF26A6FC1C00DC7297 /* AffirmComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */; };
 		C978F5EF2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */; };
@@ -1048,6 +1050,8 @@
 		C93B01B62760B03400D311A1 /* BACSConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationViewController.swift; sourceTree = "<group>"; };
 		C93B01B82760B06300D311A1 /* BACSConfirmationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationPresenter.swift; sourceTree = "<group>"; };
 		C9454C35276A33A00086C218 /* BACSDirectDebitPresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPresentationDelegate.swift; sourceTree = "<group>"; };
+		C94632BD27BA6985003DD81F /* AnalyticsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsProvider.swift; sourceTree = "<group>"; };
+		C94632C127BAA81F003DD81F /* TelemetryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryRequest.swift; sourceTree = "<group>"; };
 		C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentTests.swift; sourceTree = "<group>"; };
 		C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardSecurityCodeItemViewTests.swift; sourceTree = "<group>"; };
@@ -1986,6 +1990,15 @@
 			path = PresentationDelegates;
 			sourceTree = "<group>";
 		};
+		C94632BC27BA6968003DD81F /* AnalyticsProvider */ = {
+			isa = PBXGroup;
+			children = (
+				C94632BD27BA6985003DD81F /* AnalyticsProvider.swift */,
+				C94632C127BAA81F003DD81F /* TelemetryRequest.swift */,
+			);
+			path = AnalyticsProvider;
+			sourceTree = "<group>";
+		};
 		C96688BD26A6F72900DC7297 /* Affirm */ = {
 			isa = PBXGroup;
 			children = (
@@ -2114,6 +2127,7 @@
 		E216D3C1221AEDB30013CBCF /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				C94632BC27BA6968003DD81F /* AnalyticsProvider */,
 				A0414C2C279041F200DF3FE9 /* PublicKeyProvider */,
 				E70859FF2625B46C00D0153B /* External */,
 				E702BDE22602148900280682 /* Debugging */,
@@ -4939,6 +4953,7 @@
 				F9354BED23A7C34D00A6760B /* ButtonStyle.swift in Sources */,
 				F9B8C50C23FE962D00C4D0FB /* FormPhoneNumberItem.swift in Sources */,
 				E2C0E0BC220B2976008616F6 /* FormItemView.swift in Sources */,
+				C94632C227BAA81F003DD81F /* TelemetryRequest.swift in Sources */,
 				E7763A1125F02BD20046371E /* GiftCardPaymentMethod.swift in Sources */,
 				E788A4FB2658034400089448 /* ShopperInformation.swift in Sources */,
 				E7085B172628B29600D0153B /* PhoneExtensionInputControl.swift in Sources */,
@@ -4947,6 +4962,7 @@
 				E95E24C022C2593900973184 /* ApplePayPaymentMethod.swift in Sources */,
 				F9A6C4D12657B0D700D8CD3E /* FormSpacerItemView.swift in Sources */,
 				E24FED0822704C9800A65122 /* ComponentError.swift in Sources */,
+				C94632BE27BA6985003DD81F /* AnalyticsProvider.swift in Sources */,
 				F95A788825C416A60032CF7E /* CopyLabelView.swift in Sources */,
 				5AD40EFB26303D490090E01C /* UILabelHelpers.swift in Sources */,
 				F9172F742643E0D200985310 /* OrderStatusResponse.swift in Sources */,
