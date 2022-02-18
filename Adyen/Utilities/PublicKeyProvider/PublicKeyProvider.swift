@@ -27,7 +27,17 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
 
     private let retryApiClient: AnyRetryAPIClient
     
-    internal static var cachedPublicKey: String?
+    internal static var publicKeysCache = [String: String]()
+    
+    private var cachedPublicKey: String? {
+        get {
+            Self.publicKeysCache[request.clientKey]
+        }
+        
+        set {
+            Self.publicKeysCache[request.clientKey] = newValue
+        }
+    }
     
     /// :nodoc:
     public convenience init(apiContext: APIContext) {
@@ -45,13 +55,15 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
     
     /// :nodoc:
     public func fetch(completion: @escaping CompletionHandler) {
-        if let publicKey = Self.cachedPublicKey {
+        if let publicKey = cachedPublicKey {
             completion(.success(publicKey))
             return
         }
         
         apiClient.perform(request, completionHandler: { [weak self] result in
-            self?.handle(result, completion: completion)
+            DispatchQueue.main.async {
+                self?.handle(result, completion: completion)
+            }
         })
     }
     
@@ -65,7 +77,7 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
     private func handle(_ result: Result<ClientKeyResponse, Swift.Error>, completion: @escaping CompletionHandler) {
         switch result {
         case let .success(response):
-            Self.cachedPublicKey = response.cardPublicKey
+            cachedPublicKey = response.cardPublicKey
             completion(.success(response.cardPublicKey))
         case let .failure(error):
             completion(.failure(error))
