@@ -14,8 +14,18 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '11.0'
   s.swift_version = '5.1'
   s.frameworks = 'Foundation'
-  s.default_subspecs = 'Core', 'Components', 'Actions', 'Card', 'Encryption', 'DropIn'
+  s.default_subspecs = 'Core', 'Components', 'Actions', 'Card', 'Encryption', 'DropIn', 'Session'
   s.pod_target_xcconfig = {'SWIFT_SUPPRESS_WARNINGS' => 'YES' }
+
+  s.subspec 'Session' do |plugin|
+    plugin.source_files = 'AdyenSession/**/*.swift'
+    plugin.dependency 'Adyen/Core'
+    plugin.dependency 'Adyen/Actions'
+    plugin.dependency 'Adyen/Card'
+    plugin.dependency 'Adyen/Encryption'
+    plugin.dependency 'Adyen/Components'
+    plugin.dependency 'Adyen/DropIn'
+  end
 
   s.subspec 'DropIn' do |plugin|
     plugin.source_files = 'AdyenDropIn/**/*.swift'
