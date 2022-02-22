@@ -51,7 +51,7 @@ public final class RedirectComponent: ActionComponent {
     public func handle(_ action: RedirectAction) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
         
-        if action.url.isHttp {
+        if action.url.adyen.isHttp {
             openHttpSchemeUrl(action)
         } else {
             openCustomSchemeUrl(action)
