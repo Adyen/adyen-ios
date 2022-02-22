@@ -1,10 +1,9 @@
 //
-//  AdyenEncryption.h
-//  AdyenEncryption
+// Copyright (c) 2021 Adyen N.V.
 //
-//  Created by Mohamed Eldoheiri on 1/4/21.
-//  Copyright © 2021 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
+
 
 #import <Foundation/Foundation.h>
 

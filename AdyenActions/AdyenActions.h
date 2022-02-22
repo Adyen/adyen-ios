@@ -1,10 +1,9 @@
 //
-//  AdyenActions.h
-//  AdyenActions
+// Copyright (c) 2020 Adyen N.V.
 //
-//  Created by Mohamed Eldoheiri on 12/24/20.
-//  Copyright © 2020 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
+
 
 #import <Foundation/Foundation.h>
 

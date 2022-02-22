@@ -1,9 +1,7 @@
 //
-//  AdyenSession.h
-//  AdyenSession
+// Copyright (c) 2022 Adyen N.V.
 //
-//  Created by Mohamed Eldoheiri on 2/21/22.
-//  Copyright © 2022 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 #import <Foundation/Foundation.h>
