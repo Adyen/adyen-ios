@@ -82,6 +82,9 @@ targets:
       - framework: Carthage/Build/AdyenDropIn.xcframework
         embed: true
         codeSign: true
+      - framework: Carthage/Build/AdyenSession.xcframework
+        embed: true
+        codeSign: true
       - framework: Carthage/Build/AdyenEncryption.xcframework
         embed: true
         codeSign: true
