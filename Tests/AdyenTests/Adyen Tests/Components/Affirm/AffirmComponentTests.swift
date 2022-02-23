@@ -168,7 +168,7 @@ class AffirmComponentTests: XCTestCase {
     
     func testGetPhoneExtensions_shouldReturnNonEmptyPhoneExtensionList() throws {
         // When
-        let phoneExtensions = sut.getPhoneExtensions()
+        let phoneExtensions = sut.phoneExtensions()
         
         // Then
         XCTAssertFalse(phoneExtensions.isEmpty)
