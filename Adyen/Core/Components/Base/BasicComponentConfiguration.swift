@@ -6,16 +6,19 @@
 
 import Foundation
 
+/// :nodoc:
 public protocol AnyBasicComponentConfiguration: Localizable {
     
     var style: FormComponentStyle { get }
 }
 
+/// :nodoc:
 public protocol AnyPersonalInformationConfiguration: AnyBasicComponentConfiguration {
     
     var shopperInformation: PrefilledShopperInformation? { get }
 }
 
+/// :nodoc:
 public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     
     public let style: FormComponentStyle
@@ -29,6 +32,7 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     }
 }
 
+/// :nodoc:
 public struct PersonalInformationConfiguration: AnyPersonalInformationConfiguration {
     public let style: FormComponentStyle
     
