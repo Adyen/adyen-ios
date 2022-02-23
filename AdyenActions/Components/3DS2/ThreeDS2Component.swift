@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -30,8 +30,21 @@ public final class ThreeDS2Component: ActionComponent {
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
     
+    /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
+    public var threeDSRequestorAppURL: URL? {
+        get {
+            threeDS2ClassicFlowHandler.threeDSRequestorAppURL
+        }
+        
+        set {
+            threeDS2ClassicFlowHandler.threeDSRequestorAppURL = newValue
+            threeDS2CompactFlowHandler.threeDSRequestorAppURL = newValue
+        }
+    }
+    
     /// Initializes the 3D Secure 2 component.
     ///
+    /// - Parameter apiContext: The `APIContext`.
     /// - Parameter redirectComponentStyle: `RedirectComponent` style
     public init(apiContext: APIContext,
                 redirectComponentStyle: RedirectComponentStyle? = nil) {
@@ -41,10 +54,12 @@ public final class ThreeDS2Component: ActionComponent {
 
     /// Initializes the 3D Secure 2 component.
     ///
-    /// - Parameter threeDS2CompactFlowHandler: The internal `AnyThreeDS2ActionHandler` for the compact flow.
-    /// - Parameter threeDS2ClassicFlowHandler: The internal `AnyThreeDS2ActionHandler` for the classic flow.
-    /// - Parameter redirectComponent: The redirect component.
-    /// - Parameter redirectComponentStyle: `RedirectComponent` style.
+    /// - Parameters:
+    ///   - apiContext: The `APIContext`.
+    ///   - threeDS2CompactFlowHandler: The internal `AnyThreeDS2ActionHandler` for the compact flow.
+    ///   - threeDS2ClassicFlowHandler: The internal `AnyThreeDS2ActionHandler` for the classic flow.
+    ///   - redirectComponent: The redirect component.
+    ///   - redirectComponentStyle: `RedirectComponent` style.
     /// :nodoc:
     internal convenience init(apiContext: APIContext,
                               threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
@@ -147,7 +162,6 @@ public final class ThreeDS2Component: ActionComponent {
 
     private lazy var threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler = {
         let handler = ThreeDS2ClassicActionHandler(apiContext: apiContext, appearanceConfiguration: appearanceConfiguration)
-
         handler._isDropIn = _isDropIn
 
         return handler

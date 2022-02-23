@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -33,6 +33,9 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     
     /// :nodoc:
     public var currentActionComponent: Component?
+    
+    /// :nodoc:
+    public var threeDSRequestorAppURL: URL?
     
     /// :nodoc:
     public init(apiContext: APIContext,
@@ -97,6 +100,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
 
     private func createThreeDS2Component() -> ThreeDS2Component {
         let component = ThreeDS2Component(apiContext: apiContext)
+        component.threeDSRequestorAppURL = threeDSRequestorAppURL
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
