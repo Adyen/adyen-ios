@@ -22,8 +22,7 @@ class AffirmComponentTests: XCTestCase {
         style = FormComponentStyle()
         sut = AffirmComponent(paymentMethod: paymentMethod,
                               apiContext: apiContext,
-                              shopperInformation: nil,
-                              style: style)
+                              configuration: AffirmComponentConfiguration(style: style))
     }
     
     override func tearDownWithError() throws {
@@ -111,7 +110,8 @@ class AffirmComponentTests: XCTestCase {
     func testSubmitForm_shouldCallDelegateWithProperParameters() throws {
         // Given
         let sut = AffirmComponent(paymentMethod: paymentMethod,
-                                  apiContext: apiContext, style: style)
+                                  apiContext: apiContext,
+                                  configuration: AffirmComponentConfiguration(style: style))
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         let expectedBillingAddress = PostalAddressMocks.newYorkPostalAddress
@@ -176,10 +176,10 @@ class AffirmComponentTests: XCTestCase {
 
     func testAffirmPrefilling_givenDeliveryAddressIsSet() throws {
         // Given
+        let config = AffirmComponentConfiguration(style: style, shopperInformation: shopperInformation)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          apiContext: apiContext,
-                                         shopperInformation: shopperInformation,
-                                         style: style)
+                                         configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
         wait(for: .seconds(1))
@@ -223,10 +223,10 @@ class AffirmComponentTests: XCTestCase {
 
     func testAffirmPrefilling_givenDeliveryAddressIsNotSet() throws {
         // Given
+        let config = AffirmComponentConfiguration(style: style, shopperInformation: shopperInformationNoDeliveryAddress)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          apiContext: apiContext,
-                                         shopperInformation: shopperInformationNoDeliveryAddress,
-                                         style: style)
+                                         configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
         wait(for: .seconds(1))

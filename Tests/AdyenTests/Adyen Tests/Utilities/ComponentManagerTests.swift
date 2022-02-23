@@ -183,7 +183,7 @@ class ComponentManagerTests: XCTestCase {
 
         // Then
         let affirmComponent = try XCTUnwrap(paymentComponent as? AffirmComponent)
-        XCTAssertNotNil(affirmComponent.shopperInformation)
+        XCTAssertNotNil(affirmComponent.configuration.shopperInformation)
     }
 
     func testShopperInformationInjectionShouldSetShopperInformationOnDokuComponent() throws {
@@ -202,7 +202,7 @@ class ComponentManagerTests: XCTestCase {
 
         // Then
         let dokuComponent = try XCTUnwrap(paymentComponent as? DokuComponent)
-        XCTAssertNotNil(dokuComponent.shopperInformation)
+        XCTAssertNotNil(dokuComponent.configuration.shopperInformation)
     }
 
     func testShopperInformationInjectionShouldSetShopperInformationOnMBWayComponent() throws {
@@ -221,7 +221,7 @@ class ComponentManagerTests: XCTestCase {
 
         // Then
         let mbwayComponent = try XCTUnwrap(paymentComponent as? MBWayComponent)
-        XCTAssertNotNil(mbwayComponent.shopperInformation)
+        XCTAssertNotNil(mbwayComponent.configuration.shopperInformation)
     }
 
     func testShopperInformationInjectionShouldSetShopperInformationOnBasicPersonalInfoFormComponent() throws {
@@ -240,7 +240,7 @@ class ComponentManagerTests: XCTestCase {
 
         // Then
         let basicPersonalInfoFormComponent = try XCTUnwrap(paymentComponent as? BasicPersonalInfoFormComponent)
-        XCTAssertNotNil(basicPersonalInfoFormComponent.shopperInformation)
+        XCTAssertNotNil(basicPersonalInfoFormComponent.configuration.shopperInformation)
     }
 
     func testShopperInformationInjectionShouldSetShopperInformationOnBoletoComponent() throws {

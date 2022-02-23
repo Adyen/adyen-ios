@@ -22,12 +22,11 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     
     public var localizationParameters: LocalizationParameters?
     
-    public init(style: FormComponentStyle,
+    public init(style: FormComponentStyle = FormComponentStyle(),
                 localizationParameters: LocalizationParameters? = nil) {
         self.style = style
         self.localizationParameters = localizationParameters
     }
-    
 }
 
 public struct PersonalInformationConfiguration: AnyPersonalInformationConfiguration {
@@ -37,7 +36,7 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
     
     public var localizationParameters: LocalizationParameters?
     
-    public init(style: FormComponentStyle,
+    public init(style: FormComponentStyle = FormComponentStyle(),
                 shopperInformation: PrefilledShopperInformation? = nil,
                 localizationParameters: LocalizationParameters? = nil) {
         self.style = style
