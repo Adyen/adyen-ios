@@ -16,7 +16,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     internal var wrappedComponent: Component { coreActionHandler }
 
     /// :nodoc:
-    private let coreActionHandler: ThreeDS2CoreActionHandler
+    internal let coreActionHandler: ThreeDS2CoreActionHandler
     
     /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
     internal var threeDSRequestorAppURL: URL? {

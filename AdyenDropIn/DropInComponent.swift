@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -180,11 +180,13 @@ public final class DropInComponent: NSObject, PresentableComponent {
     )
 
     private lazy var actionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(apiContext: apiContext, style: style.actionComponent)
+        let handler = AdyenActionComponent(apiContext: apiContext)
+        handler.configuration.style = style.actionComponent
         handler._isDropIn = true
         handler.delegate = self
         handler.presentationDelegate = self
-        handler.localizationParameters = configuration.localizationParameters
+        handler.configuration.localizationParameters = configuration.localizationParameters
+        handler.configuration.threeDS = configuration.actionComponent.threeDS
         return handler
     }()
     

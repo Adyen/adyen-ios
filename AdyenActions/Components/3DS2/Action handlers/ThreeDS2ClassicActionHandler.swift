@@ -19,7 +19,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     internal var wrappedComponent: Component { coreActionHandler }
 
     /// :nodoc:
-    private let coreActionHandler: ThreeDS2CoreActionHandler
+    internal let coreActionHandler: ThreeDS2CoreActionHandler
 
     /// :nodoc:
     internal var transaction: AnyADYTransaction? {
