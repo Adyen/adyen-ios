@@ -16,45 +16,45 @@ class DokuComponentTests: XCTestCase {
     let payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
 
     func testLocalizationWithCustomTableName() {
-        let sut = DokuComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
+        let config = DokuComponentConfiguration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
+        let sut = DokuComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
         sut.payment = payment
-        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
-        XCTAssertEqual(sut.firstNameItem?.title, localizedString(.firstName, sut.localizationParameters))
-        XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(.firstName, sut.localizationParameters))
+        XCTAssertEqual(sut.firstNameItem?.title, localizedString(.firstName, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(.firstName, sut.configuration.localizationParameters))
         XCTAssertNil(sut.firstNameItem?.validationFailureMessage)
 
-        XCTAssertEqual(sut.lastNameItem?.title, localizedString(.lastName, sut.localizationParameters))
-        XCTAssertEqual(sut.lastNameItem?.placeholder, localizedString(.lastName, sut.localizationParameters))
+        XCTAssertEqual(sut.lastNameItem?.title, localizedString(.lastName, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.lastNameItem?.placeholder, localizedString(.lastName, sut.configuration.localizationParameters))
         XCTAssertNil(sut.lastNameItem?.validationFailureMessage)
 
-        XCTAssertEqual(sut.emailItem?.title, localizedString(.emailItemTitle, sut.localizationParameters))
-        XCTAssertEqual(sut.emailItem?.placeholder, localizedString(.emailItemPlaceHolder, sut.localizationParameters))
-        XCTAssertEqual(sut.emailItem?.validationFailureMessage, localizedString(.emailItemInvalid, sut.localizationParameters))
+        XCTAssertEqual(sut.emailItem?.title, localizedString(.emailItemTitle, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.emailItem?.placeholder, localizedString(.emailItemPlaceHolder, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.emailItem?.validationFailureMessage, localizedString(.emailItemInvalid, sut.configuration.localizationParameters))
 
         XCTAssertNotNil(sut.button.title)
-        XCTAssertEqual(sut.button.title, localizedString(.confirmPurchase, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedString(.confirmPurchase, sut.configuration.localizationParameters))
     }
 
     func testLocalizationWithCustomKeySeparator() {
-        let sut = DokuComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
+        let config = DokuComponentConfiguration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
+        let sut = DokuComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
         sut.payment = payment
-        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 
-        XCTAssertEqual(sut.firstNameItem?.title, localizedString(LocalizationKey(key: "adyen_firstName"), sut.localizationParameters))
-        XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(LocalizationKey(key: "adyen_firstName"), sut.localizationParameters))
+        XCTAssertEqual(sut.firstNameItem?.title, localizedString(LocalizationKey(key: "adyen_firstName"), sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(LocalizationKey(key: "adyen_firstName"), sut.configuration.localizationParameters))
         XCTAssertNil(sut.firstNameItem?.validationFailureMessage)
 
-        XCTAssertEqual(sut.lastNameItem?.title, localizedString(LocalizationKey(key: "adyen_lastName"), sut.localizationParameters))
-        XCTAssertEqual(sut.lastNameItem?.placeholder, localizedString(LocalizationKey(key: "adyen_lastName"), sut.localizationParameters))
+        XCTAssertEqual(sut.lastNameItem?.title, localizedString(LocalizationKey(key: "adyen_lastName"), sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.lastNameItem?.placeholder, localizedString(LocalizationKey(key: "adyen_lastName"), sut.configuration.localizationParameters))
         XCTAssertNil(sut.lastNameItem?.validationFailureMessage)
 
-        XCTAssertEqual(sut.emailItem?.title, localizedString(LocalizationKey(key: "adyen_emailItem_title"), sut.localizationParameters))
-        XCTAssertEqual(sut.emailItem?.placeholder, localizedString(LocalizationKey(key: "adyen_emailItem_placeHolder"), sut.localizationParameters))
-        XCTAssertEqual(sut.emailItem?.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_emailItem_invalid"), sut.localizationParameters))
+        XCTAssertEqual(sut.emailItem?.title, localizedString(LocalizationKey(key: "adyen_emailItem_title"), sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.emailItem?.placeholder, localizedString(LocalizationKey(key: "adyen_emailItem_placeHolder"), sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.emailItem?.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_emailItem_invalid"), sut.configuration.localizationParameters))
 
         XCTAssertNotNil(sut.button.title)
-        XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_confirmPurchase"), sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_confirmPurchase"), sut.configuration.localizationParameters))
     }
 
     func testUIConfiguration() {
@@ -82,7 +82,8 @@ class DokuComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        let sut = DokuComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, style: style)
+        let config = DokuComponentConfiguration(style: style)
+        let sut = DokuComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -138,7 +139,7 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testSubmitForm() {
-        let sut = DokuComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
+        let sut = DokuComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: DokuComponentConfiguration())
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         sut.payment = payment
@@ -181,7 +182,7 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testBigTitle() {
-        let sut = DokuComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
+        let sut = DokuComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: DokuComponentConfiguration())
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -196,15 +197,16 @@ class DokuComponentTests: XCTestCase {
 
     func testRequiresModalPresentation() {
         let dokuPaymentMethod = DokuPaymentMethod(type: "doku_wallet", name: "Test name")
-        let sut = DokuComponent(paymentMethod: dokuPaymentMethod, apiContext: Dummy.context)
+        let sut = DokuComponent(paymentMethod: dokuPaymentMethod, apiContext: Dummy.context, configuration: DokuComponentConfiguration())
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
     func testDokuPrefilling() throws {
         // Given
+        let config = DokuComponentConfiguration(shopperInformation: shopperInformation)
         let prefillSut = DokuComponent(paymentMethod: paymentMethod,
                                        apiContext: Dummy.context,
-                                       shopperInformation: shopperInformation)
+                                       configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
         wait(for: .seconds(1))
@@ -232,7 +234,7 @@ class DokuComponentTests: XCTestCase {
         // Given
         let sut = DokuComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context,
-                                shopperInformation: nil)
+                                configuration: DokuComponentConfiguration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .seconds(1))
