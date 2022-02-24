@@ -56,7 +56,9 @@ public final class AdyenActionComponent: ActionComponent {
         ///   - localizationParameters: Localization parameters.
         ///   - style: The UI style configurations.
         ///   - threeDS: Three DS configurations
-        public init(localizationParameters: LocalizationParameters? = nil, style: ActionComponentStyle = .init(), threeDS: AdyenActionComponent.Configuration.ThreeDS = .init()) {
+        public init(localizationParameters: LocalizationParameters? = nil,
+                    style: ActionComponentStyle = .init(),
+                    threeDS: AdyenActionComponent.Configuration.ThreeDS = .init()) {
             self.localizationParameters = localizationParameters
             self.style = style
             self.threeDS = threeDS

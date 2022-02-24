@@ -53,8 +53,8 @@ public final class ThreeDS2Component: ActionComponent {
         ///   - appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
         ///   - requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
         public init(redirectComponentStyle: RedirectComponentStyle? = nil,
-                      appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
-                      requestorAppURL: URL? = nil) {
+                    appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
+                    requestorAppURL: URL? = nil) {
             self.redirectComponentStyle = redirectComponentStyle
             self.appearanceConfiguration = appearanceConfiguration
             self.requestorAppURL = requestorAppURL
