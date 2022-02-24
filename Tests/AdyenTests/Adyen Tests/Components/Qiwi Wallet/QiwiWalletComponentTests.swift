@@ -15,40 +15,40 @@ class QiwiWalletComponentTests: XCTestCase {
     let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
     
     func testLocalizationWithCustomTableName() {
-        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context)
+        let config = QiwiWalletComponentConfiguration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
+        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, configuration: config)
         sut.payment = payment
-        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
         let expectedSelectableValues = phoneExtensions.map { PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0) }
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
         
-        XCTAssertEqual(sut.phoneItem?.title, localizedString(.phoneNumberTitle, sut.localizationParameters))
-        XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(.phoneNumberPlaceholder, sut.localizationParameters))
-        XCTAssertEqual(sut.phoneItem?.validationFailureMessage, localizedString(.phoneNumberInvalid, sut.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.title, localizedString(.phoneNumberTitle, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(.phoneNumberPlaceholder, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.validationFailureMessage, localizedString(.phoneNumberInvalid, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.phoneItem?.prefix, "+1")
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.value.identifier, "US")
         
-        XCTAssertEqual(sut.button.title, localizedString(.continueTo, sut.localizationParameters, method.name))
+        XCTAssertEqual(sut.button.title, localizedString(.continueTo, sut.configuration.localizationParameters, method.name))
         XCTAssertTrue(sut.button.title!.contains(method.name))
     }
     
     func testLocalizationWithCustomKeySeparator() {
-        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context)
+        let config = QiwiWalletComponentConfiguration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
+        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, configuration: config)
         sut.payment = payment
-        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
         let expectedSelectableValues = phoneExtensions.map { PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0) }
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
         
-        XCTAssertEqual(sut.phoneItem?.title, localizedString(LocalizationKey(key: "adyen_phoneNumber_title"), sut.localizationParameters))
-        XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(LocalizationKey(key: "adyen_phoneNumber_placeholder"), sut.localizationParameters))
-        XCTAssertEqual(sut.phoneItem?.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_phoneNumber_invalid"), sut.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.title, localizedString(LocalizationKey(key: "adyen_phoneNumber_title"), sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(LocalizationKey(key: "adyen_phoneNumber_placeholder"), sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_phoneNumber_invalid"), sut.configuration.localizationParameters))
         XCTAssertEqual(sut.phoneItem?.prefix, "+1")
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.value.identifier, "US")
         
-        XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_continueTo"), sut.localizationParameters, method.name))
+        XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_continueTo"), sut.configuration.localizationParameters, method.name))
     }
     
     func testUIConfiguration() {
@@ -76,7 +76,8 @@ class QiwiWalletComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
         
-        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, style: style)
+        let config = QiwiWalletComponentConfiguration(style: style)
+        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, configuration: config)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -122,7 +123,7 @@ class QiwiWalletComponentTests: XCTestCase {
     }
     
     func testBigTitle() {
-        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context)
+        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, configuration: QiwiWalletComponentConfiguration())
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -137,14 +138,14 @@ class QiwiWalletComponentTests: XCTestCase {
     
     func testRequiresModalPresentation() {
         let qiwiPaymentMethod = QiwiWalletPaymentMethod(type: "qiwiwallet", name: "Test name")
-        let sut = QiwiWalletComponent(paymentMethod: qiwiPaymentMethod, apiContext: Dummy.context)
+        let sut = QiwiWalletComponent(paymentMethod: qiwiPaymentMethod, apiContext: Dummy.context, configuration: QiwiWalletComponentConfiguration())
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
     func testSubmit() {
         let phoneExtensions = [PhoneExtension(value: "+3", countryCode: "UK")]
         let method = QiwiWalletPaymentMethod(type: "test_type", name: "test_name", phoneExtensions: phoneExtensions)
-        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context)
+        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, configuration: QiwiWalletComponentConfiguration())
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 

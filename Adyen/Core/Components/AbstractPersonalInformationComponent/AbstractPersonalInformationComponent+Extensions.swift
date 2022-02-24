@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -57,22 +57,6 @@ public enum PersonalInformation: Equatable {
             return true
         default:
             return false
-        }
-    }
-}
-
-/// :nodoc:
-extension AbstractPersonalInformationComponent {
-
-    /// :nodoc:
-    public struct Configuration {
-
-        /// :nodoc:
-        public let fields: [PersonalInformation]
-
-        /// :nodoc:
-        public init(fields: [PersonalInformation]) {
-            self.fields = fields
         }
     }
 }

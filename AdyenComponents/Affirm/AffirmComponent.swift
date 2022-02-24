@@ -7,6 +7,9 @@
 import Adyen
 import UIKit
 
+/// Configuration for Affirm Component
+public typealias AffirmComponentConfiguration = PersonalInformationConfiguration
+
 /// A component that provides a form for Affirm payment.
 public final class AffirmComponent: AbstractPersonalInformationComponent, Observer {
     
@@ -30,14 +33,12 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     /// - Parameters:
     ///   - paymentMethod: The Affirm payment method.
     ///   - apiContext: The component's API context.
-    ///   - shopperInformation: The shopper's information.
-    ///   - style: The component's style.
+    ///   - configuration: The component's configuration.
     public init(paymentMethod: PaymentMethod,
                 apiContext: APIContext,
-                shopperInformation: PrefilledShopperInformation? = nil,
-                style: FormComponentStyle) {
-        personalDetailsHeaderItem = FormLabelItem(text: "", style: style.sectionHeader)
-        deliveryAddressToggleItem = FormToggleItem(style: style.toggle)
+                configuration: AffirmComponentConfiguration) {
+        personalDetailsHeaderItem = FormLabelItem(text: "", style: configuration.style.sectionHeader)
+        deliveryAddressToggleItem = FormToggleItem(style: configuration.style.toggle)
         
         let fields: [PersonalInformation] = [
             .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 2))),
@@ -51,12 +52,11 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
             .deliveryAddress,
             .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1)))
         ]
-        let configuration = Configuration(fields: fields)
+        
         super.init(paymentMethod: paymentMethod,
-                   configuration: configuration,
                    apiContext: apiContext,
-                   shopperInformation: shopperInformation,
-                   style: style)
+                   fields: fields,
+                   configuration: configuration)
 
         setupItems()
     }
@@ -65,7 +65,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     
     /// :nodoc:
     private func setupItems() {
-        personalDetailsHeaderItem.text = localizedString(.boletoPersonalDetails, localizationParameters)
+        personalDetailsHeaderItem.text = localizedString(.boletoPersonalDetails, configuration.localizationParameters)
         emailItem?.autocapitalizationType = .none
         
         setupDeliveryAddressItem()
@@ -75,13 +75,13 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     
     /// :nodoc:
     private func setupDeliveryAddressItem() {
-        deliveryAddressItem?.title = localizedString(.deliveryAddressSectionTitle, localizationParameters)
+        deliveryAddressItem?.title = localizedString(.deliveryAddressSectionTitle, configuration.localizationParameters)
     }
     
     /// :nodoc:
     private func setupDeliveryAddressToggleItem() {
         guard let deliveryAddressItem = deliveryAddressItem else { return }
-        deliveryAddressToggleItem.title = localizedString(.affirmDeliveryAddressToggleTitle, localizationParameters)
+        deliveryAddressToggleItem.title = localizedString(.affirmDeliveryAddressToggleTitle, configuration.localizationParameters)
         deliveryAddressToggleItem.value = false
         deliveryAddressToggleItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                                            postfix: ViewIdentifier.deliveryAddressToggle)
@@ -90,7 +90,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     
     /// :nodoc:
     private func setupShopperInformation() {
-        if shopperInformation?.deliveryAddress != nil {
+        if configuration.shopperInformation?.deliveryAddress != nil {
             deliveryAddressToggleItem.value = true
         }
     }
@@ -99,7 +99,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     
     /// :nodoc:
     override public func submitButtonTitle() -> String {
-        localizedString(.confirmPurchase, localizationParameters)
+        localizedString(.confirmPurchase, configuration.localizationParameters)
     }
     
     /// :nodoc:
@@ -124,7 +124,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     }
     
     /// :nodoc:
-    override public func getPhoneExtensions() -> [PhoneExtension] {
+    override public func phoneExtensions() -> [PhoneExtension] {
         let query = PhoneExtensionsQuery(paymentMethod: .generic)
         return PhoneExtensionsRepository.get(with: query)
     }

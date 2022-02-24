@@ -52,7 +52,7 @@ public struct RedirectDetails: AdditionalDetails {
     }
     
     internal func extractKeyValuesFromURL() -> [(CodingKeys, String)]? {
-        let queryParameters = returnURL.queryParameters
+        let queryParameters = returnURL.adyen.queryParameters
 
         if let redirectResult = queryParameters[CodingKeys.redirectResult.rawValue]?.removingPercentEncoding {
             return [(.redirectResult, redirectResult)]

@@ -16,30 +16,30 @@ class MBWayComponentTests: XCTestCase {
     let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
 
     func testLocalizationWithCustomTableName() {
-        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
+        let config = MBWayComponentConfiguration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
+        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
         sut.payment = payment
-        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
-        XCTAssertEqual(sut.phoneItem?.title, localizedString(.phoneNumberTitle, sut.localizationParameters))
-        XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(.phoneNumberPlaceholder, sut.localizationParameters))
-        XCTAssertEqual(sut.phoneItem?.validationFailureMessage, localizedString(.phoneNumberInvalid, sut.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.title, localizedString(.phoneNumberTitle, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(.phoneNumberPlaceholder, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.validationFailureMessage, localizedString(.phoneNumberInvalid, sut.configuration.localizationParameters))
 
         XCTAssertNotNil(sut.button.title)
-        XCTAssertEqual(sut.button.title, localizedString(.continueTo, sut.localizationParameters, paymentMethod.name))
+        XCTAssertEqual(sut.button.title, localizedString(.continueTo, sut.configuration.localizationParameters, paymentMethod.name))
         XCTAssertTrue(sut.button.title!.contains(paymentMethod.name))
     }
 
     func testLocalizationWithCustomKeySeparator() {
-        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
+        let config = MBWayComponentConfiguration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
+        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
         sut.payment = payment
-        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 
-        XCTAssertEqual(sut.phoneItem?.title, localizedString(LocalizationKey(key: "adyen_phoneNumber_title"), sut.localizationParameters))
-        XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(LocalizationKey(key: "adyen_phoneNumber_placeholder"), sut.localizationParameters))
-        XCTAssertEqual(sut.phoneItem?.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_phoneNumber_invalid"), sut.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.title, localizedString(LocalizationKey(key: "adyen_phoneNumber_title"), sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(LocalizationKey(key: "adyen_phoneNumber_placeholder"), sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.phoneItem?.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_phoneNumber_invalid"), sut.configuration.localizationParameters))
 
         XCTAssertNotNil(sut.button.title)
-        XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_continueTo"), sut.localizationParameters, paymentMethod.name))
+        XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_continueTo"), sut.configuration.localizationParameters, paymentMethod.name))
     }
 
     func testUIConfiguration() {
@@ -67,7 +67,8 @@ class MBWayComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, style: style)
+        let config = MBWayComponentConfiguration(style: style)
+        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -104,7 +105,7 @@ class MBWayComponentTests: XCTestCase {
     }
 
     func testSubmitForm() {
-        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
+        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: MBWayComponentConfiguration())
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         sut.payment = payment
@@ -139,7 +140,7 @@ class MBWayComponentTests: XCTestCase {
     }
 
     func testBigTitle() {
-        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
+        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: MBWayComponentConfiguration())
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -154,15 +155,16 @@ class MBWayComponentTests: XCTestCase {
 
     func testRequiresModalPresentation() {
         let mbWayPaymentMethod = MBWayPaymentMethod(type: "mbway", name: "Test name")
-        let sut = MBWayComponent(paymentMethod: mbWayPaymentMethod, apiContext: Dummy.context)
+        let sut = MBWayComponent(paymentMethod: mbWayPaymentMethod, apiContext: Dummy.context, configuration: MBWayComponentConfiguration())
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
     func testMBWayPrefilling() throws {
         // Given
+        let config = MBWayComponentConfiguration(shopperInformation: shopperInformation)
         let prefillSut = MBWayComponent(paymentMethod: paymentMethod,
                                         apiContext: Dummy.context,
-                                        shopperInformation: shopperInformation)
+                                        configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
         wait(for: .seconds(1))
@@ -180,7 +182,7 @@ class MBWayComponentTests: XCTestCase {
         // Given
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                  apiContext: Dummy.context,
-                                 shopperInformation: nil)
+                                 configuration: MBWayComponentConfiguration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .seconds(1))
