@@ -44,6 +44,22 @@ public struct TelemetryRequest: APIRequest {
     public let component: String
     public let checkoutAttemptId: String?
 
+    // MARK: - Initializers
+
+    internal init(data: TelemetryData, checkoutAttemptId: String?) {
+        self.version = data.version
+        self.channel = data.channel
+        self.locale = data.locale
+        self.flavor = data.flavor.rawValue
+        self.userAgent = data.userAgent
+        self.referrer = data.referrer
+        self.screenWidth = data.screenWidth
+        self.containerWidth = data.containerWidth
+        self.paymentMethods = data.paymentMethods
+        self.component = data.component
+        self.checkoutAttemptId = checkoutAttemptId
+    }
+
     internal enum CodingKeys: CodingKey {
         case version
         case channel

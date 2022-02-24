@@ -7,11 +7,6 @@
 import AdyenNetworking
 import Foundation
 
-internal enum Flavor: String {
-    case components
-    case dropin
-}
-
 internal protocol AnalyticsProviderProtocol {}
 
 internal class AnalyticsProvider: AnalyticsProviderProtocol {
@@ -25,7 +20,14 @@ internal class AnalyticsProvider: AnalyticsProviderProtocol {
     internal let apiClient: APIClientProtocol
     internal let apiContext: APIContext
 
-    internal var checkoutAttemptId: String?
+    internal var checkoutAttemptId: String? {
+        get {
+            conversion ? self.checkoutAttemptId : nil
+        }
+        set {
+            self.checkoutAttemptId = newValue
+        }
+    }
 
     // MARK: - Initializers
 
