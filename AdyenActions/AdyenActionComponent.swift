@@ -42,9 +42,11 @@ public final class AdyenActionComponent: ActionComponent {
             /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
             public var requestorAppURL: URL?
             
+            /// Initializes a new instance
             public init() { /* Empty initializer */ }
         }
         
+        /// Initializes a new instance
         public init() { /* Empty initializer */ }
     }
 
