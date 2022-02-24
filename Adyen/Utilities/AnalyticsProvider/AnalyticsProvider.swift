@@ -39,16 +39,23 @@ internal class AnalyticsProvider: AnalyticsProviderProtocol {
 
     // MARK: - Private
 
-    private func fetchCheckoutAttemptId() {
+    private func fetchCheckoutAttemptId(completion: @escaping () -> Void) {
+        guard enabled else { return }
+
+        if !conversion {
+            completion()
+            return
+        }
+
         var checkoutAttemptIdRequest = CheckoutAttemptIdRequest(experiments: [])
         checkoutAttemptIdRequest.queryParameters = apiContext.queryParameters
 
-        apiClient.perform(checkoutAttemptIdRequest) { result in
+        apiClient.perform(checkoutAttemptIdRequest) { [weak self] result in
             if case let .success(response) = result {
-                self.checkoutAttemptId = response.identifier
+                self?.checkoutAttemptId = response.identifier
             }
+
+            completion()
         }
     }
-
-    // MARK: - AnalyticsProviderProtocol
 }

@@ -68,6 +68,9 @@ internal struct TelemetryData {
 extension AnalyticsProvider: TelemetryTrackerProtocol {
 
     func sendTelemetryEvent(flavor: TelemetryFlavor, paymentMethods: [String], component: String) {
+        guard enabled else { return }
+        guard telemetry else { return }
+
         let telemetryData = TelemetryData(flavor: flavor,
                                           paymentMethods: paymentMethods,
                                           component: component)
