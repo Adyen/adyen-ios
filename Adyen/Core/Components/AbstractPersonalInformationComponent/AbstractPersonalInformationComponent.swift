@@ -34,7 +34,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     public let requiresModalPresentation: Bool = true
 
     /// :nodoc:
-    public let configuration: AbstractPersonalInformationConfiguration
+    public var configuration: AbstractPersonalInformationConfiguration
     
     private let fields: [PersonalInformation]
 

@@ -21,7 +21,7 @@ public protocol AnyPersonalInformationConfiguration: AnyBasicComponentConfigurat
 /// :nodoc:
 public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     
-    public let style: FormComponentStyle
+    public var style: FormComponentStyle
     
     public var localizationParameters: LocalizationParameters?
     
@@ -34,9 +34,9 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
 
 /// :nodoc:
 public struct PersonalInformationConfiguration: AnyPersonalInformationConfiguration {
-    public let style: FormComponentStyle
+    public var style: FormComponentStyle
     
-    public let shopperInformation: PrefilledShopperInformation?
+    public var shopperInformation: PrefilledShopperInformation?
     
     public var localizationParameters: LocalizationParameters?
     
