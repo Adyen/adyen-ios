@@ -11,7 +11,9 @@ import Adyen
 #if canImport(AdyenComponents)
     import AdyenComponents
 #endif
-import AdyenActions
+#if canImport(AdyenActions)
+    import AdyenActions
+#endif
 import Foundation
 import PassKit
 
