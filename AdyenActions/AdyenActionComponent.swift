@@ -43,11 +43,24 @@ public final class AdyenActionComponent: ActionComponent {
             public var requestorAppURL: URL?
             
             /// Initializes a new instance
-            public init() { /* Empty initializer */ }
+            ///
+            /// - Parameter requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
+            public init(requestorAppURL: URL? = nil) {
+                self.requestorAppURL = requestorAppURL
+            }
         }
         
         /// Initializes a new instance
-        public init() { /* Empty initializer */ }
+        ///
+        /// - Parameters:
+        ///   - localizationParameters: Localization parameters.
+        ///   - style: The UI style configurations.
+        ///   - threeDS: Three DS configurations
+        public init(localizationParameters: LocalizationParameters? = nil, style: ActionComponentStyle = .init(), threeDS: AdyenActionComponent.Configuration.ThreeDS = .init()) {
+            self.localizationParameters = localizationParameters
+            self.style = style
+            self.threeDS = threeDS
+        }
     }
 
     /// :nodoc:

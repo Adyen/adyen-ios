@@ -45,8 +45,20 @@ public final class ThreeDS2Component: ActionComponent {
         /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
         public var requestorAppURL: URL?
         
+        
         /// Initializes a new instance
-        public init() { /* Empty initializer */ }
+        ///
+        /// - Parameters:
+        ///   - redirectComponentStyle: `RedirectComponent` style
+        ///   - appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
+        ///   - requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
+        public init(redirectComponentStyle: RedirectComponentStyle? = nil,
+                      appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
+                      requestorAppURL: URL? = nil) {
+            self.redirectComponentStyle = redirectComponentStyle
+            self.appearanceConfiguration = appearanceConfiguration
+            self.requestorAppURL = requestorAppURL
+        }
     }
     
     /// Initializes the 3D Secure 2 component.
