@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -34,7 +34,7 @@ public struct APIContext: AnyAPIContext {
     /// The client key that corresponds to the web service user you will use for initiating the payment.
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
     public let clientKey: String
-    
+
     /// Initializes the APIContext
     /// - Parameters:
     ///   - environment: The environment to retrieve internal resources from.
@@ -47,5 +47,5 @@ public struct APIContext: AnyAPIContext {
         self.environment = environment
         self.clientKey = clientKey
     }
-            
+
 }

@@ -8,6 +8,7 @@ import AdyenNetworking
 import Foundation
 
 // TODO: - Which is the response?
+// TODO: - Document
 // Empty Response
 public struct TelemetryResponse: Response {}
 
@@ -17,7 +18,7 @@ public struct TelemetryRequest: APIRequest {
     public typealias ResponseType = TelemetryResponse
 
     /// :nodoc:
-    public let path: String = "v2/analytics/log?clientKey={CLIENT_KEY}"
+    public let path: String = "v2/analytics/log"
 
     /// :nodoc:
     public var counter: UInt = 0
@@ -26,7 +27,7 @@ public struct TelemetryRequest: APIRequest {
     public let headers: [String: String] = [:]
 
     /// :nodoc:
-    public let queryParameters: [URLQueryItem] = []
+    public var queryParameters: [URLQueryItem] = []
 
     /// :nodoc:
     public let method: HTTPMethod = .post

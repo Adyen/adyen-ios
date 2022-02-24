@@ -121,6 +121,8 @@
 		C978F5EF2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */; };
 		C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFD726946F0800AED849 /* AffirmComponent.swift */; };
 		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
+		C9B6683527C7CB7A006950B9 /* TelemetryTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B6683427C7CB7A006950B9 /* TelemetryTracker.swift */; };
+		C9BAE20F27BEA68D002F5728 /* CheckoutAttemptIdRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BAE20E27BEA68D002F5728 /* CheckoutAttemptIdRequest.swift */; };
 		C9BB460427622D9B00E6730B /* BACSConfirmationViewProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB460327622D9B00E6730B /* BACSConfirmationViewProtocolMock.swift */; };
 		C9BB460627622E9600E6730B /* BACSConfirmationPresenterProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB460527622E9600E6730B /* BACSConfirmationPresenterProtocolMock.swift */; };
 		C9BB460927622F4100E6730B /* BACSConfirmationPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB460827622F4100E6730B /* BACSConfirmationPresenterTests.swift */; };
@@ -1057,6 +1059,8 @@
 		C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardSecurityCodeItemViewTests.swift; sourceTree = "<group>"; };
 		C982FFD726946F0800AED849 /* AffirmComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponent.swift; sourceTree = "<group>"; };
 		C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmPaymentMethod.swift; sourceTree = "<group>"; };
+		C9B6683427C7CB7A006950B9 /* TelemetryTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryTracker.swift; sourceTree = "<group>"; };
+		C9BAE20E27BEA68D002F5728 /* CheckoutAttemptIdRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutAttemptIdRequest.swift; sourceTree = "<group>"; };
 		C9BB460327622D9B00E6730B /* BACSConfirmationViewProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationViewProtocolMock.swift; sourceTree = "<group>"; };
 		C9BB460527622E9600E6730B /* BACSConfirmationPresenterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationPresenterProtocolMock.swift; sourceTree = "<group>"; };
 		C9BB460827622F4100E6730B /* BACSConfirmationPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationPresenterTests.swift; sourceTree = "<group>"; };
@@ -1994,7 +1998,9 @@
 			isa = PBXGroup;
 			children = (
 				C94632BD27BA6985003DD81F /* AnalyticsProvider.swift */,
+				C9B6683427C7CB7A006950B9 /* TelemetryTracker.swift */,
 				C94632C127BAA81F003DD81F /* TelemetryRequest.swift */,
+				C9BAE20E27BEA68D002F5728 /* CheckoutAttemptIdRequest.swift */,
 			);
 			path = AnalyticsProvider;
 			sourceTree = "<group>";
@@ -4910,6 +4916,8 @@
 				F9E441522382A0DD00D3CD48 /* ViewIdentifierBuilder.swift in Sources */,
 				E28098B3220DA7980087928F /* Component.swift in Sources */,
 				F95B6D8E25231715002C9062 /* RegularExpressionValidator.swift in Sources */,
+				C9B6683527C7CB7A006950B9 /* TelemetryTracker.swift in Sources */,
+				C9BAE20F27BEA68D002F5728 /* CheckoutAttemptIdRequest.swift in Sources */,
 				F926D52023F4217A00D058D3 /* DeviceDependent.swift in Sources */,
 				F9A6C4BB2657AFF600D8CD3E /* FormSpacerItem.swift in Sources */,
 				F9D5753123828EBB009C18B5 /* AnyCardPaymentMethod.swift in Sources */,
