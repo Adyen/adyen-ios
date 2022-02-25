@@ -241,7 +241,8 @@ internal final class ComponentManager {
     private func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {
         BLIKComponent(paymentMethod: paymentMethod,
                       apiContext: apiContext,
-                      style: style.formComponent)
+                      configuration: .init(style: style.formComponent,
+                                           localizationParameters: configuration.localizationParameters))
     }
     
     private func createBoletoComponent(_ paymentMethod: BoletoPaymentMethod) -> BoletoComponent {
