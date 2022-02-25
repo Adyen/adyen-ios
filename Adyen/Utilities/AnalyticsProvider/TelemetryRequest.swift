@@ -7,42 +7,40 @@
 import AdyenNetworking
 import Foundation
 
-// TODO: - Which is the response?
 // TODO: - Document
-// Empty Response
-public struct TelemetryResponse: Response {}
+internal struct TelemetryResponse: Response { /* Empty response */ }
 
-public struct TelemetryRequest: APIRequest {
-
-    /// :nodoc:
-    public typealias ResponseType = TelemetryResponse
+internal struct TelemetryRequest: APIRequest {
 
     /// :nodoc:
-    public let path: String = "v2/analytics/log"
+    internal typealias ResponseType = TelemetryResponse
 
     /// :nodoc:
-    public var counter: UInt = 0
+    internal let path: String = "v2/analytics/log"
 
     /// :nodoc:
-    public let headers: [String: String] = [:]
+    internal var counter: UInt = 0
 
     /// :nodoc:
-    public var queryParameters: [URLQueryItem] = []
+    internal let headers: [String: String] = [:]
 
     /// :nodoc:
-    public let method: HTTPMethod = .post
+    internal var queryParameters: [URLQueryItem] = []
 
-    public let version: String?
-    public let channel: String
-    public let locale: String
-    public let flavor: String
-    public let userAgent: String?
-    public let referrer: String
-    public let screenWidth: Int
-    public let containerWidth: Int?
-    public let paymentMethods: [String]
-    public let component: String
-    public let checkoutAttemptId: String?
+    /// :nodoc:
+    internal let method: HTTPMethod = .post
+
+    internal let version: String?
+    internal let channel: String
+    internal let locale: String
+    internal let flavor: String
+    internal let userAgent: String?
+    internal let referrer: String
+    internal let screenWidth: Int
+    internal let containerWidth: Int?
+    internal let paymentMethods: [String]
+    internal let component: String
+    internal let checkoutAttemptId: String?
 
     // MARK: - Initializers
 

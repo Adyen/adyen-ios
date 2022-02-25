@@ -20,14 +20,7 @@ internal class AnalyticsProvider: AnalyticsProviderProtocol {
     internal let apiClient: APIClientProtocol
     internal let apiContext: APIContext
 
-    internal var checkoutAttemptId: String? {
-        get {
-            conversion ? self.checkoutAttemptId : nil
-        }
-        set {
-            self.checkoutAttemptId = newValue
-        }
-    }
+    private var checkoutAttemptId: String?
 
     // MARK: - Initializers
 
@@ -37,17 +30,12 @@ internal class AnalyticsProvider: AnalyticsProviderProtocol {
         self.apiContext = apiContext
     }
 
-    // MARK: - Private
-
-    private func fetchCheckoutAttemptId(completion: @escaping () -> Void) {
+    internal func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
         guard enabled else { return }
 
-        if !conversion {
-            completion()
-            return
-        }
+        if !conversion { return completion(nil) }
 
-        var checkoutAttemptIdRequest = CheckoutAttemptIdRequest(experiments: [])
+        var checkoutAttemptIdRequest = CheckoutAttemptIdRequest()
         checkoutAttemptIdRequest.queryParameters = apiContext.queryParameters
 
         apiClient.perform(checkoutAttemptIdRequest) { [weak self] result in
@@ -55,7 +43,7 @@ internal class AnalyticsProvider: AnalyticsProviderProtocol {
                 self?.checkoutAttemptId = response.identifier
             }
 
-            completion()
+            completion(self?.checkoutAttemptId)
         }
     }
 }

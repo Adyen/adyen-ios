@@ -8,35 +8,39 @@ import AdyenNetworking
 import Foundation
 
 // TODO: - Document
-public struct CheckoutAttemptIdResponse: Response {
-    public let identifier: String
+internal struct CheckoutAttemptIdResponse: Response {
+
+    // MARK: - Properties
+
+    internal let identifier: String
 
     internal enum CodingKeys: String, CodingKey {
         case identifier = "id"
     }
 }
 
-public struct CheckoutAttemptIdRequest: APIRequest {
+internal struct CheckoutAttemptIdRequest: APIRequest {
 
     /// :nodoc:
-    public typealias ResponseType = CheckoutAttemptIdResponse
+    internal typealias ResponseType = CheckoutAttemptIdResponse
 
     /// :nodoc:
-    public let path: String = "v2/analytics/id"
+    internal let path: String = "v2/analytics/id"
 
     /// :nodoc:
-    public var counter: UInt = 0
+    internal var counter: UInt = 0
 
     /// :nodoc:
-    public let headers: [String: String] = [:]
+    internal let headers: [String: String] = [:]
 
     /// :nodoc:
-    public var queryParameters: [URLQueryItem] = []
+    internal var queryParameters: [URLQueryItem] = []
 
     /// :nodoc:
-    public let method: HTTPMethod = .post
+    internal let method: HTTPMethod = .post
 
-    public let experiments: [String]
+    /// :nodoc:
+    internal let experiments: [String] = []
 
     internal enum CodingKeys: CodingKey {
         case experiments

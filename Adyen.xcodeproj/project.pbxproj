@@ -122,6 +122,7 @@
 		C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFD726946F0800AED849 /* AffirmComponent.swift */; };
 		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
 		C9B6683527C7CB7A006950B9 /* TelemetryTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B6683427C7CB7A006950B9 /* TelemetryTracker.swift */; };
+		C9B6683727C8D7FB006950B9 /* TelemetryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B6683627C8D7FB006950B9 /* TelemetryData.swift */; };
 		C9BAE20F27BEA68D002F5728 /* CheckoutAttemptIdRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BAE20E27BEA68D002F5728 /* CheckoutAttemptIdRequest.swift */; };
 		C9BB460427622D9B00E6730B /* BACSConfirmationViewProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB460327622D9B00E6730B /* BACSConfirmationViewProtocolMock.swift */; };
 		C9BB460627622E9600E6730B /* BACSConfirmationPresenterProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB460527622E9600E6730B /* BACSConfirmationPresenterProtocolMock.swift */; };
@@ -1060,6 +1061,7 @@
 		C982FFD726946F0800AED849 /* AffirmComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponent.swift; sourceTree = "<group>"; };
 		C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmPaymentMethod.swift; sourceTree = "<group>"; };
 		C9B6683427C7CB7A006950B9 /* TelemetryTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryTracker.swift; sourceTree = "<group>"; };
+		C9B6683627C8D7FB006950B9 /* TelemetryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryData.swift; sourceTree = "<group>"; };
 		C9BAE20E27BEA68D002F5728 /* CheckoutAttemptIdRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutAttemptIdRequest.swift; sourceTree = "<group>"; };
 		C9BB460327622D9B00E6730B /* BACSConfirmationViewProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationViewProtocolMock.swift; sourceTree = "<group>"; };
 		C9BB460527622E9600E6730B /* BACSConfirmationPresenterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationPresenterProtocolMock.swift; sourceTree = "<group>"; };
@@ -2001,6 +2003,7 @@
 				C9B6683427C7CB7A006950B9 /* TelemetryTracker.swift */,
 				C94632C127BAA81F003DD81F /* TelemetryRequest.swift */,
 				C9BAE20E27BEA68D002F5728 /* CheckoutAttemptIdRequest.swift */,
+				C9B6683627C8D7FB006950B9 /* TelemetryData.swift */,
 			);
 			path = AnalyticsProvider;
 			sourceTree = "<group>";
@@ -5026,6 +5029,7 @@
 				F97C81AF25BAC8E600D7F85C /* AbstractPersonalInformationComponent.swift in Sources */,
 				F97842D726C2758E00677458 /* OXXOPaymentMethod.swift in Sources */,
 				F97CCD3C24360A4000BC560A /* BundleHelpers.swift in Sources */,
+				C9B6683727C8D7FB006950B9 /* TelemetryData.swift in Sources */,
 				E788A4EF2658030100089448 /* DisplayInformation.swift in Sources */,
 				F9976BB126D9006C00D2D7CE /* MultibancoPaymentMethod.swift in Sources */,
 			);
