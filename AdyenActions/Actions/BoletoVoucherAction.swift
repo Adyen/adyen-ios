@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,7 @@ import Foundation
 
 /// :nodoc:
 /// Describes a voucher that can be downloaded.
-internal protocol DownloadableVoucher {
+internal protocol Downloadable {
     
     /// :nodoc:
     /// Download URL.
@@ -17,7 +17,7 @@ internal protocol DownloadableVoucher {
 }
 
 /// Describes an action in which a Boleto voucher is presented to the shopper.
-public final class BoletoVoucherAction: Decodable, AnyVoucherAction, DownloadableVoucher {
+public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadable {
     
     /// The `paymentMethodType` for which the voucher is presented.
     public let paymentMethodType: VoucherPaymentMethod

@@ -45,7 +45,6 @@ public final class ThreeDS2Component: ActionComponent {
         /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
         public var requestorAppURL: URL?
         
-        
         /// Initializes a new instance
         ///
         /// - Parameters:
@@ -190,8 +189,8 @@ public final class ThreeDS2Component: ActionComponent {
     }()
 
     private lazy var redirectComponent: AnyRedirectComponent = {
-        let component = RedirectComponent(apiContext: apiContext,
-                                          style: configuration.redirectComponentStyle)
+        let component = RedirectComponent(apiContext: apiContext)
+        component.configuration.style = configuration.redirectComponentStyle
 
         component.delegate = self
         component._isDropIn = _isDropIn

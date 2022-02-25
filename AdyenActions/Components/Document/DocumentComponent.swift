@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,17 +19,31 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
     
-    /// The Component UI style.
-    public let style: DocumentComponentStyle
+    /// The document component configurations.
+    public struct Configuration {
+        
+        /// The component UI style.
+        public var style: DocumentComponentStyle = .init()
+        
+        /// The localization parameters, leave it nil to use the default parameters.
+        public var localizationParameters: LocalizationParameters?
+        
+        /// Initializes an instance of `Configuration`
+        ///
+        /// - Parameters:
+        ///   - style: The Component UI style.
+        ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
+        public init(style: DocumentComponentStyle = DocumentComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
+            self.style = style
+            self.localizationParameters = localizationParameters
+        }
+    }
     
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
+    /// The document component configurations.
+    public var configuration: Configuration = .init()
     
     /// :nodoc:
     internal let presenterViewController = UIViewController()
-    
-    /// :nodoc:
-    internal var action: DocumentAction?
     
     /// :nodoc:
     private let componentName = "documentAction"
@@ -37,27 +51,26 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     /// Initializes the `DocumentComponent`.
     ///
     /// - Parameter apiContext: The API context.
-    /// - Parameter style: The Component UI style.
-    public init(apiContext: APIContext, style: DocumentComponentStyle) {
+    /// - Parameter configuration: The Component configurations.
+    public init(apiContext: APIContext, configuration: Configuration = .init()) {
         self.apiContext = apiContext
-        self.style = style
+        self.configuration = configuration
     }
     
     /// Handles document action.
     ///
     /// - Parameter action: The document action object.
     public func handle(_ action: DocumentAction) {
-        self.action = action
-        
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
         
         let imageURL = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue,
                                                environment: apiContext.environment,
                                                size: .medium)
-        let viewModel = DocumentActionViewModel(message: localizedString(.bacsDownloadMandate, localizationParameters),
+        let viewModel = DocumentActionViewModel(action: action,
+                                                message: localizedString(.bacsDownloadMandate, configuration.localizationParameters),
                                                 logoURL: imageURL,
-                                                buttonTitle: localizedString(.boletoDownloadPdf, localizationParameters))
-        let view = DocumentActionView(viewModel: viewModel, style: style)
+                                                buttonTitle: localizedString(.boletoDownloadPdf, configuration.localizationParameters))
+        let view = DocumentActionView(viewModel: viewModel, style: configuration.style)
         view.delegate = self
         let viewController = ADYViewController(view: view)
         
@@ -78,8 +91,8 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
         let model = ActionNavigationBar.Model(leadingButtonTitle: nil,
                                               trailingButtonTitle: Bundle.Adyen.localizedDoneCopy)
         let style = ActionNavigationBar.Style(leadingButton: nil,
-                                              trailingButton: style.doneButton,
-                                              backgroundColor: style.backgroundColor)
+                                              trailingButton: configuration.style.doneButton,
+                                              backgroundColor: configuration.style.backgroundColor)
         
         let navBar = ActionNavigationBar(model: model, style: style)
         navBar.trailingButtonHandler = { [weak self] in
@@ -89,14 +102,13 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     }
 }
 
-extension DocumentComponent: ActionViewDelegate {
+extension DocumentComponent: DocumentActionViewDelegate {
     
     internal func didComplete() {
         delegate?.didComplete(from: self)
     }
     
-    internal func mainButtonTap(sourceView: UIView) {
-        guard let action = action else { return }
-        presentSharePopover(with: action.downloadUrl, sourceView: sourceView)
+    internal func mainButtonTap(sourceView: UIView, downloadable: Downloadable) {
+        presentSharePopover(with: downloadable.downloadUrl, sourceView: sourceView)
     }
 }

@@ -43,7 +43,8 @@ class QRCodeComponentTests: XCTestCase {
         
         style.backgroundColor = UIColor.Adyen.componentSeparator
         
-        let sut = QRCodeComponent(apiContext: Dummy.context, style: style)
+        let sut = QRCodeComponent(apiContext: Dummy.context)
+        sut.configuration.style = style
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         
@@ -107,8 +108,9 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeComponent(apiContext: Dummy.context, style: QRCodeComponentStyle(), pollingComponentBuilder: builder, timeoutInterval: 2.0)
-        
+        let sut = QRCodeComponent(apiContext: Dummy.context,
+                                  pollingComponentBuilder: builder,
+                                  timeoutInterval: 2.0)
         let componentDelegate = ActionComponentDelegateMock()
         componentDelegate.onDidFail = { error, component in
             if let qrError = error as? QRCodeComponentError,
@@ -148,7 +150,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeComponent(apiContext: Dummy.context, style: QRCodeComponentStyle(),
+        let sut = QRCodeComponent(apiContext: Dummy.context,
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         
@@ -195,7 +197,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeComponent(apiContext: Dummy.context, style: QRCodeComponentStyle(),
+        let sut = QRCodeComponent(apiContext: Dummy.context,
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         
@@ -233,7 +235,7 @@ class QRCodeComponentTests: XCTestCase {
     func testCopyButton() {
         let dummyExpectation = expectation(description: "Dummy Expectation")
         
-        let sut = QRCodeComponent(apiContext: Dummy.context, style: QRCodeComponentStyle())
+        let sut = QRCodeComponent(apiContext: Dummy.context)
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         

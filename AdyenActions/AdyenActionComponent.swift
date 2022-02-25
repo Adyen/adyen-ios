@@ -106,8 +106,8 @@ public final class AdyenActionComponent: ActionComponent {
     // MARK: - Private
     
     private func handle(_ action: RedirectAction) {
-        let component = RedirectComponent(apiContext: apiContext,
-                                          style: configuration.style.redirectComponentStyle)
+        let component = RedirectComponent(apiContext: apiContext)
+        component.configuration.style = configuration.style.redirectComponentStyle
         component.delegate = delegate
         component._isDropIn = _isDropIn
         component.presentationDelegate = presentationDelegate
@@ -173,47 +173,47 @@ public final class AdyenActionComponent: ActionComponent {
     }
     
     private func handle(_ action: AwaitAction) {
-        let component = AwaitComponent(apiContext: apiContext,
-                                       style: configuration.style.awaitComponentStyle)
+        let component = AwaitComponent(apiContext: apiContext)
+        component.configuration.style = configuration.style.awaitComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
-        component.localizationParameters = configuration.localizationParameters
+        component.configuration.localizationParameters = configuration.localizationParameters
         
         component.handle(action)
         currentActionComponent = component
     }
     
     private func handle(_ action: VoucherAction) {
-        let component = VoucherComponent(apiContext: apiContext,
-                                         style: configuration.style.voucherComponentStyle)
+        let component = VoucherComponent(apiContext: apiContext)
+        component.configuration.style = configuration.style.voucherComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
-        component.localizationParameters = configuration.localizationParameters
+        component.configuration.localizationParameters = configuration.localizationParameters
 
         component.handle(action)
         currentActionComponent = component
     }
     
     private func handle(_ action: QRCodeAction) {
-        let component = QRCodeComponent(apiContext: apiContext,
-                                        style: configuration.style.qrCodeComponentStyle)
+        let component = QRCodeComponent(apiContext: apiContext)
+        component.configuration.style = configuration.style.qrCodeComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
-        component.localizationParameters = configuration.localizationParameters
+        component.configuration.localizationParameters = configuration.localizationParameters
         
         component.handle(action)
         currentActionComponent = component
     }
     
     private func handle(_ action: DocumentAction) {
-        let component = DocumentComponent(apiContext: apiContext,
-                                          style: configuration.style.documentActionComponentStyle)
+        let component = DocumentComponent(apiContext: apiContext)
+        component.configuration.style = configuration.style.documentActionComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate
-        component.localizationParameters = configuration.localizationParameters
+        component.configuration.localizationParameters = configuration.localizationParameters
         component.presentationDelegate = presentationDelegate
         
         component.handle(action)

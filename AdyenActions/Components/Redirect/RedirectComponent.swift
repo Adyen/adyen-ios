@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -20,6 +20,22 @@ public final class RedirectComponent: ActionComponent {
         
     }
     
+    /// The component configurations.
+    public struct Configuration {
+        
+        /// The component's UI style.
+        public var style: RedirectComponentStyle?
+        
+        fileprivate let componentName = "redirect"
+        
+        /// Initializes an instance of `Configuration`
+        ///
+        /// - Parameter style: The component's UI style.
+        public init(style: RedirectComponentStyle? = nil) {
+            self.style = style
+        }
+    }
+    
     /// :nodoc:
     public let apiContext: APIContext
     
@@ -32,24 +48,27 @@ public final class RedirectComponent: ActionComponent {
     /// :nodoc:
     internal var appLauncher: AnyAppLauncher = AppLauncher()
     private var browserComponent: BrowserComponent?
-    private let style: RedirectComponentStyle?
-    private let componentName = "redirect"
+    
+    /// The component configurations.
+    public var configuration: Configuration
     
     /// Initializes the component.
     ///
     /// - Parameter apiContext: The API context.
-    /// - Parameter style: The component's UI style.
+    /// - Parameter configuration: The component configurations.
     public init(apiContext: APIContext,
-                style: RedirectComponentStyle? = nil) {
+                configuration: Configuration = Configuration()) {
         self.apiContext = apiContext
-        self.style = style
+        self.configuration = configuration
     }
     
     /// Handles a redirect action.
     ///
     /// - Parameter action: The redirect action object.
     public func handle(_ action: RedirectAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(component: configuration.componentName,
+                            flavor: _isDropIn ? .dropin : .components,
+                            context: apiContext)
         
         if action.url.adyen.isHttp {
             openHttpSchemeUrl(action)
@@ -85,7 +104,9 @@ public final class RedirectComponent: ActionComponent {
     }
 
     private func openInAppBrowser(_ action: RedirectAction) {
-        let component = BrowserComponent(url: action.url, apiContext: apiContext, style: style)
+        let component = BrowserComponent(url: action.url,
+                                         apiContext: apiContext,
+                                         style: configuration.style)
         component.delegate = self
         browserComponent = component
         presentationDelegate?.present(component: component)
