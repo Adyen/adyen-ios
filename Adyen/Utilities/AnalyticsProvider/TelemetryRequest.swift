@@ -25,7 +25,7 @@ internal struct TelemetryRequest: APIRequest {
     internal let headers: [String: String] = [:]
 
     /// :nodoc:
-    internal var queryParameters: [URLQueryItem] = []
+    internal let queryParameters: [URLQueryItem] = []
 
     /// :nodoc:
     internal let method: HTTPMethod = .post
@@ -35,6 +35,8 @@ internal struct TelemetryRequest: APIRequest {
     internal let locale: String
     internal let flavor: String
     internal let userAgent: String?
+    internal let deviceBrand: String
+    internal let systemVersion: String
     internal let referrer: String
     internal let screenWidth: Int
     internal let containerWidth: Int?
@@ -50,6 +52,8 @@ internal struct TelemetryRequest: APIRequest {
         self.locale = data.locale
         self.flavor = data.flavor.rawValue
         self.userAgent = data.userAgent
+        self.deviceBrand = data.deviceBrand
+        self.systemVersion = data.systemVersion
         self.referrer = data.referrer
         self.screenWidth = data.screenWidth
         self.containerWidth = data.containerWidth
@@ -64,6 +68,8 @@ internal struct TelemetryRequest: APIRequest {
         case locale
         case flavor
         case userAgent
+        case deviceBrand
+        case systemVersion
         case referrer
         case containerWidth
         case paymentMethods

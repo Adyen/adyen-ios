@@ -38,6 +38,10 @@ internal struct TelemetryData {
 
     internal let userAgent: String? = nil
 
+    internal let deviceBrand: String = ""
+
+    internal let systemVersion: String = ""
+
     internal var referrer: String {
         Bundle.main.bundleIdentifier ?? ""
     }

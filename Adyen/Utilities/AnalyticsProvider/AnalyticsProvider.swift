@@ -35,8 +35,7 @@ internal class AnalyticsProvider: AnalyticsProviderProtocol {
 
         if !conversion { return completion(nil) }
 
-        var checkoutAttemptIdRequest = CheckoutAttemptIdRequest()
-        checkoutAttemptIdRequest.queryParameters = apiContext.queryParameters
+        let checkoutAttemptIdRequest = CheckoutAttemptIdRequest()
 
         apiClient.perform(checkoutAttemptIdRequest) { [weak self] result in
             if case let .success(response) = result {

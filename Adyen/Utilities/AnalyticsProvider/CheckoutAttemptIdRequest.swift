@@ -34,7 +34,7 @@ internal struct CheckoutAttemptIdRequest: APIRequest {
     internal let headers: [String: String] = [:]
 
     /// :nodoc:
-    internal var queryParameters: [URLQueryItem] = []
+    internal let queryParameters: [URLQueryItem] = []
 
     /// :nodoc:
     internal let method: HTTPMethod = .post
