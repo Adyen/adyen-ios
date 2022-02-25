@@ -179,6 +179,7 @@ extension PKPaymentNetwork {
 
     internal var adyenName: String {
         if self == .masterCard { return "mc" }
+        if #available(iOS 11.2, *), self == .cartesBancaires { return "cartebancaire" }
         return self.rawValue.lowercased()
     }
 
