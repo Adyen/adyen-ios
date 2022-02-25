@@ -23,6 +23,7 @@ extension AnalyticsProvider: TelemetryTrackerProtocol {
         guard enabled else { return }
         guard telemetry else { return }
 
+        let paymentMethods = flavor == .dropin ? paymentMethods : []
         let telemetryData = TelemetryData(flavor: flavor,
                                           paymentMethods: paymentMethods,
                                           component: component)
