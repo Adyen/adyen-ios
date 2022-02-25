@@ -214,12 +214,12 @@ internal final class ComponentManager {
     }
     
     private func createACHDirectDebitComponent(_ paymentMethod: ACHDirectDebitPaymentMethod) -> ACHDirectDebitComponent {
-        ACHDirectDebitComponent(configuration: ACHDirectDebitComponent.Configuration(),
-                                paymentMethod: paymentMethod,
-                                apiContext: apiContext,
-                                shopperInformation: configuration.shopper,
-                                localizationParameters: configuration.localizationParameters,
-                                style: style.formComponent)
+        let config = ACHDirectDebitComponent.Configuration(style: style.formComponent,
+                                                           shopperInformation: configuration.shopper,
+                                                           localizationParameters: configuration.localizationParameters)
+        return ACHDirectDebitComponent(apiContext: apiContext,
+                                       paymentMethod: paymentMethod,
+                                       configuration: config)
     }
     
     private func createQiwiWalletComponent(_ paymentMethod: QiwiWalletPaymentMethod) -> QiwiWalletComponent {
