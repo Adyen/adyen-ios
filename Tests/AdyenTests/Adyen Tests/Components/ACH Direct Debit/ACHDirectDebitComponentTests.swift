@@ -29,8 +29,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let method = ACHDirectDebitPaymentMethod(type: "test_type", name: "test_name")
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
         let config = ACHDirectDebitComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil), billingAddressCountryCodes: ["US", "UK"])
-        let sut = ACHDirectDebitComponent(apiContext: Dummy.context,
-                                          paymentMethod: method,
+        let sut = ACHDirectDebitComponent(paymentMethod: method,
+                                          apiContext: Dummy.context,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
         sut.payment = payment
@@ -81,8 +81,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
         achComponentStyle.textField.backgroundColor = .red
         
         let paymentMethod = ACHDirectDebitPaymentMethod(type: "bcmc", name: "Test name")
-        let sut = ACHDirectDebitComponent(apiContext: Dummy.context,
-                                          paymentMethod: paymentMethod,
+        let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
+                                          apiContext: Dummy.context,
                                           configuration: .init(style: achComponentStyle, billingAddressCountryCodes: ["US", "UK"]),
                                           publicKeyProvider: PublicKeyProviderMock())
         
@@ -147,8 +147,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let method = ACHDirectDebitPaymentMethod(type: "test_type", name: "test_name")
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
         let config = ACHDirectDebitComponent.Configuration(shopperInformation: shopperInformation, billingAddressCountryCodes: ["US", "UK"])
-        let sut = ACHDirectDebitComponent(apiContext: Dummy.context,
-                                          paymentMethod: method,
+        let sut = ACHDirectDebitComponent(paymentMethod: method,
+                                          apiContext: Dummy.context,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
         
@@ -169,8 +169,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testBigTitle() {
         let method = ACHDirectDebitPaymentMethod(type: "test_type", name: "test_name")
         let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
-        let sut = ACHDirectDebitComponent(apiContext: Dummy.context,
-                                          paymentMethod: method,
+        let sut = ACHDirectDebitComponent(paymentMethod: method,
+                                          apiContext: Dummy.context,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
         
@@ -184,8 +184,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testRequiresModalPresentation() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: "bcmc", name: "Test name")
         let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
-        let sut = ACHDirectDebitComponent(apiContext: Dummy.context,
-                                          paymentMethod: paymentMethod,
+        let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
+                                          apiContext: Dummy.context,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
         XCTAssertEqual(sut.requiresModalPresentation, true)
@@ -194,8 +194,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testStopLoading() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: "bcmc", name: "Test name")
         let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
-        let sut = ACHDirectDebitComponent(apiContext: Dummy.context,
-                                          paymentMethod: paymentMethod,
+        let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
+                                          apiContext: Dummy.context,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
 
@@ -210,8 +210,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
     func testEmptyFieldsValidation() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: "bcmc", name: "Test name")
-        let sut = ACHDirectDebitComponent(apiContext: Dummy.context,
-                                          paymentMethod: paymentMethod,
+        let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
+                                          apiContext: Dummy.context,
                                           publicKeyProvider: PublicKeyProviderMock())
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -231,8 +231,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
     
     func testSubmission() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: "ach", name: "Test name")
-        let sut = ACHDirectDebitComponent(apiContext: Dummy.context,
-                                          paymentMethod: paymentMethod,
+        let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
+                                          apiContext: Dummy.context,
                                           configuration: .init(showsBillingAddress: false),
                                           publicKeyProvider: PublicKeyProviderMock())
         sut.payment = Payment(amount: Amount(value: 2, currencyCode: "USD"), countryCode: "US")

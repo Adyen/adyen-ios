@@ -34,7 +34,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     public weak var delegate: PaymentComponentDelegate?
     
     /// Component configuration
-    public let configuration: Configuration
+    public var configuration: Configuration
 
     /// :nodoc:
     public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
@@ -57,21 +57,21 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     
     /// Initializes the ACH Direct Debit component.
     /// - Parameters:
-    ///   - apiContext: The component's API context.
     ///   - paymentMethod: The ACH Direct Debit payment method.
+    ///   - apiContext: The component's API context.
     ///   - configuration: Configuration for the component.
-    public convenience init(apiContext: APIContext,
-                            paymentMethod: ACHDirectDebitPaymentMethod,
+    public convenience init(paymentMethod: ACHDirectDebitPaymentMethod,
+                            apiContext: APIContext,
                             configuration: Configuration = .init()) {
-        self.init(apiContext: apiContext,
-                  paymentMethod: paymentMethod,
+        self.init(paymentMethod: paymentMethod,
+                  apiContext: apiContext,
                   configuration: configuration,
                   publicKeyProvider: PublicKeyProvider(apiContext: apiContext))
     }
     
     /// :nodoc:
-    internal init(apiContext: APIContext,
-                  paymentMethod: ACHDirectDebitPaymentMethod,
+    internal init(paymentMethod: ACHDirectDebitPaymentMethod,
+                  apiContext: APIContext,
                   configuration: Configuration = .init(),
                   publicKeyProvider: AnyPublicKeyProvider) {
         self.apiContext = apiContext

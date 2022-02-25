@@ -217,8 +217,8 @@ internal final class ComponentManager {
         let config = ACHDirectDebitComponent.Configuration(style: style.formComponent,
                                                            shopperInformation: configuration.shopper,
                                                            localizationParameters: configuration.localizationParameters)
-        return ACHDirectDebitComponent(apiContext: apiContext,
-                                       paymentMethod: paymentMethod,
+        return ACHDirectDebitComponent(paymentMethod: paymentMethod,
+                                       apiContext: apiContext,
                                        configuration: config)
     }
     
