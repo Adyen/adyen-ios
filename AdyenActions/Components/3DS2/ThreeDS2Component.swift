@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -17,41 +17,76 @@ public final class ThreeDS2Component: ActionComponent {
     
     /// :nodoc:
     public let apiContext: APIContext
-
-    /// The appearance configuration of the 3D Secure 2 challenge UI.
-    public let appearanceConfiguration = ADYAppearanceConfiguration()
     
     /// The delegate of the component.
     public weak var delegate: ActionComponentDelegate?
 
-    /// `RedirectComponent` style
-    public let redirectComponentStyle: RedirectComponentStyle?
-
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
     
+    /// Three DS2 component configurations.
+    public var configuration: Configuration = .init() {
+        didSet {
+            let threeDSRequestorAppURL = configuration.requestorAppURL
+            threeDS2ClassicFlowHandler.threeDSRequestorAppURL = threeDSRequestorAppURL
+            threeDS2CompactFlowHandler.threeDSRequestorAppURL = threeDSRequestorAppURL
+        }
+    }
+    
+    /// Three DS2 component configurations.
+    public struct Configuration {
+        
+        /// `RedirectComponent` style
+        public var redirectComponentStyle: RedirectComponentStyle?
+        
+        /// The appearance configuration of the 3D Secure 2 challenge UI.
+        public var appearanceConfiguration = ADYAppearanceConfiguration()
+        
+        /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
+        public var requestorAppURL: URL?
+        
+        
+        /// Initializes a new instance
+        ///
+        /// - Parameters:
+        ///   - redirectComponentStyle: `RedirectComponent` style
+        ///   - appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
+        ///   - requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
+        public init(redirectComponentStyle: RedirectComponentStyle? = nil,
+                    appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
+                    requestorAppURL: URL? = nil) {
+            self.redirectComponentStyle = redirectComponentStyle
+            self.appearanceConfiguration = appearanceConfiguration
+            self.requestorAppURL = requestorAppURL
+        }
+    }
+    
     /// Initializes the 3D Secure 2 component.
     ///
+    /// - Parameter apiContext: The `APIContext`.
     /// - Parameter redirectComponentStyle: `RedirectComponent` style
     public init(apiContext: APIContext,
-                redirectComponentStyle: RedirectComponentStyle? = nil) {
+                configuration: Configuration = Configuration()) {
         self.apiContext = apiContext
-        self.redirectComponentStyle = redirectComponentStyle
+        self.configuration = configuration
     }
 
     /// Initializes the 3D Secure 2 component.
     ///
-    /// - Parameter threeDS2CompactFlowHandler: The internal `AnyThreeDS2ActionHandler` for the compact flow.
-    /// - Parameter threeDS2ClassicFlowHandler: The internal `AnyThreeDS2ActionHandler` for the classic flow.
-    /// - Parameter redirectComponent: The redirect component.
-    /// - Parameter redirectComponentStyle: `RedirectComponent` style.
+    /// - Parameters:
+    ///   - apiContext: The `APIContext`.
+    ///   - threeDS2CompactFlowHandler: The internal `AnyThreeDS2ActionHandler` for the compact flow.
+    ///   - threeDS2ClassicFlowHandler: The internal `AnyThreeDS2ActionHandler` for the classic flow.
+    ///   - redirectComponent: The redirect component.
+    ///   - redirectComponentStyle: `RedirectComponent` style.
     /// :nodoc:
     internal convenience init(apiContext: APIContext,
                               threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
                               threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
                               redirectComponent: AnyRedirectComponent,
-                              redirectComponentStyle: RedirectComponentStyle? = nil) {
-        self.init(apiContext: redirectComponent.apiContext, redirectComponentStyle: redirectComponentStyle)
+                              configuration: Configuration = Configuration()) {
+        self.init(apiContext: redirectComponent.apiContext,
+                  configuration: configuration)
         self.threeDS2CompactFlowHandler = threeDS2CompactFlowHandler
         self.threeDS2ClassicFlowHandler = threeDS2ClassicFlowHandler
         self.redirectComponent = redirectComponent
@@ -138,7 +173,8 @@ public final class ThreeDS2Component: ActionComponent {
     }
 
     private lazy var threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler = {
-        let handler = ThreeDS2CompactActionHandler(apiContext: apiContext, appearanceConfiguration: appearanceConfiguration)
+        let handler = ThreeDS2CompactActionHandler(apiContext: apiContext,
+                                                   appearanceConfiguration: configuration.appearanceConfiguration)
 
         handler._isDropIn = _isDropIn
 
@@ -146,15 +182,16 @@ public final class ThreeDS2Component: ActionComponent {
     }()
 
     private lazy var threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler = {
-        let handler = ThreeDS2ClassicActionHandler(apiContext: apiContext, appearanceConfiguration: appearanceConfiguration)
-
+        let handler = ThreeDS2ClassicActionHandler(apiContext: apiContext,
+                                                   appearanceConfiguration: configuration.appearanceConfiguration)
         handler._isDropIn = _isDropIn
 
         return handler
     }()
 
     private lazy var redirectComponent: AnyRedirectComponent = {
-        let component = RedirectComponent(apiContext: apiContext, style: redirectComponentStyle)
+        let component = RedirectComponent(apiContext: apiContext,
+                                          style: configuration.redirectComponentStyle)
 
         component.delegate = self
         component._isDropIn = _isDropIn

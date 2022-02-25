@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,7 +19,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     internal var wrappedComponent: Component { coreActionHandler }
 
     /// :nodoc:
-    private let coreActionHandler: ThreeDS2CoreActionHandler
+    internal let coreActionHandler: ThreeDS2CoreActionHandler
 
     /// :nodoc:
     internal var transaction: AnyADYTransaction? {
@@ -29,6 +29,17 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
 
         set {
             coreActionHandler.transaction = newValue
+        }
+    }
+    
+    /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
+    internal var threeDSRequestorAppURL: URL? {
+        get {
+            coreActionHandler.threeDSRequestorAppURL
+        }
+        
+        set {
+            coreActionHandler.threeDSRequestorAppURL = newValue
         }
     }
 

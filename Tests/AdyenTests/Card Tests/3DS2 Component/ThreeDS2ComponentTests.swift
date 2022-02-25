@@ -287,6 +287,19 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
     }
+    
+    func testSettingThreeDSRequestorAppURL() throws {
+        let threeDS2CompactFlowHandler = AnyThreeDS2ActionHandlerMock()
+        let threeDS2ClassicFlowHandler = AnyThreeDS2ActionHandlerMock()
+        let redirectComponent = AnyRedirectComponentMock()
+        let sut = ThreeDS2Component(apiContext: Dummy.context,
+                                    threeDS2CompactFlowHandler: threeDS2CompactFlowHandler,
+                                    threeDS2ClassicFlowHandler: threeDS2ClassicFlowHandler,
+                                    redirectComponent: redirectComponent)
+        sut.configuration.requestorAppURL = URL(string: "http://google.com")
+        XCTAssertEqual(threeDS2CompactFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
+        XCTAssertEqual(threeDS2ClassicFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
+    }
 
     func testChallengeSuccess() throws {
 

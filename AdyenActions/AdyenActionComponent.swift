@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,31 +14,65 @@ import UIKit
  - SeeAlso:
  [Implementation Reference](https://github.com/Adyen/adyen-ios#handling-an-action)
  */
-public final class AdyenActionComponent: ActionComponent, Localizable {
+public final class AdyenActionComponent: ActionComponent {
     
-    /// :nodoc:
     public let apiContext: APIContext
     
-    /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
     
-    /// :nodoc:
     public weak var presentationDelegate: PresentationDelegate?
     
-    /// :nodoc:
-    public let style: ActionComponentStyle
+    /// Action handling configurations.
+    public var configuration: Configuration
+    
+    /// Action handling configurations.
+    public struct Configuration: Localizable {
+        
+        /// Localization parameters.
+        public var localizationParameters: LocalizationParameters?
+        
+        /// The UI style configurations.
+        public var style: ActionComponentStyle = .init()
+        
+        /// Three DS configurations
+        public var threeDS: ThreeDS = .init()
+        
+        /// Three DS configurations
+        public struct ThreeDS {
+            /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
+            public var requestorAppURL: URL?
+            
+            /// Initializes a new instance
+            ///
+            /// - Parameter requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
+            public init(requestorAppURL: URL? = nil) {
+                self.requestorAppURL = requestorAppURL
+            }
+        }
+        
+        /// Initializes a new instance
+        ///
+        /// - Parameters:
+        ///   - localizationParameters: Localization parameters.
+        ///   - style: The UI style configurations.
+        ///   - threeDS: Three DS configurations
+        public init(localizationParameters: LocalizationParameters? = nil,
+                    style: ActionComponentStyle = .init(),
+                    threeDS: AdyenActionComponent.Configuration.ThreeDS = .init()) {
+            self.localizationParameters = localizationParameters
+            self.style = style
+            self.threeDS = threeDS
+        }
+    }
 
     /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
-    
-    /// :nodoc:
-    public var currentActionComponent: Component?
+    internal var currentActionComponent: Component?
     
     /// :nodoc:
     public init(apiContext: APIContext,
-                style: ActionComponentStyle = ActionComponentStyle()) {
+                configuration: Configuration = Configuration()) {
         self.apiContext = apiContext
-        self.style = style
+        self.configuration = configuration
     }
     
     // MARK: - Performing Actions
@@ -72,7 +106,8 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     // MARK: - Private
     
     private func handle(_ action: RedirectAction) {
-        let component = RedirectComponent(apiContext: apiContext, style: style.redirectComponentStyle)
+        let component = RedirectComponent(apiContext: apiContext,
+                                          style: configuration.style.redirectComponentStyle)
         component.delegate = delegate
         component._isDropIn = _isDropIn
         component.presentationDelegate = presentationDelegate
@@ -97,6 +132,7 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
 
     private func createThreeDS2Component() -> ThreeDS2Component {
         let component = ThreeDS2Component(apiContext: apiContext)
+        component.configuration.requestorAppURL = configuration.threeDS.requestorAppURL
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
@@ -137,43 +173,47 @@ public final class AdyenActionComponent: ActionComponent, Localizable {
     }
     
     private func handle(_ action: AwaitAction) {
-        let component = AwaitComponent(apiContext: apiContext, style: style.awaitComponentStyle)
+        let component = AwaitComponent(apiContext: apiContext,
+                                       style: configuration.style.awaitComponentStyle)
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
-        component.localizationParameters = localizationParameters
+        component.localizationParameters = configuration.localizationParameters
         
         component.handle(action)
         currentActionComponent = component
     }
     
     private func handle(_ action: VoucherAction) {
-        let component = VoucherComponent(apiContext: apiContext, style: style.voucherComponentStyle)
+        let component = VoucherComponent(apiContext: apiContext,
+                                         style: configuration.style.voucherComponentStyle)
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
-        component.localizationParameters = localizationParameters
+        component.localizationParameters = configuration.localizationParameters
 
         component.handle(action)
         currentActionComponent = component
     }
     
     private func handle(_ action: QRCodeAction) {
-        let component = QRCodeComponent(apiContext: apiContext, style: style.qrCodeComponentStyle)
+        let component = QRCodeComponent(apiContext: apiContext,
+                                        style: configuration.style.qrCodeComponentStyle)
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
-        component.localizationParameters = localizationParameters
+        component.localizationParameters = configuration.localizationParameters
         
         component.handle(action)
         currentActionComponent = component
     }
     
     private func handle(_ action: DocumentAction) {
-        let component = DocumentComponent(apiContext: apiContext, style: style.documentActionComponentStyle)
+        let component = DocumentComponent(apiContext: apiContext,
+                                          style: configuration.style.documentActionComponentStyle)
         component._isDropIn = _isDropIn
         component.delegate = delegate
-        component.localizationParameters = localizationParameters
+        component.localizationParameters = configuration.localizationParameters
         component.presentationDelegate = presentationDelegate
         
         component.handle(action)
