@@ -22,8 +22,10 @@ internal class AnalyticsProvider: AnalyticsProviderProtocol {
 
     // MARK: - Initializers
 
-    internal init(apiClient: APIClientProtocol) {
+    internal init(apiClient: APIClientProtocol,
+                  configuration: AnalyticsConfiguration) {
         self.apiClient = apiClient
+        setupConfiguration(configuration)
     }
 
     internal func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
@@ -44,6 +46,19 @@ internal class AnalyticsProvider: AnalyticsProviderProtocol {
             }
 
             completion(self?.checkoutAttemptId)
+        }
+    }
+
+    // MARK: - Private
+
+    private func setupConfiguration(_ configuration: AnalyticsConfiguration) {
+        switch configuration {
+        case let .enabled(telemetry, conversion):
+            self.enabled = true
+            self.telemetry = telemetry
+            self.conversion = conversion
+        case .disabled:
+            self.enabled = false
         }
     }
 }

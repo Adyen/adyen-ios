@@ -8,6 +8,12 @@ import AdyenNetworking
 import Foundation
 
 // TODO: - Document
+public enum AnalyticsConfiguration {
+    case enabled(telemetry: Bool, conversion: Bool)
+    case disabled
+}
+
+// TODO: - Document
 public class AdyenContext {
 
     // MARK: - Properties
@@ -17,14 +23,15 @@ public class AdyenContext {
 
     // MARK: - Initializers
 
-    public init(apiContext: APIContext) {
+    public init(apiContext: APIContext, analyticsOption: AnalyticsConfiguration) {
         self.apiContext = apiContext
+        setupAnalyticsProvider(configuration: analyticsOption)
     }
 
     // MARK: - Private
 
-    private func setupAnalyticsProvider() {
+    private func setupAnalyticsProvider(configuration: AnalyticsConfiguration) {
         let apiClient = APIClient(apiContext: apiContext)
-        analyticsProvider = AnalyticsProvider(apiClient: apiClient)
+        analyticsProvider = AnalyticsProvider(apiClient: apiClient, configuration: configuration)
     }
 }
