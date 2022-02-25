@@ -18,7 +18,6 @@ internal class AnalyticsProvider: AnalyticsProviderProtocol {
     internal var conversion = false
 
     internal let apiClient: APIClientProtocol
-
     private var checkoutAttemptId: String?
 
     // MARK: - Initializers
@@ -32,9 +31,14 @@ internal class AnalyticsProvider: AnalyticsProviderProtocol {
 
         if !conversion { return completion(nil) }
 
+        if let checkoutAttemptId = checkoutAttemptId {
+            return completion(checkoutAttemptId)
+        }
+
         let checkoutAttemptIdRequest = CheckoutAttemptIdRequest()
 
-        apiClient.perform(checkoutAttemptIdRequest) { [weak self] result in
+        let uniqueAssetAPIClient = UniqueAssetAPIClient<CheckoutAttemptIdResponse>(apiClient: apiClient)
+        uniqueAssetAPIClient.perform(checkoutAttemptIdRequest) { [weak self] result in
             if case let .success(response) = result {
                 self?.checkoutAttemptId = response.identifier
             }

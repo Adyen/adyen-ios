@@ -20,8 +20,7 @@ internal protocol TelemetryTrackerProtocol {
 extension AnalyticsProvider: TelemetryTrackerProtocol {
 
     func sendTelemetryEvent(flavor: TelemetryFlavor, paymentMethods: [String], component: String) {
-        guard enabled else { return }
-        guard telemetry else { return }
+        guard enabled, telemetry else { return }
 
         let paymentMethods = flavor == .dropin ? paymentMethods : []
         let telemetryData = TelemetryData(flavor: flavor,
