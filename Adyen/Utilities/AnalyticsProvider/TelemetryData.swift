@@ -11,6 +11,8 @@ import Foundation
 // 3. locale (✅)
 // 4. flavor (✅)
 // 5. userAgent (null)
+// a. deviceBrand
+// b. systemVersion
 // 6. referrer (✅)
 // 7. screenWidth (✅)
 // 8. containerWidth (null)

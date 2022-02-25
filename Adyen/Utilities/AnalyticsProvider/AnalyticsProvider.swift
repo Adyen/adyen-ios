@@ -14,20 +14,17 @@ internal class AnalyticsProvider: AnalyticsProviderProtocol {
     // MARK: - Properties
 
     internal var enabled = true
-    internal var conversion = false
     internal var telemetry = true
+    internal var conversion = false
 
     internal let apiClient: APIClientProtocol
-    internal let apiContext: APIContext
 
     private var checkoutAttemptId: String?
 
     // MARK: - Initializers
 
-    internal init(apiClient: APIClientProtocol,
-                  apiContext: APIContext) {
+    internal init(apiClient: APIClientProtocol) {
         self.apiClient = apiClient
-        self.apiContext = apiContext
     }
 
     internal func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
