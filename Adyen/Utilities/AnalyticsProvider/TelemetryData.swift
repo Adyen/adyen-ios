@@ -20,15 +20,13 @@ import Foundation
 // 10. checkoutAttemptId
 internal struct TelemetryData {
 
-    private enum Constants {
-        static let channel = "iOS"
-    }
+    // MARK: - Properties
 
     internal var version: String? {
         Bundle(for: AnalyticsProvider.self).infoDictionary?["CFBundleShortVersionString"] as? String
     }
 
-    internal let channel: String = Constants.channel
+    internal let channel: String = "iOS"
 
     internal var locale: String {
         let languageCode = Locale.current.languageCode ?? ""
@@ -36,13 +34,16 @@ internal struct TelemetryData {
         return "\(languageCode)_\(regionCode)"
     }
 
-    internal let flavor: TelemetryFlavor
-
     internal let userAgent: String? = nil
 
-    internal let deviceBrand: String = ""
+    internal var deviceBrand: String {
+        // TODO: - Generate deviceBrand info
+        return UIDevice.current.model
+    }
 
-    internal let systemVersion: String = ""
+    internal var systemVersion: String {
+        UIDevice.current.systemVersion
+    }
 
     internal var referrer: String {
         Bundle.main.bundleIdentifier ?? ""
@@ -53,6 +54,8 @@ internal struct TelemetryData {
     }
 
     internal let containerWidth: Int? = nil
+
+    internal let flavor: TelemetryFlavor
 
     internal let paymentMethods: [String]
 

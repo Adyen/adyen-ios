@@ -19,13 +19,13 @@ public class AdyenContext {
     // MARK: - Properties
 
     private let apiContext: APIContext
-    private var analyticsProvider: AnalyticsProvider?
+    internal var analyticsProvider: AnalyticsProviderProtocol?
 
     // MARK: - Initializers
 
-    public init(apiContext: APIContext, analyticsOption: AnalyticsConfiguration) {
+    public init(apiContext: APIContext, analyticsConfiguration: AnalyticsConfiguration) {
         self.apiContext = apiContext
-        setupAnalyticsProvider(configuration: analyticsOption)
+        setupAnalyticsProvider(configuration: analyticsConfiguration)
     }
 
     // MARK: - Private
