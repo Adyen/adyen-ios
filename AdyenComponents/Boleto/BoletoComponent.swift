@@ -91,12 +91,14 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     
     /// :nodoc:
     private lazy var formComponent: FormComponent = {
-        let configuration = AbstractPersonalInformationComponent.Configuration(fields: formFields)
+        let configuration = AbstractPersonalInformationConfiguration(style: style,
+                                                                     shopperInformation: shopperInformation,
+                                                                     localizationParameters: localizationParameters)
         let component = FormComponent(paymentMethod: paymentMethod,
-                                      configuration: configuration,
                                       apiContext: apiContext,
-                                      onCreatePaymentDetails: { [weak self] in self?.createPaymentDetails() },
-                                      style: style)
+                                      fields: formFields,
+                                      configuration: configuration,
+                                      onCreatePaymentDetails: { [weak self] in self?.createPaymentDetails() })
 
         if let emailItem = component.emailItem {
             bind(sendCopyByEmailItem.publisher, to: emailItem, at: \.isHidden.wrappedValue, with: { !$0 })
@@ -218,24 +220,22 @@ extension BoletoComponent {
         private let onCreatePaymentDetails: () -> PaymentMethodDetails?
         
         /// :nodoc:
-        fileprivate init(
-            paymentMethod: PaymentMethod,
-            configuration: AbstractPersonalInformationComponent.Configuration,
-            apiContext: APIContext,
-            onCreatePaymentDetails: @escaping () -> PaymentMethodDetails?,
-            style: FormComponentStyle = FormComponentStyle()
-        ) {
+        fileprivate init(paymentMethod: PaymentMethod,
+                         apiContext: APIContext,
+                         fields: [PersonalInformation],
+                         configuration: AbstractPersonalInformationConfiguration,
+                         onCreatePaymentDetails: @escaping () -> PaymentMethodDetails?) {
             self.onCreatePaymentDetails = onCreatePaymentDetails
             
             super.init(paymentMethod: paymentMethod,
-                       configuration: configuration,
                        apiContext: apiContext,
-                       style: style)
+                       fields: fields,
+                       configuration: configuration)
         }
         
         /// :nodoc:
         override public func submitButtonTitle() -> String {
-            localizedString(.boletobancarioBtnLabel, localizationParameters)
+            localizedString(.boletobancarioBtnLabel, configuration.localizationParameters)
         }
         
         /// :nodoc:

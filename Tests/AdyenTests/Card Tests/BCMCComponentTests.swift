@@ -156,7 +156,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context)
-        PublicKeyProvider.cachedPublicKey = Dummy.publicKey
+        PublicKeyProvider.publicKeysCache[Dummy.context.clientKey] = Dummy.publicKey
         sut.delegate = delegate
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         

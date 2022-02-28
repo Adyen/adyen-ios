@@ -6,13 +6,11 @@
 
 import Foundation
 
-/// An OXXO payment method.
-public struct OXXOPaymentMethod: PaymentMethod {
+/// A payment method that does not require any handling and could be submitted directly.
+public struct InstantPaymentMethod: PaymentMethod {
 
-    /// :nodoc:
     public let type: String
 
-    /// :nodoc:
     public let name: String
 
     /// :nodoc:

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -31,8 +31,11 @@ internal extension ThreeDS2Component {
 
 internal extension ADYChallengeParameters {
     
-    convenience init(from challengeToken: ThreeDS2Component.ChallengeToken) { // swiftlint:disable:this explicit_acl
+    // swiftlint:disable:next explicit_acl
+    convenience init(challengeToken: ThreeDS2Component.ChallengeToken,
+                     threeDSRequestorAppURL: URL?) {
         self.init(serverTransactionIdentifier: challengeToken.serverTransactionIdentifier,
+                  threeDSRequestorAppURL: threeDSRequestorAppURL,
                   acsTransactionIdentifier: challengeToken.acsTransactionIdentifier,
                   acsReferenceNumber: challengeToken.acsReferenceNumber,
                   acsSignedContent: challengeToken.acsSignedContent)

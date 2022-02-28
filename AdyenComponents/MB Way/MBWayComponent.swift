@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,6 +7,9 @@
 import Adyen
 import Foundation
 import UIKit
+
+/// Configuration for MB Way Component
+public typealias MBWayComponentConfiguration = PersonalInformationConfiguration
 
 /// A component that provides a form for MB Way payments.
 public final class MBWayComponent: AbstractPersonalInformationComponent {
@@ -18,26 +21,22 @@ public final class MBWayComponent: AbstractPersonalInformationComponent {
     /// - Parameters:
     ///   - paymentMethod: The MB Way payment method.
     ///   - apiContext: The component's API context.
-    ///   - shopperInformation: The shopper's information.
-    ///   - style: The component's UI style.
+    ///   - configuration: The component's configuration.
     public init(paymentMethod: MBWayPaymentMethod,
                 apiContext: APIContext,
-                shopperInformation: PrefilledShopperInformation? = nil,
-                style: FormComponentStyle = FormComponentStyle()) {
+                configuration: MBWayComponentConfiguration) {
         self.mbWayPaymentMethod = paymentMethod
-        let configuration = Configuration(fields: [.phone])
         super.init(paymentMethod: paymentMethod,
-                   configuration: configuration,
                    apiContext: apiContext,
-                   shopperInformation: shopperInformation,
-                   style: style)
+                   fields: [.phone],
+                   configuration: configuration)
     }
 
     override public func submitButtonTitle() -> String {
-        localizedString(.continueTo, localizationParameters, paymentMethod.name)
+        localizedString(.continueTo, configuration.localizationParameters, paymentMethod.name)
     }
 
-    override public func getPhoneExtensions() -> [PhoneExtension] {
+    override public func phoneExtensions() -> [PhoneExtension] {
         let query = PhoneExtensionsQuery(paymentMethod: PhoneNumberPaymentMethod.mbWay)
         return PhoneExtensionsRepository.get(with: query)
     }

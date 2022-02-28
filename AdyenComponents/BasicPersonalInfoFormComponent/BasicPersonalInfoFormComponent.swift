@@ -8,6 +8,9 @@ import Adyen
 import Foundation
 import UIKit
 
+/// Configuration for Basic Personal Information Component
+public typealias BasicPersonalInfoComponentConfiguration = PersonalInformationConfiguration
+
 /// A component that provides a form consisting of first name, last name, phone, and email.
 /// :nodoc:
 public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationComponent {
@@ -16,27 +19,24 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
     /// - Parameters:
     ///   - paymentMethod: The payment method.
     ///   - apiContext: The component's API context.
-    ///   - shopperInformation: The shopper's information.
-    ///   - style: The component's UI style.
+    ///   - configuration: The component's configuration.
     public init(paymentMethod: PaymentMethod,
                 apiContext: APIContext,
-                shopperInformation: PrefilledShopperInformation? = nil,
-                style: FormComponentStyle = FormComponentStyle()) {
-        let configuration = Configuration(fields: [.firstName, .lastName, .phone, .email])
+                configuration: BasicPersonalInfoComponentConfiguration) {
+        
         super.init(paymentMethod: paymentMethod,
-                   configuration: configuration,
                    apiContext: apiContext,
-                   shopperInformation: shopperInformation,
-                   style: style)
+                   fields: [.firstName, .lastName, .phone, .email],
+                   configuration: configuration)
     }
 
-    override public func getPhoneExtensions() -> [PhoneExtension] {
+    override public func phoneExtensions() -> [PhoneExtension] {
         let query = PhoneExtensionsQuery(paymentMethod: .generic)
         return PhoneExtensionsRepository.get(with: query)
     }
 
     override public func submitButtonTitle() -> String {
-        localizedString(.confirmPurchase, localizationParameters)
+        localizedString(.confirmPurchase, configuration.localizationParameters)
     }
 
     override public func createPaymentDetails() -> PaymentMethodDetails {
@@ -54,14 +54,14 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
     }
 }
 
-/// Provides an form for personal information, required for E-context ATM  payments.
+/// Provides a form for personal information, required for E-context ATM  payments.
 public typealias EContextATMComponent = BasicPersonalInfoFormComponent
 
-/// Provides an form for personal information, required for E-context Store payments.
+/// Provides a form for personal information, required for E-context Store payments.
 public typealias EContextStoreComponent = BasicPersonalInfoFormComponent
 
-/// Provides an form for personal information, required for E-context Online  payments.
+/// Provides a form for personal information, required for E-context Online  payments.
 public typealias EContextOnlineComponent = BasicPersonalInfoFormComponent
 
-/// Provides an form for personal information, required for 7eleven  payments.
+/// Provides a form for personal information, required for 7eleven  payments.
 public typealias SevenElevenComponent = BasicPersonalInfoFormComponent

@@ -7,6 +7,9 @@
 import Adyen
 import UIKit
 
+/// Configuration for Qiwi Wallet Component
+public typealias QiwiWalletComponentConfiguration = PersonalInformationConfiguration
+
 /// A component that provides a form for Qiwi Wallet payments.
 public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
     
@@ -15,24 +18,25 @@ public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
     
     /// Initializes the Qiwi Wallet component.
     ///
-    /// - Parameter paymentMethod: The Qiwi Wallet payment method.
-    /// - Parameter style: The Component's UI style.
+    /// - Parameters:
+    ///   - paymentMethod: The Qiwi Wallet payment method.
+    ///   - apiContext: The component's API context.
+    ///   - configuration: The component's configuration.
     public init(paymentMethod: QiwiWalletPaymentMethod,
                 apiContext: APIContext,
-                style: FormComponentStyle = FormComponentStyle()) {
+                configuration: QiwiWalletComponentConfiguration) {
         self.qiwiWalletPaymentMethod = paymentMethod
-        let configuration = Configuration(fields: [.phone])
         super.init(paymentMethod: paymentMethod,
-                   configuration: configuration,
                    apiContext: apiContext,
-                   style: style)
+                   fields: [.phone],
+                   configuration: configuration)
     }
 
     override public func submitButtonTitle() -> String {
-        localizedString(.continueTo, localizationParameters, paymentMethod.name)
+        localizedString(.continueTo, configuration.localizationParameters, paymentMethod.name)
     }
 
-    override public func getPhoneExtensions() -> [PhoneExtension] { qiwiWalletPaymentMethod.phoneExtensions
+    override public func phoneExtensions() -> [PhoneExtension] { qiwiWalletPaymentMethod.phoneExtensions
     }
 
     override public func createPaymentDetails() -> PaymentMethodDetails {

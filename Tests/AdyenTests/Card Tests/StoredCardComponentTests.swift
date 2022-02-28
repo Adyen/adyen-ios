@@ -14,8 +14,8 @@ class StoredCardComponentTests: XCTestCase {
 
     func testUIWithClientKey() {
         let method = StoredCardPaymentMethod(type: "type",
-                                             identifier: "id",
                                              name: "name",
+                                             identifier: "id",
                                              fundingSource: .credit,
                                              supportedShopperInteractions: [.shopperPresent],
                                              brand: "brand",
@@ -44,8 +44,8 @@ class StoredCardComponentTests: XCTestCase {
 
     func testUIWithPublicKey() {
         let method = StoredCardPaymentMethod(type: "type",
-                                             identifier: "id",
                                              name: "name",
+                                             identifier: "id",
                                              fundingSource: .credit,
                                              supportedShopperInteractions: [.shopperPresent],
                                              brand: "brand",
@@ -54,7 +54,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryYear: "22",
                                              holderName: "holderName")
         let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
-        PublicKeyProvider.cachedPublicKey = Dummy.publicKey
+        PublicKeyProvider.publicKeysCache[Dummy.context.clientKey] = Dummy.publicKey
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -74,8 +74,8 @@ class StoredCardComponentTests: XCTestCase {
 
     func testPaymentSubmitWithSuccessfulCardPublicKeyFetching() {
         let method = StoredCardPaymentMethod(type: "type",
-                                             identifier: "id",
                                              name: "name",
+                                             identifier: "id",
                                              fundingSource: .credit,
                                              supportedShopperInteractions: [.shopperPresent],
                                              brand: "brand",
@@ -140,8 +140,8 @@ class StoredCardComponentTests: XCTestCase {
 
     func testPaymentSubmitWithFailedCardPublicKeyFetching() {
         let method = StoredCardPaymentMethod(type: "type",
-                                             identifier: "id",
                                              name: "name",
+                                             identifier: "id",
                                              fundingSource: .credit,
                                              supportedShopperInteractions: [.shopperPresent],
                                              brand: "brand",
@@ -195,8 +195,8 @@ class StoredCardComponentTests: XCTestCase {
 
     func testCVCLimitForAMEX() {
         let method = StoredCardPaymentMethod(type: "type",
-                                             identifier: "id",
                                              name: "name",
+                                             identifier: "id",
                                              fundingSource: .credit,
                                              supportedShopperInteractions: [.shopperPresent],
                                              brand: "amex",
@@ -248,8 +248,8 @@ class StoredCardComponentTests: XCTestCase {
 
     func testCVCLimitForNonAMEX() {
         let method = StoredCardPaymentMethod(type: "type",
-                                             identifier: "id",
                                              name: "name",
+                                             identifier: "id",
                                              fundingSource: .credit,
                                              supportedShopperInteractions: [.shopperPresent],
                                              brand: "mc",
@@ -294,8 +294,8 @@ class StoredCardComponentTests: XCTestCase {
 
     func testCVCLimitForUnknownCardType() {
         let method = StoredCardPaymentMethod(type: "type",
-                                             identifier: "id",
                                              name: "name",
+                                             identifier: "id",
                                              fundingSource: .credit,
                                              supportedShopperInteractions: [.shopperPresent],
                                              brand: "some_brand",

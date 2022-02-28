@@ -15,7 +15,7 @@ public struct ApplePayPaymentMethod: PaymentMethod {
     /// :nodoc:
     public let name: String
 
-    /// :nodoc:
+    /// List of networks enabled on CA.
     public let brands: [String]?
     
     /// :nodoc:

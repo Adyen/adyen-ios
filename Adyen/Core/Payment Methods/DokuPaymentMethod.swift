@@ -15,15 +15,6 @@ public struct DokuPaymentMethod: PaymentMethod {
     /// :nodoc:
     public let name: String
 
-    /// Initializes the Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
-    ///
-    /// - Parameter type: The payment method type.
-    /// - Parameter name: The payment method name.
-    internal init(type: String, name: String) {
-        self.type = type
-        self.name = name
-    }
-
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
@@ -34,3 +25,12 @@ public struct DokuPaymentMethod: PaymentMethod {
         case name
     }
 }
+
+/// A Doku Wallet payment method.
+public typealias DokuWalletPaymentMethod = DokuPaymentMethod
+
+/// A Doku Alfamart payment method.
+public typealias AlfamartPaymentMethod = DokuPaymentMethod
+
+/// A Doku Indomaret payment method.
+public typealias IndomaretPaymentMethod = DokuPaymentMethod

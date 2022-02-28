@@ -15,10 +15,8 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
     /// :nodoc:
     public let name: String
     
-    /// :nodoc:
     public let fundingSource: CardFundingSource?
     
-    /// :nodoc:
     public var displayInformation: DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: "card")
     }
@@ -63,25 +61,19 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
     
     /// :nodoc:
     public let type: String
-    
-    /// :nodoc:
-    public let identifier: String
-    
     /// :nodoc:
     public let name: String
-    
-    /// :nodoc:
+
+    public let identifier: String
+
     public var brands: [String] { [brand] }
-    
-    /// :nodoc:
+
     public var fundingSource: CardFundingSource?
-    
-    /// :nodoc:
+
     public var displayInformation: DisplayInformation {
         localizedDisplayInformation(using: nil)
     }
-    
-    /// :nodoc:
+
     public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let expireDate = expiryMonth + "/" + String(expiryYear.suffix(2))
         
@@ -95,7 +87,6 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
         builder.build(paymentMethod: self)
     }
     
-    /// :nodoc:
     public let supportedShopperInteractions: [ShopperInteraction]
     
     /// The brand of the stored card, such as `"mc"` or `"visa"`.

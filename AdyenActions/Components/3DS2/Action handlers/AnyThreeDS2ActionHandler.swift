@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -17,6 +17,9 @@ internal protocol AnyThreeDS2ActionHandler {
     /// :nodoc:
     func handle(_ challengeAction: ThreeDS2ChallengeAction,
                 completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void)
+    
+    /// :nodoc:
+    var threeDSRequestorAppURL: URL? { get set }
 }
 
 /// :nodoc:

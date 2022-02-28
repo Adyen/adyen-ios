@@ -13,20 +13,16 @@ public struct StoredPayPalPaymentMethod: StoredPaymentMethod {
     public let type: String
     
     /// :nodoc:
-    public let identifier: String
-    
-    /// :nodoc:
     public let name: String
-    
-    /// :nodoc:
+
+    public let identifier: String
+
     public let supportedShopperInteractions: [ShopperInteraction]
-    
-    /// :nodoc:
+
     public var displayInformation: DisplayInformation {
         DisplayInformation(title: name, subtitle: emailAddress, logoName: type)
     }
 
-    /// :nodoc:
     public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: emailAddress, logoName: type)
     }

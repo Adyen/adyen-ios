@@ -8,11 +8,12 @@ import Foundation
 
 /// Indicates document action payment methods.
 public enum DocumentPaymentMethod: String, Codable, CaseIterable {
+
+    /// BACS payment method.
     case bacs = "directdebit_GB"
 }
 
-/// Describes an action in which shoppers can view and
-/// download the document after payment.
+/// Describes an action in which shoppers can view and download the document after payment.
 public struct DocumentAction: Decodable {
     
     /// URL of the downloadable mandate.
