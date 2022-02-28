@@ -2019,6 +2019,14 @@
 			path = Affirm;
 			sourceTree = "<group>";
 		};
+		C96C400E27CCC94500CDBAB8 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				C94632BC27BA6968003DD81F /* AnalyticsProvider */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
 		C978F5EC2732CD0800F59B3C /* CardNumberItem */ = {
 			isa = PBXGroup;
 			children = (
@@ -2139,7 +2147,6 @@
 		E216D3C1221AEDB30013CBCF /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				C94632BC27BA6968003DD81F /* AnalyticsProvider */,
 				A0414C2C279041F200DF3FE9 /* PublicKeyProvider */,
 				E70859FF2625B46C00D0153B /* External */,
 				E702BDE22602148900280682 /* Debugging */,
@@ -2399,6 +2406,7 @@
 		E2C0E03522097917008616F6 /* Adyen */ = {
 			isa = PBXGroup;
 			children = (
+				C96C400E27CCC94500CDBAB8 /* Analytics */,
 				F926D53623F6A34300D058D3 /* Formatters */,
 				F926D53123F5A5BD00D058D3 /* Validators */,
 				E9021DAB22578AA6009CF7F4 /* Assets */,

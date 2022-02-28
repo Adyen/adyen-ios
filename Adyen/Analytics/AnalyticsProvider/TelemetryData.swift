@@ -37,8 +37,13 @@ internal struct TelemetryData {
     internal let userAgent: String? = nil
 
     internal var deviceBrand: String {
-        // TODO: - Generate deviceBrand info
-        return UIDevice.current.model
+        var systemInfo = utsname()
+        uname(&systemInfo)
+        let machineMirror = Mirror(reflecting: systemInfo.machine)
+        return machineMirror.children.reduce("") { identifier, element in
+            guard let value = element.value as? Int8, value != 0 else { return identifier }
+            return identifier + String(UnicodeScalar(UInt8(value)))
+        }
     }
 
     internal var systemVersion: String {
