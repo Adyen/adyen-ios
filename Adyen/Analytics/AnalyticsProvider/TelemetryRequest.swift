@@ -71,6 +71,7 @@ internal struct TelemetryRequest: APIRequest {
         case deviceBrand
         case systemVersion
         case referrer
+        case screenWidth
         case containerWidth
         case paymentMethods
         case component
