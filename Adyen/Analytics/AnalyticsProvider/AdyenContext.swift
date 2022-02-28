@@ -19,21 +19,22 @@ public final class AdyenContext {
     // MARK: - Properties
 
     private let apiContext: APIContext
-
-    // TODO: - Inject through internal initializer
-    public var analyticsProvider: AnalyticsProviderProtocol?
+    public let analyticsProvider: AnalyticsProviderProtocol
 
     // MARK: - Initializers
 
     public init(apiContext: APIContext, analyticsConfiguration: AnalyticsConfiguration) {
         self.apiContext = apiContext
-        setupAnalyticsProvider(configuration: analyticsConfiguration)
+
+        let apiClient = APIClient(apiContext: apiContext)
+        self.analyticsProvider = AnalyticsProvider(apiClient: apiClient,
+                                                   configuration: analyticsConfiguration)
     }
 
-    // MARK: - Private
+    // MARK: - Internal
 
-    private func setupAnalyticsProvider(configuration: AnalyticsConfiguration) {
-        let apiClient = APIClient(apiContext: apiContext)
-        analyticsProvider = AnalyticsProvider(apiClient: apiClient, configuration: configuration)
+    internal init(apiContext: APIContext, analyticsProvider: AnalyticsProviderProtocol) {
+        self.apiContext = apiContext
+        self.analyticsProvider = analyticsProvider
     }
 }
