@@ -287,7 +287,8 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: IssuerListPaymentMethod) -> PaymentComponent? {
         IssuerListComponent(paymentMethod: paymentMethod,
                             apiContext: apiContext,
-                            style: style.listComponent)
+                            configuration: .init(style: style.listComponent,
+                                                 localizationParameters: configuration.localizationParameters))
     }
     
     /// :nodoc:

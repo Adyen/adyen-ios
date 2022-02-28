@@ -8,6 +8,7 @@ import Adyen
 import Foundation
 import UIKit
 
+/// Configuration for BLIK Component.
 public typealias BLIKComponentConfiguration = BasicComponentConfiguration
 
 /// A component that provides a form for BLIK payments.
@@ -39,7 +40,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
     ///
     /// - Parameter paymentMethod: The BLIK payment method.
     /// - Parameter apiContext: The API context.
-    /// - Parameter style: The Component's UI style.
+    /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: BLIKPaymentMethod,
                 apiContext: APIContext,
                 configuration: BLIKComponentConfiguration = .init()) {
