@@ -26,7 +26,7 @@ internal struct CheckoutAttemptIdRequest: APIRequest {
     internal typealias ResponseType = CheckoutAttemptIdResponse
 
     /// :nodoc:
-    internal let path: String = "v2/analytics/id"
+    internal let path: String = "checkoutshopper/v2/analytics/id"
 
     /// :nodoc:
     internal var counter: UInt = 0

@@ -44,8 +44,7 @@ public final class ThreeDS2Component: ActionComponent {
         
         /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
         public var requestorAppURL: URL?
-        
-        
+
         /// Initializes a new instance
         ///
         /// - Parameters:

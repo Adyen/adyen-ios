@@ -206,8 +206,11 @@ internal final class ComponentManager {
             bacsConfiguration = .init(payment: payment)
         }
 
+        let adyenContext = AdyenContext(apiContext: apiContext, analyticsConfiguration: .enabled(telemetry: true,
+                                                                                                 conversion: true))
         let bacsDirectDebitComponent = BACSDirectDebitComponent(paymentMethod: paymentMethod,
                                                                 apiContext: apiContext,
+                                                                adyenContext: adyenContext,
                                                                 configuration: bacsConfiguration)
         bacsDirectDebitComponent.presentationDelegate = presentationDelegate
         return bacsDirectDebitComponent

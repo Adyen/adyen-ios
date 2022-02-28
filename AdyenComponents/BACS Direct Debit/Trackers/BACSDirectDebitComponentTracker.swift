@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,24 +19,27 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
 
     private let paymentMethod: BACSDirectDebitPaymentMethod
     private let apiContext: APIContext
+    private let telemetryTracker: TelemetryTrackerProtocol
     private let isDropIn: Bool
 
     // MARK: - Initializers
 
     internal init(paymentMethod: BACSDirectDebitPaymentMethod,
                   apiContext: APIContext,
+                  telemetryTracker: TelemetryTrackerProtocol,
                   isDropIn: Bool) {
         self.paymentMethod = paymentMethod
         self.apiContext = apiContext
+        self.telemetryTracker = telemetryTracker
         self.isDropIn = isDropIn
     }
 
     // MARK: - BACSDirectDebitComponentTrackerProtocol
 
     internal func sendEvent() {
-        Analytics.sendEvent(component: paymentMethod.type,
-                            flavor: isDropIn ? .dropin : .components,
-                            context: apiContext)
+        telemetryTracker.sendTelemetryEvent(flavor: isDropIn ? .dropin : .components,
+                                            paymentMethods: [],
+                                            component: paymentMethod.type)
     }
 
 }

@@ -6,12 +6,15 @@
 
 import Foundation
 
-internal enum TelemetryFlavor: String {
+/// : nodoc:
+public enum TelemetryFlavor: String {
     case components
+    // TODO: - dropin(paymentMethods: [String])
     case dropin
 }
 
-internal protocol TelemetryTrackerProtocol {
+/// : nodoc:
+public protocol TelemetryTrackerProtocol {
     func sendTelemetryEvent(flavor: TelemetryFlavor, paymentMethods: [String], component: String)
 }
 

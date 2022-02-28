@@ -14,12 +14,14 @@ public enum AnalyticsConfiguration {
 }
 
 // TODO: - Document
-public class AdyenContext {
+public final class AdyenContext {
 
     // MARK: - Properties
 
     private let apiContext: APIContext
-    internal var analyticsProvider: AnalyticsProviderProtocol?
+
+    // TODO: - Inject through internal initializer
+    public var analyticsProvider: AnalyticsProviderProtocol?
 
     // MARK: - Initializers
 

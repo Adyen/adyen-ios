@@ -17,7 +17,7 @@ internal struct TelemetryRequest: APIRequest {
     internal typealias ResponseType = TelemetryResponse
 
     /// :nodoc:
-    internal let path: String = "v2/analytics/log"
+    internal let path: String = "checkoutshopper/v2/analytics/log"
 
     /// :nodoc:
     internal var counter: UInt = 0

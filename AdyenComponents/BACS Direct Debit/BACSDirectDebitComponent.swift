@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -34,6 +34,9 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     public let apiContext: APIContext
 
     /// :nodoc:
+    public let adyenContext: AdyenContext
+
+    /// :nodoc:
     public let style: FormComponentStyle
 
     /// :nodoc:
@@ -58,11 +61,13 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     ///   - localizationParameters: The localization parameters.
     public init(paymentMethod: BACSDirectDebitPaymentMethod,
                 apiContext: APIContext,
+                adyenContext: AdyenContext,
                 style: FormComponentStyle = .init(),
                 localizationParameters: LocalizationParameters? = nil,
                 configuration: Configuration? = nil) {
         self.paymentMethod = paymentMethod
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.style = style
         self.localizationParameters = localizationParameters
 
@@ -70,8 +75,12 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
                                                                   styleProvider: style)
         self.viewController = SecuredViewController(child: inputFormViewController, style: style)
 
+        // TODO: - This is temporary
+        guard let telemetryTracker = adyenContext.analyticsProvider as? TelemetryTrackerProtocol else { return }
+
         let tracker = BACSDirectDebitComponentTracker(paymentMethod: paymentMethod,
                                                       apiContext: apiContext,
+                                                      telemetryTracker: telemetryTracker,
                                                       isDropIn: _isDropIn)
         let itemsFactory = BACSItemsFactory(styleProvider: style,
                                             localizationParameters: localizationParameters,

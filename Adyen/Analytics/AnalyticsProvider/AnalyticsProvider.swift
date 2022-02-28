@@ -7,7 +7,8 @@
 import AdyenNetworking
 import Foundation
 
-internal protocol AnalyticsProviderProtocol {}
+// TODO: - Document
+public protocol AnalyticsProviderProtocol {}
 
 internal class AnalyticsProvider: AnalyticsProviderProtocol {
 
