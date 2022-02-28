@@ -7,9 +7,10 @@
 import AdyenNetworking
 import Foundation
 
-// TODO: - Document
+/// :nodoc:
 internal struct TelemetryResponse: Response { /* Empty response */ }
 
+/// :nodoc:
 internal struct TelemetryRequest: APIRequest {
 
     /// :nodoc:

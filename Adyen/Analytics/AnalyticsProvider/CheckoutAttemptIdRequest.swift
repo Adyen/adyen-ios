@@ -7,7 +7,7 @@
 import AdyenNetworking
 import Foundation
 
-// TODO: - Document
+/// :nodoc:
 internal struct CheckoutAttemptIdResponse: Response {
 
     // MARK: - Properties
@@ -19,6 +19,7 @@ internal struct CheckoutAttemptIdResponse: Response {
     }
 }
 
+/// :nodoc:
 internal struct CheckoutAttemptIdRequest: APIRequest {
 
     /// :nodoc:
