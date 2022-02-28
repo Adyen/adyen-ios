@@ -18,22 +18,22 @@ internal final class VoucherViewDelegateMock: VoucherViewDelegate {
         onDidComplete?()
     }
     
-    var onMainButtonTap: ((UIView) -> Void)?
+    var onMainButtonTap: ((UIView, VoucherAction) -> Void)?
 
-    func mainButtonTap(sourceView: UIView) {
-        onMainButtonTap?(sourceView)
+    func mainButtonTap(sourceView: UIView, action: VoucherAction) {
+        onMainButtonTap?(sourceView, action)
     }
     
-    var onAddToAppleWallet: (() -> Void)?
+    var onAddToAppleWallet: ((VoucherAction) -> Void)?
     
-    func addToAppleWallet(completion: @escaping () -> Void) {
-        onAddToAppleWallet?()
+    func addToAppleWallet(action: VoucherAction, completion: @escaping () -> Void) {
+        onAddToAppleWallet?(action)
     }
     
-    var onSecondaryButtonTap: ((UIView) -> Void)?
+    var onSecondaryButtonTap: ((UIView, VoucherAction) -> Void)?
     
-    func secondaryButtonTap(sourceView: UIView) {
-        onSecondaryButtonTap?(sourceView)
+    func secondaryButtonTap(sourceView: UIView, action: VoucherAction) {
+        onSecondaryButtonTap?(sourceView, action)
     }
     
 }

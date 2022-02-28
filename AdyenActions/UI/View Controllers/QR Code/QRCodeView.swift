@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,7 @@ import UIKit
 
 internal protocol QRCodeViewDelegate: AnyObject {
 
-    func copyToPasteboard()
+    func copyToPasteboard(with action: QRCodeAction)
 }
 
 internal final class QRCodeView: UIView, Localizable, Observer {
@@ -153,7 +153,7 @@ internal final class QRCodeView: UIView, Localizable, Observer {
     }()
         
     @objc private func copyCode() {
-        delegate?.copyToPasteboard()
+        delegate?.copyToPasteboard(with: model.action)
     }
 
 }

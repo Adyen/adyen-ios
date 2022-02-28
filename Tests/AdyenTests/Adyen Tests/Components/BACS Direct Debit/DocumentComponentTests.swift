@@ -13,12 +13,14 @@ import XCTest
 
 class DocumentComponentTests: XCTestCase {
     
+    let action: DocumentAction = DocumentAction(downloadUrl: URL(string: "www.adyen.com")!, paymentMethodType: .bacs)
+    
     func testUI() {
         let style = DocumentComponentStyle()
-        let sut = DocumentComponent(apiContext: Dummy.context, style: DocumentComponentStyle())
+        let sut = DocumentComponent(apiContext: Dummy.context)
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
-        sut.localizationParameters = LocalizationParameters(tableName: "test_table")
+        sut.configuration.localizationParameters = LocalizationParameters(tableName: "test_table")
         
         presentationDelegate.doPresent = { [self] component in
             XCTAssertNotNil(component.viewController as? ADYViewController)
@@ -52,12 +54,13 @@ class DocumentComponentTests: XCTestCase {
     func testMainSecondaryButtons() {
         let mainButtonExpectation = expectation(description: "Main button tapped")
         
-        let delegateMock = ActionViewDelegateMock()
-        delegateMock.onMainButtonTap = { _ in
+        let delegateMock = DocumentActionViewDelegateMock()
+        delegateMock.onMainButtonTap = { _, _ in
             mainButtonExpectation.fulfill()
         }
         
-        let viewModel = DocumentActionViewModel(message: "test", logoURL: URL(string: "www.adyen.com")!, buttonTitle: "pdf")
+        let viewModel = DocumentActionViewModel(action: action,
+                                                message: "test", logoURL: URL(string: "www.adyen.com")!, buttonTitle: "pdf")
         let style = DocumentComponentStyle()
         
         let sut = DocumentActionView(viewModel: viewModel, style: style)

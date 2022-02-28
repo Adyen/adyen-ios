@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,25 +18,39 @@ internal enum QRCodeComponentError: LocalizedError {
 }
 
 /// A component that presents a QR code.
-public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
+public final class QRCodeComponent: ActionComponent, Cancellable {
     
     /// :nodoc:
     public let apiContext: APIContext
     
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
-    
-    /// The component UI style.
-    public let style: QRCodeComponentStyle
 
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
     
-    /// :nodoc:
-    public var action: QRCodeAction?
+    /// The QR code component configurations.
+    public struct Configuration {
+        
+        /// The component UI style.
+        public var style: QRCodeComponentStyle = .init()
+        
+        /// The localization parameters, leave it nil to use the default parameters.
+        public var localizationParameters: LocalizationParameters?
+        
+        /// Initializes an instance of `Configuration`
+        ///
+        /// - Parameters:
+        ///   - style: The Component UI style.
+        ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
+        public init(style: QRCodeComponentStyle = QRCodeComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
+            self.style = style
+            self.localizationParameters = localizationParameters
+        }
+    }
     
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
+    /// The voucher component configurations.
+    public var configuration: Configuration = .init()
     
     /// :nodoc:
     private let pollingComponentBuilder: AnyPollingHandlerProvider
@@ -58,11 +72,13 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     
     /// Initializes the `QRCodeComponent`.
     ///
-    /// - Parameter style: The component UI style.
-    public convenience init(apiContext: APIContext, style: QRCodeComponentStyle?) {
+    /// - Parameter apiContext: the `APIContext`.
+    /// - Parameter configuration: The component configurations
+    public convenience init(apiContext: APIContext,
+                            configuration: Configuration = .init()) {
         self.init(
             apiContext: apiContext,
-            style: style ?? QRCodeComponentStyle(),
+            configuration: configuration,
             pollingComponentBuilder: PollingHandlerProvider(apiContext: apiContext),
             timeoutInterval: 60 * 15
         )
@@ -70,15 +86,16 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     
     /// Initializes the `QRCodeComponent`.
     ///
-    /// - Parameter style: The component UI style.
+    /// - Parameter apiContext: the `APIContext`.
+    /// - Parameter configuration: The component configurations
     /// - Parameter pollingComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter timeoutInterval: QR Code expiration timeout
     internal init(apiContext: APIContext,
-                  style: QRCodeComponentStyle = QRCodeComponentStyle(),
+                  configuration: Configuration = .init(),
                   pollingComponentBuilder: AnyPollingHandlerProvider,
                   timeoutInterval: TimeInterval) {
         self.apiContext = apiContext
-        self.style = style
+        self.configuration = configuration
         self.pollingComponentBuilder = pollingComponentBuilder
         self.expirationTimeout = timeoutInterval
         
@@ -89,8 +106,6 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     ///
     /// - Parameter action: The QR code action.
     public func handle(_ action: QRCodeAction) {
-        self.action = action
-        
         let pollingComponent = pollingComponentBuilder.handler(for: action.paymentMethodType)
         pollingComponent.delegate = self
         
@@ -126,7 +141,9 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     private func updateExpiration(_ timeLeft: TimeInterval) {
         progress.completedUnitCount = Int64(timeLeft)
         let timeLeftString = timeLeft.adyen.timeLeftString() ?? ""
-        expirationText = localizedString(.pixExpirationLabel, localizationParameters, timeLeftString)
+        expirationText = localizedString(.pixExpirationLabel,
+                                         configuration.localizationParameters,
+                                         timeLeftString)
     }
     
     /// :nodoc:
@@ -147,17 +164,19 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     private func createModel(with action: QRCodeAction) -> QRCodeView.Model {
         let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: apiContext.environment)
         return QRCodeView.Model(
-            instruction: localizedString(.pixInstructions, localizationParameters),
+            action: action,
+            instruction: localizedString(.pixInstructions,
+                                         configuration.localizationParameters),
             logoUrl: url,
             observedProgress: progress,
             expiration: $expirationText,
             style: QRCodeView.Model.Style(
-                copyButton: style.copyButton,
-                instructionLabel: style.instructionLabel,
-                progressView: style.progressView,
-                expirationLabel: style.expirationLabel,
-                logoCornerRounding: style.logoCornerRounding,
-                backgroundColor: style.backgroundColor
+                copyButton: configuration.style.copyButton,
+                instructionLabel: configuration.style.instructionLabel,
+                progressView: configuration.style.progressView,
+                expirationLabel: configuration.style.expirationLabel,
+                logoCornerRounding: configuration.style.logoCornerRounding,
+                backgroundColor: configuration.style.backgroundColor
             )
         )
     }
@@ -197,8 +216,8 @@ extension QRCodeComponent: ActionComponentDelegate {
 /// :nodoc:
 extension QRCodeComponent: QRCodeViewDelegate {
     
-    func copyToPasteboard() {
-        UIPasteboard.general.string = action.map(\.qrCodeData)
+    func copyToPasteboard(with action: QRCodeAction) {
+        UIPasteboard.general.string = action.qrCodeData
     }
     
 }
