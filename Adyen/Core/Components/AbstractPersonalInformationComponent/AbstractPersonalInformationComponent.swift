@@ -7,14 +7,14 @@
 import Foundation
 import UIKit
 
-/// :nodoc:
-public typealias AbstractPersonalInformationConfiguration = PersonalInformationConfiguration
-
 /// An abstract class that needs to be subclassed to abstract away any component
 /// who's form consists of a combination of personal information pieces like first name, last name, phone, email, and billing address.
 /// :nodoc:
 open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent {
 
+    /// :nodoc:
+    public typealias Configuration = PersonalInformationConfiguration
+    
     // MARK: - Properties
 
     /// :nodoc:
@@ -34,7 +34,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     public let requiresModalPresentation: Bool = true
 
     /// :nodoc:
-    public var configuration: AbstractPersonalInformationConfiguration
+    public var configuration: Configuration
     
     private let fields: [PersonalInformation]
 
@@ -46,7 +46,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     public init(paymentMethod: PaymentMethod,
                 apiContext: APIContext,
                 fields: [PersonalInformation],
-                configuration: AbstractPersonalInformationConfiguration) {
+                configuration: Configuration) {
         self.paymentMethod = paymentMethod
         self.configuration = configuration
         self.apiContext = apiContext

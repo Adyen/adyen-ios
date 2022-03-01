@@ -15,7 +15,7 @@ class QiwiWalletComponentTests: XCTestCase {
     let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
     
     func testLocalizationWithCustomTableName() {
-        let config = QiwiWalletComponentConfiguration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
+        let config = QiwiWalletComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
         let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, configuration: config)
         sut.payment = payment
         
@@ -34,7 +34,7 @@ class QiwiWalletComponentTests: XCTestCase {
     }
     
     func testLocalizationWithCustomKeySeparator() {
-        let config = QiwiWalletComponentConfiguration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
+        let config = QiwiWalletComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, configuration: config)
         sut.payment = payment
         
@@ -76,7 +76,7 @@ class QiwiWalletComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
         
-        let config = QiwiWalletComponentConfiguration(style: style)
+        let config = QiwiWalletComponent.Configuration(style: style)
         let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, configuration: config)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -123,7 +123,7 @@ class QiwiWalletComponentTests: XCTestCase {
     }
     
     func testBigTitle() {
-        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, configuration: QiwiWalletComponentConfiguration())
+        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, configuration: QiwiWalletComponent.Configuration())
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -138,14 +138,14 @@ class QiwiWalletComponentTests: XCTestCase {
     
     func testRequiresModalPresentation() {
         let qiwiPaymentMethod = QiwiWalletPaymentMethod(type: "qiwiwallet", name: "Test name")
-        let sut = QiwiWalletComponent(paymentMethod: qiwiPaymentMethod, apiContext: Dummy.context, configuration: QiwiWalletComponentConfiguration())
+        let sut = QiwiWalletComponent(paymentMethod: qiwiPaymentMethod, apiContext: Dummy.context, configuration: QiwiWalletComponent.Configuration())
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
     func testSubmit() {
         let phoneExtensions = [PhoneExtension(value: "+3", countryCode: "UK")]
         let method = QiwiWalletPaymentMethod(type: "test_type", name: "test_name", phoneExtensions: phoneExtensions)
-        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, configuration: QiwiWalletComponentConfiguration())
+        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, configuration: QiwiWalletComponent.Configuration())
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 

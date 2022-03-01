@@ -91,9 +91,9 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     
     /// :nodoc:
     private lazy var formComponent: FormComponent = {
-        let configuration = AbstractPersonalInformationConfiguration(style: style,
-                                                                     shopperInformation: shopperInformation,
-                                                                     localizationParameters: localizationParameters)
+        let configuration = AbstractPersonalInformationComponent.Configuration(style: style,
+                                                                               shopperInformation: shopperInformation,
+                                                                               localizationParameters: localizationParameters)
         let component = FormComponent(paymentMethod: paymentMethod,
                                       apiContext: apiContext,
                                       fields: formFields,
@@ -223,7 +223,7 @@ extension BoletoComponent {
         fileprivate init(paymentMethod: PaymentMethod,
                          apiContext: APIContext,
                          fields: [PersonalInformation],
-                         configuration: AbstractPersonalInformationConfiguration,
+                         configuration: AbstractPersonalInformationComponent.Configuration,
                          onCreatePaymentDetails: @escaping () -> PaymentMethodDetails?) {
             self.onCreatePaymentDetails = onCreatePaymentDetails
             

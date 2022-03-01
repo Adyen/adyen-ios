@@ -25,16 +25,16 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
         let sut = SEPADirectDebitComponent(paymentMethod: method, apiContext: Dummy.context)
         sut.payment = payment
-        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
+        sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
-        XCTAssertEqual(sut.nameItem.title, localizedString(.sepaNameItemTitle, sut.localizationParameters))
-        XCTAssertEqual(sut.nameItem.placeholder, localizedString(.sepaNameItemPlaceholder, sut.localizationParameters))
-        XCTAssertEqual(sut.nameItem.validationFailureMessage, localizedString(.sepaNameItemInvalid, sut.localizationParameters))
+        XCTAssertEqual(sut.nameItem.title, localizedString(.sepaNameItemTitle, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.nameItem.placeholder, localizedString(.sepaNameItemPlaceholder, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.nameItem.validationFailureMessage, localizedString(.sepaNameItemInvalid, sut.configuration.localizationParameters))
         
-        XCTAssertEqual(sut.ibanItem.title, localizedString(.sepaIbanItemTitle, sut.localizationParameters))
-        XCTAssertEqual(sut.ibanItem.validationFailureMessage, localizedString(.sepaIbanItemInvalid, sut.localizationParameters))
+        XCTAssertEqual(sut.ibanItem.title, localizedString(.sepaIbanItemTitle, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.ibanItem.validationFailureMessage, localizedString(.sepaIbanItemInvalid, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
     func testLocalizationWithZeroPayment() {
@@ -43,16 +43,16 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let sut = SEPADirectDebitComponent(paymentMethod: method, apiContext: Dummy.context)
         sut.payment = payment
 
-        XCTAssertEqual(sut.nameItem.title, localizedString(.sepaNameItemTitle, sut.localizationParameters))
-        XCTAssertEqual(sut.nameItem.placeholder, localizedString(.sepaNameItemPlaceholder, sut.localizationParameters))
-        XCTAssertEqual(sut.nameItem.validationFailureMessage, localizedString(.sepaNameItemInvalid, sut.localizationParameters))
+        XCTAssertEqual(sut.nameItem.title, localizedString(.sepaNameItemTitle, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.nameItem.placeholder, localizedString(.sepaNameItemPlaceholder, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.nameItem.validationFailureMessage, localizedString(.sepaNameItemInvalid, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.ibanItem.title, localizedString(.sepaIbanItemTitle, sut.localizationParameters))
-        XCTAssertEqual(sut.ibanItem.validationFailureMessage, localizedString(.sepaIbanItemInvalid, sut.localizationParameters))
+        XCTAssertEqual(sut.ibanItem.title, localizedString(.sepaIbanItemTitle, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.ibanItem.validationFailureMessage, localizedString(.sepaIbanItemInvalid, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, localizedString(.confirmPreauthorization, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedString(.confirmPreauthorization, sut.configuration.localizationParameters))
     }
     
     func testLocalizationWithCustomKeySeparator() {
@@ -60,16 +60,16 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
         let sut = SEPADirectDebitComponent(paymentMethod: method, apiContext: Dummy.context)
         sut.payment = payment
-        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
+        sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
-        XCTAssertEqual(sut.nameItem.title, localizedString(LocalizationKey(key: "adyen_sepa_nameItem_title"), sut.localizationParameters))
-        XCTAssertEqual(sut.nameItem.placeholder, localizedString(LocalizationKey(key: "adyen_sepa_nameItem_placeholder"), sut.localizationParameters))
-        XCTAssertEqual(sut.nameItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_sepa_nameItem_invalid"), sut.localizationParameters))
+        XCTAssertEqual(sut.nameItem.title, localizedString(LocalizationKey(key: "adyen_sepa_nameItem_title"), sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.nameItem.placeholder, localizedString(LocalizationKey(key: "adyen_sepa_nameItem_placeholder"), sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.nameItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_sepa_nameItem_invalid"), sut.configuration.localizationParameters))
         
-        XCTAssertEqual(sut.ibanItem.title, localizedString(LocalizationKey(key: "adyen_sepa_ibanItem_title"), sut.localizationParameters))
-        XCTAssertEqual(sut.ibanItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_sepa_ibanItem_invalid"), sut.localizationParameters))
+        XCTAssertEqual(sut.ibanItem.title, localizedString(LocalizationKey(key: "adyen_sepa_ibanItem_title"), sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.ibanItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_sepa_ibanItem_invalid"), sut.configuration.localizationParameters))
         
-        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.configuration.localizationParameters))
     }
     
     func testUIConfiguration() {
@@ -98,7 +98,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         sepaComponentStyle.textField.backgroundColor = .red
         
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: "bcmc", name: "Test name")
-        let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod, apiContext: Dummy.context, style: sepaComponentStyle)
+        let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod, apiContext: Dummy.context, configuration: SEPADirectDebitComponent.Configuration(style: sepaComponentStyle))
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
