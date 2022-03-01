@@ -51,7 +51,7 @@ internal struct TelemetryRequest: APIRequest {
         self.version = data.version
         self.channel = data.channel
         self.locale = data.locale
-        self.flavor = data.flavor.rawValue
+        self.flavor = data.flavor
         self.userAgent = data.userAgent
         self.deviceBrand = data.deviceBrand
         self.systemVersion = data.systemVersion

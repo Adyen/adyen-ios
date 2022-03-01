@@ -60,9 +60,21 @@ internal struct TelemetryData {
 
     internal let containerWidth: Int? = nil
 
-    internal let flavor: TelemetryFlavor
+    internal let flavor: String
 
     internal let paymentMethods: [String]
 
     internal let component: String
+
+    internal init(flavor: TelemetryFlavor, component: String) {
+        self.flavor = flavor.rawValue
+        self.component = component
+
+        switch flavor {
+        case let .dropin(paymentMethods):
+            self.paymentMethods = paymentMethods
+        case .components:
+            self.paymentMethods = []
+        }
+    }
 }

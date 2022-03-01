@@ -7,27 +7,35 @@
 import Foundation
 
 /// : nodoc:
-public enum TelemetryFlavor: String {
+public enum TelemetryFlavor {
+    public typealias RawValue = String
+
     case components
-    // TODO: - dropin(paymentMethods: [String])
-    case dropin
+    case dropin(paymentMethods: [String])
+
+    public var rawValue: RawValue {
+        switch self {
+        case .components:
+            return "components"
+        case .dropin:
+            return "dropin"
+        }
+    }
 }
 
 /// : nodoc:
 public protocol TelemetryTrackerProtocol {
-    func sendTelemetryEvent(flavor: TelemetryFlavor, paymentMethods: [String], component: String)
+    func sendTelemetryEvent(flavor: TelemetryFlavor, component: String)
 }
 
 // MARK: - TelemetryTrackerProtocol
 
 extension AnalyticsProvider: TelemetryTrackerProtocol {
 
-    func sendTelemetryEvent(flavor: TelemetryFlavor, paymentMethods: [String], component: String) {
+    func sendTelemetryEvent(flavor: TelemetryFlavor, component: String) {
         guard enabled, telemetry else { return }
 
-        let paymentMethods = flavor == .dropin ? paymentMethods : []
         let telemetryData = TelemetryData(flavor: flavor,
-                                          paymentMethods: paymentMethods,
                                           component: component)
 
         fetchCheckoutAttemptId { [weak self] checkoutAttemptId in
