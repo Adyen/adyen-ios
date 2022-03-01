@@ -71,9 +71,9 @@ internal struct TelemetryData {
         self.component = component
 
         switch flavor {
-        case let .dropin(paymentMethods):
+        case let .dropIn(paymentMethods):
             self.paymentMethods = paymentMethods
-        case .components:
+        default:
             self.paymentMethods = []
         }
     }

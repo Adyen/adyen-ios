@@ -9,14 +9,17 @@ import Foundation
 /// : nodoc:
 public enum TelemetryFlavor {
     case components
-    case dropin(paymentMethods: [String])
+    case dropIn(paymentMethods: [String])
+    case dropInComponent
 
     public var rawValue: String {
         switch self {
         case .components:
             return "components"
-        case .dropin:
+        case .dropIn:
             return "dropin"
+        case .dropInComponent:
+            return "dropInComponent"
         }
     }
 }
@@ -32,6 +35,7 @@ extension AnalyticsProvider: TelemetryTrackerProtocol {
 
     func sendTelemetryEvent(flavor: TelemetryFlavor, component: String) {
         guard configuration.isTelemetryEnabled else { return }
+        guard case .dropInComponent = flavor else { return }
 
         let telemetryData = TelemetryData(flavor: flavor,
                                           component: component)
