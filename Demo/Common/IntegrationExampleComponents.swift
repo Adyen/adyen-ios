@@ -38,8 +38,7 @@ extension IntegrationExample {
 
     internal func presentBACSDirectDebitComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return }
-        let adyenContext = AdyenContext(apiContext: apiContext, analyticsConfiguration: .enabled(telemetry: true,
-                                                                                                 conversion: true))
+        let adyenContext = AdyenContext(apiContext: apiContext)
         let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
                                                  apiContext: apiContext,
                                                  adyenContext: adyenContext)

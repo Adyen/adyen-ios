@@ -7,6 +7,35 @@
 import AdyenNetworking
 import Foundation
 
+// public enum AnalyticsConfiguration {
+//    case enabled(telemetry: Bool, conversion: Bool)
+//    case disabled
+// }
+
+// TODO: - Document
+public struct AnalyticsConfiguration {
+
+    // MARK: - Properties
+
+    public var enabled = true
+    public var telemetry = true
+    public var conversion = false
+
+    // MARK: - Initializers
+
+    public init() { /* Empty Initializer */ }
+
+    // MARK: - Internal
+
+    internal var isConversionEnabled: Bool {
+        enabled && conversion
+    }
+
+    internal var isTelemetryEnabled: Bool {
+        enabled && telemetry
+    }
+}
+
 /// : nodoc:
 public protocol AnalyticsProviderProtocol: TelemetryTrackerProtocol {}
 
@@ -15,11 +44,8 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
 
     // MARK: - Properties
 
-    internal var enabled = true
-    internal var telemetry = true
-    internal var conversion = false
-
     internal let apiClient: APIClientProtocol
+    internal let configuration: AnalyticsConfiguration
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<CheckoutAttemptIdResponse>
 
     // MARK: - Initializers
@@ -27,14 +53,14 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     internal init(apiClient: APIClientProtocol,
                   configuration: AnalyticsConfiguration) {
         self.apiClient = apiClient
+        self.configuration = configuration
         self.uniqueAssetAPIClient = UniqueAssetAPIClient<CheckoutAttemptIdResponse>(apiClient: apiClient)
-        setupConfiguration(configuration)
     }
 
     internal func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
-        guard enabled else { return }
-
-        if !conversion { return completion(nil) }
+        guard configuration.isConversionEnabled else {
+            return completion(nil)
+        }
 
         let checkoutAttemptIdRequest = CheckoutAttemptIdRequest()
 
@@ -45,19 +71,6 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
             case .failure:
                 completion(nil)
             }
-        }
-    }
-
-    // MARK: - Private
-
-    private func setupConfiguration(_ configuration: AnalyticsConfiguration) {
-        switch configuration {
-        case let .enabled(telemetry, conversion):
-            self.enabled = true
-            self.telemetry = telemetry
-            self.conversion = conversion
-        case .disabled:
-            self.enabled = false
         }
     }
 }

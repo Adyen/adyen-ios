@@ -31,7 +31,7 @@ public protocol TelemetryTrackerProtocol {
 extension AnalyticsProvider: TelemetryTrackerProtocol {
 
     func sendTelemetryEvent(flavor: TelemetryFlavor, component: String) {
-        guard enabled, telemetry else { return }
+        guard configuration.isTelemetryEnabled else { return }
 
         let telemetryData = TelemetryData(flavor: flavor,
                                           component: component)
