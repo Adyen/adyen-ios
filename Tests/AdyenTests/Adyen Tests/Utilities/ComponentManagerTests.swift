@@ -83,7 +83,7 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.regularComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, numberOfExpectedRegularComponents)
 
         XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 14)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is Localizable }.count, 6)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is Localizable }.count, 3)
         XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 15)
     }
     
@@ -106,7 +106,7 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
         
         XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 4)
-        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 6)
+        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 3)
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
@@ -128,7 +128,7 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
         
         XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 4)
-        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 6)
+        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 3)
     }
 
     func testOrderInjection() throws {
@@ -259,7 +259,7 @@ class ComponentManagerTests: XCTestCase {
 
         // Then
         let boletoComponent = try XCTUnwrap(paymentComponent as? BoletoComponent)
-        XCTAssertNotNil(boletoComponent.shopperInformation)
+        XCTAssertNotNil(boletoComponent.configuration.shopperInformation)
     }
 
     func testShopperInformationInjectionShouldSetShopperInformationOnCardComponent() throws {
