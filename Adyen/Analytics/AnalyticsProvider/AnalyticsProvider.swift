@@ -10,7 +10,7 @@ import Foundation
 // TODO: - Document
 public protocol AnalyticsProviderProtocol {}
 
-internal class AnalyticsProvider: AnalyticsProviderProtocol {
+internal final class AnalyticsProvider: AnalyticsProviderProtocol {
 
     // MARK: - Properties
 
