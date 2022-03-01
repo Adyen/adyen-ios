@@ -8,12 +8,10 @@ import Foundation
 
 /// : nodoc:
 public enum TelemetryFlavor {
-    public typealias RawValue = String
-
     case components
     case dropin(paymentMethods: [String])
 
-    public var rawValue: RawValue {
+    public var rawValue: String {
         switch self {
         case .components:
             return "components"

@@ -75,12 +75,9 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
                                                                   styleProvider: style)
         self.viewController = SecuredViewController(child: inputFormViewController, style: style)
 
-        // TODO: - This is temporary
-        guard let telemetryTracker = adyenContext.analyticsProvider as? TelemetryTrackerProtocol else { return }
-
         let tracker = BACSDirectDebitComponentTracker(paymentMethod: paymentMethod,
                                                       apiContext: apiContext,
-                                                      telemetryTracker: telemetryTracker,
+                                                      telemetryTracker: adyenContext.analyticsProvider,
                                                       isDropIn: _isDropIn)
         let itemsFactory = BACSItemsFactory(styleProvider: style,
                                             localizationParameters: localizationParameters,

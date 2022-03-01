@@ -7,9 +7,10 @@
 import AdyenNetworking
 import Foundation
 
-// TODO: - Document
-public protocol AnalyticsProviderProtocol {}
+/// : nodoc:
+public protocol AnalyticsProviderProtocol: TelemetryTrackerProtocol {}
 
+/// : nodoc:
 internal final class AnalyticsProvider: AnalyticsProviderProtocol {
 
     // MARK: - Properties
