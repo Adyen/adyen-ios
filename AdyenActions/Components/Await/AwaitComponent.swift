@@ -26,7 +26,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     public struct Configuration {
         
         /// The component UI style.
-        public var style: AwaitComponentStyle = .init()
+        public var style: AwaitComponentStyle
         
         /// The localization parameters, leave it nil to use the default parameters.
         public var localizationParameters: LocalizationParameters?
@@ -36,14 +36,15 @@ public final class AwaitComponent: ActionComponent, Cancellable {
         /// - Parameters:
         ///   - style: The Component UI style.
         ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
-        public init(style: AwaitComponentStyle = AwaitComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
+        public init(style: AwaitComponentStyle = .init(),
+                    localizationParameters: LocalizationParameters? = nil) {
             self.style = style
             self.localizationParameters = localizationParameters
         }
     }
     
     /// The await component configurations.
-    public var configuration: Configuration = .init()
+    public var configuration: Configuration
     
     /// :nodoc:
     private let awaitComponentBuilder: AnyPollingHandlerProvider

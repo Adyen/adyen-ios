@@ -50,7 +50,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     }
     
     /// The voucher component configurations.
-    public var configuration: Configuration = .init()
+    public var configuration: Configuration
 
     /// :nodoc:
     internal var voucherShareableViewProvider: AnyVoucherShareableViewProvider

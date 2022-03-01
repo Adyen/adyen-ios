@@ -50,7 +50,7 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
     }
     
     /// The voucher component configurations.
-    public var configuration: Configuration = .init()
+    public var configuration: Configuration
     
     /// :nodoc:
     private let pollingComponentBuilder: AnyPollingHandlerProvider
@@ -216,7 +216,7 @@ extension QRCodeComponent: ActionComponentDelegate {
 /// :nodoc:
 extension QRCodeComponent: QRCodeViewDelegate {
     
-    func copyToPasteboard(with action: QRCodeAction) {
+    internal func copyToPasteboard(with action: QRCodeAction) {
         UIPasteboard.general.string = action.qrCodeData
     }
     
