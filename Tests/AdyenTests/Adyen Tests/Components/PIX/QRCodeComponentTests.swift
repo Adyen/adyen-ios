@@ -112,7 +112,7 @@ class QRCodeComponentTests: XCTestCase {
         let componentDelegate = ActionComponentDelegateMock()
         componentDelegate.onDidFail = { error, component in
             if let qrError = error as? QRCodeComponentError,
-               case QRCodeComponentError.qrCodeExpired = qrError { }
+               case QRCodeComponentError.qrCodeExpired = qrError {}
             else {
                 XCTFail()
             }
