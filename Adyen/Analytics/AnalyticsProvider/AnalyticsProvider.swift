@@ -7,11 +7,6 @@
 import AdyenNetworking
 import Foundation
 
-// public enum AnalyticsConfiguration {
-//    case enabled(telemetry: Bool, conversion: Bool)
-//    case disabled
-// }
-
 // TODO: - Document
 public struct AnalyticsConfiguration {
 
@@ -56,6 +51,8 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
         self.configuration = configuration
         self.uniqueAssetAPIClient = UniqueAssetAPIClient<CheckoutAttemptIdResponse>(apiClient: apiClient)
     }
+
+    // MARK: - Internal
 
     internal func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
         guard configuration.isConversionEnabled else {

@@ -37,8 +37,8 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
     // MARK: - BACSDirectDebitComponentTrackerProtocol
 
     internal func sendEvent() {
-        telemetryTracker.sendTelemetryEvent(flavor: isDropIn ? .dropIn(paymentMethods: []) : .components,
-                                            component: paymentMethod.type)
+        let flavor: TelemetryFlavor = isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
+        telemetryTracker.trackTelemetryEvent(flavor: flavor)
     }
 
 }

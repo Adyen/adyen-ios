@@ -8,11 +8,11 @@ import Foundation
 
 /// : nodoc:
 public enum TelemetryFlavor {
-    case components
-    case dropIn(paymentMethods: [String])
+    case components(type: String)
+    case dropIn(type: String = "dropin", paymentMethods: [String])
     case dropInComponent
 
-    public var rawValue: String {
+    public var value: String {
         switch self {
         case .components:
             return "components"
@@ -26,19 +26,18 @@ public enum TelemetryFlavor {
 
 /// : nodoc:
 public protocol TelemetryTrackerProtocol {
-    func sendTelemetryEvent(flavor: TelemetryFlavor, component: String)
+    func trackTelemetryEvent(flavor: TelemetryFlavor)
 }
 
 // MARK: - TelemetryTrackerProtocol
 
 extension AnalyticsProvider: TelemetryTrackerProtocol {
 
-    func sendTelemetryEvent(flavor: TelemetryFlavor, component: String) {
+    func trackTelemetryEvent(flavor: TelemetryFlavor) {
         guard configuration.isTelemetryEnabled else { return }
         guard case .dropInComponent = flavor else { return }
 
-        let telemetryData = TelemetryData(flavor: flavor,
-                                          component: component)
+        let telemetryData = TelemetryData(flavor: flavor)
 
         fetchCheckoutAttemptId { [weak self] checkoutAttemptId in
             let telemetryRequest = TelemetryRequest(data: telemetryData,

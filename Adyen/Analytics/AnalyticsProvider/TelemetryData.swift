@@ -6,18 +6,6 @@
 
 import Foundation
 
-// 1. version (✅)
-// 2. channel (✅)
-// 3. locale (✅)
-// 4. flavor (✅)
-// 5. userAgent (null)
-// a. deviceBrand
-// b. systemVersion
-// 6. referrer (✅)
-// 7. screenWidth (✅)
-// 8. containerWidth (null)
-// 9. component
-// 10. checkoutAttemptId
 internal struct TelemetryData {
 
     // MARK: - Properties
@@ -62,19 +50,21 @@ internal struct TelemetryData {
 
     internal let flavor: String
 
-    internal let paymentMethods: [String]
+    internal var paymentMethods: [String] = []
 
     internal let component: String
 
-    internal init(flavor: TelemetryFlavor, component: String) {
-        self.flavor = flavor.rawValue
-        self.component = component
+    internal init(flavor: TelemetryFlavor) {
+        self.flavor = flavor.value
 
         switch flavor {
-        case let .dropIn(paymentMethods):
+        case let .dropIn(type, paymentMethods):
             self.paymentMethods = paymentMethods
+            self.component = type
+        case let .components(type):
+            self.component = type
         default:
-            self.paymentMethods = []
+            self.component = ""
         }
     }
 }

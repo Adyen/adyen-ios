@@ -33,7 +33,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// :nodoc:
     public let apiContext: APIContext
 
-    /// :nodoc:
+    // TODO: - Document
     public let adyenContext: AdyenContext
 
     /// :nodoc:
