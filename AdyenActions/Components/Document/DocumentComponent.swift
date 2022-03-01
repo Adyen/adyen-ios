@@ -23,7 +23,7 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     public struct Configuration {
         
         /// The component UI style.
-        public var style: DocumentComponentStyle = .init()
+        public var style: DocumentComponentStyle
         
         /// The localization parameters, leave it nil to use the default parameters.
         public var localizationParameters: LocalizationParameters?
