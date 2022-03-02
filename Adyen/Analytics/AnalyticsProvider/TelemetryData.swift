@@ -6,7 +6,7 @@
 
 import Foundation
 
-internal struct TelemetryData {
+internal struct TelemetryData: Encodable {
 
     // MARK: - Properties
 
@@ -53,6 +53,8 @@ internal struct TelemetryData {
     internal var paymentMethods: [String] = []
 
     internal let component: String
+
+    // MARK: - Initializers
 
     internal init(flavor: TelemetryFlavor) {
         self.flavor = flavor.value

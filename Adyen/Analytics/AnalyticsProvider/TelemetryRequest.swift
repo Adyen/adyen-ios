@@ -31,19 +31,19 @@ internal struct TelemetryRequest: APIRequest {
     /// :nodoc:
     internal let method: HTTPMethod = .post
 
-    internal let version: String?
-    internal let channel: String
-    internal let locale: String
-    internal let flavor: String
-    internal let userAgent: String?
-    internal let deviceBrand: String
-    internal let systemVersion: String
-    internal let referrer: String
-    internal let screenWidth: Int
-    internal let containerWidth: Int?
-    internal let paymentMethods: [String]
-    internal let component: String
-    internal let checkoutAttemptId: String?
+    private let version: String?
+    private let channel: String
+    private let locale: String
+    private let flavor: String
+    private let userAgent: String?
+    private let deviceBrand: String
+    private let systemVersion: String
+    private let referrer: String
+    private let screenWidth: Int
+    private let containerWidth: Int?
+    private let paymentMethods: [String]
+    private let component: String
+    private let checkoutAttemptId: String?
 
     // MARK: - Initializers
 

@@ -8,26 +8,36 @@ import AdyenNetworking
 import Foundation
 
 // TODO: - Document
+public struct AnalyticsOptions: OptionSet {
+    public let rawValue: Int
+
+    public static let telemetry = AnalyticsOptions(rawValue: 1 << 0)
+    public static let conversion = AnalyticsOptions(rawValue: 1 << 1)
+
+    public init(rawValue: Int) {
+        self.rawValue = rawValue
+    }
+}
+
+// TODO: - Document
 public struct AnalyticsConfiguration {
 
-    // MARK: - Properties
-
-    public var enabled = true
-    public var telemetry = true
-    public var conversion = false
+    private let options: AnalyticsOptions
 
     // MARK: - Initializers
 
-    public init() { /* Empty Initializer */ }
+    public init(options: AnalyticsOptions = [.telemetry, .conversion]) {
+        self.options = options
+    }
 
     // MARK: - Internal
 
     internal var isConversionEnabled: Bool {
-        enabled && conversion
+        options.contains(.conversion)
     }
 
     internal var isTelemetryEnabled: Bool {
-        enabled && telemetry
+        options.contains(.conversion)
     }
 }
 
