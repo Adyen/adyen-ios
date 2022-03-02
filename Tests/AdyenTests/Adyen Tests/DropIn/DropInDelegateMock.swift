@@ -11,40 +11,40 @@ import AdyenActions
 import AdyenDropIn
 
 class DropInDelegateMock: DropInComponentDelegate {
-    
-    var paymentComponentDelegateMock: PaymentComponentDelegateMock = .init()
-    
-    var actionComponentDelegateMock: ActionComponentDelegateMock = .init()
 
+    var didSubmitHandler: ((PaymentComponentData, DropInComponent) -> Void)?
+    var didProvideHandler: ((ActionComponentData, DropInComponent) -> Void)?
+    var didCompleteHandler: ((DropInComponent) -> Void)?
     var didFailHandler: ((Error, DropInComponent) -> Void)?
+    var didOpenExternalApplicationHandler: ((DropInComponent) -> Void)?
     var didCancelHandler: ((PaymentComponent, DropInComponent) -> Void)?
-    
-    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        paymentComponentDelegateMock.didSubmit(data, from: component)
-    }
-    
-    func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        actionComponentDelegateMock.didProvide(data, from: component)
-    }
-    
-    func didComplete(from component: ActionComponent) {
-        actionComponentDelegateMock.didComplete(from: component)
+
+    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: DropInComponent) {
+        didSubmitHandler?(data, dropInComponent)
     }
 
-    func didFail(with error: Error, from component: ActionComponent) {
-        actionComponentDelegateMock.didFail(with: error, from: component)
+    func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: DropInComponent) {
+        didProvideHandler?(data, dropInComponent)
+    }
+
+    func didComplete(from component: ActionComponent, in dropInComponent: DropInComponent) {
+        didCompleteHandler?(dropInComponent)
     }
     
-    func didFail(with error: Error, from component: PaymentComponent) {
-        paymentComponentDelegateMock.didFail(with: error, from: component)
-    }
-    
-    func didFail(with error: Error, from dropInComponent: DropInComponent) {
+    func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: DropInComponent) {
         didFailHandler?(error, dropInComponent)
     }
     
-    func didOpenExternalApplication(_ component: ActionComponent) {
-        actionComponentDelegateMock.didOpenExternalApplication(component)
+    func didFail(with error: Error, from component: ActionComponent, in dropInComponent: DropInComponent) {
+        didFailHandler?(error, dropInComponent)
+    }
+
+    func didFail(with error: Error, from component: DropInComponent) {
+        didFailHandler?(error, component)
+    }
+
+    func didOpenExternalApplication(_ component: DropInComponent) {
+        didOpenExternalApplicationHandler?(component)
     }
 
     func didCancel(component: PaymentComponent, from dropInComponent: DropInComponent) {

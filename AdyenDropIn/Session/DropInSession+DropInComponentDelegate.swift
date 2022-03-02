@@ -11,23 +11,29 @@ import Foundation
 import Adyen
 
 extension DropInSession: DropInComponentDelegate {
-    public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
+    
+    public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: DropInComponent) {
         session?.didSubmit(data, from: component)
     }
     
-    public func didFail(with error: Error, from component: PaymentComponent) {
+    public func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: DropInComponent) {
         session?.didFail(with: error, from: component)
     }
     
-    public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
+    public func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: DropInComponent) {
         session?.didProvide(data, from: component)
     }
     
-    public func didComplete(from component: ActionComponent) {
+    public func didComplete(from component: ActionComponent, in dropInComponent: DropInComponent) {
         session?.didComplete(from: component)
     }
     
-    public func didFail(with error: Error, from component: ActionComponent) {
+    public func didFail(with error: Error, from component: ActionComponent, in dropInComponent: DropInComponent) {
         session?.didFail(with: error, from: component)
     }
+    
+    public func didOpenExternalApplication(_ component: ActionComponent, in dropInComponent: DropInComponent) {
+        session?.didOpenExternalApplication(component)
+    }
+    
 }

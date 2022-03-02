@@ -48,7 +48,7 @@ extension DropInComponent: PaymentComponentDelegate {
     /// :nodoc:
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         paymentInProgress = true
-        delegate?.didSubmit(data, from: component)
+        delegate?.didSubmit(data, from: component, in: self)
     }
     
     /// :nodoc:
@@ -68,12 +68,12 @@ extension DropInComponent: ActionComponentDelegate {
     /// :nodoc:
     public func didOpenExternalApplication(_ component: ActionComponent) {
         stopLoading()
-        delegate?.didOpenExternalApplication(component)
+        delegate?.didOpenExternalApplication(component, in: self)
     }
 
     /// :nodoc:
     public func didComplete(from component: ActionComponent) {
-        delegate?.didComplete(from: component)
+        delegate?.didComplete(from: component, in: self)
     }
     
     /// :nodoc:
@@ -81,13 +81,13 @@ extension DropInComponent: ActionComponentDelegate {
         if case ComponentError.cancelled = error {
             userDidCancel(component)
         } else {
-            delegate?.didFail(with: error, from: self)
+            delegate?.didFail(with: error, from: component, in: self)
         }
     }
     
     /// :nodoc:
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        delegate?.didProvide(data, from: component)
+        delegate?.didProvide(data, from: component, in: self)
     }
     
 }

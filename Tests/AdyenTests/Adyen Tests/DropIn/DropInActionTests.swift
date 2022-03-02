@@ -52,7 +52,7 @@ class DropInActionsTests: XCTestCase {
         sut = DropInComponent(paymentMethods: paymenMethods, configuration: config)
         sut.delegate = mock
 
-        mock.actionComponentDelegateMock.onDidOpenExternalApplication = { _ in
+        mock.didOpenExternalApplicationHandler = { _ in
             waitExpectation.fulfill()
         }
 

@@ -78,6 +78,26 @@ extension IntegrationExample {
 
 extension IntegrationExample: DropInComponentDelegate {
     
+    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: DropInComponent) {
+        didSubmit(data, from: component)
+    }
+    
+    func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: DropInComponent) {
+        didFail(with: error, from: component)
+    }
+    
+    func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: DropInComponent) {
+        didProvide(data, from: component)
+    }
+    
+    func didComplete(from component: ActionComponent, in dropInComponent: DropInComponent) {
+        didComplete(from: component)
+    }
+    
+    func didFail(with error: Error, from component: ActionComponent, in dropInComponent: DropInComponent) {
+        didFail(with: error, from: component)
+    }
+    
     internal func didCancel(component: PaymentComponent, from dropInComponent: DropInComponent) {
         // Handle the event when the user closes a PresentableComponent.
         print("User did close: \(component.paymentMethod.name)")
