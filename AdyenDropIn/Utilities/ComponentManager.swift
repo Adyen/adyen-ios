@@ -31,9 +31,12 @@ internal final class ComponentManager {
     
     internal let apiContext: APIContext
 
+    internal let adyenContext: AdyenContext
+
     internal weak var presentationDelegate: PresentationDelegate?
     
     internal init(paymentMethods: PaymentMethods,
+                  adyenContext: AdyenContext,
                   configuration: DropInComponent.Configuration,
                   style: DropInComponent.Style,
                   partialPaymentEnabled: Bool = true,
@@ -44,6 +47,7 @@ internal final class ComponentManager {
         self.paymentMethods = paymentMethods
         self.configuration = configuration
         self.apiContext = configuration.apiContext
+        self.adyenContext = adyenContext
         self.style = style
         self.partialPaymentEnabled = partialPaymentEnabled
         self.remainingAmount = remainingAmount
@@ -229,7 +233,9 @@ internal final class ComponentManager {
                                                       shopperInformation: configuration.shopper,
                                                       localizationParameters: configuration.localizationParameters)
         return QiwiWalletComponent(paymentMethod: paymentMethod,
-                                   apiContext: apiContext, configuration: config)
+                                   apiContext: apiContext,
+                                   adyenContext: adyenContext,
+                                   configuration: config)
     }
     
     private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
@@ -237,7 +243,9 @@ internal final class ComponentManager {
                                                  shopperInformation: configuration.shopper,
                                                  localizationParameters: configuration.localizationParameters)
         return MBWayComponent(paymentMethod: paymentMethod,
-                              apiContext: apiContext, configuration: config)
+                              apiContext: apiContext,
+                              adyenContext: adyenContext,
+                              configuration: config)
     }
 
     private func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {
@@ -251,7 +259,8 @@ internal final class ComponentManager {
                                              payment: configuration.payment,
                                              shopperInformation: configuration.shopper,
                                              showEmailAddress: true),
-                        apiContext: apiContext)
+                        apiContext: apiContext,
+                        adyenContext: adyenContext)
     }
 }
 
@@ -342,6 +351,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                                              localizationParameters: configuration.localizationParameters)
         return BasicPersonalInfoFormComponent(paymentMethod: paymentMethod,
                                               apiContext: apiContext,
+                                              adyenContext: adyenContext,
                                               configuration: config)
     }
 
@@ -352,6 +362,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                                 localizationParameters: configuration.localizationParameters)
         return DokuComponent(paymentMethod: paymentMethod,
                              apiContext: apiContext,
+                             adyenContext: adyenContext,
                              configuration: config)
     }
 
@@ -375,6 +386,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                                   localizationParameters: configuration.localizationParameters)
         return AffirmComponent(paymentMethod: paymentMethod,
                                apiContext: apiContext,
+                               adyenContext: adyenContext,
                                configuration: config)
     }
     
