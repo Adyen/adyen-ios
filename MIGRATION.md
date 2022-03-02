@@ -13,3 +13,4 @@
 - `BoletoComponent.style`, `BoletoComponent.shopperInformation` and `BoletoComponent.localizationParameters` moved into the `configuration` property `BoletoComponent.Configuration`
 - `IssuerListComponent.style` and `IssuerListComponent.localizationParameters` moved into new `configuration` property `IssuerListComponent.Configuration`
 - `SEPADirectDebitComponent.style` and `SEPADirectDebitComponent.localizationParameters` moved into new `configuration` property `SEPADirectDebitComponent.Configuration`
+- `ThreeDS2Component.appearanceConfiguration` and `ThreeDS2Component.redirectComponentStyle` moved to `ThreeDS2Component.configuration`

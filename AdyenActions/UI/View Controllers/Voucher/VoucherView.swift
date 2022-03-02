@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,11 +8,15 @@ import Adyen
 import PassKit
 import UIKit
 
-internal protocol VoucherViewDelegate: ActionViewDelegate {
+internal protocol VoucherViewDelegate: AnyObject {
     
-    func addToAppleWallet(completion: @escaping () -> Void)
+    func addToAppleWallet(action: VoucherAction, completion: @escaping () -> Void)
     
-    func secondaryButtonTap(sourceView: UIView)
+    func secondaryButtonTap(sourceView: UIView, action: VoucherAction)
+    
+    func didComplete()
+    
+    func mainButtonTap(sourceView: UIView, action: VoucherAction)
 }
 
 internal final class VoucherView: UIView, Localizable {
@@ -193,16 +197,16 @@ internal final class VoucherView: UIView, Localizable {
     }()
     
     @objc private func onMainButtonTap() {
-        delegate?.mainButtonTap(sourceView: mainButton)
+        delegate?.mainButtonTap(sourceView: mainButton, action: model.action)
     }
     
     @objc private func onSecondaryButtonTap() {
-        delegate?.secondaryButtonTap(sourceView: secondaryButton)
+        delegate?.secondaryButtonTap(sourceView: secondaryButton, action: model.action)
     }
     
     @objc private func appleWalletButtonPressed() {
         loadingView.showsActivityIndicator = true
-        delegate?.addToAppleWallet { [weak self] in
+        delegate?.addToAppleWallet(action: model.action) { [weak self] in
             self?.loadingView.showsActivityIndicator = false
         }
     }

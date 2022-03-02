@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -20,6 +20,7 @@ extension IntegrationExample {
         let configuration = DropInComponent.Configuration(apiContext: apiContext)
         configuration.applePay = .init(summaryItems: ConfigurationConstants.applePaySummaryItems,
                                        merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
+        configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         configuration.payment = payment
         configuration.card.billingAddressMode = .postalCode
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,45 +9,44 @@ import PassKit
 import UIKit
 
 /// :nodoc:
-extension VoucherComponent: VoucherViewDelegate {
+extension VoucherComponent: VoucherViewDelegate, DocumentActionViewDelegate {
     
     /// :nodoc:
     private static let maximumDisplayedCodeLength = 10
     
-    private var isCodeShortEnoughToBeRead: Bool {
-        action
-            .map(\.anyAction.reference.count)
-            .map { $0 < Self.maximumDisplayedCodeLength }
-            ?? false
+    private func isCodeShortEnoughToBeRead(action: VoucherAction) -> Bool {
+        action.anyAction.reference.count < Self.maximumDisplayedCodeLength
     }
     
     internal func didComplete() {
         delegate?.didComplete(from: self)
     }
     
-    internal func mainButtonTap(sourceView: UIView) {
-        guard let action = action else { return }
-        if let downloadable = action.anyAction as? DownloadableVoucher {
-            presentSharePopover(with: downloadable.downloadUrl, sourceView: sourceView)
+    internal func mainButtonTap(sourceView: UIView, action: VoucherAction) {
+        if let downloadable = action.anyAction as? Downloadable {
+            mainButtonTap(sourceView: sourceView, downloadable: downloadable)
         } else {
-            saveAsImage(sourceView: sourceView)
+            saveAsImage(sourceView: sourceView, action: action)
         }
     }
     
-    internal func addToAppleWallet(completion: @escaping () -> Void) {
-        guard let passToken = action.flatMap(\.anyAction.passCreationToken) else { return }
+    internal func mainButtonTap(sourceView: UIView, downloadable: Downloadable) {
+        presentSharePopover(with: downloadable.downloadUrl, sourceView: sourceView)
+    }
+    
+    internal func addToAppleWallet(action: VoucherAction, completion: @escaping () -> Void) {
+        guard let passToken = action.anyAction.passCreationToken else { return }
         
         passProvider.provide(with: passToken) { [weak self] result in
             self?.handlePassProviderResult(result, completion: completion)
         }
     }
     
-    internal func secondaryButtonTap(sourceView: UIView) {
-        presentOptionsAlert(sourceView: sourceView)
+    internal func secondaryButtonTap(sourceView: UIView, action: VoucherAction) {
+        presentOptionsAlert(sourceView: sourceView, action: action)
     }
     
-    private func saveAsImage(sourceView: UIView) {
-        guard let action = action else { return }
+    private func saveAsImage(sourceView: UIView, action: VoucherAction) {
         
         let shareableView = voucherShareableViewProvider.provideView(
             with: action,
@@ -64,43 +63,42 @@ extension VoucherComponent: VoucherViewDelegate {
         )
     }
     
-    private func presentOptionsAlert(sourceView: UIView) {
-        guard let action = action else { return }
+    private func presentOptionsAlert(sourceView: UIView, action: VoucherAction) {
         
         let alert = UIAlertController(
-            title: isCodeShortEnoughToBeRead ? action.anyAction.reference : nil,
+            title: isCodeShortEnoughToBeRead(action: action) ? action.anyAction.reference : nil,
             message: nil,
             preferredStyle: .actionSheet
         )
-        createAlertActions(for: action.anyAction, sourceView: sourceView).forEach { alert.addAction($0) }
+        createAlertActions(for: action, sourceView: sourceView).forEach { alert.addAction($0) }
         
         presenterViewController.present(alert, animated: true, completion: nil)
     }
     
-    private func createAlertActions(for action: AnyVoucherAction, sourceView: UIView) -> [UIAlertAction] {
+    private func createAlertActions(for action: VoucherAction, sourceView: UIView) -> [UIAlertAction] {
         [
-            createCopyCodeAlertAction(for: action.reference),
+            createCopyCodeAlertAction(for: action.anyAction.reference),
             createSaveAlertAction(for: action, sourceView: sourceView),
-            (action as? InstructionAwareVoucherAction)
+            (action.anyAction as? InstructionAwareVoucherAction)
                 .map(\.instructionsURL)
                 .flatMap(createReadInstructionsAlertAction(for:)),
             getCancelAlertAction()
         ].compactMap { $0 }
     }
     
-    private func createSaveAlertAction(for action: AnyVoucherAction, sourceView: UIView) -> UIAlertAction? {
-        guard canAddPasses else { return nil }
+    private func createSaveAlertAction(for action: VoucherAction, sourceView: UIView) -> UIAlertAction? {
+        guard canAddPasses(action: action.anyAction) else { return nil }
         
-        if let downloadable = action as? DownloadableVoucher {
+        if let downloadable = action.anyAction as? Downloadable {
             return createDownloadPDFAlertAction(for: downloadable.downloadUrl, sourceView: sourceView)
         } else {
-            return createSaveAsAnImageAlertAction(with: sourceView)
+            return createSaveAsAnImageAlertAction(with: sourceView, action: action)
         }
     }
     
     private func createCopyCodeAlertAction(for reference: String) -> UIAlertAction {
         UIAlertAction(
-            title: localizedString(.pixCopyButton, localizationParameters),
+            title: localizedString(.pixCopyButton, configuration.localizationParameters),
             style: .default,
             handler: { [weak self] _ in self?.copyCodeSelected(reference) }
         )
@@ -108,7 +106,7 @@ extension VoucherComponent: VoucherViewDelegate {
     
     private func createReadInstructionsAlertAction(for url: URL) -> UIAlertAction {
         UIAlertAction(
-            title: localizedString(.voucherReadInstructions, localizationParameters),
+            title: localizedString(.voucherReadInstructions, configuration.localizationParameters),
             style: .default,
             handler: { _ in
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
@@ -118,7 +116,7 @@ extension VoucherComponent: VoucherViewDelegate {
     
     private func createDownloadPDFAlertAction(for url: URL, sourceView: UIView) -> UIAlertAction {
         UIAlertAction(
-            title: localizedString(.boletoDownloadPdf, localizationParameters),
+            title: localizedString(.boletoDownloadPdf, configuration.localizationParameters),
             style: .default,
             handler: { _ in
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
@@ -126,18 +124,18 @@ extension VoucherComponent: VoucherViewDelegate {
         )
     }
     
-    private func createSaveAsAnImageAlertAction(with sourceView: UIView) -> UIAlertAction {
+    private func createSaveAsAnImageAlertAction(with sourceView: UIView, action: VoucherAction) -> UIAlertAction {
         UIAlertAction(
-            title: localizedString(.voucherSaveImage, localizationParameters),
+            title: localizedString(.voucherSaveImage, configuration.localizationParameters),
             style: .default,
             handler: { [weak self] _ in
-                self?.saveAsImage(sourceView: sourceView)
+                self?.saveAsImage(sourceView: sourceView, action: action)
             }
         )
     }
     
     private func getCancelAlertAction() -> UIAlertAction {
-        UIAlertAction(title: localizedString(.cancelButton, localizationParameters), style: .cancel, handler: nil)
+        UIAlertAction(title: localizedString(.cancelButton, configuration.localizationParameters), style: .cancel, handler: nil)
     }
     
     private func copyCodeSelected(_ code: String) {
