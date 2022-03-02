@@ -1,19 +1,20 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Adyen
 import Foundation
+import SwiftUI
 import UIKit
 
-/// Callback protocol for basic action views with completion and main button actions.
-internal protocol ActionViewDelegate: AnyObject {
+/// Callback protocol for document action views.
+internal protocol DocumentActionViewDelegate: AnyObject {
     
     func didComplete()
     
-    func mainButtonTap(sourceView: UIView)
+    func mainButtonTap(sourceView: UIView, downloadable: Downloadable)
 }
 
 internal final class DocumentActionView: UIView {
@@ -66,7 +67,7 @@ internal final class DocumentActionView: UIView {
         return button
     }()
 
-    internal weak var delegate: ActionViewDelegate?
+    internal weak var delegate: DocumentActionViewDelegate?
     
     /// The view model.
     private let viewModel: DocumentActionViewModel
@@ -97,6 +98,6 @@ internal final class DocumentActionView: UIView {
     }
     
     @objc private func onMainButtonTap() {
-        delegate?.mainButtonTap(sourceView: mainButton)
+        delegate?.mainButtonTap(sourceView: mainButton, downloadable: viewModel.action)
     }
 }

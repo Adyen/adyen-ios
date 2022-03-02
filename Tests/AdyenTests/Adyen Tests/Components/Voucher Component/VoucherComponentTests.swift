@@ -18,8 +18,8 @@ class VoucherComponentTests: XCTestCase {
     override func setUp() {
         super.setUp()
         presentationDelegate = PresentationDelegateMock()
-        sut = VoucherComponent(apiContext: Dummy.context, style: nil)
-        sut.localizationParameters = LocalizationParameters(tableName: "test_table")
+        sut = VoucherComponent(apiContext: Dummy.context)
+        sut.configuration.localizationParameters = LocalizationParameters(tableName: "test_table")
         sut.presentationDelegate = presentationDelegate
     }
 
@@ -194,12 +194,12 @@ class VoucherComponentTests: XCTestCase {
         _ model: VoucherView.Model,
         forAction action: VoucherAction
     ) {
-        XCTAssertEqual(model.style.mainButton, sut.style.mainButton)
-        XCTAssertEqual(model.style.secondaryButton, sut.style.secondaryButton)
-        XCTAssertEqual(model.style.amountLabel, sut.style.amountLabel)
-        XCTAssertEqual(model.style.currencyLabel, sut.style.currencyLabel)
-        XCTAssertEqual(model.style.codeConfirmationColor, sut.style.codeConfirmationColor)
-        XCTAssertEqual(model.style.backgroundColor, sut.style.backgroundColor)
+        XCTAssertEqual(model.style.mainButton, sut.configuration.style.mainButton)
+        XCTAssertEqual(model.style.secondaryButton, sut.configuration.style.secondaryButton)
+        XCTAssertEqual(model.style.amountLabel, sut.configuration.style.amountLabel)
+        XCTAssertEqual(model.style.currencyLabel, sut.configuration.style.currencyLabel)
+        XCTAssertEqual(model.style.codeConfirmationColor, sut.configuration.style.codeConfirmationColor)
+        XCTAssertEqual(model.style.backgroundColor, sut.configuration.style.backgroundColor)
         
         let comps = action.anyAction.totalAmount.formattedComponents
         
@@ -213,7 +213,7 @@ class VoucherComponentTests: XCTestCase {
                 size: .medium
             )
         )
-        XCTAssertEqual(model.mainButtonType == .addToAppleWallet, sut.canAddPasses)
+        XCTAssertEqual(model.mainButtonType == .addToAppleWallet, sut.canAddPasses(action: action.anyAction))
     }
     
 }

@@ -87,6 +87,7 @@ then
     use_frameworks!
 
     pod 'Adyen', :path => '../'
+    pod 'Adyen/Session', :path => '../'
     pod 'Adyen/SwiftUI', :path => '../'
   end
   " >> Podfile
