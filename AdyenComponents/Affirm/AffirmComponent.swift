@@ -33,6 +33,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     /// - Parameters:
     ///   - paymentMethod: The Affirm payment method.
     ///   - apiContext: The component's API context.
+    ///   - adyenContext: The Adyen context.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: PaymentMethod,
                 apiContext: APIContext,
@@ -56,6 +57,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
         
         super.init(paymentMethod: paymentMethod,
                    apiContext: apiContext,
+                   adyenContext: adyenContext,
                    fields: fields,
                    configuration: configuration)
 
