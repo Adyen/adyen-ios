@@ -5,6 +5,7 @@
 //
 
 import AdyenActions
+import Adyen
 import Foundation
 
 final class ActionComponentDelegateMock: ActionComponentDelegate {

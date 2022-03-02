@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -48,7 +48,7 @@ extension DropInComponent: PaymentComponentDelegate {
     /// :nodoc:
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         paymentInProgress = true
-        delegate?.didSubmit(data, for: component.paymentMethod, from: self)
+        delegate?.didSubmit(data, from: component)
     }
     
     /// :nodoc:
@@ -68,12 +68,12 @@ extension DropInComponent: ActionComponentDelegate {
     /// :nodoc:
     public func didOpenExternalApplication(_ component: ActionComponent) {
         stopLoading()
-        delegate?.didOpenExternalApplication(self)
+        delegate?.didOpenExternalApplication(component)
     }
 
     /// :nodoc:
     public func didComplete(from component: ActionComponent) {
-        delegate?.didComplete(from: self)
+        delegate?.didComplete(from: component)
     }
     
     /// :nodoc:
@@ -87,7 +87,7 @@ extension DropInComponent: ActionComponentDelegate {
     
     /// :nodoc:
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        delegate?.didProvide(data, from: self)
+        delegate?.didProvide(data, from: component)
     }
     
 }
