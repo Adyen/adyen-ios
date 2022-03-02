@@ -11,7 +11,7 @@ import Foundation
 public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, AdyenObserver, CompoundFormItem, Hidable {
     
     /// :nodoc:
-    public var isHidden: Observable<Bool> = Observable(false)
+    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
     private var items: [FormItem] = []
     

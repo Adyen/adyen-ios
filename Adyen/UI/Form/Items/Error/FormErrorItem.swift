@@ -11,7 +11,7 @@ import Foundation
 public final class FormErrorItem: FormItem, Hidable {
 
     /// Indicates the error message.
-    @Observable(nil) public var message: String?
+    @AdyenObservable(nil) public var message: String?
 
     /// The error icon name.
     public let iconName: String
@@ -23,7 +23,7 @@ public final class FormErrorItem: FormItem, Hidable {
     public var identifier: String?
 
     /// :nodoc:
-    public var isHidden: Observable<Bool> = Observable(true)
+    public var isHidden: AdyenObservable<Bool> = AdyenObservable(true)
 
     /// :nodoc:
     public var subitems: [FormItem] = []

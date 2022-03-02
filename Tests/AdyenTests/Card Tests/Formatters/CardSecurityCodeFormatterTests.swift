@@ -11,7 +11,7 @@ import XCTest
 class CardSecurityCodeFormatterTests: XCTestCase {
     
     func testFormatting() {
-        let observer = Observable<CardType?>(.masterCard)
+        let observer = AdyenObservable<CardType?>(.masterCard)
         let formatter = CardSecurityCodeFormatter(publisher: observer)
         XCTAssertEqual(formatter.formattedValue(for: "1"), "1")
         XCTAssertEqual(formatter.formattedValue(for: "101abc"), "101")

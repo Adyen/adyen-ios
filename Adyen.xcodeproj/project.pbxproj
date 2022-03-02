@@ -157,7 +157,7 @@
 		E262128D22A8FE6700F2B133 /* PaymentMethodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E262128C22A8FE6700F2B133 /* PaymentMethodTests.swift */; };
 		E262128F22A90D8800F2B133 /* PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E262128E22A90D8800F2B133 /* PaymentMethod.swift */; };
 		E26EAD92233A1A340060BBA7 /* CoreColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26EAD91233A1A340060BBA7 /* CoreColors.swift */; };
-		E270FDE4225CACB0006C2CD0 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E270FDE3225CACB0006C2CD0 /* Observable.swift */; };
+		E270FDE4225CACB0006C2CD0 /* AdyenObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E270FDE3225CACB0006C2CD0 /* AdyenObservable.swift */; };
 		E270FDE6225CB40A006C2CD0 /* ObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E270FDE5225CB40A006C2CD0 /* ObservableTests.swift */; };
 		E270FDE9225CC4B1006C2CD0 /* ObservationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E270FDE8225CC4B1006C2CD0 /* ObservationManager.swift */; };
 		E270FDEB225CC4C4006C2CD0 /* Observation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E270FDEA225CC4C4006C2CD0 /* Observation.swift */; };
@@ -1140,7 +1140,7 @@
 		E262128C22A8FE6700F2B133 /* PaymentMethodTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodTests.swift; sourceTree = "<group>"; };
 		E262128E22A90D8800F2B133 /* PaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethod.swift; sourceTree = "<group>"; };
 		E26EAD91233A1A340060BBA7 /* CoreColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreColors.swift; sourceTree = "<group>"; };
-		E270FDE3225CACB0006C2CD0 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		E270FDE3225CACB0006C2CD0 /* AdyenObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenObservable.swift; sourceTree = "<group>"; };
 		E270FDE5225CB40A006C2CD0 /* ObservableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableTests.swift; sourceTree = "<group>"; };
 		E270FDE8225CC4B1006C2CD0 /* ObservationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservationManager.swift; sourceTree = "<group>"; };
 		E270FDEA225CC4C4006C2CD0 /* Observation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observation.swift; sourceTree = "<group>"; };
@@ -2226,7 +2226,7 @@
 			isa = PBXGroup;
 			children = (
 				E2B317A82265EBD200C1BB30 /* EventPublisher.swift */,
-				E270FDE3225CACB0006C2CD0 /* Observable.swift */,
+				E270FDE3225CACB0006C2CD0 /* AdyenObservable.swift */,
 				E288EB952267652D000E960C /* AdyenObserver.swift */,
 				E270FDE8225CC4B1006C2CD0 /* ObservationManager.swift */,
 				E270FDEA225CC4C4006C2CD0 /* Observation.swift */,
@@ -5021,7 +5021,7 @@
 				A0414C302790429A00DF3FE9 /* PublicKeyConsumer.swift in Sources */,
 				E28098C4220DC66E0087928F /* ListItemView.swift in Sources */,
 				E28098C2220DC1080087928F /* ListCell.swift in Sources */,
-				E270FDE4225CACB0006C2CD0 /* Observable.swift in Sources */,
+				E270FDE4225CACB0006C2CD0 /* AdyenObservable.swift in Sources */,
 				E9E3DAFF2225488900697074 /* Completion.swift in Sources */,
 				E278EB4122AA5EBD00497FD5 /* CardPaymentMethod.swift in Sources */,
 				E2D12C00221D91ED00EF682F /* StringHelpers.swift in Sources */,
