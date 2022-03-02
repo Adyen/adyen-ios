@@ -5,6 +5,10 @@
 //
 
 import Foundation
+#if canImport(AdyenActions)
+    import AdyenActions
+#endif
+import Adyen
 
 extension DropInSession: DropInComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
