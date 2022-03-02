@@ -8,11 +8,11 @@ import Adyen
 import Foundation
 import UIKit
 
-/// Configuration for BLIK Component.
-public typealias BLIKComponentConfiguration = BasicComponentConfiguration
-
 /// A component that provides a form for BLIK payments.
 public final class BLIKComponent: PaymentComponent, PresentableComponent, LoadingComponent {
+    
+    /// Configuration for BLIK Component.
+    public typealias Configuration = BasicComponentConfiguration
     
     /// :nodoc:
     public let apiContext: APIContext
@@ -28,7 +28,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
                                                                              style: configuration.style)
     
     /// Component's configuration
-    public var configuration: BLIKComponentConfiguration
+    public var configuration: Configuration
 
     /// :nodoc:
     public let requiresModalPresentation: Bool = true
@@ -43,7 +43,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
     /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: BLIKPaymentMethod,
                 apiContext: APIContext,
-                configuration: BLIKComponentConfiguration = .init()) {
+                configuration: Configuration = .init()) {
         self.blikPaymentMethod = paymentMethod
         self.apiContext = apiContext
         self.configuration = configuration
