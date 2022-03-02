@@ -4314,6 +4314,7 @@
 				F92980A227CE2B33000CA5CA /* Sources */,
 				F92980A327CE2B33000CA5CA /* Frameworks */,
 				F92980A427CE2B33000CA5CA /* Resources */,
+				F92980C027CF5149000CA5CA /* Format and lint */,
 			);
 			buildRules = (
 			);
@@ -4765,6 +4766,24 @@
 			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh \"$SRCROOT/$TARGETNAME\"\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/$TARGETNAME\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
 		};
 		F9175F9F259498EA00D653BE /* Format and lint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Format and lint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh \"$SRCROOT/$TARGETNAME\"\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/$TARGETNAME\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
+		};
+		F92980C027CF5149000CA5CA /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (

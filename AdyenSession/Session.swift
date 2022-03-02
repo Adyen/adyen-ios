@@ -1,13 +1,11 @@
 //
-//  Session.swift
-//  AdyenSession
+// Copyright (c) 2022 Adyen N.V.
 //
-//  Created by Mohamed Eldoheiri on 3/1/22.
-//  Copyright © 2022 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
 import Adyen
+import Foundation
 #if canImport(AdyenActions)
     import AdyenActions
 #endif
