@@ -7,14 +7,14 @@
 import Adyen
 import Foundation
 
+/// DropIn session adapter.
 public final class DropInSession {
-    internal weak var session: SessionProtocol?
+    internal let session: SessionProtocol
     
+    /// Initializes an instance of `DropInSession`
+    ///
+    /// - Parameter session: The session object
     public init(session: SessionProtocol) {
         self.session = session
-    }
-    
-    public func didFail(with error: Error, from dropInComponent: DropInComponent) {
-        session?.didFail(with: error, from: dropInComponent)
     }
 }

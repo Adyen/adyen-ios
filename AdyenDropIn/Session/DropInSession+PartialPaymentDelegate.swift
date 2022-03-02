@@ -9,14 +9,14 @@ import Foundation
 
 extension DropInSession: PartialPaymentDelegate {
     public func checkBalance(with data: PaymentComponentData, completion: @escaping (Result<Balance, Error>) -> Void) {
-        session?.checkBalance(with: data, completion: completion)
+        session.checkBalance(with: data, completion: completion)
     }
     
     public func requestOrder(_ completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
-        session?.requestOrder(completion)
+        session.requestOrder(completion)
     }
     
     public func cancelOrder(_ order: PartialPaymentOrder) {
-        session?.cancelOrder(order)
+        session.cancelOrder(order)
     }
 }
