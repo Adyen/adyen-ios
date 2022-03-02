@@ -19,13 +19,16 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
     /// - Parameters:
     ///   - paymentMethod: The payment method.
     ///   - apiContext: The component's API context.
+    ///   - adyenContext: The Adyen context.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: PaymentMethod,
                 apiContext: APIContext,
+                adyenContext: AdyenContext,
                 configuration: BasicPersonalInfoComponentConfiguration) {
         
         super.init(paymentMethod: paymentMethod,
                    apiContext: apiContext,
+                   adyenContext: adyenContext,
                    fields: [.firstName, .lastName, .phone, .email],
                    configuration: configuration)
     }
