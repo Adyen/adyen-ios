@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,7 @@ import Foundation
 
 /// Describes an action in which an OXXO voucher is presented to the shopper.
 public class OXXOVoucherAction: GenericVoucherAction,
-    DownloadableVoucher,
+    Downloadable,
     InstructionAwareVoucherAction {
 
     /// This reference is a short version of the barcode number of the voucher.
@@ -20,12 +20,6 @@ public class OXXOVoucherAction: GenericVoucherAction,
     
     /// Download URL.
     public let downloadUrl: URL
-    
-    /// The instruction url.
-    @available(*, deprecated, message: "Please use `instructionsURL` instead.")
-    public var instructionsUrl: String {
-        instructionsURL.absoluteString
-    }
     
     /// The instruction `URL` object.
     public let instructionsURL: URL

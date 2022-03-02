@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -28,18 +28,32 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
 
     /// :nodoc:
     public let requiresModalPresentation: Bool = true
-
-    /// The Component UI style.
-    public let style: VoucherComponentStyle
-
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
+    
+    /// The voucher component configurations.
+    public struct Configuration {
+        
+        /// The component UI style.
+        public var style: VoucherComponentStyle = .init()
+        
+        /// The localization parameters, leave it nil to use the default parameters.
+        public var localizationParameters: LocalizationParameters?
+        
+        /// Initializes an instance of `Configuration`
+        ///
+        /// - Parameters:
+        ///   - style: The Component UI style.
+        ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
+        public init(style: VoucherComponentStyle = VoucherComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
+            self.style = style
+            self.localizationParameters = localizationParameters
+        }
+    }
+    
+    /// The voucher component configurations.
+    public var configuration: Configuration
 
     /// :nodoc:
     internal var voucherShareableViewProvider: AnyVoucherShareableViewProvider
-    
-    /// :nodoc:
-    internal var action: VoucherAction?
 
     /// :nodoc:
     private lazy var apiClient: APIClientProtocol = {
@@ -50,8 +64,8 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     }()
     
     /// :nodoc:
-    internal var canAddPasses: Bool {
-        PKAddPassesViewController.canAddPasses() && action.flatMap(\.anyAction.passCreationToken) != nil
+    internal func canAddPasses(action: AnyVoucherAction) -> Bool {
+        PKAddPassesViewController.canAddPasses() && action.passCreationToken != nil
     }
 
     /// :nodoc:
@@ -66,12 +80,12 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     /// Initializes the `VoucherComponent`.
     ///
     /// - Parameter apiContext: The API context.
-    /// - Parameter style: The Component UI style.
-    public convenience init(apiContext: APIContext, style: VoucherComponentStyle?) {
+    /// - Parameter configuration: The voucher component configurations.
+    public convenience init(apiContext: APIContext, configuration: Configuration = Configuration()) {
         self.init(
             apiContext: apiContext,
             voucherShareableViewProvider: nil,
-            style: style ?? VoucherComponentStyle(),
+            configuration: configuration,
             passProvider: AppleWalletPassProvider(apiContext: apiContext)
         )
     }
@@ -83,13 +97,13 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     internal init(
         apiContext: APIContext,
         voucherShareableViewProvider: AnyVoucherShareableViewProvider?,
-        style: VoucherComponentStyle,
+        configuration: Configuration = Configuration(),
         passProvider: AnyAppleWalletPassProvider?
     ) {
         self.apiContext = apiContext
-        self.style = style
+        self.configuration = configuration
         self.voucherShareableViewProvider = voucherShareableViewProvider ??
-            VoucherShareableViewProvider(style: style, environment: apiContext.environment)
+            VoucherShareableViewProvider(style: configuration.style, environment: apiContext.environment)
         self.passProvider = passProvider ?? AppleWalletPassProvider(apiContext: apiContext)
     }
 
@@ -100,12 +114,10 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     ///
     /// - Parameter action: The await action object.
     public func handle(_ action: VoucherAction) {
-        self.action = action
-        
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
         fetchAndCacheAppleWalletPassIfNeeded(with: action.anyAction)
 
-        voucherShareableViewProvider.localizationParameters = localizationParameters
+        voucherShareableViewProvider.localizationParameters = configuration.localizationParameters
 
         let view = VoucherView(model: viewModel(with: action))
         view.delegate = self
@@ -133,9 +145,9 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     private func navBarType() -> NavigationBarType {
         let model = ActionNavigationBar.Model(leadingButtonTitle: Bundle.Adyen.localizedEditCopy,
                                               trailingButtonTitle: Bundle.Adyen.localizedDoneCopy)
-        let style = ActionNavigationBar.Style(leadingButton: style.editButton,
-                                              trailingButton: style.doneButton,
-                                              backgroundColor: style.backgroundColor)
+        let style = ActionNavigationBar.Style(leadingButton: configuration.style.editButton,
+                                              trailingButton: configuration.style.doneButton,
+                                              backgroundColor: configuration.style.backgroundColor)
         
         let navBar = ActionNavigationBar(model: model, style: style)
         
@@ -152,20 +164,21 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     private func viewModel(with action: VoucherAction) -> VoucherView.Model {
         let anyAction = action.anyAction
         let viewStyle = VoucherView.Model.Style(
-            editButton: style.editButton,
-            doneButton: style.doneButton,
-            mainButton: style.mainButton,
-            secondaryButton: style.secondaryButton,
-            codeConfirmationColor: style.codeConfirmationColor,
-            amountLabel: style.amountLabel,
-            currencyLabel: style.currencyLabel,
+            editButton: configuration.style.editButton,
+            doneButton: configuration.style.doneButton,
+            mainButton: configuration.style.mainButton,
+            secondaryButton: configuration.style.secondaryButton,
+            codeConfirmationColor: configuration.style.codeConfirmationColor,
+            amountLabel: configuration.style.amountLabel,
+            currencyLabel: configuration.style.currencyLabel,
             logoCornerRounding: .fixed(5),
-            backgroundColor: style.backgroundColor
+            backgroundColor: configuration.style.backgroundColor
         )
         
         let comps = anyAction.totalAmount.formattedComponents
         
         return VoucherView.Model(
+            action: action,
             identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "voucherView"),
             amount: comps.formattedValue,
             currency: comps.formattedCurrencySymbol,
@@ -175,18 +188,18 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
                 size: .medium
             ),
             mainButton: getPrimaryButtonTitle(with: action),
-            secondaryButtonTitle: localizedString(.moreOptions, localizationParameters),
-            codeConfirmationTitle: localizedString(.pixInstructionsCopiedMessage, localizationParameters),
-            mainButtonType: canAddPasses ? .addToAppleWallet : .save,
+            secondaryButtonTitle: localizedString(.moreOptions, configuration.localizationParameters),
+            codeConfirmationTitle: localizedString(.pixInstructionsCopiedMessage, configuration.localizationParameters),
+            mainButtonType: canAddPasses(action: action.anyAction) ? .addToAppleWallet : .save,
             style: viewStyle
         )
     }
     
     private func getPrimaryButtonTitle(with action: VoucherAction) -> String {
-        if action.anyAction is DownloadableVoucher {
-            return localizedString(.boletoDownloadPdf, localizationParameters)
+        if action.anyAction is Downloadable {
+            return localizedString(.boletoDownloadPdf, configuration.localizationParameters)
         } else {
-            return localizedString(.voucherSaveImage, localizationParameters)
+            return localizedString(.voucherSaveImage, configuration.localizationParameters)
         }
     }
 

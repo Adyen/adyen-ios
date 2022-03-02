@@ -11,12 +11,22 @@ import UIKit
 import XCTest
 
 class VoucherViewTests: XCTestCase {
+    
+    let action: VoucherAction = .boletoBancairoSantander(
+        .init(
+            paymentMethodType: .boletoBancairoSantander,
+            totalAmount: .init(value: 100, currencyCode: "EUR", localeIdentifier: nil),
+            reference: "reference",
+            expiresAt: Date(),
+            downloadUrl: URL(string: "https://google.com")!, passCreationToken: nil
+        )
+    )
 
     func testCustomUI() {
         
         let style = getMockStyle()
         
-        let sut = getSut(model: getMockModel(mainButtonType: .save, style: style))
+        let sut = getSut(model: getMockModel(action: action, mainButtonType: .save, style: style))
         
         let dummyExpectation = expectation(description: "Dummy expectation")
         
@@ -38,12 +48,13 @@ class VoucherViewTests: XCTestCase {
         let appleWalletButtonExpectation = expectation(description: "Apple wallet button tapped")
         
         let delegateMock = VoucherViewDelegateMock()
-        delegateMock.onAddToAppleWallet = {
+        delegateMock.onAddToAppleWallet = { _ in
             appleWalletButtonExpectation.fulfill()
         }
         
         let sut = getSut(
             model: getMockModel(
+                action: action,
                 mainButtonType: .addToAppleWallet,
                 style: getMockStyle()
             )
@@ -68,14 +79,15 @@ class VoucherViewTests: XCTestCase {
         let secondaryButtonExpectation = expectation(description: "Secondary button tapped")
         
         let delegateMock = VoucherViewDelegateMock()
-        delegateMock.onMainButtonTap = { _ in
+        delegateMock.onMainButtonTap = { _, _ in
             mainButtonExpectation.fulfill()
         }
-        delegateMock.onSecondaryButtonTap = { _ in
+        delegateMock.onSecondaryButtonTap = { _, _ in
             secondaryButtonExpectation.fulfill()
         }
         
         let mockModel = getMockModel(
+            action: action,
             mainButtonType: .save,
             style: getMockStyle()
         )
@@ -102,6 +114,7 @@ class VoucherViewTests: XCTestCase {
     
     func testModel() {
         let mockModel = getMockModel(
+            action: action,
             mainButtonType: .save,
             style: getMockStyle()
         )
@@ -127,6 +140,7 @@ class VoucherViewTests: XCTestCase {
     
     func testCopyCodeAnimation() {
         let mockModel = getMockModel(
+            action: action,
             mainButtonType: .save,
             style: getMockStyle()
         )
@@ -167,10 +181,12 @@ class VoucherViewTests: XCTestCase {
     }
     
     func getMockModel(
+        action: VoucherAction,
         mainButtonType: VoucherView.Model.Button,
         style: VoucherView.Model.Style
     ) -> VoucherView.Model {
         VoucherView.Model(
+            action: action,
             identifier: "identifier",
             amount: "100",
             currency: "EUR",

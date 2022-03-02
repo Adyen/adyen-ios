@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,6 +10,8 @@ import UIKit
 extension QRCodeView {
     
     internal class Model {
+        
+        internal let action: QRCodeAction
     
         internal let instruction: String
         
@@ -36,11 +38,13 @@ extension QRCodeView {
             internal let backgroundColor: UIColor
         }
         
-        internal init(instruction: String,
+        internal init(action: QRCodeAction,
+                      instruction: String,
                       logoUrl: URL,
                       observedProgress: Progress?,
                       expiration: Observable<String?>,
                       style: QRCodeView.Model.Style) {
+            self.action = action
             self.instruction = instruction
             self.logoUrl = logoUrl
             self.observedProgress = observedProgress

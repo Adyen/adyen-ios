@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -12,12 +12,6 @@ public class EContextStoresVoucherAction: GenericVoucherAction,
 
     /// Masked shopper telephone number.
     public let maskedTelephoneNumber: String
-    
-    /// The instruction url.
-    @available(*, deprecated, message: "Please use `instructionsURL` instead.")
-    public var instructionsUrl: String {
-        instructionsURL.absoluteString
-    }
     
     /// The instruction `URL` object.
     public let instructionsURL: URL

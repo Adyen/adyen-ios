@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,6 +10,9 @@ import Adyen
 #endif
 #if canImport(AdyenComponents)
     import AdyenComponents
+#endif
+#if canImport(AdyenActions)
+    import AdyenActions
 #endif
 import Foundation
 import PassKit
@@ -27,6 +30,9 @@ public extension DropInComponent {
         
         /// Payment methods list related configurations.
         public var paymentMethodsList = PaymentMethodListConfiguration()
+        
+        /// Action components related configurations.
+        public var actionComponent = ActionComponentConfiguration()
         
         /// Shopper related information
         public var shopper: PrefilledShopperInformation?
@@ -89,6 +95,11 @@ public extension DropInComponent {
         /// A list of fields that you need for a shipping contact in order to process the transaction.
         public var requiredShippingContactFields: Set<PKContactField> = []
 
+    }
+    
+    struct ActionComponentConfiguration {
+        /// Three DS configurations
+        public var threeDS: AdyenActionComponent.Configuration.ThreeDS = .init()
     }
     
 }
