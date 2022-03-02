@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// A form item into which a card number is entered.
-internal final class FormCardNumberItem: FormTextItem, Observer {
+internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     
     private static let binLength = 12
 

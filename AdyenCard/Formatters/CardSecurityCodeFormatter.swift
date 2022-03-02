@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// Formats a card's security code (CVC/CVV).
-public final class CardSecurityCodeFormatter: NumericFormatter, Observer {
+public final class CardSecurityCodeFormatter: NumericFormatter, AdyenObserver {
     
     /// Indicate is validating CVV belong to a Amex card
     private var cardType: CardType?

@@ -8,10 +8,10 @@ import Foundation
 
 /// Conforming to the Observer protocol will make the observe and binding functions available for use.
 /// :nodoc:
-public protocol Observer: AnyObject {}
+public protocol AdyenObserver: AnyObject {}
 
 /// :nodoc:
-public extension Observer {
+public extension AdyenObserver {
     
     /// Observes an event publisher for events.
     ///

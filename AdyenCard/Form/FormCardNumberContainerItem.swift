@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// A form item which consists of card number item and the supported card icons below.
-internal final class FormCardNumberContainerItem: FormItem, Observer {
+internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     
     /// The supported card type logos.
     internal let cardTypeLogos: [FormCardLogosItem.CardTypeLogo]

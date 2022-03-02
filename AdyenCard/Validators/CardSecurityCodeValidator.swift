@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// Validates a card's security code.
-public final class CardSecurityCodeValidator: NumericStringValidator, Observer {
+public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObserver {
     
     /// Initiate new instance of CardSecurityCodeValidator
     public init() {

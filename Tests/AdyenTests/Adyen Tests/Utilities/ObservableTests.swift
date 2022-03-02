@@ -7,7 +7,7 @@
 @testable import Adyen
 import XCTest
 
-class ObservableTests: XCTestCase, Observer {
+class ObservableTests: XCTestCase, AdyenObserver {
     
     func testBasicObservation() {
         var latestValue: Bool?
@@ -149,7 +149,7 @@ class ObservableTests: XCTestCase, Observer {
         XCTAssertTrue(receiver.observableObject.boolValue)
     }
 
-    class TestObserver: Observer {
+    class TestObserver: AdyenObserver {
         var stringValue: String = ""
         var optionalStringValue: String?
 

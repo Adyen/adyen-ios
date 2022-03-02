@@ -7,7 +7,7 @@
 import Adyen
 
 /// A form element that handles the display and selection of installment options based on the configuration.
-internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentElement>, Observer {
+internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentElement>, AdyenObserver {
     
     /// Configurations  to prepare the picker form items.
     private let installmentConfiguration: InstallmentConfiguration

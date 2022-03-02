@@ -11,7 +11,7 @@ import UIKit
 public typealias AffirmComponentConfiguration = PersonalInformationConfiguration
 
 /// A component that provides a form for Affirm payment.
-public final class AffirmComponent: AbstractPersonalInformationComponent, Observer {
+public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenObserver {
     
     private enum ViewIdentifier {
         static let billingAddress = "billingAddressItem"

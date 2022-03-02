@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for Boleto payment.
-public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent, Localizable, Observer {
+public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent, Localizable, AdyenObserver {
 
     /// :nodoc:
     public let apiContext: APIContext
