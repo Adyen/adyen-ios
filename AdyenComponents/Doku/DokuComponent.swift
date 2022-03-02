@@ -21,13 +21,16 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
     /// - Parameters:
     ///   - paymentMethod: The Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
     ///   - apiContext: The component's UI style.
+    ///   - adyenContext: The Adyen context.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: DokuPaymentMethod,
                 apiContext: APIContext,
+                adyenContext: AdyenContext,
                 configuration: DokuComponentConfiguration) {
         self.dokuPaymentMethod = paymentMethod
         super.init(paymentMethod: paymentMethod,
                    apiContext: apiContext,
+                   adyenContext: adyenContext,
                    fields: [.firstName, .lastName, .email],
                    configuration: configuration)
     }
