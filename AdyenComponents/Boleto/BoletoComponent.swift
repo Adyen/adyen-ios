@@ -13,6 +13,9 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
 
     /// :nodoc:
     public let apiContext: APIContext
+
+    /// :nodoc:
+    public let adyenContext: AdyenContext
     
     /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
@@ -42,13 +45,17 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     
     /// Initializes the Boleto Component
     /// - Parameters:
-    ///   - configuration: The Component's configuration.
-    ///   - style: The Component's UI style.
+    ///   - configuration: The component's configuration.
+    ///   - apiContext: The component's API context.
+    ///   - adyenContext: The Adyen context.
+    ///   - style: The component's UI style.
     public init(configuration: Configuration,
                 apiContext: APIContext,
+                adyenContext: AdyenContext,
                 style: FormComponentStyle = FormComponentStyle()) {
         self.configuration = configuration
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.style = style
         
         socialSecurityNumberItem.isHidden.wrappedValue = false
@@ -96,6 +103,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
                                                                      localizationParameters: localizationParameters)
         let component = FormComponent(paymentMethod: paymentMethod,
                                       apiContext: apiContext,
+                                      adyenContext: adyenContext,
                                       fields: formFields,
                                       configuration: configuration,
                                       onCreatePaymentDetails: { [weak self] in self?.createPaymentDetails() })
@@ -222,6 +230,7 @@ extension BoletoComponent {
         /// :nodoc:
         fileprivate init(paymentMethod: PaymentMethod,
                          apiContext: APIContext,
+                         adyenContext: AdyenContext,
                          fields: [PersonalInformation],
                          configuration: AbstractPersonalInformationConfiguration,
                          onCreatePaymentDetails: @escaping () -> PaymentMethodDetails?) {
@@ -229,6 +238,7 @@ extension BoletoComponent {
             
             super.init(paymentMethod: paymentMethod,
                        apiContext: apiContext,
+                       adyenContext: adyenContext,
                        fields: fields,
                        configuration: configuration)
         }
