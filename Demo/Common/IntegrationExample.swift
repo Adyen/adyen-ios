@@ -49,6 +49,8 @@ internal final class IntegrationExample: APIClientAware {
         clientKey: clientKey
     )
 
+    internal lazy var adyenContext = AdyenContext(apiContext: apiContext)
+
     // MARK: - Action Handling for Components
 
     internal lazy var actionComponent: AdyenActionComponent = {

@@ -27,6 +27,7 @@ extension IntegrationExample {
 
         let dropInComponentStyle = DropInComponent.Style()
         let component = DropInComponent(paymentMethods: paymentMethods,
+                                        adyenContext: adyenContext,
                                         configuration: configuration,
                                         style: dropInComponentStyle,
                                         title: ConfigurationConstants.appName)
