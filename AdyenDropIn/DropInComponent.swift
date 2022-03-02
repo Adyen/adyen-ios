@@ -42,21 +42,27 @@ public final class DropInComponent: NSObject, PresentableComponent {
 
     /// :nodoc:
     public var apiContext: APIContext { configuration.apiContext }
+
+    // TODO: - Document
+    public var adyenContext: AdyenContext
     
     /// Initializes the drop in component.
     ///
     /// - Parameters:
     ///   - paymentMethods: The payment methods to display.
+    ///   - adyenContext: The Adyen context
     ///   - configuration: The payment method specific configuration.
     ///   - style: The UI styles of the components.
     ///   - title: Name of the application. To be displayed on a first payment page.
     ///            If no external value provided, the Main Bundle's name would be used.
     public init(paymentMethods: PaymentMethods,
+                adyenContext: AdyenContext,
                 configuration: Configuration,
                 style: Style = Style(),
                 title: String? = nil) {
         self.title = title ?? Bundle.main.displayName
         self.configuration = configuration
+        self.adyenContext = adyenContext
         self.paymentMethods = paymentMethods
         self.style = style
         super.init()
@@ -149,6 +155,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     private func createComponentManager(_ order: PartialPaymentOrder?,
                                         _ remainingAmount: Amount?) -> ComponentManager {
         ComponentManager(paymentMethods: paymentMethods,
+                         adyenContext: adyenContext,
                          configuration: configuration,
                          style: style,
                          partialPaymentEnabled: partialPaymentDelegate != nil,
