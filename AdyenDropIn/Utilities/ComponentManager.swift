@@ -157,6 +157,7 @@ internal final class ComponentManager {
     private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
         CardComponent(paymentMethod: paymentMethod,
                       apiContext: apiContext,
+                      adyenContext: adyenContext,
                       configuration: configuration.card,
                       shopperInformation: configuration.shopper,
                       style: style.formComponent)
@@ -172,6 +173,7 @@ internal final class ComponentManager {
         return BCMCComponent(paymentMethod: paymentMethod,
                              configuration: configuration,
                              apiContext: apiContext,
+                             adyenContext: adyenContext,
                              style: style.formComponent)
     }
     

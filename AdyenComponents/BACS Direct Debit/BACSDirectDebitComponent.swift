@@ -33,7 +33,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// :nodoc:
     public let apiContext: APIContext
 
-    // TODO: - Document
+    /// The Adyen context
     public let adyenContext: AdyenContext
 
     /// :nodoc:
@@ -57,6 +57,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// - Parameters:
     ///   - paymentMethod: The BACS Direct Debit payment method.
     ///   - apiContext: The API context.
+    ///   - adyenContext: The Adyen context.
     ///   - style: The component's UI style.
     ///   - localizationParameters: The localization parameters.
     public init(paymentMethod: BACSDirectDebitPaymentMethod,

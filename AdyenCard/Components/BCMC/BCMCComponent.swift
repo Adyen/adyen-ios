@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,6 +16,7 @@ public final class BCMCComponent: CardComponent {
     public init(paymentMethod: BCMCPaymentMethod,
                 configuration: CardComponent.Configuration = CardComponent.Configuration(),
                 apiContext: APIContext,
+                adyenContext: AdyenContext,
                 style: FormComponentStyle = FormComponentStyle()) {
         let configuration = configuration.bcmcConfiguration()
         
@@ -25,6 +26,7 @@ public final class BCMCComponent: CardComponent {
                                               minBinLength: Constant.privateBinLength)
         super.init(paymentMethod: paymentMethod,
                    apiContext: apiContext,
+                   adyenContext: adyenContext,
                    configuration: configuration,
                    style: style,
                    publicKeyProvider: publicKeyProvider,

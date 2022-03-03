@@ -31,6 +31,9 @@ public class CardComponent: PublicKeyConsumer,
     /// :nodoc:
     public let apiContext: APIContext
 
+    /// The Adyen context.
+    public let adyenContext: AdyenContext
+
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
     /// :nodoc:
@@ -75,11 +78,13 @@ public class CardComponent: PublicKeyConsumer,
     /// - Parameters:
     ///   - paymentMethod: The card payment method.
     ///   - apiContext: The API context.
+    ///   - adyenContext: The Adyen context.
     ///   - configuration: The configuration of the component.
     ///   - shopperInformation: The shopper's information, optional.
     ///   - style: The Component's UI style.
     public convenience init(paymentMethod: AnyCardPaymentMethod,
                             apiContext: APIContext,
+                            adyenContext: AdyenContext,
                             configuration: Configuration = Configuration(),
                             shopperInformation: PrefilledShopperInformation? = nil,
                             style: FormComponentStyle = FormComponentStyle()) {
@@ -89,6 +94,7 @@ public class CardComponent: PublicKeyConsumer,
                                               minBinLength: Constant.privateBinLength)
         self.init(paymentMethod: paymentMethod,
                   apiContext: apiContext,
+                  adyenContext: adyenContext,
                   configuration: configuration,
                   shopperInformation: shopperInformation,
                   style: style,
@@ -102,6 +108,7 @@ public class CardComponent: PublicKeyConsumer,
     /// - Parameters:
     ///   - paymentMethod: The card payment method.
     ///   - apiContext: The API context.
+    ///   - adyenContext: The Adyen context.
     ///   - configuration: The Card component configuration.
     ///   - shopperInformation: The shopper's information.
     ///   - style: The Component's UI style.
@@ -109,6 +116,7 @@ public class CardComponent: PublicKeyConsumer,
     ///   - binProvider: Any object capable to provide a BinInfo.
     internal init(paymentMethod: AnyCardPaymentMethod,
                   apiContext: APIContext,
+                  adyenContext: AdyenContext,
                   configuration: Configuration,
                   shopperInformation: PrefilledShopperInformation? = nil,
                   style: FormComponentStyle,
@@ -116,6 +124,7 @@ public class CardComponent: PublicKeyConsumer,
                   binProvider: AnyBinInfoProvider) {
         self.cardPaymentMethod = paymentMethod
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.configuration = configuration
         self.shopperInformation = shopperInformation
         self.style = style
