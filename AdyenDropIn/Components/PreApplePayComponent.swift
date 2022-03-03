@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,6 +15,9 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     
     /// :nodoc:
     internal let apiContext: APIContext
+
+    /// The Adyen context
+    internal let adyenContext: AdyenContext
     
     /// :nodoc:
     internal let paymentMethod: PaymentMethod
@@ -55,16 +58,19 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     /// :nodoc:
     internal init(paymentMethod: ApplePayPaymentMethod,
                   apiContext: APIContext,
+                  adyenContext: AdyenContext,
                   payment: Payment,
                   configuration: ApplePayComponent.Configuration,
                   style: ApplePayStyle) throws {
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self._payment = payment
         self.paymentMethod = paymentMethod
         self.style = style
 
         self.applePayComponent = try ApplePayComponent(paymentMethod: paymentMethod,
                                                        apiContext: apiContext,
+                                                       adyenContext: adyenContext,
                                                        payment: payment,
                                                        configuration: configuration)
         self.applePayComponent.delegate = self

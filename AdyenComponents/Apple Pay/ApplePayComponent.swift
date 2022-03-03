@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -23,6 +23,9 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// :nodoc:
     public let apiContext: APIContext
 
+    /// The Adyen context
+    public let adyenContext: AdyenContext
+
     /// The Apple Pay payment method.
     public var paymentMethod: PaymentMethod { applePayPaymentMethod }
 
@@ -43,6 +46,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     ///
     /// - Parameter paymentMethod: The Apple Pay payment method. Must include country code.
     /// - Parameter apiContext: The API environment and credentials.
+    /// - Parameter adyenContext: The Adyen context.
     /// - Parameter payment: The describes the current payment.
     /// - Parameter configuration: Apple Pay component configuration
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment`.
@@ -55,6 +59,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// - Throws: `ApplePayComponent.Error.invalidCurrencyCode` if the `Amount.currencyCode` is not a valid ISO currency code.
     public init(paymentMethod: ApplePayPaymentMethod,
                 apiContext: APIContext,
+                adyenContext: AdyenContext,
                 payment: Payment,
                 configuration: Configuration) throws {
         guard PKPaymentAuthorizationViewController.canMakePayments() else {
@@ -90,6 +95,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
         self.configuration = configuration
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.paymentAuthorizationViewController = viewController
         self.applePayPaymentMethod = paymentMethod
         self.payment = payment

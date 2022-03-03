@@ -191,6 +191,7 @@ internal final class ComponentManager {
         do {
             return try PreApplePayComponent(paymentMethod: paymentMethod,
                                             apiContext: apiContext,
+                                            adyenContext: adyenContext,
                                             payment: payment,
                                             configuration: applePay,
                                             style: style.applePay)

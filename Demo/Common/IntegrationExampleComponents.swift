@@ -67,6 +67,7 @@ extension IntegrationExample {
                                                      allowOnboarding: true)
         let component = try? ApplePayComponent(paymentMethod: paymentMethod,
                                                apiContext: apiContext,
+                                               adyenContext: adyenContext,
                                                payment: payment,
                                                configuration: config)
         guard let presentableComponent = component else { return }
