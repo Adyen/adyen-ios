@@ -21,6 +21,9 @@ public final class GiftCardComponent: PartialPaymentComponent,
     /// :nodoc:
     public let apiContext: APIContext
 
+    /// The Adyen context.
+    public let adyenContext: AdyenContext
+
     /// :nodoc:
     private let giftCardPaymentMethod: GiftCardPaymentMethod
 
@@ -48,23 +51,29 @@ public final class GiftCardComponent: PartialPaymentComponent,
     ///   - paymentMethod: The gift card payment method.
     ///   -  clientKey: The client key that corresponds to the web service user you will use for initiating the payment.
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
-    ///   -  style: The Component's UI style.
+    ///   - apiContext: The API context
+    ///   - adyenContext: The AdyenContext
+    ///   - style:  The Component's UI style.
     public convenience init(paymentMethod: GiftCardPaymentMethod,
                             apiContext: APIContext,
+                            adyenContext: AdyenContext,
                             style: FormComponentStyle = FormComponentStyle()) {
         self.init(paymentMethod: paymentMethod,
                   apiContext: apiContext,
+                  adyenContext: adyenContext,
                   style: style,
                   publicKeyProvider: PublicKeyProvider(apiContext: apiContext))
     }
     
     internal init(paymentMethod: GiftCardPaymentMethod,
                   apiContext: APIContext,
+                  adyenContext: AdyenContext,
                   style: FormComponentStyle = FormComponentStyle(),
                   publicKeyProvider: AnyPublicKeyProvider) {
         self.giftCardPaymentMethod = paymentMethod
-        self.style = style
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
+        self.style = style
         self.publicKeyProvider = publicKeyProvider
     }
 

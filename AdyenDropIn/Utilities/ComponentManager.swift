@@ -377,6 +377,7 @@ extension ComponentManager: PaymentComponentBuilder {
         guard partialPaymentEnabled else { return nil }
         return GiftCardComponent(paymentMethod: paymentMethod,
                                  apiContext: apiContext,
+                                 adyenContext: adyenContext,
                                  style: style.formComponent)
     }
     
