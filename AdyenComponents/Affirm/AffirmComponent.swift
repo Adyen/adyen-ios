@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// A component that provides a form for Affirm payment.
-public final class AffirmComponent: AbstractPersonalInformationComponent, Observer {
+public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenObserver {
     
     /// Configuration for Affirm Component
     public typealias Configuration = PersonalInformationConfiguration

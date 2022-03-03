@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// Validates a card's security code.
-public final class CardSecurityCodeValidator: NumericStringValidator, Observer {
+public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObserver {
     
     /// Initiate new instance of CardSecurityCodeValidator
     public init() {
@@ -17,7 +17,7 @@ public final class CardSecurityCodeValidator: NumericStringValidator, Observer {
     
     /// Initiate new instance of CardSecurityCodeValidator
     /// - Parameter publisher: Observable of a card type
-    public init(publisher: Observable<CardType?>) {
+    public init(publisher: AdyenObservable<CardType?>) {
         super.init(minimumLength: 3, maximumLength: 4)
         
         updateExpectedLength(from: publisher.wrappedValue)

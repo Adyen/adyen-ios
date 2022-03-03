@@ -8,10 +8,10 @@ import Foundation
 
 /// Conforming to the Observer protocol will make the observe and binding functions available for use.
 /// :nodoc:
-public protocol Observer: AnyObject {}
+public protocol AdyenObserver: AnyObject {}
 
 /// :nodoc:
-public extension Observer {
+public extension AdyenObserver {
     
     /// Observes an event publisher for events.
     ///
@@ -33,7 +33,7 @@ public extension Observer {
     ///   - keyPath: The key path to set the new values.
     /// - Returns: An observation that represents the binding. Can be used to remove the binding later.
     @discardableResult
-    func bind<Value, Target: AnyObject>(_ observable: Observable<Value>,
+    func bind<Value, Target: AnyObject>(_ observable: AdyenObservable<Value>,
                                         to target: Target,
                                         at keyPath: ReferenceWritableKeyPath<Target, Value>) -> Observation {
         // Set the initial value.
@@ -53,7 +53,7 @@ public extension Observer {
     ///   - keyPath: The key path to set the new values.
     /// - Returns: An observation that represents the binding. Can be used to remove the binding later.
     @discardableResult
-    func bind<Value, Target: AnyObject>(_ observable: Observable<Value>,
+    func bind<Value, Target: AnyObject>(_ observable: AdyenObservable<Value>,
                                         to target: Target,
                                         at keyPath: ReferenceWritableKeyPath<Target, Value?>) -> Observation {
         // Set the initial value.
@@ -74,7 +74,7 @@ public extension Observer {
     ///   - transformation: The transformation closure.
     /// - Returns: An observation that represents the binding. Can be used to remove the binding later.
     @discardableResult
-    func bind<Value, Result, Target: AnyObject>(_ observable: Observable<Value>,
+    func bind<Value, Result, Target: AnyObject>(_ observable: AdyenObservable<Value>,
                                                 to target: Target,
                                                 at keyPath: ReferenceWritableKeyPath<Target, Result>,
                                                 with transformation: @escaping ((Value) -> Result)) -> Observation {
@@ -96,7 +96,7 @@ public extension Observer {
     ///   - keyPath: The key path to set the new values.
     /// - Returns: An observation that represents the binding. Can be used to remove the binding later.
     @discardableResult
-    func bind<Value, Result, Target: AnyObject>(_ observable: Observable<Value>,
+    func bind<Value, Result, Target: AnyObject>(_ observable: AdyenObservable<Value>,
                                                 at originKeyPath: KeyPath<Value, Result>,
                                                 to target: Target,
                                                 at keyPath: ReferenceWritableKeyPath<Target, Result>) -> Observation {
@@ -118,7 +118,7 @@ public extension Observer {
     ///   - keyPath: The key path to set the new values.
     /// - Returns: An observation that represents the binding. Can be used to remove the binding later.
     @discardableResult
-    func bind<Value, Result, Target: AnyObject>(_ observable: Observable<Value>,
+    func bind<Value, Result, Target: AnyObject>(_ observable: AdyenObservable<Value>,
                                                 at originKeyPath: KeyPath<Value, Result>,
                                                 to target: Target,
                                                 at keyPath: ReferenceWritableKeyPath<Target, Result?>) -> Observation {

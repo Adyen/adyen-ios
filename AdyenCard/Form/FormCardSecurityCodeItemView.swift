@@ -60,7 +60,7 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
 
 extension FormCardSecurityCodeItemView {
     
-    internal class HintView: UIImageView, Observer {
+    internal class HintView: UIImageView, AdyenObserver {
         
         private lazy var bundle = Bundle.cardInternalResources
         private let minimumAlpha: CGFloat = 0.3
