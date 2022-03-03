@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,7 @@ import Foundation
 /// An issuer list payment method, such as iDEAL or Open Banking.
 public struct IssuerListPaymentMethod: PaymentMethod {
 
-    public let type: String
+    public let type: PaymentMethodType
 
     public let name: String
     
@@ -40,7 +40,7 @@ public struct IssuerListPaymentMethod: PaymentMethod {
     /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.type = try container.decode(String.self, forKey: .type)
+        self.type = try container.decode(PaymentMethodType.self, forKey: .type)
         self.name = try container.decode(String.self, forKey: .name)
 
         let detailsContainer = try? container.nestedUnkeyedContainer(forKey: .details)

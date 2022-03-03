@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,6 +39,14 @@ public struct PaymentMethods: Decodable {
     /// - Returns: The first available payment method of the given type, or `nil` if none could be found.
     public func paymentMethod<T: PaymentMethod>(ofType type: T.Type) -> T? {
         regular.first { $0 is T } as? T
+    }
+    
+    /// Returns the first available payment method of the given type.
+    ///
+    /// - Parameter type: The `PaymentMethodType` of payment method to retrieve.
+    /// - Returns: The first available payment method of the given type, or `nil` if none could be found.
+    public func paymentMethod(ofType type: PaymentMethodType) -> PaymentMethod? {
+        regular.first { $0.type == type }
     }
     
     // MARK: - Decoding

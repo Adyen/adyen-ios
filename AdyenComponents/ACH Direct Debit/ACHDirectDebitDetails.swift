@@ -10,7 +10,7 @@ import Adyen
 public struct ACHDirectDebitDetails: PaymentMethodDetails, ShopperInformation {
     
     /// The payment method type.
-    public let type: String
+    public let type: PaymentMethodType
 
     /// The name of the bank account holder.
     public let holderName: String

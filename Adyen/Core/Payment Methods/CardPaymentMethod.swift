@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,7 +10,7 @@ import Foundation
 public struct CardPaymentMethod: AnyCardPaymentMethod {
     
     /// :nodoc:
-    public let type: String
+    public let type: PaymentMethodType
     
     /// :nodoc:
     public let name: String
@@ -29,7 +29,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
     /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.type = try container.decode(String.self, forKey: .type)
+        self.type = try container.decode(PaymentMethodType.self, forKey: .type)
         self.name = try container.decode(String.self, forKey: .name)
         self.brands = try container.decodeIfPresent([String].self, forKey: .brands) ?? []
         self.fundingSource = try container.decodeIfPresent(CardFundingSource.self, forKey: .fundingSource)
@@ -40,7 +40,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
         builder.build(paymentMethod: self)
     }
     
-    internal init(type: String, name: String, fundingSource: CardFundingSource, brands: [String]) {
+    internal init(type: PaymentMethodType, name: String, fundingSource: CardFundingSource, brands: [String]) {
         self.type = type
         self.name = name
         self.brands = brands
@@ -60,7 +60,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
 public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod {
     
     /// :nodoc:
-    public let type: String
+    public let type: PaymentMethodType
     /// :nodoc:
     public let name: String
 

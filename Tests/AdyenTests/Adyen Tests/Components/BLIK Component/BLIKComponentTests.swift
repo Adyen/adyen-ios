@@ -12,7 +12,7 @@ import XCTest
 
 class BLIKComponentTests: XCTestCase {
 
-    lazy var method = BLIKPaymentMethod(type: "test_type", name: "test_name")
+    lazy var method = BLIKPaymentMethod(type: .blik, name: "test_name")
     let payment = Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
     var sut: BLIKComponent!
 
@@ -167,7 +167,7 @@ class BLIKComponentTests: XCTestCase {
     }
 
     func testRequiresModalPresentation() {
-        let blikPaymentMethod = BLIKPaymentMethod(type: "blik", name: "Test name")
+        let blikPaymentMethod = BLIKPaymentMethod(type: .blik, name: "Test name")
         let sut = BLIKComponent(paymentMethod: blikPaymentMethod, apiContext: Dummy.context)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }

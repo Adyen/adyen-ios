@@ -23,7 +23,7 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     override func setUp() {
-        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil)
+        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
         let configuration = ApplePayComponent.Configuration(summaryItems: createTestSummaryItems(),
                                                             merchantIdentifier: "test_id")
         sut = try! ApplePayComponent(paymentMethod: paymentMethod,
@@ -87,7 +87,7 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     func testInvalidCurrencyCode() {
-        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil)
+        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
         let amount = Amount(value: 2, unsafeCurrencyCode: "ZZZ")
         let payment = Payment(amount: amount, countryCode: getRandomCountryCode())
         let configuration = ApplePayComponent.Configuration(summaryItems: createTestSummaryItems(),
@@ -103,7 +103,7 @@ class ApplePayComponentTest: XCTestCase {
     }
     
     func testInvalidCountryCode() {
-        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil)
+        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
         let payment = Payment(amount: amount, unsafeCountryCode: "ZZ")
         let configuration = ApplePayComponent.Configuration(summaryItems: createTestSummaryItems(),
                                                             merchantIdentifier: "test_id")
@@ -118,7 +118,7 @@ class ApplePayComponentTest: XCTestCase {
     }
     
     func testEmptySummaryItems() {
-        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil)
+        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
         let configuration = ApplePayComponent.Configuration(summaryItems: [],
                                                             merchantIdentifier: "test_id")
         XCTAssertThrowsError(try ApplePayComponent(paymentMethod: paymentMethod,
@@ -132,7 +132,7 @@ class ApplePayComponentTest: XCTestCase {
     }
     
     func testGrandTotalIsNegative() {
-        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil)
+        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
         let configuration = ApplePayComponent.Configuration(summaryItems: createInvalidGrandTotalTestSummaryItems(),
                                                             merchantIdentifier: "test_id")
         XCTAssertThrowsError(try ApplePayComponent(paymentMethod: paymentMethod,
@@ -146,7 +146,7 @@ class ApplePayComponentTest: XCTestCase {
     }
     
     func testOneItemWithZeroAmount() {
-        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil)
+        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
         let configuration = ApplePayComponent.Configuration(summaryItems: createTestSummaryItemsWithZeroAmount(),
                                                             merchantIdentifier: "test_id")
         XCTAssertThrowsError(try ApplePayComponent(paymentMethod: paymentMethod,
@@ -168,7 +168,7 @@ class ApplePayComponentTest: XCTestCase {
     }
     
     func testPaymentRequest() {
-        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil)
+        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
         let countryCode = getRandomCountryCode()
         let payment = Payment(amount: amount, countryCode: countryCode)
         let expectedSummaryItems = createTestSummaryItems()
@@ -192,7 +192,7 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     func testBrandsFiltering() {
-        let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: ["mc", "elo", "unknown_network"])
+        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: ["mc", "elo", "unknown_network"])
         let supportedNetworks = paymentMethod.supportedNetworks
 
         if #available(iOS 12.1.1, *) {

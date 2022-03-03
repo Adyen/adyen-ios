@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,7 +10,7 @@ import Foundation
 public struct StoredPayPalPaymentMethod: StoredPaymentMethod {
     
     /// :nodoc:
-    public let type: String
+    public let type: PaymentMethodType
     
     /// :nodoc:
     public let name: String
@@ -20,11 +20,11 @@ public struct StoredPayPalPaymentMethod: StoredPaymentMethod {
     public let supportedShopperInteractions: [ShopperInteraction]
 
     public var displayInformation: DisplayInformation {
-        DisplayInformation(title: name, subtitle: emailAddress, logoName: type)
+        DisplayInformation(title: name, subtitle: emailAddress, logoName: type.rawValue)
     }
 
     public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name, subtitle: emailAddress, logoName: type)
+        DisplayInformation(title: name, subtitle: emailAddress, logoName: type.rawValue)
     }
     
     /// The email address of the PayPal account.

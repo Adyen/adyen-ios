@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,7 +10,7 @@ import Foundation
 public struct SEPADirectDebitPaymentMethod: PaymentMethod {
     
     /// :nodoc:
-    public let type: String
+    public let type: PaymentMethodType
     
     /// :nodoc:
     public let name: String

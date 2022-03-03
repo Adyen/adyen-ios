@@ -26,7 +26,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomTableName() {
-        let method = ACHDirectDebitPaymentMethod(type: "test_type", name: "test_name")
+        let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
         let config = ACHDirectDebitComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil), billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: method,
@@ -80,7 +80,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         achComponentStyle.textField.title.textAlignment = .center
         achComponentStyle.textField.backgroundColor = .red
         
-        let paymentMethod = ACHDirectDebitPaymentMethod(type: "bcmc", name: "Test name")
+        let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
                                           configuration: .init(style: achComponentStyle, billingAddressCountryCodes: ["US", "UK"]),
@@ -144,7 +144,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     
     func testPrefillInfo() {
         // Given
-        let method = ACHDirectDebitPaymentMethod(type: "test_type", name: "test_name")
+        let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
         let config = ACHDirectDebitComponent.Configuration(shopperInformation: shopperInformation, billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: method,
@@ -167,7 +167,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     }
     
     func testBigTitle() {
-        let method = ACHDirectDebitPaymentMethod(type: "test_type", name: "test_name")
+        let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
         let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: method,
                                           apiContext: Dummy.context,
@@ -182,7 +182,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     }
     
     func testRequiresModalPresentation() {
-        let paymentMethod = ACHDirectDebitPaymentMethod(type: "bcmc", name: "Test name")
+        let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
@@ -192,7 +192,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     }
 
     func testStopLoading() {
-        let paymentMethod = ACHDirectDebitPaymentMethod(type: "bcmc", name: "Test name")
+        let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
@@ -209,7 +209,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     }
 
     func testEmptyFieldsValidation() {
-        let paymentMethod = ACHDirectDebitPaymentMethod(type: "bcmc", name: "Test name")
+        let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
                                           publicKeyProvider: PublicKeyProviderMock())
@@ -230,7 +230,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     }
     
     func testSubmission() {
-        let paymentMethod = ACHDirectDebitPaymentMethod(type: "ach", name: "Test name")
+        let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
                                           configuration: .init(showsBillingAddress: false),

@@ -10,7 +10,7 @@ import Foundation
 public struct ACHDirectDebitPaymentMethod: PaymentMethod {
     
     /// :nodoc:
-    public let type: String
+    public let type: PaymentMethodType
 
     /// :nodoc:
     public let name: String

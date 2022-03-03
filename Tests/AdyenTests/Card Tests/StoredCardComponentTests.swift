@@ -13,7 +13,7 @@ import XCTest
 class StoredCardComponentTests: XCTestCase {
 
     func testUIWithClientKey() {
-        let method = StoredCardPaymentMethod(type: "type",
+        let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
                                              fundingSource: .credit,
@@ -43,7 +43,7 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testUIWithPublicKey() {
-        let method = StoredCardPaymentMethod(type: "type",
+        let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
                                              fundingSource: .credit,
@@ -73,7 +73,7 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testPaymentSubmitWithSuccessfulCardPublicKeyFetching() {
-        let method = StoredCardPaymentMethod(type: "type",
+        let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
                                              fundingSource: .credit,
@@ -139,7 +139,7 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testPaymentSubmitWithFailedCardPublicKeyFetching() {
-        let method = StoredCardPaymentMethod(type: "type",
+        let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
                                              fundingSource: .credit,
@@ -194,7 +194,7 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testCVCLimitForAMEX() {
-        let method = StoredCardPaymentMethod(type: "type",
+        let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
                                              fundingSource: .credit,
@@ -247,7 +247,7 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testCVCLimitForNonAMEX() {
-        let method = StoredCardPaymentMethod(type: "type",
+        let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
                                              fundingSource: .credit,
@@ -293,7 +293,7 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testCVCLimitForUnknownCardType() {
-        let method = StoredCardPaymentMethod(type: "type",
+        let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
                                              fundingSource: .credit,

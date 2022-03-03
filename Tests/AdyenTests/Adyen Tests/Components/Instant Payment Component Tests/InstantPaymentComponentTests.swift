@@ -20,7 +20,7 @@ class InstantPaymentComponentTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        paymentMethod = GiftCardPaymentMethod(type: "type", name: "name", brand: "brand")
+        paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "name", brand: "brand")
     }
 
     func testCustomPaymentData() throws {

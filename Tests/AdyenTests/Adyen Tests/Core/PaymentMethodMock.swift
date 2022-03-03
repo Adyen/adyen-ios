@@ -8,7 +8,7 @@ import Adyen
 
 struct PaymentMethodMock: PaymentMethod {
     
-    var type: String
+    var type: PaymentMethodType
     
     var name: String
     
