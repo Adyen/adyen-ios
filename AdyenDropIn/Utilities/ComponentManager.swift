@@ -201,6 +201,7 @@ internal final class ComponentManager {
     private func createSEPAComponent(_ paymentMethod: SEPADirectDebitPaymentMethod) -> SEPADirectDebitComponent {
         SEPADirectDebitComponent(paymentMethod: paymentMethod,
                                  apiContext: apiContext,
+                                 adyenContext: adyenContext,
                                  style: style.formComponent)
     }
 

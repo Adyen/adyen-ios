@@ -32,7 +32,8 @@ extension IntegrationExample {
     internal func presentSEPADirectDebitComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: SEPADirectDebitPaymentMethod.self) else { return }
         let component = SEPADirectDebitComponent(paymentMethod: paymentMethod,
-                                                 apiContext: apiContext)
+                                                 apiContext: apiContext,
+                                                 adyenContext: adyenContext)
         present(component)
     }
 

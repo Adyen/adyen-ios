@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,6 +13,9 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     
     /// :nodoc:
     public let apiContext: APIContext
+
+    /// The Adyen context
+    public let adyenContext: AdyenContext
     
     /// Describes the component's UI style.
     public let style: FormComponentStyle
@@ -28,13 +31,17 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     /// Initializes the SEPA Direct Debit component.
     ///
     /// - Parameter paymentMethod: The SEPA Direct Debit payment method.
+    /// - Parameter apiContext: The API context.
+    /// - Parameter adyenContext: The Adyen context.
     /// - Parameter style: The Component's UI style.
     public init(paymentMethod: SEPADirectDebitPaymentMethod,
                 apiContext: APIContext,
+                adyenContext: AdyenContext,
                 style: FormComponentStyle = FormComponentStyle()) {
-        self.style = style
-        self.apiContext = apiContext
         self.sepaDirectDebitPaymentMethod = paymentMethod
+        self.apiContext = apiContext
+        self.adyenContext = adyenContext
+        self.style = style
     }
     
     private let sepaDirectDebitPaymentMethod: SEPADirectDebitPaymentMethod
