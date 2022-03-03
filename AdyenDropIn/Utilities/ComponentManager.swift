@@ -252,6 +252,7 @@ internal final class ComponentManager {
     private func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {
         BLIKComponent(paymentMethod: paymentMethod,
                       apiContext: apiContext,
+                      adyenContext: adyenContext,
                       style: style.formComponent)
     }
     

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,6 +13,9 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     
     /// :nodoc:
     public let apiContext: APIContext
+
+    /// The Adyen context
+    public let adyenContext: AdyenContext
     
     /// :nodoc:
     public var paymentMethod: PaymentMethod { blikPaymentMethod }
@@ -39,13 +42,16 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     ///
     /// - Parameter paymentMethod: The BLIK payment method.
     /// - Parameter apiContext: The API context.
+    /// - Parameter adyenContext: The Adyen context.
     /// - Parameter style: The Component's UI style.
     public init(paymentMethod: BLIKPaymentMethod,
                 apiContext: APIContext,
+                adyenContext: AdyenContext,
                 style: FormComponentStyle = FormComponentStyle()) {
         self.blikPaymentMethod = paymentMethod
-        self.style = style
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
+        self.style = style
     }
 
     /// :nodoc:
