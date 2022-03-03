@@ -28,32 +28,31 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() {
         let method = ACHDirectDebitPaymentMethod(type: "test_type", name: "test_name")
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
-        let sut = ACHDirectDebitComponent(configuration: .init(billingAddressCountryCodes: ["US", "UK"]),
-                                          paymentMethod: method,
+        let config = ACHDirectDebitComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil), billingAddressCountryCodes: ["US", "UK"])
+        let sut = ACHDirectDebitComponent(paymentMethod: method,
                                           apiContext: Dummy.context,
-                                          publicKeyProvider: PublicKeyProviderMock(),
-                                          localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil),
-                                          style: FormComponentStyle())
+                                          configuration: config,
+                                          publicKeyProvider: PublicKeyProviderMock())
         sut.payment = payment
         
-        XCTAssertEqual(sut.headerItem.text, localizedString(.achBankAccountTitle, sut.localizationParameters))
+        XCTAssertEqual(sut.headerItem.text, localizedString(.achBankAccountTitle, sut.configuration.localizationParameters))
         
-        XCTAssertEqual(sut.holderNameItem.title, localizedString(.achAccountHolderNameFieldTitle, sut.localizationParameters))
-        XCTAssertEqual(sut.holderNameItem.placeholder, localizedString(.achAccountHolderNameFieldTitle, sut.localizationParameters))
-        XCTAssertEqual(sut.holderNameItem.validationFailureMessage, localizedString(.achAccountHolderNameFieldInvalid, sut.localizationParameters))
+        XCTAssertEqual(sut.holderNameItem.title, localizedString(.achAccountHolderNameFieldTitle, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.holderNameItem.placeholder, localizedString(.achAccountHolderNameFieldTitle, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.holderNameItem.validationFailureMessage, localizedString(.achAccountHolderNameFieldInvalid, sut.configuration.localizationParameters))
         
-        XCTAssertEqual(sut.bankAccountNumberItem.title, localizedString(.achAccountNumberFieldTitle, sut.localizationParameters))
-        XCTAssertEqual(sut.bankAccountNumberItem.placeholder, localizedString(.achAccountNumberFieldTitle, sut.localizationParameters))
-        XCTAssertEqual(sut.bankAccountNumberItem.validationFailureMessage, localizedString(.achAccountNumberFieldInvalid, sut.localizationParameters))
+        XCTAssertEqual(sut.bankAccountNumberItem.title, localizedString(.achAccountNumberFieldTitle, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.bankAccountNumberItem.placeholder, localizedString(.achAccountNumberFieldTitle, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.bankAccountNumberItem.validationFailureMessage, localizedString(.achAccountNumberFieldInvalid, sut.configuration.localizationParameters))
         
-        XCTAssertEqual(sut.bankRoutingNumberItem.title, localizedString(.achAccountLocationFieldTitle, sut.localizationParameters))
-        XCTAssertEqual(sut.bankRoutingNumberItem.placeholder, localizedString(.achAccountLocationFieldTitle, sut.localizationParameters))
-        XCTAssertEqual(sut.bankRoutingNumberItem.validationFailureMessage, localizedString(.achAccountLocationFieldInvalid, sut.localizationParameters))
+        XCTAssertEqual(sut.bankRoutingNumberItem.title, localizedString(.achAccountLocationFieldTitle, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.bankRoutingNumberItem.placeholder, localizedString(.achAccountLocationFieldTitle, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.bankRoutingNumberItem.validationFailureMessage, localizedString(.achAccountLocationFieldInvalid, sut.configuration.localizationParameters))
         
-        XCTAssertEqual(sut.billingAddressItem.headerItem.text, localizedString(.billingAddressSectionTitle, sut.localizationParameters))
+        XCTAssertEqual(sut.billingAddressItem.headerItem.text, localizedString(.billingAddressSectionTitle, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.billingAddressItem.supportedCountryCodes, ["US", "UK"])
 
-        XCTAssertEqual(sut.payButton.title, localizedString(.confirmPurchase, sut.localizationParameters))
+        XCTAssertEqual(sut.payButton.title, localizedString(.confirmPurchase, sut.configuration.localizationParameters))
     }
     
     func testUIConfiguration() {
@@ -82,11 +81,10 @@ class ACHDirectDebitComponentTests: XCTestCase {
         achComponentStyle.textField.backgroundColor = .red
         
         let paymentMethod = ACHDirectDebitPaymentMethod(type: "bcmc", name: "Test name")
-        let sut = ACHDirectDebitComponent(configuration: .init(billingAddressCountryCodes: ["US", "UK"]),
-                                          paymentMethod: paymentMethod,
+        let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
-                                          publicKeyProvider: PublicKeyProviderMock(),
-                                          style: achComponentStyle)
+                                          configuration: .init(style: achComponentStyle, billingAddressCountryCodes: ["US", "UK"]),
+                                          publicKeyProvider: PublicKeyProviderMock())
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         wait(for: .seconds(1))
@@ -148,12 +146,12 @@ class ACHDirectDebitComponentTests: XCTestCase {
         // Given
         let method = ACHDirectDebitPaymentMethod(type: "test_type", name: "test_name")
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
-        let sut = ACHDirectDebitComponent(configuration: .init(billingAddressCountryCodes: ["US", "UK"]),
-                                          paymentMethod: method,
+        let config = ACHDirectDebitComponent.Configuration(shopperInformation: shopperInformation, billingAddressCountryCodes: ["US", "UK"])
+        let sut = ACHDirectDebitComponent(paymentMethod: method,
                                           apiContext: Dummy.context,
-                                          publicKeyProvider: PublicKeyProviderMock(),
-                                          shopperInformation: shopperInformation,
-                                          style: FormComponentStyle())
+                                          configuration: config,
+                                          publicKeyProvider: PublicKeyProviderMock())
+        
         sut.payment = payment
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -170,11 +168,11 @@ class ACHDirectDebitComponentTests: XCTestCase {
     
     func testBigTitle() {
         let method = ACHDirectDebitPaymentMethod(type: "test_type", name: "test_name")
-        let sut = ACHDirectDebitComponent(configuration: .init(billingAddressCountryCodes: ["US", "UK"]),
-                                          paymentMethod: method,
+        let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
+        let sut = ACHDirectDebitComponent(paymentMethod: method,
                                           apiContext: Dummy.context,
-                                          publicKeyProvider: PublicKeyProviderMock(),
-                                          style: FormComponentStyle())
+                                          configuration: config,
+                                          publicKeyProvider: PublicKeyProviderMock())
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         wait(for: .seconds(1))
@@ -185,21 +183,21 @@ class ACHDirectDebitComponentTests: XCTestCase {
     
     func testRequiresModalPresentation() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: "bcmc", name: "Test name")
-        let sut = ACHDirectDebitComponent(configuration: .init(billingAddressCountryCodes: ["US", "UK"]),
-                                          paymentMethod: paymentMethod,
+        let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
+        let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
-                                          publicKeyProvider: PublicKeyProviderMock(),
-                                          style: FormComponentStyle())
+                                          configuration: config,
+                                          publicKeyProvider: PublicKeyProviderMock())
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
     func testStopLoading() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: "bcmc", name: "Test name")
-        let sut = ACHDirectDebitComponent(configuration: .init(billingAddressCountryCodes: ["US", "UK"]),
-                                          paymentMethod: paymentMethod,
+        let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
+        let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
-                                          publicKeyProvider: PublicKeyProviderMock(),
-                                          style: FormComponentStyle())
+                                          configuration: config,
+                                          publicKeyProvider: PublicKeyProviderMock())
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         wait(for: .seconds(1))
@@ -212,11 +210,9 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
     func testEmptyFieldsValidation() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: "bcmc", name: "Test name")
-        let sut = ACHDirectDebitComponent(configuration: .init(),
-                                          paymentMethod: paymentMethod,
+        let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
-                                          publicKeyProvider: PublicKeyProviderMock(),
-                                          style: FormComponentStyle())
+                                          publicKeyProvider: PublicKeyProviderMock())
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         wait(for: .seconds(1))
@@ -235,11 +231,10 @@ class ACHDirectDebitComponentTests: XCTestCase {
     
     func testSubmission() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: "ach", name: "Test name")
-        let sut = ACHDirectDebitComponent(configuration: .init(showsBillingAddress: false),
-                                          paymentMethod: paymentMethod,
+        let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
-                                          publicKeyProvider: PublicKeyProviderMock(),
-                                          style: FormComponentStyle())
+                                          configuration: .init(showsBillingAddress: false),
+                                          publicKeyProvider: PublicKeyProviderMock())
         sut.payment = Payment(amount: Amount(value: 2, currencyCode: "USD"), countryCode: "US")
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController

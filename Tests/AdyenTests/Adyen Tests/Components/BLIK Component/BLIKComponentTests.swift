@@ -26,39 +26,39 @@ class BLIKComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomTableName() {
-        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
+        sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
-        XCTAssertEqual(sut.hintLabelItem.text, localizedString(.blikHelp, sut.localizationParameters))
+        XCTAssertEqual(sut.hintLabelItem.text, localizedString(.blikHelp, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.codeItem.title, localizedString(.blikCode, sut.localizationParameters))
-        XCTAssertEqual(sut.codeItem.placeholder, localizedString(.blikPlaceholder, sut.localizationParameters))
-        XCTAssertEqual(sut.codeItem.validationFailureMessage, localizedString(.blikInvalid, sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.title, localizedString(.blikCode, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.codeItem.placeholder, localizedString(.blikPlaceholder, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.codeItem.validationFailureMessage, localizedString(.blikInvalid, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
     func testLocalizationWithZeroPayment() {
         let payment = Payment(amount: Amount(value: 0, currencyCode: "PLN"), countryCode: "PL")
         sut.payment = payment
-        XCTAssertEqual(sut.hintLabelItem.text, localizedString(.blikHelp, sut.localizationParameters))
+        XCTAssertEqual(sut.hintLabelItem.text, localizedString(.blikHelp, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.codeItem.title, localizedString(.blikCode, sut.localizationParameters))
-        XCTAssertEqual(sut.codeItem.placeholder, localizedString(.blikPlaceholder, sut.localizationParameters))
-        XCTAssertEqual(sut.codeItem.validationFailureMessage, localizedString(.blikInvalid, sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.title, localizedString(.blikCode, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.codeItem.placeholder, localizedString(.blikPlaceholder, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.codeItem.validationFailureMessage, localizedString(.blikInvalid, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
     func testLocalizationWithCustomKeySeparator() {
-        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
+        sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 
-        XCTAssertEqual(sut.hintLabelItem.text, localizedString(LocalizationKey(key: "adyen_blik_help"), sut.localizationParameters))
+        XCTAssertEqual(sut.hintLabelItem.text, localizedString(LocalizationKey(key: "adyen_blik_help"), sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.codeItem.title, localizedString(LocalizationKey(key: "adyen_blik_code"), sut.localizationParameters))
-        XCTAssertEqual(sut.codeItem.placeholder, localizedString(LocalizationKey(key: "adyen_blik_placeholder"), sut.localizationParameters))
-        XCTAssertEqual(sut.codeItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_blik_invalid"), sut.localizationParameters))
+        XCTAssertEqual(sut.codeItem.title, localizedString(LocalizationKey(key: "adyen_blik_code"), sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.codeItem.placeholder, localizedString(LocalizationKey(key: "adyen_blik_placeholder"), sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.codeItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_blik_invalid"), sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_submitButton_formatted"), sut.localizationParameters, payment.amount.formatted))
+        XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_submitButton_formatted"), sut.configuration.localizationParameters, payment.amount.formatted))
     }
 
     func testUIConfiguration() {
@@ -91,48 +91,42 @@ class BLIKComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        sut = BLIKComponent(paymentMethod: method, apiContext: Dummy.context, style: style)
+        sut = BLIKComponent(paymentMethod: method, apiContext: Dummy.context, configuration: .init(style: style))
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+        wait(for: .seconds(1))
+        let hintView: UILabel! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeHintLabel")
 
-            let hintView: UILabel! = self.sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeHintLabel")
+        let blikCodeView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
+        let blikCodeViewTitleLabel: UILabel! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem.titleLabel")
+        let blikCodeViewTextField: UITextField! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem.textField")
 
-            let blikCodeView: FormTextInputItemView! = self.sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
-            let blikCodeViewTitleLabel: UILabel! = self.sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem.titleLabel")
-            let blikCodeViewTextField: UITextField! = self.sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem.textField")
+        let payButtonItemViewButton: UIControl! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
+        let payButtonItemViewButtonTitle: UILabel! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button.titleLabel")
 
-            let payButtonItemViewButton: UIControl! = self.sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
-            let payButtonItemViewButtonTitle: UILabel! = self.sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button.titleLabel")
+        XCTAssertEqual(hintView.backgroundColor, .brown)
+        XCTAssertEqual(hintView.textColor, .cyan)
+        XCTAssertEqual(hintView.textAlignment, .center)
+        XCTAssertEqual(hintView.font, .systemFont(ofSize: 10))
 
-            XCTAssertEqual(hintView.backgroundColor, .brown)
-            XCTAssertEqual(hintView.textColor, .cyan)
-            XCTAssertEqual(hintView.textAlignment, .center)
-            XCTAssertEqual(hintView.font, .systemFont(ofSize: 10))
+        /// Test BINK code field
+        XCTAssertEqual(blikCodeView.backgroundColor, .red)
+        XCTAssertEqual(blikCodeViewTitleLabel.textColor, sut.viewController.view.tintColor)
+        XCTAssertEqual(blikCodeViewTitleLabel.backgroundColor, .blue)
+        XCTAssertEqual(blikCodeViewTitleLabel.textAlignment, .center)
+        XCTAssertEqual(blikCodeViewTitleLabel.font, .systemFont(ofSize: 20))
+        XCTAssertEqual(blikCodeViewTextField.backgroundColor, .red)
+        XCTAssertEqual(blikCodeViewTextField.textAlignment, .right)
+        XCTAssertEqual(blikCodeViewTextField.textColor, .red)
+        XCTAssertEqual(blikCodeViewTextField.font, .systemFont(ofSize: 13))
 
-            /// Test BINK code field
-            XCTAssertEqual(blikCodeView.backgroundColor, .red)
-            XCTAssertEqual(blikCodeViewTitleLabel.textColor, self.sut.viewController.view.tintColor)
-            XCTAssertEqual(blikCodeViewTitleLabel.backgroundColor, .blue)
-            XCTAssertEqual(blikCodeViewTitleLabel.textAlignment, .center)
-            XCTAssertEqual(blikCodeViewTitleLabel.font, .systemFont(ofSize: 20))
-            XCTAssertEqual(blikCodeViewTextField.backgroundColor, .red)
-            XCTAssertEqual(blikCodeViewTextField.textAlignment, .right)
-            XCTAssertEqual(blikCodeViewTextField.textColor, .red)
-            XCTAssertEqual(blikCodeViewTextField.font, .systemFont(ofSize: 13))
-
-            /// Test footer
-            XCTAssertEqual(payButtonItemViewButton.backgroundColor, .red)
-            XCTAssertEqual(payButtonItemViewButtonTitle.backgroundColor, .red)
-            XCTAssertEqual(payButtonItemViewButtonTitle.textAlignment, .center)
-            XCTAssertEqual(payButtonItemViewButtonTitle.textColor, .white)
-            XCTAssertEqual(payButtonItemViewButtonTitle.font, .systemFont(ofSize: 22))
-
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        /// Test footer
+        XCTAssertEqual(payButtonItemViewButton.backgroundColor, .red)
+        XCTAssertEqual(payButtonItemViewButtonTitle.backgroundColor, .red)
+        XCTAssertEqual(payButtonItemViewButtonTitle.textAlignment, .center)
+        XCTAssertEqual(payButtonItemViewButtonTitle.textColor, .white)
+        XCTAssertEqual(payButtonItemViewButtonTitle.font, .systemFont(ofSize: 22))
     }
 
     func testSubmitForm() {
@@ -153,17 +147,13 @@ class BLIKComponentTests: XCTestCase {
         }
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        let dummyExpectation = expectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let submitButton: UIControl? = self.sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
+        wait(for: .seconds(1))
+        let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
 
-            let blikCodeView: FormTextInputItemView! = self.sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
-            self.populate(textItemView: blikCodeView, with: "123456")
+        let blikCodeView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
+        self.populate(textItemView: blikCodeView, with: "123456")
 
-            submitButton?.sendActions(for: .touchUpInside)
-
-            dummyExpectation.fulfill()
-        }
+        submitButton?.sendActions(for: .touchUpInside)
 
         waitForExpectations(timeout: 10, handler: nil)
     }
@@ -172,12 +162,8 @@ class BLIKComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertEqual(self.sut.viewController.title, self.method.name.uppercased())
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        wait(for: .seconds(1))
+        XCTAssertEqual(sut.viewController.title, method.name.uppercased())
     }
 
     func testRequiresModalPresentation() {

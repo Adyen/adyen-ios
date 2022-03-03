@@ -8,13 +8,13 @@ import Adyen
 import Foundation
 import UIKit
 
-/// Configuration for Basic Personal Information Component
-public typealias BasicPersonalInfoComponentConfiguration = PersonalInformationConfiguration
-
 /// A component that provides a form consisting of first name, last name, phone, and email.
 /// :nodoc:
 public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationComponent {
 
+    /// Configuration for Basic Personal Information Component
+    public typealias Configuration = PersonalInformationConfiguration
+    
     /// Initializes the component.
     /// - Parameters:
     ///   - paymentMethod: The payment method.
@@ -22,7 +22,7 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
     ///   - configuration: The component's configuration.
     public init(paymentMethod: PaymentMethod,
                 apiContext: APIContext,
-                configuration: BasicPersonalInfoComponentConfiguration) {
+                configuration: Configuration = .init()) {
         
         super.init(paymentMethod: paymentMethod,
                    apiContext: apiContext,

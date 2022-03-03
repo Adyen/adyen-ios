@@ -23,19 +23,20 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
     
-    /// Describes the component's UI style.
-    public let style: ListComponentStyle
+    /// Component's configuration.
+    public var configuration: Configuration
     
     /// Initializes the issuer list component.
     ///
     /// - Parameter paymentMethod: The issuer list payment method.
-    /// - Parameter style: The Component's UI style..
+    /// - Parameter apiContext: The API context.
+    /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: IssuerListPaymentMethod,
                 apiContext: APIContext,
-                style: ListComponentStyle = ListComponentStyle()) {
+                configuration: Configuration = .init()) {
         self.issuerListPaymentMethod = paymentMethod
         self.apiContext = apiContext
-        self.style = style
+        self.configuration = configuration
     }
     
     private let issuerListPaymentMethod: IssuerListPaymentMethod
@@ -56,11 +57,11 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     // MARK: - Private
     
     private lazy var listViewController: ListViewController = {
-        let listViewController = ListViewController(style: style)
+        let listViewController = ListViewController(style: configuration.style)
         listViewController.delegate = self
         let issuers = issuerListPaymentMethod.issuers
         let items = issuers.map { issuer -> ListItem in
-            var listItem = ListItem(title: issuer.name, style: style.listItem)
+            var listItem = ListItem(title: issuer.name, style: configuration.style.listItem)
             listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
             listItem.imageURL = LogoURLProvider.logoURL(for: issuer,
                                                         paymentMethod: issuerListPaymentMethod,
@@ -82,6 +83,29 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
         
         return listViewController
     }()
+}
+
+extension IssuerListComponent {
+    
+    /// Configuration for Issuer List type components.
+    public struct Configuration {
+        
+        /// The UI style of the component.
+        public var style: ListComponentStyle
+        
+        /// :nodoc:
+        public var localizationParameters: LocalizationParameters?
+        
+        /// Initializes the configuration for Issuer list type components.
+        /// - Parameters:
+        ///   - style: The UI style of the component.
+        ///   - localizationParameters: Localization parameters.
+        public init(style: ListComponentStyle = .init(),
+                    localizationParameters: LocalizationParameters? = nil) {
+            self.style = style
+            self.localizationParameters = localizationParameters
+        }
+    }
 }
 
 /// Provides an issuer selection list for iDEAL payments.

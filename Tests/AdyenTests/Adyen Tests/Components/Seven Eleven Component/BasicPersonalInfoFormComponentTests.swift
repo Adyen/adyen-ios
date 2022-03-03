@@ -16,7 +16,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     let payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
 
     func testLocalizationWithCustomTableName() {
-        let config = BasicPersonalInfoComponentConfiguration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
+        let config = BasicPersonalInfoFormComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
         let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
         sut.payment = payment
 
@@ -37,7 +37,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomKeySeparator() {
-        let config = BasicPersonalInfoComponentConfiguration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
+        let config = BasicPersonalInfoFormComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
 
         XCTAssertEqual(sut.firstNameItem?.title, localizedString(LocalizationKey(key: "adyen_firstName"), sut.configuration.localizationParameters))
@@ -82,7 +82,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        let config = BasicPersonalInfoComponentConfiguration(style: style)
+        let config = BasicPersonalInfoFormComponent.Configuration(style: style)
         let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -154,7 +154,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     }
 
     func testSubmitForm() {
-        let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: BasicPersonalInfoComponentConfiguration())
+        let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: BasicPersonalInfoFormComponent.Configuration())
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         sut.payment = payment
@@ -201,7 +201,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     }
 
     func testBigTitle() {
-        let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: BasicPersonalInfoComponentConfiguration())
+        let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: BasicPersonalInfoFormComponent.Configuration())
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -216,13 +216,13 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
 
     func testRequiresModalPresentation() {
         let paymentMethod = SevenElevenPaymentMethod(type: "test_type", name: "Test name")
-        let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: BasicPersonalInfoComponentConfiguration())
+        let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: BasicPersonalInfoFormComponent.Configuration())
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
     func testBasicPersonalInfoFormPrefilling() throws {
         // Given
-        let config = BasicPersonalInfoComponentConfiguration(shopperInformation: shopperInformation)
+        let config = BasicPersonalInfoFormComponent.Configuration(shopperInformation: shopperInformation)
         let prefillSut = SevenElevenComponent(paymentMethod: paymentMethod,
                                               apiContext: Dummy.context,
                                               configuration: config)
@@ -258,7 +258,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         // Given
         let sut = SevenElevenComponent(paymentMethod: paymentMethod,
                                        apiContext: Dummy.context,
-                                       configuration: BasicPersonalInfoComponentConfiguration())
+                                       configuration: BasicPersonalInfoFormComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .seconds(1))

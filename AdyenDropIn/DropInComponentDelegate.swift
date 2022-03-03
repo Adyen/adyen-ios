@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -17,31 +17,57 @@ public protocol DropInComponentDelegate: AnyObject {
     ///
     /// - Parameters:
     ///   - data: The data supplied by the drop in component, containing the filled payment method details.
-    ///   - paymentMethod: The payment method of selected payment component.
-    ///   - component: The drop in component in which the payment method was selected and filled.
-    func didSubmit(_ data: PaymentComponentData, for paymentMethod: PaymentMethod, from component: DropInComponent)
+    ///   - component: The payment component in which the payment method was selected and filled.
+    ///   - dropInComponent: The DropIn component.
+    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: DropInComponent)
+    
+    /// Invoked when a payment component fails.
+    ///
+    /// - Parameters:
+    ///   - error: The error that occurred.
+    ///   - component: The payment component that failed.
+    ///   - dropInComponent: The DropIn component.
+    func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: DropInComponent)
     
     /// Invoked when additional details have been provided for a payment method.
     ///
     /// - Parameters:
     ///   - data: The additional data supplied by the drop in component.
-    ///   - component: The drop in component from which the additional details were provided.
-    func didProvide(_ data: ActionComponentData, from component: DropInComponent)
-
+    ///   - component: The action component from which the additional details were provided.
+    ///   - dropInComponent: The DropIn component.
+    func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: DropInComponent)
+    
     /// Invoked when the action component finishes,
     /// without any further steps needed by the application, for example in case of voucher payment methods.
     /// The application just needs to dismiss the `DropInComponent`.
     ///
     /// - Parameters:
-    ///   - component: The component that handled the action.
-    func didComplete(from component: DropInComponent)
+    ///   - component: The action component that handled the action.
+    ///   - dropInComponent: The DropIn component.
+    func didComplete(from component: ActionComponent, in dropInComponent: DropInComponent)
+    
+    /// Invoked when the action component fails.
+    ///
+    /// - Parameters:
+    ///   - error: The error that occurred.
+    ///   - component: The action component that failed.
+    ///   - dropInComponent: The DropIn component.
+    func didFail(with error: Error, from component: ActionComponent, in dropInComponent: DropInComponent)
+    
+    /// Invoked when the action component opens a third party application outside the scope of the Adyen checkout,
+    /// e.g WeChat Pay Application.
+    /// In which case you can for example stop any loading animations.
+    ///
+    /// - parameter component: The action component that handled the action.
+    /// - parameter dropInComponent: The DropIn component.
+    func didOpenExternalApplication(_ component: ActionComponent, in dropInComponent: DropInComponent)
     
     /// Invoked when the drop in component failed with an error.
     ///
     /// - Parameters:
     ///   - error: The error that occurred.
     ///   - component: The drop in component that failed.
-    func didFail(with error: Error, from component: DropInComponent)
+    func didFail(with error: Error, from dropInComponent: DropInComponent)
     
     /// Invoked when user closes a payment component.
     ///
@@ -49,13 +75,6 @@ public protocol DropInComponentDelegate: AnyObject {
     ///   - component: The component that the user closed.
     ///   - dropInComponent: The drop in component that owns the `component`.
     func didCancel(component: PaymentComponent, from dropInComponent: DropInComponent)
-
-    /// Invoked when payment component redirected to external app.
-    ///
-    /// - Parameters:
-    ///   - component: The component that the user closed.
-    ///   - dropInComponent: The drop in component that owns the `component`.
-    func didOpenExternalApplication(_ component: DropInComponent)
     
 }
 
@@ -79,5 +98,5 @@ public extension DropInComponentDelegate {
     func didCancel(component: PaymentComponent, from dropInComponent: DropInComponent) {}
 
     /// :nodoc:
-    func didOpenExternalApplication(_ component: DropInComponent) {}
+    func didOpenExternalApplication(_ component: ActionComponent, in dropInComponent: DropInComponent) {}
 }
