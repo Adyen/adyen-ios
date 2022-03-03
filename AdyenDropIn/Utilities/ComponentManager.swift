@@ -223,6 +223,7 @@ internal final class ComponentManager {
         ACHDirectDebitComponent(configuration: ACHDirectDebitComponent.Configuration(),
                                 paymentMethod: paymentMethod,
                                 apiContext: apiContext,
+                                adyenContext: adyenContext,
                                 shopperInformation: configuration.shopper,
                                 localizationParameters: configuration.localizationParameters,
                                 style: style.formComponent)

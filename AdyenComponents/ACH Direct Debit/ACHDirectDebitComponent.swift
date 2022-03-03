@@ -24,6 +24,9 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     
     /// :nodoc:
     public let apiContext: APIContext
+
+    /// The Adyen context
+    public let adyenContext: AdyenContext
     
     /// :nodoc:
     public var paymentMethod: PaymentMethod {
@@ -68,18 +71,21 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     ///   - configuration: Configuration for the component.
     ///   - paymentMethod: The ACH Direct Debit payment method.
     ///   - apiContext: The component's API context.
+    ///   - adyenContext: The Adyen context
     ///   - shopperInformation: The shopper's information.
     ///   - localizationParameters: The localization parameters.
     ///   - style: The component's style.
     public convenience init(configuration: Configuration,
                             paymentMethod: ACHDirectDebitPaymentMethod,
                             apiContext: APIContext,
+                            adyenContext: AdyenContext,
                             shopperInformation: PrefilledShopperInformation? = nil,
                             localizationParameters: LocalizationParameters? = nil,
                             style: FormComponentStyle) {
         self.init(configuration: configuration,
                   paymentMethod: paymentMethod,
                   apiContext: apiContext,
+                  adyenContext: adyenContext,
                   publicKeyProvider: PublicKeyProvider(apiContext: apiContext),
                   shopperInformation: shopperInformation,
                   localizationParameters: localizationParameters,
@@ -90,6 +96,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     internal init(configuration: Configuration,
                   paymentMethod: ACHDirectDebitPaymentMethod,
                   apiContext: APIContext,
+                  adyenContext: AdyenContext,
                   publicKeyProvider: AnyPublicKeyProvider,
                   shopperInformation: PrefilledShopperInformation? = nil,
                   localizationParameters: LocalizationParameters? = nil,
@@ -97,6 +104,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.publicKeyProvider = publicKeyProvider
         self.localizationParameters = localizationParameters
         self.shopperInformation = shopperInformation
