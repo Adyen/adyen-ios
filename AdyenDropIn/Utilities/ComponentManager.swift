@@ -303,6 +303,7 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: IssuerListPaymentMethod) -> PaymentComponent? {
         IssuerListComponent(paymentMethod: paymentMethod,
                             apiContext: apiContext,
+                            adyenContext: adyenContext,
                             style: style.listComponent)
     }
     

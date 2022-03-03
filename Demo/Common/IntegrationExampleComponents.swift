@@ -26,7 +26,8 @@ extension IntegrationExample {
     internal func presentIdealComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: IssuerListPaymentMethod.self) else { return }
         let component = IdealComponent(paymentMethod: paymentMethod,
-                                       apiContext: apiContext)
+                                       apiContext: apiContext,
+                                       adyenContext: adyenContext)
         present(component)
     }
 
