@@ -7,11 +7,11 @@
 import Adyen
 import UIKit
 
-/// Configuration for Affirm Component
-public typealias AffirmComponentConfiguration = PersonalInformationConfiguration
-
 /// A component that provides a form for Affirm payment.
 public final class AffirmComponent: AbstractPersonalInformationComponent, Observer {
+    
+    /// Configuration for Affirm Component
+    public typealias Configuration = PersonalInformationConfiguration
     
     private enum ViewIdentifier {
         static let billingAddress = "billingAddressItem"
@@ -38,7 +38,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     public init(paymentMethod: PaymentMethod,
                 apiContext: APIContext,
                 adyenContext: AdyenContext,
-                configuration: AffirmComponentConfiguration) {
+                configuration: Configuration = .init()) {
         personalDetailsHeaderItem = FormLabelItem(text: "", style: configuration.style.sectionHeader)
         deliveryAddressToggleItem = FormToggleItem(style: configuration.style.toggle)
         

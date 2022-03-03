@@ -53,7 +53,7 @@ extension IntegrationExample {
     internal func presentMBWayComponent() {
         let style = FormComponentStyle()
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: MBWayPaymentMethod.self) else { return }
-        let config = MBWayComponentConfiguration(style: style)
+        let config = MBWayComponent.Configuration(style: style)
         let component = MBWayComponent(paymentMethod: paymentMethod,
                                        apiContext: apiContext,
                                        adyenContext: adyenContext,
@@ -80,7 +80,7 @@ extension IntegrationExample {
         let component = EContextStoreComponent(paymentMethod: paymentMethod,
                                                apiContext: apiContext,
                                                adyenContext: adyenContext,
-                                               configuration: BasicPersonalInfoComponentConfiguration(style: FormComponentStyle()))
+                                               configuration: BasicPersonalInfoFormComponent.Configuration(style: FormComponentStyle()))
         present(component)
     }
 

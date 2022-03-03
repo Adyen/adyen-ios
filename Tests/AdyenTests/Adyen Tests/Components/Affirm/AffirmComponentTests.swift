@@ -22,7 +22,7 @@ class AffirmComponentTests: XCTestCase {
         style = FormComponentStyle()
         sut = AffirmComponent(paymentMethod: paymentMethod,
                               apiContext: apiContext,
-                              configuration: AffirmComponentConfiguration(style: style))
+                              configuration: AffirmComponent.Configuration(style: style))
     }
     
     override func tearDownWithError() throws {
@@ -111,7 +111,7 @@ class AffirmComponentTests: XCTestCase {
         // Given
         let sut = AffirmComponent(paymentMethod: paymentMethod,
                                   apiContext: apiContext,
-                                  configuration: AffirmComponentConfiguration(style: style))
+                                  configuration: AffirmComponent.Configuration(style: style))
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         let expectedBillingAddress = PostalAddressMocks.newYorkPostalAddress
@@ -176,7 +176,7 @@ class AffirmComponentTests: XCTestCase {
 
     func testAffirmPrefilling_givenDeliveryAddressIsSet() throws {
         // Given
-        let config = AffirmComponentConfiguration(style: style, shopperInformation: shopperInformation)
+        let config = AffirmComponent.Configuration(style: style, shopperInformation: shopperInformation)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          apiContext: apiContext,
                                          configuration: config)
@@ -223,7 +223,7 @@ class AffirmComponentTests: XCTestCase {
 
     func testAffirmPrefilling_givenDeliveryAddressIsNotSet() throws {
         // Given
-        let config = AffirmComponentConfiguration(style: style, shopperInformation: shopperInformationNoDeliveryAddress)
+        let config = AffirmComponent.Configuration(style: style, shopperInformation: shopperInformationNoDeliveryAddress)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          apiContext: apiContext,
                                          configuration: config)

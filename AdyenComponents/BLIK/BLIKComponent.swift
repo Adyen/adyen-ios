@@ -9,7 +9,10 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for BLIK payments.
-public final class BLIKComponent: PaymentComponent, PresentableComponent, Localizable, LoadingComponent {
+public final class BLIKComponent: PaymentComponent, PresentableComponent, LoadingComponent {
+    
+    /// Configuration for BLIK Component.
+    public typealias Configuration = BasicComponentConfiguration
     
     /// :nodoc:
     public let apiContext: APIContext
@@ -24,13 +27,11 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     public weak var delegate: PaymentComponentDelegate?
 
     /// :nodoc:
-    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
-
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
-
-    /// Describes the component's UI style.
-    public let style: FormComponentStyle
+    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
+                                                                             style: configuration.style)
+    
+    /// Component's configuration
+    public var configuration: Configuration
 
     /// :nodoc:
     public let requiresModalPresentation: Bool = true
@@ -43,15 +44,15 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     /// - Parameter paymentMethod: The BLIK payment method.
     /// - Parameter apiContext: The API context.
     /// - Parameter adyenContext: The Adyen context.
-    /// - Parameter style: The Component's UI style.
+    /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: BLIKPaymentMethod,
                 apiContext: APIContext,
                 adyenContext: AdyenContext,
-                style: FormComponentStyle = FormComponentStyle()) {
+                configuration: Configuration = .init()) {
         self.blikPaymentMethod = paymentMethod
         self.apiContext = apiContext
         self.adyenContext = adyenContext
-        self.style = style
+        self.configuration = configuration
     }
 
     /// :nodoc:
@@ -61,8 +62,8 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     }
 
     private lazy var formViewController: FormViewController = {
-        let formViewController = FormViewController(style: style)
-        formViewController.localizationParameters = localizationParameters
+        let formViewController = FormViewController(style: configuration.style)
+        formViewController.localizationParameters = configuration.localizationParameters
         formViewController.delegate = self
 
         formViewController.title = paymentMethod.name.uppercased()
@@ -79,19 +80,19 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
     }()
 
     /// The helper message item.
-    internal lazy var hintLabelItem: FormLabelItem = .init(text: localizedString(.blikHelp, localizationParameters),
-                                                           style: style.hintLabel,
+    internal lazy var hintLabelItem: FormLabelItem = .init(text: localizedString(.blikHelp, configuration.localizationParameters),
+                                                           style: configuration.style.hintLabel,
                                                            identifier: ViewIdentifierBuilder.build(scopeInstance: self,
                                                                                                    postfix: "blikCodeHintLabel"))
 
     /// The BLIK code item.
     internal lazy var codeItem: FormTextInputItem = {
-        let item = FormTextInputItem(style: style.textField)
-        item.title = localizedString(.blikCode, localizationParameters)
-        item.placeholder = localizedString(.blikPlaceholder, localizationParameters)
+        let item = FormTextInputItem(style: configuration.style.textField)
+        item.title = localizedString(.blikCode, configuration.localizationParameters)
+        item.placeholder = localizedString(.blikPlaceholder, configuration.localizationParameters)
         item.validator = NumericStringValidator(exactLength: 6)
         item.formatter = NumericFormatter()
-        item.validationFailureMessage = localizedString(.blikInvalid, localizationParameters)
+        item.validationFailureMessage = localizedString(.blikInvalid, configuration.localizationParameters)
         item.keyboardType = .numberPad
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "blikCodeItem")
         return item
@@ -99,11 +100,11 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Locali
 
     /// The footer item.
     internal lazy var button: FormButtonItem = {
-        let item = FormButtonItem(style: style.mainButtonItem)
+        let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(with: payment?.amount,
                                                 style: .immediate,
-                                                localizationParameters)
+                                                configuration.localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }

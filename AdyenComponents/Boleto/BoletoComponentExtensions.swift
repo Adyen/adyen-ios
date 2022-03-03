@@ -10,31 +10,33 @@ import Foundation
 extension BoletoComponent {
     
     /// Boleto component configuration.
-    public struct Configuration {
+    public struct Configuration: AnyPersonalInformationConfiguration {
+        
+        /// :nodoc:
+        public let style: FormComponentStyle
+        
+        /// :nodoc:
+        public var localizationParameters: LocalizationParameters?
+        
         /// Pre-filled optional personal information about the shopper
-        internal let shopperInformation: PrefilledShopperInformation
-        
-        /// A Boleto payment method
-        internal let boletoPaymentMethod: BoletoPaymentMethod
-        
-        /// The payment to be made
-        internal let payment: Payment?
+        public let shopperInformation: PrefilledShopperInformation?
         
         /// Indicates whether to show `sendCopyByEmail` checkbox and email text field
         internal let showEmailAddress: Bool
         
-        /// Initializes the configuration struct with shopper information
+        /// Initializes the configuration for Boleto Component.
         /// - Parameters:
-        ///   - boletoPaymentMethod: A Boleto payment method
-        ///   - payment: The payment to be made
+        ///   - style: The UI style of the component.
+        ///   - localizationParameters: Localization parameters.
         ///   - shopperInformation: Pre-filled optional personal information about the shopper
-        public init(boletoPaymentMethod: BoletoPaymentMethod,
-                    payment: Payment?,
-                    shopperInformation: PrefilledShopperInformation? = nil,
+        ///   - showEmailAddress: Indicates whether to show `sendCopyByEmail` checkbox and email text field
+        public init(style: FormComponentStyle,
+                    localizationParameters: LocalizationParameters? = nil,
+                    shopperInformation: PrefilledShopperInformation?,
                     showEmailAddress: Bool) {
-            self.boletoPaymentMethod = boletoPaymentMethod
-            self.payment = payment
-            self.shopperInformation = shopperInformation ?? PrefilledShopperInformation()
+            self.style = style
+            self.localizationParameters = localizationParameters
+            self.shopperInformation = shopperInformation
             self.showEmailAddress = showEmailAddress
         }
     }

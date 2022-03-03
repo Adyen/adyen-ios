@@ -11,7 +11,7 @@ import Adyen
 import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
-public final class ACHDirectDebitComponent: PaymentComponent, PresentableComponent, Localizable, LoadingComponent, PublicKeyConsumer {
+public final class ACHDirectDebitComponent: PaymentComponent, PresentableComponent, LoadingComponent, PublicKeyConsumer {
     
     private enum ViewIdentifier {
         static let headerItem = "headerItem"
@@ -37,22 +37,14 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     public weak var delegate: PaymentComponentDelegate?
     
     /// Component configuration
-    public let configuration: Configuration
+    public var configuration: Configuration
 
     /// :nodoc:
-    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
-
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
-
-    /// Describes the component's UI style.
-    public let style: FormComponentStyle
+    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
+                                                                             style: configuration.style)
 
     /// :nodoc:
     public let requiresModalPresentation: Bool = true
-
-    /// :nodoc:
-    public let shopperInformation: PrefilledShopperInformation?
     
     /// :nodoc:
     public let publicKeyProvider: AnyPublicKeyProvider
@@ -68,47 +60,34 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     
     /// Initializes the ACH Direct Debit component.
     /// - Parameters:
-    ///   - configuration: Configuration for the component.
     ///   - paymentMethod: The ACH Direct Debit payment method.
     ///   - apiContext: The component's API context.
     ///   - adyenContext: The Adyen context
-    ///   - shopperInformation: The shopper's information.
-    ///   - localizationParameters: The localization parameters.
-    ///   - style: The component's style.
+    ///   - configuration: Configuration for the component.
     public convenience init(configuration: Configuration,
                             paymentMethod: ACHDirectDebitPaymentMethod,
                             apiContext: APIContext,
                             adyenContext: AdyenContext,
-                            shopperInformation: PrefilledShopperInformation? = nil,
-                            localizationParameters: LocalizationParameters? = nil,
-                            style: FormComponentStyle) {
+                            configuration: Configuration = .init()) {
         self.init(configuration: configuration,
                   paymentMethod: paymentMethod,
                   apiContext: apiContext,
                   adyenContext: adyenContext,
-                  publicKeyProvider: PublicKeyProvider(apiContext: apiContext),
-                  shopperInformation: shopperInformation,
-                  localizationParameters: localizationParameters,
-                  style: style)
-    }
+                  configuration: configuration,
+                  publicKeyProvider: PublicKeyProvider(apiContext: apiContext))
     
     /// :nodoc:
-    internal init(configuration: Configuration,
-                  paymentMethod: ACHDirectDebitPaymentMethod,
+    internal init(paymentMethod: ACHDirectDebitPaymentMethod,
                   apiContext: APIContext,
                   adyenContext: AdyenContext,
-                  publicKeyProvider: AnyPublicKeyProvider,
-                  shopperInformation: PrefilledShopperInformation? = nil,
-                  localizationParameters: LocalizationParameters? = nil,
-                  style: FormComponentStyle) {
+                  configuration: Configuration = .init(),
+                  publicKeyProvider: AnyPublicKeyProvider) {
         self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
         self.apiContext = apiContext
         self.adyenContext = adyenContext
+        self.configuration = configuration
         self.publicKeyProvider = publicKeyProvider
-        self.localizationParameters = localizationParameters
-        self.shopperInformation = shopperInformation
-        self.style = style
     }
     
     /// :nodoc:
@@ -154,23 +133,23 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     // MARK: - Form Items
     
     internal lazy var headerItem: FormLabelItem = {
-        let item = FormLabelItem(text: localizedString(.achBankAccountTitle, localizationParameters),
-                                 style: style.sectionHeader)
+        let item = FormLabelItem(text: localizedString(.achBankAccountTitle, configuration.localizationParameters),
+                                 style: configuration.style.sectionHeader)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                       postfix: ViewIdentifier.headerItem)
         return item
     }()
     
     internal lazy var holderNameItem: FormTextInputItem = {
-        let textItem = FormTextInputItem(style: style.textField)
+        let textItem = FormTextInputItem(style: configuration.style.textField)
 
-        let localizedTitle = localizedString(.achAccountHolderNameFieldTitle, localizationParameters)
+        let localizedTitle = localizedString(.achAccountHolderNameFieldTitle, configuration.localizationParameters)
         textItem.title = localizedTitle
         textItem.placeholder = localizedTitle
 
         textItem.validator = LengthValidator(minimumLength: 1, maximumLength: 70)
 
-        textItem.validationFailureMessage = localizedString(.achAccountHolderNameFieldInvalid, localizationParameters)
+        textItem.validationFailureMessage = localizedString(.achAccountHolderNameFieldInvalid, configuration.localizationParameters)
 
         textItem.autocapitalizationType = .words
 
@@ -180,16 +159,16 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     }()
     
     internal lazy var bankAccountNumberItem: FormTextInputItem = {
-        let textItem = FormTextInputItem(style: style.textField)
+        let textItem = FormTextInputItem(style: configuration.style.textField)
 
-        let localizedTitle = localizedString(.achAccountNumberFieldTitle, localizationParameters)
+        let localizedTitle = localizedString(.achAccountNumberFieldTitle, configuration.localizationParameters)
         textItem.title = localizedTitle
         textItem.placeholder = localizedTitle
 
         textItem.validator = NumericStringValidator(minimumLength: 4, maximumLength: 17)
         textItem.formatter = NumericFormatter()
 
-        textItem.validationFailureMessage = localizedString(.achAccountNumberFieldInvalid, localizationParameters)
+        textItem.validationFailureMessage = localizedString(.achAccountNumberFieldInvalid, configuration.localizationParameters)
 
         textItem.autocapitalizationType = .none
         textItem.keyboardType = .numberPad
@@ -200,16 +179,16 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     }()
     
     internal lazy var bankRoutingNumberItem: FormTextInputItem = {
-        let textItem = FormTextInputItem(style: style.textField)
+        let textItem = FormTextInputItem(style: configuration.style.textField)
 
-        let localizedTitle = localizedString(.achAccountLocationFieldTitle, localizationParameters)
+        let localizedTitle = localizedString(.achAccountLocationFieldTitle, configuration.localizationParameters)
         textItem.title = localizedTitle
         textItem.placeholder = localizedTitle
 
         textItem.validator = NumericStringValidator(minimumLength: 9, maximumLength: 9)
         textItem.formatter = NumericFormatter()
 
-        textItem.validationFailureMessage = localizedString(.achAccountLocationFieldInvalid, localizationParameters)
+        textItem.validationFailureMessage = localizedString(.achAccountLocationFieldInvalid, configuration.localizationParameters)
 
         textItem.autocapitalizationType = .none
         textItem.keyboardType = .numberPad
@@ -224,25 +203,25 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
                                                      postfix: ViewIdentifier.billingAddressItem)
 
         var initialCountry = defaultCountryCode
-        if let prefillCountryCode = shopperInformation?.billingAddress?.country,
+        if let prefillCountryCode = configuration.shopperInformation?.billingAddress?.country,
            configuration.billingAddressCountryCodes.contains(prefillCountryCode) {
             initialCountry = prefillCountryCode
         }
         let item = FormAddressItem(initialCountry: initialCountry,
-                                   style: style.addressStyle,
-                                   localizationParameters: localizationParameters,
+                                   style: configuration.style.addressStyle,
+                                   localizationParameters: configuration.localizationParameters,
                                    identifier: identifier,
                                    supportedCountryCodes: configuration.billingAddressCountryCodes)
-        shopperInformation?.billingAddress.map { item.value = $0 }
+        configuration.shopperInformation?.billingAddress.map { item.value = $0 }
         item.style.backgroundColor = UIColor.Adyen.lightGray
         return item
     }()
     
     internal lazy var payButton: FormButtonItem = {
-        let item = FormButtonItem(style: style.mainButtonItem)
+        let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                       postfix: ViewIdentifier.payButtonItem)
-        item.title = localizedString(.confirmPurchase, localizationParameters)
+        item.title = localizedString(.confirmPurchase, configuration.localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }
@@ -250,8 +229,8 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     }()
     
     private lazy var formViewController: FormViewController = {
-        let formViewController = FormViewController(style: style)
-        formViewController.localizationParameters = localizationParameters
+        let formViewController = FormViewController(style: configuration.style)
+        formViewController.localizationParameters = configuration.localizationParameters
         formViewController.delegate = self
 
         formViewController.title = paymentMethod.name.uppercased()
@@ -287,7 +266,16 @@ extension ACHDirectDebitComponent: TrackableComponent {
 extension ACHDirectDebitComponent {
     
     /// Configuration for the ACH Direct Debit Component
-    public struct Configuration {
+    public struct Configuration: AnyPersonalInformationConfiguration {
+
+        /// Describes the component's UI style.
+        public var style: FormComponentStyle
+
+        /// The shopper's information to be prefilled.
+        public var shopperInformation: PrefilledShopperInformation?
+        
+        /// :nodoc:
+        public var localizationParameters: LocalizationParameters?
         
         /// Determines whether the billing address should be displayed or not.
         /// Defaults to `true`.
@@ -299,12 +287,21 @@ extension ACHDirectDebitComponent {
         
         /// Initializes the configuration for ACH Direct Debit Component.
         /// - Parameters:
+        ///   - style: The UI style of the component.
+        ///   - shopperInformation: The shopper's information to be prefilled.
+        ///   - localizationParameters: Localization parameters.
         ///   - showsBillingAddress: Determines whether the billing address should be displayed or not.
         ///   Defaults to `true`.
         ///   - billingAddressCountryCodes: ISO country codes that is supported for the billing address.
         ///   Defaults to ["US", "PR"].
-        public init(showsBillingAddress: Bool = true,
+        public init(style: FormComponentStyle = FormComponentStyle(),
+                    shopperInformation: PrefilledShopperInformation? = nil,
+                    localizationParameters: LocalizationParameters? = nil,
+                    showsBillingAddress: Bool = true,
                     billingAddressCountryCodes: [String] = ["US", "PR"]) {
+            self.style = style
+            self.shopperInformation = shopperInformation
+            self.localizationParameters = localizationParameters
             self.showsBillingAddress = showsBillingAddress
             self.billingAddressCountryCodes = billingAddressCountryCodes
         }

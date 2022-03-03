@@ -9,7 +9,10 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for SEPA Direct Debit payments.
-public final class SEPADirectDebitComponent: PaymentComponent, PresentableComponent, Localizable, LoadingComponent {
+public final class SEPADirectDebitComponent: PaymentComponent, PresentableComponent, LoadingComponent {
+    
+    /// Configuration for SEPA Direct Debit Component
+    public typealias Configuration = BasicComponentConfiguration
     
     /// :nodoc:
     public let apiContext: APIContext
@@ -17,8 +20,8 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     /// The Adyen context
     public let adyenContext: AdyenContext
     
-    /// Describes the component's UI style.
-    public let style: FormComponentStyle
+    /// Component's configuration
+    public var configuration: Configuration
     
     /// The SEPA Direct Debit payment method.
     public var paymentMethod: PaymentMethod {
@@ -33,15 +36,15 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     /// - Parameter paymentMethod: The SEPA Direct Debit payment method.
     /// - Parameter apiContext: The API context.
     /// - Parameter adyenContext: The Adyen context.
-    /// - Parameter style: The Component's UI style.
+    /// - Parameter configuration: Configuration for the component.
     public init(paymentMethod: SEPADirectDebitPaymentMethod,
                 apiContext: APIContext,
                 adyenContext: AdyenContext,
-                style: FormComponentStyle = FormComponentStyle()) {
+                configuration: Configuration = .init()) {
         self.sepaDirectDebitPaymentMethod = paymentMethod
         self.apiContext = apiContext
         self.adyenContext = adyenContext
-        self.style = style
+        self.configuration = configuration
     }
     
     private let sepaDirectDebitPaymentMethod: SEPADirectDebitPaymentMethod
@@ -49,13 +52,11 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     // MARK: - Presentable Component Protocol
     
     /// :nodoc:
-    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
+    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
+                                                                             style: configuration.style)
     
     /// :nodoc:
     public var requiresModalPresentation: Bool = true
-    
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
     public func stopLoading() {
@@ -66,8 +67,8 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     // MARK: - View Controller
     
     private lazy var formViewController: FormViewController = {
-        let formViewController = FormViewController(style: style)
-        formViewController.localizationParameters = localizationParameters
+        let formViewController = FormViewController(style: configuration.style)
+        formViewController.localizationParameters = configuration.localizationParameters
         formViewController.delegate = self
 
         formViewController.title = paymentMethod.name
@@ -97,11 +98,11 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     // MARK: - Form Items
     
     internal lazy var nameItem: FormTextInputItem = {
-        let nameItem = FormTextInputItem(style: style.textField)
-        nameItem.title = localizedString(.sepaNameItemTitle, localizationParameters)
-        nameItem.placeholder = localizedString(.sepaNameItemPlaceholder, localizationParameters)
+        let nameItem = FormTextInputItem(style: configuration.style.textField)
+        nameItem.title = localizedString(.sepaNameItemTitle, configuration.localizationParameters)
+        nameItem.placeholder = localizedString(.sepaNameItemPlaceholder, configuration.localizationParameters)
         nameItem.validator = LengthValidator(minimumLength: 2)
-        nameItem.validationFailureMessage = localizedString(.sepaNameItemInvalid, localizationParameters)
+        nameItem.validationFailureMessage = localizedString(.sepaNameItemInvalid, configuration.localizationParameters)
         nameItem.autocapitalizationType = .words
         nameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "nameItem")
         return nameItem
@@ -116,23 +117,23 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
             return IBANFormatter().formattedValue(for: example)
         }
         
-        let ibanItem = FormTextInputItem(style: style.textField)
-        ibanItem.title = localizedString(.sepaIbanItemTitle, localizationParameters)
+        let ibanItem = FormTextInputItem(style: configuration.style.textField)
+        ibanItem.title = localizedString(.sepaIbanItemTitle, configuration.localizationParameters)
         ibanItem.placeholder = localizedPlaceholder()
         ibanItem.formatter = IBANFormatter()
         ibanItem.validator = IBANValidator()
-        ibanItem.validationFailureMessage = localizedString(.sepaIbanItemInvalid, localizationParameters)
+        ibanItem.validationFailureMessage = localizedString(.sepaIbanItemInvalid, configuration.localizationParameters)
         ibanItem.autocapitalizationType = .allCharacters
         ibanItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "ibanItem")
         return ibanItem
     }()
 
     internal lazy var button: FormButtonItem = {
-        let item = FormButtonItem(style: style.mainButtonItem)
+        let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(with: payment?.amount,
                                                 style: .immediate,
-                                                localizationParameters)
+                                                configuration.localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }
