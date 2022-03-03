@@ -53,6 +53,12 @@ Pod::Spec.new do |s|
     plugin.source_files = 'AdyenComponents/**/*.swift'
   end
 
+  s.subspec 'Session' do |plugin|
+    plugin.dependency 'Adyen/Core'
+    plugin.dependency 'Adyen/Actions'
+    plugin.source_files = 'AdyenSession/**/*.swift'
+  end
+
 
   s.subspec 'Actions' do |plugin|
     plugin.dependency 'Adyen/Core'
