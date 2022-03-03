@@ -12,7 +12,7 @@ internal protocol QRCodeViewDelegate: AnyObject {
     func copyToPasteboard(with action: QRCodeAction)
 }
 
-internal final class QRCodeView: UIView, Localizable, Observer {
+internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     
     private let model: Model
     
