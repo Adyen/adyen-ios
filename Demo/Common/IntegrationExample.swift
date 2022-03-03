@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -54,7 +54,7 @@ internal final class IntegrationExample: APIClientAware {
     // MARK: - Action Handling for Components
 
     internal lazy var actionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(apiContext: apiContext)
+        let handler = AdyenActionComponent(apiContext: apiContext, adyenContext: adyenContext)
         handler.delegate = self
         handler.presentationDelegate = self
         return handler

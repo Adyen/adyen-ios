@@ -17,6 +17,9 @@ public final class ThreeDS2Component: ActionComponent {
     
     /// :nodoc:
     public let apiContext: APIContext
+
+    /// The Adyen context.
+    public let adyenContext: AdyenContext
     
     /// The delegate of the component.
     public weak var delegate: ActionComponentDelegate?
@@ -61,10 +64,13 @@ public final class ThreeDS2Component: ActionComponent {
     /// Initializes the 3D Secure 2 component.
     ///
     /// - Parameter apiContext: The `APIContext`.
-    /// - Parameter redirectComponentStyle: `RedirectComponent` style
+    /// - Parameter adyenContext: The Adyen context;
+    /// - Parameter configuration: The component's configuration.
     public init(apiContext: APIContext,
+                adyenContext: AdyenContext,
                 configuration: Configuration = Configuration()) {
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.configuration = configuration
         self.updateConfiguration()
     }
@@ -79,11 +85,13 @@ public final class ThreeDS2Component: ActionComponent {
     ///   - redirectComponentStyle: `RedirectComponent` style.
     /// :nodoc:
     internal convenience init(apiContext: APIContext,
+                              adyenContext: AdyenContext,
                               threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
                               threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
                               redirectComponent: AnyRedirectComponent,
                               configuration: Configuration = Configuration()) {
         self.init(apiContext: redirectComponent.apiContext,
+                  adyenContext: adyenContext,
                   configuration: configuration)
         self.threeDS2CompactFlowHandler = threeDS2CompactFlowHandler
         self.threeDS2ClassicFlowHandler = threeDS2ClassicFlowHandler

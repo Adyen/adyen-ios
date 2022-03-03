@@ -17,6 +17,9 @@ import UIKit
 public final class AdyenActionComponent: ActionComponent {
     
     public let apiContext: APIContext
+
+    /// The Adyen context.
+    public let adyenContext: AdyenContext
     
     public weak var delegate: ActionComponentDelegate?
     
@@ -70,8 +73,10 @@ public final class AdyenActionComponent: ActionComponent {
     
     /// :nodoc:
     public init(apiContext: APIContext,
+                adyenContext: AdyenContext,
                 configuration: Configuration = Configuration()) {
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.configuration = configuration
     }
     
@@ -131,7 +136,8 @@ public final class AdyenActionComponent: ActionComponent {
     }
 
     private func createThreeDS2Component() -> ThreeDS2Component {
-        let component = ThreeDS2Component(apiContext: apiContext)
+        let component = ThreeDS2Component(apiContext: apiContext,
+                                          adyenContext: adyenContext)
         component.configuration.requestorAppURL = configuration.threeDS.requestorAppURL
         component._isDropIn = _isDropIn
         component.delegate = delegate

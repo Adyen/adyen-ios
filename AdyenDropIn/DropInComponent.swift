@@ -187,7 +187,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     )
 
     private lazy var actionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(apiContext: apiContext)
+        let handler = AdyenActionComponent(apiContext: apiContext, adyenContext: adyenContext)
         handler.configuration.style = style.actionComponent
         handler._isDropIn = true
         handler.delegate = self
