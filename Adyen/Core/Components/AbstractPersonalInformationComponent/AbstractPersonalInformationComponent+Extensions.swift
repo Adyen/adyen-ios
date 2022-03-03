@@ -29,6 +29,12 @@ extension AbstractPersonalInformationComponent: LoadingComponent {
 
 extension AbstractPersonalInformationComponent: TrackableComponent {
 
+    /// :nodoc
+    public func viewDidLoad(viewController: UIViewController) {
+        let flavor: TelemetryFlavor = _isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: flavor)
+    }
+
     /// :nodoc:
     public func viewWillAppear(viewController: UIViewController) {
         populateFields()
