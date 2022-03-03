@@ -64,6 +64,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     internal lazy var inputPresenter: BACSInputPresenterProtocol? = {
         let tracker = BACSDirectDebitComponentTracker(paymentMethod: bacsPaymentMethod,
                                                       apiContext: apiContext,
+                                                      telemetryTracker: adyenContext.analyticsProvider,
                                                       isDropIn: _isDropIn)
         let itemsFactory = BACSItemsFactory(styleProvider: configuration.style,
                                             localizationParameters: configuration.localizationParameters,
