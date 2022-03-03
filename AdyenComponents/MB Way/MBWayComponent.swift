@@ -8,11 +8,11 @@ import Adyen
 import Foundation
 import UIKit
 
-/// Configuration for MB Way Component
-public typealias MBWayComponentConfiguration = PersonalInformationConfiguration
-
 /// A component that provides a form for MB Way payments.
 public final class MBWayComponent: AbstractPersonalInformationComponent {
+    
+    /// Configuration for MB Way Component
+    public typealias Configuration = PersonalInformationConfiguration
     
     /// :nodoc:
     private let mbWayPaymentMethod: MBWayPaymentMethod
@@ -24,7 +24,7 @@ public final class MBWayComponent: AbstractPersonalInformationComponent {
     ///   - configuration: The component's configuration.
     public init(paymentMethod: MBWayPaymentMethod,
                 apiContext: APIContext,
-                configuration: MBWayComponentConfiguration) {
+                configuration: Configuration = .init()) {
         self.mbWayPaymentMethod = paymentMethod
         super.init(paymentMethod: paymentMethod,
                    apiContext: apiContext,

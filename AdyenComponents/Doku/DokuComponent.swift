@@ -8,12 +8,12 @@ import Adyen
 import Foundation
 import UIKit
 
-/// Configuration for Doku Component
-public typealias DokuComponentConfiguration = PersonalInformationConfiguration
-
 /// A component that provides a form for Doku Wallet, Doku Alfamart, and Doku Indomaret  payments.
 public final class DokuComponent: AbstractPersonalInformationComponent {
 
+    /// Configuration for Doku Component
+    public typealias Configuration = PersonalInformationConfiguration
+    
     /// :nodoc:
     private let dokuPaymentMethod: DokuPaymentMethod
 
@@ -24,7 +24,7 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
     ///   - configuration: The component's configuration.
     public init(paymentMethod: DokuPaymentMethod,
                 apiContext: APIContext,
-                configuration: DokuComponentConfiguration) {
+                configuration: Configuration = .init()) {
         self.dokuPaymentMethod = paymentMethod
         super.init(paymentMethod: paymentMethod,
                    apiContext: apiContext,
