@@ -82,7 +82,6 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.regularComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, numberOfExpectedRegularComponents)
 
         XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 14)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is Localizable }.count, 1)
         XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 15)
     }
     
@@ -104,7 +103,6 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
         
         XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 2)
-        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 1)
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
@@ -125,7 +123,7 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
         
         XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 2)
-        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 1)
+        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 0)
     }
 
     func testOrderInjection() throws {
