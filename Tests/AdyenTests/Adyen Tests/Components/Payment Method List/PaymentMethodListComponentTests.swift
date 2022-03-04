@@ -10,8 +10,8 @@ import XCTest
 
 class PaymentMethodListComponentTests: XCTestCase {
 
-    lazy var method1 = StoredPaymentMethodMock(identifier: "identifier", supportedShopperInteractions: [.shopperNotPresent], type: "test_stored_type_1", name: "test_stored_name_1")
-    lazy var method2 = PaymentMethodMock(type: "test_stored_type_2", name: "test_stored_name_2")
+    lazy var method1 = StoredPaymentMethodMock(identifier: "identifier", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_stored_type_1"), name: "test_stored_name_1")
+    lazy var method2 = PaymentMethodMock(type: .other("test_stored_type_2"), name: "test_stored_name_2")
     lazy var storedComponent = PaymentComponentMock(paymentMethod: method1)
     lazy var regularComponent = PaymentComponentMock(paymentMethod: method2)
 

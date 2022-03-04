@@ -12,7 +12,7 @@ import XCTest
 class BoletoComponentTests: XCTestCase {
     
     private var sut: BoletoComponent!
-    private var method = BoletoPaymentMethod(type: "boletobancario_santander_test", name: "Boleto Bancario")
+    private var method = BoletoPaymentMethod(type: .boleto, name: "Boleto Bancario")
 
     func testUIConfiguration() {
         var style = FormComponentStyle()

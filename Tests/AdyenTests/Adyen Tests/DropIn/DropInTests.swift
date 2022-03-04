@@ -200,11 +200,11 @@ class DropInTests: XCTestCase {
         var paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         paymentMethods.paid = [
             OrderPaymentMethod(lastFour: "1234",
-                               type: "type-1",
+                               type: .card,
                                transactionLimit: Amount(value: 2000, currencyCode: "CNY"),
                                amount: Amount(value: 2000, currencyCode: "CNY")),
             OrderPaymentMethod(lastFour: "1234",
-                               type: "type-2",
+                               type: .bcmcMobile,
                                transactionLimit: Amount(value: 3000, currencyCode: "CNY"),
                                amount: Amount(value: 3000, currencyCode: "CNY"))
         ]

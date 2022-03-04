@@ -14,7 +14,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        let paymentMethod = BACSDirectDebitPaymentMethod(type: "directdebit_GB",
+        let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit,
                                                          name: "BACS Direct Debit")
         let apiContext = Dummy.context
 

@@ -75,34 +75,34 @@ extension IntegrationExample {
 }
 
 extension IntegrationExample: DropInComponentDelegate {
-
-    internal func didSubmit(_ data: PaymentComponentData, for paymentMethod: PaymentMethod, from component: DropInComponent) {
-        print("User did start: \(paymentMethod.name)")
-        let request = PaymentsRequest(data: data)
-        apiClient.perform(request, completionHandler: paymentResponseHandler)
+    
+    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: DropInComponent) {
+        didSubmit(data, from: component)
     }
-
-    internal func didProvide(_ data: ActionComponentData, from component: DropInComponent) {
-        component.viewController.view.isUserInteractionEnabled = false
-        let request = PaymentDetailsRequest(
-            details: data.details,
-            paymentData: data.paymentData,
-            merchantAccount: ConfigurationConstants.current.merchantAccount
-        )
-        apiClient.perform(request, completionHandler: paymentResponseHandler)
+    
+    func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: DropInComponent) {
+        didFail(with: error, from: component)
     }
-
-    internal func didComplete(from component: DropInComponent) {
-        finish(with: .authorised)
+    
+    func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: DropInComponent) {
+        didProvide(data, from: component)
     }
-
-    internal func didFail(with error: Error, from component: DropInComponent) {
-        finish(with: error)
+    
+    func didComplete(from component: ActionComponent, in dropInComponent: DropInComponent) {
+        didComplete(from: component)
     }
-
+    
+    func didFail(with error: Error, from component: ActionComponent, in dropInComponent: DropInComponent) {
+        didFail(with: error, from: component)
+    }
+    
     internal func didCancel(component: PaymentComponent, from dropInComponent: DropInComponent) {
         // Handle the event when the user closes a PresentableComponent.
         print("User did close: \(component.paymentMethod.name)")
+    }
+    
+    internal func didFail(with error: Error, from dropInComponent: DropInComponent) {
+        finish(with: error)
     }
 
 }

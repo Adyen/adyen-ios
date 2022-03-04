@@ -35,6 +35,10 @@ let package = Package(
             targets: ["AdyenComponents"]
         ),
         .library(
+            name: "AdyenSession",
+            targets: ["AdyenSession"]
+        ),
+        .library(
             name: "AdyenDropIn",
             targets: ["AdyenDropIn"]
         ),
@@ -120,6 +124,14 @@ let package = Package(
             ],
             path: "AdyenComponents",
             exclude: ["Info.plist"]
+        ),
+        .target(
+            name: "AdyenSession",
+            dependencies: [
+                .target(name: "Adyen"),
+                .target(name: "AdyenActions")
+            ],
+            path: "AdyenSession"
         ),
         .target(
             name: "AdyenDropIn",

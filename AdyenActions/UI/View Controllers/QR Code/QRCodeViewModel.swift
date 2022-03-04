@@ -19,7 +19,7 @@ extension QRCodeView {
         
         internal let observedProgress: Progress?
         
-        internal let expiration: Observable<String?>
+        internal let expiration: AdyenObservable<String?>
         
         internal let style: Style
         
@@ -42,7 +42,7 @@ extension QRCodeView {
                       instruction: String,
                       logoUrl: URL,
                       observedProgress: Progress?,
-                      expiration: Observable<String?>,
+                      expiration: AdyenObservable<String?>,
                       style: QRCodeView.Model.Style) {
             self.action = action
             self.instruction = instruction

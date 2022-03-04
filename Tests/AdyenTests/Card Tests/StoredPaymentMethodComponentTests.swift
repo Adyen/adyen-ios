@@ -12,7 +12,7 @@ import XCTest
 class StoredPaymentMethodComponentTests: XCTestCase {
     
     func testLocalizationWithCustomTableName() {
-        let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: "test_type", name: "test_name")
+        let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method, apiContext: Dummy.context)
         let payment = Payment(amount: Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
@@ -26,7 +26,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
     }
 
     func testLocalizationWithZeroPayment() {
-        let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: "test_type", name: "test_name")
+        let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method, apiContext: Dummy.context)
         let payment = Payment(amount: Amount(value: 0, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
@@ -41,7 +41,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
     }
     
     func testLocalizationWithCustomKeySeparator() {
-        let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: "test_type", name: "test_name")
+        let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method, apiContext: Dummy.context)
         let payment = Payment(amount: Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
@@ -57,7 +57,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
     func testUI() {
         let method = StoredPaymentMethodMock(identifier: "id",
                                              supportedShopperInteractions: [.shopperPresent],
-                                             type: "type",
+                                             type: .other("type"),
                                              name: "name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method, apiContext: Dummy.context)
 
@@ -69,7 +69,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
             XCTAssertNotNil(data.paymentMethod as? StoredPaymentDetails)
 
             let details = data.paymentMethod as! StoredPaymentDetails
-            XCTAssertEqual(details.type, "type")
+            XCTAssertEqual(details.type.rawValue, "type")
             XCTAssertEqual(details.storedPaymentMethodIdentifier, "id")
 
             delegateExpectation.fulfill()

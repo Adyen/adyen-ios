@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,51 +10,6 @@ private extension Array where Element == PaymentMethodField {
     var isAnyFieldRequired: Bool {
         contains { $0.isRequired }
     }
-}
-
-internal enum PaymentMethodType: String {
-    case card
-    case scheme
-    case ideal
-    case entercash
-    case eps
-    case dotpay
-    case openBankingUK = "openbanking_UK"
-    case molPayEBankingFPXMY = "molpay_ebanking_fpx_MY"
-    case molPayEBankingTH = "molpay_ebanking_TH"
-    case molPayEBankingVN = "molpay_ebanking_VN"
-    case sepaDirectDebit = "sepadirectdebit"
-    case applePay = "applepay"
-    case payPal = "paypal"
-    case bcmc
-    case bcmcMobileQR = "bcmc_mobile_QR"
-    case bcmcMobile = "bcmc_mobile"
-    case weChatMiniProgram = "wechatpayMiniProgram"
-    case weChatQR = "wechatpayQR"
-    case qiwiWallet = "qiwiwallet"
-    case weChatPayWeb = "wechatpayWeb"
-    case weChatPaySDK = "wechatpaySDK"
-    case mbWay = "mbway"
-    case blik
-    case googlePay = "paywithgoogle"
-    case afterpay = "afterpay_default"
-    case androidPay = "androidpay"
-    case amazonPay = "amazonpay"
-    case dokuWallet = "doku_wallet"
-    case dokuAlfamart = "doku_alfamart"
-    case dokuIndomaret = "doku_indomaret"
-    case giftcard
-    case doku
-    case econtextSevenEleven = "econtext_seven_eleven"
-    case econtextStores = "econtext_stores"
-    case econtextATM = "econtext_atm"
-    case econtextOnline = "econtext_online"
-    case boleto = "boletobancario_santander"
-    case affirm
-    case oxxo
-    case bacsDirectDebit = "directdebit_GB"
-    case achDirectDebit = "ach"
-    case multibanco
 }
 
 private struct PaymentMethodField: Decodable {

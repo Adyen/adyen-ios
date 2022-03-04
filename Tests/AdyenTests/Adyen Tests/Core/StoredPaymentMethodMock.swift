@@ -12,7 +12,7 @@ struct StoredPaymentMethodMock: StoredPaymentMethod {
     
     var supportedShopperInteractions: [ShopperInteraction]
     
-    var type: String
+    var type: PaymentMethodType
     
     var name: String
     
