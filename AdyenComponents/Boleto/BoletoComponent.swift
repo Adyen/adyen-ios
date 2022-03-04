@@ -30,8 +30,9 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     
     /// Initializes the Boleto Component
     /// - Parameters:
+    ///   - paymentMethod: Boleto Payment Method
+    ///   - apiContext: The API Context.
     ///   - configuration: The Component's configuration.
-    ///   - style: The Component's UI style.
     public init(paymentMethod: BoletoPaymentMethod,
                 apiContext: APIContext,
                 configuration: Configuration) {

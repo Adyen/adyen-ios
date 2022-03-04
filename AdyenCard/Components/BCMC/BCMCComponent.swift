@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -12,11 +12,14 @@ import UIKit
 /// A component that handles BCMC card payments.
 public final class BCMCComponent: CardComponent {
     
-    /// :nodoc:
+    /// Initializes the BCMC Component.
+    /// - Parameters:
+    ///   - paymentMethod: BCMC payment method.
+    ///   - apiContext: The API context.
+    ///   - configuration: The configuration of the component.
     public init(paymentMethod: BCMCPaymentMethod,
-                configuration: CardComponent.Configuration = CardComponent.Configuration(),
                 apiContext: APIContext,
-                style: FormComponentStyle = FormComponentStyle()) {
+                configuration: CardComponent.Configuration = CardComponent.Configuration()) {
         let configuration = configuration.bcmcConfiguration()
         
         let publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
@@ -26,7 +29,6 @@ public final class BCMCComponent: CardComponent {
         super.init(paymentMethod: paymentMethod,
                    apiContext: apiContext,
                    configuration: configuration,
-                   style: style,
                    publicKeyProvider: publicKeyProvider,
                    binProvider: binInfoProvider)
     }
