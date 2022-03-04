@@ -123,7 +123,6 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
         
         XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 2)
-        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 0)
     }
 
     func testOrderInjection() throws {
