@@ -72,7 +72,6 @@ class ComponentManagerTests: XCTestCase {
         config.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
-                                   style: DropInComponent.Style(),
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
 
@@ -83,7 +82,7 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.regularComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, numberOfExpectedRegularComponents)
 
         XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 14)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is Localizable }.count, 3)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is Localizable }.count, 1)
         XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 15)
     }
     
@@ -98,15 +97,14 @@ class ComponentManagerTests: XCTestCase {
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
-                                   style: DropInComponent.Style(),
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
         
         XCTAssertEqual(sut.storedComponents.count, 4)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
         
-        XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 4)
-        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 3)
+        XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 2)
+        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 1)
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
@@ -120,15 +118,14 @@ class ComponentManagerTests: XCTestCase {
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
-                                   style: DropInComponent.Style(),
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
         
         XCTAssertEqual(sut.storedComponents.count, 4)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
         
-        XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 4)
-        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 3)
+        XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 2)
+        XCTAssertEqual(sut.regularComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == config.localizationParameters }.count, 1)
     }
 
     func testOrderInjection() throws {
@@ -154,7 +151,6 @@ class ComponentManagerTests: XCTestCase {
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
-                                   style: DropInComponent.Style(),
                                    order: order,
                                    presentationDelegate: presentationDelegate)
 
@@ -174,7 +170,6 @@ class ComponentManagerTests: XCTestCase {
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
-                                   style: DropInComponent.Style(),
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
 
@@ -193,7 +188,6 @@ class ComponentManagerTests: XCTestCase {
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
-                                   style: DropInComponent.Style(),
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
 
@@ -212,7 +206,6 @@ class ComponentManagerTests: XCTestCase {
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
-                                   style: DropInComponent.Style(),
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
 
@@ -231,7 +224,6 @@ class ComponentManagerTests: XCTestCase {
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
-                                   style: DropInComponent.Style(),
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
 
@@ -250,7 +242,6 @@ class ComponentManagerTests: XCTestCase {
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
-                                   style: DropInComponent.Style(),
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
 
@@ -269,7 +260,6 @@ class ComponentManagerTests: XCTestCase {
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
-                                   style: DropInComponent.Style(),
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
 
@@ -278,7 +268,7 @@ class ComponentManagerTests: XCTestCase {
 
         // Then
         let cardComponent = try XCTUnwrap(paymentComponent as? CardComponent)
-        XCTAssertNotNil(cardComponent.shopperInformation)
+        XCTAssertNotNil(cardComponent.configuration.shopperInformation)
     }
 
     // MARK: - Private
