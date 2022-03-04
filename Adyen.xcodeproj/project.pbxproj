@@ -554,6 +554,10 @@
 		F96757BD27CF686D00A16FB6 /* DropInSession+DropInComponentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96757BC27CF686D00A16FB6 /* DropInSession+DropInComponentDelegate.swift */; };
 		F96757BF27CF690600A16FB6 /* PartialPaymentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96757BE27CF690600A16FB6 /* PartialPaymentError.swift */; };
 		F96757C327CF909900A16FB6 /* AnyWeChatPaySDKActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96757C227CF909900A16FB6 /* AnyWeChatPaySDKActionComponent.swift */; };
+		F967580A27D10E2800A16FB6 /* SessionSetupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F967580927D10E2800A16FB6 /* SessionSetupRequest.swift */; };
+		F967580E27D1253000A16FB6 /* SelfRetainingAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F967580D27D1253000A16FB6 /* SelfRetainingAPIClient.swift */; };
+		F967581027D1FD9C00A16FB6 /* PaymentsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F967580F27D1FD9C00A16FB6 /* PaymentsRequest.swift */; };
+		F967581227D207C600A16FB6 /* PaymentDetailsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F967581127D207C600A16FB6 /* PaymentDetailsRequest.swift */; };
 		F967580327D0BD4700A16FB6 /* PaymentMethodType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F967580227D0BD4700A16FB6 /* PaymentMethodType.swift */; };
 		F96A25432371AB75007DBF0B /* PaymentComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */; };
 		F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */; };
@@ -1530,6 +1534,10 @@
 		F96757BC27CF686D00A16FB6 /* DropInSession+DropInComponentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DropInSession+DropInComponentDelegate.swift"; sourceTree = "<group>"; };
 		F96757BE27CF690600A16FB6 /* PartialPaymentError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialPaymentError.swift; sourceTree = "<group>"; };
 		F96757C227CF909900A16FB6 /* AnyWeChatPaySDKActionComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyWeChatPaySDKActionComponent.swift; sourceTree = "<group>"; };
+		F967580927D10E2800A16FB6 /* SessionSetupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSetupRequest.swift; sourceTree = "<group>"; };
+		F967580D27D1253000A16FB6 /* SelfRetainingAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfRetainingAPIClient.swift; sourceTree = "<group>"; };
+		F967580F27D1FD9C00A16FB6 /* PaymentsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsRequest.swift; sourceTree = "<group>"; };
+		F967581127D207C600A16FB6 /* PaymentDetailsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentDetailsRequest.swift; sourceTree = "<group>"; };
 		F967580227D0BD4700A16FB6 /* PaymentMethodType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodType.swift; sourceTree = "<group>"; };
 		F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentDelegateMock.swift; sourceTree = "<group>"; };
 		F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayDetailsTest.swift; sourceTree = "<group>"; };
@@ -3482,6 +3490,7 @@
 		F92980A727CE2B33000CA5CA /* AdyenSession */ = {
 			isa = PBXGroup;
 			children = (
+				F967580427D10C7F00A16FB6 /* API */,
 				F92980A827CE2B33000CA5CA /* AdyenSession.h */,
 				F92980B127CE2B55000CA5CA /* Session.swift */,
 				F92980C127CF550C000CA5CA /* Session+PaymentComponentDelegate.swift */,
@@ -3707,6 +3716,49 @@
 				F92980D227CF67D3000CA5CA /* DropInSession+PartialPaymentDelegate.swift */,
 			);
 			path = Session;
+			sourceTree = "<group>";
+		};
+		F967580427D10C7F00A16FB6 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				F967580527D10C9000A16FB6 /* Session Setup */,
+				F967580727D10CE800A16FB6 /* Payments */,
+				F967580827D10CF700A16FB6 /* Payment Details */,
+				F967580627D10CB100A16FB6 /* Partial Payments API */,
+				F967580D27D1253000A16FB6 /* SelfRetainingAPIClient.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		F967580527D10C9000A16FB6 /* Session Setup */ = {
+			isa = PBXGroup;
+			children = (
+				F967580927D10E2800A16FB6 /* SessionSetupRequest.swift */,
+			);
+			path = "Session Setup";
+			sourceTree = "<group>";
+		};
+		F967580627D10CB100A16FB6 /* Partial Payments API */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Partial Payments API";
+			sourceTree = "<group>";
+		};
+		F967580727D10CE800A16FB6 /* Payments */ = {
+			isa = PBXGroup;
+			children = (
+				F967580F27D1FD9C00A16FB6 /* PaymentsRequest.swift */,
+			);
+			path = Payments;
+			sourceTree = "<group>";
+		};
+		F967580827D10CF700A16FB6 /* Payment Details */ = {
+			isa = PBXGroup;
+			children = (
+				F967581127D207C600A16FB6 /* PaymentDetailsRequest.swift */,
+			);
+			path = "Payment Details";
 			sourceTree = "<group>";
 		};
 		F96A25412371AB5D007DBF0B /* Base */ = {
@@ -5625,7 +5677,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				F92980C627CF563C000CA5CA /* Session+PartialPaymentDelegate.swift in Sources */,
+				F967580A27D10E2800A16FB6 /* SessionSetupRequest.swift in Sources */,
+				F967581027D1FD9C00A16FB6 /* PaymentsRequest.swift in Sources */,
+				F967581227D207C600A16FB6 /* PaymentDetailsRequest.swift in Sources */,
 				F92980C227CF550C000CA5CA /* Session+PaymentComponentDelegate.swift in Sources */,
+				F967580E27D1253000A16FB6 /* SelfRetainingAPIClient.swift in Sources */,
 				F92980B227CE2B55000CA5CA /* Session.swift in Sources */,
 				F92980C427CF558E000CA5CA /* Session+ActionComponentDelegate.swift in Sources */,
 			);

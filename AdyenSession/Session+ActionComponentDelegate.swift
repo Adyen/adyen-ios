@@ -20,7 +20,12 @@ extension Session: ActionComponentDelegate {
     }
 
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        // TODO: Make the payment/details call
+        (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
+        let request = PaymentDetailsRequest(sessionId: sessionContext.idenitifier,
+                                            sessionData: sessionContext.data,
+                                            paymentData: data.paymentData,
+                                            details: data.details)
+        apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
     
     public func didOpenExternalApplication(_ component: ActionComponent) {
