@@ -32,7 +32,7 @@ public extension DropInComponent {
         public var paymentMethodsList = PaymentMethodListConfiguration()
         
         /// Action components related configurations.
-        public var actionComponent = ActionComponent()
+        public var actionComponent = ActionComponentConfiguration()
         
         /// Shopper related information
         public var shopper: PrefilledShopperInformation?
@@ -75,7 +75,7 @@ public extension DropInComponent {
 
     }
     
-    struct ActionComponent {
+    struct ActionComponentConfiguration {
         /// Three DS configurations
         public var threeDS: AdyenActionComponent.Configuration.ThreeDS = .init()
     }
