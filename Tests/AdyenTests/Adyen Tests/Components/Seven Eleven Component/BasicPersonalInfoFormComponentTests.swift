@@ -12,7 +12,7 @@ import XCTest
 
 class BasicPersonalInfoFormComponentTests: XCTestCase {
 
-    lazy var paymentMethod = SevenElevenPaymentMethod(type: "test_type", name: "test_name")
+    lazy var paymentMethod = SevenElevenPaymentMethod(type: .econtextSevenEleven, name: "test_name")
     let payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
 
     func testLocalizationWithCustomTableName() {
@@ -215,7 +215,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     }
 
     func testRequiresModalPresentation() {
-        let paymentMethod = SevenElevenPaymentMethod(type: "test_type", name: "Test name")
+        let paymentMethod = SevenElevenPaymentMethod(type: .econtextSevenEleven, name: "Test name")
         let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: BasicPersonalInfoFormComponent.Configuration())
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }

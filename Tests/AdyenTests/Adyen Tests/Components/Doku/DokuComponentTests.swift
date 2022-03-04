@@ -12,7 +12,7 @@ import XCTest
 
 class DokuComponentTests: XCTestCase {
 
-    lazy var paymentMethod = DokuPaymentMethod(type: "test_type", name: "test_name")
+    lazy var paymentMethod = DokuPaymentMethod(type: .dokuAlfamart, name: "test_name")
     let payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
 
     func testLocalizationWithCustomTableName() {
@@ -196,7 +196,7 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testRequiresModalPresentation() {
-        let dokuPaymentMethod = DokuPaymentMethod(type: "doku_wallet", name: "Test name")
+        let dokuPaymentMethod = DokuPaymentMethod(type: .dokuWallet, name: "Test name")
         let sut = DokuComponent(paymentMethod: dokuPaymentMethod, apiContext: Dummy.context, configuration: DokuComponent.Configuration())
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }

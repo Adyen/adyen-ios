@@ -13,7 +13,7 @@ import XCTest
 class CardComponentTests: XCTestCase {
 
     func testRequiresKeyboardInput() {
-        let method = CardPaymentMethodMock(type: "test_type", name: "test_name", brands: ["bcmc"])
+        let method = CardPaymentMethodMock(type: .card, name: "test_name", brands: ["bcmc"])
         let sut = CardComponent(paymentMethod: method, apiContext: Dummy.context)
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
@@ -22,7 +22,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomTableName() {
-        let method = CardPaymentMethodMock(type: "test_type", name: "test_name", brands: ["bcmc"])
+        let method = CardPaymentMethodMock(type: .card, name: "test_name", brands: ["bcmc"])
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "BE")
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
@@ -51,7 +51,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomKeySeparator() {
-        let method = CardPaymentMethodMock(type: "test_type", name: "test_name", brands: ["bcmc"])
+        let method = CardPaymentMethodMock(type: .card, name: "test_name", brands: ["bcmc"])
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "BE")
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
@@ -111,7 +111,7 @@ class CardComponentTests: XCTestCase {
         cardComponentStyle.toggle.title.textAlignment = .left
         cardComponentStyle.toggle.backgroundColor = .magenta
 
-        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
+        let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         let sut = CardComponent(paymentMethod: cardPaymentMethod,
@@ -213,7 +213,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testBigTitle() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context)
 
@@ -229,7 +229,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testHideCVVField() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
         var configuration = CardComponent.Configuration()
         configuration.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
@@ -249,7 +249,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testShowCVVField() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context)
 
@@ -266,7 +266,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testCVVHintChange() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context)
 
@@ -292,7 +292,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testDelegateCalled() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(brands: [CardBrand(type: .americanExpress)]))
@@ -331,7 +331,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testCVVFormatterChange() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context)
 
@@ -359,7 +359,7 @@ class CardComponentTests: XCTestCase {
         var style = FormComponentStyle(tintColor: .systemYellow)
         style.textField.title.color = .gray
 
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 style: style)
@@ -386,7 +386,7 @@ class CardComponentTests: XCTestCase {
         var style = FormComponentStyle(tintColor: .systemYellow)
         style.textField.title.color = .gray
 
-        let method = CardPaymentMethod(type: "bcmc",
+        let method = CardPaymentMethod(type: .bcmc,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex"])
@@ -412,7 +412,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testFormViewControllerDelegate() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
         
         let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
         let publicKeyProvider = PublicKeyProviderMock()
@@ -435,7 +435,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testStoredCardPaymentWithNoPayment() {
-        let method = StoredCardPaymentMethod(type: "type",
+        let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
                                              fundingSource: .credit,
@@ -458,7 +458,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testStoredCardPaymentWithPayment() {
-        let method = StoredCardPaymentMethod(type: "type",
+        let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
                                              fundingSource: .credit,
@@ -482,7 +482,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testStoredCardPaymentWithNoCVV() {
-        let method = StoredCardPaymentMethod(type: "type",
+        let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
                                              fundingSource: .credit,
@@ -509,7 +509,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testStoredCardPaymentWithNoCVVAndNoPayment() {
-        let method = StoredCardPaymentMethod(type: "type",
+        let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
                                              fundingSource: .credit,
@@ -535,7 +535,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testOneClickPayment() {
-        let method = StoredCardPaymentMethod(type: "type",
+        let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
                                              fundingSource: .credit,
@@ -556,7 +556,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testShouldShow4CardTypesOnInit() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "cup", "maestro", "jcb"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "cup", "maestro", "jcb"])
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -581,7 +581,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testShouldShowNoCardTypesOnInvalidPANEnter() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -611,7 +611,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testShouldShowCardTypesOnPANEnter() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -641,7 +641,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testSubmit() throws {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         // Dummy public key
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
@@ -696,7 +696,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testCardNumberShouldPassFocusToDate() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -746,7 +746,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testDateShouldPassFocusToCVC() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -773,7 +773,7 @@ class CardComponentTests: XCTestCase {
 
     func testAddressNL() throws {
         // Given
-        let method = CardPaymentMethod(type: "bcmc",
+        let method = CardPaymentMethod(type: .bcmc,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
@@ -829,7 +829,7 @@ class CardComponentTests: XCTestCase {
 
     func testAddressUS() throws {
         // Given
-        let method = CardPaymentMethod(type: "bcmc",
+        let method = CardPaymentMethod(type: .bcmc,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
@@ -882,7 +882,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testAddressUK() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
@@ -915,7 +915,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testAddressSelectCountry() throws {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
@@ -970,7 +970,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testPostalCode() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
@@ -1022,7 +1022,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testKCP() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "korean_local_card"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "korean_local_card"])
         let config = CardComponent.Configuration(koreanAuthenticationMode: .auto)
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
@@ -1081,7 +1081,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testBrazilSSNAuto() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
         let config = CardComponent.Configuration(socialSecurityNumberMode: .auto)
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
@@ -1136,7 +1136,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testBrazilSSNDisabled() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
         let config = CardComponent.Configuration(socialSecurityNumberMode: .hide)
 
         let sut = CardComponent(paymentMethod: method,
@@ -1155,7 +1155,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testBrazilSSNEnabled() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
         let config = CardComponent.Configuration(socialSecurityNumberMode: .show)
 
         let sut = CardComponent(paymentMethod: method,
@@ -1177,7 +1177,7 @@ class CardComponentTests: XCTestCase {
         let brands = [CardBrand(type: .visa, isLuhnCheckEnabled: true),
                       CardBrand(type: .masterCard, isLuhnCheckEnabled: false)]
 
-        let method = CardPaymentMethod(type: "bcmc",
+        let method = CardPaymentMethod(type: .bcmc,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
@@ -1201,7 +1201,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testUnSupportedBrands() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
         var config = CardComponent.Configuration()
         config.excludedCardTypes = [.americanExpress]
 
@@ -1235,7 +1235,7 @@ class CardComponentTests: XCTestCase {
                       CardBrand(type: .masterCard, cvcPolicy: .hidden),
                       CardBrand(type: .masterCard, cvcPolicy: .optional)]
 
-        let method = CardPaymentMethod(type: "visa",
+        let method = CardPaymentMethod(type: .card,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
@@ -1267,7 +1267,7 @@ class CardComponentTests: XCTestCase {
                       CardBrand(type: .masterCard, expiryDatePolicy: .optional),
                       CardBrand(type: .masterCard, expiryDatePolicy: .hidden)]
 
-        let method = CardPaymentMethod(type: "visa",
+        let method = CardPaymentMethod(type: .card,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
@@ -1304,7 +1304,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testInstallmentsWithDefaultAndCardBasedOptions() {
-        let method = CardPaymentMethod(type: "visa", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
             InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
@@ -1350,7 +1350,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testInstallmentsWithDefaultOptions() {
-        let method = CardPaymentMethod(type: "visa", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
         let config = CardComponent.Configuration(installmentConfiguration: InstallmentConfiguration(defaultOptions: defaultInstallmentOptions))
         let cardTypeProviderMock = BinInfoProviderMock()
@@ -1387,7 +1387,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testInstallmentsWitCardBasedOptions() {
-        let method = CardPaymentMethod(type: "visa", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
             InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
         let config = CardComponent.Configuration(installmentConfiguration: InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions))
@@ -1437,7 +1437,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testSupportedCardLogoVisibility() {
-        let method = CardPaymentMethod(type: "visa",
+        let method = CardPaymentMethod(type: .card,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
@@ -1476,7 +1476,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testSupportedCardLogoAlpha() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
+        let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
         let config = CardComponent.Configuration(socialSecurityNumberMode: .show)
 
         let sut = CardComponent(paymentMethod: method,
@@ -1502,7 +1502,7 @@ class CardComponentTests: XCTestCase {
 
     func testClearShouldResetPostalCodeItemToEmptyValue() throws {
         // Given
-        let method = CardPaymentMethod(type: "bcmc",
+        let method = CardPaymentMethod(type: .card,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
@@ -1530,7 +1530,7 @@ class CardComponentTests: XCTestCase {
 
     func testClearShouldResetNumberItemToEmptyValue() throws {
         // Given
-        let method = CardPaymentMethod(type: "bcmc",
+        let method = CardPaymentMethod(type: .card,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
@@ -1558,7 +1558,7 @@ class CardComponentTests: XCTestCase {
 
     func testClearShouldResetExpiryDateItemToEmptyValue() throws {
         // Given
-        let method = CardPaymentMethod(type: "bcmc",
+        let method = CardPaymentMethod(type: .bcmc,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
@@ -1586,7 +1586,7 @@ class CardComponentTests: XCTestCase {
 
     func testClearShouldResetSecurityCodeItemToEmptyValue() throws {
         // Given
-        let method = CardPaymentMethod(type: "bcmc",
+        let method = CardPaymentMethod(type: .card,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
@@ -1614,7 +1614,7 @@ class CardComponentTests: XCTestCase {
 
     func testClearShouldResetHolderNameItemToEmptyValue() throws {
         // Given
-        let method = CardPaymentMethod(type: "bcmc",
+        let method = CardPaymentMethod(type: .card,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
@@ -1642,7 +1642,7 @@ class CardComponentTests: XCTestCase {
 
     func testClearShouldDisableStoreDetailsItem() throws {
         // Given
-        let method = CardPaymentMethod(type: "bcmc",
+        let method = CardPaymentMethod(type: .card,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
@@ -1677,7 +1677,7 @@ class CardComponentTests: XCTestCase {
                                                   stateOrProvince: "AL",
                                                   street: "",
                                                   apartment: nil)
-        let method = CardPaymentMethod(type: "bcmc",
+        let method = CardPaymentMethod(type: .card,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
@@ -1704,7 +1704,7 @@ class CardComponentTests: XCTestCase {
 
     func testCardPrefillingGivenBillingAddressInFullModeShouldPrefillItems() throws {
         // Given
-        let method = CardPaymentMethod(type: "bcmc",
+        let method = CardPaymentMethod(type: .card,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
@@ -1743,7 +1743,7 @@ class CardComponentTests: XCTestCase {
 
     func testCardPrefillingGivenBillingAddressInPostalCodeModeShouldPrefillItems() throws {
         // Given
-        let method = CardPaymentMethod(type: "bcmc",
+        let method = CardPaymentMethod(type: .card,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
@@ -1782,7 +1782,7 @@ class CardComponentTests: XCTestCase {
 
     func testCardPrefillingGivenNoShopperInformationAndFullAddressModeShouldNotPrefillItems() throws {
         // Given
-        let method = CardPaymentMethod(type: "bcmc",
+        let method = CardPaymentMethod(type: .card,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
@@ -1818,7 +1818,7 @@ class CardComponentTests: XCTestCase {
 
     func testCardPrefillingGivenNoShopperInformationAndPostalCodeModeShouldNotPrefillItems() throws {
         // Given
-        let method = CardPaymentMethod(type: "bcmc",
+        let method = CardPaymentMethod(type: .card,
                                        name: "Test name",
                                        fundingSource: .credit,
                                        brands: ["visa", "amex", "mc"])
@@ -1852,7 +1852,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testAddressWithSupportedCountries() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
         config.billingAddressCountryCodes = ["UK"]
@@ -1873,7 +1873,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testAddressWithSupportedCountriesWithMatchingPrefill() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
         config.billingAddressCountryCodes = ["US", "JP"]
@@ -1894,7 +1894,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testAddressWithSupportedCountriesWithNonMatchingPrefill() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
         config.billingAddressCountryCodes = ["UK"]

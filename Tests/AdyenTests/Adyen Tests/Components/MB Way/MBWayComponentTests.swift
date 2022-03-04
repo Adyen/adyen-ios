@@ -12,7 +12,7 @@ import XCTest
 
 class MBWayComponentTests: XCTestCase {
 
-    lazy var paymentMethod = MBWayPaymentMethod(type: "test_type", name: "test_name")
+    lazy var paymentMethod = MBWayPaymentMethod(type: .mbWay, name: "test_name")
     let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
 
     func testLocalizationWithCustomTableName() {
@@ -154,7 +154,7 @@ class MBWayComponentTests: XCTestCase {
     }
 
     func testRequiresModalPresentation() {
-        let mbWayPaymentMethod = MBWayPaymentMethod(type: "mbway", name: "Test name")
+        let mbWayPaymentMethod = MBWayPaymentMethod(type: .mbWay, name: "Test name")
         let sut = MBWayComponent(paymentMethod: mbWayPaymentMethod, apiContext: Dummy.context)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }

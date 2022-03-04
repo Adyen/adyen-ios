@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -42,12 +42,12 @@ public final class InstantPaymentComponent: PaymentComponent {
 public struct InstantPaymentDetails: PaymentMethodDetails {
 
     /// The payment method type name.
-    public let type: String
+    public let type: PaymentMethodType
 
     /// Initializes an `EmptyPaymentDetails`.
     ///
     /// - Parameter type: The payment method type name.
-    public init(type: String) {
+    public init(type: PaymentMethodType) {
         self.type = type
     }
 
