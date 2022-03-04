@@ -74,34 +74,6 @@ public extension DropInComponent {
         }
 
     }
-
-    /// Apple Pay component configuration.
-    final class ApplePay {
-
-        /// Create new instance of ApplePayConfiguration
-        public init(summaryItems: [PKPaymentSummaryItem],
-                    merchantIdentifier: String,
-                    requiredBillingContactFields: Set<PKContactField> = [],
-                    requiredShippingContactFields: Set<PKContactField> = []) {
-            self.summaryItems = summaryItems
-            self.merchantIdentifier = merchantIdentifier
-            self.requiredBillingContactFields = requiredBillingContactFields
-            self.requiredShippingContactFields = requiredShippingContactFields
-        }
-
-        /// The public key used for encrypting card details.
-        public var summaryItems: [PKPaymentSummaryItem]
-
-        /// The merchant identifier for apple pay.
-        public var merchantIdentifier: String
-
-        /// A list of fields that you need for a billing contact in order to process the transaction.
-        public var requiredBillingContactFields: Set<PKContactField> = []
-
-        /// A list of fields that you need for a shipping contact in order to process the transaction.
-        public var requiredShippingContactFields: Set<PKContactField> = []
-
-    }
     
     struct ActionComponentConfiguration {
         /// Three DS configurations

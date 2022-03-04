@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,7 @@ import Foundation
 import PassKit
 
 /// A component that handles Apple Pay payments.
-public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, Localizable, FinalizableComponent {
+public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, FinalizableComponent {
 
     /// :nodoc:
     internal var success: Bool = false
@@ -104,9 +104,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     public var viewController: UIViewController {
         createPaymentAuthorizationViewController()
     }
-    
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
 
     /// Finalizes ApplePay payment after being processed by payment provider.
     /// - Parameter success: The status of the payment.
