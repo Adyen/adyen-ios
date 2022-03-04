@@ -70,9 +70,10 @@ public final class Session: SessionProtocol {
         let request = SessionSetupRequest(sessionId: sessionId,
                                           sessionData: sessionData)
         let baseAPIClient = APIClient(apiContext: configuration.apiContext)
-            .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
+            .retryAPIClient(with: SimpleScheduler(maximumCount: 3))
+            .retryOnErrorAPIClient()
         let apiClient = SelfRetainingAPIClient(apiClient: baseAPIClient)
-        apiClient.perform(request) { [weak apiClient] result in
+        apiClient.perform(request) { result in
             switch result {
             case let .success(response):
                 let sessionContext = Context(data: response.sessionData,
@@ -87,7 +88,6 @@ public final class Session: SessionProtocol {
             case let .failure(error):
                 completion(.failure(error))
             }
-            apiClient?.destroy()
         }
     }
     

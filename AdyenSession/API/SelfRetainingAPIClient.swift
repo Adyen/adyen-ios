@@ -15,6 +15,12 @@ internal final class SelfRetainingAPIClient: APIClientProtocol {
     
     private var instance: APIClientProtocol?
     
+    internal var onDeinit: (() -> Void)?
+    
+    deinit {
+        onDeinit?()
+    }
+    
     /// Initializes the API client.
     ///
     /// - Parameters:
@@ -25,11 +31,14 @@ internal final class SelfRetainingAPIClient: APIClientProtocol {
     }
     
     internal func perform<R>(_ request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>) where R: Request {
-        apiClient.perform(request, completionHandler: completionHandler)
+        apiClient.perform(request) { [weak self] in
+            completionHandler($0)
+            self?.destroy()
+        }
     }
     
     /// Destroy the retain cycle to enable `self` to be deallocated.
-    internal func destroy() {
+    private func destroy() {
         instance = nil
     }
 }
