@@ -8,7 +8,7 @@ import Foundation
 
 /// : nodoc:
 public enum TelemetryFlavor {
-    case components(type: String)
+    case components(type: PaymentMethodType)
     case dropIn(type: String = "dropin", paymentMethods: [String])
     case dropInComponent
 

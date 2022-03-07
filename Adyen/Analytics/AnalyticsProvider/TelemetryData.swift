@@ -60,7 +60,7 @@ internal struct TelemetryData: Encodable {
             self.paymentMethods = paymentMethods
             self.component = type
         case let .components(type):
-            self.component = type
+            self.component = type.rawValue
         default:
             self.component = ""
         }
