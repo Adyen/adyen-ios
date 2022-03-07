@@ -31,12 +31,12 @@ internal struct TelemetryRequest: APIRequest {
     /// :nodoc:
     internal let method: HTTPMethod = .post
 
-    private let version: String?
+    private var version: String?
     private let channel: String
     private let locale: String
     private let flavor: String
     private let userAgent: String?
-    private let deviceBrand: String
+    private var deviceBrand: String
     private let systemVersion: String
     private let referrer: String
     private let screenWidth: Int

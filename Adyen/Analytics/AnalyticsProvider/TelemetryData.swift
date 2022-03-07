@@ -10,9 +10,9 @@ internal struct TelemetryData: Encodable {
 
     // MARK: - Properties
 
-    internal var version: String? {
+    internal let version: String? = {
         Bundle(for: AnalyticsProvider.self).infoDictionary?["CFBundleShortVersionString"] as? String
-    }
+    }()
 
     internal let channel: String = "iOS"
 
@@ -24,7 +24,7 @@ internal struct TelemetryData: Encodable {
 
     internal let userAgent: String? = nil
 
-    internal var deviceBrand: String {
+    internal let deviceBrand: String = {
         var systemInfo = utsname()
         uname(&systemInfo)
         let machineMirror = Mirror(reflecting: systemInfo.machine)
@@ -32,18 +32,14 @@ internal struct TelemetryData: Encodable {
             guard let value = element.value as? Int8, value != 0 else { return identifier }
             return identifier + String(UnicodeScalar(UInt8(value)))
         }
-    }
+    }()
 
-    internal var systemVersion: String {
-        UIDevice.current.systemVersion
-    }
+    internal let systemVersion = UIDevice.current.systemVersion
 
-    internal var referrer: String {
-        Bundle.main.bundleIdentifier ?? ""
-    }
+    internal let referrer: String = Bundle.main.bundleIdentifier ?? ""
 
     internal var screenWidth: Int {
-        Int(UIScreen.main.bounds.width)
+        Int(UIScreen.main.nativeBounds.width)
     }
 
     internal let containerWidth: Int? = nil
