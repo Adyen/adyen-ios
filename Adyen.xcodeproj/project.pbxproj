@@ -678,6 +678,9 @@
 		F9C5F0DD25CAB8FC005A6E54 /* VoucherComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C5F0DC25CAB8FC005A6E54 /* VoucherComponentTests.swift */; };
 		F9C5F0F125CAB917005A6E54 /* VoucherShareableViewProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C5F0F025CAB917005A6E54 /* VoucherShareableViewProviderMock.swift */; };
 		F9C6BD6026DFBA0600DA7512 /* ThreeDS2SdkVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C6BD5F26DFBA0600DA7512 /* ThreeDS2SdkVersion.swift */; };
+		F9CA6BBE27D5E53000D7BE6E /* BalanceCheckRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CA6BBD27D5E53000D7BE6E /* BalanceCheckRequest.swift */; };
+		F9CA6BC127D5E76A00D7BE6E /* CreateOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CA6BC027D5E76A00D7BE6E /* CreateOrderRequest.swift */; };
+		F9CA6BC427D5E99000D7BE6E /* CancelOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CA6BC327D5E99000D7BE6E /* CancelOrderRequest.swift */; };
 		F9D5453F26872CFE00C9DF41 /* UIViewAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D5453E26872CFE00C9DF41 /* UIViewAnimation.swift */; };
 		F9D5750E237475DB009C18B5 /* CardEncryptorCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D5750D237475DB009C18B5 /* CardEncryptorCardTests.swift */; };
 		F9D5751223756BD0009C18B5 /* CardPublicKeyValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D5751123756BD0009C18B5 /* CardPublicKeyValidator.swift */; };
@@ -1661,6 +1664,9 @@
 		F9C5F0DC25CAB8FC005A6E54 /* VoucherComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherComponentTests.swift; sourceTree = "<group>"; };
 		F9C5F0F025CAB917005A6E54 /* VoucherShareableViewProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherShareableViewProviderMock.swift; sourceTree = "<group>"; };
 		F9C6BD5F26DFBA0600DA7512 /* ThreeDS2SdkVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreeDS2SdkVersion.swift; sourceTree = "<group>"; };
+		F9CA6BBD27D5E53000D7BE6E /* BalanceCheckRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceCheckRequest.swift; sourceTree = "<group>"; };
+		F9CA6BC027D5E76A00D7BE6E /* CreateOrderRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOrderRequest.swift; sourceTree = "<group>"; };
+		F9CA6BC327D5E99000D7BE6E /* CancelOrderRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelOrderRequest.swift; sourceTree = "<group>"; };
 		F9D5453E26872CFE00C9DF41 /* UIViewAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewAnimation.swift; sourceTree = "<group>"; };
 		F9D5750D237475DB009C18B5 /* CardEncryptorCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardEncryptorCardTests.swift; sourceTree = "<group>"; };
 		F9D5751123756BD0009C18B5 /* CardPublicKeyValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPublicKeyValidator.swift; sourceTree = "<group>"; };
@@ -3744,6 +3750,9 @@
 		F967580627D10CB100A16FB6 /* Partial Payments API */ = {
 			isa = PBXGroup;
 			children = (
+				F9CA6BC227D5E97B00D7BE6E /* Cancel Order */,
+				F9CA6BBF27D5E75C00D7BE6E /* Create Order */,
+				F9CA6BBC27D5E51900D7BE6E /* Balance check */,
 			);
 			path = "Partial Payments API";
 			sourceTree = "<group>";
@@ -4027,6 +4036,30 @@
 				5A56E15226B6DB9C00744CA0 /* VoucherViewTests.swift */,
 			);
 			path = "Voucher Component";
+			sourceTree = "<group>";
+		};
+		F9CA6BBC27D5E51900D7BE6E /* Balance check */ = {
+			isa = PBXGroup;
+			children = (
+				F9CA6BBD27D5E53000D7BE6E /* BalanceCheckRequest.swift */,
+			);
+			path = "Balance check";
+			sourceTree = "<group>";
+		};
+		F9CA6BBF27D5E75C00D7BE6E /* Create Order */ = {
+			isa = PBXGroup;
+			children = (
+				F9CA6BC027D5E76A00D7BE6E /* CreateOrderRequest.swift */,
+			);
+			path = "Create Order";
+			sourceTree = "<group>";
+		};
+		F9CA6BC227D5E97B00D7BE6E /* Cancel Order */ = {
+			isa = PBXGroup;
+			children = (
+				F9CA6BC327D5E99000D7BE6E /* CancelOrderRequest.swift */,
+			);
+			path = "Cancel Order";
 			sourceTree = "<group>";
 		};
 		F9D644DA24D2D9340059CBE3 /* MB Way */ = {
@@ -5688,9 +5721,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9CA6BC127D5E76A00D7BE6E /* CreateOrderRequest.swift in Sources */,
 				F92980C627CF563C000CA5CA /* Session+PartialPaymentDelegate.swift in Sources */,
+				F9CA6BBE27D5E53000D7BE6E /* BalanceCheckRequest.swift in Sources */,
 				F967580A27D10E2800A16FB6 /* SessionSetupRequest.swift in Sources */,
 				F967581027D1FD9C00A16FB6 /* PaymentsRequest.swift in Sources */,
+				F9CA6BC427D5E99000D7BE6E /* CancelOrderRequest.swift in Sources */,
 				F967581227D207C600A16FB6 /* PaymentDetailsRequest.swift in Sources */,
 				F92980C227CF550C000CA5CA /* Session+PaymentComponentDelegate.swift in Sources */,
 				F967580E27D1253000A16FB6 /* SelfRetainingAPIClient.swift in Sources */,

@@ -8,7 +8,7 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-internal struct PaymentDetailsRequest: APIRequest {
+internal struct BalanceCheckRequest: APIRequest {
     internal let path: String
     
     internal var counter: UInt = 0
@@ -21,32 +21,36 @@ internal struct PaymentDetailsRequest: APIRequest {
     
     internal let sessionData: String
     
-    internal let paymentData: String?
+    internal let data: PaymentComponentData
     
-    internal let details: AdditionalDetails
-    
-    internal typealias ResponseType = PaymentsResponse
+    internal typealias ResponseType = BalanceCheckResponse
     
     internal init(sessionId: String,
                   sessionData: String,
-                  paymentData: String?,
-                  details: AdditionalDetails) {
-        self.path = "checkoutshopper/v1/sessions/\(sessionId)/paymentDetails"
+                  data: PaymentComponentData) {
+        self.path = "checkoutshopper/v1/sessions/\(sessionId)/paymentMethodBalance"
         self.sessionData = sessionData
-        self.paymentData = paymentData
-        self.details = details
+        self.data = data
     }
     
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(details.encodable, forKey: .details)
-        try container.encodeIfPresent(paymentData, forKey: .paymentData)
+
+        try container.encode(data.paymentMethod.encodable, forKey: .details)
         try container.encode(sessionData, forKey: .sessionData)
     }
-    
+
     private enum CodingKeys: String, CodingKey {
-        case details
-        case paymentData
+        case details = "paymentMethod"
         case sessionData
     }
+}
+
+internal struct BalanceCheckResponse: Response {
+
+    internal let sessionData: String
+
+    internal let balance: Amount?
+
+    internal let transactionLimit: Amount?
 }

@@ -11,14 +11,28 @@ extension Session: PartialPaymentDelegate {
     
     public func checkBalance(with data: PaymentComponentData,
                              completion: @escaping (Result<Balance, Error>) -> Void) {
-        // TODO: Check balance
+        let request = BalanceCheckRequest(sessionId: sessionContext.idenitifier,
+                                          sessionData: sessionContext.data,
+                                          data: data)
+        apiClient.perform(request) { _ in
+            // TODO: Handle result
+        }
     }
     
     public func requestOrder(_ completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
-        // TODO: Request new Order
+        let request = CreateOrderRequest(sessionId: sessionContext.idenitifier,
+                                         sessionData: sessionContext.data)
+        apiClient.perform(request) { _ in
+            // TODO: Handle result
+        }
     }
     
     public func cancelOrder(_ order: PartialPaymentOrder) {
-        // TODO: Cancel Order
+        let request = CancelOrderRequest(sessionId: sessionContext.idenitifier,
+                                         sessionData: sessionContext.data,
+                                         order: order)
+        apiClient.perform(request) { _ in
+            // TODO: Handle result
+        }
     }
 }

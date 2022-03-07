@@ -12,7 +12,7 @@ import AdyenNetworking
 import CloudKit
 import Foundation
 
-internal struct PaymentsRequest: Request {
+internal struct PaymentsRequest: APIRequest {
     internal let path: String
     
     internal var counter: UInt = 0
@@ -28,8 +28,6 @@ internal struct PaymentsRequest: Request {
     internal let data: PaymentComponentData
     
     internal typealias ResponseType = PaymentsResponse
-    
-    internal typealias ErrorResponseType = APIError
     
     internal init(sessionId: String,
                   sessionData: String,
