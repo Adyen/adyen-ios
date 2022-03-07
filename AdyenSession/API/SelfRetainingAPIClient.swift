@@ -8,7 +8,7 @@ import AdyenNetworking
 import Foundation
 
 /// :nodoc:
-/// An API Client that retains its self until destroyed manually.
+/// An API Client that retains its self until destroyed manually or request is concluded.
 internal final class SelfRetainingAPIClient: APIClientProtocol {
     
     private let apiClient: APIClientProtocol

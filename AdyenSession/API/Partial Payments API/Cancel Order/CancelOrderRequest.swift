@@ -20,11 +20,11 @@ internal struct CancelOrderRequest: APIRequest {
 
     internal var counter: UInt = 0
 
-    internal var method: HTTPMethod = .post
+    internal let method: HTTPMethod = .post
 
-    internal var headers: [String: String] = [:]
+    internal let headers: [String: String] = [:]
 
-    internal var queryParameters: [URLQueryItem] = []
+    internal let queryParameters: [URLQueryItem] = []
     
     internal init(sessionId: String,
                   sessionData: String,
