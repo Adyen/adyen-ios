@@ -7,12 +7,12 @@
 @testable import Adyen
 import XCTest
 
-class ObservableTests: XCTestCase, Observer {
+class ObservableTests: XCTestCase, AdyenObserver {
     
     func testBasicObservation() {
         var latestValue: Bool?
         
-        let observable = Observable(false)
+        let observable = AdyenObservable(false)
         let observation = observe(observable) { newValue in
             latestValue = newValue
         }
@@ -33,7 +33,7 @@ class ObservableTests: XCTestCase, Observer {
     }
     
     func testMultipleObservations() {
-        let observable = Observable("")
+        let observable = AdyenObservable("")
         
         var observation1Count = 0
         observe(observable) { _ in
@@ -65,7 +65,7 @@ class ObservableTests: XCTestCase, Observer {
     }
     
     func testAutomaticObservationRemoval() {
-        let observable = Observable("")
+        let observable = AdyenObservable("")
         weak var observer: TestObserver?
         var count = 0
         
@@ -94,7 +94,7 @@ class ObservableTests: XCTestCase, Observer {
     }
     
     func testSettingEqualValue() {
-        let observable = Observable("")
+        let observable = AdyenObservable("")
         var count = 0
         
         observe(observable) { _ in
@@ -149,12 +149,12 @@ class ObservableTests: XCTestCase, Observer {
         XCTAssertTrue(receiver.observableObject.boolValue)
     }
 
-    class TestObserver: Observer {
+    class TestObserver: AdyenObserver {
         var stringValue: String = ""
         var optionalStringValue: String?
 
-        @Observable("") var observableString: String
-        @Observable(OtherObject()) var observableObject: OtherObject
+        @AdyenObservable("") var observableString: String
+        @AdyenObservable(OtherObject()) var observableObject: OtherObject
 
     }
 

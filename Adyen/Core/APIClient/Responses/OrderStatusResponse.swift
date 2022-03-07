@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -44,7 +44,7 @@ public struct OrderPaymentMethod: PaymentMethod {
     public let lastFour: String
 
     /// :nodoc:
-    public let type: String
+    public let type: PaymentMethodType
 
     /// :nodoc:
     public let transactionLimit: Amount?
@@ -59,7 +59,7 @@ public struct OrderPaymentMethod: PaymentMethod {
 
     /// :nodoc:
     public init(lastFour: String,
-                type: String,
+                type: PaymentMethodType,
                 transactionLimit: Amount?,
                 amount: Amount) {
         self.lastFour = lastFour
@@ -75,7 +75,7 @@ public struct OrderPaymentMethod: PaymentMethod {
                                                        localeIdentifier: parameters?.locale)
         return DisplayInformation(title: name,
                                   subtitle: nil,
-                                  logoName: type,
+                                  logoName: type.rawValue,
                                   disclosureText: disclosureText)
     }
 

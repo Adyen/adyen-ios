@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -33,7 +33,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
     /// :nodoc:
     public lazy var viewController: UIViewController = {
         Analytics.sendEvent(
-            component: storedPaymentMethod.type,
+            component: storedPaymentMethod.type.rawValue,
             flavor: _isDropIn ? .dropin : .components,
             context: apiContext
         )
@@ -71,7 +71,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
 /// :nodoc:
 public struct StoredPaymentDetails: PaymentMethodDetails {
     
-    internal let type: String
+    internal let type: PaymentMethodType
     
     internal let storedPaymentMethodIdentifier: String
 

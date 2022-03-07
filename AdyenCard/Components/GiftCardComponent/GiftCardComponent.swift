@@ -16,7 +16,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     PresentableComponent,
     Localizable,
     LoadingComponent,
-    Observer {
+    AdyenObserver {
     
     /// :nodoc:
     public let apiContext: APIContext

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,7 +10,7 @@ import Foundation
 public struct QiwiWalletPaymentMethod: PaymentMethod {
     
     /// :nodoc:
-    public let type: String
+    public let type: PaymentMethodType
     
     /// :nodoc:
     public let name: String
@@ -24,7 +24,7 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
     /// - Parameter name: The payment method name.
     /// - Parameter phoneExtensions: The phone extensions supported.
     /// :nodoc:
-    internal init(type: String, name: String, phoneExtensions: [PhoneExtension] = []) {
+    internal init(type: PaymentMethodType, name: String, phoneExtensions: [PhoneExtension] = []) {
         self.type = type
         self.name = name
         self.phoneExtensions = phoneExtensions
@@ -33,7 +33,7 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
     /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.type = try container.decode(String.self, forKey: .type)
+        self.type = try container.decode(PaymentMethodType.self, forKey: .type)
         self.name = try container.decode(String.self, forKey: .name)
         
         var phoneExtensions: [PhoneExtension]?

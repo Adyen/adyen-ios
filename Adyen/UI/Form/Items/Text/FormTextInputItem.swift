@@ -11,10 +11,10 @@ import Foundation
 public final class FormTextInputItem: FormTextItem, Hidable {
 
     /// :nodoc:
-    public var isHidden: Observable<Bool> = Observable(false)
+    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
 
     /// :nodoc:
-    @Observable(true) public var isEnabled: Bool
+    @AdyenObservable(true) public var isEnabled: Bool
     
     /// :nodoc:
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {

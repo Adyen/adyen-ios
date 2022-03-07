@@ -42,7 +42,7 @@ class GiftCardComponentTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        paymentMethod = GiftCardPaymentMethod(type: "testType", name: "testName", brand: "testBrand")
+        paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
         publicKeyProvider = PublicKeyProviderMock()
         sut = GiftCardComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, publicKeyProvider: publicKeyProvider)
         sut.payment = nil // Missing Payment object

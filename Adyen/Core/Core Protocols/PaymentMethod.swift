@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,7 +10,7 @@ import Foundation
 public protocol PaymentMethod: Decodable {
     
     /// A string identifying the type of payment method, such as `"card"`, `"ideal"`, `"applepay"`.
-    var type: String { get }
+    var type: PaymentMethodType { get }
     
     /// The name of the payment method, such as `"Credit Card"`, `"iDEAL"`, `"Apple Pay"`.
     var name: String { get }
@@ -32,11 +32,11 @@ public protocol PaymentMethod: Decodable {
 public extension PaymentMethod {
 
     var displayInformation: DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: type)
+        DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
     }
 
     func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: type)
+        DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
     }
     
 }

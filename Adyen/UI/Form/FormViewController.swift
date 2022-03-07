@@ -9,7 +9,7 @@ import UIKit
 /// Displays a form for the user to enter details.
 /// :nodoc:
 @objc(ADYFormViewController)
-open class FormViewController: UIViewController, Localizable, KeyboardObserver, Observer, PreferredContentSizeConsumer {
+open class FormViewController: UIViewController, Localizable, KeyboardObserver, AdyenObserver, PreferredContentSizeConsumer {
 
     fileprivate enum Animations {
         fileprivate static let keyboardBottomInset = "keyboardBottomInset"

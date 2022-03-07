@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -44,7 +44,7 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
     /// :nodoc:
     internal lazy var storedCardAlertManager: StoredCardAlertManager = {
         Analytics.sendEvent(
-            component: paymentMethod.type,
+            component: paymentMethod.type.rawValue,
             flavor: _isDropIn ? .dropin : .components,
             context: apiContext
         )

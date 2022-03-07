@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,7 +14,7 @@ import Foundation
 public struct CardDetails: PaymentMethodDetails, ShopperInformation {
 
     /// The payment method type.
-    public let type: String
+    public let type: PaymentMethodType
 
     /// The identifier of the selected stored payment method.
     public let storedPaymentMethodIdentifier: String?

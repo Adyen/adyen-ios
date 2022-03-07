@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -12,7 +12,7 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
     private let storedCardPaymentMethod: StoredCardPaymentMethod
     
     /// :nodoc:
-    public let type: String = PaymentMethodType.bcmc.rawValue
+    public let type: PaymentMethodType = .bcmc
     
     /// :nodoc:
     public var name: String { storedCardPaymentMethod.name }

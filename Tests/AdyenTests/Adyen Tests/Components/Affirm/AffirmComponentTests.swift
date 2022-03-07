@@ -17,7 +17,7 @@ class AffirmComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        paymentMethod = AffirmPaymentMethod(type: "affirm", name: "Affirm")
+        paymentMethod = AffirmPaymentMethod(type: .affirm, name: "Affirm")
         apiContext = Dummy.context
         style = FormComponentStyle()
         sut = AffirmComponent(paymentMethod: paymentMethod,
@@ -39,7 +39,7 @@ class AffirmComponentTests: XCTestCase {
         
         // Then
         let paymentMethodType = sut.paymentMethod.type
-        XCTAssertEqual(paymentMethodType, expectedPaymentMethodType.rawValue)
+        XCTAssertEqual(paymentMethodType, expectedPaymentMethodType)
     }
     
     func testComponent_shouldRequireModalPresentation() throws {
