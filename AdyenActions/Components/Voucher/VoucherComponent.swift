@@ -20,6 +20,9 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     /// :nodoc:
     public let apiContext: APIContext
 
+    /// The Adyen context.
+    public let adyenContext: AdyenContext
+
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
 
@@ -80,27 +83,29 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     /// Initializes the `VoucherComponent`.
     ///
     /// - Parameter apiContext: The API context.
+    /// - Parameter adyenContext: The Adyen context.
     /// - Parameter configuration: The voucher component configurations.
-    public convenience init(apiContext: APIContext, configuration: Configuration = Configuration()) {
-        self.init(
-            apiContext: apiContext,
-            voucherShareableViewProvider: nil,
-            configuration: configuration,
-            passProvider: AppleWalletPassProvider(apiContext: apiContext)
-        )
+    public convenience init(apiContext: APIContext,
+                            adyenContext: AdyenContext,
+                            configuration: Configuration = Configuration()) {
+        self.init(apiContext: apiContext,
+                  adyenContext: adyenContext,
+                  voucherShareableViewProvider: nil,
+                  configuration: configuration,
+                  passProvider: AppleWalletPassProvider(apiContext: apiContext))
     }
 
     /// Initializes the `AwaitComponent`.
     /// - Parameter apiContext: The API context.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
-    internal init(
-        apiContext: APIContext,
-        voucherShareableViewProvider: AnyVoucherShareableViewProvider?,
-        configuration: Configuration = Configuration(),
-        passProvider: AnyAppleWalletPassProvider?
-    ) {
+    internal init(apiContext: APIContext,
+                  adyenContext: AdyenContext,
+                  voucherShareableViewProvider: AnyVoucherShareableViewProvider?,
+                  configuration: Configuration = Configuration(),
+                  passProvider: AnyAppleWalletPassProvider?) {
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.configuration = configuration
         self.voucherShareableViewProvider = voucherShareableViewProvider ??
             VoucherShareableViewProvider(style: configuration.style, environment: apiContext.environment)
