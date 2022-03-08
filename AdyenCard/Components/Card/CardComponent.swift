@@ -166,9 +166,13 @@ public class CardComponent: PublicKeyConsumer,
         }
         var component: PaymentComponent & PresentableComponent
         if configuration.stored.showsSecurityCodeField {
-            component = StoredCardComponent(storedCardPaymentMethod: paymentMethod, apiContext: apiContext)
+            component = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
+                                            apiContext: apiContext,
+                                            adyenContext: adyenContext)
         } else {
-            component = StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext)
+            component = StoredPaymentMethodComponent(paymentMethod: paymentMethod,
+                                                     apiContext: apiContext,
+                                                     adyenContext: adyenContext)
         }
         component.payment = payment
         return component

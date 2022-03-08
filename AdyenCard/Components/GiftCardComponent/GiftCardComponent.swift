@@ -278,7 +278,10 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
         let paymentMethod = CustomDisplayablePaymentMethod(paymentMethod: giftCardPaymentMethod,
                                                            displayInformation: displayInformation)
-        let component = InstantPaymentComponent(paymentMethod: paymentMethod, paymentData: paymentData, apiContext: apiContext)
+        let component = InstantPaymentComponent(paymentMethod: paymentMethod,
+                                                paymentData: paymentData,
+                                                apiContext: apiContext,
+                                                adyenContext: adyenContext)
         delegate.showConfirmation(for: component, with: paymentData.order)
     }
 

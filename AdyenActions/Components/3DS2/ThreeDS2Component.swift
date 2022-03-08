@@ -205,7 +205,7 @@ public final class ThreeDS2Component: ActionComponent {
     }()
 
     private lazy var redirectComponent: AnyRedirectComponent = {
-        let component = RedirectComponent(apiContext: apiContext)
+        let component = RedirectComponent(apiContext: apiContext, adyenContext: adyenContext)
         component.configuration.style = configuration.redirectComponentStyle
 
         component.delegate = self
