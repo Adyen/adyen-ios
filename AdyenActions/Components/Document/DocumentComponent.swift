@@ -10,8 +10,12 @@ import UIKit
 
 /// A component that handles document actions.
 public final class DocumentComponent: ActionComponent, ShareableComponent {
+
     /// :nodoc:
     public let apiContext: APIContext
+
+    /// The Adyen context.
+    public let adyenContext: AdyenContext
     
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
@@ -51,9 +55,13 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     /// Initializes the `DocumentComponent`.
     ///
     /// - Parameter apiContext: The API context.
+    /// - Parameter adyenContext: The Adyen context.
     /// - Parameter configuration: The Component configurations.
-    public init(apiContext: APIContext, configuration: Configuration = .init()) {
+    public init(apiContext: APIContext,
+                adyenContext: AdyenContext,
+                configuration: Configuration = .init()) {
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.configuration = configuration
     }
     

@@ -20,7 +20,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     /// :nodoc:
     public let apiContext: APIContext
 
-    /// :nodoc:
+    /// The Adyen context.
     public let adyenContext: AdyenContext
     
     /// :nodoc:

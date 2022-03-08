@@ -14,7 +14,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
     public let apiContext: APIContext
 
     /// The Adyen context.
-    public var adyenContext: AdyenContext
+    public let adyenContext: AdyenContext
 
     /// :nodoc:
     public var paymentMethod: PaymentMethod { storedPaymentMethod }
