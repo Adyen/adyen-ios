@@ -12,7 +12,10 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
 
     /// :nodoc:
     public let apiContext: APIContext
-    
+
+    /// The Adyen context.
+    public var adyenContext: AdyenContext
+
     /// :nodoc:
     public var paymentMethod: PaymentMethod { storedPaymentMethod }
 
@@ -21,9 +24,11 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
 
     /// :nodoc:
     public init(paymentMethod: StoredPaymentMethod,
-                apiContext: APIContext) {
+                apiContext: APIContext,
+                adyenContext: AdyenContext) {
         self.storedPaymentMethod = paymentMethod
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
     }
     
     private let storedPaymentMethod: StoredPaymentMethod
