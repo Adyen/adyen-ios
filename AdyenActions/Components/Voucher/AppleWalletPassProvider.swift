@@ -23,15 +23,21 @@ internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
     
     /// :nodoc:
     internal let apiContext: APIContext
+
+    /// :nodoc:
+    internal let adyenContext: AdyenContext
     
     /// :nodoc:
-    internal convenience init(apiContext: APIContext) {
-        self.init(apiContext: apiContext, apiClient: nil)
+    internal convenience init(apiContext: APIContext, adyenContext: AdyenContext) {
+        self.init(apiContext: apiContext,
+                  adyenContext: adyenContext,
+                  apiClient: nil)
     }
     
     /// :nodoc:
-    internal init(apiContext: APIContext, apiClient: AnyRetryAPIClient? = nil) {
+    internal init(apiContext: APIContext, adyenContext: AdyenContext, apiClient: AnyRetryAPIClient? = nil) {
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         if let apiClient = apiClient {
             self.retryApiClient = apiClient
         } else {

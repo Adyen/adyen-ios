@@ -92,7 +92,8 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
                   adyenContext: adyenContext,
                   voucherShareableViewProvider: nil,
                   configuration: configuration,
-                  passProvider: AppleWalletPassProvider(apiContext: apiContext))
+                  passProvider: AppleWalletPassProvider(apiContext: apiContext,
+                                                        adyenContext: adyenContext))
     }
 
     /// Initializes the `AwaitComponent`.
@@ -109,7 +110,8 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
         self.configuration = configuration
         self.voucherShareableViewProvider = voucherShareableViewProvider ??
             VoucherShareableViewProvider(style: configuration.style, environment: apiContext.environment)
-        self.passProvider = passProvider ?? AppleWalletPassProvider(apiContext: apiContext)
+        self.passProvider = passProvider ?? AppleWalletPassProvider(apiContext: apiContext,
+                                                                    adyenContext: adyenContext)
     }
 
     /// :nodoc:
