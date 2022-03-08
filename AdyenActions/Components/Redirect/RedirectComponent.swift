@@ -38,6 +38,9 @@ public final class RedirectComponent: ActionComponent {
     
     /// :nodoc:
     public let apiContext: APIContext
+
+    /// The Adyen context.
+    public let adyenContext: AdyenContext
     
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
@@ -55,10 +58,13 @@ public final class RedirectComponent: ActionComponent {
     /// Initializes the component.
     ///
     /// - Parameter apiContext: The API context.
+    /// - Parameter adyenContext: The Adyen context
     /// - Parameter configuration: The component configurations.
     public init(apiContext: APIContext,
+                adyenContext: AdyenContext,
                 configuration: Configuration = Configuration()) {
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.configuration = configuration
     }
     
