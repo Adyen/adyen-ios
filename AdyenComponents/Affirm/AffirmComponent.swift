@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -33,9 +33,11 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenO
     /// - Parameters:
     ///   - paymentMethod: The Affirm payment method.
     ///   - apiContext: The component's API context.
+    ///   - adyenContext: The Adyen context.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: PaymentMethod,
                 apiContext: APIContext,
+                adyenContext: AdyenContext,
                 configuration: Configuration = .init()) {
         personalDetailsHeaderItem = FormLabelItem(text: "", style: configuration.style.sectionHeader)
         deliveryAddressToggleItem = FormToggleItem(style: configuration.style.toggle)
@@ -55,6 +57,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenO
         
         super.init(paymentMethod: paymentMethod,
                    apiContext: apiContext,
+                   adyenContext: adyenContext,
                    fields: fields,
                    configuration: configuration)
 

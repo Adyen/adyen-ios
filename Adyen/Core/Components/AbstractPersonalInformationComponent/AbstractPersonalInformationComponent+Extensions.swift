@@ -31,7 +31,15 @@ extension AbstractPersonalInformationComponent: TrackableComponent {
 
     /// :nodoc:
     public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
         populateFields()
+    }
+
+    // MARK: - Private
+
+    private func sendTelemetryEvent() {
+        let flavor: TelemetryFlavor = _isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: flavor)
     }
 }
 

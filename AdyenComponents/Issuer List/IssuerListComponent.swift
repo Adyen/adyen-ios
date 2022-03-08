@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,6 +14,9 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     
     /// :nodoc:
     public let apiContext: APIContext
+
+    /// The Adyen context.
+    public let adyenContext: AdyenContext
     
     /// The issuer list payment method.
     public var paymentMethod: PaymentMethod {
@@ -30,12 +33,15 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     ///
     /// - Parameter paymentMethod: The issuer list payment method.
     /// - Parameter apiContext: The API context.
+    /// - Parameter adyenContext: The Adyen context.
     /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: IssuerListPaymentMethod,
                 apiContext: APIContext,
+                adyenContext: AdyenContext,
                 configuration: Configuration = .init()) {
         self.issuerListPaymentMethod = paymentMethod
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.configuration = configuration
     }
     

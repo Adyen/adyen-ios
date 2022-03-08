@@ -31,9 +31,12 @@ internal final class ComponentManager {
     
     internal let apiContext: APIContext
 
+    internal let adyenContext: AdyenContext
+
     internal weak var presentationDelegate: PresentationDelegate?
     
     internal init(paymentMethods: PaymentMethods,
+                  adyenContext: AdyenContext,
                   configuration: DropInComponent.Configuration,
                   style: DropInComponent.Style,
                   partialPaymentEnabled: Bool = true,
@@ -44,6 +47,7 @@ internal final class ComponentManager {
         self.paymentMethods = paymentMethods
         self.configuration = configuration
         self.apiContext = configuration.apiContext
+        self.adyenContext = adyenContext
         self.style = style
         self.partialPaymentEnabled = partialPaymentEnabled
         self.remainingAmount = remainingAmount
@@ -153,6 +157,7 @@ internal final class ComponentManager {
     private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
         CardComponent(paymentMethod: paymentMethod,
                       apiContext: apiContext,
+                      adyenContext: adyenContext,
                       configuration: configuration.card,
                       shopperInformation: configuration.shopper,
                       style: style.formComponent)
@@ -168,6 +173,7 @@ internal final class ComponentManager {
         return BCMCComponent(paymentMethod: paymentMethod,
                              configuration: configuration,
                              apiContext: apiContext,
+                             adyenContext: adyenContext,
                              style: style.formComponent)
     }
     
@@ -185,6 +191,7 @@ internal final class ComponentManager {
         do {
             return try PreApplePayComponent(paymentMethod: paymentMethod,
                                             apiContext: apiContext,
+                                            adyenContext: adyenContext,
                                             payment: payment,
                                             configuration: applePay,
                                             style: style.applePay)
@@ -199,6 +206,7 @@ internal final class ComponentManager {
                                                             localizationParameters: configuration.localizationParameters)
         return SEPADirectDebitComponent(paymentMethod: paymentMethod,
                                         apiContext: apiContext,
+                                        adyenContext: adyenContext,
                                         configuration: config)
     }
 
@@ -206,8 +214,10 @@ internal final class ComponentManager {
         let bacsConfiguration = BACSDirectDebitComponent.Configuration(style: style.formComponent,
                                                                        localizationParameters: configuration.localizationParameters)
 
+        let adyenContext = AdyenContext(apiContext: apiContext)
         let bacsDirectDebitComponent = BACSDirectDebitComponent(paymentMethod: paymentMethod,
                                                                 apiContext: apiContext,
+                                                                adyenContext: adyenContext,
                                                                 configuration: bacsConfiguration)
         bacsDirectDebitComponent.presentationDelegate = presentationDelegate
         return bacsDirectDebitComponent
@@ -219,6 +229,7 @@ internal final class ComponentManager {
                                                            localizationParameters: configuration.localizationParameters)
         return ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                        apiContext: apiContext,
+                                       adyenContext: adyenContext,
                                        configuration: config)
     }
     
@@ -227,7 +238,9 @@ internal final class ComponentManager {
                                                        shopperInformation: configuration.shopper,
                                                        localizationParameters: configuration.localizationParameters)
         return QiwiWalletComponent(paymentMethod: paymentMethod,
-                                   apiContext: apiContext, configuration: config)
+                                   apiContext: apiContext,
+                                   adyenContext: adyenContext,
+                                   configuration: config)
     }
     
     private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
@@ -235,12 +248,15 @@ internal final class ComponentManager {
                                                   shopperInformation: configuration.shopper,
                                                   localizationParameters: configuration.localizationParameters)
         return MBWayComponent(paymentMethod: paymentMethod,
-                              apiContext: apiContext, configuration: config)
+                              apiContext: apiContext,
+                              adyenContext: adyenContext,
+                              configuration: config)
     }
 
     private func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {
         BLIKComponent(paymentMethod: paymentMethod,
                       apiContext: apiContext,
+                      adyenContext: adyenContext,
                       configuration: .init(style: style.formComponent,
                                            localizationParameters: configuration.localizationParameters))
     }
@@ -248,6 +264,7 @@ internal final class ComponentManager {
     private func createBoletoComponent(_ paymentMethod: BoletoPaymentMethod) -> BoletoComponent {
         BoletoComponent(paymentMethod: paymentMethod,
                         apiContext: apiContext,
+                        adyenContext: adyenContext,
                         configuration: BoletoComponent.Configuration(style: style.formComponent,
                                                                      localizationParameters: configuration.localizationParameters,
                                                                      shopperInformation: configuration.shopper,
@@ -288,6 +305,7 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: IssuerListPaymentMethod) -> PaymentComponent? {
         IssuerListComponent(paymentMethod: paymentMethod,
                             apiContext: apiContext,
+                            adyenContext: adyenContext,
                             configuration: .init(style: style.listComponent,
                                                  localizationParameters: configuration.localizationParameters))
     }
@@ -343,6 +361,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                                                   localizationParameters: configuration.localizationParameters)
         return BasicPersonalInfoFormComponent(paymentMethod: paymentMethod,
                                               apiContext: apiContext,
+                                              adyenContext: adyenContext,
                                               configuration: config)
     }
 
@@ -353,6 +372,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                                  localizationParameters: configuration.localizationParameters)
         return DokuComponent(paymentMethod: paymentMethod,
                              apiContext: apiContext,
+                             adyenContext: adyenContext,
                              configuration: config)
     }
 
@@ -361,6 +381,7 @@ extension ComponentManager: PaymentComponentBuilder {
         guard partialPaymentEnabled else { return nil }
         return GiftCardComponent(paymentMethod: paymentMethod,
                                  apiContext: apiContext,
+                                 adyenContext: adyenContext,
                                  style: style.formComponent)
     }
     
@@ -376,6 +397,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                                    localizationParameters: configuration.localizationParameters)
         return AffirmComponent(paymentMethod: paymentMethod,
                                apiContext: apiContext,
+                               adyenContext: adyenContext,
                                configuration: config)
     }
     

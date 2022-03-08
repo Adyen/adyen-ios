@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -38,6 +38,9 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// :nodoc:
     public let apiContext: APIContext
 
+    /// The Adyen context
+    public let adyenContext: AdyenContext
+
     /// The object that acts as the presentation delegate of the component.
     public weak var presentationDelegate: PresentationDelegate?
     
@@ -61,6 +64,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     internal lazy var inputPresenter: BACSInputPresenterProtocol? = {
         let tracker = BACSDirectDebitComponentTracker(paymentMethod: bacsPaymentMethod,
                                                       apiContext: apiContext,
+                                                      telemetryTracker: adyenContext.analyticsProvider,
                                                       isDropIn: _isDropIn)
         let itemsFactory = BACSItemsFactory(styleProvider: configuration.style,
                                             localizationParameters: configuration.localizationParameters,
@@ -78,13 +82,15 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// - Parameters:
     ///   - paymentMethod: The BACS Direct Debit payment method.
     ///   - apiContext: The API context.
-    ///   - style: The component's UI style.
-    ///   - localizationParameters: The localization parameters.
+    ///   - adyenContext: The Adyen context.
+    ///   - configuration: Configuration for the component.
     public init(paymentMethod: BACSDirectDebitPaymentMethod,
                 apiContext: APIContext,
+                adyenContext: AdyenContext,
                 configuration: Configuration = Configuration()) {
         self.bacsPaymentMethod = paymentMethod
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.configuration = configuration
     }
 }

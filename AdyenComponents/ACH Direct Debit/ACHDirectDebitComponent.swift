@@ -24,6 +24,9 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     
     /// :nodoc:
     public let apiContext: APIContext
+
+    /// The Adyen context
+    public let adyenContext: AdyenContext
     
     /// :nodoc:
     public var paymentMethod: PaymentMethod {
@@ -59,12 +62,15 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     /// - Parameters:
     ///   - paymentMethod: The ACH Direct Debit payment method.
     ///   - apiContext: The component's API context.
+    ///   - adyenContext: The Adyen context
     ///   - configuration: Configuration for the component.
     public convenience init(paymentMethod: ACHDirectDebitPaymentMethod,
                             apiContext: APIContext,
+                            adyenContext: AdyenContext,
                             configuration: Configuration = .init()) {
         self.init(paymentMethod: paymentMethod,
                   apiContext: apiContext,
+                  adyenContext: adyenContext,
                   configuration: configuration,
                   publicKeyProvider: PublicKeyProvider(apiContext: apiContext))
     }
@@ -72,10 +78,13 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     /// :nodoc:
     internal init(paymentMethod: ACHDirectDebitPaymentMethod,
                   apiContext: APIContext,
+                  adyenContext: AdyenContext,
                   configuration: Configuration = .init(),
                   publicKeyProvider: AnyPublicKeyProvider) {
-        self.apiContext = apiContext
+        self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
+        self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.configuration = configuration
         self.publicKeyProvider = publicKeyProvider
     }

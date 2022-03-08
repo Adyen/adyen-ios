@@ -17,7 +17,8 @@ extension IntegrationExample {
     internal func presentCardComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: CardPaymentMethod.self) else { return }
         let component = CardComponent(paymentMethod: paymentMethod,
-                                      apiContext: apiContext)
+                                      apiContext: apiContext,
+                                      adyenContext: adyenContext)
         component.cardComponentDelegate = self
         present(component)
     }
@@ -25,21 +26,25 @@ extension IntegrationExample {
     internal func presentIdealComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: IssuerListPaymentMethod.self) else { return }
         let component = IdealComponent(paymentMethod: paymentMethod,
-                                       apiContext: apiContext)
+                                       apiContext: apiContext,
+                                       adyenContext: adyenContext)
         present(component)
     }
 
     internal func presentSEPADirectDebitComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: SEPADirectDebitPaymentMethod.self) else { return }
         let component = SEPADirectDebitComponent(paymentMethod: paymentMethod,
-                                                 apiContext: apiContext)
+                                                 apiContext: apiContext,
+                                                 adyenContext: adyenContext)
         present(component)
     }
 
     internal func presentBACSDirectDebitComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return }
+        let adyenContext = AdyenContext(apiContext: apiContext)
         let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
-                                                 apiContext: apiContext)
+                                                 apiContext: apiContext,
+                                                 adyenContext: adyenContext)
         bacsDirectDebitPresenter = BACSDirectDebitPresentationDelegate(bacsComponent: component)
         component.presentationDelegate = bacsDirectDebitPresenter
         present(component)
@@ -51,6 +56,7 @@ extension IntegrationExample {
         let config = MBWayComponent.Configuration(style: style)
         let component = MBWayComponent(paymentMethod: paymentMethod,
                                        apiContext: apiContext,
+                                       adyenContext: adyenContext,
                                        configuration: config)
         present(component)
     }
@@ -62,6 +68,7 @@ extension IntegrationExample {
                                                      allowOnboarding: true)
         let component = try? ApplePayComponent(paymentMethod: paymentMethod,
                                                apiContext: apiContext,
+                                               adyenContext: adyenContext,
                                                payment: payment,
                                                configuration: config)
         guard let presentableComponent = component else { return }
@@ -72,6 +79,7 @@ extension IntegrationExample {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: EContextPaymentMethod.self) else { return }
         let component = EContextStoreComponent(paymentMethod: paymentMethod,
                                                apiContext: apiContext,
+                                               adyenContext: adyenContext,
                                                configuration: BasicPersonalInfoFormComponent.Configuration(style: FormComponentStyle()))
         present(component)
     }
