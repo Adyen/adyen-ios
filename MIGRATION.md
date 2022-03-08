@@ -14,6 +14,8 @@
 - `IssuerListComponent.style` and `IssuerListComponent.localizationParameters` moved into new `configuration` property `IssuerListComponent.Configuration`
 - `SEPADirectDebitComponent.style` and `SEPADirectDebitComponent.localizationParameters` moved into new `configuration` property `SEPADirectDebitComponent.Configuration`
 - `ThreeDS2Component.appearanceConfiguration` and `ThreeDS2Component.redirectComponentStyle` moved to `ThreeDS2Component.configuration`
+- `CardComponent.style`, `CardComponent.shopperInformation` and `CardComponent.localizationParameters` moved into the `configuration` property `CardComponent.Configuration`
+- `DropInComponent.style` moved into the `configuration` property `DropInComponent.Configuration`
 - `AwaitComponent.style` and `AwaitComponent.localizationParameters` moved to `AwaitComponent.configuration`
 - `QRCodeComponent.style` and `QRCodeComponent.localizationParameters` moved to `QRCodeComponent.configuration`
 - `VoucherComponent.style` and `VoucherComponent.localizationParameters` moved to `VoucherComponent.configuration`

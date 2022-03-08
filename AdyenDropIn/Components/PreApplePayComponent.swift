@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,7 +11,20 @@ import UIKit
 #endif
 
 // :nodoc:
-internal final class PreApplePayComponent: Localizable, PresentableComponent, FinalizableComponent, PaymentComponent {
+internal final class PreApplePayComponent: PresentableComponent, FinalizableComponent, PaymentComponent {
+    
+    internal struct Configuration: Localizable {
+        
+        internal var style: ApplePayStyle
+
+        internal var localizationParameters: LocalizationParameters?
+
+        internal init(style: ApplePayStyle = ApplePayStyle(),
+                      localizationParameters: LocalizationParameters? = nil) {
+            self.style = style
+            self.localizationParameters = localizationParameters
+        }
+    }
     
     /// :nodoc:
     internal let apiContext: APIContext
@@ -29,16 +42,13 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     internal weak var delegate: PaymentComponentDelegate?
     
     /// :nodoc:
-    internal var localizationParameters: LocalizationParameters?
-    
-    /// :nodoc:
     internal weak var presentationDelegate: PresentationDelegate?
     
     /// :nodoc:
     fileprivate let applePayComponent: ApplePayComponent
-    
+
     /// :nodoc:
-    internal let style: ApplePayStyle
+    internal let configuration: Configuration
     
     /// :nodoc:
     internal lazy var viewController: UIViewController = {
@@ -56,17 +66,17 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     internal init(paymentMethod: ApplePayPaymentMethod,
                   apiContext: APIContext,
                   payment: Payment,
-                  configuration: ApplePayComponent.Configuration,
-                  style: ApplePayStyle) throws {
+                  configuration: Configuration,
+                  applePayConfiguration: ApplePayComponent.Configuration) throws {
         self.apiContext = apiContext
         self._payment = payment
         self.paymentMethod = paymentMethod
-        self.style = style
+        self.configuration = configuration
 
         self.applePayComponent = try ApplePayComponent(paymentMethod: paymentMethod,
                                                        apiContext: apiContext,
                                                        payment: payment,
-                                                       configuration: configuration)
+                                                       configuration: applePayConfiguration)
         self.applePayComponent.delegate = self
     }
     
@@ -77,7 +87,7 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     
     /// :nodoc:
     private func createModel(with amount: Amount) -> PreApplePayView.Model {
-        PreApplePayView.Model(hint: amount.formatted, style: style)
+        PreApplePayView.Model(hint: amount.formatted, style: configuration.style)
     }
     
 }

@@ -18,9 +18,6 @@ import Foundation
 
 internal final class ComponentManager {
 
-    /// Indicates the UI configuration of the drop in component.
-    private var style: DropInComponent.Style
-
     private let partialPaymentEnabled: Bool
     
     private let supportsEditingStoredPaymentMethods: Bool
@@ -35,7 +32,6 @@ internal final class ComponentManager {
     
     internal init(paymentMethods: PaymentMethods,
                   configuration: DropInComponent.Configuration,
-                  style: DropInComponent.Style,
                   partialPaymentEnabled: Bool = true,
                   remainingAmount: Amount? = nil,
                   order: PartialPaymentOrder?,
@@ -44,7 +40,6 @@ internal final class ComponentManager {
         self.paymentMethods = paymentMethods
         self.configuration = configuration
         self.apiContext = configuration.apiContext
-        self.style = style
         self.partialPaymentEnabled = partialPaymentEnabled
         self.remainingAmount = remainingAmount
         self.order = order
@@ -63,7 +58,7 @@ internal final class ComponentManager {
                                           configuration.localizationParameters,
                                           amountString)
         let paidFooter = ListSectionFooter(title: footerTitle,
-                                           style: style.listComponent.partialPaymentSectionFooter)
+                                           style: configuration.style.listComponent.partialPaymentSectionFooter)
         let paidSection = ComponentsSection(header: nil,
                                             components: paidComponents,
                                             footer: paidFooter)
@@ -88,7 +83,7 @@ internal final class ComponentManager {
         let localizedTitle = localizedString(.paymentMethodsOtherMethods, configuration.localizationParameters)
         let regularSectionTitle = storedSection.components.isEmpty ? nil : localizedTitle
         let regularHeader: ListSectionHeader? = regularSectionTitle.map {
-            ListSectionHeader(title: $0, style: style.listComponent.sectionHeader)
+            ListSectionHeader(title: $0, style: configuration.style.listComponent.sectionHeader)
         }
         let regularSection = ComponentsSection(header: regularHeader, components: regularComponents, footer: nil)
         
@@ -151,24 +146,28 @@ internal final class ComponentManager {
     private let configuration: DropInComponent.Configuration
     
     private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
-        CardComponent(paymentMethod: paymentMethod,
-                      apiContext: apiContext,
-                      configuration: configuration.card,
-                      shopperInformation: configuration.shopper,
-                      style: style.formComponent)
+        var cardConfiguration = configuration.card.cardComponentConfiguration
+        cardConfiguration.style = configuration.style.formComponent
+        cardConfiguration.localizationParameters = configuration.localizationParameters
+        cardConfiguration.shopperInformation = configuration.shopper
+        return CardComponent(paymentMethod: paymentMethod,
+                             apiContext: apiContext,
+                             configuration: cardConfiguration)
     }
     
     private func createBancontactComponent(with paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
         let cardConfiguration = configuration.card
-        let configuration = CardComponent.Configuration(showsHolderNameField: cardConfiguration.showsHolderNameField,
+        let configuration = CardComponent.Configuration(style: configuration.style.formComponent,
+                                                        shopperInformation: configuration.shopper,
+                                                        localizationParameters: configuration.localizationParameters,
+                                                        showsHolderNameField: cardConfiguration.showsHolderNameField,
                                                         showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
                                                         showsSecurityCodeField: cardConfiguration.showsSecurityCodeField,
                                                         storedCardConfiguration: cardConfiguration.stored)
 
         return BCMCComponent(paymentMethod: paymentMethod,
-                             configuration: configuration,
                              apiContext: apiContext,
-                             style: style.formComponent)
+                             configuration: configuration)
     }
     
     private func createPreApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
@@ -183,11 +182,13 @@ internal final class ComponentManager {
         }
         
         do {
+            let preApplePayConfig = PreApplePayComponent.Configuration(style: configuration.style.applePay,
+                                                                       localizationParameters: configuration.localizationParameters)
             return try PreApplePayComponent(paymentMethod: paymentMethod,
                                             apiContext: apiContext,
                                             payment: payment,
-                                            configuration: applePay,
-                                            style: style.applePay)
+                                            configuration: preApplePayConfig,
+                                            applePayConfiguration: applePay)
         } catch {
             adyenPrint("Failed to instantiate ApplePayComponent because of error: \(error.localizedDescription)")
             return nil
@@ -195,7 +196,7 @@ internal final class ComponentManager {
     }
     
     private func createSEPAComponent(_ paymentMethod: SEPADirectDebitPaymentMethod) -> SEPADirectDebitComponent {
-        let config = SEPADirectDebitComponent.Configuration(style: style.formComponent,
+        let config = SEPADirectDebitComponent.Configuration(style: configuration.style.formComponent,
                                                             localizationParameters: configuration.localizationParameters)
         return SEPADirectDebitComponent(paymentMethod: paymentMethod,
                                         apiContext: apiContext,
@@ -203,7 +204,7 @@ internal final class ComponentManager {
     }
 
     private func createBACSDirectDebit(_ paymentMethod: BACSDirectDebitPaymentMethod) -> BACSDirectDebitComponent {
-        let bacsConfiguration = BACSDirectDebitComponent.Configuration(style: style.formComponent,
+        let bacsConfiguration = BACSDirectDebitComponent.Configuration(style: configuration.style.formComponent,
                                                                        localizationParameters: configuration.localizationParameters)
 
         let bacsDirectDebitComponent = BACSDirectDebitComponent(paymentMethod: paymentMethod,
@@ -214,7 +215,7 @@ internal final class ComponentManager {
     }
     
     private func createACHDirectDebitComponent(_ paymentMethod: ACHDirectDebitPaymentMethod) -> ACHDirectDebitComponent {
-        let config = ACHDirectDebitComponent.Configuration(style: style.formComponent,
+        let config = ACHDirectDebitComponent.Configuration(style: configuration.style.formComponent,
                                                            shopperInformation: configuration.shopper,
                                                            localizationParameters: configuration.localizationParameters)
         return ACHDirectDebitComponent(paymentMethod: paymentMethod,
@@ -223,7 +224,7 @@ internal final class ComponentManager {
     }
     
     private func createQiwiWalletComponent(_ paymentMethod: QiwiWalletPaymentMethod) -> QiwiWalletComponent {
-        let config = QiwiWalletComponent.Configuration(style: style.formComponent,
+        let config = QiwiWalletComponent.Configuration(style: configuration.style.formComponent,
                                                        shopperInformation: configuration.shopper,
                                                        localizationParameters: configuration.localizationParameters)
         return QiwiWalletComponent(paymentMethod: paymentMethod,
@@ -231,7 +232,7 @@ internal final class ComponentManager {
     }
     
     private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
-        let config = MBWayComponent.Configuration(style: style.formComponent,
+        let config = MBWayComponent.Configuration(style: configuration.style.formComponent,
                                                   shopperInformation: configuration.shopper,
                                                   localizationParameters: configuration.localizationParameters)
         return MBWayComponent(paymentMethod: paymentMethod,
@@ -241,14 +242,14 @@ internal final class ComponentManager {
     private func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {
         BLIKComponent(paymentMethod: paymentMethod,
                       apiContext: apiContext,
-                      configuration: .init(style: style.formComponent,
+                      configuration: .init(style: configuration.style.formComponent,
                                            localizationParameters: configuration.localizationParameters))
     }
     
     private func createBoletoComponent(_ paymentMethod: BoletoPaymentMethod) -> BoletoComponent {
         BoletoComponent(paymentMethod: paymentMethod,
                         apiContext: apiContext,
-                        configuration: BoletoComponent.Configuration(style: style.formComponent,
+                        configuration: BoletoComponent.Configuration(style: configuration.style.formComponent,
                                                                      localizationParameters: configuration.localizationParameters,
                                                                      shopperInformation: configuration.shopper,
                                                                      showEmailAddress: true))
@@ -288,7 +289,7 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: IssuerListPaymentMethod) -> PaymentComponent? {
         IssuerListComponent(paymentMethod: paymentMethod,
                             apiContext: apiContext,
-                            configuration: .init(style: style.listComponent,
+                            configuration: .init(style: configuration.style.listComponent,
                                                  localizationParameters: configuration.localizationParameters))
     }
     
@@ -338,7 +339,7 @@ extension ComponentManager: PaymentComponentBuilder {
 
     /// :nodoc:
     internal func build(paymentMethod: EContextPaymentMethod) -> PaymentComponent? {
-        let config = BasicPersonalInfoFormComponent.Configuration(style: style.formComponent,
+        let config = BasicPersonalInfoFormComponent.Configuration(style: configuration.style.formComponent,
                                                                   shopperInformation: configuration.shopper,
                                                                   localizationParameters: configuration.localizationParameters)
         return BasicPersonalInfoFormComponent(paymentMethod: paymentMethod,
@@ -348,7 +349,7 @@ extension ComponentManager: PaymentComponentBuilder {
 
     /// :nodoc:
     internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
-        let config = DokuComponent.Configuration(style: style.formComponent,
+        let config = DokuComponent.Configuration(style: configuration.style.formComponent,
                                                  shopperInformation: configuration.shopper,
                                                  localizationParameters: configuration.localizationParameters)
         return DokuComponent(paymentMethod: paymentMethod,
@@ -361,7 +362,7 @@ extension ComponentManager: PaymentComponentBuilder {
         guard partialPaymentEnabled else { return nil }
         return GiftCardComponent(paymentMethod: paymentMethod,
                                  apiContext: apiContext,
-                                 style: style.formComponent)
+                                 style: configuration.style.formComponent)
     }
     
     /// :nodoc:
@@ -371,7 +372,7 @@ extension ComponentManager: PaymentComponentBuilder {
     
     /// :nodoc:
     internal func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent? {
-        let config = AffirmComponent.Configuration(style: style.formComponent,
+        let config = AffirmComponent.Configuration(style: configuration.style.formComponent,
                                                    shopperInformation: configuration.shopper,
                                                    localizationParameters: configuration.localizationParameters)
         return AffirmComponent(paymentMethod: paymentMethod,
