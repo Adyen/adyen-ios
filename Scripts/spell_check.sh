@@ -26,11 +26,27 @@ function processOutPut() {
   done
 }
 
+function escapePath() {
+  echo $( echo "$1" | sed 's/ /\\ /g' )
+}
+
+set -e
+
 export PATH=~/.mint/bin:$PATH
 
-mint install ezura/spell-checker-for-swift@5.3.0
+mint install fromkk/SpellChecker@0.1.0 SpellChecker
 
-typokana | processOutPut $OUT_PUT_FILE_NAME
+IFS=$'\n'
+files="$(find . -type f -name '*.swift')"
+declare -p -a files
+
+options=""
+for file in $files
+do
+  options="$options $( escapePath $file )"
+done
+
+/Users/runner/.mint/bin/SpellChecker --yml spell-check-allow-list.yaml -- $options | processOutPut $OUT_PUT_FILE_NAME
 
 SHOULD_FAIL=$(cat $OUT_PUT_FILE_NAME)
 
