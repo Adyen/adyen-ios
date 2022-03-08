@@ -12,7 +12,7 @@ public struct AnalyticsOptions: OptionSet {
     public let rawValue: Int
 
     public static let telemetry = AnalyticsOptions(rawValue: 1 << 0)
-    public static let conversion = AnalyticsOptions(rawValue: 1 << 1)
+    public static let checkoutAttemptId = AnalyticsOptions(rawValue: 1 << 1)
 
     public init(rawValue: Int) {
         self.rawValue = rawValue
@@ -26,18 +26,18 @@ public struct AnalyticsConfiguration {
 
     // MARK: - Initializers
 
-    public init(options: AnalyticsOptions = [.telemetry, .conversion]) {
+    public init(options: AnalyticsOptions = [.telemetry, .checkoutAttemptId]) {
         self.options = options
     }
 
     // MARK: - Internal
 
-    internal var isConversionEnabled: Bool {
-        options.contains(.conversion)
+    internal var isCheckoutAttemptIdEnabled: Bool {
+        options.contains(.checkoutAttemptId)
     }
 
     internal var isTelemetryEnabled: Bool {
-        options.contains(.conversion)
+        options.contains(.checkoutAttemptId)
     }
 }
 
@@ -65,7 +65,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     // MARK: - Internal
 
     internal func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
-        guard configuration.isConversionEnabled else {
+        guard configuration.isCheckoutAttemptIdEnabled else {
             return completion(nil)
         }
 
