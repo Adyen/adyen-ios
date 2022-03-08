@@ -58,13 +58,53 @@ class SelfRetainingAPIClientTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
     
+    func testSelfRetentionAndDestructionWithMultipleCalls() throws {
+        let request = SessionSetupRequest(sessionId: "id", sessionData: "data")
+        let successExpectation = expectation(description: "expect response to be received")
+        successExpectation.expectedFulfillmentCount = 4
+        let apiClient = APIClientMock()
+        let expectedResponse = SessionSetupResponse(
+            countryCode: "US",
+            shopperLocale: "EG",
+            paymentMethods: PaymentMethods(regular: [], stored: []),
+            amount: .init(value: 2, currencyCode: "USD", localeIdentifier: nil),
+            sessionData: "data"
+        )
+        apiClient.mockedResults = [
+            .success(expectedResponse),
+            .success(expectedResponse),
+            .success(expectedResponse),
+            .success(expectedResponse)
+        ]
+        let deinitExpectation = expectation(description: "expect deinit to be called")
+        performRequestWithLocalAPIClient(
+            request: request,
+            count: 4,
+            with: apiClient,
+            onDeinit: {
+                deinitExpectation.fulfill()
+            }, completion: { result in
+                switch result {
+                case .failure:
+                    XCTFail()
+                case let .success(response):
+                    XCTAssertEqual(response, expectedResponse)
+                    successExpectation.fulfill()
+                }
+            }
+        )
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+    
     func performRequestWithLocalAPIClient<R: Request>(request: R,
+                                                      count: Int = 1,
                                                       with apiClient: APIClientProtocol,
                                                       onDeinit: (() -> Void)?,
                                                       completion: @escaping (Result<R.ResponseType, Error>) -> Void) {
         let sut = SelfRetainingAPIClient(apiClient: apiClient)
-        sut.perform(request, completionHandler: completion)
         sut.onDeinit = onDeinit
+        (1...count).forEach { _ in
+            sut.perform(request, completionHandler: completion)
+        }
     }
-    
 }

@@ -12,7 +12,7 @@ import Foundation
 
 extension Session: PaymentComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        let request = PaymentsRequest(sessionId: sessionContext.idenitifier,
+        let request = PaymentsRequest(sessionId: sessionContext.identifier,
                                       sessionData: sessionContext.data,
                                       data: data)
         apiClient.perform(request, completionHandler: paymentResponseHandler)

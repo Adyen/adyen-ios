@@ -17,7 +17,7 @@ public final class Session: SessionProtocol {
     /// Session configuration.
     public struct Configuration {
         
-        internal let sessionIdenitifier: String
+        internal let sessionIdentifier: String
         
         internal let initialSessionData: String
         
@@ -27,10 +27,10 @@ public final class Session: SessionProtocol {
         ///
         /// - Parameters:
         ///   - apiContext: The API context.
-        public init(sessionIdenitifier: String,
+        public init(sessionIdentifier: String,
                     initialSessionData: String,
                     apiContext: APIContext) {
-            self.sessionIdenitifier = sessionIdenitifier
+            self.sessionIdentifier = sessionIdentifier
             self.initialSessionData = initialSessionData
             self.apiContext = apiContext
         }
@@ -42,8 +42,8 @@ public final class Session: SessionProtocol {
         /// The session data.
         public internal(set) var data: String
         
-        /// The session idenitifier
-        public let idenitifier: String
+        /// The session identifier
+        public let identifier: String
         
         /// Country Code
         public let countryCode: String
@@ -62,22 +62,31 @@ public final class Session: SessionProtocol {
     public internal(set) var sessionContext: Context
     
     /// Initializes an instance of `Session` asynchronously.
-    /// - Parameter completion: The completion closure, that delivers the new instance.
+    /// - Parameter configuration: The session configuration.
+    /// - Parameter completion: The completion closure, that delivers the new instance asynchronously.
     public static func initialize(with configuration: Configuration,
                                   completion: @escaping ((Result<Session, Error>) -> Void)) {
-        let sessionId = configuration.sessionIdenitifier
-        let sessionData = configuration.initialSessionData
-        let request = SessionSetupRequest(sessionId: sessionId,
-                                          sessionData: sessionData)
         let baseAPIClient = APIClient(apiContext: configuration.apiContext)
             .retryAPIClient(with: SimpleScheduler(maximumCount: 3))
             .retryOnErrorAPIClient()
+        initialize(with: configuration,
+                   baseAPIClient: baseAPIClient,
+                   completion: completion)
+    }
+    
+    internal static func initialize(with configuration: Configuration,
+                                    baseAPIClient: APIClientProtocol,
+                                    completion: @escaping ((Result<Session, Error>) -> Void)) {
+        let sessionId = configuration.sessionIdentifier
+        let sessionData = configuration.initialSessionData
+        let request = SessionSetupRequest(sessionId: sessionId,
+                                          sessionData: sessionData)
         let apiClient = SelfRetainingAPIClient(apiClient: baseAPIClient)
         apiClient.perform(request) { result in
             switch result {
             case let .success(response):
                 let sessionContext = Context(data: response.sessionData,
-                                             idenitifier: sessionId,
+                                             identifier: sessionId,
                                              countryCode: response.countryCode,
                                              shopperLocale: response.shopperLocale,
                                              amount: response.amount,

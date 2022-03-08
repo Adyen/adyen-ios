@@ -21,7 +21,7 @@ extension Session: ActionComponentDelegate {
 
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
-        let request = PaymentDetailsRequest(sessionId: sessionContext.idenitifier,
+        let request = PaymentDetailsRequest(sessionId: sessionContext.identifier,
                                             sessionData: sessionContext.data,
                                             paymentData: data.paymentData,
                                             details: data.details)

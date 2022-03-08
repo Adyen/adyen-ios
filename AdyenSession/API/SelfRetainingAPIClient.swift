@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import AdyenNetworking
 import Foundation
 
@@ -15,7 +16,11 @@ internal final class SelfRetainingAPIClient: APIClientProtocol {
     
     private var instance: APIClientProtocol?
     
+    /// :nodoc:
+    /// For Testing only
     internal var onDeinit: (() -> Void)?
+    
+    private var retainCount: Int = 0
     
     deinit {
         onDeinit?()
@@ -27,18 +32,28 @@ internal final class SelfRetainingAPIClient: APIClientProtocol {
     ///   - apiClient: The wrapped API client.
     internal init(apiClient: APIClientProtocol) {
         self.apiClient = apiClient
-        self.instance = self
     }
     
-    internal func perform<R>(_ request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>) where R: Request {
+    internal func perform<R>(_ request: R,
+                             completionHandler: @escaping CompletionHandler<R.ResponseType>) where R: Request {
+        AdyenAssertion.assert(message: "This function must be called on the main thread",
+                              condition: Thread.isMainThread)
+        instance = self
+        retainCount += 1
         apiClient.perform(request) { [weak self] in
             completionHandler($0)
-            self?.destroy()
+            self?.destroyIfNeeded()
         }
     }
     
     /// Destroy the retain cycle to enable `self` to be deallocated.
-    private func destroy() {
-        instance = nil
+    private func destroyIfNeeded() {
+        AdyenAssertion.assert(message: "This function must be called on the main thread",
+                              condition: Thread.isMainThread)
+        retainCount -= 1
+        
+        if retainCount == 0 {
+            instance = nil
+        }
     }
 }

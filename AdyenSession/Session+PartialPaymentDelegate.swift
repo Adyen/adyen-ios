@@ -11,7 +11,7 @@ extension Session: PartialPaymentDelegate {
     
     public func checkBalance(with data: PaymentComponentData,
                              completion: @escaping (Result<Balance, Error>) -> Void) {
-        let request = BalanceCheckRequest(sessionId: sessionContext.idenitifier,
+        let request = BalanceCheckRequest(sessionId: sessionContext.identifier,
                                           sessionData: sessionContext.data,
                                           data: data)
         apiClient.perform(request) { _ in
@@ -20,7 +20,7 @@ extension Session: PartialPaymentDelegate {
     }
     
     public func requestOrder(_ completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
-        let request = CreateOrderRequest(sessionId: sessionContext.idenitifier,
+        let request = CreateOrderRequest(sessionId: sessionContext.identifier,
                                          sessionData: sessionContext.data)
         apiClient.perform(request) { _ in
             // TODO: Handle result
@@ -28,7 +28,7 @@ extension Session: PartialPaymentDelegate {
     }
     
     public func cancelOrder(_ order: PartialPaymentOrder) {
-        let request = CancelOrderRequest(sessionId: sessionContext.idenitifier,
+        let request = CancelOrderRequest(sessionId: sessionContext.identifier,
                                          sessionData: sessionContext.data,
                                          order: order)
         apiClient.perform(request) { _ in
