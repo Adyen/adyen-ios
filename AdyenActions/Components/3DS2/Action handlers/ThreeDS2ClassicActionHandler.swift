@@ -15,6 +15,9 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     /// :nodoc:
     internal let apiContext: APIContext
 
+    /// :nodoc
+    internal let adyenContext: AdyenContext
+
     /// :nodoc:
     internal var wrappedComponent: Component { coreActionHandler }
 
@@ -50,15 +53,21 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
     /// :nodoc:
     internal convenience init(apiContext: APIContext,
+                              adyenContext: AdyenContext,
                               service: AnyADYService,
                               appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
-        self.init(apiContext: apiContext, appearanceConfiguration: appearanceConfiguration)
+        self.init(apiContext: apiContext,
+                  adyenContext: adyenContext,
+                  appearanceConfiguration: appearanceConfiguration)
         self.coreActionHandler.service = service
     }
 
     /// Initializes the 3D Secure 2 action handler.
-    internal init(apiContext: APIContext, appearanceConfiguration: ADYAppearanceConfiguration) {
+    internal init(apiContext: APIContext,
+                  adyenContext: AdyenContext,
+                  appearanceConfiguration: ADYAppearanceConfiguration) {
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.coreActionHandler = ThreeDS2CoreActionHandler(apiContext: apiContext, appearanceConfiguration: appearanceConfiguration)
     }
 
