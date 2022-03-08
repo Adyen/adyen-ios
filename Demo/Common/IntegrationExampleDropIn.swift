@@ -25,10 +25,8 @@ extension IntegrationExample {
         configuration.card.billingAddressMode = .postalCode
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
 
-        let dropInComponentStyle = DropInComponent.Style()
         let component = DropInComponent(paymentMethods: paymentMethods,
                                         configuration: configuration,
-                                        style: dropInComponentStyle,
                                         title: ConfigurationConstants.appName)
         component.delegate = self
         component.partialPaymentDelegate = self

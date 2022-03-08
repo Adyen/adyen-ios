@@ -78,8 +78,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// - Parameters:
     ///   - paymentMethod: The BACS Direct Debit payment method.
     ///   - apiContext: The API context.
-    ///   - style: The component's UI style.
-    ///   - localizationParameters: The localization parameters.
+    ///   - configuration: Configuration for the component.
     public init(paymentMethod: BACSDirectDebitPaymentMethod,
                 apiContext: APIContext,
                 configuration: Configuration = Configuration()) {
