@@ -13,22 +13,16 @@ internal struct TelemetryResponse: Response { /* Empty response */ }
 /// :nodoc:
 internal struct TelemetryRequest: APIRequest {
 
-    /// :nodoc:
     internal typealias ResponseType = TelemetryResponse
 
-    /// :nodoc:
     internal let path: String = "checkoutshopper/v2/analytics/log"
 
-    /// :nodoc:
     internal var counter: UInt = 0
 
-    /// :nodoc:
     internal let headers: [String: String] = [:]
 
-    /// :nodoc:
     internal let queryParameters: [URLQueryItem] = []
 
-    /// :nodoc:
     internal let method: HTTPMethod = .post
 
     private var version: String?

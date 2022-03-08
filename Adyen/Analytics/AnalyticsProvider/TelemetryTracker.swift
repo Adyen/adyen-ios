@@ -11,7 +11,6 @@ public enum TelemetryFlavor {
     case components(type: PaymentMethodType)
     case dropIn(type: String = "dropin", paymentMethods: [String])
 
-    
     // The `dropInComponent` type describes a component within the drop-in component.
     // In telemetry, we need to distinguish when a component is used from the drop-in
     // and when it's used as standalone.

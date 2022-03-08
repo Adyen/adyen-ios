@@ -22,25 +22,18 @@ internal struct CheckoutAttemptIdResponse: Response {
 /// :nodoc:
 internal struct CheckoutAttemptIdRequest: APIRequest {
 
-    /// :nodoc:
     internal typealias ResponseType = CheckoutAttemptIdResponse
 
-    /// :nodoc:
     internal let path: String = "checkoutshopper/v2/analytics/id"
 
-    /// :nodoc:
     internal var counter: UInt = 0
 
-    /// :nodoc:
     internal let headers: [String: String] = [:]
 
-    /// :nodoc:
     internal let queryParameters: [URLQueryItem] = []
 
-    /// :nodoc:
     internal let method: HTTPMethod = .post
 
-    /// :nodoc:
     internal let experiments: [String] = []
 
     internal enum CodingKeys: CodingKey {
