@@ -84,9 +84,8 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
         self.init(apiContext: apiContext,
                   adyenContext: adyenContext,
                   configuration: configuration,
-                  pollingComponentBuilder: PollingHandlerProvider(apiContext: apiContext),
-                  timeoutInterval: 60 * 15
-        )
+                  pollingComponentBuilder: PollingHandlerProvider(apiContext: apiContext, adyenContext: adyenContext),
+                  timeoutInterval: 60 * 15)
     }
     
     /// Initializes the `QRCodeComponent`.

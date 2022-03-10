@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -34,12 +34,17 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
     /// :nodoc:
     private let apiContext: APIContext
 
+    /// :nodoc
+    private let adyenContext: AdyenContext
+
     /// :nodoc:
     private let apiClient: AnyRetryAPIClient
 
     /// :nodoc:
-    internal init(apiContext: APIContext) {
+    internal init(apiContext: APIContext,
+                  adyenContext: AdyenContext) {
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.apiClient = RetryAPIClient(
             apiClient: APIClient(apiContext: apiContext),
             scheduler: BackoffScheduler(queue: .main)
@@ -64,7 +69,9 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
     
     /// :nodoc:
     private func createPollingComponent() -> AnyPollingHandler {
-        PollingComponent(apiContext: apiContext, apiClient: apiClient)
+        PollingComponent(apiContext: apiContext,
+                         adyenContext: adyenContext,
+                         apiClient: apiClient)
     }
     
 }

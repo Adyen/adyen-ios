@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -20,6 +20,9 @@ internal final class PollingComponent: AnyPollingHandler {
 
     /// :nodoc:
     internal let apiContext: APIContext
+
+    /// :nodoc:
+    internal let adyenContext: AdyenContext
     
     /// :nodoc:
     internal weak var presentationDelegate: PresentationDelegate?
@@ -36,8 +39,10 @@ internal final class PollingComponent: AnyPollingHandler {
     /// - Parameter apiContext: The API context.
     /// - Parameter apiClient: The API client.
     internal init(apiContext: APIContext,
+                  adyenContext: AdyenContext,
                   apiClient: AnyRetryAPIClient) {
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.apiClient = apiClient
     }
     

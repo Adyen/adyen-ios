@@ -62,7 +62,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
                             configuration: Configuration = .init()) {
         self.init(apiContext: apiContext,
                   adyenContext: adyenContext,
-                  awaitComponentBuilder: PollingHandlerProvider(apiContext: apiContext),
+                  awaitComponentBuilder: PollingHandlerProvider(apiContext: apiContext, adyenContext: adyenContext),
                   configuration: configuration)
     }
     
