@@ -35,6 +35,8 @@ extension ComponentWrapper {
     /// :nodoc:
     internal var apiContext: APIContext { wrappedComponent.apiContext }
 
+    internal var adyenContext: AdyenContext { wrappedComponent.adyenContext }
+
     /// :nodoc:
     internal var _isDropIn: Bool { // swiftlint:disable:this identifier_name
         get {

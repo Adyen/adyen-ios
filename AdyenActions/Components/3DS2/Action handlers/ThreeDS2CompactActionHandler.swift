@@ -43,15 +43,19 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     /// Initializes the 3D Secure 2 action handler.
     ///
     /// - Parameter apiContext: The API context.
+    /// - Parameter adyenContext: The Adyen context.
     /// - Parameter fingerprintSubmitter: The fingerprint submitter.
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
     /// :nodoc:
     internal convenience init(apiContext: APIContext,
+                              adyenContext: AdyenContext,
                               fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter? = nil,
                               service: AnyADYService,
                               appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
-        self.init(apiContext: apiContext, appearanceConfiguration: appearanceConfiguration)
+        self.init(apiContext: apiContext,
+                  adyenContext: adyenContext,
+                  appearanceConfiguration: appearanceConfiguration)
         if let fingerprintSubmitter = fingerprintSubmitter {
             self.fingerprintSubmitter = fingerprintSubmitter
         }
@@ -59,8 +63,12 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     }
 
     /// Initializes the 3D Secure 2 action handler.
-    internal init(apiContext: APIContext, appearanceConfiguration: ADYAppearanceConfiguration) {
-        self.coreActionHandler = ThreeDS2CoreActionHandler(apiContext: apiContext, appearanceConfiguration: appearanceConfiguration)
+    internal init(apiContext: APIContext,
+                  adyenContext: AdyenContext,
+                  appearanceConfiguration: ADYAppearanceConfiguration) {
+        self.coreActionHandler = ThreeDS2CoreActionHandler(apiContext: apiContext,
+                                                           adyenContext: adyenContext,
+                                                           appearanceConfiguration: appearanceConfiguration)
     }
 
     // MARK: - Fingerprint

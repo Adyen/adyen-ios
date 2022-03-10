@@ -68,7 +68,9 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
                   appearanceConfiguration: ADYAppearanceConfiguration) {
         self.apiContext = apiContext
         self.adyenContext = adyenContext
-        self.coreActionHandler = ThreeDS2CoreActionHandler(apiContext: apiContext, appearanceConfiguration: appearanceConfiguration)
+        self.coreActionHandler = ThreeDS2CoreActionHandler(apiContext: apiContext,
+                                                           adyenContext: adyenContext,
+                                                           appearanceConfiguration: appearanceConfiguration)
     }
 
     // MARK: - Fingerprint
