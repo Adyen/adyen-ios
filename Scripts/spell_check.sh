@@ -43,10 +43,11 @@ declare -p -a files
 options=""
 for file in $files
 do
-  options="$options $( escapePath $file )"
+  # options="$options $( escapePath $file )"
+  /Users/runner/.mint/bin/SpellChecker --yml spell-check-allow-list.yaml -- $file | processOutPut $OUT_PUT_FILE_NAME
 done
 
-/Users/runner/.mint/bin/SpellChecker --yml spell-check-allow-list.yaml -- $options | processOutPut $OUT_PUT_FILE_NAME
+
 
 SHOULD_FAIL=$(cat $OUT_PUT_FILE_NAME)
 
