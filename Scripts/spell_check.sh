@@ -37,8 +37,8 @@ export PATH=~/.mint/bin:$PATH
 mint install fromkk/SpellChecker@0.1.0 SpellChecker
 
 IFS=$'\n'
-files="$(find . -type f -name '*.swift')"
-declare -a files
+files="$(git diff origin/$current_branch..origin/$target_branch --name-only -- "*.swift")"
+declare -p -a files
 
 excludedFiles="$(cat spell-check-excluded-files-list)"
 declare -a excludedFiles
