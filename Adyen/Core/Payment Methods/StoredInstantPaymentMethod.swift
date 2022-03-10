@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// A sored payment method that does not require any handling and could be submitted directly.
+/// A stored payment method that does not require any handling and could be submitted directly.
 public struct StoredInstantPaymentMethod: StoredPaymentMethod {
 
     public let type: PaymentMethodType

@@ -91,6 +91,13 @@ whiteList:
   - explicit_acl
   - cyclomatic_complexity
   - korean
+  - korea
+  - Heimdall
+  - authorise
+  - associatedtype
+  - threeds
+  - acl
+  - xcrun
   - ios
   - validatable
   - Tintable
@@ -146,3 +153,10 @@ whiteList:
   - eftpos
   - nanaco
   - waon
+  - deinit
+  - darwin
+  - cyclomatic
+  - doesn
+  - couldn
+  - brazilian
+  - australian

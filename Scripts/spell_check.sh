@@ -20,7 +20,7 @@ function processOutPut() {
      elif [[ $line == *"warning"* ]]; then
        echo "${RED}$line${NOCOLOR}"
        echo "true" > $1
-     else
+     elif [[ $line != *"no typo!"* ]]; then
        echo "$line"
      fi
   done
@@ -38,13 +38,23 @@ mint install fromkk/SpellChecker@0.1.0 SpellChecker
 
 IFS=$'\n'
 files="$(find . -type f -name '*.swift')"
-declare -p -a files
+declare -a files
 
-options=""
+excludedFiles="$(cat spell-check-excluded-files-list)"
+declare -a excludedFiles
+
 for file in $files
 do
-  # options="$options $( escapePath $file )"
-  /Users/runner/.mint/bin/SpellChecker --yml spell-check-allow-list.yaml -- $file | processOutPut $OUT_PUT_FILE_NAME
+  isIncluded=true
+  for excludedFile in $excludedFiles
+  do
+    if [[ "$file" == *"$excludedFile"* ]]; then
+      isIncluded=false
+    fi
+  done
+  if [[ $isIncluded == true ]]; then
+    /Users/runner/.mint/bin/SpellChecker --yml spell-check-word-allow-list.yaml -- $file | processOutPut $OUT_PUT_FILE_NAME
+  fi
 done
 
 
