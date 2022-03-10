@@ -170,7 +170,7 @@ public final class AdyenActionComponent: ActionComponent {
             return
         }
         
-        let weChatPaySDKActionComponent = classObject.init(apiContext: apiContext)
+        let weChatPaySDKActionComponent = classObject.init(apiContext: apiContext, adyenContext: adyenContext)
         weChatPaySDKActionComponent._isDropIn = _isDropIn
         weChatPaySDKActionComponent.delegate = delegate
         weChatPaySDKActionComponent.handle(action)

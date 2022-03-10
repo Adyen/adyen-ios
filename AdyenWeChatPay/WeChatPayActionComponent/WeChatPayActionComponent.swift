@@ -118,11 +118,16 @@ import Foundation
         public let apiContext: APIContext
 
         /// :nodoc:
+        public let adyenContext: AdyenContext
+
+        /// :nodoc:
         public weak var delegate: ActionComponentDelegate?
 
         /// :nodoc:
-        public init(apiContext: APIContext) {
+        public init(apiContext: APIContext,
+                    adyenContext: AdyenContext) {
             self.apiContext = apiContext
+            self.adyenContext = adyenContext
         }
 
         /// :nodoc:
