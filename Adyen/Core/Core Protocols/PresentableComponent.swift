@@ -76,5 +76,14 @@ extension TrackableComponent {
     public func viewDidAppear(viewController: UIViewController) { /* Empty Implementation */ }
 
     /// :nodoc:
-    public func viewWillAppear(viewController: UIViewController) { /* Empty Implementation */ }
+    public func viewWillAppear(viewController: UIViewController) {
+        trackTelemetryEvent()
+    }
+
+    // MARK: - Private
+
+    private func trackTelemetryEvent() {
+        let flavor: TelemetryFlavor = _isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: flavor)
+    }
 }
