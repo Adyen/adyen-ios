@@ -29,7 +29,7 @@ extension AdyenScope where Base: UIView {
         anchor(inside: .layoutGuide(margins), edgeInsets: EdgeInsets(edgeInsets: padding))
     }
     
-    /// Attaches the given edges of this view to coresponding anchors inside the specified anchor source.
+    /// Attaches the given edges of this view to corresponding anchors inside the specified anchor source.
     /// - Parameters:
     ///   - anchorSource: The anchor source to contain this view.
     ///   - edgeInsets: Edges with inset values on which the views should be anchored. Defaults to all 4 edges with 0 inset each.
