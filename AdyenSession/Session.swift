@@ -62,22 +62,26 @@ public final class Session: SessionProtocol {
     public internal(set) var sessionContext: Context
     
     /// The presentation delegate.
-    public weak var presentationDelegate: PresentationDelegate?
+    public private(set) weak var presentationDelegate: PresentationDelegate?
     
     /// Initializes an instance of `Session` asynchronously.
     /// - Parameter configuration: The session configuration.
+    /// - Parameter presentationDelegate: The presentation delegate.
     /// - Parameter completion: The completion closure, that delivers the new instance asynchronously.
     public static func initialize(with configuration: Configuration,
+                                  presentationDelegate: PresentationDelegate,
                                   completion: @escaping ((Result<Session, Error>) -> Void)) {
         let baseAPIClient = APIClient(apiContext: configuration.apiContext)
             .retryAPIClient(with: SimpleScheduler(maximumCount: 3))
             .retryOnErrorAPIClient()
         initialize(with: configuration,
+                   presentationDelegate: presentationDelegate,
                    baseAPIClient: baseAPIClient,
                    completion: completion)
     }
     
     internal static func initialize(with configuration: Configuration,
+                                    presentationDelegate: PresentationDelegate,
                                     baseAPIClient: APIClientProtocol,
                                     completion: @escaping ((Result<Session, Error>) -> Void)) {
         makeSetupCall(with: configuration,
@@ -86,6 +90,7 @@ public final class Session: SessionProtocol {
             case let .success(sessionContext):
                 let session = Session(configuration: configuration,
                                       sessionContext: sessionContext)
+                session.presentationDelegate = presentationDelegate
                 completion(.success(session))
             case let .failure(error):
                 completion(.failure(error))

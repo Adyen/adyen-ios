@@ -39,6 +39,7 @@ class SessionTests: XCTestCase {
         Session.initialize(with: .init(sessionIdentifier: "session_id",
                                        initialSessionData: "session_data_0",
                                        apiContext: Dummy.context),
+                           presentationDelegate: PresentationDelegateMock(),
                            baseAPIClient: apiClient) { result in
             switch result {
             case .failure:
@@ -248,7 +249,8 @@ class SessionTests: XCTestCase {
         let initializationExpectation = expectation(description: "Expect session object to be initialized")
         Session.initialize(with: .init(sessionIdentifier: "session_id",
                                              initialSessionData: "session_data_0",
-                                             apiContext: Dummy.context),
+                                       apiContext: Dummy.context),
+                           presentationDelegate: PresentationDelegateMock(),
                                  baseAPIClient: apiClient) { result in
             switch result {
             case let .success(session):
