@@ -128,13 +128,28 @@ class SessionTests: XCTestCase {
             url: URL(string: "https://google.com")!,
             paymentData: "payment_data"
         )
-        apiClient.mockedResults = [.success(PaymentsResponse(resultCode: .authorised,
-                                                             action: .redirect(
-                                                                expectedAction
-                                                             ),
-                                                             order: nil,
-                                                             sessionData: "session_data"))]
-        let didSubmitExpectation = expectation(description: "Expect payments call to be made")
+        apiClient.mockedResults = [
+            .success(
+                PaymentsResponse(
+                    resultCode: .authorised,
+                    action: .redirect(
+                        expectedAction
+                    ),
+                    order: nil,
+                    sessionData: "session_data"
+                )
+            ),
+            .success(
+                PaymentsResponse(
+                    resultCode: .authorised,
+                    action: nil,
+                    order: nil,
+                    sessionData: "session_data"
+                )
+            )
+        ]
+        let didSubmitExpectation = expectation(description: "Expect payments and payments details calls to be made")
+        didSubmitExpectation.expectedFulfillmentCount = 2
         apiClient.onExecute = {
             didSubmitExpectation.fulfill()
         }
@@ -146,6 +161,13 @@ class SessionTests: XCTestCase {
             case let .redirect(redirect):
                 XCTAssertEqual(redirect.paymentData, expectedAction.paymentData)
                 XCTAssertEqual(redirect.url, expectedAction.url)
+                let data = ActionComponentData(
+                    details: RedirectDetails(
+                        returnURL: URL(string: "https://google.com")!
+                    ),
+                    paymentData: "payment_data"
+                )
+                sut.didProvide(data, from: RedirectComponent(apiContext: Dummy.context))
             default:
                 XCTFail()
             }
