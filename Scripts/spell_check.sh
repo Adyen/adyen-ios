@@ -20,17 +20,44 @@ function processOutPut() {
      elif [[ $line == *"warning"* ]]; then
        echo "${RED}$line${NOCOLOR}"
        echo "true" > $1
-     else
+     elif [[ $line != *"no typo!"* ]]; then
        echo "$line"
      fi
   done
 }
 
+function escapePath() {
+  echo $( echo "$1" | sed 's/ /\\ /g' )
+}
+
+set -e
+
 export PATH=~/.mint/bin:$PATH
 
-mint install ezura/spell-checker-for-swift@5.3.0
+mint install fromkk/SpellChecker@0.1.0 SpellChecker
 
-typokana | processOutPut $OUT_PUT_FILE_NAME
+IFS=$'\n'
+files="$(git diff origin/$current_branch..origin/$target_branch --name-only -- "*.swift")"
+declare -p -a files
+
+excludedFiles="$(cat spell-check-excluded-files-list)"
+declare -a excludedFiles
+
+for file in $files
+do
+  isIncluded=true
+  for excludedFile in $excludedFiles
+  do
+    if [[ "$file" == *"$excludedFile"* ]]; then
+      isIncluded=false
+    fi
+  done
+  if [[ $isIncluded == true ]]; then
+    /Users/runner/.mint/bin/SpellChecker --yml spell-check-word-allow-list.yaml -- $file | processOutPut $OUT_PUT_FILE_NAME
+  fi
+done
+
+
 
 SHOULD_FAIL=$(cat $OUT_PUT_FILE_NAME)
 
