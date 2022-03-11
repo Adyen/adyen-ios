@@ -23,7 +23,9 @@ extension SessionSetupResponse: Equatable {
 class SelfRetainingAPIClientTests: XCTestCase {
 
     func testSelfRetentionAndDestruction() throws {
-        let request = SessionSetupRequest(sessionId: "id", sessionData: "data")
+        let request = SessionSetupRequest(sessionId: "id",
+                                          sessionData: "data",
+                                          order: nil)
         let successExpectation = expectation(description: "expect response to be received")
         let baseApiClient = APIClientMock()
         let expectedResponse = SessionSetupResponse(
@@ -59,7 +61,9 @@ class SelfRetainingAPIClientTests: XCTestCase {
     }
     
     func testSelfRetentionAndDestructionWithMultipleCalls() throws {
-        let request = SessionSetupRequest(sessionId: "id", sessionData: "data")
+        let request = SessionSetupRequest(sessionId: "id",
+                                          sessionData: "data",
+                                          order: nil)
         let successExpectation = expectation(description: "expect response to be received")
         successExpectation.expectedFulfillmentCount = 4
         let apiClient = APIClientMock()

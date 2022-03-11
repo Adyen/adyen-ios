@@ -61,6 +61,9 @@ public final class Session: SessionProtocol {
     /// The session context information.
     public internal(set) var sessionContext: Context
     
+    /// The presentation delegate.
+    public weak var presentationDelegate: PresentationDelegate?
+    
     /// Initializes an instance of `Session` asynchronously.
     /// - Parameter configuration: The session configuration.
     /// - Parameter completion: The completion closure, that delivers the new instance asynchronously.
@@ -77,10 +80,28 @@ public final class Session: SessionProtocol {
     internal static func initialize(with configuration: Configuration,
                                     baseAPIClient: APIClientProtocol,
                                     completion: @escaping ((Result<Session, Error>) -> Void)) {
+        makeSetupCall(with: configuration,
+                      baseAPIClient: baseAPIClient) { result in
+            switch result {
+            case let .success(sessionContext):
+                let session = Session(configuration: configuration,
+                                      sessionContext: sessionContext)
+                completion(.success(session))
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    internal static func makeSetupCall(with configuration: Configuration,
+                                       baseAPIClient: APIClientProtocol,
+                                       order: PartialPaymentOrder? = nil,
+                                       completion: @escaping ((Result<Context, Error>) -> Void)) {
         let sessionId = configuration.sessionIdentifier
         let sessionData = configuration.initialSessionData
         let request = SessionSetupRequest(sessionId: sessionId,
-                                          sessionData: sessionData)
+                                          sessionData: sessionData,
+                                          order: order)
         let apiClient = SelfRetainingAPIClient(apiClient: baseAPIClient)
         apiClient.perform(request) { result in
             switch result {
@@ -91,9 +112,7 @@ public final class Session: SessionProtocol {
                                              shopperLocale: response.shopperLocale,
                                              amount: response.amount,
                                              paymentMethods: response.paymentMethods)
-                let session = Session(configuration: configuration,
-                                      sessionContext: sessionContext)
-                completion(.success(session))
+                completion(.success(sessionContext))
             case let .failure(error):
                 completion(.failure(error))
             }
@@ -104,13 +123,23 @@ public final class Session: SessionProtocol {
         // TODO: Call back merchant
     }
     
+    // MARK: - Action Handling for Components
+
+    internal lazy var actionComponent: ActionHandlingComponent = {
+        let handler = AdyenActionComponent(apiContext: configuration.apiContext)
+        handler.delegate = self
+        handler.presentationDelegate = presentationDelegate
+        return handler
+    }()
+    
     // MARK: - Private
     
-    private let configuration: Configuration
+    internal let configuration: Configuration
     
     internal lazy var apiClient: APIClientProtocol = {
         APIClient(apiContext: configuration.apiContext)
             .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
+            .retryOnErrorAPIClient()
     }()
     
     private init(configuration: Configuration, sessionContext: Context) {

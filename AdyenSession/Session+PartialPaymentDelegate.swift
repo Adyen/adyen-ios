@@ -7,6 +7,7 @@
 import Adyen
 import Foundation
 
+/// :nodoc:
 extension Session: PartialPaymentDelegate {
     
     public func checkBalance(with data: PaymentComponentData,

@@ -10,42 +10,80 @@ import Adyen
 #endif
 import Foundation
 
+/// :nodoc:
 extension Session: PaymentComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
+        didSubmit(data, currentComponent: component)
+    }
+    
+    internal func didSubmit(_ data: PaymentComponentData, currentComponent: Component) {
         let request = PaymentsRequest(sessionId: sessionContext.identifier,
                                       sessionData: sessionContext.data,
                                       data: data)
-        apiClient.perform(request, completionHandler: paymentResponseHandler)
+        apiClient.perform(request) { [weak self] in
+            self?.paymentResponseHandler(result: $0, for: currentComponent)
+        }
     }
     
-    internal func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
+    internal func paymentResponseHandler(result: Result<PaymentsResponse, Error>,
+                                         for currentComponent: Component) {
         switch result {
         case let .success(response):
-            updateContext(with: response)
-            if let action = response.action {
-                handle(action)
-            } else if let order = response.order,
-                      let remainingAmount = order.remainingAmount,
-                      remainingAmount.value > 0 {
-                handle(order)
-            } else {
-                finish(with: response.resultCode)
-            }
+            handle(paymentResponse: response, for: currentComponent)
         case let .failure(error):
             finish(with: error)
         }
     }
     
-    private func updateContext(with response: PaymentsResponse) {
+    private func handle(paymentResponse response: PaymentsResponse,
+                        for currentComponent: Component) {
         sessionContext.data = response.sessionData
+        if let action = response.action {
+            handle(action: action, for: currentComponent)
+        } else if let order = response.order,
+                  let remainingAmount = order.remainingAmount,
+                  remainingAmount.value > 0 {
+            handle(order: order, for: currentComponent)
+        } else {
+            finish(with: response.resultCode)
+        }
     }
     
-    private func handle(_ action: Action) {
-        // TODO: Handle Action
+    private func handle(action: Action, for currentComponent: Component) {
+        if let component = currentComponent as? ActionHandlingComponent {
+            component.handle(action)
+        } else {
+            actionComponent.handle(action)
+        }
     }
     
-    private func handle(_ order: PartialPaymentOrder) {
-        // TODO: Handle Order
+    private func handle(order: PartialPaymentOrder, for currentComponent: Component) {
+        Self.makeSetupCall(with: configuration,
+                           baseAPIClient: apiClient,
+                           order: order) { [weak self] result in
+            self?.updateContext(with: result)
+            self?.reload(currentComponent: currentComponent, with: order)
+        }
+    }
+    
+    private func updateContext(with result: Result<Context, Error>) {
+        switch result {
+        case let .success(context):
+            sessionContext = context
+        case let .failure(error):
+            finish(with: error)
+        }
+    }
+    
+    private func reload(currentComponent: Component, with order: PartialPaymentOrder) {
+        do {
+            guard let currentComponent = currentComponent as? DropInComponentProtocol else {
+                throw PartialPaymentError.notSupportedForComponent
+            }
+            try currentComponent.reload(with: order, sessionContext.paymentMethods)
+        } catch {
+            finish(with: error)
+        }
     }
     
     private func finish(with resultCode: PaymentsResponse.ResultCode) {
@@ -57,6 +95,10 @@ extension Session: PaymentComponentDelegate {
     }
 
     public func didFail(with error: Error, from component: PaymentComponent) {
+        didFail(with: error, currentComponent: component)
+    }
+    
+    internal func didFail(with error: Error, currentComponent: Component) {
         // TODO: call back the merchant
     }
 }

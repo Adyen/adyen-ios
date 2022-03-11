@@ -14,7 +14,7 @@ import UIKit
  - SeeAlso:
  [Implementation Reference](https://github.com/Adyen/adyen-ios#handling-an-action)
  */
-public final class AdyenActionComponent: ActionComponent {
+public final class AdyenActionComponent: ActionComponent, ActionHandlingComponent {
     
     public let apiContext: APIContext
     
