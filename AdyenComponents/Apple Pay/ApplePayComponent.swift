@@ -29,10 +29,8 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// Apple Pay component configuration.
     internal let configuration: Configuration
 
-    /// :nodoc:
     internal var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
 
-    /// :nodoc:
     internal var paymentAuthorizationCompletion: ((PKPaymentAuthorizationStatus) -> Void)?
 
     internal var finalizeCompletion: (() -> Void)?

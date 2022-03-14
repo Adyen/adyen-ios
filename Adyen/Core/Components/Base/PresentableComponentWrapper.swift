@@ -24,7 +24,7 @@ public final class PresentableComponentWrapper: PresentableComponent,
     public let component: Component
     
     /// :nodoc:
-    public var requiresModalPresentation: Bool = true
+    public let requiresModalPresentation: Bool = true
     
     /// :nodoc:
     public var navBarType: NavigationBarType
@@ -43,19 +43,16 @@ public final class PresentableComponentWrapper: PresentableComponent,
         self.viewController = viewController
         self.navBarType = navBarType
     }
-    
-    /// :nodoc:
+
     public func didCancel() {
         component.cancelIfNeeded()
         stopLoading()
     }
 
-    /// :nodoc:
     public func didFinalize(with success: Bool, compleate: (() -> Void)?) {
         component.finalizeIfNeeded(with: success, compleate: compleate)
     }
 
-    /// :nodoc:
     public func stopLoading() {
         component.stopLoadingIfNeeded()
     }
