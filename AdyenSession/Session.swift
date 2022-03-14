@@ -72,7 +72,7 @@ public final class Session: SessionProtocol {
                                   presentationDelegate: PresentationDelegate,
                                   completion: @escaping ((Result<Session, Error>) -> Void)) {
         let baseAPIClient = APIClient(apiContext: configuration.apiContext)
-            .retryAPIClient(with: SimpleScheduler(maximumCount: 3))
+            .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
             .retryOnErrorAPIClient()
         initialize(with: configuration,
                    presentationDelegate: presentationDelegate,
