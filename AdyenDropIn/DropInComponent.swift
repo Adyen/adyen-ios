@@ -23,7 +23,9 @@ import UIKit
  - SeeAlso:
  [Implementation Reference](https://docs.adyen.com/online-payments/ios/drop-in)
  */
-public final class DropInComponent: NSObject, PresentableComponent {
+public final class DropInComponent: NSObject,
+    AnyDropInComponent,
+    ActionHandlingComponent {
 
     private var configuration: Configuration
 
