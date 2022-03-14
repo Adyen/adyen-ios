@@ -13,8 +13,8 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     
     /// :nodoc:
     public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-        if let compleate = finalizeCompletion {
-            compleate()
+        if let completion = finalizeCompletion {
+            completion()
         } else {
             paymentAuthorizationViewController = nil
 

@@ -80,8 +80,8 @@ internal final class PreApplePayComponent: PresentableComponent, FinalizableComp
         self.applePayComponent.delegate = self
     }
     
-    public func didFinalize(with success: Bool, compleate: (() -> Void)?) {
-        applePayComponent.didFinalize(with: success, compleate: compleate)
+    public func didFinalize(with success: Bool, completion: (() -> Void)?) {
+        applePayComponent.didFinalize(with: success, completion: completion)
     }
     
     /// :nodoc:

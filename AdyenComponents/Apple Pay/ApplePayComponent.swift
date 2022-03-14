@@ -107,9 +107,9 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     /// Finalizes ApplePay payment after being processed by payment provider.
     /// - Parameter success: The status of the payment.
-    public func didFinalize(with success: Bool, compleate: (() -> Void)?) {
+    public func didFinalize(with success: Bool, completion: (() -> Void)?) {
         self.success = success
-        finalizeCompletion = compleate
+        finalizeCompletion = completion
         paymentAuthorizationCompletion?(success ? .success : .failure)
         paymentAuthorizationCompletion = nil
     }

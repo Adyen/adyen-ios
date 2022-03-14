@@ -49,8 +49,8 @@ public final class PresentableComponentWrapper: PresentableComponent,
         stopLoading()
     }
 
-    public func didFinalize(with success: Bool, compleate: (() -> Void)?) {
-        component.finalizeIfNeeded(with: success, compleate: compleate)
+    public func didFinalize(with success: Bool, completion: (() -> Void)?) {
+        component.finalizeIfNeeded(with: success, completion: completion)
     }
 
     public func stopLoading() {
