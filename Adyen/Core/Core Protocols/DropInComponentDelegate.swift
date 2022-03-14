@@ -15,7 +15,7 @@ public protocol DropInComponentDelegate: AnyObject {
     ///   - data: The data supplied by the drop in component, containing the filled payment method details.
     ///   - component: The payment component in which the payment method was selected and filled.
     ///   - dropInComponent: The DropIn component.
-    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: DropInComponentProtocol)
+    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: AnyDropInComponent)
     
     /// Invoked when a payment component fails.
     ///
@@ -23,7 +23,7 @@ public protocol DropInComponentDelegate: AnyObject {
     ///   - error: The error that occurred.
     ///   - component: The payment component that failed.
     ///   - dropInComponent: The DropIn component.
-    func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: DropInComponentProtocol)
+    func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: AnyDropInComponent)
     
     /// Invoked when additional details have been provided for a payment method.
     ///
@@ -31,7 +31,7 @@ public protocol DropInComponentDelegate: AnyObject {
     ///   - data: The additional data supplied by the drop in component.
     ///   - component: The action component from which the additional details were provided.
     ///   - dropInComponent: The DropIn component.
-    func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: DropInComponentProtocol)
+    func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: AnyDropInComponent)
     
     /// Invoked when the action component finishes,
     /// without any further steps needed by the application, for example in case of voucher payment methods.
@@ -40,7 +40,7 @@ public protocol DropInComponentDelegate: AnyObject {
     /// - Parameters:
     ///   - component: The action component that handled the action.
     ///   - dropInComponent: The DropIn component.
-    func didComplete(from component: ActionComponent, in dropInComponent: DropInComponentProtocol)
+    func didComplete(from component: ActionComponent, in dropInComponent: AnyDropInComponent)
     
     /// Invoked when the action component fails.
     ///
@@ -48,7 +48,7 @@ public protocol DropInComponentDelegate: AnyObject {
     ///   - error: The error that occurred.
     ///   - component: The action component that failed.
     ///   - dropInComponent: The DropIn component.
-    func didFail(with error: Error, from component: ActionComponent, in dropInComponent: DropInComponentProtocol)
+    func didFail(with error: Error, from component: ActionComponent, in dropInComponent: AnyDropInComponent)
     
     /// Invoked when the action component opens a third party application outside the scope of the Adyen checkout,
     /// e.g WeChat Pay Application.
@@ -56,21 +56,21 @@ public protocol DropInComponentDelegate: AnyObject {
     ///
     /// - parameter component: The action component that handled the action.
     /// - parameter dropInComponent: The DropIn component.
-    func didOpenExternalApplication(_ component: ActionComponent, in dropInComponent: DropInComponentProtocol)
+    func didOpenExternalApplication(_ component: ActionComponent, in dropInComponent: AnyDropInComponent)
     
     /// Invoked when the drop in component failed with an error.
     ///
     /// - Parameters:
     ///   - error: The error that occurred.
     ///   - component: The drop in component that failed.
-    func didFail(with error: Error, from dropInComponent: DropInComponentProtocol)
+    func didFail(with error: Error, from dropInComponent: AnyDropInComponent)
     
     /// Invoked when user closes a payment component.
     ///
     /// - Parameters:
     ///   - component: The component that the user closed.
     ///   - dropInComponent: The drop in component that owns the `component`.
-    func didCancel(component: PaymentComponent, from dropInComponent: DropInComponentProtocol)
+    func didCancel(component: PaymentComponent, from dropInComponent: AnyDropInComponent)
     
 }
 
@@ -91,8 +91,8 @@ public protocol StoredPaymentMethodsDelegate: AnyObject {
 public extension DropInComponentDelegate {
     
     /// :nodoc:
-    func didCancel(component: PaymentComponent, from dropInComponent: DropInComponentProtocol) {}
+    func didCancel(component: PaymentComponent, from dropInComponent: AnyDropInComponent) {}
 
     /// :nodoc:
-    func didOpenExternalApplication(_ component: ActionComponent, in dropInComponent: DropInComponentProtocol) {}
+    func didOpenExternalApplication(_ component: ActionComponent, in dropInComponent: AnyDropInComponent) {}
 }

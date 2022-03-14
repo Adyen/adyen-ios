@@ -12,42 +12,42 @@ import AdyenDropIn
 
 class DropInDelegateMock: DropInComponentDelegate {
 
-    var didSubmitHandler: ((PaymentComponentData, DropInComponentProtocol) -> Void)?
-    var didProvideHandler: ((ActionComponentData, DropInComponentProtocol) -> Void)?
-    var didCompleteHandler: ((DropInComponentProtocol) -> Void)?
-    var didFailHandler: ((Error, DropInComponentProtocol) -> Void)?
-    var didOpenExternalApplicationHandler: ((DropInComponentProtocol) -> Void)?
-    var didCancelHandler: ((PaymentComponent, DropInComponentProtocol) -> Void)?
+    var didSubmitHandler: ((PaymentComponentData, AnyDropInComponent) -> Void)?
+    var didProvideHandler: ((ActionComponentData, AnyDropInComponent) -> Void)?
+    var didCompleteHandler: ((AnyDropInComponent) -> Void)?
+    var didFailHandler: ((Error, AnyDropInComponent) -> Void)?
+    var didOpenExternalApplicationHandler: ((AnyDropInComponent) -> Void)?
+    var didCancelHandler: ((PaymentComponent, AnyDropInComponent) -> Void)?
 
-    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: DropInComponentProtocol) {
+    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
         didSubmitHandler?(data, dropInComponent)
     }
 
-    func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: DropInComponentProtocol) {
+    func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
         didProvideHandler?(data, dropInComponent)
     }
 
-    func didComplete(from component: ActionComponent, in dropInComponent: DropInComponentProtocol) {
+    func didComplete(from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
         didCompleteHandler?(dropInComponent)
     }
     
-    func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: DropInComponentProtocol) {
+    func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
         didFailHandler?(error, dropInComponent)
     }
     
-    func didFail(with error: Error, from component: ActionComponent, in dropInComponent: DropInComponentProtocol) {
+    func didFail(with error: Error, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
         didFailHandler?(error, dropInComponent)
     }
 
-    func didFail(with error: Error, from component: DropInComponentProtocol) {
+    func didFail(with error: Error, from component: AnyDropInComponent) {
         didFailHandler?(error, component)
     }
 
-    func didOpenExternalApplication(_ component: ActionComponent, in dropInComponent: DropInComponentProtocol) {
+    func didOpenExternalApplication(_ component: ActionComponent, in dropInComponent: AnyDropInComponent) {
         didOpenExternalApplicationHandler?(dropInComponent)
     }
 
-    func didCancel(component: PaymentComponent, from dropInComponent: DropInComponentProtocol) {
+    func didCancel(component: PaymentComponent, from dropInComponent: AnyDropInComponent) {
         didCancelHandler?(component, dropInComponent)
     }
 

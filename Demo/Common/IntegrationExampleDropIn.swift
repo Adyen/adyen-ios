@@ -76,32 +76,32 @@ extension IntegrationExample {
 
 extension IntegrationExample: DropInComponentDelegate {
     
-    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: DropInComponentProtocol) {
+    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
         didSubmit(data, from: component)
     }
     
-    func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: DropInComponentProtocol) {
+    func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
         didFail(with: error, from: component)
     }
     
-    func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: DropInComponentProtocol) {
+    func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
         didProvide(data, from: component)
     }
     
-    func didComplete(from component: ActionComponent, in dropInComponent: DropInComponentProtocol) {
+    func didComplete(from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
         didComplete(from: component)
     }
     
-    func didFail(with error: Error, from component: ActionComponent, in dropInComponent: DropInComponentProtocol) {
+    func didFail(with error: Error, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
         didFail(with: error, from: component)
     }
     
-    internal func didCancel(component: PaymentComponent, from dropInComponent: DropInComponentProtocol) {
+    internal func didCancel(component: PaymentComponent, from dropInComponent: AnyDropInComponent) {
         // Handle the event when the user closes a PresentableComponent.
         print("User did close: \(component.paymentMethod.name)")
     }
     
-    internal func didFail(with error: Error, from dropInComponent: DropInComponentProtocol) {
+    internal func didFail(with error: Error, from dropInComponent: AnyDropInComponent) {
         finish(with: error)
     }
 

@@ -662,7 +662,7 @@
 		F9B798C923AB697100A2103C /* FormComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B798C823AB697100A2103C /* FormComponentStyle.swift */; };
 		F9B798CB23AB706D00A2103C /* ListComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B798CA23AB706D00A2103C /* ListComponentStyle.swift */; };
 		F9B8AF5927DA48C900DC0894 /* ActionHandlingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B8AF5527DA483300DC0894 /* ActionHandlingComponent.swift */; };
-		F9B8AF5B27DA4A4C00DC0894 /* DropInComponentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B8AF5A27DA4A4C00DC0894 /* DropInComponentProtocol.swift */; };
+		F9B8AF5B27DA4A4C00DC0894 /* AnyDropInComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B8AF5A27DA4A4C00DC0894 /* AnyDropInComponent.swift */; };
 		F9B8AF5C27DA4E5E00DC0894 /* DropInComponentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E226F54A229803130013A463 /* DropInComponentDelegate.swift */; };
 		F9B8AF5E27DA4EA400DC0894 /* Session+DropInComponentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B8AF5D27DA4EA400DC0894 /* Session+DropInComponentDelegate.swift */; };
 		F9B8AF6027DB4E8700DC0894 /* ActionHandlingComponentMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B8AF5F27DB4E8700DC0894 /* ActionHandlingComponentMock.swift */; };
@@ -1653,7 +1653,7 @@
 		F9B798CA23AB706D00A2103C /* ListComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListComponentStyle.swift; sourceTree = "<group>"; };
 		F9B798D223ACF10800A2103C /* RedirectComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectComponentStyle.swift; sourceTree = "<group>"; };
 		F9B8AF5527DA483300DC0894 /* ActionHandlingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionHandlingComponent.swift; sourceTree = "<group>"; };
-		F9B8AF5A27DA4A4C00DC0894 /* DropInComponentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInComponentProtocol.swift; sourceTree = "<group>"; };
+		F9B8AF5A27DA4A4C00DC0894 /* AnyDropInComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyDropInComponent.swift; sourceTree = "<group>"; };
 		F9B8AF5D27DA4EA400DC0894 /* Session+DropInComponentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session+DropInComponentDelegate.swift"; sourceTree = "<group>"; };
 		F9B8AF5F27DB4E8700DC0894 /* ActionHandlingComponentMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionHandlingComponentMock.swift; sourceTree = "<group>"; };
 		F9B8C49323FC32FB00C4D0FB /* FormItemViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItemViewBuilder.swift; sourceTree = "<group>"; };
@@ -3448,7 +3448,7 @@
 				F9FE252E2625AE8C001874BB /* PartialPaymentDelegate.swift */,
 				F9FE25D52626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift */,
 				F92980CB27CF64DF000CA5CA /* SessionProtocol.swift */,
-				F9B8AF5A27DA4A4C00DC0894 /* DropInComponentProtocol.swift */,
+				F9B8AF5A27DA4A4C00DC0894 /* AnyDropInComponent.swift */,
 				E226F54A229803130013A463 /* DropInComponentDelegate.swift */,
 			);
 			path = "Core Protocols";
@@ -5132,7 +5132,7 @@
 				E224088722AFA3A80058923E /* StoredInstantPaymentMethod.swift in Sources */,
 				E262128F22A90D8800F2B133 /* PaymentMethod.swift in Sources */,
 				F95A789325C41BB20032CF7E /* NSTextAlignmentHelpers.swift in Sources */,
-				F9B8AF5B27DA4A4C00DC0894 /* DropInComponentProtocol.swift in Sources */,
+				F9B8AF5B27DA4A4C00DC0894 /* AnyDropInComponent.swift in Sources */,
 				F967580327D0BD4700A16FB6 /* PaymentMethodType.swift in Sources */,
 				F919DF8F24E682250027976E /* ClientKeyRequest.swift in Sources */,
 				F9639B2424DC38460073F38A /* PresentationDelegate.swift in Sources */,

@@ -21,13 +21,13 @@ extension Session: PaymentComponentDelegate {
                                       sessionData: sessionContext.data,
                                       data: data)
         apiClient.perform(request) { [weak self] in
-            self?.paymentResponseHandler(result: $0, for: currentComponent)
+            self?.handle(paymentResponseResult: $0, for: currentComponent)
         }
     }
     
-    internal func paymentResponseHandler(result: Result<PaymentsResponse, Error>,
+    internal func handle(paymentResponseResult: Result<PaymentsResponse, Error>,
                                          for currentComponent: Component) {
-        switch result {
+        switch paymentResponseResult {
         case let .success(response):
             handle(paymentResponse: response, for: currentComponent)
         case let .failure(error):
@@ -77,7 +77,7 @@ extension Session: PaymentComponentDelegate {
     
     private func reload(currentComponent: Component, with order: PartialPaymentOrder) {
         do {
-            guard let currentComponent = currentComponent as? DropInComponentProtocol else {
+            guard let currentComponent = currentComponent as? AnyDropInComponent else {
                 throw PartialPaymentError.notSupportedForComponent
             }
             try currentComponent.reload(with: order, sessionContext.paymentMethods)

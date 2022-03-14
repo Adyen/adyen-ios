@@ -35,7 +35,7 @@ extension Session: ActionComponentDelegate {
                                             paymentData: data.paymentData,
                                             details: data.details)
         apiClient.perform(request) { [weak self] in
-            self?.paymentResponseHandler(result: $0, for: currentComponent)
+            self?.handle(paymentResponseResult: $0, for: currentComponent)
         }
     }
     

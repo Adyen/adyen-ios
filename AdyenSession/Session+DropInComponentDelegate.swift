@@ -9,27 +9,27 @@ import Foundation
 
 /// :nodoc:
 extension Session: DropInComponentDelegate {
-    public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: DropInComponentProtocol) {
+    public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
         didSubmit(data, currentComponent: dropInComponent)
     }
     
-    public func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: DropInComponentProtocol) {
+    public func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
         didFail(with: error, currentComponent: dropInComponent)
     }
     
-    public func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: DropInComponentProtocol) {
+    public func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
         didProvide(data, currentComponent: dropInComponent)
     }
     
-    public func didComplete(from component: ActionComponent, in dropInComponent: DropInComponentProtocol) {
+    public func didComplete(from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
         didComplete(currentComponent: dropInComponent)
     }
     
-    public func didFail(with error: Error, from component: ActionComponent, in dropInComponent: DropInComponentProtocol) {
+    public func didFail(with error: Error, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
         didFail(with: error, currentComponent: dropInComponent)
     }
     
-    public func didFail(with error: Error, from dropInComponent: DropInComponentProtocol) {
+    public func didFail(with error: Error, from dropInComponent: AnyDropInComponent) {
         didFail(with: error, currentComponent: dropInComponent)
     }
     
