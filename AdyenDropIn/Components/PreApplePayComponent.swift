@@ -81,8 +81,8 @@ internal final class PreApplePayComponent: PresentableComponent, FinalizableComp
     }
     
     /// :nodoc
-    internal func didFinalize(with success: Bool) {
-        applePayComponent.didFinalize(with: success)
+    public func didFinalize(with success: Bool, compleate: (() -> Void)?) {
+        applePayComponent.didFinalize(with: success, compleate: compleate)
     }
     
     /// :nodoc:

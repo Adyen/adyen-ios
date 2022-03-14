@@ -51,9 +51,8 @@ public final class PresentableComponentWrapper: PresentableComponent,
     }
 
     /// :nodoc:
-    public func didFinalize(with success: Bool) {
-        component.finalizeIfNeeded(with: success)
-        stopLoading()
+    public func didFinalize(with success: Bool, compleate: (() -> Void)?) {
+        component.finalizeIfNeeded(with: success, compleate: compleate)
     }
 
     /// :nodoc:

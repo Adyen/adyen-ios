@@ -34,6 +34,8 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     /// :nodoc:
     internal var paymentAuthorizationCompletion: ((PKPaymentAuthorizationStatus) -> Void)?
+
+    internal var finalizeCompletion: (() -> Void)?
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -107,27 +109,20 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     /// Finalizes ApplePay payment after being processed by payment provider.
     /// - Parameter success: The status of the payment.
-    public func didFinalize(with success: Bool) {
+    public func didFinalize(with success: Bool, compleate: (() -> Void)?) {
         self.success = success
+        finalizeCompletion = compleate
         paymentAuthorizationCompletion?(success ? .success : .failure)
         paymentAuthorizationCompletion = nil
     }
 
     // MARK: - Private
 
-    internal func dismiss(completion: (() -> Void)?) {
-        paymentAuthorizationViewController?.dismiss(animated: true) { [weak self] in
-            guard let self = self else { return }
-            self.paymentAuthorizationViewController = nil
-            completion?()
-        }
-    }
-    
     private func createPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController {
         if paymentAuthorizationViewController == nil {
             let supportedNetworks = applePayPaymentMethod.supportedNetworks
             let request = configuration.createPaymentRequest(payment: payment, supportedNetworks: supportedNetworks)
-            paymentAuthorizationViewController = ApplePayComponent.createPaymentAuthorizationViewController(from: request)
+            paymentAuthorizationViewController = Self.createPaymentAuthorizationViewController(from: request)
             paymentAuthorizationViewController?.delegate = self
             paymentAuthorizationCompletion = nil
             success = false
@@ -146,59 +141,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     private static func canMakePaymentWith(_ networks: [PKPaymentNetwork]) -> Bool {
         PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks)
-    }
-
-}
-
-extension ApplePayComponent {
-
-    /// Describes the error that can occur during Apple Pay payment.
-    public enum Error: Swift.Error, LocalizedError {
-        /// Indicates that the user can't make payments on any of the payment request’s supported networks.
-        case userCannotMakePayment
-
-        /// Indicates that the current device's hardware doesn't support ApplePay.
-        case deviceDoesNotSupportApplyPay
-
-        /// Indicates that the summaryItems array is empty.
-        case emptySummaryItems
-
-        /// Indicates that the grand total summary item is a negative value.
-        case negativeGrandTotal
-
-        /// Indicates that at least one of the summary items has an invalid amount.
-        case invalidSummaryItem
-
-        /// Indicates that the country code is invalid.
-        case invalidCountryCode
-
-        /// Indicates that the currency code is invalid.
-        case invalidCurrencyCode
-
-        /// Indicates that the token was generated incorrectly.
-        case invalidToken
-
-        /// :nodoc:
-        public var errorDescription: String? {
-            switch self {
-            case .userCannotMakePayment:
-                return "The user can’t make payments on any of the payment request’s supported networks."
-            case .deviceDoesNotSupportApplyPay:
-                return "The current device's hardware doesn't support ApplePay."
-            case .emptySummaryItems:
-                return "The summaryItems array is empty."
-            case .negativeGrandTotal:
-                return "The grand total summary item should be greater than or equal to zero."
-            case .invalidSummaryItem:
-                return "At least one of the summary items has an invalid amount."
-            case .invalidCountryCode:
-                return "The country code is invalid."
-            case .invalidCurrencyCode:
-                return "The currency code is invalid."
-            case .invalidToken:
-                return "The Apple Pay token is invalid. Make sure you are using physical device, not a Simulator."
-            }
-        }
     }
 
 }
