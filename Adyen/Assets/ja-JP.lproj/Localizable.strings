@@ -45,6 +45,7 @@
 "adyen.emailItem.placeHolder" = "Eメールアドレス";
 "adyen.emailItem.invalid" = "Eメールアドレスが無効です";
 "adyen.moreOptions" = "その他のオプション";
+"adyen.applepay.total" = "合計";
 "adyen.mbway.confirmPayment" = "MB WAYアプリで支払を確認する";
 "adyen.await.waitForConfirmation" = "確認を待っています";
 "adyen.blik.confirmPayment" = "バンキングアプリを開いて、支払を確認してください。";

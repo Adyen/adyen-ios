@@ -45,6 +45,7 @@
 "adyen.emailItem.placeHolder" = "عنوان البريد الإلكتروني";
 "adyen.emailItem.invalid" = "عنوان بريد إلكتروني غير صحيح";
 "adyen.moreOptions" = "المزيد من الخيارات";
+"adyen.applepay.total" = "الإجمالي";
 "adyen.mbway.confirmPayment" = "تأكيد الدفع على تطبيق MB WAY";
 "adyen.await.waitForConfirmation" = "في انتظار التأكيد";
 "adyen.blik.confirmPayment" = "افتح تطبيقك البنكي لتأكيد الدفع.";
@@ -116,7 +117,7 @@
 "adyen.giftcard.currencyError" = "لا تسري بطاقات الهدايا إلا بالعملة التي صدرت بها";
 "adyen.giftcard.noBalance" = "لا يوجد رصيد ببطاقة الهدايا هذه";
 "adyen.partialPayment.remainingBalance" = "سيبلغ الرصيد المتبقي %@";
-"adyen.partialPayment.payRemainingAmount" = "تحديد طريقة الدفع لمبلغ % المتبقي";
+"adyen.partialPayment.payRemainingAmount" = "تحديد طريقة الدفع لمبلغ %@ المتبقي";
 "adyen.card.taxNumber.label" = "تاريخ ميلاد حامل البطاقة (يوم شهر سنة) أو رقم تسجيل الشركة (10 أرقام)";
 "adyen.card.taxNumber.placeholder" = "يوم شهر سنة / 0123456789";
 "adyen.card.taxNumber.invalid" = "تاريخ ميلاد حامل البطاقة أو رقم تسجيل الشركة غير صحيح";

@@ -45,6 +45,7 @@
 "adyen.emailItem.placeHolder" = "Sähköpostiosoite";
 "adyen.emailItem.invalid" = "Ei-kelvollinen sähköpostiosoite";
 "adyen.moreOptions" = "Lisää vaihtoehtoja";
+"adyen.applepay.total" = "Yhteensä";
 "adyen.mbway.confirmPayment" = "Vahvista maksusi MB WAY -sovelluksella";
 "adyen.await.waitForConfirmation" = "Odottaa vahvistusta";
 "adyen.blik.confirmPayment" = "Avaa pankkisovelluksesi vahvistaaksesi maksun.";

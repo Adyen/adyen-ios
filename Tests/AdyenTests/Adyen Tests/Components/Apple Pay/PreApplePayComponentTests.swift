@@ -17,7 +17,8 @@ class PreApplePayComponentTests: XCTestCase {
     lazy var payment = Payment(amount: amount, countryCode: getRandomCountryCode())
     
     override func setUp() {
-        let configuration = ApplePayComponent.Configuration(summaryItems: createTestSummaryItems(), merchantIdentifier: "test_id")
+        let configuration = ApplePayComponent.Configuration(payment: Dummy.createTestApplePayPayment(),
+                                                            merchantIdentifier: "test_id")
         var applePayStyle = ApplePayStyle()
         applePayStyle.paymentButtonType = .inStore
         let preApplePayConfig = PreApplePayComponent.Configuration(style: applePayStyle)
@@ -64,13 +65,17 @@ class PreApplePayComponentTests: XCTestCase {
     
     func testApplePayPresented() {
         guard Available.iOS12 else { return }
-        let dummyExpectation = expectation(description: "Dummy Expectation")
+        let presentExpectation = expectation(description: "Present Expectation")
+        let dismissExpectation = expectation(description: "Dismiss Expectation")
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let presentationMock = PresentationDelegateMock()
         presentationMock.doPresent = { component in
             UIApplication.shared.keyWindow?.rootViewController?.present(component: component)
+        }
+        presentationMock.doDismiss = { compleat in
+            compleat?()
         }
         sut.presentationDelegate = presentationMock
         
@@ -83,9 +88,13 @@ class PreApplePayComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             XCTAssertTrue(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController is PKPaymentAuthorizationViewController)
             UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: false, completion: nil)
-            dummyExpectation.fulfill()
+            presentExpectation.fulfill()
         }
-        
+
+        sut.finalizeIfNeeded(with: false) {
+            dismissExpectation.fulfill()
+        }
+
         waitForExpectations(timeout: 10, handler: nil)
     }
     
@@ -106,15 +115,5 @@ class PreApplePayComponentTests: XCTestCase {
         
         waitForExpectations(timeout: 10, handler: nil)
     }
-    
-    private func createTestSummaryItems() -> [PKPaymentSummaryItem] {
-        var amounts = (0...3).map { _ in
-            NSDecimalNumber(mantissa: UInt64.random(in: 1...20), exponent: 1, isNegative: Bool.random())
-        }
-        // Positive Grand total
-        amounts.append(NSDecimalNumber(mantissa: 20, exponent: 1, isNegative: false))
-        return amounts.enumerated().map {
-            PKPaymentSummaryItem(label: "summary_\($0)", amount: $1)
-        }
-    }
+
 }

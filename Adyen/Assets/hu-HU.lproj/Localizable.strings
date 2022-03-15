@@ -45,6 +45,7 @@
 "adyen.emailItem.placeHolder" = "E-mail-cím";
 "adyen.emailItem.invalid" = "Érvénytelen e-mail-cím";
 "adyen.moreOptions" = "További lehetőségek";
+"adyen.applepay.total" = "Összesen";
 "adyen.mbway.confirmPayment" = "Fizetés jóváhagyása az MB WAY alkalmazásban";
 "adyen.await.waitForConfirmation" = "Várakozás a jóváhagyásra";
 "adyen.blik.confirmPayment" = "A fizetés jóváhagyásához nyissa meg a banki alkalmazást.";

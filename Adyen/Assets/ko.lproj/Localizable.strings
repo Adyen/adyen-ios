@@ -45,6 +45,7 @@
 "adyen.emailItem.placeHolder" = "이메일 주소";
 "adyen.emailItem.invalid" = "유효하지 않은 이메일 주소";
 "adyen.moreOptions" = "옵션 더 보기";
+"adyen.applepay.total" = "총 금액";
 "adyen.mbway.confirmPayment" = "MB WAY 앱에서 결제를 확인하십시오";
 "adyen.await.waitForConfirmation" = "확인 대기중";
 "adyen.blik.confirmPayment" = "뱅킹 앱을 열어서 결제를 확인하세요.";

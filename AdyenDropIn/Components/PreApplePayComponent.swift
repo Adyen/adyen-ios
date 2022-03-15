@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import PassKit
 import UIKit
 #if canImport(AdyenComponents)
     import AdyenComponents
@@ -42,7 +43,7 @@ internal final class PreApplePayComponent: PresentableComponent, FinalizableComp
     internal weak var delegate: PaymentComponentDelegate?
     
     /// :nodoc:
-    internal weak var presentationDelegate: PresentationDelegate?
+    internal weak var presentationDelegate: NavigationProtocol?
     
     /// :nodoc:
     fileprivate let applePayComponent: ApplePayComponent
@@ -75,14 +76,21 @@ internal final class PreApplePayComponent: PresentableComponent, FinalizableComp
 
         self.applePayComponent = try ApplePayComponent(paymentMethod: paymentMethod,
                                                        apiContext: apiContext,
-                                                       payment: payment,
                                                        configuration: applePayConfiguration)
         self.applePayComponent.delegate = self
     }
 
     /// :nodoc:
     internal func didFinalize(with success: Bool, completion: (() -> Void)?) {
-        applePayComponent.didFinalize(with: success, completion: completion)
+        applePayComponent.didFinalize(with: success, completion: { [weak self] in
+            let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+            if let navigation = self?.presentationDelegate,
+               rootViewController?.adyen.topPresenter is PKPaymentAuthorizationViewController {
+                navigation.dismiss(completion: completion)
+            } else {
+                completion?()
+            }
+        })
     }
     
     /// :nodoc:

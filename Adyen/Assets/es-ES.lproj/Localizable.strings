@@ -45,6 +45,7 @@
 "adyen.emailItem.placeHolder" = "Dirección de correo electrónico";
 "adyen.emailItem.invalid" = "La dirección de correo electrónico no es válida";
 "adyen.moreOptions" = "Más opciones";
+"adyen.applepay.total" = "Total";
 "adyen.mbway.confirmPayment" = "Confirme su pago en la aplicación MB WAY";
 "adyen.await.waitForConfirmation" = "Esperando confirmación";
 "adyen.blik.confirmPayment" = "Abra la aplicación de su banco para confirmar el pago.";

@@ -45,6 +45,7 @@
 "adyen.emailItem.placeHolder" = "E-mailová adresa";
 "adyen.emailItem.invalid" = "Neplatná emailová adresa";
 "adyen.moreOptions" = "Viac možností";
+"adyen.applepay.total" = "Celkom";
 "adyen.mbway.confirmPayment" = "Potvrďte svoju platbu v aplikácii MB WAY";
 "adyen.await.waitForConfirmation" = "Čaká sa na potvrdenie";
 "adyen.blik.confirmPayment" = "Otvorte svoju bankovú aplikáciu a potvrďte platbu.";

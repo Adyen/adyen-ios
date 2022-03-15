@@ -23,12 +23,12 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     override func setUp() {
-        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
-        let configuration = ApplePayComponent.Configuration(summaryItems: createTestSummaryItems(),
+        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: nil)
+        let configuration = ApplePayComponent.Configuration(payment: Dummy.createTestApplePayPayment(),
                                                             merchantIdentifier: "test_id")
+
         sut = try! ApplePayComponent(paymentMethod: paymentMethod,
                                      apiContext: Dummy.context,
-                                     payment: payment,
                                      configuration: configuration)
         mockDelegate = PaymentComponentDelegateMock()
         sut.delegate = mockDelegate
@@ -93,15 +93,9 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     func testInvalidCurrencyCode() {
-        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
         let amount = Amount(value: 2, unsafeCurrencyCode: "ZZZ")
         let payment = Payment(amount: amount, countryCode: getRandomCountryCode())
-        let configuration = ApplePayComponent.Configuration(summaryItems: createTestSummaryItems(),
-                                                            merchantIdentifier: "test_id")
-        XCTAssertThrowsError(try ApplePayComponent(paymentMethod: paymentMethod,
-                                                   apiContext: Dummy.context,
-                                                   payment: payment,
-                                                   configuration: configuration)) { error in
+        XCTAssertThrowsError(try ApplePayPayment(payment: payment)) { error in
             XCTAssertTrue(error is ApplePayComponent.Error)
             XCTAssertEqual(error as! ApplePayComponent.Error, ApplePayComponent.Error.invalidCurrencyCode)
             XCTAssertEqual((error as! ApplePayComponent.Error).localizedDescription, "The currency code is invalid.")
@@ -109,14 +103,8 @@ class ApplePayComponentTest: XCTestCase {
     }
     
     func testInvalidCountryCode() {
-        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
         let payment = Payment(amount: amount, unsafeCountryCode: "ZZ")
-        let configuration = ApplePayComponent.Configuration(summaryItems: createTestSummaryItems(),
-                                                            merchantIdentifier: "test_id")
-        XCTAssertThrowsError(try ApplePayComponent(paymentMethod: paymentMethod,
-                                                   apiContext: Dummy.context,
-                                                   payment: payment,
-                                                   configuration: configuration)) { error in
+        XCTAssertThrowsError(try ApplePayPayment(payment: payment)) { error in
             XCTAssertTrue(error is ApplePayComponent.Error)
             XCTAssertEqual(error as! ApplePayComponent.Error, ApplePayComponent.Error.invalidCountryCode)
             XCTAssertEqual((error as! ApplePayComponent.Error).localizedDescription, "The country code is invalid.")
@@ -124,13 +112,7 @@ class ApplePayComponentTest: XCTestCase {
     }
     
     func testEmptySummaryItems() {
-        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
-        let configuration = ApplePayComponent.Configuration(summaryItems: [],
-                                                            merchantIdentifier: "test_id")
-        XCTAssertThrowsError(try ApplePayComponent(paymentMethod: paymentMethod,
-                                                   apiContext: Dummy.context,
-                                                   payment: payment,
-                                                   configuration: configuration)) { error in
+        XCTAssertThrowsError(try ApplePayPayment(countryCode: "US", currencyCode: "USD", summaryItems: [])) { error in
             XCTAssertTrue(error is ApplePayComponent.Error)
             XCTAssertEqual(error as! ApplePayComponent.Error, ApplePayComponent.Error.emptySummaryItems)
             XCTAssertEqual((error as! ApplePayComponent.Error).localizedDescription, "The summaryItems array is empty.")
@@ -138,13 +120,9 @@ class ApplePayComponentTest: XCTestCase {
     }
     
     func testGrandTotalIsNegative() {
-        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
-        let configuration = ApplePayComponent.Configuration(summaryItems: createInvalidGrandTotalTestSummaryItems(),
-                                                            merchantIdentifier: "test_id")
-        XCTAssertThrowsError(try ApplePayComponent(paymentMethod: paymentMethod,
-                                                   apiContext: Dummy.context,
-                                                   payment: payment,
-                                                   configuration: configuration)) { error in
+        XCTAssertThrowsError(try ApplePayPayment(countryCode: "US",
+                                                 currencyCode: "USD",
+                                                 summaryItems: createInvalidGrandTotalTestSummaryItems())) { error in
             XCTAssertTrue(error is ApplePayComponent.Error)
             XCTAssertEqual(error as! ApplePayComponent.Error, ApplePayComponent.Error.negativeGrandTotal)
             XCTAssertEqual((error as! ApplePayComponent.Error).localizedDescription, "The grand total summary item should be greater than or equal to zero.")
@@ -152,13 +130,9 @@ class ApplePayComponentTest: XCTestCase {
     }
     
     func testOneItemWithZeroAmount() {
-        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
-        let configuration = ApplePayComponent.Configuration(summaryItems: createTestSummaryItemsWithZeroAmount(),
-                                                            merchantIdentifier: "test_id")
-        XCTAssertThrowsError(try ApplePayComponent(paymentMethod: paymentMethod,
-                                                   apiContext: Dummy.context,
-                                                   payment: payment,
-                                                   configuration: configuration)) { error in
+        XCTAssertThrowsError(try ApplePayPayment(countryCode: "US",
+                                                 currencyCode: "USD",
+                                                 summaryItems: createTestSummaryItemsWithZeroAmount())) { error in
             XCTAssertTrue(error is ApplePayComponent.Error)
             XCTAssertEqual(error as! ApplePayComponent.Error, ApplePayComponent.Error.invalidSummaryItem)
             XCTAssertEqual((error as! ApplePayComponent.Error).localizedDescription, "At least one of the summary items has an invalid amount.")
@@ -173,26 +147,49 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertTrue(sut?.viewController is PKPaymentAuthorizationViewController)
     }
     
-    func testPaymentRequest() {
+    func testPaymentRequestViaSummeryItems() throws {
         let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
         let countryCode = getRandomCountryCode()
-        let payment = Payment(amount: amount, countryCode: countryCode)
-        let expectedSummaryItems = createTestSummaryItems()
+        let currencyCode = getRandomCurrencyCode()
+        let expectedSummaryItems = Dummy.createTestSummaryItems()
         let expectedRequiredBillingFields = getRandomContactFieldSet()
         let expectedRequiredShippingFields = getRandomContactFieldSet()
-        let configuration = ApplePayComponent.Configuration(summaryItems: expectedSummaryItems,
+        let configuration = ApplePayComponent.Configuration(payment: try .init(countryCode: countryCode,
+                                                                               currencyCode: currencyCode,
+                                                                               summaryItems: expectedSummaryItems),
                                                             merchantIdentifier: "test_id",
                                                             requiredBillingContactFields: expectedRequiredBillingFields,
                                                             requiredShippingContactFields: expectedRequiredShippingFields)
-        let paymentRequest = configuration.createPaymentRequest(payment: payment,
-                                                                supportedNetworks: paymentMethod.supportedNetworks)
+        let paymentRequest = configuration.createPaymentRequest(supportedNetworks: paymentMethod.supportedNetworks)
         XCTAssertEqual(paymentRequest.paymentSummaryItems, expectedSummaryItems)
-            
+        XCTAssertEqual(paymentRequest.merchantCapabilities, PKMerchantCapability.capability3DS)
+        XCTAssertEqual(paymentRequest.supportedNetworks, self.supportedNetworks)
+        XCTAssertEqual(paymentRequest.currencyCode, currencyCode)
+        XCTAssertEqual(paymentRequest.merchantIdentifier, "test_id")
+        XCTAssertEqual(paymentRequest.countryCode, countryCode)
+        XCTAssertEqual(paymentRequest.requiredBillingContactFields, expectedRequiredBillingFields)
+        XCTAssertEqual(paymentRequest.requiredShippingContactFields, expectedRequiredShippingFields)
+    }
+
+    func testPaymentRequestViaPayment() throws {
+        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
+        let expectedRequiredBillingFields = getRandomContactFieldSet()
+        let expectedRequiredShippingFields = getRandomContactFieldSet()
+        let configuration = ApplePayComponent.Configuration(payment: try .init(payment: payment),
+                                                            merchantIdentifier: "test_id",
+                                                            requiredBillingContactFields: expectedRequiredBillingFields,
+                                                            requiredShippingContactFields: expectedRequiredShippingFields)
+        let paymentRequest = configuration.createPaymentRequest(supportedNetworks: paymentMethod.supportedNetworks)
+
+        XCTAssertEqual(paymentRequest.paymentSummaryItems.count, 1)
+        XCTAssertEqual(paymentRequest.paymentSummaryItems[0].label, "Total")
+        XCTAssertEqual(paymentRequest.paymentSummaryItems[0].amount.description, payment.amount.formattedComponents.formattedValue)
+
         XCTAssertEqual(paymentRequest.merchantCapabilities, PKMerchantCapability.capability3DS)
         XCTAssertEqual(paymentRequest.supportedNetworks, self.supportedNetworks)
         XCTAssertEqual(paymentRequest.currencyCode, amount.currencyCode)
         XCTAssertEqual(paymentRequest.merchantIdentifier, "test_id")
-        XCTAssertEqual(paymentRequest.countryCode, countryCode)
+        XCTAssertEqual(paymentRequest.countryCode, payment.countryCode)
         XCTAssertEqual(paymentRequest.requiredBillingContactFields, expectedRequiredBillingFields)
         XCTAssertEqual(paymentRequest.requiredShippingContactFields, expectedRequiredShippingFields)
     }
@@ -213,17 +210,6 @@ class ApplePayComponentTest: XCTestCase {
         return contactFieldsPool.randomElement().map { [$0] } ?? []
     }
     
-    private func createTestSummaryItems() -> [PKPaymentSummaryItem] {
-        var amounts = (0...3).map { _ in
-            NSDecimalNumber(mantissa: UInt64.random(in: 1...20), exponent: 1, isNegative: Bool.random())
-        }
-        // Positive Grand total
-        amounts.append(NSDecimalNumber(mantissa: 20, exponent: 1, isNegative: false))
-        return amounts.enumerated().map {
-            PKPaymentSummaryItem(label: "summary_\($0)", amount: $1)
-        }
-    }
-    
     private func createInvalidGrandTotalTestSummaryItems() -> [PKPaymentSummaryItem] {
         var amounts = (0...3).map { _ in
             NSDecimalNumber(mantissa: UInt64.random(in: 1...20), exponent: 1, isNegative: Bool.random())
@@ -236,7 +222,7 @@ class ApplePayComponentTest: XCTestCase {
     }
     
     private func createTestSummaryItemsWithZeroAmount() -> [PKPaymentSummaryItem] {
-        var items = createTestSummaryItems()
+        var items = Dummy.createTestSummaryItems()
         let amount = NSDecimalNumber(mantissa: 0, exponent: 1, isNegative: true)
         let item = PKPaymentSummaryItem(label: "summary_zero_value", amount: amount)
         items.insert(item, at: 0)

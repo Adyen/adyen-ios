@@ -48,18 +48,6 @@ internal enum ConfigurationConstants {
 
     static let merchantAccount = "{YOUR_MERCHANT_ACCOUNT}"
     
-    static var applePaySummaryItems: [PKPaymentSummaryItem] {
-        [
-            PKPaymentSummaryItem(
-                label: "Total",
-                amount: AmountFormatter.decimalAmount(current.amount.value,
-                                                      currencyCode: current.amount.currencyCode,
-                                                      localeIdentifier: nil),
-                type: .final
-            )
-        ]
-    }
-    
     static var current = Configuration.loadConfiguration() {
         didSet { Configuration.saveConfiguration(current) }
     }

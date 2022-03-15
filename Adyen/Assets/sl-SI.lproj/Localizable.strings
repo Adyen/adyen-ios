@@ -45,6 +45,7 @@
 "adyen.emailItem.placeHolder" = "Elektronski naslov";
 "adyen.emailItem.invalid" = "Neveljaven elektronski naslov";
 "adyen.moreOptions" = "Več možnosti";
+"adyen.applepay.total" = "Skupaj";
 "adyen.mbway.confirmPayment" = "Potrdite svoje plačilo v aplikaciji MB WAY";
 "adyen.await.waitForConfirmation" = "Čakanje na potrditev";
 "adyen.blik.confirmPayment" = "Za potrditev plačila odprite svojo bančno aplikacijo.";

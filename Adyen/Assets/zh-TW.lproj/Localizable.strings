@@ -45,6 +45,7 @@
 "adyen.emailItem.placeHolder" = "電子郵件地址";
 "adyen.emailItem.invalid" = "電子郵件地址無效";
 "adyen.moreOptions" = "其他選項";
+"adyen.applepay.total" = "總金額";
 "adyen.mbway.confirmPayment" = "在 MB WAY 應用程式上確認您的付款";
 "adyen.await.waitForConfirmation" = "正在等候確認";
 "adyen.blik.confirmPayment" = "開啟您的銀行應用程式以確認付款。";

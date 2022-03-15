@@ -45,6 +45,7 @@
 "adyen.emailItem.placeHolder" = "Διεύθυνση email";
 "adyen.emailItem.invalid" = "Μη έγκυρη διεύθυνση email";
 "adyen.moreOptions" = "Περισσότερες επιλογές";
+"adyen.applepay.total" = "Σύνολο";
 "adyen.mbway.confirmPayment" = "Επιβεβαιώστε την πληρωμή στην εφαρμογή MB WAY";
 "adyen.await.waitForConfirmation" = "Αναμονή για επιβεβαίωση…";
 "adyen.blik.confirmPayment" = "Ανοίξτε την εφαρμογή τραπεζικής σας για να επιβεβαιώσετε την πληρωμή.";

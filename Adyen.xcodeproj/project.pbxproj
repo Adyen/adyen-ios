@@ -310,6 +310,9 @@
 		E7D5311A2446F525000046B4 /* FormSeparatorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D531182446F525000046B4 /* FormSeparatorItem.swift */; };
 		E7D5311C2447065B000046B4 /* PreselectedPaymentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5311B2447065B000046B4 /* PreselectedPaymentComponentTests.swift */; };
 		E7D874F327DF5CDC00D3C00A /* ApplePayComponentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D874F227DF5CDC00D3C00A /* ApplePayComponentError.swift */; };
+		E7D874F527E0E26100D3C00A /* ApplePayConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D874F427E0E26100D3C00A /* ApplePayConfiguration.swift */; };
+		E7D874F727E0E2DE00D3C00A /* ApplePayPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D874F627E0E2DE00D3C00A /* ApplePayPayment.swift */; };
+		E7DE050627F7243000CB5F83 /* NavigationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DE050527F7243000CB5F83 /* NavigationProtocol.swift */; };
 		E7E0E2382762005B001DF0C9 /* NSConstraintHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E0E2372762005B001DF0C9 /* NSConstraintHelper.swift */; };
 		E7E8343C24F3C81700EC3844 /* PublicKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E8343B24F3C81700EC3844 /* PublicKeyProviderMock.swift */; };
 		E7ED5F5F25F25F8100EE5BCA /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = F9C5F08325C96919005A6E54 /* Adyen3DS2 */; };
@@ -1336,6 +1339,9 @@
 		E7D531182446F525000046B4 /* FormSeparatorItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormSeparatorItem.swift; sourceTree = "<group>"; };
 		E7D5311B2447065B000046B4 /* PreselectedPaymentComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentComponentTests.swift; sourceTree = "<group>"; };
 		E7D874F227DF5CDC00D3C00A /* ApplePayComponentError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayComponentError.swift; sourceTree = "<group>"; };
+		E7D874F427E0E26100D3C00A /* ApplePayConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayConfiguration.swift; sourceTree = "<group>"; };
+		E7D874F627E0E2DE00D3C00A /* ApplePayPayment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayPayment.swift; sourceTree = "<group>"; };
+		E7DE050527F7243000CB5F83 /* NavigationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationProtocol.swift; sourceTree = "<group>"; };
 		E7E0E2372762005B001DF0C9 /* NSConstraintHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSConstraintHelper.swift; sourceTree = "<group>"; };
 		E7E8343B24F3C81700EC3844 /* PublicKeyProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyProviderMock.swift; sourceTree = "<group>"; };
 		E90139CA22846AD5004C74DA /* ModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewController.swift; sourceTree = "<group>"; };
@@ -2822,6 +2828,7 @@
 				E90139CA22846AD5004C74DA /* ModalViewController.swift */,
 				E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */,
 				E7388D8423DB1F9A008E62B8 /* DimmingPresentationController.swift */,
+				E7DE050527F7243000CB5F83 /* NavigationProtocol.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -3099,6 +3106,8 @@
 				F99262C324EECB9F00C9A60D /* ApplePayComponentExtensions.swift */,
 				E97B971E22A14C6C00505476 /* ApplePayDetails.swift */,
 				E7D874F227DF5CDC00D3C00A /* ApplePayComponentError.swift */,
+				E7D874F427E0E26100D3C00A /* ApplePayConfiguration.swift */,
+				E7D874F627E0E2DE00D3C00A /* ApplePayPayment.swift */,
 			);
 			path = "Apple Pay";
 			sourceTree = "<group>";
@@ -4605,7 +4614,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1220;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1330;
 				ORGANIZATIONNAME = Adyen;
 				TargetAttributes = {
 					C96A8E2826CA800A000BB8C6 = {
@@ -5608,6 +5617,7 @@
 				E72DA34123E1BE5300707638 /* DropInNavigationController.swift in Sources */,
 				F90E95F02726B625007E382B /* DropInComponentExtensions.swift in Sources */,
 				E9B36CB82243B38A00EAA368 /* DropInComponent.swift in Sources */,
+				E7DE050627F7243000CB5F83 /* NavigationProtocol.swift in Sources */,
 				5A238C69263A9C8C00758FEF /* PreApplePayComponent.swift in Sources */,
 				E767F3F525A4CFAF0077029E /* WrapperViewController.swift in Sources */,
 				E9B36CC522451C7100EAA368 /* ComponentManager.swift in Sources */,
@@ -5636,6 +5646,7 @@
 				F9175EAA259394FF00D653BE /* ApplePayComponentExtensions.swift in Sources */,
 				E746E67127B3FA700076BB71 /* InstantComponents.swift in Sources */,
 				C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */,
+				E7D874F727E0E2DE00D3C00A /* ApplePayPayment.swift in Sources */,
 				F9175ED22593951800D653BE /* MBWayComponent.swift in Sources */,
 				F9175E9B259394F200D653BE /* IssuerListComponent.swift in Sources */,
 				A0414C21278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift in Sources */,
@@ -5650,6 +5661,7 @@
 				C9D8EB9927452355006D8CA1 /* BACSInputFormViewController.swift in Sources */,
 				C93B01B92760B06300D311A1 /* BACSConfirmationPresenter.swift in Sources */,
 				A0414C1D278C275C00DF3FE9 /* ACHDirectDebitComponent.swift in Sources */,
+				E7D874F527E0E26100D3C00A /* ApplePayConfiguration.swift in Sources */,
 				C9BF0DB327353A2600DCAA1E /* BACSDirectDebitComponent.swift in Sources */,
 				F9175EE32593952600D653BE /* BLIKDetails.swift in Sources */,
 				F9B016F92604F3FF001F23FC /* BasicPersonalInfoFormComponent.swift in Sources */,

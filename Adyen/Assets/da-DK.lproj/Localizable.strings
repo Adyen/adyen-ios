@@ -45,6 +45,7 @@
 "adyen.emailItem.placeHolder" = "E-mailadresse";
 "adyen.emailItem.invalid" = "Ugyldig e-mailadresse";
 "adyen.moreOptions" = "Flere valg";
+"adyen.applepay.total" = "I alt";
 "adyen.mbway.confirmPayment" = "Bekræft din betaling på appen MB WAY";
 "adyen.await.waitForConfirmation" = "Venter på bekræftelse";
 "adyen.blik.confirmPayment" = "Åbn din bankapp for at bekræfte betalingen.";

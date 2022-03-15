@@ -45,6 +45,7 @@
 "adyen.emailItem.placeHolder" = "Адрес эл. почты";
 "adyen.emailItem.invalid" = "Недействительный адрес эл. почты";
 "adyen.moreOptions" = "Другие опции";
+"adyen.applepay.total" = "К оплате";
 "adyen.mbway.confirmPayment" = "Подтвердите оплату в приложении MB WAY";
 "adyen.await.waitForConfirmation" = "Ожидание подтверждения";
 "adyen.blik.confirmPayment" = "Для подтверждения оплаты откройте приложение банка.";
