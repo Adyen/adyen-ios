@@ -43,6 +43,10 @@ class ApplePayComponentTest: XCTestCase {
 
     func testApplePayViewControllerShouldCallDelegateDidFail() {
         guard Available.iOS12 else { return }
+
+        // This is nececery to give ApplePay time to dissapear from screen.
+        wait(for: .seconds(1))
+
         let viewController = sut!.viewController
         let onDidFailExpectation = expectation(description: "Wait for delegate call")
         mockDelegate.onDidFail = { error, component in
@@ -64,6 +68,10 @@ class ApplePayComponentTest: XCTestCase {
 
     func testApplePayViewControllerShouldCallFinalizeCompleation() {
         guard Available.iOS12 else { return }
+
+        // This is nececery to give ApplePay time to dissapear from screen.
+        wait(for: .seconds(1))
+
         let viewController = sut!.viewController
         let onDidFinalizeExpectation = expectation(description: "Wait for didFinalize call")
         mockDelegate.onDidFail = { error, component in
