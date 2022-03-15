@@ -58,6 +58,7 @@ jobs:
         --binary-basename AdyenDropIn
         --binary-basename AdyenWeChatPay
         --binary-basename AdyenComponents
+        --binary-basename AdyenSession
         --binary-basename AdyenEncryption
         --binary-basename AdyenActions
         --binary-basename AdyenSwiftUI'

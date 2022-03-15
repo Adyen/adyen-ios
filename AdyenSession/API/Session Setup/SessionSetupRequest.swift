@@ -21,17 +21,29 @@ internal struct SessionSetupRequest: Request {
     
     internal let sessionData: String
     
+    internal let order: PartialPaymentOrder?
+    
     internal typealias ResponseType = SessionSetupResponse
     
     internal typealias ErrorResponseType = APIError
     
-    internal init(sessionId: String, sessionData: String) {
+    internal init(sessionId: String,
+                  sessionData: String,
+                  order: PartialPaymentOrder?) {
         self.path = "checkoutshopper/v1/sessions/\(sessionId)/setup"
         self.sessionData = sessionData
+        self.order = order
+    }
+    
+    internal func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(sessionData, forKey: .sessionData)
+        try container.encodeIfPresent(order?.compactOrder, forKey: .order)
     }
     
     private enum CodingKeys: String, CodingKey {
         case sessionData
+        case order
     }
 }
 
