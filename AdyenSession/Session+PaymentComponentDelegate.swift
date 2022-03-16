@@ -26,7 +26,7 @@ extension Session: PaymentComponentDelegate {
     }
     
     internal func handle(paymentResponseResult: Result<PaymentsResponse, Error>,
-                                         for currentComponent: Component) {
+                         for currentComponent: Component) {
         switch paymentResponseResult {
         case let .success(response):
             handle(paymentResponse: response, for: currentComponent)
@@ -37,7 +37,6 @@ extension Session: PaymentComponentDelegate {
     
     private func handle(paymentResponse response: PaymentsResponse,
                         for currentComponent: Component) {
-        sessionContext.data = response.sessionData
         if let action = response.action {
             handle(action: action, for: currentComponent)
         } else if let order = response.order,
@@ -45,7 +44,7 @@ extension Session: PaymentComponentDelegate {
                   remainingAmount.value > 0 {
             handle(order: order, for: currentComponent)
         } else {
-            finish(with: response.resultCode)
+            finish()
         }
     }
     
@@ -86,11 +85,11 @@ extension Session: PaymentComponentDelegate {
         }
     }
     
-    private func finish(with resultCode: PaymentsResponse.ResultCode) {
+    internal func finish() {
         // TODO: Handle Finish
     }
     
-    private func finish(with error: Error) {
+    internal func finish(with error: Error) {
         // TODO: Handle Finish
     }
 

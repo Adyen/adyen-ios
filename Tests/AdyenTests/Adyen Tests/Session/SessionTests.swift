@@ -60,7 +60,6 @@ class SessionTests: XCTestCase {
     func testDidSubmitWithNoActionAndNoOrder() throws {
         let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
-        
         let paymentMethod = expectedPaymentMethods.regular.last as! MBWayPaymentMethod
         let data = PaymentComponentData(
             paymentMethodDetails: MBWayDetails(
@@ -98,6 +97,7 @@ class SessionTests: XCTestCase {
             storedBcmcDictionary
         ],
         "paymentMethods": [
+            giftCard,
             creditCardDictionary,
             issuerListDictionary,
             mbway
@@ -249,6 +249,132 @@ class SessionTests: XCTestCase {
         XCTAssertEqual(sut.sessionContext.countryCode, "EG")
         XCTAssertEqual(sut.sessionContext.shopperLocale, "EG")
         XCTAssertEqual(sut.sessionContext.data, "session_data_xxx")
+    }
+    
+    func testCheckBalanceCheckSuccess() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
+        let details = GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc")
+        let amount = Amount(value: 34, currencyCode: "EUR")
+        let paymentData = PaymentComponentData(paymentMethodDetails: details, amount: amount, order: nil)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(BalanceCheckResponse(sessionData: "session_data2",
+                                                                 balance: Amount(value: 50, currencyCode: "EUR"),
+                                                                 transactionLimit: Amount(value: 30, currencyCode: "EUR")))]
+        
+        sut.checkBalance(with: paymentData) { result in
+            let balance = try! result.get()
+            XCTAssertEqual(balance.availableAmount.value, 50)
+            XCTAssertEqual(balance.transactionLimit!.value, 30)
+            XCTAssertEqual(sut.sessionContext.data, "session_data2")
+        }
+    }
+    
+    func testBalanceCheckZeroBalance() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
+        let details = GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc")
+        let amount = Amount(value: 34, currencyCode: "EUR")
+        let paymentData = PaymentComponentData(paymentMethodDetails: details, amount: amount, order: nil)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(BalanceCheckResponse(sessionData: "session_data2",
+                                                                 balance: nil,
+                                                                 transactionLimit: nil))]
+        
+        // get .failure
+        sut.checkBalance(with: paymentData) { result in
+            XCTAssertNotNil(result.failure)
+            XCTAssertEqual(sut.sessionContext.data, "session_data2")
+        }
+    }
+    
+    func testBalanceCheckFailure() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
+        let details = GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc")
+        let amount = Amount(value: 34, currencyCode: "EUR")
+        let paymentData = PaymentComponentData(paymentMethodDetails: details, amount: amount, order: nil)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.failure(BalanceChecker.Error.zeroBalance)]
+        
+        // get .failure
+        sut.checkBalance(with: paymentData) { result in
+            XCTAssertNotNil(result.failure)
+            XCTAssertEqual(sut.sessionContext.data, "session_data_1")
+        }
+    }
+    
+    func testRequestOrderSuccess() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(CreateOrderResponse(pspReference: "ref",
+                                                                orderData: "data",
+                                                                remainingAmount: Amount(value: 10, currencyCode: "EUR"),
+                                                                sessionData: "session_data2"))]
+        
+        sut.requestOrder { result in
+            let order = try! result.get()
+            XCTAssertEqual(order.reference, "ref")
+            XCTAssertEqual(order.orderData, "data")
+            XCTAssertEqual(order.remainingAmount?.value, 10)
+            XCTAssertEqual(sut.sessionContext.data, "session_data2")
+        }
+    }
+    
+    func testRequestOrderFailure() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.failure(PartialPaymentError.missingOrderData)]
+        
+        sut.requestOrder { result in
+            XCTAssertNotNil(result.failure)
+            XCTAssertEqual(sut.sessionContext.data, "session_data_1")
+        }
+    }
+    
+    func testCancelOrderSuccess() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(CancelOrderResponse(sessionData: "session_data2"))]
+        
+        let order = PartialPaymentOrder(pspReference: "ref", orderData: nil)
+        sut.cancelOrder(order)
+        
+        wait(for: .seconds(1))
+        XCTAssertEqual(sut.sessionContext.data, "session_data2")
+    }
+    
+    func testCancelOrderFailure() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.failure(PartialPaymentError.missingOrderData)]
+        
+        let order = PartialPaymentOrder(pspReference: "ref", orderData: nil)
+        sut.cancelOrder(order)
+        
+        wait(for: .seconds(1))
+        XCTAssertEqual(sut.sessionContext.data, "session_data_1")
     }
     
     private func initializeSession(expectedPaymentMethods: PaymentMethods) throws -> Session {
