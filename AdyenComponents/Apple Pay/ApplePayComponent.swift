@@ -12,7 +12,7 @@ import PassKit
 public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, FinalizableComponent {
 
     /// :nodoc:
-    internal var success: Bool = false
+    internal var resultConfirmed: Bool = false
     
     /// :nodoc:
     private let payment: Payment
@@ -108,7 +108,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// Finalizes ApplePay payment after being processed by payment provider.
     /// - Parameter success: The status of the payment.
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {
-        self.success = success
+        self.resultConfirmed = true
         finalizeCompletion = completion
         paymentAuthorizationCompletion?(success ? .success : .failure)
         paymentAuthorizationCompletion = nil
@@ -123,7 +123,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
             paymentAuthorizationViewController = Self.createPaymentAuthorizationViewController(from: request)
             paymentAuthorizationViewController?.delegate = self
             paymentAuthorizationCompletion = nil
-            success = false
+            resultConfirmed = false
         }
         return paymentAuthorizationViewController!
     }
