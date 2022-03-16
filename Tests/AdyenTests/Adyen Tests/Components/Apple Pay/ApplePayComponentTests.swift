@@ -66,7 +66,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertTrue(viewController !== self.sut.viewController)
     }
 
-    func testApplePayViewControllerShouldCallFinalizeCompleation() {
+    func testApplePayViewControllerShouldCallFinalizeCompletion() {
         guard Available.iOS12 else { return }
 
         // This is nececery to give ApplePay time to dissapear from screen.
