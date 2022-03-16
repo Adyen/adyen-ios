@@ -33,8 +33,8 @@ extension Session: PartialPaymentDelegate {
     private func handle(response: BalanceCheckResponse, completion: @escaping (Result<Balance, Error>) -> Void) {
         guard let availableAmount = response.balance else {
             let error = BalanceChecker.Error.zeroBalance
-            finish(with: error)
             completion(.failure(error))
+            finish(with: error)
             return
         }
         let balance = Balance(availableAmount: availableAmount, transactionLimit: response.transactionLimit)
@@ -42,8 +42,8 @@ extension Session: PartialPaymentDelegate {
     }
 
     private func handle(error: Error, completion: @escaping (Result<Balance, Error>) -> Void) {
-        finish(with: error)
         completion(.failure(error))
+        finish(with: error)
     }
     
     public func requestOrder(_ completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
@@ -60,8 +60,8 @@ extension Session: PartialPaymentDelegate {
         case let .success(response):
             completion(.success(response.order))
         case let .failure(error):
-            finish(with: error)
             completion(.failure(error))
+            finish(with: error)
         }
     }
     
