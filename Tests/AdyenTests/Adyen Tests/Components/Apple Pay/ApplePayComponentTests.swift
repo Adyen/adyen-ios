@@ -84,7 +84,7 @@ class ApplePayComponentTest: XCTestCase {
         
         wait(for: .seconds(1))
 
-        sut.didFinalize(with: true) {
+        sut.finalizeIfNeeded(with: true) {
             onDidFinalizeExpectation.fulfill()
         }
         sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
