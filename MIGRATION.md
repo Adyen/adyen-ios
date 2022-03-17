@@ -22,3 +22,5 @@
 - `RedirectComponent.style` moved to `RedirectComponent.configuration`
 - `DocumentComponent.style` and `DocumentComponent.localizationParameters` moved to `DocumentComponent.configuration`
 - `DropInComponentDelegate` has been refactored to be more transparent about which action component or payment component caused the call back.
+- Method `didFinalize(with success: Bool)` for `FinalizableComponent` changed to `didFinalize(with success: Bool, completion: (() -> Void)?)`.
+- Helper method `finalizeIfNeeded(with success: Bool)` for `Component` changed to `finalizeIfNeeded(with success: Bool, completion: (() -> Void)?)`.

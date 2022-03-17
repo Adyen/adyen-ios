@@ -10,7 +10,7 @@ import UIKit
     import AdyenComponents
 #endif
 
-// :nodoc:
+/// :nodoc:
 internal final class PreApplePayComponent: PresentableComponent, FinalizableComponent, PaymentComponent {
     
     internal struct Configuration: Localizable {
@@ -79,10 +79,10 @@ internal final class PreApplePayComponent: PresentableComponent, FinalizableComp
                                                        configuration: applePayConfiguration)
         self.applePayComponent.delegate = self
     }
-    
-    /// :nodoc
-    internal func didFinalize(with success: Bool) {
-        applePayComponent.didFinalize(with: success)
+
+    /// :nodoc:
+    internal func didFinalize(with success: Bool, completion: (() -> Void)?) {
+        applePayComponent.didFinalize(with: success, completion: completion)
     }
     
     /// :nodoc:

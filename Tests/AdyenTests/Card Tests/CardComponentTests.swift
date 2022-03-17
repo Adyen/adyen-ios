@@ -657,6 +657,7 @@ class CardComponentTests: XCTestCase {
         let expectedVerificationAddress = PostalAddressMocks.newYorkPostalAddress
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        let finalizationExpectation = expectation(description: "Component should finalize.")
         delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
@@ -669,7 +670,9 @@ class CardComponentTests: XCTestCase {
             XCTAssertEqual(data.storePaymentMethod, true)
             XCTAssertEqual(data.billingAddress, expectedVerificationAddress)
 
-            sut.stopLoadingIfNeeded()
+            sut.finalizeIfNeeded(with: true, completion: {
+                finalizationExpectation.fulfill()
+            })
             delegateExpectation.fulfill()
 
             XCTAssertEqual(sut.cardViewController.view.isUserInteractionEnabled, true)
