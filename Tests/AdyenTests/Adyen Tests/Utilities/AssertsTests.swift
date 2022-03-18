@@ -113,20 +113,20 @@ class AssertsTests: XCTestCase {
 
     }
 
-    func testModalViewControllerPreferredContentSizeAssertion() {
-        let sut = ModalViewController(rootViewController: UIViewController(), navBarType: .regular)
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-
-        AdyenAssertion.listener = { message in
-            XCTAssertEqual(message, "PreferredContentSize is overridden for this view controller.\ngetter - returns combined size of an inner content and navigation bar.\nsetter - no implemented.")
-            expectation.fulfill()
-        }
-
-        sut.preferredContentSize = .zero
-
-        wait(for: [expectation], timeout: 2)
-
-    }
+//    func testModalViewControllerPreferredContentSizeAssertion() {
+//        let sut = ModalViewController(rootViewController: UIViewController(), navBarType: .regular)
+//        let expectation = XCTestExpectation(description: "Dummy Expectation")
+//
+//        AdyenAssertion.listener = { message in
+//            XCTAssertEqual(message, "PreferredContentSize is overridden for this view controller.\ngetter - returns combined size of an inner content and navigation bar.\nsetter - no implemented.")
+//            expectation.fulfill()
+//        }
+//
+//        sut.preferredContentSize = .zero
+//
+//        wait(for: [expectation], timeout: 2)
+//
+//    }
 
     class MockComponent: Component {
         let apiContext: APIContext

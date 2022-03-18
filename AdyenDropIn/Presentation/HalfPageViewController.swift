@@ -93,7 +93,7 @@ internal final class HalfPageViewController: UIViewController {
     }
     
     private func isUpdatingFrameAllowed() -> Bool {
-        /// Frame updates are not allowed in case there is currenly a frame update ongoing
+        /// Frame updates are not allowed in case there is currently a frame update ongoing
         /// or frame updates are frozen.
         currentlyUpdatingFrameContext == nil && isFrameUpdateFrozen == false
     }
@@ -101,7 +101,7 @@ internal final class HalfPageViewController: UIViewController {
     private func updateFrameThrottled(with context: FrameUpdateContext) {
         guard let view = child.viewIfLoaded else { return }
         let finalFrame = child.finalPresentationFrame(with: context.keyboardRect)
-        AdyenAssertion.assert(message: "isFrameUpdateFrozen shouldn't be true",
+        AdyenAssertion.assert(message: "isFrameUpdateFrozen must not be true",
                               condition: isFrameUpdateFrozen)
         currentlyUpdatingFrameContext = context
         viewIfLoaded?.layoutIfNeeded()

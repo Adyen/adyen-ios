@@ -26,7 +26,7 @@ internal final class DropInNavigationController: UIViewController,
     
     private let rootNavigationController: ComponentNavigationController
     
-    private let chileViewController: HalfPageViewController
+    internal let chileViewController: HalfPageViewController
     
     internal typealias CancelHandler = (Bool, PresentableComponent) -> Void
     
@@ -90,7 +90,7 @@ internal final class DropInNavigationController: UIViewController,
         rootNavigationController.popComponent(animated: animated)
     }
     
-    // MARK: - Layouting
+    // MARK: - Layout
     
     internal func freezeFrameUpdate() {
         chileViewController.freezeFrameUpdate()
