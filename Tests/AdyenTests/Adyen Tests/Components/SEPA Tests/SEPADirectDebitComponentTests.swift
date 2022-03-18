@@ -16,6 +16,10 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let sut = SEPADirectDebitComponent(paymentMethod: method, apiContext: Dummy.context)
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
+        
+        UIApplication.shared.keyWindow?.rootViewController = navigationViewController
+        
+        wait(for: .milliseconds(50))
 
         XCTAssertTrue(navigationViewController.chileViewController.requiresKeyboardInput)
     }

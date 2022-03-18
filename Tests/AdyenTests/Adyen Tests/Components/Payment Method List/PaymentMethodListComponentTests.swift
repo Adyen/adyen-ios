@@ -21,6 +21,10 @@ class PaymentMethodListComponentTests: XCTestCase {
         let sut = PaymentMethodListComponent(apiContext: Dummy.context, components: sectionedComponents)
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
+        
+        UIApplication.shared.keyWindow?.rootViewController = navigationViewController
+        
+        wait(for: .milliseconds(50))
 
         XCTAssertFalse(navigationViewController.chileViewController.requiresKeyboardInput)
     }

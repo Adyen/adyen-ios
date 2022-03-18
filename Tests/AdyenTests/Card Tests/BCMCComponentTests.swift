@@ -26,6 +26,10 @@ class BCMCComponentTests: XCTestCase {
                                 configuration: CardComponent.Configuration())
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
+        
+        UIApplication.shared.keyWindow?.rootViewController = navigationViewController
+        
+        wait(for: .milliseconds(50))
 
         XCTAssertTrue(navigationViewController.chileViewController.requiresKeyboardInput)
     }
