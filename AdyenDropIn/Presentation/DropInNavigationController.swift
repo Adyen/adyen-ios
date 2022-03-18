@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,25 +7,51 @@
 import Adyen
 import UIKit
 
-internal final class DropInNavigationController: UINavigationController, KeyboardObserver, PreferredContentSizeConsumer {
+internal protocol DropInNavigationLayouter: AnyObject {
+    func freezeFrameUpdate()
     
-    internal typealias CancelHandler = (Bool, PresentableComponent) -> Void
+    func unfreezeFrameUpdate()
+    
+    func updateTopViewControllerIfNeeded(animated: Bool)
+}
+
+internal final class DropInNavigationController: UIViewController,
+    DropInNavigationLayouter,
+    KeyboardObserver,
+    PreferredContentSizeConsumer {
     
     private let cancelHandler: CancelHandler?
     
     private var keyboardRect: CGRect = .zero
-
-    internal var keyboardObserver: Any?
     
-    internal let style: NavigationStyle
+    private let rootNavigationController: ComponentNavigationController
+    
+    private let chileViewController: HalfPageViewController
+    
+    internal typealias CancelHandler = (Bool, PresentableComponent) -> Void
+    
+    private let style: NavigationStyle
+    
+    // MARK: - Initializers
     
     internal init(rootComponent: PresentableComponent, style: NavigationStyle, cancelHandler: @escaping CancelHandler) {
         self.style = style
         self.cancelHandler = cancelHandler
+        self.rootNavigationController = ComponentNavigationController(rootComponent: rootComponent, cancelHandler: cancelHandler)
+        self.chileViewController = HalfPageViewController(child: rootNavigationController)
         super.init(nibName: nil, bundle: nil)
-        setup(root: rootComponent)
+        setupChildViewController()
         startObserving()
     }
+    
+    @available(*, unavailable)
+    internal required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Observing keyboard
+    
+    internal var keyboardObserver: Any?
     
     deinit {
         stopObserving()
@@ -38,69 +64,64 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
         }
     }
     
-    @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    internal func willUpdatePreferredContentSize() { /* Empty implementation */ }
-
-    internal func didUpdatePreferredContentSize() {
-        updateTopViewControllerIfNeeded()
+    // MARK: - Life cycle
+    
+    override internal func viewDidLoad() {
+        super.viewDidLoad()
+        rootNavigationController.view.backgroundColor = style.backgroundColor
     }
     
-    internal func present(_ viewController: UIViewController, customPresentation: Bool = true) {
-        if customPresentation {
-            pushViewController(viewController, animated: true)
-        } else {
-            present(viewController, animated: true, completion: nil)
-        }
-    }
+    // MARK: - Navigation
     
     internal func present(asModal component: PresentableComponent) {
         if component.requiresModalPresentation {
-            pushViewController(wrapInModalController(component: component,
-                                                     isRoot: false),
-                               animated: true)
+            rootNavigationController.push(component: component, animated: true)
         } else {
             present(component.viewController, animated: true, completion: nil)
         }
     }
     
     internal func present(root component: PresentableComponent) {
-        pushViewController(wrapInModalController(component: component, isRoot: true), animated: true)
+        rootNavigationController.push(component: component, animated: true)
     }
+    
+    @discardableResult
+    internal func popViewController(animated: Bool) -> UIViewController? {
+        rootNavigationController.popComponent(animated: animated)
+    }
+    
+    // MARK: - Layouting
+    
+    internal func freezeFrameUpdate() {
+        chileViewController.freezeFrameUpdate()
+    }
+    
+    internal func unfreezeFrameUpdate() {
+        chileViewController.unfreezeFrameUpdate()
+    }
+    
+    internal func willUpdatePreferredContentSize() { /* Empty implementation */ }
 
-    // MARK: - Private
+    internal func didUpdatePreferredContentSize() {
+        updateTopViewControllerIfNeeded()
+    }
 
     internal func updateTopViewControllerIfNeeded(animated: Bool = true) {
-        guard let topViewController = topViewController as? WrapperViewController else { return }
-
-        let frame = topViewController.requiresKeyboardInput ? self.keyboardRect : .zero
-        topViewController.updateFrame(keyboardRect: frame, animated: animated)
+        let frame = chileViewController.requiresKeyboardInput ? self.keyboardRect : .zero
+        chileViewController.updateFrame(keyboardRect: frame, animated: animated)
     }
     
-    private func wrapInModalController(component: PresentableComponent, isRoot: Bool) -> WrapperViewController {
-        let modal = ModalViewController(
-            rootViewController: component.viewController,
-            style: style,
-            navBarType: component.navBarType,
-            cancelButtonHandler: { [weak self] in self?.cancelHandler?($0, component) }
-        )
-        modal.isRoot = isRoot
-        let container = WrapperViewController(child: modal)
-        
-        return container
-    }
+    // MARK: - Private
     
-    private func setup(root component: PresentableComponent) {
-        let rootContainer = wrapInModalController(component: component, isRoot: true)
-        viewControllers = [rootContainer]
+    private func setupChildViewController() {
+        addChild(chileViewController)
+        view.addSubview(chileViewController.view)
+        chileViewController.didMove(toParent: self)
+        chileViewController.view.adyen.anchor(inside: view)
         
-        delegate = self
+        rootNavigationController.delegate = self
         modalPresentationStyle = .custom
         transitioningDelegate = self
-        navigationBar.isHidden = true
     }
 }
 
@@ -110,7 +131,9 @@ extension DropInNavigationController: UINavigationControllerDelegate {
                                        animationControllerFor operation: UINavigationController.Operation,
                                        from fromVC: UIViewController,
                                        to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        SlideInPresentationAnimator(duration: 0.6)
+        DropInNavigationAnimator(duration: 0.6,
+                                 isPush: operation == .push,
+                                 dropInNavigationLayouter: self)
     }
     
 }
@@ -120,11 +143,13 @@ extension DropInNavigationController: UIViewControllerTransitioningDelegate {
     internal func presentationController(forPresented presented: UIViewController,
                                          presenting: UIViewController?,
                                          source: UIViewController) -> UIPresentationController? {
-        DimmingPresentationController(presented: presented,
-                                      presenting: presenting,
-                                      layoutDidChanged: { [weak self] in
-                                          self?.updateTopViewControllerIfNeeded(animated: false)
-                                      })
+        OverlayPresentationController(
+            presented: presented,
+            presenting: presenting,
+            layoutDidChanged: { [weak self] in
+                self?.updateTopViewControllerIfNeeded(animated: false)
+            }
+        )
     }
     
 }

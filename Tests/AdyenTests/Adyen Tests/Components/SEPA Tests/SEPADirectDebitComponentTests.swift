@@ -17,7 +17,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
 
-        XCTAssertTrue((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
+        XCTAssertTrue((navigationViewController.topViewController as! HalfPageViewController).requiresKeyboardInput)
     }
     
     func testLocalizationWithCustomTableName() {

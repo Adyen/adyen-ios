@@ -22,7 +22,7 @@ class PaymentMethodListComponentTests: XCTestCase {
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
 
-        XCTAssertFalse((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
+        XCTAssertFalse((navigationViewController.topViewController as! HalfPageViewController).requiresKeyboardInput)
     }
     
     func testLocalizationWithCustomTableName() {

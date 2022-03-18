@@ -12,6 +12,9 @@ public enum Dimensions {
 
     /// :nodoc:
     public static var leastPresentableHeightScale: CGFloat = 0.25
+    
+    /// :nodoc:
+    public static var leastPresentableHeight: CGFloat { UIScreen.main.bounds.height * leastPresentableHeightScale }
 
     /// :nodoc:
     public static var maxAdaptiveWidth: CGFloat = 375

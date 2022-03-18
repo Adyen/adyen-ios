@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -112,32 +112,26 @@ internal final class CoreListDataSource: NSObject, ListViewControllerDataSource 
     
     // MARK: - Item Loading state
     
-    internal func startLoading(for item: ListItem, _ tableView: UITableView) {
-        if let cell = cell(for: item, tableView: tableView) {
-            cell.showsActivityIndicator = true
-        }
+    internal func startLoading(for loadingItem: ListItem, _ tableView: UITableView) {
+        loadingItem.showsActivityIndicator = true
         
         tableView.isUserInteractionEnabled = false
         
-        for case let visibleCell as ListCell in tableView.visibleCells where visibleCell.item != item {
-            visibleCell.isEnabled = false
-        }
-    }
-    
-    private func cell(for item: ListItem, tableView: UITableView) -> ListCell? {
-        for case let cell as ListCell in tableView.visibleCells where cell.item == item {
-            return cell
+        for case let item in sections.flatMap(\.items) where item != loadingItem {
+            item.isEnabled = false
         }
         
-        return nil
+        tableView.reloadData()
     }
     
     internal func stopLoading(_ tableView: UITableView) {
         tableView.isUserInteractionEnabled = true
         
-        for case let visibleCell as ListCell in tableView.visibleCells {
-            visibleCell.isEnabled = true
-            visibleCell.showsActivityIndicator = false
+        for case let item in sections.flatMap(\.items) {
+            item.isEnabled = true
+            item.showsActivityIndicator = false
         }
+        
+        tableView.reloadData()
     }
 }

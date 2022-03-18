@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,10 +7,10 @@
 import Foundation
 import UIKit
 
-// MARK: - DimmingPresentationController
+// MARK: - OverlayPresentationController
 
 /// Presentation Controller that performs dimming view alongside presentation animation.
-internal final class DimmingPresentationController: UIPresentationController {
+internal final class OverlayPresentationController: UIPresentationController {
     internal var layoutDidChanged: () -> Void
     
     internal init(presented: UIViewController, presenting: UIViewController?, layoutDidChanged: @escaping () -> Void) {
@@ -18,17 +18,17 @@ internal final class DimmingPresentationController: UIPresentationController {
         super.init(presentedViewController: presented, presenting: presenting)
     }
     
-    private lazy var dimmingView: UIView = {
-        let dimmingView = UIView()
-        dimmingView.backgroundColor = UIColor.Adyen.dimmBackground
-        dimmingView.alpha = 0.0
+    private lazy var overlayView: UIView = {
+        let overlayView = UIView()
+        overlayView.backgroundColor = UIColor.Adyen.overlayBackground
+        overlayView.alpha = 0.0
         
-        return dimmingView
+        return overlayView
     }()
     
-    private func attachDimmigView(to view: UIView) {
-        view.insertSubview(dimmingView, at: 0)
-        dimmingView.adyen.anchor(inside: view)
+    private func attachOverlayView(to view: UIView) {
+        view.insertSubview(overlayView, at: 0)
+        overlayView.adyen.anchor(inside: view)
     }
     
     override internal func containerViewWillLayoutSubviews() {
@@ -46,10 +46,10 @@ internal final class DimmingPresentationController: UIPresentationController {
         super.presentationTransitionWillBegin()
         
         guard let containerView = containerView else { return }
-        attachDimmigView(to: containerView)
+        attachOverlayView(to: containerView)
         
         presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in
-            self.dimmingView.alpha = 1.0
+            self.overlayView.alpha = 1.0
         })
     }
     
@@ -63,7 +63,7 @@ internal final class DimmingPresentationController: UIPresentationController {
         super.dismissalTransitionWillBegin()
         
         presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in
-            self.dimmingView.alpha = 0.0
+            self.overlayView.alpha = 0.0
         })
     }
 }

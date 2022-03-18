@@ -128,8 +128,12 @@ extension IntegrationExample {
         }
     }
 
-    private func handle(_ action: Action) {
-        actionComponent.handle(action)
+    internal func handle(_ action: Action) {
+        if let actionComponent = currentComponent as? ActionHandlingComponent {
+            actionComponent.handle(action)
+        } else {
+            actionComponent.handle(action)
+        }
     }
 
 }

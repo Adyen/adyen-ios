@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -40,6 +40,12 @@ public class ListItem: FormItem {
 
     /// The flag to indicate if an icon is a custom image that should not be tempered.
     public let canModifyIcon: Bool
+    
+    /// :nodoc:
+    public var showsActivityIndicator: Bool = false
+    
+    /// :nodoc:
+    public var isEnabled: Bool = true
     
     /// Initializes the list item.
     ///

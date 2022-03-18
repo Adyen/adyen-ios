@@ -220,9 +220,7 @@ public final class DropInComponent: NSObject,
         case let component as PresentableComponent where component.requiresModalPresentation:
             navigationController.present(asModal: component)
         case let component as PresentableComponent where component.viewController is UIAlertController:
-            navigationController.present(component.viewController, customPresentation: false)
-        case let component as PresentableComponent:
-            navigationController.present(component.viewController, customPresentation: true)
+            navigationController.present(component.viewController, animated: true, completion: nil)
         case let component as InstantPaymentComponent:
             component.initiatePayment()
         default:
@@ -237,8 +235,6 @@ public final class DropInComponent: NSObject,
         
         if isRoot {
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
-        } else {
-            navigationController.popViewController(animated: true)
         }
     }
 

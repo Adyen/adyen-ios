@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,7 +13,7 @@ extension UIColor {
     public enum Adyen {
 
         /// :nodoc:
-        public static var dimmBackground: UIColor {
+        public static var overlayBackground: UIColor {
             componentSeparator
         }
 

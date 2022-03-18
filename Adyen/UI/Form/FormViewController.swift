@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -61,13 +61,16 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         delegate?.viewDidAppear(viewController: self)
-
-        view.adyen.animate(context: AnimationContext(animationKey: Animations.firstResponder,
-                                                     duration: 0,
-                                                     options: [.layoutSubviews, .beginFromCurrentState],
-                                                     animations: { [weak self] in
-                                                         self?.assignInitialFirstResponder()
-                                                     }))
+        
+        view.adyen.animate(context: AnimationContext(
+            animationKey: Animations.firstResponder,
+            duration: 0.3,
+            options: [.layoutSubviews, .beginFromCurrentState],
+            animations: { [weak self] in
+                self?.assignInitialFirstResponder()
+            }
+        ))
+        
     }
 
     /// :nodoc:
