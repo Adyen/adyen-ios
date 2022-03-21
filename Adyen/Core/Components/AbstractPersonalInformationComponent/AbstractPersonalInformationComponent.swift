@@ -10,7 +10,7 @@ import UIKit
 /// An abstract class that needs to be subclassed to abstract away any component
 /// who's form consists of a combination of personal information pieces like first name, last name, phone, email, and billing address.
 /// :nodoc:
-open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent {
+open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent, ViewControllerDelegate {
 
     /// :nodoc:
     public typealias Configuration = PersonalInformationConfiguration
@@ -41,6 +41,20 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     
     private let fields: [PersonalInformation]
 
+    /// :nodoc:
+    internal lazy var formViewController: FormViewController = {
+        let formViewController = FormViewController(style: configuration.style)
+        formViewController.localizationParameters = configuration.localizationParameters
+
+        formViewController.title = paymentMethod.name
+        formViewController.delegate = self
+        build(formViewController)
+
+        return formViewController
+    }()
+
+    // MARK: - Initializers
+
     /// Initializes the MB Way component.
     ///
     /// - Parameter paymentMethod: The payment method.
@@ -60,17 +74,19 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         self.configuration = configuration
     }
 
+    // MARK: - ViewControllerDelegate
+
     /// :nodoc:
-    internal lazy var formViewController: FormViewController = {
-        let formViewController = FormViewController(style: configuration.style)
-        formViewController.localizationParameters = configuration.localizationParameters
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
+        populateFields()
+    }
 
-        formViewController.title = paymentMethod.name
-        formViewController.delegate = self
-        build(formViewController)
+    // MARK: - Private
 
-        return formViewController
-    }()
+    private func sendTelemetryEvent() {
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
+    }
 
     /// :nodoc:
     private func build(_ formViewController: FormViewController) {
