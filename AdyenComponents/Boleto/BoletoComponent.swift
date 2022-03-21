@@ -47,6 +47,8 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         self.configuration = configuration
         socialSecurityNumberItem.isHidden.wrappedValue = false
     }
+
+    // MARK: - Private
     
     /// :nodoc:
     private lazy var socialSecurityNumberItem: FormTextInputItem = {
@@ -173,12 +175,20 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
 
         return nil
     }
+
+    private func sendTelemetryEvent() {
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
+    }
+
+    // MARK: - Public
     
     /// :nodoc:
     public func stopLoading() {
         formComponent.stopLoading()
     }
 }
+
+extension BoletoComponent: TrackableComponent {}
 
 extension BoletoComponent: ViewControllerDelegate {
 
@@ -190,6 +200,7 @@ extension BoletoComponent: ViewControllerDelegate {
 
     /// :nodoc:
     public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
         prefillFields(for: formComponent)
     }
 }
