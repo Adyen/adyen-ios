@@ -89,7 +89,21 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
         
         return listViewController
     }()
+
+    private func sendTelemetryEvent() {
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
+    }
 }
+
+extension IssuerListComponent: ViewControllerDelegate {
+
+    /// :nodoc:
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
+    }
+}
+
+extension IssuerListComponent: TrackableComponent {}
 
 extension IssuerListComponent {
     
@@ -131,5 +145,3 @@ public typealias EntercashComponent = IssuerListComponent
 
 /// Provides an issuer selection list for OpenBanking payments.
 public typealias OpenBankingComponent = IssuerListComponent
-
-extension IssuerListComponent: TrackableComponent {}
