@@ -59,9 +59,13 @@ internal final class DropInNavigationController: UIViewController,
 
     internal func startObserving() {
         startObserving { [weak self] in
-            self?.keyboardRect = $0
-            self?.updateTopViewControllerIfNeeded()
+            self?.update(newKeyboardRect: $0)
         }
+    }
+    
+    private func update(newKeyboardRect: CGRect) {
+        keyboardRect = newKeyboardRect
+        updateTopViewControllerIfNeeded()
     }
     
     // MARK: - Life cycle
@@ -131,9 +135,12 @@ extension DropInNavigationController: UINavigationControllerDelegate {
                                        animationControllerFor operation: UINavigationController.Operation,
                                        from fromVC: UIViewController,
                                        to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        DropInNavigationAnimator(duration: 0.6,
-                                 isPush: operation == .push,
-                                 dropInNavigationLayouter: self)
+        /// Animation is the exact opposite when the language is RTL vs LTR.
+        let isLTRInterface = view.effectiveUserInterfaceLayoutDirection == .leftToRight
+        let isPush = isLTRInterface ? operation == .push : operation == .pop
+        return DropInNavigationAnimator(duration: 0.6,
+                                        isPush: isPush,
+                                        dropInNavigationLayouter: self)
     }
     
 }

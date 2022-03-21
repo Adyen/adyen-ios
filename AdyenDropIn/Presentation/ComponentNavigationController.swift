@@ -30,7 +30,7 @@ internal final class ComponentNavigationController: UINavigationController {
                   innerController.isViewLoaded else { return .zero }
             let innerSize = innerController.preferredContentSize
             return CGSize(width: innerSize.width,
-                          height: navigationBar.frame.size.height + innerSize.height + (1.0 / UIScreen.main.scale))
+                          height: navigationBar.frame.size.height + innerSize.height)
         }
         
         // swiftlint:disable:next unused_setter_value
@@ -63,7 +63,8 @@ internal final class ComponentNavigationController: UINavigationController {
     /// e.g `viewController.adyen.finalPresentationFrame(in:keyboardRect:)`.
     /// :nodoc:
     internal func finalPresentationFrame(with keyboardRect: CGRect = .zero) -> CGRect {
-        topViewController?.view.layer.layoutIfNeeded()
+        viewIfLoaded?.layoutIfNeeded()
+        topViewController?.viewIfLoaded?.layoutIfNeeded()
         let expectedWidth = Dimensions.greatestPresentableWidth
         var frame = UIScreen.main.bounds
         frame.origin.x = (frame.width - expectedWidth) / 2
@@ -73,7 +74,7 @@ internal final class ComponentNavigationController: UINavigationController {
         let biggestHeightPossible = frame.height * Dimensions.greatestPresentableHeightScale
         guard preferredContentSize != .zero else { return frame }
 
-        let bottomPadding = max(abs(keyboardRect.height), view.safeAreaInsets.bottom)
+        let bottomPadding = max(abs(keyboardRect.height), view.safeAreaInsets.bottom, 0)
         let expectedHeight = preferredContentSize.height + bottomPadding
 
         func calculateFrame(for expectedHeight: CGFloat) {

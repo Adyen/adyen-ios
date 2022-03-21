@@ -39,6 +39,7 @@ internal final class DropInNavigationAnimator: NSObject, UIViewControllerAnimate
         toShow.view.frame.origin.x = isPush ? containerView.bounds.width : -containerView.bounds.width
         
         toShow.view.layoutIfNeeded()
+        toHide.view.layoutIfNeeded()
         
         let toShowHeight = toShow.preferredContentSize.height
         let toHideHeight = toHide.preferredContentSize.height

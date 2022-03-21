@@ -49,6 +49,8 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         addFormView()
         itemManager.topLevelItemViews.forEach(formView.appendItemView(_:))
         delegate?.viewDidLoad(viewController: self)
+        
+        assignInitialFirstResponder()
     }
 
     /// :nodoc:
@@ -61,22 +63,6 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         delegate?.viewDidAppear(viewController: self)
-        
-        view.adyen.animate(context: AnimationContext(
-            animationKey: Animations.firstResponder,
-            duration: 0.3,
-            options: [.layoutSubviews, .beginFromCurrentState],
-            animations: { [weak self] in
-                self?.assignInitialFirstResponder()
-            }
-        ))
-        
-    }
-
-    /// :nodoc:
-    override open func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        resignFirstResponder()
     }
 
     /// :nodoc:

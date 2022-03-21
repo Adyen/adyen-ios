@@ -76,8 +76,8 @@ internal final class HalfPageViewController: UIViewController {
         guard isUpdatingFrameAllowed(),
               let nextContext = nextUpdatingFrameContext else { return }
         
-        updateFrameThrottled(with: nextContext)
         nextUpdatingFrameContext = nil
+        updateFrameThrottled(with: nextContext)
     }
     
     internal func updateFrame(keyboardRect: CGRect, animated: Bool = true) {
@@ -95,16 +95,20 @@ internal final class HalfPageViewController: UIViewController {
     private func isUpdatingFrameAllowed() -> Bool {
         /// Frame updates are not allowed in case there is currently a frame update ongoing
         /// or frame updates are frozen.
-        currentlyUpdatingFrameContext == nil && isFrameUpdateFrozen == false
+        currentlyUpdatingFrameContext == nil &&
+            isFrameUpdateFrozen == false &&
+            isViewLoaded
     }
 
     private func updateFrameThrottled(with context: FrameUpdateContext) {
-        guard let view = child.viewIfLoaded else { return }
+        guard let view = viewIfLoaded else { return }
         let finalFrame = child.finalPresentationFrame(with: context.keyboardRect)
         AdyenAssertion.assert(message: "isFrameUpdateFrozen must not be true",
                               condition: isFrameUpdateFrozen)
+        AdyenAssertion.assert(message: "Only one animation at a time is allowed",
+                              condition: currentlyUpdatingFrameContext != nil)
         currentlyUpdatingFrameContext = context
-        viewIfLoaded?.layoutIfNeeded()
+        view.layoutIfNeeded()
         view.adyen.animate(context: SpringAnimationContext(
             animationKey: "Update frame",
             duration: context.animated ? 0.5 : 0.0,
@@ -129,6 +133,11 @@ internal final class HalfPageViewController: UIViewController {
         view.addSubview(child.view)
         child.didMove(toParent: self)
         setupChildLayout()
+    }
+    
+    override internal func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        child.view.adyen.round(using: .fixed(12))
     }
 
     private func setupChildLayout() {
