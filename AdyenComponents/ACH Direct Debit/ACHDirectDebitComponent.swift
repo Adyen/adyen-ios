@@ -226,6 +226,8 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         }
         return item
     }()
+
+    // MARK: - Private
     
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(style: configuration.style)
@@ -249,16 +251,28 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
 
         return formViewController
     }()
+
+    private func sendTelemetryEvent() {
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
+    }
 }
 
 /// :nodoc:
-extension ACHDirectDebitComponent: TrackableComponent {
-    
+extension ACHDirectDebitComponent: TrackableComponent {}
+
+/// :nodoc:
+extension ACHDirectDebitComponent: ViewControllerDelegate {
+
     /// :nodoc:
     public func viewDidLoad(viewController: UIViewController) {
         Analytics.sendEvent(component: paymentMethod.type.rawValue, flavor: _isDropIn ? .dropin : .components, context: apiContext)
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
+    }
+
+    /// :nodoc:
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
     }
 }
 
