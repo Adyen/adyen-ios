@@ -94,6 +94,10 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         
         submit(data: PaymentComponentData(paymentMethodDetails: details, amount: amountToPay, order: order))
     }
+
+    private func sendTelemetryEvent() {
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
+    }
     
     // MARK: - Form Items
     
@@ -143,3 +147,11 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
 }
 
 extension SEPADirectDebitComponent: TrackableComponent {}
+
+/// :nodoc:
+extension SEPADirectDebitComponent: ViewControllerDelegate {
+
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
+    }
+}
