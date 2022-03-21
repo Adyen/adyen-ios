@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for BLIK payments.
-public final class BLIKComponent: PaymentComponent, PresentableComponent, LoadingComponent {
+public final class BLIKComponent: PaymentComponent, PresentableComponent, LoadingComponent, ViewControllerDelegate {
     
     /// Configuration for BLIK Component.
     public typealias Configuration = BasicComponentConfiguration
@@ -53,6 +53,12 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
         self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.configuration = configuration
+    }
+
+    // MARK: - ViewControllerDelegate
+
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
     }
 
     /// :nodoc:
@@ -110,6 +116,12 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
         }
         return item
     }()
+
+    // MARK: - Private
+
+    private func sendTelemetryEvent() {
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
+    }
 
     private func didSelectSubmitButton() {
         guard formViewController.validate() else { return }
