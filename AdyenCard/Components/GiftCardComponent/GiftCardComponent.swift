@@ -339,6 +339,12 @@ public final class GiftCardComponent: PartialPaymentComponent,
             return .failure(error)
         }
     }
+
+    // MARK: - Tracking
+
+    internal func sendTelemetryEvent() {
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
+    }
 }
 
 /// :nodoc:
