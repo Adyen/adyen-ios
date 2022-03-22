@@ -37,10 +37,13 @@ internal final class DropInNavigationController: UIViewController,
     internal init(rootComponent: PresentableComponent, style: NavigationStyle, cancelHandler: @escaping CancelHandler) {
         self.style = style
         self.cancelHandler = cancelHandler
-        self.rootNavigationController = ComponentNavigationController(rootComponent: rootComponent, cancelHandler: cancelHandler)
+        self.rootNavigationController = ComponentNavigationController(rootComponent: rootComponent,
+                                                                      style: style,
+                                                                      cancelHandler: cancelHandler)
         self.chileViewController = HalfPageViewController(child: rootNavigationController)
         super.init(nibName: nil, bundle: nil)
         setupChildViewController()
+        setupNavigationBarAppearance()
         startObserving()
     }
     
@@ -65,6 +68,7 @@ internal final class DropInNavigationController: UIViewController,
     
     private func update(newKeyboardRect: CGRect) {
         keyboardRect = newKeyboardRect
+        adyenPrint("keyboardRect: \(self.keyboardRect)")
         updateTopViewControllerIfNeeded()
     }
     
@@ -127,6 +131,21 @@ internal final class DropInNavigationController: UIViewController,
         modalPresentationStyle = .custom
         transitioningDelegate = self
     }
+    
+    private func setupNavigationBarAppearance() {
+        rootNavigationController.navigationBar.isTranslucent = false
+        rootNavigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        rootNavigationController.navigationBar.shadowImage = UIImage()
+        
+        if #available(iOS 15.0, *) {
+            let navigationBarAppearance = UINavigationBarAppearance()
+            navigationBarAppearance.backgroundColor = style.backgroundColor
+            navigationBarAppearance.configureWithOpaqueBackground()
+            navigationBarAppearance.shadowColor = .clear
+            UINavigationBar.appearance().standardAppearance = navigationBarAppearance
+            UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
+        }
+    }
 }
 
 extension DropInNavigationController: UINavigationControllerDelegate {
@@ -137,9 +156,9 @@ extension DropInNavigationController: UINavigationControllerDelegate {
                                        to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         /// Animation is the exact opposite when the language is RTL vs LTR.
         let isLTRInterface = view.effectiveUserInterfaceLayoutDirection == .leftToRight
-        let isPush = isLTRInterface ? operation == .push : operation == .pop
-        return DropInNavigationAnimator(duration: 0.6,
-                                        isPush: isPush,
+        let isRightToLeftAnimation = isLTRInterface ? operation == .push : operation == .pop
+        return DropInNavigationAnimator(duration: 0.5,
+                                        isRightToLeftSlideAnimation: isRightToLeftAnimation,
                                         dropInNavigationLayouter: self)
     }
     

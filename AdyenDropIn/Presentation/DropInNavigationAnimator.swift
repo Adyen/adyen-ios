@@ -13,16 +13,17 @@ internal final class DropInNavigationAnimator: NSObject, UIViewControllerAnimate
         case dropinTransitionPresentation = "transition_presentation"
     }
     
-    private var isPush: Bool
+    private var isRightToLeftSlideAnimation: Bool
     
     private let duration: TimeInterval
     
     private weak var dropInNavigationLayouter: DropInNavigationLayouter?
     
-    internal init(duration: TimeInterval, isPush: Bool,
+    internal init(duration: TimeInterval,
+                  isRightToLeftSlideAnimation: Bool,
                   dropInNavigationLayouter: DropInNavigationLayouter?) {
         self.duration = duration
-        self.isPush = isPush
+        self.isRightToLeftSlideAnimation = isRightToLeftSlideAnimation
         self.dropInNavigationLayouter = dropInNavigationLayouter
     }
     
@@ -36,7 +37,7 @@ internal final class DropInNavigationAnimator: NSObject, UIViewControllerAnimate
 
         let containerView = transitionContext.containerView
         containerView.addSubview(toShow.view)
-        toShow.view.frame.origin.x = isPush ? containerView.bounds.width : -containerView.bounds.width
+        toShow.view.frame.origin.x = isRightToLeftSlideAnimation ? containerView.bounds.width : -containerView.bounds.width
         
         toShow.view.layoutIfNeeded()
         toHide.view.layoutIfNeeded()
@@ -57,7 +58,7 @@ internal final class DropInNavigationAnimator: NSObject, UIViewControllerAnimate
             velocity: 0.2,
             options: [.beginFromCurrentState, .curveEaseInOut],
             animations: { [weak self] in
-                if self?.isPush ?? false {
+                if self?.isRightToLeftSlideAnimation ?? false {
                     toHide.view.frame.origin.x = -toHide.view.frame.width
                 } else {
                     toHide.view.frame.origin.x = toHide.view.frame.width

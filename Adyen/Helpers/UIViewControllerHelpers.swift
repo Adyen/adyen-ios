@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,6 +19,16 @@ public extension AdyenScope where Base: UIViewController {
             topController = presenter
         }
         return topController
+    }
+    
+    func hierarchyRequiresKeyboardInput() -> Bool {
+        let viewController = base
+        if let viewController = viewController as? FormViewController {
+            return viewController.requiresKeyboardInput
+        }
+
+        return viewController.children.contains(where: { $0.adyen.hierarchyRequiresKeyboardInput()
+        })
     }
     
 }

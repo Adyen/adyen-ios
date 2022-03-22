@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -22,6 +22,10 @@ public enum AdyenLogging {
 /// and `Swift.print()` is called inside after checking first if `AdyenLogging.isEnabled` is `true`, and returns if `false`.
 public func adyenPrint(_ items: Any..., separator: String = " ", terminator: String = "\n") {
     guard AdyenLogging.isEnabled else { return }
+    
+    let timestamp = ISO8601DateFormatter().string(from: Date())
+    var items = items
+    items.insert("[\(timestamp)]", at: 0)
     var idx = items.startIndex
     let endIdx = items.endIndex
     

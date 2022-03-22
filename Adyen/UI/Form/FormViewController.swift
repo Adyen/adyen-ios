@@ -172,7 +172,9 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
 
         resignFirstResponder()
 
-        showValidation()
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(400)) { [weak self] in
+            self?.showValidation()
+        }
 
         return false
     }

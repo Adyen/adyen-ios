@@ -11,12 +11,24 @@ internal final class ComponentNavigationController: UINavigationController {
     
     internal var cancelHandler: (Bool, PresentableComponent) -> Void
     
+    private let style: NavigationStyle
+    
     internal init(rootComponent: PresentableComponent,
+                  style: NavigationStyle,
                   cancelHandler: @escaping (Bool, PresentableComponent) -> Void) {
         self.cancelHandler = cancelHandler
         self.components = [rootComponent]
+        self.style = style
         
         super.init(rootViewController: rootComponent.viewController)
+        let button = createCancelButton()
+        button.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
+        rootComponent.viewController.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
+    }
+    
+    @objc private func cancelTapped() {
+        guard let rootComponent = components.first else { return }
+        cancelHandler(true, rootComponent)
     }
     
     @available(*, unavailable)
@@ -49,13 +61,42 @@ internal final class ComponentNavigationController: UINavigationController {
         pushViewController(component.viewController, animated: animated)
     }
     
+    private func createCancelButton() -> UIButton {
+        let button: UIButton
+
+        func legacy() -> UIButton {
+            let button = UIButton(type: UIButton.ButtonType.system)
+            let cancelText = Bundle(for: UIApplication.self).localizedString(forKey: "Cancel", value: nil, table: nil)
+            button.setTitle(cancelText, for: .normal)
+            button.setTitleColor(style.tintColor, for: .normal)
+            return button
+        }
+
+        switch style.cancelButton {
+        case .legacy:
+            return legacy()
+        case let .custom(image):
+            button = UIButton(type: UIButton.ButtonType.custom)
+            button.setImage(image, for: .normal)
+        default:
+            if #available(iOS 13.0, *) {
+                button = UIButton(type: UIButton.ButtonType.close)
+                button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
+            } else {
+                return legacy()
+            }
+        }
+
+        return button
+    }
+    
     internal func popComponent(animated: Bool) -> UIViewController? {
         popViewController(animated: animated)
     }
     
     override internal func popViewController(animated: Bool) -> UIViewController? {
         let currentComponent = components.removeLast()
-        cancelHandler(components.isEmpty, currentComponent)
+        cancelHandler(false, currentComponent)
         return super.popViewController(animated: animated)
     }
     
@@ -76,6 +117,8 @@ internal final class ComponentNavigationController: UINavigationController {
 
         let bottomPadding = max(abs(keyboardRect.height), view.safeAreaInsets.bottom, 0)
         let expectedHeight = preferredContentSize.height + bottomPadding
+        
+        adyenPrint("preferredContentSize: \(preferredContentSize)")
 
         func calculateFrame(for expectedHeight: CGFloat) {
             frame.origin.y += frame.size.height - expectedHeight

@@ -28,7 +28,7 @@ internal final class HalfPageViewController: UIViewController {
     }
 
     internal var requiresKeyboardInput: Bool {
-        hierarchyRequiresKeyboardInput(viewController: child.topViewController)
+        child.topViewController?.adyen.hierarchyRequiresKeyboardInput() ?? false
     }
 
     internal let child: ComponentNavigationController
@@ -77,7 +77,7 @@ internal final class HalfPageViewController: UIViewController {
               let nextContext = nextUpdatingFrameContext else { return }
         
         nextUpdatingFrameContext = nil
-        updateFrameThrottled(with: nextContext)
+        updateFrame(with: nextContext)
     }
     
     internal func updateFrame(keyboardRect: CGRect, animated: Bool = true) {
@@ -89,7 +89,7 @@ internal final class HalfPageViewController: UIViewController {
             nextUpdatingFrameContext = context
             return
         }
-        updateFrameThrottled(with: context)
+        updateFrame(with: context)
     }
     
     private func isUpdatingFrameAllowed() -> Bool {
@@ -100,7 +100,7 @@ internal final class HalfPageViewController: UIViewController {
             isViewLoaded
     }
 
-    private func updateFrameThrottled(with context: FrameUpdateContext) {
+    private func updateFrame(with context: FrameUpdateContext) {
         guard let view = viewIfLoaded else { return }
         let finalFrame = child.finalPresentationFrame(with: context.keyboardRect)
         AdyenAssertion.assert(message: "isFrameUpdateFrozen must not be true",
@@ -111,7 +111,7 @@ internal final class HalfPageViewController: UIViewController {
         view.layoutIfNeeded()
         view.adyen.animate(context: SpringAnimationContext(
             animationKey: "Update frame",
-            duration: context.animated ? 0.5 : 0.0,
+            duration: context.animated ? 0.4 : 0.0,
             delay: 0,
             dampingRatio: 0.8,
             velocity: 0.2,
@@ -158,14 +158,6 @@ internal final class HalfPageViewController: UIViewController {
         self.bottomConstraint = bottomConstraint
         self.leftConstraint = leftConstraint
         self.rightConstraint = rightConstraint
-    }
-
-    private func hierarchyRequiresKeyboardInput(viewController: UIViewController?) -> Bool {
-        if let viewController = viewController as? FormViewController {
-            return viewController.requiresKeyboardInput
-        }
-
-        return viewController?.children.contains(where: { hierarchyRequiresKeyboardInput(viewController: $0) }) ?? false
     }
     
     private func update(finalFrame: CGRect) {
