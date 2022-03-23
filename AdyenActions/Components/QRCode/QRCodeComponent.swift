@@ -157,11 +157,11 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
     private func createViewController(with action: QRCodeAction) -> UIViewController {
         let viewController = QRCodeViewController(viewModel: createModel(with: action))
         viewController.qrCodeView.delegate = self
-        viewController.navigationItem.rightBarButtonItem = creatRightNavigationBarIetm()
+        viewController.navigationItem.rightBarButtonItem = createRightNavigationBarItem()
         return viewController
     }
     
-    private func creatRightNavigationBarIetm() -> UIBarButtonItem {
+    private func createRightNavigationBarItem() -> UIBarButtonItem {
         let trailingButton = UIButton(style: configuration.style.doneButton)
         trailingButton.translatesAutoresizingMaskIntoConstraints = false
         trailingButton.setTitle(Bundle.Adyen.localizedDoneCopy, for: .normal)

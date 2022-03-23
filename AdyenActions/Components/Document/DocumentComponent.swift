@@ -79,7 +79,7 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
         if let presentationDelegate = presentationDelegate {
             let presentableComponent = PresentableComponentWrapper(component: self,
                                                                    viewController: viewController)
-            viewController.navigationItem.rightBarButtonItem = creatRightNavigationBarIetm()
+            viewController.navigationItem.rightBarButtonItem = createRightNavigationBarItem()
             presentationDelegate.present(component: presentableComponent)
         } else {
             AdyenAssertion.assertionFailure(
@@ -102,7 +102,7 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
 //        return .custom(navBar)
 //    }
     
-    private func creatRightNavigationBarIetm() -> UIBarButtonItem {
+    private func createRightNavigationBarItem() -> UIBarButtonItem {
         let trailingButton = UIButton(style: configuration.style.doneButton)
         trailingButton.translatesAutoresizingMaskIntoConstraints = false
         trailingButton.setTitle(Bundle.Adyen.localizedDoneCopy, for: .normal)

@@ -5,6 +5,7 @@
 //
 
 import AdyenNetworking
+import Foundation
 import func Darwin.fputs
 
 /// Provides control over SDK logging.
