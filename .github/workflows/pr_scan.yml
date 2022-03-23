@@ -23,7 +23,7 @@ jobs:
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '13.2.0'
+        xcode-version: latest-stable
 
     - name: Install Tools
       run: |

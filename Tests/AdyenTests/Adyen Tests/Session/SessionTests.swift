@@ -326,9 +326,8 @@ class SessionTests: XCTestCase {
         
         sut.requestOrder { result in
             let order = try! result.get()
-            XCTAssertEqual(order.reference, "ref")
+            XCTAssertEqual(order.pspReference, "ref")
             XCTAssertEqual(order.orderData, "data")
-            XCTAssertEqual(order.remainingAmount?.value, 10)
             XCTAssertEqual(sut.sessionContext.data, "session_data2")
         }
     }
