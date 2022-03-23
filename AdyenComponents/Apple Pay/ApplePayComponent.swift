@@ -157,6 +157,21 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks)
     }
 
+    private func sendTelemetryEvent() {
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
+    }
+}
+
+extension ApplePayComponent: TrackableComponent {}
+
+extension ApplePayComponent: ViewControllerDelegate {
+    public func viewDidLoad(viewController: UIViewController) { /* Empty implementation */ }
+
+    public func viewDidAppear(viewController: UIViewController) { /* Empty implementation */ }
+
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
+    }
 }
 
 extension ApplePayComponent {
