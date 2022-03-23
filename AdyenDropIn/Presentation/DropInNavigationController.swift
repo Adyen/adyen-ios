@@ -26,7 +26,7 @@ internal final class DropInNavigationController: UIViewController,
     
     private let rootNavigationController: ComponentNavigationController
     
-    internal let chileViewController: HalfPageViewController
+    internal let childViewController: HalfPageViewController
     
     internal typealias CancelHandler = (Bool, PresentableComponent) -> Void
     
@@ -40,7 +40,7 @@ internal final class DropInNavigationController: UIViewController,
         self.rootNavigationController = ComponentNavigationController(rootComponent: rootComponent,
                                                                       style: style,
                                                                       cancelHandler: cancelHandler)
-        self.chileViewController = HalfPageViewController(child: rootNavigationController)
+        self.childViewController = HalfPageViewController(child: rootNavigationController)
         super.init(nibName: nil, bundle: nil)
         setupChildViewController()
         setupNavigationBarAppearance()
@@ -101,11 +101,11 @@ internal final class DropInNavigationController: UIViewController,
     // MARK: - Layout
     
     internal func freezeFrameUpdate() {
-        chileViewController.freezeFrameUpdate()
+        childViewController.freezeFrameUpdate()
     }
     
     internal func unfreezeFrameUpdate() {
-        chileViewController.unfreezeFrameUpdate()
+        childViewController.unfreezeFrameUpdate()
     }
     
     internal func willUpdatePreferredContentSize() { /* Empty implementation */ }
@@ -115,17 +115,17 @@ internal final class DropInNavigationController: UIViewController,
     }
 
     internal func updateTopViewControllerIfNeeded(animated: Bool = true) {
-        let frame = chileViewController.requiresKeyboardInput ? self.keyboardRect : .zero
-        chileViewController.updateFrame(keyboardRect: frame, animated: animated)
+        let frame = childViewController.requiresKeyboardInput ? self.keyboardRect : .zero
+        childViewController.updateFrame(keyboardRect: frame, animated: animated)
     }
     
     // MARK: - Private
     
     private func setupChildViewController() {
-        addChild(chileViewController)
-        view.addSubview(chileViewController.view)
-        chileViewController.didMove(toParent: self)
-        chileViewController.view.adyen.anchor(inside: view)
+        addChild(childViewController)
+        view.addSubview(childViewController.view)
+        childViewController.didMove(toParent: self)
+        childViewController.view.adyen.anchor(inside: view)
         
         rootNavigationController.delegate = self
         modalPresentationStyle = .custom

@@ -22,7 +22,7 @@ class CardComponentTests: XCTestCase {
         
         wait(for: .milliseconds(50))
 
-        XCTAssertTrue(navigationViewController.chileViewController.requiresKeyboardInput)
+        XCTAssertTrue(navigationViewController.childViewController.requiresKeyboardInput)
     }
 
     func testLocalizationWithCustomTableName() {

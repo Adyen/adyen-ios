@@ -26,7 +26,7 @@ class PaymentMethodListComponentTests: XCTestCase {
         
         wait(for: .milliseconds(50))
 
-        XCTAssertFalse(navigationViewController.chileViewController.requiresKeyboardInput)
+        XCTAssertFalse(navigationViewController.childViewController.requiresKeyboardInput)
     }
     
     func testLocalizationWithCustomTableName() {
