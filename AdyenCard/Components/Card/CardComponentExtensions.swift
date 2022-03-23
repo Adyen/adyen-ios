@@ -53,16 +53,28 @@ extension CardComponent {
             delegate?.didFail(with: error, from: self)
         }
     }
+
+    private func sendTelemetryEvent() {
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
+    }
 }
 
 /// :nodoc:
-extension CardComponent: TrackableComponent {
-    
+extension CardComponent: TrackableComponent {}
+
+/// :nodoc:
+extension CardComponent: ViewControllerDelegate {
+
     /// :nodoc:
     public func viewDidLoad(viewController: UIViewController) {
         Analytics.sendEvent(component: paymentMethod.type.rawValue, flavor: _isDropIn ? .dropin : .components, context: apiContext)
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
+    }
+
+    /// :nodoc:
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
     }
 }
 
