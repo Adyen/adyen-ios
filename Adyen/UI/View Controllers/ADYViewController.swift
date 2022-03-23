@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,6 +9,8 @@ import UIKit
 /// :nodoc:
 /// `ADYViewController` serves as a height-aware `UIViewController`
 public final class ADYViewController: UIViewController {
+    
+    private lazy var scrollView = UIScrollView()
     
     /// :nodoc:
     private let contentView: UIView
@@ -28,13 +30,25 @@ public final class ADYViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override public func loadView() {
-        self.view = contentView
+    override public func viewDidLoad() {
+        super.viewDidLoad()
+        buildUI()
+    }
+    
+    private func buildUI() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(scrollView)
+        scrollView.adyen.anchor(inside: view.safeAreaLayoutGuide)
+
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(contentView)
+        contentView.adyen.anchor(inside: scrollView)
+        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
     }
     
     override public var preferredContentSize: CGSize {
         get {
-            view.adyen.minimalSize
+            contentView.adyen.minimalSize
         }
 
         // swiftlint:disable:next unused_setter_value

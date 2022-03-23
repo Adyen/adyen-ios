@@ -72,7 +72,7 @@ internal final class VoucherView: UIView, Localizable {
         spacerPortraitConstraint = firstSpacer.heightAnchor.constraint(equalToConstant: 80.0)
 
         NSLayoutConstraint.activate([
-            logo.topAnchor.constraint(equalTo: topAnchor, constant: -22),
+            logo.topAnchor.constraint(equalTo: topAnchor, constant: 22),
             logo.centerXAnchor.constraint(equalTo: centerXAnchor),
             firstSpacer.topAnchor.constraint(equalTo: logo.bottomAnchor),
             firstSpacer.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
@@ -147,6 +147,7 @@ internal final class VoucherView: UIView, Localizable {
         amountLabel.setContentHuggingPriority(.required, for: .horizontal)
         amountLabel.setContentHuggingPriority(.required, for: .vertical)
         amountLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "amountLabel")
+        amountLabel.translatesAutoresizingMaskIntoConstraints = false
         
         return amountLabel
     }()
@@ -157,6 +158,7 @@ internal final class VoucherView: UIView, Localizable {
         currencyLabel.setContentHuggingPriority(.required, for: .horizontal)
         currencyLabel.setContentHuggingPriority(.required, for: .vertical)
         currencyLabel.numberOfLines = 1
+        currencyLabel.translatesAutoresizingMaskIntoConstraints = false
         currencyLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "currencyLabel")
         
         return currencyLabel
