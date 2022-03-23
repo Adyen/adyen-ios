@@ -140,15 +140,15 @@ class AdyenActionComponentTests: XCTestCase {
         let action = try! JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)
         sut.handle(Action.voucher(action))
         
-        wait(for: .seconds(2))
+        wait(for: .milliseconds(200))
         
         let waitExpectation = expectation(description: "Expect VoucherViewController to be presented")
         let topPresentedViewController = UIViewController.findTopPresenter()
-        XCTAssertNotNil(topPresentedViewController?.view as? VoucherView)
+        XCTAssertNotNil(topPresentedViewController?.view.findView(with: "adyen.voucherView") as? VoucherView)
 
         (sut.presentationDelegate as! UIViewController).dismiss(animated: true) {
             let topPresentedViewController = UIViewController.findTopPresenter()
-            XCTAssertNil(topPresentedViewController as? VoucherViewController)
+            XCTAssertNil(topPresentedViewController?.view.findView(with: "adyen.voucherView") as? VoucherView)
 
             waitExpectation.fulfill()
         }

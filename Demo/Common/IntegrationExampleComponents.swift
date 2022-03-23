@@ -46,8 +46,8 @@ extension IntegrationExample {
     }
 
     internal func presentMBWayComponent() {
-        let style = FormComponentStyle()
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: MBWayPaymentMethod.self) else { return }
+        let style = FormComponentStyle()
         let config = MBWayComponent.Configuration(style: style)
         let component = MBWayComponent(paymentMethod: paymentMethod,
                                        apiContext: apiContext,
