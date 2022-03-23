@@ -7,6 +7,7 @@
 import Adyen
 import AdyenNetworking
 import PassKit
+import SwiftUI
 import UIKit
 
 /// A component that handles voucher action.
@@ -129,9 +130,9 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
         if let presentationDelegate = presentationDelegate {
             let presentableComponent = PresentableComponentWrapper(
                 component: self,
-                viewController: viewController,
-                navBarType: navBarType()
+                viewController: viewController
             )
+            viewController.navigationItem.rightBarButtonItem = creatRightNavigationBarIetm()
             presentationDelegate.present(component: presentableComponent)
         } else {
             AdyenAssertion.assertionFailure(
@@ -142,23 +143,33 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     
     internal let presenterViewController = UIViewController()
         
-    private func navBarType() -> NavigationBarType {
-        let model = ActionNavigationBar.Model(leadingButtonTitle: Bundle.Adyen.localizedEditCopy,
-                                              trailingButtonTitle: Bundle.Adyen.localizedDoneCopy)
-        let style = ActionNavigationBar.Style(leadingButton: configuration.style.editButton,
-                                              trailingButton: configuration.style.doneButton,
-                                              backgroundColor: configuration.style.backgroundColor)
-        
-        let navBar = ActionNavigationBar(model: model, style: style)
-        
-        navBar.leadingButtonHandler = {
-            navBar.onCancelHandler?()
-        }
-        
-        navBar.trailingButtonHandler = { [weak self] in
-            self.map { $0.delegate?.didComplete(from: $0) }
-        }
-        return .custom(navBar)
+    private func creatRightNavigationBarIetm() -> UIBarButtonItem {
+//        let model = ActionNavigationBar.Model(leadingButtonTitle: Bundle.Adyen.localizedEditCopy,
+//                                              trailingButtonTitle: Bundle.Adyen.localizedDoneCopy)
+//        let style = ActionNavigationBar.Style(leadingButton: configuration.style.editButton,
+//                                              trailingButton: configuration.style.doneButton,
+//                                              backgroundColor: configuration.style.backgroundColor)
+//
+//        let navBar = ActionNavigationBar(model: model, style: style)
+//
+//        navBar.leadingButtonHandler = {
+//            navBar.onCancelHandler?()
+//        }
+//
+//        navBar.trailingButtonHandler = { [weak self] in
+//            self.map { $0.delegate?.didComplete(from: $0) }
+//        }
+//        return .custom(navBar)
+        let trailingButton = UIButton(style: configuration.style.doneButton)
+        trailingButton.translatesAutoresizingMaskIntoConstraints = false
+        trailingButton.setTitle(Bundle.Adyen.localizedDoneCopy, for: .normal)
+        trailingButton.addTarget(self, action: #selector(onTrailingButtonTap), for: .touchUpInside)
+        trailingButton.contentHorizontalAlignment = .trailing
+        return UIBarButtonItem(customView: trailingButton)
+    }
+    
+    @objc private func onTrailingButtonTap() {
+        delegate?.didComplete(from: self)
     }
     
     private func viewModel(with action: VoucherAction) -> VoucherView.Model {

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,6 +9,14 @@ import UIKit
 
 /// Contains the styling customization options for the QR code component.
 public struct QRCodeComponentStyle: ViewStyle {
+    
+    /// The done button style.
+    public var doneButton = ButtonStyle(
+        title: TextStyle(font: .preferredFont(forTextStyle: .headline),
+                         color: UIColor.Adyen.defaultBlue),
+        cornerRounding: .none,
+        background: UIColor.clear
+    )
     
     /// The copy button style.
     public var copyButton = ButtonStyle(

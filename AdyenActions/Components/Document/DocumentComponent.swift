@@ -78,7 +78,8 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
 
         if let presentationDelegate = presentationDelegate {
             let presentableComponent = PresentableComponentWrapper(component: self,
-                                                                   viewController: viewController, navBarType: navBarType())
+                                                                   viewController: viewController)
+            viewController.navigationItem.rightBarButtonItem = creatRightNavigationBarIetm()
             presentationDelegate.present(component: presentableComponent)
         } else {
             AdyenAssertion.assertionFailure(
@@ -87,18 +88,31 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
         }
     }
     
-    private func navBarType() -> NavigationBarType {
-        let model = ActionNavigationBar.Model(leadingButtonTitle: nil,
-                                              trailingButtonTitle: Bundle.Adyen.localizedDoneCopy)
-        let style = ActionNavigationBar.Style(leadingButton: nil,
-                                              trailingButton: configuration.style.doneButton,
-                                              backgroundColor: configuration.style.backgroundColor)
-        
-        let navBar = ActionNavigationBar(model: model, style: style)
-        navBar.trailingButtonHandler = { [weak self] in
-            self.map { $0.delegate?.didComplete(from: $0) }
-        }
-        return .custom(navBar)
+//    private func navBarType() -> NavigationBarType {
+//        let model = ActionNavigationBar.Model(leadingButtonTitle: nil,
+//                                              trailingButtonTitle: Bundle.Adyen.localizedDoneCopy)
+//        let style = ActionNavigationBar.Style(leadingButton: nil,
+//                                              trailingButton: configuration.style.doneButton,
+//                                              backgroundColor: configuration.style.backgroundColor)
+//
+//        let navBar = ActionNavigationBar(model: model, style: style)
+//        navBar.trailingButtonHandler = { [weak self] in
+//            self.map { $0.delegate?.didComplete(from: $0) }
+//        }
+//        return .custom(navBar)
+//    }
+    
+    private func creatRightNavigationBarIetm() -> UIBarButtonItem {
+        let trailingButton = UIButton(style: configuration.style.doneButton)
+        trailingButton.translatesAutoresizingMaskIntoConstraints = false
+        trailingButton.setTitle(Bundle.Adyen.localizedDoneCopy, for: .normal)
+        trailingButton.addTarget(self, action: #selector(onTrailingButtonTap), for: .touchUpInside)
+        trailingButton.contentHorizontalAlignment = .trailing
+        return UIBarButtonItem(customView: trailingButton)
+    }
+    
+    @objc private func onTrailingButtonTap() {
+        delegate?.didComplete(from: self)
     }
 }
 
