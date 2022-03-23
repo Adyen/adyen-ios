@@ -90,7 +90,7 @@ internal final class DropInNavigationController: UIViewController,
     }
     
     internal func present(root component: PresentableComponent) {
-        rootNavigationController.push(component: component, animated: true)
+        rootNavigationController.pushAsRoot(component: component, animated: true)
     }
     
     @discardableResult

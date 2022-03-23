@@ -21,9 +21,7 @@ internal final class ComponentNavigationController: UINavigationController {
         self.style = style
         
         super.init(rootViewController: rootComponent.viewController)
-        let button = createCancelButton()
-        button.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
-        rootComponent.viewController.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
+        setupNavigationBar(for: rootComponent.viewController)
     }
     
     @objc private func cancelTapped() {
@@ -59,6 +57,20 @@ internal final class ComponentNavigationController: UINavigationController {
     internal func push(component: PresentableComponent, animated: Bool) {
         components.append(component)
         pushViewController(component.viewController, animated: animated)
+    }
+    
+    internal func pushAsRoot(component: PresentableComponent, animated: Bool) {
+        components = [component]
+        component.viewController.navigationItem.hidesBackButton = true
+        pushViewController(component.viewController, animated: animated)
+        viewControllers = [component.viewController]
+        setupNavigationBar(for: component.viewController)
+    }
+    
+    private func setupNavigationBar(for viewController: UIViewController) {
+        let button = createCancelButton()
+        button.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
+        viewController.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
     }
     
     private func createCancelButton() -> UIButton {
