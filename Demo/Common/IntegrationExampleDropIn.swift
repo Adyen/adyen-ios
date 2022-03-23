@@ -22,7 +22,7 @@ extension IntegrationExample {
                                        merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         configuration.payment = payment
-        configuration.card.billingAddressMode = .postalCode
+        configuration.card.billingAddressMode = .full
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
 
         let component = DropInComponent(paymentMethods: paymentMethods,

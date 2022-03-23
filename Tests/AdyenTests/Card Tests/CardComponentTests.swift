@@ -823,6 +823,8 @@ class CardComponentTests: XCTestCase {
 
         let payButtonItemViewButton: UIControl? = view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        
+        wait(for: .seconds(1))
 
         XCTAssertFalse(houseNumberItemView.alertLabel.isHidden)
         XCTAssertFalse(addressItemView.alertLabel.isHidden)

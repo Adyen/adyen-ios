@@ -132,7 +132,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
                 component: self,
                 viewController: viewController
             )
-            viewController.navigationItem.rightBarButtonItem = creatRightNavigationBarItem()
+            viewController.navigationItem.rightBarButtonItem = createRightNavigationBarItem()
             presentationDelegate.present(component: presentableComponent)
         } else {
             AdyenAssertion.assertionFailure(
@@ -143,7 +143,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     
     internal let presenterViewController = UIViewController()
         
-    private func creatRightNavigationBarItem() -> UIBarButtonItem {
+    private func createRightNavigationBarItem() -> UIBarButtonItem {
 //        let model = ActionNavigationBar.Model(leadingButtonTitle: Bundle.Adyen.localizedEditCopy,
 //                                              trailingButtonTitle: Bundle.Adyen.localizedDoneCopy)
 //        let style = ActionNavigationBar.Style(leadingButton: configuration.style.editButton,

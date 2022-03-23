@@ -129,8 +129,6 @@ internal final class ComponentNavigationController: UINavigationController {
 
         let bottomPadding = max(abs(keyboardRect.height), view.safeAreaInsets.bottom, 0)
         let expectedHeight = preferredContentSize.height + bottomPadding
-        
-        adyenPrint("preferredContentSize: \(preferredContentSize)")
 
         func calculateFrame(for expectedHeight: CGFloat) {
             frame.origin.y += frame.size.height - expectedHeight
