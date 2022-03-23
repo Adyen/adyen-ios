@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -51,26 +51,9 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     internal var confirmationPresenter: BACSConfirmationPresenterProtocol?
     private var confirmationViewPresented = false
 
-    internal lazy var inputFormViewController: BACSInputFormViewController = {
-        let inputFormViewController = BACSInputFormViewController(title: paymentMethod.name,
-                                                                  styleProvider: configuration.style)
-        inputFormViewController.presenter = inputPresenter
-        return inputFormViewController
-    }()
+    internal let inputFormViewController: BACSInputFormViewController
     
-    internal lazy var inputPresenter: BACSInputPresenterProtocol? = {
-        let tracker = BACSDirectDebitComponentTracker(paymentMethod: bacsPaymentMethod,
-                                                      apiContext: apiContext,
-                                                      isDropIn: _isDropIn)
-        let itemsFactory = BACSItemsFactory(styleProvider: configuration.style,
-                                            localizationParameters: configuration.localizationParameters,
-                                            scope: String(describing: self))
-        return BACSInputPresenter(view: inputFormViewController,
-                                  router: self,
-                                  tracker: tracker,
-                                  itemsFactory: itemsFactory,
-                                  amount: payment?.amount)
-    }()
+    private var inputPresenter: BACSInputPresenterProtocol?
     
     // MARK: - Initializers
 
@@ -85,6 +68,24 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
         self.bacsPaymentMethod = paymentMethod
         self.apiContext = apiContext
         self.configuration = configuration
+        self.inputFormViewController = BACSInputFormViewController(title: paymentMethod.name,
+                                                                   styleProvider: configuration.style)
+        self.inputPresenter = createInputPresenter()
+        inputFormViewController.presenter = inputPresenter
+    }
+    
+    private func createInputPresenter() -> BACSInputPresenterProtocol {
+        let tracker = BACSDirectDebitComponentTracker(paymentMethod: bacsPaymentMethod,
+                                                      apiContext: apiContext,
+                                                      isDropIn: _isDropIn)
+        let itemsFactory = BACSItemsFactory(styleProvider: configuration.style,
+                                            localizationParameters: configuration.localizationParameters,
+                                            scope: String(describing: self))
+        return BACSInputPresenter(view: inputFormViewController,
+                                  router: self,
+                                  tracker: tracker,
+                                  itemsFactory: itemsFactory,
+                                  amount: payment?.amount)
     }
 }
 

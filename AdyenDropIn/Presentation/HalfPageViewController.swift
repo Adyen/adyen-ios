@@ -103,10 +103,10 @@ internal final class HalfPageViewController: UIViewController {
     private func updateFrame(with context: FrameUpdateContext) {
         guard let view = viewIfLoaded else { return }
         let finalFrame = child.finalPresentationFrame(with: context.keyboardRect)
-        AdyenAssertion.assert(message: "isFrameUpdateFrozen must not be true",
-                              condition: isFrameUpdateFrozen)
-        AdyenAssertion.assert(message: "Only one animation at a time is allowed",
-                              condition: currentlyUpdatingFrameContext != nil)
+//        AdyenAssertion.assert(message: "isFrameUpdateFrozen must not be true",
+//                              condition: isFrameUpdateFrozen)
+//        AdyenAssertion.assert(message: "Only one animation at a time is allowed",
+//                              condition: currentlyUpdatingFrameContext != nil)
         currentlyUpdatingFrameContext = context
         view.layoutIfNeeded()
         view.adyen.animate(context: SpringAnimationContext(
