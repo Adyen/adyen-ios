@@ -265,12 +265,17 @@ class SessionTests: XCTestCase {
                                                                  balance: Amount(value: 50, currencyCode: "EUR"),
                                                                  transactionLimit: Amount(value: 30, currencyCode: "EUR")))]
         
+        let expectation = expectation(description: "Expect API call to be made")
+        apiClient.onExecute = {
+            expectation.fulfill()
+        }
         sut.checkBalance(with: paymentData) { result in
             let balance = try! result.get()
             XCTAssertEqual(balance.availableAmount.value, 50)
             XCTAssertEqual(balance.transactionLimit!.value, 30)
             XCTAssertEqual(sut.sessionContext.data, "session_data2")
         }
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testBalanceCheckZeroBalance() throws {
@@ -287,11 +292,16 @@ class SessionTests: XCTestCase {
                                                                  balance: nil,
                                                                  transactionLimit: nil))]
         
+        let expectation = expectation(description: "Expect API call to be made")
+        apiClient.onExecute = {
+            expectation.fulfill()
+        }
         // get .failure
         sut.checkBalance(with: paymentData) { result in
             XCTAssertNotNil(result.failure)
             XCTAssertEqual(sut.sessionContext.data, "session_data2")
         }
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testBalanceCheckFailure() throws {
@@ -306,11 +316,16 @@ class SessionTests: XCTestCase {
         
         apiClient.mockedResults = [.failure(BalanceChecker.Error.zeroBalance)]
         
+        let expectation = expectation(description: "Expect API call to be made")
+        apiClient.onExecute = {
+            expectation.fulfill()
+        }
         // get .failure
         sut.checkBalance(with: paymentData) { result in
             XCTAssertNotNil(result.failure)
             XCTAssertEqual(sut.sessionContext.data, "session_data_1")
         }
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testRequestOrderSuccess() throws {
@@ -324,12 +339,17 @@ class SessionTests: XCTestCase {
                                                                 remainingAmount: Amount(value: 10, currencyCode: "EUR"),
                                                                 sessionData: "session_data2"))]
         
+        let expectation = expectation(description: "Expect API call to be made")
+        apiClient.onExecute = {
+            expectation.fulfill()
+        }
         sut.requestOrder { result in
             let order = try! result.get()
             XCTAssertEqual(order.pspReference, "ref")
             XCTAssertEqual(order.orderData, "data")
             XCTAssertEqual(sut.sessionContext.data, "session_data2")
         }
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testRequestOrderFailure() throws {
@@ -340,10 +360,15 @@ class SessionTests: XCTestCase {
         
         apiClient.mockedResults = [.failure(PartialPaymentError.missingOrderData)]
         
+        let expectation = expectation(description: "Expect API call to be made")
+        apiClient.onExecute = {
+            expectation.fulfill()
+        }
         sut.requestOrder { result in
             XCTAssertNotNil(result.failure)
             XCTAssertEqual(sut.sessionContext.data, "session_data_1")
         }
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testCancelOrderSuccess() throws {
