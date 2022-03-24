@@ -8,6 +8,10 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
+internal protocol SessionResponse: Response {
+    var sessionData: String { get }
+}
+
 internal struct SessionSetupRequest: Request {
     internal let path: String
     
@@ -47,7 +51,7 @@ internal struct SessionSetupRequest: Request {
     }
 }
 
-internal struct SessionSetupResponse: Response {
+internal struct SessionSetupResponse: SessionResponse {
     
     internal let countryCode: String
     

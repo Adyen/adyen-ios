@@ -47,7 +47,7 @@ internal struct CancelOrderRequest: APIRequest {
     }
 }
 
-internal struct CancelOrderResponse: Response {
+internal struct CancelOrderResponse: SessionResponse {
 
     internal let sessionData: String
 }

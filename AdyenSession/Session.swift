@@ -142,7 +142,8 @@ public final class Session: SessionProtocol {
     internal let configuration: Configuration
     
     internal lazy var apiClient: APIClientProtocol = {
-        APIClient(apiContext: configuration.apiContext)
+        let apiClient = SessionAPIClient(apiClient: APIClient(apiContext: configuration.apiContext), session: self)
+        return apiClient
             .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
             .retryOnErrorAPIClient()
     }()

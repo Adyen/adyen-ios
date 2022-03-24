@@ -87,6 +87,8 @@
 		A0414C302790429A00DF3FE9 /* PublicKeyConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C2F2790429A00DF3FE9 /* PublicKeyConsumer.swift */; };
 		A0414C322791C9BB00DF3FE9 /* BankPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C312791C9BB00DF3FE9 /* BankPayload.swift */; };
 		A0414C342791D9EC00DF3FE9 /* BankDetailsEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C332791D9EC00DF3FE9 /* BankDetailsEncryptor.swift */; };
+		A04E60CD27DFA2BD0051C72C /* SessionAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60CC27DFA2BD0051C72C /* SessionAPIClient.swift */; };
+		A04E60D327E0E6280051C72C /* XCTestCase+Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60D227E0E6280051C72C /* XCTestCase+Result.swift */; };
 		A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */; };
 		A07355D7276B350F00530562 /* DocumentActionViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */; };
 		A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */; };
@@ -1080,6 +1082,8 @@
 		A0414C2F2790429A00DF3FE9 /* PublicKeyConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyConsumer.swift; sourceTree = "<group>"; };
 		A0414C312791C9BB00DF3FE9 /* BankPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankPayload.swift; sourceTree = "<group>"; };
 		A0414C332791D9EC00DF3FE9 /* BankDetailsEncryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankDetailsEncryptor.swift; sourceTree = "<group>"; };
+		A04E60CC27DFA2BD0051C72C /* SessionAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionAPIClient.swift; sourceTree = "<group>"; };
+		A04E60D227E0E6280051C72C /* XCTestCase+Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Result.swift"; sourceTree = "<group>"; };
 		A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponentTests.swift; sourceTree = "<group>"; };
 		A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionViewDelegateMock.swift; sourceTree = "<group>"; };
 		A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatter.swift; sourceTree = "<group>"; };
@@ -2051,6 +2055,7 @@
 				F96AE51A26038602009F82BD /* XCTestCaseExtension.swift */,
 				C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */,
 				5A56E15426B6DEF800744CA0 /* XCTestCase+Style.swift */,
+				A04E60D227E0E6280051C72C /* XCTestCase+Result.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -3735,6 +3740,7 @@
 				F967580827D10CF700A16FB6 /* Payment Details */,
 				F967580627D10CB100A16FB6 /* Partial Payments API */,
 				F967580D27D1253000A16FB6 /* SelfRetainingAPIClient.swift */,
+				A04E60CC27DFA2BD0051C72C /* SessionAPIClient.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -5732,6 +5738,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A04E60CD27DFA2BD0051C72C /* SessionAPIClient.swift in Sources */,
 				F9CA6BC127D5E76A00D7BE6E /* CreateOrderRequest.swift in Sources */,
 				F92980C627CF563C000CA5CA /* Session+PartialPaymentDelegate.swift in Sources */,
 				F9CA6BBE27D5E53000D7BE6E /* BalanceCheckRequest.swift in Sources */,
@@ -5740,6 +5747,7 @@
 				F9CA6BC427D5E99000D7BE6E /* CancelOrderRequest.swift in Sources */,
 				F967581227D207C600A16FB6 /* PaymentDetailsRequest.swift in Sources */,
 				F92980C227CF550C000CA5CA /* Session+PaymentComponentDelegate.swift in Sources */,
+				A04E60D327E0E6280051C72C /* XCTestCase+Result.swift in Sources */,
 				F967580E27D1253000A16FB6 /* SelfRetainingAPIClient.swift in Sources */,
 				F9B8AF5E27DA4EA400DC0894 /* Session+DropInComponentDelegate.swift in Sources */,
 				F92980B227CE2B55000CA5CA /* Session.swift in Sources */,
