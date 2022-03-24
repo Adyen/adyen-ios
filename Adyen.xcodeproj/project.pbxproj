@@ -258,10 +258,7 @@
 		E757F03925D2ED57007C813D /* APIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E757F02525D2ED4C007C813D /* APIClientMock.swift */; };
 		E757F03A25D2ED58007C813D /* APIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E757F02525D2ED4C007C813D /* APIClientMock.swift */; };
 		E759E24C25CB3BB700B1F8DC /* DropInTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E759E1F425CB373F00B1F8DC /* DropInTests.swift */; };
-		E7620EAD23C3466B00A492C3 /* ModalViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */; };
 		E767F3F525A4CFAF0077029E /* HalfPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F34D25A4865A0077029E /* HalfPageViewController.swift */; };
-		E767F49B25A5E9740077029E /* ModalToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F49A25A5E9740077029E /* ModalToolbar.swift */; };
-		E767F4DC25A603A50077029E /* ModalToolbarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F4DB25A603A50077029E /* ModalToolbarTests.swift */; };
 		E76CAC4E26BC0CC200117953 /* CardViewControllerItemsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76CAC4D26BC0CC200117953 /* CardViewControllerItemsProvider.swift */; };
 		E76EC680241125E0009C6E2F /* FormCardSecurityCodeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC67F241125E0009C6E2F /* FormCardSecurityCodeItem.swift */; };
 		E76EC682241125F5009C6E2F /* FormCardSecurityCodeItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC681241125F5009C6E2F /* FormCardSecurityCodeItemView.swift */; };
@@ -1280,10 +1277,7 @@
 		E755BF7126B40C90007AAB25 /* DateValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateValidator.swift; sourceTree = "<group>"; };
 		E757F02525D2ED4C007C813D /* APIClientMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientMock.swift; sourceTree = "<group>"; };
 		E759E1F425CB373F00B1F8DC /* DropInTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInTests.swift; sourceTree = "<group>"; };
-		E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewControllerTests.swift; sourceTree = "<group>"; };
 		E767F34D25A4865A0077029E /* HalfPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfPageViewController.swift; sourceTree = "<group>"; };
-		E767F49A25A5E9740077029E /* ModalToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalToolbar.swift; sourceTree = "<group>"; };
-		E767F4DB25A603A50077029E /* ModalToolbarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalToolbarTests.swift; sourceTree = "<group>"; };
 		E768712426B02D17005A91DB /* Shared.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Shared.entitlements; sourceTree = "<group>"; };
 		E76A4D392684F39A001BEAC3 /* KCPDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KCPDetails.swift; sourceTree = "<group>"; };
 		E76CAC4D26BC0CC200117953 /* CardViewControllerItemsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewControllerItemsProvider.swift; sourceTree = "<group>"; };
@@ -2820,7 +2814,6 @@
 		E767F49925A5E9670077029E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E767F49A25A5E9740077029E /* ModalToolbar.swift */,
 				5A238C92263AEA0800758FEF /* PreApplePayView.swift */,
 			);
 			path = Views;
@@ -3907,9 +3900,7 @@
 			children = (
 				F99F08602383F28800EBB948 /* Form */,
 				F9DC6BA423AA291500863F3A /* List Component */,
-				E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */,
 				E7D5311B2447065B000046B4 /* PreselectedPaymentComponentTests.swift */,
-				E767F4DB25A603A50077029E /* ModalToolbarTests.swift */,
 				F9FE39E22679E09200F02A9B /* LoadingViewTests.swift */,
 			);
 			path = UI;
@@ -5438,7 +5429,6 @@
 				F9838D0126318EBD00963483 /* ReadyToSubmitPaymentComponentDelegateMock.swift in Sources */,
 				A0BFC8082720259500E36516 /* CardBrandSorterTests.swift in Sources */,
 				F919DF9924EA64680027976E /* CardPublicKeyProviderTests.swift in Sources */,
-				E7620EAD23C3466B00A492C3 /* ModalViewControllerTests.swift in Sources */,
 				C9C21914276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift in Sources */,
 				E7085C1E2629FDD700D0153B /* RedirectListnerTests.swift in Sources */,
 				E74CE3DF26727EB1008231D2 /* DropInDelegateMock.swift in Sources */,
@@ -5463,7 +5453,6 @@
 				F9D644E724D40C7C0059CBE3 /* MBWayComponentTests.swift in Sources */,
 				5AF730EA2667C3F10091C573 /* APIContextTests.swift in Sources */,
 				5A56E15526B6DEF800744CA0 /* XCTestCase+Style.swift in Sources */,
-				E767F4DC25A603A50077029E /* ModalToolbarTests.swift in Sources */,
 				E7D3ED84243B667500E73F59 /* FormCardNumberItemViewTests.swift in Sources */,
 				F957AAA62552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift in Sources */,
 				F9B997A425C8554F00891084 /* DokuVoucherUITests.swift in Sources */,
@@ -5563,7 +5552,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F96F44CF23BDEC0200871C1F /* DropInComponentStyle.swift in Sources */,
-				E767F49B25A5E9740077029E /* ModalToolbar.swift in Sources */,
 				E9021DFC2260D626009CF7F4 /* ComponentSections.swift in Sources */,
 				E7484C2723B9FDF000CCF74F /* DropInNavigationAnimator.swift in Sources */,
 				5A238C93263AEA0800758FEF /* PreApplePayView.swift in Sources */,
@@ -6288,6 +6276,7 @@
 		E2C0E065220982AE008616F6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
@@ -6315,6 +6304,7 @@
 		E2C0E066220982AE008616F6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
@@ -6516,6 +6506,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -6537,6 +6528,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenActions;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
@@ -6548,6 +6540,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -6569,6 +6562,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenActions;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;

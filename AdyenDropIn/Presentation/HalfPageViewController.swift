@@ -66,7 +66,7 @@ internal final class HalfPageViewController: UIViewController {
         let oldValue = isFrameUpdateFrozen
         isFrameUpdateFrozen = false
         
-        if oldValue == true {
+        if oldValue {
             /// Update the frame using the latest `nextUpdatingFrameContext` if there is any.
             updateNextFrameIfNeeded()
         }

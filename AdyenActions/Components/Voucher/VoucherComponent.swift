@@ -144,22 +144,6 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     internal let presenterViewController = UIViewController()
         
     private func createRightNavigationBarItem() -> UIBarButtonItem {
-//        let model = ActionNavigationBar.Model(leadingButtonTitle: Bundle.Adyen.localizedEditCopy,
-//                                              trailingButtonTitle: Bundle.Adyen.localizedDoneCopy)
-//        let style = ActionNavigationBar.Style(leadingButton: configuration.style.editButton,
-//                                              trailingButton: configuration.style.doneButton,
-//                                              backgroundColor: configuration.style.backgroundColor)
-//
-//        let navBar = ActionNavigationBar(model: model, style: style)
-//
-//        navBar.leadingButtonHandler = {
-//            navBar.onCancelHandler?()
-//        }
-//
-//        navBar.trailingButtonHandler = { [weak self] in
-//            self.map { $0.delegate?.didComplete(from: $0) }
-//        }
-//        return .custom(navBar)
         let trailingButton = UIButton(style: configuration.style.doneButton)
         trailingButton.translatesAutoresizingMaskIntoConstraints = false
         trailingButton.setTitle(Bundle.Adyen.localizedDoneCopy, for: .normal)

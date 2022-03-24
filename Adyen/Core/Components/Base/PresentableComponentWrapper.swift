@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -26,22 +26,14 @@ public final class PresentableComponentWrapper: PresentableComponent,
     /// :nodoc:
     public let requiresModalPresentation: Bool = true
     
-    /// :nodoc:
-    public var navBarType: NavigationBarType
-    
     /// Initializes the wrapper component.
     ///
     /// - Parameter component: The wrapped component.
     /// - Parameter viewController: The `ViewController` used as the UI of the `PresentableComponent`.
     /// - Parameter navBarType: Type of the navigation bar to use.
-    public init(
-        component: Component,
-        viewController: UIViewController,
-        navBarType: NavigationBarType = .regular
-    ) {
+    public init(component: Component, viewController: UIViewController) {
         self.component = component
         self.viewController = viewController
-        self.navBarType = navBarType
     }
 
     public func didCancel() {

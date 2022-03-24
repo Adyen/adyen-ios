@@ -31,12 +31,6 @@ public protocol AnyNavigationBar: UIView {
     
 }
 
-/// :nodoc:
-public enum NavigationBarType {
-    case regular
-    case custom(AnyNavigationBar)
-}
-
 /// A component that provides a view controller for the shopper to fill payment details.
 public protocol PresentableComponent: Component {
     
@@ -46,9 +40,6 @@ public protocol PresentableComponent: Component {
     
     /// Returns a view controller that presents the payment details for the shopper to fill.
     var viewController: UIViewController { get }
-    
-    /// Indicates whether Component implements a custom Navigation bar.
-    var navBarType: NavigationBarType { get }
 }
 
 /// :nodoc:
@@ -56,9 +47,6 @@ public extension PresentableComponent {
     
     /// :nodoc:
     var requiresModalPresentation: Bool { false }
-    
-    /// :nodoc:
-    var navBarType: NavigationBarType { .regular }
     
 }
 

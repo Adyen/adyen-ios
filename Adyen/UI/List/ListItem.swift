@@ -42,10 +42,10 @@ public class ListItem: FormItem {
     public let canModifyIcon: Bool
     
     /// :nodoc:
-    public var showsActivityIndicator: Bool = false
+    internal var showsActivityIndicator: Bool = false
     
     /// :nodoc:
-    public var isEnabled: Bool = true
+    internal var isEnabled: Bool = true
     
     /// Initializes the list item.
     ///
