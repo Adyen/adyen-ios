@@ -39,9 +39,20 @@ public final class InstantPaymentComponent: PaymentComponent {
     public func initiatePayment() {
         let details = InstantPaymentDetails(type: paymentMethod.type)
         let paymentData = self.paymentData ?? PaymentComponentData(paymentMethodDetails: details, amount: amountToPay, order: order)
+
+        sendTelemetryEvent()
         submit(data: paymentData)
     }
+
+    // MARK: - Private
+
+    private func sendTelemetryEvent() {
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
+    }
 }
+
+/// :nodoc:
+extension InstantPaymentComponent: TrackableComponent {}
 
 /// Describes a payment details that contains nothing but the payment method type name.
 public struct InstantPaymentDetails: PaymentMethodDetails {
