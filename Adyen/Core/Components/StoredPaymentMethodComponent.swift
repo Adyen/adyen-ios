@@ -42,6 +42,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
             flavor: _isDropIn ? .dropin : .components,
             context: apiContext
         )
+        sendTelemetryEvent()
         
         let displayInformation = storedPaymentMethod.localizedDisplayInformation(using: localizationParameters)
         let alertController = UIAlertController(title: localizedString(.dropInStoredTitle,
@@ -70,8 +71,16 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
     
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
-    
+
+    // MARK: - Private
+
+    private func sendTelemetryEvent() {
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
+    }
 }
+
+/// :nodoc:
+extension StoredPaymentMethodComponent: TrackableComponent {}
 
 /// :nodoc:
 public struct StoredPaymentDetails: PaymentMethodDetails {
