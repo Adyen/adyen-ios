@@ -144,11 +144,11 @@ class AdyenActionComponentTests: XCTestCase {
         
         let waitExpectation = expectation(description: "Expect VoucherViewController to be presented")
         let topPresentedViewController = UIViewController.findTopPresenter()
-        XCTAssertNotNil(topPresentedViewController?.view.findView(with: "adyen.voucherView") as? VoucherView)
+        XCTAssertNotNil(topPresentedViewController?.view.findView(with: "AdyenActions.VoucherComponent.voucherView") as? VoucherView)
 
         (sut.presentationDelegate as! UIViewController).dismiss(animated: true) {
             let topPresentedViewController = UIViewController.findTopPresenter()
-            XCTAssertNil(topPresentedViewController?.view.findView(with: "adyen.voucherView") as? VoucherView)
+            XCTAssertNil(topPresentedViewController?.view.findView(with: "AdyenActions.VoucherComponent.voucherView") as? VoucherView)
 
             waitExpectation.fulfill()
         }

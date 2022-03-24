@@ -35,7 +35,6 @@ internal final class VoucherView: UIView, Localizable {
         super.init(frame: .zero)
         self.accessibilityIdentifier = model.identifier
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.accessibilityIdentifier = "adyen.voucherView"
         
         buildUI()
     }
