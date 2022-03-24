@@ -53,6 +53,7 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
             flavor: _isDropIn ? .dropin : .components,
             context: apiContext
         )
+        sendTelemetryEvent()
         
         let manager = StoredCardAlertManager(paymentMethod: storedCardPaymentMethod,
                                              apiContext: apiContext,
@@ -74,4 +75,12 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
         return manager
     }()
 
+    // MARK: - Private
+
+    private func sendTelemetryEvent() {
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
+    }
 }
+
+/// :nodoc:
+extension StoredCardComponent: TrackableComponent {}
