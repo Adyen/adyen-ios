@@ -19,6 +19,11 @@ import UIKit
 
 /// :nodoc:
 extension DropInComponent: PaymentMethodListComponentDelegate {
+
+    internal func didLoad(_ paymentMethodListComponent: PaymentMethodListComponent) {
+        let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: .dropIn(paymentMethods: paymentMethodTypes))
+    }
     
     internal func didSelect(_ component: PaymentComponent,
                             in paymentMethodListComponent: PaymentMethodListComponent) {
@@ -39,7 +44,6 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
         }
         storedPaymentMethodsDelegate?.disable(storedPaymentMethod: paymentMethod, completion: deletionCompletion)
     }
-    
 }
 
 /// :nodoc:
