@@ -4,11 +4,6 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
-  push:
-    branches:
-    - master
-    - develop
-
 jobs:
 
   setup:
