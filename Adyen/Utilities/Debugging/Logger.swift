@@ -18,13 +18,15 @@ public enum AdyenLogging {
     }
 }
 
+private let loggingDateFormatter = ISO8601DateFormatter()
+
 /// :nodoc:
 /// Copies the interface of `Swift.print()`,
 /// and `Swift.print()` is called inside after checking first if `AdyenLogging.isEnabled` is `true`, and returns if `false`.
 public func adyenPrint(_ items: Any..., separator: String = " ", terminator: String = "\n") {
     guard AdyenLogging.isEnabled else { return }
     
-    let timestamp = ISO8601DateFormatter().string(from: Date())
+    let timestamp = loggingDateFormatter.string(from: Date())
     var items = items
     items.insert("[\(timestamp)]", at: 0)
     var idx = items.startIndex
