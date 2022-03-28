@@ -7,38 +7,20 @@
 import AdyenNetworking
 import Foundation
 
-// TODO: - Document
-public struct AnalyticsOptions: OptionSet {
-    public let rawValue: Int
-
-    public static let telemetry = AnalyticsOptions(rawValue: 1 << 0)
-    public static let checkoutAttemptId = AnalyticsOptions(rawValue: 1 << 1)
-
-    public init(rawValue: Int) {
-        self.rawValue = rawValue
-    }
-}
-
-// TODO: - Document
+/// A configuration object that defines the behavior for the analytics.
 public struct AnalyticsConfiguration {
 
-    private let options: AnalyticsOptions
+    // MARK: - Properties
+
+    /// A Boolean value that determines whether telemetry tracking is enabled.
+    public let isTelemetryEnabled = true
+
+    /// A Boolean value that determines whether the checkoutAttemt id fetch is enabled.
+    public let isCheckoutAttemptIdEnabled = true
 
     // MARK: - Initializers
 
-    public init(options: AnalyticsOptions = [.telemetry, .checkoutAttemptId]) {
-        self.options = options
-    }
-
-    // MARK: - Internal
-
-    internal var isCheckoutAttemptIdEnabled: Bool {
-        options.contains(.checkoutAttemptId)
-    }
-
-    internal var isTelemetryEnabled: Bool {
-        options.contains(.checkoutAttemptId)
-    }
+    public init() { /* Empty implementation */ }
 }
 
 /// : nodoc:
