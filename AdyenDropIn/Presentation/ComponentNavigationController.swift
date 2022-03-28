@@ -9,7 +9,7 @@ import UIKit
 
 internal final class ComponentNavigationController: UINavigationController {
     
-    internal var cancelHandler: (Bool, PresentableComponent) -> Void
+    internal let cancelHandler: (Bool, PresentableComponent) -> Void
     
     private let style: NavigationStyle
     

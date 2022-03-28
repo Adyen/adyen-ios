@@ -52,19 +52,19 @@ internal final class HalfPageViewController: UIViewController {
         internal let animated: Bool
     }
     
-    private var isFrameUpdateFrozen: Bool = false
+    private var isFrameUpdatePaused: Bool = false
     
     /// Keep only the currently animating context and only one next context, i.e the latest.
     private var currentlyUpdatingFrameContext: FrameUpdateContext?
     private var nextUpdatingFrameContext: FrameUpdateContext?
     
-    internal func freezeFrameUpdate() {
-        isFrameUpdateFrozen = true
+    internal func pauseFrameUpdate() {
+        isFrameUpdatePaused = true
     }
     
-    internal func unfreezeFrameUpdate() {
-        let oldValue = isFrameUpdateFrozen
-        isFrameUpdateFrozen = false
+    internal func resumeFrameUpdate() {
+        let oldValue = isFrameUpdatePaused
+        isFrameUpdatePaused = false
         
         if oldValue {
             /// Update the frame using the latest `nextUpdatingFrameContext` if there is any.
@@ -73,7 +73,7 @@ internal final class HalfPageViewController: UIViewController {
     }
     
     private func updateNextFrameIfNeeded() {
-        guard isUpdatingFrameAllowed(),
+        guard isUpdatingFrameAllowed,
               let nextContext = nextUpdatingFrameContext else { return }
         
         nextUpdatingFrameContext = nil
@@ -83,7 +83,7 @@ internal final class HalfPageViewController: UIViewController {
     internal func updateFrame(keyboardRect: CGRect, animated: Bool = true) {
         let context = FrameUpdateContext(keyboardRect: keyboardRect,
                                          animated: animated)
-        guard isUpdatingFrameAllowed() else {
+        guard isUpdatingFrameAllowed else {
             /// There is currently an ongoing animation or updating frames is frozen,
             /// in this case update the `nextUpdatingFrameContext`.
             nextUpdatingFrameContext = context
@@ -92,11 +92,11 @@ internal final class HalfPageViewController: UIViewController {
         updateFrame(with: context)
     }
     
-    private func isUpdatingFrameAllowed() -> Bool {
+    private var isUpdatingFrameAllowed: Bool {
         /// Frame updates are not allowed in case there is currently a frame update ongoing
         /// or frame updates are frozen.
         currentlyUpdatingFrameContext == nil &&
-            isFrameUpdateFrozen == false &&
+            isFrameUpdatePaused == false &&
             isViewLoaded
     }
 
@@ -108,7 +108,7 @@ internal final class HalfPageViewController: UIViewController {
             adyenPrint("[WARNING] Only one animation at a time is allowed")
         }
         
-        if isFrameUpdateFrozen {
+        if isFrameUpdatePaused {
             adyenPrint("[WARNING] isFrameUpdateFrozen must not be true")
         }
         currentlyUpdatingFrameContext = context

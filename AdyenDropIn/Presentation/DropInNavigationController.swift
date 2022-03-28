@@ -8,9 +8,9 @@ import Adyen
 import UIKit
 
 internal protocol DropInNavigationLayouter: AnyObject {
-    func freezeFrameUpdate()
+    func pauseFrameUpdate()
     
-    func unfreezeFrameUpdate()
+    func resumeFrameUpdate()
     
     func updateTopViewControllerIfNeeded(animated: Bool)
 }
@@ -100,12 +100,12 @@ internal final class DropInNavigationController: UIViewController,
     
     // MARK: - Layout
     
-    internal func freezeFrameUpdate() {
-        childViewController.freezeFrameUpdate()
+    internal func pauseFrameUpdate() {
+        childViewController.pauseFrameUpdate()
     }
     
-    internal func unfreezeFrameUpdate() {
-        childViewController.unfreezeFrameUpdate()
+    internal func resumeFrameUpdate() {
+        childViewController.resumeFrameUpdate()
     }
     
     internal func willUpdatePreferredContentSize() { /* Empty implementation */ }

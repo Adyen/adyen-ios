@@ -6,7 +6,6 @@
 
 import Adyen
 import Foundation
-import SwiftUI
 import UIKit
 
 /// Callback protocol for document action views.

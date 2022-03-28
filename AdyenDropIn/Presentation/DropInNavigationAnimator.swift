@@ -13,7 +13,7 @@ internal final class DropInNavigationAnimator: NSObject, UIViewControllerAnimate
         case dropinTransitionPresentation = "transition_presentation"
     }
     
-    private var isRightToLeftSlideAnimation: Bool
+    private let isRightToLeftSlideAnimation: Bool
     
     private let duration: TimeInterval
     
@@ -48,7 +48,7 @@ internal final class DropInNavigationAnimator: NSObject, UIViewControllerAnimate
         if toHideHeight >= toShowHeight {
             dropInNavigationLayouter?.updateTopViewControllerIfNeeded(animated: true)
         }
-        dropInNavigationLayouter?.freezeFrameUpdate()
+        dropInNavigationLayouter?.pauseFrameUpdate()
         
         let context = SpringAnimationContext(
             animationKey: Animation.dropinTransitionPresentation.rawValue,
@@ -57,8 +57,8 @@ internal final class DropInNavigationAnimator: NSObject, UIViewControllerAnimate
             dampingRatio: 0.8,
             velocity: 0.2,
             options: [.beginFromCurrentState, .curveEaseInOut],
-            animations: { [weak self] in
-                if self?.isRightToLeftSlideAnimation ?? false {
+            animations: { [isRightToLeftSlideAnimation] in
+                if isRightToLeftSlideAnimation {
                     toHide.view.frame.origin.x = -toHide.view.frame.width
                 } else {
                     toHide.view.frame.origin.x = toHide.view.frame.width
@@ -67,7 +67,7 @@ internal final class DropInNavigationAnimator: NSObject, UIViewControllerAnimate
             }, completion: { [weak dropInNavigationLayouter] finished in
                 transitionContext.completeTransition(finished)
                 
-                dropInNavigationLayouter?.unfreezeFrameUpdate()
+                dropInNavigationLayouter?.resumeFrameUpdate()
                 
                 if toShowHeight > toHideHeight {
                     dropInNavigationLayouter?.updateTopViewControllerIfNeeded(animated: true)

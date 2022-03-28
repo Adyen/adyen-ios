@@ -7,7 +7,6 @@
 import Adyen
 import AdyenNetworking
 import PassKit
-import SwiftUI
 import UIKit
 
 /// A component that handles voucher action.

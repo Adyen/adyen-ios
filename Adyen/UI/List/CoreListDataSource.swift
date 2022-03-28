@@ -117,7 +117,7 @@ internal final class CoreListDataSource: NSObject, ListViewControllerDataSource 
         
         tableView.isUserInteractionEnabled = false
         
-        for case let item in sections.flatMap(\.items) where item != loadingItem {
+        for item in sections.flatMap(\.items) where item != loadingItem {
             item.isEnabled = false
         }
         
