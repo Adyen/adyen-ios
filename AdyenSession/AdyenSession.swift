@@ -11,8 +11,10 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-/// The Session object.
-public final class Session: SessionProtocol {
+/// `AdyenSession` acts as the auto-pilot for the checkout process
+/// such as handling the payments and payment details calls internally
+/// and providing feedback at the end via `AdyenSessionDelegate` methods.
+public final class AdyenSession {
     
     /// Session configuration.
     public struct Configuration {
@@ -64,13 +66,16 @@ public final class Session: SessionProtocol {
     /// The presentation delegate.
     public private(set) weak var presentationDelegate: PresentationDelegate?
     
-    /// Initializes an instance of `Session` asynchronously.
+    /// The delegate object.
+    public weak var delegate: AdyenSessionDelegate?
+    
+    /// Initializes an instance of `SessionComponent` asynchronously.
     /// - Parameter configuration: The session configuration.
     /// - Parameter presentationDelegate: The presentation delegate.
     /// - Parameter completion: The completion closure, that delivers the new instance asynchronously.
     public static func initialize(with configuration: Configuration,
                                   presentationDelegate: PresentationDelegate,
-                                  completion: @escaping ((Result<Session, Error>) -> Void)) {
+                                  completion: @escaping ((Result<AdyenSession, Error>) -> Void)) {
         let baseAPIClient = APIClient(apiContext: configuration.apiContext)
             .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
             .retryOnErrorAPIClient()
@@ -83,13 +88,13 @@ public final class Session: SessionProtocol {
     internal static func initialize(with configuration: Configuration,
                                     presentationDelegate: PresentationDelegate,
                                     baseAPIClient: APIClientProtocol,
-                                    completion: @escaping ((Result<Session, Error>) -> Void)) {
+                                    completion: @escaping ((Result<AdyenSession, Error>) -> Void)) {
         makeSetupCall(with: configuration,
                       baseAPIClient: baseAPIClient) { result in
             switch result {
             case let .success(sessionContext):
-                let session = Session(configuration: configuration,
-                                      sessionContext: sessionContext)
+                let session = AdyenSession(configuration: configuration,
+                                           sessionContext: sessionContext)
                 session.presentationDelegate = presentationDelegate
                 completion(.success(session))
             case let .failure(error):

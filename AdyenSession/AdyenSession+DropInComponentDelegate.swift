@@ -8,9 +8,10 @@ import Adyen
 import Foundation
 
 /// :nodoc:
-extension Session: DropInComponentDelegate {
+extension AdyenSession: DropInComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
-        didSubmit(data, currentComponent: dropInComponent)
+        let handler = delegate?.handlerForPayments(in: component, session: self) ?? self
+        handler.didSubmit(data, from: component, session: self)
     }
     
     public func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
@@ -18,7 +19,8 @@ extension Session: DropInComponentDelegate {
     }
     
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
-        didProvide(data, currentComponent: dropInComponent)
+        let handler = delegate?.handlerForAdditionalDetails(in: component, session: self) ?? self
+        handler.didProvide(data, from: component, session: self)
     }
     
     public func didComplete(from component: ActionComponent, in dropInComponent: AnyDropInComponent) {

@@ -11,7 +11,7 @@ import Adyen
 import Foundation
 
 /// :nodoc:
-extension Session: ActionComponentDelegate {
+extension AdyenSession: ActionComponentDelegate {
     public func didFail(with error: Error, from component: ActionComponent) {
         didFail(with: error, currentComponent: component)
     }
@@ -25,21 +25,27 @@ extension Session: ActionComponentDelegate {
     }
 
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        didProvide(data, currentComponent: component)
-    }
-    
-    internal func didProvide(_ data: ActionComponentData, currentComponent: Component) {
-        (currentComponent as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
-        let request = PaymentDetailsRequest(sessionId: sessionContext.identifier,
-                                            sessionData: sessionContext.data,
-                                            paymentData: data.paymentData,
-                                            details: data.details)
-        apiClient.perform(request) { [weak self] in
-            self?.handle(paymentResponseResult: $0, for: currentComponent)
-        }
+        let handler = delegate?.handlerForAdditionalDetails(in: component, session: self) ?? self
+        handler.didProvide(data, from: component, session: self)
     }
     
     public func didOpenExternalApplication(_ component: ActionComponent) {
         // TODO: call back the merchant
+    }
+}
+
+/// :nodoc:
+extension AdyenSession: AdyenSessionPaymentDetailsHandler {
+    public func didProvide(_ actionComponentData: ActionComponentData,
+                           from component: ActionComponent,
+                           session: AdyenSession) {
+        (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
+        let request = PaymentDetailsRequest(sessionId: sessionContext.identifier,
+                                            sessionData: sessionContext.data,
+                                            paymentData: actionComponentData.paymentData,
+                                            details: actionComponentData.details)
+        apiClient.perform(request) { [weak self] in
+            self?.handle(paymentResponseResult: $0, for: component)
+        }
     }
 }

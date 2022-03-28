@@ -11,17 +11,39 @@ import Adyen
 import Foundation
 
 /// :nodoc:
-extension Session: PaymentComponentDelegate {
+extension AdyenSession: PaymentComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        didSubmit(data, currentComponent: component)
+        let handler = delegate?.handlerForPayments(in: component, session: self) ?? self
+        handler.didSubmit(data, from: component, session: self)
     }
     
-    internal func didSubmit(_ data: PaymentComponentData, currentComponent: Component) {
+    internal func finish() {
+        // TODO: Handle Finish
+    }
+    
+    internal func finish(with error: Error) {
+        // TODO: Handle Finish
+    }
+
+    public func didFail(with error: Error, from component: PaymentComponent) {
+        didFail(with: error, currentComponent: component)
+    }
+    
+    internal func didFail(with error: Error, currentComponent: Component) {
+        delegate?.didFail(with: error, from: currentComponent, session: self)
+    }
+}
+
+/// :nodoc:
+extension AdyenSession: AdyenSessionPaymentsHandler {
+    public func didSubmit(_ paymentComponentData: PaymentComponentData,
+                          from component: Component,
+                          session: AdyenSession) {
         let request = PaymentsRequest(sessionId: sessionContext.identifier,
                                       sessionData: sessionContext.data,
-                                      data: data)
+                                      data: paymentComponentData)
         apiClient.perform(request) { [weak self] in
-            self?.handle(paymentResponseResult: $0, for: currentComponent)
+            self?.handle(paymentResponseResult: $0, for: component)
         }
     }
     
@@ -83,21 +105,5 @@ extension Session: PaymentComponentDelegate {
         } catch {
             finish(with: error)
         }
-    }
-    
-    internal func finish() {
-        // TODO: Handle Finish
-    }
-    
-    internal func finish(with error: Error) {
-        // TODO: Handle Finish
-    }
-
-    public func didFail(with error: Error, from component: PaymentComponent) {
-        didFail(with: error, currentComponent: component)
-    }
-    
-    internal func didFail(with error: Error, currentComponent: Component) {
-        // TODO: call back the merchant
     }
 }

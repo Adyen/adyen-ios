@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// :nodoc:
-extension Session: PartialPaymentDelegate {
+extension AdyenSession: PartialPaymentDelegate {
     
     public func checkBalance(with data: PaymentComponentData,
                              completion: @escaping (Result<Balance, Error>) -> Void) {

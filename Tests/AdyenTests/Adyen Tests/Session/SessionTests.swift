@@ -36,7 +36,7 @@ class SessionTests: XCTestCase {
                                                                  amount: .init(value: 220, currencyCode: "USD"),
                                                                  sessionData: "session_data_1"))]
         let expectation = expectation(description: "Expect session object to be initialized")
-        Session.initialize(with: .init(sessionIdentifier: "session_id",
+        AdyenSession.initialize(with: .init(sessionIdentifier: "session_id",
                                        initialSessionData: "session_data_0",
                                        apiContext: Dummy.context),
                            presentationDelegate: PresentationDelegateMock(),
@@ -401,7 +401,7 @@ class SessionTests: XCTestCase {
         XCTAssertEqual(sut.sessionContext.data, "session_data_1")
     }
     
-    private func initializeSession(expectedPaymentMethods: PaymentMethods) throws -> Session {
+    private func initializeSession(expectedPaymentMethods: PaymentMethods) throws -> AdyenSession {
         let apiClient = APIClientMock()
         apiClient.mockedResults = [
             .success(
@@ -417,9 +417,9 @@ class SessionTests: XCTestCase {
                 )
             )
         ]
-        var sut: Session! = nil
+        var sut: AdyenSession! = nil
         let initializationExpectation = expectation(description: "Expect session object to be initialized")
-        Session.initialize(with: .init(sessionIdentifier: "session_id",
+        AdyenSession.initialize(with: .init(sessionIdentifier: "session_id",
                                              initialSessionData: "session_data_0",
                                        apiContext: Dummy.context),
                            presentationDelegate: PresentationDelegateMock(),
