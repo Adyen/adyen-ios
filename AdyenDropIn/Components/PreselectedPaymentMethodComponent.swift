@@ -157,4 +157,4 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
 }
 
-extension PreselectedPaymentMethodComponent: TrackableComponent {}
+extension PreselectedPaymentMethodComponent: ViewControllerDelegate {}

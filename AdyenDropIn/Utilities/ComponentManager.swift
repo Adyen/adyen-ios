@@ -409,5 +409,4 @@ extension ComponentManager: PaymentComponentBuilder {
                                 apiContext: apiContext,
                                 adyenContext: adyenContext)
     }
-
 }

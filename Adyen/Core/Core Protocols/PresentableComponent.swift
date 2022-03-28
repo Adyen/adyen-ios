@@ -63,7 +63,7 @@ public extension PresentableComponent {
 }
 
 /// :nodoc:
-public protocol TrackableComponent: Component, PaymentMethodAware, ViewControllerDelegate {
+public protocol TrackableComponent: Component, PaymentMethodAware {
     var telemetryFlavor: TelemetryFlavor { get }
 }
 
@@ -73,24 +73,5 @@ extension TrackableComponent {
     public var telemetryFlavor: TelemetryFlavor {
         let flavor: TelemetryFlavor = _isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
         return flavor
-    }
-
-    /// :nodoc:
-    public func viewDidLoad(viewController: UIViewController) {
-        Analytics.sendEvent(component: paymentMethod.type.rawValue, flavor: _isDropIn ? .dropin : .components, context: apiContext)
-    }
-
-    /// :nodoc:
-    public func viewDidAppear(viewController: UIViewController) { /* Empty Implementation */ }
-
-    /// :nodoc:
-    public func viewWillAppear(viewController: UIViewController) {
-        trackTelemetryEvent()
-    }
-
-    // MARK: - Private
-
-    private func trackTelemetryEvent() {
-        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
     }
 }
