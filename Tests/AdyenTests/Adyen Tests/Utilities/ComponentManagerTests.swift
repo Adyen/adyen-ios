@@ -44,7 +44,8 @@ class ComponentManagerTests: XCTestCase {
             oxxo,
             multibanco,
             boleto,
-            affirm
+            affirm,
+            atome
         ]
     ]
     
@@ -266,6 +267,24 @@ class ComponentManagerTests: XCTestCase {
         // Then
         let cardComponent = try XCTUnwrap(paymentComponent as? CardComponent)
         XCTAssertNotNil(cardComponent.configuration.shopperInformation)
+    }
+    
+    func testShopperInformationInjectionShouldSetShopperInformationOnAtomeComponent() throws {
+        // Given
+        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        configuration.shopper = shopperInformation
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   configuration: configuration,
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
+
+        // Action
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "atome" })
+
+        // Assert
+        let atomeComponent = try XCTUnwrap(paymentComponent as? AtomeComponent)
+        XCTAssertNotNil(atomeComponent.configuration.shopperInformation)
     }
 
     // MARK: - Private
