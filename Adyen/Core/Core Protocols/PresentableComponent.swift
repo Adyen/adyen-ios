@@ -63,15 +63,16 @@ public extension PresentableComponent {
 }
 
 /// :nodoc:
-public protocol TrackableComponent: Component, PaymentMethodAware {
-    var telemetryFlavor: TelemetryFlavor { get }
+public protocol TrackableComponent: Component {
+
+    func sendTelemetryEvent()
 }
 
 /// :nodoc:
-extension TrackableComponent {
+extension TrackableComponent where Self: PaymentMethodAware {
 
-    public var telemetryFlavor: TelemetryFlavor {
+    public func sendTelemetryEvent() {
         let flavor: TelemetryFlavor = _isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
-        return flavor
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: flavor)
     }
 }

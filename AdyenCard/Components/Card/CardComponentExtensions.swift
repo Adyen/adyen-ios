@@ -53,10 +53,6 @@ extension CardComponent {
             delegate?.didFail(with: error, from: self)
         }
     }
-
-    private func sendTelemetryEvent() {
-        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
-    }
 }
 
 /// :nodoc:

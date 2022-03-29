@@ -84,10 +84,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
 
     // MARK: - Private
 
-    private func sendTelemetryEvent() {
-        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
-    }
-
     /// :nodoc:
     private func build(_ formViewController: FormViewController) {
         fields.forEach { field in

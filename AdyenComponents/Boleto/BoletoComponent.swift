@@ -176,10 +176,6 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         return nil
     }
 
-    private func sendTelemetryEvent() {
-        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
-    }
-
     // MARK: - Public
     
     /// :nodoc:

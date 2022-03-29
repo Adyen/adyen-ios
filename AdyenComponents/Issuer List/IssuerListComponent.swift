@@ -89,10 +89,6 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
         
         return listViewController
     }()
-
-    private func sendTelemetryEvent() {
-        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
-    }
 }
 
 extension IssuerListComponent: ViewControllerDelegate {

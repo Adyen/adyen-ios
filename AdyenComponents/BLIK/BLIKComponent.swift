@@ -119,10 +119,6 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
 
     // MARK: - Private
 
-    private func sendTelemetryEvent() {
-        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
-    }
-
     private func didSelectSubmitButton() {
         guard formViewController.validate() else { return }
 

@@ -74,12 +74,6 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
         
         return manager
     }()
-
-    // MARK: - Private
-
-    private func sendTelemetryEvent() {
-        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
-    }
 }
 
 /// :nodoc:

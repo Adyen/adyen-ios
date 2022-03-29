@@ -71,12 +71,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
     
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
-
-    // MARK: - Private
-
-    private func sendTelemetryEvent() {
-        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
-    }
+    
 }
 
 /// :nodoc:

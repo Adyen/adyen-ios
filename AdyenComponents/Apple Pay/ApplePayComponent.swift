@@ -156,10 +156,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     private static func canMakePaymentWith(_ networks: [PKPaymentNetwork]) -> Bool {
         PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks)
     }
-
-    private func sendTelemetryEvent() {
-        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
-    }
 }
 
 extension ApplePayComponent: TrackableComponent {}

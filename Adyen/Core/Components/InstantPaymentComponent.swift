@@ -43,12 +43,6 @@ public final class InstantPaymentComponent: PaymentComponent {
         sendTelemetryEvent()
         submit(data: paymentData)
     }
-
-    // MARK: - Private
-
-    private func sendTelemetryEvent() {
-        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
-    }
 }
 
 /// :nodoc:

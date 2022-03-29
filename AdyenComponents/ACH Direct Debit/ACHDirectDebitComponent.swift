@@ -251,10 +251,6 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
 
         return formViewController
     }()
-
-    private func sendTelemetryEvent() {
-        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: telemetryFlavor)
-    }
 }
 
 /// :nodoc:
