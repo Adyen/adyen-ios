@@ -49,7 +49,7 @@ class ComponentManagerTests: XCTestCase {
         ]
     ]
     
-    let numberOfExpectedRegularComponents = 19
+    let numberOfExpectedRegularComponents = 20
 
     var presentationDelegate: PresentationDelegateMock!
 
@@ -82,8 +82,8 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.storedComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, 4)
         XCTAssertEqual(sut.regularComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, numberOfExpectedRegularComponents)
 
-        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 14)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 15)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 15)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 16)
     }
     
     func testLocalizationWithCustomTableName() throws {
