@@ -60,19 +60,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     
     internal let inputFormViewController: BACSInputFormViewController
     
-    internal lazy var inputPresenter: BACSInputPresenterProtocol? = {
-        let tracker = BACSDirectDebitComponentTracker(paymentMethod: bacsPaymentMethod,
-                                                      apiContext: apiContext,
-                                                      isDropIn: _isDropIn)
-        let itemsFactory = BACSItemsFactory(styleProvider: configuration.style,
-                                            localizationParameters: configuration.localizationParameters,
-                                            scope: String(describing: self))
-        inputFormViewController.presenter = inputPresenter
-        return BACSInputPresenter(view: inputFormViewController,
-                                  router: self,
-                                  tracker: tracker,
-                                  itemsFactory: itemsFactory)
-    }()
+    internal private(set) var inputPresenter: BACSInputPresenterProtocol?
     
     // MARK: - Initializers
 
@@ -91,6 +79,17 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
             title: paymentMethod.name,
             styleProvider: configuration.style
         )
+        let tracker = BACSDirectDebitComponentTracker(paymentMethod: bacsPaymentMethod,
+                                                      apiContext: apiContext,
+                                                      isDropIn: _isDropIn)
+        let itemsFactory = BACSItemsFactory(styleProvider: configuration.style,
+                                            localizationParameters: configuration.localizationParameters,
+                                            scope: String(describing: self))
+        self.inputPresenter = BACSInputPresenter(view: inputFormViewController,
+                                                 router: self,
+                                                 tracker: tracker,
+                                                 itemsFactory: itemsFactory)
+        inputFormViewController.presenter = inputPresenter
         
     }
 }
@@ -159,7 +158,7 @@ extension BACSDirectDebitComponent: Cancellable {
     /// :nodoc:
     /// Called when the user cancels the component.
     public func didCancel() {
-        if !confirmationViewPresented {
+        if confirmationViewPresented == false {
             inputPresenter?.resetForm()
         } else {
             confirmationViewPresented = false

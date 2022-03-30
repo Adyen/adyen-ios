@@ -21,7 +21,6 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
     private let view: BACSInputFormViewProtocol
     private let tracker: BACSDirectDebitComponentTrackerProtocol
     private weak var router: BACSDirectDebitRouterProtocol?
-    private let itemsFactory: BACSItemsFactoryProtocol
     private var data: BACSDirectDebitData?
 
     // MARK: - Items
@@ -33,6 +32,8 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
     internal var amountConsentToggleItem: FormToggleItem?
     internal var legalConsentToggleItem: FormToggleItem?
     internal var continueButtonItem: FormButtonItem?
+    
+    internal let itemsFactory: BACSItemsFactoryProtocol
     
     internal var amount: Amount? {
         didSet {
