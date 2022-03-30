@@ -8,7 +8,7 @@ import UIKit
 
 internal final class ListHeaderView: UITableViewHeaderFooterView {
     
-    internal static let reuseIdentifier = String(describing: self)
+    internal static let reuseIdentifier = String(describing: ListHeaderView.self)
     
     internal var onTrailingButtonTap: (() -> Void)?
     
