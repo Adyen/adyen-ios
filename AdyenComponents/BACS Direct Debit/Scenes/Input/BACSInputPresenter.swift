@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,6 +8,7 @@ import Adyen
 import Foundation
 
 internal protocol BACSInputPresenterProtocol: AnyObject {
+    var amount: Amount? { get set }
     func viewDidLoad()
     func viewWillAppear()
     func resetForm()
@@ -22,7 +23,6 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
     private weak var router: BACSDirectDebitRouterProtocol?
     private let itemsFactory: BACSItemsFactoryProtocol
     private var data: BACSDirectDebitData?
-    private let amount: Amount?
 
     // MARK: - Items
 
@@ -33,19 +33,23 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
     internal var amountConsentToggleItem: FormToggleItem?
     internal var legalConsentToggleItem: FormToggleItem?
     internal var continueButtonItem: FormButtonItem?
+    
+    internal var amount: Amount? {
+        didSet {
+            amountConsentToggleItem?.title = itemsFactory.createConsentText(with: amount)
+        }
+    }
 
     // MARK: - Initializers
 
     internal init(view: BACSInputFormViewProtocol,
                   router: BACSDirectDebitRouterProtocol,
                   tracker: BACSDirectDebitComponentTrackerProtocol,
-                  itemsFactory: BACSItemsFactoryProtocol,
-                  amount: Amount?) {
+                  itemsFactory: BACSItemsFactoryProtocol) {
         self.view = view
         self.router = router
         self.tracker = tracker
         self.itemsFactory = itemsFactory
-        self.amount = amount
     }
 
     // MARK: - BACSInputPresenterProtocol
@@ -78,7 +82,7 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
         bankAccountNumberItem = itemsFactory.createBankAccountNumberItem()
         sortCodeItem = itemsFactory.createSortCodeItem()
         emailItem = itemsFactory.createEmailItem()
-        amountConsentToggleItem = itemsFactory.createAmountConsentToggle(amount: amount?.formatted)
+        amountConsentToggleItem = itemsFactory.createAmountConsentToggle(amount: amount)
         legalConsentToggleItem = itemsFactory.createLegalConsentToggle()
 
         continueButtonItem = itemsFactory.createContinueButton()
