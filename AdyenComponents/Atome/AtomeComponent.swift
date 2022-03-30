@@ -58,7 +58,6 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
     private func setupItems() {
         personalDetailsHeaderItem.text = localizedString(.boletoPersonalDetails, configuration.localizationParameters)
         phoneItem?.title =  localizedString(.phoneNumberTitle, configuration.localizationParameters)
-        configuration.shopperInformation?.deliveryAddress?.country = "SG"
     }
 
     // MARK: - Public

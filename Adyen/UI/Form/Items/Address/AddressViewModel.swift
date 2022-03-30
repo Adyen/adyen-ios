@@ -76,10 +76,6 @@ internal struct AddressViewModel {
                                 .item(.houseNumberOrName),
                                 .item(.city),
                                 .split(.stateOrProvince, .postalCode)]
-        case "SG":
-            viewModel.schema = [.item(.street),
-                                .item(.houseNumberOrName),
-                                .item(.postalCode)]
         default:
             break
         }
