@@ -10,17 +10,33 @@ import Adyen
 #endif
 import Foundation
 
+/// :nodoc:
 extension Session: ActionComponentDelegate {
     public func didFail(with error: Error, from component: ActionComponent) {
-        // TODO: call back the merchant
+        didFail(with: error, currentComponent: component)
     }
 
     public func didComplete(from component: ActionComponent) {
+        didComplete(currentComponent: component)
+    }
+    
+    internal func didComplete(currentComponent: Component) {
         // TODO: call back the merchant
     }
 
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        // TODO: Make the payment/details call
+        didProvide(data, currentComponent: component)
+    }
+    
+    internal func didProvide(_ data: ActionComponentData, currentComponent: Component) {
+        (currentComponent as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
+        let request = PaymentDetailsRequest(sessionId: sessionContext.identifier,
+                                            sessionData: sessionContext.data,
+                                            paymentData: data.paymentData,
+                                            details: data.details)
+        apiClient.perform(request) { [weak self] in
+            self?.handle(paymentResponseResult: $0, for: currentComponent)
+        }
     }
     
     public func didOpenExternalApplication(_ component: ActionComponent) {

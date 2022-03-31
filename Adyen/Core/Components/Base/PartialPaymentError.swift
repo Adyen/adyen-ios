@@ -14,6 +14,9 @@ public enum PartialPaymentError: LocalizedError {
 
     /// Indicates that the order data is missing where its required.
     case missingOrderData
+    
+    /// Indicates that the partial payment flow is not supported with the current component.
+    case notSupportedForComponent
 
     /// :nodoc:
     public var errorDescription: String? {
@@ -22,6 +25,8 @@ public enum PartialPaymentError: LocalizedError {
             return "There is no remaining amount to be paid."
         case .missingOrderData:
             return "Order data is missing"
+        case .notSupportedForComponent:
+            return "Partial payment flow is not supported with the current component."
         }
     }
 }

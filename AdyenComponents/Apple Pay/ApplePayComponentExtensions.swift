@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,9 +13,11 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     
     /// :nodoc:
     public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-        dismiss { [weak self] in
-            guard let self = self, self.success == false else { return }
-            self.delegate?.didFail(with: ComponentError.cancelled, from: self)
+        paymentAuthorizationViewController = nil
+        if resultConfirmed {
+            finalizeCompletion?()
+        } else {
+            delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
     }
     
@@ -84,7 +86,7 @@ extension ApplePayComponent {
         /// - Parameter requiredShippingContactFields: The excluded card brands.
         /// - Parameter billingContact: A pre-populated billing address.
         /// - Parameter allowOnboarding: The flag to toggle onboarding.
-        /// If true, allow the shopper to add cards to Apple Pay if non exists yet.
+        /// If true, allow the shopper to add cards to Apple Pay if none exists yet.
         /// If false, then Apple Pay is disabled if the shopper doesn't have supported cards on Apple Pay wallet.
         /// Default is false.
         public init(summaryItems: [PKPaymentSummaryItem],

@@ -25,11 +25,9 @@ extension IntegrationExample {
         configuration.card.billingAddressMode = .postalCode
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
 
-        let dropInComponentStyle = DropInComponent.Style()
         let component = DropInComponent(paymentMethods: paymentMethods,
                                         adyenContext: adyenContext,
                                         configuration: configuration,
-                                        style: dropInComponentStyle,
                                         title: ConfigurationConstants.appName)
         component.delegate = self
         component.partialPaymentDelegate = self
@@ -79,32 +77,32 @@ extension IntegrationExample {
 
 extension IntegrationExample: DropInComponentDelegate {
     
-    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: DropInComponent) {
+    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
         didSubmit(data, from: component)
     }
     
-    func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: DropInComponent) {
+    func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
         didFail(with: error, from: component)
     }
     
-    func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: DropInComponent) {
+    func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
         didProvide(data, from: component)
     }
     
-    func didComplete(from component: ActionComponent, in dropInComponent: DropInComponent) {
+    func didComplete(from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
         didComplete(from: component)
     }
     
-    func didFail(with error: Error, from component: ActionComponent, in dropInComponent: DropInComponent) {
+    func didFail(with error: Error, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
         didFail(with: error, from: component)
     }
     
-    internal func didCancel(component: PaymentComponent, from dropInComponent: DropInComponent) {
+    internal func didCancel(component: PaymentComponent, from dropInComponent: AnyDropInComponent) {
         // Handle the event when the user closes a PresentableComponent.
         print("User did close: \(component.paymentMethod.name)")
     }
     
-    internal func didFail(with error: Error, from dropInComponent: DropInComponent) {
+    internal func didFail(with error: Error, from dropInComponent: AnyDropInComponent) {
         finish(with: error)
     }
 

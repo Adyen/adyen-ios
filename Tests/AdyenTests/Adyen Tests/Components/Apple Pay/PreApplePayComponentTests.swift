@@ -20,11 +20,12 @@ class PreApplePayComponentTests: XCTestCase {
         let configuration = ApplePayComponent.Configuration(summaryItems: createTestSummaryItems(), merchantIdentifier: "test_id")
         var applePayStyle = ApplePayStyle()
         applePayStyle.paymentButtonType = .inStore
+        let preApplePayConfig = PreApplePayComponent.Configuration(style: applePayStyle)
         sut = try! PreApplePayComponent(paymentMethod: ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil),
                                         apiContext: Dummy.context,
                                         payment: payment,
-                                        configuration: configuration,
-                                        style: applePayStyle)
+                                        configuration: preApplePayConfig,
+                                        applePayConfiguration: configuration)
     }
     
     func testUIConfiguration() {
