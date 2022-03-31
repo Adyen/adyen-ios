@@ -22,6 +22,8 @@ public final class Session: SessionProtocol {
         internal let initialSessionData: String
         
         internal let apiContext: APIContext
+
+        internal let adyenContext: AdyenContext
         
         /// Initializes a new Configuration object
         ///
@@ -29,10 +31,12 @@ public final class Session: SessionProtocol {
         ///   - apiContext: The API context.
         public init(sessionIdentifier: String,
                     initialSessionData: String,
-                    apiContext: APIContext) {
+                    apiContext: APIContext,
+                    adyenContext: AdyenContext) {
             self.sessionIdentifier = sessionIdentifier
             self.initialSessionData = initialSessionData
             self.apiContext = apiContext
+            self.adyenContext = adyenContext
         }
     }
     
@@ -131,7 +135,8 @@ public final class Session: SessionProtocol {
     // MARK: - Action Handling for Components
 
     internal lazy var actionComponent: ActionHandlingComponent = {
-        let handler = AdyenActionComponent(apiContext: configuration.apiContext)
+        let handler = AdyenActionComponent(apiContext: configuration.apiContext,
+                                           adyenContext: configuration.adyenContext)
         handler.delegate = self
         handler.presentationDelegate = presentationDelegate
         return handler
