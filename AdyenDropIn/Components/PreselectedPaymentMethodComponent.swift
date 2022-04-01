@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -30,6 +30,9 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
     /// :nodoc:
     internal var apiContext: APIContext { defaultComponent.apiContext }
+
+    /// :nodoc:
+    internal var adyenContext: AdyenContext { defaultComponent.adyenContext }
 
     /// :nodoc:
     internal var paymentMethod: PaymentMethod { defaultComponent.paymentMethod }
@@ -154,4 +157,4 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
 }
 
-extension PreselectedPaymentMethodComponent: TrackableComponent {}
+extension PreselectedPaymentMethodComponent: ViewControllerDelegate {}

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,6 +16,9 @@ public final class PresentableComponentWrapper: PresentableComponent,
     
     /// :nodoc:
     public var apiContext: APIContext { component.apiContext }
+
+    /// The Adyen context.
+    public var adyenContext: AdyenContext { component.adyenContext }
     
     /// :nodoc:
     public let viewController: UIViewController

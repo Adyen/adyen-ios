@@ -195,6 +195,7 @@ public final class DropInComponent: NSObject,
     internal func paymentMethodListComponent(onCancel: (() -> Void)?) -> PaymentMethodListComponent {
         let paymentComponents = componentManager.sections
         let component = PaymentMethodListComponent(apiContext: apiContext,
+                                                   adyenContext: adyenContext,
                                                    components: paymentComponents,
                                                    style: configuration.style.listComponent)
         component.onCancel = onCancel

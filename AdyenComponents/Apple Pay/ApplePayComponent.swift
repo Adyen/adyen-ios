@@ -146,5 +146,16 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     private static func canMakePaymentWith(_ networks: [PKPaymentNetwork]) -> Bool {
         PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks)
     }
+}
 
+extension ApplePayComponent: TrackableComponent {}
+
+extension ApplePayComponent: ViewControllerDelegate {
+    public func viewDidLoad(viewController: UIViewController) { /* Empty implementation */ }
+
+    public func viewDidAppear(viewController: UIViewController) { /* Empty implementation */ }
+
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
+    }
 }

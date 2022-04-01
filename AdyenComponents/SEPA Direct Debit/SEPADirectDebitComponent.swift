@@ -143,3 +143,11 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
 }
 
 extension SEPADirectDebitComponent: TrackableComponent {}
+
+/// :nodoc:
+extension SEPADirectDebitComponent: ViewControllerDelegate {
+
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
+    }
+}

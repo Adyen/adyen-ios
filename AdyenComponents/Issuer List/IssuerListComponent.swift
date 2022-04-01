@@ -91,6 +91,16 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     }()
 }
 
+extension IssuerListComponent: ViewControllerDelegate {
+
+    /// :nodoc:
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
+    }
+}
+
+extension IssuerListComponent: TrackableComponent {}
+
 extension IssuerListComponent {
     
     /// Configuration for Issuer List type components.
@@ -131,5 +141,3 @@ public typealias EntercashComponent = IssuerListComponent
 
 /// Provides an issuer selection list for OpenBanking payments.
 public typealias OpenBankingComponent = IssuerListComponent
-
-extension IssuerListComponent: TrackableComponent {}

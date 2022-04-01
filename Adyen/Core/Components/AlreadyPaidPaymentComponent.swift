@@ -9,9 +9,12 @@ import Foundation
 /// Provides a placeholder for payment methods that are already paid, just for display.
 /// :nodoc:
 public final class AlreadyPaidPaymentComponent: PaymentComponent {
-    
+
     /// :nodoc:
     public let apiContext: APIContext
+
+    /// The Adyen context.
+    public let adyenContext: AdyenContext
 
     /// :nodoc:
     public let paymentMethod: PaymentMethod
@@ -21,8 +24,10 @@ public final class AlreadyPaidPaymentComponent: PaymentComponent {
 
     /// :nodoc:
     public init(paymentMethod: PaymentMethod,
-                apiContext: APIContext) {
+                apiContext: APIContext,
+                adyenContext: AdyenContext) {
         self.paymentMethod = paymentMethod
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
     }
 }

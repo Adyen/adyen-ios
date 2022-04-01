@@ -13,6 +13,9 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
     
     /// :nodoc:
     internal let apiContext: APIContext
+
+    /// The Adyen context.
+    internal let adyenContext: AdyenContext
     
     /// The card payment method.
     internal var paymentMethod: PaymentMethod { storedCardPaymentMethod }
@@ -31,9 +34,11 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
     
     /// :nodoc:
     internal init(storedCardPaymentMethod: StoredCardPaymentMethod,
-                  apiContext: APIContext) {
+                  apiContext: APIContext,
+                  adyenContext: AdyenContext) {
         self.storedCardPaymentMethod = storedCardPaymentMethod
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
     }
     
     /// :nodoc:
@@ -48,9 +53,11 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
             flavor: _isDropIn ? .dropin : .components,
             context: apiContext
         )
+        sendTelemetryEvent()
         
         let manager = StoredCardAlertManager(paymentMethod: storedCardPaymentMethod,
                                              apiContext: apiContext,
+                                             adyenContext: adyenContext,
                                              amount: payment?.amount)
         
         manager.localizationParameters = localizationParameters
@@ -67,5 +74,7 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
         
         return manager
     }()
-
 }
+
+/// :nodoc:
+extension StoredCardComponent: TrackableComponent {}

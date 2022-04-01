@@ -20,6 +20,9 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     
     /// :nodoc:
     internal let apiContext: APIContext
+
+    /// :nodoc:
+    internal let adyenContext: AdyenContext
     
     /// The components that are displayed in the list.
     internal private(set) var componentSections: [ComponentsSection]
@@ -35,12 +38,16 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     
     /// Initializes the list component.
     ///
+    /// - Parameter apiContext: The component's context.
+    /// - Parameter adyenContext: The Adyen context.
     /// - Parameter components: The components to display in the list.
     /// - Parameter style: The component's UI style.
     internal init(apiContext: APIContext,
+                  adyenContext: AdyenContext,
                   components: [ComponentsSection],
                   style: ListComponentStyle = ListComponentStyle()) {
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.componentSections = components
         self.style = style
     }
@@ -66,9 +73,10 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     
     private func createListViewController() -> ListViewController {
         let listViewController = ListViewController(style: style)
+        listViewController.delegate = self
         listViewController.title = localizedString(.paymentMethodsTitle, localizationParameters)
         listViewController.reload(newSections: createListSections())
-        
+
         return listViewController
     }
     
@@ -152,11 +160,33 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     internal func stopLoading() {
         listViewController.stopLoading()
     }
-    
+
+    // MARK: - Private
+
+    private func sendTelemetryEvent() {
+        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: .dropIn(paymentMethods: []))
+    }
+}
+
+extension PaymentMethodListComponent: ViewControllerDelegate {
+
+    func viewDidLoad(viewController: UIViewController) {
+        delegate?.didLoad(self)
+    }
+
+    func viewWillAppear(viewController: UIViewController) { /* Empty implementation */ }
+
+    func viewDidAppear(viewController: UIViewController) { /* Empty implementation */ }
 }
 
 /// Defines the methods a delegate of the payment method list component should implement.
 internal protocol PaymentMethodListComponentDelegate: AnyObject {
+
+    /// Tells the delegate the payment method list component has been loaded.
+    ///
+    /// - Parameters:
+    ///   - paymentMethodListComponent: The payment method list component in which the component was selected.
+    func didLoad(_ paymentMethodListComponent: PaymentMethodListComponent)
     
     /// Invoked when a component was selected in the payment method list.
     ///
@@ -175,7 +205,6 @@ internal protocol PaymentMethodListComponentDelegate: AnyObject {
     func didDelete(_ paymentMethod: StoredPaymentMethod,
                    in paymentMethodListComponent: PaymentMethodListComponent,
                    completion: @escaping Completion<Bool>)
-    
 }
 
 private extension Array where Element == ComponentsSection {

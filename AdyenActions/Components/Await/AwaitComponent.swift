@@ -12,6 +12,9 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     
     /// :nodoc:
     public let apiContext: APIContext
+
+    /// The Adyen context.
+    public let adyenContext: AdyenContext
     
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
@@ -52,23 +55,29 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     /// Initializes the `AwaitComponent`.
     ///
     /// - Parameter apiContext: The API context.
+    /// - Parameter adyeContext: The Adyen context.
     /// - Parameter configuration: The await component configurations.
     public convenience init(apiContext: APIContext,
+                            adyenContext: AdyenContext,
                             configuration: Configuration = .init()) {
         self.init(apiContext: apiContext,
-                  awaitComponentBuilder: PollingHandlerProvider(apiContext: apiContext),
+                  adyenContext: adyenContext,
+                  awaitComponentBuilder: PollingHandlerProvider(apiContext: apiContext, adyenContext: adyenContext),
                   configuration: configuration)
     }
     
     /// Initializes the `AwaitComponent`.
     ///
     /// - Parameter apiContext: The API context.
+    /// - Parameter adyenContext: The Adyen context.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter configuration: The Component UI style.
     internal init(apiContext: APIContext,
+                  adyenContext: AdyenContext,
                   awaitComponentBuilder: AnyPollingHandlerProvider,
                   configuration: Configuration = .init()) {
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
         self.configuration = configuration
         self.awaitComponentBuilder = awaitComponentBuilder
     }

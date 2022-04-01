@@ -17,7 +17,8 @@ extension IntegrationExample {
 
     internal func presentDropInComponent() {
         guard let paymentMethods = paymentMethods else { return }
-        let configuration = DropInComponent.Configuration(apiContext: apiContext)
+        let configuration = DropInComponent.Configuration(apiContext: apiContext,
+                                                          adyenContext: adyenContext)
         configuration.applePay = .init(summaryItems: ConfigurationConstants.applePaySummaryItems,
                                        merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)

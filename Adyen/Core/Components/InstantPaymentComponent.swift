@@ -8,9 +8,12 @@ import Foundation
 
 /// A component that handles payment methods that don't need any payment detail to be filled.
 public final class InstantPaymentComponent: PaymentComponent {
-    
+
     /// :nodoc:
     public let apiContext: APIContext
+
+    /// The Adyen context.
+    public let adyenContext: AdyenContext
 
     /// The ready to submit payment data.
     public let paymentData: PaymentComponentData?
@@ -24,19 +27,26 @@ public final class InstantPaymentComponent: PaymentComponent {
     /// :nodoc:
     public init(paymentMethod: PaymentMethod,
                 paymentData: PaymentComponentData?,
-                apiContext: APIContext) {
+                apiContext: APIContext,
+                adyenContext: AdyenContext) {
         self.paymentMethod = paymentMethod
         self.paymentData = paymentData
         self.apiContext = apiContext
+        self.adyenContext = adyenContext
     }
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     public func initiatePayment() {
         let details = InstantPaymentDetails(type: paymentMethod.type)
         let paymentData = self.paymentData ?? PaymentComponentData(paymentMethodDetails: details, amount: amountToPay, order: order)
+
+        sendTelemetryEvent()
         submit(data: paymentData)
     }
 }
+
+/// :nodoc:
+extension InstantPaymentComponent: TrackableComponent {}
 
 /// Describes a payment details that contains nothing but the payment method type name.
 public struct InstantPaymentDetails: PaymentMethodDetails {

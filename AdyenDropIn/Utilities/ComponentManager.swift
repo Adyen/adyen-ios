@@ -284,12 +284,12 @@ extension ComponentManager: PaymentComponentBuilder {
     
     /// :nodoc:
     internal func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
-        StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext)
+        StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext, adyenContext: adyenContext)
     }
     
     /// :nodoc:
     internal func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent? {
-        StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext)
+        StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext, adyenContext: adyenContext)
     }
     
     /// :nodoc:
@@ -337,7 +337,8 @@ extension ComponentManager: PaymentComponentBuilder {
         guard classObject.isDeviceSupported() else { return nil }
         return InstantPaymentComponent(paymentMethod: paymentMethod,
                                        paymentData: nil,
-                                       apiContext: apiContext)
+                                       apiContext: apiContext,
+                                       adyenContext: adyenContext)
     }
     
     /// :nodoc:
@@ -406,7 +407,7 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
         InstantPaymentComponent(paymentMethod: paymentMethod,
                                 paymentData: nil,
-                                apiContext: apiContext)
+                                apiContext: apiContext,
+                                adyenContext: adyenContext)
     }
-
 }
