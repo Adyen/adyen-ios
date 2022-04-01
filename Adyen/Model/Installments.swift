@@ -9,7 +9,7 @@ import Foundation
 /// The model to create an installments instance.
 public struct Installments: Encodable, Equatable {
     
-    /// Instalments plan.
+    /// Installments plan.
     public enum Plan: String {
         /// Regular, monthly installment payments.
         case regular

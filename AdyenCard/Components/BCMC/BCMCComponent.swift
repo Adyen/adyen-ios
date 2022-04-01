@@ -12,12 +12,15 @@ import UIKit
 /// A component that handles BCMC card payments.
 public final class BCMCComponent: CardComponent {
     
-    /// :nodoc:
+    /// Initializes the BCMC Component.
+    /// - Parameters:
+    ///   - paymentMethod: BCMC payment method.
+    ///   - apiContext: The API context.
+    ///   - configuration: The configuration of the component.
     public init(paymentMethod: BCMCPaymentMethod,
-                configuration: CardComponent.Configuration = CardComponent.Configuration(),
                 apiContext: APIContext,
                 adyenContext: AdyenContext,
-                style: FormComponentStyle = FormComponentStyle()) {
+                configuration: CardComponent.Configuration = .init()) {
         let configuration = configuration.bcmcConfiguration()
         
         let publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
@@ -28,7 +31,6 @@ public final class BCMCComponent: CardComponent {
                    apiContext: apiContext,
                    adyenContext: adyenContext,
                    configuration: configuration,
-                   style: style,
                    publicKeyProvider: publicKeyProvider,
                    binProvider: binInfoProvider)
     }

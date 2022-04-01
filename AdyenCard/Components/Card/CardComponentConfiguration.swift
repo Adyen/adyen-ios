@@ -1,10 +1,49 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Adyen
+
+/// :nodoc:
+public protocol AnyCardComponentConfiguration {
+    
+    /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
+    var showsHolderNameField: Bool { get }
+
+    /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
+    var showsStorePaymentMethodField: Bool { get }
+
+    /// Indicates whether to show the security code field at all. Defaults to true.
+    var showsSecurityCodeField: Bool { get }
+
+    /// Indicates whether to show the security fields for South Korea issued cards. Defaults to `auto`.
+    /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
+    var koreanAuthenticationMode: CardComponent.FieldVisibility { get }
+
+    /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards. Defaults to `auto`.
+    /// In `auto` mode the field will appear based on card bin lookup.
+    var socialSecurityNumberMode: CardComponent.FieldVisibility { get }
+
+    /// Indicates the display mode of the billing address form. Defaults to none.
+    var billingAddressMode: CardComponent.AddressFormType { get }
+
+    /// Stored card configuration.
+    var stored: StoredCardConfiguration { get }
+
+    /// The list of allowed card types.  Defaults to nil.
+    /// By default list of supported cards is extracted from component's `AnyCardPaymentMethod`.
+    /// Use this property to enforce a custom collection of card types.
+    var allowedCardTypes: [CardType]? { get }
+
+    /// Installments options to present to the user.
+    var installmentConfiguration: InstallmentConfiguration? { get }
+    
+    /// List of ISO country codes that is supported for the billing address.
+    /// When nil, all countries are provided.
+    var billingAddressCountryCodes: [String]? { get }
+}
 
 extension CardComponent {
 
@@ -35,7 +74,16 @@ extension CardComponent {
     }
 
     /// Card component configuration.
-    public struct Configuration {
+    public struct Configuration: AnyCardComponentConfiguration, AnyPersonalInformationConfiguration {
+        
+        /// Describes the component's UI style.
+        public var style: FormComponentStyle
+        
+        /// The shopper's information to be prefilled.
+        public var shopperInformation: PrefilledShopperInformation?
+        
+        /// :nodoc:
+        public var localizationParameters: LocalizationParameters?
 
         /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
         public var showsHolderNameField: Bool
@@ -77,14 +125,18 @@ extension CardComponent {
 
         /// Configuration of Card component.
         /// - Parameters:
+        ///   - style: The component's UI style.
+        ///   - shopperInformation: The shopper's information to be prefilled.
+        ///   - localizationParameters: Localization parameters.
         ///   - showsHolderNameField: Indicates if the field for entering the holder name should be displayed in the form.
-        ///   Defaults to false.
+        ///   Defaults to `false`.
         ///   - showsStorePaymentMethodField: Indicates if the field for storing the card payment method should be displayed in the form.
-        ///   Defaults to true.
+        ///   Defaults to `true`.
         ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
-        ///   Defaults to true.
-        ///   - koreanAuthenticationMode: Indicates whether to show the security fields for South Korea issued cards.
-        ///   Defaults to .auto.
+        ///   Defaults to `true`.
+        ///   - koreanAuthenticationMode: Indicates the visibility option for the security fields for South Korea issued cards.
+        ///   Defaults to `.auto`.
+        ///   - socialSecurityNumberMode: Indicates the visibility option for the security code field. Defaults to `.auto`
         ///   - billingAddressMode: Indicates mode of how to display the billing address form.
         ///   Defaults to none.
         ///   - storedCardConfiguration: Stored card configuration.
@@ -92,7 +144,10 @@ extension CardComponent {
         ///   - installmentConfiguration: Configuration for installments. Defaults to `nil`.
         ///   - billingAddressCountryCodes: List of ISO country codes that is supported for the billing address.
         ///   Defaults to `nil`, which equals to all countries.
-        public init(showsHolderNameField: Bool = false,
+        public init(style: FormComponentStyle = FormComponentStyle(),
+                    shopperInformation: PrefilledShopperInformation? = nil,
+                    localizationParameters: LocalizationParameters? = nil,
+                    showsHolderNameField: Bool = false,
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,
                     koreanAuthenticationMode: FieldVisibility = .auto,
@@ -102,6 +157,9 @@ extension CardComponent {
                     allowedCardTypes: [CardType]? = nil,
                     installmentConfiguration: InstallmentConfiguration? = nil,
                     billingAddressCountryCodes: [String]? = nil) {
+            self.style = style
+            self.shopperInformation = shopperInformation
+            self.localizationParameters = localizationParameters
             self.showsHolderNameField = showsHolderNameField
             self.showsSecurityCodeField = showsSecurityCodeField
             self.showsStorePaymentMethodField = showsStorePaymentMethodField

@@ -81,23 +81,25 @@ internal final class IntegrationExample: APIClientAware {
 
     internal func finish(with resultCode: PaymentsResponse.ResultCode) {
         let success = resultCode == .authorised || resultCode == .received || resultCode == .pending
-        currentComponent?.finalizeIfNeeded(with: success)
-
-        presenter?.dismiss { [weak self] in
-            // Payment is processed. Add your code here.
-            self?.presentAlert(withTitle: resultCode.rawValue)
+        currentComponent?.finalizeIfNeeded(with: success) { [weak self] in
+            guard let self = self else { return }
+            self.presenter?.dismiss {
+                // Payment is processed. Add your code here.
+                self.presentAlert(withTitle: resultCode.rawValue)
+            }
         }
     }
 
     internal func finish(with error: Error) {
-        currentComponent?.finalizeIfNeeded(with: false)
-
-        presenter?.dismiss { [weak self] in
-            // Payment is unsuccessful. Add your code here.
-            if let componentError = (error as? ComponentError), componentError == ComponentError.cancelled {
-                self?.presentAlert(withTitle: "Cancelled")
-            } else {
-                self?.presentAlert(with: error)
+        currentComponent?.finalizeIfNeeded(with: false) { [weak self] in
+            guard let self = self else { return }
+            self.presenter?.dismiss {
+                // Payment is unsuccessful. Add your code here.
+                if let componentError = (error as? ComponentError), componentError == ComponentError.cancelled {
+                    self.presentAlert(withTitle: "Cancelled")
+                } else {
+                    self.presentAlert(with: error)
+                }
             }
         }
     }

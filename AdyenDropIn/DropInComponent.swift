@@ -23,7 +23,9 @@ import UIKit
  - SeeAlso:
  [Implementation Reference](https://docs.adyen.com/online-payments/ios/drop-in)
  */
-public final class DropInComponent: NSObject, PresentableComponent {
+public final class DropInComponent: NSObject,
+    AnyDropInComponent,
+    ActionHandlingComponent {
 
     private var configuration: Configuration
 
@@ -33,9 +35,6 @@ public final class DropInComponent: NSObject, PresentableComponent {
 
     /// The payment methods to display.
     public internal(set) var paymentMethods: PaymentMethods
-    
-    /// Indicates the UI configuration of the drop in component.
-    public let style: Style
     
     /// The title text on the first page of drop in component.
     public let title: String
@@ -52,19 +51,16 @@ public final class DropInComponent: NSObject, PresentableComponent {
     ///   - paymentMethods: The payment methods to display.
     ///   - adyenContext: The Adyen context
     ///   - configuration: The payment method specific configuration.
-    ///   - style: The UI styles of the components.
     ///   - title: Name of the application. To be displayed on a first payment page.
     ///            If no external value provided, the Main Bundle's name would be used.
     public init(paymentMethods: PaymentMethods,
                 adyenContext: AdyenContext,
                 configuration: Configuration,
-                style: Style = Style(),
                 title: String? = nil) {
         self.title = title ?? Bundle.main.displayName
         self.configuration = configuration
         self.adyenContext = adyenContext
         self.paymentMethods = paymentMethods
-        self.style = style
         super.init()
     }
 
@@ -157,7 +153,6 @@ public final class DropInComponent: NSObject, PresentableComponent {
         ComponentManager(paymentMethods: paymentMethods,
                          adyenContext: adyenContext,
                          configuration: configuration,
-                         style: style,
                          partialPaymentEnabled: partialPaymentDelegate != nil,
                          remainingAmount: remainingAmount,
                          order: order,
@@ -180,7 +175,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
     
     internal lazy var navigationController = DropInNavigationController(
         rootComponent: rootComponent,
-        style: style.navigation,
+        style: configuration.style.navigation,
         cancelHandler: { [weak self] isRoot, component in
             self?.didSelectCancelButton(isRoot: isRoot, component: component)
         }
@@ -188,7 +183,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
 
     private lazy var actionComponent: AdyenActionComponent = {
         let handler = AdyenActionComponent(apiContext: apiContext, adyenContext: adyenContext)
-        handler.configuration.style = style.actionComponent
+        handler.configuration.style = configuration.style.actionComponent
         handler._isDropIn = true
         handler.delegate = self
         handler.presentationDelegate = self
@@ -202,7 +197,7 @@ public final class DropInComponent: NSObject, PresentableComponent {
         let component = PaymentMethodListComponent(apiContext: apiContext,
                                                    adyenContext: adyenContext,
                                                    components: paymentComponents,
-                                                   style: style.listComponent)
+                                                   style: configuration.style.listComponent)
         component.onCancel = onCancel
         component.localizationParameters = configuration.localizationParameters
         component.delegate = self
@@ -214,8 +209,8 @@ public final class DropInComponent: NSObject, PresentableComponent {
                                                     onCancel: (() -> Void)?) -> PreselectedPaymentMethodComponent {
         let component = PreselectedPaymentMethodComponent(component: paymentComponent,
                                                           title: title,
-                                                          style: style.formComponent,
-                                                          listItemStyle: style.listComponent.listItem)
+                                                          style: configuration.style.formComponent,
+                                                          listItemStyle: configuration.style.listComponent.listItem)
         component.payment = configuration.payment
         component.localizationParameters = configuration.localizationParameters
         component.delegate = self

@@ -14,9 +14,13 @@
 - `IssuerListComponent.style` and `IssuerListComponent.localizationParameters` moved into new `configuration` property `IssuerListComponent.Configuration`
 - `SEPADirectDebitComponent.style` and `SEPADirectDebitComponent.localizationParameters` moved into new `configuration` property `SEPADirectDebitComponent.Configuration`
 - `ThreeDS2Component.appearanceConfiguration` and `ThreeDS2Component.redirectComponentStyle` moved to `ThreeDS2Component.configuration`
+- `CardComponent.style`, `CardComponent.shopperInformation` and `CardComponent.localizationParameters` moved into the `configuration` property `CardComponent.Configuration`
+- `DropInComponent.style` moved into the `configuration` property `DropInComponent.Configuration`
 - `AwaitComponent.style` and `AwaitComponent.localizationParameters` moved to `AwaitComponent.configuration`
 - `QRCodeComponent.style` and `QRCodeComponent.localizationParameters` moved to `QRCodeComponent.configuration`
 - `VoucherComponent.style` and `VoucherComponent.localizationParameters` moved to `VoucherComponent.configuration`
 - `RedirectComponent.style` moved to `RedirectComponent.configuration`
 - `DocumentComponent.style` and `DocumentComponent.localizationParameters` moved to `DocumentComponent.configuration`
 - `DropInComponentDelegate` has been refactored to be more transparent about which action component or payment component caused the call back.
+- Method `didFinalize(with success: Bool)` for `FinalizableComponent` changed to `didFinalize(with success: Bool, completion: (() -> Void)?)`.
+- Helper method `finalizeIfNeeded(with success: Bool)` for `Component` changed to `finalizeIfNeeded(with success: Bool, completion: (() -> Void)?)`.
