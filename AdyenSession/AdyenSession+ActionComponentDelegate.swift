@@ -21,6 +21,7 @@ extension AdyenSession: ActionComponentDelegate {
     }
     
     internal func didComplete(currentComponent: Component) {
+        // TODO: find real result
         delegate?.didComplete(with: .authorised, component: currentComponent, session: self)
     }
 
