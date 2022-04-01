@@ -35,4 +35,8 @@ extension AdyenSession: DropInComponentDelegate {
         didFail(with: error, currentComponent: dropInComponent)
     }
     
+    public func didOpenExternalApplication(_ component: ActionComponent, in dropInComponent: AnyDropInComponent) {
+        didOpenExternalApplication(actionComponent: component)
+    }
+    
 }

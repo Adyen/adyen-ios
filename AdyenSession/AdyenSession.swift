@@ -69,23 +69,27 @@ public final class AdyenSession {
     /// The delegate object.
     public weak var delegate: AdyenSessionDelegate?
     
-    /// Initializes an instance of `SessionComponent` asynchronously.
+    /// Initializes an instance of `AdyenSession` asynchronously.
     /// - Parameter configuration: The session configuration.
+    /// - Parameter delegate: The session delegate.
     /// - Parameter presentationDelegate: The presentation delegate.
     /// - Parameter completion: The completion closure, that delivers the new instance asynchronously.
     public static func initialize(with configuration: Configuration,
+                                  delegate: AdyenSessionDelegate,
                                   presentationDelegate: PresentationDelegate,
                                   completion: @escaping ((Result<AdyenSession, Error>) -> Void)) {
         let baseAPIClient = APIClient(apiContext: configuration.apiContext)
             .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
             .retryOnErrorAPIClient()
         initialize(with: configuration,
+                   delegate: delegate,
                    presentationDelegate: presentationDelegate,
                    baseAPIClient: baseAPIClient,
                    completion: completion)
     }
     
     internal static func initialize(with configuration: Configuration,
+                                    delegate: AdyenSessionDelegate,
                                     presentationDelegate: PresentationDelegate,
                                     baseAPIClient: APIClientProtocol,
                                     completion: @escaping ((Result<AdyenSession, Error>) -> Void)) {
@@ -95,6 +99,7 @@ public final class AdyenSession {
             case let .success(sessionContext):
                 let session = AdyenSession(configuration: configuration,
                                            sessionContext: sessionContext)
+                session.delegate = delegate
                 session.presentationDelegate = presentationDelegate
                 completion(.success(session))
             case let .failure(error):

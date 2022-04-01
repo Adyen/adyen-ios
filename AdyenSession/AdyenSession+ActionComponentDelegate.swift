@@ -21,7 +21,7 @@ extension AdyenSession: ActionComponentDelegate {
     }
     
     internal func didComplete(currentComponent: Component) {
-        // TODO: call back the merchant
+        delegate?.didComplete(with: .authorised, component: currentComponent, session: self)
     }
 
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
@@ -30,7 +30,11 @@ extension AdyenSession: ActionComponentDelegate {
     }
     
     public func didOpenExternalApplication(_ component: ActionComponent) {
-        // TODO: call back the merchant
+        didOpenExternalApplication(actionComponent: component)
+    }
+    
+    internal func didOpenExternalApplication(actionComponent: ActionComponent) {
+        delegate?.didOpenExternalApplication(actionComponent, session: self)
     }
 }
 

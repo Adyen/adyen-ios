@@ -26,6 +26,7 @@ extension IntegrationExample: PartialPaymentDelegate {
     }
 
     internal func checkBalance(with data: PaymentComponentData,
+                               component: Component,
                                completion: @escaping (Result<Balance, Error>) -> Void) {
         let request = BalanceCheckRequest(data: data)
         apiClient.perform(request) { [weak self] result in
@@ -58,7 +59,8 @@ extension IntegrationExample: PartialPaymentDelegate {
         completion(.failure(error))
     }
 
-    internal func requestOrder(_ completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
+    internal func requestOrder(in component: Component,
+                               completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
         let request = CreateOrderRequest(amount: payment.amount, reference: UUID().uuidString)
         apiClient.perform(request) { [weak self] result in
             self?.handle(result: result, completion: completion)
@@ -76,7 +78,7 @@ extension IntegrationExample: PartialPaymentDelegate {
         }
     }
 
-    internal func cancelOrder(_ order: PartialPaymentOrder) {
+    internal func cancelOrder(_ order: PartialPaymentOrder, component: Component) {
         let request = CancelOrderRequest(order: order)
         apiClient.perform(request) { [weak self] result in
             self?.handle(result: result)

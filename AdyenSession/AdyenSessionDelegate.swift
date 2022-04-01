@@ -18,9 +18,10 @@ public protocol AdyenSessionDelegate: AnyObject {
     /// The application only needs to dismiss the component.
     ///
     /// - Parameters:
+    ///   - resultCode: The result code of the completed payment.
     ///   - component: The component object.
     ///   - session: The session object.
-    func didComplete(from component: Component, session: AdyenSession)
+    func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession)
     
     /// Invoked when a payment component fails.
     ///
@@ -30,11 +31,20 @@ public protocol AdyenSessionDelegate: AnyObject {
     ///   - session: The session object.
     func didFail(with error: Error, from component: Component, session: AdyenSession)
     
+    /// Invoked when the action component opens a third party application outside the scope of the Adyen checkout,
+    /// e.g WeChat Pay Application.
+    /// In which case you can for example stop any loading animations.
+    ///
+    /// - Parameters:
+    ///   - component: The current component object.
+    ///   - session: The session object.
+    func didOpenExternalApplication(_ component: ActionComponent, session: AdyenSession)
+    
     /// Returns a handler for handling the payment data submitted by the shopper, that is required for the payments call.
     /// - Parameters:
     ///   - component: The current payment component object.
     ///   - session: The session object.
-    /// - Returns: An instance conforming to the `SessionComponentPaymentsHandler`.
+    /// - Returns: An instance conforming to the `AdyenSessionPaymentsHandler`.
     /// protocol to take over, or nil to let `AdyenSession` handle it.
     func handlerForPayments(in component: PaymentComponent, session: AdyenSession) -> AdyenSessionPaymentsHandler?
     
@@ -42,7 +52,7 @@ public protocol AdyenSessionDelegate: AnyObject {
     /// - Parameters:
     ///   - component: The current action component object.
     ///   - session: The session object.
-    /// - Returns: An instance conforming to the `SessionComponentPaymentDetailsHandler`.
+    /// - Returns: An instance conforming to the `AdyenSessionPaymentDetailsHandler`.
     /// protocol to take over, or nil to let `AdyenSession` handle it.
     func handlerForAdditionalDetails(in component: ActionComponent, session: AdyenSession) -> AdyenSessionPaymentDetailsHandler?
 }
@@ -75,4 +85,50 @@ public protocol AdyenSessionPaymentDetailsHandler {
     ///   - actionComponentData: The data supplied by the action component.
     ///   - component: The component that handled the action.
     func didProvide(_ actionComponentData: ActionComponentData, from component: ActionComponent, session: AdyenSession)
+}
+
+/// Represents the result of a payment via `AdyenSession`.
+public enum SessionPaymentResultCode: String {
+    /// Indicates the payment was successfully authorised.
+    case authorised = "Authorised"
+    
+    /// Indicates the payment was refused.
+    case refused = "Refused"
+    
+    /// Indicates that it is not possible to obtain the final status of the payment.
+    case pending = "Pending"
+    
+    /// Indicates the payment has been cancelled
+    /// (either by the shopper or the merchant) before processing was completed.
+    case cancelled = "Cancelled"
+    
+    /// There was an error when the payment was being processed.
+    case error = "Error"
+    
+    /// Indicates the payment has successfully been received by Adyen, and will be processed.
+    case received = "Received"
+    
+    // Internal init to map payment response to only the final codes.
+    internal init(paymentResultCode: PaymentsResponse.ResultCode) {
+        switch paymentResultCode {
+        case .authenticationFinished,
+             .authenticationNotRequired,
+             .redirectShopper, .identifyShopper,
+             .challengeShopper,
+             .presentToShopper:
+            self = .error
+        case .authorised:
+            self = .authorised
+        case .refused:
+            self = .refused
+        case .pending:
+            self = .pending
+        case .cancelled:
+            self = .cancelled
+        case .error:
+            self = .error
+        case .received:
+            self = .received
+        }
+    }
 }

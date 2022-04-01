@@ -103,5 +103,4 @@ internal extension PaymentsResponse {
         case challengeShopper = "ChallengeShopper"
         case presentToShopper = "PresentToShopper"
     }
-    
 }

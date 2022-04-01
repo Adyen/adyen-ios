@@ -17,11 +17,11 @@ extension AdyenSession: PaymentComponentDelegate {
         handler.didSubmit(data, from: component, session: self)
     }
     
-    internal func finish() {
-        // TODO: Handle Finish
+    internal func finish(with resultCode: SessionPaymentResultCode, component: Component) {
+        delegate?.didComplete(with: resultCode, component: component, session: self)
     }
     
-    internal func finish(with error: Error) {
+    internal func finish(with error: Error, component: Component) {
         // TODO: Handle Finish
     }
 
@@ -53,7 +53,7 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
         case let .success(response):
             handle(paymentResponse: response, for: currentComponent)
         case let .failure(error):
-            finish(with: error)
+            finish(with: error, component: currentComponent)
         }
     }
     
@@ -66,7 +66,8 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
                   remainingAmount.value > 0 {
             handle(order: order, for: currentComponent)
         } else {
-            finish()
+            finish(with: SessionPaymentResultCode(paymentResultCode: response.resultCode),
+                   component: currentComponent)
         }
     }
     
@@ -82,17 +83,17 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
         Self.makeSetupCall(with: configuration,
                            baseAPIClient: apiClient,
                            order: order) { [weak self] result in
-            self?.updateContext(with: result)
+            self?.updateContext(with: result, component: currentComponent)
             self?.reload(currentComponent: currentComponent, with: order)
         }
     }
     
-    private func updateContext(with result: Result<Context, Error>) {
+    private func updateContext(with result: Result<Context, Error>, component: Component) {
         switch result {
         case let .success(context):
             sessionContext = context
         case let .failure(error):
-            finish(with: error)
+            finish(with: error, component: component)
         }
     }
     
@@ -103,7 +104,7 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
             }
             try currentComponent.reload(with: order, sessionContext.paymentMethods)
         } catch {
-            finish(with: error)
+            finish(with: error, component: currentComponent)
         }
     }
 }
