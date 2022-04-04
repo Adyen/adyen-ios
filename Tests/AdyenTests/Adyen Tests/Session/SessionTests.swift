@@ -460,6 +460,86 @@ class SessionTests: XCTestCase {
         wait(for: [didProvideExpectation], timeout: 2)
     }
     
+    func testSessionAsDropInDelegate() throws {
+        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
+
+        let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        let dropIn = DropInComponent(paymentMethods: paymenMethods, configuration: config)
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionHandlerMock = SessionAdvancedHandlerMock()
+        let sessionDelegate = SessionDelegateMock()
+        sessionDelegate.handlerMock = sessionHandlerMock
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        dropIn.delegate = sut
+        
+        let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
+        let paymentComponent = PaymentComponentMock(paymentMethod: paymentMethod)
+        let actionComponent = QRCodeComponent(apiContext: Dummy.context)
+        
+        let didFailExpectation = expectation(description: "didFail should be called")
+        sessionDelegate.onDidFail = { (error, component, session) in
+            XCTAssertTrue(error is ComponentError)
+            XCTAssertTrue(session === sut)
+            didFailExpectation.fulfill()
+        }
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, component, session) in
+            XCTAssertTrue(session === sut)
+            didCompleteExpectation.fulfill()
+        }
+        
+        let didOpenExternalAppExpectation = expectation(description: "didOpenExternalApplication should be called")
+        sessionDelegate.onDidOpenExternalApplication = {
+            didOpenExternalAppExpectation.fulfill()
+        }
+        
+        let didProvideExpectation = expectation(description: "handler didProvide should be called")
+        sessionHandlerMock.onDidProvide = { (data, component, session) in
+            XCTAssertTrue(component === actionComponent)
+            XCTAssertTrue(session === sut)
+            didProvideExpectation.fulfill()
+        }
+        
+        let didSubmitExpectation = expectation(description: "handler didSubmit should be called")
+        sessionHandlerMock.onDidSubmit = { (data, component, session) in
+            XCTAssertTrue(component === paymentComponent)
+            XCTAssertTrue(session === sut)
+            didSubmitExpectation.fulfill()
+        }
+        
+        
+        let paymentData = PaymentComponentData(
+            paymentMethodDetails: MBWayDetails(
+                paymentMethod: paymentMethod,
+                telephoneNumber: "telephone"
+            ),
+            amount: .init(
+                value: 20,
+                currencyCode: "USD",
+                localeIdentifier: nil
+            ),
+            order: nil
+        )
+        
+        let actionData = ActionComponentData(
+            details: RedirectDetails(
+                returnURL: URL(string: "https://google.com")!
+            ),
+            paymentData: "payment_data"
+        )
+        
+        
+        dropIn.didComplete(from: actionComponent)
+        dropIn.didFail(with: ComponentError.paymentMethodNotSupported, from: paymentComponent)
+        dropIn.didOpenExternalApplication(QRCodeComponent(apiContext: Dummy.context))
+        dropIn.didSubmit(paymentData, from: paymentComponent)
+        dropIn.didProvide(actionData, from: actionComponent)
+        
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
     private func initializeSession(expectedPaymentMethods: PaymentMethods,
                                    delegate: AdyenSessionDelegate = SessionDelegateMock()) throws -> AdyenSession {
         let apiClient = APIClientMock()

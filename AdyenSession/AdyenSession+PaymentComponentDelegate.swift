@@ -22,7 +22,7 @@ extension AdyenSession: PaymentComponentDelegate {
     }
     
     internal func finish(with error: Error, component: Component) {
-        // TODO: Handle Finish
+        didFail(with: error, currentComponent: component)
     }
 
     public func didFail(with error: Error, from component: PaymentComponent) {
