@@ -129,10 +129,12 @@ extension IntegrationExample {
     }
 
     internal func handle(_ action: Action) {
-        if let actionComponent = currentComponent as? ActionHandlingComponent {
-            actionComponent.handle(action)
+        if let dropInAsActionComponent = currentComponent as? ActionHandlingComponent {
+            /// In case current component is a `DropInComponent` that implements `ActionHandlingComponent`
+            dropInAsActionComponent.handle(action)
         } else {
-            actionComponent.handle(action)
+            /// In case current component is an individual component like `CardComponent`
+            adyenActionComponent.handle(action)
         }
     }
 
