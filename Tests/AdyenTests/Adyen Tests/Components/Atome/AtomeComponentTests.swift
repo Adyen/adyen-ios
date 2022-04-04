@@ -57,7 +57,7 @@ class AtomeComponentTests: XCTestCase {
         sut.addressItem?.value = expectedBillingAddress
         
         // Action
-        let paymentDetails = sut.createPaymentDetails()
+        let paymentDetails = try sut.createPaymentDetails()
     
         let shopperInformation = try XCTUnwrap(paymentDetails as? ShopperInformation)
         let firstName = try XCTUnwrap(shopperInformation.shopperName?.firstName)

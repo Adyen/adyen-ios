@@ -68,7 +68,7 @@ internal struct PaymentsRequest: APIRequest {
     }
 }
 
-internal struct PaymentsResponse: Response {
+internal struct PaymentsResponse: SessionResponse {
     
     internal let resultCode: ResultCode
     

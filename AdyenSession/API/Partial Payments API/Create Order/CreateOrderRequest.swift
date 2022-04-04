@@ -40,7 +40,7 @@ internal struct CreateOrderRequest: APIRequest {
     }
 }
 
-internal struct CreateOrderResponse: Response {
+internal struct CreateOrderResponse: SessionResponse {
 
     internal let pspReference: String
 
