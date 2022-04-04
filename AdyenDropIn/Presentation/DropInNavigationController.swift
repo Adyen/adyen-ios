@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -47,14 +47,6 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
 
     internal func didUpdatePreferredContentSize() {
         updateTopViewControllerIfNeeded()
-    }
-    
-    internal func present(_ viewController: UIViewController, customPresentation: Bool = true) {
-        if customPresentation {
-            pushViewController(viewController, animated: true)
-        } else {
-            present(viewController, animated: true, completion: nil)
-        }
     }
     
     internal func present(asModal component: PresentableComponent) {

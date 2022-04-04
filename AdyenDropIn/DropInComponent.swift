@@ -215,14 +215,8 @@ public final class DropInComponent: NSObject,
         setNecessaryDelegates(on: component)
         
         switch component {
-        case let component as PreApplePayComponent:
-            navigationController.present(asModal: component)
-        case let component as PresentableComponent where component.requiresModalPresentation:
-            navigationController.present(asModal: component)
-        case let component as PresentableComponent where component.viewController is UIAlertController:
-            navigationController.present(component.viewController, customPresentation: false)
         case let component as PresentableComponent:
-            navigationController.present(component.viewController, customPresentation: true)
+            navigationController.present(asModal: component)
         case let component as InstantPaymentComponent:
             component.initiatePayment()
         default:
