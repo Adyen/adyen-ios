@@ -206,7 +206,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     }
 
     /// :nodoc:
-    open func createPaymentDetails() -> PaymentMethodDetails {
+    open func createPaymentDetails() throws -> PaymentMethodDetails {
         fatalError("This is an abstract class that needs to be subclassed.")
     }
 

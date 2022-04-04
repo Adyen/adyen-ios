@@ -73,7 +73,8 @@ internal enum AnyPaymentMethodDecoder {
         .econtextATM: EContextATMPaymentMethodDecoder(),
         .econtextOnline: EContextOnlinePaymentMethodDecoder(),
         .boleto: BoletoPaymentMethodDecoder(),
-        .affirm: AffirmPaymentMethodDecoder()
+        .affirm: AffirmPaymentMethodDecoder(),
+        .atome: AtomePaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = InstantPaymentMethodDecoder()
@@ -264,5 +265,11 @@ private struct BoletoPaymentMethodDecoder: PaymentMethodDecoder {
 private struct AffirmPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         .affirm(try AffirmPaymentMethod(from: decoder))
+    }
+}
+
+private struct AtomePaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
+        .atome(try AtomePaymentMethod(from: decoder))
     }
 }
