@@ -156,8 +156,8 @@ class BACSItemsFactoryTests: XCTestCase {
 
     func testCreateAmountConsentToggleWhenAmountIsNotNilShouldReturnItemWithCorrectProperties() throws {
         // Given
-        let expectedAmount = "$105.6"
-        let expectedTitle = "I agree that \(expectedAmount) will be deducted from my bank account."
+        let expectedAmount = Amount(value: 10560, currencyCode: "USD")
+        let expectedTitle = "I agree that \(expectedAmount.formatted) will be deducted from my bank account."
         let expectedIdentifier = ".amountConsentToggleItem"
 
         // When

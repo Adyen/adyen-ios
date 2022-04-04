@@ -24,8 +24,8 @@ class BACSInputPresenterTests: XCTestCase {
         sut = BACSInputPresenter(view: view,
                                  router: router,
                                  tracker: tracker,
-                                 itemsFactory: itemsFactory,
-                                 amount: amount)
+                                 itemsFactory: itemsFactory)
+        sut.amount = amount
     }
 
     override func tearDownWithError() throws {
