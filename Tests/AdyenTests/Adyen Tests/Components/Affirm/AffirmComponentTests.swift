@@ -12,6 +12,7 @@ class AffirmComponentTests: XCTestCase {
     
     private var paymentMethod: PaymentMethod!
     private var apiContext: APIContext!
+    private var adyenContext: AdyenContext!
     private var style: FormComponentStyle!
     private var sut: AffirmComponent!
 
@@ -19,9 +20,11 @@ class AffirmComponentTests: XCTestCase {
         try super.setUpWithError()
         paymentMethod = AffirmPaymentMethod(type: .affirm, name: "Affirm")
         apiContext = Dummy.context
+        adyenContext = Dummy.adyenContext
         style = FormComponentStyle()
         sut = AffirmComponent(paymentMethod: paymentMethod,
                               apiContext: apiContext,
+                              adyenContext: adyenContext,
                               configuration: AffirmComponent.Configuration(style: style))
     }
     
@@ -111,6 +114,7 @@ class AffirmComponentTests: XCTestCase {
         // Given
         let sut = AffirmComponent(paymentMethod: paymentMethod,
                                   apiContext: apiContext,
+                                  adyenContext: adyenContext,
                                   configuration: AffirmComponent.Configuration(style: style))
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -179,6 +183,7 @@ class AffirmComponentTests: XCTestCase {
         let config = AffirmComponent.Configuration(style: style, shopperInformation: shopperInformation)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          apiContext: apiContext,
+                                         adyenContext: adyenContext,
                                          configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
@@ -226,6 +231,7 @@ class AffirmComponentTests: XCTestCase {
         let config = AffirmComponent.Configuration(style: style, shopperInformation: shopperInformationNoDeliveryAddress)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          apiContext: apiContext,
+                                         adyenContext: adyenContext,
                                          configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
