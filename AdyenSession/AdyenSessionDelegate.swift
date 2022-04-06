@@ -108,15 +108,20 @@ public enum SessionPaymentResultCode: String {
     /// Indicates the payment has successfully been received by Adyen, and will be processed.
     case received = "Received"
     
+    /// Indicates that the response contains additional information that is presented to the shopper.
+    case presentToShopper = "PresentToShopper"
+    
     // Internal init to map payment response to only the final codes.
     internal init(paymentResultCode: PaymentsResponse.ResultCode) {
         switch paymentResultCode {
         case .authenticationFinished,
              .authenticationNotRequired,
-             .redirectShopper, .identifyShopper,
-             .challengeShopper,
-             .presentToShopper:
+             .redirectShopper,
+             .identifyShopper,
+             .challengeShopper:
             self = .error
+        case .presentToShopper:
+            self = .presentToShopper
         case .authorised:
             self = .authorised
         case .refused:

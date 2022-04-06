@@ -530,14 +530,270 @@ class SessionTests: XCTestCase {
             paymentData: "payment_data"
         )
         
-        
-        dropIn.didComplete(from: actionComponent)
         dropIn.didFail(with: ComponentError.paymentMethodNotSupported, from: paymentComponent)
         dropIn.didOpenExternalApplication(QRCodeComponent(apiContext: Dummy.context))
         dropIn.didSubmit(paymentData, from: paymentComponent)
         dropIn.didProvide(actionData, from: actionComponent)
+        sut.sessionContext.resultCode = .authorised
+        dropIn.didComplete(from: actionComponent)
         
         waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    func testResultCodeAuthorised() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionDelegate = SessionDelegateMock()
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(
+            PaymentsResponse(
+                resultCode: .authorised,
+                action: nil,
+                order: nil,
+                sessionData: "session_data"
+            )
+        )]
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, _, _) in
+            XCTAssertEqual(result, .authorised)
+            didCompleteExpectation.fulfill()
+        }
+        let actionData = ActionComponentData(
+            details: RedirectDetails(
+                returnURL: URL(string: "https://google.com")!
+            ),
+            paymentData: "payment_data"
+        )
+        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context))
+        wait(for: [didCompleteExpectation], timeout: 2)
+    }
+    
+    func testResultCodePending() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionDelegate = SessionDelegateMock()
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(
+            PaymentsResponse(
+                resultCode: .pending,
+                action: nil,
+                order: nil,
+                sessionData: "session_data"
+            )
+        )]
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, _, _) in
+            XCTAssertEqual(result, .pending)
+            didCompleteExpectation.fulfill()
+        }
+        let actionData = ActionComponentData(
+            details: RedirectDetails(
+                returnURL: URL(string: "https://google.com")!
+            ),
+            paymentData: "payment_data"
+        )
+        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context))
+        wait(for: [didCompleteExpectation], timeout: 2)
+    }
+    
+    func testResultCodeRefused() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionDelegate = SessionDelegateMock()
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(
+            PaymentsResponse(
+                resultCode: .refused,
+                action: nil,
+                order: nil,
+                sessionData: "session_data"
+            )
+        )]
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, _, _) in
+            XCTAssertEqual(result, .refused)
+            didCompleteExpectation.fulfill()
+        }
+        let actionData = ActionComponentData(
+            details: RedirectDetails(
+                returnURL: URL(string: "https://google.com")!
+            ),
+            paymentData: "payment_data"
+        )
+        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context))
+        wait(for: [didCompleteExpectation], timeout: 2)
+    }
+    
+    func testResultCodeCancelled() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionDelegate = SessionDelegateMock()
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(
+            PaymentsResponse(
+                resultCode: .cancelled,
+                action: nil,
+                order: nil,
+                sessionData: "session_data"
+            )
+        )]
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, _, _) in
+            XCTAssertEqual(result, .cancelled)
+            didCompleteExpectation.fulfill()
+        }
+        let actionData = ActionComponentData(
+            details: RedirectDetails(
+                returnURL: URL(string: "https://google.com")!
+            ),
+            paymentData: "payment_data"
+        )
+        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context))
+        wait(for: [didCompleteExpectation], timeout: 2)
+    }
+    
+    func testResultCodeReceived() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionDelegate = SessionDelegateMock()
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(
+            PaymentsResponse(
+                resultCode: .received,
+                action: nil,
+                order: nil,
+                sessionData: "session_data"
+            )
+        )]
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, _, _) in
+            XCTAssertEqual(result, .received)
+            didCompleteExpectation.fulfill()
+        }
+        let actionData = ActionComponentData(
+            details: RedirectDetails(
+                returnURL: URL(string: "https://google.com")!
+            ),
+            paymentData: "payment_data"
+        )
+        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context))
+        wait(for: [didCompleteExpectation], timeout: 2)
+    }
+    
+    func testResultCodePresentToShopper() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionDelegate = SessionDelegateMock()
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(
+            PaymentsResponse(
+                resultCode: .presentToShopper,
+                action: nil,
+                order: nil,
+                sessionData: "session_data"
+            )
+        )]
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, _, _) in
+            XCTAssertEqual(result, .presentToShopper)
+            didCompleteExpectation.fulfill()
+        }
+        let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
+        let paymentComponent = PaymentComponentMock(paymentMethod: paymentMethod)
+        let paymentData = PaymentComponentData(
+            paymentMethodDetails: MBWayDetails(
+                paymentMethod: paymentMethod,
+                telephoneNumber: "telephone"
+            ),
+            amount: .init(
+                value: 20,
+                currencyCode: "USD",
+                localeIdentifier: nil
+            ),
+            order: nil
+        )
+        sut.didSubmit(paymentData, from: paymentComponent)
+        wait(for: [didCompleteExpectation], timeout: 2)
+    }
+    
+    func testResultCodeError() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionDelegate = SessionDelegateMock()
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(
+            PaymentsResponse(
+                resultCode: .error,
+                action: nil,
+                order: nil,
+                sessionData: "session_data"
+            )
+        )]
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, _, _) in
+            XCTAssertEqual(result, .error)
+            didCompleteExpectation.fulfill()
+        }
+        let actionData = ActionComponentData(
+            details: RedirectDetails(
+                returnURL: URL(string: "https://google.com")!
+            ),
+            paymentData: "payment_data"
+        )
+        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context))
+        wait(for: [didCompleteExpectation], timeout: 2)
+    }
+    
+    func testResultCodeErrorFromAnotherCode() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionDelegate = SessionDelegateMock()
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(
+            PaymentsResponse(
+                resultCode: .redirectShopper,
+                action: nil,
+                order: nil,
+                sessionData: "session_data"
+            )
+        )]
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, _, _) in
+            XCTAssertEqual(result, .error)
+            didCompleteExpectation.fulfill()
+        }
+        let actionData = ActionComponentData(
+            details: RedirectDetails(
+                returnURL: URL(string: "https://google.com")!
+            ),
+            paymentData: "payment_data"
+        )
+        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context))
+        wait(for: [didCompleteExpectation], timeout: 2)
     }
     
     private func initializeSession(expectedPaymentMethods: PaymentMethods,

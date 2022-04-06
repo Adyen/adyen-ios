@@ -21,8 +21,12 @@ extension AdyenSession: ActionComponentDelegate {
     }
     
     internal func didComplete(currentComponent: Component) {
-        // TODO: find real result
-        delegate?.didComplete(with: .authorised, component: currentComponent, session: self)
+        guard let resultCode = sessionContext.resultCode else {
+            AdyenAssertion.assertionFailure(message: "Missing resultCode.")
+            return
+        }
+        delegate?.didComplete(with: SessionPaymentResultCode(paymentResultCode: resultCode),
+                              component: currentComponent, session: self)
     }
 
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {

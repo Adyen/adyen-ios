@@ -24,8 +24,14 @@ internal final class SessionAPIClient: APIClientProtocol {
     
     internal func perform<R>(_ request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>) where R: Request {
         apiClient.perform(request) { [weak self] result in
-            if let response = try? result.get() as? SessionResponse {
-                self?.session?.sessionContext.data = response.sessionData
+            // update session context with data and result code if exist
+            if let response = try? result.get() {
+                if let response = response as? SessionResponse {
+                    self?.session?.sessionContext.data = response.sessionData
+                }
+                if let response = response as? PaymentResultCodeAware {
+                    self?.session?.sessionContext.resultCode = response.resultCode
+                }
             }
             completionHandler(result)
         }

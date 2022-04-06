@@ -58,6 +58,9 @@ public final class AdyenSession {
         
         /// The payment methods
         public let paymentMethods: PaymentMethods
+        
+        /// Result code from the latest API call
+        internal var resultCode: PaymentsResponse.ResultCode?
     }
     
     /// The session context information.

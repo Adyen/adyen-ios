@@ -14,7 +14,7 @@ import AdyenSession
 
 class SessionDelegateMock: AdyenSessionDelegate {
     
-    var handlerMock = SessionAdvancedHandlerMock()
+    var handlerMock: SessionAdvancedHandlerMock?
     var onDidComplete: ((SessionPaymentResultCode, Component, AdyenSession) -> Void)?
     var onDidFail: ((Error, Component, AdyenSession) -> Void)?
     var onDidOpenExternalApplication: (() -> Void)?
