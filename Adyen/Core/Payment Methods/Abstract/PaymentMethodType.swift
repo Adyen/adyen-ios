@@ -49,6 +49,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     case bacsDirectDebit
     case achDirectDebit
     case multibanco
+    case atome
     case other(String)
     
     // swiftlint:disable cyclomatic_complexity function_body_length
@@ -97,6 +98,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case "directdebit_GB": self = .bacsDirectDebit
         case "ach": self = .achDirectDebit
         case "multibanco": self = .multibanco
+        case "atome": self = .atome
         default: self = .other(rawValue)
         }
     }
@@ -147,6 +149,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .bacsDirectDebit: return "directdebit_GB"
         case .achDirectDebit: return "ach"
         case .multibanco: return "multibanco"
+        case .atome: return "atome"
         case let .other(value): return value
         }
     }

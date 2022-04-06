@@ -122,7 +122,11 @@ extension DropInComponent: FinalizableComponent {
 
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {
         stopLoading()
-        selectedPaymentComponent?.finalizeIfNeeded(with: success, completion: completion)
+        if let selectedPaymentComponent = selectedPaymentComponent {
+            selectedPaymentComponent.finalizeIfNeeded(with: success, completion: completion)
+        } else {
+            completion?()
+        }
     }
 }
 

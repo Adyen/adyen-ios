@@ -21,6 +21,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		00F621BE27EB132500C04097 /* AtomeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621BD27EB132500C04097 /* AtomeComponent.swift */; };
+		00F621C027EB153400C04097 /* AtomeDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621BF27EB153400C04097 /* AtomeDetails.swift */; };
+		00F621C227EB1E3100C04097 /* AtomePaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621C127EB1E3100C04097 /* AtomePaymentMethod.swift */; };
+		00F621C527F1AF5A00C04097 /* AtomeComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621C427F1AF5A00C04097 /* AtomeComponentTests.swift */; };
 		5A1315C926296B100092366D /* ProgressViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1315C826296B100092366D /* ProgressViewStyle.swift */; };
 		5A15D589264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */; };
 		5A15D5A1264BE1E500A8E3C7 /* PrefilledShopperInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */; };
@@ -1021,6 +1025,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		00F621BD27EB132500C04097 /* AtomeComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeComponent.swift; sourceTree = "<group>"; };
+		00F621BF27EB153400C04097 /* AtomeDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeDetails.swift; sourceTree = "<group>"; };
+		00F621C127EB1E3100C04097 /* AtomePaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomePaymentMethod.swift; sourceTree = "<group>"; };
+		00F621C427F1AF5A00C04097 /* AtomeComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeComponentTests.swift; sourceTree = "<group>"; };
 		5A1315C826296B100092366D /* ProgressViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewStyle.swift; sourceTree = "<group>"; };
 		5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoComponentExtensions.swift; sourceTree = "<group>"; };
 		5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefilledShopperInformation.swift; sourceTree = "<group>"; };
@@ -1865,6 +1873,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00F621BC27EB12FA00C04097 /* Atome */ = {
+			isa = PBXGroup;
+			children = (
+				00F621BD27EB132500C04097 /* AtomeComponent.swift */,
+				00F621BF27EB153400C04097 /* AtomeDetails.swift */,
+			);
+			path = Atome;
+			sourceTree = "<group>";
+		};
+		00F621C327F1AF0900C04097 /* Atome */ = {
+			isa = PBXGroup;
+			children = (
+				00F621C427F1AF5A00C04097 /* AtomeComponentTests.swift */,
+			);
+			path = Atome;
+			sourceTree = "<group>";
+		};
 		5A22C26C262D67C000F12D97 /* PIX */ = {
 			isa = PBXGroup;
 			children = (
@@ -2288,6 +2313,7 @@
 			children = (
 				E746E67327B429DF0076BB71 /* Abstract */,
 				C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */,
+				00F621C127EB1E3100C04097 /* AtomePaymentMethod.swift */,
 				A0414C1E278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift */,
 				E95E24BF22C2593900973184 /* ApplePayPaymentMethod.swift */,
 				C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */,
@@ -3018,6 +3044,7 @@
 				F919DFA124ED599D0027976E /* AdyenActionComponentTests.swift */,
 				A009837B279859BE007E68C4 /* ACH Direct Debit */,
 				C96688BD26A6F72900DC7297 /* Affirm */,
+				00F621C327F1AF0900C04097 /* Atome */,
 				F9639B5724E3DB3F0073F38A /* APIClientMock.swift */,
 				F960FB06237181DC00AEF74B /* Apple Pay */,
 				F97BC2AC2668C63200F1D242 /* AppleWalletPassProviderTests.swift */,
@@ -3257,6 +3284,7 @@
 				F9175E57259393E800D653BE /* AdyenComponents.h */,
 				A0414C1B27888BF300DF3FE9 /* ACH Direct Debit */,
 				C982FFD626945FCE00AED849 /* Affirm */,
+				00F621BC27EB12FA00C04097 /* Atome */,
 				E97B971B229E83E300505476 /* Apple Pay */,
 				C9BF0DB1273539EB00DCAA1E /* BACS Direct Debit */,
 				F9B016F72604F388001F23FC /* BasicPersonalInfoFormComponent */,
@@ -5184,6 +5212,7 @@
 				F9D5751C237C0EA0009C18B5 /* BCMCPaymentMethod.swift in Sources */,
 				E788A5072658045D00089448 /* Amount.swift in Sources */,
 				E27BFD9022B114DC00692E0D /* ShopperInteraction.swift in Sources */,
+				00F621C227EB1E3100C04097 /* AtomePaymentMethod.swift in Sources */,
 				5A27AB032636A07900EF6F89 /* LocalizationKey.swift in Sources */,
 				F9589D332601F1D400E4113F /* PhoneFormItemInjector.swift in Sources */,
 				F9354BE723A7B4E200A6760B /* TextStyle.swift in Sources */,
@@ -5458,6 +5487,7 @@
 				C92708422759106500D15EA0 /* BACSRouterProtocolMock.swift in Sources */,
 				F9DC6BA623AA293500863F3A /* ListViewControllerTests.swift in Sources */,
 				F90FB7BE2446EBB9005BFE0E /* BrowserInfoTests.swift in Sources */,
+				00F621C527F1AF5A00C04097 /* AtomeComponentTests.swift in Sources */,
 				E73C567F25EFCC4200B57758 /* IssuerListComponentTests.swift in Sources */,
 				E9E3DAC6221ECF6300697074 /* CardNumberValidatorTests.swift in Sources */,
 				F9D644E424D2FA310059CBE3 /* EmailValidatorTests.swift in Sources */,
@@ -5588,6 +5618,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00F621BE27EB132500C04097 /* AtomeComponent.swift in Sources */,
 				F9B017252604F49C001F23FC /* BasicPersonalInfoFormDetails.swift in Sources */,
 				F9175EC22593950D00D653BE /* QiwiWalletComponent.swift in Sources */,
 				F9175EAC259394FF00D653BE /* ApplePayComponent.swift in Sources */,
@@ -5598,6 +5629,7 @@
 				F9175EE22593952600D653BE /* BLIKComponent.swift in Sources */,
 				C9D8EBA02745556B006D8CA1 /* BACSDirectDebitDetails.swift in Sources */,
 				E7D874F327DF5CDC00D3C00A /* ApplePayComponentError.swift in Sources */,
+				00F621C027EB153400C04097 /* AtomeDetails.swift in Sources */,
 				F9175E8B259394E100D653BE /* SEPADirectDebitComponent.swift in Sources */,
 				5A15D589264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift in Sources */,
 				F9175E8A259394E100D653BE /* SEPADirectDebitDetails.swift in Sources */,
