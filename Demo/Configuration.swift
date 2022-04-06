@@ -36,11 +36,11 @@ internal enum ConfigurationConstants {
     static let clientKey = "{YOUR_CLIENT_KEY}"
     
     static let lineItems = [["description": "Socks",
-                            "quantity": "2",
-                            "amountIncludingTax": "300",
-                            "amountExcludingTax": "248",
-                            "taxAmount": "52",
-                            "id": "Item #2"]]
+                             "quantity": "2",
+                             "amountIncludingTax": "300",
+                             "amountExcludingTax": "248",
+                             "taxAmount": "52",
+                             "id": "Item #2"]]
 
     static let demoServerAPIKey = "{YOUR_DEMO_SERVER_API_KEY}"
 

@@ -13,18 +13,16 @@ import XCTest
 class PreApplePayComponentTests: XCTestCase {
     
     var sut: PreApplePayComponent!
-    lazy var amount = Amount(value: 2, currencyCode: getRandomCurrencyCode())
-    lazy var payment = Payment(amount: amount, countryCode: getRandomCountryCode())
-    
+    lazy var applePayPayment = Dummy.createTestApplePayPayment()
+
     override func setUp() {
-        let configuration = ApplePayComponent.Configuration(payment: Dummy.createTestApplePayPayment(),
+        let configuration = ApplePayComponent.Configuration(payment: applePayPayment,
                                                             merchantIdentifier: "test_id")
         var applePayStyle = ApplePayStyle()
         applePayStyle.paymentButtonType = .inStore
         let preApplePayConfig = PreApplePayComponent.Configuration(style: applePayStyle)
         sut = try! PreApplePayComponent(paymentMethod: ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil),
                                         apiContext: Dummy.context,
-                                        payment: payment,
                                         configuration: preApplePayConfig,
                                         applePayConfiguration: configuration)
     }
@@ -37,7 +35,7 @@ class PreApplePayComponentTests: XCTestCase {
                                           hintLabel: .init(font: .boldSystemFont(ofSize: 16),
                                                            color: .red,
                                                            textAlignment: .center))
-        let model = PreApplePayView.Model(hint: amount.formatted,
+        let model = PreApplePayView.Model(hint: applePayPayment.payment.amount.formatted,
                                           style: applePayStyle)
         
         let view = PreApplePayView(model: model)
@@ -74,9 +72,7 @@ class PreApplePayComponentTests: XCTestCase {
         presentationMock.doPresent = { component in
             UIApplication.shared.keyWindow?.rootViewController?.present(component: component)
         }
-        presentationMock.doDismiss = { compleat in
-            compleat?()
-        }
+        presentationMock.doDismiss = { completion in completion?() }
         sut.presentationDelegate = presentationMock
         
         let applePayButton = self.sut.viewController.view.findView(by: "applePayButton") as? PKPaymentButton
@@ -108,7 +104,7 @@ class PreApplePayComponentTests: XCTestCase {
             let hintLabel = self.sut.viewController.view.findView(by: "hintLabel") as? UILabel
             
             XCTAssertNotNil(hintLabel)
-            XCTAssertEqual(hintLabel?.text, self.amount.formatted)
+            XCTAssertEqual(hintLabel?.text, self.applePayPayment.payment.amount.formatted)
             
             dummyExpectation.fulfill()
         }

@@ -15,31 +15,31 @@ extension ApplePayComponent {
     /// Apple Pay component configuration.
     public struct Configuration {
 
-        /// The context of a current payment. Contains 
-        public let payment: ApplePayPayment
+        /// The context of a current payment. Contains
+        public let applePayPayment: ApplePayPayment
 
         /// The merchant identifier for apple pay.
-        public var merchantIdentifier: String
+        public let merchantIdentifier: String
 
         /// A list of fields that you need for a billing contact in order to process the transaction.
         /// Ignored on iOS 10.*.
-        public var requiredBillingContactFields: Set<PKContactField> = []
+        public let requiredBillingContactFields: Set<PKContactField>
 
         /// A list of fields that you need for a shipping contact in order to process the transaction.
         /// Ignored on iOS 10.*.
-        public var requiredShippingContactFields: Set<PKContactField> = []
+        public let requiredShippingContactFields: Set<PKContactField>
 
         /// A pre-populated billing address.
-        public var billingContact: PKContact?
+        public let billingContact: PKContact?
 
         /// The flag to toggle onboarding.
         /// If true, allow the shopper to add cards to Apple Pay if non exists yet.
         /// If false, then Apple Pay is disabled if the shopper doesn't have supported cards on Apple Pay wallet.
-        public var allowOnboarding: Bool
+        public let allowOnboarding: Bool
 
         /// Initializes the configuration.
         ///
-        /// - Parameter summaryItems: The line items for this payment.
+        /// - Parameter payment: Instance of ApplePay Payment object.
         /// - Parameter merchantIdentifier: The merchant identifier.
         /// - Parameter requiredBillingContactFields:
         /// A list of fields that you need for a billing contact in order to process the transaction. Ignored on iOS 10.*.
@@ -57,7 +57,7 @@ extension ApplePayComponent {
                     requiredShippingContactFields: Set<PKContactField> = [],
                     billingContact: PKContact? = nil,
                     allowOnboarding: Bool = false) {
-            self.payment = payment
+            self.applePayPayment = payment
             self.merchantIdentifier = merchantIdentifier
             self.requiredBillingContactFields = requiredBillingContactFields
             self.requiredShippingContactFields = requiredShippingContactFields
@@ -67,12 +67,12 @@ extension ApplePayComponent {
 
         internal func createPaymentRequest(supportedNetworks: [PKPaymentNetwork]) -> PKPaymentRequest {
             let paymentRequest = PKPaymentRequest()
-            paymentRequest.countryCode = payment.countryCode
+            paymentRequest.countryCode = applePayPayment.countryCode
             paymentRequest.merchantIdentifier = merchantIdentifier
-            paymentRequest.currencyCode = payment.currencyCode
+            paymentRequest.currencyCode = applePayPayment.currencyCode
             paymentRequest.supportedNetworks = supportedNetworks
             paymentRequest.merchantCapabilities = .capability3DS
-            paymentRequest.paymentSummaryItems = payment.summaryItems
+            paymentRequest.paymentSummaryItems = applePayPayment.summaryItems
             paymentRequest.requiredBillingContactFields = requiredBillingContactFields
             paymentRequest.requiredShippingContactFields = requiredShippingContactFields
             paymentRequest.billingContact = billingContact
@@ -82,7 +82,7 @@ extension ApplePayComponent {
 
     // Adyen supports: interac, visa, mc, electron, maestro, amex, jcb, discover, elodebit, elo.
     // Will support girocard in future versions
-    internal static var defaultNetworks: [PKPaymentNetwork] {
+    internal static var defaultNetworks: [PKPaymentNetwork] = {
         var networks: [PKPaymentNetwork] = [
             .visa,
             .masterCard,
@@ -121,7 +121,7 @@ extension ApplePayComponent {
         }
 
         return networks
-    }
+    }()
 
 }
 
@@ -131,7 +131,7 @@ extension ApplePayPaymentMethod {
         var networks = ApplePayComponent.defaultNetworks
         if let brands = brands {
             let brandsSet = Set(brands)
-            networks = networks.filter { brandsSet.contains($0.adyenName) }
+            networks = networks.filter { brandsSet.contains($0.txVarientName) }
         }
         return networks
     }
@@ -140,7 +140,7 @@ extension ApplePayPaymentMethod {
 
 extension PKPaymentNetwork {
 
-    internal var adyenName: String {
+    internal var txVarientName: String {
         if self == .masterCard { return "mc" }
         if #available(iOS 11.2, *), self == .cartesBancaires { return "cartebancaire" }
         return self.rawValue.lowercased()

@@ -4,7 +4,7 @@ import Adyen
 import Foundation
 @testable import AdyenDropIn
 
-final class PresentationDelegateMock: NavigationProtocol {
+final class PresentationDelegateMock: NavigationDelegate {
 
     var doDismiss: ( ((() -> Void)?) -> Void )?
 

@@ -44,7 +44,7 @@ class ApplePayComponentTest: XCTestCase {
     func testApplePayViewControllerShouldCallDelegateDidFail() {
         guard Available.iOS12 else { return }
 
-        // This is nececery to give ApplePay time to dissapear from screen.
+        // This is necessary to give ApplePay time to disappear from screen.
         wait(for: .seconds(2))
 
         let viewController = sut!.viewController
@@ -69,7 +69,7 @@ class ApplePayComponentTest: XCTestCase {
     func testApplePayViewControllerShouldCallFinalizeCompletion() {
         guard Available.iOS12 else { return }
 
-        // This is nececery to give ApplePay time to dissapear from screen.
+        // This is necessary to give ApplePay time to disappear from screen.
         wait(for: .seconds(2))
 
         let viewController = sut!.viewController

@@ -11,8 +11,12 @@ import PassKit
 /// A component that handles Apple Pay payments.
 public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, FinalizableComponent {
 
+    private let paymentRequest: PKPaymentRequest
+
     internal var resultConfirmed: Bool = false
+
     internal var viewControllerDidFinish: Bool = false
+
     internal let applePayPaymentMethod: ApplePayPaymentMethod
 
     /// :nodoc:
@@ -21,7 +25,11 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// The Apple Pay payment method.
     public var paymentMethod: PaymentMethod { applePayPaymentMethod }
 
-    /// Apple Pay component configuration.
+    /// Read-only payment property. Set `payment` is not supported on ApplePayComponent.
+    public var payment: Payment? {
+        configuration.applePayPayment.payment
+    }
+
     internal let configuration: Configuration
 
     internal var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
@@ -34,20 +42,17 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     public weak var delegate: PaymentComponentDelegate?
     
     /// Initializes the component.
-    /// - Warning: didFinalize() must be called before dismissing this component.
+    /// - Warning: Do not dismiss this component.
+    ///  First, call `didFinalize(with:completion:)` on error or success, then dismiss it.
+    ///  Dismissal should occur within `completion` block.
     ///
     /// - Parameter paymentMethod: The Apple Pay payment method. Must include country code.
     /// - Parameter apiContext: The API environment and credentials.
-    /// - Parameter payment: The describes the current payment.
     /// - Parameter configuration: Apple Pay component configuration
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment`.
     /// if user can't make payments on any of the payment request’s supported networks.
     /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplyPay` if the current device's hardware doesn't support ApplePay.
-    /// - Throws: `ApplePayComponent.Error.emptySummaryItems` if the summaryItems array is empty.
-    /// - Throws: `ApplePayComponent.Error.negativeGrandTotal` if the grand total is negative.
-    /// - Throws: `ApplePayComponent.Error.invalidSummaryItem` if at least one of the summary items has an invalid amount.
-    /// - Throws: `ApplePayComponent.Error.invalidCountryCode` if the `payment.countryCode` is not a valid ISO country code.
-    /// - Throws: `ApplePayComponent.Error.invalidCurrencyCode` if the `Amount.currencyCode` is not a valid ISO currency code.
+    /// - Throws: `ApplePayComponent.Error.userCannotMakePayment` if user can't make payments on any of the supported networks.
     public init(paymentMethod: ApplePayPaymentMethod,
                 apiContext: APIContext,
                 configuration: Configuration) throws {
@@ -59,8 +64,8 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
             throw Error.userCannotMakePayment
         }
 
-        let request = configuration.createPaymentRequest(supportedNetworks: supportedNetworks)
-        guard let viewController = ApplePayComponent.createPaymentAuthorizationViewController(from: request) else {
+        self.paymentRequest = configuration.createPaymentRequest(supportedNetworks: supportedNetworks)
+        guard let viewController = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest) else {
             throw UnknownError(
                 errorDescription: "Failed to instantiate PKPaymentAuthorizationViewController because of unknown error"
             )
@@ -74,24 +79,19 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
         viewController.delegate = self
     }
-    
-    // MARK: - Presentable Component Protocol
-    
-    /// :nodoc:
+
     public var viewController: UIViewController {
         createPaymentAuthorizationViewController()
     }
 
-    /// Finalizes ApplePay payment after being processed by payment provider.
-    /// - Parameter success: The status of the payment.
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {
         self.resultConfirmed = true
-        if paymentAuthorizationCompletion == nil {
-            completion?()
-        } else {
+        if let paymentAuthorizationCompletion = paymentAuthorizationCompletion {
             finalizeCompletion = completion
-            paymentAuthorizationCompletion?(success ? .success : .failure)
-            paymentAuthorizationCompletion = nil
+            paymentAuthorizationCompletion(success ? .success : .failure)
+            self.paymentAuthorizationCompletion = nil
+        } else {
+            completion?()
         }
     }
 
@@ -99,23 +99,12 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     private func createPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController {
         if paymentAuthorizationViewController == nil {
-            let supportedNetworks = applePayPaymentMethod.supportedNetworks
-            let request = configuration.createPaymentRequest(supportedNetworks: supportedNetworks)
-            paymentAuthorizationViewController = Self.createPaymentAuthorizationViewController(from: request)
+            paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest)
             paymentAuthorizationViewController?.delegate = self
             paymentAuthorizationCompletion = nil
             resultConfirmed = false
         }
         return paymentAuthorizationViewController!
-    }
-    
-    private static func createPaymentAuthorizationViewController(from request: PKPaymentRequest) -> PKPaymentAuthorizationViewController? {
-        guard let paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: request) else {
-            adyenPrint("Failed to instantiate PKPaymentAuthorizationViewController.")
-            return nil
-        }
-        
-        return paymentAuthorizationViewController
     }
 
     private static func canMakePaymentWith(_ networks: [PKPaymentNetwork]) -> Bool {
