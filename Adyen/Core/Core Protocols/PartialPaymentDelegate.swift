@@ -24,7 +24,7 @@ public protocol PartialPaymentDelegate: AnyObject {
     /// - Parameters:
     ///   - component: The current component.
     ///   - completion: The completion closure called when the order object.
-    func requestOrder(in component: Component,
+    func requestOrder(for component: Component,
                       completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void)
 
     /// Invoked when the payment component needs to cancel the order.

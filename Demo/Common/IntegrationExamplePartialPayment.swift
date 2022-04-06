@@ -59,7 +59,7 @@ extension IntegrationExample: PartialPaymentDelegate {
         completion(.failure(error))
     }
 
-    internal func requestOrder(in component: Component,
+    internal func requestOrder(for component: Component,
                                completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
         let request = CreateOrderRequest(amount: payment.amount, reference: UUID().uuidString)
         apiClient.perform(request) { [weak self] result in

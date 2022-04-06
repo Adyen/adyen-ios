@@ -284,7 +284,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
             AdyenAssertion.assertionFailure(message: Error.missingPartialPaymentDelegate.localizedDescription)
             return .failure(Error.missingPartialPaymentDelegate)
         }
-        partialPaymentDelegate.requestOrder(in: self) { [weak self] result in
+        partialPaymentDelegate.requestOrder(for: self) { [weak self] result in
             self?.handle(orderResult: result, paymentData: paymentData)
         }
         return .success(())

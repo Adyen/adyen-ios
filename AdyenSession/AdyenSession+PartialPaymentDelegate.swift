@@ -51,7 +51,7 @@ extension AdyenSession: PartialPaymentDelegate {
         finish(with: error, component: component)
     }
     
-    public func requestOrder(in component: Component, completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
+    public func requestOrder(for component: Component, completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
         let request = CreateOrderRequest(sessionId: sessionContext.identifier,
                                          sessionData: sessionContext.data)
         apiClient.perform(request) { [weak self] result in

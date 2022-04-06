@@ -70,7 +70,7 @@ public final class AdyenSession {
     public private(set) weak var presentationDelegate: PresentationDelegate?
     
     /// The delegate object.
-    public weak var delegate: AdyenSessionDelegate?
+    public private(set) weak var delegate: AdyenSessionDelegate?
     
     /// Initializes an instance of `AdyenSession` asynchronously.
     /// - Parameter configuration: The session configuration.

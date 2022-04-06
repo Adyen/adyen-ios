@@ -21,7 +21,7 @@ final class PartialPaymentDelegateMock: PartialPaymentDelegate {
 
     var onRequestOrder: (((Result<PartialPaymentOrder, Error>) -> Void) -> Void)?
 
-    func requestOrder(in component: Component, completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
+    func requestOrder(for component: Component, completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
         onRequestOrder?(completion)
     }
 

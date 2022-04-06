@@ -345,7 +345,7 @@ class SessionTests: XCTestCase {
         apiClient.onExecute = {
             expectation.fulfill()
         }
-        sut.requestOrder(in: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
+        sut.requestOrder(for: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
             let order = try! result.get()
             XCTAssertEqual(order.pspReference, "ref")
             XCTAssertEqual(order.orderData, "data")
@@ -367,7 +367,7 @@ class SessionTests: XCTestCase {
         apiClient.onExecute = {
             expectation.fulfill()
         }
-        sut.requestOrder(in: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
+        sut.requestOrder(for: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
             XCTAssertNotNil(result.failure)
             XCTAssertEqual(sut.sessionContext.data, "session_data_1")
         }
