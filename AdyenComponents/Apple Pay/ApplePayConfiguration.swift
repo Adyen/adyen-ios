@@ -131,7 +131,7 @@ extension ApplePayPaymentMethod {
         var networks = ApplePayComponent.defaultNetworks
         if let brands = brands {
             let brandsSet = Set(brands)
-            networks = networks.filter { brandsSet.contains($0.txVarientName) }
+            networks = networks.filter { brandsSet.contains($0.txVariantName) }
         }
         return networks
     }
@@ -140,7 +140,7 @@ extension ApplePayPaymentMethod {
 
 extension PKPaymentNetwork {
 
-    internal var txVarientName: String {
+    internal var txVariantName: String {
         if self == .masterCard { return "mc" }
         if #available(iOS 11.2, *), self == .cartesBancaires { return "cartebancaire" }
         return self.rawValue.lowercased()
