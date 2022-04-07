@@ -51,26 +51,30 @@ class ComponentManagerTests: XCTestCase {
     let numberOfExpectedRegularComponents = 19
 
     var presentationDelegate: PresentationDelegateMock!
+    var adyenContext: AdyenContext!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         presentationDelegate = PresentationDelegateMock()
+        adyenContext = Dummy.adyenContext
     }
 
     override func tearDownWithError() throws {
         presentationDelegate = nil
+        adyenContext = nil
         try super.tearDownWithError()
     }
 
     func testClientKeyInjectionAndProtocolConfromance() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let merchantIdentifier = "applePayMerchantIdentifier"
         let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
         config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
         config.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   adyenContext: adyenContext,
                                    configuration: config,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -87,7 +91,7 @@ class ComponentManagerTests: XCTestCase {
     
     func testLocalizationWithCustomTableName() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
         config.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let merchantIdentifier = "applePayMerchantIdentifier"
@@ -95,6 +99,7 @@ class ComponentManagerTests: XCTestCase {
         config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   adyenContext: adyenContext,
                                    configuration: config,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -107,7 +112,7 @@ class ComponentManagerTests: XCTestCase {
     
     func testLocalizationWithCustomKeySeparator() throws {
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         let merchantIdentifier = "applePayMerchantIdentifier"
         let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
@@ -115,6 +120,7 @@ class ComponentManagerTests: XCTestCase {
         config.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   adyenContext: adyenContext,
                                    configuration: config,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -127,7 +133,7 @@ class ComponentManagerTests: XCTestCase {
 
     func testOrderInjection() throws {
         var paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
         let merchantIdentifier = "applePayMerchantIdentifier"
         let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
         config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
@@ -147,6 +153,7 @@ class ComponentManagerTests: XCTestCase {
         ]
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   adyenContext: adyenContext,
                                    configuration: config,
                                    order: order,
                                    presentationDelegate: presentationDelegate)
@@ -163,9 +170,10 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnAffirmComponent() throws {
         // Given
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   adyenContext: adyenContext,
                                    configuration: configuration,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -181,9 +189,10 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnDokuComponent() throws {
         // Given
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   adyenContext: adyenContext,
                                    configuration: configuration,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -199,9 +208,10 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnMBWayComponent() throws {
         // Given
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   adyenContext: adyenContext,
                                    configuration: configuration,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -217,9 +227,10 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnBasicPersonalInfoFormComponent() throws {
         // Given
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   adyenContext: adyenContext,
                                    configuration: configuration,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -235,9 +246,10 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnBoletoComponent() throws {
         // Given
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   adyenContext: adyenContext,
                                    configuration: configuration,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -253,9 +265,10 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnCardComponent() throws {
         // Given
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        let configuration = DropInComponent.Configuration(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   adyenContext: adyenContext,
                                    configuration: configuration,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)

@@ -28,6 +28,7 @@ class ApplePayComponentTest: XCTestCase {
                                                             merchantIdentifier: "test_id")
         sut = try! ApplePayComponent(paymentMethod: paymentMethod,
                                      apiContext: Dummy.context,
+                                     adyenContext: Dummy.adyenContext,
                                      payment: payment,
                                      configuration: configuration)
         mockDelegate = PaymentComponentDelegateMock()
@@ -100,6 +101,7 @@ class ApplePayComponentTest: XCTestCase {
                                                             merchantIdentifier: "test_id")
         XCTAssertThrowsError(try ApplePayComponent(paymentMethod: paymentMethod,
                                                    apiContext: Dummy.context,
+                                                   adyenContext: Dummy.adyenContext,
                                                    payment: payment,
                                                    configuration: configuration)) { error in
             XCTAssertTrue(error is ApplePayComponent.Error)
@@ -115,6 +117,7 @@ class ApplePayComponentTest: XCTestCase {
                                                             merchantIdentifier: "test_id")
         XCTAssertThrowsError(try ApplePayComponent(paymentMethod: paymentMethod,
                                                    apiContext: Dummy.context,
+                                                   adyenContext: Dummy.adyenContext,
                                                    payment: payment,
                                                    configuration: configuration)) { error in
             XCTAssertTrue(error is ApplePayComponent.Error)
@@ -129,6 +132,7 @@ class ApplePayComponentTest: XCTestCase {
                                                             merchantIdentifier: "test_id")
         XCTAssertThrowsError(try ApplePayComponent(paymentMethod: paymentMethod,
                                                    apiContext: Dummy.context,
+                                                   adyenContext: Dummy.adyenContext,
                                                    payment: payment,
                                                    configuration: configuration)) { error in
             XCTAssertTrue(error is ApplePayComponent.Error)
@@ -143,6 +147,7 @@ class ApplePayComponentTest: XCTestCase {
                                                             merchantIdentifier: "test_id")
         XCTAssertThrowsError(try ApplePayComponent(paymentMethod: paymentMethod,
                                                    apiContext: Dummy.context,
+                                                   adyenContext: Dummy.adyenContext,
                                                    payment: payment,
                                                    configuration: configuration)) { error in
             XCTAssertTrue(error is ApplePayComponent.Error)
@@ -157,6 +162,7 @@ class ApplePayComponentTest: XCTestCase {
                                                             merchantIdentifier: "test_id")
         XCTAssertThrowsError(try ApplePayComponent(paymentMethod: paymentMethod,
                                                    apiContext: Dummy.context,
+                                                   adyenContext: Dummy.adyenContext,
                                                    payment: payment,
                                                    configuration: configuration)) { error in
             XCTAssertTrue(error is ApplePayComponent.Error)
@@ -187,7 +193,7 @@ class ApplePayComponentTest: XCTestCase {
         let paymentRequest = configuration.createPaymentRequest(payment: payment,
                                                                 supportedNetworks: paymentMethod.supportedNetworks)
         XCTAssertEqual(paymentRequest.paymentSummaryItems, expectedSummaryItems)
-            
+
         XCTAssertEqual(paymentRequest.merchantCapabilities, PKMerchantCapability.capability3DS)
         XCTAssertEqual(paymentRequest.supportedNetworks, self.supportedNetworks)
         XCTAssertEqual(paymentRequest.currencyCode, amount.currencyCode)

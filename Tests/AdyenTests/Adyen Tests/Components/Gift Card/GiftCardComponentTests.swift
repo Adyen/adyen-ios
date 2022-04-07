@@ -44,7 +44,10 @@ class GiftCardComponentTests: XCTestCase {
         super.setUp()
         paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
         publicKeyProvider = PublicKeyProviderMock()
-        sut = GiftCardComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, publicKeyProvider: publicKeyProvider)
+        sut = GiftCardComponent(paymentMethod: paymentMethod,
+                                apiContext: Dummy.context,
+                                adyenContext: Dummy.adyenContext,
+                                publicKeyProvider: publicKeyProvider)
         sut.payment = nil // Missing Payment object
         delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
