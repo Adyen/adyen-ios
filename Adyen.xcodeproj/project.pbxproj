@@ -119,7 +119,6 @@
 		C9454C38276A34150086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9454C35276A33A00086C218 /* BACSDirectDebitPresentationDelegate.swift */; };
 		C94632BE27BA6985003DD81F /* AnalyticsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94632BD27BA6985003DD81F /* AnalyticsProvider.swift */; };
 		C94632C227BAA81F003DD81F /* TelemetryRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94632C127BAA81F003DD81F /* TelemetryRequest.swift */; };
-		C94A14C027FC59F100A1C870 /* AnalyticsProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94A14BF27FC59F100A1C870 /* AnalyticsProviderTests.swift */; };
 		C95903DE275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */; };
 		C96688BF26A6FC1C00DC7297 /* AffirmComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */; };
 		C978F5EF2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */; };
@@ -1121,7 +1120,6 @@
 		C9454C35276A33A00086C218 /* BACSDirectDebitPresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPresentationDelegate.swift; sourceTree = "<group>"; };
 		C94632BD27BA6985003DD81F /* AnalyticsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsProvider.swift; sourceTree = "<group>"; };
 		C94632C127BAA81F003DD81F /* TelemetryRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryRequest.swift; sourceTree = "<group>"; };
-		C94A14BF27FC59F100A1C870 /* AnalyticsProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsProviderTests.swift; sourceTree = "<group>"; };
 		C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentTests.swift; sourceTree = "<group>"; };
 		C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardSecurityCodeItemViewTests.swift; sourceTree = "<group>"; };
@@ -2112,14 +2110,6 @@
 			path = AnalyticsProvider;
 			sourceTree = "<group>";
 		};
-		C94A14BE27FC59D400A1C870 /* Analytics */ = {
-			isa = PBXGroup;
-			children = (
-				C94A14BF27FC59F100A1C870 /* AnalyticsProviderTests.swift */,
-			);
-			path = Analytics;
-			sourceTree = "<group>";
-		};
 		C96688BD26A6F72900DC7297 /* Affirm */ = {
 			isa = PBXGroup;
 			children = (
@@ -3040,7 +3030,6 @@
 		E97B9716229D530F00505476 /* Adyen Tests */ = {
 			isa = PBXGroup;
 			children = (
-				C94A14BE27FC59D400A1C870 /* Analytics */,
 				F967581327D25B0200A16FB6 /* Session */,
 				F91760A52594C5C000D653BE /* Assets */,
 				E97B9717229D533B00505476 /* Components */,
@@ -5464,7 +5453,6 @@
 				E7768BDC26B416C3000851B3 /* DateValidationTests.swift in Sources */,
 				F97BC2CE2668EB4500F1D242 /* VoucherViewDelegateMock.swift in Sources */,
 				F9AC61C2243751A70062A00D /* ActionComponentDelegateMock.swift in Sources */,
-				C94A14C027FC59F100A1C870 /* AnalyticsProviderTests.swift in Sources */,
 				F9F1A98726CCFD1F0005CB1D /* JWAA256CBCHS512AlgorithmTests.swift in Sources */,
 				C9BB460627622E9600E6730B /* BACSConfirmationPresenterProtocolMock.swift in Sources */,
 				E759E24C25CB3BB700B1F8DC /* DropInTests.swift in Sources */,
