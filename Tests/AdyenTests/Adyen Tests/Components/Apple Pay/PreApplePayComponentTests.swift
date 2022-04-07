@@ -23,6 +23,7 @@ class PreApplePayComponentTests: XCTestCase {
         let preApplePayConfig = PreApplePayComponent.Configuration(style: applePayStyle)
         sut = try! PreApplePayComponent(paymentMethod: ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil),
                                         apiContext: Dummy.context,
+                                        adyenContext: Dummy.adyenContext,
                                         payment: payment,
                                         configuration: preApplePayConfig,
                                         applePayConfiguration: configuration)
