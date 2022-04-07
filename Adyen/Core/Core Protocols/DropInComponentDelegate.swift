@@ -25,7 +25,7 @@ public protocol DropInComponentDelegate: AnyObject {
     ///   - dropInComponent: The DropIn component.
     func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: AnyDropInComponent)
     
-    /// Invoked when additional details have been provided for a payment method.
+    /// Invoked when there is new data provided that is required for the payment details call.
     ///
     /// - Parameters:
     ///   - data: The additional data supplied by the drop in component.

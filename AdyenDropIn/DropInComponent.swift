@@ -134,7 +134,8 @@ public final class DropInComponent: NSObject,
         componentManager = createComponentManager(order, response.remainingAmount)
         paymentInProgress = false
         showPaymentMethodsList(onCancel: { [weak self] in
-            self?.partialPaymentDelegate?.cancelOrder(order)
+            guard let self = self else { return }
+            self.partialPaymentDelegate?.cancelOrder(order, component: self)
         })
     }
     

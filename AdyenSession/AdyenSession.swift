@@ -11,8 +11,10 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-/// The Session object.
-public final class Session: SessionProtocol {
+/// `AdyenSession` acts as the auto-pilot for the checkout process
+/// such as handling the payments and payment details calls internally
+/// and providing feedback at the end via `AdyenSessionDelegate` methods.
+public final class AdyenSession {
     
     /// Session configuration.
     public struct Configuration {
@@ -56,6 +58,9 @@ public final class Session: SessionProtocol {
         
         /// The payment methods
         public let paymentMethods: PaymentMethods
+        
+        /// Result code from the latest API call
+        internal var resultCode: PaymentsResponse.ResultCode?
     }
     
     /// The session context information.
@@ -64,32 +69,40 @@ public final class Session: SessionProtocol {
     /// The presentation delegate.
     public private(set) weak var presentationDelegate: PresentationDelegate?
     
-    /// Initializes an instance of `Session` asynchronously.
+    /// The delegate object.
+    public private(set) weak var delegate: AdyenSessionDelegate?
+    
+    /// Initializes an instance of `AdyenSession` asynchronously.
     /// - Parameter configuration: The session configuration.
+    /// - Parameter delegate: The session delegate.
     /// - Parameter presentationDelegate: The presentation delegate.
     /// - Parameter completion: The completion closure, that delivers the new instance asynchronously.
     public static func initialize(with configuration: Configuration,
+                                  delegate: AdyenSessionDelegate,
                                   presentationDelegate: PresentationDelegate,
-                                  completion: @escaping ((Result<Session, Error>) -> Void)) {
+                                  completion: @escaping ((Result<AdyenSession, Error>) -> Void)) {
         let baseAPIClient = APIClient(apiContext: configuration.apiContext)
             .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
             .retryOnErrorAPIClient()
         initialize(with: configuration,
+                   delegate: delegate,
                    presentationDelegate: presentationDelegate,
                    baseAPIClient: baseAPIClient,
                    completion: completion)
     }
     
     internal static func initialize(with configuration: Configuration,
+                                    delegate: AdyenSessionDelegate,
                                     presentationDelegate: PresentationDelegate,
                                     baseAPIClient: APIClientProtocol,
-                                    completion: @escaping ((Result<Session, Error>) -> Void)) {
+                                    completion: @escaping ((Result<AdyenSession, Error>) -> Void)) {
         makeSetupCall(with: configuration,
                       baseAPIClient: baseAPIClient) { result in
             switch result {
             case let .success(sessionContext):
-                let session = Session(configuration: configuration,
-                                      sessionContext: sessionContext)
+                let session = AdyenSession(configuration: configuration,
+                                           sessionContext: sessionContext)
+                session.delegate = delegate
                 session.presentationDelegate = presentationDelegate
                 completion(.success(session))
             case let .failure(error):

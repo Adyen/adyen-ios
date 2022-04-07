@@ -93,6 +93,8 @@
 		A0414C342791D9EC00DF3FE9 /* BankDetailsEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C332791D9EC00DF3FE9 /* BankDetailsEncryptor.swift */; };
 		A04E60CD27DFA2BD0051C72C /* SessionAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60CC27DFA2BD0051C72C /* SessionAPIClient.swift */; };
 		A04E60D327E0E6280051C72C /* XCTestCase+Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60D227E0E6280051C72C /* XCTestCase+Result.swift */; };
+		A04E60D527EDDF4F0051C72C /* AdyenSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60D427EDDF4F0051C72C /* AdyenSessionDelegate.swift */; };
+		A04E60DB27F30D900051C72C /* SessionDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60DA27F30D900051C72C /* SessionDelegateMock.swift */; };
 		A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */; };
 		A07355D7276B350F00530562 /* DocumentActionViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */; };
 		A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */; };
@@ -474,15 +476,14 @@
 		F92980A927CE2B33000CA5CA /* AdyenSession.h in Headers */ = {isa = PBXBuildFile; fileRef = F92980A827CE2B33000CA5CA /* AdyenSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F92980AC27CE2B33000CA5CA /* AdyenSession.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F92980A627CE2B33000CA5CA /* AdyenSession.framework */; };
 		F92980AD27CE2B33000CA5CA /* AdyenSession.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F92980A627CE2B33000CA5CA /* AdyenSession.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F92980B227CE2B55000CA5CA /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92980B127CE2B55000CA5CA /* Session.swift */; };
+		F92980B227CE2B55000CA5CA /* AdyenSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92980B127CE2B55000CA5CA /* AdyenSession.swift */; };
 		F92980B327CE2B6B000CA5CA /* AdyenActions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9175F8C2594986900D653BE /* AdyenActions.framework */; platformFilter = ios; };
 		F92980B827CE2B6F000CA5CA /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; platformFilter = ios; };
 		F92980BC27CE409D000CA5CA /* AdyenSession.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F92980A627CE2B33000CA5CA /* AdyenSession.framework */; platformFilter = ios; };
 		F92980BD27CE409D000CA5CA /* AdyenSession.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F92980A627CE2B33000CA5CA /* AdyenSession.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F92980C227CF550C000CA5CA /* Session+PaymentComponentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92980C127CF550C000CA5CA /* Session+PaymentComponentDelegate.swift */; };
-		F92980C427CF558E000CA5CA /* Session+ActionComponentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92980C327CF558E000CA5CA /* Session+ActionComponentDelegate.swift */; };
-		F92980C627CF563C000CA5CA /* Session+PartialPaymentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92980C527CF563C000CA5CA /* Session+PartialPaymentDelegate.swift */; };
-		F92980CC27CF64DF000CA5CA /* SessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92980CB27CF64DF000CA5CA /* SessionProtocol.swift */; };
+		F92980C227CF550C000CA5CA /* AdyenSession+PaymentComponentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92980C127CF550C000CA5CA /* AdyenSession+PaymentComponentDelegate.swift */; };
+		F92980C427CF558E000CA5CA /* AdyenSession+ActionComponentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92980C327CF558E000CA5CA /* AdyenSession+ActionComponentDelegate.swift */; };
+		F92980C627CF563C000CA5CA /* AdyenSession+PartialPaymentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92980C527CF563C000CA5CA /* AdyenSession+PartialPaymentDelegate.swift */; };
 		F92980CE27CF650F000CA5CA /* ActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92980CD27CF650F000CA5CA /* ActionComponent.swift */; };
 		F92980D127CF6580000CA5CA /* ActionComponentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97B972022B0F3F500505476 /* ActionComponentData.swift */; };
 		F931DDC5270B0874004B012C /* Available.swift in Sources */ = {isa = PBXBuildFile; fileRef = F931DDC4270B0874004B012C /* Available.swift */; };
@@ -671,7 +672,7 @@
 		F9B8AF5927DA48C900DC0894 /* ActionHandlingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B8AF5527DA483300DC0894 /* ActionHandlingComponent.swift */; };
 		F9B8AF5B27DA4A4C00DC0894 /* AnyDropInComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B8AF5A27DA4A4C00DC0894 /* AnyDropInComponent.swift */; };
 		F9B8AF5C27DA4E5E00DC0894 /* DropInComponentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E226F54A229803130013A463 /* DropInComponentDelegate.swift */; };
-		F9B8AF5E27DA4EA400DC0894 /* Session+DropInComponentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B8AF5D27DA4EA400DC0894 /* Session+DropInComponentDelegate.swift */; };
+		F9B8AF5E27DA4EA400DC0894 /* AdyenSession+DropInComponentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B8AF5D27DA4EA400DC0894 /* AdyenSession+DropInComponentDelegate.swift */; };
 		F9B8AF6027DB4E8700DC0894 /* ActionHandlingComponentMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B8AF5F27DB4E8700DC0894 /* ActionHandlingComponentMock.swift */; };
 		F9B8C49123FC286D00C4D0FB /* FormCardNumberItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B317A42265D76600C1BB30 /* FormCardNumberItem.swift */; };
 		F9B8C49223FC287100C4D0FB /* FormCardNumberItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B317A62265D7B700C1BB30 /* FormCardNumberItemView.swift */; };
@@ -1092,6 +1093,8 @@
 		A0414C332791D9EC00DF3FE9 /* BankDetailsEncryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankDetailsEncryptor.swift; sourceTree = "<group>"; };
 		A04E60CC27DFA2BD0051C72C /* SessionAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionAPIClient.swift; sourceTree = "<group>"; };
 		A04E60D227E0E6280051C72C /* XCTestCase+Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Result.swift"; sourceTree = "<group>"; };
+		A04E60D427EDDF4F0051C72C /* AdyenSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSessionDelegate.swift; sourceTree = "<group>"; };
+		A04E60DA27F30D900051C72C /* SessionDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDelegateMock.swift; sourceTree = "<group>"; };
 		A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponentTests.swift; sourceTree = "<group>"; };
 		A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionViewDelegateMock.swift; sourceTree = "<group>"; };
 		A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatter.swift; sourceTree = "<group>"; };
@@ -1456,11 +1459,10 @@
 		F926D55423FBF1A800D058D3 /* QiwiWalletComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QiwiWalletComponentTests.swift; sourceTree = "<group>"; };
 		F92980A627CE2B33000CA5CA /* AdyenSession.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenSession.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F92980A827CE2B33000CA5CA /* AdyenSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenSession.h; sourceTree = "<group>"; };
-		F92980B127CE2B55000CA5CA /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
-		F92980C127CF550C000CA5CA /* Session+PaymentComponentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session+PaymentComponentDelegate.swift"; sourceTree = "<group>"; };
-		F92980C327CF558E000CA5CA /* Session+ActionComponentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session+ActionComponentDelegate.swift"; sourceTree = "<group>"; };
-		F92980C527CF563C000CA5CA /* Session+PartialPaymentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session+PartialPaymentDelegate.swift"; sourceTree = "<group>"; };
-		F92980CB27CF64DF000CA5CA /* SessionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionProtocol.swift; sourceTree = "<group>"; };
+		F92980B127CE2B55000CA5CA /* AdyenSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSession.swift; sourceTree = "<group>"; };
+		F92980C127CF550C000CA5CA /* AdyenSession+PaymentComponentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AdyenSession+PaymentComponentDelegate.swift"; sourceTree = "<group>"; };
+		F92980C327CF558E000CA5CA /* AdyenSession+ActionComponentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AdyenSession+ActionComponentDelegate.swift"; sourceTree = "<group>"; };
+		F92980C527CF563C000CA5CA /* AdyenSession+PartialPaymentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AdyenSession+PartialPaymentDelegate.swift"; sourceTree = "<group>"; };
 		F92980CD27CF650F000CA5CA /* ActionComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionComponent.swift; sourceTree = "<group>"; };
 		F931DDC4270B0874004B012C /* Available.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Available.swift; path = "Tests/AdyenTests/Adyen Tests/Utilities/Available.swift"; sourceTree = SOURCE_ROOT; };
 		F9354BE623A7B4E200A6760B /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
@@ -1668,7 +1670,7 @@
 		F9B798D223ACF10800A2103C /* RedirectComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectComponentStyle.swift; sourceTree = "<group>"; };
 		F9B8AF5527DA483300DC0894 /* ActionHandlingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionHandlingComponent.swift; sourceTree = "<group>"; };
 		F9B8AF5A27DA4A4C00DC0894 /* AnyDropInComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyDropInComponent.swift; sourceTree = "<group>"; };
-		F9B8AF5D27DA4EA400DC0894 /* Session+DropInComponentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session+DropInComponentDelegate.swift"; sourceTree = "<group>"; };
+		F9B8AF5D27DA4EA400DC0894 /* AdyenSession+DropInComponentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AdyenSession+DropInComponentDelegate.swift"; sourceTree = "<group>"; };
 		F9B8AF5F27DB4E8700DC0894 /* ActionHandlingComponentMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionHandlingComponentMock.swift; sourceTree = "<group>"; };
 		F9B8C49323FC32FB00C4D0FB /* FormItemViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItemViewBuilder.swift; sourceTree = "<group>"; };
 		F9B8C50B23FE962D00C4D0FB /* FormPhoneNumberItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPhoneNumberItem.swift; sourceTree = "<group>"; };
@@ -3483,7 +3485,6 @@
 				F9FE253A2625AED6001874BB /* PartialPaymentComponent.swift */,
 				F9FE252E2625AE8C001874BB /* PartialPaymentDelegate.swift */,
 				F9FE25D52626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift */,
-				F92980CB27CF64DF000CA5CA /* SessionProtocol.swift */,
 				F9B8AF5A27DA4A4C00DC0894 /* AnyDropInComponent.swift */,
 				E226F54A229803130013A463 /* DropInComponentDelegate.swift */,
 			);
@@ -3543,11 +3544,12 @@
 			children = (
 				F967580427D10C7F00A16FB6 /* API */,
 				F92980A827CE2B33000CA5CA /* AdyenSession.h */,
-				F92980B127CE2B55000CA5CA /* Session.swift */,
-				F92980C127CF550C000CA5CA /* Session+PaymentComponentDelegate.swift */,
-				F9B8AF5D27DA4EA400DC0894 /* Session+DropInComponentDelegate.swift */,
-				F92980C327CF558E000CA5CA /* Session+ActionComponentDelegate.swift */,
-				F92980C527CF563C000CA5CA /* Session+PartialPaymentDelegate.swift */,
+				F92980B127CE2B55000CA5CA /* AdyenSession.swift */,
+				A04E60D427EDDF4F0051C72C /* AdyenSessionDelegate.swift */,
+				F92980C127CF550C000CA5CA /* AdyenSession+PaymentComponentDelegate.swift */,
+				F9B8AF5D27DA4EA400DC0894 /* AdyenSession+DropInComponentDelegate.swift */,
+				F92980C327CF558E000CA5CA /* AdyenSession+ActionComponentDelegate.swift */,
+				F92980C527CF563C000CA5CA /* AdyenSession+PartialPaymentDelegate.swift */,
 			);
 			path = AdyenSession;
 			sourceTree = "<group>";
@@ -3812,6 +3814,7 @@
 			children = (
 				F967581427D25B1600A16FB6 /* SelfRetainingAPIClientTests.swift */,
 				F9CA6BC527D7503200D7BE6E /* SessionTests.swift */,
+				A04E60DA27F30D900051C72C /* SessionDelegateMock.swift */,
 			);
 			path = Session;
 			sourceTree = "<group>";
@@ -5250,7 +5253,6 @@
 				F96F44CD23B257D700871C1F /* Logger.swift in Sources */,
 				E216D3BC221AAB240013CBCF /* FormItem.swift in Sources */,
 				E9093403228EDADA00C9F04B /* Payment.swift in Sources */,
-				F92980CC27CF64DF000CA5CA /* SessionProtocol.swift in Sources */,
 				A0414C2E2790420B00DF3FE9 /* PublicKeyProvider.swift in Sources */,
 				E216D3CD221AFBB90013CBCF /* Validator.swift in Sources */,
 				E28098C0220DBF970087928F /* ListItem.swift in Sources */,
@@ -5454,6 +5456,7 @@
 				F9FE39E32679E09200F02A9B /* LoadingViewTests.swift in Sources */,
 				F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */,
 				A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */,
+				A04E60DB27F30D900051C72C /* SessionDelegateMock.swift in Sources */,
 				F9AC61C424375F510062A00D /* PresentingViewControllerMock.swift in Sources */,
 				5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */,
 				F9885435272C17BD00F34557 /* PaymentMethodListComponentDelegateMock.swift in Sources */,
@@ -5772,18 +5775,19 @@
 			files = (
 				A04E60CD27DFA2BD0051C72C /* SessionAPIClient.swift in Sources */,
 				F9CA6BC127D5E76A00D7BE6E /* CreateOrderRequest.swift in Sources */,
-				F92980C627CF563C000CA5CA /* Session+PartialPaymentDelegate.swift in Sources */,
+				F92980C627CF563C000CA5CA /* AdyenSession+PartialPaymentDelegate.swift in Sources */,
 				F9CA6BBE27D5E53000D7BE6E /* BalanceCheckRequest.swift in Sources */,
 				F967580A27D10E2800A16FB6 /* SessionSetupRequest.swift in Sources */,
 				F967581027D1FD9C00A16FB6 /* PaymentsRequest.swift in Sources */,
+				A04E60D527EDDF4F0051C72C /* AdyenSessionDelegate.swift in Sources */,
 				F9CA6BC427D5E99000D7BE6E /* CancelOrderRequest.swift in Sources */,
 				F967581227D207C600A16FB6 /* PaymentDetailsRequest.swift in Sources */,
-				F92980C227CF550C000CA5CA /* Session+PaymentComponentDelegate.swift in Sources */,
+				F92980C227CF550C000CA5CA /* AdyenSession+PaymentComponentDelegate.swift in Sources */,
 				A04E60D327E0E6280051C72C /* XCTestCase+Result.swift in Sources */,
 				F967580E27D1253000A16FB6 /* SelfRetainingAPIClient.swift in Sources */,
-				F9B8AF5E27DA4EA400DC0894 /* Session+DropInComponentDelegate.swift in Sources */,
-				F92980B227CE2B55000CA5CA /* Session.swift in Sources */,
-				F92980C427CF558E000CA5CA /* Session+ActionComponentDelegate.swift in Sources */,
+				F9B8AF5E27DA4EA400DC0894 /* AdyenSession+DropInComponentDelegate.swift in Sources */,
+				F92980B227CE2B55000CA5CA /* AdyenSession.swift in Sources */,
+				F92980C427CF558E000CA5CA /* AdyenSession+ActionComponentDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

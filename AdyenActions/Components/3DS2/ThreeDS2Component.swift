@@ -208,6 +208,7 @@ public final class ThreeDS2Component: ActionComponent {
     }()
 }
 
+// This is for the RedirectComponent inside the ThreeDS2Component
 extension ThreeDS2Component: ActionComponentDelegate {
 
     public func didOpenExternalApplication(_ component: ActionComponent) {
