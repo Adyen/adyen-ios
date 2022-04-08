@@ -8,7 +8,10 @@ import Foundation
 
 /// An item in which a switch is toggled, producing a boolean value.
 /// :nodoc:
-public final class FormToggleItem: FormValueItem<Bool, FormToggleItemStyle> {
+public final class FormToggleItem: FormValueItem<Bool, FormToggleItemStyle>, Hidable {
+
+    /// :nodoc:
+    public var isHidden: Observable<Bool> = Observable(false)
     
     /// Initializes the switch item.
     ///
