@@ -85,7 +85,7 @@ internal enum AnyPaymentMethodDecoder {
             let type = try container.decode(String.self, forKey: .type)
             let isStored = decoder.codingPath.contains { $0.stringValue == PaymentMethods.CodingKeys.stored.stringValue }
             let brand = try? container.decode(String.self, forKey: .brand)
-            let isIssuersList = container.contains(.issuers)
+            let isIssuersList = try container.containsValue(.issuers)
 
             if isIssuersList {
                 return try IssuerListPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
