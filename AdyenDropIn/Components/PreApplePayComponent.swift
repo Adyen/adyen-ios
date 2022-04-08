@@ -30,6 +30,8 @@ internal final class PreApplePayComponent: PresentableComponent,
         }
     }
 
+    private var isPresenting: Bool = false
+
     private let payment: Payment
 
     private let applePayComponent: ApplePayComponent
@@ -72,9 +74,8 @@ internal final class PreApplePayComponent: PresentableComponent,
     }
 
     internal func didCancel() {
-        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
-        if let navigation = presentationDelegate,
-           rootViewController?.adyen.topPresenter is PKPaymentAuthorizationViewController {
+        if let navigation = presentationDelegate, isPresenting {
+            isPresenting = false
             navigation.dismiss(completion: nil)
         }
     }
@@ -105,6 +106,7 @@ extension PreApplePayComponent: PreApplePayViewDelegate {
     
     /// :nodoc:
     internal func pay() {
+        isPresenting = true
         presentationDelegate?.present(component: applePayComponent)
     }
     
