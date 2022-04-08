@@ -86,7 +86,7 @@ public struct ApplePayPayment {
             throw ApplePayComponent.Error.negativeGrandTotal
         }
 
-        let totalString = localizedString(.applepayTotal, localizationParameters)
+        let totalString = localizedString(.applePayTotal, localizationParameters)
         self.init(payment: payment, summaryItems: [PKPaymentSummaryItem(label: totalString, amount: decimalValue)])
     }
 

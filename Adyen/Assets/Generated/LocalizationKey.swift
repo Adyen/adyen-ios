@@ -102,7 +102,7 @@ public struct LocalizationKey {
     /// More options
     public static let moreOptions = LocalizationKey(key: "adyen.moreOptions")
     /// Total
-    public static let applepayTotal = LocalizationKey(key: "adyen.applepay.total")
+    public static let applePayTotal = LocalizationKey(key: "adyen.applePay.total")
     /// Confirm your payment on the MB WAY app
     public static let mbwayConfirmPayment = LocalizationKey(key: "adyen.mbway.confirmPayment")
     /// Waiting for confirmation
