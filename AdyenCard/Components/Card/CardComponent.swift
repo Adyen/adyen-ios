@@ -165,7 +165,7 @@ public class CardComponent: PublicKeyConsumer,
         return component
     }()
 
-    func update(storePaymentMethodFieldVisibility isVisible: Bool) {
+    public func update(storePaymentMethodFieldVisibility isVisible: Bool) {
         cardViewController.update(storePaymentMethodFieldVisibility: isVisible)
     }
     // MARK: - Form Items
