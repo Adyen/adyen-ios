@@ -11,15 +11,16 @@ import UIKit
 
 /// A component that handles BCMC card payments.
 public final class BCMCComponent: CardComponent {
-    
     /// Initializes the BCMC Component.
     /// - Parameters:
     ///   - paymentMethod: BCMC payment method.
     ///   - apiContext: The API context.
     ///   - configuration: The configuration of the component.
+    ///   - addressViewModelBuilder: The address viewmodel builder of the component.
     public init(paymentMethod: BCMCPaymentMethod,
                 apiContext: APIContext,
-                configuration: CardComponent.Configuration = .init()) {
+                configuration: CardComponent.Configuration = .init(),
+                addressViewModelBuilder: AddressViewModelBuilder) {
         let configuration = configuration.bcmcConfiguration()
         
         let publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
@@ -30,7 +31,8 @@ public final class BCMCComponent: CardComponent {
                    apiContext: apiContext,
                    configuration: configuration,
                    publicKeyProvider: publicKeyProvider,
-                   binProvider: binInfoProvider)
+                   binProvider: binInfoProvider,
+                   addressViewModelBuilder: addressViewModelBuilder)
     }
 
 }

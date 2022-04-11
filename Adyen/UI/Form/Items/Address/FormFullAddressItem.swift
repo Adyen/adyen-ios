@@ -32,6 +32,8 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     internal let supportedCountryCodes: [String]?
     
+    internal let addressViewModelBuilder: AddressViewModelBuilder
+    
     override public var title: String? {
         didSet {
             headerItem.text = title ?? ""
@@ -49,10 +51,12 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
                 style: AddressStyle,
                 localizationParameters: LocalizationParameters? = nil,
                 identifier: String? = nil,
-                supportedCountryCodes: [String]? = nil) {
+                supportedCountryCodes: [String]? = nil,
+                addressViewModelBuilder: AddressViewModelBuilder) {
         self.initialCountry = initialCountry
         self.localizationParameters = localizationParameters
         self.supportedCountryCodes = supportedCountryCodes
+        self.addressViewModelBuilder = addressViewModelBuilder
         super.init(value: PostalAddress(), style: style)
 
         self.identifier = identifier
@@ -88,7 +92,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     private func update(for countryCode: String) {
         let subRegions = RegionRepository.subRegions(for: countryCode)
-        let viewModel = AddressViewModel[countryCode]
+        let viewModel = addressViewModelBuilder.build(countryCode: countryCode)
         
         items = [FormSpacerItem(),
                  headerItem.addingDefaultMargins(),

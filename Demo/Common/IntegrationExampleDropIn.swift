@@ -27,7 +27,8 @@ extension IntegrationExample {
 
         let component = DropInComponent(paymentMethods: paymentMethods,
                                         configuration: configuration,
-                                        title: ConfigurationConstants.appName)
+                                        title: ConfigurationConstants.appName,
+                                        addressViewModelBuilder: DefaultAddressViewModelBuilder())
         component.delegate = self
         component.partialPaymentDelegate = self
         component.storedPaymentMethodsDelegate = self

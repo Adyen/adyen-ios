@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		00EA4ED4280412140053D938 /* DefaultAddressViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */; };
+		00EA4ED62804124C0053D938 /* AtomeAddressViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */; };
 		00F621BE27EB132500C04097 /* AtomeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621BD27EB132500C04097 /* AtomeComponent.swift */; };
 		00F621C027EB153400C04097 /* AtomeDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621BF27EB153400C04097 /* AtomeDetails.swift */; };
 		00F621C227EB1E3100C04097 /* AtomePaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621C127EB1E3100C04097 /* AtomePaymentMethod.swift */; };
@@ -1024,6 +1026,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAddressViewModelBuilder.swift; sourceTree = "<group>"; };
+		00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeAddressViewModelBuilder.swift; sourceTree = "<group>"; };
 		00F621BD27EB132500C04097 /* AtomeComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeComponent.swift; sourceTree = "<group>"; };
 		00F621BF27EB153400C04097 /* AtomeDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeDetails.swift; sourceTree = "<group>"; };
 		00F621C127EB1E3100C04097 /* AtomePaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomePaymentMethod.swift; sourceTree = "<group>"; };
@@ -2679,6 +2683,8 @@
 				E7085911261F1C8E00D0153B /* FormFullAddressItem.swift */,
 				E7085CB6262DE14A00D0153B /* AddressStyle.swift */,
 				E795A27526404E9400321C48 /* AddressViewModel.swift */,
+				00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */,
+				00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */,
 			);
 			path = Address;
 			sourceTree = "<group>";
@@ -5219,6 +5225,7 @@
 				5AD40E75262F04440090E01C /* UIProgressViewHelpers.swift in Sources */,
 				F91664F023E41D7300C10738 /* AnyEncodable.swift in Sources */,
 				E7D531192446F525000046B4 /* FormSeparatorItemView.swift in Sources */,
+				00EA4ED62804124C0053D938 /* AtomeAddressViewModelBuilder.swift in Sources */,
 				E705F8EB2462B1B900438C3B /* FormButtonItemStyle.swift in Sources */,
 				E2B317A02265BB0B00C1BB30 /* LengthValidator.swift in Sources */,
 				E9021DFA225E2487009CF7F4 /* ListHeaderView.swift in Sources */,
@@ -5319,6 +5326,7 @@
 				A026C85127C4FE4700E6C34A /* BasicComponentConfiguration.swift in Sources */,
 				E7085B162628B29600D0153B /* FormPhoneExtensionPickerItemView.swift in Sources */,
 				F924C079246C38E0006DDAB8 /* SecuredViewController.swift in Sources */,
+				00EA4ED4280412140053D938 /* DefaultAddressViewModelBuilder.swift in Sources */,
 				E7D5311A2446F525000046B4 /* FormSeparatorItem.swift in Sources */,
 				E71E8F3E257921D10054B03D /* StoredBLIKPaymentMethod.swift in Sources */,
 				C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */,

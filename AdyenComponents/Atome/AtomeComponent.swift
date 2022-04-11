@@ -89,5 +89,10 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
         let query = PhoneExtensionsQuery(paymentMethod: .generic)
         return PhoneExtensionsRepository.get(with: query)
     }
+    
+    /// :nodoc:
+    override public func addressViewModelBuilder() -> AddressViewModelBuilder {
+        return AtomeAddressViewModelBuilder()
+    }
 
 }

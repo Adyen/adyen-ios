@@ -24,11 +24,15 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
     internal let style: AddressStyle
 
     /// :nodoc:
+    internal let addressViewModelBuilder: AddressViewModelBuilder
+
+    /// :nodoc:
     internal lazy var item: FormAddressItem = {
         let addressItem = FormAddressItem(initialCountry: initialCountry,
                                           style: style,
                                           localizationParameters: localizationParameters,
-                                          identifier: identifier)
+                                          identifier: identifier,
+                                          addressViewModelBuilder: addressViewModelBuilder)
         value.map { addressItem.value = $0 }
         return addressItem
     }()
@@ -36,11 +40,13 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
     internal init(value: PostalAddress?,
                   initialCountry: String,
                   identifier: String,
-                  style: AddressStyle) {
+                  style: AddressStyle,
+                  addressViewModelBuilder: AddressViewModelBuilder) {
         self.value = value
         self.initialCountry = initialCountry
         self.identifier = identifier
         self.style = style
+        self.addressViewModelBuilder = addressViewModelBuilder
     }
 
     /// :nodoc:

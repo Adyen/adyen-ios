@@ -25,6 +25,8 @@ internal class CardViewController: FormViewController {
     internal var items: ItemsProvider
     
     private var issuingCountryCode: String?
+    
+    private let addressViewModelBuilder: AddressViewModelBuilder
 
     // MARK: Init view controller
 
@@ -45,11 +47,13 @@ internal class CardViewController: FormViewController {
                   logoProvider: LogoURLProvider,
                   supportedCardTypes: [CardType],
                   scope: String,
-                  localizationParameters: LocalizationParameters?) {
+                  localizationParameters: LocalizationParameters?,
+                  addressViewModelBuilder: AddressViewModelBuilder) {
         self.configuration = configuration
         self.shopperInformation = shopperInformation
         self.supportedCardTypes = supportedCardTypes
         self.formStyle = formStyle
+        self.addressViewModelBuilder = addressViewModelBuilder
 
         let countryCode = payment?.countryCode ?? Locale.current.regionCode ?? CardComponent.Constant.defaultCountryCode
         let cardLogos = supportedCardTypes.map {
@@ -62,7 +66,8 @@ internal class CardViewController: FormViewController {
                                    cardLogos: cardLogos,
                                    scope: scope,
                                    defaultCountryCode: countryCode,
-                                   localizationParameters: localizationParameters)
+                                   localizationParameters: localizationParameters,
+                                   addressViewModelBuilder: addressViewModelBuilder)
         super.init(style: formStyle)
         self.localizationParameters = localizationParameters
     }

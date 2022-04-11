@@ -32,7 +32,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(paymentMethod: method,
                                           apiContext: Dummy.context,
                                           configuration: config,
-                                          publicKeyProvider: PublicKeyProviderMock())
+                                          publicKeyProvider: PublicKeyProviderMock(),
+                                          addressViewModelBuilder: DefaultAddressViewModelBuilder())
         sut.payment = payment
         
         XCTAssertEqual(sut.headerItem.text, localizedString(.achBankAccountTitle, sut.configuration.localizationParameters))
@@ -84,7 +85,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
                                           configuration: .init(style: achComponentStyle, billingAddressCountryCodes: ["US", "UK"]),
-                                          publicKeyProvider: PublicKeyProviderMock())
+                                          publicKeyProvider: PublicKeyProviderMock(),
+                                          addressViewModelBuilder: DefaultAddressViewModelBuilder())
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         wait(for: .seconds(1))
@@ -150,7 +152,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(paymentMethod: method,
                                           apiContext: Dummy.context,
                                           configuration: config,
-                                          publicKeyProvider: PublicKeyProviderMock())
+                                          publicKeyProvider: PublicKeyProviderMock(),
+                                          addressViewModelBuilder: DefaultAddressViewModelBuilder())
         
         sut.payment = payment
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -172,7 +175,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(paymentMethod: method,
                                           apiContext: Dummy.context,
                                           configuration: config,
-                                          publicKeyProvider: PublicKeyProviderMock())
+                                          publicKeyProvider: PublicKeyProviderMock(),
+                                          addressViewModelBuilder: DefaultAddressViewModelBuilder())
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         wait(for: .seconds(1))
@@ -187,7 +191,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
                                           configuration: config,
-                                          publicKeyProvider: PublicKeyProviderMock())
+                                          publicKeyProvider: PublicKeyProviderMock(),
+                                          addressViewModelBuilder: DefaultAddressViewModelBuilder())
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
@@ -197,7 +202,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
                                           configuration: config,
-                                          publicKeyProvider: PublicKeyProviderMock())
+                                          publicKeyProvider: PublicKeyProviderMock(),
+                                          addressViewModelBuilder:DefaultAddressViewModelBuilder())
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         wait(for: .seconds(1))
@@ -212,7 +218,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
-                                          publicKeyProvider: PublicKeyProviderMock())
+                                          publicKeyProvider: PublicKeyProviderMock(),
+                                          addressViewModelBuilder: DefaultAddressViewModelBuilder())
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         wait(for: .seconds(1))
@@ -234,7 +241,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
                                           configuration: .init(showsBillingAddress: false),
-                                          publicKeyProvider: PublicKeyProviderMock())
+                                          publicKeyProvider: PublicKeyProviderMock(),
+                                          addressViewModelBuilder: DefaultAddressViewModelBuilder())
         sut.payment = Payment(amount: Amount(value: 2, currencyCode: "USD"), countryCode: "US")
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController

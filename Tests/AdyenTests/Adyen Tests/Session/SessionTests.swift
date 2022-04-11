@@ -198,7 +198,8 @@ class SessionTests: XCTestCase {
                                        apiContext: Dummy.context)
         let dropInComponent = DropInComponent(paymentMethods: expectedPaymentMethods,
                                               configuration: .init(apiContext: Dummy.context),
-                                              title: nil)
+                                              title: nil,
+                                              addressViewModelBuilder: DefaultAddressViewModelBuilder())
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
         let expectedOrder = PartialPaymentOrder(pspReference: "pspReference",

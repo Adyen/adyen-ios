@@ -150,12 +150,13 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return AddressFormItemInjector(value: configuration.shopperInformation?.billingAddress,
                                        initialCountry: initialCountry,
                                        identifier: identifier,
-                                       style: configuration.style.addressStyle)
+                                       style: configuration.style.addressStyle,
+                                       addressViewModelBuilder: addressViewModelBuilder())
     }()
-    
+
     /// :nodoc:
     public var addressItem: FormAddressItem? { addressItemInjector?.item }
-    
+
     /// :nodoc:
     internal lazy var deliveryAddressItemInjector: AddressFormItemInjector? = {
         guard fields.contains(.deliveryAddress) else { return nil }
@@ -164,7 +165,8 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return AddressFormItemInjector(value: configuration.shopperInformation?.deliveryAddress,
                                        initialCountry: initialCountry,
                                        identifier: identifier,
-                                       style: configuration.style.addressStyle)
+                                       style: configuration.style.addressStyle,
+                                       addressViewModelBuilder: addressViewModelBuilder())
     }()
     
     /// :nodoc:
@@ -213,6 +215,11 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     /// :nodoc:
     open func phoneExtensions() -> [PhoneExtension] {
         fatalError("This is an abstract class that needs to be subclassed.")
+    }
+    
+    /// :nodoc:
+    open func addressViewModelBuilder() -> AddressViewModelBuilder {
+        return DefaultAddressViewModelBuilder()
     }
 
     /// :nodoc:

@@ -49,6 +49,9 @@ public class CardComponent: PublicKeyConsumer,
     /// Card component configuration.
     public let configuration: Configuration
     
+    /// Card component address builder.
+    public let addressViewModelBuilder: AddressViewModelBuilder
+    
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate? {
         didSet {
@@ -69,9 +72,11 @@ public class CardComponent: PublicKeyConsumer,
     ///   - paymentMethod: The card payment method.
     ///   - apiContext: The API context.
     ///   - configuration: The configuration of the component.
+    ///   - addressViewModelBuilder: The address viewmodel builder of the component.
     public convenience init(paymentMethod: AnyCardPaymentMethod,
                             apiContext: APIContext,
-                            configuration: Configuration = .init()) {
+                            configuration: Configuration = .init(),
+                            addressViewModelBuilder: AddressViewModelBuilder) {
         let publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: apiContext),
                                               publicKeyProvider: publicKeyProvider,
@@ -80,7 +85,8 @@ public class CardComponent: PublicKeyConsumer,
                   apiContext: apiContext,
                   configuration: configuration,
                   publicKeyProvider: publicKeyProvider,
-                  binProvider: binInfoProvider)
+                  binProvider: binInfoProvider,
+                  addressViewModelBuilder: addressViewModelBuilder)
     }
     
     /// :nodoc:
@@ -92,11 +98,13 @@ public class CardComponent: PublicKeyConsumer,
     ///   - configuration: The Card component configuration.
     ///   - publicKeyProvider: The public key provider
     ///   - binProvider: Any object capable to provide a BinInfo.
+    ///   - addressViewModelBuilder: The address viewmodel builder of the component.
     internal init(paymentMethod: AnyCardPaymentMethod,
                   apiContext: APIContext,
                   configuration: Configuration,
                   publicKeyProvider: AnyPublicKeyProvider,
-                  binProvider: AnyBinInfoProvider) {
+                  binProvider: AnyBinInfoProvider,
+                  addressViewModelBuilder: AddressViewModelBuilder) {
         self.cardPaymentMethod = paymentMethod
         self.apiContext = apiContext
         self.configuration = configuration
@@ -107,6 +115,7 @@ public class CardComponent: PublicKeyConsumer,
         let excludedCardTypes = configuration.excludedCardTypes
         let allowedCardTypes = configuration.allowedCardTypes ?? paymentMethodCardTypes
         self.supportedCardTypes = allowedCardTypes.minus(excludedCardTypes)
+        self.addressViewModelBuilder = addressViewModelBuilder
     }
     
     // MARK: - Presentable Component Protocol
@@ -155,7 +164,8 @@ public class CardComponent: PublicKeyConsumer,
                                                     logoProvider: LogoURLProvider(environment: apiContext.environment),
                                                     supportedCardTypes: supportedCardTypes,
                                                     scope: String(describing: self),
-                                                    localizationParameters: configuration.localizationParameters)
+                                                    localizationParameters: configuration.localizationParameters,
+                                                    addressViewModelBuilder: addressViewModelBuilder)
         formViewController.delegate = self
         formViewController.cardDelegate = self
         formViewController.title = paymentMethod.name
