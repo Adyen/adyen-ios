@@ -31,6 +31,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let config = ACHDirectDebitComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil), billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: method,
                                           apiContext: Dummy.context,
+                                          adyenContext: Dummy.adyenContext,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
         sut.payment = payment
@@ -83,6 +84,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
+                                          adyenContext: Dummy.adyenContext,
                                           configuration: .init(style: achComponentStyle, billingAddressCountryCodes: ["US", "UK"]),
                                           publicKeyProvider: PublicKeyProviderMock())
         
@@ -149,6 +151,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let config = ACHDirectDebitComponent.Configuration(shopperInformation: shopperInformation, billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: method,
                                           apiContext: Dummy.context,
+                                          adyenContext: Dummy.adyenContext,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
         
@@ -171,6 +174,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: method,
                                           apiContext: Dummy.context,
+                                          adyenContext: Dummy.adyenContext,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
         
@@ -186,6 +190,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
+                                          adyenContext: Dummy.adyenContext,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
         XCTAssertEqual(sut.requiresModalPresentation, true)
@@ -196,6 +201,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
+                                          adyenContext: Dummy.adyenContext,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
 
@@ -212,6 +218,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
+                                          adyenContext: Dummy.adyenContext,
                                           publicKeyProvider: PublicKeyProviderMock())
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -233,6 +240,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
+                                          adyenContext: Dummy.adyenContext,
                                           configuration: .init(showsBillingAddress: false),
                                           publicKeyProvider: PublicKeyProviderMock())
         sut.payment = Payment(amount: Amount(value: 2, currencyCode: "USD"), countryCode: "US")

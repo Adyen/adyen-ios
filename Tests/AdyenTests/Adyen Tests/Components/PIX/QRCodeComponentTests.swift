@@ -9,6 +9,19 @@
 import XCTest
 
 class QRCodeComponentTests: XCTestCase {
+
+    var adyenContext: AdyenContext!
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        adyenContext = Dummy.adyenContext
+    }
+
+    override func tearDownWithError() throws {
+        adyenContext = nil
+        try super.tearDownWithError()
+    }
+
     lazy var method = InstantPaymentMethod(type: .other("pix"), name: "pix")
     let payment = Payment(amount: Amount(value: 2, currencyCode: "BRL"), countryCode: "BR")
     let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
@@ -43,7 +56,7 @@ class QRCodeComponentTests: XCTestCase {
         
         style.backgroundColor = UIColor.Adyen.componentSeparator
         
-        let sut = QRCodeComponent(apiContext: Dummy.context)
+        let sut = QRCodeComponent(apiContext: Dummy.context, adyenContext: adyenContext)
         sut.configuration.style = style
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
@@ -109,6 +122,7 @@ class QRCodeComponentTests: XCTestCase {
         )
         
         let sut = QRCodeComponent(apiContext: Dummy.context,
+                                  adyenContext: adyenContext,
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         let componentDelegate = ActionComponentDelegateMock()
@@ -151,6 +165,7 @@ class QRCodeComponentTests: XCTestCase {
         )
         
         let sut = QRCodeComponent(apiContext: Dummy.context,
+                                  adyenContext: adyenContext,
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         
@@ -198,6 +213,7 @@ class QRCodeComponentTests: XCTestCase {
         )
         
         let sut = QRCodeComponent(apiContext: Dummy.context,
+                                  adyenContext: adyenContext,
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         
@@ -235,7 +251,8 @@ class QRCodeComponentTests: XCTestCase {
     func testCopyButton() {
         let dummyExpectation = expectation(description: "Dummy Expectation")
         
-        let sut = QRCodeComponent(apiContext: Dummy.context)
+        let sut = QRCodeComponent(apiContext: Dummy.context,
+                                  adyenContext: adyenContext)
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         

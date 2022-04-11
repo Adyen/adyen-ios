@@ -15,6 +15,18 @@ import AdyenDropIn
 
 class SessionTests: XCTestCase {
 
+    var adyenContext: AdyenContext!
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        adyenContext = Dummy.adyenContext
+    }
+
+    override func tearDownWithError() throws {
+        adyenContext = nil
+        try super.tearDownWithError()
+    }
+
     func testInitialization() throws {
         let apiClient = APIClientMock()
         let dictionary = [
@@ -38,7 +50,8 @@ class SessionTests: XCTestCase {
         let expectation = expectation(description: "Expect session object to be initialized")
         Session.initialize(with: .init(sessionIdentifier: "session_id",
                                        initialSessionData: "session_data_0",
-                                       apiContext: Dummy.context),
+                                       apiContext: Dummy.context,
+                                       adyenContext: adyenContext),
                            presentationDelegate: PresentationDelegateMock(),
                            baseAPIClient: apiClient) { result in
             switch result {
@@ -74,7 +87,8 @@ class SessionTests: XCTestCase {
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
-                                       apiContext: Dummy.context)
+                                       apiContext: Dummy.context,
+                                       adyenContext: adyenContext)
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
         apiClient.mockedResults = [.success(PaymentsResponse(resultCode: .authorised,
@@ -121,7 +135,8 @@ class SessionTests: XCTestCase {
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
-                                       apiContext: Dummy.context)
+                                       apiContext: Dummy.context,
+                                       adyenContext: adyenContext)
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
         let expectedAction = RedirectAction(
@@ -167,7 +182,8 @@ class SessionTests: XCTestCase {
                     ),
                     paymentData: "payment_data"
                 )
-                sut.didProvide(data, from: RedirectComponent(apiContext: Dummy.context))
+                sut.didProvide(data, from: RedirectComponent(apiContext: Dummy.context,
+                                                             adyenContext: self.adyenContext))
             default:
                 XCTFail()
             }
@@ -195,9 +211,12 @@ class SessionTests: XCTestCase {
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
-                                       apiContext: Dummy.context)
+                                       apiContext: Dummy.context,
+                                       adyenContext: adyenContext)
         let dropInComponent = DropInComponent(paymentMethods: expectedPaymentMethods,
-                                              configuration: .init(apiContext: Dummy.context),
+                                              adyenContext: adyenContext,
+                                              configuration: .init(apiContext: Dummy.context,
+                                                                   adyenContext: adyenContext),
                                               title: nil)
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
@@ -420,10 +439,11 @@ class SessionTests: XCTestCase {
         var sut: Session! = nil
         let initializationExpectation = expectation(description: "Expect session object to be initialized")
         Session.initialize(with: .init(sessionIdentifier: "session_id",
-                                             initialSessionData: "session_data_0",
-                                       apiContext: Dummy.context),
+                                       initialSessionData: "session_data_0",
+                                       apiContext: Dummy.context,
+                                       adyenContext: adyenContext),
                            presentationDelegate: PresentationDelegateMock(),
-                                 baseAPIClient: apiClient) { result in
+                           baseAPIClient: apiClient) { result in
             switch result {
             case let .success(session):
                 sut = session

@@ -23,7 +23,9 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method,
+                                      apiContext: Dummy.context,
+                                      adyenContext: Dummy.adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -53,7 +55,9 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method,
+                                      apiContext: Dummy.context,
+                                      adyenContext: Dummy.adyenContext)
         PublicKeyProvider.publicKeysCache[Dummy.context.clientKey] = Dummy.publicKey
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
@@ -83,7 +87,9 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method,
+                                      apiContext: Dummy.context,
+                                      adyenContext: Dummy.adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -149,7 +155,9 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method,
+                                      apiContext: Dummy.context,
+                                      adyenContext: Dummy.adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -204,7 +212,9 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method,
+                                      apiContext: Dummy.context,
+                                      adyenContext: Dummy.adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -257,7 +267,9 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method,
+                                      apiContext: Dummy.context,
+                                      adyenContext: Dummy.adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -303,7 +315,9 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method,
+                                      apiContext: Dummy.context,
+                                      adyenContext: Dummy.adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment

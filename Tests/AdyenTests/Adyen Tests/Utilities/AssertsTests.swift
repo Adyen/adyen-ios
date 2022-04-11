@@ -11,8 +11,16 @@ import XCTest
 
 class AssertsTests: XCTestCase {
 
-    override func tearDown() {
-        AdyenAssertion.listener = nil
+    var adyenContext: AdyenContext!
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        adyenContext = Dummy.adyenContext
+    }
+
+    override func tearDownWithError() throws {
+        adyenContext = nil
+        try super.tearDownWithError()
     }
 
     func testListViewControllerPreferredContentSizeAssertion() {
@@ -61,7 +69,7 @@ class AssertsTests: XCTestCase {
     }
 
     func testAwaitVComponentPresentationDelegateAssertion() {
-        let sut = AwaitComponent(apiContext: Dummy.context)
+        let sut = AwaitComponent(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in
@@ -76,7 +84,7 @@ class AssertsTests: XCTestCase {
     }
 
     func testVoucherComponentPresentationDelegateAssertion() {
-        let sut = VoucherComponent(apiContext: Dummy.context)
+        let sut = VoucherComponent(apiContext: Dummy.context, adyenContext: adyenContext)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in
@@ -130,9 +138,11 @@ class AssertsTests: XCTestCase {
 
     class MockComponent: Component {
         let apiContext: APIContext
+        let adyenContext: AdyenContext
         
-        init(apiContext: APIContext = Dummy.context) {
+        init(apiContext: APIContext = Dummy.context, adyenContext: AdyenContext = Dummy.adyenContext) {
             self.apiContext = apiContext
+            self.adyenContext = adyenContext
         }
     }
 

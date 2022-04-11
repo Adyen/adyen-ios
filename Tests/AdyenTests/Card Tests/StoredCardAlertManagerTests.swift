@@ -28,7 +28,10 @@ class StoredCardAlertManagerTests: XCTestCase {
     func testLocalizationWithCustomTableName() throws {
         let method = try Coder.decode(storedCardDictionary) as StoredCardPaymentMethod
         let amount = Amount(value: 3, currencyCode: "EUR")
-        let sut = StoredCardAlertManager(paymentMethod: method, apiContext: Dummy.context, amount: amount)
+        let sut = StoredCardAlertManager(paymentMethod: method,
+                                         apiContext: Dummy.context,
+                                         adyenContext: Dummy.adyenContext,
+                                         amount: amount)
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
         let alertController = sut.alertController
@@ -50,7 +53,10 @@ class StoredCardAlertManagerTests: XCTestCase {
     func testLocalizationWithCustomKeySeparator() throws {
         let method = try Coder.decode(storedCardDictionary) as StoredCardPaymentMethod
         let amount = Amount(value: 3, currencyCode: "EUR")
-        let sut = StoredCardAlertManager(paymentMethod: method, apiContext: Dummy.context, amount: amount)
+        let sut = StoredCardAlertManager(paymentMethod: method,
+                                         apiContext: Dummy.context,
+                                         adyenContext: Dummy.adyenContext,
+                                         amount: amount)
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
         let alertController = sut.alertController
@@ -72,7 +78,10 @@ class StoredCardAlertManagerTests: XCTestCase {
     func testResetFieldsAfterCancel() {
         let method = try! Coder.decode(storedCardDictionary) as StoredCardPaymentMethod
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        let sut = StoredCardAlertManager(paymentMethod: method, apiContext: Dummy.context, amount: payment.amount)
+        let sut = StoredCardAlertManager(paymentMethod: method,
+                                         apiContext: Dummy.context,
+                                         adyenContext: Dummy.adyenContext,
+                                         amount: payment.amount)
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
         let alertController = sut.alertController

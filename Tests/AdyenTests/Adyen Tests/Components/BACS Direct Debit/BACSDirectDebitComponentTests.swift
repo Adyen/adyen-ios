@@ -10,6 +10,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
     var confirmationPresenter: BACSConfirmationPresenterProtocolMock!
     var presentationDelegate: PresentationDelegateMock!
     var paymentComponentDelegate: PaymentComponentDelegateMock!
+    var adyenContext: AdyenContext!
     var sut: BACSDirectDebitComponent!
 
     override func setUpWithError() throws {
@@ -22,9 +23,11 @@ class BACSDirectDebitComponentTests: XCTestCase {
         confirmationPresenter = BACSConfirmationPresenterProtocolMock()
         presentationDelegate = PresentationDelegateMock()
         paymentComponentDelegate = PaymentComponentDelegateMock()
+        adyenContext = Dummy.adyenContext
 
         sut = BACSDirectDebitComponent(paymentMethod: paymentMethod,
-                                       apiContext: apiContext)
+                                       apiContext: apiContext,
+                                       adyenContext: adyenContext)
 
         sut.presentationDelegate = presentationDelegate
         sut.delegate = paymentComponentDelegate
@@ -35,6 +38,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
         confirmationPresenter = nil
         presentationDelegate = nil
         paymentComponentDelegate = nil
+        adyenContext = nil
         sut = nil
         try super.tearDownWithError()
     }

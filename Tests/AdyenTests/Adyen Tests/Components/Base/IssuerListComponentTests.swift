@@ -12,7 +12,7 @@ class IssuerListComponentTests: XCTestCase {
 
     func testStartStopLoading() {
         let paymentMethod = try! Coder.decode(issuerListDictionary) as IssuerListPaymentMethod
-        let sut = IssuerListComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
+        let sut = IssuerListComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController

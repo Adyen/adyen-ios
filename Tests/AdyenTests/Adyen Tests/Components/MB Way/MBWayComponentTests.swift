@@ -17,7 +17,10 @@ class MBWayComponentTests: XCTestCase {
 
     func testLocalizationWithCustomTableName() {
         let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
-        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
+        let sut = MBWayComponent(paymentMethod: paymentMethod,
+                                 apiContext: Dummy.context,
+                                 adyenContext: Dummy.adyenContext,
+                                 configuration: config)
         sut.payment = payment
 
         XCTAssertEqual(sut.phoneItem?.title, localizedString(.phoneNumberTitle, sut.configuration.localizationParameters))
@@ -31,7 +34,10 @@ class MBWayComponentTests: XCTestCase {
 
     func testLocalizationWithCustomKeySeparator() {
         let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
-        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
+        let sut = MBWayComponent(paymentMethod: paymentMethod,
+                                 apiContext: Dummy.context,
+                                 adyenContext: Dummy.adyenContext,
+                                 configuration: config)
         sut.payment = payment
 
         XCTAssertEqual(sut.phoneItem?.title, localizedString(LocalizationKey(key: "adyen_phoneNumber_title"), sut.configuration.localizationParameters))
@@ -68,7 +74,10 @@ class MBWayComponentTests: XCTestCase {
         style.textField.backgroundColor = .red
 
         let config = MBWayComponent.Configuration(style: style)
-        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
+        let sut = MBWayComponent(paymentMethod: paymentMethod,
+                                 apiContext: Dummy.context,
+                                 adyenContext: Dummy.adyenContext,
+                                 configuration: config)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -105,7 +114,9 @@ class MBWayComponentTests: XCTestCase {
     }
 
     func testSubmitForm() {
-        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
+        let sut = MBWayComponent(paymentMethod: paymentMethod,
+                                 apiContext: Dummy.context,
+                                 adyenContext: Dummy.adyenContext)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         sut.payment = payment
@@ -140,7 +151,9 @@ class MBWayComponentTests: XCTestCase {
     }
 
     func testBigTitle() {
-        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
+        let sut = MBWayComponent(paymentMethod: paymentMethod,
+                                 apiContext: Dummy.context,
+                                 adyenContext: Dummy.adyenContext)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -155,7 +168,7 @@ class MBWayComponentTests: XCTestCase {
 
     func testRequiresModalPresentation() {
         let mbWayPaymentMethod = MBWayPaymentMethod(type: .mbWay, name: "Test name")
-        let sut = MBWayComponent(paymentMethod: mbWayPaymentMethod, apiContext: Dummy.context)
+        let sut = MBWayComponent(paymentMethod: mbWayPaymentMethod, apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
@@ -164,6 +177,7 @@ class MBWayComponentTests: XCTestCase {
         let config = MBWayComponent.Configuration(shopperInformation: shopperInformation)
         let prefillSut = MBWayComponent(paymentMethod: paymentMethod,
                                         apiContext: Dummy.context,
+                                        adyenContext: Dummy.adyenContext,
                                         configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
@@ -182,6 +196,7 @@ class MBWayComponentTests: XCTestCase {
         // Given
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                  apiContext: Dummy.context,
+                                 adyenContext: Dummy.adyenContext,
                                  configuration: MBWayComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 

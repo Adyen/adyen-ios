@@ -67,6 +67,7 @@ class BoletoComponentTests: XCTestCase {
         
         sut = BoletoComponent(paymentMethod: method,
                               apiContext: Dummy.context,
+                              adyenContext: Dummy.adyenContext,
                               configuration: getConfiguration(style: style, showEmailAddress: true))
         
         let sutVC = sut.viewController
@@ -127,6 +128,7 @@ class BoletoComponentTests: XCTestCase {
         
         sut = BoletoComponent(paymentMethod: method,
                               apiContext: Dummy.context,
+                              adyenContext: Dummy.adyenContext,
                               configuration: getConfiguration(with: prefilledInformation, showEmailAddress: true))
         
         let sutVC = sut.viewController
@@ -174,6 +176,7 @@ class BoletoComponentTests: XCTestCase {
     func testNoPrefilledInformation() {
         sut = BoletoComponent(paymentMethod: method,
                               apiContext: Dummy.context,
+                              adyenContext: Dummy.adyenContext,
                               configuration: getConfiguration(showEmailAddress: true))
         
         let sutVC = sut.viewController
@@ -219,8 +222,9 @@ class BoletoComponentTests: XCTestCase {
     
     func testNoEmailSection() {
         sut = BoletoComponent(paymentMethod: method,
-                                    apiContext: Dummy.context,
-                                    configuration: getConfiguration(showEmailAddress: false))
+                              apiContext: Dummy.context,
+                              adyenContext: Dummy.adyenContext,
+                              configuration: getConfiguration(showEmailAddress: false))
         
         let sutVC = sut.viewController
         
@@ -241,6 +245,7 @@ class BoletoComponentTests: XCTestCase {
     func testEmailFieldHiding() {
         sut = BoletoComponent(paymentMethod: method,
                               apiContext: Dummy.context,
+                              adyenContext: Dummy.adyenContext,
                               configuration: getConfiguration(with: dummyFullPrefilledInformation, showEmailAddress: true))
         
         let sutVC = sut.viewController
@@ -292,19 +297,17 @@ class BoletoComponentTests: XCTestCase {
         
         sut = BoletoComponent(paymentMethod: method,
                               apiContext: Dummy.context,
+                              adyenContext: Dummy.adyenContext,
                               configuration: mockConfiguration)
         sut.delegate = mockDelegate
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-        
             let submitButton: SubmitButton? = self.sut.viewController.view.findView(by: "payButtonItem.button") as? SubmitButton
-        
             submitButton?.sendActions(for: .touchUpInside)
-            
         }
-    
+
         waitForExpectations(timeout: 10, handler: nil)
     }
     
@@ -328,6 +331,7 @@ class BoletoComponentTests: XCTestCase {
 
         sut = BoletoComponent(paymentMethod: method,
                               apiContext: Dummy.context,
+                              adyenContext: Dummy.adyenContext,
                               configuration: mockConfiguration)
         sut.delegate = mockDelegate
 

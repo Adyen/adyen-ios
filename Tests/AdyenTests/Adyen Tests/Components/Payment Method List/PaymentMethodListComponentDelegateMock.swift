@@ -10,6 +10,12 @@
 import Foundation
 
 internal final class PaymentMethodListComponentDelegateMock: PaymentMethodListComponentDelegate {
+
+    var onDidLoad: ((_ paymentMethodListComponent: PaymentMethodListComponent) -> Void)?
+
+    func didLoad(_ paymentMethodListComponent: PaymentMethodListComponent) {
+        onDidLoad?(paymentMethodListComponent)
+    }
     
     var onDidSelect: ((_ component: PaymentComponent, _ paymentMethodListComponent: PaymentMethodListComponent) -> Void)?
     

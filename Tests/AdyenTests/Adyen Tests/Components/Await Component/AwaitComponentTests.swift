@@ -54,7 +54,7 @@ class AwaitComponentTests: XCTestCase {
 
     func testLocalizationWithCustomTableName() {
 
-        let sut = AwaitComponent(apiContext: Dummy.context)
+        let sut = AwaitComponent(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
@@ -108,7 +108,7 @@ class AwaitComponentTests: XCTestCase {
             }, onQRHandler: nil
         )
 
-        let sut = AwaitComponent(apiContext: Dummy.context, awaitComponentBuilder: handlerProvider)
+        let sut = AwaitComponent(apiContext: Dummy.context, adyenContext: Dummy.adyenContext, awaitComponentBuilder: handlerProvider)
         sut.configuration.style = style
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
