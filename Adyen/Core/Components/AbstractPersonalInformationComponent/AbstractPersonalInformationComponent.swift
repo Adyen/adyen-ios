@@ -153,10 +153,10 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
                                        style: configuration.style.addressStyle,
                                        addressViewModelBuilder: addressViewModelBuilder())
     }()
-
+    
     /// :nodoc:
     public var addressItem: FormAddressItem? { addressItemInjector?.item }
-
+    
     /// :nodoc:
     internal lazy var deliveryAddressItemInjector: AddressFormItemInjector? = {
         guard fields.contains(.deliveryAddress) else { return nil }

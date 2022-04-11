@@ -11,6 +11,7 @@ import UIKit
 
 /// A component that handles BCMC card payments.
 public final class BCMCComponent: CardComponent {
+    
     /// Initializes the BCMC Component.
     /// - Parameters:
     ///   - paymentMethod: BCMC payment method.
