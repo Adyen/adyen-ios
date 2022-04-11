@@ -56,7 +56,7 @@ public struct PaymentMethods: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.regular = try container.decode([AnyPaymentMethod].self, forKey: .regular).compactMap(\.value)
         
-        if container.contains(.stored) {
+        if try container.containsValue(.stored) {
             self.stored = try container.decode([AnyPaymentMethod].self, forKey: .stored).compactMap { $0.value as? StoredPaymentMethod }
         } else {
             self.stored = []

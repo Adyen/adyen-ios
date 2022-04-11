@@ -213,6 +213,39 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethods.regular[20].type.rawValue, "oxxo")
 
     }
+
+    func testDecodingPaymentMethodsWithNullValues() throws {
+
+        let json = """
+{
+    "storedPaymentMethods": null,
+    "paymentMethods": [
+        {
+            "brand": null,
+            "brands": [
+                "visa",
+                "mc",
+                "diners",
+                "discover",
+                "maestro"
+            ],
+            "issuers": null,
+            "configuration": null,
+            "fundingSource": null,
+            "group": null,
+            "inputDetails": null,
+            "name": "Card payment",
+            "type": "scheme"
+        }
+    ]
+}
+"""
+
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: json.data(using: .utf8)!)
+        XCTAssertEqual(paymentMethods.regular.count, 1)
+        XCTAssertEqual(paymentMethods.stored.count, 0)
+        XCTAssertTrue(paymentMethods.regular[0] is CardPaymentMethod)
+    }
     
     func testEquality() {
         XCTAssertFalse(BLIKPaymentMethod(type: .blik, name: "blik") ==

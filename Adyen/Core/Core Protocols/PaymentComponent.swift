@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,7 +39,7 @@ extension PaymentComponent {
 /// Describes the methods a delegate of the payment component needs to implement.
 public protocol PaymentComponentDelegate: AnyObject {
     
-    /// Invoked when the payment component finishes, typically by a user submitting their payment details.
+    /// Invoked when the shopper submits the data needed for the payments call.
     ///
     /// - Parameters:
     ///   - data: The data supplied by the payment component.

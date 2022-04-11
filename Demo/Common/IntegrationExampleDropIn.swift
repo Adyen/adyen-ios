@@ -56,10 +56,6 @@ extension IntegrationExample {
         }
     }
 
-    private func handle(_ action: Action) {
-        (currentComponent as? DropInComponent)?.handle(action)
-    }
-
     internal func handle(_ order: PartialPaymentOrder) {
         requestPaymentMethods(order: order) { [weak self] paymentMethods in
             self?.handle(order, paymentMethods)

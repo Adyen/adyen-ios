@@ -122,7 +122,11 @@ extension DropInComponent: FinalizableComponent {
 
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {
         stopLoading()
-        selectedPaymentComponent?.finalizeIfNeeded(with: success, completion: completion)
+        if let selectedPaymentComponent = selectedPaymentComponent {
+            selectedPaymentComponent.finalizeIfNeeded(with: success, completion: completion)
+        } else {
+            completion?()
+        }
     }
 }
 
@@ -131,8 +135,8 @@ extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
     /// :nodoc:
     public func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?) {
         let newRoot = preselectedPaymentMethodComponent(for: component, onCancel: { [weak self] in
-            guard let order = order else { return }
-            self?.partialPaymentDelegate?.cancelOrder(order)
+            guard let self = self, let order = order else { return }
+            self.partialPaymentDelegate?.cancelOrder(order, component: self)
         })
         navigationController.present(root: newRoot)
         rootComponent = newRoot
