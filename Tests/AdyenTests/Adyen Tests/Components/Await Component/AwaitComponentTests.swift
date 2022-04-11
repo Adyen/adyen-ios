@@ -15,6 +15,10 @@ final class PollingHandlerMock: AnyPollingHandler {
     
     let apiContext = APIContext(environment: Environment.test, clientKey: "local_DUMMYKEYFORTESTING")
 
+    var adyenContext: AdyenContext {
+        return .init(apiContext: apiContext)
+    }
+
     var delegate: ActionComponentDelegate?
 
     var onHandle: ((_ action: PaymentDataAware) -> Void)?
