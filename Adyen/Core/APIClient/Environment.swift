@@ -6,34 +6,29 @@
 
 import AdyenNetworking
 import Foundation
-    
-/// :nodoc:
+
 /// Struct that defines the environment to retrieve resources from.
 public struct Environment: AnyAPIEnvironment {
     
     /// :nodoc:
     public var baseURL: URL
 
-    /// :nodoc:
     /// Adyen's test environment.
     public static let test = Environment(baseURL: URL(string: "https://checkoutshopper-test.adyen.com/")!)
 
     /// :nodoc:
     public static let beta = Environment(baseURL: URL(string: "https://checkoutshopper-beta.adyen.com/")!)
-    
-    /// :nodoc:
+
     /// Adyen's default live environment.
-    public static let live = Environment(baseURL: URL(string: "https://checkoutshopper-live.adyen.com/")!)
-    
-    /// :nodoc:
+    @available(*, deprecated, message: "This property no longer supported. Please select matching environment.")
+    public static let live = liveEurope
+
     /// Adyen's European live environment.
-    public static let liveEurope = Environment.live
-    
-    /// :nodoc:
+    public static let liveEurope = Environment(baseURL: URL(string: "https://checkoutshopper-live.adyen.com/")!)
+
     /// Adyen's Australian live environment.
     public static let liveAustralia = Environment(baseURL: URL(string: "https://checkoutshopper-live-au.adyen.com/")!)
-    
-    /// :nodoc:
+
     /// Adyen's United States live environment.
     public static let liveUnitedStates = Environment(baseURL: URL(string: "https://checkoutshopper-live-us.adyen.com/")!)
 
@@ -41,7 +36,7 @@ public struct Environment: AnyAPIEnvironment {
     ///
     /// - Parameters:
     ///   - baseURL: The environment base url.
-    public init(baseURL: URL) {
+    internal init(baseURL: URL) {
         self.baseURL = baseURL
     }
 
