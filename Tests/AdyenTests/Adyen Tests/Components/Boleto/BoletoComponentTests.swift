@@ -304,11 +304,8 @@ class BoletoComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-
             let submitButton: SubmitButton? = self.sut.viewController.view.findView(by: "payButtonItem.button") as? SubmitButton
-
             submitButton?.sendActions(for: .touchUpInside)
-            
         }
 
         waitForExpectations(timeout: 10, handler: nil)
