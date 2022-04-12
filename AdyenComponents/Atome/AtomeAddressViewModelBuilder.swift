@@ -5,12 +5,16 @@
 //
 
 import Foundation
+import Adyen
 
-public struct AtomeAddressViewModelBuilder: AddressViewModelBuilder {
-    
-    public init() {}
+/// :nodoc:
+internal struct AtomeAddressViewModelBuilder: AddressViewModelBuilder {
 
-    public func build(countryCode: String) -> AddressViewModel {
+    /// :nodoc:
+    internal init() {}
+
+    /// :nodoc:
+    internal func build(countryCode: String) -> AddressViewModel {
         return AddressViewModel(labels: [.street: .streetFieldTitle,
                                          .apartment: .apartmentSuiteFieldTitle,
                                          .houseNumberOrName: .houseNumberFieldTitle,

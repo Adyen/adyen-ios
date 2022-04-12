@@ -26,7 +26,6 @@ internal class CardViewController: FormViewController {
     
     private var issuingCountryCode: String?
 
-
     // MARK: Init view controller
 
     /// Create new instance of CardViewController
@@ -38,7 +37,6 @@ internal class CardViewController: FormViewController {
     ///   - logoProvider: The provider for logo image URLs.
     ///   - supportedCardTypes: The list of supported cards.
     ///   - scope: The view's scope.
-    ///   - localizationParameters: Localization parameters.
     ///   - localizationParameters: Localization parameters.
     internal init(configuration: CardComponent.Configuration,
                   shopperInformation: PrefilledShopperInformation?,

@@ -60,7 +60,6 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     ///   - paymentMethod: The ACH Direct Debit payment method.
     ///   - apiContext: The component's API context.
     ///   - configuration: Configuration for the component.
-    ///   - addressViewModelBuilder: The address view model builder for the component.
     public convenience init(paymentMethod: ACHDirectDebitPaymentMethod,
                             apiContext: APIContext,
                             configuration: Configuration = .init()) {

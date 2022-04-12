@@ -6,15 +6,19 @@
 
 import Foundation
 
+/// :nodoc:
 public protocol AddressViewModelBuilder {
     func build(countryCode: String) -> AddressViewModel
 }
 
+/// :nodoc:
 public struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
     
+    /// :nodoc:
     public init() {}
-    
-    // swiftlint:disable function_body_length explicit_acl
+
+    /// :nodoc:
+    // swiftlint:disable function_body_length
     public func build(countryCode: String) -> AddressViewModel {
         var viewModel = AddressViewModel(labels: [.city: .cityFieldTitle,
                                                   .houseNumberOrName: .houseNumberFieldTitle,

@@ -22,7 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		00EA4ED4280412140053D938 /* DefaultAddressViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */; };
-		00EA4ED62804124C0053D938 /* AtomeAddressViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */; };
+		00EA4ED7280590050053D938 /* AtomeAddressViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */; };
 		00F621BE27EB132500C04097 /* AtomeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621BD27EB132500C04097 /* AtomeComponent.swift */; };
 		00F621C027EB153400C04097 /* AtomeDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621BF27EB153400C04097 /* AtomeDetails.swift */; };
 		00F621C227EB1E3100C04097 /* AtomePaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621C127EB1E3100C04097 /* AtomePaymentMethod.swift */; };
@@ -1882,6 +1882,7 @@
 			children = (
 				00F621BD27EB132500C04097 /* AtomeComponent.swift */,
 				00F621BF27EB153400C04097 /* AtomeDetails.swift */,
+				00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */,
 			);
 			path = Atome;
 			sourceTree = "<group>";
@@ -2686,7 +2687,6 @@
 				E7085CB6262DE14A00D0153B /* AddressStyle.swift */,
 				E795A27526404E9400321C48 /* AddressViewModel.swift */,
 				00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */,
-				00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */,
 			);
 			path = Address;
 			sourceTree = "<group>";
@@ -5228,7 +5228,6 @@
 				5AD40E75262F04440090E01C /* UIProgressViewHelpers.swift in Sources */,
 				F91664F023E41D7300C10738 /* AnyEncodable.swift in Sources */,
 				E7D531192446F525000046B4 /* FormSeparatorItemView.swift in Sources */,
-				00EA4ED62804124C0053D938 /* AtomeAddressViewModelBuilder.swift in Sources */,
 				E705F8EB2462B1B900438C3B /* FormButtonItemStyle.swift in Sources */,
 				E2B317A02265BB0B00C1BB30 /* LengthValidator.swift in Sources */,
 				E9021DFA225E2487009CF7F4 /* ListHeaderView.swift in Sources */,
@@ -5658,6 +5657,7 @@
 				C9D8EB9927452355006D8CA1 /* BACSInputFormViewController.swift in Sources */,
 				C93B01B92760B06300D311A1 /* BACSConfirmationPresenter.swift in Sources */,
 				A0414C1D278C275C00DF3FE9 /* ACHDirectDebitComponent.swift in Sources */,
+				00EA4ED7280590050053D938 /* AtomeAddressViewModelBuilder.swift in Sources */,
 				C9BF0DB327353A2600DCAA1E /* BACSDirectDebitComponent.swift in Sources */,
 				F9175EE32593952600D653BE /* BLIKDetails.swift in Sources */,
 				F9B016F92604F3FF001F23FC /* BasicPersonalInfoFormComponent.swift in Sources */,
