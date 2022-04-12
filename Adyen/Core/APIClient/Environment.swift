@@ -20,7 +20,11 @@ public struct Environment: AnyAPIEnvironment {
     public static let beta = Environment(baseURL: URL(string: "https://checkoutshopper-beta.adyen.com/")!)
 
     /// Adyen's default live environment.
-    @available(*, deprecated, message: "This property no longer supported. Please select matching environment.")
+    @available(*, deprecated, message:
+                """
+                This property is no longer supported.
+                Please explicitly select the environment matching your region.
+                """)
     public static let live = liveEurope
 
     /// Adyen's European live environment.
