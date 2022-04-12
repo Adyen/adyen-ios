@@ -17,11 +17,9 @@ public final class BCMCComponent: CardComponent {
     ///   - paymentMethod: BCMC payment method.
     ///   - apiContext: The API context.
     ///   - configuration: The configuration of the component.
-    ///   - addressViewModelBuilder: The address viewmodel builder of the component.
     public init(paymentMethod: BCMCPaymentMethod,
                 apiContext: APIContext,
-                configuration: CardComponent.Configuration = .init(),
-                addressViewModelBuilder: AddressViewModelBuilder) {
+                configuration: CardComponent.Configuration = .init()) {
         let configuration = configuration.bcmcConfiguration()
         
         let publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
@@ -32,8 +30,7 @@ public final class BCMCComponent: CardComponent {
                    apiContext: apiContext,
                    configuration: configuration,
                    publicKeyProvider: publicKeyProvider,
-                   binProvider: binInfoProvider,
-                   addressViewModelBuilder: addressViewModelBuilder)
+                   binProvider: binInfoProvider)
     }
 
 }

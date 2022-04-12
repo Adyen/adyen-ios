@@ -74,8 +74,7 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
                                    order: nil,
-                                   presentationDelegate: presentationDelegate,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                   presentationDelegate: presentationDelegate)
 
         XCTAssertEqual(sut.storedComponents.count, 4)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
@@ -99,8 +98,7 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
                                    order: nil,
-                                   presentationDelegate: presentationDelegate,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                   presentationDelegate: presentationDelegate)
         
         XCTAssertEqual(sut.storedComponents.count, 4)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
@@ -120,8 +118,7 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
                                    order: nil,
-                                   presentationDelegate: presentationDelegate,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                   presentationDelegate: presentationDelegate)
         
         XCTAssertEqual(sut.storedComponents.count, 4)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
@@ -153,8 +150,7 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
                                    order: order,
-                                   presentationDelegate: presentationDelegate,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                   presentationDelegate: presentationDelegate)
 
         XCTAssertEqual(sut.paidComponents.count, 2)
         XCTAssertEqual(sut.storedComponents.count, 4)
@@ -173,8 +169,7 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
                                    order: nil,
-                                   presentationDelegate: presentationDelegate,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                   presentationDelegate: presentationDelegate)
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "affirm" })
@@ -192,8 +187,7 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
                                    order: nil,
-                                   presentationDelegate: presentationDelegate,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                   presentationDelegate: presentationDelegate)
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "doku_wallet" })
@@ -211,8 +205,7 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
                                    order: nil,
-                                   presentationDelegate: presentationDelegate,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                   presentationDelegate: presentationDelegate)
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "mbway" })
@@ -230,8 +223,7 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
                                    order: nil,
-                                   presentationDelegate: presentationDelegate,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                   presentationDelegate: presentationDelegate)
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "econtext_online" })
@@ -249,8 +241,7 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
                                    order: nil,
-                                   presentationDelegate: presentationDelegate,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                   presentationDelegate: presentationDelegate)
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "boletobancario_santander" })
@@ -268,8 +259,7 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
                                    order: nil,
-                                   presentationDelegate: presentationDelegate,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                   presentationDelegate: presentationDelegate)
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "scheme" })
@@ -287,8 +277,7 @@ class ComponentManagerTests: XCTestCase {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: configuration,
                                    order: nil,
-                                   presentationDelegate: presentationDelegate,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                   presentationDelegate: presentationDelegate)
 
         // Action
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "atome" })

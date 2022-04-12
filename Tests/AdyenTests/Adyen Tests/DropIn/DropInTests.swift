@@ -132,8 +132,7 @@ class DropInTests: XCTestCase {
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymentMethods,
-                              configuration: config,
-                              addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                              configuration: config)
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -151,8 +150,7 @@ class DropInTests: XCTestCase {
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymentMethods,
-                              configuration: config,
-                              addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                              configuration: config)
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -167,8 +165,7 @@ class DropInTests: XCTestCase {
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymentMethods,
-                              configuration: config,
-                              addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                              configuration: config)
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -185,8 +182,7 @@ class DropInTests: XCTestCase {
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymentMethods,
-                              configuration: config,
-                              addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                              configuration: config)
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -217,8 +213,7 @@ class DropInTests: XCTestCase {
                                amount: Amount(value: 3000, currencyCode: "CNY"))
         ]
         sut = DropInComponent(paymentMethods: paymentMethods,
-                              configuration: config,
-                              addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                              configuration: config)
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -239,8 +234,7 @@ class DropInTests: XCTestCase {
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleNonInstant.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymentMethods,
-                              configuration: config,
-                              addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                              configuration: config)
         
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -260,8 +254,7 @@ class DropInTests: XCTestCase {
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymentMethods,
-                              configuration: config,
-                              addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                              configuration: config)
         
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root

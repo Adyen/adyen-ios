@@ -24,8 +24,7 @@ class DropInActionsTests: XCTestCase {
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymentMethods,
-                              configuration: config,
-                              addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                              configuration: config)
 
         let waitExpectation = expectation(description: "Expect SafariViewController to open")
         let root = UIViewController()
@@ -52,8 +51,7 @@ class DropInActionsTests: XCTestCase {
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymenMethods,
-                              configuration: config,
-                              addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                              configuration: config)
         sut.delegate = mock
 
         mock.didOpenExternalApplicationHandler = { _ in

@@ -41,9 +41,6 @@ public final class DropInComponent: NSObject,
 
     /// :nodoc:
     public var apiContext: APIContext { configuration.apiContext }
-
-    /// :nodoc:
-    public let addressViewModelBuilder: AddressViewModelBuilder
     
     /// Initializes the drop in component.
     ///
@@ -52,15 +49,12 @@ public final class DropInComponent: NSObject,
     ///   - configuration: The payment method specific configuration.
     ///   - title: Name of the application. To be displayed on a first payment page.
     ///            If no external value provided, the Main Bundle's name would be used.
-    ///   - addressViewModelBuilder: The  address viewmodel builder
     public init(paymentMethods: PaymentMethods,
                 configuration: Configuration,
-                title: String? = nil,
-                addressViewModelBuilder: AddressViewModelBuilder) {
+                title: String? = nil) {
         self.title = title ?? Bundle.main.displayName
         self.configuration = configuration
         self.paymentMethods = paymentMethods
-        self.addressViewModelBuilder = addressViewModelBuilder
         super.init()
     }
 
@@ -157,8 +151,7 @@ public final class DropInComponent: NSObject,
                          remainingAmount: remainingAmount,
                          order: order,
                          supportsEditingStoredPaymentMethods: storedPaymentMethodsDelegate != nil,
-                         presentationDelegate: self,
-                         addressViewModelBuilder: addressViewModelBuilder)
+                         presentationDelegate: self)
     }
     
     internal lazy var rootComponent: PresentableComponent = {

@@ -199,8 +199,7 @@ class SessionTests: XCTestCase {
                                        apiContext: Dummy.context)
         let dropInComponent = DropInComponent(paymentMethods: expectedPaymentMethods,
                                               configuration: .init(apiContext: Dummy.context),
-                                              title: nil,
-                                              addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                              title: nil)
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
         let expectedOrder = PartialPaymentOrder(pspReference: "pspReference",
@@ -467,8 +466,7 @@ class SessionTests: XCTestCase {
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         let dropIn = DropInComponent(paymentMethods: paymenMethods,
-                                     configuration: config,
-                                     addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                     configuration: config)
         let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
         let sessionHandlerMock = SessionAdvancedHandlerMock()
         let sessionDelegate = SessionDelegateMock()

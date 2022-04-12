@@ -15,8 +15,7 @@ class CardComponentTests: XCTestCase {
     func testRequiresKeyboardInput() {
         let method = CardPaymentMethodMock(type: .card, name: "test_name", brands: ["bcmc"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                apiContext: Dummy.context)
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
 
@@ -32,8 +31,7 @@ class CardComponentTests: XCTestCase {
         
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: configuration,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: configuration)
         sut.payment = payment
         var items = sut.cardViewController.items
 
@@ -63,8 +61,7 @@ class CardComponentTests: XCTestCase {
         
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: configuration,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: configuration)
         sut.payment = payment
 
         var items = sut.cardViewController.items
@@ -123,8 +120,7 @@ class CardComponentTests: XCTestCase {
         configuration.style = cardComponentStyle
         let sut = CardComponent(paymentMethod: cardPaymentMethod,
                                 apiContext: Dummy.context,
-                                configuration: configuration,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: configuration)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -222,8 +218,7 @@ class CardComponentTests: XCTestCase {
     func testBigTitle() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                apiContext: Dummy.context)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -242,8 +237,7 @@ class CardComponentTests: XCTestCase {
         configuration.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: configuration,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: configuration)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -260,8 +254,7 @@ class CardComponentTests: XCTestCase {
     func testShowCVVField() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                apiContext: Dummy.context)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -278,8 +271,7 @@ class CardComponentTests: XCTestCase {
     func testCVVHintChange() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                apiContext: Dummy.context)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -313,8 +305,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: .init(),
                                 publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                binProvider: cardTypeProviderMock)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -344,8 +335,7 @@ class CardComponentTests: XCTestCase {
     func testCVVFormatterChange() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                apiContext: Dummy.context)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -374,8 +364,7 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: CardComponent.Configuration(style: style),
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: CardComponent.Configuration(style: style))
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -405,7 +394,7 @@ class CardComponentTests: XCTestCase {
                                        brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: CardComponent.Configuration(style: style), addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: CardComponent.Configuration(style: style))
 
         // When
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -438,8 +427,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: CardComponent.Configuration(),
                                 publicKeyProvider: publicKeyProvider,
-                                binProvider: BinInfoProviderMock(),
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                binProvider: BinInfoProviderMock())
 
         sut.viewDidLoad(viewController: sut.cardViewController)
 
@@ -458,8 +446,7 @@ class CardComponentTests: XCTestCase {
                                              expiryYear: "22",
                                              holderName: "holderName")
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                apiContext: Dummy.context)
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
@@ -482,8 +469,7 @@ class CardComponentTests: XCTestCase {
                                              expiryYear: "22",
                                              holderName: "holderName")
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                apiContext: Dummy.context)
         sut.payment = Payment(amount: Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
@@ -510,8 +496,7 @@ class CardComponentTests: XCTestCase {
         configuration.stored.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: configuration,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: configuration)
         sut.payment = Payment(amount: Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
@@ -538,8 +523,7 @@ class CardComponentTests: XCTestCase {
         configuration.stored.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: configuration,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: configuration)
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
@@ -565,8 +549,7 @@ class CardComponentTests: XCTestCase {
         configuration.stored.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: configuration,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: configuration)
         XCTAssertNotNil(sut.viewController as? UIAlertController)
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
@@ -575,8 +558,7 @@ class CardComponentTests: XCTestCase {
     func testShouldShow4CardTypesOnInit() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "cup", "maestro", "jcb"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
@@ -601,8 +583,7 @@ class CardComponentTests: XCTestCase {
     func testShouldShowNoCardTypesOnInvalidPANEnter() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
@@ -632,8 +613,7 @@ class CardComponentTests: XCTestCase {
     func testShouldShowCardTypesOnPANEnter() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
@@ -669,8 +649,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: BinInfoProviderMock(),
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                binProvider: BinInfoProviderMock())
 
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -721,8 +700,7 @@ class CardComponentTests: XCTestCase {
     func testCardNumberShouldPassFocusToDate() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
@@ -772,8 +750,7 @@ class CardComponentTests: XCTestCase {
     func testDateShouldPassFocusToCVC() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
@@ -806,8 +783,7 @@ class CardComponentTests: XCTestCase {
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "NL")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -863,8 +839,7 @@ class CardComponentTests: XCTestCase {
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -914,8 +889,7 @@ class CardComponentTests: XCTestCase {
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -948,8 +922,7 @@ class CardComponentTests: XCTestCase {
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "CA")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -1006,8 +979,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: BinInfoProviderMock(),
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                binProvider: BinInfoProviderMock())
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -1063,8 +1035,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                binProvider: cardTypeProviderMock)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let delegate = PaymentComponentDelegateMock()
@@ -1122,8 +1093,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                binProvider: cardTypeProviderMock)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let delegate = PaymentComponentDelegateMock()
@@ -1170,8 +1140,7 @@ class CardComponentTests: XCTestCase {
 
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         
         let brazilSSNItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem")
         XCTAssertNil(brazilSSNItemView)
@@ -1189,8 +1158,7 @@ class CardComponentTests: XCTestCase {
 
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         
         let brazilSSNItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem")
         XCTAssertFalse(brazilSSNItemView!.isHidden)
@@ -1214,8 +1182,7 @@ class CardComponentTests: XCTestCase {
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
 
         let cardNumberItem = sut.cardViewController.items.numberContainerItem.numberItem
         cardNumberItem.update(brands: brands)
@@ -1237,8 +1204,7 @@ class CardComponentTests: XCTestCase {
 
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         
         fillCard(on: sut.viewController.view, with: Dummy.visaCard)
         let cardNumberItem = sut.cardViewController.items.numberContainerItem.numberItem
@@ -1272,8 +1238,7 @@ class CardComponentTests: XCTestCase {
         let config = CardComponent.Configuration()
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
 
         let cvcItem = sut.cardViewController.items.securityCodeItem
         cvcItem.value = ""
@@ -1305,8 +1270,7 @@ class CardComponentTests: XCTestCase {
         let config = CardComponent.Configuration()
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
 
         let expDateItem = sut.cardViewController.items.expiryDateItem
         expDateItem.value = ""
@@ -1347,8 +1311,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                binProvider: cardTypeProviderMock)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .seconds(1))
@@ -1391,8 +1354,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                binProvider: cardTypeProviderMock)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .seconds(1))
@@ -1429,8 +1391,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config,
                                 publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                binProvider: cardTypeProviderMock)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .seconds(1))
@@ -1476,8 +1437,7 @@ class CardComponentTests: XCTestCase {
         let config = CardComponent.Configuration()
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -1514,8 +1474,7 @@ class CardComponentTests: XCTestCase {
 
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         
         let logoItem = sut.cardViewController.items.numberContainerItem.supportedCardLogosItem
         XCTAssertEqual(logoItem.alpha, 1)
@@ -1543,8 +1502,7 @@ class CardComponentTests: XCTestCase {
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         sut.cardViewController.items.postalCodeItem.value = "1501 NH"
 
         // show view controller
@@ -1572,8 +1530,7 @@ class CardComponentTests: XCTestCase {
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         sut.cardViewController.items.numberContainerItem.numberItem.value = "4111 1111 1111 1111"
         
         // show view controller
@@ -1601,8 +1558,7 @@ class CardComponentTests: XCTestCase {
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         sut.cardViewController.items.expiryDateItem.value = "03/24"
 
         // show view controller
@@ -1630,8 +1586,7 @@ class CardComponentTests: XCTestCase {
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         sut.cardViewController.items.securityCodeItem.value = "935"
 
         // show view controller
@@ -1659,8 +1614,7 @@ class CardComponentTests: XCTestCase {
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         sut.cardViewController.items.holderNameItem.value = "Katrina del Mar"
 
         // show view controller
@@ -1688,8 +1642,7 @@ class CardComponentTests: XCTestCase {
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         sut.cardViewController.items.storeDetailsItem.value = true
 
         // show view controller
@@ -1724,8 +1677,7 @@ class CardComponentTests: XCTestCase {
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         // show view controller
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -1755,8 +1707,7 @@ class CardComponentTests: XCTestCase {
 
         let prefilledSut = CardComponent(paymentMethod: method,
                                          apiContext: Dummy.context,
-                                         configuration: configuration,
-                                         addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                         configuration: configuration)
 
         // When
         UIApplication.shared.keyWindow?.rootViewController = prefilledSut.cardViewController
@@ -1795,8 +1746,7 @@ class CardComponentTests: XCTestCase {
 
         let prefilledSut = CardComponent(paymentMethod: method,
                                          apiContext: Dummy.context,
-                                         configuration: configuration,
-                                         addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                         configuration: configuration)
 
         // When
         UIApplication.shared.keyWindow?.rootViewController = prefilledSut.cardViewController
@@ -1834,8 +1784,7 @@ class CardComponentTests: XCTestCase {
 
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: configuration,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: configuration)
 
         // When
         UIApplication.shared.keyWindow?.rootViewController = sut.cardViewController
@@ -1871,8 +1820,7 @@ class CardComponentTests: XCTestCase {
 
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: configuration,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: configuration)
 
         // When
         UIApplication.shared.keyWindow?.rootViewController = sut.cardViewController
@@ -1903,8 +1851,7 @@ class CardComponentTests: XCTestCase {
         
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -1926,8 +1873,7 @@ class CardComponentTests: XCTestCase {
         
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -1949,8 +1895,7 @@ class CardComponentTests: XCTestCase {
         
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                addressViewModelBuilder: DefaultAddressViewModelBuilder())
+                                configuration: config)
         
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController

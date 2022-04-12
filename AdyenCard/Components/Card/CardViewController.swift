@@ -25,8 +25,7 @@ internal class CardViewController: FormViewController {
     internal var items: ItemsProvider
     
     private var issuingCountryCode: String?
-    
-    private let addressViewModelBuilder: AddressViewModelBuilder
+
 
     // MARK: Init view controller
 
@@ -40,6 +39,7 @@ internal class CardViewController: FormViewController {
     ///   - supportedCardTypes: The list of supported cards.
     ///   - scope: The view's scope.
     ///   - localizationParameters: Localization parameters.
+    ///   - localizationParameters: Localization parameters.
     internal init(configuration: CardComponent.Configuration,
                   shopperInformation: PrefilledShopperInformation?,
                   formStyle: FormComponentStyle,
@@ -47,13 +47,11 @@ internal class CardViewController: FormViewController {
                   logoProvider: LogoURLProvider,
                   supportedCardTypes: [CardType],
                   scope: String,
-                  localizationParameters: LocalizationParameters?,
-                  addressViewModelBuilder: AddressViewModelBuilder) {
+                  localizationParameters: LocalizationParameters?) {
         self.configuration = configuration
         self.shopperInformation = shopperInformation
         self.supportedCardTypes = supportedCardTypes
         self.formStyle = formStyle
-        self.addressViewModelBuilder = addressViewModelBuilder
 
         let countryCode = payment?.countryCode ?? Locale.current.regionCode ?? CardComponent.Constant.defaultCountryCode
         let cardLogos = supportedCardTypes.map {
@@ -67,7 +65,7 @@ internal class CardViewController: FormViewController {
                                    scope: scope,
                                    defaultCountryCode: countryCode,
                                    localizationParameters: localizationParameters,
-                                   addressViewModelBuilder: addressViewModelBuilder)
+                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
         super.init(style: formStyle)
         self.localizationParameters = localizationParameters
     }

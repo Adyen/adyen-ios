@@ -52,9 +52,6 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     }
     
     private let achDirectDebitPaymentMethod: ACHDirectDebitPaymentMethod
-    
-    /// :nodoc:
-    private let addressViewModelBuilder: AddressViewModelBuilder
 
     // MARK: - Init
     
@@ -63,29 +60,25 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     ///   - paymentMethod: The ACH Direct Debit payment method.
     ///   - apiContext: The component's API context.
     ///   - configuration: Configuration for the component.
-    ///   - addressViewModelBuilder: The address viewmodel builder for the component.
+    ///   - addressViewModelBuilder: The address view model builder for the component.
     public convenience init(paymentMethod: ACHDirectDebitPaymentMethod,
                             apiContext: APIContext,
-                            configuration: Configuration = .init(),
-                            addressViewModelBuilder: AddressViewModelBuilder) {
+                            configuration: Configuration = .init()) {
         self.init(paymentMethod: paymentMethod,
                   apiContext: apiContext,
                   configuration: configuration,
-                  publicKeyProvider: PublicKeyProvider(apiContext: apiContext),
-                  addressViewModelBuilder: addressViewModelBuilder)
+                  publicKeyProvider: PublicKeyProvider(apiContext: apiContext))
     }
     
     /// :nodoc:
     internal init(paymentMethod: ACHDirectDebitPaymentMethod,
                   apiContext: APIContext,
                   configuration: Configuration = .init(),
-                  publicKeyProvider: AnyPublicKeyProvider,
-                  addressViewModelBuilder: AddressViewModelBuilder) {
+                  publicKeyProvider: AnyPublicKeyProvider) {
         self.apiContext = apiContext
         self.achDirectDebitPaymentMethod = paymentMethod
         self.configuration = configuration
         self.publicKeyProvider = publicKeyProvider
-        self.addressViewModelBuilder = addressViewModelBuilder
     }
     
     /// :nodoc:
@@ -210,7 +203,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
                                    localizationParameters: configuration.localizationParameters,
                                    identifier: identifier,
                                    supportedCountryCodes: configuration.billingAddressCountryCodes,
-                                   addressViewModelBuilder: addressViewModelBuilder)
+                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
         configuration.shopperInformation?.billingAddress.map { item.value = $0 }
         item.style.backgroundColor = UIColor.Adyen.lightGray
         return item

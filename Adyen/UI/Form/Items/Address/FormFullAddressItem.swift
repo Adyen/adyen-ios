@@ -47,6 +47,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     ///   - localizationParameters: The localization parameters
     ///   - identifier: The item identifier
     ///   - supportedCountryCodes: Supported country codes. If `nil`, all country codes are listed.
+    ///   - addressViewModelBuilder: The Address view model builder
     public init(initialCountry: String,
                 style: AddressStyle,
                 localizationParameters: LocalizationParameters? = nil,

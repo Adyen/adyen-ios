@@ -30,16 +30,13 @@ internal final class ComponentManager {
 
     internal weak var presentationDelegate: PresentationDelegate?
     
-    internal let addressViewModelBuilder: AddressViewModelBuilder
-    
     internal init(paymentMethods: PaymentMethods,
                   configuration: DropInComponent.Configuration,
                   partialPaymentEnabled: Bool = true,
                   remainingAmount: Amount? = nil,
                   order: PartialPaymentOrder?,
                   supportsEditingStoredPaymentMethods: Bool = false,
-                  presentationDelegate: PresentationDelegate,
-                  addressViewModelBuilder: AddressViewModelBuilder) {
+                  presentationDelegate: PresentationDelegate) {
         self.paymentMethods = paymentMethods
         self.configuration = configuration
         self.apiContext = configuration.apiContext
@@ -48,7 +45,6 @@ internal final class ComponentManager {
         self.order = order
         self.supportsEditingStoredPaymentMethods = supportsEditingStoredPaymentMethods
         self.presentationDelegate = presentationDelegate
-        self.addressViewModelBuilder = addressViewModelBuilder
     }
     
     // MARK: - Internal
@@ -156,8 +152,7 @@ internal final class ComponentManager {
         cardConfiguration.shopperInformation = configuration.shopper
         return CardComponent(paymentMethod: paymentMethod,
                              apiContext: apiContext,
-                             configuration: cardConfiguration,
-                             addressViewModelBuilder: addressViewModelBuilder)
+                             configuration: cardConfiguration)
     }
     
     private func createBancontactComponent(with paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
@@ -172,8 +167,7 @@ internal final class ComponentManager {
 
         return BCMCComponent(paymentMethod: paymentMethod,
                              apiContext: apiContext,
-                             configuration: configuration,
-                             addressViewModelBuilder: addressViewModelBuilder)
+                             configuration: configuration)
     }
     
     private func createPreApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
@@ -226,8 +220,7 @@ internal final class ComponentManager {
                                                            localizationParameters: configuration.localizationParameters)
         return ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                        apiContext: apiContext,
-                                       configuration: config,
-                                       addressViewModelBuilder: addressViewModelBuilder)
+                                       configuration: config)
     }
     
     private func createQiwiWalletComponent(_ paymentMethod: QiwiWalletPaymentMethod) -> QiwiWalletComponent {
