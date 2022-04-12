@@ -133,6 +133,7 @@
 		C9BB460927622F4100E6730B /* BACSConfirmationPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB460827622F4100E6730B /* BACSConfirmationPresenterTests.swift */; };
 		C9BF0DB327353A2600DCAA1E /* BACSDirectDebitComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BF0DB227353A2600DCAA1E /* BACSDirectDebitComponent.swift */; };
 		C9C0005C280468E100CE2EEC /* AnalyticsProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0005B280468E100CE2EEC /* AnalyticsProviderMock.swift */; };
+		C9C0005F280474DF00CE2EEC /* AnalyticsProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0005D280474DF00CE2EEC /* AnalyticsProviderTests.swift */; };
 		C9C21914276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21913276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift */; };
 		C9D8EB9927452355006D8CA1 /* BACSInputFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9827452355006D8CA1 /* BACSInputFormViewController.swift */; };
 		C9D8EB9B2745282E006D8CA1 /* BACSInputPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9A2745282E006D8CA1 /* BACSInputPresenter.swift */; };
@@ -1135,6 +1136,7 @@
 		C9BB460827622F4100E6730B /* BACSConfirmationPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationPresenterTests.swift; sourceTree = "<group>"; };
 		C9BF0DB227353A2600DCAA1E /* BACSDirectDebitComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponent.swift; sourceTree = "<group>"; };
 		C9C0005B280468E100CE2EEC /* AnalyticsProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsProviderMock.swift; sourceTree = "<group>"; };
+		C9C0005D280474DF00CE2EEC /* AnalyticsProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsProviderTests.swift; sourceTree = "<group>"; };
 		C9C21913276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationViewControllerTests.swift; sourceTree = "<group>"; };
 		C9D8EB9827452355006D8CA1 /* BACSInputFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewController.swift; sourceTree = "<group>"; };
 		C9D8EB9A2745282E006D8CA1 /* BACSInputPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputPresenter.swift; sourceTree = "<group>"; };
@@ -2181,6 +2183,7 @@
 			isa = PBXGroup;
 			children = (
 				C9C0005B280468E100CE2EEC /* AnalyticsProviderMock.swift */,
+				C9C0005D280474DF00CE2EEC /* AnalyticsProviderTests.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -5464,6 +5467,7 @@
 				E7768BDC26B416C3000851B3 /* DateValidationTests.swift in Sources */,
 				F97BC2CE2668EB4500F1D242 /* VoucherViewDelegateMock.swift in Sources */,
 				F9AC61C2243751A70062A00D /* ActionComponentDelegateMock.swift in Sources */,
+				C9C0005F280474DF00CE2EEC /* AnalyticsProviderTests.swift in Sources */,
 				F9F1A98726CCFD1F0005CB1D /* JWAA256CBCHS512AlgorithmTests.swift in Sources */,
 				C9BB460627622E9600E6730B /* BACSConfirmationPresenterProtocolMock.swift in Sources */,
 				E759E24C25CB3BB700B1F8DC /* DropInTests.swift in Sources */,

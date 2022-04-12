@@ -8,15 +8,15 @@ import AdyenNetworking
 import Foundation
 
 /// A configuration object that defines the behavior for the analytics.
-public struct AnalyticsConfiguration {
+public class AnalyticsConfiguration {
 
     // MARK: - Properties
 
     /// A Boolean value that determines whether telemetry tracking is enabled.
-    public let isTelemetryEnabled = true
+    public var isTelemetryEnabled = true
 
     /// A Boolean value that determines whether the checkoutAttemt id fetch is enabled.
-    public let isCheckoutAttemptIdEnabled = true
+    public var isCheckoutAttemptIdEnabled = true
 
     // MARK: - Initializers
 
