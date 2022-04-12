@@ -176,17 +176,11 @@ internal final class ComponentManager {
             return nil
         }
         
-        guard let payment = configuration.payment else {
-            adyenPrint("Failed to instantiate ApplePayComponent because payment is missing")
-            return nil
-        }
-        
         do {
             let preApplePayConfig = PreApplePayComponent.Configuration(style: configuration.style.applePay,
                                                                        localizationParameters: configuration.localizationParameters)
             return try PreApplePayComponent(paymentMethod: paymentMethod,
                                             apiContext: apiContext,
-                                            payment: payment,
                                             configuration: preApplePayConfig,
                                             applePayConfiguration: applePay)
         } catch {

@@ -174,7 +174,7 @@ class DropInTests: XCTestCase {
 
     func testOpenApplePay() {
         let config = DropInComponent.Configuration(apiContext: Dummy.context)
-        config.applePay = .init(summaryItems: [.init(label: "Item", amount: 100)], merchantIdentifier: "")
+        config.applePay = .init(payment: Dummy.createTestApplePayPayment(), merchantIdentifier: "")
         config.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
