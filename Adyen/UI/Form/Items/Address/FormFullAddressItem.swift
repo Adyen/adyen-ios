@@ -98,7 +98,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         items = [FormSpacerItem(),
                  headerItem.addingDefaultMargins(),
                  countrySelectItem]
-        for field in viewModel.schema {
+        for field in viewModel.scheme {
             switch field {
             case let .item(fieldType):
                 let item = create(for: fieldType, from: viewModel, subRegions: subRegions)

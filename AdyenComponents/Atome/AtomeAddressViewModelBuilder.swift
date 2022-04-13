@@ -24,7 +24,7 @@ internal struct AtomeAddressViewModelBuilder: AddressViewModelBuilder {
                                               .houseNumberOrName: .houseNumberFieldPlaceholder,
                                               .postalCode: .postalCodeFieldPlaceholder],
                                 optionalFields: [.apartment],
-                                schema: [.item(.street),
+                                scheme: [.item(.street),
                                          .item(.apartment),
                                          .split(.houseNumberOrName, .postalCode)])
     }

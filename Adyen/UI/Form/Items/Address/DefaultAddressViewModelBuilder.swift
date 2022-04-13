@@ -33,7 +33,7 @@ public struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
                                                        .postalCode: .postalCodeFieldPlaceholder,
                                                        .apartment: .apartmentSuiteFieldPlaceholder],
                                          optionalFields: [.apartment],
-                                         schema: AddressField.allCases.filter { $0 != .country }.map { .item($0) })
+                                         scheme: AddressField.allCases.filter { $0 != .country }.map { .item($0) })
         switch countryCode {
         case "BR":
             viewModel.labels[.stateOrProvince] = .stateFieldTitle
@@ -46,11 +46,11 @@ public struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
             viewModel.placeholder[.stateOrProvince] = .provinceOrTerritoryFieldPlaceholder
             viewModel.placeholder[.street] = .addressFieldPlaceholder
             viewModel.optionalFields = [.houseNumberOrName]
-            viewModel.schema = [.street, .houseNumberOrName, .city, .postalCode, .stateOrProvince].map { .item($0) }
+            viewModel.scheme = [.street, .houseNumberOrName, .city, .postalCode, .stateOrProvince].map { .item($0) }
         case "GB":
             viewModel.labels[.city] = .cityTownFieldTitle
             viewModel.placeholder[.city] = .cityTownFieldPlaceholder
-            viewModel.schema = [.houseNumberOrName, .street, .city, .postalCode].map { .item($0) }
+            viewModel.scheme = [.houseNumberOrName, .street, .city, .postalCode].map { .item($0) }
         case "US":
             viewModel.labels[.postalCode] = .zipCodeFieldTitle
             viewModel.labels[.houseNumberOrName] = .apartmentSuiteFieldTitle
@@ -61,7 +61,7 @@ public struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
             viewModel.placeholder[.stateOrProvince] = .selectStateFieldPlaceholder
             viewModel.placeholder[.street] = .addressFieldPlaceholder
             viewModel.optionalFields = [.houseNumberOrName]
-            viewModel.schema = [.item(.street),
+            viewModel.scheme = [.item(.street),
                                 .item(.houseNumberOrName),
                                 .item(.city),
                                 .split(.stateOrProvince, .postalCode)]

@@ -19,7 +19,7 @@ public enum AddressField: String, CaseIterable {
 }
 
 /// :nodoc:
-public enum FormScheme {
+public enum AddressFormScheme {
     case item(AddressField)
     case split(AddressField, AddressField)
 }
@@ -30,16 +30,16 @@ public struct AddressViewModel {
     internal var labels: [AddressField: LocalizationKey]
     internal var placeholder: [AddressField: LocalizationKey]
     internal var optionalFields: [AddressField]
-    internal var schema: [FormScheme]
+    internal var scheme: [AddressFormScheme]
 
     public init(labels: [AddressField: LocalizationKey],
                 placeholder: [AddressField: LocalizationKey],
                 optionalFields: [AddressField],
-                schema: [FormScheme]) {
+                scheme: [AddressFormScheme]) {
         self.labels = labels
         self.placeholder = placeholder
         self.optionalFields = optionalFields
-        self.schema = schema
+        self.scheme = scheme
     }
 
 }
