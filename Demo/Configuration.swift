@@ -36,29 +36,17 @@ internal enum ConfigurationConstants {
     static let clientKey = "{YOUR_CLIENT_KEY}"
     
     static let lineItems = [["description": "Socks",
-                            "quantity": "2",
-                            "amountIncludingTax": "300",
-                            "amountExcludingTax": "248",
-                            "taxAmount": "52",
-                            "id": "Item #2"]]
+                             "quantity": "2",
+                             "amountIncludingTax": "300",
+                             "amountExcludingTax": "248",
+                             "taxAmount": "52",
+                             "id": "Item #2"]]
 
     static let demoServerAPIKey = "{YOUR_DEMO_SERVER_API_KEY}"
 
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
 
     static let merchantAccount = "{YOUR_MERCHANT_ACCOUNT}"
-    
-    static var applePaySummaryItems: [PKPaymentSummaryItem] {
-        [
-            PKPaymentSummaryItem(
-                label: "Total",
-                amount: AmountFormatter.decimalAmount(current.amount.value,
-                                                      currencyCode: current.amount.currencyCode,
-                                                      localeIdentifier: nil),
-                type: .final
-            )
-        ]
-    }
     
     static var current = Configuration.loadConfiguration() {
         didSet { Configuration.saveConfiguration(current) }

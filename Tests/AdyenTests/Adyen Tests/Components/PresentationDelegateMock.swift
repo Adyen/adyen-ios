@@ -2,8 +2,15 @@
 
 import Adyen
 import Foundation
+@testable import AdyenDropIn
 
-final class PresentationDelegateMock: PresentationDelegate {
+final class PresentationDelegateMock: NavigationDelegate {
+
+    var doDismiss: ( ((() -> Void)?) -> Void )?
+
+    func dismiss(completion: (() -> Void)?) {
+        doDismiss?(completion)
+    }
 
     // MARK: - presentComponent
 

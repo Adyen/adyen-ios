@@ -110,20 +110,25 @@ extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
     }
 }
 
-extension DropInComponent: PresentationDelegate {
+extension DropInComponent: NavigationDelegate {
+
+    internal func dismiss(completion: (() -> Void)? = nil) {
+        navigationController.dismiss(animated: true, completion: completion)
+    }
 
     /// :nodoc:
     public func present(component: PresentableComponent) {
         navigationController.present(asModal: component)
     }
+
 }
 
 extension DropInComponent: FinalizableComponent {
 
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {
         stopLoading()
-        if let selectedPaymentComponent = selectedPaymentComponent {
-            selectedPaymentComponent.finalizeIfNeeded(with: success, completion: completion)
+        if let finalizableComponent = selectedPaymentComponent as? FinalizableComponent {
+            finalizableComponent.didFinalize(with: success, completion: completion)
         } else {
             completion?()
         }

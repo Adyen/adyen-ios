@@ -17,9 +17,14 @@ extension IntegrationExample {
 
     internal func presentDropInComponent() {
         guard let paymentMethods = paymentMethods else { return }
+
         let configuration = DropInComponent.Configuration(apiContext: apiContext)
-        configuration.applePay = .init(summaryItems: ConfigurationConstants.applePaySummaryItems,
-                                       merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
+
+        if let applePayPayment = try? ApplePayPayment(payment: payment) {
+            configuration.applePay = .init(payment: applePayPayment,
+                                           merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
+        }
+
         configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         configuration.payment = payment
         configuration.card.billingAddressMode = .postalCode

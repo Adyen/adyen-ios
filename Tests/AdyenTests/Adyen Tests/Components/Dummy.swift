@@ -5,8 +5,10 @@
 //
 
 import Adyen
+import AdyenComponents
 import AdyenEncryption
 import Foundation
+import PassKit
 
 enum Dummy: Error {
     case error
@@ -39,5 +41,21 @@ enum Dummy: Error {
                                        expiryMonth: "03",
                                        expiryYear: "30",
                                        holder: nil)
+
+    internal static func createTestApplePayPayment() -> ApplePayPayment {
+        return try! .init(countryCode: "US", currencyCode: "USD", summaryItems: createTestSummaryItems())
+    }
+
+    internal static func createTestSummaryItems() -> [PKPaymentSummaryItem] {
+        var amounts = (0...3).map { _ in
+            NSDecimalNumber(mantissa: UInt64.random(in: 1...20), exponent: 1, isNegative: Bool.random())
+        }
+        // Positive Grand total
+        amounts.append(NSDecimalNumber(mantissa: 20, exponent: 1, isNegative: false))
+        return amounts.enumerated().map {
+            PKPaymentSummaryItem(label: "summary_\($0)", amount: $1)
+        }
+    }
+
 
 }

@@ -11,6 +11,10 @@ import PassKit
 import XCTest
 
 class ComponentManagerTests: XCTestCase {
+
+    var paymentMethods: PaymentMethods {
+        return try! Coder.decode(dictionary) as PaymentMethods
+    }
     
     let dictionary = [
         "storedPaymentMethods": [
@@ -49,7 +53,7 @@ class ComponentManagerTests: XCTestCase {
         ]
     ]
     
-    let numberOfExpectedRegularComponents = 20
+    let numberOfExpectedRegularComponents = 19
 
     var presentationDelegate: PresentationDelegateMock!
 
@@ -64,13 +68,7 @@ class ComponentManagerTests: XCTestCase {
     }
 
     func testClientKeyInjectionAndProtocolConfromance() throws {
-        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
         let config = DropInComponent.Configuration(apiContext: Dummy.context)
-        config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        let merchantIdentifier = "applePayMerchantIdentifier"
-        let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
-        config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
-        config.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
                                    order: nil,
@@ -83,17 +81,30 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.regularComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, numberOfExpectedRegularComponents)
 
         XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 15)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 15)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 0)
+    }
+
+    func testApplePayPaymentMethod() {
+        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        config.applePay = .init(payment: Dummy.createTestApplePayPayment(), merchantIdentifier: "merchant.com.test")
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   configuration: config,
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
+
+        XCTAssertEqual(sut.storedComponents.count, 4)
+        XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents + 1)
+
+        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 15)
         XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 16)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 1)
     }
     
     func testLocalizationWithCustomTableName() throws {
-        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
         let config = DropInComponent.Configuration(apiContext: Dummy.context)
         config.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        let merchantIdentifier = "applePayMerchantIdentifier"
-        let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
-        config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    configuration: config,
@@ -107,12 +118,8 @@ class ComponentManagerTests: XCTestCase {
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
-        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
         let config = DropInComponent.Configuration(apiContext: Dummy.context)
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-        let merchantIdentifier = "applePayMerchantIdentifier"
-        let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
-        config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
         config.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
@@ -127,15 +134,12 @@ class ComponentManagerTests: XCTestCase {
     }
 
     func testOrderInjection() throws {
-        var paymentMethods = try Coder.decode(dictionary) as PaymentMethods
         let config = DropInComponent.Configuration(apiContext: Dummy.context)
-        let merchantIdentifier = "applePayMerchantIdentifier"
-        let summaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "174.08"), type: .final)]
-        config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
         config.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
 
         let order = PartialPaymentOrder(pspReference: "test pspRef", orderData: "test order data")
 
+        var paymentMethods = paymentMethods
         paymentMethods.paid = [
             OrderPaymentMethod(lastFour: "1234",
                                type: .other("type-1"),
