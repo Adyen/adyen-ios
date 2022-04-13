@@ -37,22 +37,10 @@ internal final class IntegrationExample: APIClientAware {
         return DefaultAPIClient(apiContext: context)
     }()
 
-    internal var clientKey: String {
-        if CommandLine.arguments.contains("-UITests") {
-            return "local_DUMMYKEYFORTESTING"
-        }
-        return ConfigurationConstants.clientKey
-    }
-    
-    internal lazy var apiContext = APIContext(
-        environment: ConfigurationConstants.componentsEnvironment,
-        clientKey: clientKey
-    )
-
     // MARK: - Action Handling for Components
 
     internal lazy var adyenActionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(apiContext: apiContext)
+        let handler = AdyenActionComponent(apiContext: ConfigurationConstants.apiContext)
         handler.delegate = self
         handler.presentationDelegate = self
         return handler

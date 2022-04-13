@@ -25,3 +25,4 @@
 - Method `didFinalize(with success: Bool)` for `FinalizableComponent` changed to `didFinalize(with success: Bool, completion: (() -> Void)?)`;
 - Helper method `finalizeIfNeeded(with success: Bool)` for `Component` changed to `finalizeIfNeeded(with success: Bool, completion: (() -> Void)?)`;
 - In `ApplePayComponent.Configuration` init parameter `payment: Payment` changed to `payment: ApplePayPayment`;
+- `APIContext.init(environment: AnyAPIEnvironment, clientKey: String)` now `throws` exception if client key is invalid.
