@@ -8,30 +8,25 @@
 import XCTest
 
 class APIContextTests: XCTestCase {
-    
-    func testInjection() {
+
+    func testCreateValidClientKey() throws {
         let environment = Environment(baseURL: URL(string: "https://adyen.com")!)
         let clientKey = "ttest_keykeykeykey"
-        
-        let sut = APIContext(environment: environment, clientKey: clientKey)
-        
+        let sut = try APIContext(environment: environment, clientKey: clientKey)
+
         XCTAssertEqual(sut.clientKey, clientKey)
         XCTAssertEqual(sut.environment.baseURL, environment.baseURL)
     }
     
-    func testInvalidClientKey() {
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        
-        AdyenAssertion.listener = { message in
-            XCTAssertEqual(message, "ClientKey is invalid.")
-            expectation.fulfill()
-            
-            AdyenAssertion.listener = nil
+    func testCreateInvalidClientKey() {
+        let environment = Environment(baseURL: URL(string: "https://adyen.com")!)
+        let clientKey = "WrongClientKey"
+
+        XCTAssertThrowsError(try APIContext(environment: environment, clientKey: clientKey),
+                             "Testing Invalid client key") { error in
+            XCTAssertTrue(error is ClientKeyError)
+            XCTAssertEqual(error as! ClientKeyError, ClientKeyError.invalidClientKey)
         }
-        
-        _ = APIContext(environment: Dummy.context.environment, clientKey: "invalid_client_key")
-        
-        wait(for: [expectation], timeout: 2)
     }
     
     func testQueryParameters() {
