@@ -12,14 +12,18 @@ import XCTest
 
 class CardComponentTests: XCTestCase {
 
+    var analyticsProviderMock: AnalyticsProviderMock!
     var adyenContext: AdyenContext!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
+        analyticsProviderMock = AnalyticsProviderMock()
         adyenContext = Dummy.adyenContext
+        adyenContext.analyticsProvider = analyticsProviderMock
     }
 
     override func tearDownWithError() throws {
+        analyticsProviderMock = nil
         adyenContext = nil
         try super.tearDownWithError()
     }
@@ -1974,6 +1978,22 @@ class CardComponentTests: XCTestCase {
         
         XCTAssertEqual(sut.cardViewController.items.billingAddressItem.supportedCountryCodes, ["UK"])
         XCTAssertEqual(countryItemView?.inputControl.label, "United Kingdom")
+    }
+
+    func testViewWillAppearShouldSendTelemetryRequest() throws {
+        // Given
+        let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let configuration = CardComponent.Configuration()
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                adyenContext: adyenContext,
+                                configuration: configuration)
+
+        // When
+        sut.cardViewController.viewWillAppear(false)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
     }
 
     // MARK: - Private
