@@ -39,6 +39,7 @@ public struct APIContext: AnyAPIContext {
     /// - Parameters:
     ///   - environment: The environment to retrieve internal resources from.
     ///   - clientKey: The client key that corresponds to the web service user you will use for initiating the payment.
+    /// - Throws: `ClientKeyError.invalidClientKey` if the client key is invalid.
     public init(environment: AnyAPIEnvironment, clientKey: String) throws {
         guard ClientKeyValidator().isValid(clientKey) else {
             throw ClientKeyError.invalidClientKey
