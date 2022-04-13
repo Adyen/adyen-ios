@@ -11,7 +11,7 @@ import Foundation
 public final class FormToggleItem: FormValueItem<Bool, FormToggleItemStyle>, Hidable {
 
     /// :nodoc:
-    public var isHidden: Observable<Bool> = Observable(false)
+    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
     /// Initializes the switch item.
     ///
