@@ -35,6 +35,7 @@ public protocol TelemetryTrackerProtocol {
 
 // MARK: - TelemetryTrackerProtocol
 
+/// : nodoc:
 extension AnalyticsProvider: TelemetryTrackerProtocol {
 
     func trackTelemetryEvent(flavor: TelemetryFlavor) {

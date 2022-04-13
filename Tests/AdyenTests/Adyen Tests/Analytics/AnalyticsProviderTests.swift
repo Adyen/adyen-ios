@@ -30,6 +30,15 @@ class AnalyticsProviderTests: XCTestCase {
         try super.tearDownWithError()
     }
 
+    func testAnalyticsProviderIsInitializedWithCorrectDefaultConfigurationValues() throws {
+        // Given
+        analyticsConfiguration = .init()
+
+        // Then
+        XCTAssertTrue(sut.configuration.isCheckoutAttemptIdEnabled)
+        XCTAssertTrue(sut.configuration.isTelemetryEnabled)
+    }
+
     func testFetchCheckoutAttemptIdWhenCheckoutAttemptIdIsDisabledShouldCallCompletionWithNilValue() throws {
         // Given
         analyticsConfiguration.isCheckoutAttemptIdEnabled = false
