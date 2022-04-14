@@ -186,7 +186,7 @@ This optional method is invoked when user closes a payment component managed by 
 ---
 
 ```swift
-func didOpenExternalApplication(_ component: DropInComponent)
+func didOpenExternalApplication(component: DropInComponent)
 ```
 
 This optional method is invoked after a redirect to an external application has occurred.

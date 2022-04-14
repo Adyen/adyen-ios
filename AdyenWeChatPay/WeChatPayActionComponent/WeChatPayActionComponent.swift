@@ -58,7 +58,7 @@ import Foundation
             WXApi.registerApp(action.sdkData.appIdentifier, universalLink: WeChatPaySDKActionComponent.universalLink)
             WXApi.send(PayReq(actionData: action.sdkData))
         
-            delegate?.didOpenExternalApplication(self)
+            delegate?.didOpenExternalApplication(component: self)
         }
     
         /// Checks if the current device supports WeChat Pay.

@@ -211,8 +211,8 @@ public final class ThreeDS2Component: ActionComponent {
 // This is for the RedirectComponent inside the ThreeDS2Component
 extension ThreeDS2Component: ActionComponentDelegate {
 
-    public func didOpenExternalApplication(_ component: ActionComponent) {
-        delegate?.didOpenExternalApplication(self)
+    public func didOpenExternalApplication(component: ActionComponent) {
+        delegate?.didOpenExternalApplication(component: self)
     }
 
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {

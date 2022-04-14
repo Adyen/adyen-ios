@@ -27,7 +27,7 @@ class SessionDelegateMock: AdyenSessionDelegate {
         onDidFail?(error, component, session)
     }
     
-    func didOpenExternalApplication(_ component: ActionComponent, session: AdyenSession) {
+    func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {
         onDidOpenExternalApplication?()
     }
     
