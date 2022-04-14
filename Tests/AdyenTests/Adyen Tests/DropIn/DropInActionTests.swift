@@ -62,7 +62,7 @@ class DropInActionsTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = root
 
         root.present(sut.viewController, animated: true) {
-            self.sut.didOpenExternalApplication(RedirectComponent(apiContext: Dummy.context))
+            self.sut.didOpenExternalApplication(component: RedirectComponent(apiContext: Dummy.context))
         }
 
         waitForExpectations(timeout: 15, handler: nil)

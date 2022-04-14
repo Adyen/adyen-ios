@@ -34,12 +34,12 @@ extension AdyenSession: ActionComponentDelegate {
         handler.didProvide(data, from: component, session: self)
     }
     
-    public func didOpenExternalApplication(_ component: ActionComponent) {
+    public func didOpenExternalApplication(component: ActionComponent) {
         didOpenExternalApplication(actionComponent: component)
     }
     
     internal func didOpenExternalApplication(actionComponent: ActionComponent) {
-        delegate?.didOpenExternalApplication(actionComponent, session: self)
+        delegate?.didOpenExternalApplication(component: actionComponent, session: self)
     }
 }
 

@@ -22,7 +22,7 @@ public protocol ActionComponentDelegate: AnyObject {
     /// In which case you can for example stop any loading animations.
     ///
     /// - parameter component: The component that handled the action.
-    func didOpenExternalApplication(_ component: ActionComponent)
+    func didOpenExternalApplication(component: ActionComponent)
     
     /// Invoked when there is new data provided to initiate the payment details call.
     ///
@@ -51,6 +51,6 @@ public protocol ActionComponentDelegate: AnyObject {
 public extension ActionComponentDelegate {
     
     /// :nodoc:
-    func didOpenExternalApplication(_ component: ActionComponent) {}
+    func didOpenExternalApplication(component: ActionComponent) {}
     
 }
