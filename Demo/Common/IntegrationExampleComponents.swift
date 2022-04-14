@@ -109,9 +109,9 @@ extension IntegrationExample {
             let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self),
             let applePayPayment = try? ApplePayPayment(payment: payment)
         else { return nil }
-        let config = ApplePayComponent.Configuration(payment: applePayPayment,
-                                                     merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
-                                                     allowOnboarding: true)
+        var config = ApplePayComponent.Configuration(payment: applePayPayment,
+                                                     merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
+        config.allowOnboarding = true
         let component = try? ApplePayComponent(paymentMethod: paymentMethod,
                                                apiContext: ConfigurationConstants.apiContext,
                                                configuration: config)

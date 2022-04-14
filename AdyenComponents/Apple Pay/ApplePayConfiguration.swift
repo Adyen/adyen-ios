@@ -13,6 +13,7 @@ import PassKit
 extension ApplePayComponent {
 
     /// Apple Pay component configuration.
+
     public struct Configuration {
 
         /// The context of a current payment. Contains
@@ -23,46 +24,52 @@ extension ApplePayComponent {
 
         /// A list of fields that you need for a billing contact in order to process the transaction.
         /// Ignored on iOS 10.*.
-        public let requiredBillingContactFields: Set<PKContactField>
+        public var requiredBillingContactFields: Set<PKContactField> = []
 
         /// A list of fields that you need for a shipping contact in order to process the transaction.
         /// Ignored on iOS 10.*.
-        public let requiredShippingContactFields: Set<PKContactField>
+        public var requiredShippingContactFields: Set<PKContactField> = []
 
         /// A pre-populated billing address.
-        public let billingContact: PKContact?
+        public var billingContact: PKContact?
 
         /// The flag to toggle onboarding.
         /// If true, allow the shopper to add cards to Apple Pay if non exists yet.
         /// If false, then Apple Pay is disabled if the shopper doesn't have supported cards on Apple Pay wallet.
-        public let allowOnboarding: Bool
+        /// Default is false.
+        public var allowOnboarding: Bool = false
+
+        // Shipping methods supported by the merchant.
+        public var shippingContact: PKContact?
+
+        // Indicates the display mode for the shipping (e.g, "Pick Up", "Ship To", "Deliver To"). Localized.
+        // The default is PKShippingTypeShipping
+        public var shippingType: PKShippingType = .shipping
+
+        // Indicates the editing mode for the shipping contact. The default is true.
+        public let shippingContactEditing: Bool = true
+
+        // Optional merchant-supplied information about the payment request.  Examples of this are an order
+        // or cart identifier.  It will be signed and included in the resulting PKPaymentToken.
+        public var applicationData: Data?
+
+        /// A list of ISO 3166 country codes to limit payments to cards from specific countries or regions.
+        public var supportedCountries: Set<String>?
+
+        // Indicates whether the merchant supports coupon code entry and validation. Defaults to NO.
+        public var supportsCouponCode: Bool = false
+
+        // An optional coupon code that is valid and has been applied to the payment request already.
+        public var couponCode: String?
 
         /// Initializes the configuration.
         ///
         /// - Parameter payment: Instance of ApplePay Payment object.
         /// - Parameter merchantIdentifier: The merchant identifier.
-        /// - Parameter requiredBillingContactFields:
-        /// A list of fields that you need for a billing contact in order to process the transaction. Ignored on iOS 10.*.
-        /// - Parameter requiredShippingContactFields:
-        /// A list of fields that you need for a shipping contact in order to process the transaction. Ignored on iOS 10.*.
-        /// - Parameter requiredShippingContactFields: The excluded card brands.
-        /// - Parameter billingContact: A pre-populated billing address.
-        /// - Parameter allowOnboarding: The flag to toggle onboarding.
-        /// If true, allow the shopper to add cards to Apple Pay if none exists yet.
-        /// If false, then Apple Pay is disabled if the shopper doesn't have supported cards on Apple Pay wallet.
-        /// Default is false.
         public init(payment: ApplePayPayment,
-                    merchantIdentifier: String,
-                    requiredBillingContactFields: Set<PKContactField> = [],
-                    requiredShippingContactFields: Set<PKContactField> = [],
-                    billingContact: PKContact? = nil,
-                    allowOnboarding: Bool = false) {
+                    merchantIdentifier: String) {
             self.applePayPayment = payment
             self.merchantIdentifier = merchantIdentifier
-            self.requiredBillingContactFields = requiredBillingContactFields
-            self.requiredShippingContactFields = requiredShippingContactFields
-            self.billingContact = billingContact
-            self.allowOnboarding = allowOnboarding
         }
 
         internal func createPaymentRequest(supportedNetworks: [PKPaymentNetwork]) -> PKPaymentRequest {
@@ -76,6 +83,16 @@ extension ApplePayComponent {
             paymentRequest.requiredBillingContactFields = requiredBillingContactFields
             paymentRequest.requiredShippingContactFields = requiredShippingContactFields
             paymentRequest.billingContact = billingContact
+            paymentRequest.shippingContact = shippingContact
+            paymentRequest.shippingType = shippingType
+            paymentRequest.supportedCountries = supportedCountries
+
+            if #available(iOS 15.0, *) {
+                paymentRequest.couponCode = couponCode
+                paymentRequest.supportsCouponCode = supportsCouponCode
+                paymentRequest.shippingContactEditingMode = shippingContactEditing ? .enabled : .storePickup
+            }
+
             return paymentRequest
         }
     }
