@@ -66,7 +66,8 @@ internal class CardViewController: FormViewController {
                                    cardLogos: cardLogos,
                                    scope: scope,
                                    defaultCountryCode: countryCode,
-                                   localizationParameters: localizationParameters)
+                                   localizationParameters: localizationParameters,
+                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
         super.init(style: formStyle)
         self.localizationParameters = localizationParameters
     }

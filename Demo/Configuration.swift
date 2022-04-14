@@ -35,6 +35,7 @@ internal enum ConfigurationConstants {
         if let apiContext = try? APIContext(environment: componentsEnvironment, clientKey: clientKey) {
             return apiContext
         }
+        // swiftlint:disable:next force_try
         return try! APIContext(environment: componentsEnvironment, clientKey: "local_DUMMYKEYFORTESTING")
     }
     
