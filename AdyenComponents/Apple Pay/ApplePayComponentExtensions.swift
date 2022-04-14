@@ -34,13 +34,12 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         paymentAuthorizationCompletion = completion
         let token = payment.token.paymentData.base64EncodedString()
         let network = payment.token.paymentMethod.network?.rawValue ?? ""
-        let billingContact = payment.billingContact
-        let shippingContact = payment.shippingContact
         let details = ApplePayDetails(paymentMethod: applePayPaymentMethod,
                                       token: token,
                                       network: network,
-                                      billingContact: billingContact,
-                                      shippingContact: shippingContact)
+                                      billingContact: payment.billingContact,
+                                      shippingContact: payment.shippingContact,
+                                      shippingMethod: payment.shippingMethod)
         
         submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.amountToPay, order: order))
     }
