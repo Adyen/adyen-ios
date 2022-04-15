@@ -13,6 +13,8 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     private let paymentRequest: PKPaymentRequest
 
+    internal var applePayPayment: ApplePayPayment
+
     internal var resultConfirmed: Bool = false
 
     internal var viewControllerDidFinish: Bool = false
@@ -26,9 +28,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     public var paymentMethod: PaymentMethod { applePayPaymentMethod }
 
     /// Read-only payment property. Set `payment` is not supported on ApplePayComponent.
-    public var payment: Payment? {
-        configuration.applePayPayment.payment
-    }
+    public var payment: Payment? { applePayPayment.payment }
 
     internal let configuration: Configuration
 
@@ -40,6 +40,9 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
+
+    /// The delegate changes of ApplePay payment state.
+    public weak var applePayDelegate: ApplePayComponentDelegate?
     
     /// Initializes the component.
     /// - Warning: Do not dismiss this component.
@@ -75,6 +78,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         self.apiContext = apiContext
         self.paymentAuthorizationViewController = viewController
         self.applePayPaymentMethod = paymentMethod
+        self.applePayPayment = configuration.applePayPayment
         super.init()
 
         viewController.delegate = self
@@ -93,6 +97,10 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         } else {
             completion?()
         }
+    }
+
+    public func update(payment: Payment) throws {
+        applePayPayment = try ApplePayPayment(payment: payment)
     }
 
     // MARK: - Private

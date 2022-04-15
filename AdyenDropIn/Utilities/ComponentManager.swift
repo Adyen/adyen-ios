@@ -126,7 +126,10 @@ internal final class ComponentManager {
             paymentComponent.localizationParameters = configuration.localizationParameters
         }
 
-        paymentComponent.payment = configuration.payment
+        if let payment = configuration.payment {
+            try? paymentComponent.update(payment: payment)
+        }
+
         paymentComponent.order = order
         return paymentComponent
     }
@@ -384,11 +387,11 @@ extension ComponentManager: PaymentComponentBuilder {
     /// :nodoc:
     internal func build(paymentMethod: AtomePaymentMethod) -> PaymentComponent? {
         let config = AtomeComponent.Configuration(style: configuration.style.formComponent,
-                                                   shopperInformation: configuration.shopper,
-                                                   localizationParameters: configuration.localizationParameters)
+                                                  shopperInformation: configuration.shopper,
+                                                  localizationParameters: configuration.localizationParameters)
         return AtomeComponent(paymentMethod: paymentMethod,
-                               apiContext: apiContext,
-                               configuration: config)
+                              apiContext: apiContext,
+                              configuration: config)
     }
 
 }

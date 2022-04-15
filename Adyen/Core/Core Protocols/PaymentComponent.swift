@@ -58,23 +58,25 @@ public protocol PaymentComponentDelegate: AnyObject {
 /// Any component with a payment property.
 public protocol PaymentAwareComponent: Component {
 
-    /// The payment information.
-    var payment: Payment? { get set }
-
     /// The partial payment order if any.
     var order: PartialPaymentOrder? { get set }
+
+    /// The payment information.
+    var payment: Payment? { get }
+
+    /// Attempts to update payment.
+    func update(payment: Payment) throws
 }
 
 /// :nodoc:
 extension PaymentAwareComponent {
     /// :nodoc:
     public var payment: Payment? {
-        get {
-            objc_getAssociatedObject(self, &AssociatedKeys.payment) as? Payment
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedKeys.payment, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY)
-        }
+        objc_getAssociatedObject(self, &AssociatedKeys.payment) as? Payment
+    }
+
+    public func update(payment: Payment) throws {
+        objc_setAssociatedObject(self, &AssociatedKeys.payment, payment, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY)
     }
 
     /// :nodoc:

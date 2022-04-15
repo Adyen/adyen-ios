@@ -56,11 +56,8 @@ public class CardComponent: PublicKeyConsumer,
         }
     }
 
-    /// The payment information.
-    public var payment: Payment? {
-        didSet {
-            storedCardComponent?.payment = payment
-        }
+    public func update(payment: Payment) throws {
+        try storedCardComponent?.update(payment: payment)
     }
     
     /// Initializes the card component.
@@ -142,7 +139,9 @@ public class CardComponent: PublicKeyConsumer,
             storedComponent.localizationParameters = configuration.localizationParameters
             component = storedComponent
         }
-        component.payment = payment
+        if let payment = payment {
+            try? component.update(payment: payment)
+        }
         return component
     }()
 

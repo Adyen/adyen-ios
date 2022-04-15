@@ -204,7 +204,9 @@ public final class DropInComponent: NSObject,
                                                           title: title,
                                                           style: configuration.style.formComponent,
                                                           listItemStyle: configuration.style.listComponent.listItem)
-        component.payment = configuration.payment
+        if let payment = configuration.payment {
+            try? component.update(payment: payment)
+        }
         component.localizationParameters = configuration.localizationParameters
         component.delegate = self
         component.onCancel = onCancel
@@ -262,7 +264,14 @@ public final class DropInComponent: NSObject,
         (component as? PreApplePayComponent)?.presentationDelegate = self
         
         component._isDropIn = true
-        component.payment = configuration.payment
+
+        if let payment = configuration.payment {
+            do {
+                try component.update(payment: payment)
+            } catch {
+                delegate?.didFail(with: error, from: self)
+            }
+        }
     }
 }
 
