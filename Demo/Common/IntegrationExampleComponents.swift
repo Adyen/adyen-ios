@@ -31,7 +31,7 @@ extension IntegrationExample {
     internal func cardComponent(from paymentMethods: PaymentMethods?) -> CardComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
-        return CardComponent(paymentMethod: paymentMethod, apiContext: apiContext)
+        return CardComponent(paymentMethod: paymentMethod, apiContext: ConfigurationConstants.apiContext)
     }
 
     // MARK: IDEAL
@@ -49,7 +49,7 @@ extension IntegrationExample {
     internal func idealComponent(from paymentMethods: PaymentMethods?) -> IdealComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: IssuerListPaymentMethod.self) else { return nil }
-        return IdealComponent(paymentMethod: paymentMethod, apiContext: apiContext)
+        return IdealComponent(paymentMethod: paymentMethod, apiContext: ConfigurationConstants.apiContext)
     }
 
     // MARK: SEPA
@@ -67,7 +67,7 @@ extension IntegrationExample {
     internal func sepaComponent(from paymentMethods: PaymentMethods?) -> SEPADirectDebitComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: SEPADirectDebitPaymentMethod.self) else { return nil }
-        return SEPADirectDebitComponent(paymentMethod: paymentMethod, apiContext: apiContext)
+        return SEPADirectDebitComponent(paymentMethod: paymentMethod, apiContext: ConfigurationConstants.apiContext)
     }
 
     // MARK: MBWay
@@ -88,7 +88,7 @@ extension IntegrationExample {
         let style = FormComponentStyle()
         let config = MBWayComponent.Configuration(style: style)
         return MBWayComponent(paymentMethod: paymentMethod,
-                              apiContext: apiContext,
+                              apiContext: ConfigurationConstants.apiContext,
                               configuration: config)
     }
 
@@ -125,7 +125,7 @@ extension IntegrationExample {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: EContextPaymentMethod.self) else { return nil }
         return EContextStoreComponent(paymentMethod: paymentMethod,
-                                      apiContext: apiContext,
+                                      apiContext: ConfigurationConstants.apiContext,
                                       configuration: BasicPersonalInfoFormComponent.Configuration(style: FormComponentStyle()))
     }
 
@@ -134,7 +134,7 @@ extension IntegrationExample {
     internal func presentBACSDirectDebitComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return }
         let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
-                                                 apiContext: apiContext)
+                                                 apiContext: ConfigurationConstants.apiContext)
         bacsDirectDebitPresenter = BACSDirectDebitPresentationDelegate(bacsComponent: component)
         component.presentationDelegate = bacsDirectDebitPresenter
         present(component, delegate: self)

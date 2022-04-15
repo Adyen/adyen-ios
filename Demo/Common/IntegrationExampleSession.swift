@@ -25,7 +25,7 @@ extension IntegrationExample: AdyenSessionDelegate {
         finish(with: error)
     }
     
-    func didOpenExternalApplication(_ component: ActionComponent, session: AdyenSession) {}
+    func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {}
     
     private func finish(with resultCode: SessionPaymentResultCode) {
         let resultCode = PaymentsResponse.ResultCode(rawValue: resultCode.rawValue) ?? .authorised

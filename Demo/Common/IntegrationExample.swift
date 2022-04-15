@@ -92,7 +92,7 @@ internal final class IntegrationExample: APIClientAware {
     private func initializeSession(with sessionId: String, data: String) {
         let configuration = AdyenSession.Configuration(sessionIdentifier: sessionId,
                                                        initialSessionData: data,
-                                                       apiContext: apiContext)
+                                                       apiContext: ConfigurationConstants.apiContext)
         AdyenSession.initialize(with: configuration, delegate: self, presentationDelegate: self) { [weak self] result in
             switch result {
             case let .success(session):
