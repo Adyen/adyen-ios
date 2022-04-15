@@ -49,6 +49,9 @@ extension ApplePayComponent {
         // Indicates the editing mode for the shipping contact. The default is true.
         public let shippingContactEditing: Bool = true
 
+        // An array of shipping method objects that describe the supported shipping methods.
+        public var shippingMethods: [PKShippingMethod]?
+
         // Optional merchant-supplied information about the payment request.  Examples of this are an order
         // or cart identifier.  It will be signed and included in the resulting PKPaymentToken.
         public var applicationData: Data?
@@ -86,6 +89,7 @@ extension ApplePayComponent {
             paymentRequest.shippingContact = shippingContact
             paymentRequest.shippingType = shippingType
             paymentRequest.supportedCountries = supportedCountries
+            paymentRequest.shippingMethods = shippingMethods
 
             if #available(iOS 15.0, *) {
                 paymentRequest.couponCode = couponCode
@@ -135,6 +139,15 @@ extension ApplePayComponent {
 
         if #available(iOS 14.5, *) {
             networks.append(.mir)
+        }
+
+        if #available(iOS 15.0, *) {
+            networks.append(.nanaco)
+            networks.append(.waon)
+        }
+
+        if #available(iOS 15.1, *) {
+            networks.append(.dankort)
         }
 
         return networks
