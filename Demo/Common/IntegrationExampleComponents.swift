@@ -8,6 +8,7 @@ import Adyen
 import AdyenActions
 import AdyenCard
 import AdyenComponents
+import PassKit
 import UIKit
 
 extension IntegrationExample {
@@ -112,6 +113,12 @@ extension IntegrationExample {
         var config = ApplePayComponent.Configuration(payment: applePayPayment,
                                                      merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         config.allowOnboarding = true
+        config.supportsCouponCode = true
+        config.shippingType = .delivery
+        config.requiredShippingContactFields = [.postalAddress]
+        config.requiredBillingContactFields = [.postalAddress]
+        config.shippingMethods = ConfigurationConstants.shippingMethods
+        
         let component = try? ApplePayComponent(paymentMethod: paymentMethod,
                                                apiContext: ConfigurationConstants.apiContext,
                                                configuration: config)
@@ -280,4 +287,44 @@ extension IntegrationExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {
         present(component, delegate: self)
     }
+}
+
+extension IntegrationExample: ApplePayComponentDelegate {
+    func didUpdate(contact: PKContact, with payment: ApplePayPayment, component: ApplePayComponent) -> PKPaymentRequestShippingContactUpdate {
+        var items = payment.summaryItems
+        print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
+        if let last = items.last {
+            items = items.dropLast()
+            let cityLabel = contact.postalAddress?.city ?? "Somwhere"
+            items.append(.init(label: "Shipping \(cityLabel)",
+                               amount: NSDecimalNumber(value: 5.0)))
+            items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue + 5.0)))
+        }
+        return .init(paymentSummaryItems: items)
+    }
+
+    func didUpdate(shippingMethod: PKShippingMethod, with payment: ApplePayPayment, component: ApplePayComponent) -> PKPaymentRequestShippingMethodUpdate {
+        var items = payment.summaryItems
+        print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
+        if let last = items.last {
+            items = items.dropLast()
+            items.append(shippingMethod)
+            items.append(.init(label: last.label,
+                               amount: NSDecimalNumber(value: last.amount.floatValue + shippingMethod.amount.floatValue)))
+        }
+        return .init(paymentSummaryItems: items)
+    }
+
+    @available(iOS 15.0, *)
+    func didUpdate(couponCode: String, with payment: ApplePayPayment, component: ApplePayComponent) -> PKPaymentRequestCouponCodeUpdate {
+        var items = payment.summaryItems
+        print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
+        if let last = items.last {
+            items = items.dropLast()
+            items.append(.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0)))
+            items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue - 5.0)))
+        }
+        return .init(paymentSummaryItems: items)
+    }
+
 }

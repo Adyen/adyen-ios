@@ -43,4 +43,87 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         
         submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.amountToPay, order: order))
     }
+
+    public func paymentAuthorizationViewController(
+        _ controller: PKPaymentAuthorizationViewController,
+        didSelectShippingContact contact: PKContact,
+        handler completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void
+    ) {
+        guard let applePayDelegate = applePayDelegate else {
+            return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
+        }
+
+        let result = applePayDelegate.didUpdate(contact: contact,
+                                                with: applePayPayment,
+                                                component: self)
+        if result.paymentSummaryItems.isEmpty == false {
+            do {
+                try applePayPayment.update(with: result.paymentSummaryItems)
+            } catch {
+                delegate?.didFail(with: error, from: self)
+            }
+        }
+        print(applePayPayment.summaryItems.reduce("") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
+        completion(result)
+    }
+
+    public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
+                                                   didSelect shippingMethod: PKShippingMethod,
+                                                   handler completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void) {
+        guard let applePayDelegate = applePayDelegate else {
+            return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
+        }
+
+        let result = applePayDelegate.didUpdate(shippingMethod: shippingMethod,
+                                                with: applePayPayment,
+                                                component: self)
+        if result.paymentSummaryItems.isEmpty == false {
+            do {
+                try applePayPayment.update(with: result.paymentSummaryItems)
+            } catch {
+                delegate?.didFail(with: error, from: self)
+            }
+        }
+        print(applePayPayment.summaryItems.reduce("") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
+        completion(result)
+    }
+
+    @available(iOS 15.0, *)
+    public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
+                                                   didChangeCouponCode couponCode: String,
+                                                   handler completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void) {
+        guard let applePayDelegate = applePayDelegate else {
+            return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
+        }
+
+        let result = applePayDelegate.didUpdate(couponCode: couponCode,
+                                                with: applePayPayment,
+                                                component: self)
+        if result.paymentSummaryItems.isEmpty == false {
+            do {
+                try applePayPayment.update(with: result.paymentSummaryItems)
+            } catch {
+                delegate?.didFail(with: error, from: self)
+            }
+        }
+        print(applePayPayment.summaryItems.reduce("") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
+        completion(result)
+    }
+}
+
+public protocol ApplePayComponentDelegate: AnyObject {
+
+    func didUpdate(contact: PKContact,
+                   with payment: ApplePayPayment,
+                   component: ApplePayComponent) -> PKPaymentRequestShippingContactUpdate
+
+    func didUpdate(shippingMethod: PKShippingMethod,
+                   with payment: ApplePayPayment,
+                   component: ApplePayComponent) -> PKPaymentRequestShippingMethodUpdate
+
+    @available(iOS 15.0, *)
+    func didUpdate(couponCode: String,
+                   with payment: ApplePayPayment,
+                   component: ApplePayComponent) -> PKPaymentRequestCouponCodeUpdate
+    
 }
