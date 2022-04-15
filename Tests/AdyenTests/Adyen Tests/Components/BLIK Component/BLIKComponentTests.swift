@@ -18,14 +18,14 @@ class BLIKComponentTests: XCTestCase {
 
     override func setUp() {
         sut = BLIKComponent(paymentMethod: method, apiContext: Dummy.context)
-        sut.payment = payment
+        try! sut.update(payment: payment)
     }
 
     override func tearDown() {
         sut = nil
     }
 
-    func testLocalizationWithCustomTableName() {
+    func testLocalizationWithCustomTableName() throws {
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
         XCTAssertEqual(sut.hintLabelItem.text, localizedString(.blikHelp, sut.configuration.localizationParameters))
@@ -37,9 +37,9 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
-    func testLocalizationWithZeroPayment() {
+    func testLocalizationWithZeroPayment() throws {
         let payment = Payment(amount: Amount(value: 0, currencyCode: "PLN"), countryCode: "PL")
-        sut.payment = payment
+        try sut.update(payment: payment)
         XCTAssertEqual(sut.hintLabelItem.text, localizedString(.blikHelp, sut.configuration.localizationParameters))
 
         XCTAssertEqual(sut.codeItem.title, localizedString(.blikCode, sut.configuration.localizationParameters))

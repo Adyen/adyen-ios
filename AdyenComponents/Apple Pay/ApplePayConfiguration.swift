@@ -141,15 +141,6 @@ extension ApplePayComponent {
             networks.append(.mir)
         }
 
-        if #available(iOS 15.0, *) {
-            networks.append(.nanaco)
-            networks.append(.waon)
-        }
-
-        if #available(iOS 15.1, *) {
-            networks.append(.dankort)
-        }
-
         return networks
     }()
 

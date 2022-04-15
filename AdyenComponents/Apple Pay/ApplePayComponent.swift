@@ -27,7 +27,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// The Apple Pay payment method.
     public var paymentMethod: PaymentMethod { applePayPaymentMethod }
 
-    /// Read-only payment property. Set `payment` is not supported on ApplePayComponent.
     public var payment: Payment? { applePayPayment.payment }
 
     internal let configuration: Configuration

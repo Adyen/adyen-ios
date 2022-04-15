@@ -12,7 +12,7 @@ import XCTest
 
 class StoredCardComponentTests: XCTestCase {
 
-    func testUIWithClientKey() {
+    func testUIWithClientKey() throws {
         let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
@@ -26,7 +26,7 @@ class StoredCardComponentTests: XCTestCase {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payment
+        try sut.update(payment: payment)
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -42,7 +42,7 @@ class StoredCardComponentTests: XCTestCase {
         alertController.dismiss(animated: false, completion: nil)
     }
 
-    func testUIWithPublicKey() {
+    func testUIWithPublicKey() throws {
         let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
@@ -57,7 +57,7 @@ class StoredCardComponentTests: XCTestCase {
         PublicKeyProvider.publicKeysCache[Dummy.context.clientKey] = Dummy.publicKey
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payment
+        try sut.update(payment: payment)
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -72,7 +72,7 @@ class StoredCardComponentTests: XCTestCase {
         alertController.dismiss(animated: false, completion: nil)
     }
 
-    func testPaymentSubmitWithSuccessfulCardPublicKeyFetching() {
+    func testPaymentSubmitWithSuccessfulCardPublicKeyFetching() throws {
         let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
@@ -86,7 +86,7 @@ class StoredCardComponentTests: XCTestCase {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payment
+        try sut.update(payment: payment)
 
         let delegateExpectation = expectation(description: "expect delegate to be called.")
         let delegate = PaymentComponentDelegateMock()
@@ -138,7 +138,7 @@ class StoredCardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testPaymentSubmitWithFailedCardPublicKeyFetching() {
+    func testPaymentSubmitWithFailedCardPublicKeyFetching() throws {
         let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
@@ -152,7 +152,7 @@ class StoredCardComponentTests: XCTestCase {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payment
+        try sut.update(payment: payment)
 
         let delegate = PaymentComponentDelegateMock()
         delegate.onDidSubmit = { _, _ in
@@ -193,7 +193,7 @@ class StoredCardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testCVCLimitForAMEX() {
+    func testCVCLimitForAMEX() throws {
         let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
@@ -207,7 +207,7 @@ class StoredCardComponentTests: XCTestCase {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payment
+        try sut.update(payment: payment)
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -246,7 +246,7 @@ class StoredCardComponentTests: XCTestCase {
         alertController.dismiss(animated: false, completion: nil)
     }
 
-    func testCVCLimitForNonAMEX() {
+    func testCVCLimitForNonAMEX() throws {
         let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
@@ -260,7 +260,7 @@ class StoredCardComponentTests: XCTestCase {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payment
+        try sut.update(payment: payment)
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -292,7 +292,7 @@ class StoredCardComponentTests: XCTestCase {
         alertController.dismiss(animated: false, completion: nil)
     }
 
-    func testCVCLimitForUnknownCardType() {
+    func testCVCLimitForUnknownCardType() throws {
         let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
@@ -306,7 +306,7 @@ class StoredCardComponentTests: XCTestCase {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payment
+        try sut.update(payment: payment)
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 

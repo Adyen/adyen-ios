@@ -47,15 +47,15 @@ class BACSDirectDebitComponentTests: XCTestCase {
         XCTAssertNotNil(sut.confirmationPresenter)
     }
     
-    func testUpdatingAmount() {
-        sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
+    func testUpdatingAmount() throws {
+        try sut.update(payment: .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL"))
         let presenter: BACSInputPresenter = sut.inputPresenter as! BACSInputPresenter
         let expectedConsentTitle1 = presenter.itemsFactory.createConsentText(with: Amount(value: 100, currencyCode: "EUR"))
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         wait(for: .milliseconds(200))
         XCTAssertEqual(presenter.amountConsentToggleItem?.title, expectedConsentTitle1)
         
-        sut.payment = .init(amount: .init(value: 1000, currencyCode: "EUR"), countryCode: "NL")
+        try sut.update(payment: .init(amount: .init(value: 1000, currencyCode: "EUR"), countryCode: "NL"))
         let expectedConsentTitle2 = presenter.itemsFactory.createConsentText(with: Amount(value: 1000, currencyCode: "EUR"))
         XCTAssertEqual(presenter.amountConsentToggleItem?.title, expectedConsentTitle2)
     }

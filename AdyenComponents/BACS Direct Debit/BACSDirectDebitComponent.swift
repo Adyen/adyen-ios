@@ -16,6 +16,8 @@ internal protocol BACSDirectDebitRouterProtocol: AnyObject {
 /// A component that provides a form for BACS Direct Debit payments.
 public final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent {
 
+    private var persistedPayment: Payment?
+
     /// Configuration for BACS Direct Debit Component.
     public typealias Configuration = BasicComponentConfiguration
     
@@ -41,12 +43,10 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     
     /// Component's configuration
     public var configuration: Configuration
-    
-    /// The payment information.
-    public var payment: Payment? {
-        didSet {
-            inputPresenter?.amount = payment?.amount
-        }
+
+    public func update(payment: Payment) throws {
+        persistedPayment = payment
+        inputPresenter?.amount = payment.amount
     }
 
     // MARK: - Properties

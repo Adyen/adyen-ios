@@ -175,8 +175,10 @@ class ApplePayComponentTest: XCTestCase {
         let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
         let expectedRequiredBillingFields = getRandomContactFieldSet()
         let expectedRequiredShippingFields = getRandomContactFieldSet()
-        let configuration = ApplePayComponent.Configuration(payment: try .init(payment: payment),
+        var configuration = ApplePayComponent.Configuration(payment: try .init(payment: payment),
                                                             merchantIdentifier: "test_id")
+        configuration.requiredBillingContactFields = expectedRequiredBillingFields
+        configuration.requiredShippingContactFields = expectedRequiredShippingFields
         let paymentRequest = configuration.createPaymentRequest(supportedNetworks: paymentMethod.supportedNetworks)
 
         XCTAssertEqual(paymentRequest.paymentSummaryItems.count, 1)

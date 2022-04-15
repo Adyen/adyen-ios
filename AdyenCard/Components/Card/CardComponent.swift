@@ -26,6 +26,8 @@ public class CardComponent: PublicKeyConsumer,
         internal static let privateBinLength = 11
         internal static let publicPanSuffixLength = 4
     }
+
+    private var persistedPayment: Payment?
     
     /// :nodoc:
     public let apiContext: APIContext
@@ -56,7 +58,10 @@ public class CardComponent: PublicKeyConsumer,
         }
     }
 
+    public var payment: Payment? { persistedPayment }
+
     public func update(payment: Payment) throws {
+        self.persistedPayment = payment
         try storedCardComponent?.update(payment: payment)
     }
     

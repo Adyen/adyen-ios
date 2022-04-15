@@ -295,7 +295,7 @@ extension IntegrationExample: ApplePayComponentDelegate {
         print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
         if let last = items.last {
             items = items.dropLast()
-            let cityLabel = contact.postalAddress?.city ?? "Somwhere"
+            let cityLabel = contact.postalAddress?.city ?? "Somewhere"
             items.append(.init(label: "Shipping \(cityLabel)",
                                amount: NSDecimalNumber(value: 5.0)))
             items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue + 5.0)))

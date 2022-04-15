@@ -25,7 +25,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         return shopperInformation
     }
 
-    func testLocalizationWithCustomTableName() {
+    func testLocalizationWithCustomTableName() throws {
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
         let config = ACHDirectDebitComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil), billingAddressCountryCodes: ["US", "UK"])
@@ -33,7 +33,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           apiContext: Dummy.context,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
-        sut.payment = payment
+        try sut.update(payment: payment)
         
         XCTAssertEqual(sut.headerItem.text, localizedString(.achBankAccountTitle, sut.configuration.localizationParameters))
         
@@ -142,7 +142,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
     }
     
-    func testPrefillInfo() {
+    func testPrefillInfo() throws {
         // Given
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
@@ -152,7 +152,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
         
-        sut.payment = payment
+        try sut.update(payment: payment)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .milliseconds(300))
@@ -229,13 +229,13 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(routingNumberItemView?.alertLabel.text, "Invalid ABA routing number")
     }
     
-    func testSubmission() {
+    func testSubmission() throws {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           apiContext: Dummy.context,
                                           configuration: .init(showsBillingAddress: false),
                                           publicKeyProvider: PublicKeyProviderMock())
-        sut.payment = Payment(amount: Amount(value: 2, currencyCode: "USD"), countryCode: "US")
+        try sut.update(payment: Payment(amount: Amount(value: 2, currencyCode: "USD"), countryCode: "US"))
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 

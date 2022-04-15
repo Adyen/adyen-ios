@@ -57,7 +57,7 @@ internal enum ConfigurationConstants {
     static var shippingMethods: [PKShippingMethod] = {
         var shippingByCar = PKShippingMethod(label: "By car", amount: NSDecimalNumber(5.0))
         shippingByCar.identifier = "car"
-        shippingByCar.detail = "Tommorow"
+        shippingByCar.detail = "Tomorrow"
 
         var shippingByPlane = PKShippingMethod(label: "By Plane", amount: NSDecimalNumber(50.0))
         shippingByPlane.identifier = "plane"
