@@ -21,13 +21,13 @@ extension IntegrationExample {
         component.cardComponentDelegate = self
         present(component, delegate: self)
     }
-    
+
     internal func presentCardComponentSession() {
         guard let component = cardComponent(from: sessionPaymentMethods) else { return }
         component.cardComponentDelegate = self
         present(component, delegate: session)
     }
-    
+
     internal func cardComponent(from paymentMethods: PaymentMethods?) -> CardComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
@@ -40,12 +40,12 @@ extension IntegrationExample {
         guard let component = idealComponent(from: paymentMethods) else { return }
         present(component, delegate: self)
     }
-    
+
     internal func presentIdealComponentSession() {
         guard let component = idealComponent(from: sessionPaymentMethods) else { return }
         present(component, delegate: session)
     }
-    
+
     internal func idealComponent(from paymentMethods: PaymentMethods?) -> IdealComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: IssuerListPaymentMethod.self) else { return nil }
@@ -58,12 +58,12 @@ extension IntegrationExample {
         guard let component = sepaComponent(from: paymentMethods) else { return }
         present(component, delegate: self)
     }
-    
+
     internal func presentSEPADirectDebitComponentSession() {
         guard let component = sepaComponent(from: sessionPaymentMethods) else { return }
         present(component, delegate: session)
     }
-    
+
     internal func sepaComponent(from paymentMethods: PaymentMethods?) -> SEPADirectDebitComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: SEPADirectDebitPaymentMethod.self) else { return nil }
@@ -76,12 +76,12 @@ extension IntegrationExample {
         guard let component = mbWayComponent(from: paymentMethods) else { return }
         present(component, delegate: self)
     }
-    
+
     internal func presentMBWayComponentSession() {
         guard let component = mbWayComponent(from: sessionPaymentMethods) else { return }
         present(component, delegate: session)
     }
-    
+
     internal func mbWayComponent(from paymentMethods: PaymentMethods?) -> MBWayComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: MBWayPaymentMethod.self) else { return nil }
@@ -103,7 +103,7 @@ extension IntegrationExample {
                                                      merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
                                                      allowOnboarding: true)
         let component = try? ApplePayComponent(paymentMethod: paymentMethod,
-                                               apiContext: apiContext,
+                                               apiContext: ConfigurationConstants.apiContext,
                                                configuration: config)
         guard let presentableComponent = component else { return }
         present(presentableComponent, delegate: self)
@@ -115,12 +115,12 @@ extension IntegrationExample {
         guard let component = convenienceStoreComponent(from: paymentMethods) else { return }
         present(component, delegate: self)
     }
-    
+
     internal func presentConvenienceStoreSession() {
         guard let component = convenienceStoreComponent(from: sessionPaymentMethods) else { return }
         present(component, delegate: session)
     }
-    
+
     internal func convenienceStoreComponent(from paymentMethods: PaymentMethods?) -> EContextStoreComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: EContextPaymentMethod.self) else { return nil }
@@ -128,7 +128,7 @@ extension IntegrationExample {
                                       apiContext: apiContext,
                                       configuration: BasicPersonalInfoFormComponent.Configuration(style: FormComponentStyle()))
     }
-    
+
     // MARK: BACS
 
     internal func presentBACSDirectDebitComponent() {

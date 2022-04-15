@@ -26,7 +26,7 @@ final class ActionComponentDelegateMock: ActionComponentDelegate {
     
     var onDidOpenExternalApplication: ((_ component: ActionComponent) -> Void)?
     
-    func didOpenExternalApplication(_ component: ActionComponent) {
+    func didOpenExternalApplication(component: ActionComponent) {
         onDidOpenExternalApplication?(component)
     }
 }

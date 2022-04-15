@@ -66,9 +66,9 @@ extension DropInComponent: PaymentComponentDelegate {
 extension DropInComponent: ActionComponentDelegate {
     
     /// :nodoc:
-    public func didOpenExternalApplication(_ component: ActionComponent) {
+    public func didOpenExternalApplication(component: ActionComponent) {
         stopLoading()
-        delegate?.didOpenExternalApplication(component, in: self)
+        delegate?.didOpenExternalApplication(component: component, in: self)
     }
 
     /// :nodoc:

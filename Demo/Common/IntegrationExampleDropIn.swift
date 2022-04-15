@@ -40,7 +40,7 @@ extension IntegrationExample {
     internal func dropInComponent(from paymentMethods: PaymentMethods?) -> DropInComponent? {
         guard let paymentMethods = paymentMethods else { return nil }
 
-        let configuration = DropInComponent.Configuration(apiContext: apiContext)
+        let configuration = DropInComponent.Configuration(apiContext: ConfigurationConstants.apiContext)
 
         if let applePayPayment = try? ApplePayPayment(payment: payment) {
             configuration.applePay = .init(payment: applePayPayment,

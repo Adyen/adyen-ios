@@ -38,7 +38,7 @@ public protocol AdyenSessionDelegate: AnyObject {
     /// - Parameters:
     ///   - component: The current component object.
     ///   - session: The session object.
-    func didOpenExternalApplication(_ component: ActionComponent, session: AdyenSession)
+    func didOpenExternalApplication(component: ActionComponent, session: AdyenSession)
     
     /// Returns a handler for handling the payment data submitted by the shopper, that is required for the payments call.
     /// - Parameters:

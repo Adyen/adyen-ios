@@ -14,7 +14,8 @@ class CardComponentTests: XCTestCase {
 
     func testRequiresKeyboardInput() {
         let method = CardPaymentMethodMock(type: .card, name: "test_name", brands: ["bcmc"])
-        let sut = CardComponent(paymentMethod: method, apiContext: Dummy.context)
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context)
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
 

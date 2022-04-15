@@ -465,7 +465,8 @@ class SessionTests: XCTestCase {
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
-        let dropIn = DropInComponent(paymentMethods: paymenMethods, configuration: config)
+        let dropIn = DropInComponent(paymentMethods: paymenMethods,
+                                     configuration: config)
         let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
         let sessionHandlerMock = SessionAdvancedHandlerMock()
         let sessionDelegate = SessionDelegateMock()
@@ -531,7 +532,7 @@ class SessionTests: XCTestCase {
         )
         
         dropIn.didFail(with: ComponentError.paymentMethodNotSupported, from: paymentComponent)
-        dropIn.didOpenExternalApplication(QRCodeComponent(apiContext: Dummy.context))
+        dropIn.didOpenExternalApplication(component: QRCodeComponent(apiContext: Dummy.context))
         dropIn.didSubmit(paymentData, from: paymentComponent)
         dropIn.didProvide(actionData, from: actionComponent)
         sut.sessionContext.resultCode = .authorised

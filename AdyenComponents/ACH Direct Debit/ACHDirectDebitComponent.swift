@@ -201,7 +201,8 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
                                    style: configuration.style.addressStyle,
                                    localizationParameters: configuration.localizationParameters,
                                    identifier: identifier,
-                                   supportedCountryCodes: configuration.billingAddressCountryCodes)
+                                   supportedCountryCodes: configuration.billingAddressCountryCodes,
+                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
         configuration.shopperInformation?.billingAddress.map { item.value = $0 }
         item.style.backgroundColor = UIColor.Adyen.lightGray
         return item
