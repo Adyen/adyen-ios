@@ -195,6 +195,23 @@ extension IntegrationExample {
 
     // MARK: - Payment response handling
 
+    private func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
+        switch result {
+        case let .success(response):
+            if let action = response.action {
+                handle(action)
+            } else if let order = response.order,
+                      let remainingAmount = order.remainingAmount,
+                      remainingAmount.value > 0 {
+                handle(order)
+            } else {
+                finish(with: response)
+            }
+        case let .failure(error):
+            finish(with: error)
+        }
+    }
+
     internal func handle(_ action: Action) {
         if let dropInAsActionComponent = currentComponent as? ActionHandlingComponent {
             /// In case current component is a `DropInComponent` that implements `ActionHandlingComponent`
@@ -227,7 +244,7 @@ extension IntegrationExample: ActionComponentDelegate {
     }
 
     internal func didComplete(from component: ActionComponent) {
-        finish(with: .authorised)
+        finish(with: .received)
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {

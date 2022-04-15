@@ -71,7 +71,7 @@ extension IntegrationExample {
                       remainingAmount.value > 0 {
                 handle(order)
             } else {
-                finish(with: response.resultCode)
+                finish(with: response)
             }
         case let .failure(error):
             finish(with: error)
