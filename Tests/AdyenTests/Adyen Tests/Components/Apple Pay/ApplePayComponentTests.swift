@@ -154,12 +154,12 @@ class ApplePayComponentTest: XCTestCase {
         let expectedSummaryItems = Dummy.createTestSummaryItems()
         let expectedRequiredBillingFields = getRandomContactFieldSet()
         let expectedRequiredShippingFields = getRandomContactFieldSet()
-        let configuration = ApplePayComponent.Configuration(payment: try .init(countryCode: countryCode,
+        var configuration = ApplePayComponent.Configuration(payment: try .init(countryCode: countryCode,
                                                                                currencyCode: currencyCode,
                                                                                summaryItems: expectedSummaryItems),
-                                                            merchantIdentifier: "test_id",
-                                                            requiredBillingContactFields: expectedRequiredBillingFields,
-                                                            requiredShippingContactFields: expectedRequiredShippingFields)
+                                                            merchantIdentifier: "test_id")
+        configuration.requiredBillingContactFields = expectedRequiredBillingFields
+        configuration.requiredShippingContactFields = expectedRequiredShippingFields
         let paymentRequest = configuration.createPaymentRequest(supportedNetworks: paymentMethod.supportedNetworks)
         XCTAssertEqual(paymentRequest.paymentSummaryItems, expectedSummaryItems)
         XCTAssertEqual(paymentRequest.merchantCapabilities, PKMerchantCapability.capability3DS)
@@ -176,9 +176,7 @@ class ApplePayComponentTest: XCTestCase {
         let expectedRequiredBillingFields = getRandomContactFieldSet()
         let expectedRequiredShippingFields = getRandomContactFieldSet()
         let configuration = ApplePayComponent.Configuration(payment: try .init(payment: payment),
-                                                            merchantIdentifier: "test_id",
-                                                            requiredBillingContactFields: expectedRequiredBillingFields,
-                                                            requiredShippingContactFields: expectedRequiredShippingFields)
+                                                            merchantIdentifier: "test_id")
         let paymentRequest = configuration.createPaymentRequest(supportedNetworks: paymentMethod.supportedNetworks)
 
         XCTAssertEqual(paymentRequest.paymentSummaryItems.count, 1)

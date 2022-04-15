@@ -53,6 +53,18 @@ internal enum ConfigurationConstants {
                              "amountExcludingTax": "248",
                              "taxAmount": "52",
                              "id": "Item #2"]]
+
+    static var shippingMethods: [PKShippingMethod] = {
+        var shippingByCar = PKShippingMethod(label: "By car", amount: NSDecimalNumber(5.0))
+        shippingByCar.identifier = "car"
+        shippingByCar.detail = "Tommorow"
+
+        var shippingByPlane = PKShippingMethod(label: "By Plane", amount: NSDecimalNumber(50.0))
+        shippingByPlane.identifier = "plane"
+        shippingByPlane.detail = "Today"
+        
+        return [shippingByCar, shippingByPlane]
+    }()
     
     static var current = Configuration.loadConfiguration() {
         didSet { Configuration.saveConfiguration(current) }
