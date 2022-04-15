@@ -16,7 +16,29 @@ extension IntegrationExample {
     // MARK: - DropIn Component
 
     internal func presentDropInComponent() {
-        guard let paymentMethods = paymentMethods else { return }
+        guard let dropIn = dropInComponent(from: paymentMethods) else { return }
+        
+        dropIn.delegate = self
+        dropIn.partialPaymentDelegate = self
+        dropIn.storedPaymentMethodsDelegate = self
+        currentComponent = dropIn
+
+        presenter?.present(viewController: dropIn.viewController, completion: nil)
+    }
+    
+    internal func presentDropInComponentSession() {
+        guard let dropIn = dropInComponent(from: sessionPaymentMethods) else { return }
+        
+        dropIn.delegate = session
+        dropIn.partialPaymentDelegate = session
+//        dropIn.storedPaymentMethodsDelegate = self
+        currentComponent = dropIn
+
+        presenter?.present(viewController: dropIn.viewController, completion: nil)
+    }
+    
+    internal func dropInComponent(from paymentMethods: PaymentMethods?) -> DropInComponent? {
+        guard let paymentMethods = paymentMethods else { return nil }
 
         let configuration = DropInComponent.Configuration(apiContext: apiContext)
 
@@ -24,21 +46,17 @@ extension IntegrationExample {
             configuration.applePay = .init(payment: applePayPayment,
                                            merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         }
-
+        
         configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         configuration.payment = payment
         configuration.card.billingAddressMode = .postalCode
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
-
+        
         let component = DropInComponent(paymentMethods: paymentMethods,
                                         configuration: configuration,
                                         title: ConfigurationConstants.appName)
-        component.delegate = self
-        component.partialPaymentDelegate = self
-        component.storedPaymentMethodsDelegate = self
-        currentComponent = component
-
-        presenter?.present(viewController: component.viewController, completion: nil)
+        
+        return component
     }
 
     // MARK: - Payment response handling

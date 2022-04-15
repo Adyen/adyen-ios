@@ -11,9 +11,10 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-/// `AdyenSession` acts as the auto-pilot for the checkout process
-/// such as handling the payments and payment details calls internally
-/// and providing feedback at the end via `AdyenSessionDelegate` methods.
+/// `AdyenSession` acts as the auto-pilot for the whole checkout process.
+/// It can handle the necessary steps internally such as `/payments` and `/payment/details`
+/// calls and partial payment calls, then provide feedback
+/// via `AdyenSessionDelegate` methods.
 public final class AdyenSession {
     
     /// Session configuration.
@@ -51,7 +52,7 @@ public final class AdyenSession {
         public let countryCode: String
         
         /// Shopper Locale
-        public let shopperLocale: String
+        public let shopperLocale: String?
         
         /// The payment amount
         public let amount: Amount
@@ -135,10 +136,6 @@ public final class AdyenSession {
                 completion(.failure(error))
             }
         }
-    }
-    
-    public func didFail(with error: Error, from dropInComponent: Component) {
-        // TODO: Call back merchant
     }
     
     // MARK: - Action Handling for Components

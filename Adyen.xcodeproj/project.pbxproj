@@ -98,6 +98,10 @@
 		A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */; };
 		A07355D7276B350F00530562 /* DocumentActionViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */; };
 		A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */; };
+		A09ADA0E2806E72D00BF6802 /* IntegrationExampleSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09ADA0D2806E72D00BF6802 /* IntegrationExampleSession.swift */; };
+		A09ADA0F2806E72D00BF6802 /* IntegrationExampleSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09ADA0D2806E72D00BF6802 /* IntegrationExampleSession.swift */; };
+		A09ADA112807142600BF6802 /* SessionSetupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09ADA102807142600BF6802 /* SessionSetupRequest.swift */; };
+		A09ADA122807142600BF6802 /* SessionSetupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09ADA102807142600BF6802 /* SessionSetupRequest.swift */; };
 		A09C704327032870004C01AA /* FormCardLogosItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09C704227032870004C01AA /* FormCardLogosItemView.swift */; };
 		A0BFC8082720259500E36516 /* CardBrandSorterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BFC8072720259500E36516 /* CardBrandSorterTests.swift */; };
 		A0D48FB827109B0200C0B82C /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */; };
@@ -1102,6 +1106,8 @@
 		A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionViewDelegateMock.swift; sourceTree = "<group>"; };
 		A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatter.swift; sourceTree = "<group>"; };
 		A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatterTests.swift; sourceTree = "<group>"; };
+		A09ADA0D2806E72D00BF6802 /* IntegrationExampleSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationExampleSession.swift; sourceTree = "<group>"; };
+		A09ADA102807142600BF6802 /* SessionSetupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSetupRequest.swift; sourceTree = "<group>"; };
 		A09C704227032870004C01AA /* FormCardLogosItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardLogosItemView.swift; sourceTree = "<group>"; };
 		A0BFC8072720259500E36516 /* CardBrandSorterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardBrandSorterTests.swift; sourceTree = "<group>"; };
 		A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayHelpers.swift; sourceTree = "<group>"; };
@@ -3707,6 +3713,7 @@
 				E7D18A0325D44610006AD3B7 /* IntegrationExampleDropIn.swift */,
 				E7D18A0F25D44769006AD3B7 /* IntegrationExampleComponents.swift */,
 				F9FE24ED2625A0D6001874BB /* IntegrationExamplePartialPayment.swift */,
+				A09ADA0D2806E72D00BF6802 /* IntegrationExampleSession.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -3993,6 +4000,7 @@
 				F9FE248326258F6E001874BB /* CancelOrderRequest.swift */,
 				F9FE24D826259267001874BB /* CreateOrderRequest.swift */,
 				F988542F272C078E00F34557 /* DisableStoredPaymentMethodRequest.swift */,
+				A09ADA102807142600BF6802 /* SessionSetupRequest.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -5584,12 +5592,14 @@
 				F9A53C442549887F009000A7 /* DefaultAPIClient.swift in Sources */,
 				E24FED0D2270915A00A65122 /* CodingHelpers.swift in Sources */,
 				C9454C37276A340B0086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */,
+				A09ADA112807142600BF6802 /* SessionSetupRequest.swift in Sources */,
 				E757F03925D2ED57007C813D /* APIClientMock.swift in Sources */,
 				E73C560625EE8C8D00B57758 /* APIClientHelper.swift in Sources */,
 				F9A53C4A2549887F009000A7 /* Environment.swift in Sources */,
 				F9FE24EE2625A0D6001874BB /* IntegrationExamplePartialPayment.swift in Sources */,
 				F99E73C02624846F00EA5B78 /* BalanceCheckRequest.swift in Sources */,
 				F9620D7B23C36082005209FC /* Configuration.swift in Sources */,
+				A09ADA0E2806E72D00BF6802 /* IntegrationExampleSession.swift in Sources */,
 				5A545FC72642F77500724A87 /* ConfigurationViewModel.swift in Sources */,
 				E24FECF5226EF9AB00A65122 /* ComponentsViewController.swift in Sources */,
 				5A54600F264433CD00724A87 /* SearchBar.swift in Sources */,
@@ -5828,6 +5838,7 @@
 				E7D18A0525D44610006AD3B7 /* IntegrationExampleDropIn.swift in Sources */,
 				F9A53D6325499B13009000A7 /* Configuration.swift in Sources */,
 				F95B6D9A2527454E002C9062 /* SceneDelegate.swift in Sources */,
+				A09ADA0F2806E72D00BF6802 /* IntegrationExampleSession.swift in Sources */,
 				F95B6DD6252B4654002C9062 /* ComponentsItem.swift in Sources */,
 				E73C560725EE8C8D00B57758 /* APIClientHelper.swift in Sources */,
 				E7D18A1125D44769006AD3B7 /* IntegrationExampleComponents.swift in Sources */,
@@ -5840,6 +5851,7 @@
 				5A545FE72643CF2700724A87 /* ConfigurationView.swift in Sources */,
 				5A546010264433CE00724A87 /* SearchBar.swift in Sources */,
 				F95B6D9C2527454E002C9062 /* ComponentsView.swift in Sources */,
+				A09ADA122807142600BF6802 /* SessionSetupRequest.swift in Sources */,
 				F95B6DAE25274D9C002C9062 /* PaymentsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

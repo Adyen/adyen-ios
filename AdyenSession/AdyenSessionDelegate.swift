@@ -60,9 +60,9 @@ public protocol AdyenSessionDelegate: AnyObject {
 /// :nodoc:
 public extension AdyenSessionDelegate {
 
-    func handlerForPayments(for component: PaymentComponent, session: AdyenSession) -> AdyenSessionPaymentsHandler? { nil }
+    func handlerForPayments(in component: PaymentComponent, session: AdyenSession) -> AdyenSessionPaymentsHandler? { nil }
     
-    func handlerForAdditionalDetails(for component: ActionComponent, session: AdyenSession) -> AdyenSessionPaymentDetailsHandler? { nil }
+    func handlerForAdditionalDetails(in component: ActionComponent, session: AdyenSession) -> AdyenSessionPaymentDetailsHandler? { nil }
 }
 
 /// Describes the interface to take over the step where data is provided for the payments call.

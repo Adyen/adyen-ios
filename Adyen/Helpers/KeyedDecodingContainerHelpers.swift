@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -31,7 +31,7 @@ internal extension KeyedDecodingContainer {
     ///
     /// - parameter key: The key to search for.
     /// - returns: Whether the `Decoder` has an entry for the given key.
-    func containsValue(_ key: KeyedDecodingContainer<K>.Key) throws -> Bool {
+    func containsValue(_ key: KeyedDecodingContainer<K>.Key) throws -> Bool { // swiftlint:disable:this explicit_acl
         try contains(key) && !decodeNil(forKey: key)
     }
 }

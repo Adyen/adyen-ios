@@ -25,3 +25,6 @@
 - Method `didFinalize(with success: Bool)` for `FinalizableComponent` changed to `didFinalize(with success: Bool, completion: (() -> Void)?)`;
 - Helper method `finalizeIfNeeded(with success: Bool)` for `Component` changed to `finalizeIfNeeded(with success: Bool, completion: (() -> Void)?)`;
 - In `ApplePayComponent.Configuration` init parameter `payment: Payment` changed to `payment: ApplePayPayment`;
+- Method `requestOrder(_ component: Component, completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void)` changed to `requestOrder(for component: Component, completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void)`
+- Method `cancelOrder(_ order: PartialPaymentOrder)` changed to `cancelOrder(_ order: PartialPaymentOrder, component: Component)`
+

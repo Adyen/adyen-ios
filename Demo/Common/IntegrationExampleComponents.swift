@@ -14,46 +14,85 @@ extension IntegrationExample {
 
     // MARK: - Standalone Components
 
+    // MARK: Card
+
     internal func presentCardComponent() {
-        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: CardPaymentMethod.self) else { return }
-        let component = CardComponent(paymentMethod: paymentMethod,
-                                      apiContext: apiContext)
+        guard let component = cardComponent(from: paymentMethods) else { return }
         component.cardComponentDelegate = self
-        present(component)
+        present(component, delegate: self)
     }
+    
+    internal func presentCardComponentSession() {
+        guard let component = cardComponent(from: sessionPaymentMethods) else { return }
+        component.cardComponentDelegate = self
+        present(component, delegate: session)
+    }
+    
+    internal func cardComponent(from paymentMethods: PaymentMethods?) -> CardComponent? {
+        guard let paymentMethods = paymentMethods,
+              let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
+        return CardComponent(paymentMethod: paymentMethod, apiContext: apiContext)
+    }
+
+    // MARK: IDEAL
 
     internal func presentIdealComponent() {
-        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: IssuerListPaymentMethod.self) else { return }
-        let component = IdealComponent(paymentMethod: paymentMethod,
-                                       apiContext: apiContext)
-        present(component)
+        guard let component = idealComponent(from: paymentMethods) else { return }
+        present(component, delegate: self)
     }
+    
+    internal func presentIdealComponentSession() {
+        guard let component = idealComponent(from: sessionPaymentMethods) else { return }
+        present(component, delegate: session)
+    }
+    
+    internal func idealComponent(from paymentMethods: PaymentMethods?) -> IdealComponent? {
+        guard let paymentMethods = paymentMethods,
+              let paymentMethod = paymentMethods.paymentMethod(ofType: IssuerListPaymentMethod.self) else { return nil }
+        return IdealComponent(paymentMethod: paymentMethod, apiContext: apiContext)
+    }
+
+    // MARK: SEPA
 
     internal func presentSEPADirectDebitComponent() {
-        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: SEPADirectDebitPaymentMethod.self) else { return }
-        let component = SEPADirectDebitComponent(paymentMethod: paymentMethod,
-                                                 apiContext: apiContext)
-        present(component)
+        guard let component = sepaComponent(from: paymentMethods) else { return }
+        present(component, delegate: self)
+    }
+    
+    internal func presentSEPADirectDebitComponentSession() {
+        guard let component = sepaComponent(from: sessionPaymentMethods) else { return }
+        present(component, delegate: session)
+    }
+    
+    internal func sepaComponent(from paymentMethods: PaymentMethods?) -> SEPADirectDebitComponent? {
+        guard let paymentMethods = paymentMethods,
+              let paymentMethod = paymentMethods.paymentMethod(ofType: SEPADirectDebitPaymentMethod.self) else { return nil }
+        return SEPADirectDebitComponent(paymentMethod: paymentMethod, apiContext: apiContext)
     }
 
-    internal func presentBACSDirectDebitComponent() {
-        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return }
-        let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
-                                                 apiContext: apiContext)
-        bacsDirectDebitPresenter = BACSDirectDebitPresentationDelegate(bacsComponent: component)
-        component.presentationDelegate = bacsDirectDebitPresenter
-        present(component)
-    }
+    // MARK: MBWay
 
     internal func presentMBWayComponent() {
-        let style = FormComponentStyle()
-        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: MBWayPaymentMethod.self) else { return }
-        let config = MBWayComponent.Configuration(style: style)
-        let component = MBWayComponent(paymentMethod: paymentMethod,
-                                       apiContext: apiContext,
-                                       configuration: config)
-        present(component)
+        guard let component = mbWayComponent(from: paymentMethods) else { return }
+        present(component, delegate: self)
     }
+    
+    internal func presentMBWayComponentSession() {
+        guard let component = mbWayComponent(from: sessionPaymentMethods) else { return }
+        present(component, delegate: session)
+    }
+    
+    internal func mbWayComponent(from paymentMethods: PaymentMethods?) -> MBWayComponent? {
+        guard let paymentMethods = paymentMethods,
+              let paymentMethod = paymentMethods.paymentMethod(ofType: MBWayPaymentMethod.self) else { return nil }
+        let style = FormComponentStyle()
+        let config = MBWayComponent.Configuration(style: style)
+        return MBWayComponent(paymentMethod: paymentMethod,
+                              apiContext: apiContext,
+                              configuration: config)
+    }
+
+    // MARK: Apple Pay
 
     internal func presentApplePayComponent() {
         guard
@@ -67,30 +106,53 @@ extension IntegrationExample {
                                                apiContext: apiContext,
                                                configuration: config)
         guard let presentableComponent = component else { return }
-        present(presentableComponent)
+        present(presentableComponent, delegate: self)
     }
 
+    // MARK: Convenience Store
+
     internal func presentConvenienceStore() {
-        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: EContextPaymentMethod.self) else { return }
-        let component = EContextStoreComponent(paymentMethod: paymentMethod,
-                                               apiContext: apiContext,
-                                               configuration: BasicPersonalInfoFormComponent.Configuration(style: FormComponentStyle()))
-        present(component)
+        guard let component = convenienceStoreComponent(from: paymentMethods) else { return }
+        present(component, delegate: self)
+    }
+    
+    internal func presentConvenienceStoreSession() {
+        guard let component = convenienceStoreComponent(from: sessionPaymentMethods) else { return }
+        present(component, delegate: session)
+    }
+    
+    internal func convenienceStoreComponent(from paymentMethods: PaymentMethods?) -> EContextStoreComponent? {
+        guard let paymentMethods = paymentMethods,
+              let paymentMethod = paymentMethods.paymentMethod(ofType: EContextPaymentMethod.self) else { return nil }
+        return EContextStoreComponent(paymentMethod: paymentMethod,
+                                      apiContext: apiContext,
+                                      configuration: BasicPersonalInfoFormComponent.Configuration(style: FormComponentStyle()))
+    }
+    
+    // MARK: BACS
+
+    internal func presentBACSDirectDebitComponent() {
+        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return }
+        let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
+                                                 apiContext: apiContext)
+        bacsDirectDebitPresenter = BACSDirectDebitPresentationDelegate(bacsComponent: component)
+        component.presentationDelegate = bacsDirectDebitPresenter
+        present(component, delegate: self)
     }
 
     // MARK: - Presentation
 
-    private func present(_ component: PresentableComponent) {
+    private func present(_ component: PresentableComponent, delegate: (PaymentComponentDelegate & ActionComponentDelegate)?) {
         if let component = component as? PaymentAwareComponent {
             component.payment = payment
         }
 
         if let paymentComponent = component as? PaymentComponent {
-            paymentComponent.delegate = self
+            paymentComponent.delegate = delegate
         }
 
         if let actionComponent = component as? ActionComponent {
-            actionComponent.delegate = self
+            actionComponent.delegate = delegate
         }
 
         currentComponent = component
@@ -192,6 +254,6 @@ extension IntegrationExample: CardComponentDelegate {
 
 extension IntegrationExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {
-        present(component)
+        present(component, delegate: self)
     }
 }
