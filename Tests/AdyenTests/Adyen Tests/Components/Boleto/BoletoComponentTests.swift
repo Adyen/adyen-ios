@@ -10,9 +10,25 @@
 import XCTest
 
 class BoletoComponentTests: XCTestCase {
-    
+
+    private var analyticsProviderMock: AnalyticsProviderMock!
+    private var adyenContext: AdyenContext!
+
     private var sut: BoletoComponent!
     private var method = BoletoPaymentMethod(type: .boleto, name: "Boleto Bancario")
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        analyticsProviderMock = AnalyticsProviderMock()
+        adyenContext = Dummy.adyenContext
+        adyenContext.analyticsProvider = analyticsProviderMock
+    }
+
+    override func tearDownWithError() throws {
+        analyticsProviderMock = nil
+        adyenContext = nil
+        try super.tearDownWithError()
+    }
 
     func testUIConfiguration() {
         var style = FormComponentStyle()
@@ -347,6 +363,20 @@ class BoletoComponentTests: XCTestCase {
 
         waitForExpectations(timeout: 15, handler: nil)
     }
+
+    func testViewWillAppearShouldSendTelemetryEvent() throws {
+        // Given
+        sut = BoletoComponent(paymentMethod: method,
+                              apiContext: Dummy.context,
+                              adyenContext: Dummy.adyenContext,
+                              configuration: getConfiguration(with: dummyFullPrefilledInformation, showEmailAddress: true))
+
+        // When
+        sut.viewWillAppear(viewController: sut.viewController)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+    }
     
     private let dummyAddress = PostalAddress(
         city: "São Paulo",
@@ -382,5 +412,4 @@ class BoletoComponentTests: XCTestCase {
                                       shopperInformation: shopperInfo,
                                       showEmailAddress: showEmailAddress)
     }
-
 }
