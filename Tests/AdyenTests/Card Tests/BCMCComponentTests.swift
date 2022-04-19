@@ -362,7 +362,7 @@ class BCMCComponentTests: XCTestCase {
         XCTAssertEqual(sut.viewController.title, cardPaymentMethod.name)
     }
 
-    func testViewWillAppearShouldSendTelemetryRequest() throws {
+    func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
         let cardPaymentMethod = CardPaymentMethod(type: .card,
                                        name: "Test name",

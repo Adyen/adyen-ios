@@ -20,6 +20,10 @@ class GiftCardComponentTests: XCTestCase {
 
     var publicKeyProvider: PublicKeyProviderMock!
 
+    var analyticsProviderMock: AnalyticsProviderMock!
+
+    var adyenContext: AdyenContext!
+
     var sut: GiftCardComponent!
 
     var paymentMethod: GiftCardPaymentMethod!
@@ -44,9 +48,14 @@ class GiftCardComponentTests: XCTestCase {
         super.setUp()
         paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
         publicKeyProvider = PublicKeyProviderMock()
+
+        analyticsProviderMock = AnalyticsProviderMock()
+        adyenContext = Dummy.adyenContext
+        adyenContext.analyticsProvider = analyticsProviderMock
+
         sut = GiftCardComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context,
-                                adyenContext: Dummy.adyenContext,
+                                adyenContext: adyenContext,
                                 publicKeyProvider: publicKeyProvider)
         sut.payment = nil // Missing Payment object
         delegateMock = PaymentComponentDelegateMock()
@@ -535,6 +544,17 @@ class GiftCardComponentTests: XCTestCase {
         XCTAssertEqual(sut.errorItem.message, "An unknown error occurred")
 
         waitForExpectations(timeout: 10, handler: nil)
+    }
+
+    func testViewWillAppearShouldSendTelemetryEvent() throws {
+        // Given
+        let mockViewController = UIViewController()
+
+        // When
+        sut.viewWillAppear(viewController: mockViewController)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
     }
 
     private func populate(cardNumber: String, pin: String) {

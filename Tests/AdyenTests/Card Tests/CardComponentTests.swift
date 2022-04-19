@@ -1980,7 +1980,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(countryItemView?.inputControl.label, "United Kingdom")
     }
 
-    func testViewWillAppearShouldSendTelemetryRequest() throws {
+    func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
         let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let configuration = CardComponent.Configuration()
