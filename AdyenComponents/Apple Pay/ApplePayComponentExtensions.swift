@@ -53,18 +53,23 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
             return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
         }
 
-        let result = applePayDelegate.didUpdate(contact: contact,
-                                                with: applePayPayment,
-                                                component: self)
-        if result.paymentSummaryItems.isEmpty == false {
-            do {
-                try applePayPayment.update(with: result.paymentSummaryItems)
-            } catch {
-                delegate?.didFail(with: error, from: self)
-            }
-        }
-        print(applePayPayment.summaryItems.reduce("") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
-        completion(result)
+        let applePayPayment = self.applePayPayment
+        applePayDelegate.didUpdate(contact: contact,
+                                   for: applePayPayment,
+                                   with: { [weak self] result in
+                                       guard let self = self else {
+                                           return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
+                                       }
+            
+                                       if result.paymentSummaryItems.isEmpty == false {
+                                           do {
+                                               try self.applePayPayment.update(with: result.paymentSummaryItems)
+                                           } catch {
+                                               self.delegate?.didFail(with: error, from: self)
+                                           }
+                                       }
+                                       completion(result)
+                                   })
     }
 
     public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
@@ -74,18 +79,23 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
             return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
         }
 
-        let result = applePayDelegate.didUpdate(shippingMethod: shippingMethod,
-                                                with: applePayPayment,
-                                                component: self)
-        if result.paymentSummaryItems.isEmpty == false {
-            do {
-                try applePayPayment.update(with: result.paymentSummaryItems)
-            } catch {
-                delegate?.didFail(with: error, from: self)
-            }
-        }
-        print(applePayPayment.summaryItems.reduce("") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
-        completion(result)
+        let applePayPayment = self.applePayPayment
+        applePayDelegate.didUpdate(shippingMethod: shippingMethod,
+                                   for: applePayPayment,
+                                   with: { [weak self] result in
+                                       guard let self = self else {
+                                           return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
+                                       }
+
+                                       if result.paymentSummaryItems.isEmpty == false {
+                                           do {
+                                               try self.applePayPayment.update(with: result.paymentSummaryItems)
+                                           } catch {
+                                               self.delegate?.didFail(with: error, from: self)
+                                           }
+                                       }
+                                       completion(result)
+                                   })
     }
 
     @available(iOS 15.0, *)
@@ -96,34 +106,39 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
             return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
         }
 
-        let result = applePayDelegate.didUpdate(couponCode: couponCode,
-                                                with: applePayPayment,
-                                                component: self)
-        if result.paymentSummaryItems.isEmpty == false {
-            do {
-                try applePayPayment.update(with: result.paymentSummaryItems)
-            } catch {
-                delegate?.didFail(with: error, from: self)
-            }
-        }
-        print(applePayPayment.summaryItems.reduce("") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
-        completion(result)
+        let applePayPayment = self.applePayPayment
+        applePayDelegate.didUpdate(couponCode: couponCode,
+                                   for: applePayPayment,
+                                   with: { [weak self] result in
+                                       guard let self = self else {
+                                           return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
+                                       }
+
+                                       if result.paymentSummaryItems.isEmpty == false {
+                                           do {
+                                               try self.applePayPayment.update(with: result.paymentSummaryItems)
+                                           } catch {
+                                               self.delegate?.didFail(with: error, from: self)
+                                           }
+                                       }
+                                       completion(result)
+                                   })
     }
 }
 
 public protocol ApplePayComponentDelegate: AnyObject {
 
     func didUpdate(contact: PKContact,
-                   with payment: ApplePayPayment,
-                   component: ApplePayComponent) -> PKPaymentRequestShippingContactUpdate
+                   for payment: ApplePayPayment,
+                   with completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void)
 
     func didUpdate(shippingMethod: PKShippingMethod,
-                   with payment: ApplePayPayment,
-                   component: ApplePayComponent) -> PKPaymentRequestShippingMethodUpdate
+                   for payment: ApplePayPayment,
+                   with completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void)
 
     @available(iOS 15.0, *)
     func didUpdate(couponCode: String,
-                   with payment: ApplePayPayment,
-                   component: ApplePayComponent) -> PKPaymentRequestCouponCodeUpdate
+                   for payment: ApplePayPayment,
+                   with completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void)
     
 }
