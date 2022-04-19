@@ -12,14 +12,35 @@ import XCTest
 
 class MBWayComponentTests: XCTestCase {
 
-    lazy var paymentMethod = MBWayPaymentMethod(type: .mbWay, name: "test_name")
-    let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
+    private var analyticsProviderMock: AnalyticsProviderMock!
+    private var adyenContext: AdyenContext!
+    private var paymentMethod: MBWayPaymentMethod!
+    private var payment: Payment!
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+
+        analyticsProviderMock = AnalyticsProviderMock()
+        adyenContext = Dummy.adyenContext
+        adyenContext.analyticsProvider = analyticsProviderMock
+
+        paymentMethod = MBWayPaymentMethod(type: .mbWay, name: "test_name")
+        payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
+    }
+
+    override func tearDownWithError() throws {
+        analyticsProviderMock = nil
+        adyenContext = nil
+        paymentMethod = nil
+        payment = nil
+        try super.tearDownWithError()
+    }
 
     func testLocalizationWithCustomTableName() {
         let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                  apiContext: Dummy.context,
-                                 adyenContext: Dummy.adyenContext,
+                                 adyenContext: adyenContext,
                                  configuration: config)
         sut.payment = payment
 
@@ -36,7 +57,7 @@ class MBWayComponentTests: XCTestCase {
         let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                  apiContext: Dummy.context,
-                                 adyenContext: Dummy.adyenContext,
+                                 adyenContext: adyenContext,
                                  configuration: config)
         sut.payment = payment
 
@@ -76,7 +97,7 @@ class MBWayComponentTests: XCTestCase {
         let config = MBWayComponent.Configuration(style: style)
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                  apiContext: Dummy.context,
-                                 adyenContext: Dummy.adyenContext,
+                                 adyenContext: adyenContext,
                                  configuration: config)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -116,7 +137,7 @@ class MBWayComponentTests: XCTestCase {
     func testSubmitForm() {
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                  apiContext: Dummy.context,
-                                 adyenContext: Dummy.adyenContext)
+                                 adyenContext: adyenContext)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         sut.payment = payment
@@ -153,7 +174,7 @@ class MBWayComponentTests: XCTestCase {
     func testBigTitle() {
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                  apiContext: Dummy.context,
-                                 adyenContext: Dummy.adyenContext)
+                                 adyenContext: adyenContext)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -168,7 +189,7 @@ class MBWayComponentTests: XCTestCase {
 
     func testRequiresModalPresentation() {
         let mbWayPaymentMethod = MBWayPaymentMethod(type: .mbWay, name: "Test name")
-        let sut = MBWayComponent(paymentMethod: mbWayPaymentMethod, apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
+        let sut = MBWayComponent(paymentMethod: mbWayPaymentMethod, apiContext: Dummy.context, adyenContext: adyenContext)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
@@ -177,7 +198,7 @@ class MBWayComponentTests: XCTestCase {
         let config = MBWayComponent.Configuration(shopperInformation: shopperInformation)
         let prefillSut = MBWayComponent(paymentMethod: paymentMethod,
                                         apiContext: Dummy.context,
-                                        adyenContext: Dummy.adyenContext,
+                                        adyenContext: adyenContext,
                                         configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
@@ -192,11 +213,11 @@ class MBWayComponentTests: XCTestCase {
         XCTAssertEqual(expectedPhoneNumber, phoneNumber)
     }
 
-    func testMBWay_givenNoShopperInformation_shouldNotPrefill() throws {
+    func testMBWayGivenNoShopperInformationShouldNotPrefill() throws {
         // Given
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                  apiContext: Dummy.context,
-                                 adyenContext: Dummy.adyenContext,
+                                 adyenContext: adyenContext,
                                  configuration: MBWayComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -208,6 +229,20 @@ class MBWayComponentTests: XCTestCase {
         let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: MBWayViewIdentifier.phone))
         let phoneNumber = phoneNumberView.item.value
         XCTAssertTrue(phoneNumber.isEmpty)
+    }
+
+    func testViewWillAppearShouldSendTelemetryEvent() throws {
+        // Given
+        let sut = MBWayComponent(paymentMethod: paymentMethod,
+                                 apiContext: Dummy.context,
+                                 adyenContext: adyenContext,
+                                 configuration: MBWayComponent.Configuration())
+
+        // When
+        sut.viewWillAppear(viewController: sut.viewController)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
     }
 
     // MARK: - Private
