@@ -9,6 +9,22 @@
 import XCTest
 
 class QiwiWalletComponentTests: XCTestCase {
+
+    var analyticsProviderMock: AnalyticsProviderMock!
+    var adyenContext: AdyenContext!
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        analyticsProviderMock = AnalyticsProviderMock()
+        adyenContext = Dummy.adyenContext
+        adyenContext.analyticsProvider = analyticsProviderMock
+    }
+
+    override func tearDownWithError() throws {
+        analyticsProviderMock = nil
+        adyenContext = nil
+        try super.tearDownWithError()
+    }
     
     lazy var phoneExtensions = [PhoneExtension(value: "+1", countryCode: "US"), PhoneExtension(value: "+3", countryCode: "UK")]
     lazy var method = QiwiWalletPaymentMethod(type: .qiwiWallet, name: "test_name", phoneExtensions: phoneExtensions)
@@ -16,7 +32,7 @@ class QiwiWalletComponentTests: XCTestCase {
     
     func testLocalizationWithCustomTableName() {
         let config = QiwiWalletComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
-        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, adyenContext: Dummy.adyenContext, configuration: config)
+        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, adyenContext: adyenContext, configuration: config)
         sut.payment = payment
         
         let expectedSelectableValues = phoneExtensions.map { PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0) }
@@ -35,7 +51,7 @@ class QiwiWalletComponentTests: XCTestCase {
     
     func testLocalizationWithCustomKeySeparator() {
         let config = QiwiWalletComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
-        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, adyenContext: Dummy.adyenContext, configuration: config)
+        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, adyenContext: adyenContext, configuration: config)
         sut.payment = payment
         
         let expectedSelectableValues = phoneExtensions.map { PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0) }
@@ -77,7 +93,7 @@ class QiwiWalletComponentTests: XCTestCase {
         style.textField.backgroundColor = .red
         
         let config = QiwiWalletComponent.Configuration(style: style)
-        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, adyenContext: Dummy.adyenContext, configuration: config)
+        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, adyenContext: adyenContext, configuration: config)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -123,7 +139,7 @@ class QiwiWalletComponentTests: XCTestCase {
     }
     
     func testBigTitle() {
-        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, adyenContext: Dummy.adyenContext, configuration: QiwiWalletComponent.Configuration())
+        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, adyenContext: adyenContext, configuration: QiwiWalletComponent.Configuration())
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -138,14 +154,14 @@ class QiwiWalletComponentTests: XCTestCase {
     
     func testRequiresModalPresentation() {
         let qiwiPaymentMethod = QiwiWalletPaymentMethod(type: .qiwiWallet, name: "Test name")
-        let sut = QiwiWalletComponent(paymentMethod: qiwiPaymentMethod, apiContext: Dummy.context, adyenContext: Dummy.adyenContext, configuration: QiwiWalletComponent.Configuration())
+        let sut = QiwiWalletComponent(paymentMethod: qiwiPaymentMethod, apiContext: Dummy.context, adyenContext: adyenContext, configuration: QiwiWalletComponent.Configuration())
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
     func testSubmit() {
         let phoneExtensions = [PhoneExtension(value: "+3", countryCode: "UK")]
         let method = QiwiWalletPaymentMethod(type: .qiwiWallet, name: "test_name", phoneExtensions: phoneExtensions)
-        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, adyenContext: Dummy.adyenContext, configuration: QiwiWalletComponent.Configuration())
+        let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, adyenContext: adyenContext, configuration: QiwiWalletComponent.Configuration())
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
@@ -179,5 +195,20 @@ class QiwiWalletComponentTests: XCTestCase {
         }
         waitForExpectations(timeout: 10, handler: nil)
     }
-    
+
+    func testViewWillAppearShouldSendTelemetryEvent() throws {
+        // Given
+        let phoneExtensions = [PhoneExtension(value: "+3", countryCode: "UK")]
+        let paymentMethod = QiwiWalletPaymentMethod(type: .qiwiWallet, name: "test_name", phoneExtensions: phoneExtensions)
+        let sut = QiwiWalletComponent(paymentMethod: paymentMethod,
+                                      apiContext: Dummy.context,
+                                      adyenContext: adyenContext,
+                                      configuration: QiwiWalletComponent.Configuration())
+
+        // When
+        sut.viewWillAppear(viewController: sut.viewController)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+    }
 }
