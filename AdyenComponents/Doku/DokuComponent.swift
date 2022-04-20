@@ -36,12 +36,12 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
         localizedString(.confirmPurchase, configuration.localizationParameters)
     }
 
-    override public func createPaymentDetails() -> PaymentMethodDetails {
+    override public func createPaymentDetails() throws -> PaymentMethodDetails {
         guard let firstNameItem = firstNameItem,
               let lastNameItem = lastNameItem,
               let emailItem = emailItem else {
-            fatalError("There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
-        }
+                  throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
+              }
         return DokuDetails(paymentMethod: paymentMethod,
                            firstName: firstNameItem.value,
                            lastName: lastNameItem.value,
