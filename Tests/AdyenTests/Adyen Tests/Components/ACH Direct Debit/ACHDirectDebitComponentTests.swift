@@ -33,7 +33,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           apiContext: Dummy.context,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
-        try sut.update(payment: payment)
+        sut.payment = payment
         
         XCTAssertEqual(sut.headerItem.text, localizedString(.achBankAccountTitle, sut.configuration.localizationParameters))
         
@@ -152,7 +152,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
         
-        try sut.update(payment: payment)
+        sut.payment = payment
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .milliseconds(300))
@@ -235,7 +235,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           apiContext: Dummy.context,
                                           configuration: .init(showsBillingAddress: false),
                                           publicKeyProvider: PublicKeyProviderMock())
-        try sut.update(payment: Payment(amount: Amount(value: 2, currencyCode: "USD"), countryCode: "US"))
+        sut.payment = Payment(amount: Amount(value: 2, currencyCode: "USD"), countryCode: "US")
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 

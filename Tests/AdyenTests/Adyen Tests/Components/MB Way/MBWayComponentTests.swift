@@ -18,7 +18,7 @@ class MBWayComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() throws {
         let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
         let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
-        try sut.update(payment: payment)
+        sut.payment = payment
 
         XCTAssertEqual(sut.phoneItem?.title, localizedString(.phoneNumberTitle, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(.phoneNumberPlaceholder, sut.configuration.localizationParameters))
@@ -32,7 +32,7 @@ class MBWayComponentTests: XCTestCase {
     func testLocalizationWithCustomKeySeparator() throws {
         let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
-        try sut.update(payment: payment)
+        sut.payment = payment
 
         XCTAssertEqual(sut.phoneItem?.title, localizedString(LocalizationKey(key: "adyen_phoneNumber_title"), sut.configuration.localizationParameters))
         XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(LocalizationKey(key: "adyen_phoneNumber_placeholder"), sut.configuration.localizationParameters))
@@ -104,7 +104,7 @@ class MBWayComponentTests: XCTestCase {
         let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
-        try sut.update(payment: payment)
+        sut.payment = payment
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidSubmit = { data, component in

@@ -32,7 +32,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: configuration)
-        try sut.update(payment: payment)
+        sut.payment = payment
         var items = sut.cardViewController.items
 
         XCTAssertEqual(items.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
@@ -62,7 +62,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: configuration)
-        try sut.update(payment: payment)
+        sut.payment = payment
 
         var items = sut.cardViewController.items
         XCTAssertEqual(items.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
@@ -456,7 +456,7 @@ class CardComponentTests: XCTestCase {
                                              holderName: "holderName")
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context)
-        try sut.update(payment: Payment(amount: Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL"))
+        sut.payment = Payment(amount: Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
@@ -540,7 +540,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: configuration)
-        try sut.update(payment: Payment(amount: Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL"))
+        sut.payment = Payment(amount: Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
@@ -813,7 +813,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
-        try sut.update(payment: .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "NL"))
+        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "NL")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         // When
@@ -871,7 +871,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
-        try sut.update(payment: .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US"))
+        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         // When
@@ -923,7 +923,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
-        try sut.update(payment: .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB"))
+        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .milliseconds(300))
@@ -956,7 +956,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
-        try sut.update(payment: .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "CA"))
+        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "CA")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .milliseconds(300))
@@ -1013,7 +1013,7 @@ class CardComponentTests: XCTestCase {
                                 configuration: config,
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: BinInfoProviderMock())
-        try sut.update(payment: .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US"))
+        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let delegate = PaymentComponentDelegateMock()
@@ -1881,7 +1881,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config)
         
-        try sut.update(payment: .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB"))
+        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .milliseconds(300))
@@ -1903,7 +1903,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config)
         
-        try sut.update(payment: .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US"))
+        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .milliseconds(300))
@@ -1925,7 +1925,7 @@ class CardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 configuration: config)
         
-        try sut.update(payment: .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB"))
+        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .milliseconds(300))

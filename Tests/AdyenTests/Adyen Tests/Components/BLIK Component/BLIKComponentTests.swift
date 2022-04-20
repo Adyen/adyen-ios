@@ -18,7 +18,7 @@ class BLIKComponentTests: XCTestCase {
 
     override func setUp() {
         sut = BLIKComponent(paymentMethod: method, apiContext: Dummy.context)
-        try! sut.update(payment: payment)
+        sut.payment = payment
     }
 
     override func tearDown() {
@@ -39,7 +39,7 @@ class BLIKComponentTests: XCTestCase {
 
     func testLocalizationWithZeroPayment() throws {
         let payment = Payment(amount: Amount(value: 0, currencyCode: "PLN"), countryCode: "PL")
-        try sut.update(payment: payment)
+        sut.payment = payment
         XCTAssertEqual(sut.hintLabelItem.text, localizedString(.blikHelp, sut.configuration.localizationParameters))
 
         XCTAssertEqual(sut.codeItem.title, localizedString(.blikCode, sut.configuration.localizationParameters))

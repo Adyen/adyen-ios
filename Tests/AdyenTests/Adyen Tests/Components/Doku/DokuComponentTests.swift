@@ -18,7 +18,7 @@ class DokuComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() throws {
         let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
         let sut = DokuComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
-        try sut.update(payment: payment)
+        sut.payment = payment
 
         XCTAssertEqual(sut.firstNameItem?.title, localizedString(.firstName, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(.firstName, sut.configuration.localizationParameters))
@@ -39,7 +39,7 @@ class DokuComponentTests: XCTestCase {
     func testLocalizationWithCustomKeySeparator() throws {
         let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = DokuComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
-        try sut.update(payment: payment)
+        sut.payment = payment
 
         XCTAssertEqual(sut.firstNameItem?.title, localizedString(LocalizationKey(key: "adyen_firstName"), sut.configuration.localizationParameters))
         XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(LocalizationKey(key: "adyen_firstName"), sut.configuration.localizationParameters))
@@ -142,7 +142,7 @@ class DokuComponentTests: XCTestCase {
         let sut = DokuComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: DokuComponent.Configuration())
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
-        try sut.update(payment: payment)
+        sut.payment = payment
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidSubmit = { data, component in

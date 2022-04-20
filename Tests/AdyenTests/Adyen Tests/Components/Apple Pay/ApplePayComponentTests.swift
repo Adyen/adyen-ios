@@ -95,7 +95,7 @@ class ApplePayComponentTest: XCTestCase {
     func testInvalidCurrencyCode() {
         let amount = Amount(value: 2, unsafeCurrencyCode: "ZZZ")
         let payment = Payment(amount: amount, countryCode: getRandomCountryCode())
-        XCTAssertThrowsError(try ApplePayPayment(payment: payment)) { error in
+        XCTAssertThrowsError(try ApplePayPayment(payment: payment, brand: "TEST")) { error in
             XCTAssertTrue(error is ApplePayComponent.Error)
             XCTAssertEqual(error as! ApplePayComponent.Error, ApplePayComponent.Error.invalidCurrencyCode)
             XCTAssertEqual((error as! ApplePayComponent.Error).localizedDescription, "The currency code is invalid.")
@@ -104,7 +104,7 @@ class ApplePayComponentTest: XCTestCase {
     
     func testInvalidCountryCode() {
         let payment = Payment(amount: amount, unsafeCountryCode: "ZZ")
-        XCTAssertThrowsError(try ApplePayPayment(payment: payment)) { error in
+        XCTAssertThrowsError(try ApplePayPayment(payment: payment, brand: "TEST")) { error in
             XCTAssertTrue(error is ApplePayComponent.Error)
             XCTAssertEqual(error as! ApplePayComponent.Error, ApplePayComponent.Error.invalidCountryCode)
             XCTAssertEqual((error as! ApplePayComponent.Error).localizedDescription, "The country code is invalid.")
@@ -175,14 +175,14 @@ class ApplePayComponentTest: XCTestCase {
         let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
         let expectedRequiredBillingFields = getRandomContactFieldSet()
         let expectedRequiredShippingFields = getRandomContactFieldSet()
-        var configuration = ApplePayComponent.Configuration(payment: try .init(payment: payment),
+        var configuration = ApplePayComponent.Configuration(payment: try .init(payment: payment, brand: "TEST"),
                                                             merchantIdentifier: "test_id")
         configuration.requiredBillingContactFields = expectedRequiredBillingFields
         configuration.requiredShippingContactFields = expectedRequiredShippingFields
         let paymentRequest = configuration.createPaymentRequest(supportedNetworks: paymentMethod.supportedNetworks)
 
         XCTAssertEqual(paymentRequest.paymentSummaryItems.count, 1)
-        XCTAssertEqual(paymentRequest.paymentSummaryItems[0].label, "Total")
+        XCTAssertEqual(paymentRequest.paymentSummaryItems[0].label, "TEST")
         XCTAssertEqual(paymentRequest.paymentSummaryItems[0].amount.description, payment.amount.formattedComponents.formattedValue)
 
         XCTAssertEqual(paymentRequest.merchantCapabilities, PKMerchantCapability.capability3DS)

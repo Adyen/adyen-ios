@@ -15,7 +15,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method, apiContext: Dummy.context)
         let payment = Payment(amount: Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
-        try sut.update(payment: payment)
+        sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
         let viewController = sut.viewController as? UIAlertController
@@ -29,7 +29,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method, apiContext: Dummy.context)
         let payment = Payment(amount: Amount(value: 0, currencyCode: "EUR"), countryCode: "DE")
-        try sut.update(payment: payment)
+        sut.payment = payment
 
         let viewController = sut.viewController as? UIAlertController
         XCTAssertNotNil(viewController)
@@ -44,7 +44,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method, apiContext: Dummy.context)
         let payment = Payment(amount: Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
-        try sut.update(payment: payment)
+        sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
         let viewController = sut.viewController as? UIAlertController
@@ -80,7 +80,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         sut.delegate = delegate
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        try sut.update(payment: payment)
+        sut.payment = payment
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 

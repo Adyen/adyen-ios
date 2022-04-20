@@ -34,7 +34,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
     
     override func setUp() {
         component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), apiContext: Dummy.context)
-        try! component.update(payment: payment)
+        component.payment = payment
         sut = PreselectedPaymentMethodComponent(component: component, title: "Test title", style: FormComponentStyle(), listItemStyle: ListItemStyle())
         
         delegate = PreselectedPaymentComponentDelegateMock()

@@ -25,6 +25,8 @@ public struct ApplePayPayment {
     /// The code of the currency in which the amount's value is specified.
     public var currencyCode: String { payment.amount.currencyCode }
 
+    internal var brand: String
+
     /// Create a new instance of ApplePayPayment.
     /// - Parameters:
     ///   - countryCode: The code of the country in which the payment is made.
@@ -58,18 +60,19 @@ public struct ApplePayPayment {
                                                         currencyCode: currencyCode)
         let amount = Amount(value: amountInt, currencyCode: currencyCode)
         let payment = Payment(amount: amount, countryCode: countryCode)
-        self.init(payment: payment, summaryItems: summaryItems)
+        self.init(payment: payment, summaryItems: summaryItems, brand: lastItem.label)
     }
 
     /// Create a new instance of ApplePayPayment.
     /// - Parameters:
     ///   - payment: The combination of amount and country code.
     ///   - localizationParameters: The localization parameters to control how strings are localized.
+    ///   - brand: The business name shopper will see when they look for the charge on their bank or credit card statement.
     /// - Throws: `ApplePayComponent.Error.negativeGrandTotal` if the grand total is negative.
     /// - Throws: `ApplePayComponent.Error.invalidSummaryItem` if at least one of the summary items has an invalid amount.
     /// - Throws: `ApplePayComponent.Error.invalidCountryCode` if the `payment.countryCode` is not a valid ISO country code.
     /// - Throws: `ApplePayComponent.Error.invalidCurrencyCode` if the `Amount.currencyCode` is not a valid ISO currency code.
-    public init(payment: Payment, localizationParameters: LocalizationParameters? = nil) throws {
+    public init(payment: Payment, brand: String, localizationParameters: LocalizationParameters? = nil) throws {
         guard CountryCodeValidator().isValid(payment.countryCode) else {
             throw ApplePayComponent.Error.invalidCountryCode
         }
@@ -86,13 +89,15 @@ public struct ApplePayPayment {
             throw ApplePayComponent.Error.negativeGrandTotal
         }
 
-        let totalString = localizedString(.applePayTotal, localizationParameters)
-        self.init(payment: payment, summaryItems: [PKPaymentSummaryItem(label: totalString, amount: decimalValue)])
+        self.init(payment: payment,
+                  summaryItems: [PKPaymentSummaryItem(label: brand, amount: decimalValue)],
+                  brand: brand)
     }
 
-    private init(payment: Payment, summaryItems: [PKPaymentSummaryItem]) {
+    private init(payment: Payment, summaryItems: [PKPaymentSummaryItem], brand: String) {
         self.summaryItems = summaryItems
         self.payment = payment
+        self.brand = brand
     }
 
 }

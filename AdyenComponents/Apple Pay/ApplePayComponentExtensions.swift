@@ -61,7 +61,8 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
                                            return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
                                        }
             
-                                       if result.paymentSummaryItems.isEmpty == false {
+                                       if result.status == .success,
+                                          result.paymentSummaryItems.isEmpty == false {
                                            do {
                                                try self.applePayPayment.update(with: result.paymentSummaryItems)
                                            } catch {
@@ -87,7 +88,8 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
                                            return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
                                        }
 
-                                       if result.paymentSummaryItems.isEmpty == false {
+                                       if result.status == .success,
+                                          result.paymentSummaryItems.isEmpty == false {
                                            do {
                                                try self.applePayPayment.update(with: result.paymentSummaryItems)
                                            } catch {
@@ -113,8 +115,9 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
                                        guard let self = self else {
                                            return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
                                        }
-
-                                       if result.paymentSummaryItems.isEmpty == false {
+            
+                                       if result.status == .success,
+                                          result.paymentSummaryItems.isEmpty == false {
                                            do {
                                                try self.applePayPayment.update(with: result.paymentSummaryItems)
                                            } catch {

@@ -126,10 +126,7 @@ internal final class ComponentManager {
             paymentComponent.localizationParameters = configuration.localizationParameters
         }
 
-        if let payment = configuration.payment {
-            try? paymentComponent.update(payment: payment)
-        }
-
+        paymentComponent.payment = configuration.payment
         paymentComponent.order = order
         return paymentComponent
     }

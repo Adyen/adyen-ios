@@ -24,7 +24,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let method = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "test_name")
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
         let sut = SEPADirectDebitComponent(paymentMethod: method, apiContext: Dummy.context)
-        try sut.update(payment: payment)
+        sut.payment = payment
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
         XCTAssertEqual(sut.nameItem.title, localizedString(.sepaNameItemTitle, sut.configuration.localizationParameters))
@@ -41,7 +41,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let method = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "test_name")
         let payment = Payment(amount: Amount(value: 0, currencyCode: "EUR"), countryCode: "DE")
         let sut = SEPADirectDebitComponent(paymentMethod: method, apiContext: Dummy.context)
-        try sut.update(payment: payment)
+        sut.payment = payment
 
         XCTAssertEqual(sut.nameItem.title, localizedString(.sepaNameItemTitle, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.nameItem.placeholder, localizedString(.sepaNameItemPlaceholder, sut.configuration.localizationParameters))
@@ -59,7 +59,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let method = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "test_name")
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
         let sut = SEPADirectDebitComponent(paymentMethod: method, apiContext: Dummy.context)
-        try sut.update(payment: payment)
+        sut.payment = payment
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
         XCTAssertEqual(sut.nameItem.title, localizedString(LocalizationKey(key: "adyen_sepa_nameItem_title"), sut.configuration.localizationParameters))

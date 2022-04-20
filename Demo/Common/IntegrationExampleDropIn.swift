@@ -42,7 +42,7 @@ extension IntegrationExample {
 
         let configuration = DropInComponent.Configuration(apiContext: ConfigurationConstants.apiContext)
 
-        if let applePayPayment = try? ApplePayPayment(payment: payment) {
+        if let applePayPayment = try? ApplePayPayment(payment: payment, brand: ConfigurationConstants.appName) {
             configuration.applePay = .init(payment: applePayPayment,
                                            merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         }

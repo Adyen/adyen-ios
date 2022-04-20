@@ -27,7 +27,19 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// The Apple Pay payment method.
     public var paymentMethod: PaymentMethod { applePayPaymentMethod }
 
-    public var payment: Payment? { applePayPayment.payment }
+    public var payment: Payment? {
+        get {
+            applePayPayment.payment
+        }
+
+        set {
+            do {
+                try update(payment: newValue)
+            } catch {
+                delegate?.didFail(with: error, from: self)
+            }
+        }
+    }
 
     internal let configuration: Configuration
 
@@ -98,8 +110,12 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         }
     }
 
-    public func update(payment: Payment) throws {
-        applePayPayment = try ApplePayPayment(payment: payment)
+    public func update(payment: Payment?) throws {
+        guard let payment = payment else {
+            throw ApplePayComponent.Error.negativeGrandTotal
+        }
+
+        applePayPayment = try ApplePayPayment(payment: payment, brand: applePayPayment.brand)
     }
 
     // MARK: - Private
