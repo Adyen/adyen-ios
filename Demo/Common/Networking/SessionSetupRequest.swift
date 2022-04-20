@@ -28,11 +28,15 @@ internal struct SessionSetupRequest: APIRequest {
         let currentConfiguration = ConfigurationConstants.current
         
         try container.encode(currentConfiguration.countryCode, forKey: .countryCode)
+        try container.encode(Locale.current.identifier, forKey: .shopperLocale)
+        try container.encode(ConfigurationConstants.shopperEmail, forKey: .shopperEmail)
+        try container.encode(ConfigurationConstants.shopperReference, forKey: .shopperReference)
         try container.encode(currentConfiguration.merchantAccount, forKey: .merchantAccount)
         try container.encode(currentConfiguration.amount, forKey: .amount)
         try container.encode(ConfigurationConstants.returnUrl, forKey: .returnUrl)
         try container.encode(ConfigurationConstants.reference, forKey: .reference)
-        
+        try container.encode("iOS", forKey: .channel)
+        try container.encode(ConfigurationConstants.additionalData, forKey: .additionalData)
     }
     
     internal enum CodingKeys: CodingKey {
@@ -42,6 +46,11 @@ internal struct SessionSetupRequest: APIRequest {
         case order
         case returnUrl
         case reference
+        case shopperLocale
+        case shopperEmail
+        case shopperReference
+        case channel
+        case additionalData
     }
     
 }

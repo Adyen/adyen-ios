@@ -13,8 +13,6 @@ import AdyenNetworking
 import AdyenSession
 import UIKit
 
-extension IntegrationExample {}
-
 extension IntegrationExample: AdyenSessionDelegate {
     
     func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession) {

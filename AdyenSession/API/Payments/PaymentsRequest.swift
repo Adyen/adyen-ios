@@ -51,8 +51,6 @@ internal struct PaymentsRequest: APIRequest {
         try container.encodeIfPresent(data.socialSecurityNumber, forKey: .socialSecurityNumber)
         try container.encodeIfPresent(data.browserInfo, forKey: .browserInfo)
         try container.encodeIfPresent(data.order?.compactOrder, forKey: .order)
-//        try container.encode("iOS", forKey: .channel)
-//        try container.encode(data.amount, forKey: .amount)
     }
     
     private enum CodingKeys: String, CodingKey {

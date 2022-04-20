@@ -34,12 +34,16 @@ extension APIClientAware {
     private func generateApiClient() -> APIClientProtocol {
         if CommandLine.arguments.contains("-UITests") {
             guard
-                let url = Bundle.main.url(forResource: "payment_methods_response", withExtension: "json"),
-                let data = try? Data(contentsOf: url),
-                let response = try? JSONDecoder().decode(PaymentMethodsResponse.self, from: data) else { return DefaultAPIClient() }
+                let paymentMethodsUrl = Bundle.main.url(forResource: "payment_methods_response", withExtension: "json"),
+                let sessionsUrl = Bundle.main.url(forResource: "session_response", withExtension: "json"),
+                let paymentMethodsData = try? Data(contentsOf: paymentMethodsUrl),
+                let sessionData = try? Data(contentsOf: sessionsUrl),
+                let paymentMethodsResponse = try? JSONDecoder().decode(PaymentMethodsResponse.self, from: paymentMethodsData),
+                let sessionResponse = try? JSONDecoder().decode(SessionSetupResponse.self, from: sessionData)
+            else { return DefaultAPIClient() }
 
             let apiClient = APIClientMock()
-            apiClient.mockedResults = [.success(response)]
+            apiClient.mockedResults = [.success(paymentMethodsResponse), .success(sessionResponse)]
             return apiClient
         }
 

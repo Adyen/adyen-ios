@@ -31,7 +31,7 @@ extension IntegrationExample {
         
         dropIn.delegate = session
         dropIn.partialPaymentDelegate = session
-//        dropIn.storedPaymentMethodsDelegate = self
+        dropIn.storedPaymentMethodsDelegate = self
         currentComponent = dropIn
 
         presenter?.present(viewController: dropIn.viewController, completion: nil)
