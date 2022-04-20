@@ -20,8 +20,7 @@ class DokuComponentTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = Dummy.adyenContext
-        adyenContext.analyticsProvider = analyticsProviderMock
+        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
 
         paymentMethod = DokuPaymentMethod(type: .dokuAlfamart, name: "test_name")
         payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")

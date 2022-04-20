@@ -19,8 +19,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = Dummy.adyenContext
-        adyenContext.analyticsProvider = analyticsProviderMock
+        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
     }
 
     override func tearDownWithError() throws {

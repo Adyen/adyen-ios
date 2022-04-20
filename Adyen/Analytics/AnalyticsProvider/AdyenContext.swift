@@ -16,7 +16,7 @@ public final class AdyenContext {
     private let analyticsConfiguration: AnalyticsConfiguration
 
     /// :nodoc:
-    public var analyticsProvider: AnalyticsProviderProtocol
+    public let analyticsProvider: AnalyticsProviderProtocol
 
     // MARK: - Initializers
 
@@ -31,5 +31,14 @@ public final class AdyenContext {
         let apiClient = APIClient(apiContext: apiContext)
         self.analyticsProvider = AnalyticsProvider(apiClient: apiClient,
                                                    configuration: analyticsConfiguration)
+    }
+
+    /// :nodoc:
+    internal init(apiContext: APIContext,
+                  analyticsProvider: AnalyticsProviderProtocol,
+                  analyticsConfiguration: AnalyticsConfiguration = .init()) {
+        self.apiContext = apiContext
+        self.analyticsProvider = analyticsProvider
+        self.analyticsConfiguration = analyticsConfiguration
     }
 }
