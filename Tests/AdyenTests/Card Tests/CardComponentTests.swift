@@ -481,7 +481,61 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(vc?.actions[1].title, "Pay €1,234.56")
     }
 
-    func testStoredCardPaymentWithNoCVV() {
+    func testStoredCardPaymentLocalization() throws {
+        let method = StoredCardPaymentMethod(type: "type",
+                                             identifier: "id",
+                                             name: "name",
+                                             fundingSource: .credit,
+                                             supportedShopperInteractions: [.shopperPresent],
+                                             brand: "brand",
+                                             lastFour: "1234",
+                                             expiryMonth: "12",
+                                             expiryYear: "22",
+                                             holderName: "holderName")
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context)
+
+        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
+        sut.payment = Payment(amount: Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
+        XCTAssertNotNil(sut.storedCardComponent)
+        XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
+        XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
+        let vc = sut.viewController as? UIAlertController
+        XCTAssertEqual(vc?.message, "Test-Please enter the CVC code for •••• 1234")
+        XCTAssertEqual(vc?.title, "Test-Verify your card")
+        XCTAssertEqual(vc?.actions[0].title, "Test-Cancel")
+        XCTAssertEqual(vc?.actions[1].title, "Test-Pay €1,234.56")
+    }
+
+    func testStoredCardPaymentLocalizationWithNoCVV() throws {
+        let method = StoredCardPaymentMethod(type: "type",
+                                             identifier: "id",
+                                             name: "Payment Method Name",
+                                             fundingSource: .credit,
+                                             supportedShopperInteractions: [.shopperPresent],
+                                             brand: "brand",
+                                             lastFour: "1234",
+                                             expiryMonth: "12",
+                                             expiryYear: "22",
+                                             holderName: "holderName")
+        var config: CardComponent.Configuration = CardComponent.Configuration()
+        config.stored.showsSecurityCodeField = false
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config)
+        sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
+        sut.payment = Payment(amount: Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
+        XCTAssertNotNil(sut.storedCardComponent)
+        XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
+        XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
+        let vc = sut.viewController as? UIAlertController
+        XCTAssertEqual(vc?.message, "•••• 1234")
+        XCTAssertEqual(vc?.title, "Test-Confirm Payment Method Name payment")
+        XCTAssertEqual(vc?.actions[0].title, "Test-Cancel")
+        XCTAssertEqual(vc?.actions[1].title, "Test-Pay €1,234.56")
+    }
+
+    func testStoredCardPaymentWithNoCVV() throws {
         let method = StoredCardPaymentMethod(type: "type",
                                              identifier: "id",
                                              name: "name",
