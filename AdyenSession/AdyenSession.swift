@@ -11,8 +11,8 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-/// `AdyenSession` acts as the auto-pilot for the whole checkout process.
-/// It can handle the necessary steps internally such as `/payments` and `/payment/details`
+/// `AdyenSession` acts as the delegate for the checkout payment flow.
+/// It can handle the required steps internally such as `/payments` and `/payment/details`
 /// calls and partial payment calls, then provide feedback
 /// via `AdyenSessionDelegate` methods.
 public final class AdyenSession {
