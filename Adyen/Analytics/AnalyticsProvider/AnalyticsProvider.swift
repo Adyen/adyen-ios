@@ -12,6 +12,9 @@ public class AnalyticsConfiguration {
 
     // MARK: - Properties
 
+    /// A Boolean value that determines whether analytics is enabled.
+    public var isEnabled = true
+
     /// A Boolean value that determines whether telemetry tracking is enabled.
     public var isTelemetryEnabled = true
 
@@ -47,6 +50,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     // MARK: - Internal
 
     internal func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
+        guard configuration.isEnabled else { return }
         guard configuration.isCheckoutAttemptIdEnabled else {
             return completion(nil)
         }
