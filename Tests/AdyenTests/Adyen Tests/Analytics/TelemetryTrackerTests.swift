@@ -31,6 +31,19 @@ class TelemetryTrackerTests: XCTestCase {
         try super.tearDownWithError()
     }
 
+    func testTrackTelemetryEventGivenAnalyticsIsDisabledAndTelemetryIsEnabledShouldNotSendAnyRequest() throws {
+        // Given
+        let expectedRequestCalls = 0
+        analyticsConfiguration.isEnabled = false
+        analyticsConfiguration.isTelemetryEnabled = true
+
+        // When
+        sut.trackTelemetryEvent(flavor: .components(type: .affirm))
+
+        // Then
+        XCTAssertEqual(expectedRequestCalls, apiClient.counter, "One or more telemetry requests were sent.")
+    }
+
     func testTrackTelemetryEventGivenTelemetryIsDisabledShouldNotSendAnyRequest() throws {
         // Given
         let expectedRequestCalls = 0

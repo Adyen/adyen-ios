@@ -35,8 +35,42 @@ class AnalyticsProviderTests: XCTestCase {
         analyticsConfiguration = .init()
 
         // Then
+        XCTAssertTrue(sut.configuration.isEnabled)
         XCTAssertTrue(sut.configuration.isCheckoutAttemptIdEnabled)
         XCTAssertTrue(sut.configuration.isTelemetryEnabled)
+    }
+
+    func testFetchCheckoutAttemptIdWhenAnalyticsIsEnabledGivenCheckoutAttemptIdIsEnabledShouldTriggerRequest() throws {
+        // Given
+        let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
+        analyticsConfiguration.isEnabled = true
+        analyticsConfiguration.isCheckoutAttemptIdEnabled = true
+
+        let checkoutAttemptIdResponse = CheckoutAttemptIdResponse(identifier: expectedCheckoutAttemptId)
+        let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
+        apiClient.mockedResults = [checkoutAttemptIdResult]
+
+        // When
+        sut.fetchCheckoutAttemptId { receivedCheckoutAttemptId in
+
+            // Then
+            XCTAssertNotNil(receivedCheckoutAttemptId, "The checkoutAttemptId is nil.")
+            XCTAssertEqual(expectedCheckoutAttemptId, receivedCheckoutAttemptId, "The received checkoutAttemptId is not the expected one.")
+        }
+    }
+
+    func testFetchCheckoutAttemptIdWhenAnalyticsIsDisabledShouldNotTriggerCheckoutAttemptIdRequest() throws {
+        // Given
+        analyticsConfiguration.isEnabled = false
+        let expectation = expectation(description: "checkoutAttemptId completion action.")
+        expectation.isInverted = true
+
+        // When
+        sut.fetchCheckoutAttemptId { receivedCheckoutAttemptId in
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1)
     }
 
     func testFetchCheckoutAttemptIdWhenCheckoutAttemptIdIsDisabledShouldCallCompletionWithNilValue() throws {
