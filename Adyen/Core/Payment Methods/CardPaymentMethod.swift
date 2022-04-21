@@ -9,17 +9,13 @@ import Foundation
 /// A card payment method.
 public struct CardPaymentMethod: AnyCardPaymentMethod {
     
-    /// :nodoc:
     public let type: PaymentMethodType
     
-    /// :nodoc:
     public let name: String
     
-    public let fundingSource: CardFundingSource?
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
     
-    public var displayInformation: DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: "card")
-    }
+    public let fundingSource: CardFundingSource?
     
     /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`, `"bcmc"`.
     public let brands: [String]
@@ -38,6 +34,10 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
+    }
+    
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        DisplayInformation(title: name, subtitle: nil, logoName: "card")
     }
     
     internal init(type: PaymentMethodType, name: String, fundingSource: CardFundingSource, brands: [String]) {
@@ -59,10 +59,11 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
 /// A stored card.
 public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod {
     
-    /// :nodoc:
     public let type: PaymentMethodType
-    /// :nodoc:
+    
     public let name: String
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
     public let identifier: String
 
@@ -70,11 +71,7 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
 
     public var fundingSource: CardFundingSource?
 
-    public var displayInformation: DisplayInformation {
-        localizedDisplayInformation(using: nil)
-    }
-
-    public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let expireDate = expiryMonth + "/" + String(expiryYear.suffix(2))
         
         return DisplayInformation(title: String.Adyen.securedString + lastFour,

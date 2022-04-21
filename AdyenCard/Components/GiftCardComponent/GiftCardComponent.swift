@@ -259,16 +259,11 @@ public final class GiftCardComponent: PartialPaymentComponent,
                                   remainingAmount: Amount,
                                   paymentData: PaymentComponentData) {
         let lastFourDigits = String(numberItem.value.suffix(4))
-        let footnote = localizedString(.partialPaymentRemainingBalance,
-                                       localizationParameters,
-                                       remainingAmount.formatted)
-        let displayInformation = DisplayInformation(title: String.Adyen.securedString + lastFourDigits,
-                                                    subtitle: nil,
-                                                    logoName: giftCardPaymentMethod.brand,
-                                                    footnoteText: footnote)
-
-        let paymentMethod = CustomDisplayablePaymentMethod(paymentMethod: giftCardPaymentMethod,
-                                                           displayInformation: displayInformation)
+        let paymentMethod = GiftCardConfirmationPaymentMethod(
+            paymentMethod: giftCardPaymentMethod,
+            lastFour: lastFourDigits,
+            remainingAmount: remainingAmount
+        )
         let component = InstantPaymentComponent(paymentMethod: paymentMethod, paymentData: paymentData, apiContext: apiContext)
         delegate.showConfirmation(for: component, with: paymentData.order)
     }

@@ -13,10 +13,18 @@ struct CardPaymentMethodMock: AnyCardPaymentMethod {
     
     var name: String
     
+    var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
+    
     var brands: [String]
     
     func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case type
+        case name
+        case brands
     }
     
 }

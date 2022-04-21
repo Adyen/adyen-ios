@@ -491,6 +491,7 @@
 		F92980C627CF563C000CA5CA /* AdyenSession+PartialPaymentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92980C527CF563C000CA5CA /* AdyenSession+PartialPaymentDelegate.swift */; };
 		F92980CE27CF650F000CA5CA /* ActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92980CD27CF650F000CA5CA /* ActionComponent.swift */; };
 		F92980D127CF6580000CA5CA /* ActionComponentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97B972022B0F3F500505476 /* ActionComponentData.swift */; };
+		F92CBA072811754400367820 /* GiftCardConfirmationPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE25B32625ECE7001874BB /* GiftCardConfirmationPaymentMethod.swift */; };
 		F931DDC5270B0874004B012C /* Available.swift in Sources */ = {isa = PBXBuildFile; fileRef = F931DDC4270B0874004B012C /* Available.swift */; };
 		F9354BE723A7B4E200A6760B /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9354BE623A7B4E200A6760B /* TextStyle.swift */; };
 		F9354BE923A7B5AC00A6760B /* ViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9354BE823A7B5AC00A6760B /* ViewStyle.swift */; };
@@ -751,7 +752,6 @@
 		F9FE25882625B40F001874BB /* CardNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAA9221C54C600697074 /* CardNumberFormatter.swift */; };
 		F9FE25A72625B448001874BB /* GiftCardComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE24552624BCEC001874BB /* GiftCardComponent.swift */; };
 		F9FE25A82625B448001874BB /* GiftCardDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE24562624BCEC001874BB /* GiftCardDetails.swift */; };
-		F9FE25B42625ECE7001874BB /* CustomDisplayablePaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE25B32625ECE7001874BB /* CustomDisplayablePaymentMethod.swift */; };
 		F9FE25D62626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE25D52626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift */; };
 		F9FE39E32679E09200F02A9B /* LoadingViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE39E22679E09200F02A9B /* LoadingViewTests.swift */; };
 /* End PBXBuildFile section */
@@ -1748,7 +1748,7 @@
 		F9FE25222625ADD0001874BB /* PartialPaymentOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialPaymentOrder.swift; sourceTree = "<group>"; };
 		F9FE252E2625AE8C001874BB /* PartialPaymentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialPaymentDelegate.swift; sourceTree = "<group>"; };
 		F9FE253A2625AED6001874BB /* PartialPaymentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialPaymentComponent.swift; sourceTree = "<group>"; };
-		F9FE25B32625ECE7001874BB /* CustomDisplayablePaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDisplayablePaymentMethod.swift; sourceTree = "<group>"; };
+		F9FE25B32625ECE7001874BB /* GiftCardConfirmationPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftCardConfirmationPaymentMethod.swift; sourceTree = "<group>"; };
 		F9FE25D52626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyToSubmitPaymentComponentDelegate.swift; sourceTree = "<group>"; };
 		F9FE39E22679E09200F02A9B /* LoadingViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -2819,7 +2819,6 @@
 			children = (
 				F9D5751723799BB0009C18B5 /* AnyPaymentMethodDecoder.swift */,
 				F9D5753023828EBB009C18B5 /* AnyCardPaymentMethod.swift */,
-				F9FE25B32625ECE7001874BB /* CustomDisplayablePaymentMethod.swift */,
 				E9B36C9C223FDE4F00EAA368 /* PaymentMethods.swift */,
 				F967580227D0BD4700A16FB6 /* PaymentMethodType.swift */,
 			);
@@ -4225,6 +4224,7 @@
 		F9FE24542624BCEC001874BB /* GiftCardComponent */ = {
 			isa = PBXGroup;
 			children = (
+				F9FE25B32625ECE7001874BB /* GiftCardConfirmationPaymentMethod.swift */,
 				F9FE24552624BCEC001874BB /* GiftCardComponent.swift */,
 				F96A2881265F9C2B00E718BD /* GiftCardComponentExtensions.swift */,
 				F9FE24562624BCEC001874BB /* GiftCardDetails.swift */,
@@ -5182,7 +5182,6 @@
 				F97FA024264AD5FE004AFD0C /* ListFooterView.swift in Sources */,
 				F96F44D723BDED6B00871C1F /* FormToggleItemStyle.swift in Sources */,
 				C9D8EBA2274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift in Sources */,
-				F9FE25B42625ECE7001874BB /* CustomDisplayablePaymentMethod.swift in Sources */,
 				E216D3CF221AFC3A0013CBCF /* IBANSpecification.swift in Sources */,
 				E224088722AFA3A80058923E /* StoredInstantPaymentMethod.swift in Sources */,
 				E262128F22A90D8800F2B133 /* PaymentMethod.swift in Sources */,
@@ -5540,6 +5539,7 @@
 				E9E3DAB4221D988200697074 /* CardNumberValidator.swift in Sources */,
 				F92329DD25AD049E002C5BC4 /* FallbackCardBrandProvider.swift in Sources */,
 				E7798569268CE1B900CECA95 /* KCPDetails.swift in Sources */,
+				F92CBA072811754400367820 /* GiftCardConfirmationPaymentMethod.swift in Sources */,
 				E9E3DACD221EEAB200697074 /* CardSecurityCodeValidator.swift in Sources */,
 				F96286B5256BDEA400043FE3 /* CardBundleExtension.swift in Sources */,
 				F9FE25682625B3D7001874BB /* CardExpiryDateFormatter.swift in Sources */,

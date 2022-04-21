@@ -81,13 +81,14 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     }
     
     private func item(for component: PaymentComponent) -> ListItem {
-        let displayInformation = component.paymentMethod.localizedDisplayInformation(using: localizationParameters)
+        let displayInformation = component.paymentMethod.displayInformation(using: localizationParameters)
         let isProtected = brandProtectedComponents.contains(component.paymentMethod.type)
         let listItem = ListItem(title: displayInformation.title,
                                 style: style.listItem,
                                 canModifyIcon: !isProtected)
         listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
-        listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: apiContext.environment)
+        let logoName = component.paymentMethod.displayInformation(using: localizationParameters).logoName
+        listItem.imageURL = LogoURLProvider.logoURL(withName: logoName, environment: apiContext.environment)
         listItem.trailingText = displayInformation.disclosureText
         listItem.subtitle = displayInformation.subtitle
         listItem.selectionHandler = { [weak self, weak component] in

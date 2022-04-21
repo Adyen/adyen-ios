@@ -9,11 +9,11 @@ import Foundation
 /// Stored Blik payment.
 public struct StoredBLIKPaymentMethod: StoredPaymentMethod {
 
-    /// :nodoc:
     public let type: PaymentMethodType
 
-    /// :nodoc:
     public let name: String
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
     public let identifier: String
 

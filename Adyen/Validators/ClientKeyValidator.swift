@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,13 +13,13 @@ public enum ClientKeyError: Error, LocalizedError {
     case invalidClientKey
 
     public var errorDescription: String? {
-        switch(self) {
+        switch self {
         case .invalidClientKey:
             return
-             """
-             The entered client key is invalid.
-             Valid client key starts with environment name (e.x. `live_XXXXXXXXXX`).
-             """
+                """
+                The entered client key is invalid.
+                Valid client key starts with environment name (e.x. `live_XXXXXXXXXX`).
+                """
         }
     }
 

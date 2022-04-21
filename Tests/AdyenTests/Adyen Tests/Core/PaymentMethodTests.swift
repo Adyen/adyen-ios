@@ -10,7 +10,7 @@ import AdyenComponents
 
 class PaymentMethodTests: XCTestCase {
     
-    func testDecodingPaymentMethods() throws {
+    private func getPaymentMethods() throws -> PaymentMethods {
         let dictionary = [
             "storedPaymentMethods": [
                 storedCreditCardDictionary,
@@ -65,10 +65,13 @@ class PaymentMethodTests: XCTestCase {
                 oxxo
             ]
         ]
-        
+        return try Coder.decode(dictionary) as PaymentMethods
+    }
+    
+    func testDecodingPaymentMethods() throws {
         // Stored payment methods
         
-        let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
+        let paymentMethods = try getPaymentMethods()
         XCTAssertEqual(paymentMethods.stored.count, 7)
         XCTAssertTrue(paymentMethods.stored[0] is StoredCardPaymentMethod)
         
@@ -76,15 +79,21 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual((paymentMethods.stored[1] as! StoredCardPaymentMethod).fundingSource!, .credit)
         
         // Test StoredCardPaymentMethod localization
-        let storedCardPaymentMethod = paymentMethods.stored[1] as! StoredCardPaymentMethod
+        var storedCardPaymentMethod = paymentMethods.stored[1] as! StoredCardPaymentMethod
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        XCTAssertEqual(storedCardPaymentMethod.displayInformation,
-                       expectedStoredCardPaymentMethodDisplayInfo(method: storedCardPaymentMethod, localizationParameters: nil))
-        XCTAssertEqual(storedCardPaymentMethod.localizedDisplayInformation(using: expectedLocalizationParameters),
+        XCTAssertEqual(storedCardPaymentMethod.displayInformation(using: expectedLocalizationParameters),
                        expectedStoredCardPaymentMethodDisplayInfo(method: storedCardPaymentMethod, localizationParameters: expectedLocalizationParameters))
+        storedCardPaymentMethod.merchantProvidedDisplayInformation = .init(title: "custom title", subtitle: "custom subtitle")
+        XCTAssertEqual(
+            storedCardPaymentMethod.displayInformation(using: expectedLocalizationParameters),
+            expectedStoredCardPaymentMethodDisplayInfo(
+                method: storedCardPaymentMethod,
+                localizationParameters: expectedLocalizationParameters
+            )
+        )
         
         XCTAssertTrue(paymentMethods.stored[2] is StoredPayPalPaymentMethod)
-        XCTAssertEqual((paymentMethods.stored[2] as! StoredPayPalPaymentMethod).displayInformation.subtitle, "example@shopper.com")
+        XCTAssertEqual((paymentMethods.stored[2] as! StoredPayPalPaymentMethod).displayInformation(using: expectedLocalizationParameters).subtitle, "example@shopper.com")
         XCTAssertTrue(paymentMethods.stored[3] is StoredInstantPaymentMethod)
         XCTAssertTrue(paymentMethods.stored[4] is StoredBCMCPaymentMethod)
         
@@ -95,11 +104,19 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual((paymentMethods.stored[6] as! StoredBLIKPaymentMethod).identifier, "8315892878479934")
         
         // Test StoredBCMCPaymentMethod localization
-        let storedBCMCPaymentMethod = paymentMethods.stored[4] as! StoredBCMCPaymentMethod
-        XCTAssertEqual(storedBCMCPaymentMethod.displayInformation,
+        var storedBCMCPaymentMethod = paymentMethods.stored[4] as! StoredBCMCPaymentMethod
+        XCTAssertEqual(storedBCMCPaymentMethod.displayInformation(using: nil),
                        expectedBancontactCardDisplayInfo(method: storedBCMCPaymentMethod, localizationParameters: nil))
-        XCTAssertEqual(storedBCMCPaymentMethod.localizedDisplayInformation(using: expectedLocalizationParameters),
+        XCTAssertEqual(storedBCMCPaymentMethod.displayInformation(using: expectedLocalizationParameters),
                        expectedBancontactCardDisplayInfo(method: storedBCMCPaymentMethod, localizationParameters: expectedLocalizationParameters))
+        storedBCMCPaymentMethod.merchantProvidedDisplayInformation = .init(title: "custom title", subtitle: "custom subtitle")
+        XCTAssertEqual(
+            storedBCMCPaymentMethod.displayInformation(using: expectedLocalizationParameters),
+            expectedBancontactCardDisplayInfo(
+                method: storedBCMCPaymentMethod,
+                localizationParameters: expectedLocalizationParameters
+            )
+        )
         
         XCTAssertEqual(paymentMethods.stored[3].type.rawValue, "unknown")
         XCTAssertEqual(paymentMethods.stored[3].name, "Stored Redirect Payment Method")
@@ -212,6 +229,98 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethods.regular[20].name, "OXXO")
         XCTAssertEqual(paymentMethods.regular[20].type.rawValue, "oxxo")
 
+    }
+    
+    func testOverridingDisplayInformation() throws {
+        var paymentMethods = try getPaymentMethods()
+        
+        // Card payment method
+        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .scheme,
+                                                  with: .init(title: "custom title",
+                                                              subtitle: "custom subtitle"))
+        let cardpaymentMethod = paymentMethods.paymentMethod(ofType: .scheme)
+        XCTAssertEqual(cardpaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertEqual(cardpaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+        
+        // BCMC payment method
+        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .bcmc,
+                                                  with: .init(title: "custom title",
+                                                              subtitle: "custom subtitle"))
+        let bcmcpaymentMethod = paymentMethods.paymentMethod(ofType: .bcmc)
+        XCTAssertEqual(bcmcpaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertEqual(bcmcpaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+        
+        // Apple pay payment method
+        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .applePay,
+                                                  with: .init(title: "custom title",
+                                                              subtitle: "custom subtitle"))
+        let applePaypaymentMethod = paymentMethods.paymentMethod(ofType: .applePay)
+        XCTAssertEqual(applePaypaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertEqual(applePaypaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+        
+        // payPal payment method
+        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .payPal,
+                                                  with: .init(title: "custom title",
+                                                              subtitle: "custom subtitle"))
+        let payPalpaymentMethod = paymentMethods.paymentMethod(ofType: .payPal)
+        XCTAssertEqual(payPalpaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertEqual(payPalpaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+        
+        // weChat payment method
+        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .weChatPaySDK,
+                                                  with: .init(title: "custom title",
+                                                              subtitle: "custom subtitle"))
+        let weChatPaymentMethod = paymentMethods.paymentMethod(ofType: .weChatPaySDK)
+        XCTAssertEqual(weChatPaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertEqual(weChatPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+        
+        // QiwiWallet payment method
+        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .qiwiWallet,
+                                                  with: .init(title: "custom title",
+                                                              subtitle: "custom subtitle"))
+        let qiwiWalletPaymentMethod = paymentMethods.paymentMethod(ofType: .qiwiWallet)
+        XCTAssertEqual(qiwiWalletPaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertEqual(qiwiWalletPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+        
+        // BLIK payment method
+        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .blik,
+                                                  with: .init(title: "custom title",
+                                                              subtitle: "custom subtitle"))
+        let blikPaymentMethod = paymentMethods.paymentMethod(ofType: .blik)
+        XCTAssertEqual(blikPaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertEqual(blikPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+        
+        // Giro payment method
+        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .other("giropay"),
+                                                  with: .init(title: "custom title",
+                                                              subtitle: "custom subtitle"))
+        let giroPaymentMethod = paymentMethods.paymentMethod(ofType: .other("giropay"))
+        XCTAssertEqual(giroPaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertEqual(giroPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+        
+        // giftCard payment method
+        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .giftcard,
+                                                  with: .init(title: "custom title",
+                                                              subtitle: "custom subtitle"))
+        let giftCardPaymentMethod = paymentMethods.paymentMethod(ofType: .giftcard)
+        XCTAssertEqual(giftCardPaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertEqual(giftCardPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+        
+        // dukoWallet payment method
+        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .dokuWallet,
+                                                  with: .init(title: "custom title",
+                                                              subtitle: "custom subtitle"))
+        let dukoWalletPaymentMethod = paymentMethods.paymentMethod(ofType: .giftcard)
+        XCTAssertEqual(dukoWalletPaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertEqual(dukoWalletPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+        
+        // ideal payment method
+        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .ideal,
+                                                  with: .init(title: "custom title",
+                                                              subtitle: "custom subtitle"))
+        let idealPaymentMethod = paymentMethods.paymentMethod(ofType: .ideal)
+        XCTAssertEqual(idealPaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertEqual(idealPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
     }
 
     func testDecodingPaymentMethodsWithNullValues() throws {
@@ -357,8 +466,8 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.holderName, "test")
         XCTAssertEqual(paymentMethod.fundingSource, .credit)
         XCTAssertEqual(paymentMethod.supportedShopperInteractions, [.shopperPresent, .shopperNotPresent])
-        XCTAssertEqual(paymentMethod.displayInformation, expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: nil))
-        XCTAssertEqual(paymentMethod.localizedDisplayInformation(using: expectedLocalizationParameters), expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: expectedLocalizationParameters))
+        XCTAssertEqual(paymentMethod.displayInformation(using: nil), expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: nil))
+        XCTAssertEqual(paymentMethod.displayInformation(using: expectedLocalizationParameters), expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: expectedLocalizationParameters))
     }
     
     func testDecodingStoredDebitCardPaymentMethod() throws {
@@ -373,12 +482,19 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.holderName, "test")
         XCTAssertEqual(paymentMethod.fundingSource, .debit)
         XCTAssertEqual(paymentMethod.supportedShopperInteractions, [.shopperPresent, .shopperNotPresent])
-        XCTAssertEqual(paymentMethod.displayInformation, expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: nil))
-        XCTAssertEqual(paymentMethod.localizedDisplayInformation(using: expectedLocalizationParameters), expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: expectedLocalizationParameters))
+        XCTAssertEqual(paymentMethod.displayInformation(using: nil), expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: nil))
+        XCTAssertEqual(paymentMethod.displayInformation(using: expectedLocalizationParameters), expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: expectedLocalizationParameters))
     }
     
     public func expectedStoredCardPaymentMethodDisplayInfo(method: StoredCardPaymentMethod, localizationParameters: LocalizationParameters?) -> DisplayInformation {
         let expireDate = method.expiryMonth + "/" + method.expiryYear.suffix(2)
+        if let customDisplayInformation = method.merchantProvidedDisplayInformation {
+            return DisplayInformation(
+                title: customDisplayInformation.title,
+                subtitle: customDisplayInformation.subtitle ?? localizedString(.cardStoredExpires, localizationParameters, expireDate),
+                logoName: method.brand
+            )
+        }
         
         return DisplayInformation(title: String.Adyen.securedString + method.lastFour,
                                   subtitle: localizedString(.cardStoredExpires, localizationParameters, expireDate),
@@ -518,8 +634,8 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.supportedShopperInteractions, [.shopperPresent])
         XCTAssertEqual(paymentMethod.lastFour, "4449")
         let expectedDisplayInfo = expectedBancontactCardDisplayInfo(method: paymentMethod, localizationParameters: nil)
-        XCTAssertEqual(paymentMethod.displayInformation, expectedDisplayInfo)
-        XCTAssertEqual(paymentMethod.localizedDisplayInformation(using: expectedLocalizationParameters),
+        XCTAssertEqual(paymentMethod.displayInformation(using: nil), expectedDisplayInfo)
+        XCTAssertEqual(paymentMethod.displayInformation(using: expectedLocalizationParameters),
                        expectedBancontactCardDisplayInfo(method: paymentMethod, localizationParameters: expectedLocalizationParameters))
     }
 
@@ -539,8 +655,16 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.name, "DOKU wallet")
     }
     
-    public func expectedBancontactCardDisplayInfo(method: StoredBCMCPaymentMethod, localizationParameters: LocalizationParameters?) -> DisplayInformation {
+    public func expectedBancontactCardDisplayInfo(method: StoredBCMCPaymentMethod,
+                                                  localizationParameters: LocalizationParameters?) -> DisplayInformation {
         let expireDate = method.expiryMonth + "/" + method.expiryYear.suffix(2)
+        if let customDisplayInformation = method.merchantProvidedDisplayInformation {
+            return DisplayInformation(
+                title: customDisplayInformation.title,
+                subtitle: customDisplayInformation.subtitle ?? localizedString(.cardStoredExpires, localizationParameters, expireDate),
+                logoName: method.brand
+            )
+        }
         
         return DisplayInformation(title: String.Adyen.securedString + method.lastFour,
                                   subtitle: localizedString(.cardStoredExpires, localizationParameters, expireDate),
@@ -553,8 +677,8 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try Coder.decode(giftCard) as GiftCardPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "giftcard")
         XCTAssertEqual(paymentMethod.name, "Generic GiftCard")
-        XCTAssertEqual(paymentMethod.displayInformation.logoName, "genericgiftcard")
-        XCTAssertEqual(paymentMethod.localizedDisplayInformation(using: nil).logoName, "genericgiftcard")
+        XCTAssertEqual(paymentMethod.displayInformation(using: nil).logoName, "genericgiftcard")
+        XCTAssertEqual(paymentMethod.displayInformation(using: nil).logoName, "genericgiftcard")
     }
     
     // MARK: - Boleto
@@ -563,8 +687,8 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try Coder.decode(boleto) as BoletoPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "boletobancario_santander")
         XCTAssertEqual(paymentMethod.name, "Boleto Bancario")
-        XCTAssertEqual(paymentMethod.displayInformation.logoName, "boletobancario_santander")
-        XCTAssertEqual(paymentMethod.localizedDisplayInformation(using: nil).logoName, "boletobancario_santander")
+        XCTAssertEqual(paymentMethod.displayInformation(using: nil).logoName, "boletobancario_santander")
+        XCTAssertEqual(paymentMethod.displayInformation(using: nil).logoName, "boletobancario_santander")
     }
 
     // MARK: - BACS Direct Debit

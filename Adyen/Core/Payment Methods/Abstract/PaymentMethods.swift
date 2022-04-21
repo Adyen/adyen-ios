@@ -18,7 +18,7 @@ public struct PaymentMethods: Decodable {
     public var paid: [PaymentMethod] = []
     
     /// The regular payment methods.
-    public let regular: [PaymentMethod]
+    public private(set) var regular: [PaymentMethod]
     
     /// The stored payment methods.
     public var stored: [StoredPaymentMethod]
@@ -31,6 +31,18 @@ public struct PaymentMethods: Decodable {
     public init(regular: [PaymentMethod], stored: [StoredPaymentMethod]) {
         self.regular = regular
         self.stored = stored
+    }
+    
+    /// Override the title of any payment method shown in DropIn
+    ///
+    /// - Parameters:
+    ///   - paymentMethodType: The payment method type for which to override its title.
+    ///   - displayInformation: The `displayInformation` to use instead of the default one.
+    public mutating func overrideDisplayInformation(ofPaymentMethod paymentMethodType: PaymentMethodType,
+                                                    with displayInformation: MerchantCustomDisplayInformation) {
+        for (index, paymentMethod) in regular.enumerated() where paymentMethod.type == paymentMethodType {
+            regular[index].merchantProvidedDisplayInformation = displayInformation
+        }
     }
     
     /// Returns the first available payment method of the given type.
