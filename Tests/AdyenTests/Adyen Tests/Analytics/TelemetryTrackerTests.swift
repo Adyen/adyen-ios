@@ -14,28 +14,28 @@ import XCTest
 class TelemetryTrackerTests: XCTestCase {
 
     var apiClient: APIClientMock!
-    var analyticsConfiguration: AnalyticsConfiguration!
     var sut: TelemetryTrackerProtocol!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         apiClient = APIClientMock()
-        analyticsConfiguration = .init()
-        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
+        sut = AnalyticsProvider(apiClient: apiClient, configuration: .init())
     }
 
     override func tearDownWithError() throws {
         apiClient = nil
-        analyticsConfiguration = nil
         sut = nil
         try super.tearDownWithError()
     }
 
     func testTrackTelemetryEventGivenAnalyticsIsDisabledAndTelemetryIsEnabledShouldNotSendAnyRequest() throws {
         // Given
-        let expectedRequestCalls = 0
+        var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = false
         analyticsConfiguration.isTelemetryEnabled = true
+        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
+
+        let expectedRequestCalls = 0
 
         // When
         sut.trackTelemetryEvent(flavor: .components(type: .affirm))
@@ -46,8 +46,11 @@ class TelemetryTrackerTests: XCTestCase {
 
     func testTrackTelemetryEventGivenTelemetryIsDisabledShouldNotSendAnyRequest() throws {
         // Given
-        let expectedRequestCalls = 0
+        var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isTelemetryEnabled = false
+        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
+
+        let expectedRequestCalls = 0
 
         // When
         sut.trackTelemetryEvent(flavor: .components(type: .affirm))
@@ -58,9 +61,12 @@ class TelemetryTrackerTests: XCTestCase {
 
     func testTrackTelemetryEventGivenTelemetryIsEnabledAndFlavorIsDropInComponentShouldNotSendAnyRequest() throws {
         // Given
-        let expectedRequestCalls = 0
+        var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isTelemetryEnabled = true
+        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
+
         let flavor: TelemetryFlavor = .dropInComponent
+        let expectedRequestCalls = 0
 
         // When
         sut.trackTelemetryEvent(flavor: flavor)
@@ -71,9 +77,12 @@ class TelemetryTrackerTests: XCTestCase {
 
     func testTrackTelemetryEventGivenTelemetryIsEnabledAndFlavorIsComponentsShouldSendTelemetryRequest() throws {
         // Given
-        let expectedRequestCalls = 2
+        var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isTelemetryEnabled = true
+        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
+
         let flavor: TelemetryFlavor = .components(type: .affirm)
+        let expectedRequestCalls = 2
 
         let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
         let telemetryResult: Result<Response, Error> = .success(telemetryResponse)
@@ -89,9 +98,12 @@ class TelemetryTrackerTests: XCTestCase {
 
     func testTrackTelemetryEventGivenTelemetryIsEnabledAndFlavorIsDropInShouldSendTelemetryRequest() throws {
         // Given
-        let expectedRequestCalls = 2
+        var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isTelemetryEnabled = true
+        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
+
         let flavor: TelemetryFlavor = .dropIn(paymentMethods: ["scheme", "paypal", "affirm"])
+        let expectedRequestCalls = 2
 
         let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
         let telemetryResult: Result<Response, Error> = .success(telemetryResponse)

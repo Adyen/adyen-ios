@@ -8,7 +8,7 @@ import AdyenNetworking
 import Foundation
 
 /// A configuration object that defines the behavior for the analytics.
-public class AnalyticsConfiguration {
+public struct AnalyticsConfiguration {
 
     // MARK: - Properties
 

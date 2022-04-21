@@ -25,6 +25,8 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
                                                    didAuthorizePayment payment: PKPayment,
                                                    completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
+        // TODO: - Send telemetry event from here???
+
         guard payment.token.paymentData.isEmpty == false else {
             completion(.failure)
             delegate?.didFail(with: Error.invalidToken, from: self)
