@@ -74,7 +74,7 @@ internal final class IntegrationExample: APIClientAware {
         }
     }
     
-    private func setupSession() {
+    internal func setupSession() {
         let request = SessionSetupRequest()
         apiClient.perform(request) { [weak self] result in
             guard let self = self else { return }

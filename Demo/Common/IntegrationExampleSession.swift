@@ -16,10 +16,12 @@ import UIKit
 extension IntegrationExample: AdyenSessionDelegate {
     
     func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession) {
+        setupSession()
         finish(with: resultCode)
     }
     
     func didFail(with error: Error, from component: Component, session: AdyenSession) {
+        setupSession()
         finish(with: error)
     }
     

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -87,7 +87,7 @@ internal final class ComponentsViewController: UIViewController, Presenter {
 
     internal func presentBACSDirectDebitComponent() {
         if componentsView.isUsingSession {
-            // TODO: bacs for session
+            integrationExample.presentBACSDirectDebitComponentSession()
         } else {
             integrationExample.presentBACSDirectDebitComponent()
         }
@@ -103,7 +103,7 @@ internal final class ComponentsViewController: UIViewController, Presenter {
 
     internal func presentApplePayComponent() {
         if componentsView.isUsingSession {
-            
+            integrationExample.presentApplePayComponentSession()
         } else {
             integrationExample.presentApplePayComponent()
         }

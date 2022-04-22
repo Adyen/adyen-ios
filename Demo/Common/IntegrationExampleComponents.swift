@@ -95,18 +95,27 @@ extension IntegrationExample {
     // MARK: Apple Pay
 
     internal func presentApplePayComponent() {
+        guard let component = applePayComponent(from: paymentMethods) else { return }
+        present(component, delegate: self)
+    }
+    
+    internal func presentApplePayComponentSession() {
+        guard let component = applePayComponent(from: sessionPaymentMethods) else { return }
+        present(component, delegate: session)
+    }
+    
+    internal func applePayComponent(from paymentMethods: PaymentMethods?) -> ApplePayComponent? {
         guard
             let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self),
             let applePayPayment = try? ApplePayPayment(payment: payment)
-        else { return }
+        else { return nil }
         let config = ApplePayComponent.Configuration(payment: applePayPayment,
                                                      merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
                                                      allowOnboarding: true)
         let component = try? ApplePayComponent(paymentMethod: paymentMethod,
                                                apiContext: ConfigurationConstants.apiContext,
                                                configuration: config)
-        guard let presentableComponent = component else { return }
-        present(presentableComponent, delegate: self)
+        return component
     }
 
     // MARK: Convenience Store
@@ -132,12 +141,22 @@ extension IntegrationExample {
     // MARK: BACS
 
     internal func presentBACSDirectDebitComponent() {
-        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return }
+        guard let component = bacsComponent(from: paymentMethods) else { return }
+        present(component, delegate: self)
+    }
+    
+    internal func presentBACSDirectDebitComponentSession() {
+        guard let component = bacsComponent(from: sessionPaymentMethods) else { return }
+        present(component, delegate: session)
+    }
+    
+    internal func bacsComponent(from paymentMethods: PaymentMethods?) -> BACSDirectDebitComponent? {
+        guard let paymentMethods = paymentMethods,
+              let paymentMethod = paymentMethods.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return nil }
         let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
                                                  apiContext: ConfigurationConstants.apiContext)
         bacsDirectDebitPresenter = BACSDirectDebitPresentationDelegate(bacsComponent: component)
-        component.presentationDelegate = bacsDirectDebitPresenter
-        present(component, delegate: self)
+        return component
     }
 
     // MARK: - Presentation
