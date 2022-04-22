@@ -25,16 +25,23 @@ public final class AdyenSession {
         
         internal let apiContext: APIContext
         
+        internal let actionComponent: AdyenActionComponent.Configuration
+        
         /// Initializes a new Configuration object
         ///
         /// - Parameters:
+        ///   - sessionIdentifier: The session identifier.
+        ///   - initialSessionData: The initial session data.
         ///   - apiContext: The API context.
+        ///   - actionComponent: The action handling configuration.
         public init(sessionIdentifier: String,
                     initialSessionData: String,
-                    apiContext: APIContext) {
+                    apiContext: APIContext,
+                    actionComponent: AdyenActionComponent.Configuration = .init()) {
             self.sessionIdentifier = sessionIdentifier
             self.initialSessionData = initialSessionData
             self.apiContext = apiContext
+            self.actionComponent = actionComponent
         }
     }
     
