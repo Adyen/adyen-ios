@@ -37,14 +37,14 @@ public struct PaymentMethods: Decodable {
     ///
     /// - Parameters:
     ///   - type: The type of the payment method.
+    ///   - displayInformation: The `displayInformation` to use instead of the default one.
     ///   - predicate: A closure that takes a `PaymentMethod` of the payment methods list as
     ///   its argument and returns a Boolean value indicating whether the
     ///   `PaymentMethod` is a match.
-    ///   - displayInformation: The `displayInformation` to use instead of the default one.
     public mutating func overrideDisplayInformation<T: PaymentMethod>(
         ofPaymentMethod type: PaymentMethodType,
-        where predicate: (T) -> Bool,
-        with displayInformation: MerchantCustomDisplayInformation
+        with displayInformation: MerchantCustomDisplayInformation,
+        where predicate: (T) -> Bool
     ) {
         for (index, paymentMethod) in regular.enumerated() where paymentMethod.type == type {
             guard let paymentMethod = paymentMethod as? T,
@@ -88,12 +88,25 @@ public struct PaymentMethods: Decodable {
         regular.filter { $0 is T }.compactMap { $0 as? T }.first(where: predicate)
     }
     
-    /// Returns the first available payment method of the given type.
+    /// Returns the first available payment method of the given `PaymentMethodType`.
     ///
     /// - Parameter type: The `PaymentMethodType` of payment method to retrieve.
     /// - Returns: The first available payment method of the given type, or `nil` if none could be found.
     public func paymentMethod(ofType type: PaymentMethodType) -> PaymentMethod? {
         regular.first { $0.type == type }
+    }
+    
+    /// Returns the first available payment method of the given `PaymentMethodType` and passes the predicate closure.
+    ///
+    /// - Parameters:
+    ///   - type: The `PaymentMethodType` of payment method to retrieve.
+    ///   - predicate: A closure that takes a `PaymentMethod` of the payment methods list as
+    ///   its argument and returns a Boolean value indicating whether the
+    ///   `PaymentMethod` is a match.
+    /// - Returns: The first available payment method of the given type and passes the predicate closure, or `nil` if none could be found.
+    public func paymentMethod<T: PaymentMethod>(ofType type: PaymentMethodType,
+                                                where predicate: (T) -> Bool) -> T? {
+        regular.filter { $0.type == type }.compactMap { $0 as? T }.first(where: predicate)
     }
     
     // MARK: - Decoding

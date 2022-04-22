@@ -10,6 +10,12 @@ import AdyenComponents
 
 class PaymentMethodTests: XCTestCase {
     
+    var paymentMethods: PaymentMethods!
+    
+    override func setUpWithError() throws {
+        paymentMethods = try getPaymentMethods()
+    }
+    
     private func getPaymentMethods() throws -> PaymentMethods {
         let dictionary = [
             "storedPaymentMethods": [
@@ -62,7 +68,9 @@ class PaymentMethodTests: XCTestCase {
                 econtextATM,
                 econtextStores,
                 econtextOnline,
-                oxxo
+                oxxo,
+                giftCard1,
+                givexGiftCard,
             ]
         ]
         return try Coder.decode(dictionary) as PaymentMethods
@@ -71,7 +79,6 @@ class PaymentMethodTests: XCTestCase {
     func testDecodingPaymentMethods() throws {
         // Stored payment methods
         
-        let paymentMethods = try getPaymentMethods()
         XCTAssertEqual(paymentMethods.stored.count, 7)
         XCTAssertTrue(paymentMethods.stored[0] is StoredCardPaymentMethod)
         
@@ -134,7 +141,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 21)
+        XCTAssertEqual(paymentMethods.regular.count, 23)
         XCTAssertTrue(paymentMethods.regular[0] is CardPaymentMethod)
         XCTAssertEqual((paymentMethods.regular[0] as! CardPaymentMethod).fundingSource!, .credit)
         
@@ -231,90 +238,168 @@ class PaymentMethodTests: XCTestCase {
 
     }
     
-    func testOverridingDisplayInformation() throws {
-        var paymentMethods = try getPaymentMethods()
-        
-        // Card payment method
+    func testOverridingDisplayInformationCard() throws {
         paymentMethods.overrideDisplayInformation(ofPaymentMethod: .scheme,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let cardpaymentMethod = paymentMethods.paymentMethod(ofType: .scheme)
         XCTAssertEqual(cardpaymentMethod?.displayInformation(using: nil).title, "custom title")
         XCTAssertEqual(cardpaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
-        
-        // BCMC payment method
+    }
+    
+    func testOverridingDisplayInformationBCMC() throws {
         paymentMethods.overrideDisplayInformation(ofPaymentMethod: .bcmc,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let bcmcpaymentMethod = paymentMethods.paymentMethod(ofType: .bcmc)
         XCTAssertEqual(bcmcpaymentMethod?.displayInformation(using: nil).title, "custom title")
         XCTAssertEqual(bcmcpaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
-        
-        // Apple pay payment method
+    }
+    
+    func testOverridingDisplayInformationApplePay() throws {
         paymentMethods.overrideDisplayInformation(ofPaymentMethod: .applePay,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let applePaypaymentMethod = paymentMethods.paymentMethod(ofType: .applePay)
         XCTAssertEqual(applePaypaymentMethod?.displayInformation(using: nil).title, "custom title")
         XCTAssertEqual(applePaypaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
-        
-        // payPal payment method
+    }
+    
+    func testOverridingDisplayInformationPayPal() throws {
         paymentMethods.overrideDisplayInformation(ofPaymentMethod: .payPal,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let payPalpaymentMethod = paymentMethods.paymentMethod(ofType: .payPal)
         XCTAssertEqual(payPalpaymentMethod?.displayInformation(using: nil).title, "custom title")
         XCTAssertEqual(payPalpaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
-        
-        // weChat payment method
+    }
+    
+    func testOverridingDisplayInformationWeChat() throws {
         paymentMethods.overrideDisplayInformation(ofPaymentMethod: .weChatPaySDK,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let weChatPaymentMethod = paymentMethods.paymentMethod(ofType: .weChatPaySDK)
         XCTAssertEqual(weChatPaymentMethod?.displayInformation(using: nil).title, "custom title")
         XCTAssertEqual(weChatPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
-        
-        // QiwiWallet payment method
+    }
+    
+    func testOverridingDisplayInformationQiwiWallet() throws {
         paymentMethods.overrideDisplayInformation(ofPaymentMethod: .qiwiWallet,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let qiwiWalletPaymentMethod = paymentMethods.paymentMethod(ofType: .qiwiWallet)
         XCTAssertEqual(qiwiWalletPaymentMethod?.displayInformation(using: nil).title, "custom title")
         XCTAssertEqual(qiwiWalletPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
-        
-        // BLIK payment method
+    }
+    
+    func testOverridingDisplayInformationBLIK() throws {
         paymentMethods.overrideDisplayInformation(ofPaymentMethod: .blik,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let blikPaymentMethod = paymentMethods.paymentMethod(ofType: .blik)
         XCTAssertEqual(blikPaymentMethod?.displayInformation(using: nil).title, "custom title")
         XCTAssertEqual(blikPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
-        
-        // Giro payment method
+    }
+    
+    func testOverridingDisplayInformationGiro() throws {
         paymentMethods.overrideDisplayInformation(ofPaymentMethod: .other("giropay"),
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let giroPaymentMethod = paymentMethods.paymentMethod(ofType: .other("giropay"))
         XCTAssertEqual(giroPaymentMethod?.displayInformation(using: nil).title, "custom title")
         XCTAssertEqual(giroPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
-        
-        // giftCard payment method
-        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .giftcard,
-                                                  with: .init(title: "custom title",
-                                                              subtitle: "custom subtitle"))
+    }
+    
+    func testOverridingDisplayInformationGenericGiftCard() throws {
+        paymentMethods.overrideDisplayInformation(
+            ofPaymentMethod: .giftcard,
+            with: .init(title: "custom title",
+                        subtitle: "custom subtitle"),
+            where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
+                paymentMethod.brand == "genericgiftcard"
+            }
+        )
         let giftCardPaymentMethod = paymentMethods.paymentMethod(ofType: .giftcard)
         XCTAssertEqual(giftCardPaymentMethod?.displayInformation(using: nil).title, "custom title")
         XCTAssertEqual(giftCardPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
         
-        // dukoWallet payment method
+        /// make sure that we override the display information of only generic giftcard payment method.
+        let givexGiftCardPaymentMethod = paymentMethods.paymentMethod(
+            ofType: PaymentMethodType.giftcard,
+            where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
+                paymentMethod.brand == "givex"
+            }
+        )
+        XCTAssertEqual(givexGiftCardPaymentMethod?.displayInformation(using: nil).title, "Givex")
+        XCTAssertNil(givexGiftCardPaymentMethod?.displayInformation(using: nil).subtitle)
+    }
+    
+    func testOverridingDisplayInformationGivexGiftCard() throws {
+        paymentMethods.overrideDisplayInformation(
+            ofPaymentMethod: .giftcard,
+            with: .init(title: "custom title",
+                        subtitle: "custom subtitle"),
+            where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
+                paymentMethod.brand == "givex"
+            }
+        )
+        let givexGiftCardPaymentMethod = paymentMethods.paymentMethod(
+            ofType: PaymentMethodType.giftcard,
+            where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
+                paymentMethod.brand == "givex"
+            }
+        )
+        XCTAssertEqual(givexGiftCardPaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertEqual(givexGiftCardPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+        
+        let anyGiftCardPaymentMethod = paymentMethods.paymentMethod(
+            ofType: PaymentMethodType.giftcard,
+            where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
+                paymentMethod.brand == "giftfor2card"
+            }
+        )
+        XCTAssertEqual(anyGiftCardPaymentMethod?.displayInformation(using: nil).title, "GiftFor2")
+        XCTAssertNil(anyGiftCardPaymentMethod?.displayInformation(using: nil).subtitle)
+    }
+    
+    func testOverridingDisplayInformationAnyGivenGiftCard() throws {
+        paymentMethods.overrideDisplayInformation(
+            ofPaymentMethod: .giftcard,
+            with: .init(title: "custom title",
+                        subtitle: "custom subtitle"),
+            where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
+                paymentMethod.brand == "giftfor2card"
+            }
+        )
+        let anyGiftCardPaymentMethod = paymentMethods.paymentMethod(
+            ofType: PaymentMethodType.giftcard,
+            where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
+                paymentMethod.brand == "giftfor2card"
+            }
+        )
+        XCTAssertEqual(anyGiftCardPaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertEqual(anyGiftCardPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+        
+        let givexGiftCardPaymentMethod = paymentMethods.paymentMethod(
+            ofType: PaymentMethodType.giftcard,
+            where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
+                paymentMethod.brand == "givex"
+            }
+        )
+        XCTAssertEqual(givexGiftCardPaymentMethod?.displayInformation(using: nil).title, "Givex")
+        XCTAssertNil(givexGiftCardPaymentMethod?.displayInformation(using: nil).subtitle)
+    }
+    
+    func testOverridingDisplayInformationDukoWallet() throws {
         paymentMethods.overrideDisplayInformation(ofPaymentMethod: .dokuWallet,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
-        let dukoWalletPaymentMethod = paymentMethods.paymentMethod(ofType: .giftcard)
+        let dukoWalletPaymentMethod = paymentMethods.paymentMethod(ofType: .dokuWallet)
         XCTAssertEqual(dukoWalletPaymentMethod?.displayInformation(using: nil).title, "custom title")
         XCTAssertEqual(dukoWalletPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
-        
-        // ideal payment method
+    }
+    
+    func testOverridingDisplayInformationIdeal() throws {
         paymentMethods.overrideDisplayInformation(ofPaymentMethod: .ideal,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
