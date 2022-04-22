@@ -156,6 +156,7 @@ extension IntegrationExample {
         let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
                                                  apiContext: ConfigurationConstants.apiContext)
         bacsDirectDebitPresenter = BACSDirectDebitPresentationDelegate(bacsComponent: component)
+        component.presentationDelegate = bacsDirectDebitPresenter
         return component
     }
 
