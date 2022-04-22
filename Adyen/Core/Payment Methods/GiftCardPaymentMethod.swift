@@ -15,7 +15,7 @@ public struct GiftCardPaymentMethod: PaymentMethod {
     
     public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
-    /// The brand of the stored card, in this case its a constant `"bcmc"`.
+    /// The brand of the gift card.
     public let brand: String
 
     /// :nodoc:

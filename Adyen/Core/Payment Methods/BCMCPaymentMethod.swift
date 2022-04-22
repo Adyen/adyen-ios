@@ -22,7 +22,7 @@ public struct BCMCPaymentMethod: AnyCardPaymentMethod {
     
     /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`, `"bcmc"`.
     /// In this case the brands is ["bcmc"].
-    public let brands: [String] = [PaymentMethodType.bcmc.rawValue]
+    public let brands: [CardType] = [CardType.bcmc]
     
     public var fundingSource: CardFundingSource? { cardPaymentMethod.fundingSource }
     

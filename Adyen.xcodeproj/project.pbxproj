@@ -352,7 +352,6 @@
 		E9B36CBF2243DA1400EAA368 /* AdyenCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E05F220982AE008616F6 /* AdyenCard.framework */; };
 		E9B36CC522451C7100EAA368 /* ComponentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B36CC422451C7100EAA368 /* ComponentManager.swift */; };
 		E9B36CC722451C8300EAA368 /* DropInConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B36CC622451C8300EAA368 /* DropInConfiguration.swift */; };
-		E9E3DAAF221D5C5E00697074 /* CardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAAE221D5C5E00697074 /* CardType.swift */; };
 		E9E3DAB2221D79C800697074 /* CardNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAB1221D79C800697074 /* CardNumberFormatterTests.swift */; };
 		E9E3DAB3221D988200697074 /* CardComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAA5221C431A00697074 /* CardComponent.swift */; };
 		E9E3DAB4221D988200697074 /* CardNumberValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAA7221C54BA00697074 /* CardNumberValidator.swift */; };
@@ -492,6 +491,7 @@
 		F92980CE27CF650F000CA5CA /* ActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92980CD27CF650F000CA5CA /* ActionComponent.swift */; };
 		F92980D127CF6580000CA5CA /* ActionComponentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97B972022B0F3F500505476 /* ActionComponentData.swift */; };
 		F92CBA072811754400367820 /* GiftCardConfirmationPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE25B32625ECE7001874BB /* GiftCardConfirmationPaymentMethod.swift */; };
+		F92CBA092812CB0D00367820 /* CardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAAE221D5C5E00697074 /* CardType.swift */; };
 		F931DDC5270B0874004B012C /* Available.swift in Sources */ = {isa = PBXBuildFile; fileRef = F931DDC4270B0874004B012C /* Available.swift */; };
 		F9354BE723A7B4E200A6760B /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9354BE623A7B4E200A6760B /* TextStyle.swift */; };
 		F9354BE923A7B5AC00A6760B /* ViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9354BE823A7B5AC00A6760B /* ViewStyle.swift */; };
@@ -2322,6 +2322,7 @@
 		E278EB3C22AA5E8700497FD5 /* Payment Methods */ = {
 			isa = PBXGroup;
 			children = (
+				F92CBA082812CAE300367820 /* Brands */,
 				E746E67327B429DF0076BB71 /* Abstract */,
 				C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */,
 				00F621C127EB1E3100C04097 /* AtomePaymentMethod.swift */,
@@ -2914,7 +2915,6 @@
 		E7B6280124ED6450000CEC6E /* CardType */ = {
 			isa = PBXGroup;
 			children = (
-				E9E3DAAE221D5C5E00697074 /* CardType.swift */,
 				E2D12C122223E1C000EF682F /* CardTypeDetector.swift */,
 				E7166A5524EAD99F007CCDEF /* BinInfoProvider.swift */,
 				F92329DC25AD049E002C5BC4 /* FallbackCardBrandProvider.swift */,
@@ -3566,6 +3566,14 @@
 				F92980C527CF563C000CA5CA /* AdyenSession+PartialPaymentDelegate.swift */,
 			);
 			path = AdyenSession;
+			sourceTree = "<group>";
+		};
+		F92CBA082812CAE300367820 /* Brands */ = {
+			isa = PBXGroup;
+			children = (
+				E9E3DAAE221D5C5E00697074 /* CardType.swift */,
+			);
+			path = Brands;
 			sourceTree = "<group>";
 		};
 		F9354BE523A7B4AE00A6760B /* Styles */ = {
@@ -5316,6 +5324,7 @@
 				F924C074246C2E0B006DDAB8 /* LazyOptional.swift in Sources */,
 				F913B3F126B80D4E008F6CD2 /* APIRequest.swift in Sources */,
 				F9B8AF5C27DA4E5E00DC0894 /* DropInComponentDelegate.swift in Sources */,
+				F92CBA092812CB0D00367820 /* CardType.swift in Sources */,
 				E2C0E0C1220D7E5E008616F6 /* SubmitButton.swift in Sources */,
 				E216D3C9221AFB830013CBCF /* IBANValidator.swift in Sources */,
 				E76EC6972417F36A009C6E2F /* FormTextInputItemView.swift in Sources */,
@@ -5530,7 +5539,6 @@
 			files = (
 				E9E3DAB3221D988200697074 /* CardComponent.swift in Sources */,
 				F9FE25A82625B448001874BB /* GiftCardDetails.swift in Sources */,
-				E9E3DAAF221D5C5E00697074 /* CardType.swift in Sources */,
 				A018094826FDD345003A8DE3 /* FormCardNumberContainerItem.swift in Sources */,
 				A01DCF0B26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift in Sources */,
 				A0FA143F26D65A5300627127 /* InstallmentPickerElement.swift in Sources */,

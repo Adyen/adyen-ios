@@ -426,7 +426,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.type.rawValue, "scheme")
         XCTAssertEqual(paymentMethod.name, "Credit Card")
         XCTAssertEqual(paymentMethod.fundingSource!, .credit)
-        XCTAssertEqual(paymentMethod.brands, ["mc", "visa", "amex"])
+        XCTAssertEqual(paymentMethod.brands, [.masterCard, .visa, .americanExpress])
     }
     
     func testDecodingDebitCardPaymentMethod() throws {
@@ -434,7 +434,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.type.rawValue, "scheme")
         XCTAssertEqual(paymentMethod.name, "Credit Card")
         XCTAssertEqual(paymentMethod.fundingSource!, .debit)
-        XCTAssertEqual(paymentMethod.brands, ["mc", "visa", "amex"])
+        XCTAssertEqual(paymentMethod.brands, [.masterCard, .visa, .americanExpress])
     }
     
     func testDecodingBCMCCardPaymentMethod() throws {
@@ -459,7 +459,7 @@ class PaymentMethodTests: XCTestCase {
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         XCTAssertEqual(paymentMethod.type.rawValue, "scheme")
         XCTAssertEqual(paymentMethod.name, "VISA")
-        XCTAssertEqual(paymentMethod.brand, "visa")
+        XCTAssertEqual(paymentMethod.brand, .visa)
         XCTAssertEqual(paymentMethod.lastFour, "1111")
         XCTAssertEqual(paymentMethod.expiryMonth, "08")
         XCTAssertEqual(paymentMethod.expiryYear, "2018")
@@ -475,7 +475,7 @@ class PaymentMethodTests: XCTestCase {
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         XCTAssertEqual(paymentMethod.type.rawValue, "scheme")
         XCTAssertEqual(paymentMethod.name, "VISA")
-        XCTAssertEqual(paymentMethod.brand, "visa")
+        XCTAssertEqual(paymentMethod.brand, .visa)
         XCTAssertEqual(paymentMethod.lastFour, "1111")
         XCTAssertEqual(paymentMethod.expiryMonth, "08")
         XCTAssertEqual(paymentMethod.expiryYear, "2018")
@@ -492,13 +492,13 @@ class PaymentMethodTests: XCTestCase {
             return DisplayInformation(
                 title: customDisplayInformation.title,
                 subtitle: customDisplayInformation.subtitle ?? localizedString(.cardStoredExpires, localizationParameters, expireDate),
-                logoName: method.brand
+                logoName: method.brand.rawValue
             )
         }
         
         return DisplayInformation(title: String.Adyen.securedString + method.lastFour,
                                   subtitle: localizedString(.cardStoredExpires, localizationParameters, expireDate),
-                                  logoName: method.brand)
+                                  logoName: method.brand.rawValue)
     }
     
     // MARK: - Issuer List
