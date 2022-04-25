@@ -165,7 +165,7 @@ public class CardComponent: PublicKeyConsumer,
                                                     localizationParameters: configuration.localizationParameters)
         formViewController.delegate = self
         formViewController.cardDelegate = self
-        formViewController.title = paymentMethod.name
+        formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         return formViewController
     }()
 }

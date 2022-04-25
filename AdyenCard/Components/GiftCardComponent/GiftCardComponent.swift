@@ -80,7 +80,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         let formViewController = FormViewController(style: style)
         formViewController.localizationParameters = localizationParameters
         formViewController.delegate = self
-        formViewController.title = paymentMethod.name
+        formViewController.title = paymentMethod.displayInformation(using: localizationParameters).title
         formViewController.append(errorItem)
         formViewController.append(numberItem)
         formViewController.append(securityCodeItem)

@@ -19,6 +19,11 @@ public struct BLIKPaymentMethod: PaymentMethod {
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
+    
+    /// :nodoc:
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue)
+    }
 
     private enum CodingKeys: String, CodingKey {
         case type

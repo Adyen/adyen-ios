@@ -46,6 +46,7 @@ public extension PaymentMethod {
         return defaultDisplayInformation
     }
 
+    /// :nodoc:
     func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
     }

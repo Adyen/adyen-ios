@@ -81,7 +81,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
             return listItem
         }
         
-        listViewController.title = paymentMethod.name
+        listViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         listViewController.reload(newSections: [ListSection(items: items)])
         
         return listViewController

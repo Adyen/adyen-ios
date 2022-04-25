@@ -100,8 +100,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         let paymentMethod = defaultComponent.paymentMethod
         let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
         var listItem = ListItem(title: displayInformation.title, style: self.listItemStyle)
-        let logoName = paymentMethod.displayInformation(using: localizationParameters).logoName
-        listItem.imageURL = LogoURLProvider.logoURL(withName: logoName,
+        listItem.imageURL = LogoURLProvider.logoURL(withName: displayInformation.logoName,
                                                     environment: apiContext.environment)
         listItem.subtitle = displayInformation.subtitle
         listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "defaultComponent")
