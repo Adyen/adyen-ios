@@ -25,5 +25,13 @@ internal extension KeyedDecodingContainer {
         
         return intValue
     }
-    
+
+    /// Returns a Boolean value indicating whether the decoder contains a **non null** value
+    /// associated with the given key.
+    ///
+    /// - parameter key: The key to search for.
+    /// - returns: Whether the `Decoder` has an entry for the given key.
+    func containsValue(_ key: KeyedDecodingContainer<K>.Key) throws -> Bool {
+        try contains(key) && !decodeNil(forKey: key)
+    }
 }

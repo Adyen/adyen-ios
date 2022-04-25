@@ -44,9 +44,9 @@ public final class MBWayComponent: AbstractPersonalInformationComponent {
         return PhoneExtensionsRepository.get(with: query)
     }
 
-    override public func createPaymentDetails() -> PaymentMethodDetails {
+    override public func createPaymentDetails() throws -> PaymentMethodDetails {
         guard let phoneItem = phoneItem else {
-            fatalError("There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
+            throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
         return MBWayDetails(paymentMethod: paymentMethod,
                             telephoneNumber: phoneItem.phoneNumber)

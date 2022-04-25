@@ -17,17 +17,21 @@ extension IntegrationExample {
 
     internal func presentDropInComponent() {
         guard let paymentMethods = paymentMethods else { return }
-        let configuration = DropInComponent.Configuration(apiContext: apiContext,
-                                                          adyenContext: adyenContext)
-        configuration.applePay = .init(summaryItems: ConfigurationConstants.applePaySummaryItems,
-                                       merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
+
+        let configuration = DropInComponent.Configuration(apiContext: ConfigurationConstants.apiContext,
+                                                          adyenContext: ConfigurationConstants.adyenContext)
+
+        if let applePayPayment = try? ApplePayPayment(payment: payment) {
+            configuration.applePay = .init(payment: applePayPayment,
+                                           merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
+        }
         configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         configuration.payment = payment
         configuration.card.billingAddressMode = .postalCode
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
 
         let component = DropInComponent(paymentMethods: paymentMethods,
-                                        adyenContext: adyenContext,
+                                        adyenContext: ConfigurationConstants.adyenContext,
                                         configuration: configuration,
                                         title: ConfigurationConstants.appName)
         component.delegate = self
@@ -55,10 +59,6 @@ extension IntegrationExample {
         case let .failure(error):
             finish(with: error)
         }
-    }
-
-    private func handle(_ action: Action) {
-        (currentComponent as? DropInComponent)?.handle(action)
     }
 
     internal func handle(_ order: PartialPaymentOrder) {

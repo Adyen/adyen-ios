@@ -106,15 +106,15 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenO
     }
     
     /// :nodoc:
-    override public func createPaymentDetails() -> PaymentMethodDetails {
+    override public func createPaymentDetails() throws -> PaymentMethodDetails {
         guard let firstName = firstNameItem?.value,
               let lastName = lastNameItem?.value,
               let emailAddress = emailItem?.value,
               let telephoneNumber = phoneItem?.value,
               let billingAddress = addressItem?.value,
               let deliveryAddress = deliveryAddressItem?.value else {
-            fatalError("There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
-        }
+                  throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
+              }
         
         let shopperName = ShopperName(firstName: firstName, lastName: lastName)
         let affirmDetails = AffirmDetails(paymentMethod: paymentMethod,

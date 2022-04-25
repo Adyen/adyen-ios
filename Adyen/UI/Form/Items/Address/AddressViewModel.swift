@@ -7,7 +7,8 @@
 import Foundation
 import UIKit
 
-internal enum AddressField: String, CaseIterable {
+/// :nodoc:
+public enum AddressField: String, CaseIterable {
     case street
     case houseNumberOrName
     case apartment
@@ -17,72 +18,30 @@ internal enum AddressField: String, CaseIterable {
     case country
 }
 
-internal enum FormScheme {
+/// :nodoc:
+public enum AddressFormScheme {
     case item(AddressField)
     case split(AddressField, AddressField)
 }
 
-internal struct AddressViewModel {
+/// :nodoc:
+public struct AddressViewModel {
 
     internal var labels: [AddressField: LocalizationKey]
     internal var placeholder: [AddressField: LocalizationKey]
     internal var optionalFields: [AddressField]
-    internal var schema: [FormScheme]
+    internal var scheme: [AddressFormScheme]
 
-    // swiftlint:disable function_body_length explicit_acl
-    internal static subscript(countryCode: String) -> AddressViewModel {
-        var viewModel = AddressViewModel(labels: [.city: .cityFieldTitle,
-                                                  .houseNumberOrName: .houseNumberFieldTitle,
-                                                  .street: .streetFieldTitle,
-                                                  .stateOrProvince: .provinceOrTerritoryFieldTitle,
-                                                  .postalCode: .postalCodeFieldTitle,
-                                                  .apartment: .apartmentSuiteFieldTitle],
-                                         placeholder: [.city: .cityFieldPlaceholder,
-                                                       .houseNumberOrName: .houseNumberFieldPlaceholder,
-                                                       .street: .streetFieldPlaceholder,
-                                                       .stateOrProvince: .provinceOrTerritoryFieldPlaceholder,
-                                                       .postalCode: .postalCodeFieldPlaceholder,
-                                                       .apartment: .apartmentSuiteFieldPlaceholder],
-                                         optionalFields: [.apartment],
-                                         schema: AddressField.allCases.filter { $0 != .country }.map { .item($0) })
-        switch countryCode {
-        case "BR":
-            viewModel.labels[.stateOrProvince] = .stateFieldTitle
-            viewModel.placeholder[.stateOrProvince] = .selectStateOrProvinceFieldPlaceholder
-        case "CA":
-            viewModel.labels[.houseNumberOrName] = .apartmentSuiteFieldTitle
-            viewModel.labels[.stateOrProvince] = .provinceOrTerritoryFieldTitle
-            viewModel.labels[.street] = .addressFieldTitle
-            viewModel.placeholder[.houseNumberOrName] = .apartmentSuiteFieldPlaceholder
-            viewModel.placeholder[.stateOrProvince] = .provinceOrTerritoryFieldPlaceholder
-            viewModel.placeholder[.street] = .addressFieldPlaceholder
-            viewModel.optionalFields = [.houseNumberOrName]
-            viewModel.schema = [.street, .houseNumberOrName, .city, .postalCode, .stateOrProvince].map { .item($0) }
-        case "GB":
-            viewModel.labels[.city] = .cityTownFieldTitle
-            viewModel.placeholder[.city] = .cityTownFieldPlaceholder
-            viewModel.schema = [.houseNumberOrName, .street, .city, .postalCode].map { .item($0) }
-        case "US":
-            viewModel.labels[.postalCode] = .zipCodeFieldTitle
-            viewModel.labels[.houseNumberOrName] = .apartmentSuiteFieldTitle
-            viewModel.labels[.stateOrProvince] = .stateFieldTitle
-            viewModel.labels[.street] = .addressFieldTitle
-            viewModel.placeholder[.postalCode] = .zipCodeFieldPlaceholder
-            viewModel.placeholder[.houseNumberOrName] = .apartmentSuiteFieldPlaceholder
-            viewModel.placeholder[.stateOrProvince] = .selectStateFieldPlaceholder
-            viewModel.placeholder[.street] = .addressFieldPlaceholder
-            viewModel.optionalFields = [.houseNumberOrName]
-            viewModel.schema = [.item(.street),
-                                .item(.houseNumberOrName),
-                                .item(.city),
-                                .split(.stateOrProvince, .postalCode)]
-        default:
-            break
-        }
-
-        return viewModel
+    public init(labels: [AddressField: LocalizationKey],
+                placeholder: [AddressField: LocalizationKey],
+                optionalFields: [AddressField],
+                scheme: [AddressFormScheme]) {
+        self.labels = labels
+        self.placeholder = placeholder
+        self.optionalFields = optionalFields
+        self.scheme = scheme
     }
-    // swiftlint:enable function_body_length explicit_acl
+
 }
 
 extension AddressField {

@@ -21,6 +21,15 @@ enum PostalAddressMocks {
                                                        stateOrProvince: "CA",
                                                        street: "Garfield Ave",
                                                        apartment: nil)
+    
+    static let singaporePostalAddress = PostalAddress(city: "Singapore",
+                                                       country: "Singapore",
+                                                       houseNumberOrName: "109",
+                                                       postalCode: "179097",
+                                                       stateOrProvince: "North East Community",
+                                                       street: "North Bridge Rd, #10-22 Funan",
+                                                       apartment: nil)
+    
     static let emptyUSPostalAddress = PostalAddress(city: "",
                                                     country: "US",
                                                     houseNumberOrName: "",

@@ -102,7 +102,7 @@ public final class RedirectComponent: ActionComponent {
             guard let self = self else { return }
             self.registerRedirectBounceBackListener(action)
             if success {
-                self.delegate?.didOpenExternalApplication(self)
+                self.delegate?.didOpenExternalApplication(component: self)
             } else {
                 self.openInAppBrowser(action)
             }
@@ -126,7 +126,7 @@ public final class RedirectComponent: ActionComponent {
             guard let self = self else { return }
             if success {
                 self.registerRedirectBounceBackListener(action)
-                self.delegate?.didOpenExternalApplication(self)
+                self.delegate?.didOpenExternalApplication(component: self)
             } else {
                 self.delegate?.didFail(with: RedirectComponent.Error.appNotFound, from: self)
             }
@@ -159,7 +159,7 @@ extension RedirectComponent: BrowserComponentDelegate {
 
     /// :nodoc:
     internal func didOpenExternalApplication() {
-        delegate?.didOpenExternalApplication(self)
+        delegate?.didOpenExternalApplication(component: self)
     }
     
 }
@@ -183,8 +183,8 @@ extension RedirectComponent: ActionComponentDelegate {
     }
     
     /// :nodoc:
-    public func didOpenExternalApplication(_ component: ActionComponent) {
-        delegate?.didOpenExternalApplication(self)
+    public func didOpenExternalApplication(component: ActionComponent) {
+        delegate?.didOpenExternalApplication(component: self)
     }
     
 }

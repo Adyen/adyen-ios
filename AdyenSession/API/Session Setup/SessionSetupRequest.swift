@@ -12,6 +12,10 @@ internal protocol SessionResponse: Response {
     var sessionData: String { get }
 }
 
+internal protocol PaymentResultCodeAware {
+    var resultCode: PaymentsResponse.ResultCode { get }
+}
+
 internal struct SessionSetupRequest: Request {
     internal let path: String
     

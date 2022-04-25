@@ -17,8 +17,8 @@ extension IntegrationExample {
     internal func presentCardComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: CardPaymentMethod.self) else { return }
         let component = CardComponent(paymentMethod: paymentMethod,
-                                      apiContext: apiContext,
-                                      adyenContext: adyenContext)
+                                      apiContext: ConfigurationConstants.apiContext,
+                                      adyenContext: ConfigurationConstants.adyenContext)
         component.cardComponentDelegate = self
         present(component)
     }
@@ -26,25 +26,24 @@ extension IntegrationExample {
     internal func presentIdealComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: IssuerListPaymentMethod.self) else { return }
         let component = IdealComponent(paymentMethod: paymentMethod,
-                                       apiContext: apiContext,
-                                       adyenContext: adyenContext)
+                                       apiContext: ConfigurationConstants.apiContext,
+                                       adyenContext: ConfigurationConstants.adyenContext)
         present(component)
     }
 
     internal func presentSEPADirectDebitComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: SEPADirectDebitPaymentMethod.self) else { return }
         let component = SEPADirectDebitComponent(paymentMethod: paymentMethod,
-                                                 apiContext: apiContext,
-                                                 adyenContext: adyenContext)
+                                                 apiContext: ConfigurationConstants.apiContext,
+                                                 adyenContext: ConfigurationConstants.adyenContext)
         present(component)
     }
 
     internal func presentBACSDirectDebitComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return }
-        let adyenContext = AdyenContext(apiContext: apiContext)
         let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
-                                                 apiContext: apiContext,
-                                                 adyenContext: adyenContext)
+                                                 apiContext: ConfigurationConstants.apiContext,
+                                                 adyenContext: ConfigurationConstants.adyenContext)
         bacsDirectDebitPresenter = BACSDirectDebitPresentationDelegate(bacsComponent: component)
         component.presentationDelegate = bacsDirectDebitPresenter
         present(component)
@@ -55,21 +54,23 @@ extension IntegrationExample {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: MBWayPaymentMethod.self) else { return }
         let config = MBWayComponent.Configuration(style: style)
         let component = MBWayComponent(paymentMethod: paymentMethod,
-                                       apiContext: apiContext,
-                                       adyenContext: adyenContext,
+                                       apiContext: ConfigurationConstants.apiContext,
+                                       adyenContext: ConfigurationConstants.adyenContext,
                                        configuration: config)
         present(component)
     }
 
     internal func presentApplePayComponent() {
-        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self) else { return }
-        let config = ApplePayComponent.Configuration(summaryItems: ConfigurationConstants.applePaySummaryItems,
+        guard
+            let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self),
+            let applePayPayment = try? ApplePayPayment(payment: payment)
+        else { return }
+        let config = ApplePayComponent.Configuration(payment: applePayPayment,
                                                      merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
                                                      allowOnboarding: true)
         let component = try? ApplePayComponent(paymentMethod: paymentMethod,
-                                               apiContext: apiContext,
-                                               adyenContext: adyenContext,
-                                               payment: payment,
+                                               apiContext: ConfigurationConstants.apiContext,
+                                               adyenContext: ConfigurationConstants.adyenContext,
                                                configuration: config)
         guard let presentableComponent = component else { return }
         present(presentableComponent)
@@ -78,8 +79,8 @@ extension IntegrationExample {
     internal func presentConvenienceStore() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: EContextPaymentMethod.self) else { return }
         let component = EContextStoreComponent(paymentMethod: paymentMethod,
-                                               apiContext: apiContext,
-                                               adyenContext: adyenContext,
+                                               apiContext: ConfigurationConstants.apiContext,
+                                               adyenContext: ConfigurationConstants.adyenContext,
                                                configuration: BasicPersonalInfoFormComponent.Configuration(style: FormComponentStyle()))
         present(component)
     }
@@ -136,8 +137,14 @@ extension IntegrationExample {
         }
     }
 
-    private func handle(_ action: Action) {
-        actionComponent.handle(action)
+    internal func handle(_ action: Action) {
+        if let dropInAsActionComponent = currentComponent as? ActionHandlingComponent {
+            /// In case current component is a `DropInComponent` that implements `ActionHandlingComponent`
+            dropInAsActionComponent.handle(action)
+        } else {
+            /// In case current component is an individual component like `CardComponent`
+            adyenActionComponent.handle(action)
+        }
     }
 
 }

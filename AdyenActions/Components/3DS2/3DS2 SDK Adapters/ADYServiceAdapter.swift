@@ -6,6 +6,7 @@
 
 import Adyen3DS2
 import Foundation
+import Adyen
 
 internal protocol AnyADYService {
     func service(with parameters: ADYServiceParameters,
@@ -30,7 +31,9 @@ internal final class ADYServiceAdapter: AnyADYService {
     }
 
     internal func transaction(withMessageVersion: String) throws -> AnyADYTransaction {
-        guard let service = service else { fatalError("ADYService is nil.") }
+        guard let service = service else {
+            throw UnknownError(errorDescription: "ADYService is nil.")
+        }
         return try service.transaction(withMessageVersion: withMessageVersion)
     }
     

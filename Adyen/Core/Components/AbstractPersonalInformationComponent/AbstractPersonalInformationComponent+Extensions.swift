@@ -21,9 +21,12 @@ extension AbstractPersonalInformationComponent: LoadingComponent {
 
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
-
-        let details = createPaymentDetails()
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: amountToPay, order: order))
+        do {
+            let details = try createPaymentDetails()
+            submit(data: PaymentComponentData(paymentMethodDetails: details, amount: amountToPay, order: order))
+        } catch let error {
+            delegate?.didFail(with: error, from: self)
+        }
     }
 }
 

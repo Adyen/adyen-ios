@@ -42,9 +42,9 @@ public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
     override public func phoneExtensions() -> [PhoneExtension] { qiwiWalletPaymentMethod.phoneExtensions
     }
 
-    override public func createPaymentDetails() -> PaymentMethodDetails {
+    override public func createPaymentDetails() throws -> PaymentMethodDetails {
         guard let phoneItem = phoneItem else {
-            fatalError("There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
+            throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
         return QiwiWalletDetails(paymentMethod: paymentMethod,
                                  phonePrefix: phoneItem.prefix,

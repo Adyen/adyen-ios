@@ -144,18 +144,21 @@ public class CardComponent: PublicKeyConsumer,
         }
         var component: PaymentComponent & PresentableComponent
         if configuration.stored.showsSecurityCodeField {
-            component = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
-                                            apiContext: apiContext,
-                                            adyenContext: adyenContext)
+            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, apiContext: apiContext, adyenContext: adyenContext)
+            storedComponent.localizationParameters = configuration.localizationParameters
+            component = storedComponent
         } else {
-            component = StoredPaymentMethodComponent(paymentMethod: paymentMethod,
-                                                     apiContext: apiContext,
-                                                     adyenContext: adyenContext)
+            let storedComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext, adyenContext: adyenContext)
+            storedComponent.localizationParameters = configuration.localizationParameters
+            component = storedComponent
         }
         component.payment = payment
         return component
     }()
-    
+
+    public func update(storePaymentMethodFieldVisibility isVisible: Bool) {
+        cardViewController.update(storePaymentMethodFieldVisibility: isVisible)
+    }
     // MARK: - Form Items
     
     private lazy var securedViewController = SecuredViewController(child: cardViewController, style: configuration.style)

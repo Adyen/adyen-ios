@@ -182,18 +182,12 @@ internal final class ComponentManager {
             return nil
         }
         
-        guard let payment = configuration.payment else {
-            adyenPrint("Failed to instantiate ApplePayComponent because payment is missing")
-            return nil
-        }
-        
         do {
             let preApplePayConfig = PreApplePayComponent.Configuration(style: configuration.style.applePay,
                                                                        localizationParameters: configuration.localizationParameters)
             return try PreApplePayComponent(paymentMethod: paymentMethod,
                                             apiContext: apiContext,
                                             adyenContext: adyenContext,
-                                            payment: payment,
                                             configuration: preApplePayConfig,
                                             applePayConfiguration: applePay)
         } catch {
@@ -410,4 +404,16 @@ extension ComponentManager: PaymentComponentBuilder {
                                 apiContext: apiContext,
                                 adyenContext: adyenContext)
     }
+
+    /// :nodoc:
+    internal func build(paymentMethod: AtomePaymentMethod) -> PaymentComponent? {
+        let config = AtomeComponent.Configuration(style: configuration.style.formComponent,
+                                                  shopperInformation: configuration.shopper,
+                                                  localizationParameters: configuration.localizationParameters)
+        return AtomeComponent(paymentMethod: paymentMethod,
+                              apiContext: apiContext,
+                              adyenContext: adyenContext,
+                              configuration: config)
+    }
+
 }

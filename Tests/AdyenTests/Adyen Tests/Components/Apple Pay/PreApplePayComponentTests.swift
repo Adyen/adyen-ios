@@ -13,18 +13,17 @@ import XCTest
 class PreApplePayComponentTests: XCTestCase {
     
     var sut: PreApplePayComponent!
-    lazy var amount = Amount(value: 2, currencyCode: getRandomCurrencyCode())
-    lazy var payment = Payment(amount: amount, countryCode: getRandomCountryCode())
-    
+    lazy var applePayPayment = Dummy.createTestApplePayPayment()
+
     override func setUp() {
-        let configuration = ApplePayComponent.Configuration(summaryItems: createTestSummaryItems(), merchantIdentifier: "test_id")
+        let configuration = ApplePayComponent.Configuration(payment: applePayPayment,
+                                                            merchantIdentifier: "test_id")
         var applePayStyle = ApplePayStyle()
         applePayStyle.paymentButtonType = .inStore
         let preApplePayConfig = PreApplePayComponent.Configuration(style: applePayStyle)
         sut = try! PreApplePayComponent(paymentMethod: ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil),
                                         apiContext: Dummy.context,
                                         adyenContext: Dummy.adyenContext,
-                                        payment: payment,
                                         configuration: preApplePayConfig,
                                         applePayConfiguration: configuration)
     }
@@ -37,7 +36,7 @@ class PreApplePayComponentTests: XCTestCase {
                                           hintLabel: .init(font: .boldSystemFont(ofSize: 16),
                                                            color: .red,
                                                            textAlignment: .center))
-        let model = PreApplePayView.Model(hint: amount.formatted,
+        let model = PreApplePayView.Model(hint: applePayPayment.payment.amount.formatted,
                                           style: applePayStyle)
         
         let view = PreApplePayView(model: model)
@@ -65,7 +64,8 @@ class PreApplePayComponentTests: XCTestCase {
     
     func testApplePayPresented() {
         guard Available.iOS12 else { return }
-        let dummyExpectation = expectation(description: "Dummy Expectation")
+        let presentExpectation = expectation(description: "Present Expectation")
+        let dismissExpectation = expectation(description: "Dismiss Expectation")
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -73,6 +73,7 @@ class PreApplePayComponentTests: XCTestCase {
         presentationMock.doPresent = { component in
             UIApplication.shared.keyWindow?.rootViewController?.present(component: component)
         }
+        presentationMock.doDismiss = { completion in completion?() }
         sut.presentationDelegate = presentationMock
         
         let applePayButton = self.sut.viewController.view.findView(by: "applePayButton") as? PKPaymentButton
@@ -84,9 +85,13 @@ class PreApplePayComponentTests: XCTestCase {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             XCTAssertTrue(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController is PKPaymentAuthorizationViewController)
             UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: false, completion: nil)
-            dummyExpectation.fulfill()
+            presentExpectation.fulfill()
         }
-        
+
+        sut.finalizeIfNeeded(with: false) {
+            dismissExpectation.fulfill()
+        }
+
         waitForExpectations(timeout: 10, handler: nil)
     }
     
@@ -100,22 +105,12 @@ class PreApplePayComponentTests: XCTestCase {
             let hintLabel = self.sut.viewController.view.findView(by: "hintLabel") as? UILabel
             
             XCTAssertNotNil(hintLabel)
-            XCTAssertEqual(hintLabel?.text, self.amount.formatted)
+            XCTAssertEqual(hintLabel?.text, self.applePayPayment.payment.amount.formatted)
             
             dummyExpectation.fulfill()
         }
         
         waitForExpectations(timeout: 10, handler: nil)
     }
-    
-    private func createTestSummaryItems() -> [PKPaymentSummaryItem] {
-        var amounts = (0...3).map { _ in
-            NSDecimalNumber(mantissa: UInt64.random(in: 1...20), exponent: 1, isNegative: Bool.random())
-        }
-        // Positive Grand total
-        amounts.append(NSDecimalNumber(mantissa: 20, exponent: 1, isNegative: false))
-        return amounts.enumerated().map {
-            PKPaymentSummaryItem(label: "summary_\($0)", amount: $1)
-        }
-    }
+
 }

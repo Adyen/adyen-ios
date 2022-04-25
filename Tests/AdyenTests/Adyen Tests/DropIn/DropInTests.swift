@@ -139,7 +139,9 @@ class DropInTests: XCTestCase {
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymentMethods, adyenContext: adyenContext, configuration: config)
+        sut = DropInComponent(paymentMethods: paymentMethods,
+                              adyenContext: adyenContext,
+                              configuration: config)
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -156,7 +158,9 @@ class DropInTests: XCTestCase {
         let config = DropInComponent.Configuration(apiContext: Dummy.context, adyenContext: adyenContext)
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymentMethods, adyenContext: adyenContext, configuration: config)
+        sut = DropInComponent(paymentMethods: paymentMethods,
+                              adyenContext: adyenContext,
+                              configuration: config)
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -170,7 +174,9 @@ class DropInTests: XCTestCase {
         let config = DropInComponent.Configuration(apiContext: Dummy.context, adyenContext: adyenContext, allowPreselectedPaymentView: false)
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymentMethods, adyenContext: adyenContext, configuration: config)
+        sut = DropInComponent(paymentMethods: paymentMethods,
+                              adyenContext: adyenContext,
+                              configuration: config)
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -182,11 +188,13 @@ class DropInTests: XCTestCase {
 
     func testOpenApplePay() {
         let config = DropInComponent.Configuration(apiContext: Dummy.context, adyenContext: adyenContext)
-        config.applePay = .init(summaryItems: [.init(label: "Item", amount: 100)], merchantIdentifier: "")
+        config.applePay = .init(payment: Dummy.createTestApplePayPayment(), merchantIdentifier: "")
         config.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymentMethods, adyenContext: adyenContext, configuration: config)
+        sut = DropInComponent(paymentMethods: paymentMethods,
+                              adyenContext: adyenContext,
+                              configuration: config)
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -216,7 +224,9 @@ class DropInTests: XCTestCase {
                                transactionLimit: Amount(value: 3000, currencyCode: "CNY"),
                                amount: Amount(value: 3000, currencyCode: "CNY"))
         ]
-        sut = DropInComponent(paymentMethods: paymentMethods, adyenContext: adyenContext, configuration: config)
+        sut = DropInComponent(paymentMethods: paymentMethods,
+                              adyenContext: adyenContext,
+                              configuration: config)
 
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -236,7 +246,9 @@ class DropInTests: XCTestCase {
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleNonInstant.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymentMethods, adyenContext: adyenContext, configuration: config)
+        sut = DropInComponent(paymentMethods: paymentMethods,
+                              adyenContext: adyenContext,
+                              configuration: config)
         
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root
@@ -255,7 +267,9 @@ class DropInTests: XCTestCase {
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymentMethods, adyenContext: adyenContext, configuration: config)
+        sut = DropInComponent(paymentMethods: paymentMethods,
+                              adyenContext: adyenContext,
+                              configuration: config)
         
         let root = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController = root

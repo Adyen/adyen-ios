@@ -68,7 +68,7 @@ internal struct PaymentsRequest: APIRequest {
     }
 }
 
-internal struct PaymentsResponse: SessionResponse {
+internal struct PaymentsResponse: SessionResponse, PaymentResultCodeAware {
     
     internal let resultCode: ResultCode
     
@@ -103,5 +103,4 @@ internal extension PaymentsResponse {
         case challengeShopper = "ChallengeShopper"
         case presentToShopper = "PresentToShopper"
     }
-    
 }

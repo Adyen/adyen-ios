@@ -13,7 +13,7 @@ import XCTest
 
 final class PollingHandlerMock: AnyPollingHandler {
     
-    let apiContext = APIContext(environment: Environment.test, clientKey: "local_DUMMYKEYFORTESTING")
+    let apiContext = Dummy.context
 
     var adyenContext: AdyenContext {
         return .init(apiContext: apiContext)

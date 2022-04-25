@@ -43,7 +43,7 @@ class DropInDelegateMock: DropInComponentDelegate {
         didFailHandler?(error, component)
     }
 
-    func didOpenExternalApplication(_ component: ActionComponent, in dropInComponent: AnyDropInComponent) {
+    func didOpenExternalApplication(component: ActionComponent, in dropInComponent: AnyDropInComponent) {
         didOpenExternalApplicationHandler?(dropInComponent)
     }
 
