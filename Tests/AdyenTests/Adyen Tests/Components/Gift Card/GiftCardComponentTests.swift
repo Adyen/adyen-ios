@@ -44,8 +44,8 @@ class GiftCardComponentTests: XCTestCase {
         sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.payButtonItem.button")
     }
 
-    override func setUp() {
-        super.setUp()
+    override func setUpWithError() throws {
+        try super.setUpWithError()
         paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
         publicKeyProvider = PublicKeyProviderMock()
 
@@ -63,6 +63,17 @@ class GiftCardComponentTests: XCTestCase {
         sut.partialPaymentDelegate = partialPaymentDelegate
         readyToSubmitPaymentComponentDelegate = ReadyToSubmitPaymentComponentDelegateMock()
         sut.readyToSubmitComponentDelegate = readyToSubmitPaymentComponentDelegate
+    }
+
+    override func tearDownWithError() throws {
+        paymentMethod = nil
+        publicKeyProvider = nil
+        analyticsProviderMock = nil
+        adyenContext = nil
+        delegateMock = nil
+        partialPaymentDelegate = nil
+        sut = nil
+        try super.tearDownWithError()
     }
 
     func testCheckBalanceFailure() throws {

@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import Adyen
+import Adyen
 import AdyenComponents
 import AdyenEncryption
 import Foundation
@@ -18,7 +18,7 @@ enum Dummy: Error {
     
     internal static let context = try! APIContext(environment: Environment.test, clientKey: "local_DUMMYKEYFORTESTING")
 
-    internal static let adyenContext = AdyenContext(apiContext: context, analyticsProvider: AnalyticsProviderMock())
+    internal static let adyenContext = AdyenContext(apiContext: context)
 
     internal static let visaCard = Card(number: "4917 6100 0000 0000",
                                         securityCode: "737",
