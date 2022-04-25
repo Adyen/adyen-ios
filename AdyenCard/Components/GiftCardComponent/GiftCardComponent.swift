@@ -193,7 +193,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     }
 
     private func startFlow(with paymentData: PaymentComponentData) {
-        partialPaymentDelegate?.checkBalance(with: paymentData) { [weak self] result in
+        partialPaymentDelegate?.checkBalance(with: paymentData, component: self) { [weak self] result in
             guard let self = self else { return }
             result
                 .mapError(Error.otherError)
@@ -296,7 +296,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
             AdyenAssertion.assertionFailure(message: Error.missingPartialPaymentDelegate.localizedDescription)
             return .failure(Error.missingPartialPaymentDelegate)
         }
-        partialPaymentDelegate.requestOrder { [weak self] result in
+        partialPaymentDelegate.requestOrder(for: self) { [weak self] result in
             self?.handle(orderResult: result, paymentData: paymentData)
         }
         return .success(())

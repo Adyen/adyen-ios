@@ -61,7 +61,7 @@ class AffirmComponentTests: XCTestCase {
         sut.deliveryAddressToggleItem.value = false
         
         // When
-        let paymentDetails = sut.createPaymentDetails()
+        let paymentDetails = try sut.createPaymentDetails()
         
         // Then
         let shopperInformation = try XCTUnwrap(paymentDetails as? ShopperInformation)
@@ -83,7 +83,7 @@ class AffirmComponentTests: XCTestCase {
         sut.deliveryAddressItem?.value = expectedDeliveryAddress
         
         // When
-        let paymentDetails = sut.createPaymentDetails()
+        let paymentDetails = try sut.createPaymentDetails()
         
         // Then
         let shopperInformation = try XCTUnwrap(paymentDetails as? ShopperInformation)

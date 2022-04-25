@@ -30,8 +30,16 @@ internal enum ConfigurationConstants {
     static let shopperEmail = "checkoutShopperiOS@example.org"
     
     static let additionalData = ["allow3DS2": true]
-    
-    static let apiContext = APIContext(environment: componentsEnvironment, clientKey: clientKey)
+
+    static var apiContext: APIContext {
+        if let apiContext = try? APIContext(environment: componentsEnvironment, clientKey: clientKey) {
+            return apiContext
+        }
+        // swiftlint:disable:next force_try
+        return try! APIContext(environment: componentsEnvironment, clientKey: "local_DUMMYKEYFORTESTING")
+    }
+
+    static var adyenContext = AdyenContext(apiContext: apiContext)
     
     static let clientKey = "{YOUR_CLIENT_KEY}"
 
@@ -40,18 +48,13 @@ internal enum ConfigurationConstants {
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
 
     static let merchantAccount = "{YOUR_MERCHANT_ACCOUNT}"
-    
-    static var applePaySummaryItems: [PKPaymentSummaryItem] {
-        [
-            PKPaymentSummaryItem(
-                label: "Total",
-                amount: AmountFormatter.decimalAmount(current.amount.value,
-                                                      currencyCode: current.amount.currencyCode,
-                                                      localeIdentifier: nil),
-                type: .final
-            )
-        ]
-    }
+
+    static let lineItems = [["description": "Socks",
+                             "quantity": "2",
+                             "amountIncludingTax": "300",
+                             "amountExcludingTax": "248",
+                             "taxAmount": "52",
+                             "id": "Item #2"]]
     
     static var current = Configuration.loadConfiguration() {
         didSet { Configuration.saveConfiguration(current) }

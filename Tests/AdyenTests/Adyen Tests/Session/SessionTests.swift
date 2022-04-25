@@ -48,12 +48,13 @@ class SessionTests: XCTestCase {
                                                                  amount: .init(value: 220, currencyCode: "USD"),
                                                                  sessionData: "session_data_1"))]
         let expectation = expectation(description: "Expect session object to be initialized")
-        Session.initialize(with: .init(sessionIdentifier: "session_id",
-                                       initialSessionData: "session_data_0",
-                                       apiContext: Dummy.context,
-                                       adyenContext: adyenContext),
-                           presentationDelegate: PresentationDelegateMock(),
-                           baseAPIClient: apiClient) { result in
+        AdyenSession.initialize(with: .init(sessionIdentifier: "session_id",
+                                            initialSessionData: "session_data_0",
+                                            apiContext: Dummy.context,
+                                            adyenContext: adyenContext),
+                                delegate: SessionDelegateMock(),
+                                presentationDelegate: PresentationDelegateMock(),
+                                baseAPIClient: apiClient) { result in
             switch result {
             case .failure:
                 XCTFail()
@@ -288,7 +289,7 @@ class SessionTests: XCTestCase {
         apiClient.onExecute = {
             expectation.fulfill()
         }
-        sut.checkBalance(with: paymentData) { result in
+        sut.checkBalance(with: paymentData, component: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
             let balance = try! result.get()
             XCTAssertEqual(balance.availableAmount.value, 50)
             XCTAssertEqual(balance.transactionLimit!.value, 30)
@@ -316,7 +317,7 @@ class SessionTests: XCTestCase {
             expectation.fulfill()
         }
         // get .failure
-        sut.checkBalance(with: paymentData) { result in
+        sut.checkBalance(with: paymentData, component: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
             XCTAssertNotNil(result.failure)
             XCTAssertEqual(sut.sessionContext.data, "session_data2")
         }
@@ -340,7 +341,7 @@ class SessionTests: XCTestCase {
             expectation.fulfill()
         }
         // get .failure
-        sut.checkBalance(with: paymentData) { result in
+        sut.checkBalance(with: paymentData, component: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
             XCTAssertNotNil(result.failure)
             XCTAssertEqual(sut.sessionContext.data, "session_data_1")
         }
@@ -352,6 +353,7 @@ class SessionTests: XCTestCase {
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
         let apiClient = APIClientMock()
         sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
         
         apiClient.mockedResults = [.success(CreateOrderResponse(pspReference: "ref",
                                                                 orderData: "data",
@@ -362,7 +364,7 @@ class SessionTests: XCTestCase {
         apiClient.onExecute = {
             expectation.fulfill()
         }
-        sut.requestOrder { result in
+        sut.requestOrder(for: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
             let order = try! result.get()
             XCTAssertEqual(order.pspReference, "ref")
             XCTAssertEqual(order.orderData, "data")
@@ -376,6 +378,7 @@ class SessionTests: XCTestCase {
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
         let apiClient = APIClientMock()
         sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
         
         apiClient.mockedResults = [.failure(PartialPaymentError.missingOrderData)]
         
@@ -383,7 +386,7 @@ class SessionTests: XCTestCase {
         apiClient.onExecute = {
             expectation.fulfill()
         }
-        sut.requestOrder { result in
+        sut.requestOrder(for: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
             XCTAssertNotNil(result.failure)
             XCTAssertEqual(sut.sessionContext.data, "session_data_1")
         }
@@ -395,11 +398,12 @@ class SessionTests: XCTestCase {
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
         let apiClient = APIClientMock()
         sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
         
         apiClient.mockedResults = [.success(CancelOrderResponse(sessionData: "session_data2"))]
         
         let order = PartialPaymentOrder(pspReference: "ref", orderData: nil)
-        sut.cancelOrder(order)
+        sut.cancelOrder(order, component: PaymentComponentMock(paymentMethod: paymentMethod))
         
         wait(for: .seconds(1))
         XCTAssertEqual(sut.sessionContext.data, "session_data2")
@@ -410,17 +414,412 @@ class SessionTests: XCTestCase {
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
         let apiClient = APIClientMock()
         sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
         
         apiClient.mockedResults = [.failure(PartialPaymentError.missingOrderData)]
         
         let order = PartialPaymentOrder(pspReference: "ref", orderData: nil)
-        sut.cancelOrder(order)
+        sut.cancelOrder(order, component: PaymentComponentMock(paymentMethod: paymentMethod))
         
         wait(for: .seconds(1))
         XCTAssertEqual(sut.sessionContext.data, "session_data_1")
     }
     
-    private func initializeSession(expectedPaymentMethods: PaymentMethods) throws -> Session {
+    func testDelegateDidSubmitHandler() throws {
+        let sessionHandlerMock = SessionAdvancedHandlerMock()
+        let sessionDelegate = SessionDelegateMock()
+        sessionDelegate.handlerMock = sessionHandlerMock
+        
+        let didSubmitExpectation = expectation(description: "handler didSubmit should be called")
+        sessionHandlerMock.onDidSubmit = { (data, component, session) in
+            didSubmitExpectation.fulfill()
+        }
+        
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods,
+                                        delegate: sessionDelegate)
+        let paymentMethod = expectedPaymentMethods.regular.last as! MBWayPaymentMethod
+        let data = PaymentComponentData(
+            paymentMethodDetails: MBWayDetails(
+                paymentMethod: paymentMethod,
+                telephoneNumber: "telephone"
+            ),
+            amount: .init(
+                value: 20,
+                currencyCode: "USD",
+                localeIdentifier: nil
+            ),
+            order: nil
+        )
+        let component = MBWayComponent(paymentMethod: paymentMethod,
+                                       apiContext: Dummy.context,
+                                       adyenContext: adyenContext)
+        sut.didSubmit(data, from: component)
+        wait(for: [didSubmitExpectation], timeout: 2)
+    }
+    
+    func testDelegateDidProvideHandler() throws {
+        let sessionHandlerMock = SessionAdvancedHandlerMock()
+        let sessionDelegate = SessionDelegateMock()
+        sessionDelegate.handlerMock = sessionHandlerMock
+        
+        let didProvideExpectation = expectation(description: "handler didProvide should be called")
+        sessionHandlerMock.onDidProvide = { (data, component, session) in
+            didProvideExpectation.fulfill()
+        }
+        
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        let data = ActionComponentData(
+            details: RedirectDetails(
+                returnURL: URL(string: "https://google.com")!
+            ),
+            paymentData: "payment_data"
+        )
+        sut.didProvide(data, from: RedirectComponent(apiContext: Dummy.context, adyenContext: adyenContext))
+        wait(for: [didProvideExpectation], timeout: 2)
+    }
+    
+    func testSessionAsDropInDelegate() throws {
+        let config = DropInComponent.Configuration(apiContext: Dummy.context, adyenContext: adyenContext)
+        config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
+
+        let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        let dropIn = DropInComponent(paymentMethods: paymenMethods,
+                                     adyenContext: adyenContext,
+                                     configuration: config)
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionHandlerMock = SessionAdvancedHandlerMock()
+        let sessionDelegate = SessionDelegateMock()
+        sessionDelegate.handlerMock = sessionHandlerMock
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        dropIn.delegate = sut
+        
+        let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
+        let paymentComponent = PaymentComponentMock(paymentMethod: paymentMethod)
+        let actionComponent = QRCodeComponent(apiContext: Dummy.context, adyenContext: adyenContext)
+        
+        let didFailExpectation = expectation(description: "didFail should be called")
+        sessionDelegate.onDidFail = { (error, component, session) in
+            XCTAssertTrue(error is ComponentError)
+            XCTAssertTrue(session === sut)
+            didFailExpectation.fulfill()
+        }
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, component, session) in
+            XCTAssertTrue(session === sut)
+            didCompleteExpectation.fulfill()
+        }
+        
+        let didOpenExternalAppExpectation = expectation(description: "didOpenExternalApplication should be called")
+        sessionDelegate.onDidOpenExternalApplication = {
+            didOpenExternalAppExpectation.fulfill()
+        }
+        
+        let didProvideExpectation = expectation(description: "handler didProvide should be called")
+        sessionHandlerMock.onDidProvide = { (data, component, session) in
+            XCTAssertTrue(component === actionComponent)
+            XCTAssertTrue(session === sut)
+            didProvideExpectation.fulfill()
+        }
+        
+        let didSubmitExpectation = expectation(description: "handler didSubmit should be called")
+        sessionHandlerMock.onDidSubmit = { (data, component, session) in
+            XCTAssertTrue(component === paymentComponent)
+            XCTAssertTrue(session === sut)
+            didSubmitExpectation.fulfill()
+        }
+        
+        
+        let paymentData = PaymentComponentData(
+            paymentMethodDetails: MBWayDetails(
+                paymentMethod: paymentMethod,
+                telephoneNumber: "telephone"
+            ),
+            amount: .init(
+                value: 20,
+                currencyCode: "USD",
+                localeIdentifier: nil
+            ),
+            order: nil
+        )
+        
+        let actionData = ActionComponentData(
+            details: RedirectDetails(
+                returnURL: URL(string: "https://google.com")!
+            ),
+            paymentData: "payment_data"
+        )
+        
+        dropIn.didFail(with: ComponentError.paymentMethodNotSupported, from: paymentComponent)
+        dropIn.didOpenExternalApplication(component: QRCodeComponent(apiContext: Dummy.context, adyenContext: adyenContext))
+        dropIn.didSubmit(paymentData, from: paymentComponent)
+        dropIn.didProvide(actionData, from: actionComponent)
+        sut.sessionContext.resultCode = .authorised
+        dropIn.didComplete(from: actionComponent)
+        
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    func testResultCodeAuthorised() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionDelegate = SessionDelegateMock()
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(
+            PaymentsResponse(
+                resultCode: .authorised,
+                action: nil,
+                order: nil,
+                sessionData: "session_data"
+            )
+        )]
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, _, _) in
+            XCTAssertEqual(result, .authorised)
+            didCompleteExpectation.fulfill()
+        }
+        let actionData = ActionComponentData(
+            details: RedirectDetails(
+                returnURL: URL(string: "https://google.com")!
+            ),
+            paymentData: "payment_data"
+        )
+        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context, adyenContext: adyenContext))
+        wait(for: [didCompleteExpectation], timeout: 2)
+    }
+    
+    func testResultCodePending() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionDelegate = SessionDelegateMock()
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(
+            PaymentsResponse(
+                resultCode: .pending,
+                action: nil,
+                order: nil,
+                sessionData: "session_data"
+            )
+        )]
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, _, _) in
+            XCTAssertEqual(result, .pending)
+            didCompleteExpectation.fulfill()
+        }
+        let actionData = ActionComponentData(
+            details: RedirectDetails(
+                returnURL: URL(string: "https://google.com")!
+            ),
+            paymentData: "payment_data"
+        )
+        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context, adyenContext: adyenContext))
+        wait(for: [didCompleteExpectation], timeout: 2)
+    }
+    
+    func testResultCodeRefused() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionDelegate = SessionDelegateMock()
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(
+            PaymentsResponse(
+                resultCode: .refused,
+                action: nil,
+                order: nil,
+                sessionData: "session_data"
+            )
+        )]
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, _, _) in
+            XCTAssertEqual(result, .refused)
+            didCompleteExpectation.fulfill()
+        }
+        let actionData = ActionComponentData(
+            details: RedirectDetails(
+                returnURL: URL(string: "https://google.com")!
+            ),
+            paymentData: "payment_data"
+        )
+        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context, adyenContext: adyenContext))
+        wait(for: [didCompleteExpectation], timeout: 2)
+    }
+    
+    func testResultCodeCancelled() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionDelegate = SessionDelegateMock()
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(
+            PaymentsResponse(
+                resultCode: .cancelled,
+                action: nil,
+                order: nil,
+                sessionData: "session_data"
+            )
+        )]
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, _, _) in
+            XCTAssertEqual(result, .cancelled)
+            didCompleteExpectation.fulfill()
+        }
+        let actionData = ActionComponentData(
+            details: RedirectDetails(
+                returnURL: URL(string: "https://google.com")!
+            ),
+            paymentData: "payment_data"
+        )
+        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context, adyenContext: adyenContext))
+        wait(for: [didCompleteExpectation], timeout: 2)
+    }
+    
+    func testResultCodeReceived() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionDelegate = SessionDelegateMock()
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(
+            PaymentsResponse(
+                resultCode: .received,
+                action: nil,
+                order: nil,
+                sessionData: "session_data"
+            )
+        )]
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, _, _) in
+            XCTAssertEqual(result, .received)
+            didCompleteExpectation.fulfill()
+        }
+        let actionData = ActionComponentData(
+            details: RedirectDetails(
+                returnURL: URL(string: "https://google.com")!
+            ),
+            paymentData: "payment_data"
+        )
+        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context, adyenContext: adyenContext))
+        wait(for: [didCompleteExpectation], timeout: 2)
+    }
+    
+    func testResultCodePresentToShopper() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionDelegate = SessionDelegateMock()
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(
+            PaymentsResponse(
+                resultCode: .presentToShopper,
+                action: nil,
+                order: nil,
+                sessionData: "session_data"
+            )
+        )]
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, _, _) in
+            XCTAssertEqual(result, .presentToShopper)
+            didCompleteExpectation.fulfill()
+        }
+        let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
+        let paymentComponent = PaymentComponentMock(paymentMethod: paymentMethod)
+        let paymentData = PaymentComponentData(
+            paymentMethodDetails: MBWayDetails(
+                paymentMethod: paymentMethod,
+                telephoneNumber: "telephone"
+            ),
+            amount: .init(
+                value: 20,
+                currencyCode: "USD",
+                localeIdentifier: nil
+            ),
+            order: nil
+        )
+        sut.didSubmit(paymentData, from: paymentComponent)
+        wait(for: [didCompleteExpectation], timeout: 2)
+    }
+    
+    func testResultCodeError() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionDelegate = SessionDelegateMock()
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(
+            PaymentsResponse(
+                resultCode: .error,
+                action: nil,
+                order: nil,
+                sessionData: "session_data"
+            )
+        )]
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, _, _) in
+            XCTAssertEqual(result, .error)
+            didCompleteExpectation.fulfill()
+        }
+        let actionData = ActionComponentData(
+            details: RedirectDetails(
+                returnURL: URL(string: "https://google.com")!
+            ),
+            paymentData: "payment_data"
+        )
+        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context, adyenContext: adyenContext))
+        wait(for: [didCompleteExpectation], timeout: 2)
+    }
+    
+    func testResultCodeErrorFromAnotherCode() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sessionDelegate = SessionDelegateMock()
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
+        let apiClient = APIClientMock()
+        sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
+        
+        apiClient.mockedResults = [.success(
+            PaymentsResponse(
+                resultCode: .redirectShopper,
+                action: nil,
+                order: nil,
+                sessionData: "session_data"
+            )
+        )]
+        
+        let didCompleteExpectation = expectation(description: "didComplete should be called")
+        sessionDelegate.onDidComplete = { (result, _, _) in
+            XCTAssertEqual(result, .error)
+            didCompleteExpectation.fulfill()
+        }
+        let actionData = ActionComponentData(
+            details: RedirectDetails(
+                returnURL: URL(string: "https://google.com")!
+            ),
+            paymentData: "payment_data"
+        )
+        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context, adyenContext: adyenContext))
+        wait(for: [didCompleteExpectation], timeout: 2)
+    }
+    
+    private func initializeSession(expectedPaymentMethods: PaymentMethods,
+                                   delegate: AdyenSessionDelegate = SessionDelegateMock()) throws -> AdyenSession {
         let apiClient = APIClientMock()
         apiClient.mockedResults = [
             .success(
@@ -436,14 +835,15 @@ class SessionTests: XCTestCase {
                 )
             )
         ]
-        var sut: Session! = nil
+        var sut: AdyenSession! = nil
         let initializationExpectation = expectation(description: "Expect session object to be initialized")
-        Session.initialize(with: .init(sessionIdentifier: "session_id",
-                                       initialSessionData: "session_data_0",
-                                       apiContext: Dummy.context,
-                                       adyenContext: adyenContext),
-                           presentationDelegate: PresentationDelegateMock(),
-                           baseAPIClient: apiClient) { result in
+        AdyenSession.initialize(with: .init(sessionIdentifier: "session_id",
+                                            initialSessionData: "session_data_0",
+                                            apiContext: Dummy.context,
+                                            adyenContext: adyenContext),
+                                delegate: delegate,
+                                presentationDelegate: PresentationDelegateMock(),
+                                baseAPIClient: apiClient) { result in
             switch result {
             case let .success(session):
                 sut = session
@@ -452,7 +852,7 @@ class SessionTests: XCTestCase {
                 XCTFail()
             }
         }
-        waitForExpectations(timeout: 2, handler: nil)
+        wait(for: [initializationExpectation], timeout: 2)
         return sut
     }
 

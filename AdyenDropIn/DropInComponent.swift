@@ -140,7 +140,8 @@ public final class DropInComponent: NSObject,
         componentManager = createComponentManager(order, response.remainingAmount)
         paymentInProgress = false
         showPaymentMethodsList(onCancel: { [weak self] in
-            self?.partialPaymentDelegate?.cancelOrder(order)
+            guard let self = self else { return }
+            self.partialPaymentDelegate?.cancelOrder(order, component: self)
         })
     }
     
@@ -223,14 +224,8 @@ public final class DropInComponent: NSObject,
         setNecessaryDelegates(on: component)
         
         switch component {
-        case let component as PreApplePayComponent:
-            navigationController.present(asModal: component)
-        case let component as PresentableComponent where component.requiresModalPresentation:
-            navigationController.present(asModal: component)
-        case let component as PresentableComponent where component.viewController is UIAlertController:
-            navigationController.present(component.viewController, customPresentation: false)
         case let component as PresentableComponent:
-            navigationController.present(component.viewController, customPresentation: true)
+            navigationController.present(asModal: component)
         case let component as InstantPaymentComponent:
             component.initiatePayment()
         default:

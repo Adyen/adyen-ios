@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,6 +9,10 @@ import UIKit
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
+
+protocol CardViewControllerProtocol {
+    func update(storePaymentMethodFieldVisibility isVisible: Bool)
+}
 
 internal class CardViewController: FormViewController {
 
@@ -62,7 +66,8 @@ internal class CardViewController: FormViewController {
                                    cardLogos: cardLogos,
                                    scope: scope,
                                    defaultCountryCode: countryCode,
-                                   localizationParameters: localizationParameters)
+                                   localizationParameters: localizationParameters,
+                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
         super.init(style: formStyle)
         self.localizationParameters = localizationParameters
     }
@@ -291,5 +296,12 @@ internal protocol CardViewControllerDelegate: AnyObject {
 extension FormValueItem where ValueType == String {
     internal var nonEmptyValue: String? {
         self.value.isEmpty ? nil : self.value
+    }
+}
+
+extension CardViewController: CardViewControllerProtocol {
+    func update(storePaymentMethodFieldVisibility isVisible: Bool) {
+        items.storeDetailsItem.value = false
+        items.storeDetailsItem.isVisible = isVisible
     }
 }

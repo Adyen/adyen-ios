@@ -51,6 +51,7 @@ internal struct PaymentsRequest: APIRequest {
         try container.encode(currentConfiguration.merchantAccount, forKey: .merchantAccount)
         try container.encodeIfPresent(data.order?.compactOrder, forKey: .order)
         try container.encodeIfPresent(data.installments, forKey: .installments)
+        try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -74,6 +75,7 @@ internal struct PaymentsRequest: APIRequest {
         case socialSecurityNumber
         case order
         case installments
+        case lineItems
     }
     
 }

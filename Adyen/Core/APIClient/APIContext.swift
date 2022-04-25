@@ -41,9 +41,10 @@ public struct APIContext: AnyAPIContext {
     /// - Parameters:
     ///   - environment: The environment to retrieve internal resources from.
     ///   - clientKey: The client key that corresponds to the web service user you will use for initiating the payment.
-    public init(environment: AnyAPIEnvironment, clientKey: String) {
-        if ClientKeyValidator().isValid(clientKey) == false {
-            AdyenAssertion.assertionFailure(message: "ClientKey is invalid.")
+    /// - Throws: `ClientKeyError.invalidClientKey` if the client key is invalid.
+    public init(environment: AnyAPIEnvironment, clientKey: String) throws {
+        guard ClientKeyValidator().isValid(clientKey) else {
+            throw ClientKeyError.invalidClientKey
         }
 
         self.environment = environment

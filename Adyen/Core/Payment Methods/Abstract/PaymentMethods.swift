@@ -56,7 +56,7 @@ public struct PaymentMethods: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.regular = try container.decode([AnyPaymentMethod].self, forKey: .regular).compactMap(\.value)
         
-        if container.contains(.stored) {
+        if try container.containsValue(.stored) {
             self.stored = try container.decode([AnyPaymentMethod].self, forKey: .stored).compactMap { $0.value as? StoredPaymentMethod }
         } else {
             self.stored = []
@@ -96,6 +96,7 @@ internal enum AnyPaymentMethod: Decodable {
     case econtextOnline(EContextPaymentMethod)
     case boleto(BoletoPaymentMethod)
     case affirm(AffirmPaymentMethod)
+    case atome(AtomePaymentMethod)
     
     case none
     
@@ -149,6 +150,9 @@ internal enum AnyPaymentMethod: Decodable {
             return paymentMethod
         case let .affirm(paymentMethod):
             return paymentMethod
+        case let .atome(paymentMethod):
+            return paymentMethod
+
         case .none:
             return nil
         }

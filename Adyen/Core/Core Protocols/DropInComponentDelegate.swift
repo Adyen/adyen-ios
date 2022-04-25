@@ -25,7 +25,7 @@ public protocol DropInComponentDelegate: AnyObject {
     ///   - dropInComponent: The DropIn component.
     func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: AnyDropInComponent)
     
-    /// Invoked when additional details have been provided for a payment method.
+    /// Invoked when there is new data provided that is required for the payment details call.
     ///
     /// - Parameters:
     ///   - data: The additional data supplied by the drop in component.
@@ -56,7 +56,7 @@ public protocol DropInComponentDelegate: AnyObject {
     ///
     /// - parameter component: The action component that handled the action.
     /// - parameter dropInComponent: The DropIn component.
-    func didOpenExternalApplication(_ component: ActionComponent, in dropInComponent: AnyDropInComponent)
+    func didOpenExternalApplication(component: ActionComponent, in dropInComponent: AnyDropInComponent)
     
     /// Invoked when the drop in component failed with an error.
     ///
@@ -94,5 +94,5 @@ public extension DropInComponentDelegate {
     func didCancel(component: PaymentComponent, from dropInComponent: AnyDropInComponent) {}
 
     /// :nodoc:
-    func didOpenExternalApplication(_ component: ActionComponent, in dropInComponent: AnyDropInComponent) {}
+    func didOpenExternalApplication(component: ActionComponent, in dropInComponent: AnyDropInComponent) {}
 }

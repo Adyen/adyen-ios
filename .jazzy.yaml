@@ -12,6 +12,13 @@ hide_documentation_coverage: true
 
 custom_categories:
   
+  - name: Adyen Session
+    children:
+      - AdyenSession
+      - AdyenSessionDelegate
+      - AdyenSessionPaymentsHandler
+      - AdyenSessionPaymentDetailsHandler
+  
   - name: Drop In Component
     children:
       - DropInComponent

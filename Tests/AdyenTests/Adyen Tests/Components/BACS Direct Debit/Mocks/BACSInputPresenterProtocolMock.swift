@@ -6,6 +6,8 @@
 class BACSInputPresenterProtocolMock: BACSInputPresenterProtocol {
 
     // MARK: - viewDidLoad
+    
+    var amount: Amount?
 
     var viewDidLoadCallsCount = 0
     var viewDidLoadCalled: Bool {

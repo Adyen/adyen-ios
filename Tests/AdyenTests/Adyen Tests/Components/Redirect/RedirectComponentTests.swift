@@ -221,6 +221,40 @@ class RedirectComponentTests: XCTestCase {
 
         waitForExpectations(timeout: 10, handler: nil)
     }
+
+    func testRedirectResult() {
+        // Given
+        let sut = RedirectComponent(apiContext: Dummy.context)
+        let presentationDelegate = PresentationDelegateMock()
+        sut.presentationDelegate = presentationDelegate
+        let delegate = ActionComponentDelegateMock()
+        sut.delegate = delegate
+        let action = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data")
+
+        let presentExpectation = expectation(description: "Expect in app browser to be presented")
+        presentationDelegate.doPresent = { component in
+            presentExpectation.fulfill()
+        }
+
+        let redirectExpectation = expectation(description: "Expect redirect to be proccessed")
+        delegate.onDidProvide = { (data, component) in
+            XCTAssertTrue(component === sut)
+            XCTAssertNotNil(data.details)
+            redirectExpectation.fulfill()
+        }
+        delegate.onDidFail = { (_,_) in XCTFail("Should not call onDidFail") }
+
+        // When
+        // action handled
+        sut.handle(action)
+        wait(for: .seconds(1))
+
+        // and redirect received
+        RedirectComponent.applicationDidOpen(from: URL(string: "https://www.adyen.com?redirectResult=XXX")!)
+
+        // Then
+        waitForExpectations(timeout: 5, handler: nil)
+    }
     
 }
 

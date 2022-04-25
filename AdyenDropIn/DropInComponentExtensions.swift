@@ -70,9 +70,9 @@ extension DropInComponent: PaymentComponentDelegate {
 extension DropInComponent: ActionComponentDelegate {
     
     /// :nodoc:
-    public func didOpenExternalApplication(_ component: ActionComponent) {
+    public func didOpenExternalApplication(component: ActionComponent) {
         stopLoading()
-        delegate?.didOpenExternalApplication(component, in: self)
+        delegate?.didOpenExternalApplication(component: component, in: self)
     }
 
     /// :nodoc:
@@ -114,19 +114,28 @@ extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
     }
 }
 
-extension DropInComponent: PresentationDelegate {
+extension DropInComponent: NavigationDelegate {
+
+    internal func dismiss(completion: (() -> Void)? = nil) {
+        navigationController.dismiss(animated: true, completion: completion)
+    }
 
     /// :nodoc:
     public func present(component: PresentableComponent) {
         navigationController.present(asModal: component)
     }
+
 }
 
 extension DropInComponent: FinalizableComponent {
 
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {
         stopLoading()
-        selectedPaymentComponent?.finalizeIfNeeded(with: success, completion: completion)
+        if let finalizableComponent = selectedPaymentComponent as? FinalizableComponent {
+            finalizableComponent.didFinalize(with: success, completion: completion)
+        } else {
+            completion?()
+        }
     }
 }
 
@@ -135,8 +144,8 @@ extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
     /// :nodoc:
     public func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?) {
         let newRoot = preselectedPaymentMethodComponent(for: component, onCancel: { [weak self] in
-            guard let order = order else { return }
-            self?.partialPaymentDelegate?.cancelOrder(order)
+            guard let self = self, let order = order else { return }
+            self.partialPaymentDelegate?.cancelOrder(order, component: self)
         })
         navigationController.present(root: newRoot)
         rootComponent = newRoot

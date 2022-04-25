@@ -474,3 +474,8 @@ let affirm = [
     "name": "Affirm",
     "type": "affirm"
 ]
+
+let atome = [
+    "name": "Atome",
+    "type": "atome"
+]

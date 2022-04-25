@@ -49,7 +49,9 @@ class FormItemViewBuilderTests: XCTestCase {
     }
 
     func testFormSAddressItemViewUS() {
-        let item = FormAddressItem(initialCountry: "US", style: AddressStyle())
+        let item = FormAddressItem(initialCountry: "US",
+                                   style: AddressStyle(),
+                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
         let view = item.build(with: FormItemViewBuilder())
 
         XCTAssertNotNil(view as? FormVerticalStackItemView<FormAddressItem>)
@@ -57,7 +59,9 @@ class FormItemViewBuilderTests: XCTestCase {
     }
 
     func testFormSAddressItemViewNL() {
-        let item = FormAddressItem(initialCountry: "NL", style: AddressStyle())
+        let item = FormAddressItem(initialCountry: "NL",
+                                   style: AddressStyle(),
+                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
         let view = item.build(with: FormItemViewBuilder())
 
         XCTAssertNotNil(view as? FormVerticalStackItemView<FormAddressItem>)
@@ -65,7 +69,9 @@ class FormItemViewBuilderTests: XCTestCase {
     }
 
     func testFormSAddressItemViewGB() {
-        let item = FormAddressItem(initialCountry: "GB", style: AddressStyle())
+        let item = FormAddressItem(initialCountry: "GB",
+                                   style: AddressStyle(),
+                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
         let view = item.build(with: FormItemViewBuilder())
 
         XCTAssertNotNil(view as? FormVerticalStackItemView<FormAddressItem>)

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,7 +14,8 @@ internal protocol BACSItemsFactoryProtocol {
     func createEmailItem() -> FormTextInputItem
     func createContinueButton() -> FormButtonItem
     func createPaymentButton() -> FormButtonItem
-    func createAmountConsentToggle(amount: String?) -> FormToggleItem
+    func createAmountConsentToggle(amount: Amount?) -> FormToggleItem
+    func createConsentText(with amount: Amount?) -> String
     func createLegalConsentToggle() -> FormToggleItem
 }
 
@@ -158,22 +159,26 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         return buttonItem
     }
 
-    internal func createAmountConsentToggle(amount: String?) -> FormToggleItem {
+    internal func createAmountConsentToggle(amount: Amount?) -> FormToggleItem {
         let toggleItem = FormToggleItem(style: styleProvider.toggle)
         toggleItem.value = false
 
-        let localizedTitle: String?
-        if let amount = amount {
-            localizedTitle = localizedString(.bacsSpecifiedAmountConsentToggleTitle, localizationParameters, amount)
-        } else {
-            localizedTitle = localizedString(.bacsAmountConsentToggleTitle, localizationParameters)
-        }
-        toggleItem.title = localizedTitle
+        toggleItem.title = createConsentText(with: amount)
 
         let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
                                                      postfix: ViewIdentifier.amountTermsToggleItem)
         toggleItem.identifier = identifier
         return toggleItem
+    }
+    
+    internal func createConsentText(with amount: Amount?) -> String {
+        let localizedTitle: String
+        if let amount = amount {
+            localizedTitle = localizedString(.bacsSpecifiedAmountConsentToggleTitle, localizationParameters, amount.formatted)
+        } else {
+            localizedTitle = localizedString(.bacsAmountConsentToggleTitle, localizationParameters)
+        }
+        return localizedTitle
     }
 
     internal func createLegalConsentToggle() -> FormToggleItem {
