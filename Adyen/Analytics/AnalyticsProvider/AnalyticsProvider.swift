@@ -18,7 +18,7 @@ public struct AnalyticsConfiguration {
     /// A Boolean value that determines whether telemetry tracking is enabled.
     public var isTelemetryEnabled = true
 
-    /// A Boolean value that determines whether the checkoutAttemt id fetch is enabled.
+    /// A Boolean value that determines whether the checkoutAttempt id fetch is enabled.
     public var isCheckoutAttemptIdEnabled = true
 
     // MARK: - Initializers
