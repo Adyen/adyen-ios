@@ -32,22 +32,18 @@ extension APIClientAware {
     }
 
     private func generateApiClient() -> APIClientProtocol {
-        if CommandLine.arguments.contains("-UITests") {
-            guard
-                let paymentMethodsUrl = Bundle.main.url(forResource: "payment_methods_response", withExtension: "json"),
-                let sessionsUrl = Bundle.main.url(forResource: "session_response", withExtension: "json"),
-                let paymentMethodsData = try? Data(contentsOf: paymentMethodsUrl),
-                let sessionData = try? Data(contentsOf: sessionsUrl),
-                let paymentMethodsResponse = try? JSONDecoder().decode(PaymentMethodsResponse.self, from: paymentMethodsData),
-                let sessionResponse = try? JSONDecoder().decode(SessionSetupResponse.self, from: sessionData)
-            else { return DefaultAPIClient() }
-
-            let apiClient = APIClientMock()
-            apiClient.mockedResults = [.success(sessionResponse), .success(paymentMethodsResponse)]
-            return apiClient
-        }
-
-        return DefaultAPIClient()
+        guard CommandLine.arguments.contains("-UITests"),
+              let paymentMethodsUrl = Bundle.main.url(forResource: "payment_methods_response", withExtension: "json"),
+              let sessionsUrl = Bundle.main.url(forResource: "session_response", withExtension: "json"),
+              let paymentMethodsData = try? Data(contentsOf: paymentMethodsUrl),
+              let sessionData = try? Data(contentsOf: sessionsUrl),
+              let paymentMethodsResponse = try? JSONDecoder().decode(PaymentMethodsResponse.self, from: paymentMethodsData),
+              let sessionResponse = try? JSONDecoder().decode(SessionSetupResponse.self, from: sessionData)
+        else { return DefaultAPIClient() }
+        
+        let apiClient = APIClientMock()
+        apiClient.mockedResults = [.success(sessionResponse), .success(paymentMethodsResponse)]
+        return apiClient
     }
 }
 

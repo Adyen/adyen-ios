@@ -37,12 +37,18 @@ jobs:
     - name: Build and test
       run: |
         xcodebuild -version
-        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty && exit ${PIPESTATUS[0]}
+        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" -derivedDataPath './derivedData' | xcpretty && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
         scheme: 'AdyenUIHost'
         destination: 'name=iPhone 11'
+        
+    - name: Upload Drived data
+        uses: actions/upload-artifact@v2
+        with:
+          name: derivedData
+          path: derivedData
 
     - name: Slather
       run: |
