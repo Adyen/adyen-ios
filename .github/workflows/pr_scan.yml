@@ -36,20 +36,19 @@ jobs:
 
     - name: Build and test
       run: |
+        brew install chargepoint/xcparse/xcparse
         xcodebuild -version
         xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
+        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -resultBundlePath TestResults'
         scheme: 'AdyenUIHost'
         destination: 'name=iPhone 11'
         
-    - name: Upload Drived data
-      if: always()
-      uses: actions/upload-artifact@v2
+    - uses: kishikawakatsumi/xcresulttool@v1
       with:
-        name: DerivedData
-        path: DerivedData
+        path: TestResults.xcresult
+      if: success() || failure()
 
     - name: Slather
       run: |
