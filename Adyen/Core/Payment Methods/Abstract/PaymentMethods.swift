@@ -85,7 +85,7 @@ public struct PaymentMethods: Decodable {
     /// - Returns: The first available payment method of the given type and passes the predicate closure, or `nil` if none could be found.
     public func paymentMethod<T: PaymentMethod>(ofType type: T.Type,
                                                 where predicate: (T) -> Bool) -> T? {
-        regular.filter { $0 is T }.compactMap { $0 as? T }.first(where: predicate)
+        regular.compactMap { $0 as? T }.first(where: predicate)
     }
     
     /// Returns the first available payment method of the given `PaymentMethodType`.
