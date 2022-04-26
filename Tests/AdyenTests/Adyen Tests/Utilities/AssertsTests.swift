@@ -19,6 +19,7 @@ class AssertsTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
+        AdyenAssertion.listener = nil
         adyenContext = nil
         try super.tearDownWithError()
     }
@@ -69,7 +70,7 @@ class AssertsTests: XCTestCase {
     }
 
     func testAwaitVComponentPresentationDelegateAssertion() {
-        let sut = AwaitComponent(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
+        let sut = AwaitComponent(apiContext: Dummy.context, adyenContext: adyenContext)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in
