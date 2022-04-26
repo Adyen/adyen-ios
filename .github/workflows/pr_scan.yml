@@ -23,7 +23,7 @@ jobs:
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: latest-stable
+        xcode-version: '13.3.0'
 
     - name: Install Tools
       run: |
@@ -44,11 +44,11 @@ jobs:
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -resultBundlePath TestResults'
         scheme: 'AdyenUIHost'
         destination: 'name=iPhone 11'
-        
-    - uses: kishikawakatsumi/xcresulttool@v1
+      
+    - uses: actions/upload-artifact@v3
       with:
+        name: testResultBundle
         path: TestResults.xcresult
-        show-passed-tests: false
       if: success() || failure()
 
     - name: Slather
