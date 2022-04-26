@@ -45,10 +45,10 @@ jobs:
         destination: 'name=iPhone 11'
         
     - name: Upload Drived data
-        uses: actions/upload-artifact@v2
-        with:
-          name: derivedData
-          path: derivedData
+      uses: actions/upload-artifact@v2
+      with:
+        name: derivedData
+        path: derivedData
 
     - name: Slather
       run: |
