@@ -45,6 +45,7 @@ jobs:
         destination: 'name=iPhone 11'
         
     - name: Upload Drived data
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: DerivedData
