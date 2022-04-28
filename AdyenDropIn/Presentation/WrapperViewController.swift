@@ -24,7 +24,7 @@ internal final class WrapperViewController: UIViewController {
 
     internal init(child: ModalViewController) {
         self.child = child
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil, bundle: Bundle(for: WrapperViewController.self))
 
         setupChildViewController()
     }

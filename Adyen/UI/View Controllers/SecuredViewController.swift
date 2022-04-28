@@ -46,7 +46,7 @@ public final class SecuredViewController: UIViewController {
         self.childViewController = child
         self.style = style
 
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil, bundle: Bundle(for: SecuredViewController.self))
     }
 
     /// :nodoc:
