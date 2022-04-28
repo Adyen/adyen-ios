@@ -33,6 +33,40 @@ public struct PaymentMethods: Decodable {
         self.stored = stored
     }
     
+    /// Override the title/subtitle of a stored payment method shown in DropIn
+    ///
+    /// - Parameters:
+    ///   - type: The type of the stored payment method.
+    ///   - displayInformation: The `displayInformation` to use instead of the default one.
+    ///   - predicate: A closure that takes a `PaymentMethod` of the payment methods list as
+    ///   its argument and returns a Boolean value indicating whether the
+    ///   `PaymentMethod` is a match.
+    public mutating func overrideDisplayInformation<T: PaymentMethod>(
+        ofStoredPaymentMethod type: PaymentMethodType,
+        with displayInformation: MerchantCustomDisplayInformation,
+        where predicate: (T) -> Bool
+    ) {
+        for (index, paymentMethod) in stored.enumerated() where paymentMethod.type == type {
+            guard let paymentMethod = paymentMethod as? T,
+                  predicate(paymentMethod) else { continue }
+            stored[index].merchantProvidedDisplayInformation = displayInformation
+        }
+    }
+    
+    /// Override the title/subtitle of a stored payment method shown in DropIn
+    ///
+    /// - Parameters:
+    ///   - type: The type of the stored payment method.
+    ///   - displayInformation: The `displayInformation` to use instead of the default one.
+    public mutating func overrideDisplayInformation(
+        ofStoredPaymentMethod type: PaymentMethodType,
+        with displayInformation: MerchantCustomDisplayInformation
+    ) {
+        for (index, paymentMethod) in stored.enumerated() where paymentMethod.type == type {
+            stored[index].merchantProvidedDisplayInformation = displayInformation
+        }
+    }
+    
     /// Override the title/subtitle of any payment method shown in DropIn
     ///
     /// - Parameters:
@@ -42,7 +76,7 @@ public struct PaymentMethods: Decodable {
     ///   its argument and returns a Boolean value indicating whether the
     ///   `PaymentMethod` is a match.
     public mutating func overrideDisplayInformation<T: PaymentMethod>(
-        ofPaymentMethod type: PaymentMethodType,
+        ofRegularPaymentMethod type: PaymentMethodType,
         with displayInformation: MerchantCustomDisplayInformation,
         where predicate: (T) -> Bool
     ) {
@@ -59,7 +93,7 @@ public struct PaymentMethods: Decodable {
     ///   - type: The type of the payment method.
     ///   - displayInformation: The `displayInformation` to use instead of the default one.
     public mutating func overrideDisplayInformation(
-        ofPaymentMethod type: PaymentMethodType,
+        ofRegularPaymentMethod type: PaymentMethodType,
         with displayInformation: MerchantCustomDisplayInformation
     ) {
         for (index, paymentMethod) in regular.enumerated() where paymentMethod.type == type {

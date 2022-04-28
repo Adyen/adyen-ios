@@ -239,7 +239,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationCard() throws {
-        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .scheme,
+        paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .scheme,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let cardpaymentMethod = paymentMethods.paymentMethod(ofType: .scheme)
@@ -248,7 +248,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationBCMC() throws {
-        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .bcmc,
+        paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .bcmc,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let bcmcpaymentMethod = paymentMethods.paymentMethod(ofType: .bcmc)
@@ -257,7 +257,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationApplePay() throws {
-        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .applePay,
+        paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .applePay,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let applePaypaymentMethod = paymentMethods.paymentMethod(ofType: .applePay)
@@ -266,7 +266,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationPayPal() throws {
-        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .payPal,
+        paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .payPal,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let payPalpaymentMethod = paymentMethods.paymentMethod(ofType: .payPal)
@@ -275,7 +275,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationWeChat() throws {
-        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .weChatPaySDK,
+        paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .weChatPaySDK,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let weChatPaymentMethod = paymentMethods.paymentMethod(ofType: .weChatPaySDK)
@@ -284,7 +284,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationQiwiWallet() throws {
-        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .qiwiWallet,
+        paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .qiwiWallet,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let qiwiWalletPaymentMethod = paymentMethods.paymentMethod(ofType: .qiwiWallet)
@@ -293,7 +293,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationBLIK() throws {
-        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .blik,
+        paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .blik,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let blikPaymentMethod = paymentMethods.paymentMethod(ofType: .blik)
@@ -301,8 +301,53 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(blikPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
     }
     
+    func testOverridingDisplayInformationStoredBLIK() throws {
+        paymentMethods.overrideDisplayInformation(ofStoredPaymentMethod: .blik,
+                                                  with: .init(title: "custom title",
+                                                              subtitle: "custom subtitle"))
+        let storedBlikPaymentMethod = paymentMethods.stored.first { $0.type == .blik }
+        XCTAssertEqual(storedBlikPaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertEqual(storedBlikPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+    }
+    
+    func testOverridingDisplayInformationStoredCreditCard() throws {
+        paymentMethods.overrideDisplayInformation(ofStoredPaymentMethod: .scheme,
+                                                  with: .init(title: "custom title",
+                                                              subtitle: "custom subtitle"),
+                                                  where: { (storeCardPaymentMethod: StoredCardPaymentMethod) -> Bool in
+            storeCardPaymentMethod.fundingSource == .credit
+            
+        })
+        let storedPaymentMethod = paymentMethods.stored.filter { $0.type == .scheme }.compactMap { $0 as? StoredCardPaymentMethod }.first { $0.fundingSource == .credit }
+        XCTAssertEqual(storedPaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertEqual(storedPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+        
+        /// make sure that we override the display information of only credit card payment method.
+        let storedDebitPaymentMethod = paymentMethods.stored.filter { $0.type == .scheme }.compactMap { $0 as? StoredCardPaymentMethod }.first { $0.fundingSource == .debit }
+        XCTAssertNotEqual(storedDebitPaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertNotEqual(storedDebitPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+    }
+    
+    func testOverridingDisplayInformationStoredDebitCard() throws {
+        paymentMethods.overrideDisplayInformation(ofStoredPaymentMethod: .scheme,
+                                                  with: .init(title: "custom title",
+                                                              subtitle: "custom subtitle"),
+                                                  where: { (storeCardPaymentMethod: StoredCardPaymentMethod) -> Bool in
+            storeCardPaymentMethod.fundingSource == .debit
+            
+        })
+        let storedPaymentMethod = paymentMethods.stored.filter { $0.type == .scheme }.compactMap { $0 as? StoredCardPaymentMethod }.first { $0.fundingSource == .debit }
+        XCTAssertEqual(storedPaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertEqual(storedPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+        
+        /// make sure that we override the display information of only debit card payment method.
+        let storedCreditPaymentMethod = paymentMethods.stored.filter { $0.type == .scheme }.compactMap { $0 as? StoredCardPaymentMethod }.first { $0.fundingSource == .credit }
+        XCTAssertNotEqual(storedCreditPaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertNotEqual(storedCreditPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+    }
+    
     func testOverridingDisplayInformationGiro() throws {
-        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .other("giropay"),
+        paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .other("giropay"),
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let giroPaymentMethod = paymentMethods.paymentMethod(ofType: .other("giropay"))
@@ -312,7 +357,7 @@ class PaymentMethodTests: XCTestCase {
     
     func testOverridingDisplayInformationGenericGiftCard() throws {
         paymentMethods.overrideDisplayInformation(
-            ofPaymentMethod: .giftcard,
+            ofRegularPaymentMethod: .giftcard,
             with: .init(title: "custom title",
                         subtitle: "custom subtitle"),
             where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
@@ -336,7 +381,7 @@ class PaymentMethodTests: XCTestCase {
     
     func testOverridingDisplayInformationGivexGiftCard() throws {
         paymentMethods.overrideDisplayInformation(
-            ofPaymentMethod: .giftcard,
+            ofRegularPaymentMethod: .giftcard,
             with: .init(title: "custom title",
                         subtitle: "custom subtitle"),
             where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
@@ -364,7 +409,7 @@ class PaymentMethodTests: XCTestCase {
     
     func testOverridingDisplayInformationAnyGivenGiftCard() throws {
         paymentMethods.overrideDisplayInformation(
-            ofPaymentMethod: .giftcard,
+            ofRegularPaymentMethod: .giftcard,
             with: .init(title: "custom title",
                         subtitle: "custom subtitle"),
             where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
@@ -391,7 +436,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationDukoWallet() throws {
-        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .dokuWallet,
+        paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .dokuWallet,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let dukoWalletPaymentMethod = paymentMethods.paymentMethod(ofType: .dokuWallet)
@@ -400,7 +445,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationIdeal() throws {
-        paymentMethods.overrideDisplayInformation(ofPaymentMethod: .ideal,
+        paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .ideal,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
         let idealPaymentMethod = paymentMethods.paymentMethod(ofType: .ideal)
