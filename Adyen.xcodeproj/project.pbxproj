@@ -2322,7 +2322,6 @@
 		E278EB3C22AA5E8700497FD5 /* Payment Methods */ = {
 			isa = PBXGroup;
 			children = (
-				F92CBA082812CAE300367820 /* Brands */,
 				E746E67327B429DF0076BB71 /* Abstract */,
 				C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */,
 				00F621C127EB1E3100C04097 /* AtomePaymentMethod.swift */,
@@ -2809,6 +2808,7 @@
 		E746E67227B429100076BB71 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E9E3DAAE221D5C5E00697074 /* CardType.swift */,
 				E27BFD8F22B114DC00692E0D /* ShopperInteraction.swift */,
 				E788A4EE2658030100089448 /* DisplayInformation.swift */,
 			);
@@ -3566,14 +3566,6 @@
 				F92980C527CF563C000CA5CA /* AdyenSession+PartialPaymentDelegate.swift */,
 			);
 			path = AdyenSession;
-			sourceTree = "<group>";
-		};
-		F92CBA082812CAE300367820 /* Brands */ = {
-			isa = PBXGroup;
-			children = (
-				E9E3DAAE221D5C5E00697074 /* CardType.swift */,
-			);
-			path = Brands;
 			sourceTree = "<group>";
 		};
 		F9354BE523A7B4AE00A6760B /* Styles */ = {
