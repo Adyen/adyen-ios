@@ -36,7 +36,6 @@ jobs:
 
     - name: Build and test
       run: |
-        brew install chargepoint/xcparse/xcparse
         xcodebuild -version
         xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty && exit ${PIPESTATUS[0]}
       env:
