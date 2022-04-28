@@ -42,7 +42,7 @@ extension APIClientAware {
         else { return DefaultAPIClient() }
         
         let apiClient = APIClientMock()
-        apiClient.mockedResults = [.success(sessionResponse), .success(paymentMethodsResponse)]
+        apiClient.mockedResults = [.success(paymentMethodsResponse), .success(sessionResponse)]
         return apiClient
     }
 }

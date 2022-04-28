@@ -53,8 +53,8 @@ internal final class IntegrationExample: APIClientAware {
     // MARK: - Networking
     
     internal func requestInitialData() {
-        setupSession()
         requestPaymentMethods()
+        setupSession()
     }
 
     internal func requestPaymentMethods(order: PartialPaymentOrder? = nil,
