@@ -87,7 +87,7 @@ class DokuComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         
         /// Test firstName field
         self.assertTextInputUI(DokuViewIdentifier.firstName,
@@ -160,24 +160,21 @@ class DokuComponentTests: XCTestCase {
         }
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        let dummyExpectation = expectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let submitButton: UIControl? = sut.viewController.view.findView(with: DokuViewIdentifier.payButton)
+        
+        wait(for: .milliseconds(300))
+        
+        let submitButton: UIControl? = sut.viewController.view.findView(with: DokuViewIdentifier.payButton)
 
-            let firstNameView: FormTextInputItemView! = sut.viewController.view.findView(with: DokuViewIdentifier.firstName)
-            self.populate(textItemView: firstNameView, with: "Mohamed")
+        let firstNameView: FormTextInputItemView! = sut.viewController.view.findView(with: DokuViewIdentifier.firstName)
+        self.populate(textItemView: firstNameView, with: "Mohamed")
 
-            let lastNameView: FormTextInputItemView! = sut.viewController.view.findView(with: DokuViewIdentifier.lastName)
-            self.populate(textItemView: lastNameView, with: "Smith")
+        let lastNameView: FormTextInputItemView! = sut.viewController.view.findView(with: DokuViewIdentifier.lastName)
+        self.populate(textItemView: lastNameView, with: "Smith")
 
-            let emailView: FormTextInputItemView! = sut.viewController.view.findView(with: DokuViewIdentifier.email)
-            self.populate(textItemView: emailView, with: "mohamed.smith@domain.com")
+        let emailView: FormTextInputItemView! = sut.viewController.view.findView(with: DokuViewIdentifier.email)
+        self.populate(textItemView: emailView, with: "mohamed.smith@domain.com")
 
-            submitButton?.sendActions(for: .touchUpInside)
-
-            dummyExpectation.fulfill()
-        }
-
+        submitButton?.sendActions(for: .touchUpInside)
         waitForExpectations(timeout: 10, handler: nil)
     }
 
@@ -186,13 +183,10 @@ class DokuComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.Test name"))
-            XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        wait(for: .milliseconds(300))
+        
+        XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.Test name"))
+        XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
     }
 
     func testRequiresModalPresentation() {
@@ -209,7 +203,7 @@ class DokuComponentTests: XCTestCase {
                                        configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -237,7 +231,7 @@ class DokuComponentTests: XCTestCase {
                                 configuration: DokuComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         // Then
         let view: UIView = sut.viewController.view
