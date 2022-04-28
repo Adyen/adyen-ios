@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -64,7 +64,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         formViewController.localizationParameters = configuration.localizationParameters
         formViewController.delegate = self
 
-        formViewController.title = paymentMethod.name
+        formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.append(nameItem)
         formViewController.append(ibanItem)
         formViewController.append(button)

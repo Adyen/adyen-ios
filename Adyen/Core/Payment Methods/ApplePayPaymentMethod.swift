@@ -9,11 +9,11 @@ import Foundation
 /// An Apple pay payment method.
 public struct ApplePayPaymentMethod: PaymentMethod {
     
-    /// :nodoc:
     public let type: PaymentMethodType
     
-    /// :nodoc:
     public let name: String
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
     /// List of networks enabled on CA.
     public let brands: [String]?
@@ -21,6 +21,12 @@ public struct ApplePayPaymentMethod: PaymentMethod {
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case type
+        case name
+        case brands
     }
     
 }

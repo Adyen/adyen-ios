@@ -39,6 +39,8 @@ public struct OrderPaymentMethod: PaymentMethod {
     public var name: String {
         String.Adyen.securedString + lastFour
     }
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
     /// :nodoc:
     public let lastFour: String
@@ -53,11 +55,6 @@ public struct OrderPaymentMethod: PaymentMethod {
     public let amount: Amount
 
     /// :nodoc:
-    public var displayInformation: DisplayInformation {
-        localizedDisplayInformation(using: nil)
-    }
-
-    /// :nodoc:
     public init(lastFour: String,
                 type: PaymentMethodType,
                 transactionLimit: Amount?,
@@ -69,7 +66,7 @@ public struct OrderPaymentMethod: PaymentMethod {
     }
 
     /// :nodoc:
-    public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let disclosureText = AmountFormatter.formatted(amount: -amount.value,
                                                        currencyCode: amount.currencyCode,
                                                        localeIdentifier: parameters?.locale)

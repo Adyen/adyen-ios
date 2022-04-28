@@ -9,11 +9,11 @@ import Foundation
 /// An E-context (ATM, Store, Online) or 7eleven payment method.
 public struct EContextPaymentMethod: PaymentMethod {
 
-    /// :nodoc:
     public let type: PaymentMethodType
 
-    /// :nodoc:
     public let name: String
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {

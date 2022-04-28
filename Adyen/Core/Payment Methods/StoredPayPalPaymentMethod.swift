@@ -9,21 +9,17 @@ import Foundation
 /// A stored PayPal account.
 public struct StoredPayPalPaymentMethod: StoredPaymentMethod {
     
-    /// :nodoc:
     public let type: PaymentMethodType
-    
-    /// :nodoc:
+
     public let name: String
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
     public let identifier: String
 
     public let supportedShopperInteractions: [ShopperInteraction]
 
-    public var displayInformation: DisplayInformation {
-        DisplayInformation(title: name, subtitle: emailAddress, logoName: type.rawValue)
-    }
-
-    public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: emailAddress, logoName: type.rawValue)
     }
     

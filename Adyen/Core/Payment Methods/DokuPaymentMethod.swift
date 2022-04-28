@@ -9,11 +9,11 @@ import Foundation
 /// A Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
 public struct DokuPaymentMethod: PaymentMethod {
 
-    /// :nodoc:
     public let type: PaymentMethodType
 
-    /// :nodoc:
     public let name: String
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
