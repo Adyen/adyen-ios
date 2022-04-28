@@ -9,17 +9,20 @@ import Foundation
 /// A Bancontact card payment method.
 public struct BCMCPaymentMethod: AnyCardPaymentMethod {
 
-    private let cardPaymentMethod: CardPaymentMethod
+    private var cardPaymentMethod: CardPaymentMethod
 
-    /// :nodoc:
     public var type: PaymentMethodType { cardPaymentMethod.type }
 
-    /// :nodoc:
     public var name: String { cardPaymentMethod.name }
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? {
+        get { cardPaymentMethod.merchantProvidedDisplayInformation }
+        set { cardPaymentMethod.merchantProvidedDisplayInformation = newValue }
+    }
     
     /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`, `"bcmc"`.
     /// In this case the brands is ["bcmc"].
-    public let brands: [String] = [PaymentMethodType.bcmc.rawValue]
+    public let brands: [CardType] = [CardType.bcmc]
     
     public var fundingSource: CardFundingSource? { cardPaymentMethod.fundingSource }
     

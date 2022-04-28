@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -98,9 +98,10 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
     private lazy var listItem: ListItem = {
         let paymentMethod = defaultComponent.paymentMethod
-        let displayInformation = paymentMethod.localizedDisplayInformation(using: localizationParameters)
+        let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
         var listItem = ListItem(title: displayInformation.title, style: self.listItemStyle)
-        listItem.imageURL = LogoURLProvider.logoURL(for: paymentMethod, environment: apiContext.environment)
+        listItem.imageURL = LogoURLProvider.logoURL(withName: displayInformation.logoName,
+                                                    environment: apiContext.environment)
         listItem.subtitle = displayInformation.subtitle
         listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "defaultComponent")
         return listItem
@@ -130,7 +131,9 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     }()
 
     private lazy var footnoteItem: FormLabelItem? = {
-        guard let footnoteText = paymentMethod.displayInformation.footnoteText else { return nil }
+        guard let footnoteText = paymentMethod
+            .displayInformation(using: localizationParameters)
+            .footnoteText else { return nil }
         let item = FormLabelItem(text: footnoteText, style: style.footnoteLabel)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footnote")
         return item

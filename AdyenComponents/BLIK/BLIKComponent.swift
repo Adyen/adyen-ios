@@ -60,7 +60,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
         formViewController.localizationParameters = configuration.localizationParameters
         formViewController.delegate = self
 
-        formViewController.title = paymentMethod.name.uppercased()
+        formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
 
         formViewController.append(FormSpacerItem())
         formViewController.append(hintLabelItem.addingDefaultMargins())

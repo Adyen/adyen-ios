@@ -38,7 +38,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
             context: apiContext
         )
         
-        let displayInformation = storedPaymentMethod.localizedDisplayInformation(using: localizationParameters)
+        let displayInformation = storedPaymentMethod.displayInformation(using: localizationParameters)
         let alertController = UIAlertController(title: localizedString(.dropInStoredTitle,
                                                                        localizationParameters, storedPaymentMethod.name),
                                                 message: displayInformation.title,

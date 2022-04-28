@@ -7,7 +7,7 @@
 import Foundation
 
 extension KeyedDecodingContainer {
-    
+
     /// Decodes a value of the given type for the given key.
     ///
     /// - parameter key: The key that the decoded value is associated with.
@@ -22,7 +22,7 @@ extension KeyedDecodingContainer {
                                                    in: self,
                                                    debugDescription: "String was not convertible to an integer.")
         }
-        
+
         return intValue
     }
 
