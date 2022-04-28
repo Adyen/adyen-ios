@@ -52,7 +52,7 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
                 ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent)
             ]
         ]
-        integrationExample.requestInitialData()
+        integrationExample.requestPaymentMethods()
     }
     
     // MARK: - Configuration
@@ -73,7 +73,7 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
     private func onConfigurationClosed(_ configuration: Configuration) {
         ConfigurationConstants.current = configuration
         dismiss(completion: nil)
-        integrationExample.requestInitialData()
+        integrationExample.requestPaymentMethods()
     }
 
     // MARK: - Presenter

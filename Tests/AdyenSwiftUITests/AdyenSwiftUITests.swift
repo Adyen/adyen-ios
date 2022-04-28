@@ -54,10 +54,5 @@ class AdyenSwiftUITests: XCTestCase {
             expectation(for: predicate, evaluatedWith: $0, handler: nil)
         }
         waitForExpectations(timeout: 20, handler: nil)
-        
-        let fullScreenshot = XCUIScreen.main.screenshot()
-        let screenshot = XCTAttachment(screenshot: fullScreenshot)
-        screenshot.lifetime = .keepAlways
-        add(screenshot)
     }
 }
