@@ -87,7 +87,15 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
                                       apiContext: apiContext,
                                       fields: formFields,
                                       configuration: configuration,
-                                      onCreatePaymentDetails: { [weak self] in self?.createPaymentDetails() })
+                                      onCreatePaymentDetails: { [weak self] in
+            var paymentMethodDetails: PaymentMethodDetails?
+            do {
+                paymentMethodDetails = try self?.createPaymentDetails()
+            } catch let error {
+                adyenPrint(error)
+            }
+            return paymentMethodDetails
+        })
 
         if let emailItem = component.emailItem {
             bind(sendCopyByEmailItem.publisher, to: emailItem, at: \.isHidden.wrappedValue, with: { !$0 })
@@ -138,11 +146,11 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     }
     
     /// :nodoc:
-    private func createPaymentDetails() -> PaymentMethodDetails {
+    private func createPaymentDetails() throws -> PaymentMethodDetails {
         guard let firstNameItem = formComponent.firstNameItem,
               let lastNameItem = formComponent.lastNameItem,
               let billingAddress = configuration.shopperInformation?.billingAddress ?? formComponent.addressItem?.value else {
-            fatalError("There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
+            throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
         
         let shopperName = ShopperName(firstName: firstNameItem.value, lastName: lastNameItem.value)

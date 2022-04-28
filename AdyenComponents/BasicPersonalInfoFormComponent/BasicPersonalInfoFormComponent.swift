@@ -39,13 +39,13 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
         localizedString(.confirmPurchase, configuration.localizationParameters)
     }
 
-    override public func createPaymentDetails() -> PaymentMethodDetails {
+    override public func createPaymentDetails() throws -> PaymentMethodDetails {
         guard let firstNameItem = firstNameItem,
               let lastNameItem = lastNameItem,
               let emailItem = emailItem,
               let phoneItem = phoneItem else {
-            fatalError("There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
-        }
+                  throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
+              }
         return BasicPersonalInfoFormDetails(paymentMethod: paymentMethod,
                                             firstName: firstNameItem.value,
                                             lastName: lastNameItem.value,
