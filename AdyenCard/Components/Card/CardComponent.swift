@@ -150,6 +150,10 @@ public class CardComponent: PublicKeyConsumer,
         cardViewController.update(storePaymentMethodFieldVisibility: isVisible)
     }
 
+    public func update(storePaymentMethodFieldValue isOn: Bool) {
+        cardViewController.update(storePaymentMethodFieldValue: isOn)
+    }
+
     // MARK: - Form Items
     
     private lazy var securedViewController = SecuredViewController(child: cardViewController, style: configuration.style)
