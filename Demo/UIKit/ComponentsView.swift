@@ -15,11 +15,17 @@ internal final class ComponentsView: UIView {
         addSubview(tableView)
         
         tableView.adyen.anchor(inside: self)
+        tableView.tableHeaderView = switchContainerView
+        switchContainerView.bounds.size.height = 55
     }
     
     @available(*, unavailable)
     internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    internal var isUsingSession: Bool {
+        sessionSwitch.isOn
     }
     
     // MARK: - Items
@@ -43,6 +49,36 @@ internal final class ComponentsView: UIView {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         
         return tableView
+    }()
+    
+    private lazy var sessionSwitch: UISwitch = {
+        let sessionSwitch = UISwitch()
+        sessionSwitch.isOn = true
+        return sessionSwitch
+    }()
+    
+    private lazy var switchStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 25
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Using Session"
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        
+        stackView.addArrangedSubview(label)
+        stackView.addArrangedSubview(sessionSwitch)
+        return stackView
+    }()
+    
+    private lazy var switchContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(switchStackView)
+        switchStackView.adyen.anchor(inside: view, with: UIEdgeInsets(top: 10, left: 20, bottom: -10, right: -20))
+        return view
     }()
     
     // MARK: - Apple Pay

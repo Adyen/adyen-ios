@@ -33,36 +33,38 @@ public protocol AdyenSessionDelegate: AnyObject {
     
     /// Invoked when the action component opens a third party application outside the scope of the Adyen checkout,
     /// e.g WeChat Pay Application.
-    /// In which case you can for example stop any loading animations.
+    /// In which case you can, for example, stop any loading animations.
     ///
     /// - Parameters:
     ///   - component: The current component object.
     ///   - session: The session object.
     func didOpenExternalApplication(component: ActionComponent, session: AdyenSession)
     
-    /// Returns a handler for handling the payment data submitted by the shopper, that is required for the payments call.
+    /// Returns a handler for handling the payment data submitted by the shopper that is required for the payments call.
+    /// This method is optional.
     /// - Parameters:
     ///   - component: The current payment component object.
     ///   - session: The session object.
-    /// - Returns: An instance conforming to the `AdyenSessionPaymentsHandler`.
-    /// protocol to take over, or nil to let `AdyenSession` handle it.
+    /// - Returns: An instance conforming to the `AdyenSessionPaymentsHandler`
+    /// protocol to take over, or nil to let `AdyenSession` handle the flow.
     func handlerForPayments(in component: PaymentComponent, session: AdyenSession) -> AdyenSessionPaymentsHandler?
     
-    /// Returns a handler for handling the additional data provided, that is required for the payment details call.
+    /// Returns a handler for handling the additional data provided that is required for the payment details call.
+    /// This method is optional.
     /// - Parameters:
     ///   - component: The current action component object.
     ///   - session: The session object.
-    /// - Returns: An instance conforming to the `AdyenSessionPaymentDetailsHandler`.
-    /// protocol to take over, or nil to let `AdyenSession` handle it.
+    /// - Returns: An instance conforming to the `AdyenSessionPaymentDetailsHandler`
+    /// protocol to take over, or nil to let `AdyenSession` handle the flow.
     func handlerForAdditionalDetails(in component: ActionComponent, session: AdyenSession) -> AdyenSessionPaymentDetailsHandler?
 }
 
 /// :nodoc:
 public extension AdyenSessionDelegate {
 
-    func handlerForPayments(for component: PaymentComponent, session: AdyenSession) -> AdyenSessionPaymentsHandler? { nil }
+    func handlerForPayments(in component: PaymentComponent, session: AdyenSession) -> AdyenSessionPaymentsHandler? { nil }
     
-    func handlerForAdditionalDetails(for component: ActionComponent, session: AdyenSession) -> AdyenSessionPaymentDetailsHandler? { nil }
+    func handlerForAdditionalDetails(in component: ActionComponent, session: AdyenSession) -> AdyenSessionPaymentDetailsHandler? { nil }
 }
 
 /// Describes the interface to take over the step where data is provided for the payments call.

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -44,7 +44,7 @@ internal final class ComponentsViewController: UIViewController, Presenter {
             ]
         ]
         
-        requestPaymentMethods()
+        requestInitialData()
         
         if #available(iOS 13.0.0, *) {
             addConfigurationButton()
@@ -54,39 +54,71 @@ internal final class ComponentsViewController: UIViewController, Presenter {
     // MARK: - DropIn Component
 
     internal func presentDropInComponent() {
-        integrationExample.presentDropInComponent()
+        if componentsView.isUsingSession {
+            integrationExample.presentDropInComponentSession()
+        } else {
+            integrationExample.presentDropInComponent()
+        }
     }
 
     internal func presentCardComponent() {
-        integrationExample.presentCardComponent()
+        if componentsView.isUsingSession {
+            integrationExample.presentCardComponentSession()
+        } else {
+            integrationExample.presentCardComponent()
+        }
     }
 
     internal func presentIdealComponent() {
-        integrationExample.presentIdealComponent()
+        if componentsView.isUsingSession {
+            integrationExample.presentIdealComponentSession()
+        } else {
+            integrationExample.presentIdealComponent()
+        }
     }
 
     internal func presentSEPADirectDebitComponent() {
-        integrationExample.presentSEPADirectDebitComponent()
+        if componentsView.isUsingSession {
+            integrationExample.presentSEPADirectDebitComponentSession()
+        } else {
+            integrationExample.presentSEPADirectDebitComponent()
+        }
     }
 
     internal func presentBACSDirectDebitComponent() {
-        integrationExample.presentBACSDirectDebitComponent()
+        if componentsView.isUsingSession {
+            integrationExample.presentBACSDirectDebitComponentSession()
+        } else {
+            integrationExample.presentBACSDirectDebitComponent()
+        }
     }
 
     internal func presentMBWayComponent() {
-        integrationExample.presentMBWayComponent()
+        if componentsView.isUsingSession {
+            integrationExample.presentMBWayComponentSession()
+        } else {
+            integrationExample.presentMBWayComponent()
+        }
     }
 
     internal func presentApplePayComponent() {
-        integrationExample.presentApplePayComponent()
-    }
-
-    internal func requestPaymentMethods() {
-        integrationExample.requestPaymentMethods()
+        if componentsView.isUsingSession {
+            integrationExample.presentApplePayComponentSession()
+        } else {
+            integrationExample.presentApplePayComponent()
+        }
     }
 
     internal func presentConvenienceStore() {
-        integrationExample.presentConvenienceStore()
+        if componentsView.isUsingSession {
+            integrationExample.presentConvenienceStoreSession()
+        } else {
+            integrationExample.presentConvenienceStore()
+        }
+    }
+    
+    internal func requestInitialData() {
+        integrationExample.requestInitialData()
     }
 
     // MARK: - Presenter
@@ -152,7 +184,7 @@ extension ComponentsViewController {
     private func onConfigurationClosed(_ configuration: Configuration) {
         ConfigurationConstants.current = configuration
         dismiss(completion: nil)
-        requestPaymentMethods()
+        requestInitialData()
     }
     
 }

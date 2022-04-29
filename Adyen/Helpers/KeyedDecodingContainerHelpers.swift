@@ -6,8 +6,8 @@
 
 import Foundation
 
-internal extension KeyedDecodingContainer {
-    
+extension KeyedDecodingContainer {
+
     /// Decodes a value of the given type for the given key.
     ///
     /// - parameter key: The key that the decoded value is associated with.
@@ -15,14 +15,14 @@ internal extension KeyedDecodingContainer {
     /// - throws: `DecodingError.typeMismatch` if the encountered encoded value isn't convertible to the requested type.
     /// - throws: `DecodingError.keyNotFound` if `self` does not have an entry for the given key.
     /// - throws: `DecodingError.valueNotFound` if `self` has a null entry for the given key.
-    func decodeIntString(forKey key: K) throws -> Int { // swiftlint:disable:this explicit_acl
+    internal func decodeIntString(forKey key: K) throws -> Int {
         let stringValue = try decode(String.self, forKey: key)
         guard let intValue = Int(stringValue) else {
             throw DecodingError.dataCorruptedError(forKey: key,
                                                    in: self,
                                                    debugDescription: "String was not convertible to an integer.")
         }
-        
+
         return intValue
     }
 
@@ -31,7 +31,7 @@ internal extension KeyedDecodingContainer {
     ///
     /// - parameter key: The key to search for.
     /// - returns: Whether the `Decoder` has an entry for the given key.
-    func containsValue(_ key: KeyedDecodingContainer<K>.Key) throws -> Bool { // swiftlint:disable:this explicit_acl
+    internal func containsValue(_ key: KeyedDecodingContainer<K>.Key) throws -> Bool {
         try contains(key) && !decodeNil(forKey: key)
     }
 }
