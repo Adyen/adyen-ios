@@ -38,7 +38,7 @@ public protocol TelemetryTrackerProtocol {
 /// : nodoc:
 extension AnalyticsProvider: TelemetryTrackerProtocol {
 
-    func trackTelemetryEvent(flavor: TelemetryFlavor) {
+    internal func trackTelemetryEvent(flavor: TelemetryFlavor) {
         guard configuration.isEnabled else { return }
         guard configuration.isTelemetryEnabled else { return }
         if case .dropInComponent = flavor { return }
