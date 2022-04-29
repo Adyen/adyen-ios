@@ -134,7 +134,7 @@ class AffirmComponentTests: XCTestCase {
             didSubmitExpectation.fulfill()
         }
         
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         
         let view: UIView = sut.viewController.view
         
@@ -182,7 +182,7 @@ class AffirmComponentTests: XCTestCase {
                                          configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -229,7 +229,7 @@ class AffirmComponentTests: XCTestCase {
                                          configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -272,7 +272,7 @@ class AffirmComponentTests: XCTestCase {
         // Given
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         // Then
         let view: UIView = sut.viewController.view

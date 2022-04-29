@@ -80,7 +80,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -120,7 +120,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -160,7 +160,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -200,7 +200,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -240,7 +240,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -293,7 +293,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -347,7 +347,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -405,7 +405,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -462,7 +462,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -518,7 +518,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 

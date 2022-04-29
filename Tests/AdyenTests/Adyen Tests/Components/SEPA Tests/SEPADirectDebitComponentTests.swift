@@ -102,51 +102,48 @@ class SEPADirectDebitComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
-            let nameItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.titleLabel")
-            let nameItemViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.textField")
-            
-            let ibanItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem")
-            let ibanItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem.titleLabel")
-            let ibanItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem.textField")
-            
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
-            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button.titleLabel")
-            
-            /// Test card number field
-            XCTAssertEqual(nameItemView?.backgroundColor, .red)
-            XCTAssertEqual(nameItemViewTitleLabel?.textColor, sut.viewController.view.tintColor)
-            XCTAssertEqual(nameItemViewTitleLabel?.backgroundColor, .blue)
-            XCTAssertEqual(nameItemViewTitleLabel?.textAlignment, .center)
-            XCTAssertEqual(nameItemViewTitleLabel?.font, .systemFont(ofSize: 20))
-            XCTAssertEqual(nameItemViewTextField?.backgroundColor, .red)
-            XCTAssertEqual(nameItemViewTextField?.textAlignment, .right)
-            XCTAssertEqual(nameItemViewTextField?.textColor, .red)
-            XCTAssertEqual(nameItemViewTextField?.font, .systemFont(ofSize: 13))
-            
-            /// Test IBAN field
-            XCTAssertEqual(ibanItemView?.backgroundColor, .red)
-            XCTAssertEqual(ibanItemTitleLabel?.backgroundColor, .blue)
-            XCTAssertEqual(ibanItemTitleLabel?.textAlignment, .center)
-            XCTAssertEqual(ibanItemTitleLabel?.font, .systemFont(ofSize: 20))
-            XCTAssertEqual(ibanItemTitleLabel?.textColor, .yellow)
-            XCTAssertEqual(ibanItemTextField?.backgroundColor, .red)
-            XCTAssertEqual(ibanItemTextField?.textAlignment, .right)
-            XCTAssertEqual(ibanItemTextField?.textColor, .red)
-            XCTAssertEqual(ibanItemTextField?.font, .systemFont(ofSize: 13))
-            
-            /// Test footer
-            XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
-            
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        wait(for: .milliseconds(300))
+        
+        let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
+        let nameItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.titleLabel")
+        let nameItemViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.textField")
+        
+        let ibanItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem")
+        let ibanItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem.titleLabel")
+        let ibanItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem.textField")
+        
+        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
+        let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button.titleLabel")
+        
+        /// Test card number field
+        XCTAssertEqual(nameItemView?.backgroundColor, .red)
+        XCTAssertEqual(nameItemViewTitleLabel?.textColor, sut.viewController.view.tintColor)
+        XCTAssertEqual(nameItemViewTitleLabel?.backgroundColor, .blue)
+        XCTAssertEqual(nameItemViewTitleLabel?.textAlignment, .center)
+        XCTAssertEqual(nameItemViewTitleLabel?.font, .systemFont(ofSize: 20))
+        XCTAssertEqual(nameItemViewTextField?.backgroundColor, .red)
+        XCTAssertEqual(nameItemViewTextField?.textAlignment, .right)
+        XCTAssertEqual(nameItemViewTextField?.textColor, .red)
+        XCTAssertEqual(nameItemViewTextField?.font, .systemFont(ofSize: 13))
+        
+        /// Test IBAN field
+        XCTAssertEqual(ibanItemView?.backgroundColor, .red)
+        XCTAssertEqual(ibanItemTitleLabel?.backgroundColor, .blue)
+        XCTAssertEqual(ibanItemTitleLabel?.textAlignment, .center)
+        XCTAssertEqual(ibanItemTitleLabel?.font, .systemFont(ofSize: 20))
+        XCTAssertEqual(ibanItemTitleLabel?.textColor, .yellow)
+        XCTAssertEqual(ibanItemTextField?.backgroundColor, .red)
+        XCTAssertEqual(ibanItemTextField?.textAlignment, .right)
+        XCTAssertEqual(ibanItemTextField?.textColor, .red)
+        XCTAssertEqual(ibanItemTextField?.font, .systemFont(ofSize: 13))
+        
+        /// Test footer
+        XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
+        
     }
     
     func testBigTitle() {
@@ -155,13 +152,10 @@ class SEPADirectDebitComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.Test name"))
-            XCTAssertEqual(sut.viewController.title, sepaPaymentMethod.name)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        wait(for: .milliseconds(300))
+        
+        XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.Test name"))
+        XCTAssertEqual(sut.viewController.title, sepaPaymentMethod.name)
     }
     
     func testRequiresModalPresentation() {
@@ -176,15 +170,12 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertFalse(sut.button.showsActivityIndicator)
-            sut.button.showsActivityIndicator = true
-            sut.stopLoadingIfNeeded()
-            XCTAssertFalse(sut.button.showsActivityIndicator)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        wait(for: .milliseconds(300))
+        
+        XCTAssertFalse(sut.button.showsActivityIndicator)
+        sut.button.showsActivityIndicator = true
+        sut.stopLoadingIfNeeded()
+        XCTAssertFalse(sut.button.showsActivityIndicator)
     }
 
     func testEmptyFieldsValidation() {
@@ -193,21 +184,17 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+        wait(for: .milliseconds(300))
+        
+        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
+        let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
+        let ibanItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem")
 
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
-            let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
-            let ibanItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem")
+        payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-            payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        XCTAssertEqual(nameItemView?.alertLabel.text, "Holder name invalid")
+        XCTAssertEqual(ibanItemView?.alertLabel.text, "Invalid account number")
 
-            XCTAssertEqual(nameItemView?.alertLabel.text, "Holder name invalid")
-            XCTAssertEqual(ibanItemView?.alertLabel.text, "Invalid account number")
-
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
     }
 
     func testSubmission() {
@@ -229,18 +216,16 @@ class SEPADirectDebitComponentTests: XCTestCase {
             expectation.fulfill()
         }
 
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+        wait(for: .milliseconds(300))
+        
+        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
+        let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
+        let ibanItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem")
 
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
-            let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
-            let ibanItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem")
+        self.populate(textItemView: ibanItemView!, with: "NL13TEST0123456789")
+        self.populate(textItemView: nameItemView!, with: "A. Klaassen")
 
-            self.populate(textItemView: ibanItemView!, with: "NL13TEST0123456789")
-            self.populate(textItemView: nameItemView!, with: "A. Klaassen")
-
-            payButtonItemViewButton?.sendActions(for: .touchUpInside)
-        }
-        wait(for: [expectation], timeout: 5)
+        payButtonItemViewButton?.sendActions(for: .touchUpInside)
     }
     
 }
