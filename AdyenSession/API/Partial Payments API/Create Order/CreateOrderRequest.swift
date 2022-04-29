@@ -46,8 +46,6 @@ internal struct CreateOrderResponse: SessionResponse {
 
     internal let orderData: String
 
-    internal let remainingAmount: Amount
-
     internal let sessionData: String
 
     internal var order: PartialPaymentOrder {
@@ -57,7 +55,6 @@ internal struct CreateOrderResponse: SessionResponse {
     private enum CodingKeys: String, CodingKey {
         case pspReference
         case orderData
-        case remainingAmount
         case sessionData
     }
 }

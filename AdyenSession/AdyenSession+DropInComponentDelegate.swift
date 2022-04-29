@@ -11,7 +11,7 @@ import Foundation
 extension AdyenSession: DropInComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
         let handler = delegate?.handlerForPayments(in: component, session: self) ?? self
-        handler.didSubmit(data, from: component, session: self)
+        handler.didSubmit(data, from: component, in: dropInComponent, session: self)
     }
     
     public func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
