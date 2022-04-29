@@ -79,6 +79,7 @@ internal class ThreeDS2CoreActionHandler: Component {
             let serviceParameters = ADYServiceParameters()
             serviceParameters.directoryServerIdentifier = token.directoryServerIdentifier
             serviceParameters.directoryServerPublicKey = token.directoryServerPublicKey
+            serviceParameters.directoryServerRootCertificates = token.directoryServerRootCertificates
 
             service.service(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { [weak self] _ in
                 if let encodedFingerprint = self?.getFingerprint(messageVersion: token.threeDSMessageVersion,
