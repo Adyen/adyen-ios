@@ -87,7 +87,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         
         /// Test firstName field
         self.assertTextInputUI(ViewIdentifier.firstName,
@@ -176,28 +176,26 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         }
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        let dummyExpectation = expectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let submitButton: UIControl? = sut.viewController.view.findView(with: ViewIdentifier.payButton)
+        
+        wait(for: .milliseconds(300))
+        
+        let submitButton: UIControl? = sut.viewController.view.findView(with: ViewIdentifier.payButton)
 
-            let firstNameView: FormTextInputItemView! = sut.viewController.view.findView(with: ViewIdentifier.firstName)
-            self.populate(textItemView: firstNameView, with: "Mohamed")
+        let firstNameView: FormTextInputItemView! = sut.viewController.view.findView(with: ViewIdentifier.firstName)
+        self.populate(textItemView: firstNameView, with: "Mohamed")
 
-            let lastNameView: FormTextInputItemView! = sut.viewController.view.findView(with: ViewIdentifier.lastName)
-            self.populate(textItemView: lastNameView, with: "Smith")
+        let lastNameView: FormTextInputItemView! = sut.viewController.view.findView(with: ViewIdentifier.lastName)
+        self.populate(textItemView: lastNameView, with: "Smith")
 
-            let emailView: FormTextInputItemView! = sut.viewController.view.findView(with: ViewIdentifier.email)
-            self.populate(textItemView: emailView, with: "mohamed.smith@domain.com")
+        let emailView: FormTextInputItemView! = sut.viewController.view.findView(with: ViewIdentifier.email)
+        self.populate(textItemView: emailView, with: "mohamed.smith@domain.com")
 
-            let phoneNumberView: FormPhoneNumberItemView! = sut.viewController.view.findView(with: ViewIdentifier.phone)
-            self.populate(textItemView: phoneNumberView, with: "1233456789")
+        let phoneNumberView: FormPhoneNumberItemView! = sut.viewController.view.findView(with: ViewIdentifier.phone)
+        self.populate(textItemView: phoneNumberView, with: "1233456789")
 
-            submitButton?.sendActions(for: .touchUpInside)
-
-            dummyExpectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 10, handler: nil)
+        submitButton?.sendActions(for: .touchUpInside)
+        
+        waitForExpectations(timeout: 10)
     }
 
     func testBigTitle() {
@@ -205,13 +203,10 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.Test name"))
-            XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        wait(for: .milliseconds(300))
+        
+        XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.Test name"))
+        XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
     }
 
     func testRequiresModalPresentation() {
@@ -228,7 +223,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
                                               configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -261,7 +256,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
                                        configuration: BasicPersonalInfoFormComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         // Then
         let view: UIView = sut.viewController.view

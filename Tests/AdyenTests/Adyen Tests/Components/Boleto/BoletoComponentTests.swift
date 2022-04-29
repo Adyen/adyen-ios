@@ -73,7 +73,7 @@ class BoletoComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sutVC
         
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         
         let firstNameField: UITextField? = sutVC.view.findView(by: "firstNameItem.textField") as? UITextField
         let lastNameField: UITextField? = sutVC.view.findView(by: "lastNameItem.textField") as? UITextField
@@ -133,7 +133,7 @@ class BoletoComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sutVC
         
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         
         let firstNameField: UITextField? = sutVC.view.findView(by: "firstNameItem.textField") as? UITextField
         let lastNameField: UITextField? = sutVC.view.findView(by: "lastNameItem.textField") as? UITextField
@@ -180,7 +180,7 @@ class BoletoComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sutVC
         
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         
         let firstNameField: UITextField? = sutVC.view.findView(by: "firstNameItem.textField") as? UITextField
         let lastNameField: UITextField? = sutVC.view.findView(by: "lastNameItem.textField") as? UITextField
@@ -226,7 +226,7 @@ class BoletoComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sutVC
         
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         
         let emailSwitch: UISwitch? = sutVC.view.findView(by: "sendCopyToEmailItem.switch") as? UISwitch
         let emailField: UITextField? = sutVC.view.findView(by: "emailItem.textField") as? UITextField
@@ -247,7 +247,7 @@ class BoletoComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sutVC
         
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         
         let emailSwitchItem: FormToggleItemView? = sutVC.view.findView(by: "sendCopyToEmailItem") as? FormToggleItemView
         
@@ -297,13 +297,11 @@ class BoletoComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+        wait(for: .milliseconds(300))
         
-            let submitButton: SubmitButton? = self.sut.viewController.view.findView(by: "payButtonItem.button") as? SubmitButton
-        
-            submitButton?.sendActions(for: .touchUpInside)
-            
-        }
+        let submitButton: SubmitButton? = self.sut.viewController.view.findView(by: "payButtonItem.button") as? SubmitButton
+    
+        submitButton?.sendActions(for: .touchUpInside)
     
         waitForExpectations(timeout: 10, handler: nil)
     }
@@ -332,14 +330,12 @@ class BoletoComponentTests: XCTestCase {
         sut.delegate = mockDelegate
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .milliseconds(300))
 
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
+        let submitButton: SubmitButton? = self.sut.viewController.view.findView(by: "payButtonItem.button") as? SubmitButton
 
-            let submitButton: SubmitButton? = self.sut.viewController.view.findView(by: "payButtonItem.button") as? SubmitButton
-
-            submitButton?.sendActions(for: .touchUpInside)
-
-        }
+        submitButton?.sendActions(for: .touchUpInside)
 
         waitForExpectations(timeout: 15, handler: nil)
     }
