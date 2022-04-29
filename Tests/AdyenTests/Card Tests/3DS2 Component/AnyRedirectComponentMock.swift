@@ -14,6 +14,10 @@ final class AnyRedirectComponentMock: AnyRedirectComponent {
     
     let apiContext = Dummy.context
 
+    var adyenContext: AdyenContext {
+        return .init(apiContext: apiContext)
+    }
+
     var delegate: ActionComponentDelegate?
 
     var onHandle: ((_ action: RedirectAction) -> Void)?

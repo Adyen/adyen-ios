@@ -10,12 +10,23 @@
 import XCTest
 
 class BCMCComponentTests: XCTestCase {
-    
+
+    var analyticsProviderMock: AnalyticsProviderMock!
+    var adyenContext: AdyenContext!
     var delegate: PaymentComponentDelegateMock!
-    
-    override func setUp() {
-        super.setUp()
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        analyticsProviderMock = AnalyticsProviderMock()
+        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
         delegate = PaymentComponentDelegateMock()
+    }
+
+    override func tearDownWithError() throws {
+        analyticsProviderMock = nil
+        adyenContext = nil
+        delegate = nil
+        try super.tearDownWithError()
     }
 
     func testRequiresKeyboardInput() {
@@ -23,7 +34,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context,
-                                adyenContext: Dummy.adyenContext,
+                                adyenContext: adyenContext,
                                 configuration: CardComponent.Configuration())
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
@@ -36,7 +47,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context,
-                                adyenContext: Dummy.adyenContext,
+                                adyenContext: adyenContext,
                                 configuration: CardComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -63,7 +74,7 @@ class BCMCComponentTests: XCTestCase {
         configuration.showsHolderNameField = true
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context,
-                                adyenContext: Dummy.adyenContext,
+                                adyenContext: adyenContext,
                                 configuration: configuration)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -89,7 +100,7 @@ class BCMCComponentTests: XCTestCase {
         configuration.showsStorePaymentMethodField = false
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context,
-                                adyenContext: Dummy.adyenContext,
+                                adyenContext: adyenContext,
                                 configuration: configuration)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -113,7 +124,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context,
-                                adyenContext: Dummy.adyenContext)
+                                adyenContext: adyenContext)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
@@ -139,7 +150,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context,
-                                adyenContext: Dummy.adyenContext)
+                                adyenContext: adyenContext)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
@@ -162,7 +173,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context,
-                                adyenContext: Dummy.adyenContext)
+                                adyenContext: adyenContext)
         PublicKeyProvider.publicKeysCache[Dummy.context.clientKey] = Dummy.publicKey
         sut.delegate = delegate
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -218,7 +229,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context,
-                                adyenContext: Dummy.adyenContext)
+                                adyenContext: adyenContext)
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -245,7 +256,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context,
-                                adyenContext: Dummy.adyenContext)
+                                adyenContext: adyenContext)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -270,7 +281,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context,
-                                adyenContext: Dummy.adyenContext)
+                                adyenContext: adyenContext)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -296,7 +307,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context,
-                                adyenContext: Dummy.adyenContext)
+                                adyenContext: adyenContext)
         sut.delegate = delegate
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -342,12 +353,29 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context,
-                                adyenContext: Dummy.adyenContext)
+                                adyenContext: adyenContext)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         wait(for: .seconds(1))
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, cardPaymentMethod.name)
     }
-    
+
+    func testViewWillAppearShouldSendTelemetryEvent() throws {
+        // Given
+        let cardPaymentMethod = CardPaymentMethod(type: .card,
+                                       name: "Test name",
+                                       fundingSource: .credit,
+                                       brands: ["visa", "amex", "mc"])
+        let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
+        let sut = BCMCComponent(paymentMethod: paymentMethod,
+                                apiContext: Dummy.context,
+                                adyenContext: adyenContext)
+
+        // When
+        sut.cardViewController.viewWillAppear(true)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+    }
 }

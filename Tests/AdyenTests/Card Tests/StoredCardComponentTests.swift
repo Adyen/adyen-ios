@@ -12,20 +12,26 @@ import XCTest
 
 class StoredCardComponentTests: XCTestCase {
 
+    private var analyticsProviderMock: AnalyticsProviderMock!
+    private var adyenContext: AdyenContext!
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        analyticsProviderMock = AnalyticsProviderMock()
+        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+    }
+
+    override func tearDownWithError() throws {
+        analyticsProviderMock = nil
+        adyenContext = nil
+        try super.tearDownWithError()
+    }
+
     func testUIWithClientKey() {
-        let method = StoredCardPaymentMethod(type: .card,
-                                             name: "name",
-                                             identifier: "id",
-                                             fundingSource: .credit,
-                                             supportedShopperInteractions: [.shopperPresent],
-                                             brand: "brand",
-                                             lastFour: "1234",
-                                             expiryMonth: "12",
-                                             expiryYear: "22",
-                                             holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method,
+        let paymentMethod = storedCardPaymentMethod(brand: "brand")
+        let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
                                       apiContext: Dummy.context,
-                                      adyenContext: Dummy.adyenContext)
+                                      adyenContext: adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -45,19 +51,10 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testUIWithPublicKey() {
-        let method = StoredCardPaymentMethod(type: .card,
-                                             name: "name",
-                                             identifier: "id",
-                                             fundingSource: .credit,
-                                             supportedShopperInteractions: [.shopperPresent],
-                                             brand: "brand",
-                                             lastFour: "1234",
-                                             expiryMonth: "12",
-                                             expiryYear: "22",
-                                             holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method,
+        let paymentMethod = storedCardPaymentMethod(brand: "brand")
+        let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
                                       apiContext: Dummy.context,
-                                      adyenContext: Dummy.adyenContext)
+                                      adyenContext: adyenContext)
         PublicKeyProvider.publicKeysCache[Dummy.context.clientKey] = Dummy.publicKey
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
@@ -77,19 +74,10 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testPaymentSubmitWithSuccessfulCardPublicKeyFetching() {
-        let method = StoredCardPaymentMethod(type: .card,
-                                             name: "name",
-                                             identifier: "id",
-                                             fundingSource: .credit,
-                                             supportedShopperInteractions: [.shopperPresent],
-                                             brand: "brand",
-                                             lastFour: "1234",
-                                             expiryMonth: "12",
-                                             expiryYear: "22",
-                                             holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method,
+        let paymentMethod = storedCardPaymentMethod(brand: "brand")
+        let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
                                       apiContext: Dummy.context,
-                                      adyenContext: Dummy.adyenContext)
+                                      adyenContext: adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -145,19 +133,10 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testPaymentSubmitWithFailedCardPublicKeyFetching() {
-        let method = StoredCardPaymentMethod(type: .card,
-                                             name: "name",
-                                             identifier: "id",
-                                             fundingSource: .credit,
-                                             supportedShopperInteractions: [.shopperPresent],
-                                             brand: "brand",
-                                             lastFour: "1234",
-                                             expiryMonth: "12",
-                                             expiryYear: "22",
-                                             holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method,
+        let paymentMethod = storedCardPaymentMethod(brand: "brand")
+        let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
                                       apiContext: Dummy.context,
-                                      adyenContext: Dummy.adyenContext)
+                                      adyenContext: adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -202,19 +181,10 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testCVCLimitForAMEX() {
-        let method = StoredCardPaymentMethod(type: .card,
-                                             name: "name",
-                                             identifier: "id",
-                                             fundingSource: .credit,
-                                             supportedShopperInteractions: [.shopperPresent],
-                                             brand: "amex",
-                                             lastFour: "1234",
-                                             expiryMonth: "12",
-                                             expiryYear: "22",
-                                             holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method,
+        let paymentMethod = storedCardPaymentMethod(brand: "amex")
+        let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
                                       apiContext: Dummy.context,
-                                      adyenContext: Dummy.adyenContext)
+                                      adyenContext: adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -257,19 +227,10 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testCVCLimitForNonAMEX() {
-        let method = StoredCardPaymentMethod(type: .card,
-                                             name: "name",
-                                             identifier: "id",
-                                             fundingSource: .credit,
-                                             supportedShopperInteractions: [.shopperPresent],
-                                             brand: "mc",
-                                             lastFour: "1234",
-                                             expiryMonth: "12",
-                                             expiryYear: "22",
-                                             holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method,
+        let paymentMethod = storedCardPaymentMethod(brand: "mc")
+        let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
                                       apiContext: Dummy.context,
-                                      adyenContext: Dummy.adyenContext)
+                                      adyenContext: adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -305,19 +266,10 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testCVCLimitForUnknownCardType() {
-        let method = StoredCardPaymentMethod(type: .card,
-                                             name: "name",
-                                             identifier: "id",
-                                             fundingSource: .credit,
-                                             supportedShopperInteractions: [.shopperPresent],
-                                             brand: "some_brand",
-                                             lastFour: "1234",
-                                             expiryMonth: "12",
-                                             expiryYear: "22",
-                                             holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method,
+        let paymentMethod = storedCardPaymentMethod(brand: "some_brand")
+        let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
                                       apiContext: Dummy.context,
-                                      adyenContext: Dummy.adyenContext)
+                                      adyenContext: adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -347,6 +299,34 @@ class StoredCardComponentTests: XCTestCase {
         alertController.dismiss(animated: false, completion: nil)
     }
 
+    func testViewDidLoadShouldSendTelemetryEvent() throws {
+        // Given
+        let paymentMethod = storedCardPaymentMethod(brand: "some_brand")
+        let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
+                                      apiContext: Dummy.context,
+                                      adyenContext: adyenContext)
+
+        // When
+        sut.viewController.viewDidLoad()
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+    }
+
+    // MARK: - Private
+
+    private func storedCardPaymentMethod(brand: String) -> StoredCardPaymentMethod {
+        .init(type: .card,
+              name: "name",
+              identifier: "id",
+              fundingSource: .credit,
+              supportedShopperInteractions: [.shopperPresent],
+              brand: brand,
+              lastFour: "1234",
+              expiryMonth: "12",
+              expiryYear: "22",
+              holderName: "holderName")
+    }
 }
 
 extension UIAlertAction {

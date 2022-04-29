@@ -13,7 +13,6 @@ public final class AdyenContext {
     // MARK: - Properties
 
     private let apiContext: APIContext
-    private let analyticsConfiguration: AnalyticsConfiguration
 
     /// :nodoc:
     public let analyticsProvider: AnalyticsProviderProtocol
@@ -26,21 +25,16 @@ public final class AdyenContext {
     ///   - analyticsConfiguration: A configuration object that specifies the behavior for the analytics.
     public init(apiContext: APIContext, analyticsConfiguration: AnalyticsConfiguration = .init()) {
         self.apiContext = apiContext
-        self.analyticsConfiguration = analyticsConfiguration
 
         let apiClient = APIClient(apiContext: apiContext)
         self.analyticsProvider = AnalyticsProvider(apiClient: apiClient,
                                                    configuration: analyticsConfiguration)
     }
 
-    // MARK: - Internal
-
     /// :nodoc:
     internal init(apiContext: APIContext,
-                  analyticsProvider: AnalyticsProviderProtocol,
-                  analyticsConfiguration: AnalyticsConfiguration) {
+                  analyticsProvider: AnalyticsProviderProtocol) {
         self.apiContext = apiContext
         self.analyticsProvider = analyticsProvider
-        self.analyticsConfiguration = analyticsConfiguration
     }
 }

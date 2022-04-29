@@ -224,7 +224,7 @@ class RedirectComponentTests: XCTestCase {
 
     func testRedirectResult() {
         // Given
-        let sut = RedirectComponent(apiContext: Dummy.context)
+        let sut = RedirectComponent(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         let delegate = ActionComponentDelegateMock()

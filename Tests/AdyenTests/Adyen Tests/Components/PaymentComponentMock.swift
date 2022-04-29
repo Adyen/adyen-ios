@@ -9,6 +9,10 @@ import Adyen
 class PaymentComponentMock: PaymentComponent {
     
     let apiContext = Dummy.context
+
+    var adyenContext: AdyenContext {
+        return .init(apiContext: apiContext)
+    }
     
     var paymentMethod: PaymentMethod
     

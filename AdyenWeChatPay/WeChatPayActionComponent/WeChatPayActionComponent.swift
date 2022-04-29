@@ -22,6 +22,9 @@ import Foundation
     
         /// :nodoc:
         public let apiContext: APIContext
+
+        /// :nodoc:
+        public var adyenContext: AdyenContext
     
         /// :nodoc:
         public weak var delegate: ActionComponentDelegate?
@@ -30,8 +33,9 @@ import Foundation
         private var currentlyHandledAction: WeChatPaySDKAction?
     
         /// :nodoc:
-        public init(apiContext: APIContext) {
+        public init(apiContext: APIContext, adyenContext: AdyenContext) {
             self.apiContext = apiContext
+            self.adyenContext = adyenContext
         }
     
         /// :nodoc:
@@ -47,7 +51,7 @@ import Foundation
              Handling multiple WeChatPaySDKAction's in parallel is not supported.
             """)
         
-            Analytics.sendEvent(components: "wechatpaySDK", flavor: _isDropIn ? .dropIn : .components, context: apiContext)
+            Analytics.sendEvent(component: "wechatpaySDK", flavor: _isDropIn ? .dropin : .components, context: apiContext)
         
             currentlyHandledAction = action
         
@@ -124,8 +128,7 @@ import Foundation
         public weak var delegate: ActionComponentDelegate?
 
         /// :nodoc:
-        public init(apiContext: APIContext,
-                    adyenContext: AdyenContext) {
+        public init(apiContext: APIContext, adyenContext: AdyenContext) {
             self.apiContext = apiContext
             self.adyenContext = adyenContext
         }

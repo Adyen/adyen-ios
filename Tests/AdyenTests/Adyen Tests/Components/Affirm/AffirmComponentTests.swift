@@ -9,7 +9,8 @@
 import XCTest
 
 class AffirmComponentTests: XCTestCase {
-    
+
+    private var analyticsProviderMock: AnalyticsProviderMock!
     private var paymentMethod: PaymentMethod!
     private var apiContext: APIContext!
     private var adyenContext: AdyenContext!
@@ -18,9 +19,10 @@ class AffirmComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
+        analyticsProviderMock = AnalyticsProviderMock()
         paymentMethod = AffirmPaymentMethod(type: .affirm, name: "Affirm")
         apiContext = Dummy.context
-        adyenContext = Dummy.adyenContext
+        adyenContext = AdyenContext(apiContext: apiContext, analyticsProvider: analyticsProviderMock)
         style = FormComponentStyle()
         sut = AffirmComponent(paymentMethod: paymentMethod,
                               apiContext: apiContext,
@@ -311,6 +313,17 @@ class AffirmComponentTests: XCTestCase {
         let expectedDeliveryAddress = PostalAddressMocks.emptyUSPostalAddress
         let deliveryAddress = deliveryAddressView.item.value
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
+    }
+
+    private func testViewWillAppear_shouldSendTelemetryEvent() throws {
+        // Given
+        let mockViewController = UIViewController()
+
+        // When
+        sut.viewWillAppear(viewController: mockViewController)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
     }
 
     // MARK: - Private

@@ -10,10 +10,29 @@ import XCTest
 
 class IssuerListComponentTests: XCTestCase {
 
-    func testStartStopLoading() {
-        let paymentMethod = try! Coder.decode(issuerListDictionary) as IssuerListPaymentMethod
-        let sut = IssuerListComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
+    private var analyticsProviderMock: AnalyticsProviderMock!
+    private var adyenContext: AdyenContext!
+    private var paymentMethod: IssuerListPaymentMethod!
+    private var sut: IssuerListComponent!
 
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        analyticsProviderMock = AnalyticsProviderMock()
+        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+
+        paymentMethod = try! Coder.decode(issuerListDictionary) as IssuerListPaymentMethod
+        sut = IssuerListComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, adyenContext: adyenContext)
+    }
+
+    override func tearDownWithError() throws {
+        analyticsProviderMock = nil
+        adyenContext = nil
+        paymentMethod = nil
+        sut = nil
+        try super.tearDownWithError()
+    }
+
+    func testStartStopLoading() {
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -25,7 +44,7 @@ class IssuerListComponentTests: XCTestCase {
             XCTAssertFalse(cell.showsActivityIndicator)
             listViewController?.startLoading(for: item)
             XCTAssertTrue(cell.showsActivityIndicator)
-            sut.stopLoadingIfNeeded()
+            self.sut.stopLoadingIfNeeded()
             XCTAssertFalse(cell.showsActivityIndicator)
             expectation.fulfill()
         }
@@ -33,4 +52,14 @@ class IssuerListComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 5)
     }
 
+    func testViewWillAppearShouldSendTelemetryEvent() throws {
+        // Given
+        let mockViewController = UIViewController()
+
+        // When
+        sut.viewWillAppear(viewController: mockViewController)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+    }
 }

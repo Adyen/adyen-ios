@@ -10,12 +10,27 @@
 import XCTest
 
 class StoredPaymentMethodComponentTests: XCTestCase {
-    
+
+    private var analyticsProviderMock: AnalyticsProviderMock!
+    private var adyenContext: AdyenContext!
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        analyticsProviderMock = AnalyticsProviderMock()
+        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+    }
+
+    override func tearDownWithError() throws {
+        analyticsProviderMock = nil
+        adyenContext = nil
+        try super.tearDownWithError()
+    }
+
     func testLocalizationWithCustomTableName() {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method,
                                                apiContext: Dummy.context,
-                                               adyenContext: Dummy.adyenContext)
+                                               adyenContext: adyenContext)
         let payment = Payment(amount: Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
@@ -31,7 +46,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method,
                                                apiContext: Dummy.context,
-                                               adyenContext: Dummy.adyenContext)
+                                               adyenContext: adyenContext)
         let payment = Payment(amount: Amount(value: 0, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
 
@@ -48,7 +63,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method,
                                                apiContext: Dummy.context,
-                                               adyenContext: Dummy.adyenContext)
+                                               adyenContext: adyenContext)
         let payment = Payment(amount: Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
@@ -67,7 +82,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
                                              name: "name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method,
                                                apiContext: Dummy.context,
-                                               adyenContext: Dummy.adyenContext)
+                                               adyenContext: adyenContext)
 
         let delegate = PaymentComponentDelegateMock()
 
@@ -107,5 +122,21 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         }
         waitForExpectations(timeout: 10, handler: nil)
     }
-    
+
+    func testViewDidLoadShouldSendTelemetryEvent() throws {
+        // Given
+        let method = StoredPaymentMethodMock(identifier: "id",
+                                             supportedShopperInteractions: [.shopperPresent],
+                                             type: .other("type"),
+                                             name: "name")
+        let sut = StoredPaymentMethodComponent(paymentMethod: method,
+                                               apiContext: Dummy.context,
+                                               adyenContext: adyenContext)
+
+        // When
+        sut.viewController.viewDidLoad()
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+    }
 }

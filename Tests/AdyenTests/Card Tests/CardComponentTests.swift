@@ -12,14 +12,17 @@ import XCTest
 
 class CardComponentTests: XCTestCase {
 
+    var analyticsProviderMock: AnalyticsProviderMock!
     var adyenContext: AdyenContext!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        adyenContext = Dummy.adyenContext
+        analyticsProviderMock = AnalyticsProviderMock()
+        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
     }
 
     override func tearDownWithError() throws {
+        analyticsProviderMock = nil
         adyenContext = nil
         try super.tearDownWithError()
     }
@@ -523,6 +526,7 @@ class CardComponentTests: XCTestCase {
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
+                                adyenContext: adyenContext,
                                 configuration: config)
 
         sut.payment = Payment(amount: Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
@@ -552,6 +556,7 @@ class CardComponentTests: XCTestCase {
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
+                                adyenContext: adyenContext,
                                 configuration: config)
 
         sut.payment = Payment(amount: Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
@@ -2031,6 +2036,22 @@ class CardComponentTests: XCTestCase {
         
         XCTAssertEqual(sut.cardViewController.items.billingAddressItem.supportedCountryCodes, ["UK"])
         XCTAssertEqual(countryItemView?.inputControl.label, "United Kingdom")
+    }
+
+    func testViewWillAppearShouldSendTelemetryEvent() throws {
+        // Given
+        let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
+        let configuration = CardComponent.Configuration()
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                adyenContext: adyenContext,
+                                configuration: configuration)
+
+        // When
+        sut.cardViewController.viewWillAppear(false)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
     }
 
     // MARK: - Private

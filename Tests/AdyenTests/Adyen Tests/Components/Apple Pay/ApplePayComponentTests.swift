@@ -12,6 +12,8 @@ import XCTest
 class ApplePayComponentTest: XCTestCase {
 
     var mockDelegate: PaymentComponentDelegateMock!
+    var analyticsProviderMock: AnalyticsProviderMock!
+    var adyenContext: AdyenContext!
     var sut: ApplePayComponent!
     lazy var amount = Amount(value: 2, currencyCode: getRandomCurrencyCode())
     lazy var payment = Payment(amount: amount, countryCode: getRandomCountryCode())
@@ -25,17 +27,20 @@ class ApplePayComponentTest: XCTestCase {
     override func setUp() {
         let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: nil)
         let configuration = ApplePayComponent.Configuration(payment: Dummy.createTestApplePayPayment(),
-                                                            merchantIdentifier: "test_id")
-
+                                                            merchantIdentifier: "test_id")                                                 
+        analyticsProviderMock = AnalyticsProviderMock()
+        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
         sut = try! ApplePayComponent(paymentMethod: paymentMethod,
                                      apiContext: Dummy.context,
-                                     adyenContext: Dummy.adyenContext,
+                                     adyenContext: adyenContext,
                                      configuration: configuration)
         mockDelegate = PaymentComponentDelegateMock()
         sut.delegate = mockDelegate
     }
 
     override func tearDown() {
+        analyticsProviderMock = nil
+        adyenContext = nil
         sut = nil
         mockDelegate = nil
         UIApplication.shared.keyWindow!.rootViewController?.dismiss(animated: false)
@@ -204,6 +209,17 @@ class ApplePayComponentTest: XCTestCase {
         } else {
             XCTAssertEqual(supportedNetworks, [.masterCard])
         }
+    }
+
+    func testViewWillAppearShouldSendTelemetryEvent() throws {
+        // Given
+        let mockViewController = UIViewController()
+
+        // When
+        sut.viewWillAppear(viewController: mockViewController)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
     }
     
     private func getRandomContactFieldSet() -> Set<PKContactField> {
