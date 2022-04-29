@@ -40,7 +40,7 @@ jobs:
         xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
+        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -resultBundlePath TestResults'
         scheme: 'AdyenUIHost'
         destination: 'name=iPhone 11'
 
