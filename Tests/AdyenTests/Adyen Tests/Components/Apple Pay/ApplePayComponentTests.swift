@@ -15,6 +15,7 @@ class ApplePayComponentTest: XCTestCase {
     var sut: ApplePayComponent!
     lazy var amount = Amount(value: 2, currencyCode: getRandomCurrencyCode())
     lazy var payment = Payment(amount: amount, countryCode: getRandomCountryCode())
+    let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: nil)
 
     private var emptyVC: UIViewController {
         let vc = UIViewController()
@@ -23,7 +24,6 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     override func setUp() {
-        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: nil)
         let configuration = ApplePayComponent.Configuration(payment: Dummy.createTestApplePayPayment(),
                                                             merchantIdentifier: "test_id")
 
@@ -91,6 +91,69 @@ class ApplePayComponentTest: XCTestCase {
 
         waitForExpectations(timeout: 10)
     }
+
+    func testApplePayShipping() {
+        guard Available.iOS12 else { return }
+
+        var configuration = ApplePayComponent.Configuration(payment: Dummy.createTestApplePayPayment(),
+                                                            merchantIdentifier: "test_id")
+        let shippingMethods = [PKShippingMethod(label: "Shipping1", amount: 1.0), PKShippingMethod(label: "Shipping2", amount: 2.0)]
+        shippingMethods.forEach { $0.identifier = UUID().uuidString }
+        configuration.shippingMethods = shippingMethods
+
+        sut = try! ApplePayComponent(paymentMethod: paymentMethod,
+                                     apiContext: Dummy.context,
+                                     configuration: configuration)
+
+        UIApplication.shared.keyWindow!.rootViewController = emptyVC
+        UIApplication.shared.keyWindow!.rootViewController!.present(sut!.viewController, animated: false)
+
+        wait(for: .seconds(1))
+        let onShippingSelected = expectation(description: "Wait for didFinalize call")
+        sut.paymentAuthorizationViewController(sut!.viewController as! PKPaymentAuthorizationViewController,
+                                               didSelect: shippingMethods.first!) { update in
+            onShippingSelected.fulfill()
+        }
+
+        waitForExpectations(timeout: 4)
+    }
+
+    @available(iOS 15, *)
+    func testApplePayShippingContact() {
+        guard Available.iOS12 else { return }
+
+        UIApplication.shared.keyWindow!.rootViewController = emptyVC
+        UIApplication.shared.keyWindow!.rootViewController!.present(sut!.viewController, animated: false)
+
+        wait(for: .seconds(1))
+        let onContactSelected = expectation(description: "Wait for didFinalize call")
+        let contact = PKContact()
+        contact.name = PersonNameComponents(givenName: "Test", familyName: "Testovich")
+        sut.paymentAuthorizationViewController(sut!.viewController as! PKPaymentAuthorizationViewController,
+                                               didSelectShippingContact: contact ) { update in
+            onContactSelected.fulfill()
+        }
+
+        waitForExpectations(timeout: 4)
+    }
+
+    @available(iOS 15.0, *)
+    func testApplePayCoupon() {
+        guard Available.iOS12 else { return }
+
+        UIApplication.shared.keyWindow!.rootViewController = emptyVC
+        UIApplication.shared.keyWindow!.rootViewController!.present(sut!.viewController, animated: false)
+
+        wait(for: .seconds(1))
+        let onContactSelected = expectation(description: "Wait for didFinalize call")
+        sut.paymentAuthorizationViewController(sut!.viewController as! PKPaymentAuthorizationViewController,
+                                               didChangeCouponCode: "Coupon" ) { update in
+            onContactSelected.fulfill()
+        }
+
+        waitForExpectations(timeout: 4)
+    }
+
 
     func testInvalidCurrencyCode() {
         let amount = Amount(value: 2, unsafeCurrencyCode: "ZZZ")

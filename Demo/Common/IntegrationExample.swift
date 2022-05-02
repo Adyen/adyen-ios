@@ -107,13 +107,13 @@ internal final class IntegrationExample: APIClientAware {
     internal func finish(with result: PaymentsResponse) {
         let success = result.resultCode == .authorised || result.resultCode == .received || result.resultCode == .pending
         let message = "\(result.resultCode.rawValue) \(result.amount?.formatted ?? "")"
-        finilize(success, message)
+        finalize(success, message)
     }
 
     internal func finish(with result: PaymentsResponse.ResultCode) {
         let success = result == .authorised || result == .received || result == .pending
         let message = "\(result.rawValue)"
-        finilize(success, message)
+        finalize(success, message)
     }
 
     internal func finish(with error: Error) {
@@ -123,10 +123,10 @@ internal final class IntegrationExample: APIClientAware {
         } else {
             message = error.localizedDescription
         }
-        finilize(false, message)
+        finalize(false, message)
     }
 
-    private func finilize(_ success: Bool, _ message: String) {
+    private func finalize(_ success: Bool, _ message: String) {
         currentComponent?.finalizeIfNeeded(with: success) { [weak self] in
             guard let self = self else { return }
             self.presenter?.dismiss {
