@@ -58,11 +58,11 @@ public protocol PaymentComponentDelegate: AnyObject {
 /// Any component with a payment property.
 public protocol PaymentAwareComponent: Component {
 
-    /// The partial payment order if any.
-    var order: PartialPaymentOrder? { get set }
-
     /// The payment information.
     var payment: Payment? { get set }
+
+    /// The partial payment order if any.
+    var order: PartialPaymentOrder? { get set }
 }
 
 /// :nodoc:

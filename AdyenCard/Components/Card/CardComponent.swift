@@ -26,8 +26,6 @@ public class CardComponent: PublicKeyConsumer,
         internal static let privateBinLength = 11
         internal static let publicPanSuffixLength = 4
     }
-
-    private var persistedPayment: Payment?
     
     /// :nodoc:
     public let apiContext: APIContext
