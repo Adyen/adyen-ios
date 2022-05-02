@@ -302,6 +302,9 @@ extension FormValueItem where ValueType == String {
 
 extension CardViewController: CardViewControllerProtocol {
     func update(storePaymentMethodFieldVisibility isVisible: Bool) {
+        if !isVisible {
+            items.storeDetailsItem.value = false
+        }
         items.storeDetailsItem.isVisible = isVisible
     }
 
