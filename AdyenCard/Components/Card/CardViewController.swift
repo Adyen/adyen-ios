@@ -309,6 +309,6 @@ extension CardViewController: CardViewControllerProtocol {
     }
 
     func update(storePaymentMethodFieldValue isOn: Bool) {
-        items.storeDetailsItem.value = isOn
+        items.storeDetailsItem.value = items.storeDetailsItem.isVisible && isOn
     }
 }
