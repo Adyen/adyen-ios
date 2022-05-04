@@ -66,7 +66,7 @@ public class CardComponent: PublicKeyConsumer,
     /// Initializes the card component.
     ///
     /// - Parameters:
-    ///   - paymentMethod: The card payment method.
+    ///   - payyymentMethod: The card payment method.
     ///   - apiContext: The API context.
     ///   - configuration: The configuration of the component.
     public convenience init(paymentMethod: AnyCardPaymentMethod,
