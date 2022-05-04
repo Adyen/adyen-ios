@@ -37,7 +37,12 @@ export PATH=~/.mint/bin:$PATH
 mint install fromkk/SpellChecker@0.1.0 SpellChecker
 
 IFS=$'\n'
-files="$(git diff origin/$current_branch..origin/$target_branch --name-only -- "*.swift")"
+echo "Is Fork: $isFork"
+if $isFork ; then
+  files="$(git diff origin/$target_branch HEAD --name-only -- "*.swift")"
+else
+  files="$(git diff origin/$current_branch..origin/$target_branch --name-only -- "*.swift")"
+fi
 declare -p -a files
 
 excludedFiles="$(cat spell-check-excluded-files-list)"
