@@ -95,7 +95,7 @@ class BLIKComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         let hintView: UILabel! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeHintLabel")
 
         let blikCodeView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
@@ -147,7 +147,7 @@ class BLIKComponentTests: XCTestCase {
         }
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
 
         let blikCodeView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
@@ -162,7 +162,7 @@ class BLIKComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         XCTAssertEqual(sut.viewController.title, method.name.uppercased())
     }
 

@@ -72,36 +72,32 @@ class MBWayComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: MBWayViewIdentifier.phone)
-            let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: MBWayViewIdentifier.phoneTitleLabel)
-            let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: MBWayViewIdentifier.phoneTextField)
+        wait(for: .milliseconds(300))
+        
+        let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: MBWayViewIdentifier.phone)
+        let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: MBWayViewIdentifier.phoneTitleLabel)
+        let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: MBWayViewIdentifier.phoneTextField)
 
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: MBWayViewIdentifier.payButton)
-            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: MBWayViewIdentifier.payButtonTitleLabel)
+        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: MBWayViewIdentifier.payButton)
+        let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: MBWayViewIdentifier.payButtonTitleLabel)
 
-            /// Test phone number field
-            XCTAssertEqual(phoneNumberView?.backgroundColor, .red)
-            XCTAssertEqual(phoneNumberViewTitleLabel?.textColor, sut.viewController.view.tintColor)
-            XCTAssertEqual(phoneNumberViewTitleLabel?.backgroundColor, .blue)
-            XCTAssertEqual(phoneNumberViewTitleLabel?.textAlignment, .center)
-            XCTAssertEqual(phoneNumberViewTitleLabel?.font, .systemFont(ofSize: 20))
-            XCTAssertEqual(phoneNumberViewTextField?.backgroundColor, .red)
-            XCTAssertEqual(phoneNumberViewTextField?.textAlignment, .right)
-            XCTAssertEqual(phoneNumberViewTextField?.textColor, .red)
-            XCTAssertEqual(phoneNumberViewTextField?.font, .systemFont(ofSize: 13))
+        /// Test phone number field
+        XCTAssertEqual(phoneNumberView?.backgroundColor, .red)
+        XCTAssertEqual(phoneNumberViewTitleLabel?.textColor, sut.viewController.view.tintColor)
+        XCTAssertEqual(phoneNumberViewTitleLabel?.backgroundColor, .blue)
+        XCTAssertEqual(phoneNumberViewTitleLabel?.textAlignment, .center)
+        XCTAssertEqual(phoneNumberViewTitleLabel?.font, .systemFont(ofSize: 20))
+        XCTAssertEqual(phoneNumberViewTextField?.backgroundColor, .red)
+        XCTAssertEqual(phoneNumberViewTextField?.textAlignment, .right)
+        XCTAssertEqual(phoneNumberViewTextField?.textColor, .red)
+        XCTAssertEqual(phoneNumberViewTextField?.font, .systemFont(ofSize: 13))
 
-            /// Test footer
-            XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
-
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        /// Test footer
+        XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
     }
 
     func testSubmitForm() {
@@ -124,17 +120,15 @@ class MBWayComponentTests: XCTestCase {
         }
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        let dummyExpectation = expectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let submitButton: UIControl? = sut.viewController.view.findView(with: MBWayViewIdentifier.payButton)
+        
+        wait(for: .milliseconds(300))
+        
+        let submitButton: UIControl? = sut.viewController.view.findView(with: MBWayViewIdentifier.payButton)
 
-            let phoneNumberView: FormPhoneNumberItemView! = sut.viewController.view.findView(with: MBWayViewIdentifier.phone)
-            self.populate(textItemView: phoneNumberView, with: "1233456789")
+        let phoneNumberView: FormPhoneNumberItemView! = sut.viewController.view.findView(with: MBWayViewIdentifier.phone)
+        self.populate(textItemView: phoneNumberView, with: "1233456789")
 
-            submitButton?.sendActions(for: .touchUpInside)
-
-            dummyExpectation.fulfill()
-        }
+        submitButton?.sendActions(for: .touchUpInside)
 
         waitForExpectations(timeout: 10, handler: nil)
     }
@@ -144,13 +138,10 @@ class MBWayComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.Test name"))
-            XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 10)
+        wait(for: .milliseconds(300))
+        
+        XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.Test name"))
+        XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
     }
 
     func testRequiresModalPresentation() {
@@ -167,7 +158,7 @@ class MBWayComponentTests: XCTestCase {
                                         configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -185,7 +176,7 @@ class MBWayComponentTests: XCTestCase {
                                  configuration: MBWayComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         // Then
         let view: UIView = sut.viewController.view
