@@ -79,7 +79,7 @@ public protocol AdyenSessionPaymentsHandler {
     ///   - session: The `AdyenSession` instance.
     func didSubmit(_ paymentComponentData: PaymentComponentData,
                    from component: Component,
-                   in dropInComponent: AnyDropInComponent?,
+                   dropInComponent: AnyDropInComponent?,
                    session: AdyenSession)
 }
 

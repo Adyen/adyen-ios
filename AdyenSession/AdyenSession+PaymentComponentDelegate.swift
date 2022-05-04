@@ -14,7 +14,7 @@ import Foundation
 extension AdyenSession: PaymentComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         let handler = delegate?.handlerForPayments(in: component, session: self) ?? self
-        handler.didSubmit(data, from: component, in: nil, session: self)
+        handler.didSubmit(data, from: component, dropInComponent: nil, session: self)
     }
     
     internal func finish(with resultCode: SessionPaymentResultCode, component: Component) {
@@ -38,7 +38,7 @@ extension AdyenSession: PaymentComponentDelegate {
 extension AdyenSession: AdyenSessionPaymentsHandler {
     public func didSubmit(_ paymentComponentData: PaymentComponentData,
                           from component: Component,
-                          in dropInComponent: AnyDropInComponent?,
+                          dropInComponent: AnyDropInComponent?,
                           session: AdyenSession) {
         let request = PaymentsRequest(sessionId: sessionContext.identifier,
                                       sessionData: sessionContext.data,
