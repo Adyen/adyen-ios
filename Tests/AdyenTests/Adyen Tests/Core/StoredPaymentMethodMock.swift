@@ -16,8 +16,17 @@ struct StoredPaymentMethodMock: StoredPaymentMethod {
     
     var name: String
     
+    var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
+    
     func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case type
+        case identifier = "id"
+        case name
+        case supportedShopperInteractions
     }
     
 }

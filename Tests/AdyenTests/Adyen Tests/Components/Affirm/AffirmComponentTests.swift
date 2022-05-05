@@ -106,7 +106,7 @@ class AffirmComponentTests: XCTestCase {
         let deliveryAddressItem = try XCTUnwrap(sut.deliveryAddressItem)
         XCTAssertTrue(deliveryAddressItem.isHidden.wrappedValue)
     }
-
+    
     func testGetPhoneExtensions_shouldReturnNonEmptyPhoneExtensionList() throws {
         // When
         let phoneExtensions = sut.phoneExtensions()

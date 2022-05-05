@@ -9,20 +9,16 @@ import Foundation
 /// A card payment method.
 public struct CardPaymentMethod: AnyCardPaymentMethod {
     
-    /// :nodoc:
     public let type: PaymentMethodType
     
-    /// :nodoc:
     public let name: String
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
     
     public let fundingSource: CardFundingSource?
     
-    public var displayInformation: DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: "card")
-    }
-    
     /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`, `"bcmc"`.
-    public let brands: [String]
+    public let brands: [CardType]
     
     // MARK: - Decoding
     
@@ -31,7 +27,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.type = try container.decode(PaymentMethodType.self, forKey: .type)
         self.name = try container.decode(String.self, forKey: .name)
-        self.brands = try container.decodeIfPresent([String].self, forKey: .brands) ?? []
+        self.brands = try container.decodeIfPresent([CardType].self, forKey: .brands) ?? []
         self.fundingSource = try container.decodeIfPresent(CardFundingSource.self, forKey: .fundingSource)
     }
     
@@ -40,7 +36,11 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
         builder.build(paymentMethod: self)
     }
     
-    internal init(type: PaymentMethodType, name: String, fundingSource: CardFundingSource, brands: [String]) {
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        DisplayInformation(title: name, subtitle: nil, logoName: "card")
+    }
+    
+    internal init(type: PaymentMethodType, name: String, fundingSource: CardFundingSource, brands: [CardType]) {
         self.type = type
         self.name = name
         self.brands = brands
@@ -59,27 +59,24 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
 /// A stored card.
 public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod {
     
-    /// :nodoc:
     public let type: PaymentMethodType
-    /// :nodoc:
+    
     public let name: String
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
     public let identifier: String
 
-    public var brands: [String] { [brand] }
+    public var brands: [CardType] { [brand] }
 
     public var fundingSource: CardFundingSource?
 
-    public var displayInformation: DisplayInformation {
-        localizedDisplayInformation(using: nil)
-    }
-
-    public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let expireDate = expiryMonth + "/" + String(expiryYear.suffix(2))
         
         return DisplayInformation(title: String.Adyen.securedString + lastFour,
                                   subtitle: localizedString(.cardStoredExpires, parameters, expireDate),
-                                  logoName: brand)
+                                  logoName: brand.rawValue)
     }
     
     /// :nodoc:
@@ -90,7 +87,7 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
     public let supportedShopperInteractions: [ShopperInteraction]
     
     /// The brand of the stored card, such as `"mc"` or `"visa"`.
-    public let brand: String
+    public let brand: CardType
     
     /// The last four digits of the card number.
     public let lastFour: String

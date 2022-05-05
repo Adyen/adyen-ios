@@ -81,45 +81,41 @@ class QiwiWalletComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem")
-            let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem.titleLabel")
-            let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem.textField")
-            
-            let phoneExtensionView: FormPhoneExtensionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormPhoneNumberItem.phoneExtensionPickerItem")
-            let phoneExtensionViewLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.FormPhoneNumberItem.phoneExtensionPickerItem.inputControl.label")
-            
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.payButtonItem.button")
-            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.payButtonItem.button.titleLabel")
-            
-            /// Test phone number field
-            XCTAssertEqual(phoneNumberView?.backgroundColor, .red)
-            XCTAssertEqual(phoneNumberViewTitleLabel?.textColor, sut.viewController.view.tintColor)
-            XCTAssertEqual(phoneNumberViewTitleLabel?.backgroundColor, .blue)
-            XCTAssertEqual(phoneNumberViewTitleLabel?.textAlignment, .center)
-            XCTAssertEqual(phoneNumberViewTitleLabel?.font, .systemFont(ofSize: 20))
-            XCTAssertEqual(phoneNumberViewTextField?.backgroundColor, .red)
-            XCTAssertEqual(phoneNumberViewTextField?.textAlignment, .right)
-            XCTAssertEqual(phoneNumberViewTextField?.textColor, .red)
-            XCTAssertEqual(phoneNumberViewTextField?.font, .systemFont(ofSize: 13))
-            
-            /// Test phone extension
-            XCTAssertEqual(phoneExtensionView?.backgroundColor, .red)
-            XCTAssertEqual(phoneExtensionViewLabel?.textAlignment, .right)
-            XCTAssertEqual(phoneExtensionViewLabel?.textColor, .red)
-            XCTAssertEqual(phoneExtensionViewLabel?.font, .systemFont(ofSize: 13))
-            
-            /// Test footer
-            XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
-            
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        wait(for: .milliseconds(300))
+        
+        let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem")
+        let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem.titleLabel")
+        let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem.textField")
+        
+        let phoneExtensionView: FormPhoneExtensionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormPhoneNumberItem.phoneExtensionPickerItem")
+        let phoneExtensionViewLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.FormPhoneNumberItem.phoneExtensionPickerItem.inputControl.label")
+        
+        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.payButtonItem.button")
+        let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.payButtonItem.button.titleLabel")
+        
+        /// Test phone number field
+        XCTAssertEqual(phoneNumberView?.backgroundColor, .red)
+        XCTAssertEqual(phoneNumberViewTitleLabel?.textColor, sut.viewController.view.tintColor)
+        XCTAssertEqual(phoneNumberViewTitleLabel?.backgroundColor, .blue)
+        XCTAssertEqual(phoneNumberViewTitleLabel?.textAlignment, .center)
+        XCTAssertEqual(phoneNumberViewTitleLabel?.font, .systemFont(ofSize: 20))
+        XCTAssertEqual(phoneNumberViewTextField?.backgroundColor, .red)
+        XCTAssertEqual(phoneNumberViewTextField?.textAlignment, .right)
+        XCTAssertEqual(phoneNumberViewTextField?.textColor, .red)
+        XCTAssertEqual(phoneNumberViewTextField?.font, .systemFont(ofSize: 13))
+        
+        /// Test phone extension
+        XCTAssertEqual(phoneExtensionView?.backgroundColor, .red)
+        XCTAssertEqual(phoneExtensionViewLabel?.textAlignment, .right)
+        XCTAssertEqual(phoneExtensionViewLabel?.textColor, .red)
+        XCTAssertEqual(phoneExtensionViewLabel?.font, .systemFont(ofSize: 13))
+        
+        /// Test footer
+        XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
+        XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
     }
     
     func testBigTitle() {
@@ -127,13 +123,10 @@ class QiwiWalletComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.CardComponent.Test name"))
-            XCTAssertEqual(sut.viewController.title, self.method.name)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        wait(for: .milliseconds(300))
+        
+        XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.CardComponent.Test name"))
+        XCTAssertEqual(sut.viewController.title, self.method.name)
     }
     
     func testRequiresModalPresentation() {
@@ -165,19 +158,18 @@ class QiwiWalletComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem")
+        wait(for: .milliseconds(300))
+        
+        let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem")
 
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.payButtonItem.button")
+        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.payButtonItem.button")
 
-            self.populate(textItemView: phoneNumberView!, with: "7455573152")
+        self.populate(textItemView: phoneNumberView!, with: "7455573152")
 
-            payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        
+        waitForExpectations(timeout: 10)
 
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 10, handler: nil)
     }
     
 }

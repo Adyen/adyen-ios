@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -335,7 +335,8 @@ extension CardType {
 
 extension CardType {
     
-    internal func matches(cardNumber: String) -> Bool {
+    /// :nodoc:
+    public func matches(cardNumber: String) -> Bool {
         guard let pattern = pattern else {
             return false
         }

@@ -9,15 +9,20 @@ import Foundation
 /// A SEPA Direct Debit payment method.
 public struct SEPADirectDebitPaymentMethod: PaymentMethod {
     
-    /// :nodoc:
     public let type: PaymentMethodType
     
-    /// :nodoc:
     public let name: String
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
     
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case type
+        case name
     }
     
 }

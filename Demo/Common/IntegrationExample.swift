@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,6 +10,7 @@ import AdyenCard
 import AdyenComponents
 import AdyenDropIn
 import AdyenNetworking
+import AdyenSession
 import UIKit
 
 internal protocol Presenter: AnyObject {
@@ -29,8 +30,11 @@ internal final class IntegrationExample: APIClientAware {
 
     internal var paymentMethods: PaymentMethods?
     internal var currentComponent: PresentableComponent?
+    internal var sessionPaymentMethods: PaymentMethods?
 
     internal weak var presenter: Presenter?
+    
+    internal var session: AdyenSession?
     
     internal lazy var palApiClient: APIClientProtocol = {
         let context = DemoAPIContext(environment: ConfigurationConstants.classicAPIEnvironment)
@@ -47,6 +51,11 @@ internal final class IntegrationExample: APIClientAware {
     }()
 
     // MARK: - Networking
+    
+    internal func requestInitialData() {
+        requestPaymentMethods()
+        setupSession()
+    }
 
     internal func requestPaymentMethods(order: PartialPaymentOrder? = nil,
                                         completion: ((PaymentMethods) -> Void)? = nil) {
@@ -61,6 +70,36 @@ internal final class IntegrationExample: APIClientAware {
                 self.presentAlert(with: error) { [weak self] in
                     self?.requestPaymentMethods(order: order, completion: completion)
                 }
+            }
+        }
+    }
+    
+    internal func setupSession() {
+        let request = SessionSetupRequest()
+        apiClient.perform(request) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case let .success(response):
+                self.initializeSession(with: response.sessionId, data: response.sessionData)
+            case let .failure(error):
+                self.presentAlert(with: error) { [weak self] in
+                    self?.setupSession()
+                }
+            }
+        }
+    }
+    
+    private func initializeSession(with sessionId: String, data: String) {
+        let configuration = AdyenSession.Configuration(sessionIdentifier: sessionId,
+                                                       initialSessionData: data,
+                                                       apiContext: ConfigurationConstants.apiContext)
+        AdyenSession.initialize(with: configuration, delegate: self, presentationDelegate: self) { [weak self] result in
+            switch result {
+            case let .success(session):
+                self?.session = session
+                self?.sessionPaymentMethods = session.sessionContext.paymentMethods
+            case let .failure(error):
+                self?.presentAlert(with: error)
             }
         }
     }

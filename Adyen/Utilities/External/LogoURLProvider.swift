@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,24 +19,6 @@ public final class LogoURLProvider {
         self.environment = environment
     }
 
-    /// Build the logo URL for a given Payment Method.
-    ///
-    /// - Parameter paymentMethod: The payment method that needs the logo.
-    /// - Returns: The URL for the payment method logo.
-    public func logoURL(for paymentMethod: PaymentMethod,
-                        size: Size = .small) -> URL {
-        logoURL(withName: paymentMethod.displayInformation.logoName, size: size)
-    }
-
-    /// Build the logo URL for a specific issuer from an issuer list payment method.
-    ///
-    /// - Parameter issuer: The issuer that needs the logo.
-    /// - Parameter paymentMethod: The issuer payment method.
-    /// - Returns: The URL for the issuer logo.
-    public func logoURL(for issuer: IssuerListPaymentMethod.Issuer, paymentMethod: IssuerListPaymentMethod) -> URL {
-        url(for: [paymentMethod.displayInformation.logoName, issuer.identifier])
-    }
-
     /// Build the logo URL for a specific named resource.
     ///
     /// - Parameter name: The name of the resource.
@@ -46,28 +28,23 @@ public final class LogoURLProvider {
     }
 
     // MARK: - Static Methods
-
-    /// Build the logo URL for a given Payment Method.
-    ///
-    /// - Parameter paymentMethod: The payment method that needs the logo.
-    /// - Parameter environment: The environment to be used.
-    /// - Returns: The URL for the payment method logo.
-    public static func logoURL(for paymentMethod: PaymentMethod,
-                               environment: AnyAPIEnvironment,
-                               size: Size = .small) -> URL {
-        logoURL(withName: paymentMethod.displayInformation.logoName,
-                environment: environment,
-                size: size)
-    }
     
     /// Build the logo URL for a specific issuer from an issuer list payment method.
     ///
     /// - Parameter issuer: The issuer that needs the logo.
+    /// - Parameter localizedParameters: The localization parameters
     /// - Parameter paymentMethod: The issuer payment method.
     /// - Parameter environment: The environment to be used.
     /// - Returns: The URL for the issuer logo.
-    public static func logoURL(for issuer: IssuerListPaymentMethod.Issuer, paymentMethod: IssuerListPaymentMethod, environment: AnyAPIEnvironment) -> URL {
-        LogoURLProvider(environment: environment).url(for: [paymentMethod.displayInformation.logoName, issuer.identifier])
+    public static func logoURL(for issuer: IssuerListPaymentMethod.Issuer,
+                               localizedParameters: LocalizationParameters?,
+                               paymentMethod: IssuerListPaymentMethod,
+                               environment: AnyAPIEnvironment) -> URL {
+        LogoURLProvider(environment: environment)
+            .url(for: [
+                paymentMethod.displayInformation(using: localizedParameters).logoName,
+                issuer.identifier
+            ])
     }
     
     /// Build the logo URL for a specific named resource.

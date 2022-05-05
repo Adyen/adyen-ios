@@ -27,3 +27,9 @@
 - In `ApplePayComponent.Configuration` init parameter `payment: Payment` changed to `payment: ApplePayPayment`;
 - Refactor `didOpenExternalApplication(_ component:` into `didOpenExternalApplication(component:`;
 - `APIContext.init(environment: AnyAPIEnvironment, clientKey: String)` now `throws` exception if client key is invalid;
+- Method `requestOrder(_ component: Component, completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void)` changed to `requestOrder(for component: Component, completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void)`
+- Method `cancelOrder(_ order: PartialPaymentOrder)` changed to `cancelOrder(_ order: PartialPaymentOrder, component: Component)`
+- `CardPaymentMethod.brands` is now a strongly typed Array of `CardType`.
+- `StoredCardPaymentMethod.brands` is now a strongly typed Array of `CardType`.
+- `StoredCardPaymentMethod.brand` is now a strongly typed `CardType`.
+- `PaymentMethods` now has a convenient function `overrideDisplayInformation(ofPaymentMethod:with:)` to override a specific payment method title/subtitle in the DropIn list.
