@@ -37,4 +37,12 @@ enum PostalAddressMocks {
                                                     stateOrProvince: "AL",
                                                     street: "",
                                                     apartment: nil)
+
+    static let defaultUSPostalAddress = PostalAddress(city: nil,
+                                                       country: "US",
+                                                       houseNumberOrName: "109",
+                                                       postalCode: "179097",
+                                                       stateOrProvince: nil,
+                                                       street: "North Bridge Rd, #10-22 Funan",
+                                                       apartment: "")
 }
