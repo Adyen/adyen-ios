@@ -291,6 +291,7 @@
 		E7768BDC26B416C3000851B3 /* DateValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7768BDB26B416C3000851B3 /* DateValidationTests.swift */; };
 		E7798569268CE1B900CECA95 /* KCPDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76A4D392684F39A001BEAC3 /* KCPDetails.swift */; };
 		E7806EBD26147AB700101DBB /* ViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7806EBC26147AB700101DBB /* ViewControllerDelegate.swift */; };
+		E7877803282409FF004A6366 /* ApplePayDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7877802282409FF004A6366 /* ApplePayDelegateMock.swift */; };
 		E787C9AC24696A8900B401E0 /* CornerRadiusStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */; };
 		E787C9AE24698C2E00B401E0 /* UIViewRoundingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9AD24698C2E00B401E0 /* UIViewRoundingHelpers.swift */; };
 		E787C9D1246E948F00B401E0 /* CoreFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = E787C9D0246E948F00B401E0 /* CoreFonts.swift */; };
@@ -1328,6 +1329,7 @@
 		E7763A1025F02BD20046371E /* GiftCardPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftCardPaymentMethod.swift; sourceTree = "<group>"; };
 		E7768BDB26B416C3000851B3 /* DateValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateValidationTests.swift; sourceTree = "<group>"; };
 		E7806EBC26147AB700101DBB /* ViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerDelegate.swift; sourceTree = "<group>"; };
+		E7877802282409FF004A6366 /* ApplePayDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayDelegateMock.swift; sourceTree = "<group>"; };
 		E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusStyle.swift; sourceTree = "<group>"; };
 		E787C9AD24698C2E00B401E0 /* UIViewRoundingHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewRoundingHelpers.swift; sourceTree = "<group>"; };
 		E787C9D0246E948F00B401E0 /* CoreFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreFonts.swift; sourceTree = "<group>"; };
@@ -3694,6 +3696,7 @@
 				F960FB082371823A00AEF74B /* ApplePayComponentTests.swift */,
 				F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */,
 				5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */,
+				E7877802282409FF004A6366 /* ApplePayDelegateMock.swift */,
 			);
 			path = "Apple Pay";
 			sourceTree = "<group>";
@@ -5401,6 +5404,7 @@
 				E9E3DABB221EA22F00697074 /* CardExpiryDateFormatterTests.swift in Sources */,
 				F9639B5624E3DB190073F38A /* PollingComponentTests.swift in Sources */,
 				F9976BB526D90C6700D2D7CE /* MultibancoShareableVoucherViewProviderTests.swift in Sources */,
+				E7877803282409FF004A6366 /* ApplePayDelegateMock.swift in Sources */,
 				F99F08642383F2B000EBB948 /* FormTextItemViewTests.swift in Sources */,
 				5A54FFE126299602007194B7 /* TimeIntervalExtensionsTests.swift in Sources */,
 				F96A25432371AB75007DBF0B /* PaymentComponentDelegateMock.swift in Sources */,

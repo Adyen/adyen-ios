@@ -12,6 +12,7 @@ import XCTest
 class ApplePayComponentTest: XCTestCase {
 
     var mockDelegate: PaymentComponentDelegateMock!
+    var mockApplePayDelegate: ApplePayDelegateMock!
     var sut: ApplePayComponent!
     lazy var amount = Amount(value: 2, currencyCode: getRandomCurrencyCode())
     lazy var payment = Payment(amount: amount, countryCode: getRandomCountryCode())
@@ -31,6 +32,11 @@ class ApplePayComponentTest: XCTestCase {
                                      apiContext: Dummy.context,
                                      configuration: configuration)
         mockDelegate = PaymentComponentDelegateMock()
+        if #available(iOS 15.0, *) {
+            mockApplePayDelegate = ApplePayDelegateMockiOS15()
+        } else {
+            mockApplePayDelegate = ApplePayDelegateMockClassic()
+        }
         sut.delegate = mockDelegate
     }
 
@@ -58,11 +64,9 @@ class ApplePayComponentTest: XCTestCase {
         UIApplication.shared.keyWindow!.rootViewController!.present(viewController, animated: false)
         
         wait(for: .seconds(1))
-
         self.sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
 
         waitForExpectations(timeout: 10)
-
         XCTAssertTrue(viewController !== self.sut.viewController)
     }
 
@@ -75,8 +79,7 @@ class ApplePayComponentTest: XCTestCase {
         let viewController = sut!.viewController
         let onDidFinalizeExpectation = expectation(description: "Wait for didFinalize call")
         mockDelegate.onDidFail = { error, component in
-            // TODO: test on Xcode 13.2.1
-            // XCTFail("Should not call ComponentError.cancelled")
+             XCTFail("Should not call ComponentError.cancelled")
         }
 
         UIApplication.shared.keyWindow!.rootViewController = emptyVC
@@ -104,33 +107,68 @@ class ApplePayComponentTest: XCTestCase {
         sut = try! ApplePayComponent(paymentMethod: paymentMethod,
                                      apiContext: Dummy.context,
                                      configuration: configuration)
+        sut.applePayDelegate = mockApplePayDelegate
+        mockApplePayDelegate.onShippingMethodChange = { method, payment in
+            return .init(paymentSummaryItems: [
+                PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
+                PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
+            ])
+        }
 
         UIApplication.shared.keyWindow!.rootViewController = emptyVC
         UIApplication.shared.keyWindow!.rootViewController!.present(sut!.viewController, animated: false)
 
         wait(for: .seconds(1))
         let onShippingSelected = expectation(description: "Wait for didFinalize call")
+        let selectedShippingMethod: PKShippingMethod? = shippingMethods.first
+
+        XCTAssertEqual(sut.payment?.amount.value, 20000)
+        XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 5)
+        XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "summary_4")
+
         sut.paymentAuthorizationViewController(sut!.viewController as! PKPaymentAuthorizationViewController,
-                                               didSelect: shippingMethods.first!) { update in
+                                               didSelect: selectedShippingMethod!) { update in
+            XCTAssertEqual(self.mockApplePayDelegate.shippingMethod, shippingMethods.first)
+            XCTAssertEqual(self.sut.payment?.amount.value, 222200)
+            XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 2)
+            XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "New Item 2")
             onShippingSelected.fulfill()
         }
 
         waitForExpectations(timeout: 4)
     }
 
-    @available(iOS 15, *)
     func testApplePayShippingContact() {
         guard Available.iOS12 else { return }
 
         UIApplication.shared.keyWindow!.rootViewController = emptyVC
         UIApplication.shared.keyWindow!.rootViewController!.present(sut!.viewController, animated: false)
 
+        sut.applePayDelegate = mockApplePayDelegate
+        mockApplePayDelegate.onShippingContactChange = { contact, payment in
+            return .init(paymentSummaryItems: [
+                PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
+                PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
+            ])
+        }
+
         wait(for: .seconds(1))
         let onContactSelected = expectation(description: "Wait for didFinalize call")
         let contact = PKContact()
-        contact.name = PersonNameComponents(givenName: "Test", familyName: "Testovich")
+        contact.name = PersonNameComponents()
+        contact.name!.givenName = "Test"
+        contact.name!.familyName = "Testovich"
+
+        XCTAssertEqual(sut.payment?.amount.value, 20000)
+        XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 5)
+        XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "summary_4")
         sut.paymentAuthorizationViewController(sut!.viewController as! PKPaymentAuthorizationViewController,
                                                didSelectShippingContact: contact ) { update in
+
+            XCTAssertEqual(self.mockApplePayDelegate.contact, contact)
+            XCTAssertEqual(self.sut.payment?.amount.value, 222200)
+            XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 2)
+            XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "New Item 2")
             onContactSelected.fulfill()
         }
 
@@ -144,10 +182,27 @@ class ApplePayComponentTest: XCTestCase {
         UIApplication.shared.keyWindow!.rootViewController = emptyVC
         UIApplication.shared.keyWindow!.rootViewController!.present(sut!.viewController, animated: false)
 
+        sut.applePayDelegate = mockApplePayDelegate
+        (mockApplePayDelegate as! ApplePayDelegateMockiOS15).onCouponChange = { coupon, payment in
+            return .init(paymentSummaryItems: [
+                PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
+                PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
+            ])
+        }
+
         wait(for: .seconds(1))
         let onContactSelected = expectation(description: "Wait for didFinalize call")
+
+        XCTAssertEqual(sut.payment?.amount.value, 20000)
+        XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 5)
+        XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "summary_4")
         sut.paymentAuthorizationViewController(sut!.viewController as! PKPaymentAuthorizationViewController,
                                                didChangeCouponCode: "Coupon" ) { update in
+
+            XCTAssertEqual(self.mockApplePayDelegate.couponCode, "Coupon")
+            XCTAssertEqual(self.sut.payment?.amount.value, 222200)
+            XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 2)
+            XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "New Item 2")
             onContactSelected.fulfill()
         }
 
@@ -293,43 +348,6 @@ class ApplePayComponentTest: XCTestCase {
     }
     
     private var supportedNetworks: [PKPaymentNetwork] {
-        var networks: [PKPaymentNetwork] = [
-            .visa,
-            .masterCard,
-            .amex,
-            .discover,
-            .interac,
-            .JCB,
-            .suica,
-            .quicPay,
-            .idCredit,
-            .chinaUnionPay
-        ]
-
-        if #available(iOS 11.2, *) {
-            networks.append(.cartesBancaires)
-        }
-
-        if #available(iOS 12.1.1, *) {
-            networks.append(.elo)
-            networks.append(.mada)
-        }
-
-        if #available(iOS 12.0, *) {
-            networks.append(.maestro)
-            networks.append(.electron)
-            networks.append(.vPay)
-            networks.append(.eftpos)
-        }
-
-        if #available(iOS 14.0, *) {
-            networks.append(.girocard)
-        }
-
-        if #available(iOS 14.5, *) {
-            networks.append(.mir)
-        }
-
-        return networks
+        ApplePayComponent.defaultNetworks
     }
 }
