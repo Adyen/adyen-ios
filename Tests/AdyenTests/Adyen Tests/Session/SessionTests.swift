@@ -338,7 +338,6 @@ class SessionTests: XCTestCase {
         
         apiClient.mockedResults = [.success(CreateOrderResponse(pspReference: "ref",
                                                                 orderData: "data",
-                                                                remainingAmount: Amount(value: 10, currencyCode: "EUR"),
                                                                 sessionData: "session_data2"))]
         
         let expectation = expectation(description: "Expect API call to be made")
