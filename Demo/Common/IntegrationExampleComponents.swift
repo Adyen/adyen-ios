@@ -184,33 +184,16 @@ extension IntegrationExample {
         let navigation = UINavigationController(rootViewController: component.viewController)
         component.viewController.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel,
                                                                            target: self,
-                                                                           action: #selector(cancelDidPress))
+                                                                           action: #selector(cancelPressed))
         presenter?.present(viewController: navigation, completion: nil)
     }
 
-    @objc private func cancelDidPress() {
+    @objc private func cancelPressed() {
         currentComponent?.cancelIfNeeded()
         presenter?.dismiss(completion: nil)
     }
 
     // MARK: - Payment response handling
-
-    private func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
-        switch result {
-        case let .success(response):
-            if let action = response.action {
-                handle(action)
-            } else if let order = response.order,
-                      let remainingAmount = order.remainingAmount,
-                      remainingAmount.value > 0 {
-                handle(order)
-            } else {
-                finish(with: response.resultCode)
-            }
-        case let .failure(error):
-            finish(with: error)
-        }
-    }
 
     internal func handle(_ action: Action) {
         if let dropInAsActionComponent = currentComponent as? ActionHandlingComponent {
