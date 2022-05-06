@@ -18,7 +18,7 @@ internal final class VoucherViewController: UIViewController {
     internal init(voucherView: UIView, style: ViewStyle) {
         self.voucherView = voucherView
         self.style = style
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil, bundle: Bundle(for: VoucherViewController.self))
     }
 
     @available(*, unavailable)
