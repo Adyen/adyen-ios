@@ -104,10 +104,10 @@ public struct ApplePayPayment {
 
 extension ApplePayPayment {
 
-    internal mutating func update(with summaryItems: [PKPaymentSummaryItem]) throws {
-        self = try .init(countryCode: countryCode,
-                         currencyCode: currencyCode,
-                         summaryItems: summaryItems)
+    internal func update(with summaryItems: [PKPaymentSummaryItem]) throws -> ApplePayPayment {
+        try .init(countryCode: countryCode,
+                  currencyCode: currencyCode,
+                  summaryItems: summaryItems)
     }
 
 }

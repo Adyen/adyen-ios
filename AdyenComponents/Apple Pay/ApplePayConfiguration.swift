@@ -30,7 +30,7 @@ extension ApplePayComponent {
         /// Ignored on iOS 10.*.
         public var requiredShippingContactFields: Set<PKContactField> = []
 
-        /// A pre-populated billing address.
+        /// A prepopulated billing address.
         public var billingContact: PKContact?
 
         /// The flag to toggle onboarding.
@@ -39,30 +39,31 @@ extension ApplePayComponent {
         /// Default is false.
         public var allowOnboarding: Bool = false
 
-        // Shipping methods supported by the merchant.
+        /// A prepopulated shipping address.
         public var shippingContact: PKContact?
 
-        // Indicates the display mode for the shipping (e.g, "Pick Up", "Ship To", "Deliver To"). Localized.
-        // The default is PKShippingTypeShipping
+        /// Indicates the display mode for the shipping (e.g, "Pick Up", "Ship To", "Deliver To"). Localized.
+        /// The default is PKShippingTypeShipping
         public var shippingType: PKShippingType = .shipping
 
-        // Indicates the editing mode for the shipping contact. The default is true.
-        public let shippingContactEditing: Bool = true
+        /// Determine whether to disable editing of the shipping contact field before displaying the payment sheet.
+        /// The default is true.
+        public let allowShippingContactEditing: Bool = true
 
-        // An array of shipping method objects that describe the supported shipping methods.
+        /// An array of shipping method objects that describe the supported shipping methods.
         public var shippingMethods: [PKShippingMethod]?
 
-        // Optional merchant-supplied information about the payment request.  Examples of this are an order
-        // or cart identifier.  It will be signed and included in the resulting PKPaymentToken.
+        /// Optional merchant-supplied information about the payment request.  Examples of this are an order
+        /// or cart identifier.  It will be signed and included in the resulting PKPaymentToken.
         public var applicationData: Data?
 
         /// A list of ISO 3166 country codes to limit payments to cards from specific countries or regions.
         public var supportedCountries: Set<String>?
 
-        // Indicates whether the merchant supports coupon code entry and validation. Defaults to NO.
+        /// Indicates whether the merchant supports coupon code entry and validation. Defaults to NO.
         public var supportsCouponCode: Bool = false
 
-        // An optional coupon code that is valid and has been applied to the payment request already.
+        /// An optional coupon code that is valid and has been applied to the payment request already.
         public var couponCode: String?
 
         /// Initializes the configuration.
@@ -94,7 +95,7 @@ extension ApplePayComponent {
             if #available(iOS 15.0, *) {
                 paymentRequest.couponCode = couponCode
                 paymentRequest.supportsCouponCode = supportsCouponCode
-                paymentRequest.shippingContactEditingMode = shippingContactEditing ? .enabled : .storePickup
+                paymentRequest.shippingContactEditingMode = allowShippingContactEditing ? .enabled : .storePickup
             }
 
             return paymentRequest

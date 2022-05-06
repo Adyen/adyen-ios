@@ -288,7 +288,7 @@ extension IntegrationExample: PresentationDelegate {
 extension IntegrationExample: ApplePayComponentDelegate {
     func didUpdate(contact: PKContact,
                    for payment: ApplePayPayment,
-                   with completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void) {
+                   completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void) {
         var items = payment.summaryItems
         print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
         if let last = items.last {
@@ -303,7 +303,7 @@ extension IntegrationExample: ApplePayComponentDelegate {
 
     func didUpdate(shippingMethod: PKShippingMethod,
                    for payment: ApplePayPayment,
-                   with completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void) {
+                   completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void) {
         var items = payment.summaryItems
         print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
         if let last = items.last {
@@ -318,7 +318,7 @@ extension IntegrationExample: ApplePayComponentDelegate {
     @available(iOS 15.0, *)
     func didUpdate(couponCode: String,
                    for payment: ApplePayPayment,
-                   with completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void) {
+                   completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void) {
         var items = payment.summaryItems
         print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
         if let last = items.last {
