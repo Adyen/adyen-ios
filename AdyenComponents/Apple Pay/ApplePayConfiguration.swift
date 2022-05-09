@@ -30,7 +30,7 @@ extension ApplePayComponent {
         /// Ignored on iOS 10.*.
         public var requiredShippingContactFields: Set<PKContactField> = []
 
-        /// A prepopulated billing address.
+        /// A pre-filled billing address.
         public var billingContact: PKContact?
 
         /// The flag to toggle onboarding.
@@ -39,7 +39,7 @@ extension ApplePayComponent {
         /// Default is false.
         public var allowOnboarding: Bool = false
 
-        /// A prepopulated shipping address.
+        /// A pre-filled shipping address.
         public var shippingContact: PKContact?
 
         /// Indicates the display mode for the shipping (e.g, "Pick Up", "Ship To", "Deliver To"). Localized.
