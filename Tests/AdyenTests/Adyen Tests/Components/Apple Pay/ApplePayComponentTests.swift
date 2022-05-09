@@ -37,7 +37,6 @@ class ApplePayComponentTest: XCTestCase {
         } else {
             mockApplePayDelegate = ApplePayDelegateMockClassic()
         }
-        sut.delegate = mockDelegate
     }
 
     override func tearDown() {
@@ -47,17 +46,33 @@ class ApplePayComponentTest: XCTestCase {
         UIApplication.shared.keyWindow!.rootViewController = emptyVC
     }
 
+    func testApplePayCallDelegateDidFailOnInvalidPayment() {
+        sut.delegate = mockDelegate
+        let onDidFailExpectation = expectation(description: "Wait for delegate call")
+        mockDelegate.onDidFail = { error, component in
+            XCTAssertEqual(error as! ApplePayComponent.Error, ApplePayComponent.Error.invalidCurrencyCode)
+            onDidFailExpectation.fulfill()
+            self.mockDelegate = nil // to prevent false triggering
+        }
+
+        sut.payment = Payment(amount: Amount(value: 100, unsafeCurrencyCode: "123"), unsafeCountryCode: "US")
+
+        waitForExpectations(timeout: 10)
+    }
+
     func testApplePayViewControllerShouldCallDelegateDidFail() {
         guard Available.iOS12 else { return }
 
         // This is necessary to give ApplePay time to disappear from screen.
         wait(for: .seconds(2))
 
+        sut.delegate = mockDelegate
         let viewController = sut!.viewController
         let onDidFailExpectation = expectation(description: "Wait for delegate call")
         mockDelegate.onDidFail = { error, component in
             XCTAssertEqual(error as! ComponentError, ComponentError.cancelled)
             onDidFailExpectation.fulfill()
+            self.mockDelegate = nil // to prevent false triggering
         }
 
         UIApplication.shared.keyWindow!.rootViewController = emptyVC
@@ -78,9 +93,6 @@ class ApplePayComponentTest: XCTestCase {
 
         let viewController = sut!.viewController
         let onDidFinalizeExpectation = expectation(description: "Wait for didFinalize call")
-        mockDelegate.onDidFail = { error, component in
-             XCTFail("Should not call ComponentError.cancelled")
-        }
 
         UIApplication.shared.keyWindow!.rootViewController = emptyVC
         UIApplication.shared.keyWindow!.rootViewController!.present(viewController, animated: false)
@@ -115,9 +127,6 @@ class ApplePayComponentTest: XCTestCase {
             ])
         }
 
-        UIApplication.shared.keyWindow!.rootViewController = emptyVC
-        UIApplication.shared.keyWindow!.rootViewController!.present(sut!.viewController, animated: false)
-
         wait(for: .seconds(1))
         let onShippingSelected = expectation(description: "Wait for didFinalize call")
         let selectedShippingMethod: PKShippingMethod? = shippingMethods.first
@@ -140,9 +149,6 @@ class ApplePayComponentTest: XCTestCase {
 
     func testApplePayShippingContact() {
         guard Available.iOS12 else { return }
-
-        UIApplication.shared.keyWindow!.rootViewController = emptyVC
-        UIApplication.shared.keyWindow!.rootViewController!.present(sut!.viewController, animated: false)
 
         sut.applePayDelegate = mockApplePayDelegate
         mockApplePayDelegate.onShippingContactChange = { contact, payment in
@@ -178,9 +184,6 @@ class ApplePayComponentTest: XCTestCase {
     @available(iOS 15.0, *)
     func testApplePayCoupon() {
         guard Available.iOS12 else { return }
-
-        UIApplication.shared.keyWindow!.rootViewController = emptyVC
-        UIApplication.shared.keyWindow!.rootViewController!.present(sut!.viewController, animated: false)
 
         sut.applePayDelegate = mockApplePayDelegate
         (mockApplePayDelegate as! ApplePayDelegateMockiOS15).onCouponChange = { coupon, payment in
