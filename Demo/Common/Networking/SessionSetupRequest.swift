@@ -37,6 +37,7 @@ internal struct SessionSetupRequest: APIRequest {
         try container.encode(ConfigurationConstants.reference, forKey: .reference)
         try container.encode("iOS", forKey: .channel)
         try container.encode(ConfigurationConstants.additionalData, forKey: .additionalData)
+        try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
     }
     
     internal enum CodingKeys: CodingKey {
@@ -51,6 +52,7 @@ internal struct SessionSetupRequest: APIRequest {
         case shopperReference
         case channel
         case additionalData
+        case lineItems
     }
     
 }

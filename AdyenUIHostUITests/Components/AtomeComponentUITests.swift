@@ -21,9 +21,6 @@ class AtomeComponentUITests: XCTestCase {
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Atome")
         apiContext = Dummy.context
         style = FormComponentStyle()
-        sut = AtomeComponent(paymentMethod: paymentMethod,
-                             apiContext: apiContext,
-                             configuration: AtomeComponent.Configuration(style: style))
         configAtomePayLater()
     }
 
@@ -36,10 +33,14 @@ class AtomeComponentUITests: XCTestCase {
     }
 
     func testAllRequiredTextField_shouldExist() throws {
-        let atomeComponentFirstNameItem = app.otherElements.textFields["AdyenComponents.AtomeComponent.firstNameItem.textField"]
-        let atomeComponentlastNameItem = app.otherElements.textFields["AdyenComponents.AtomeComponent.lastNameItem.textField"]
-        let atomeComponentPhoneNumberItem = app.otherElements.textFields["AdyenComponents.AtomeComponent.phoneNumberItem.textField"]
-        let atomeComponentBillingAddressItem = app.otherElements["AdyenComponents.AtomeComponent.addressItem"]
+        let config = AtomeComponent.Configuration(style: style, shopperInformation: shopperInformation)
+        sut = AtomeComponent(paymentMethod: paymentMethod,
+                             apiContext: apiContext,
+                             configuration: config)
+        let atomeComponentFirstNameItem = app.otherElements.textFields[AtomeViewIdentifier.firstName]
+        let atomeComponentlastNameItem = app.otherElements.textFields[AtomeViewIdentifier.lastName]
+        let atomeComponentPhoneNumberItem = app.otherElements.textFields[AtomeViewIdentifier.phone]
+        let atomeComponentBillingAddressItem = app.otherElements[AtomeViewIdentifier.billingAddress]
 
         // Assert
         XCTAssertTrue(atomeComponentFirstNameItem.exists)
@@ -49,129 +50,95 @@ class AtomeComponentUITests: XCTestCase {
     }
 
     func testPayButton_shouldExist() throws {
-        let atomeComponentPayButton = app.otherElements.buttons["AdyenComponents.AtomeComponent.payButtonItem.button"]
+        let atomeComponentPayButton = app.otherElements.buttons[AtomeViewIdentifier.payButton]
 
         // Assert
         XCTAssertTrue(atomeComponentPayButton.exists)
     }
 
-    func testCompleteAtomeflow_shouldsuccess() {
-        let firstNameTextfield = app.otherElements.textFields[AtomeViewIdentifier.firstName]
-        firstNameTextfield.tap()
-        firstNameTextfield.typeText("John")
+    func testSubmitForm_shouldCallDelegateWithProperParameters() {
+        let config = AtomeComponent.Configuration(style: style, shopperInformation: shopperInformation)
+        sut = AtomeComponent(paymentMethod: paymentMethod,
+                             apiContext: apiContext,
+                             configuration: config)
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
+        let expectedBillingAddress = PostalAddressMocks.singaporePostalAddress
 
-        let lastNameTextfield = app.otherElements.textFields[AtomeViewIdentifier.lastName]
-        lastNameTextfield.tap()
-        lastNameTextfield.typeText("Smith")
-
-        let phoneNumberTextfield = app.otherElements.textFields[AtomeViewIdentifier.phone]
-        phoneNumberTextfield.tap()
-        phoneNumberTextfield.typeText("80002018")
-
-        let streetTextfield = app.otherElements.textFields[AtomeViewIdentifier.streetName]
-        streetTextfield.tap()
-        streetTextfield.typeText("North-Ridge")
-
-        let apartmentTextfield = app.otherElements.textFields[AtomeViewIdentifier.apartmentName]
-        apartmentTextfield.tap()
-        apartmentTextfield.typeText("FlowerStreet Bell")
-
-        let houseNumberTextfield = app.otherElements.textFields[AtomeViewIdentifier.houseNumberOrName]
-        houseNumberTextfield.tap()
-        houseNumberTextfield.typeText("345")
-
-        let postalCodeTextfield = app.otherElements.textFields[AtomeViewIdentifier.postalCode]
-        postalCodeTextfield.tap()
-        postalCodeTextfield.typeText("1089")
-
-        app.otherElements.buttons[AtomeViewIdentifier.payButton].tap()
-
-        wait(for: .seconds(5))
-
-        if app.webViews.buttons.containing(NSPredicate(format: "label BEGINSWITH 'Pay in Browser'")).element.exists {
-            app.webViews.buttons.containing(NSPredicate(format: "label BEGINSWITH 'Pay in Browser'")).element.tap()
-            
-            XCTAssertTrue(app.webViews.textFields[AtomeViewIdentifier.inputOTP].exists)
-
-            app.otherElements.webViews.textFields[AtomeViewIdentifier.inputOTP].tap()
-            app.otherElements.webViews.textFields[AtomeViewIdentifier.inputOTP].typeText("3153")
-            
-            XCTAssertTrue(app.webViews.buttons.containing(NSPredicate(format: "label BEGINSWITH 'Next'")).element.exists)
-
-            app.webViews.buttons.containing(NSPredicate(format: "label BEGINSWITH 'Next'")).element.tap()
-            
-            wait(for: .seconds(2))
-
-            let confirmButton = app.webViews.buttons.containing(NSPredicate(format: "label BEGINSWITH 'Confirm payment'"))
-            if confirmButton.element.exists {
-                confirmButton.element.tap()
-            }
-            wait(for: .seconds(2))
-
-            app.swipeUp()
-
-            app.webViews.buttons.containing(NSPredicate(format: "label BEGINSWITH 'Back to merchant'")).element.tap()
-            app.alerts["Authorised"].scrollViews.otherElements.buttons["OK"].tap()
+        // Then
+        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === self.sut)
+            let details = data.paymentMethod as! AtomeDetails
+            XCTAssertEqual(details.shopperName?.firstName, "Katrina")
+            XCTAssertEqual(details.shopperName?.lastName, "Del Mar")
+            XCTAssertEqual(details.telephoneNumber, "80002018")
+            XCTAssertEqual(details.billingAddress, expectedBillingAddress)
+            self.sut.stopLoadingIfNeeded()
+            didSubmitExpectation.fulfill()
         }
+
+        wait(for: .milliseconds(300))
+
+        let view: UIView = sut.viewController.view
+        do {
+            let submitButton: UIControl =  try XCTUnwrap(view.findView(by: AtomeViewIdentifier.payButton))
+            submitButton.sendActions(for: .touchUpInside)
+        } catch let error {
+            print(error)
+        }
+        waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testCompleteAtomeflow_through_loginRegster_shouldsuccess() {
-        let firstNameTextfield = app.otherElements.textFields[AtomeViewIdentifier.firstName]
-        firstNameTextfield.tap()
-        firstNameTextfield.typeText("John")
-        
-        let lastNameTextfield = app.otherElements.textFields[AtomeViewIdentifier.lastName]
-        lastNameTextfield.tap()
-        lastNameTextfield.typeText("Smith")
+    func testAtome_givenNoShopperInformation_shouldNotPrefill() throws {
+        // Given
+        sut = AtomeComponent(paymentMethod: paymentMethod,
+                              apiContext: apiContext,
+                              configuration: AffirmComponent.Configuration(style: style))
 
-        let phoneNumberTextfield = app.otherElements.textFields[AtomeViewIdentifier.phone]
-        phoneNumberTextfield.tap()
-        phoneNumberTextfield.typeText("80002018")
+        // Then
+        let atomeComponentFirstNameItem = app.otherElements.textFields[AtomeViewIdentifier.firstName]
+        let firstName: String = atomeComponentFirstNameItem.value as! String
 
-        let streetTextfield = app.otherElements.textFields[AtomeViewIdentifier.streetName]
-        streetTextfield.tap()
-        streetTextfield.typeText("North-Ridge")
+        // Assert
+        XCTAssertTrue(firstName.isEmpty)
 
-        let apartmentTextfield = app.otherElements.textFields[AtomeViewIdentifier.apartmentName]
-        apartmentTextfield.tap()
-        apartmentTextfield.typeText("FlowerStreet Bell")
+        let  atomeComponentLastNameItem = app.otherElements.textFields[AtomeViewIdentifier.lastName]
+        let lastName: String = atomeComponentLastNameItem.value as! String
 
-        let houseNumberTextfield = app.otherElements.textFields[AtomeViewIdentifier.houseNumberOrName]
-        houseNumberTextfield.tap()
-        houseNumberTextfield.typeText("345")
+        // Assert
+        XCTAssertTrue(lastName.isEmpty)
 
-        let postalCodeTextfield = app.otherElements.textFields[AtomeViewIdentifier.postalCode]
-        postalCodeTextfield.tap()
-        postalCodeTextfield.typeText("1089")
+        let atomeComponentPhoneNumber = app.otherElements.textFields[AtomeViewIdentifier.phone]
+        let phoneNumber: String = atomeComponentPhoneNumber.value as! String
 
-        app.otherElements.buttons[AtomeViewIdentifier.payButton].tap()
+        // Assert
+        XCTAssertTrue(phoneNumber.isEmpty)
 
-        wait(for: .seconds(5))
+        let atomeComponentStreetAddressItem  = app.otherElements.textFields[AtomeViewIdentifier.streetName]
+        let streetAddress: String = atomeComponentStreetAddressItem.value as! String
 
-        if app.webViews.buttons.containing(NSPredicate(format: "label BEGINSWITH 'Login/Register to Pay'")).element.exists {
-            app.webViews.buttons.containing(NSPredicate(format: "label BEGINSWITH 'Login/Register to Pay'")).element.tap()
+        // Assert
+        XCTAssertTrue(streetAddress.isEmpty)
 
-            XCTAssertTrue(app.webViews.textFields[AtomeViewIdentifier.inputOTP].exists)
+        let atomeComponentApartmentAddressItem  = app.otherElements.textFields[AtomeViewIdentifier.apartmentName]
+        let apartmentName: String = atomeComponentApartmentAddressItem.value as! String
 
-            app.otherElements.webViews.textFields[AtomeViewIdentifier.inputOTP].tap()
-            app.otherElements.webViews.textFields[AtomeViewIdentifier.inputOTP].typeText("3153")
+        // Assert
+        XCTAssertTrue(apartmentName.isEmpty)
 
-            XCTAssertTrue(app.webViews.buttons.containing(NSPredicate(format: "label BEGINSWITH 'Next'")).element.exists)
-            app.webViews.buttons.containing(NSPredicate(format: "label BEGINSWITH 'Next'")).element.tap()
+        let atomeComponentHouseNumberOrNameAddressItem  = app.otherElements.textFields[AtomeViewIdentifier.houseNumberOrName]
+        let houseNumberOrName: String = atomeComponentHouseNumberOrNameAddressItem.value as! String
 
-            wait(for: .seconds(2))
+        // Assert
+        XCTAssertTrue(houseNumberOrName.isEmpty)
 
-            let confirmButton = app.webViews.buttons.containing(NSPredicate(format: "label BEGINSWITH 'Confirm payment'"))
-            if confirmButton.element.exists {
-                confirmButton.element.tap()
-            }
-            wait(for: .seconds(2))
+        let atomeComponentPostalCodeAddressItem  = app.otherElements.textFields[AtomeViewIdentifier.postalCode]
+        let postalCode: String = atomeComponentPostalCodeAddressItem.value as! String
 
-            app.swipeUp()
-
-            app.webViews.buttons.containing(NSPredicate(format: "label BEGINSWITH 'Back to merchant'")).element.tap()
-            app.alerts["Authorised"].scrollViews.otherElements.buttons["OK"].tap()
-        }
+        // Assert
+        XCTAssertTrue(postalCode.isEmpty)
     }
 
     // MARK: - Private
@@ -202,11 +169,21 @@ class AtomeComponentUITests: XCTestCase {
         static let firstName = "AdyenComponents.AtomeComponent.firstNameItem.textField"
         static let lastName = "AdyenComponents.AtomeComponent.lastNameItem.textField"
         static let phone = "AdyenComponents.AtomeComponent.phoneNumberItem.textField"
+        static let billingAddress = "AdyenComponents.AtomeComponent.addressItem"
         static let streetName = "AdyenComponents.AtomeComponent.addressItem.street.textField"
         static let apartmentName = "AdyenComponents.AtomeComponent.addressItem.apartment.textField"
         static let houseNumberOrName = "AdyenComponents.AtomeComponent.addressItem.houseNumberOrName.textField"
         static let postalCode = "AdyenComponents.AtomeComponent.addressItem.postalCode.textField"
         static let payButton = "AdyenComponents.AtomeComponent.payButtonItem.button"
         static let inputOTP = "Input OTP"
+    }
+
+    private var shopperInformation: PrefilledShopperInformation {
+        let billingAddress = PostalAddressMocks.singaporePostalAddress
+        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina",
+                                                                                      lastName: "Del Mar"),
+                                                             telephoneNumber: "80002018",
+                                                             billingAddress: billingAddress)
+        return shopperInformation
     }
 }
