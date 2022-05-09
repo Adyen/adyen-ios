@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -40,23 +40,17 @@ extension IntegrationExample: PartialPaymentDelegate {
         case let .success(response):
             handle(response: response, completion: completion)
         case let .failure(error):
-            handle(error: error, completion: completion)
+            completion(.failure(error))
         }
     }
 
     private func handle(response: BalanceCheckResponse, completion: @escaping (Result<Balance, Error>) -> Void) {
         guard let availableAmount = response.balance else {
-            finish(with: GiftCardError.noBalance)
             completion(.failure(GiftCardError.noBalance))
             return
         }
         let balance = Balance(availableAmount: availableAmount, transactionLimit: response.transactionLimit)
         completion(.success(balance))
-    }
-
-    private func handle(error: Error, completion: @escaping (Result<Balance, Error>) -> Void) {
-        finish(with: error)
-        completion(.failure(error))
     }
 
     internal func requestOrder(for component: Component,
@@ -73,7 +67,6 @@ extension IntegrationExample: PartialPaymentDelegate {
         case let .success(response):
             completion(.success(response.order))
         case let .failure(error):
-            finish(with: error)
             completion(.failure(error))
         }
     }
