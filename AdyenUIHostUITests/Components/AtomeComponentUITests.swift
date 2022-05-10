@@ -19,9 +19,12 @@ class AtomeComponentUITests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Atome")
+        app.launchArguments = ["SY", "SGD"]
         apiContext = Dummy.context
         style = FormComponentStyle()
-        configAtomePayLater()
+        sut = AtomeComponent(paymentMethod: paymentMethod,
+                              apiContext: apiContext,
+                              configuration: AtomeComponent.Configuration(style: style))
     }
 
     override func tearDownWithError() throws {
@@ -34,42 +37,43 @@ class AtomeComponentUITests: XCTestCase {
 
     func testAllRequiredTextField_shouldExist() throws {
         let config = AtomeComponent.Configuration(style: style, shopperInformation: shopperInformation)
-        sut = AtomeComponent(paymentMethod: paymentMethod,
+        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
+        let sut = AtomeComponent(paymentMethod: paymentMethod,
                              apiContext: apiContext,
                              configuration: config)
-        let atomeComponentFirstNameItem = app.otherElements.textFields[AtomeViewIdentifier.firstName]
-        let atomeComponentlastNameItem = app.otherElements.textFields[AtomeViewIdentifier.lastName]
-        let atomeComponentPhoneNumberItem = app.otherElements.textFields[AtomeViewIdentifier.phone]
-        let atomeComponentBillingAddressItem = app.otherElements[AtomeViewIdentifier.billingAddress]
+
+        let view: UIView = sut.viewController.view
+
+        let atomeComponentFirstNameItem = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.firstName))
+        let atomeComponentlastNameItem = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.lastName))
+        let atomeComponentPhoneNumberItem = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.phone))
+        let atomeComponentBillingAddressItem = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.billingAddress))
+        let atomeComponentPayButton = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.payButton))
 
         // Assert
-        XCTAssertTrue(atomeComponentFirstNameItem.exists)
-        XCTAssertTrue(atomeComponentlastNameItem.exists)
-        XCTAssertTrue(atomeComponentPhoneNumberItem.exists)
-        XCTAssertTrue(atomeComponentBillingAddressItem.exists)
-    }
-
-    func testPayButton_shouldExist() throws {
-        let atomeComponentPayButton = app.otherElements.buttons[AtomeViewIdentifier.payButton]
-
-        // Assert
-        XCTAssertTrue(atomeComponentPayButton.exists)
+        XCTAssertTrue(atomeComponentFirstNameItem.isDescendant(of: view))
+        XCTAssertTrue(atomeComponentlastNameItem.isDescendant(of: view))
+        XCTAssertTrue(atomeComponentPhoneNumberItem.isDescendant(of: view))
+        XCTAssertTrue(atomeComponentBillingAddressItem.isDescendant(of: view))
+        XCTAssertTrue(atomeComponentPayButton.isDescendant(of: view))
     }
 
     func testSubmitForm_shouldCallDelegateWithProperParameters() {
         let config = AtomeComponent.Configuration(style: style, shopperInformation: shopperInformation)
-        sut = AtomeComponent(paymentMethod: paymentMethod,
+        let sut = AtomeComponent(paymentMethod: paymentMethod,
                              apiContext: apiContext,
                              configuration: config)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
-        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
+
         let expectedBillingAddress = PostalAddressMocks.singaporePostalAddress
+
+        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
 
         // Then
         let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === self.sut)
+            XCTAssertTrue(component === sut)
             let details = data.paymentMethod as! AtomeDetails
             XCTAssertEqual(details.shopperName?.firstName, "Katrina")
             XCTAssertEqual(details.shopperName?.lastName, "Del Mar")
@@ -93,87 +97,53 @@ class AtomeComponentUITests: XCTestCase {
 
     func testAtome_givenNoShopperInformation_shouldNotPrefill() throws {
         // Given
-        sut = AtomeComponent(paymentMethod: paymentMethod,
-                              apiContext: apiContext,
-                              configuration: AffirmComponent.Configuration(style: style))
+        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
+
+        wait(for: .milliseconds(300))
+
+        let view: UIView = sut.viewController.view
 
         // Then
-        let atomeComponentFirstNameItem = app.otherElements.textFields[AtomeViewIdentifier.firstName]
-        let firstName: String = atomeComponentFirstNameItem.value as! String
-
-        // Assert
+        let atomeComponentFirstNameItem: FormTextInputItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.firstName))
+        let firstName = atomeComponentFirstNameItem.item.value
         XCTAssertTrue(firstName.isEmpty)
 
-        let  atomeComponentLastNameItem = app.otherElements.textFields[AtomeViewIdentifier.lastName]
-        let lastName: String = atomeComponentLastNameItem.value as! String
-
-        // Assert
+        let atomeComponentLastNameItem: FormTextInputItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.lastName))
+        let lastName = atomeComponentLastNameItem.item.value
         XCTAssertTrue(lastName.isEmpty)
 
-        let atomeComponentPhoneNumber = app.otherElements.textFields[AtomeViewIdentifier.phone]
-        let phoneNumber: String = atomeComponentPhoneNumber.value as! String
-
-        // Assert
+        let atomeComponentPhoneNumber: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.phone))
+        let phoneNumber = atomeComponentPhoneNumber.item.value
         XCTAssertTrue(phoneNumber.isEmpty)
 
-        let atomeComponentStreetAddressItem  = app.otherElements.textFields[AtomeViewIdentifier.streetName]
-        let streetAddress: String = atomeComponentStreetAddressItem.value as! String
+        let atomeComponentStreetAddressItem: FormTextInputItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.streetName))
+        let streetName = atomeComponentStreetAddressItem.item.value
+        XCTAssertTrue(streetName.isEmpty)
 
-        // Assert
-        XCTAssertTrue(streetAddress.isEmpty)
-
-        let atomeComponentApartmentAddressItem  = app.otherElements.textFields[AtomeViewIdentifier.apartmentName]
-        let apartmentName: String = atomeComponentApartmentAddressItem.value as! String
-
-        // Assert
+        let atomeComponentApartmentAddressItem: FormTextInputItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.apartmentName))
+        let apartmentName = atomeComponentApartmentAddressItem.item.value
         XCTAssertTrue(apartmentName.isEmpty)
 
-        let atomeComponentHouseNumberOrNameAddressItem  = app.otherElements.textFields[AtomeViewIdentifier.houseNumberOrName]
-        let houseNumberOrName: String = atomeComponentHouseNumberOrNameAddressItem.value as! String
-
-        // Assert
+        let atomeComponentHouseNumberOrNameAddressItem: FormTextInputItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.houseNumberOrName))
+        let houseNumberOrName = atomeComponentHouseNumberOrNameAddressItem.item.value
         XCTAssertTrue(houseNumberOrName.isEmpty)
 
-        let atomeComponentPostalCodeAddressItem  = app.otherElements.textFields[AtomeViewIdentifier.postalCode]
-        let postalCode: String = atomeComponentPostalCodeAddressItem.value as! String
-
-        // Assert
+        let atomeComponentPostalCodeAddressItem: FormTextInputItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.postalCode))
+        let postalCode = atomeComponentPostalCodeAddressItem.item.value
         XCTAssertTrue(postalCode.isEmpty)
     }
 
     // MARK: - Private
 
-    private func configAtomePayLater() {
-        app.launch()
-        app.navigationBars["Components"].buttons["settings"].tap()
-
-        let tablesQuery = app.tables
-        tablesQuery.buttons.containing(NSPredicate(format: "label BEGINSWITH 'Country code'")).element.tap()
-        tablesQuery.searchFields.element.tap()
-
-        let singaporeCell = tablesQuery.cells.containing(NSPredicate(format: "label BEGINSWITH 'SG'"))
-        singaporeCell.element.tap()
-
-        app.navigationBars.buttons["Configuration"].tap()
-        tablesQuery.cells.containing(NSPredicate(format: "label BEGINSWITH 'Set to country'")).element.tap()
-        app.navigationBars["Configuration"].buttons["Save"].tap()
-
-        tablesQuery.staticTexts["Drop In"].tap()
-
-        let elementsQuery = app.scrollViews.otherElements
-        elementsQuery.buttons.containing(NSPredicate(format: "label BEGINSWITH 'Change Payment Method'")).element.tap()
-        tablesQuery.staticTexts["Atome Paylater"].tap()
-    }
-
     private enum AtomeViewIdentifier {
-        static let firstName = "AdyenComponents.AtomeComponent.firstNameItem.textField"
-        static let lastName = "AdyenComponents.AtomeComponent.lastNameItem.textField"
-        static let phone = "AdyenComponents.AtomeComponent.phoneNumberItem.textField"
+        static let firstName = "AdyenComponents.AtomeComponent.firstNameItem"
+        static let lastName = "AdyenComponents.AtomeComponent.lastNameItem"
+        static let phone = "AdyenComponents.AtomeComponent.phoneNumberItem"
         static let billingAddress = "AdyenComponents.AtomeComponent.addressItem"
-        static let streetName = "AdyenComponents.AtomeComponent.addressItem.street.textField"
-        static let apartmentName = "AdyenComponents.AtomeComponent.addressItem.apartment.textField"
-        static let houseNumberOrName = "AdyenComponents.AtomeComponent.addressItem.houseNumberOrName.textField"
-        static let postalCode = "AdyenComponents.AtomeComponent.addressItem.postalCode.textField"
+        static let streetName = "AdyenComponents.AtomeComponent.addressItem.street"
+        static let apartmentName = "AdyenComponents.AtomeComponent.addressItem.apartment"
+        static let houseNumberOrName = "AdyenComponents.AtomeComponent.addressItem.houseNumberOrName"
+        static let postalCode = "AdyenComponents.AtomeComponent.addressItem.postalCode"
         static let payButton = "AdyenComponents.AtomeComponent.payButtonItem.button"
         static let inputOTP = "Input OTP"
     }

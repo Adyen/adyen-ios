@@ -83,9 +83,17 @@ internal struct Configuration: Codable {
     )
     
     fileprivate static func loadConfiguration() -> Configuration {
-        UserDefaults.standard.data(forKey: defaultsKey)
-            .flatMap { try? JSONDecoder().decode(Configuration.self, from: $0) }
-            ?? defaultConfiguration
+        if CommandLine.arguments.contains("SY") {
+           return Configuration(countryCode: "SY",
+                                value: 17408,
+                                currencyCode: "SGD",
+                                apiVersion: 68,
+                                merchantAccount: ConfigurationConstants.merchantAccount)
+        } else {
+            return UserDefaults.standard.data(forKey: defaultsKey)
+                .flatMap { try? JSONDecoder().decode(Configuration.self, from: $0) }
+                ?? defaultConfiguration
+        }
     }
     
     fileprivate static func saveConfiguration(_ configuration: Configuration) {
