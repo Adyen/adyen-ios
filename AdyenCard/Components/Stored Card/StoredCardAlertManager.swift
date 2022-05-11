@@ -10,7 +10,7 @@ import Adyen
 #endif
 import UIKit
 
-internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIContextAware, Localizable {
+internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, AdyenContextAware, Localizable {
     
     internal let apiContext: APIContext
     internal let adyenContext: AdyenContext

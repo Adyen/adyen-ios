@@ -9,7 +9,7 @@ import Foundation
 
 /// :nodoc:
 /// An object that needs an API context to retrieve internal resources
-public protocol APIContextAware: AnyObject {
+public protocol AdyenContextAware: AnyObject {
     
     /// :nodoc:
     /// The API context

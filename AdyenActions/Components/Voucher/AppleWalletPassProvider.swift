@@ -19,7 +19,7 @@ internal protocol AnyAppleWalletPassProvider {
 
 /// :nodoc:
 internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
-    APIContextAware {
+    AdyenContextAware {
     
     /// :nodoc:
     internal let apiContext: APIContext

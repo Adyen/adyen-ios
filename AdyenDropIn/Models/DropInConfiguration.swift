@@ -20,7 +20,7 @@ import PassKit
 public extension DropInComponent {
     
     /// Contains the configuration for the drop in component and the embedded payment method components.
-    final class Configuration: APIContextAware {
+    final class Configuration: AdyenContextAware {
         
         /// Card component related configuration.
         public var card = Card()
