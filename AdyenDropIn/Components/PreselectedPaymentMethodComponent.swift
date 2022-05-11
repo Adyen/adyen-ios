@@ -29,7 +29,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     private let defaultComponent: PaymentComponent
     
     /// :nodoc:
-    internal var apiContext: APIContext { defaultComponent.apiContext }
+    internal var apiContext: APIContext { defaultComponent.adyenContext.apiContext }
 
     /// :nodoc:
     internal var adyenContext: AdyenContext { defaultComponent.adyenContext }

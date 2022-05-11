@@ -33,7 +33,7 @@ internal protocol ComponentWrapper: Component {
 extension ComponentWrapper {
 
     /// :nodoc:
-    internal var apiContext: APIContext { wrappedComponent.apiContext }
+    internal var apiContext: APIContext { wrappedComponent.adyenContext.apiContext }
 
     internal var adyenContext: AdyenContext { wrappedComponent.adyenContext }
 

@@ -90,7 +90,7 @@ public final class ThreeDS2Component: ActionComponent {
                               threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
                               redirectComponent: AnyRedirectComponent,
                               configuration: Configuration = Configuration()) {
-        self.init(apiContext: redirectComponent.apiContext,
+        self.init(apiContext: redirectComponent.adyenContext.apiContext,
                   adyenContext: adyenContext,
                   configuration: configuration)
         self.threeDS2CompactFlowHandler = threeDS2CompactFlowHandler

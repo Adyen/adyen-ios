@@ -10,10 +10,10 @@ import Foundation
 /// :nodoc:
 /// An object that needs an API context to retrieve internal resources
 public protocol AdyenContextAware: AnyObject {
-    
+
     /// :nodoc:
     /// The API context
-    var apiContext: APIContext { get }
+    // var apiContext: APIContext { get }
 
     /// The Adyen context.
     var adyenContext: AdyenContext { get }

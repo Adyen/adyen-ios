@@ -12,7 +12,9 @@ public final class AdyenContext {
 
     // MARK: - Properties
 
-    private let apiContext: APIContext
+    /// :nodoc:
+    /// The API context
+    public let apiContext: APIContext
 
     /// :nodoc:
     public let analyticsProvider: AnalyticsProviderProtocol

@@ -15,7 +15,7 @@ public final class PresentableComponentWrapper: PresentableComponent,
     LoadingComponent {
     
     /// :nodoc:
-    public var apiContext: APIContext { component.apiContext }
+    public var apiContext: APIContext { component.adyenContext.apiContext }
 
     /// The Adyen context.
     public var adyenContext: AdyenContext { component.adyenContext }
