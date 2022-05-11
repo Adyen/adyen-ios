@@ -110,7 +110,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         }
     }
 
-    public func update(payment: Payment?) throws {
+    internal func update(payment: Payment?) throws {
         guard let payment = payment else {
             throw ApplePayComponent.Error.negativeGrandTotal
         }
