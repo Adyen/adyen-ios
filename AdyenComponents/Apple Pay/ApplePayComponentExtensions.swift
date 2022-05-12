@@ -56,21 +56,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         let applePayPayment = applePayPayment
         applePayDelegate.didUpdate(contact: contact,
                                    for: applePayPayment,
-                                   completion: { [weak self] result in
-                                       guard let self = self else {
-                                           return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
-                                       }
-            
-                                       if result.status == .success,
-                                          result.paymentSummaryItems.isEmpty == false {
-                                           do {
-                                               self.applePayPayment = try applePayPayment.update(with: result.paymentSummaryItems)
-                                           } catch {
-                                               self.delegate?.didFail(with: error, from: self)
-                                           }
-                                       }
-                                       completion(result)
-                                   })
+                                   completion: handlePaymentRequestUpdate(applePayPayment, completion))
     }
 
     public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
@@ -83,21 +69,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         let applePayPayment = applePayPayment
         applePayDelegate.didUpdate(shippingMethod: shippingMethod,
                                    for: applePayPayment,
-                                   completion: { [weak self] result in
-                                       guard let self = self else {
-                                           return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
-                                       }
-
-                                       if result.status == .success,
-                                          result.paymentSummaryItems.isEmpty == false {
-                                           do {
-                                               self.applePayPayment = try applePayPayment.update(with: result.paymentSummaryItems)
-                                           } catch {
-                                               self.delegate?.didFail(with: error, from: self)
-                                           }
-                                       }
-                                       completion(result)
-                                   })
+                                   completion: handlePaymentRequestUpdate(applePayPayment, completion))
     }
 
     @available(iOS 15.0, *)
@@ -111,20 +83,24 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         let applePayPayment = applePayPayment
         applePayDelegate.didUpdate(couponCode: couponCode,
                                    for: applePayPayment,
-                                   completion: { [weak self] result in
-                                       guard let self = self else {
-                                           return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
-                                       }
-            
-                                       if result.status == .success,
-                                          result.paymentSummaryItems.isEmpty == false {
-                                           do {
-                                               self.applePayPayment = try applePayPayment.update(with: result.paymentSummaryItems)
-                                           } catch {
-                                               self.delegate?.didFail(with: error, from: self)
-                                           }
-                                       }
-                                       completion(result)
-                                   })
+                                   completion: handlePaymentRequestUpdate(applePayPayment, completion))
+    }
+
+    private func handlePaymentRequestUpdate<T: PKPaymentRequestUpdate>(_ applePayPayment: ApplePayPayment,
+                                                                       _ completion: @escaping (T) -> Void) -> (T) -> Void {
+        return { [weak self] result in
+            guard let self = self else {
+                return completion(T(paymentSummaryItems: applePayPayment.summaryItems))
+            }
+
+            if result.status == .success, result.paymentSummaryItems.count > 0 {
+                do {
+                    self.applePayPayment = try applePayPayment.update(with: result.paymentSummaryItems)
+                } catch {
+                    self.delegate?.didFail(with: error, from: self)
+                }
+            }
+            completion(result)
+        }
     }
 }
