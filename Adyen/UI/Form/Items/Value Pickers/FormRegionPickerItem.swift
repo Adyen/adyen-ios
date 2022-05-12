@@ -21,7 +21,6 @@ public final class FormRegionPickerItem: BaseFormPickerItem<Region> {
                    style: style)
     }
 
-    // :nodoc:
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }

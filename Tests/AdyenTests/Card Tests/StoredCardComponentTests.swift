@@ -12,7 +12,7 @@ import XCTest
 
 class StoredCardComponentTests: XCTestCase {
 
-    func testUIWithClientKey() {
+    func testUIWithClientKey() throws {
         let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
@@ -42,7 +42,7 @@ class StoredCardComponentTests: XCTestCase {
         alertController.dismiss(animated: false, completion: nil)
     }
 
-    func testUIWithPublicKey() {
+    func testUIWithPublicKey() throws {
         let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
@@ -72,7 +72,7 @@ class StoredCardComponentTests: XCTestCase {
         alertController.dismiss(animated: false, completion: nil)
     }
 
-    func testPaymentSubmitWithSuccessfulCardPublicKeyFetching() {
+    func testPaymentSubmitWithSuccessfulCardPublicKeyFetching() throws {
         let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
@@ -138,7 +138,7 @@ class StoredCardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testPaymentSubmitWithFailedCardPublicKeyFetching() {
+    func testPaymentSubmitWithFailedCardPublicKeyFetching() throws {
         let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
@@ -193,7 +193,7 @@ class StoredCardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testCVCLimitForAMEX() {
+    func testCVCLimitForAMEX() throws {
         let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
@@ -246,7 +246,7 @@ class StoredCardComponentTests: XCTestCase {
         alertController.dismiss(animated: false, completion: nil)
     }
 
-    func testCVCLimitForNonAMEX() {
+    func testCVCLimitForNonAMEX() throws {
         let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",
@@ -292,7 +292,7 @@ class StoredCardComponentTests: XCTestCase {
         alertController.dismiss(animated: false, completion: nil)
     }
 
-    func testCVCLimitForUnknownCardType() {
+    func testCVCLimitForUnknownCardType() throws {
         let method = StoredCardPaymentMethod(type: .card,
                                              name: "name",
                                              identifier: "id",

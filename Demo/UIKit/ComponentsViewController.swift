@@ -136,8 +136,8 @@ internal final class ComponentsViewController: UIViewController, Presenter {
         present(viewController: alertController, completion: nil)
     }
 
-    internal func presentAlert(withTitle title: String) {
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+    internal func presentAlert(withTitle title: String, message: String?) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default))
 
         present(viewController: alertController, completion: nil)

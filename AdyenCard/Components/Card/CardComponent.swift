@@ -56,7 +56,6 @@ public class CardComponent: PublicKeyConsumer,
         }
     }
 
-    /// The payment information.
     public var payment: Payment? {
         didSet {
             storedCardComponent?.payment = payment

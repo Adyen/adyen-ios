@@ -15,7 +15,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     lazy var paymentMethod = SevenElevenPaymentMethod(type: .econtextSevenEleven, name: "test_name")
     let payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
 
-    func testLocalizationWithCustomTableName() {
+    func testLocalizationWithCustomTableName() throws {
         let config = BasicPersonalInfoFormComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
         let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
         sut.payment = payment
@@ -153,7 +153,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         XCTAssertEqual(textViewTextField?.font, style.text.font)
     }
 
-    func testSubmitForm() {
+    func testSubmitForm() throws {
         let sut = SevenElevenComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: BasicPersonalInfoFormComponent.Configuration())
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
