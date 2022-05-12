@@ -19,7 +19,7 @@ class AtomeComponentUITests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Atome")
-        app.launchArguments = ["SY", "SGD"]
+        app.launchArguments = ["SG", "SGD"]
         apiContext = Dummy.context
         style = FormComponentStyle()
         sut = AtomeComponent(paymentMethod: paymentMethod,
