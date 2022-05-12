@@ -31,7 +31,7 @@ internal final class AwaitViewController: UIViewController {
                   style: AwaitComponentStyle = AwaitComponentStyle()) {
         self.viewModel = viewModel
         self.style = style
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil, bundle: Bundle(for: AwaitViewController.self))
     }
     
     /// :nodoc:

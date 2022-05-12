@@ -33,7 +33,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     /// - Parameter style: The `FormViewController` UI style.
     public init(style: ViewStyle) {
         self.style = style
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil, bundle: Bundle(for: FormViewController.self))
         startObserving()
     }
 

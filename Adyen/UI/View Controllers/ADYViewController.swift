@@ -19,7 +19,7 @@ public final class ADYViewController: UIViewController {
     ///   - title: The title of the `ADYViewController`
     public init(view: UIView, title: String? = nil) {
         self.contentView = view
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil, bundle: Bundle(for: ADYViewController.self))
         self.title = title
     }
     

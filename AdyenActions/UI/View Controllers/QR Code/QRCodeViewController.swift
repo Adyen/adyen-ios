@@ -26,7 +26,7 @@ internal final class QRCodeViewController: UIViewController {
     /// - Parameter style: The UI style.
     internal init(viewModel: QRCodeView.Model) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil, bundle: Bundle(for: QRCodeViewController.self))
     }
     
     /// :nodoc:
