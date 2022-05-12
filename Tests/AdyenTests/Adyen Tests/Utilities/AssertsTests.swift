@@ -140,8 +140,7 @@ class AssertsTests: XCTestCase {
     class MockComponent: Component {
         let adyenContext: AdyenContext
         
-        init(apiContext: APIContext = Dummy.context, adyenContext: AdyenContext = Dummy.adyenContext) {
-            self.apiContext = apiContext
+        init(adyenContext: AdyenContext = Dummy.adyenContext) {
             self.adyenContext = adyenContext
         }
     }

@@ -59,7 +59,6 @@ public final class RedirectComponent: ActionComponent {
     /// - Parameter configuration: The component configurations.
     public init(adyenContext: AdyenContext,
                 configuration: Configuration = Configuration()) {
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.configuration = configuration
     }

@@ -103,7 +103,6 @@ public class CardComponent: PublicKeyConsumer,
                   publicKeyProvider: AnyPublicKeyProvider,
                   binProvider: AnyBinInfoProvider) {
         self.cardPaymentMethod = paymentMethod
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.configuration = configuration
         self.publicKeyProvider = publicKeyProvider

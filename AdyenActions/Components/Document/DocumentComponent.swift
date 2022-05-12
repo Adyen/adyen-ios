@@ -56,7 +56,6 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     /// - Parameter configuration: The Component configurations.
     public init(adyenContext: AdyenContext,
                 configuration: Configuration = .init()) {
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.configuration = configuration
     }

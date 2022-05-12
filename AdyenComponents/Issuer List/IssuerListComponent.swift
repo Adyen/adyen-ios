@@ -37,7 +37,6 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
                 adyenContext: AdyenContext,
                 configuration: Configuration = .init()) {
         self.issuerListPaymentMethod = paymentMethod
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.configuration = configuration
     }

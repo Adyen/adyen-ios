@@ -24,7 +24,6 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
                 apiContext: APIContext,
                 adyenContext: AdyenContext) {
         self.storedPaymentMethod = paymentMethod
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
     }
     

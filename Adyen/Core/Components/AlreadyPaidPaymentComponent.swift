@@ -24,7 +24,6 @@ public final class AlreadyPaidPaymentComponent: PaymentComponent {
                 apiContext: APIContext,
                 adyenContext: AdyenContext) {
         self.paymentMethod = paymentMethod
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
     }
 }

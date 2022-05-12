@@ -75,7 +75,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         }
 
         self.configuration = configuration
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.paymentAuthorizationViewController = viewController
         self.applePayPaymentMethod = paymentMethod

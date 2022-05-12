@@ -60,7 +60,6 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     /// Initializes the 3D Secure 2 action handler.
     internal init(adyenContext: AdyenContext,
                   appearanceConfiguration: ADYAppearanceConfiguration) {
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.coreActionHandler = ThreeDS2CoreActionHandler(adyenContext: adyenContext,
                                                            appearanceConfiguration: appearanceConfiguration)

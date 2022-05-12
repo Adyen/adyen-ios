@@ -28,7 +28,6 @@ public final class InstantPaymentComponent: PaymentComponent {
                 adyenContext: AdyenContext) {
         self.paymentMethod = paymentMethod
         self.paymentData = paymentData
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
     }
 

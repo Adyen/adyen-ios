@@ -39,7 +39,6 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
 
     /// :nodoc:
     internal init(adyenContext: AdyenContext) {
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.apiClient = RetryAPIClient(
             apiClient: APIClient(apiContext: apiContext),

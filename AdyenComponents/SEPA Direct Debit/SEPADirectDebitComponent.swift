@@ -40,7 +40,6 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
                 adyenContext: AdyenContext,
                 configuration: Configuration = .init()) {
         self.sepaDirectDebitPaymentMethod = paymentMethod
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.configuration = configuration
     }

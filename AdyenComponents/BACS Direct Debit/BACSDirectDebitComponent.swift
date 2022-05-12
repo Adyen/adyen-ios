@@ -76,7 +76,6 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
                 adyenContext: AdyenContext,
                 configuration: Configuration = Configuration()) {
         self.bacsPaymentMethod = paymentMethod
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.configuration = configuration
         self.inputFormViewController = BACSInputFormViewController(

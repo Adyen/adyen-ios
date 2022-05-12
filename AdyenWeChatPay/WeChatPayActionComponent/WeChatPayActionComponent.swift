@@ -31,7 +31,6 @@ import Foundation
     
         /// :nodoc:
         public init(adyenContext: AdyenContext) {
-            self.apiContext = apiContext
             self.adyenContext = adyenContext
         }
     
@@ -123,7 +122,6 @@ import Foundation
 
         /// :nodoc:
         public init(adyenContext: AdyenContext) {
-            self.apiContext = apiContext
             self.adyenContext = adyenContext
         }
 

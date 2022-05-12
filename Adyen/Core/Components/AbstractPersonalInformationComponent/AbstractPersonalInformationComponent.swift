@@ -65,7 +65,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
                 fields: [PersonalInformation],
                 configuration: Configuration) {
         self.paymentMethod = paymentMethod
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.fields = fields
         self.configuration = configuration

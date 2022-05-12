@@ -68,7 +68,6 @@ public final class GiftCardComponent: PartialPaymentComponent,
                   style: FormComponentStyle = FormComponentStyle(),
                   publicKeyProvider: AnyPublicKeyProvider) {
         self.giftCardPaymentMethod = paymentMethod
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.style = style
         self.publicKeyProvider = publicKeyProvider

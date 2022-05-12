@@ -48,7 +48,6 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
                 adyenContext: AdyenContext,
                 configuration: Configuration = .init()) {
         self.blikPaymentMethod = paymentMethod
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.configuration = configuration
     }

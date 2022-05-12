@@ -37,7 +37,6 @@ internal final class PollingComponent: AnyPollingHandler {
     /// - Parameter apiClient: The API client.
     internal init(adyenContext: AdyenContext,
                   apiClient: AnyRetryAPIClient) {
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.apiClient = apiClient
     }

@@ -40,7 +40,6 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
                 adyenContext: AdyenContext,
                 configuration: Configuration) {
         self.boletoPaymentMethod = paymentMethod
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.configuration = configuration
         socialSecurityNumberItem.isHidden.wrappedValue = false

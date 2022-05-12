@@ -65,11 +65,10 @@ public extension DropInComponent {
         ///   - style: The UI styles of the components.
         ///   - allowsSkippingPaymentList: Boolean to enable skipping payment list when there is only one one non-instant payment method.
         ///   - allowPreselectedPaymentView: Boolean to enable the preselected stored payment method view step.
-        public init(  adyenContext: AdyenContext,
+        public init(adyenContext: AdyenContext,
                     style: Style = Style(),
                     allowsSkippingPaymentList: Bool = false,
                     allowPreselectedPaymentView: Bool = true) {
-            self.apiContext = apiContext
             self.adyenContext = adyenContext
             self.style = style
             self.allowsSkippingPaymentList = allowsSkippingPaymentList

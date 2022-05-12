@@ -24,7 +24,6 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
                   apiContext: APIContext,
                   adyenContext: AdyenContext,
                   amount: Amount?) {
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.paymentMethod = paymentMethod
         self.amount = amount

@@ -42,7 +42,6 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     internal init(adyenContext: AdyenContext,
                   components: [ComponentsSection],
                   style: ListComponentStyle = ListComponentStyle()) {
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.componentSections = components
         self.style = style

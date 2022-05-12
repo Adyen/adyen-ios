@@ -72,7 +72,6 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     /// :nodoc:
     public init(adyenContext: AdyenContext,
                 configuration: Configuration = Configuration()) {
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.configuration = configuration
     }

@@ -51,7 +51,6 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
                   adyenContext: AdyenContext,
                   style: RedirectComponentStyle? = nil) {
         self.url = url
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.style = style
         super.init()

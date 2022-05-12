@@ -81,7 +81,6 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
                   publicKeyProvider: AnyPublicKeyProvider) {
         self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.configuration = configuration
         self.publicKeyProvider = publicKeyProvider

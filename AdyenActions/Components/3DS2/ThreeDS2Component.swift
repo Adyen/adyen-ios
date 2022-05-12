@@ -65,8 +65,6 @@ public final class ThreeDS2Component: ActionComponent {
     /// - Parameter configuration: The component's configuration.
     public init(adyenContext: AdyenContext,
                 configuration: Configuration = Configuration()) {
-        self.apiContext = apiContext
-        self.adyenContext = adyenContext
         self.configuration = configuration
         self.updateConfiguration()
     }

@@ -98,7 +98,6 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
                   voucherShareableViewProvider: AnyVoucherShareableViewProvider?,
                   configuration: Configuration = Configuration(),
                   passProvider: AnyAppleWalletPassProvider?) {
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.configuration = configuration
         self.voucherShareableViewProvider = voucherShareableViewProvider ??

@@ -66,7 +66,6 @@ internal final class PreApplePayComponent: PresentableComponent,
                   adyenContext: AdyenContext,
                   configuration: Configuration,
                   applePayConfiguration: ApplePayComponent.Configuration) throws {
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.paymentMethod = paymentMethod
         self.configuration = configuration

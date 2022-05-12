@@ -34,7 +34,6 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
                   apiContext: APIContext,
                   adyenContext: AdyenContext) {
         self.storedCardPaymentMethod = storedCardPaymentMethod
-        self.apiContext = apiContext
         self.adyenContext = adyenContext
     }
     
