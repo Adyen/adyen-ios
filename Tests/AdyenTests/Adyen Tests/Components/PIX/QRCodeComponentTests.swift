@@ -56,7 +56,7 @@ class QRCodeComponentTests: XCTestCase {
         
         style.backgroundColor = UIColor.Adyen.componentSeparator
         
-        let sut = QRCodeComponent(apiContext: Dummy.context, adyenContext: adyenContext)
+        let sut = QRCodeComponent(adyenContext: adyenContext)
         sut.configuration.style = style
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
@@ -121,8 +121,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeComponent(apiContext: Dummy.context,
-                                  adyenContext: adyenContext,
+        let sut = QRCodeComponent(adyenContext: adyenContext,
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         let componentDelegate = ActionComponentDelegateMock()
@@ -164,8 +163,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeComponent(apiContext: Dummy.context,
-                                  adyenContext: adyenContext,
+        let sut = QRCodeComponent(adyenContext: adyenContext,
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         
@@ -212,8 +210,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeComponent(apiContext: Dummy.context,
-                                  adyenContext: adyenContext,
+        let sut = QRCodeComponent(adyenContext: adyenContext,
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         
@@ -251,8 +248,7 @@ class QRCodeComponentTests: XCTestCase {
     func testCopyButton() {
         let dummyExpectation = expectation(description: "Dummy Expectation")
         
-        let sut = QRCodeComponent(apiContext: Dummy.context,
-                                  adyenContext: adyenContext)
+        let sut = QRCodeComponent(adyenContext: adyenContext)
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         

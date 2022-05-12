@@ -30,7 +30,6 @@ class CardComponentTests: XCTestCase {
     func testRequiresKeyboardInput() {
         let method = CardPaymentMethodMock(type: .card, name: "test_name", brands: ["bcmc"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext)
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
@@ -46,7 +45,6 @@ class CardComponentTests: XCTestCase {
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: configuration)
         sut.payment = payment
@@ -77,7 +75,6 @@ class CardComponentTests: XCTestCase {
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: configuration)
         sut.payment = payment
@@ -137,7 +134,6 @@ class CardComponentTests: XCTestCase {
         configuration.showsHolderNameField = true
         configuration.style = cardComponentStyle
         let sut = CardComponent(paymentMethod: cardPaymentMethod,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: configuration)
 
@@ -237,7 +233,6 @@ class CardComponentTests: XCTestCase {
     func testBigTitle() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -256,7 +251,6 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: configuration)
 
@@ -275,7 +269,6 @@ class CardComponentTests: XCTestCase {
     func testShowCVVField() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -293,7 +286,6 @@ class CardComponentTests: XCTestCase {
     func testCVVHintChange() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -325,7 +317,6 @@ class CardComponentTests: XCTestCase {
         }
 
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: .init(),
                                 publicKeyProvider: PublicKeyProviderMock(),
@@ -359,7 +350,6 @@ class CardComponentTests: XCTestCase {
     func testCVVFormatterChange() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -388,7 +378,6 @@ class CardComponentTests: XCTestCase {
 
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: CardComponent.Configuration(style: style))
 
@@ -419,7 +408,6 @@ class CardComponentTests: XCTestCase {
                                        fundingSource: .credit,
                                        brands: ["visa", "amex"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: CardComponent.Configuration(style: style))
 
@@ -451,7 +439,6 @@ class CardComponentTests: XCTestCase {
         }
         
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: CardComponent.Configuration(),
                                 publicKeyProvider: publicKeyProvider,
@@ -474,7 +461,6 @@ class CardComponentTests: XCTestCase {
                                              expiryYear: "22",
                                              holderName: "holderName")
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext)
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
@@ -498,7 +484,6 @@ class CardComponentTests: XCTestCase {
                                              expiryYear: "22",
                                              holderName: "holderName")
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext)
         sut.payment = Payment(amount: Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
         XCTAssertNotNil(sut.storedCardComponent)
@@ -525,7 +510,6 @@ class CardComponentTests: XCTestCase {
         var config: CardComponent.Configuration = CardComponent.Configuration()
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
 
@@ -555,7 +539,6 @@ class CardComponentTests: XCTestCase {
         config.stored.showsSecurityCodeField = false
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
 
@@ -584,7 +567,6 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.stored.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: configuration)
         sut.payment = Payment(amount: Amount(value: 123456, currencyCode: "EUR"), countryCode: "NL")
@@ -612,7 +594,6 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.stored.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: configuration)
         XCTAssertNotNil(sut.storedCardComponent)
@@ -639,7 +620,6 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.stored.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: configuration)
         XCTAssertNotNil(sut.viewController as? UIAlertController)
@@ -650,7 +630,6 @@ class CardComponentTests: XCTestCase {
     func testShouldShow4CardTypesOnInit() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "cup", "maestro", "jcb"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -676,7 +655,6 @@ class CardComponentTests: XCTestCase {
     func testShouldShowNoCardTypesOnInvalidPANEnter() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -707,7 +685,6 @@ class CardComponentTests: XCTestCase {
     func testShouldShowCardTypesOnPANEnter() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -741,7 +718,6 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config,
                                 publicKeyProvider: PublicKeyProviderMock(),
@@ -796,7 +772,6 @@ class CardComponentTests: XCTestCase {
     func testCardNumberShouldPassFocusToDate() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -847,7 +822,6 @@ class CardComponentTests: XCTestCase {
     func testDateShouldPassFocusToCVC() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -880,7 +854,6 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "NL")
@@ -937,7 +910,6 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
@@ -988,7 +960,6 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
@@ -1022,7 +993,6 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         sut.payment = .init(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "CA")
@@ -1078,7 +1048,6 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config,
                                 publicKeyProvider: PublicKeyProviderMock(),
@@ -1135,7 +1104,6 @@ class CardComponentTests: XCTestCase {
         }
 
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config,
                                 publicKeyProvider: PublicKeyProviderMock(),
@@ -1194,7 +1162,6 @@ class CardComponentTests: XCTestCase {
         }
 
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config,
                                 publicKeyProvider: PublicKeyProviderMock(),
@@ -1244,7 +1211,6 @@ class CardComponentTests: XCTestCase {
         let config = CardComponent.Configuration(socialSecurityNumberMode: .hide)
 
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         
@@ -1263,7 +1229,6 @@ class CardComponentTests: XCTestCase {
         let config = CardComponent.Configuration(socialSecurityNumberMode: .show)
 
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         
@@ -1288,7 +1253,6 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
 
@@ -1311,7 +1275,6 @@ class CardComponentTests: XCTestCase {
         config.excludedCardTypes = [.americanExpress]
 
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         
@@ -1346,7 +1309,6 @@ class CardComponentTests: XCTestCase {
                                        brands: ["visa", "amex", "mc"])
         let config = CardComponent.Configuration()
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
 
@@ -1379,7 +1341,6 @@ class CardComponentTests: XCTestCase {
                                        brands: ["visa", "amex", "mc"])
         let config = CardComponent.Configuration()
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
 
@@ -1419,7 +1380,6 @@ class CardComponentTests: XCTestCase {
         let cardTypeProviderMock = BinInfoProviderMock()
 
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config,
                                 publicKeyProvider: PublicKeyProviderMock(),
@@ -1463,7 +1423,6 @@ class CardComponentTests: XCTestCase {
         let cardTypeProviderMock = BinInfoProviderMock()
 
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config,
                                 publicKeyProvider: PublicKeyProviderMock(),
@@ -1501,7 +1460,6 @@ class CardComponentTests: XCTestCase {
         let cardTypeProviderMock = BinInfoProviderMock()
 
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config,
                                 publicKeyProvider: PublicKeyProviderMock(),
@@ -1550,7 +1508,6 @@ class CardComponentTests: XCTestCase {
                                        brands: ["visa", "amex", "mc"])
         let config = CardComponent.Configuration()
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         
@@ -1588,7 +1545,6 @@ class CardComponentTests: XCTestCase {
         let config = CardComponent.Configuration(socialSecurityNumberMode: .show)
 
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         
@@ -1617,7 +1573,6 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         sut.cardViewController.items.postalCodeItem.value = "1501 NH"
@@ -1646,7 +1601,6 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         sut.cardViewController.items.numberContainerItem.numberItem.value = "4111 1111 1111 1111"
@@ -1675,7 +1629,6 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         sut.cardViewController.items.expiryDateItem.value = "03/24"
@@ -1704,7 +1657,6 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         sut.cardViewController.items.securityCodeItem.value = "935"
@@ -1733,7 +1685,6 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration(showsHolderNameField: true)
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         sut.cardViewController.items.holderNameItem.value = "Katrina del Mar"
@@ -1762,7 +1713,6 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .postalCode
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         sut.cardViewController.items.storeDetailsItem.value = true
@@ -1798,7 +1748,6 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddressMode = .full
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         // show view controller
@@ -1908,7 +1857,6 @@ class CardComponentTests: XCTestCase {
         configuration.billingAddressMode = .full
 
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: configuration)
 
@@ -1945,7 +1893,6 @@ class CardComponentTests: XCTestCase {
         configuration.billingAddressMode = .postalCode
 
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: configuration)
 
@@ -1977,7 +1924,6 @@ class CardComponentTests: XCTestCase {
         config.billingAddressCountryCodes = ["UK"]
         
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         
@@ -2000,7 +1946,6 @@ class CardComponentTests: XCTestCase {
         config.shopperInformation = shopperInformation
         
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         
@@ -2023,7 +1968,6 @@ class CardComponentTests: XCTestCase {
         config.shopperInformation = shopperInformation
         
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         
@@ -2043,7 +1987,6 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let configuration = CardComponent.Configuration()
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: configuration)
 
