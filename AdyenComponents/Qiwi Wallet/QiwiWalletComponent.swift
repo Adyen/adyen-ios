@@ -20,7 +20,6 @@ public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
     ///
     /// - Parameters:
     ///   - paymentMethod: The Qiwi Wallet payment method.
-    ///   - apiContext: The component's API context.
     ///   - adyenContext: The Adyen context.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: QiwiWalletPaymentMethod,

@@ -54,8 +54,7 @@ public final class RedirectComponent: ActionComponent {
     
     /// Initializes the component.
     ///
-    /// - Parameter apiContext: The API context.
-    /// - Parameter adyenContext: The Adyen context
+    /// - Parameter adyenContext: The Adyen context.
     /// - Parameter configuration: The component configurations.
     public init(adyenContext: AdyenContext,
                 configuration: Configuration = Configuration()) {

@@ -67,7 +67,6 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// Creates and returns a BACS Direct Debit component.
     /// - Parameters:
     ///   - paymentMethod: The BACS Direct Debit payment method.
-    ///   - apiContext: The API context.
     ///   - adyenContext: The Adyen context.
     ///   - configuration: Configuration for the component.
     public init(paymentMethod: BACSDirectDebitPaymentMethod,

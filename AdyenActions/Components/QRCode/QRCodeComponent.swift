@@ -72,7 +72,6 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
     
     /// Initializes the `QRCodeComponent`.
     ///
-    /// - Parameter apiContext: the `APIContext`.
     /// - Parameter adyenContext: The Adyen context.
     /// - Parameter configuration: The component configurations
     public convenience init(adyenContext: AdyenContext,
@@ -85,7 +84,6 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
     
     /// Initializes the `QRCodeComponent`.
     ///
-    /// - Parameter apiContext: the `APIContext`.
     /// - Parameter adyenContext: The Adyen context.
     /// - Parameter configuration: The component configurations
     /// - Parameter pollingComponentBuilder: The payment method specific await action handler provider.

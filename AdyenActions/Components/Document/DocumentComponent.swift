@@ -51,7 +51,6 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     
     /// Initializes the `DocumentComponent`.
     ///
-    /// - Parameter apiContext: The API context.
     /// - Parameter adyenContext: The Adyen context.
     /// - Parameter configuration: The Component configurations.
     public init(adyenContext: AdyenContext,

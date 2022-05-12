@@ -51,7 +51,6 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     
     /// Initializes the `AwaitComponent`.
     ///
-    /// - Parameter apiContext: The API context.
     /// - Parameter adyeContext: The Adyen context.
     /// - Parameter configuration: The await component configurations.
     public convenience init(adyenContext: AdyenContext,
@@ -63,7 +62,6 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     
     /// Initializes the `AwaitComponent`.
     ///
-    /// - Parameter apiContext: The API context.
     /// - Parameter adyenContext: The Adyen context.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter configuration: The Component UI style.

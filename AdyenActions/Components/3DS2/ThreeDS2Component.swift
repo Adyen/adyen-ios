@@ -60,8 +60,7 @@ public final class ThreeDS2Component: ActionComponent {
     
     /// Initializes the 3D Secure 2 component.
     ///
-    /// - Parameter apiContext: The `APIContext`.
-    /// - Parameter adyenContext: The Adyen context;
+    /// - Parameter adyenContext: The Adyen context.
     /// - Parameter configuration: The component's configuration.
     public init(adyenContext: AdyenContext,
                 configuration: Configuration = Configuration()) {
@@ -73,7 +72,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// Initializes the 3D Secure 2 component.
     ///
     /// - Parameters:
-    ///   - apiContext: The `APIContext`.
+    ///   - adyenContext: The  Adyen context.
     ///   - threeDS2CompactFlowHandler: The internal `AnyThreeDS2ActionHandler` for the compact flow.
     ///   - threeDS2ClassicFlowHandler: The internal `AnyThreeDS2ActionHandler` for the classic flow.
     ///   - redirectComponent: The redirect component.

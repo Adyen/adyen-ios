@@ -29,7 +29,6 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     /// Initializes the issuer list component.
     ///
     /// - Parameter paymentMethod: The issuer list payment method.
-    /// - Parameter apiContext: The API context.
     /// - Parameter adyenContext: The Adyen context.
     /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: IssuerListPaymentMethod,

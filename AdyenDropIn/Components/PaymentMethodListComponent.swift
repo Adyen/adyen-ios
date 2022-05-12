@@ -35,7 +35,6 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     
     /// Initializes the list component.
     ///
-    /// - Parameter apiContext: The component's context.
     /// - Parameter adyenContext: The Adyen context.
     /// - Parameter components: The components to display in the list.
     /// - Parameter style: The component's UI style.

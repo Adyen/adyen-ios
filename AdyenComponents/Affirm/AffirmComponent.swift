@@ -32,7 +32,6 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenO
     /// Initializes the Affirm component.
     /// - Parameters:
     ///   - paymentMethod: The Affirm payment method.
-    ///   - apiContext: The component's API context.
     ///   - adyenContext: The Adyen context.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: PaymentMethod,

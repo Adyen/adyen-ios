@@ -30,7 +30,6 @@ internal class ThreeDS2CoreActionHandler: Component {
 
     /// Initializes the 3D Secure 2 action handler.
     ///
-    /// - Parameter apiContext: The API context.
     /// - Parameter adyenContext: The Adyen context.
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.

@@ -48,7 +48,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     ///  Dismissal should occur within `completion` block.
     ///
     /// - Parameter paymentMethod: The Apple Pay payment method. Must include country code.
-    /// - Parameter apiContext: The API environment and credentials.
     /// - Parameter adyenContext: The Adyen context.
     /// - Parameter configuration: Apple Pay component configuration
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment`.

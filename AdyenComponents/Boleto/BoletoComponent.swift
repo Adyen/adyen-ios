@@ -10,8 +10,7 @@ import UIKit
 
 /// A component that provides a form for Boleto payment.
 public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent, AdyenObserver {
-    
-    
+
     /// The Adyen context
     public let adyenContext: AdyenContext
     
@@ -32,7 +31,6 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     /// Initializes the Boleto Component
     /// - Parameters:
     ///   - paymentMethod: Boleto Payment Method
-    ///   - apiContext: The component's API context.
     ///   - adyenContext: The Adyen context.
     ///   - configuration: The Component's configuration.
     public init(paymentMethod: BoletoPaymentMethod,

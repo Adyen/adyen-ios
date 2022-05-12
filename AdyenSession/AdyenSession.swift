@@ -28,7 +28,7 @@ public final class AdyenSession {
         /// Initializes a new Configuration object
         ///
         /// - Parameters:
-        ///   - apiContext: The API context.
+        ///   - adyenContext: The Adyen context.
         public init(sessionIdentifier: String,
                     initialSessionData: String,
                     adyenContext: AdyenContext) {

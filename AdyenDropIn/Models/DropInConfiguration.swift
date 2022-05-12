@@ -60,7 +60,6 @@ public extension DropInComponent {
         
         /// Initializes the drop in configuration.
         /// - Parameters:
-        ///   - apiContext: The API context used to retrieve internal resources.
         ///   - adyenContext: The Adyen context.
         ///   - style: The UI styles of the components.
         ///   - allowsSkippingPaymentList: Boolean to enable skipping payment list when there is only one one non-instant payment method.

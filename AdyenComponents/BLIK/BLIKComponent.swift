@@ -40,7 +40,6 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
     /// Initializes the BLIK component.
     ///
     /// - Parameter paymentMethod: The BLIK payment method.
-    /// - Parameter apiContext: The API context.
     /// - Parameter adyenContext: The Adyen context.
     /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: BLIKPaymentMethod,

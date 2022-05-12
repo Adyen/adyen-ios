@@ -58,8 +58,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     /// Initializes the ACH Direct Debit component.
     /// - Parameters:
     ///   - paymentMethod: The ACH Direct Debit payment method.
-    ///   - apiContext: The component's API context.
-    ///   - adyenContext: The Adyen context
+    ///   - adyenContext: The Adyen context.
     ///   - configuration: Configuration for the component.
     public convenience init(paymentMethod: ACHDirectDebitPaymentMethod,
                             adyenContext: AdyenContext,

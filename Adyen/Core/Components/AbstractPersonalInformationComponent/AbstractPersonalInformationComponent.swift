@@ -55,7 +55,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     /// Initializes the MB Way component.
     ///
     /// - Parameter paymentMethod: The payment method.
-    /// - Parameter apiContext: The API context.
     /// - Parameter adyenContext: The Adyen context.
     /// - Parameter fields: The component's fields.
     /// - Parameter configuration: The Component's configuration.
