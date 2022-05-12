@@ -19,9 +19,6 @@ internal final class PollingComponent: AnyPollingHandler {
     private var errorCount = 0
 
     /// :nodoc:
-    internal let apiContext: APIContext
-
-    /// :nodoc:
     internal let adyenContext: AdyenContext
     
     /// :nodoc:

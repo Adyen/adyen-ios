@@ -12,7 +12,6 @@ import UIKit
 
 internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, AdyenContextAware, Localizable {
     
-    internal let apiContext: APIContext
     internal let adyenContext: AdyenContext
     private let paymentMethod: StoredCardPaymentMethod
     private let amount: Amount?

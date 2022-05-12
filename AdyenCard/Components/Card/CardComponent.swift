@@ -27,12 +27,9 @@ public class CardComponent: PublicKeyConsumer,
         internal static let publicPanSuffixLength = 4
     }
     
-    /// :nodoc:
-    public let apiContext: APIContext
-
     /// The Adyen context.
     public let adyenContext: AdyenContext
-
+    
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
     /// :nodoc:

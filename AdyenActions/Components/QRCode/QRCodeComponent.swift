@@ -20,9 +20,6 @@ internal enum QRCodeComponentError: LocalizedError {
 /// A component that presents a QR code.
 public final class QRCodeComponent: ActionComponent, Cancellable {
     
-    /// :nodoc:
-    public let apiContext: APIContext
-
     /// The Adyen context.
     public let adyenContext: AdyenContext
     

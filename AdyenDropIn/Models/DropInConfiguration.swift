@@ -36,9 +36,6 @@ public extension DropInComponent {
         
         /// Shopper related information
         public var shopper: PrefilledShopperInformation?
-        
-        /// API context used to retrieve internal resources.
-        public let apiContext: APIContext
 
         /// The Adyen context.
         public let adyenContext: AdyenContext

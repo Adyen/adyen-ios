@@ -19,9 +19,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     internal let applePayPaymentMethod: ApplePayPaymentMethod
 
-    /// :nodoc:
-    public let apiContext: APIContext
-
+    
     /// The Adyen context
     public let adyenContext: AdyenContext
 

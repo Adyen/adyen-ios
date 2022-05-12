@@ -19,9 +19,6 @@ public struct PaymentMethodListConfiguration {
 internal final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable, Cancellable {
     
     /// :nodoc:
-    internal let apiContext: APIContext
-
-    /// :nodoc:
     internal let adyenContext: AdyenContext
     
     /// The components that are displayed in the list.

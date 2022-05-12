@@ -26,8 +26,6 @@ internal final class ComponentManager {
 
     internal let order: PartialPaymentOrder?
     
-    internal let apiContext: APIContext
-
     internal let adyenContext: AdyenContext
 
     internal weak var presentationDelegate: PresentationDelegate?

@@ -23,8 +23,6 @@ public final class AdyenSession {
         
         internal let initialSessionData: String
         
-        internal let apiContext: APIContext
-
         internal let adyenContext: AdyenContext
         
         /// Initializes a new Configuration object

@@ -15,9 +15,6 @@ internal protocol AnyRedirectComponent: ActionComponent {
 /// Handles the 3D Secure 2 fingerprint and challenge.
 public final class ThreeDS2Component: ActionComponent {
     
-    /// :nodoc:
-    public let apiContext: APIContext
-
     /// The Adyen context.
     public let adyenContext: AdyenContext
     

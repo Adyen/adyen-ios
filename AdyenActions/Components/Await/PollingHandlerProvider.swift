@@ -31,9 +31,6 @@ internal protocol AnyPollingHandlerProvider {
 /// :nodoc:
 internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
 
-    /// :nodoc:
-    private let apiContext: APIContext
-
     /// :nodoc
     private let adyenContext: AdyenContext
 

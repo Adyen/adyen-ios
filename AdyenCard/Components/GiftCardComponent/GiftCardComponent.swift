@@ -18,12 +18,9 @@ public final class GiftCardComponent: PartialPaymentComponent,
     LoadingComponent,
     AdyenObserver {
     
-    /// :nodoc:
-    public let apiContext: APIContext
-
     /// The Adyen context.
     public let adyenContext: AdyenContext
-
+    
     /// :nodoc:
     private let giftCardPaymentMethod: GiftCardPaymentMethod
 

@@ -13,9 +13,6 @@ import Foundation
 internal class ThreeDS2CoreActionHandler: Component {
     
     /// :nodoc:
-    internal let apiContext: APIContext
-
-    /// :nodoc:
     internal let adyenContext: AdyenContext
 
     /// The appearance configuration of the 3D Secure 2 challenge UI.

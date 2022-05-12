@@ -12,9 +12,6 @@ import UIKit
 /// This component will provide a list in which the user can select their issuer.
 public final class IssuerListComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
-    /// :nodoc:
-    public let apiContext: APIContext
-
     /// The Adyen context.
     public let adyenContext: AdyenContext
     

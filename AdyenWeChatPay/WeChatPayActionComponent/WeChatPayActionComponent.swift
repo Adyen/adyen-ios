@@ -19,9 +19,6 @@ import Foundation
     public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
 
         private static let universalLink = "https://www.adyen.com/"
-    
-        /// :nodoc:
-        public let apiContext: APIContext
 
         /// :nodoc:
         public var adyenContext: AdyenContext
@@ -117,9 +114,6 @@ import Foundation
     /// :nodoc:
     /// Action component to handle WeChat Pay SDK action.
     public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
-
-        /// :nodoc:
-        public let apiContext: APIContext
 
         /// :nodoc:
         public let adyenContext: AdyenContext

@@ -16,8 +16,6 @@ internal protocol BrowserComponentDelegate: AnyObject {
 /// A component that opens a URL in web browsed and presents it.
 internal final class BrowserComponent: NSObject, PresentableComponent {
 
-    internal let apiContext: APIContext
-
     /// :nodoc
     internal let adyenContext: AdyenContext
 

@@ -22,9 +22,6 @@ internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
     AdyenContextAware {
     
     /// :nodoc:
-    internal let apiContext: APIContext
-
-    /// :nodoc:
     internal let adyenContext: AdyenContext
     
     /// :nodoc:

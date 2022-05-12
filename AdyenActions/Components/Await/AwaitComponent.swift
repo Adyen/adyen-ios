@@ -10,9 +10,6 @@ import Foundation
 /// A component that handles Await action's.
 public final class AwaitComponent: ActionComponent, Cancellable {
     
-    /// :nodoc:
-    public let apiContext: APIContext
-
     /// The Adyen context.
     public let adyenContext: AdyenContext
     

@@ -11,9 +11,7 @@ import UIKit
 /// A component that provides a form for Boleto payment.
 public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent, AdyenObserver {
     
-    /// :nodoc:
-    public let apiContext: APIContext
-
+    
     /// The Adyen context
     public let adyenContext: AdyenContext
     

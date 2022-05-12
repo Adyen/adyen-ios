@@ -12,9 +12,6 @@ import Foundation
 /// :nodoc:
 internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, ComponentWrapper {
     
-    /// :nodoc:
-    internal let apiContext: APIContext
-
     /// :nodoc
     internal let adyenContext: AdyenContext
 
