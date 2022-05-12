@@ -65,9 +65,9 @@ internal enum ConfigurationConstants {
 internal struct Configuration: Codable {
     private static let defaultsKey = "ConfigurationKey"
     
-    internal let countryCode: String
+    internal var countryCode: String
     internal let value: Int
-    internal let currencyCode: String
+    internal var currencyCode: String
     internal let apiVersion: Int
     internal let merchantAccount: String
     
@@ -83,9 +83,17 @@ internal struct Configuration: Codable {
     )
     
     fileprivate static func loadConfiguration() -> Configuration {
-        UserDefaults.standard.data(forKey: defaultsKey)
+        var config = UserDefaults.standard.data(forKey: defaultsKey)
             .flatMap { try? JSONDecoder().decode(Configuration.self, from: $0) }
             ?? defaultConfiguration
+        switch CommandLine.arguments.first {
+        case "SG":
+            config.countryCode = "SG"
+            config.currencyCode = "SGD"
+        default:
+            return config
+        }
+        return config
     }
     
     fileprivate static func saveConfiguration(_ configuration: Configuration) {

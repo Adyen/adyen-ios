@@ -21,6 +21,17 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		007D790C2812C81400382D31 /* AtomeComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007D790B2812C81400382D31 /* AtomeComponentUITests.swift */; };
+		007D7916281FC4B200382D31 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF8CD4C26691D3A00102339 /* Dummy.swift */; };
+		007D7917281FC4FA00382D31 /* PaymentComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */; };
+		007D7918281FC51500382D31 /* PostalAddressMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */; };
+		007D7919281FC61000382D31 /* UIView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D57527237C3EE3009C18B5 /* UIView+Search.swift */; };
+		007D791A281FC62E00382D31 /* XCTestCaseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96AE51A26038602009F82BD /* XCTestCaseExtension.swift */; };
+		007D791B281FC63500382D31 /* XCTestCase+FormAddressItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */; };
+		007D791C281FC6B000382D31 /* XCTestCaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92385B62757AE8B0082F7B7 /* XCTestCaseExtensions.swift */; };
+		007D791F2823A84C00382D31 /* AffirmComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007D791E2823A84C00382D31 /* AffirmComponentUITests.swift */; };
+		007D79222823BE6A00382D31 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007D79212823BE6A00382D31 /* UIApplicationExtension.swift */; };
+		007D79232823BE7800382D31 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007D79212823BE6A00382D31 /* UIApplicationExtension.swift */; };
 		00EA4ED4280412140053D938 /* DefaultAddressViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */; };
 		00EA4ED7280590050053D938 /* AtomeAddressViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */; };
 		00F621BE27EB132500C04097 /* AtomeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621BD27EB132500C04097 /* AtomeComponent.swift */; };
@@ -763,6 +774,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		007D790F2812C81400382D31 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E2C0E07C220B0399008616F6;
+			remoteInfo = AdyenUIHost;
+		};
 		A0414C22278D9B6F00DF3FE9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
@@ -1036,6 +1054,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		007D79092812C81400382D31 /* AdyenUIHostUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdyenUIHostUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		007D790B2812C81400382D31 /* AtomeComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeComponentUITests.swift; sourceTree = "<group>"; };
+		007D791E2823A84C00382D31 /* AffirmComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentUITests.swift; sourceTree = "<group>"; };
+		007D79212823BE6A00382D31 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAddressViewModelBuilder.swift; sourceTree = "<group>"; };
 		00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeAddressViewModelBuilder.swift; sourceTree = "<group>"; };
 		00F621BD27EB132500C04097 /* AtomeComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeComponent.swift; sourceTree = "<group>"; };
@@ -1763,6 +1785,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		007D79062812C81400382D31 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E2C0E03022097917008616F6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1892,6 +1921,48 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		007D790A2812C81400382D31 /* AdyenUIHostUITests */ = {
+			isa = PBXGroup;
+			children = (
+				007D79202823BE4C00382D31 /* Helpers */,
+				007D79142812EFD300382D31 /* Components */,
+			);
+			path = AdyenUIHostUITests;
+			sourceTree = "<group>";
+		};
+		007D79142812EFD300382D31 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				007D791D2823A83100382D31 /* Affirm */,
+				007D79152812EFF600382D31 /* Atome */,
+				007D790B2812C81400382D31 /* AtomeComponentUITests.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		007D79152812EFF600382D31 /* Atome */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Atome;
+			sourceTree = "<group>";
+		};
+		007D791D2823A83100382D31 /* Affirm */ = {
+			isa = PBXGroup;
+			children = (
+				007D791E2823A84C00382D31 /* AffirmComponentUITests.swift */,
+			);
+			path = Affirm;
+			sourceTree = "<group>";
+		};
+		007D79202823BE4C00382D31 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				007D79212823BE6A00382D31 /* UIApplicationExtension.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		00F621BC27EB12FA00C04097 /* Atome */ = {
 			isa = PBXGroup;
 			children = (
@@ -2485,6 +2556,7 @@
 				F9620D8323C73B0D005209FC /* AdyenWeChatPay */,
 				E7E58BF825ADDFA000E869F9 /* Tests */,
 				E7E58BF725ADDF8400E869F9 /* Demo */,
+				007D790A2812C81400382D31 /* AdyenUIHostUITests */,
 				E2C0E03422097917008616F6 /* Products */,
 				E2D12C01221ECBB000EF682F /* Frameworks */,
 			);
@@ -2506,6 +2578,7 @@
 				F92326AC25A3669E002C5BC4 /* AdyenEncryption.framework */,
 				F95899C625FA524100E4113F /* AdyenSwiftUI.framework */,
 				F92980A627CE2B33000CA5CA /* AdyenSession.framework */,
+				007D79092812C81400382D31 /* AdyenUIHostUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4332,6 +4405,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		007D79082812C81400382D31 /* AdyenUIHostUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 007D79132812C81400382D31 /* Build configuration list for PBXNativeTarget "AdyenUIHostUITests" */;
+			buildPhases = (
+				007D79052812C81400382D31 /* Sources */,
+				007D79062812C81400382D31 /* Frameworks */,
+				007D79072812C81400382D31 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				007D79102812C81400382D31 /* PBXTargetDependency */,
+			);
+			name = AdyenUIHostUITests;
+			productName = AdyenUIHostUITests;
+			productReference = 007D79092812C81400382D31 /* AdyenUIHostUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		E2C0E03222097917008616F6 /* Adyen */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E2C0E04722097917008616F6 /* Build configuration list for PBXNativeTarget "Adyen" */;
@@ -4631,10 +4722,14 @@
 		E2C0E02A22097917008616F6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1220;
+				LastSwiftUpdateCheck = 1320;
 				LastUpgradeCheck = 1330;
 				ORGANIZATIONNAME = Adyen;
 				TargetAttributes = {
+					007D79082812C81400382D31 = {
+						CreatedOnToolsVersion = 13.2;
+						TestTargetID = E2C0E07C220B0399008616F6;
+					};
 					C96A8E2826CA800A000BB8C6 = {
 						CreatedOnToolsVersion = 12.5;
 					};
@@ -4745,11 +4840,19 @@
 				C96A8E2826CA800A000BB8C6 /* Localization */,
 				E2C0E03B22097917008616F6 /* AdyenUIKitTests */,
 				F9615FAE252DDA4800FA8EDD /* AdyenSwiftUITests */,
+				007D79082812C81400382D31 /* AdyenUIHostUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		007D79072812C81400382D31 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E2C0E03122097917008616F6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5139,6 +5242,23 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		007D79052812C81400382D31 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				007D7916281FC4B200382D31 /* Dummy.swift in Sources */,
+				007D7918281FC51500382D31 /* PostalAddressMocks.swift in Sources */,
+				007D79222823BE6A00382D31 /* UIApplicationExtension.swift in Sources */,
+				007D791F2823A84C00382D31 /* AffirmComponentUITests.swift in Sources */,
+				007D7919281FC61000382D31 /* UIView+Search.swift in Sources */,
+				007D791B281FC63500382D31 /* XCTestCase+FormAddressItem.swift in Sources */,
+				007D791C281FC6B000382D31 /* XCTestCaseExtensions.swift in Sources */,
+				007D7917281FC4FA00382D31 /* PaymentComponentDelegateMock.swift in Sources */,
+				007D791A281FC62E00382D31 /* XCTestCaseExtension.swift in Sources */,
+				007D790C2812C81400382D31 /* AtomeComponentUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E2C0E02F22097917008616F6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5493,6 +5613,7 @@
 				F9BA21BF246D36AC00D36A63 /* LazyOptionalTests.swift in Sources */,
 				E9021DF2225CC6D0009CF7F4 /* RedirectDetailsTests.swift in Sources */,
 				F96F44E123BF5C2000871C1F /* LocalizationTests.swift in Sources */,
+				007D79232823BE7800382D31 /* UIApplicationExtension.swift in Sources */,
 				F9D5750E237475DB009C18B5 /* CardEncryptorCardTests.swift in Sources */,
 				F9C5F0DD25CAB8FC005A6E54 /* VoucherComponentTests.swift in Sources */,
 				5AD40F4F263157D50090E01C /* UIButtonHelpersTests.swift in Sources */,
@@ -5891,6 +6012,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		007D79102812C81400382D31 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E2C0E07C220B0399008616F6 /* AdyenUIHost */;
+			targetProxy = 007D790F2812C81400382D31 /* PBXContainerItemProxy */;
+		};
 		A0414C23278D9B6F00DF3FE9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F92326AB25A3669E002C5BC4 /* AdyenEncryption */;
@@ -6116,6 +6242,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		007D79112812C81400382D31 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2NYSS5932;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.CheckoutDemoUIKit.AdyenUIHostUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AdyenUIHost;
+			};
+			name = Debug;
+		};
+		007D79122812C81400382D31 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2NYSS5932;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.CheckoutDemoUIKit.AdyenUIHostUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AdyenUIHost;
+			};
+			name = Release;
+		};
 		C96A8E2926CA800A000BB8C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7035,6 +7203,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		007D79132812C81400382D31 /* Build configuration list for PBXNativeTarget "AdyenUIHostUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				007D79112812C81400382D31 /* Debug */,
+				007D79122812C81400382D31 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C96A8E2B26CA800A000BB8C6 /* Build configuration list for PBXAggregateTarget "Localization" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
