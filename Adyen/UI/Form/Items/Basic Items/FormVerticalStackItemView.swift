@@ -10,16 +10,16 @@ import UIKit
 /// A view representing a vertical stack of items.
 /// Items are created from the `subitems` property of the `item`
 /// :nodoc:
-public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormItemType> {
+open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormItemType> {
 
-    private var views: [AnyFormItemView] = []
+    public private(set) var views: [AnyFormItemView] = []
 
     private var observations: [Observation] = []
 
     /// Initializes the split item view.
     ///
     /// - Parameter item: The item represented by the view.
-    internal required init(item: FormItemType) {
+    public required init(item: FormItemType) {
         super.init(item: item)
 
         prepareSubItems()
@@ -44,16 +44,6 @@ public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemVi
 
     /// :nodoc:
     override public var childItemViews: [AnyFormItemView] { views }
-
-    /// :nodoc:
-    override public var canBecomeFirstResponder: Bool {
-        views.first { $0.canBecomeFirstResponder } != nil
-    }
-
-    /// :nodoc:
-    override public func becomeFirstResponder() -> Bool {
-        views.first { $0.canBecomeFirstResponder }?.becomeFirstResponder() ?? super.becomeFirstResponder()
-    }
 
     // MARK: - Layout
 
