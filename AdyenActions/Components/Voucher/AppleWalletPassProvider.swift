@@ -28,14 +28,13 @@ internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
     internal let adyenContext: AdyenContext
     
     /// :nodoc:
-    internal convenience init(apiContext: APIContext, adyenContext: AdyenContext) {
-        self.init(apiContext: apiContext,
-                  adyenContext: adyenContext,
+    internal convenience init(adyenContext: AdyenContext) {
+        self.init(adyenContext: adyenContext,
                   apiClient: nil)
     }
     
     /// :nodoc:
-    internal init(apiContext: APIContext, adyenContext: AdyenContext, apiClient: AnyRetryAPIClient? = nil) {
+    internal init(adyenContext: AdyenContext, apiClient: AnyRetryAPIClient? = nil) {
         self.apiContext = apiContext
         self.adyenContext = adyenContext
         if let apiClient = apiClient {

@@ -52,24 +52,20 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
     /// :nodoc:
-    internal convenience init(apiContext: APIContext,
-                              adyenContext: AdyenContext,
+    internal convenience init(adyenContext: AdyenContext,
                               service: AnyADYService,
                               appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
-        self.init(apiContext: apiContext,
-                  adyenContext: adyenContext,
+        self.init(adyenContext: adyenContext,
                   appearanceConfiguration: appearanceConfiguration)
         self.coreActionHandler.service = service
     }
 
     /// Initializes the 3D Secure 2 action handler.
-    internal init(apiContext: APIContext,
-                  adyenContext: AdyenContext,
+    internal init(adyenContext: AdyenContext,
                   appearanceConfiguration: ADYAppearanceConfiguration) {
         self.apiContext = apiContext
         self.adyenContext = adyenContext
-        self.coreActionHandler = ThreeDS2CoreActionHandler(apiContext: apiContext,
-                                                           adyenContext: adyenContext,
+        self.coreActionHandler = ThreeDS2CoreActionHandler(adyenContext: adyenContext,
                                                            appearanceConfiguration: appearanceConfiguration)
     }
 

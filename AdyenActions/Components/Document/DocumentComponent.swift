@@ -57,8 +57,7 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     /// - Parameter apiContext: The API context.
     /// - Parameter adyenContext: The Adyen context.
     /// - Parameter configuration: The Component configurations.
-    public init(apiContext: APIContext,
-                adyenContext: AdyenContext,
+    public init(adyenContext: AdyenContext,
                 configuration: Configuration = .init()) {
         self.apiContext = apiContext
         self.adyenContext = adyenContext

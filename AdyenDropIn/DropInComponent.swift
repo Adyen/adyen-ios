@@ -183,7 +183,7 @@ public final class DropInComponent: NSObject,
     )
 
     private lazy var actionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(apiContext: apiContext, adyenContext: adyenContext)
+        let handler = AdyenActionComponent(adyenContext: AdyenContext)
         handler.configuration.style = configuration.style.actionComponent
         handler._isDropIn = true
         handler.delegate = self
@@ -195,8 +195,7 @@ public final class DropInComponent: NSObject,
     
     internal func paymentMethodListComponent(onCancel: (() -> Void)?) -> PaymentMethodListComponent {
         let paymentComponents = componentManager.sections
-        let component = PaymentMethodListComponent(apiContext: apiContext,
-                                                   adyenContext: adyenContext,
+        let component = PaymentMethodListComponent(adyenContext: adyenContext,
                                                    components: paymentComponents,
                                                    style: configuration.style.listComponent)
         component.onCancel = onCancel

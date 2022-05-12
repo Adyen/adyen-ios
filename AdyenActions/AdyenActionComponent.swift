@@ -72,8 +72,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     internal var currentActionComponent: Component?
     
     /// :nodoc:
-    public init(apiContext: APIContext,
-                adyenContext: AdyenContext,
+    public init(adyenContext: AdyenContext,
                 configuration: Configuration = Configuration()) {
         self.apiContext = apiContext
         self.adyenContext = adyenContext
@@ -111,7 +110,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     // MARK: - Private
     
     private func handle(_ action: RedirectAction) {
-        let component = RedirectComponent(apiContext: apiContext, adyenContext: adyenContext)
+        let component = RedirectComponent(adyenContext: AdyenContext)
         component.configuration.style = configuration.style.redirectComponentStyle
         component.delegate = delegate
         component._isDropIn = _isDropIn
@@ -136,8 +135,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     }
 
     private func createThreeDS2Component() -> ThreeDS2Component {
-        let component = ThreeDS2Component(apiContext: apiContext,
-                                          adyenContext: adyenContext)
+        let component = ThreeDS2Component(adyenContext: adyenContext)
         component.configuration.requestorAppURL = configuration.threeDS.requestorAppURL
         component._isDropIn = _isDropIn
         component.delegate = delegate
@@ -170,7 +168,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
             return
         }
         
-        let weChatPaySDKActionComponent = classObject.init(apiContext: apiContext, adyenContext: adyenContext)
+        let weChatPaySDKActionComponent = classObject.init(adyenContext: AdyenContext)
         weChatPaySDKActionComponent._isDropIn = _isDropIn
         weChatPaySDKActionComponent.delegate = delegate
         weChatPaySDKActionComponent.handle(action)
@@ -179,7 +177,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     }
     
     private func handle(_ action: AwaitAction) {
-        let component = AwaitComponent(apiContext: apiContext, adyenContext: adyenContext)
+        let component = AwaitComponent(adyenContext: AdyenContext)
         component.configuration.style = configuration.style.awaitComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate
@@ -191,7 +189,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     }
     
     private func handle(_ action: VoucherAction) {
-        let component = VoucherComponent(apiContext: apiContext, adyenContext: adyenContext)
+        let component = VoucherComponent(adyenContext: AdyenContext)
         component.configuration.style = configuration.style.voucherComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate
@@ -203,7 +201,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     }
     
     private func handle(_ action: QRCodeAction) {
-        let component = QRCodeComponent(apiContext: apiContext, adyenContext: adyenContext)
+        let component = QRCodeComponent(adyenContext: AdyenContext)
         component.configuration.style = configuration.style.qrCodeComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate
@@ -215,7 +213,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     }
     
     private func handle(_ action: DocumentAction) {
-        let component = DocumentComponent(apiContext: apiContext, adyenContext: adyenContext)
+        let component = DocumentComponent(adyenContext: AdyenContext)
         component.configuration.style = configuration.style.documentActionComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate

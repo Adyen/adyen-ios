@@ -66,8 +66,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// - Parameter apiContext: The `APIContext`.
     /// - Parameter adyenContext: The Adyen context;
     /// - Parameter configuration: The component's configuration.
-    public init(apiContext: APIContext,
-                adyenContext: AdyenContext,
+    public init(adyenContext: AdyenContext,
                 configuration: Configuration = Configuration()) {
         self.apiContext = apiContext
         self.adyenContext = adyenContext
@@ -84,8 +83,7 @@ public final class ThreeDS2Component: ActionComponent {
     ///   - redirectComponent: The redirect component.
     ///   - redirectComponentStyle: `RedirectComponent` style.
     /// :nodoc:
-    internal convenience init(apiContext: APIContext,
-                              adyenContext: AdyenContext,
+    internal convenience init(adyenContext: AdyenContext,
                               threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
                               threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
                               redirectComponent: AnyRedirectComponent,
@@ -186,8 +184,7 @@ public final class ThreeDS2Component: ActionComponent {
     }
 
     internal lazy var threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler = {
-        let handler = ThreeDS2CompactActionHandler(apiContext: apiContext,
-                                                   adyenContext: adyenContext,
+        let handler = ThreeDS2CompactActionHandler(adyenContext: adyenContext,
                                                    appearanceConfiguration: configuration.appearanceConfiguration)
 
         handler._isDropIn = _isDropIn
@@ -197,8 +194,7 @@ public final class ThreeDS2Component: ActionComponent {
     }()
 
     internal lazy var threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler = {
-        let handler = ThreeDS2ClassicActionHandler(apiContext: apiContext,
-                                                   adyenContext: adyenContext,
+        let handler = ThreeDS2ClassicActionHandler(adyenContext: adyenContext,
                                                    appearanceConfiguration: configuration.appearanceConfiguration)
         handler._isDropIn = _isDropIn
         handler.threeDSRequestorAppURL = configuration.requestorAppURL
@@ -207,7 +203,7 @@ public final class ThreeDS2Component: ActionComponent {
     }()
 
     private lazy var redirectComponent: AnyRedirectComponent = {
-        let component = RedirectComponent(apiContext: apiContext, adyenContext: adyenContext)
+        let component = RedirectComponent(adyenContext: AdyenContext)
         component.configuration.style = configuration.redirectComponentStyle
 
         component.delegate = self

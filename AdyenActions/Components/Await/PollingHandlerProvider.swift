@@ -41,8 +41,7 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
     private let apiClient: AnyRetryAPIClient
 
     /// :nodoc:
-    internal init(apiContext: APIContext,
-                  adyenContext: AdyenContext) {
+    internal init(adyenContext: AdyenContext) {
         self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.apiClient = RetryAPIClient(
@@ -69,8 +68,7 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
     
     /// :nodoc:
     private func createPollingComponent() -> AnyPollingHandler {
-        PollingComponent(apiContext: apiContext,
-                         adyenContext: adyenContext,
+        PollingComponent(       adyenContext: adyenContext,
                          apiClient: apiClient)
     }
     

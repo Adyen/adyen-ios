@@ -33,7 +33,7 @@ import Foundation
         private var currentlyHandledAction: WeChatPaySDKAction?
     
         /// :nodoc:
-        public init(apiContext: APIContext, adyenContext: AdyenContext) {
+        public init(adyenContext: AdyenContext) {
             self.apiContext = apiContext
             self.adyenContext = adyenContext
         }
@@ -128,7 +128,7 @@ import Foundation
         public weak var delegate: ActionComponentDelegate?
 
         /// :nodoc:
-        public init(apiContext: APIContext, adyenContext: AdyenContext) {
+        public init(adyenContext: AdyenContext) {
             self.apiContext = apiContext
             self.adyenContext = adyenContext
         }

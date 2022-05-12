@@ -57,12 +57,10 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     /// - Parameter apiContext: The API context.
     /// - Parameter adyeContext: The Adyen context.
     /// - Parameter configuration: The await component configurations.
-    public convenience init(apiContext: APIContext,
-                            adyenContext: AdyenContext,
+    public convenience init(adyenContext: AdyenContext,
                             configuration: Configuration = .init()) {
-        self.init(apiContext: apiContext,
-                  adyenContext: adyenContext,
-                  awaitComponentBuilder: PollingHandlerProvider(apiContext: apiContext, adyenContext: adyenContext),
+        self.init(adyenContext: adyenContext,
+                  awaitComponentBuilder: PollingHandlerProvider(adyenContext: AdyenContext),
                   configuration: configuration)
     }
     
@@ -72,8 +70,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     /// - Parameter adyenContext: The Adyen context.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter configuration: The Component UI style.
-    internal init(apiContext: APIContext,
-                  adyenContext: AdyenContext,
+    internal init(adyenContext: AdyenContext,
                   awaitComponentBuilder: AnyPollingHandlerProvider,
                   configuration: Configuration = .init()) {
         self.apiContext = apiContext

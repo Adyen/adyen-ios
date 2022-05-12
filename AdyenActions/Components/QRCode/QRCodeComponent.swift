@@ -78,13 +78,11 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
     /// - Parameter apiContext: the `APIContext`.
     /// - Parameter adyenContext: The Adyen context.
     /// - Parameter configuration: The component configurations
-    public convenience init(apiContext: APIContext,
-                            adyenContext: AdyenContext,
+    public convenience init(adyenContext: AdyenContext,
                             configuration: Configuration = .init()) {
-        self.init(apiContext: apiContext,
-                  adyenContext: adyenContext,
+        self.init(adyenContext: adyenContext,
                   configuration: configuration,
-                  pollingComponentBuilder: PollingHandlerProvider(apiContext: apiContext, adyenContext: adyenContext),
+                  pollingComponentBuilder: PollingHandlerProvider(adyenContext: AdyenContext),
                   timeoutInterval: 60 * 15)
     }
     
@@ -95,8 +93,7 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
     /// - Parameter configuration: The component configurations
     /// - Parameter pollingComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter timeoutInterval: QR Code expiration timeout
-    internal init(apiContext: APIContext,
-                  adyenContext: AdyenContext,
+    internal init(adyenContext: AdyenContext,
                   configuration: Configuration = .init(),
                   pollingComponentBuilder: AnyPollingHandlerProvider,
                   timeoutInterval: TimeInterval) {

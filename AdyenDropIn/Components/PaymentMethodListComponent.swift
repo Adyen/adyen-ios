@@ -42,8 +42,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     /// - Parameter adyenContext: The Adyen context.
     /// - Parameter components: The components to display in the list.
     /// - Parameter style: The component's UI style.
-    internal init(apiContext: APIContext,
-                  adyenContext: AdyenContext,
+    internal init(adyenContext: AdyenContext,
                   components: [ComponentsSection],
                   style: ListComponentStyle = ListComponentStyle()) {
         self.apiContext = apiContext

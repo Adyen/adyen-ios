@@ -85,23 +85,19 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     /// - Parameter apiContext: The API context.
     /// - Parameter adyenContext: The Adyen context.
     /// - Parameter configuration: The voucher component configurations.
-    public convenience init(apiContext: APIContext,
-                            adyenContext: AdyenContext,
+    public convenience init(adyenContext: AdyenContext,
                             configuration: Configuration = Configuration()) {
-        self.init(apiContext: apiContext,
-                  adyenContext: adyenContext,
+        self.init(adyenContext: adyenContext,
                   voucherShareableViewProvider: nil,
                   configuration: configuration,
-                  passProvider: AppleWalletPassProvider(apiContext: apiContext,
-                                                        adyenContext: adyenContext))
+                  passProvider: AppleWalletPassProvider(adyenContext: adyenContext))
     }
 
     /// Initializes the `AwaitComponent`.
     /// - Parameter apiContext: The API context.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
-    internal init(apiContext: APIContext,
-                  adyenContext: AdyenContext,
+    internal init(adyenContext: AdyenContext,
                   voucherShareableViewProvider: AnyVoucherShareableViewProvider?,
                   configuration: Configuration = Configuration(),
                   passProvider: AnyAppleWalletPassProvider?) {
@@ -110,8 +106,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
         self.configuration = configuration
         self.voucherShareableViewProvider = voucherShareableViewProvider ??
             VoucherShareableViewProvider(style: configuration.style, environment: apiContext.environment)
-        self.passProvider = passProvider ?? AppleWalletPassProvider(apiContext: apiContext,
-                                                                    adyenContext: adyenContext)
+        self.passProvider = passProvider ?? AppleWalletPassProvider(adyenContext: adyenContext)
     }
 
     /// :nodoc:
