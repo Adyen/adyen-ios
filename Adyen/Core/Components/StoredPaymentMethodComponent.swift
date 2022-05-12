@@ -21,7 +21,6 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
 
     /// :nodoc:
     public init(paymentMethod: StoredPaymentMethod,
-                apiContext: APIContext,
                 adyenContext: AdyenContext) {
         self.storedPaymentMethod = paymentMethod
         self.adyenContext = adyenContext

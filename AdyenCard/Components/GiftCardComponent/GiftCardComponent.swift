@@ -52,18 +52,15 @@ public final class GiftCardComponent: PartialPaymentComponent,
     ///   - adyenContext: The AdyenContext
     ///   - style:  The Component's UI style.
     public convenience init(paymentMethod: GiftCardPaymentMethod,
-                            apiContext: APIContext,
                             adyenContext: AdyenContext,
                             style: FormComponentStyle = FormComponentStyle()) {
         self.init(paymentMethod: paymentMethod,
-                  apiContext: apiContext,
                   adyenContext: adyenContext,
                   style: style,
                   publicKeyProvider: PublicKeyProvider(apiContext: apiContext))
     }
     
     internal init(paymentMethod: GiftCardPaymentMethod,
-                  apiContext: APIContext,
                   adyenContext: AdyenContext,
                   style: FormComponentStyle = FormComponentStyle(),
                   publicKeyProvider: AnyPublicKeyProvider) {
@@ -276,7 +273,6 @@ public final class GiftCardComponent: PartialPaymentComponent,
                                                            displayInformation: displayInformation)
         let component = InstantPaymentComponent(paymentMethod: paymentMethod,
                                                 paymentData: paymentData,
-                                                apiContext: apiContext,
                                                 adyenContext: adyenContext)
         delegate.showConfirmation(for: component, with: paymentData.order)
     }

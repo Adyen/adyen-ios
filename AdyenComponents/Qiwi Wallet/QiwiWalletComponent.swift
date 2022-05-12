@@ -24,12 +24,10 @@ public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
     ///   - adyenContext: The Adyen context.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: QiwiWalletPaymentMethod,
-                apiContext: APIContext,
                 adyenContext: AdyenContext,
                 configuration: Configuration = .init()) {
         self.qiwiWalletPaymentMethod = paymentMethod
         super.init(paymentMethod: paymentMethod,
-                   apiContext: apiContext,
                    adyenContext: adyenContext,
                    fields: [.phone],
                    configuration: configuration)

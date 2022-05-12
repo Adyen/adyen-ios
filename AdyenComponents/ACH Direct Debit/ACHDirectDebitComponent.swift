@@ -63,11 +63,9 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     ///   - adyenContext: The Adyen context
     ///   - configuration: Configuration for the component.
     public convenience init(paymentMethod: ACHDirectDebitPaymentMethod,
-                            apiContext: APIContext,
                             adyenContext: AdyenContext,
                             configuration: Configuration = .init()) {
         self.init(paymentMethod: paymentMethod,
-                  apiContext: apiContext,
                   adyenContext: adyenContext,
                   configuration: configuration,
                   publicKeyProvider: PublicKeyProvider(apiContext: apiContext))
@@ -75,7 +73,6 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     
     /// :nodoc:
     internal init(paymentMethod: ACHDirectDebitPaymentMethod,
-                  apiContext: APIContext,
                   adyenContext: AdyenContext,
                   configuration: Configuration = .init(),
                   publicKeyProvider: AnyPublicKeyProvider) {

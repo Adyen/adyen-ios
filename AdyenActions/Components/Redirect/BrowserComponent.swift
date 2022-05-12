@@ -47,7 +47,6 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     /// - Parameter apiContext: The API context.
     /// - Parameter style: The component's UI style.
     internal init(url: URL,
-                  apiContext: APIContext,
                   adyenContext: AdyenContext,
                   style: RedirectComponentStyle? = nil) {
         self.url = url

@@ -71,7 +71,6 @@ public class CardComponent: PublicKeyConsumer,
     ///   - adyenContext: The Adyen context.
     ///   - configuration: The configuration of the component.
     public convenience init(paymentMethod: AnyCardPaymentMethod,
-                            apiContext: APIContext,
                             adyenContext: AdyenContext,
                             configuration: Configuration = .init()) {
         let publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
@@ -79,7 +78,6 @@ public class CardComponent: PublicKeyConsumer,
                                               publicKeyProvider: publicKeyProvider,
                                               minBinLength: Constant.privateBinLength)
         self.init(paymentMethod: paymentMethod,
-                  apiContext: apiContext,
                   adyenContext: adyenContext,
                   configuration: configuration,
                   publicKeyProvider: publicKeyProvider,
@@ -97,7 +95,6 @@ public class CardComponent: PublicKeyConsumer,
     ///   - publicKeyProvider: The public key provider
     ///   - binProvider: Any object capable to provide a BinInfo.
     internal init(paymentMethod: AnyCardPaymentMethod,
-                  apiContext: APIContext,
                   adyenContext: AdyenContext,
                   configuration: Configuration,
                   publicKeyProvider: AnyPublicKeyProvider,
@@ -140,11 +137,11 @@ public class CardComponent: PublicKeyConsumer,
         }
         var component: PaymentComponent & PresentableComponent
         if configuration.stored.showsSecurityCodeField {
-            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, apiContext: apiContext, adyenContext: adyenContext)
+            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, adyenContext: adyenContext)
             storedComponent.localizationParameters = configuration.localizationParameters
             component = storedComponent
         } else {
-            let storedComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext, adyenContext: adyenContext)
+            let storedComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod, adyenContext: adyenContext)
             storedComponent.localizationParameters = configuration.localizationParameters
             component = storedComponent
         }

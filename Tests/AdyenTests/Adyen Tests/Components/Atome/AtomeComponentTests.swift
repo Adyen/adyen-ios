@@ -24,7 +24,6 @@ class AtomeComponentTests: XCTestCase {
         adyenContext = AdyenContext(apiContext: apiContext, analyticsProvider: analyticsProviderMock)
         style = FormComponentStyle()
         sut = AtomeComponent(paymentMethod: paymentMethod,
-                             apiContext: apiContext,
                              adyenContext: adyenContext,
                              configuration: AtomeComponent.Configuration(style: style))
     }

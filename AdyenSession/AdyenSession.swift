@@ -31,7 +31,6 @@ public final class AdyenSession {
         ///   - apiContext: The API context.
         public init(sessionIdentifier: String,
                     initialSessionData: String,
-                    apiContext: APIContext,
                     adyenContext: AdyenContext) {
             self.sessionIdentifier = sessionIdentifier
             self.initialSessionData = initialSessionData

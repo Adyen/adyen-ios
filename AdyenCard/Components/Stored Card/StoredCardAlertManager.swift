@@ -21,7 +21,6 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
     internal var localizationParameters: LocalizationParameters?
     
     internal init(paymentMethod: StoredCardPaymentMethod,
-                  apiContext: APIContext,
                   adyenContext: AdyenContext,
                   amount: Amount?) {
         self.adyenContext = adyenContext

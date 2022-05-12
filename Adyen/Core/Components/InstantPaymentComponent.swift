@@ -24,7 +24,6 @@ public final class InstantPaymentComponent: PaymentComponent {
     /// :nodoc:
     public init(paymentMethod: PaymentMethod,
                 paymentData: PaymentComponentData?,
-                apiContext: APIContext,
                 adyenContext: AdyenContext) {
         self.paymentMethod = paymentMethod
         self.paymentData = paymentData

@@ -24,12 +24,10 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
     ///   - adyenContext: The Adyen context.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: DokuPaymentMethod,
-                apiContext: APIContext,
                 adyenContext: AdyenContext,
                 configuration: Configuration = .init()) {
         self.dokuPaymentMethod = paymentMethod
         super.init(paymentMethod: paymentMethod,
-                   apiContext: apiContext,
                    adyenContext: adyenContext,
                    fields: [.firstName, .lastName, .email],
                    configuration: configuration)

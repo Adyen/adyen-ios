@@ -56,7 +56,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplyPay` if the current device's hardware doesn't support ApplePay.
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment` if user can't make payments on any of the supported networks.
     public init(paymentMethod: ApplePayPaymentMethod,
-                apiContext: APIContext,
                 adyenContext: AdyenContext,
                 configuration: Configuration) throws {
         guard PKPaymentAuthorizationViewController.canMakePayments() else {

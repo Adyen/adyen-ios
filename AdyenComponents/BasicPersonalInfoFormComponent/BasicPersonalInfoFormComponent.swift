@@ -22,11 +22,9 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
     ///   - adyenContext: The Adyen context.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: PaymentMethod,
-                apiContext: APIContext,
                 adyenContext: AdyenContext,
                 configuration: Configuration = .init()) {
         super.init(paymentMethod: paymentMethod,
-                   apiContext: apiContext,
                    adyenContext: adyenContext,
                    fields: [.firstName, .lastName, .phone, .email],
                    configuration: configuration)

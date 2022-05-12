@@ -36,7 +36,6 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     ///   - adyenContext: The Adyen context.
     ///   - configuration: The Component's configuration.
     public init(paymentMethod: BoletoPaymentMethod,
-                apiContext: APIContext,
                 adyenContext: AdyenContext,
                 configuration: Configuration) {
         self.boletoPaymentMethod = paymentMethod
@@ -88,8 +87,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
                                                                                shopperInformation: configuration.shopperInformation,
                                                                                localizationParameters: configuration.localizationParameters)
         let component = FormComponent(paymentMethod: paymentMethod,
-                                      apiContext: apiContext,
-                                      adyenContext: adyenContext,
+                                                   adyenContext: adyenContext,
                                       fields: formFields,
                                       configuration: configuration,
                                       onCreatePaymentDetails: { [weak self] in
@@ -228,7 +226,6 @@ extension BoletoComponent {
         
         /// :nodoc:
         fileprivate init(paymentMethod: PaymentMethod,
-                         apiContext: APIContext,
                          adyenContext: AdyenContext,
                          fields: [PersonalInformation],
                          configuration: AbstractPersonalInformationComponent.Configuration,
@@ -236,7 +233,6 @@ extension BoletoComponent {
             self.onCreatePaymentDetails = onCreatePaymentDetails
             
             super.init(paymentMethod: paymentMethod,
-                       apiContext: apiContext,
                        adyenContext: adyenContext,
                        fields: fields,
                        configuration: configuration)

@@ -72,7 +72,6 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     ///   - adyenContext: The Adyen context.
     ///   - configuration: Configuration for the component.
     public init(paymentMethod: BACSDirectDebitPaymentMethod,
-                apiContext: APIContext,
                 adyenContext: AdyenContext,
                 configuration: Configuration = Configuration()) {
         self.bacsPaymentMethod = paymentMethod

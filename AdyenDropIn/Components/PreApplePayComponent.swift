@@ -62,7 +62,6 @@ internal final class PreApplePayComponent: PresentableComponent,
     
     /// :nodoc:
     internal init(paymentMethod: ApplePayPaymentMethod,
-                  apiContext: APIContext,
                   adyenContext: AdyenContext,
                   configuration: Configuration,
                   applePayConfiguration: ApplePayComponent.Configuration) throws {
@@ -71,7 +70,6 @@ internal final class PreApplePayComponent: PresentableComponent,
         self.configuration = configuration
         self.payment = applePayConfiguration.applePayPayment.payment
         self.applePayComponent = try ApplePayComponent(paymentMethod: paymentMethod,
-                                                       apiContext: apiContext,
                                                        adyenContext: adyenContext,
                                                        configuration: applePayConfiguration)
         self.applePayComponent.delegate = self

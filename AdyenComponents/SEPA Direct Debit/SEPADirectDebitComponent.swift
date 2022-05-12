@@ -36,7 +36,6 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     /// - Parameter adyenContext: The Adyen context.
     /// - Parameter configuration: Configuration for the component.
     public init(paymentMethod: SEPADirectDebitPaymentMethod,
-                apiContext: APIContext,
                 adyenContext: AdyenContext,
                 configuration: Configuration = .init()) {
         self.sepaDirectDebitPaymentMethod = paymentMethod

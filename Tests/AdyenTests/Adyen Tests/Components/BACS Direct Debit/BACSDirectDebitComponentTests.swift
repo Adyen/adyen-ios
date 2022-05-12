@@ -26,7 +26,6 @@ class BACSDirectDebitComponentTests: XCTestCase {
         adyenContext = Dummy.adyenContext
 
         sut = BACSDirectDebitComponent(paymentMethod: paymentMethod,
-                                       apiContext: apiContext,
                                        adyenContext: adyenContext)
 
         sut.presentationDelegate = presentationDelegate

@@ -33,7 +33,6 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     /// - Parameter adyenContext: The Adyen context.
     /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: IssuerListPaymentMethod,
-                apiContext: APIContext,
                 adyenContext: AdyenContext,
                 configuration: Configuration = .init()) {
         self.issuerListPaymentMethod = paymentMethod

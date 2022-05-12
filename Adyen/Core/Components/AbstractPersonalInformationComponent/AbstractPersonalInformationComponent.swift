@@ -60,7 +60,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     /// - Parameter fields: The component's fields.
     /// - Parameter configuration: The Component's configuration.
     public init(paymentMethod: PaymentMethod,
-                apiContext: APIContext,
                 adyenContext: AdyenContext,
                 fields: [PersonalInformation],
                 configuration: Configuration) {

@@ -31,7 +31,6 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
     
     /// :nodoc:
     internal init(storedCardPaymentMethod: StoredCardPaymentMethod,
-                  apiContext: APIContext,
                   adyenContext: AdyenContext) {
         self.storedCardPaymentMethod = storedCardPaymentMethod
         self.adyenContext = adyenContext
@@ -52,7 +51,6 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
         sendTelemetryEvent()
         
         let manager = StoredCardAlertManager(paymentMethod: storedCardPaymentMethod,
-                                             apiContext: apiContext,
                                              adyenContext: adyenContext,
                                              amount: payment?.amount)
         

@@ -21,7 +21,6 @@ public final class AlreadyPaidPaymentComponent: PaymentComponent {
 
     /// :nodoc:
     public init(paymentMethod: PaymentMethod,
-                apiContext: APIContext,
                 adyenContext: AdyenContext) {
         self.paymentMethod = paymentMethod
         self.adyenContext = adyenContext
