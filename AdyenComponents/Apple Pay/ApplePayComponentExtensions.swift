@@ -53,10 +53,12 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
             return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
         }
 
-        let applePayPayment = applePayPayment
         applePayDelegate.didUpdate(contact: contact,
-                                   for: applePayPayment,
-                                   completion: handlePaymentRequestUpdate(applePayPayment, completion))
+                                   for: applePayPayment) { [weak self] result in
+            guard let self = self else { return }
+            self.updateApplePayPayment(result)
+            completion(result)
+        }
     }
 
     public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
@@ -66,10 +68,12 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
             return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
         }
 
-        let applePayPayment = applePayPayment
         applePayDelegate.didUpdate(shippingMethod: shippingMethod,
-                                   for: applePayPayment,
-                                   completion: handlePaymentRequestUpdate(applePayPayment, completion))
+                                   for: applePayPayment) { [weak self] result in
+            guard let self = self else { return }
+            self.updateApplePayPayment(result)
+            completion(result)
+        }
     }
 
     @available(iOS 15.0, *)
@@ -80,27 +84,22 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
             return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
         }
 
-        let applePayPayment = applePayPayment
         applePayDelegate.didUpdate(couponCode: couponCode,
-                                   for: applePayPayment,
-                                   completion: handlePaymentRequestUpdate(applePayPayment, completion))
-    }
-
-    private func handlePaymentRequestUpdate<T: PKPaymentRequestUpdate>(_ applePayPayment: ApplePayPayment,
-                                                                       _ completion: @escaping (T) -> Void) -> (T) -> Void {
-        return { [weak self] result in
-            guard let self = self else {
-                return completion(T(paymentSummaryItems: applePayPayment.summaryItems))
-            }
-
-            if result.status == .success, result.paymentSummaryItems.count > 0 {
-                do {
-                    self.applePayPayment = try applePayPayment.update(with: result.paymentSummaryItems)
-                } catch {
-                    self.delegate?.didFail(with: error, from: self)
-                }
-            }
+                                   for: applePayPayment) { [weak self] result in
+            guard let self = self else { return }
+            self.updateApplePayPayment(result)
             completion(result)
         }
     }
+
+    private func updateApplePayPayment<T: PKPaymentRequestUpdate>(_ result: T) {
+        if result.status == .success, result.paymentSummaryItems.count > 0 {
+            do {
+                applePayPayment = try applePayPayment.update(with: result.paymentSummaryItems)
+            } catch {
+                delegate?.didFail(with: error, from: self)
+            }
+        }
+    }
+
 }
