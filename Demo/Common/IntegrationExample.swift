@@ -40,8 +40,7 @@ internal final class IntegrationExample: APIClientAware {
     // MARK: - Action Handling for Components
 
     internal lazy var adyenActionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(apiContext: ConfigurationConstants.apiContext,
-                                           adyenContext: ConfigurationConstants.adyenContext)
+        let handler = AdyenActionComponent(adyenContext: ConfigurationConstants.adyenContext)
         handler.delegate = self
         handler.presentationDelegate = self
         return handler

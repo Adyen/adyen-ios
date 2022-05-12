@@ -8,7 +8,7 @@
 
 final class PublicKeyProviderMock: AnyPublicKeyProvider {
     
-    let apiContext: APIContext = Dummy.context
+    let apiContext: adyenContext.apiContext = Dummy.context
 
     var onFetch: ((_ completion: @escaping CompletionHandler) -> Void)?
 

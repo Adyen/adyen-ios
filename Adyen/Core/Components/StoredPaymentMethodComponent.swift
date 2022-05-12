@@ -35,7 +35,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
         Analytics.sendEvent(
             component: storedPaymentMethod.type.rawValue,
             flavor: _isDropIn ? .dropin : .components,
-            context: apiContext
+            context: adyenContext.apiContext
         )
         sendTelemetryEvent()
         

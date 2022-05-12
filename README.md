@@ -111,7 +111,7 @@ Use **Environment.test** for environment. When you're ready to accept live payme
 
 ```swift
 let apiContext = APIContext(clientKey: clientKey, environment: Environment.test)
-let configuration = DropInComponent.Configuration(apiContext: apiContext)
+let configuration = DropInComponent.Configuration(apiContext: adyenContext.apiContext)
 ```
 
 Some payment methods need additional configuration. For example `ApplePayComponent`. These payment method specific configuration parameters can be set in an instance of `DropInComponent.Configuration`:
@@ -123,7 +123,7 @@ let summaryItems = [
                       PKPaymentSummaryItem(label: "Total", amount: 100, type: .final)
                    ]
 
-let configuration = DropInComponent.Configuration(apiContext: apiContext)
+let configuration = DropInComponent.Configuration(apiContext: adyenContext.apiContext)
 configuration.payment = payment
 configuration.applePay = .init(summaryItems: summaryItems,
                                merchantIdentifier: "merchant.com.adyen.MY_MERCHANT_ID")
@@ -212,7 +212,7 @@ In case of using individual components - not Drop-in -, create and persist an in
 
 ```swift
 lazy var actionComponent: AdyenActionComponent = {
-    let handler = AdyenActionComponent(apiContext: apiContext)
+    let handler = AdyenActionComponent(apiContext: adyenContext.apiContext)
     handler.delegate = self
     handler.presentationDelegate = self
     return handler
@@ -289,7 +289,7 @@ style.textField.text.color = .white
 style.switch.title.color = .white
 
 let component = CardComponent(paymentMethod: paymentMethod,
-                              apiContext: apiContext,
+                              apiContext: adyenContext.apiContext,
                               style: style)
 ```
 

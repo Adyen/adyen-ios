@@ -66,7 +66,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
             listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
             listItem.imageURL = LogoURLProvider.logoURL(for: issuer,
                                                         paymentMethod: issuerListPaymentMethod,
-                                                        environment: apiContext.environment)
+                                                        environment: adyenContext.apiContext.environment)
             listItem.selectionHandler = { [weak self] in
                 guard let self = self else { return }
                 

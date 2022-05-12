@@ -73,8 +73,8 @@ public class CardComponent: PublicKeyConsumer,
     public convenience init(paymentMethod: AnyCardPaymentMethod,
                             adyenContext: AdyenContext,
                             configuration: Configuration = .init()) {
-        let publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
-        let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: apiContext),
+        let publicKeyProvider = PublicKeyProvider(apiContext: adyenContext.apiContext)
+        let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: adyenContext.apiContext),
                                               publicKeyProvider: publicKeyProvider,
                                               minBinLength: Constant.privateBinLength)
         self.init(paymentMethod: paymentMethod,
@@ -152,6 +152,7 @@ public class CardComponent: PublicKeyConsumer,
     public func update(storePaymentMethodFieldVisibility isVisible: Bool) {
         cardViewController.update(storePaymentMethodFieldVisibility: isVisible)
     }
+
     // MARK: - Form Items
     
     private lazy var securedViewController = SecuredViewController(child: cardViewController, style: configuration.style)
@@ -161,7 +162,7 @@ public class CardComponent: PublicKeyConsumer,
                                                     shopperInformation: configuration.shopperInformation,
                                                     formStyle: configuration.style,
                                                     payment: payment,
-                                                    logoProvider: LogoURLProvider(environment: apiContext.environment),
+                                                    logoProvider: LogoURLProvider(environment: adyenContext.apiContext.environment),
                                                     supportedCardTypes: supportedCardTypes,
                                                     scope: String(describing: self),
                                                     localizationParameters: configuration.localizationParameters)

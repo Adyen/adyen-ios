@@ -13,7 +13,7 @@ class AtomeComponentTests: XCTestCase {
     private var analyticsProviderMock: AnalyticsProviderMock!
     private var adyenContext: AdyenContext!
     private var paymentMethod: PaymentMethod!
-    private var apiContext: APIContext!
+    private var apiContext: adyenContext.apiContext!
     private var style: FormComponentStyle!
     private var sut: AtomeComponent!
 
@@ -21,7 +21,7 @@ class AtomeComponentTests: XCTestCase {
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Atome")
         apiContext = Dummy.context
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(apiContext: apiContext, analyticsProvider: analyticsProviderMock)
+        adyenContext = AdyenContext(apiContext: adyenContext.apiContext, analyticsProvider: analyticsProviderMock)
         style = FormComponentStyle()
         sut = AtomeComponent(paymentMethod: paymentMethod,
                              adyenContext: adyenContext,

@@ -81,7 +81,6 @@ public struct OrderPaymentMethod: PaymentMethod {
 
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         AlreadyPaidPaymentComponent(paymentMethod: self,
-                                    apiContext: builder.adyenContext.apiContext,
                                     adyenContext: builder.adyenContext)
     }
 

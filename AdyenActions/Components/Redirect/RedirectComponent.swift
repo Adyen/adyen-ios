@@ -69,7 +69,7 @@ public final class RedirectComponent: ActionComponent {
     public func handle(_ action: RedirectAction) {
         Analytics.sendEvent(component: configuration.componentName,
                             flavor: _isDropIn ? .dropin : .components,
-                            context: apiContext)
+                            context: adyenContext.apiContext)
         
         if action.url.adyen.isHttp {
             openHttpSchemeUrl(action)

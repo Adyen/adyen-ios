@@ -64,10 +64,10 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     ///
     /// - Parameter action: The document action object.
     public func handle(_ action: DocumentAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: adyenContext.apiContext)
         
         let imageURL = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue,
-                                               environment: apiContext.environment,
+                                               environment: adyenContext.apiContext.environment,
                                                size: .medium)
         let viewModel = DocumentActionViewModel(action: action,
                                                 message: localizedString(.bacsDownloadMandate, configuration.localizationParameters),

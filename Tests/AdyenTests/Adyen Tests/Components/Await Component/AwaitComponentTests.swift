@@ -16,7 +16,7 @@ final class PollingHandlerMock: AnyPollingHandler {
     let apiContext = Dummy.context
 
     var adyenContext: AdyenContext {
-        return .init(apiContext: apiContext)
+        return .init(apiContext: adyenContext.apiContext)
     }
 
     var delegate: ActionComponentDelegate?

@@ -57,7 +57,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         self.init(paymentMethod: paymentMethod,
                   adyenContext: adyenContext,
                   style: style,
-                  publicKeyProvider: PublicKeyProvider(apiContext: apiContext))
+                  publicKeyProvider: PublicKeyProvider(apiContext: adyenContext.apiContext))
     }
     
     internal init(paymentMethod: GiftCardPaymentMethod,

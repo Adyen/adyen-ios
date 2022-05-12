@@ -22,8 +22,8 @@ public final class BCMCComponent: CardComponent {
                 configuration: CardComponent.Configuration = .init()) {
         let configuration = configuration.bcmcConfiguration()
         
-        let publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
-        let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: apiContext),
+        let publicKeyProvider = PublicKeyProvider(apiContext: adyenContext.apiContext)
+        let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: adyenContext.apiContext),
                                               publicKeyProvider: publicKeyProvider,
                                               minBinLength: Constant.privateBinLength)
         super.init(paymentMethod: paymentMethod,

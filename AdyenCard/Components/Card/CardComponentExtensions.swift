@@ -63,7 +63,7 @@ extension CardComponent: ViewControllerDelegate {
 
     /// :nodoc:
     public func viewDidLoad(viewController: UIViewController) {
-        Analytics.sendEvent(component: paymentMethod.type.rawValue, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(component: paymentMethod.type.rawValue, flavor: _isDropIn ? .dropin : .components, context: adyenContext.apiContext)
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
     }

@@ -58,7 +58,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     /// :nodoc:
     private lazy var apiClient: APIClientProtocol = {
         let scheduler = SimpleScheduler(maximumCount: 3)
-        return APIClient(apiContext: apiContext)
+        return APIClient(apiContext: adyenContext.apiContext)
             .retryAPIClient(with: scheduler)
             .retryOnErrorAPIClient()
     }()
@@ -101,7 +101,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
         self.adyenContext = adyenContext
         self.configuration = configuration
         self.voucherShareableViewProvider = voucherShareableViewProvider ??
-            VoucherShareableViewProvider(style: configuration.style, environment: apiContext.environment)
+            VoucherShareableViewProvider(style: configuration.style, environment: adyenContext.apiContext.environment)
         self.passProvider = passProvider ?? AppleWalletPassProvider(adyenContext: adyenContext)
     }
 
@@ -112,7 +112,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     ///
     /// - Parameter action: The await action object.
     public func handle(_ action: VoucherAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: adyenContext.apiContext)
         fetchAndCacheAppleWalletPassIfNeeded(with: action.anyAction)
 
         voucherShareableViewProvider.localizationParameters = configuration.localizationParameters
@@ -182,7 +182,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
             currency: comps.formattedCurrencySymbol,
             logoUrl: LogoURLProvider.logoURL(
                 withName: anyAction.paymentMethodType.rawValue,
-                environment: apiContext.environment,
+                environment: adyenContext.apiContext.environment,
                 size: .medium
             ),
             mainButton: getPrimaryButtonTitle(with: action),

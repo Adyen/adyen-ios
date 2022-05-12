@@ -46,7 +46,7 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
         Analytics.sendEvent(
             component: paymentMethod.type.rawValue,
             flavor: _isDropIn ? .dropin : .components,
-            context: apiContext
+            context: adyenContext.apiContext
         )
         sendTelemetryEvent()
         

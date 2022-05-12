@@ -81,7 +81,7 @@ public final class AdyenSession {
                                   delegate: AdyenSessionDelegate,
                                   presentationDelegate: PresentationDelegate,
                                   completion: @escaping ((Result<AdyenSession, Error>) -> Void)) {
-        let baseAPIClient = APIClient(apiContext: configuration.apiContext)
+        let baseAPIClient = APIClient(apiContext: configuration.adyenContext.apiContext)
             .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
             .retryOnErrorAPIClient()
         initialize(with: configuration,
@@ -144,8 +144,7 @@ public final class AdyenSession {
     // MARK: - Action Handling for Components
 
     internal lazy var actionComponent: ActionHandlingComponent = {
-        let handler = AdyenActionComponent(apiContext: configuration.apiContext,
-                                           adyenContext: configuration.adyenContext)
+        let handler = AdyenActionComponent(adyenContext: configuration.adyenContext)
         handler.delegate = self
         handler.presentationDelegate = presentationDelegate
         return handler
@@ -156,7 +155,7 @@ public final class AdyenSession {
     internal let configuration: Configuration
     
     internal lazy var apiClient: APIClientProtocol = {
-        let apiClient = SessionAPIClient(apiClient: APIClient(apiContext: configuration.apiContext), session: self)
+        let apiClient = SessionAPIClient(apiClient: APIClient(apiContext: configuration.adyenContext.apiContext), session: self)
         return apiClient
             .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
             .retryOnErrorAPIClient()

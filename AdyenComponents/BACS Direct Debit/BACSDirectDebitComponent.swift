@@ -35,7 +35,6 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// The BACS Direct Debit payment method.
     public var paymentMethod: PaymentMethod { bacsPaymentMethod }
 
-    
     /// The Adyen context
     public let adyenContext: AdyenContext
 
@@ -82,7 +81,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
             styleProvider: configuration.style
         )
         let tracker = BACSDirectDebitComponentTracker(paymentMethod: bacsPaymentMethod,
-                                                      apiContext: apiContext,
+                                                      apiContext: adyenContext.apiContext,
                                                       telemetryTracker: adyenContext.analyticsProvider,
                                                       isDropIn: _isDropIn)
         let itemsFactory = BACSItemsFactory(styleProvider: configuration.style,

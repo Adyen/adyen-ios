@@ -78,7 +78,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
                          completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         let event = Analytics.Event(component: "\(threeDS2EventName).fingerprint",
                                     flavor: _isDropIn ? .dropin : .components,
-                                    environment: apiContext.environment)
+                                    environment: adyenContext.apiContext.environment)
         coreActionHandler.handle(fingerprintAction, event: event) { [weak self] result in
             switch result {
             case let .success(encodedFingerprint):
@@ -102,7 +102,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
                          completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         let event = Analytics.Event(component: "\(threeDS2EventName).challenge",
                                     flavor: _isDropIn ? .dropin : .components,
-                                    environment: apiContext.environment)
+                                    environment: adyenContext.apiContext.environment)
         coreActionHandler.handle(challengeAction, event: event) { [weak self] result in
             switch result {
             case let .success(result):
@@ -122,7 +122,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     // MARK: - Private
 
     /// :nodoc:
-    private lazy var fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter = ThreeDS2FingerprintSubmitter(apiContext: apiContext)
+    private lazy var fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter = ThreeDS2FingerprintSubmitter(apiContext: adyenContext.apiContext)
 
     private let threeDS2EventName = "3ds2"
 

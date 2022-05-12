@@ -39,9 +39,6 @@ public final class DropInComponent: NSObject,
     /// The title text on the first page of drop in component.
     public let title: String
 
-    /// :nodoc:
-    public var apiContext: APIContext { configuration.apiContext }
-
     // TODO: - Document
     public var adyenContext: AdyenContext
     
@@ -98,7 +95,7 @@ public final class DropInComponent: NSObject,
     /// :nodoc:
     private lazy var apiClient: APIClientProtocol = {
         let scheduler = SimpleScheduler(maximumCount: 3)
-        return APIClient(apiContext: apiContext)
+        return APIClient(apiContext: adyenContext.apiContext)
             .retryAPIClient(with: scheduler)
             .retryOnErrorAPIClient()
     }()
@@ -183,7 +180,7 @@ public final class DropInComponent: NSObject,
     )
 
     private lazy var actionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(adyenContext: AdyenContext)
+        let handler = AdyenActionComponent(adyenContext: adyenContext)
         handler.configuration.style = configuration.style.actionComponent
         handler._isDropIn = true
         handler.delegate = self

@@ -41,7 +41,7 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
     internal init(adyenContext: AdyenContext) {
         self.adyenContext = adyenContext
         self.apiClient = RetryAPIClient(
-            apiClient: APIClient(apiContext: apiContext),
+            apiClient: APIClient(apiContext: adyenContext.apiContext),
             scheduler: BackoffScheduler(queue: .main)
         )
     }
@@ -64,7 +64,7 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
     
     /// :nodoc:
     private func createPollingComponent() -> AnyPollingHandler {
-        PollingComponent(       adyenContext: adyenContext,
+        PollingComponent(adyenContext: adyenContext,
                          apiClient: apiClient)
     }
     

@@ -17,7 +17,6 @@ extension IntegrationExample {
     internal func presentCardComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: CardPaymentMethod.self) else { return }
         let component = CardComponent(paymentMethod: paymentMethod,
-                                      apiContext: ConfigurationConstants.apiContext,
                                       adyenContext: ConfigurationConstants.adyenContext)
         component.cardComponentDelegate = self
         present(component)
@@ -26,7 +25,6 @@ extension IntegrationExample {
     internal func presentIdealComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: IssuerListPaymentMethod.self) else { return }
         let component = IdealComponent(paymentMethod: paymentMethod,
-                                       apiContext: ConfigurationConstants.apiContext,
                                        adyenContext: ConfigurationConstants.adyenContext)
         present(component)
     }
@@ -34,7 +32,6 @@ extension IntegrationExample {
     internal func presentSEPADirectDebitComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: SEPADirectDebitPaymentMethod.self) else { return }
         let component = SEPADirectDebitComponent(paymentMethod: paymentMethod,
-                                                 apiContext: ConfigurationConstants.apiContext,
                                                  adyenContext: ConfigurationConstants.adyenContext)
         present(component)
     }
@@ -42,7 +39,6 @@ extension IntegrationExample {
     internal func presentBACSDirectDebitComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return }
         let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
-                                                 apiContext: ConfigurationConstants.apiContext,
                                                  adyenContext: ConfigurationConstants.adyenContext)
         bacsDirectDebitPresenter = BACSDirectDebitPresentationDelegate(bacsComponent: component)
         component.presentationDelegate = bacsDirectDebitPresenter
@@ -54,7 +50,6 @@ extension IntegrationExample {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: MBWayPaymentMethod.self) else { return }
         let config = MBWayComponent.Configuration(style: style)
         let component = MBWayComponent(paymentMethod: paymentMethod,
-                                       apiContext: ConfigurationConstants.apiContext,
                                        adyenContext: ConfigurationConstants.adyenContext,
                                        configuration: config)
         present(component)
@@ -69,7 +64,6 @@ extension IntegrationExample {
                                                      merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
                                                      allowOnboarding: true)
         let component = try? ApplePayComponent(paymentMethod: paymentMethod,
-                                               apiContext: ConfigurationConstants.apiContext,
                                                adyenContext: ConfigurationConstants.adyenContext,
                                                configuration: config)
         guard let presentableComponent = component else { return }
@@ -79,7 +73,6 @@ extension IntegrationExample {
     internal func presentConvenienceStore() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: EContextPaymentMethod.self) else { return }
         let component = EContextStoreComponent(paymentMethod: paymentMethod,
-                                               apiContext: ConfigurationConstants.apiContext,
                                                adyenContext: ConfigurationConstants.adyenContext,
                                                configuration: BasicPersonalInfoFormComponent.Configuration(style: FormComponentStyle()))
         present(component)

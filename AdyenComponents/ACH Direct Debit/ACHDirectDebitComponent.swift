@@ -22,7 +22,6 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         static let payButtonItem = "payButtonItem"
     }
     
-    
     /// The Adyen context
     public let adyenContext: AdyenContext
     
@@ -68,7 +67,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         self.init(paymentMethod: paymentMethod,
                   adyenContext: adyenContext,
                   configuration: configuration,
-                  publicKeyProvider: PublicKeyProvider(apiContext: apiContext))
+                  publicKeyProvider: PublicKeyProvider(apiContext: adyenContext.apiContext))
     }
     
     /// :nodoc:
@@ -256,7 +255,7 @@ extension ACHDirectDebitComponent: ViewControllerDelegate {
 
     /// :nodoc:
     public func viewDidLoad(viewController: UIViewController) {
-        Analytics.sendEvent(component: paymentMethod.type.rawValue, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(component: paymentMethod.type.rawValue, flavor: _isDropIn ? .dropin : .components, context: adyenContext.apiContext)
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
     }

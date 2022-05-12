@@ -103,7 +103,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         let paymentMethod = defaultComponent.paymentMethod
         let displayInformation = paymentMethod.localizedDisplayInformation(using: localizationParameters)
         var listItem = ListItem(title: displayInformation.title, style: self.listItemStyle)
-        listItem.imageURL = LogoURLProvider.logoURL(for: paymentMethod, environment: apiContext.environment)
+        listItem.imageURL = LogoURLProvider.logoURL(for: paymentMethod, environment: adyenContext.apiContext.environment)
         listItem.subtitle = displayInformation.subtitle
         listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "defaultComponent")
         return listItem

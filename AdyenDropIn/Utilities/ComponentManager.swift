@@ -41,7 +41,6 @@ internal final class ComponentManager {
         self.paymentMethods = paymentMethods
         self.adyenContext = adyenContext
         self.configuration = configuration
-        self.apiContext = configuration.apiContext
         self.partialPaymentEnabled = partialPaymentEnabled
         self.remainingAmount = remainingAmount
         self.order = order
@@ -202,8 +201,6 @@ internal final class ComponentManager {
     private func createBACSDirectDebit(_ paymentMethod: BACSDirectDebitPaymentMethod) -> BACSDirectDebitComponent {
         let bacsConfiguration = BACSDirectDebitComponent.Configuration(style: configuration.style.formComponent,
                                                                        localizationParameters: configuration.localizationParameters)
-
-        let adyenContext = AdyenContext(apiContext: apiContext)
         let bacsDirectDebitComponent = BACSDirectDebitComponent(paymentMethod: paymentMethod,
                                                                 adyenContext: adyenContext,
                                                                 configuration: bacsConfiguration)

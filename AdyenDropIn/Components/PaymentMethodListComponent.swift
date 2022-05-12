@@ -90,7 +90,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
                                 style: style.listItem,
                                 canModifyIcon: !isProtected)
         listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
-        listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: apiContext.environment)
+        listItem.imageURL = LogoURLProvider.logoURL(for: component.paymentMethod, environment: adyenContext.apiContext.environment)
         listItem.trailingText = displayInformation.disclosureText
         listItem.subtitle = displayInformation.subtitle
         listItem.selectionHandler = { [weak self, weak component] in

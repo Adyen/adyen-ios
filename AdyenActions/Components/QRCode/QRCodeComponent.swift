@@ -79,7 +79,7 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
                             configuration: Configuration = .init()) {
         self.init(adyenContext: adyenContext,
                   configuration: configuration,
-                  pollingComponentBuilder: PollingHandlerProvider(adyenContext: AdyenContext),
+                  pollingComponentBuilder: PollingHandlerProvider(adyenContext: adyenContext),
                   timeoutInterval: 60 * 15)
     }
     
@@ -162,7 +162,7 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
     
     /// :nodoc:
     private func createModel(with action: QRCodeAction) -> QRCodeView.Model {
-        let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: apiContext.environment)
+        let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: adyenContext.apiContext.environment)
         return QRCodeView.Model(
             action: action,
             instruction: localizedString(.pixInstructions,

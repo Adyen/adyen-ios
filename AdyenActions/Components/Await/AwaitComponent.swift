@@ -57,7 +57,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     public convenience init(adyenContext: AdyenContext,
                             configuration: Configuration = .init()) {
         self.init(adyenContext: adyenContext,
-                  awaitComponentBuilder: PollingHandlerProvider(adyenContext: AdyenContext),
+                  awaitComponentBuilder: PollingHandlerProvider(adyenContext: adyenContext),
                   configuration: configuration)
     }
     
@@ -82,7 +82,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     ///
     /// - Parameter action: The await action object.
     public func handle(_ action: AwaitAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: adyenContext.apiContext)
         
         let viewModel = AwaitComponentViewModel.viewModel(with: action.paymentMethodType,
                                                           localizationParameters: configuration.localizationParameters)

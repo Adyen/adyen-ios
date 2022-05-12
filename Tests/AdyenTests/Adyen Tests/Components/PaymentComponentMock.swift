@@ -11,7 +11,7 @@ class PaymentComponentMock: PaymentComponent {
     let apiContext = Dummy.context
 
     var adyenContext: AdyenContext {
-        return .init(apiContext: apiContext)
+        return .init(apiContext: adyenContext.apiContext)
     }
     
     var paymentMethod: PaymentMethod

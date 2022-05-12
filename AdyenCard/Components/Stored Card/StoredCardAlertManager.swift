@@ -27,7 +27,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
         self.paymentMethod = paymentMethod
         self.amount = amount
         
-        self.publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
+        self.publicKeyProvider = PublicKeyProvider(apiContext: adyenContext.apiContext)
     }
     
     // MARK: - CVC length

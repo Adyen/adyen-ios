@@ -65,6 +65,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// - Parameter configuration: The component's configuration.
     public init(adyenContext: AdyenContext,
                 configuration: Configuration = Configuration()) {
+        self.adyenContext = adyenContext
         self.configuration = configuration
         self.updateConfiguration()
     }
@@ -83,8 +84,7 @@ public final class ThreeDS2Component: ActionComponent {
                               threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
                               redirectComponent: AnyRedirectComponent,
                               configuration: Configuration = Configuration()) {
-        self.init(apiContext: redirectComponent.adyenContext.apiContext,
-                  adyenContext: adyenContext,
+        self.init(adyenContext: adyenContext,
                   configuration: configuration)
         self.threeDS2CompactFlowHandler = threeDS2CompactFlowHandler
         self.threeDS2ClassicFlowHandler = threeDS2ClassicFlowHandler
@@ -198,7 +198,7 @@ public final class ThreeDS2Component: ActionComponent {
     }()
 
     private lazy var redirectComponent: AnyRedirectComponent = {
-        let component = RedirectComponent(adyenContext: AdyenContext)
+        let component = RedirectComponent(adyenContext: adyenContext)
         component.configuration.style = configuration.redirectComponentStyle
 
         component.delegate = self
