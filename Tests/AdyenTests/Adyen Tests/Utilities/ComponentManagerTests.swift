@@ -81,8 +81,8 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.storedComponents.count, 4)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
 
-        XCTAssertEqual(sut.storedComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, 4)
-        XCTAssertEqual(sut.regularComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, numberOfExpectedRegularComponents)
+        XCTAssertEqual(sut.storedComponents.filter { $0.adyenContext.apiContext.clientKey == Dummy.context.clientKey }.count, 4)
+        XCTAssertEqual(sut.regularComponents.filter { $0.adyenContext.apiContext.clientKey == Dummy.context.clientKey }.count, numberOfExpectedRegularComponents)
 
         XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 15)
         XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 15)

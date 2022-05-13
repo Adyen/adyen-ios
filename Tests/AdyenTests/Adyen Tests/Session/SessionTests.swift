@@ -180,8 +180,7 @@ class SessionTests: XCTestCase {
                     ),
                     paymentData: "payment_data"
                 )
-                sut.didProvide(data, from: RedirectComponent(apiContext: Dummy.context,
-                                                             adyenContext: self.adyenContext))
+                sut.didProvide(data, from: RedirectComponent(adyenContext: self.adyenContext))
             default:
                 XCTFail()
             }
@@ -212,8 +211,7 @@ class SessionTests: XCTestCase {
                                               adyenContext: adyenContext)
         let dropInComponent = DropInComponent(paymentMethods: expectedPaymentMethods,
                                               adyenContext: adyenContext,
-                                              configuration: .init(apiContext: Dummy.context,
-                                                                   adyenContext: adyenContext),
+                                              configuration: .init(adyenContext: adyenContext),
                                               title: nil)
         let apiClient = APIClientMock()
         sut.apiClient = apiClient

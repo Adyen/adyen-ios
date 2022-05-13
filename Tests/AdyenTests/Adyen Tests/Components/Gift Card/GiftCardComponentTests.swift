@@ -50,7 +50,7 @@ class GiftCardComponentTests: XCTestCase {
         publicKeyProvider = PublicKeyProviderMock()
 
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(analyticsProvider: analyticsProviderMock)
+        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
 
         sut = GiftCardComponent(paymentMethod: paymentMethod,
                                 adyenContext: adyenContext,

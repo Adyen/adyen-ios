@@ -17,7 +17,6 @@ class BACSDirectDebitComponentTests: XCTestCase {
         try super.setUpWithError()
         let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit,
                                                          name: "BACS Direct Debit")
-        let apiContext = Dummy.context
 
         inputPresenter = BACSInputPresenterProtocolMock()
         confirmationPresenter = BACSConfirmationPresenterProtocolMock()

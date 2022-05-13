@@ -20,7 +20,7 @@ class BLIKComponentTests: XCTestCase {
 
     override func setUp() {
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(analyticsProvider: analyticsProviderMock)
+        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
         sut = BLIKComponent(paymentMethod: method, adyenContext: adyenContext)
         sut.payment = payment
     }
