@@ -21,7 +21,7 @@ class MBWayComponentTests: XCTestCase {
         try super.setUpWithError()
 
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        adyenContext = AdyenContext(analyticsProvider: analyticsProviderMock)
 
         paymentMethod = MBWayPaymentMethod(type: .mbWay, name: "test_name")
         payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
@@ -183,7 +183,7 @@ class MBWayComponentTests: XCTestCase {
 
     func testRequiresModalPresentation() {
         let mbWayPaymentMethod = MBWayPaymentMethod(type: .mbWay, name: "Test name")
-        let sut = MBWayComponent(paymentMethod: mbWayPaymentMethod, apiContext: Dummy.context, adyenContext: adyenContext)
+        let sut = MBWayComponent(paymentMethod: mbWayPaymentMethod, adyenContext: adyenContext)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 

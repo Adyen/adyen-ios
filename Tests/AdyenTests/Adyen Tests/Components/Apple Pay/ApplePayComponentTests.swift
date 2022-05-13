@@ -29,7 +29,7 @@ class ApplePayComponentTest: XCTestCase {
         let configuration = ApplePayComponent.Configuration(payment: Dummy.createTestApplePayPayment(),
                                                             merchantIdentifier: "test_id")                                                 
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        adyenContext = AdyenContext(analyticsProvider: analyticsProviderMock)
         sut = try! ApplePayComponent(paymentMethod: paymentMethod,
                                           adyenContext: adyenContext,
                                      configuration: configuration)

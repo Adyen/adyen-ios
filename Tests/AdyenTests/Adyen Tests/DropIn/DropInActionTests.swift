@@ -27,7 +27,7 @@ class DropInActionsTests: XCTestCase {
     }
 
     func testOpenRedirectActionOnDropIn() {
-        let config = DropInComponent.Configuration(apiContext: Dummy.context, adyenContext: adyenContext)
+        let config = DropInComponent.Configuration(adyenContext: adyenContext)
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
@@ -52,7 +52,7 @@ class DropInActionsTests: XCTestCase {
     }
 
     func testOpenExternalApp() {
-        let config = DropInComponent.Configuration(apiContext: Dummy.context, adyenContext: adyenContext)
+        let config = DropInComponent.Configuration(adyenContext: adyenContext)
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let waitExpectation = expectation(description: "Expect a callback")
@@ -72,7 +72,7 @@ class DropInActionsTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = root
 
         root.present(sut.viewController, animated: true) {
-            self.sut.didOpenExternalApplication(component: RedirectComponent(apiContext: Dummy.context, adyenContext: Dummy.adyenContext))
+            self.sut.didOpenExternalApplication(component: RedirectComponent(adyenContext: Dummy.adyenContext))
         }
 
         waitForExpectations(timeout: 15, handler: nil)

@@ -70,7 +70,7 @@ class AssertsTests: XCTestCase {
     }
 
     func testAwaitVComponentPresentationDelegateAssertion() {
-        let sut = AwaitComponent(apiContext: Dummy.context, adyenContext: adyenContext)
+        let sut = AwaitComponent(adyenContext: adyenContext)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in
@@ -85,7 +85,7 @@ class AssertsTests: XCTestCase {
     }
 
     func testVoucherComponentPresentationDelegateAssertion() {
-        let sut = VoucherComponent(apiContext: Dummy.context, adyenContext: adyenContext)
+        let sut = VoucherComponent(adyenContext: adyenContext)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in

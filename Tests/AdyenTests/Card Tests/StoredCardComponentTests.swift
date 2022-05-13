@@ -18,7 +18,7 @@ class StoredCardComponentTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        adyenContext = AdyenContext(analyticsProvider: analyticsProviderMock)
     }
 
     override func tearDownWithError() throws {

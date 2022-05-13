@@ -20,7 +20,7 @@ class AffirmComponentTests: XCTestCase {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
         paymentMethod = AffirmPaymentMethod(type: .affirm, name: "Affirm")
-        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        adyenContext = AdyenContext(analyticsProvider: analyticsProviderMock)
         style = FormComponentStyle()
         sut = AffirmComponent(paymentMethod: paymentMethod,
                               adyenContext: adyenContext,

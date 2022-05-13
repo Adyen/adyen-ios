@@ -18,7 +18,7 @@ class VoucherComponentTests: XCTestCase {
     override func setUp() {
         super.setUp()
         presentationDelegate = PresentationDelegateMock()
-        sut = VoucherComponent(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
+        sut = VoucherComponent(adyenContext: Dummy.adyenContext)
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "test_table")
         sut.presentationDelegate = presentationDelegate
     }

@@ -20,8 +20,8 @@ class BLIKComponentTests: XCTestCase {
 
     override func setUp() {
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
-        sut = BLIKComponent(paymentMethod: method, apiContext: Dummy.context, adyenContext: adyenContext)
+        adyenContext = AdyenContext(analyticsProvider: analyticsProviderMock)
+        sut = BLIKComponent(paymentMethod: method, adyenContext: adyenContext)
         sut.payment = payment
     }
 
@@ -95,7 +95,7 @@ class BLIKComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        sut = BLIKComponent(paymentMethod: method, apiContext: Dummy.context, adyenContext: adyenContext, configuration: .init(style: style))
+        sut = BLIKComponent(paymentMethod: method, adyenContext: adyenContext, configuration: .init(style: style))
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -172,7 +172,7 @@ class BLIKComponentTests: XCTestCase {
 
     func testRequiresModalPresentation() {
         let blikPaymentMethod = BLIKPaymentMethod(type: .blik, name: "Test name")
-        let sut = BLIKComponent(paymentMethod: blikPaymentMethod, apiContext: Dummy.context, adyenContext: adyenContext)
+        let sut = BLIKComponent(paymentMethod: blikPaymentMethod, adyenContext: adyenContext)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 

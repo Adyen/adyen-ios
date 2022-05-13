@@ -18,10 +18,10 @@ class IssuerListComponentTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        adyenContext = AdyenContext(analyticsProvider: analyticsProviderMock)
 
         paymentMethod = try! Coder.decode(issuerListDictionary) as IssuerListPaymentMethod
-        sut = IssuerListComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, adyenContext: adyenContext)
+        sut = IssuerListComponent(paymentMethod: paymentMethod, adyenContext: adyenContext)
     }
 
     override func tearDownWithError() throws {
