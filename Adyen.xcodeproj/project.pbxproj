@@ -2148,10 +2148,6 @@
 			children = (
 				C94632BD27BA6985003DD81F /* AnalyticsProvider.swift */,
 				C9B6683427C7CB7A006950B9 /* TelemetryTracker.swift */,
-				C94632C127BAA81F003DD81F /* TelemetryRequest.swift */,
-				C9BAE20E27BEA68D002F5728 /* CheckoutAttemptIdRequest.swift */,
-				C9B6683627C8D7FB006950B9 /* TelemetryData.swift */,
-				C9B6683827C903FE006950B9 /* AdyenContext.swift */,
 			);
 			path = AnalyticsProvider;
 			sourceTree = "<group>";
@@ -2167,6 +2163,8 @@
 		C96C400E27CCC94500CDBAB8 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
+				C9CA0B69282E7E5D00C4E9C2 /* Models */,
+				C9CA0B68282E7E4A00C4E9C2 /* Requests */,
 				C94632BC27BA6968003DD81F /* AnalyticsProvider */,
 			);
 			path = Analytics;
@@ -2230,6 +2228,31 @@
 				C97C16AB280702B200534419 /* TelemetryFlavorTests.swift */,
 			);
 			path = Analytics;
+			sourceTree = "<group>";
+		};
+		C9CA0B68282E7E4A00C4E9C2 /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				C94632C127BAA81F003DD81F /* TelemetryRequest.swift */,
+				C9BAE20E27BEA68D002F5728 /* CheckoutAttemptIdRequest.swift */,
+			);
+			path = Requests;
+			sourceTree = "<group>";
+		};
+		C9CA0B69282E7E5D00C4E9C2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C9B6683627C8D7FB006950B9 /* TelemetryData.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C9CA0B6A282E7E7A00C4E9C2 /* AdyenContext */ = {
+			isa = PBXGroup;
+			children = (
+				C9B6683827C903FE006950B9 /* AdyenContext.swift */,
+			);
+			path = AdyenContext;
 			sourceTree = "<group>";
 		};
 		C9D8EB9527440297006D8CA1 /* Input */ = {
@@ -2556,17 +2579,17 @@
 		E2C0E03522097917008616F6 /* Adyen */ = {
 			isa = PBXGroup;
 			children = (
+				E2C0E03622097917008616F6 /* Adyen.h */,
 				C96C400E27CCC94500CDBAB8 /* Analytics */,
-				F926D53623F6A34300D058D3 /* Formatters */,
-				F926D53123F5A5BD00D058D3 /* Validators */,
 				E9021DAB22578AA6009CF7F4 /* Assets */,
 				E9B36C96223FBD1C00EAA368 /* Core */,
+				F926D53623F6A34300D058D3 /* Formatters */,
+				E2D12BFE221D91DE00EF682F /* Helpers */,
+				E2C0E03722097917008616F6 /* Info.plist */,
 				E788A4D82657FF5D00089448 /* Model */,
 				E2C0E093220B04E5008616F6 /* UI */,
 				E216D3C1221AEDB30013CBCF /* Utilities */,
-				E2D12BFE221D91DE00EF682F /* Helpers */,
-				E2C0E03622097917008616F6 /* Adyen.h */,
-				E2C0E03722097917008616F6 /* Info.plist */,
+				F926D53123F5A5BD00D058D3 /* Validators */,
 			);
 			path = Adyen;
 			sourceTree = "<group>";
@@ -3186,6 +3209,7 @@
 		E9B36C96223FBD1C00EAA368 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				C9CA0B6A282E7E7A00C4E9C2 /* AdyenContext */,
 				E746E67227B429100076BB71 /* Models */,
 				E788A4ED2658027D00089448 /* Errors */,
 				F926D51C23F4214500D058D3 /* Core Protocols */,

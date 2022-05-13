@@ -12,8 +12,7 @@ public final class AdyenContext {
 
     // MARK: - Properties
 
-    /// :nodoc:
-    /// The API context
+    /// The API context used to retrieve internal resources.
     public let apiContext: APIContext
 
     /// :nodoc:
