@@ -31,8 +31,7 @@ class ApplePayComponentTest: XCTestCase {
         analyticsProviderMock = AnalyticsProviderMock()
         adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
         sut = try! ApplePayComponent(paymentMethod: paymentMethod,
-                                     apiContext: Dummy.context,
-                                     adyenContext: adyenContext,
+                                          adyenContext: adyenContext,
                                      configuration: configuration)
         mockDelegate = PaymentComponentDelegateMock()
         sut.delegate = mockDelegate

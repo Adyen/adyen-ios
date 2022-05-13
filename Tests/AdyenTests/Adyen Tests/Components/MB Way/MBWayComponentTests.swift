@@ -38,8 +38,7 @@ class MBWayComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() {
         let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
         let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 apiContext: Dummy.context,
-                                 adyenContext: adyenContext,
+                                  adyenContext: adyenContext,
                                  configuration: config)
         sut.payment = payment
 
@@ -55,8 +54,7 @@ class MBWayComponentTests: XCTestCase {
     func testLocalizationWithCustomKeySeparator() {
         let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 apiContext: Dummy.context,
-                                 adyenContext: adyenContext,
+                                  adyenContext: adyenContext,
                                  configuration: config)
         sut.payment = payment
 
@@ -95,8 +93,7 @@ class MBWayComponentTests: XCTestCase {
 
         let config = MBWayComponent.Configuration(style: style)
         let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 apiContext: Dummy.context,
-                                 adyenContext: adyenContext,
+                                  adyenContext: adyenContext,
                                  configuration: config)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -135,8 +132,7 @@ class MBWayComponentTests: XCTestCase {
 
     func testSubmitForm() {
         let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 apiContext: Dummy.context,
-                                 adyenContext: adyenContext)
+                                  adyenContext: adyenContext)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         sut.payment = payment
@@ -172,8 +168,7 @@ class MBWayComponentTests: XCTestCase {
 
     func testBigTitle() {
         let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 apiContext: Dummy.context,
-                                 adyenContext: adyenContext)
+                                  adyenContext: adyenContext)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -196,8 +191,7 @@ class MBWayComponentTests: XCTestCase {
         // Given
         let config = MBWayComponent.Configuration(shopperInformation: shopperInformation)
         let prefillSut = MBWayComponent(paymentMethod: paymentMethod,
-                                        apiContext: Dummy.context,
-                                        adyenContext: adyenContext,
+                                                adyenContext: adyenContext,
                                         configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
@@ -215,8 +209,7 @@ class MBWayComponentTests: XCTestCase {
     func testMBWayGivenNoShopperInformationShouldNotPrefill() throws {
         // Given
         let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 apiContext: Dummy.context,
-                                 adyenContext: adyenContext,
+                                  adyenContext: adyenContext,
                                  configuration: MBWayComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -233,8 +226,7 @@ class MBWayComponentTests: XCTestCase {
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
         let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 apiContext: Dummy.context,
-                                 adyenContext: adyenContext,
+                                  adyenContext: adyenContext,
                                  configuration: MBWayComponent.Configuration())
 
         // When

@@ -37,7 +37,6 @@ class DokuComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() {
         let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
         let sut = DokuComponent(paymentMethod: paymentMethod,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         sut.payment = payment
@@ -61,7 +60,6 @@ class DokuComponentTests: XCTestCase {
     func testLocalizationWithCustomKeySeparator() {
         let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = DokuComponent(paymentMethod: paymentMethod,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
         sut.payment = payment
@@ -109,7 +107,6 @@ class DokuComponentTests: XCTestCase {
 
         let config = DokuComponent.Configuration(style: style)
         let sut = DokuComponent(paymentMethod: paymentMethod,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: config)
 
@@ -168,7 +165,6 @@ class DokuComponentTests: XCTestCase {
 
     func testSubmitForm() {
         let sut = DokuComponent(paymentMethod: paymentMethod,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: DokuComponent.Configuration())
         let delegate = PaymentComponentDelegateMock()
@@ -214,7 +210,6 @@ class DokuComponentTests: XCTestCase {
 
     func testBigTitle() {
         let sut = DokuComponent(paymentMethod: paymentMethod,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: DokuComponent.Configuration())
 
@@ -232,7 +227,6 @@ class DokuComponentTests: XCTestCase {
     func testRequiresModalPresentation() {
         let dokuPaymentMethod = DokuPaymentMethod(type: .dokuWallet, name: "Test name")
         let sut = DokuComponent(paymentMethod: dokuPaymentMethod,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: DokuComponent.Configuration())
         XCTAssertEqual(sut.requiresModalPresentation, true)
@@ -242,8 +236,7 @@ class DokuComponentTests: XCTestCase {
         // Given
         let config = DokuComponent.Configuration(shopperInformation: shopperInformation)
         let prefillSut = DokuComponent(paymentMethod: paymentMethod,
-                                       apiContext: Dummy.context,
-                                       adyenContext: adyenContext,
+                                              adyenContext: adyenContext,
                                        configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
@@ -271,7 +264,6 @@ class DokuComponentTests: XCTestCase {
     func testDokuGivenNoShopperInformationShouldNotPrefill() throws {
         // Given
         let sut = DokuComponent(paymentMethod: paymentMethod,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: DokuComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -297,7 +289,6 @@ class DokuComponentTests: XCTestCase {
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
         let sut = DokuComponent(paymentMethod: paymentMethod,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 configuration: DokuComponent.Configuration())
 

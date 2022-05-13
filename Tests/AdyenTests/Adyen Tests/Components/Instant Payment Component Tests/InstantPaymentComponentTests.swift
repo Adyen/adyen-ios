@@ -30,8 +30,7 @@ class InstantPaymentComponentTests: XCTestCase {
         paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "name", brand: "brand")
         sut = InstantPaymentComponent(paymentMethod: paymentMethod,
                                       paymentData: paymentComponentData,
-                                      apiContext: Dummy.context,
-                                      adyenContext: adyenContext)
+                                            adyenContext: adyenContext)
         sut.delegate = delegate
     }
 

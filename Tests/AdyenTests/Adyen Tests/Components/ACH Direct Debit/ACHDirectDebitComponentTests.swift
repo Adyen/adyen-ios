@@ -45,7 +45,6 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
         let config = ACHDirectDebitComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil), billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: method,
-                                          apiContext: Dummy.context,
                                           adyenContext: adyenContext,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
@@ -98,7 +97,6 @@ class ACHDirectDebitComponentTests: XCTestCase {
         
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
-                                          apiContext: Dummy.context,
                                           adyenContext: adyenContext,
                                           configuration: .init(style: achComponentStyle, billingAddressCountryCodes: ["US", "UK"]),
                                           publicKeyProvider: PublicKeyProviderMock())
@@ -165,7 +163,6 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
         let config = ACHDirectDebitComponent.Configuration(shopperInformation: shopperInformation, billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: method,
-                                          apiContext: Dummy.context,
                                           adyenContext: adyenContext,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
@@ -188,7 +185,6 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
         let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: method,
-                                          apiContext: Dummy.context,
                                           adyenContext: adyenContext,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
@@ -204,7 +200,6 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
-                                          apiContext: Dummy.context,
                                           adyenContext: adyenContext,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
@@ -215,7 +210,6 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
-                                          apiContext: Dummy.context,
                                           adyenContext: adyenContext,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
@@ -232,7 +226,6 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testEmptyFieldsValidation() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
-                                          apiContext: Dummy.context,
                                           adyenContext: adyenContext,
                                           publicKeyProvider: PublicKeyProviderMock())
 
@@ -254,7 +247,6 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testSubmission() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
-                                          apiContext: Dummy.context,
                                           adyenContext: adyenContext,
                                           configuration: .init(showsBillingAddress: false),
                                           publicKeyProvider: PublicKeyProviderMock())
@@ -297,7 +289,6 @@ class ACHDirectDebitComponentTests: XCTestCase {
         // Given
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
-                                          apiContext: Dummy.context,
                                           adyenContext: adyenContext,
                                           configuration: .init(showsBillingAddress: false),
                                           publicKeyProvider: PublicKeyProviderMock())

@@ -1778,8 +1778,7 @@ class CardComponentTests: XCTestCase {
         configuration.shopperInformation = shopperInformation
 
         let prefilledSut = CardComponent(paymentMethod: method,
-                                         apiContext: Dummy.context,
-                                adyenContext: adyenContext,
+                                         adyenContext: adyenContext,
                                          configuration: configuration)
 
         // When
@@ -1818,8 +1817,7 @@ class CardComponentTests: XCTestCase {
         configuration.shopperInformation = shopperInformation
 
         let prefilledSut = CardComponent(paymentMethod: method,
-                                         apiContext: Dummy.context,
-                                adyenContext: adyenContext,
+                                         adyenContext: adyenContext,
                                          configuration: configuration)
 
         // When

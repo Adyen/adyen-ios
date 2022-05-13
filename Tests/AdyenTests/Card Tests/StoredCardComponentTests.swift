@@ -30,7 +30,6 @@ class StoredCardComponentTests: XCTestCase {
     func testUIWithClientKey() {
         let paymentMethod = storedCardPaymentMethod(brand: "brand")
         let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
-                                      apiContext: Dummy.context,
                                       adyenContext: adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
@@ -53,7 +52,6 @@ class StoredCardComponentTests: XCTestCase {
     func testUIWithPublicKey() {
         let paymentMethod = storedCardPaymentMethod(brand: "brand")
         let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
-                                      apiContext: Dummy.context,
                                       adyenContext: adyenContext)
         PublicKeyProvider.publicKeysCache[Dummy.context.clientKey] = Dummy.publicKey
 
@@ -76,7 +74,6 @@ class StoredCardComponentTests: XCTestCase {
     func testPaymentSubmitWithSuccessfulCardPublicKeyFetching() {
         let paymentMethod = storedCardPaymentMethod(brand: "brand")
         let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
-                                      apiContext: Dummy.context,
                                       adyenContext: adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
@@ -135,7 +132,6 @@ class StoredCardComponentTests: XCTestCase {
     func testPaymentSubmitWithFailedCardPublicKeyFetching() {
         let paymentMethod = storedCardPaymentMethod(brand: "brand")
         let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
-                                      apiContext: Dummy.context,
                                       adyenContext: adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
@@ -183,7 +179,6 @@ class StoredCardComponentTests: XCTestCase {
     func testCVCLimitForAMEX() {
         let paymentMethod = storedCardPaymentMethod(brand: "amex")
         let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
-                                      apiContext: Dummy.context,
                                       adyenContext: adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
@@ -229,7 +224,6 @@ class StoredCardComponentTests: XCTestCase {
     func testCVCLimitForNonAMEX() {
         let paymentMethod = storedCardPaymentMethod(brand: "mc")
         let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
-                                      apiContext: Dummy.context,
                                       adyenContext: adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
@@ -268,7 +262,6 @@ class StoredCardComponentTests: XCTestCase {
     func testCVCLimitForUnknownCardType() {
         let paymentMethod = storedCardPaymentMethod(brand: "some_brand")
         let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
-                                      apiContext: Dummy.context,
                                       adyenContext: adyenContext)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
@@ -303,7 +296,6 @@ class StoredCardComponentTests: XCTestCase {
         // Given
         let paymentMethod = storedCardPaymentMethod(brand: "some_brand")
         let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
-                                      apiContext: Dummy.context,
                                       adyenContext: adyenContext)
 
         // When

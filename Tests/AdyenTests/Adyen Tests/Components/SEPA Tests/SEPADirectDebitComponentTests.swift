@@ -114,8 +114,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod,
-                                           apiContext: Dummy.context,
-                                           adyenContext: adyenContext,
+                                                      adyenContext: adyenContext,
                                            configuration: SEPADirectDebitComponent.Configuration(style: sepaComponentStyle))
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -266,8 +265,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let mockViewController = UIViewController()
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod,
-                                           apiContext: Dummy.context,
-                                           adyenContext: adyenContext)
+                                                      adyenContext: adyenContext)
 
         // When
         sut.viewWillAppear(viewController: mockViewController)

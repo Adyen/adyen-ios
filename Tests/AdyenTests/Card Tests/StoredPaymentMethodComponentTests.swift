@@ -29,8 +29,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method,
-                                               apiContext: Dummy.context,
-                                               adyenContext: adyenContext)
+                                                              adyenContext: adyenContext)
         let payment = Payment(amount: Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
@@ -45,8 +44,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
     func testLocalizationWithZeroPayment() {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method,
-                                               apiContext: Dummy.context,
-                                               adyenContext: adyenContext)
+                                                              adyenContext: adyenContext)
         let payment = Payment(amount: Amount(value: 0, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
 
@@ -62,8 +60,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
     func testLocalizationWithCustomKeySeparator() {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method,
-                                               apiContext: Dummy.context,
-                                               adyenContext: adyenContext)
+                                                              adyenContext: adyenContext)
         let payment = Payment(amount: Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
@@ -81,8 +78,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
                                              type: .other("type"),
                                              name: "name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method,
-                                               apiContext: Dummy.context,
-                                               adyenContext: adyenContext)
+                                                              adyenContext: adyenContext)
 
         let delegate = PaymentComponentDelegateMock()
 
@@ -130,8 +126,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
                                              type: .other("type"),
                                              name: "name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method,
-                                               apiContext: Dummy.context,
-                                               adyenContext: adyenContext)
+                                                              adyenContext: adyenContext)
 
         // When
         sut.viewController.viewDidLoad()

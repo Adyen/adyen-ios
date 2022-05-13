@@ -81,7 +81,6 @@ class BoletoComponentTests: XCTestCase {
         )
         
         sut = BoletoComponent(paymentMethod: method,
-                              apiContext: Dummy.context,
                               adyenContext: adyenContext,
                               configuration: getConfiguration(style: style, showEmailAddress: true))
         
@@ -142,7 +141,6 @@ class BoletoComponentTests: XCTestCase {
         let brazilSocialSecurityNumberFormatter = BrazilSocialSecurityNumberFormatter()
         
         sut = BoletoComponent(paymentMethod: method,
-                              apiContext: Dummy.context,
                               adyenContext: adyenContext,
                               configuration: getConfiguration(with: prefilledInformation, showEmailAddress: true))
         
@@ -190,7 +188,6 @@ class BoletoComponentTests: XCTestCase {
     
     func testNoPrefilledInformation() {
         sut = BoletoComponent(paymentMethod: method,
-                              apiContext: Dummy.context,
                               adyenContext: adyenContext,
                               configuration: getConfiguration(showEmailAddress: true))
         
@@ -237,7 +234,6 @@ class BoletoComponentTests: XCTestCase {
     
     func testNoEmailSection() {
         sut = BoletoComponent(paymentMethod: method,
-                              apiContext: Dummy.context,
                               adyenContext: adyenContext,
                               configuration: getConfiguration(showEmailAddress: false))
         
@@ -259,7 +255,6 @@ class BoletoComponentTests: XCTestCase {
     
     func testEmailFieldHiding() {
         sut = BoletoComponent(paymentMethod: method,
-                              apiContext: Dummy.context,
                               adyenContext: adyenContext,
                               configuration: getConfiguration(with: dummyFullPrefilledInformation, showEmailAddress: true))
         
@@ -311,7 +306,6 @@ class BoletoComponentTests: XCTestCase {
         }
         
         sut = BoletoComponent(paymentMethod: method,
-                              apiContext: Dummy.context,
                               adyenContext: adyenContext,
                               configuration: mockConfiguration)
         sut.delegate = mockDelegate
@@ -345,7 +339,6 @@ class BoletoComponentTests: XCTestCase {
         }
 
         sut = BoletoComponent(paymentMethod: method,
-                              apiContext: Dummy.context,
                               adyenContext: adyenContext,
                               configuration: mockConfiguration)
         sut.delegate = mockDelegate
@@ -366,7 +359,6 @@ class BoletoComponentTests: XCTestCase {
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
         sut = BoletoComponent(paymentMethod: method,
-                              apiContext: Dummy.context,
                               adyenContext: adyenContext,
                               configuration: getConfiguration(with: dummyFullPrefilledInformation, showEmailAddress: true))
 

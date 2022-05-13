@@ -53,7 +53,6 @@ class GiftCardComponentTests: XCTestCase {
         adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
 
         sut = GiftCardComponent(paymentMethod: paymentMethod,
-                                apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 publicKeyProvider: publicKeyProvider)
         sut.payment = nil // Missing Payment object
