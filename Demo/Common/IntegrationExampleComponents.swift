@@ -8,6 +8,7 @@ import Adyen
 import AdyenActions
 import AdyenCard
 import AdyenComponents
+import PassKit
 import UIKit
 
 extension IntegrationExample {
@@ -107,11 +108,17 @@ extension IntegrationExample {
     internal func applePayComponent(from paymentMethods: PaymentMethods?) -> ApplePayComponent? {
         guard
             let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self),
-            let applePayPayment = try? ApplePayPayment(payment: payment)
+            let applePayPayment = try? ApplePayPayment(payment: payment, brand: ConfigurationConstants.appName)
         else { return nil }
-        let config = ApplePayComponent.Configuration(payment: applePayPayment,
-                                                     merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
-                                                     allowOnboarding: true)
+        var config = ApplePayComponent.Configuration(payment: applePayPayment,
+                                                     merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
+        config.allowOnboarding = true
+        config.supportsCouponCode = true
+        config.shippingType = .delivery
+        config.requiredShippingContactFields = [.postalAddress]
+        config.requiredBillingContactFields = [.postalAddress]
+        config.shippingMethods = ConfigurationConstants.shippingMethods
+        
         let component = try? ApplePayComponent(paymentMethod: paymentMethod,
                                                apiContext: ConfigurationConstants.apiContext,
                                                configuration: config)
@@ -195,6 +202,23 @@ extension IntegrationExample {
 
     // MARK: - Payment response handling
 
+    private func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
+        switch result {
+        case let .success(response):
+            if let action = response.action {
+                handle(action)
+            } else if let order = response.order,
+                      let remainingAmount = order.remainingAmount,
+                      remainingAmount.value > 0 {
+                handle(order)
+            } else {
+                finish(with: response)
+            }
+        case let .failure(error):
+            finish(with: error)
+        }
+    }
+
     internal func handle(_ action: Action) {
         if let dropInAsActionComponent = currentComponent as? ActionHandlingComponent {
             /// In case current component is a `DropInComponent` that implements `ActionHandlingComponent`
@@ -227,7 +251,7 @@ extension IntegrationExample: ActionComponentDelegate {
     }
 
     internal func didComplete(from component: ActionComponent) {
-        finish(with: .authorised)
+        finish(with: PaymentsResponse.ResultCode.received)
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
@@ -259,4 +283,50 @@ extension IntegrationExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {
         present(component, delegate: self)
     }
+}
+
+extension IntegrationExample: ApplePayComponentDelegate {
+    func didUpdate(contact: PKContact,
+                   for payment: ApplePayPayment,
+                   completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void) {
+        var items = payment.summaryItems
+        print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
+        if let last = items.last {
+            items = items.dropLast()
+            let cityLabel = contact.postalAddress?.city ?? "Somewhere"
+            items.append(.init(label: "Shipping \(cityLabel)",
+                               amount: NSDecimalNumber(value: 5.0)))
+            items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue + 5.0)))
+        }
+        completion(.init(paymentSummaryItems: items))
+    }
+
+    func didUpdate(shippingMethod: PKShippingMethod,
+                   for payment: ApplePayPayment,
+                   completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void) {
+        var items = payment.summaryItems
+        print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
+        if let last = items.last {
+            items = items.dropLast()
+            items.append(shippingMethod)
+            items.append(.init(label: last.label,
+                               amount: NSDecimalNumber(value: last.amount.floatValue + shippingMethod.amount.floatValue)))
+        }
+        completion(.init(paymentSummaryItems: items))
+    }
+
+    @available(iOS 15.0, *)
+    func didUpdate(couponCode: String,
+                   for payment: ApplePayPayment,
+                   completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void) {
+        var items = payment.summaryItems
+        print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
+        if let last = items.last {
+            items = items.dropLast()
+            items.append(.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0)))
+            items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue - 5.0)))
+        }
+        completion(.init(paymentSummaryItems: items))
+    }
+
 }

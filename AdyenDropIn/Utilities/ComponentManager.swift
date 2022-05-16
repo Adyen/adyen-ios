@@ -384,11 +384,11 @@ extension ComponentManager: PaymentComponentBuilder {
     /// :nodoc:
     internal func build(paymentMethod: AtomePaymentMethod) -> PaymentComponent? {
         let config = AtomeComponent.Configuration(style: configuration.style.formComponent,
-                                                   shopperInformation: configuration.shopper,
-                                                   localizationParameters: configuration.localizationParameters)
+                                                  shopperInformation: configuration.shopper,
+                                                  localizationParameters: configuration.localizationParameters)
         return AtomeComponent(paymentMethod: paymentMethod,
-                               apiContext: apiContext,
-                               configuration: config)
+                              apiContext: apiContext,
+                              configuration: config)
     }
 
 }

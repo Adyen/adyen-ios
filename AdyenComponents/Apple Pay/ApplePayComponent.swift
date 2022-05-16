@@ -13,6 +13,8 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     private let paymentRequest: PKPaymentRequest
 
+    internal var applePayPayment: ApplePayPayment
+
     internal var resultConfirmed: Bool = false
 
     internal var viewControllerDidFinish: Bool = false
@@ -25,9 +27,18 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// The Apple Pay payment method.
     public var paymentMethod: PaymentMethod { applePayPaymentMethod }
 
-    /// Read-only payment property. Set `payment` is not supported on ApplePayComponent.
     public var payment: Payment? {
-        configuration.applePayPayment.payment
+        get {
+            applePayPayment.payment
+        }
+
+        set {
+            do {
+                try update(payment: newValue)
+            } catch {
+                delegate?.didFail(with: error, from: self)
+            }
+        }
     }
 
     internal let configuration: Configuration
@@ -40,6 +51,9 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
+
+    /// The delegate changes of ApplePay payment state.
+    public weak var applePayDelegate: ApplePayComponentDelegate?
     
     /// Initializes the component.
     /// - Warning: Do not dismiss this component.
@@ -75,6 +89,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         self.apiContext = apiContext
         self.paymentAuthorizationViewController = viewController
         self.applePayPaymentMethod = paymentMethod
+        self.applePayPayment = configuration.applePayPayment
         super.init()
 
         viewController.delegate = self
@@ -93,6 +108,14 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         } else {
             completion?()
         }
+    }
+
+    internal func update(payment: Payment?) throws {
+        guard let payment = payment else {
+            throw ApplePayComponent.Error.negativeGrandTotal
+        }
+
+        applePayPayment = try ApplePayPayment(payment: payment, brand: applePayPayment.brand)
     }
 
     // MARK: - Private

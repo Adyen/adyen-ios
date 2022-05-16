@@ -41,8 +41,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     
     /// Component's configuration
     public var configuration: Configuration
-    
-    /// The payment information.
+
     public var payment: Payment? {
         didSet {
             inputPresenter?.amount = payment?.amount

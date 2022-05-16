@@ -15,7 +15,7 @@ class MBWayComponentTests: XCTestCase {
     lazy var paymentMethod = MBWayPaymentMethod(type: .mbWay, name: "test_name")
     let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
 
-    func testLocalizationWithCustomTableName() {
+    func testLocalizationWithCustomTableName() throws {
         let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
         let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
         sut.payment = payment
@@ -29,7 +29,7 @@ class MBWayComponentTests: XCTestCase {
         XCTAssertTrue(sut.button.title!.contains(paymentMethod.name))
     }
 
-    func testLocalizationWithCustomKeySeparator() {
+    func testLocalizationWithCustomKeySeparator() throws {
         let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: config)
         sut.payment = payment
@@ -100,7 +100,7 @@ class MBWayComponentTests: XCTestCase {
         XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
     }
 
-    func testSubmitForm() {
+    func testSubmitForm() throws {
         let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate

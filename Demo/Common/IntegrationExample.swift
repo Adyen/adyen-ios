@@ -19,7 +19,7 @@ internal protocol Presenter: AnyObject {
 
     func dismiss(completion: (() -> Void)?)
 
-    func presentAlert(withTitle title: String)
+    func presentAlert(withTitle title: String, message: String?)
 
     func presentAlert(with error: Error, retryHandler: (() -> Void)?)
 }
@@ -104,37 +104,41 @@ internal final class IntegrationExample: APIClientAware {
         }
     }
 
-    internal func finish(with resultCode: PaymentsResponse.ResultCode) {
-        let success = resultCode == .authorised || resultCode == .received || resultCode == .pending
+    internal func finish(with result: PaymentsResponse) {
+        let success = result.resultCode == .authorised || result.resultCode == .received || result.resultCode == .pending
+        let message = "\(result.resultCode.rawValue) \(result.amount?.formatted ?? "")"
+        finalize(success, message)
+    }
+
+    internal func finish(with result: PaymentsResponse.ResultCode) {
+        let success = result == .authorised || result == .received || result == .pending
+        let message = "\(result.rawValue)"
+        finalize(success, message)
+    }
+
+    internal func finish(with error: Error) {
+        let message: String
+        if let componentError = (error as? ComponentError), componentError == ComponentError.cancelled {
+            message = "Cancelled"
+        } else {
+            message = error.localizedDescription
+        }
+        finalize(false, message)
+    }
+
+    private func finalize(_ success: Bool, _ message: String) {
         currentComponent?.finalizeIfNeeded(with: success) { [weak self] in
             guard let self = self else { return }
             self.presenter?.dismiss {
                 // Payment is processed. Add your code here.
-                self.presentAlert(withTitle: resultCode.rawValue)
-            }
-        }
-    }
-
-    internal func finish(with error: Error) {
-        currentComponent?.finalizeIfNeeded(with: false) { [weak self] in
-            guard let self = self else { return }
-            self.presenter?.dismiss {
-                // Payment is unsuccessful. Add your code here.
-                if let componentError = (error as? ComponentError), componentError == ComponentError.cancelled {
-                    self.presentAlert(withTitle: "Cancelled")
-                } else {
-                    self.presentAlert(with: error)
-                }
+                let title = success ? "Success" : "Error"
+                self.presenter?.presentAlert(withTitle: title, message: message)
             }
         }
     }
 
     internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         presenter?.presentAlert(with: error, retryHandler: retryHandler)
-    }
-
-    internal func presentAlert(withTitle title: String) {
-        presenter?.presentAlert(withTitle: title)
     }
 
     // MARK: - BACS Direct Debit Component

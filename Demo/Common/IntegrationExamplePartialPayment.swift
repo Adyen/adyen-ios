@@ -82,9 +82,9 @@ extension IntegrationExample: PartialPaymentDelegate {
         switch result {
         case let .success(response):
             if response.resultCode == .received {
-                presentAlert(withTitle: "Order Cancelled")
+                presenter?.presentAlert(withTitle: "Order Cancelled", message: nil)
             } else {
-                presentAlert(withTitle: "Something went wrong, order is not canceled but will expire.")
+                presenter?.presentAlert(withTitle: "Something went wrong, order is not canceled but will expire.", message: nil)
             }
         case let .failure(error):
             finish(with: error)

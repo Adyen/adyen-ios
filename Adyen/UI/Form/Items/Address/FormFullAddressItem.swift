@@ -18,6 +18,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     private let localizationParameters: LocalizationParameters?
     
     private var observers: [AddressField: Observation] = [:]
+    
     private var publisherObservers: [AddressField: Observation] = [:]
     
     private var initialCountry: String

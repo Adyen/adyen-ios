@@ -14,7 +14,7 @@ class QiwiWalletComponentTests: XCTestCase {
     lazy var method = QiwiWalletPaymentMethod(type: .qiwiWallet, name: "test_name", phoneExtensions: phoneExtensions)
     let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
     
-    func testLocalizationWithCustomTableName() {
+    func testLocalizationWithCustomTableName() throws {
         let config = QiwiWalletComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
         let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, configuration: config)
         sut.payment = payment
@@ -33,7 +33,7 @@ class QiwiWalletComponentTests: XCTestCase {
         XCTAssertTrue(sut.button.title!.contains(method.name))
     }
     
-    func testLocalizationWithCustomKeySeparator() {
+    func testLocalizationWithCustomKeySeparator() throws {
         let config = QiwiWalletComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = QiwiWalletComponent(paymentMethod: method, apiContext: Dummy.context, configuration: config)
         sut.payment = payment
