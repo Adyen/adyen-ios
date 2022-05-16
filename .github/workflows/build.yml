@@ -1,4 +1,4 @@
-name: Build and Test
+name: Compatibility Test
 
 on:
   push:
@@ -6,11 +6,10 @@ on:
     - master
     - develop
     - release-*
-
+    
 jobs:
-
   tests:
-    runs-on: macos-12
+    runs-on: macos-11
     continue-on-error: true
     strategy:
       fail-fast: false
@@ -18,11 +17,11 @@ jobs:
         include:
         - destination: 'name=iPhone 11 Pro'
           scheme: AdyenUIHost
-        - destination: 'name=iPhone-6,OS=11.4'
+        - destination: 'OS=11.4,name=iPhone-6'
           scheme: AdyenUIHost
-        - destination: 'name=iPhone-X,OS=12.4'
+        - destination: 'OS=12.4,name=iPhone-X'
           scheme: AdyenUIKitTests
-        - destination: 'name=iPhone 8,OS=13.7'
+        - destination: 'OS=13.7,name=iPhone 8'
           scheme: AdyenUIHost
     steps:
     - uses: actions/checkout@v2
@@ -57,68 +56,8 @@ jobs:
 
     - name: Build and test
       run: |
-        xcodebuild build test -project ${project} -scheme "${scheme}" -destination "${destination}" ${params} | xcpretty && exit ${PIPESTATUS[0]}
+        xcodebuild build test -project ${project} -scheme "${scheme}" -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
         scheme: ${{ matrix.scheme }}
         destination: ${{ matrix.destination }}
-
-  sonar:
-    runs-on: macos-12
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-java@v1
-      with:
-        java-version: '11'
-
-    - name: Install Dependencies
-      run: |
-        brew install sonar-scanner
-        gem install slather
-
-    - name: Build and test
-      run: |
-        xcodebuild build test -project ${project} -scheme "${scheme}" -destination "${destination}" ${params} | xcpretty && exit ${PIPESTATUS[0]}
-      env:
-        project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
-        scheme: AdyenUIHost
-        destination: 'name=iPhone 11'
-
-    - name: Slather
-      run: |
-        slather coverage --sonarqube-xml ${params} ${project}
-        slather coverage --cobertura-xml ${params} ${project}
-      env:
-        project: 'Adyen.xcodeproj'
-        params: '
-        --build-directory ./DerivedData
-        --output-directory ./reports
-        --scheme AdyenUIHost
-        --binary-basename Adyen
-        --binary-basename AdyenCard
-        --binary-basename AdyenDropIn
-        --binary-basename AdyenWeChatPay
-        --binary-basename AdyenComponents
-        --binary-basename AdyenEncryption
-        --binary-basename AdyenActions
-        --binary-basename AdyenSwiftUI'
-
-    - name: SwiftLint
-      run: |
-        fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
-
-    - name: Run Sonar
-      run: |
-        git fetch --unshallow --no-tags
-        sonar-scanner -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Code coverage
-      if: github.ref == 'refs/heads/develop'
-      uses: codecov/codecov-action@v1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./reports/cobertura.xml

@@ -14,7 +14,7 @@ class ApplePayComponentTest: XCTestCase {
     var mockDelegate: PaymentComponentDelegateMock!
     var mockApplePayDelegate: ApplePayDelegateMock!
     var sut: ApplePayComponent!
-    lazy var amount = Amount(value: 2, currencyCode: getRandomCurrencyCode())
+    lazy var amount = Amount(value: 2, currencyCode: "USD")
     lazy var payment = Payment(amount: amount, countryCode: getRandomCountryCode())
     let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: nil)
 
@@ -183,7 +183,7 @@ class ApplePayComponentTest: XCTestCase {
 
     @available(iOS 15.0, *)
     func testApplePayCoupon() {
-        guard Available.iOS12 else { return }
+        guard Available.iOS15 else { return }
 
         sut.applePayDelegate = mockApplePayDelegate
         (mockApplePayDelegate as! ApplePayDelegateMockiOS15).onCouponChange = { coupon, payment in
