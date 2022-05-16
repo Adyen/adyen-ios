@@ -1505,19 +1505,19 @@ class CardComponentTests: XCTestCase {
                                 configuration: config)
         
         let logoItem = sut.cardViewController.items.numberContainerItem.supportedCardLogosItem
-        XCTAssertEqual(logoItem.alpha, 1)
+        XCTAssertTrue(logoItem.cardLogos.allSatisfy { $0.alpha == 1})
         
         var binResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress)])
         sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertEqual(logoItem.alpha, 0.3)
+        XCTAssertEqual(logoItem.cardLogos[0].alpha, 0.3)
         
         binResponse = BinLookupResponse(brands: [])
         sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertEqual(logoItem.alpha, 1)
+        XCTAssertTrue(logoItem.cardLogos.allSatisfy { $0.alpha == 1})
         
         binResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress, isSupported: false)])
         sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertEqual(logoItem.alpha, 1)
+        XCTAssertEqual(logoItem.cardLogos[0].alpha, 1)
     }
 
     func testClearShouldResetPostalCodeItemToEmptyValue() throws {
