@@ -24,4 +24,12 @@ enum Available {
             return false
         }
     }
+
+    static var iOS15: Bool {
+        if #available(iOS 15.0, *) {
+            return true
+        } else {
+            return false
+        }
+    }
 }
