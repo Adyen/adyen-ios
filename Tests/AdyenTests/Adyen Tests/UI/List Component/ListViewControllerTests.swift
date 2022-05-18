@@ -62,7 +62,7 @@ class ListViewControllerTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sut
         
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         
         let listCell11 = sut.tableView.cellForRow(at: IndexPath(item: 0, section: 0)) as? ListCell
         let listView11TitleLabel: UILabel? = sut.view.findView(with: "11.titleLabel")

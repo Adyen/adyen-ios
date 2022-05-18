@@ -7,7 +7,7 @@ on:
 jobs:
 
   setup:
-    runs-on: macos-11
+    runs-on: macos-12
     steps:
     - uses: actions/checkout@v2
       with:
@@ -16,11 +16,9 @@ jobs:
       with:
         token: ${{ secrets.MANUAL_ACTION_TOKEN }}
 
-
     - name: Spell check
       run: |
         brew install mint
         Scripts/spell_check.sh
       env:
         target_branch: ${{ github.event.pull_request.base.ref }}
-        current_branch: ${{ github.head_ref }}

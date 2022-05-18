@@ -44,7 +44,7 @@ class PreApplePayComponentTests: XCTestCase {
         viewController.view = view
         UIApplication.shared.keyWindow?.rootViewController = viewController
         
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         
         let hintLabel: UILabel? = viewController.view.findView(by: "hintLabel")
         XCTAssertEqual(hintLabel?.text, model.hint)
@@ -64,7 +64,6 @@ class PreApplePayComponentTests: XCTestCase {
     
     func testApplePayPresented() {
         guard Available.iOS12 else { return }
-        let presentExpectation = expectation(description: "Present Expectation")
         let dismissExpectation = expectation(description: "Dismiss Expectation")
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -82,11 +81,10 @@ class PreApplePayComponentTests: XCTestCase {
         
         applePayButton?.sendActions(for: .touchUpInside)
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertTrue(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController is PKPaymentAuthorizationViewController)
-            UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: false, completion: nil)
-            presentExpectation.fulfill()
-        }
+        wait(for: .milliseconds(300))
+        
+        XCTAssertTrue(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController is PKPaymentAuthorizationViewController)
+        UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: false, completion: nil)
 
         sut.finalizeIfNeeded(with: false) {
             dismissExpectation.fulfill()
@@ -99,18 +97,12 @@ class PreApplePayComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController?.present(component: sut)
         
-        let dummyExpectation = expectation(description: "Dummy Expectation")
-
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let hintLabel = self.sut.viewController.view.findView(by: "hintLabel") as? UILabel
-            
-            XCTAssertNotNil(hintLabel)
-            XCTAssertEqual(hintLabel?.text, self.applePayPayment.payment.amount.formatted)
-            
-            dummyExpectation.fulfill()
-        }
+        wait(for: .milliseconds(300))
         
-        waitForExpectations(timeout: 10, handler: nil)
+        let hintLabel = self.sut.viewController.view.findView(by: "hintLabel") as? UILabel
+        
+        XCTAssertNotNil(hintLabel)
+        XCTAssertEqual(hintLabel?.text, self.applePayPayment.payment.amount.formatted)
     }
 
 }

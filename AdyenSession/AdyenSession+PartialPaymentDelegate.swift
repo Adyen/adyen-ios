@@ -25,49 +25,38 @@ extension AdyenSession: PartialPaymentDelegate {
                         completion: @escaping (Result<Balance, Error>) -> Void) {
         switch result {
         case let .success(response):
-            handle(response: response, component: component, completion: completion)
+            handle(response: response, completion: completion)
         case let .failure(error):
-            handle(error: error, component: component, completion: completion)
+            completion(.failure(error))
         }
     }
 
     private func handle(response: BalanceCheckResponse,
-                        component: Component,
                         completion: @escaping (Result<Balance, Error>) -> Void) {
         guard let availableAmount = response.balance else {
             let error = BalanceChecker.Error.zeroBalance
             completion(.failure(error))
-            finish(with: error, component: component)
             return
         }
         let balance = Balance(availableAmount: availableAmount, transactionLimit: response.transactionLimit)
         completion(.success(balance))
-    }
-
-    private func handle(error: Error,
-                        component: Component,
-                        completion: @escaping (Result<Balance, Error>) -> Void) {
-        completion(.failure(error))
-        finish(with: error, component: component)
     }
     
     public func requestOrder(for component: Component, completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
         let request = CreateOrderRequest(sessionId: sessionContext.identifier,
                                          sessionData: sessionContext.data)
         apiClient.perform(request) { [weak self] result in
-            self?.handle(result: result, component: component, completion: completion)
+            self?.handle(result: result, completion: completion)
         }
     }
     
     private func handle(result: Result<CreateOrderResponse, Error>,
-                        component: Component,
                         completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
         switch result {
         case let .success(response):
             completion(.success(response.order))
         case let .failure(error):
             completion(.failure(error))
-            finish(with: error, component: component)
         }
     }
     
@@ -75,18 +64,10 @@ extension AdyenSession: PartialPaymentDelegate {
         let request = CancelOrderRequest(sessionId: sessionContext.identifier,
                                          sessionData: sessionContext.data,
                                          order: order)
-        apiClient.perform(request) { [weak self] result in
-            self?.handle(result: result, component: component)
-        }
-    }
-    
-    private func handle(result: Result<CancelOrderResponse, Error>, component: Component) {
-        switch result {
-        case .success:
-            finish(with: ComponentError.cancelled, component: component)
-        case let .failure(error):
-            finish(with: error, component: component)
-        }
+        // no feedback needed from cancelOrder as the delegate will be called
+        // when cancel button in dropIn is pressed
+        // we may need to update that flow first if feedback is needed from here
+        apiClient.perform(request) { _ in }
     }
     
 }

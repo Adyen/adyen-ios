@@ -43,12 +43,8 @@ class ModalViewControllerTests: XCTestCase {
         sut.loadView()
         sut.viewDidLoad()
         
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            test()
-            expectation.fulfill()
-        }
+        wait(for: .milliseconds(300))
         
-        wait(for: [expectation], timeout: 2)
+        test()
     }
 }

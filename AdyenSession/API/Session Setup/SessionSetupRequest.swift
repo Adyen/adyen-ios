@@ -59,7 +59,7 @@ internal struct SessionSetupResponse: SessionResponse {
     
     internal let countryCode: String
     
-    internal let shopperLocale: String
+    internal let shopperLocale: String?
     
     internal let paymentMethods: PaymentMethods
     

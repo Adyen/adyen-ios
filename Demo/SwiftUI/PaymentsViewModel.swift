@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -91,8 +91,8 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
         viewControllerToPresent = alertController
     }
 
-    internal func presentAlert(withTitle title: String) {
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+    internal func presentAlert(withTitle title: String, message: String?) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         viewControllerToPresent = alertController
     }

@@ -61,42 +61,42 @@ class QRCodeComponentTests: XCTestCase {
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         
-        presentationDelegate.doPresent = { component in
+        presentationDelegate.doPresent = { [weak self] component in
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
             let viewController = component.viewController as! QRCodeViewController
             
             UIApplication.shared.keyWindow?.rootViewController = viewController
             
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-                let copyButton: SubmitButton? = viewController.view.findView(by: "copyButton")
-                let instructionLabel: UILabel? = viewController.view.findView(by: "instructionLabel")
-                let progressView: UIProgressView? = viewController.view.findView(by: "progressView")
-                let expirationLabel: UILabel? = viewController.view.findView(by: "expirationLabel")
-                let logo: UIImageView? = viewController.view.findView(by: "logo")
-                
-                // Test copy button
-                XCTAssertEqual(copyButton?.backgroundColor, style.copyButton.backgroundColor)
-                XCTAssertEqual(copyButton?.layer.cornerRadius, 4)
-                
-                // Test instruction label
-                XCTAssertEqual(instructionLabel?.font, style.instructionLabel.font)
-                XCTAssertEqual(instructionLabel?.textColor, style.instructionLabel.color)
-                XCTAssertEqual(instructionLabel?.textAlignment, style.instructionLabel.textAlignment)
-                
-                // Test progress view
-                XCTAssertEqual(progressView?.progressTintColor, style.progressView.progressTintColor)
-                XCTAssertEqual(progressView?.trackTintColor, style.progressView.trackTintColor)
-                
-                // Test expiration label
-                XCTAssertEqual(expirationLabel?.font, style.expirationLabel.font)
-                XCTAssertEqual(expirationLabel?.textColor, style.expirationLabel.color)
-                XCTAssertEqual(expirationLabel?.textAlignment, style.expirationLabel.textAlignment)
-                
-                // Test logo
-                XCTAssertEqual(logo?.layer.cornerRadius, 10)
-                
-                dummyExpectation.fulfill()
-            }
+            self?.wait(for: .milliseconds(300))
+            
+            let copyButton: SubmitButton? = viewController.view.findView(by: "copyButton")
+            let instructionLabel: UILabel? = viewController.view.findView(by: "instructionLabel")
+            let progressView: UIProgressView? = viewController.view.findView(by: "progressView")
+            let expirationLabel: UILabel? = viewController.view.findView(by: "expirationLabel")
+            let logo: UIImageView? = viewController.view.findView(by: "logo")
+            
+            // Test copy button
+            XCTAssertEqual(copyButton?.backgroundColor, style.copyButton.backgroundColor)
+            XCTAssertEqual(copyButton?.layer.cornerRadius, 4)
+            
+            // Test instruction label
+            XCTAssertEqual(instructionLabel?.font, style.instructionLabel.font)
+            XCTAssertEqual(instructionLabel?.textColor, style.instructionLabel.color)
+            XCTAssertEqual(instructionLabel?.textAlignment, style.instructionLabel.textAlignment)
+            
+            // Test progress view
+            XCTAssertEqual(progressView?.progressTintColor, style.progressView.progressTintColor)
+            XCTAssertEqual(progressView?.trackTintColor, style.progressView.trackTintColor)
+            
+            // Test expiration label
+            XCTAssertEqual(expirationLabel?.font, style.expirationLabel.font)
+            XCTAssertEqual(expirationLabel?.textColor, style.expirationLabel.color)
+            XCTAssertEqual(expirationLabel?.textAlignment, style.expirationLabel.textAlignment)
+            
+            // Test logo
+            XCTAssertEqual(logo?.layer.cornerRadius, 10)
+            
+            dummyExpectation.fulfill()
         }
         
         sut.handle(action)
@@ -256,21 +256,21 @@ class QRCodeComponentTests: XCTestCase {
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         
-        presentationDelegate.doPresent = { component in
+        presentationDelegate.doPresent = { [self] component in
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
             let viewController = component.viewController as! QRCodeViewController
             
             UIApplication.shared.keyWindow?.rootViewController = viewController
             
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-                let copyButton: SubmitButton? = viewController.view.findView(by: "copyButton")
-                XCTAssertNotNil(copyButton)
-                copyButton?.sendActions(for: .touchUpInside)
-                
-                XCTAssertEqual(self.action.qrCodeData, UIPasteboard.general.string)
-                
-                dummyExpectation.fulfill()
-            }
+            wait(for: .milliseconds(300))
+            
+            let copyButton: SubmitButton? = viewController.view.findView(by: "copyButton")
+            XCTAssertNotNil(copyButton)
+            copyButton?.sendActions(for: .touchUpInside)
+            
+            XCTAssertEqual(self.action.qrCodeData, UIPasteboard.general.string)
+            
+            dummyExpectation.fulfill()
         }
         
         sut.handle(action)

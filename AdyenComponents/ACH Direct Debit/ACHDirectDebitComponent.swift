@@ -235,7 +235,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         formViewController.localizationParameters = configuration.localizationParameters
         formViewController.delegate = self
 
-        formViewController.title = paymentMethod.name.uppercased()
+        formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
 
         formViewController.append(FormSpacerItem())
         formViewController.append(headerItem.addingDefaultMargins())

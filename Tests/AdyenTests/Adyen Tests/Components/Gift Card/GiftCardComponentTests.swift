@@ -56,7 +56,6 @@ class GiftCardComponentTests: XCTestCase {
                                 apiContext: Dummy.context,
                                 adyenContext: adyenContext,
                                 publicKeyProvider: publicKeyProvider)
-        sut.payment = nil // Missing Payment object
         delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
         partialPaymentDelegate = PartialPaymentDelegateMock()
@@ -102,7 +101,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -127,7 +126,7 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        sut.payment = .init(amount: .init(value: 10, currencyCode: "EUR"), countryCode: "NL")
+        sut.payment = Payment(amount: .init(value: 10, currencyCode: "EUR"), countryCode: "NL")
 
         delegateMock.onDidFail = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
@@ -142,7 +141,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -167,7 +166,7 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        sut.payment = .init(amount: .init(value: 10, currencyCode: "USD"), countryCode: "US")
+        sut.payment = Payment(amount: .init(value: 10, currencyCode: "USD"), countryCode: "US")
 
         delegateMock.onDidFail = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
@@ -182,7 +181,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -207,7 +206,7 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        sut.payment = .init(amount: .init(value: 10, currencyCode: "EUR"), countryCode: "US")
+        sut.payment = Payment(amount: .init(value: 10, currencyCode: "EUR"), countryCode: "US")
 
         delegateMock.onDidFail = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
@@ -222,7 +221,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -247,8 +246,6 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        sut.payment = nil // Missing Payment object
-
         delegateMock.onDidFail = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
         }
@@ -262,7 +259,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -287,7 +284,7 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
+        sut.payment = Payment(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
         sut.readyToSubmitComponentDelegate = nil
 
         delegateMock.onDidFail = { error, component in
@@ -315,7 +312,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -340,7 +337,7 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
+        sut.payment = Payment(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
 
         delegateMock.onDidFail = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
@@ -369,7 +366,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -394,7 +391,7 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
+        sut.payment = Payment(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
 
         delegateMock.onDidFail = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
@@ -427,7 +424,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -452,7 +449,7 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
+        sut.payment = Payment(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
         sut.order = PartialPaymentOrder(pspReference: "pspreference", orderData: "data")
 
         delegateMock.onDidFail = { error, component in
@@ -484,7 +481,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -509,7 +506,7 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        sut.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
+        sut.payment = Payment(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
 
         let onDidFailExpectation = expectation(description: "Expect delegateMock.onDidFail to be called.")
         delegateMock.onDidFail = { error, component in
@@ -540,7 +537,7 @@ class GiftCardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
 
         XCTAssertTrue(errorView!.isHidden)
 

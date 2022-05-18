@@ -59,7 +59,6 @@ public class CardComponent: PublicKeyConsumer,
         }
     }
 
-    /// The payment information.
     public var payment: Payment? {
         didSet {
             storedCardComponent?.payment = payment
@@ -112,9 +111,8 @@ public class CardComponent: PublicKeyConsumer,
         self.publicKeyProvider = publicKeyProvider
         self.binInfoProvider = binProvider
 
-        let paymentMethodCardTypes = paymentMethod.brands.compactMap(CardType.init)
         let excludedCardTypes = configuration.excludedCardTypes
-        let allowedCardTypes = configuration.allowedCardTypes ?? paymentMethodCardTypes
+        let allowedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
         self.supportedCardTypes = allowedCardTypes.minus(excludedCardTypes)
     }
     
@@ -159,6 +157,7 @@ public class CardComponent: PublicKeyConsumer,
     public func update(storePaymentMethodFieldVisibility isVisible: Bool) {
         cardViewController.update(storePaymentMethodFieldVisibility: isVisible)
     }
+
     // MARK: - Form Items
     
     private lazy var securedViewController = SecuredViewController(child: cardViewController, style: configuration.style)
@@ -174,7 +173,7 @@ public class CardComponent: PublicKeyConsumer,
                                                     localizationParameters: configuration.localizationParameters)
         formViewController.delegate = self
         formViewController.cardDelegate = self
-        formViewController.title = paymentMethod.name
+        formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         return formViewController
     }()
 }

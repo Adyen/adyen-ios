@@ -22,9 +22,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     // MARK: - PresentableComponent
 
     /// :nodoc:
-    public var viewController: UIViewController {
-        SecuredViewController(child: inputFormViewController, style: configuration.style)
-    }
+    public let viewController: UIViewController
 
     /// :nodoc:
     public var requiresModalPresentation: Bool = true
@@ -46,8 +44,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     
     /// Component's configuration
     public var configuration: Configuration
-    
-    /// The payment information.
+
     public var payment: Payment? {
         didSet {
             inputPresenter?.amount = payment?.amount
@@ -81,10 +78,11 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
         self.apiContext = apiContext
         self.adyenContext = adyenContext
         self.configuration = configuration
-        self.inputFormViewController = BACSInputFormViewController(
-            title: paymentMethod.name,
-            styleProvider: configuration.style
-        )
+        self.inputFormViewController = BACSInputFormViewController(title: paymentMethod.name,
+                                                                   styleProvider: configuration.style)
+        self.viewController = SecuredViewController(child: inputFormViewController,
+                                                    style: configuration.style)
+        
         let tracker = BACSDirectDebitComponentTracker(paymentMethod: bacsPaymentMethod,
                                                       apiContext: apiContext,
                                                       telemetryTracker: adyenContext.analyticsProvider,

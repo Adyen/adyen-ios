@@ -25,6 +25,9 @@ public struct ApplePayDetails: PaymentMethodDetails {
     
     /// The user-selected shipping address for this transaction.
     public let shippingContact: PKContact?
+
+    /// The shipping method that the user chose.
+    public let shippingMethod: PKShippingMethod?
     
     /// Initializes the Apple Pay details.
     ///
@@ -34,12 +37,19 @@ public struct ApplePayDetails: PaymentMethodDetails {
     ///   - network: The payment network backing the Apple pay card.
     ///   - billingContact: The user-selected billing address for this transaction.
     ///   - shippingContact: The user-selected shipping address for this transaction.
-    internal init(paymentMethod: ApplePayPaymentMethod, token: String, network: String, billingContact: PKContact?, shippingContact: PKContact?) {
+    ///   - shippingMethod: The shipping method that the user chose.
+    internal init(paymentMethod: ApplePayPaymentMethod,
+                  token: String,
+                  network: String,
+                  billingContact: PKContact?,
+                  shippingContact: PKContact?,
+                  shippingMethod: PKShippingMethod?) {
         self.type = paymentMethod.type
         self.token = token
         self.network = network
         self.billingContact = billingContact
         self.shippingContact = shippingContact
+        self.shippingMethod = shippingMethod
     }
     
     // MARK: - Coding

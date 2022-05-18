@@ -57,7 +57,7 @@ class PaymentMethodListComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.listViewController
         
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         
         let cell = sut.listViewController.tableView.visibleCells[0] as! ListCell
         XCTAssertFalse(cell.showsActivityIndicator)
@@ -76,7 +76,7 @@ class PaymentMethodListComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.listViewController
         
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         
         let sectionHeader = try XCTUnwrap(sut.listViewController.tableView.headerView(forSection: 0) as? ListHeaderView)
         sectionHeader.trailingButton.sendActions(for: .touchUpInside)
@@ -117,12 +117,12 @@ class PaymentMethodListComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.listViewController
         
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         
         let sectionHeader = try XCTUnwrap(sut.listViewController.tableView.headerView(forSection: 0) as? ListHeaderView)
         sectionHeader.trailingButton.sendActions(for: .touchUpInside)
         
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         
         let allCells = sut.listViewController.tableView.visibleCells
         

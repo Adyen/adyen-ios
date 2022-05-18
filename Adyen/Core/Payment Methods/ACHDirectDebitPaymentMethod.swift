@@ -9,15 +9,20 @@ import Foundation
 /// An ACH Direct Debit payment method.
 public struct ACHDirectDebitPaymentMethod: PaymentMethod {
     
-    /// :nodoc:
     public let type: PaymentMethodType
 
-    /// :nodoc:
     public let name: String
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
+    }
+    
+    /// :nodoc:
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue)
     }
 
     // MARK: - Private

@@ -8,16 +8,21 @@ import Foundation
 
 /// A BLIK payment method.
 public struct BLIKPaymentMethod: PaymentMethod {
-
-    /// :nodoc:
+    
     public let type: PaymentMethodType
 
-    /// :nodoc:
     public let name: String
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
     /// :nodoc:
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
+    }
+    
+    /// :nodoc:
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue)
     }
 
     private enum CodingKeys: String, CodingKey {

@@ -11,9 +11,10 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-/// `AdyenSession` acts as the auto-pilot for the checkout process
-/// such as handling the payments and payment details calls internally
-/// and providing feedback at the end via `AdyenSessionDelegate` methods.
+/// `AdyenSession` acts as the delegate for the checkout payment flow.
+/// It can handle the required steps internally such as `/payments` and `/payment/details`
+/// calls and partial payment calls, then provide feedback
+/// via `AdyenSessionDelegate` methods.
 public final class AdyenSession {
     
     /// Session configuration.
@@ -27,18 +28,25 @@ public final class AdyenSession {
 
         internal let adyenContext: AdyenContext
         
+        internal let actionComponent: AdyenActionComponent.Configuration
+        
         /// Initializes a new Configuration object
         ///
         /// - Parameters:
+        ///   - sessionIdentifier: The session identifier.
+        ///   - initialSessionData: The initial session data.
         ///   - apiContext: The API context.
+        ///   - actionComponent: The action handling configuration.
         public init(sessionIdentifier: String,
                     initialSessionData: String,
                     apiContext: APIContext,
-                    adyenContext: AdyenContext) {
+                    adyenContext: AdyenContext,
+                    actionComponent: AdyenActionComponent.Configuration = .init()) {
             self.sessionIdentifier = sessionIdentifier
             self.initialSessionData = initialSessionData
             self.apiContext = apiContext
             self.adyenContext = adyenContext
+            self.actionComponent = actionComponent
         }
     }
     
@@ -55,7 +63,7 @@ public final class AdyenSession {
         public let countryCode: String
         
         /// Shopper Locale
-        public let shopperLocale: String
+        public let shopperLocale: String?
         
         /// The payment amount
         public let amount: Amount
@@ -141,15 +149,12 @@ public final class AdyenSession {
         }
     }
     
-    public func didFail(with error: Error, from dropInComponent: Component) {
-        // TODO: Call back merchant
-    }
-    
     // MARK: - Action Handling for Components
 
     internal lazy var actionComponent: ActionHandlingComponent = {
         let handler = AdyenActionComponent(apiContext: configuration.apiContext,
-                                           adyenContext: configuration.adyenContext)
+                                           adyenContext: configuration.adyenContext,
+                                           configuration: configuration.actionComponent)
         handler.delegate = self
         handler.presentationDelegate = presentationDelegate
         return handler

@@ -10,7 +10,7 @@ import UIKit
     import AdyenEncryption
 #endif
 
-protocol CardViewControllerProtocol {
+internal protocol CardViewControllerProtocol {
     func update(storePaymentMethodFieldVisibility isVisible: Bool)
 }
 

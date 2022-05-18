@@ -9,11 +9,11 @@ import Foundation
 /// A Qiwi Wallet payment method.
 public struct QiwiWalletPaymentMethod: PaymentMethod {
     
-    /// :nodoc:
     public let type: PaymentMethodType
     
-    /// :nodoc:
     public let name: String
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
     
     /// Qiwi Wallet details.
     public let phoneExtensions: [PhoneExtension]

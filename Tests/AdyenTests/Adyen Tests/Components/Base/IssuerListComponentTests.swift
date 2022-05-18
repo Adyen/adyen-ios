@@ -38,18 +38,16 @@ class IssuerListComponentTests: XCTestCase {
 
         let listViewController = sut.viewController as? ListViewController
         XCTAssertNotNil(listViewController)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let item = listViewController!.sections[0].items[0]
-            let cell = listViewController!.tableView.visibleCells[0] as! ListCell
-            XCTAssertFalse(cell.showsActivityIndicator)
-            listViewController?.startLoading(for: item)
-            XCTAssertTrue(cell.showsActivityIndicator)
-            self.sut.stopLoadingIfNeeded()
-            XCTAssertFalse(cell.showsActivityIndicator)
-            expectation.fulfill()
-        }
-
-        wait(for: [expectation], timeout: 5)
+        
+        wait(for: .milliseconds(300))
+        
+        let item = listViewController!.sections[0].items[0]
+        let cell = listViewController!.tableView.visibleCells[0] as! ListCell
+        XCTAssertFalse(cell.showsActivityIndicator)
+        listViewController?.startLoading(for: item)
+        XCTAssertTrue(cell.showsActivityIndicator)
+        sut.stopLoadingIfNeeded()
+        XCTAssertFalse(cell.showsActivityIndicator)
     }
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {

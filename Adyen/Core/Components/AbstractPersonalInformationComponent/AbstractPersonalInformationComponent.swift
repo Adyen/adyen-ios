@@ -46,7 +46,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         let formViewController = FormViewController(style: configuration.style)
         formViewController.localizationParameters = configuration.localizationParameters
 
-        formViewController.title = paymentMethod.name
+        formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.delegate = self
         build(formViewController)
 
@@ -238,7 +238,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     
     /// :nodoc:
     open func addressViewModelBuilder() -> AddressViewModelBuilder {
-        return DefaultAddressViewModelBuilder()
+        DefaultAddressViewModelBuilder()
     }
 
     /// :nodoc:

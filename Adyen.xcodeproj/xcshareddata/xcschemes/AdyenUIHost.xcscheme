@@ -64,6 +64,16 @@
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "007D79082812C81400382D31"
+               BuildableName = "AdyenUIHostUITests.xctest"
+               BlueprintName = "AdyenUIHostUITests"
+               ReferencedContainer = "container:Adyen.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

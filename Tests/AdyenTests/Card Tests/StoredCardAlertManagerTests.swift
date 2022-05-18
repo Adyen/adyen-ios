@@ -37,7 +37,7 @@ class StoredCardAlertManagerTests: XCTestCase {
         let alertController = sut.alertController
         
         XCTAssertEqual(alertController.title, localizedString(.cardStoredTitle, sut.localizationParameters))
-        let displayInformation = method.localizedDisplayInformation(using: sut.localizationParameters)
+        let displayInformation = method.displayInformation(using: sut.localizationParameters)
         XCTAssertEqual(alertController.message, localizedString(.cardStoredMessage, sut.localizationParameters, displayInformation.title))
         
         XCTAssertNotNil(alertController.textFields)
@@ -62,7 +62,7 @@ class StoredCardAlertManagerTests: XCTestCase {
         let alertController = sut.alertController
         
         XCTAssertEqual(alertController.title, localizedString(LocalizationKey(key: "adyen_card_stored_title"), sut.localizationParameters))
-        let displayInformation = method.localizedDisplayInformation(using: sut.localizationParameters)
+        let displayInformation = method.displayInformation(using: sut.localizationParameters)
         XCTAssertEqual(alertController.message, localizedString(LocalizationKey(key: "adyen_card_stored_message"), sut.localizationParameters, displayInformation.title))
         
         XCTAssertNotNil(alertController.textFields)

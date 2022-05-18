@@ -9,22 +9,21 @@ import Foundation
 /// A stored Bancontact account.
 public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
     
-    private let storedCardPaymentMethod: StoredCardPaymentMethod
+    private var storedCardPaymentMethod: StoredCardPaymentMethod
     
-    /// :nodoc:
     public let type: PaymentMethodType = .bcmc
     
-    /// :nodoc:
     public var name: String { storedCardPaymentMethod.name }
-
-    public var identifier: String { storedCardPaymentMethod.identifier }
     
-    public var displayInformation: DisplayInformation {
-        storedCardPaymentMethod.displayInformation
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? {
+        get { storedCardPaymentMethod.merchantProvidedDisplayInformation }
+        set { storedCardPaymentMethod.merchantProvidedDisplayInformation = newValue }
     }
 
-    public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        storedCardPaymentMethod.localizedDisplayInformation(using: parameters)
+    public var identifier: String { storedCardPaymentMethod.identifier }
+
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        storedCardPaymentMethod.displayInformation(using: parameters)
     }
     
     public var supportedShopperInteractions: [ShopperInteraction] {

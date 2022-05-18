@@ -12,6 +12,8 @@ public struct StoredInstantPaymentMethod: StoredPaymentMethod {
     public let type: PaymentMethodType
 
     public let name: String
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
     public let identifier: String
 

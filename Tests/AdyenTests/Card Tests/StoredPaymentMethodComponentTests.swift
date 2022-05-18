@@ -26,7 +26,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testLocalizationWithCustomTableName() {
+    func testLocalizationWithCustomTableName() throws {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method,
                                                apiContext: Dummy.context,
@@ -42,7 +42,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
     }
 
-    func testLocalizationWithZeroPayment() {
+    func testLocalizationWithZeroPayment() throws {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method,
                                                apiContext: Dummy.context,
@@ -59,7 +59,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         XCTAssertEqual(viewController?.actions.last?.title, "Confirm preauthorization")
     }
     
-    func testLocalizationWithCustomKeySeparator() {
+    func testLocalizationWithCustomKeySeparator() throws {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method,
                                                apiContext: Dummy.context,
@@ -75,7 +75,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
     }
 
-    func testUI() {
+    func testUI() throws {
         let method = StoredPaymentMethodMock(identifier: "id",
                                              supportedShopperInteractions: [.shopperPresent],
                                              type: .other("type"),

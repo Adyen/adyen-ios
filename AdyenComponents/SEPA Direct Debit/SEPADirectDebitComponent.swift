@@ -71,7 +71,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         formViewController.localizationParameters = configuration.localizationParameters
         formViewController.delegate = self
 
-        formViewController.title = paymentMethod.name
+        formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.append(nameItem)
         formViewController.append(ibanItem)
         formViewController.append(button)

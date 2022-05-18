@@ -455,6 +455,18 @@ let giftCard = [
     "type": "giftcard"
 ] as [String: Any]
 
+let givexGiftCard = [
+    "brand": "givex",
+    "name": "Givex",
+    "type": "giftcard"
+] as [String: Any]
+
+let giftCard1 = [
+    "brand": "giftfor2card",
+    "name": "GiftFor2",
+    "type": "giftcard"
+] as [String: Any]
+
 let boleto = [
     "name": "Boleto Bancario",
     "type": "boletobancario_santander"
