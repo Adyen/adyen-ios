@@ -7,7 +7,8 @@
 import AdyenNetworking
 import Foundation
 
-/// A class that defines a set of attributes to set the behaviour and state for all components.
+/// A class that defines a set of attributes to set the behaviour for all components for a payment.
+/// An `AdyenContext` is instance should be created per payment session.
 public final class AdyenContext {
 
     // MARK: - Properties
@@ -20,7 +21,7 @@ public final class AdyenContext {
 
     // MARK: - Initializers
 
-    /// Creates and returns an Adyen context with the provided API context and analytics configuration.
+    /// Creates an Adyen context with the provided API context and analytics configuration.
     /// - Parameters:
     ///   - apiContext: The API context used to retrieve internal resources.
     ///   - analyticsConfiguration: A configuration object that specifies the behavior for the analytics.

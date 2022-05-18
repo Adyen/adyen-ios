@@ -18,9 +18,11 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
 
     /// The Adyen context.
     public let adyenContext: AdyenContext
-    
+
+    /// The object that acts as the delegate of the action component.
     public weak var delegate: ActionComponentDelegate?
-    
+
+    /// The object that acts as the presentation delegate of the action component.
     public weak var presentationDelegate: PresentationDelegate?
     
     /// Action handling configurations.
