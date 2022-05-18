@@ -39,14 +39,14 @@ public final class DropInComponent: NSObject,
     /// The title text on the first page of drop in component.
     public let title: String
 
-    // TODO: - Document
+    /// The Adyen context.
     public var adyenContext: AdyenContext
     
     /// Initializes the drop in component.
     ///
     /// - Parameters:
     ///   - paymentMethods: The payment methods to display.
-    ///   - adyenContext: The Adyen context
+    ///   - adyenContext: The Adyen context.
     ///   - configuration: The payment method specific configuration.
     ///   - title: Name of the application. To be displayed on a first payment page.
     ///            If no external value provided, the Main Bundle's name would be used.

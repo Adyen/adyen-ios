@@ -25,7 +25,6 @@ internal struct TelemetryData: Encodable {
 
     internal let userAgent: String? = nil
 
-    // TODO: - Get device name
     internal let deviceBrand: String = {
         var systemInfo = utsname()
         uname(&systemInfo)

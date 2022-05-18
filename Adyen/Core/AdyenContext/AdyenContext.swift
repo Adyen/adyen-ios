@@ -7,7 +7,7 @@
 import AdyenNetworking
 import Foundation
 
-// TODO: - Document (consult with docs team)
+/// A class that defines a set of attributes to set the behaviour and state for all components.
 public final class AdyenContext {
 
     // MARK: - Properties
