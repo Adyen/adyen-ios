@@ -34,7 +34,7 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
         collectionView.dataSource = self
         
         observe(item.$cardLogos) { [weak self] _ in
-            self?.collectionView.reloadData()
+            self?.collectionView.reloadSections([0])
         }
     }
     
