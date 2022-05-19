@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Describes an action in which a Doku voucher is presented to the shopper.
@@ -19,7 +19,6 @@ public final class DokuVoucherAction: GenericVoucherAction, InstructionAwareVouc
     /// The instruction `URL` object.
     public let instructionsURL: URL
 
-    /// :nodoc:
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         shopperName = try container.decode(String.self, forKey: .shopperName)
@@ -28,7 +27,6 @@ public final class DokuVoucherAction: GenericVoucherAction, InstructionAwareVouc
         try super.init(from: decoder)
     }
 
-    /// :nodoc:
     internal init(paymentMethodType: VoucherPaymentMethod,
                   initialAmount: Amount,
                   totalAmount: Amount,
@@ -49,7 +47,6 @@ public final class DokuVoucherAction: GenericVoucherAction, InstructionAwareVouc
                    merchantName: merchantName)
     }
 
-    /// :nodoc:
     private enum CodingKeys: String, CodingKey {
         case shopperEmail,
              shopperName,

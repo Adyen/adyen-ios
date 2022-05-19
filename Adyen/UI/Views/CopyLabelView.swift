@@ -1,15 +1,14 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import UIKit
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class CopyLabelView: UIView, Localizable {
 
-    /// :nodoc:
     public var localizationParameters: LocalizationParameters?
 
     private let style: TextStyle
@@ -26,7 +25,6 @@ public final class CopyLabelView: UIView, Localizable {
         return label
     }()
 
-    /// :nodoc:
     public init(text: String, style: TextStyle) {
         self.text = text
         self.style = style
@@ -64,7 +62,6 @@ public final class CopyLabelView: UIView, Localizable {
         backgroundColor = UIColor.Adyen.lightGray
     }
 
-    /// :nodoc:
     override public var canBecomeFirstResponder: Bool { true }
 
     @objc private func handleCopy() {

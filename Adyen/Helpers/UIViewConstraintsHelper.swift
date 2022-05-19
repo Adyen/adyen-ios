@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,7 @@ import AdyenNetworking
 import UIKit
 
 /// Adds helper functionality to any `UIView` instance through the `adyen` property.
-/// :nodoc:
+@_spi(AdyenInternal)
 extension AdyenScope where Base: UIView {
 
     /// Attaches top, bottom, left and right anchors of this view to the corresponding anchors inside the specified view.
@@ -73,7 +73,6 @@ extension AdyenScope where Base: UIView {
     }
 
     /// An enum to specify an anchor source
-    /// :nodoc:
     public enum LayoutAnchorSource {
         
         /// Regular `UIView` object
@@ -93,23 +92,17 @@ extension AdyenScope where Base: UIView {
     }
     
     /// Inset distances for views that can be nil.
-    /// :nodoc:
     public struct EdgeInsets {
         
-        /// :nodoc:
         public var top: CGFloat?
 
-        /// :nodoc:
         public var left: CGFloat?
 
-        /// :nodoc:
         public var bottom: CGFloat?
 
-        /// :nodoc:
         public var right: CGFloat?
         
         /// Creates insets with 0 on all 4 values.
-        /// :nodoc:
         public static var zero: EdgeInsets {
             .init(top: 0, left: 0, bottom: 0, right: 0)
         }
@@ -121,7 +114,6 @@ extension AdyenScope where Base: UIView {
             right = edgeInsets.right
         }
         
-        /// :nodoc:
         public init(top: CGFloat? = nil, left: CGFloat? = nil, bottom: CGFloat? = nil, right: CGFloat? = nil) {
             self.top = top
             self.left = left

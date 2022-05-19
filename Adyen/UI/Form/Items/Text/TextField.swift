@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,7 +11,7 @@ import UIKit
 /// specifically the voice over reading of the UITextField.placeholder.
 /// So in order to prevent this behaviour,
 /// accessibilityValue is overriden to return an empty string in case the text var is nil or empty string.
-/// :nodoc:
+@_spi(AdyenInternal)
 @objc(AdyTextField)
 public final class TextField: UITextField {
     
@@ -23,7 +23,6 @@ public final class TextField: UITextField {
     /// cut, copy, share are allowed for the text field. Default is `true`
     public var allowsEditingActions: Bool = true
 
-    /// :nodoc:
     override public var accessibilityValue: String? {
         get {
             guard disablePlaceHolderAccessibility else { return super.accessibilityValue }
@@ -37,7 +36,6 @@ public final class TextField: UITextField {
         set { super.accessibilityValue = newValue }
     }
 
-    /// :nodoc:
     override public var font: UIFont? {
         didSet {
             let sizeToFit = sizeThatFits(CGSize(width: bounds.width,

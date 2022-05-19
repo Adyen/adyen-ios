@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// :nodoc:
+/// Any Object thats aware of a `PaymentMethod`.
 public protocol PaymentMethodAware: AnyObject {
     /// The payment method for which to gather payment details.
     var paymentMethod: PaymentMethod { get }
@@ -20,10 +20,9 @@ public protocol PaymentComponent: PaymentAwareComponent, PaymentMethodAware {
     
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension PaymentComponent {
     
-    /// :nodoc:
     public func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
         guard data.browserInfo == nil else {
             delegate?.didSubmit(data, from: component ?? self)
@@ -65,9 +64,9 @@ public protocol PaymentAwareComponent: Component {
     var order: PartialPaymentOrder? { get set }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension PaymentAwareComponent {
-    /// :nodoc:
+    
     public var payment: Payment? {
         get {
             objc_getAssociatedObject(self, &AssociatedKeys.payment) as? Payment
@@ -77,7 +76,6 @@ extension PaymentAwareComponent {
         }
     }
 
-    /// :nodoc:
     public var order: PartialPaymentOrder? {
         get {
             objc_getAssociatedObject(self, &AssociatedKeys.order) as? PartialPaymentOrder
@@ -87,7 +85,6 @@ extension PaymentAwareComponent {
         }
     }
 
-    /// :nodoc:
     public var amountToPay: Amount? {
         order?.remainingAmount ?? payment?.amount
     }

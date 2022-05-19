@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
@@ -58,7 +58,6 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
 
     /// Initializes the card payment details.
     ///
-    /// :nodoc:
     ///
     /// - Parameters:
     ///   - paymentMethod: The used card payment method.
@@ -91,7 +90,6 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
 
     /// Initializes the card payment details for a stored card payment method.
     ///
-    /// :nodoc:
     ///
     /// - Parameters:
     ///   - paymentMethod: The used stored card payment method.

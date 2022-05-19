@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,6 @@
 import SwiftUI
 
 #if canImport(SwiftUI) && canImport(Combine)
-    /// :nodoc:
     @available(iOS 13.0, *)
     public extension View {
 
@@ -22,7 +21,6 @@ import SwiftUI
         }
     }
 
-    /// :nodoc:
     @available(iOS 13.0, *)
     internal struct ViewControllerPresenter: ViewModifier {
 
@@ -36,7 +34,6 @@ import SwiftUI
         }
     }
 
-    /// :nodoc:
     @available(iOS 13.0, *)
     internal final class FullScreenView: UIViewControllerRepresentable {
 

@@ -9,13 +9,11 @@ import UIKit
 
 extension AbstractPersonalInformationComponent: LoadingComponent {
 
-    /// :nodoc:
     public func stopLoading() {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
 
-    /// :nodoc:
     internal func didSelectSubmitButton() {
         guard formViewController.validate() else { return }
 
@@ -24,21 +22,21 @@ extension AbstractPersonalInformationComponent: LoadingComponent {
         do {
             let details = try createPaymentDetails()
             submit(data: PaymentComponentData(paymentMethodDetails: details, amount: amountToPay, order: order))
-        } catch let error {
+        } catch {
             delegate?.didFail(with: error, from: self)
         }
     }
 }
 
+@_spi(AdyenInternal)
 extension AbstractPersonalInformationComponent: TrackableComponent {
 
-    /// :nodoc:
     public func viewWillAppear(viewController: UIViewController) {
         populateFields()
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public enum PersonalInformation: Equatable {
     case firstName
     case lastName

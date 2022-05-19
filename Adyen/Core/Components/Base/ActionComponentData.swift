@@ -17,7 +17,6 @@ public struct ActionComponentData {
     
     /// Initializes the action component data.
     ///
-    /// :nodoc:
     ///
     /// - Parameters:
     ///   - details: The additional details supplied by the action component.

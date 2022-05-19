@@ -1,17 +1,16 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Formats a card's expiration date for display.
 /// The input is expected to be sanitized as "MMYY", which will result in "MM / YY".
 public final class CardExpiryDateFormatter: NumericFormatter {
     
-    /// :nodoc:
     override public func formattedValue(for value: String) -> String {
         let separator = " / "
         

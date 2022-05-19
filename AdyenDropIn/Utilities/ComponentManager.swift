@@ -4,15 +4,15 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenCard)
-    import AdyenCard
+    @_spi(AdyenInternal) import AdyenCard
 #endif
 #if canImport(AdyenComponents)
     import AdyenComponents
 #endif
 #if canImport(AdyenActions)
-    import AdyenActions
+    @_spi(AdyenInternal) import AdyenActions
 #endif
 import Foundation
 
@@ -254,32 +254,26 @@ internal final class ComponentManager {
 
 extension ComponentManager: PaymentComponentBuilder {
     
-    /// :nodoc:
     internal func build(paymentMethod: StoredCardPaymentMethod) -> PaymentComponent? {
         createCardComponent(with: paymentMethod)
     }
     
-    /// :nodoc:
     internal func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext)
     }
     
-    /// :nodoc:
     internal func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext)
     }
     
-    /// :nodoc:
     internal func build(paymentMethod: CardPaymentMethod) -> PaymentComponent? {
         createCardComponent(with: paymentMethod)
     }
     
-    /// :nodoc:
     internal func build(paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
         createBancontactComponent(with: paymentMethod)
     }
     
-    /// :nodoc:
     internal func build(paymentMethod: IssuerListPaymentMethod) -> PaymentComponent? {
         IssuerListComponent(paymentMethod: paymentMethod,
                             apiContext: apiContext,
@@ -287,27 +281,22 @@ extension ComponentManager: PaymentComponentBuilder {
                                                  localizationParameters: configuration.localizationParameters))
     }
     
-    /// :nodoc:
     internal func build(paymentMethod: SEPADirectDebitPaymentMethod) -> PaymentComponent? {
         createSEPAComponent(paymentMethod)
     }
 
-    /// :nodoc:
     internal func build(paymentMethod: BACSDirectDebitPaymentMethod) -> PaymentComponent? {
         createBACSDirectDebit(paymentMethod)
     }
     
-    /// :nodoc:
     internal func build(paymentMethod: ACHDirectDebitPaymentMethod) -> PaymentComponent? {
         createACHDirectDebitComponent(paymentMethod)
     }
     
-    /// :nodoc:
     internal func build(paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
         createPreApplePayComponent(with: paymentMethod)
     }
     
-    /// :nodoc:
     internal func build(paymentMethod: WeChatPayPaymentMethod) -> PaymentComponent? {
         guard let classObject = loadTheConcreteWeChatPaySDKActionComponentClass() else { return nil }
         guard classObject.isDeviceSupported() else { return nil }
@@ -316,22 +305,18 @@ extension ComponentManager: PaymentComponentBuilder {
                                        apiContext: apiContext)
     }
     
-    /// :nodoc:
     internal func build(paymentMethod: QiwiWalletPaymentMethod) -> PaymentComponent? {
         createQiwiWalletComponent(paymentMethod)
     }
     
-    /// :nodoc:
     internal func build(paymentMethod: MBWayPaymentMethod) -> PaymentComponent? {
         createMBWayComponent(paymentMethod)
     }
 
-    /// :nodoc:
     internal func build(paymentMethod: BLIKPaymentMethod) -> PaymentComponent? {
         createBLIKComponent(paymentMethod)
     }
 
-    /// :nodoc:
     internal func build(paymentMethod: EContextPaymentMethod) -> PaymentComponent? {
         let config = BasicPersonalInfoFormComponent.Configuration(style: configuration.style.formComponent,
                                                                   shopperInformation: configuration.shopper,
@@ -341,7 +326,6 @@ extension ComponentManager: PaymentComponentBuilder {
                                               configuration: config)
     }
 
-    /// :nodoc:
     internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
         let config = DokuComponent.Configuration(style: configuration.style.formComponent,
                                                  shopperInformation: configuration.shopper,
@@ -351,7 +335,6 @@ extension ComponentManager: PaymentComponentBuilder {
                              configuration: config)
     }
 
-    /// :nodoc:
     internal func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {
         guard partialPaymentEnabled else { return nil }
         return GiftCardComponent(paymentMethod: paymentMethod,
@@ -359,12 +342,10 @@ extension ComponentManager: PaymentComponentBuilder {
                                  style: configuration.style.formComponent)
     }
     
-    /// :nodoc:
     internal func build(paymentMethod: BoletoPaymentMethod) -> PaymentComponent? {
         createBoletoComponent(paymentMethod)
     }
     
-    /// :nodoc:
     internal func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent? {
         let config = AffirmComponent.Configuration(style: configuration.style.formComponent,
                                                    shopperInformation: configuration.shopper,
@@ -374,14 +355,12 @@ extension ComponentManager: PaymentComponentBuilder {
                                configuration: config)
     }
     
-    /// :nodoc:
     internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
         InstantPaymentComponent(paymentMethod: paymentMethod,
                                 paymentData: nil,
                                 apiContext: apiContext)
     }
 
-    /// :nodoc:
     internal func build(paymentMethod: AtomePaymentMethod) -> PaymentComponent? {
         let config = AtomeComponent.Configuration(style: configuration.style.formComponent,
                                                   shopperInformation: configuration.shopper,

@@ -4,14 +4,13 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import PassKit
 import UIKit
 #if canImport(AdyenComponents)
     import AdyenComponents
 #endif
 
-/// :nodoc:
 internal final class PreApplePayComponent: PresentableComponent,
     FinalizableComponent,
     PaymentComponent,
@@ -46,7 +45,6 @@ internal final class PreApplePayComponent: PresentableComponent,
 
     internal let configuration: Configuration
     
-    /// :nodoc:
     internal lazy var viewController: UIViewController = {
         let view = PreApplePayView(model: createModel(with: payment.amount))
         let viewController = ADYViewController(view: view, title: "Apple Pay")
@@ -55,10 +53,8 @@ internal final class PreApplePayComponent: PresentableComponent,
         return viewController
     }()
     
-    /// :nodoc:
     internal let requiresModalPresentation: Bool = true
     
-    /// :nodoc:
     internal init(paymentMethod: ApplePayPaymentMethod,
                   apiContext: APIContext,
                   configuration: Configuration,
@@ -104,7 +100,6 @@ extension PreApplePayComponent: PaymentComponentDelegate {
 
 extension PreApplePayComponent: PreApplePayViewDelegate {
     
-    /// :nodoc:
     internal func pay() {
         isPresenting = true
         presentationDelegate?.present(component: applePayComponent)

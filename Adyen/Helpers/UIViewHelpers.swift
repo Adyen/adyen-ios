@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,10 +8,9 @@ import AdyenNetworking
 import UIKit
 
 /// Adds helper functionality to any `UIView` instance through the `adyen` property.
-/// :nodoc:
+@_spi(AdyenInternal)
 extension AdyenScope where Base: UIView {
-
-    /// :nodoc:
+    
     @discardableResult
     public func snapShot(forceRedraw: Bool = false) -> UIImage? {
         if forceRedraw {
@@ -27,7 +26,6 @@ extension AdyenScope where Base: UIView {
         return image
     }
     
-    /// :nodoc:
     public func hide(animationKey: String,
                      hidden: Bool,
                      animated: Bool) {
@@ -39,7 +37,6 @@ extension AdyenScope where Base: UIView {
         }
     }
 
-    /// :nodoc:
     private func hideWithAnimation(animationKey: String,
                                    _ hidden: Bool) {
         let context = KeyFrameAnimationContext(animationKey: animationKey,
@@ -61,7 +58,6 @@ extension AdyenScope where Base: UIView {
         animate(context: context)
     }
     
-    /// :nodoc:
     private func hideWithoutAnimation(_ hidden: Bool) {
         guard base.isHidden != hidden else { return }
         
@@ -70,7 +66,6 @@ extension AdyenScope where Base: UIView {
         base.adyen.updatePreferredContentSize()
     }
 
-    /// :nodoc:
     public var minimalSize: CGSize {
         let targetSize = CGSize(width: Dimensions.greatestPresentableWidth,
                                 height: UIView.layoutFittingCompressedSize.height)

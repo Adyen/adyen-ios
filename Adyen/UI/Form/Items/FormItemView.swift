@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import UIKit
 
 /// A view representing a form item.
-/// :nodoc:
+@_spi(AdyenInternal)
 open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, AdyenObserver {
     
     /// The item represented by the view.
@@ -24,7 +24,6 @@ open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, AdyenObser
         preservesSuperviewLayoutMargins = true
     }
     
-    /// :nodoc:
     @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -36,13 +35,12 @@ open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, AdyenObser
         []
     }
     
-    /// :nodoc:
     public func reset() { /* Do nothing */ }
     
 }
 
 /// A type-erased form item view.
-/// :nodoc:
+@_spi(AdyenInternal)
 public protocol AnyFormItemView: UIView {
     
     /// The embedding item view of the current item view.
@@ -51,12 +49,11 @@ public protocol AnyFormItemView: UIView {
     /// The array of item views embedded in the current item view.
     var childItemViews: [AnyFormItemView] { get }
     
-    /// :nodoc:
     func reset()
     
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public extension AnyFormItemView {
     
     /// The embedding item view of the current item view.

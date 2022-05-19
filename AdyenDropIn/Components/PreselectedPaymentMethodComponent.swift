@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
@@ -28,10 +28,8 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     private let title: String
     private let defaultComponent: PaymentComponent
     
-    /// :nodoc:
     internal var apiContext: APIContext { defaultComponent.apiContext }
 
-    /// :nodoc:
     internal var paymentMethod: PaymentMethod { defaultComponent.paymentMethod }
     
     /// Delegate actions.
@@ -152,7 +150,6 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
     // MARK: - Localization
     
-    /// :nodoc:
     public var localizationParameters: LocalizationParameters?
     
 }

@@ -4,11 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import Foundation
 
-/// :nodoc:
 /// An API Client that retains its self until destroyed manually or request is concluded.
 internal final class SelfRetainingAPIClient: APIClientProtocol {
     
@@ -16,7 +15,6 @@ internal final class SelfRetainingAPIClient: APIClientProtocol {
     
     private var instance: APIClientProtocol?
     
-    /// :nodoc:
     /// For Testing only
     internal var onDeinit: (() -> Void)?
     

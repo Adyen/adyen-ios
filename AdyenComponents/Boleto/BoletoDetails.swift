@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Contains the details supplied by the Boleto component.
@@ -25,7 +25,6 @@ public struct BoletoDetails: PaymentMethodDetails, ShopperInformation {
     /// The billing address of the shopper.
     public let billingAddress: PostalAddress?
     
-    /// :nodoc:
     public let telephoneNumber: String? = nil
     
     /// Initializes the Boleto details

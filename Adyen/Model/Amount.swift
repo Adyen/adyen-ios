@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -43,7 +43,6 @@ public struct Amount: Codable, Equatable {
         self.init(value: minorUnit, currencyCode: currencyCode, localeIdentifier: localeIdentifier)
     }
 
-    /// :nodoc:
     internal init(value: Int, unsafeCurrencyCode: String) {
         self.value = value
         self.currencyCode = unsafeCurrencyCode
@@ -55,12 +54,11 @@ public struct Amount: Codable, Equatable {
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public extension Amount {
 
     /// Returns a formatted representation of the amount.
     ///
-    /// :nodoc:
     var formatted: String {
         if let formattedAmount = AmountFormatter.formatted(
             amount: value,
@@ -75,35 +73,31 @@ public extension Amount {
     
     /// Returns a formatted representation of the amount, split in two components
     ///
-    /// :nodoc:
+    @_spi(AdyenInternal)
     var formattedComponents: AmountComponents {
         AmountComponents(amount: self)
     }
 
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension Amount: Comparable {
 
-    /// :nodoc:
     public static func < (lhs: Amount, rhs: Amount) -> Bool {
         assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compare")
         return lhs.value < rhs.value
     }
 
-    /// :nodoc:
     public static func <= (lhs: Amount, rhs: Amount) -> Bool {
         assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compare")
         return lhs.value <= rhs.value
     }
 
-    /// :nodoc:
     public static func >= (lhs: Amount, rhs: Amount) -> Bool {
         assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compare")
         return lhs.value >= rhs.value
     }
 
-    /// :nodoc:
     public static func > (lhs: Amount, rhs: Amount) -> Bool {
         assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to compare")
         return lhs.value > rhs.value
@@ -116,10 +110,9 @@ extension Amount: Comparable {
 
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public struct AmountComponents {
     
-    /// :nodoc:
     fileprivate init(amount: Amount) {
         if let comps = Self.extractAmountComponents(from: amount.formatted) {
             (self.formattedCurrencySymbol, self.formattedValue) = comps
@@ -129,10 +122,8 @@ public struct AmountComponents {
         }
     }
     
-    /// :nodoc:
     public let formattedValue: String
     
-    /// :nodoc:
     public let formattedCurrencySymbol: String
     
     private static func extractAmountComponents(

@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
@@ -58,7 +58,6 @@ public struct VoucherComponentStyle: ViewStyle {
     /// The secondary button copy code confirmation color
     public var codeConfirmationColor = UIColor.Adyen.green40
 
-    /// :nodoc:
     public var backgroundColor = UIColor.Adyen.componentBackground
 
     /// Initializes the voucher component style with the default style.

@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 /// An error that occurred during the use of QRCodeComponent
@@ -20,13 +20,11 @@ internal enum QRCodeComponentError: LocalizedError {
 /// A component that presents a QR code.
 public final class QRCodeComponent: ActionComponent, Cancellable {
     
-    /// :nodoc:
     public let apiContext: APIContext
     
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
 
-    /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
     
     /// The QR code component configurations.
@@ -52,22 +50,16 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
     /// The voucher component configurations.
     public var configuration: Configuration
     
-    /// :nodoc:
     private let pollingComponentBuilder: AnyPollingHandlerProvider
     
-    /// :nodoc:
     private var pollingComponent: AnyPollingHandler?
     
-    /// :nodoc:
     private var timeoutTimer: ExpirationTimer?
     
-    /// :nodoc
     private let progress = Progress()
     
-    /// :nodoc:
     @AdyenObservable(nil) private var expirationText: String?
     
-    /// :nodoc:
     private let expirationTimeout: TimeInterval
     
     /// Initializes the `QRCodeComponent`.
@@ -137,7 +129,6 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
         timeoutTimer?.startTimer()
     }
     
-    /// :nodoc:
     private func updateExpiration(_ timeLeft: TimeInterval) {
         progress.completedUnitCount = Int64(timeLeft)
         let timeLeftString = timeLeft.adyen.timeLeftString() ?? ""
@@ -146,21 +137,18 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
                                          timeLeftString)
     }
     
-    /// :nodoc:
     private func onTimerTimeout() {
         cleanup()
         
         delegate?.didFail(with: QRCodeComponentError.qrCodeExpired, from: self)
     }
     
-    /// :nodoc:
     private func createViewController(with action: QRCodeAction) -> UIViewController {
         let viewController = QRCodeViewController(viewModel: createModel(with: action))
         viewController.qrCodeView.delegate = self
         return viewController
     }
     
-    /// :nodoc:
     private func createModel(with action: QRCodeAction) -> QRCodeView.Model {
         let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: apiContext.environment)
         return QRCodeView.Model(
@@ -181,31 +169,26 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
         )
     }
     
-    /// :nodoc:
     public func didCancel() {
         cleanup()
     }
     
-    /// :nodoc:
     fileprivate func cleanup() {
         timeoutTimer?.stopTimer()
         pollingComponent?.didCancel()
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension QRCodeComponent: ActionComponentDelegate {
 
-    /// :nodoc:
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         cleanup()
         delegate?.didProvide(data, from: self)
     }
 
-    /// :nodoc:
     public func didComplete(from component: ActionComponent) {}
 
-    /// :nodoc:
     public func didFail(with error: Error, from component: ActionComponent) {
         cleanup()
         delegate?.didFail(with: error, from: self)
@@ -213,7 +196,7 @@ extension QRCodeComponent: ActionComponentDelegate {
     
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension QRCodeComponent: QRCodeViewDelegate {
     
     internal func copyToPasteboard(with action: QRCodeAction) {

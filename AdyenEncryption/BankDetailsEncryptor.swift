@@ -54,7 +54,6 @@ extension BankDetailsEncryptor {
         /// Indicates an error when trying to encrypt empty or invalid routing number.
         case invalidRoutingNumber
         
-        /// :nodoc:
         public var errorDescription: String? {
             switch self {
             case .invalidAccountNumber:

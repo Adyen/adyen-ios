@@ -15,12 +15,12 @@ public struct ACHDirectDebitPaymentMethod: PaymentMethod {
     
     public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue)
     }

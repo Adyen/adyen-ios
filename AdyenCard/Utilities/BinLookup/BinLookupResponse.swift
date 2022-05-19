@@ -1,29 +1,23 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import Foundation
 
-/// :nodoc:
 internal struct BinLookupResponse: Response {
 
-    /// :nodoc:
     internal var brands: [CardBrand]?
 
-    /// :nodoc:
     internal let requestId: String
 
-    /// :nodoc:
     internal let issuingCountryCode: String?
 
-    /// :nodoc:
     internal var isCreatedLocally: Bool = false
     
-    /// :nodoc:
     internal init(brands: [CardBrand]? = nil,
                   requestId: String = UUID().uuidString,
                   issuingCountryCode: String? = "NL",

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,10 +11,8 @@ import Foundation
 @propertyWrapper
 internal final class LazyOptional<ValueType> {
     
-    /// :nodoc:
     private var _wrappedValue: ValueType?
     
-    /// :nodoc:
     private let initialize: () -> ValueType
     
     /// Initializes the property wrapper.
@@ -24,7 +22,6 @@ internal final class LazyOptional<ValueType> {
         self.initialize = initialize
     }
     
-    /// :nodoc:
     internal var wrappedValue: ValueType {
         
         get {
@@ -40,7 +37,6 @@ internal final class LazyOptional<ValueType> {
         
     }
     
-    /// :nodoc:
     internal var projectedValue: LazyOptional { self }
     
     /// Dealloc the property, and it will get initialized when called again.

@@ -4,20 +4,20 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenComponents)
     import AdyenComponents
 #endif
 #if canImport(AdyenActions)
-    import AdyenActions
+    @_spi(AdyenInternal) import AdyenActions
 #endif
 #if canImport(AdyenCard)
-    import AdyenCard
+    @_spi(AdyenInternal) import AdyenCard
 #endif
 import AdyenNetworking
 import UIKit
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension DropInComponent: PaymentMethodListComponentDelegate {
     
     internal func didSelect(_ component: PaymentComponent,
@@ -42,16 +42,14 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
     
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension DropInComponent: PaymentComponentDelegate {
     
-    /// :nodoc:
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         paymentInProgress = true
         delegate?.didSubmit(data, from: component, in: self)
     }
     
-    /// :nodoc:
     public func didFail(with error: Error, from component: PaymentComponent) {
         if case ComponentError.cancelled = error {
             userDidCancel(component)
@@ -62,21 +60,18 @@ extension DropInComponent: PaymentComponentDelegate {
 
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension DropInComponent: ActionComponentDelegate {
     
-    /// :nodoc:
     public func didOpenExternalApplication(component: ActionComponent) {
         stopLoading()
         delegate?.didOpenExternalApplication(component: component, in: self)
     }
-
-    /// :nodoc:
+    
     public func didComplete(from component: ActionComponent) {
         delegate?.didComplete(from: component, in: self)
     }
     
-    /// :nodoc:
     public func didFail(with error: Error, from component: ActionComponent) {
         if case ComponentError.cancelled = error {
             userDidCancel(component)
@@ -85,7 +80,6 @@ extension DropInComponent: ActionComponentDelegate {
         }
     }
     
-    /// :nodoc:
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         delegate?.didProvide(data, from: component, in: self)
     }
@@ -116,7 +110,7 @@ extension DropInComponent: NavigationDelegate {
         navigationController.dismiss(animated: true, completion: completion)
     }
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func present(component: PresentableComponent) {
         navigationController.present(asModal: component)
     }
@@ -137,7 +131,7 @@ extension DropInComponent: FinalizableComponent {
 
 extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?) {
         let newRoot = preselectedPaymentMethodComponent(for: component, onCancel: { [weak self] in
             guard let self = self, let order = order else { return }

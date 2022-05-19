@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Indicates the Voucher payment methods.
@@ -56,7 +56,6 @@ public enum VoucherAction: Decodable {
     /// Indicates an Multibanco voucher type
     case multibanco(MultibancoVoucherAction)
 
-    /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
@@ -79,12 +78,11 @@ public enum VoucherAction: Decodable {
         }
     }
 
-    /// :nodoc:
     private enum CodingKeys: String, CodingKey {
         case paymentMethodType
     }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public var anyAction: AnyVoucherAction {
         switch self {
         case let .boletoBancairoSantander(action):
@@ -105,11 +103,9 @@ public enum VoucherAction: Decodable {
     }
 }
 
-/// :nodoc:
 /// Describes a voucher that has an instructions url.
 internal protocol InstructionAwareVoucherAction {
     
-    /// :nodoc:
     /// The instruction url.
     var instructionsURL: URL { get }
 }
@@ -135,10 +131,9 @@ public class GenericVoucherAction: Decodable, AnyVoucherAction {
     /// Merchant Name.
     public let merchantName: String
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public let passCreationToken: String?
 
-    /// :nodoc:
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         paymentMethodType = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
@@ -164,7 +159,6 @@ public class GenericVoucherAction: Decodable, AnyVoucherAction {
         }
     }
 
-    /// :nodoc:
     internal init(paymentMethodType: VoucherPaymentMethod,
                   initialAmount: Amount,
                   totalAmount: Amount,

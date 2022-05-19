@@ -4,27 +4,23 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
 import UIKit
 
 /// A component that provides a form for gift card payments.
-public final class GiftCardComponent: PartialPaymentComponent,
-    PublicKeyConsumer,
-    PresentableComponent,
+public final class GiftCardComponent: PresentableComponent,
     Localizable,
     LoadingComponent,
     AdyenObserver {
     
-    /// :nodoc:
     public let apiContext: APIContext
 
-    /// :nodoc:
     private let giftCardPaymentMethod: GiftCardPaymentMethod
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public let publicKeyProvider: AnyPublicKeyProvider
 
     /// The gift card payment method.
@@ -70,10 +66,8 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
     // MARK: - Presentable Component Protocol
 
-    /// :nodoc:
     public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
 
-    /// :nodoc:
     public var requiresModalPresentation: Bool { true }
 
     private lazy var formViewController: FormViewController = {
@@ -137,18 +131,15 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
     // MARK: - Localizable Protocol
 
-    /// :nodoc:
     public var localizationParameters: LocalizationParameters?
 
     // MARK: - Loading Component Protocol
 
-    /// :nodoc:
     public func stopLoading() {
         button.showsActivityIndicator = false
         viewController.view.isUserInteractionEnabled = true
     }
 
-    /// :nodoc:
     internal func startLoading() {
         button.showsActivityIndicator = true
         viewController.view.isUserInteractionEnabled = false
@@ -324,9 +315,9 @@ public final class GiftCardComponent: PartialPaymentComponent,
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public extension Result {
-    /// :nodoc:
+    
     func handle(success: (Success) -> Void, failure: (Failure) -> Void) {
         switch self {
         case let .success(successObject):
@@ -336,3 +327,9 @@ public extension Result {
         }
     }
 }
+
+@_spi(AdyenInternal)
+extension GiftCardComponent: PartialPaymentComponent {}
+
+@_spi(AdyenInternal)
+extension GiftCardComponent: PublicKeyConsumer {}

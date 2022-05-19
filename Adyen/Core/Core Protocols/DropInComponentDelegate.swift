@@ -87,12 +87,10 @@ public protocol StoredPaymentMethodsDelegate: AnyObject {
     
 }
 
-/// :nodoc:
+/// Provides default empty implementations for some of the `DropInComponentDelegate` functions.
 public extension DropInComponentDelegate {
     
-    /// :nodoc:
     func didCancel(component: PaymentComponent, from dropInComponent: AnyDropInComponent) {}
 
-    /// :nodoc:
     func didOpenExternalApplication(component: ActionComponent, in dropInComponent: AnyDropInComponent) {}
 }

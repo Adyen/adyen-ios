@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import UIKit
 
 /// An image view that displays images from a remote location.
-/// :nodoc:
+@_spi(AdyenInternal)
 open class NetworkImageView: UIImageView {
     
     /// The URL of the image to display.
@@ -26,7 +26,6 @@ open class NetworkImageView: UIImageView {
     /// The image to display before image loading starts and also in case it fails.
     public var placeholderImage: UIImage?
     
-    /// :nodoc:
     override open func didMoveToWindow() {
         super.didMoveToWindow()
         

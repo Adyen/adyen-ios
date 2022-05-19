@@ -335,7 +335,7 @@ extension CardType {
 
 extension CardType {
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func matches(cardNumber: String) -> Bool {
         guard let pattern = pattern else {
             return false

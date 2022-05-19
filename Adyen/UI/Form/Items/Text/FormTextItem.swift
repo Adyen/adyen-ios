@@ -8,13 +8,12 @@ import Foundation
 import UIKit
 
 /// An item in which text can be entered using a text field.
-/// :nodoc:
+@_spi(AdyenInternal)
 open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFormItem, InputViewRequiringFormItem {
 
     /// The placeholder of the text field.
     @AdyenObservable(nil) public var placeholder: String?
     
-    /// :nodoc:
     override public var value: String {
         get { publisher.wrappedValue }
         set { publishTransformed(value: newValue) }
@@ -48,7 +47,6 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
         super.init(value: "", style: style)
     }
 
-    /// :nodoc:
     public func isValid() -> Bool {
         validator?.isValid(value) ?? true
     }
@@ -62,7 +60,6 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
         textDidChange(value: value)
     }
 
-    /// :nodoc:
     @discardableResult
     internal func textDidChange(value: String) -> String {
         let sanitizedValue = formatter?.sanitizedValue(for: value) ?? value
@@ -74,10 +71,9 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
 
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension AnyFormItemView {
 
-    /// :nodoc:
     internal func applyTextDelegateIfNeeded(delegate: FormTextItemViewDelegate) {
         if let formTextItemView = self as? AnyFormTextItemView {
             formTextItemView.delegate = delegate

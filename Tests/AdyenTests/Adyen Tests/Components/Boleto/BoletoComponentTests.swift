@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import Adyen
-@testable import AdyenActions
+@_spi(AdyenInternal) @testable import Adyen
+@_spi(AdyenInternal) @testable import AdyenActions
 @testable import AdyenComponents
 import XCTest
 

@@ -7,20 +7,18 @@
 import AdyenNetworking
 import Foundation
 
-/// :nodoc:
 /// Interface to fetch the client public key.
+@_spi(AdyenInternal)
 public protocol AnyPublicKeyProvider: AnyObject {
     
-    /// :nodoc:
     typealias CompletionHandler = (Result<String, Error>) -> Void
     
-    /// :nodoc:
     /// Fetches the client public key with a closure for success and failure.
     func fetch(completion: @escaping CompletionHandler)
 }
 
-/// :nodoc:
 /// `PublicKeyProvider` is used to fetch the client public key that is needed for encrypting data.
+@_spi(AdyenInternal)
 public final class PublicKeyProvider: AnyPublicKeyProvider {
 
     private let request: ClientKeyRequest
@@ -39,21 +37,18 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
         }
     }
     
-    /// :nodoc:
     public convenience init(apiContext: APIContext) {
         let scheduler = SimpleScheduler(maximumCount: 2)
         self.init(apiClient: APIClient(apiContext: apiContext).retryAPIClient(with: scheduler),
                   request: ClientKeyRequest(clientKey: apiContext.clientKey))
     }
 
-    /// :nodoc:
     /// For testing only
     internal init(apiClient: AnyRetryAPIClient, request: ClientKeyRequest) {
         self.retryApiClient = apiClient
         self.request = request
     }
     
-    /// :nodoc:
     public func fetch(completion: @escaping CompletionHandler) {
         if let publicKey = cachedPublicKey {
             completion(.success(publicKey))

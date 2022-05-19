@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,6 @@
 import Foundation
 
 /// Conforming types can publish observable events.
-/// :nodoc:
 public protocol EventPublisher: AnyObject {
     
     /// The type of event published.
@@ -18,7 +17,7 @@ public protocol EventPublisher: AnyObject {
     
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public extension EventPublisher {
     
     /// Adds an event handler.
@@ -51,11 +50,9 @@ public extension EventPublisher {
 }
 
 /// Alias for a closure that handles an event.
-/// :nodoc:
 public typealias EventHandler<Event> = (Event) -> Void
 
 /// Represents a token that references the event handler.
-/// :nodoc:
 public struct EventHandlerToken: Hashable {
     private let uuid = UUID()
 }

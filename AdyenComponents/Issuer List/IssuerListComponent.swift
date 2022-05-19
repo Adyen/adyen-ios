@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
@@ -12,7 +12,6 @@ import UIKit
 /// This component will provide a list in which the user can select their issuer.
 public final class IssuerListComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
-    /// :nodoc:
     public let apiContext: APIContext
     
     /// The issuer list payment method.
@@ -51,7 +50,6 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
         listViewController.stopLoading()
     }
     
-    /// :nodoc:
     public var requiresModalPresentation: Bool = true
     
     // MARK: - Private
@@ -96,7 +94,6 @@ extension IssuerListComponent {
         /// The UI style of the component.
         public var style: ListComponentStyle
         
-        /// :nodoc:
         public var localizationParameters: LocalizationParameters?
         
         /// Initializes the configuration for Issuer list type components.
@@ -129,4 +126,5 @@ public typealias EntercashComponent = IssuerListComponent
 /// Provides an issuer selection list for OpenBanking payments.
 public typealias OpenBankingComponent = IssuerListComponent
 
+@_spi(AdyenInternal)
 extension IssuerListComponent: TrackableComponent {}

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,13 +7,12 @@
 import UIKit
 
 /// A view representing a value item.
-/// :nodoc:
+@_spi(AdyenInternal)
 open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType, Style>>: FormItemView<ItemType>, AnyFormValueItemView {
 
     // MARK: - Title Label
 
     /// The top label view.
-    /// :nodoc:
     public lazy var titleLabel: UILabel = {
         let titleLabel = UILabel(style: item.style.title)
         titleLabel.text = item.title
@@ -39,7 +38,6 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         gestureRecognizers = [UITapGestureRecognizer(target: self, action: #selector(becomeFirstResponder))]
     }
     
-    /// :nodoc:
     override open func didAddSubview(_ subview: UIView) {
         super.didAddSubview(subview)
         bringSubviewToFront(separatorView)
@@ -150,7 +148,6 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     
     /// This method places separatorView at the bottom of a view.
     /// Subclasses can override this method to setup alternative placement for a separatorView.
-    /// :nodoc:
     open func configureSeparatorView() {
         let constraints = [
             separatorView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
@@ -165,7 +162,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
 }
 
 /// A type-erased form value item view.
-/// :nodoc:
+@_spi(AdyenInternal)
 public protocol AnyFormValueItemView: AnyFormItemView {
     
     /// Indicates if the item is currently being edited.

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,22 +11,16 @@ internal final class NameFormItemInjector: FormItemInjector, Localizable {
 
     internal let contentType: UITextContentType
 
-    /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
 
-    /// :nodoc:
     internal let style: FormTextItemStyle
 
-    /// :nodoc:
     internal var value: String?
 
-    /// :nodoc:
     internal var identifier: String
 
-    /// :nodoc:
     internal var localizationKey: LocalizationKey
 
-    /// :nodoc:
     internal lazy var item: FormTextInputItem = {
         let item = FormTextInputItem(style: style)
         item.value = value ?? ""
@@ -52,7 +46,6 @@ internal final class NameFormItemInjector: FormItemInjector, Localizable {
         self.contentType = contentType
     }
 
-    /// :nodoc:
     internal func inject(into formViewController: FormViewController) {
         formViewController.append(item)
     }

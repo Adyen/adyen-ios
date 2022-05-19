@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
@@ -14,10 +14,8 @@ import Foundation
 /// Provide cardType detection based on BinLookup API.
 internal protocol AnyBinLookupService {
     
-    /// :nodoc:
     typealias CompletionHandler = (Result<BinLookupResponse, Error>) -> Void
     
-    /// :nodoc:
     func requestCardType(for bin: String, supportedCardTypes: [CardType], caller: @escaping CompletionHandler)
 }
 

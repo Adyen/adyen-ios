@@ -19,12 +19,12 @@ public struct StoredBLIKPaymentMethod: StoredPaymentMethod {
 
     public let supportedShopperInteractions: [ShopperInteraction]
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue)
     }

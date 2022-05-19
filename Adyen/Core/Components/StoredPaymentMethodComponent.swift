@@ -7,19 +7,15 @@
 import Foundation
 import UIKit
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class StoredPaymentMethodComponent: PaymentComponent, PresentableComponent, Localizable {
 
-    /// :nodoc:
     public let apiContext: APIContext
     
-    /// :nodoc:
     public var paymentMethod: PaymentMethod { storedPaymentMethod }
 
-    /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
 
-    /// :nodoc:
     public init(paymentMethod: StoredPaymentMethod,
                 apiContext: APIContext) {
         self.storedPaymentMethod = paymentMethod
@@ -30,7 +26,6 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
     
     // MARK: - PresentableComponent
 
-    /// :nodoc:
     public lazy var viewController: UIViewController = {
         Analytics.sendEvent(
             component: storedPaymentMethod.type.rawValue,
@@ -63,19 +58,20 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
         return alertController
     }()
     
-    /// :nodoc:
     public var localizationParameters: LocalizationParameters?
     
 }
 
-/// :nodoc:
+/// The store payment method details.
 public struct StoredPaymentDetails: PaymentMethodDetails {
     
     internal let type: PaymentMethodType
     
     internal let storedPaymentMethodIdentifier: String
-
-    /// :nodoc:
+    
+    /// Initializes a new instance of `StoredPaymentDetails`
+    ///
+    /// - Parameter paymentMethod: The payment method.
     public init(paymentMethod: StoredPaymentMethod) {
         self.type = paymentMethod.type
         self.storedPaymentMethodIdentifier = paymentMethod.identifier

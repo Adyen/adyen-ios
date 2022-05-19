@@ -6,19 +6,19 @@
 
 import Foundation
 
-/// :nodoc:
+/// Any component's most basic configuration.
 public protocol AnyBasicComponentConfiguration: Localizable {
     
     var style: FormComponentStyle { get }
 }
 
-/// :nodoc:
+/// The configuration of any component thats aware of shoppers' personal information.
 public protocol AnyPersonalInformationConfiguration: AnyBasicComponentConfiguration {
     
     var shopperInformation: PrefilledShopperInformation? { get }
 }
 
-/// :nodoc:
+/// Any component's most basic configuration.
 public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     
     public var style: FormComponentStyle
@@ -32,7 +32,7 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     }
 }
 
-/// :nodoc:
+/// The configuration of any component thats aware of shoppers' personal information.
 public struct PersonalInformationConfiguration: AnyPersonalInformationConfiguration {
     public var style: FormComponentStyle
     

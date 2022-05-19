@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 /// Represents the observation of an observer to an observable.
-/// :nodoc:
+@_spi(AdyenInternal)
 public struct Observation: Hashable {
     
     /// The UUID of the observation.
@@ -28,14 +28,12 @@ public struct Observation: Hashable {
     
     // MARK: - Equatable
     
-    /// :nodoc:
     public static func == (lhs: Observation, rhs: Observation) -> Bool {
         lhs.uuid == rhs.uuid
     }
     
     // MARK: - Hashable
     
-    /// :nodoc:
     public func hash(into hasher: inout Hasher) {
         uuid.hash(into: &hasher)
     }

@@ -9,31 +9,25 @@ import UIKit
 
 /// An abstract class that needs to be subclassed to abstract away any component
 /// who's form consists of a combination of personal information pieces like first name, last name, phone, email, and billing address.
-/// :nodoc:
 open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent {
-
-    /// :nodoc:
+    
     public typealias Configuration = PersonalInformationConfiguration
     
     // MARK: - Properties
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public let apiContext: APIContext
     
-    /// :nodoc:
     public let paymentMethod: PaymentMethod
 
-    /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
 
-    /// :nodoc:
     public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
                                                                              style: configuration.style)
 
-    /// :nodoc:
     public let requiresModalPresentation: Bool = true
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public var configuration: Configuration
     
     private let fields: [PersonalInformation]
@@ -43,6 +37,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     /// - Parameter paymentMethod: The payment method.
     /// - Parameter configuration: The Component's configuration.
     /// - Parameter style: The Component's UI style.
+    @_spi(AdyenInternal)
     public init(paymentMethod: PaymentMethod,
                 apiContext: APIContext,
                 fields: [PersonalInformation],
@@ -53,7 +48,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         self.fields = fields
     }
 
-    /// :nodoc:
     internal lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(style: configuration.style)
         formViewController.localizationParameters = configuration.localizationParameters
@@ -65,7 +59,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return formViewController
     }()
 
-    /// :nodoc:
     private func build(_ formViewController: FormViewController) {
         fields.forEach { field in
             self.add(field, into: formViewController)
@@ -75,7 +68,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
     }
 
-    /// :nodoc:
     private func add(_ field: PersonalInformation,
                      into formViewController: FormViewController) {
         switch field {
@@ -96,7 +88,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         }
     }
 
-    /// :nodoc:
     internal lazy var firstNameItemInjector: NameFormItemInjector? = {
         guard fields.contains(.firstName) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "firstNameItem")
@@ -109,10 +100,9 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return injector
     }()
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public var firstNameItem: FormTextInputItem? { firstNameItemInjector?.item }
 
-    /// :nodoc:
     internal lazy var lastNameItemInjector: NameFormItemInjector? = {
         guard fields.contains(.lastName) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "lastNameItem")
@@ -125,10 +115,9 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return injector
     }()
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public var lastNameItem: FormTextInputItem? { lastNameItemInjector?.item }
 
-    /// :nodoc:
     internal lazy var emailItemInjector: EmailFormItemInjector? = {
         guard fields.contains(.email) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "emailItem")
@@ -139,10 +128,9 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return injector
     }()
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public var emailItem: FormTextInputItem? { emailItemInjector?.item }
     
-    /// :nodoc:
     internal lazy var addressItemInjector: AddressFormItemInjector? = {
         guard fields.contains(.address) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "addressItem")
@@ -154,10 +142,9 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
                                        addressViewModelBuilder: addressViewModelBuilder())
     }()
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public var addressItem: FormAddressItem? { addressItemInjector?.item }
     
-    /// :nodoc:
     internal lazy var deliveryAddressItemInjector: AddressFormItemInjector? = {
         guard fields.contains(.deliveryAddress) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "deliveryAddressItem")
@@ -169,10 +156,9 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
                                        addressViewModelBuilder: addressViewModelBuilder())
     }()
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public var deliveryAddressItem: FormAddressItem? { deliveryAddressItemInjector?.item }
 
-    /// :nodoc:
     internal lazy var phoneItemInjector: PhoneFormItemInjector? = {
         guard fields.contains(.phone) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneNumberItem")
@@ -184,7 +170,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return injector
     }()
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public var phoneItem: FormPhoneNumberItem? { phoneItemInjector?.item }
 
     private lazy var selectableValues: [PhoneExtensionPickerItem] = phoneExtensions().map {
@@ -202,37 +188,34 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return item
     }()
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     open func submitButtonTitle() -> String {
         fatalError("This is an abstract class that needs to be subclassed.")
     }
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     open func createPaymentDetails() throws -> PaymentMethodDetails {
         fatalError("This is an abstract class that needs to be subclassed.")
     }
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     open func phoneExtensions() -> [PhoneExtension] {
         fatalError("This is an abstract class that needs to be subclassed.")
     }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     open func addressViewModelBuilder() -> AddressViewModelBuilder {
         DefaultAddressViewModelBuilder()
     }
 
-    /// :nodoc:
     private var defaultCountryCode: String {
         payment?.countryCode ?? Locale.current.regionCode ?? "US"
     }
 
-    /// :nodoc:
     public func showValidation() {
         formViewController.showValidation()
     }
 
-    /// :nodoc:
     internal func populateFields() {
         guard let shopperInformation = configuration.shopperInformation else { return }
 

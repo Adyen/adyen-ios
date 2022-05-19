@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 import XCTest
 
 class KeyedDecodingContainerExtensions: XCTestCase {
@@ -27,7 +27,6 @@ class KeyedDecodingContainerExtensions: XCTestCase {
 private struct TestObject: Decodable {
     let someInt: Int
     
-    /// :nodoc:
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.someInt = try container.decodeIntString(forKey: .someInt)

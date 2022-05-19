@@ -4,15 +4,13 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
-/// :nodoc:
 internal protocol BACSDirectDebitComponentTrackerProtocol: AnyObject {
     func sendEvent()
 }
 
-/// :nodoc:
 internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerProtocol {
 
     // MARK: - Properties

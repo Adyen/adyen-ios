@@ -4,14 +4,13 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import PassKit
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     
-    /// :nodoc:
     public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
         paymentAuthorizationViewController = nil
         if resultConfirmed {
@@ -21,7 +20,6 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         }
     }
     
-    /// :nodoc:
     public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
                                                    didAuthorizePayment payment: PKPayment,
                                                    completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {

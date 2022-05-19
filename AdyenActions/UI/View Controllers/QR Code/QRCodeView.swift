@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 internal protocol QRCodeViewDelegate: AnyObject {
@@ -19,7 +19,6 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     /// The delegate of the view
     internal weak var delegate: QRCodeViewDelegate?
     
-    /// :nodoc:
     public var localizationParameters: LocalizationParameters?
     
     internal init(model: Model) {

@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import PassKit
 import UIKit
 
@@ -39,10 +39,8 @@ internal final class VoucherView: UIView, Localizable {
         buildUI()
     }
     
-    /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
     
-    /// :nodoc:
     @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

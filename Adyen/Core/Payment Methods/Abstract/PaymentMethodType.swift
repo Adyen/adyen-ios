@@ -55,7 +55,6 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     
     // swiftlint:disable cyclomatic_complexity function_body_length
 
-    /// :nodoc:
     public init?(rawValue: String) {
         switch rawValue {
         case "card": self = .card
@@ -105,7 +104,6 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         }
     }
 
-    /// :nodoc:
     public var rawValue: String {
         switch self {
         case .card: return "card"
