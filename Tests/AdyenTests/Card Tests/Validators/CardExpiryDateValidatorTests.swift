@@ -24,11 +24,8 @@ class CardExpiryDateValidatorTests: XCTestCase {
         // Test date 30 years in the future from reference date 01/01/2020.
         XCTAssertTrue(validator.isValid("0150"))
         
-        // Test date less than 3 months in the past from reference date 01/01/2020.
+        // Test date 3 months in the past from reference date 01/01/2020.
         XCTAssertTrue(validator.isValid("1019"))
-        
-        // Test date 3 months from reference date 01/01/2020.
-        XCTAssertTrue(validator.isValid("0919"))
     }
     
     private func getReferenceDate() -> Date {
