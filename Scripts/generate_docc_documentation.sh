@@ -9,7 +9,7 @@ set -e
 
 PROJECT_NAME=TempProject
 FRAMEWORK_NAME=Adyen
-FINAL_DOC_PATH=Docc
+FINAL_DOC_PATH=Docc_archive
 
 rm -rf $PROJECT_NAME
 
