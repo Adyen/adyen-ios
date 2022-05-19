@@ -33,7 +33,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
     // MARK: - CVC length
 
     private var minCharactersCount: Int {
-        switch CardType(rawValue: paymentMethod.brand) {
+        switch paymentMethod.brand {
         case .americanExpress:
             return 4
         default:
@@ -47,7 +47,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
     
     internal private(set) lazy var alertController: UIAlertController = {
         let title = localizedString(.cardStoredTitle, localizationParameters)
-        let displayInformation = paymentMethod.localizedDisplayInformation(using: localizationParameters)
+        let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
         let message = localizedString(.cardStoredMessage, localizationParameters, displayInformation.title)
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)

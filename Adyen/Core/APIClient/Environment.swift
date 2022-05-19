@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,10 +21,10 @@ public struct Environment: AnyAPIEnvironment {
 
     /// Adyen's default live environment.
     @available(*, deprecated, message:
-                """
-                This property is no longer supported.
-                Please explicitly select the environment matching your region.
-                """)
+        """
+        This property is no longer supported.
+        Please explicitly select the environment matching your region.
+        """)
     public static let live = liveEurope
 
     /// Adyen's European live environment.
@@ -35,6 +35,9 @@ public struct Environment: AnyAPIEnvironment {
 
     /// Adyen's United States live environment.
     public static let liveUnitedStates = Environment(baseURL: URL(string: "https://checkoutshopper-live-us.adyen.com/")!)
+
+    /// Adyen's apse live  environment.
+    public static let liveApse = Environment(baseURL: URL(string: "https://checkoutshopper-live-apse.adyen.com/")!)
 
     /// Initializes an `Environment` object.
     ///

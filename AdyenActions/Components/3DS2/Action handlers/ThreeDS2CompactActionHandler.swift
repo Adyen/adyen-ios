@@ -121,7 +121,8 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     // MARK: - Private
 
     /// :nodoc:
-    private lazy var fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter = ThreeDS2FingerprintSubmitter(apiContext: adyenContext.apiContext)
+    private lazy var fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter =
+        ThreeDS2FingerprintSubmitter(apiContext: adyenContext.apiContext)
 
     private let threeDS2EventName = "3ds2"
 

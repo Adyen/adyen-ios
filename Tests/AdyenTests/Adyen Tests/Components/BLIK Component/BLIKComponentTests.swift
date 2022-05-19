@@ -29,7 +29,7 @@ class BLIKComponentTests: XCTestCase {
         sut = nil
     }
 
-    func testLocalizationWithCustomTableName() {
+    func testLocalizationWithCustomTableName() throws {
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
         XCTAssertEqual(sut.hintLabelItem.text, localizedString(.blikHelp, sut.configuration.localizationParameters))
@@ -41,7 +41,7 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
-    func testLocalizationWithZeroPayment() {
+    func testLocalizationWithZeroPayment() throws {
         let payment = Payment(amount: Amount(value: 0, currencyCode: "PLN"), countryCode: "PL")
         sut.payment = payment
         XCTAssertEqual(sut.hintLabelItem.text, localizedString(.blikHelp, sut.configuration.localizationParameters))
@@ -99,7 +99,7 @@ class BLIKComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         let hintView: UILabel! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeHintLabel")
 
         let blikCodeView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
@@ -151,7 +151,7 @@ class BLIKComponentTests: XCTestCase {
         }
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
 
         let blikCodeView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
@@ -166,7 +166,7 @@ class BLIKComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         XCTAssertEqual(sut.viewController.title, method.name.uppercased())
     }
 

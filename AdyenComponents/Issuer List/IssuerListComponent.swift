@@ -63,8 +63,9 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
         let items = issuers.map { issuer -> ListItem in
             var listItem = ListItem(title: issuer.name, style: configuration.style.listItem)
             listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
-            listItem.imageURL = LogoURLProvider.logoURL(for: issuer,
-                                                        paymentMethod: issuerListPaymentMethod,
+            listItem.imageURL = LogoURLProvider.logoURL(for: issuer, 
+                                                        localizedParameters: configuration.localizationParameters, 
+                                                        paymentMethod: issuerListPaymentMethod, 
                                                         environment: adyenContext.apiContext.environment)
             listItem.selectionHandler = { [weak self] in
                 guard let self = self else { return }
@@ -78,7 +79,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
             return listItem
         }
         
-        listViewController.title = paymentMethod.name
+        listViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         listViewController.reload(newSections: [ListSection(items: items)])
         
         return listViewController

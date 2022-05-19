@@ -16,49 +16,51 @@ extension IntegrationExample {
     // MARK: - DropIn Component
 
     internal func presentDropInComponent() {
-        guard let paymentMethods = paymentMethods else { return }
+        guard let dropIn = dropInComponent(from: paymentMethods) else { return }
+        
+        dropIn.delegate = self
+        dropIn.partialPaymentDelegate = self
+        dropIn.storedPaymentMethodsDelegate = self
+        currentComponent = dropIn
+
+        presenter?.present(viewController: dropIn.viewController, completion: nil)
+    }
+    
+    internal func presentDropInComponentSession() {
+        guard let dropIn = dropInComponent(from: sessionPaymentMethods) else { return }
+        
+        dropIn.delegate = session
+        dropIn.partialPaymentDelegate = session
+        dropIn.storedPaymentMethodsDelegate = self
+        currentComponent = dropIn
+
+        presenter?.present(viewController: dropIn.viewController, completion: nil)
+    }
+    
+    internal func dropInComponent(from paymentMethods: PaymentMethods?) -> DropInComponent? {
+        guard let paymentMethods = paymentMethods else { return nil }
 
         let configuration = DropInComponent.Configuration(adyenContext: ConfigurationConstants.adyenContext)
 
-        if let applePayPayment = try? ApplePayPayment(payment: payment) {
+        if let applePayPayment = try? ApplePayPayment(payment: payment, brand: ConfigurationConstants.appName) {
             configuration.applePay = .init(payment: applePayPayment,
                                            merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         }
+        
         configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         configuration.payment = payment
         configuration.card.billingAddressMode = .postalCode
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
-
+        
         let component = DropInComponent(paymentMethods: paymentMethods,
                                         adyenContext: ConfigurationConstants.adyenContext,
                                         configuration: configuration,
                                         title: ConfigurationConstants.appName)
-        component.delegate = self
-        component.partialPaymentDelegate = self
-        component.storedPaymentMethodsDelegate = self
-        currentComponent = component
-
-        presenter?.present(viewController: component.viewController, completion: nil)
+        
+        return component
     }
 
     // MARK: - Payment response handling
-
-    private func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
-        switch result {
-        case let .success(response):
-            if let action = response.action {
-                handle(action)
-            } else if let order = response.order,
-                      let remainingAmount = order.remainingAmount,
-                      remainingAmount.value > 0 {
-                handle(order)
-            } else {
-                finish(with: response.resultCode)
-            }
-        case let .failure(error):
-            finish(with: error)
-        }
-    }
 
     internal func handle(_ order: PartialPaymentOrder) {
         requestPaymentMethods(order: order) { [weak self] paymentMethods in

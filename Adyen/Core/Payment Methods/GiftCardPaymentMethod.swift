@@ -9,13 +9,13 @@ import Foundation
 /// Any Gift Card payment method.
 public struct GiftCardPaymentMethod: PaymentMethod {
 
-    /// :nodoc:
     public let type: PaymentMethodType
 
-    /// :nodoc:
     public let name: String
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
-    /// The brand of the stored card, in this case its a constant `"bcmc"`.
+    /// The brand of the gift card.
     public let brand: String
 
     /// :nodoc:
@@ -23,11 +23,7 @@ public struct GiftCardPaymentMethod: PaymentMethod {
         builder.build(paymentMethod: self)
     }
 
-    public var displayInformation: DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: brand)
-    }
-
-    public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: brand)
     }
 

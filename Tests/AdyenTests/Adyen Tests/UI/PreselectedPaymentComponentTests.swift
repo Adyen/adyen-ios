@@ -84,14 +84,11 @@ class PreselectedPaymentComponentTests: XCTestCase {
         XCTAssertFalse(button.showsActivityIndicator)
         sut.startLoading(for: component)
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertTrue(button.showsActivityIndicator)
-            self.sut.stopLoadingIfNeeded()
-            XCTAssertFalse(button.showsActivityIndicator)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        wait(for: .milliseconds(300))
+        
+        XCTAssertTrue(button.showsActivityIndicator)
+        self.sut.stopLoadingIfNeeded()
+        XCTAssertFalse(button.showsActivityIndicator)
     }
     
     func testPressOpenAllButton() {
@@ -140,25 +137,21 @@ class PreselectedPaymentComponentTests: XCTestCase {
         
         let separator = view.findView(by: "separatorLine")
         
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertEqual(view.backgroundColor, .green)
-            XCTAssertEqual(listViewTitle.textColor, .white)
-            XCTAssertEqual(listViewSubtitle.textColor, .white)
-            
-            XCTAssertEqual(submitButtonContainer!.backgroundColor, .red)
-            XCTAssertEqual(submitButton!.backgroundColor, .brown)
-            XCTAssertEqual(submitButtonLabel.textColor, .cyan)
-            
-            XCTAssertEqual(openAllButtonContainer!.backgroundColor, .black)
-            XCTAssertEqual(openAllButton!.backgroundColor, .cyan)
-            XCTAssertEqual(openAllButtonLabel.textColor, .brown)
-            
-            XCTAssertEqual(separator!.backgroundColor, .red)
-            
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        wait(for: .milliseconds(300))
+        
+        XCTAssertEqual(view.backgroundColor, .green)
+        XCTAssertEqual(listViewTitle.textColor, .white)
+        XCTAssertEqual(listViewSubtitle.textColor, .white)
+        
+        XCTAssertEqual(submitButtonContainer!.backgroundColor, .red)
+        XCTAssertEqual(submitButton!.backgroundColor, .brown)
+        XCTAssertEqual(submitButtonLabel.textColor, .cyan)
+        
+        XCTAssertEqual(openAllButtonContainer!.backgroundColor, .black)
+        XCTAssertEqual(openAllButton!.backgroundColor, .cyan)
+        XCTAssertEqual(openAllButtonLabel.textColor, .brown)
+        
+        XCTAssertEqual(separator!.backgroundColor, .red)
     }
     
     func testPayButtonTitle() {
@@ -168,12 +161,9 @@ class PreselectedPaymentComponentTests: XCTestCase {
         let submitButton = submitButtonContainer!.findView(by: "button")
         let submitButtonLabel: UILabel! = submitButton!.findView(by: "titleLabel")
         
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertEqual(submitButtonLabel.text, "Pay")
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        wait(for: .milliseconds(300))
+        
+        XCTAssertEqual(submitButtonLabel.text, "Pay")
     }
     
     func testPaypalComponent() {
@@ -185,12 +175,9 @@ class PreselectedPaymentComponentTests: XCTestCase {
         let listView: ListItemView? = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.defaultComponent")
         let listViewTitle: UILabel! = listView!.findView(by: "titleLabel")
         
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertEqual(listViewTitle.text, "PayPal")
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        wait(for: .milliseconds(300))
+        
+        XCTAssertEqual(listViewTitle.text, "PayPal")
     }
     
     func testStoredCardComponent() {
@@ -203,13 +190,10 @@ class PreselectedPaymentComponentTests: XCTestCase {
         let listViewTitle: UILabel! = listView!.findView(by: "titleLabel")
         let listViewSubtitle: UILabel! = listView!.findView(by: "subtitleLabel")
         
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertEqual(listViewTitle.text, "•••• 1111")
-            XCTAssertEqual(listViewSubtitle.text, "Expires 08/18")
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        wait(for: .milliseconds(300))
+        
+        XCTAssertEqual(listViewTitle.text, "•••• 1111")
+        XCTAssertEqual(listViewSubtitle.text, "Expires 08/18")
     }
     
     func getStoredCard() -> StoredCardPaymentMethod {

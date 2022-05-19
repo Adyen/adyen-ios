@@ -22,7 +22,7 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
     internal init(rootComponent: PresentableComponent, style: NavigationStyle, cancelHandler: @escaping CancelHandler) {
         self.style = style
         self.cancelHandler = cancelHandler
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil, bundle: Bundle(for: DropInNavigationController.self))
         setup(root: rootComponent)
         startObserving()
     }

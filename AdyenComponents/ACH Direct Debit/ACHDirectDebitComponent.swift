@@ -227,7 +227,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         formViewController.localizationParameters = configuration.localizationParameters
         formViewController.delegate = self
 
-        formViewController.title = paymentMethod.name.uppercased()
+        formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
 
         formViewController.append(FormSpacerItem())
         formViewController.append(headerItem.addingDefaultMargins())
@@ -254,7 +254,9 @@ extension ACHDirectDebitComponent: ViewControllerDelegate {
 
     /// :nodoc:
     public func viewDidLoad(viewController: UIViewController) {
-        Analytics.sendEvent(component: paymentMethod.type.rawValue, flavor: _isDropIn ? .dropin : .components, context: adyenContext.apiContext)
+        Analytics.sendEvent(component: paymentMethod.type.rawValue,
+                            flavor: _isDropIn ? .dropin : .components,
+                            context: adyenContext.apiContext)
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
     }
