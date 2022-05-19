@@ -350,7 +350,7 @@ class StoredCardComponentTests: XCTestCase {
 
     func testViewDidLoadShouldSendTelemetryEvent() throws {
         // Given
-        let paymentMethod = storedCardPaymentMethod(brand: "some_brand")
+        let paymentMethod = storedCardPaymentMethod(brand: .masterCard)
         let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
                                       adyenContext: adyenContext)
 
@@ -363,7 +363,7 @@ class StoredCardComponentTests: XCTestCase {
 
     // MARK: - Private
 
-    private func storedCardPaymentMethod(brand: String) -> StoredCardPaymentMethod {
+    private func storedCardPaymentMethod(brand: CardType) -> StoredCardPaymentMethod {
         .init(type: .card,
               name: "name",
               identifier: "id",

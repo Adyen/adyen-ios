@@ -11,7 +11,7 @@ import XCTest
 class AffirmComponentUITests: XCTestCase {
 
     private var paymentMethod: PaymentMethod!
-    private var apiContext: APIContext!
+    private var adyenContext: AdyenContext!
     private var style: FormComponentStyle!
     private var sut: AffirmComponent!
     private let app = XCUIApplication()
@@ -20,16 +20,16 @@ class AffirmComponentUITests: XCTestCase {
         try super.setUpWithError()
         print(app.debugDescription)
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Affirm")
-        apiContext = Dummy.context
+        adyenContext = AdyenContext(apiContext: Dummy.context)
         style = FormComponentStyle()
         sut = AffirmComponent(paymentMethod: paymentMethod,
-                              apiContext: apiContext,
+                              adyenContext: adyenContext,
                               configuration: AffirmComponent.Configuration(style: style))
     }
 
     override func tearDownWithError() throws {
         paymentMethod = nil
-        apiContext = nil
+        adyenContext = nil
         style = nil
         sut = nil
         try super.tearDownWithError()
@@ -38,7 +38,7 @@ class AffirmComponentUITests: XCTestCase {
     func testSubmitForm_shouldCallDelegateWithProperParameters() throws {
         // Given
         let sut = AffirmComponent(paymentMethod: paymentMethod,
-                                  apiContext: apiContext,
+                                  adyenContext: adyenContext,
                                   configuration: AffirmComponent.Configuration(style: style))
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -98,7 +98,7 @@ class AffirmComponentUITests: XCTestCase {
         // Given
         let config = AffirmComponent.Configuration(style: style, shopperInformation: shopperInformation)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
-                                         apiContext: apiContext,
+                                         adyenContext: adyenContext,
                                          configuration: config)
         UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
 
@@ -145,7 +145,7 @@ class AffirmComponentUITests: XCTestCase {
         // Given
         let config = AffirmComponent.Configuration(style: style, shopperInformation: shopperInformationNoDeliveryAddress)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
-                                         apiContext: apiContext,
+                                         adyenContext: adyenContext,
                                          configuration: config)
         UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
 

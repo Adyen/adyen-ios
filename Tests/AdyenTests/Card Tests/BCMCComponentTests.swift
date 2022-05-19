@@ -124,7 +124,7 @@ class BCMCComponentTests: XCTestCase {
         
         let cardNumberItem = cardNumberItemView!.item
         XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 1)
-        XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.url, LogoURLProvider.logoURL(withName: "bcmc", environment: sut.apiContext.environment))
+        XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.url, LogoURLProvider.logoURL(withName: "bcmc", environment: adyenContext.apiContext.environment))
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.cardTypeLogos"))
     }
     
@@ -334,9 +334,9 @@ class BCMCComponentTests: XCTestCase {
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
         let cardPaymentMethod = CardPaymentMethod(type: .card,
-                                       name: "Test name",
-                                       fundingSource: .credit,
-                                       brands: ["visa", "amex", "mc"])
+                                                  name: "Test name",
+                                                  fundingSource: .credit,
+                                                  brands: [.visa, .americanExpress, .masterCard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 adyenContext: adyenContext)

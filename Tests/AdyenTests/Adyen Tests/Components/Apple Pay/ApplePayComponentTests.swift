@@ -122,7 +122,7 @@ class ApplePayComponentTest: XCTestCase {
         configuration.shippingMethods = shippingMethods
 
         sut = try! ApplePayComponent(paymentMethod: paymentMethod,
-                                     apiContext: Dummy.context,
+                                     adyenContext: adyenContext,
                                      configuration: configuration)
         sut.applePayDelegate = mockApplePayDelegate
         mockApplePayDelegate.onShippingMethodChange = { method, payment in

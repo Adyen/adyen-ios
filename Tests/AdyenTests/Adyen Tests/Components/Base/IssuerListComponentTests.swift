@@ -33,7 +33,6 @@ class IssuerListComponentTests: XCTestCase {
     }
 
     func testStartStopLoading() {
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let listViewController = sut.viewController as? ListViewController
