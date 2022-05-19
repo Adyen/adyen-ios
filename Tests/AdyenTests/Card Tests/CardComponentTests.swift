@@ -1936,6 +1936,39 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(countryItemView?.inputControl.label, "United Kingdom")
     }
 
+    func testCardHolderNameValidatorWithEmptyName() {
+        let method = CardPaymentMethodMock(type: .card, name: "Test name", brands: [.bcmc])
+        let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "BE")
+        var configuration = CardComponent.Configuration()
+        configuration.showsHolderNameField = true
+        configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
+
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: configuration)
+        sut.payment = payment
+
+        var items = sut.cardViewController.items
+        XCTAssertFalse(items.holderNameItem.isValid())
+    }
+
+    func testCardHolderNameValidatorWithMinimumLength() {
+        let method = CardPaymentMethodMock(type: .card, name: "Test name", brands: [.bcmc])
+        let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "BE")
+        var configuration = CardComponent.Configuration()
+        configuration.showsHolderNameField = true
+        configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
+
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: configuration)
+        sut.payment = payment
+
+        var items = sut.cardViewController.items
+        items.holderNameItem.value = "A"
+        XCTAssertTrue(items.holderNameItem.isValid())
+    }
+
     // MARK: - Private
 
     private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {
