@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,7 +14,7 @@ internal final class ComponentsView: UIView {
         
         addSubview(tableView)
         
-        tableView.adyen.anchor(inside: self)
+        tableView.anchor(inside: self)
         tableView.tableHeaderView = switchContainerView
         switchContainerView.bounds.size.height = 55
     }
@@ -77,7 +77,7 @@ internal final class ComponentsView: UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(switchStackView)
-        switchStackView.adyen.anchor(inside: view, with: UIEdgeInsets(top: 10, left: 20, bottom: -10, right: -20))
+        switchStackView.anchor(inside: view, with: UIEdgeInsets(top: 10, left: 20, bottom: -10, right: -20))
         return view
     }()
     

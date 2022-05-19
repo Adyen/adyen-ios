@@ -23,14 +23,12 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
     /// - Parameter type: The payment method type.
     /// - Parameter name: The payment method name.
     /// - Parameter phoneExtensions: The phone extensions supported.
-    /// :nodoc:
     internal init(type: PaymentMethodType, name: String, phoneExtensions: [PhoneExtension] = []) {
         self.type = type
         self.name = name
         self.phoneExtensions = phoneExtensions
     }
     
-    /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.type = try container.decode(PaymentMethodType.self, forKey: .type)
@@ -50,7 +48,7 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
         self.phoneExtensions = phoneExtensions ?? PhoneExtensionsRepository.get(with: PhoneExtensionsQuery(paymentMethod: .qiwiWallet))
     }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
@@ -65,7 +63,6 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
 }
 
 /// Describes a country phone extension.
-/// :nodoc:
 public struct PhoneExtension: Decodable, Equatable {
     
     /// The phone extension.
@@ -79,13 +76,11 @@ public struct PhoneExtension: Decodable, Equatable {
         Locale.current.localizedString(forRegionCode: countryCode) ?? ""
     }
 
-    /// :nodoc:
     public init(value: String, countryCode: String) {
         self.value = value
         self.countryCode = countryCode
     }
 
-    /// :nodoc:
     private enum CodingKeys: String, CodingKey {
         case value = "id"
         case countryCode = "name"

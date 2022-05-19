@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,11 +8,11 @@ import AdyenNetworking
 import Foundation
 
 /// So that any `TimeInterval` instance will inherit the `adyen` scope.
-/// :nodoc:
+@_spi(AdyenInternal)
 extension TimeInterval: AdyenCompatible {}
 
 /// Adds helper functionality to any `TimeInterval` instance through the `adyen` property.
-/// :nodoc:
+@_spi(AdyenInternal)
 public extension AdyenScope where Base == TimeInterval {
     
     /// Transform `TimeInterval` to a `String` with either "MM:SS" or "HH:MM:SS" depending
@@ -25,7 +25,6 @@ public extension AdyenScope where Base == TimeInterval {
         }
     }
     
-    /// :nodoc:
     private func preIOS13TimeString() -> String {
         let intValue = Int(base)
         let seconds = intValue % 60
@@ -39,7 +38,6 @@ public extension AdyenScope where Base == TimeInterval {
             .joined(separator: ":")
     }
     
-    /// :nodoc
     private func postIOS13TimeString() -> String? {
         let formatter = DateComponentsFormatter()
         formatter.zeroFormattingBehavior = [.dropLeading, .pad]

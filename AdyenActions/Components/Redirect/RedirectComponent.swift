@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 extension RedirectComponent: AnyRedirectComponent {}
@@ -36,17 +36,19 @@ public final class RedirectComponent: ActionComponent {
         }
     }
     
+<<<<<<< HEAD
     /// :nodoc:
     /// The context object for this component.
     public let context: AdyenContext
+=======
+    public let apiContext: APIContext
+>>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     
-    /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
 
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
     
-    /// :nodoc:
     internal var appLauncher: AnyAppLauncher = AppLauncher()
     private var browserComponent: BrowserComponent?
     
@@ -143,7 +145,6 @@ public final class RedirectComponent: ActionComponent {
 
 extension RedirectComponent: BrowserComponentDelegate {
 
-    /// :nodoc:
     internal func didCancel() {
         if browserComponent != nil {
             browserComponent = nil
@@ -151,32 +152,27 @@ extension RedirectComponent: BrowserComponentDelegate {
         }
     }
 
-    /// :nodoc:
     internal func didOpenExternalApplication() {
         delegate?.didOpenExternalApplication(component: self)
     }
     
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension RedirectComponent: ActionComponentDelegate {
     
-    /// :nodoc:
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         delegate?.didProvide(data, from: self)
     }
 
-    /// :nodoc:
     public func didComplete(from component: ActionComponent) {
         delegate?.didComplete(from: self)
     }
     
-    /// :nodoc:
     public func didFail(with error: Swift.Error, from component: ActionComponent) {
         delegate?.didFail(with: error, from: self)
     }
     
-    /// :nodoc:
     public func didOpenExternalApplication(component: ActionComponent) {
         delegate?.didOpenExternalApplication(component: self)
     }

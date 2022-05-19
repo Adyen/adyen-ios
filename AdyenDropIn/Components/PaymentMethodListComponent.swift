@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
@@ -18,8 +18,12 @@ public struct PaymentMethodListConfiguration {
 /// A component that presents a list of items for each payment method with a component.
 internal final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable, Cancellable {
     
+<<<<<<< HEAD
     /// :nodoc:
     internal let context: AdyenContext
+=======
+    internal let apiContext: APIContext
+>>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     
     /// The components that are displayed in the list.
     internal private(set) var componentSections: [ComponentsSection]
@@ -58,7 +62,6 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     
     // MARK: - View Controller
     
-    /// :nodoc:
     internal var viewController: UIViewController { listViewController }
 
     private let brandProtectedComponents: Set<PaymentMethodType> = [.applePay]
@@ -132,7 +135,6 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     
     // MARK: - Localization
     
-    /// :nodoc:
     public var localizationParameters: LocalizationParameters?
     
     // MARK: - Loading
@@ -151,7 +153,6 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
         listViewController.startLoading(for: allListItems[index])
     }
     
-    /// :nodoc:
     internal func stopLoading() {
         listViewController.stopLoading()
     }

@@ -152,3 +152,18 @@ internal final class IntegrationExample: APIClientAware {
 
     internal var bacsDirectDebitPresenter: BACSDirectDebitPresentationDelegate?
 }
+
+public extension Amount {
+
+    var formatted: String {
+        if let formattedAmount = AmountFormatter.formatted(
+            amount: value,
+            currencyCode: currencyCode,
+            localeIdentifier: localeIdentifier
+        ) {
+            return formattedAmount
+        }
+
+        return String(value) + " " + currencyCode
+    }
+}

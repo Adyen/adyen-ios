@@ -18,7 +18,6 @@ public enum PartialPaymentError: LocalizedError {
     /// Indicates that the partial payment flow is not supported with the current component.
     case notSupportedForComponent
 
-    /// :nodoc:
     public var errorDescription: String? {
         switch self {
         case .zeroRemainingAmount:

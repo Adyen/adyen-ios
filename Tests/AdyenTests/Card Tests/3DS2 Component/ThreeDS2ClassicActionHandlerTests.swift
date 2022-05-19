@@ -6,10 +6,10 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-@testable import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 import Adyen3DS2
-@testable import AdyenActions
-@testable import AdyenCard
+@_spi(AdyenInternal) @testable import AdyenActions
+@testable @_spi(AdyenInternal) import AdyenCard
 import XCTest
 
 class ThreeDS2ClassicActionHandlerTests: XCTestCase {

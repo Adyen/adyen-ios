@@ -4,15 +4,15 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenComponents)
     import AdyenComponents
 #endif
 #if canImport(AdyenActions)
-    import AdyenActions
+    @_spi(AdyenInternal) import AdyenActions
 #endif
 #if canImport(AdyenCard)
-    import AdyenCard
+    @_spi(AdyenInternal) import AdyenCard
 #endif
 import AdyenNetworking
 import UIKit
@@ -39,9 +39,13 @@ public final class DropInComponent: NSObject,
     /// The title text on the first page of drop in component.
     public let title: String
 
+<<<<<<< HEAD
     /// :nodoc:
     /// The context object for this component.
     public var context: AdyenContext
+=======
+    public var apiContext: APIContext { configuration.apiContext }
+>>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     
     /// Initializes the drop in component.
     ///
@@ -78,7 +82,6 @@ public final class DropInComponent: NSObject,
     
     // MARK: - Presentable Component Protocol
     
-    /// :nodoc:
     public var viewController: UIViewController { navigationController }
 
     // MARK: - Handling Actions
@@ -93,7 +96,6 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Handling Partial Payments
 
-    /// :nodoc:
     private lazy var apiClient: APIClientProtocol = {
         let scheduler = SimpleScheduler(maximumCount: 3)
         return APIClient(apiContext: context.apiContext)

@@ -9,20 +9,25 @@ import Foundation
 /// A component that handles payment methods that don't need any payment detail to be filled.
 public final class InstantPaymentComponent: PaymentComponent {
 
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
 
     /// The ready to submit payment data.
     public let paymentData: PaymentComponentData?
 
-    /// :nodoc:
+    /// The payment method.
     public let paymentMethod: PaymentMethod
 
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
 
-    /// :nodoc:
+    /// Initializes a new instance of `InstantPaymentComponent`.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The payment method.
+    ///   - paymentData: The ready to submit payment data.
+    ///   - apiContext: The API context.
     public init(paymentMethod: PaymentMethod,
                 paymentData: PaymentComponentData?,
                 context: AdyenContext) {

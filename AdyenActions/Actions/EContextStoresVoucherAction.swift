@@ -16,7 +16,6 @@ public class EContextStoresVoucherAction: GenericVoucherAction,
     /// The instruction `URL` object.
     public let instructionsURL: URL
 
-    /// :nodoc:
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         maskedTelephoneNumber = try container.decode(String.self, forKey: .maskedTelephoneNumber)
@@ -24,7 +23,6 @@ public class EContextStoresVoucherAction: GenericVoucherAction,
         try super.init(from: decoder)
     }
 
-    /// :nodoc:
     private enum CodingKeys: String, CodingKey {
         case maskedTelephoneNumber,
              instructionsUrl

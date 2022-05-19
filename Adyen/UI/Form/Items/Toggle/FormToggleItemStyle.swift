@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -22,7 +22,6 @@ public struct FormToggleItemStyle: FormValueItemStyle {
     /// If value is nil, the default color would be used.
     public var separatorColor: UIColor?
     
-    /// :nodoc:
     public var backgroundColor: UIColor = .clear
     
     /// Initializes the form switch item style.

@@ -8,8 +8,8 @@
 
 import XCTest
 @testable import AdyenSession
-import Adyen
-import AdyenActions
+@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) import AdyenActions
 import AdyenComponents
 import AdyenDropIn
 

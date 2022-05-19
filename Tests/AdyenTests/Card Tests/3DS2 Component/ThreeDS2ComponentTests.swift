@@ -6,8 +6,8 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-@testable import AdyenActions
-@testable import AdyenCard
+@_spi(AdyenInternal) @testable import AdyenActions
+@testable @_spi(AdyenInternal) import AdyenCard
 import XCTest
 
 extension ThreeDSResult: Equatable {

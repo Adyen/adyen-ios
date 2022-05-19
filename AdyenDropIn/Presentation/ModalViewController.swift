@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 /// View controller with a custom navigation bar for DropIn.
@@ -38,24 +38,20 @@ internal final class ModalViewController: UIViewController {
         self.style = style
         self.cancelButtonHandler = cancelButtonHandler
         
-      super.init(nibName: nil, bundle: Bundle(for: ModalViewController.self))
+        super.init(nibName: nil, bundle: Bundle(for: ModalViewController.self))
     }
     
-    /// :nodoc:
     @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /// :nodoc:
     internal var isRoot: Bool = false
     
-    /// :nodoc:
     internal var cancelButtonHandler: ((Bool) -> Void)?
     
     // MARK: - UIViewController
     
-    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         addChildViewController()
@@ -87,7 +83,6 @@ internal final class ModalViewController: UIViewController {
         }
     }
     
-    /// :nodoc:
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         view.adyen.round(corners: [.topLeft, .topRight], radius: style.cornerRadius)

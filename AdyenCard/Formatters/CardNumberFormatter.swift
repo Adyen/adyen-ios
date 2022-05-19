@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Formats a card's number for display.
@@ -14,7 +14,6 @@ public final class CardNumberFormatter: NumericFormatter {
     /// For example, setting this to `americanExpress` will change the number grouping accordingly.
     public var cardType: CardType?
     
-    /// :nodoc:
     override public func formattedValue(for value: String) -> String {
         let sanitizedCardNumber = sanitizedValue(for: value)
         let grouping = cardFormatGrouping(for: sanitizedCardNumber.count)

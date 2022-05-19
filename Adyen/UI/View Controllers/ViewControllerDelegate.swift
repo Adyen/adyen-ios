@@ -6,19 +6,16 @@
 
 import UIKit
 
-/// :nodoc:
 /// Delegate to handle different viewController events.
+@_spi(AdyenInternal)
 public protocol ViewControllerDelegate: AnyObject {
 
-    /// :nodoc:
     /// Handles the UIViewController.viewDidLoad() event.
     func viewDidLoad(viewController: UIViewController)
 
-    /// :nodoc:
     /// Handles the UIViewController.viewDidAppear() event.
     func viewDidAppear(viewController: UIViewController)
 
-    /// :nodoc
     /// Handles the UIViewController.viewWillAppear() event.
     func viewWillAppear(viewController: UIViewController)
 }

@@ -4,25 +4,25 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Adyen3DS2
 import Foundation
 
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
-/// :nodoc:
 internal class ThreeDS2CoreActionHandler: Component {
     
+<<<<<<< HEAD
     /// :nodoc:
     internal let context: AdyenContext
+=======
+    internal let apiContext: APIContext
+>>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
 
     /// The appearance configuration of the 3D Secure 2 challenge UI.
-    /// :nodoc:
     internal let appearanceConfiguration: ADYAppearanceConfiguration
 
-    /// :nodoc:
     internal lazy var service: AnyADYService = ADYServiceAdapter()
 
-    /// :nodoc:
     internal var transaction: AnyADYTransaction?
     
     /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
@@ -33,8 +33,12 @@ internal class ThreeDS2CoreActionHandler: Component {
     /// - Parameter context: The context object for this component.
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
+<<<<<<< HEAD
     /// :nodoc:
     internal convenience init(context: AdyenContext,
+=======
+    internal convenience init(apiContext: APIContext,
+>>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
                               service: AnyADYService,
                               appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
         self.init(context: context,
@@ -56,7 +60,6 @@ internal class ThreeDS2CoreActionHandler: Component {
     /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
     /// - Parameter event: The Analytics event.
     /// - Parameter completionHandler: The completion closure.
-    /// :nodoc:
     internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
                          event: Analytics.Event,
                          completionHandler: @escaping (Result<String, Error>) -> Void) {
@@ -117,7 +120,6 @@ internal class ThreeDS2CoreActionHandler: Component {
     /// - Parameter challengeAction: The challenge action as received from the Checkout API.
     /// - Parameter event: The Analytics event.
     /// - Parameter completionHandler: The completion closure.
-    /// :nodoc:
     internal func handle(_ challengeAction: ThreeDS2ChallengeAction,
                          event: Analytics.Event,
                          completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {

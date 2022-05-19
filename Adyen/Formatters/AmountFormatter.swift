@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,6 @@
 import Foundation
 
 /// Helper class to format money amounts and to convert between money amounts in major currency units and amounts in minor currency units.
-/// :nodoc:
 public final class AmountFormatter {
     
     private init() {}

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,6 +9,7 @@ import UIKit
 
 /// A View Controller wrapper to blur its content when going into the background.
 /// Used to wrap view controllers that contain sensitive user info.
+@_spi(AdyenInternal)
 public final class SecuredViewController: UIViewController {
 
     private let notificationCenter = NotificationCenter.default
@@ -21,16 +22,13 @@ public final class SecuredViewController: UIViewController {
 
     private var backgroundObservers: [Any]?
 
-    /// :nodoc:
     public weak var delegate: ViewControllerDelegate?
 
-    /// :nodoc:
     override public var preferredContentSize: CGSize {
         get { childViewController.preferredContentSize }
         set { childViewController.preferredContentSize = newValue }
     }
 
-    /// :nodoc:
     override public var title: String? {
         get { childViewController.title }
         set { childViewController.title = newValue }
@@ -49,20 +47,17 @@ public final class SecuredViewController: UIViewController {
         super.init(nibName: nil, bundle: Bundle(for: SecuredViewController.self))
     }
 
-    /// :nodoc:
     @available(*, unavailable)
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    /// :nodoc:
     deinit {
         backgroundObservers?.forEach { notificationCenter.removeObserver($0) }
     }
 
     // MARK: - View lifecycle
 
-    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
 
@@ -73,13 +68,11 @@ public final class SecuredViewController: UIViewController {
         delegate?.viewDidLoad(viewController: self)
     }
 
-    /// :nodoc:
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         delegate?.viewDidAppear(viewController: self)
     }
 
-    /// :nodoc:
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         delegate?.viewWillAppear(viewController: self)

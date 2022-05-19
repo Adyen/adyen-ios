@@ -6,19 +6,18 @@
 
 import Foundation
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public protocol PublicKeyConsumer: PaymentComponent {
 
     /// Provider for fetching the public key.
     var publicKeyProvider: AnyPublicKeyProvider { get }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension PublicKeyConsumer {
-    /// :nodoc:
+    
     public typealias PublicKeySuccessHandler = (_ publicKey: String) -> Void
 
-    /// :nodoc:
     /// Convenient way to fetch the client public key with a closure for the success case
     /// and an option to notify the delegate on the failure case.
     /// - Parameters:

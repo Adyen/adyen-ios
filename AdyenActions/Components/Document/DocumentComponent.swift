@@ -4,18 +4,22 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import UIKit
 
 /// A component that handles document actions.
 public final class DocumentComponent: ActionComponent, ShareableComponent {
+<<<<<<< HEAD
 
     /// :nodoc:
     /// The context object for this component.
     public let context: AdyenContext
+=======
     
-    /// :nodoc:
+    public let apiContext: APIContext
+>>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
+    
     public weak var delegate: ActionComponentDelegate?
     
     /// Delegates `PresentableComponent`'s presentation.
@@ -44,10 +48,8 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     /// The document component configurations.
     public var configuration: Configuration = .init()
     
-    /// :nodoc:
     internal let presenterViewController = UIViewController()
     
-    /// :nodoc:
     private let componentName = "documentAction"
     
     /// Initializes the `DocumentComponent`.

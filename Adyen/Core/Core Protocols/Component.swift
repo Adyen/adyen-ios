@@ -9,7 +9,7 @@ import Foundation
 /// A component provides payment method-specific UI and handling.
 public protocol Component: AdyenContextAware {}
 
-/// :nodoc:
+/// Provides convenience functions to `Component` instances.
 extension Component {
 
     /// Finalizes the payment if there is any, after being processed by payment provider.
@@ -49,7 +49,7 @@ public protocol FinalizableComponent: Component {
 
 public extension Component {
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     var _isDropIn: Bool { // swiftlint:disable:this identifier_name
         get {
             guard let value = objc_getAssociatedObject(self, &AssociatedKeys.isDropIn) as? Bool else {

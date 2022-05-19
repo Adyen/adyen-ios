@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,6 @@ import Foundation
 import UIKit
 
 /// A style of form elements in which a value can be entered.
-/// :nodoc:
 public protocol FormValueItemStyle: TintableStyle {
     
     /// The color of bottom line separating form elements.
@@ -20,13 +19,11 @@ public protocol FormValueItemStyle: TintableStyle {
 }
 
 /// An item in a form in which a value can be entered.
-/// :nodoc:
+@_spi(AdyenInternal)
 open class FormValueItem<ValueType: Equatable, StyleType: FormValueItemStyle>: FormItem {
 
-    /// :nodoc:
     public private(set) var subitems: [FormItem]
 
-    /// :nodoc:
     public var identifier: String?
 
     /// The value entered in the item.

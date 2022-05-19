@@ -1,12 +1,12 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Adyen3DS2
 import Foundation
-import Adyen
+@_spi(AdyenInternal) import Adyen
 
 internal protocol AnyADYService {
     func service(with parameters: ADYServiceParameters,

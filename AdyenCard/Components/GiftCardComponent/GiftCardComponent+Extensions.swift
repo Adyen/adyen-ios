@@ -4,9 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
+<<<<<<< HEAD:AdyenCard/Components/GiftCardComponent/GiftCardComponent+Extensions.swift
 /// :nodoc:
 extension GiftCardComponent: TrackableComponent {}
 
@@ -14,6 +15,11 @@ extension GiftCardComponent: TrackableComponent {}
 extension GiftCardComponent: ViewControllerDelegate {
 
     /// :nodoc:
+=======
+@_spi(AdyenInternal)
+extension GiftCardComponent: TrackableComponent {
+    
+>>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle):AdyenCard/Components/GiftCardComponent/GiftCardComponentExtensions.swift
     public func viewDidLoad(viewController: UIViewController) {
         Analytics.sendEvent(component: paymentMethod.type.rawValue,
                             flavor: _isDropIn ? .dropin : .components,
@@ -48,7 +54,6 @@ extension GiftCardComponent {
         /// Indicates any other error
         case otherError(Swift.Error)
 
-        /// :nodoc:
         public var errorDescription: String? {
             switch self {
             case .balanceCheckFailure:

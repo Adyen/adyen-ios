@@ -144,11 +144,21 @@ internal final class ComponentsViewController: UIViewController, Presenter {
     }
 
     internal func present(viewController: UIViewController, completion: (() -> Void)?) {
-        adyen.topPresenter.present(viewController, animated: true, completion: completion)
+        topPresenter.present(viewController, animated: true, completion: completion)
     }
 
     internal func dismiss(completion: (() -> Void)?) {
         dismiss(animated: true, completion: completion)
+    }
+}
+
+extension UIViewController {
+    var topPresenter: UIViewController {
+        var topController: UIViewController = self
+        while let presenter = topController.presentedViewController {
+            topController = presenter
+        }
+        return topController
     }
 }
 

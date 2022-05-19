@@ -23,14 +23,14 @@ public protocol PaymentMethod: Decodable {
     ///
     /// - Parameters:
     ///   - using: The localization parameters.
-    /// :nodoc:
+    @_spi(AdyenInternal)
     func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent?
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public extension PaymentMethod {
     
     func displayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
@@ -46,7 +46,7 @@ public extension PaymentMethod {
         return defaultDisplayInformation
     }
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
     }
@@ -64,7 +64,7 @@ public protocol StoredPaymentMethod: PaymentMethod {
     
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public func == (lhs: StoredPaymentMethod, rhs: StoredPaymentMethod) -> Bool {
     lhs.type == rhs.type &&
         lhs.name == rhs.name &&
@@ -73,19 +73,19 @@ public func == (lhs: StoredPaymentMethod, rhs: StoredPaymentMethod) -> Bool {
         String(describing: type(of: lhs)) == String(describing: type(of: rhs))
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public func != (lhs: StoredPaymentMethod, rhs: StoredPaymentMethod) -> Bool {
     !(lhs == rhs)
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public func == (lhs: PaymentMethod, rhs: PaymentMethod) -> Bool {
     lhs.type == rhs.type &&
         lhs.name == rhs.name &&
         String(describing: type(of: lhs)) == String(describing: type(of: rhs))
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public func != (lhs: PaymentMethod, rhs: PaymentMethod) -> Bool {
     !(lhs == rhs)
 }

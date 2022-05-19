@@ -24,7 +24,6 @@ public class OXXOVoucherAction: GenericVoucherAction,
     /// The instruction `URL` object.
     public let instructionsURL: URL
 
-    /// :nodoc:
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         alternativeReference = try container.decode(String.self, forKey: .alternativeReference)
@@ -34,7 +33,6 @@ public class OXXOVoucherAction: GenericVoucherAction,
         try super.init(from: decoder)
     }
 
-    /// :nodoc:
     private enum CodingKeys: String, CodingKey {
         case alternativeReference,
              merchantReference,

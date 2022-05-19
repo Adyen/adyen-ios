@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
@@ -14,9 +14,13 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     /// Configuration for SEPA Direct Debit Component
     public typealias Configuration = BasicComponentConfiguration
     
+<<<<<<< HEAD
     /// :nodoc:
     /// The context object for this component.
     public let context: AdyenContext
+=======
+    public let apiContext: APIContext
+>>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     
     /// Component's configuration
     public var configuration: Configuration
@@ -46,14 +50,11 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     
     // MARK: - Presentable Component Protocol
     
-    /// :nodoc:
     public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
                                                                              style: configuration.style)
     
-    /// :nodoc:
     public var requiresModalPresentation: Bool = true
     
-    /// :nodoc:
     public func stopLoading() {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
@@ -137,6 +138,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
 
 }
 
+@_spi(AdyenInternal)
 extension SEPADirectDebitComponent: TrackableComponent {}
 
 /// :nodoc:

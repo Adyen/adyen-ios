@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 /// A form item in which two items are shown side-by-side horizontally.
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class FormSplitItem: FormItem {
 
     internal var leftItem: FormItem
@@ -17,10 +17,8 @@ public final class FormSplitItem: FormItem {
     /// Indicates the `FormSplitItemView` UI styling.
     public let style: ViewStyle
     
-    /// :nodoc:
     public var identifier: String?
     
-    /// :nodoc:
     public var subitems: [FormItem] {
         [leftItem, rightItem]
     }
@@ -36,7 +34,6 @@ public final class FormSplitItem: FormItem {
         self.style = style
     }
     
-    /// :nodoc:
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }

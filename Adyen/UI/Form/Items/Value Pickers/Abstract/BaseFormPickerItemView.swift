@@ -1,13 +1,13 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import UIKit
 
-/// :nodoc:
 /// Represents a picker item view.
+@_spi(AdyenInternal)
 open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormValueItemView<BasePickerElement<T>,
     FormTextItemStyle,
     BaseFormPickerItem<T>>,
@@ -47,16 +47,13 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
         }
     }
 
-    /// :nodoc:
     override open var canBecomeFirstResponder: Bool { true }
 
-    /// :nodoc:
     @discardableResult
     override open func becomeFirstResponder() -> Bool {
         inputControl.becomeFirstResponder()
     }
 
-    /// :nodoc:
     @discardableResult
     override open func resignFirstResponder() -> Bool {
         inputControl.resignFirstResponder()
@@ -75,7 +72,6 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
     }
 
     /// Function called right after `init` for additional initialization of controls.
-    /// :nodoc:
     open func initialize() {
         addSubview(inputControl)
         inputControl.preservesSuperviewLayoutMargins = true
@@ -84,7 +80,6 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
 
     /// The main control of the picker element that
     /// handles displaying the selected value and triggering the picker view.
-    /// :nodoc:
     public lazy var inputControl: PickerTextInputControl = {
         let view = createInputControl()
         view.showChevron = item.selectableValues.count > 1

@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import SafariServices
 import UIKit
 
@@ -38,7 +38,6 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
         return safariViewController
     }()
     
-    /// :nodoc:
     internal weak var delegate: BrowserComponentDelegate?
     
     /// Initializes the component.
@@ -75,13 +74,11 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
 extension BrowserComponent: SFSafariViewControllerDelegate, UIAdaptivePresentationControllerDelegate {
     
     /// Called when user clicks "Cancel" button or Safari redirects to other app.
-    /// :nodoc:
     internal func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         finish()
     }
 
     /// Called when user drag VC down to dismiss.
-    /// :nodoc:
     internal func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         self.delegate?.didCancel()
     }

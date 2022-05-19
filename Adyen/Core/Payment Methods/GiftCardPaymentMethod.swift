@@ -18,7 +18,7 @@ public struct GiftCardPaymentMethod: PaymentMethod {
     /// The brand of the gift card.
     public let brand: String
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }

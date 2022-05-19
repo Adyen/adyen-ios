@@ -7,20 +7,16 @@
 import Foundation
 
 /// Provides a placeholder for payment methods that are already paid, just for display.
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class AlreadyPaidPaymentComponent: PaymentComponent {
 
-    /// :nodoc:
     /// The context object for this component.
     public let context: AdyenContext
     
-    /// :nodoc:
     public let paymentMethod: PaymentMethod
 
-    /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
 
-    /// :nodoc:
     public init(paymentMethod: PaymentMethod,
                 context: AdyenContext) {
         self.paymentMethod = paymentMethod

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,21 +7,19 @@
 import AdyenNetworking
 import Foundation
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension String: AdyenCompatible {
 
-    /// :nodoc:
     public enum Adyen {
 
-        /// :nodoc:
         public static let securedString: String = "••••\u{00a0}"
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension Optional: AdyenCompatible {}
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public extension AdyenScope where Base == String? {
 
     /// Returns true if optional string is null or not empty.
@@ -31,7 +29,7 @@ public extension AdyenScope where Base == String? {
 
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public extension AdyenScope where Base == String {
 
     /// Return flag emoji if string is a country code; otherwise returns empty string.

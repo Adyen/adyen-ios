@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,7 +15,6 @@ public struct ProgressViewStyle: ViewStyle {
     /// The color shown for the portion of the progress bar that is not filled.
     public let trackTintColor: UIColor
     
-    /// :nodoc:
     public var backgroundColor = UIColor.clear
     
     /// Initializes the progress view style

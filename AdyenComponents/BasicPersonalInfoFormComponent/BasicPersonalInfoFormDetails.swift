@@ -4,11 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Collection of the generic personal details supplied by components.
-/// :nodoc:
 public struct BasicPersonalInfoFormDetails: PaymentMethodDetails, ShopperInformation {
 
     /// The payment method type.

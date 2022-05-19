@@ -4,24 +4,27 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
 /// A component that provides a form for Boleto payment.
+<<<<<<< HEAD
 public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent, AdyenObserver {
 
     /// :nodoc:
     /// The context object for this component.
     public let context: AdyenContext
+=======
+public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent {
     
-    /// :nodoc:
+    public let apiContext: APIContext
+>>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
+    
     public weak var delegate: PaymentComponentDelegate?
         
-    /// :nodoc:
     public var paymentMethod: PaymentMethod { boletoPaymentMethod }
 
-    /// :nodoc:
     public let requiresModalPresentation: Bool = true
     
     /// The Component's configuration.
@@ -45,7 +48,6 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
 
     // MARK: - Private
     
-    /// :nodoc:
     private lazy var socialSecurityNumberItem: FormTextInputItem = {
         let socialSecurityNumberItem = FormTextInputItem(style: configuration.style.textField)
         socialSecurityNumberItem.title = localizedString(.boletoSocialSecurityNumber, configuration.localizationParameters)
@@ -58,7 +60,6 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         return socialSecurityNumberItem
     }()
     
-    /// :nodoc:
     internal lazy var sendCopyByEmailItem: FormToggleItem = {
         let sendCopyToEmailItem = FormToggleItem(style: configuration.style.toggle)
         sendCopyToEmailItem.value = false
@@ -68,7 +69,6 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         return sendCopyToEmailItem
     }()
     
-    /// :nodoc:
     private func headerFormItem(key: LocalizationKey) -> FormContainerItem {
         FormLabelItem(
             text: localizedString(key, configuration.localizationParameters),
@@ -80,7 +80,6 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         ).addingDefaultMargins()
     }
     
-    /// :nodoc:
     private lazy var formComponent: FormComponent = {
         let configuration = AbstractPersonalInformationComponent.Configuration(style: configuration.style,
                                                                                shopperInformation: configuration.shopperInformation,
@@ -107,10 +106,8 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         return component
     }()
     
-    /// :nodoc:
     public lazy var viewController: UIViewController = formComponent.viewController
     
-    /// :nodoc:
     /// Constructs the fields for the form based on the configuration
     private var formFields: [PersonalInformation] {
         var fields: [PersonalInformation] = [
@@ -131,7 +128,6 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         return fields
     }
 
-    /// :nodoc:
     /// Sets the initial values for the form fields based on configuration
     private func prefillFields(for component: FormComponent) {
         configuration.shopperInformation?.shopperName.map {
@@ -147,7 +143,6 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         }
     }
     
-    /// :nodoc:
     private func createPaymentDetails() throws -> PaymentMethodDetails {
         guard let firstNameItem = formComponent.firstNameItem,
               let lastNameItem = formComponent.lastNameItem,
@@ -166,7 +161,6 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         )
     }
     
-    /// :nodoc:
     /// Obtain email address depending if it was prefilled, or the checkbox was ticked
     private func getEmailDetails() -> String? {
         if let prefilledEmail = configuration.shopperInformation?.emailAddress {
@@ -180,29 +174,30 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
 
     // MARK: - Public
     
-    /// :nodoc:
     public func stopLoading() {
         formComponent.stopLoading()
     }
 }
 
+<<<<<<< HEAD
 extension BoletoComponent: TrackableComponent {}
 
+=======
+@_spi(AdyenInternal)
+>>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
 extension BoletoComponent: ViewControllerDelegate {
 
-    /// :nodoc:
     public func viewDidLoad(viewController: UIViewController) {}
 
-    /// :nodoc:
     public func viewDidAppear(viewController: UIViewController) {}
 
-    /// :nodoc:
     public func viewWillAppear(viewController: UIViewController) {
         sendTelemetryEvent()
         prefillFields(for: formComponent)
     }
 }
 
+@_spi(AdyenInternal)
 extension BoletoComponent: PaymentComponentDelegate {
     
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
@@ -214,16 +209,13 @@ extension BoletoComponent: PaymentComponentDelegate {
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension BoletoComponent {
     
-    /// :nodoc:
     fileprivate final class FormComponent: AbstractPersonalInformationComponent {
         
-        /// :nodoc:
         private let onCreatePaymentDetails: () -> PaymentMethodDetails?
         
-        /// :nodoc:
         fileprivate init(paymentMethod: PaymentMethod,
                          context: AdyenContext,
                          fields: [PersonalInformation],
@@ -237,14 +229,17 @@ extension BoletoComponent {
                        configuration: configuration)
         }
         
-        /// :nodoc:
+        @_spi(AdyenInternal)
         override public func submitButtonTitle() -> String {
             localizedString(.boletobancarioBtnLabel, configuration.localizationParameters)
         }
         
-        /// :nodoc:
+        @_spi(AdyenInternal)
         override public func createPaymentDetails() -> PaymentMethodDetails {
             onCreatePaymentDetails() ?? InstantPaymentDetails(type: paymentMethod.type)
         }
     }
 }
+
+@_spi(AdyenInternal)
+extension BoletoComponent: AdyenObserver {}
