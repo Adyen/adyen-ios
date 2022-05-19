@@ -148,7 +148,8 @@ public final class AdyenSession {
     // MARK: - Action Handling for Components
 
     internal lazy var actionComponent: ActionHandlingComponent = {
-        let handler = AdyenActionComponent(apiContext: configuration.apiContext)
+        let handler = AdyenActionComponent(apiContext: configuration.apiContext,
+                                           configuration: configuration.actionComponent)
         handler.delegate = self
         handler.presentationDelegate = presentationDelegate
         return handler

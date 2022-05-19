@@ -813,7 +813,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
                                 configuration: config)
-        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "NL")
+        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "EUR"), countryCode: "NL")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         // When
@@ -850,7 +850,7 @@ class CardComponentTests: XCTestCase {
         let payButtonItemViewButton: UIControl? = view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(500))
 
         XCTAssertFalse(houseNumberItemView.alertLabel.isHidden)
         XCTAssertFalse(addressItemView.alertLabel.isHidden)
@@ -908,7 +908,7 @@ class CardComponentTests: XCTestCase {
         let payButtonItemViewButton: UIControl? = view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(500))
 
         XCTAssertTrue(houseNumberItemView.alertLabel.isHidden)
         XCTAssertFalse(addressItemView.alertLabel.isHidden)
@@ -1505,19 +1505,19 @@ class CardComponentTests: XCTestCase {
                                 configuration: config)
         
         let logoItem = sut.cardViewController.items.numberContainerItem.supportedCardLogosItem
-        XCTAssertEqual(logoItem.alpha, 1)
+        XCTAssertTrue(logoItem.cardLogos.allSatisfy { $0.alpha == 1})
         
         var binResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress)])
         sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertEqual(logoItem.alpha, 0.3)
+        XCTAssertEqual(logoItem.cardLogos[0].alpha, 0.3)
         
         binResponse = BinLookupResponse(brands: [])
         sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertEqual(logoItem.alpha, 1)
+        XCTAssertTrue(logoItem.cardLogos.allSatisfy { $0.alpha == 1})
         
         binResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress, isSupported: false)])
         sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertEqual(logoItem.alpha, 1)
+        XCTAssertEqual(logoItem.cardLogos[0].alpha, 1)
     }
 
     func testClearShouldResetPostalCodeItemToEmptyValue() throws {
