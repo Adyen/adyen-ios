@@ -55,6 +55,7 @@ class CardExpiryDateValidatorTests: XCTestCase {
         XCTAssertFalse(validator.isValid("0917"))
         XCTAssertFalse(validator.isValid("0101"))
         XCTAssertFalse(validator.isValid("0819"))
+        XCTAssertFalse(validator.isValid("0919"))
         
         // More than 30 years in the future from reference date 01/01/2020.
         XCTAssertFalse(validator.isValid("0151"))
