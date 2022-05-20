@@ -28,6 +28,7 @@ target '$PROJECT_NAME' do
 
   pod 'Adyen', :path => '../'
   pod 'Adyen/SwiftUI', :path => '../'
+  pod 'Adyen/Session', :path => '../'
 end
 
 # post_install do |installer|
