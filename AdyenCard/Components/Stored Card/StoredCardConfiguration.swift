@@ -11,6 +11,7 @@ public struct StoredCardConfiguration {
 
     /// Indicates whether to show the security code field.
     public var showsSecurityCodeField = true
-
+    
+    /// Initializes a new instance.
     public init() { /* empty init */ }
 }

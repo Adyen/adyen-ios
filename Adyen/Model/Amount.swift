@@ -54,7 +54,6 @@ public struct Amount: Codable, Equatable {
     }
 }
 
-@_spi(AdyenInternal)
 public extension Amount {
 
     /// Returns a formatted representation of the amount.
