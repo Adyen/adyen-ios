@@ -26,15 +26,15 @@
         
       </p>
     
-      <p class="header-col--secondary">
+      <div class="header-col--secondary">
         <form role="search" action="search.json">
           <input type="text" placeholder="Search documentation" data-typeahead>
         </form>
-      </p>
+      </div>
     
         <p class="header-col header-col--secondary">
           <a class="header-link" href="https://github.com/Adyen/adyen-ios">
-            <img class="header-icon" src="img/gh.png"/>
+            <img class="header-icon" src="img/gh.png" alt="GitHub"/>
             View on GitHub
           </a>
         </p>
@@ -43,13 +43,36 @@
 
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html">Adyen Reference</a>
-      <img class="carat" src="img/carat.png" />
+      <img class="carat" src="img/carat.png" alt=""/>
       Other Protocols  Reference
     </p>
 
     <div class="content-wrapper">
       <nav class="navigation">
         <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Adyen%20Session.html">Adyen Session</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/AdyenSession.html">AdyenSession</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/AdyenSession/Configuration.html">– Configuration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/AdyenSession/Context.html">– Context</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/AdyenSessionDelegate.html">AdyenSessionDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/AdyenSessionPaymentsHandler.html">AdyenSessionPaymentsHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/AdyenSessionPaymentDetailsHandler.html">AdyenSessionPaymentDetailsHandler</a>
+              </li>
+            </ul>
+          </li>
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="Drop%20In%20Component.html">Drop In Component</a>
             <ul class="nav-group-tasks">
@@ -63,10 +86,19 @@
                 <a class="nav-group-task-link" href="Classes/DropInComponent/Configuration.html">– Configuration</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/DropInComponent/ApplePayConfiguration.html">– ApplePayConfiguration</a>
+                <a class="nav-group-task-link" href="Classes/DropInComponent/ActionComponentConfiguration.html">– ActionComponentConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DropInComponent/Card.html">– Card</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/DropInComponentDelegate.html">DropInComponentDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PaymentMethodListConfiguration.html">PaymentMethodListConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/StoredPaymentMethodsDelegate.html">StoredPaymentMethodsDelegate</a>
               </li>
             </ul>
           </li>
@@ -128,6 +160,9 @@
                 <a class="nav-group-task-link" href="Structs/QRCodeComponentStyle.html">QRCodeComponentStyle</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DocumentComponentStyle.html">DocumentComponentStyle</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/NavigationStyle.html">NavigationStyle</a>
               </li>
               <li class="nav-group-task">
@@ -136,10 +171,13 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/ProgressViewStyle.html">ProgressViewStyle</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ApplePayStyle.html">ApplePayStyle</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a class="nav-group-name-link" href="Payment%20Methods.html">Payment Methods</a>
+            <a class="nav-group-name-link" href="Basic%20Payment%20Methods.html">Basic Payment Methods</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/PaymentMethod.html">PaymentMethod</a>
@@ -151,73 +189,39 @@
                 <a class="nav-group-task-link" href="Protocols/StoredPaymentMethod.html">StoredPaymentMethod</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/StoredCardPaymentMethod.html">StoredCardPaymentMethod</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/StoredBCMCPaymentMethod.html">StoredBCMCPaymentMethod</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/StoredPayPalPaymentMethod.html">StoredPayPalPaymentMethod</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen23StoredBLIKPaymentMethodV">StoredBLIKPaymentMethod</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/AnyCardPaymentMethod.html">AnyCardPaymentMethod</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/CardPaymentMethod.html">CardPaymentMethod</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/BCMCPaymentMethod.html">BCMCPaymentMethod</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/IssuerListPaymentMethod.html">IssuerListPaymentMethod</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/IssuerListPaymentMethod/Issuer.html">– Issuer</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen21ApplePayPaymentMethodV">ApplePayPaymentMethod</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen28SEPADirectDebitPaymentMethodV">SEPADirectDebitPaymentMethod</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen23QiwiWalletPaymentMethodV">QiwiWalletPaymentMethod</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen19AffirmPaymentMethodV">AffirmPaymentMethod</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/AwaitPaymentMethod.html">AwaitPaymentMethod</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen18MBWayPaymentMethodV">MBWayPaymentMethod</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen17BLIKPaymentMethodV">BLIKPaymentMethod</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/VoucherPaymentMethod.html">VoucherPaymentMethod</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen17DokuPaymentMethodV">DokuPaymentMethod</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen17OXXOPaymentMethodV">OXXOPaymentMethod</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen21EContextPaymentMethodV">EContextPaymentMethod</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen24SevenElevenPaymentMethoda">SevenElevenPaymentMethod</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/QRCodePaymentMethod.html">QRCodePaymentMethod</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Payment%20Methods.html#/s:5Adyen22WeChatPayPaymentMethodV">WeChatPayPaymentMethod</a>
+                <a class="nav-group-task-link" href="Enums/DocumentPaymentMethod.html">DocumentPaymentMethod</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Stored%20payment%20methods.html">Stored payment methods</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/StoredPayPalPaymentMethod.html">StoredPayPalPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/StoredCardPaymentMethod.html">StoredCardPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/StoredBCMCPaymentMethod.html">StoredBCMCPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/StoredBLIKPaymentMethod.html">StoredBLIKPaymentMethod</a>
               </li>
             </ul>
           </li>
@@ -255,10 +259,19 @@
                 <a class="nav-group-task-link" href="Classes/DokuVoucherAction.html">DokuVoucherAction</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/MultibancoVoucherAction.html">MultibancoVoucherAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/BoletoVoucherAction.html">BoletoVoucherAction</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/EContextATMVoucherAction.html">EContextATMVoucherAction</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/EContextStoresVoucherAction.html">EContextStoresVoucherAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/OXXOVoucherAction.html">OXXOVoucherAction</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/QRCodeAction.html">QRCodeAction</a>
@@ -270,10 +283,10 @@
                 <a class="nav-group-task-link" href="Classes/WeChatPaySDKAction.html">WeChatPaySDKAction</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/BoletoVoucherAction.html">BoletoVoucherAction</a>
+                <a class="nav-group-task-link" href="Structs/DocumentAction.html">DocumentAction</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/OXXOVoucherAction.html">OXXOVoucherAction</a>
+                <a class="nav-group-task-link" href="Enums/AppleWalletError.html">AppleWalletError</a>
               </li>
             </ul>
           </li>
@@ -284,13 +297,25 @@
                 <a class="nav-group-task-link" href="Classes/AdyenActionComponent.html">AdyenActionComponent</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/AdyenActionComponent/Configuration.html">– Configuration</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/VoucherComponent.html">VoucherComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/VoucherComponent/Configuration.html">– Configuration</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/QRCodeComponent.html">QRCodeComponent</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/QRCodeComponent/Configuration.html">– Configuration</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/AwaitComponent.html">AwaitComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/AwaitComponent/Configuration.html">– Configuration</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/AwaitActionDetails.html">AwaitActionDetails</a>
@@ -302,16 +327,37 @@
                 <a class="nav-group-task-link" href="Classes/RedirectComponent/Error.html">– Error</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/RedirectComponent/Configuration.html">– Configuration</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/RedirectDetails.html">RedirectDetails</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/WeChatPaySDKActionComponent.html">WeChatPaySDKActionComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/WeChatPaySDKActionComponent.html">WeChatPaySDKActionComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DocumentComponent.html">DocumentComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DocumentComponent/Configuration.html">– Configuration</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="Card%20Component.html">Card Component</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/AnyCardPaymentMethod.html">AnyCardPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/CardPaymentMethod.html">CardPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/BCMCPaymentMethod.html">BCMCPaymentMethod</a>
+              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/CardComponent.html">CardComponent</a>
               </li>
@@ -325,10 +371,13 @@
                 <a class="nav-group-task-link" href="Classes/CardComponent/Configuration.html">– Configuration</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Card%20Component.html#/s:5Adyen13BCMCComponentC">BCMCComponent</a>
+                <a class="nav-group-task-link" href="Classes/BCMCComponent.html">BCMCComponent</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/CardDetails.html">CardDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/KCPDetails.html">KCPDetails</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/CardFundingSource.html">CardFundingSource</a>
@@ -340,10 +389,10 @@
                 <a class="nav-group-task-link" href="Structs/CardBrand.html">CardBrand</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Card%20Component.html#/s:5Adyen23CardExpiryDateFormatterC">CardExpiryDateFormatter</a>
+                <a class="nav-group-task-link" href="Classes/CardExpiryDateFormatter.html">CardExpiryDateFormatter</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Card%20Component.html#/s:5Adyen23CardExpiryDateValidatorC">CardExpiryDateValidator</a>
+                <a class="nav-group-task-link" href="Classes/CardExpiryDateValidator.html">CardExpiryDateValidator</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/CardSecurityCodeFormatter.html">CardSecurityCodeFormatter</a>
@@ -355,13 +404,25 @@
                 <a class="nav-group-task-link" href="Classes/CardNumberFormatter.html">CardNumberFormatter</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Card%20Component.html#/s:5Adyen19CardNumberValidatorC">CardNumberValidator</a>
+                <a class="nav-group-task-link" href="Classes/CardNumberValidator.html">CardNumberValidator</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/CardComponentDelegate.html">CardComponentDelegate</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/StoredCardConfiguration.html">StoredCardConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/InstallmentConfiguration.html">InstallmentConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/InstallmentOptions.html">InstallmentOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Installments.html">Installments</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Installments/Plan.html">– Plan</a>
               </li>
             </ul>
           </li>
@@ -370,6 +431,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/ThreeDS2Component.html">ThreeDS2Component</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ThreeDS2Component/Configuration.html">– Configuration</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/ThreeDS2Component/Error.html">– Error</a>
@@ -382,6 +446,9 @@
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="Apple%20Pay%20Component.html">Apple Pay Component</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ApplePayPaymentMethod.html">ApplePayPaymentMethod</a>
+              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/ApplePayComponent.html">ApplePayComponent</a>
               </li>
@@ -409,13 +476,16 @@
                 <a class="nav-group-task-link" href="Structs/GiftCardDetails.html">GiftCardDetails</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Gift%20Card%20Component.html#/s:5Adyen21GiftCardPaymentMethodV">GiftCardPaymentMethod</a>
+                <a class="nav-group-task-link" href="Structs/GiftCardPaymentMethod.html">GiftCardPaymentMethod</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="SEPA%20Direct%20Debit%20Component.html">SEPA Direct Debit Component</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/SEPADirectDebitPaymentMethod.html">SEPADirectDebitPaymentMethod</a>
+              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/SEPADirectDebitComponent.html">SEPADirectDebitComponent</a>
               </li>
@@ -426,13 +496,47 @@
                 <a class="nav-group-task-link" href="Classes/IBANFormatter.html">IBANFormatter</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="SEPA%20Direct%20Debit%20Component.html#/s:5Adyen13IBANValidatorC">IBANValidator</a>
+                <a class="nav-group-task-link" href="Classes/IBANValidator.html">IBANValidator</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="BACS%20Direct%20Debit%20Component.html">BACS Direct Debit Component</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/BACSDirectDebitPaymentMethod.html">BACSDirectDebitPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/BACSDirectDebitComponent.html">BACSDirectDebitComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/BACSDirectDebitDetails.html">BACSDirectDebitDetails</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="ACH%20Direct%20Debit%20Component.html">ACH Direct Debit Component</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ACHDirectDebitPaymentMethod.html">ACHDirectDebitPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ACHDirectDebitComponent.html">ACHDirectDebitComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ACHDirectDebitComponent/Configuration.html">– Configuration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ACHDirectDebitDetails.html">ACHDirectDebitDetails</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="Qiwi%20Wallet%20Component.html">Qiwi Wallet Component</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/QiwiWalletPaymentMethod.html">QiwiWalletPaymentMethod</a>
+              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/QiwiWalletComponent.html">QiwiWalletComponent</a>
               </li>
@@ -445,6 +549,9 @@
             <a class="nav-group-name-link" href="Affirm%20Component.html">Affirm Component</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/AffirmPaymentMethod.html">AffirmPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/AffirmComponent.html">AffirmComponent</a>
               </li>
               <li class="nav-group-task">
@@ -455,6 +562,9 @@
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="BLIK%20Component.html">BLIK Component</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/BLIKPaymentMethod.html">BLIKPaymentMethod</a>
+              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/BLIKComponent.html">BLIKComponent</a>
               </li>
@@ -473,7 +583,7 @@
                 <a class="nav-group-task-link" href="Classes/BoletoComponent/Configuration.html">– Configuration</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Boleto%20Component.html#/s:5Adyen19BoletoPaymentMethodV">BoletoPaymentMethod</a>
+                <a class="nav-group-task-link" href="Structs/BoletoPaymentMethod.html">BoletoPaymentMethod</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/BoletoDetails.html">BoletoDetails</a>
@@ -483,6 +593,9 @@
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="MBWay%20Component.html">MBWay Component</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/MBWayPaymentMethod.html">MBWayPaymentMethod</a>
+              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/MBWayComponent.html">MBWayComponent</a>
               </li>
@@ -497,6 +610,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/WeChatPaySDKData.html">WeChatPaySDKData</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/WeChatPayPaymentMethod.html">WeChatPayPaymentMethod</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -504,6 +620,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/IssuerListComponent.html">IssuerListComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/IssuerListComponent/Configuration.html">– Configuration</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Issuer%20List%20Component.html#/s:5Adyen14IdealComponenta">IdealComponent</a>
@@ -547,8 +666,31 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Instant%20Payment%20Component.html">Instant Payment Component</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/InstantPaymentMethod.html">InstantPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Instant%20Payment%20Component.html#/s:5Adyen23MultibancoPaymentMethoda">MultibancoPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Instant%20Payment%20Component.html#/s:5Adyen19MultibancoComponenta">MultibancoComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Instant%20Payment%20Component.html#/s:5Adyen17OXXOPaymentMethoda">OXXOPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Instant%20Payment%20Component.html#/s:5Adyen13OXXOComponenta">OXXOComponent</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a class="nav-group-name-link" href="EContext%20Component.html">EContext Component</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/EContextPaymentMethod.html">EContextPaymentMethod</a>
+              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="EContext%20Component.html#/s:5Adyen20EContextATMComponenta">EContextATMComponent</a>
               </li>
@@ -559,6 +701,9 @@
                 <a class="nav-group-task-link" href="EContext%20Component.html#/s:5Adyen22EContextStoreComponenta">EContextStoreComponent</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="EContext%20Component.html#/s:5Adyen24SevenElevenPaymentMethoda">SevenElevenPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="EContext%20Component.html#/s:5Adyen20SevenElevenComponenta">SevenElevenComponent</a>
               </li>
             </ul>
@@ -566,6 +711,9 @@
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="Doku%20Component.html">Doku Component</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DokuPaymentMethod.html">DokuPaymentMethod</a>
+              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DokuComponent.html">DokuComponent</a>
               </li>
@@ -578,7 +726,7 @@
             <a class="nav-group-name-link" href="Public%20Protocols.html">Public Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Public%20Protocols.html#/s:5Adyen9ComponentP">Component</a>
+                <a class="nav-group-task-link" href="Protocols/Component.html">Component</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/ComponentError.html">ComponentError</a>
@@ -609,6 +757,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Public%20Protocols.html#/s:5Adyen20PaymentMethodDetailsP">PaymentMethodDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/AnyVoucherAction.html">AnyVoucherAction</a>
               </li>
             </ul>
           </li>
@@ -666,6 +817,9 @@
                 <a class="nav-group-task-link" href="Structs/PrefilledShopperInformation.html">PrefilledShopperInformation</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PrefilledShopperInformation/CardInformation.html">– CardInformation</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/PartialPaymentOrder.html">PartialPaymentOrder</a>
               </li>
               <li class="nav-group-task">
@@ -689,10 +843,19 @@
                 <a class="nav-group-task-link" href="Enums/CardEncryptor/Error.html">– Error</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/BankDetailsEncryptor.html">BankDetailsEncryptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/BankDetailsEncryptor/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/Card.html">Card</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/EncryptedCard.html">EncryptedCard</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/EncryptionError.html">EncryptionError</a>
               </li>
             </ul>
           </li>
@@ -706,7 +869,22 @@
                 <a class="nav-group-task-link" href="Protocols/Formatter.html">Formatter</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/Sanitizer.html">Sanitizer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/BrazilSocialSecurityNumberFormatter.html">BrazilSocialSecurityNumberFormatter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Utilities.html#/s:5Adyen18threeDS2SdkVersionSSvp">threeDS2SdkVersion</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/Validator.html">Validator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DateValidator.html">DateValidator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DateValidator/Format.html">– Format</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/LengthValidator.html">LengthValidator</a>
@@ -716,9 +894,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/LogoURLProvider/Size.html">– Size</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/SecuredViewController.html">SecuredViewController</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/Localizable.html">Localizable</a>
@@ -732,21 +907,43 @@
             <a class="nav-group-name-link" href="Other%20Classes.html">Other Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/BrazilSocialSecurityNumberFormatter.html">BrazilSocialSecurityNumberFormatter</a>
+                <a class="nav-group-task-link" href="Classes/AbstractPersonalInformationComponent.html">AbstractPersonalInformationComponent</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/DateValidator.html">DateValidator</a>
+                <a class="nav-group-task-link" href="Classes/AdyenObservable.html">AdyenObservable</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/DateValidator/Format.html">– Format</a>
+                <a class="nav-group-task-link" href="Classes/AmountFormatter.html">AmountFormatter</a>
               </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a class="nav-group-name-link" href="Other%20Global%20Variables.html">Other Global Variables</a>
-            <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Other%20Global%20Variables.html#/s:5Adyen18threeDS2SdkVersionSSvp">threeDS2SdkVersion</a>
+                <a class="nav-group-task-link" href="Classes/AtomeComponent.html">AtomeComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/BasicPersonalInfoFormComponent.html">BasicPersonalInfoFormComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/ClientKeyValidator.html">ClientKeyValidator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/EmailValidator.html">EmailValidator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/InstantPaymentComponent.html">InstantPaymentComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/NumericFormatter.html">NumericFormatter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/NumericStringValidator.html">NumericStringValidator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/PhoneNumberValidator.html">PhoneNumberValidator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/RegularExpressionValidator.html">RegularExpressionValidator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/StoredPaymentMethodComponent.html">StoredPaymentMethodComponent</a>
               </li>
             </ul>
           </li>
@@ -754,7 +951,38 @@
             <a class="nav-group-name-link" href="Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/AppleWalletError.html">AppleWalletError</a>
+                <a class="nav-group-task-link" href="Enums/ClientKeyError.html">ClientKeyError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/PaymentMethodType.html">PaymentMethodType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/SessionPaymentResultCode.html">SessionPaymentResultCode</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other%20Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIColor.html">UIColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/UIColor/Adyen.html">– Adyen</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/View.html">View</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other%20Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Functions.html#/s:5Adyen2aaoiyAA9Validator_pAaC_p_AaC_ptF">&amp;&amp;(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Functions.html#/s:5Adyen2oooiyAA9Validator_pAaC_p_AaC_ptF">||(_:_:)</a>
               </li>
             </ul>
           </li>
@@ -762,7 +990,70 @@
             <a class="nav-group-name-link" href="Other%20Protocols.html">Other Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/AnyVoucherAction.html">AnyVoucherAction</a>
+                <a class="nav-group-task-link" href="Protocols/APIContextAware.html">APIContextAware</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/APIContextInitializable.html">APIContextInitializable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/ActionHandlingComponent.html">ActionHandlingComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Protocols.html#/s:5Adyen0A8ObserverP">AdyenObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/AnyBasicComponentConfiguration.html">AnyBasicComponentConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/AnyCardComponentConfiguration.html">AnyCardComponentConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/AnyDropInComponent.html">AnyDropInComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/AnyNavigationBar.html">AnyNavigationBar</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/AnyPersonalInformationConfiguration.html">AnyPersonalInformationConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/AnyWeChatPaySDKActionComponent.html">AnyWeChatPaySDKActionComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/ApplePayComponentDelegate.html">ApplePayComponentDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/Cancellable.html">Cancellable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/ComponentLoader.html">ComponentLoader</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/DeviceDependent.html">DeviceDependent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/EventPublisher.html">EventPublisher</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/FormValueItemStyle.html">FormValueItemStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/LoadingComponent.html">LoadingComponent</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/OpaqueEncodable.html">OpaqueEncodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/PaymentMethodAware.html">PaymentMethodAware</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/ReadyToSubmitPaymentComponentDelegate.html">ReadyToSubmitPaymentComponentDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/TintableStyle.html">TintableStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/ViewStyle.html">ViewStyle</a>
               </li>
             </ul>
           </li>
@@ -770,7 +1061,84 @@
             <a class="nav-group-name-link" href="Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/KCPDetails.html">KCPDetails</a>
+                <a class="nav-group-task-link" href="Structs/AddressStyle.html">AddressStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/AnyEncodable.html">AnyEncodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ApplePayPayment.html">ApplePayPayment</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/AtomeDetails.html">AtomeDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/AtomePaymentMethod.html">AtomePaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/BasicComponentConfiguration.html">BasicComponentConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/BasicPersonalInfoFormDetails.html">BasicPersonalInfoFormDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/CountryCodeValidator.html">CountryCodeValidator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/CurrencyCodeValidator.html">CurrencyCodeValidator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/Environment.html">Environment</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Structs.html#/s:5Adyen17EventHandlerTokenV">EventHandlerToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/FormErrorItemStyle.html">FormErrorItemStyle</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/InstantPaymentDetails.html">InstantPaymentDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ListSectionFooter.html">ListSectionFooter</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/MerchantCustomDisplayInformation.html">MerchantCustomDisplayInformation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PersonalInformationConfiguration.html">PersonalInformationConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/PhoneExtension.html">PhoneExtension</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/StoredInstantPaymentMethod.html">StoredInstantPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/StoredPaymentDetails.html">StoredPaymentDetails</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/ThreeDSResult.html">ThreeDSResult</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Other%20Typealiases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Typealiases.html#/s:5Adyen21AlfamartPaymentMethoda">AlfamartPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Typealiases.html#/s:5Adyen10Completiona">Completion</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Typealiases.html#/s:5Adyen23DokuWalletPaymentMethoda">DokuWalletPaymentMethod</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Typealiases.html#/s:5Adyen12EventHandlera">EventHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Other%20Typealiases.html#/s:5Adyen22IndomaretPaymentMethoda">IndomaretPaymentMethod</a>
               </li>
             </ul>
           </li>
@@ -793,9 +1161,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:5Adyen16AnyVoucherActionP"></a>
-                    <a name="//apple_ref/swift/Protocol/AnyVoucherAction" class="dashAnchor"></a>
-                    <a class="token" href="#/s:5Adyen16AnyVoucherActionP">AnyVoucherAction</a>
+                    <a name="/s:5Adyen15APIContextAwareP"></a>
+                    <a name="//apple_ref/swift/Protocol/APIContextAware" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen15APIContextAwareP">APIContextAware</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -803,15 +1171,602 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Describes any voucher action object.</p>
+                        <p>An object that needs an API context to retrieve internal resources</p>
 
-                        <a href="Protocols/AnyVoucherAction.html" class="slightly-smaller">See more</a>
+                        <a href="Protocols/APIContextAware.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">AnyVoucherAction</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">APIContextAware</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen30AnyBasicComponentConfigurationP"></a>
+                    <a name="//apple_ref/swift/Protocol/AnyBasicComponentConfiguration" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen30AnyBasicComponentConfigurationP">AnyBasicComponentConfiguration</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Any component&rsquo;s most basic configuration.</p>
+
+                        <a href="Protocols/AnyBasicComponentConfiguration.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">AnyBasicComponentConfiguration</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Localizable.html">Localizable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen35AnyPersonalInformationConfigurationP"></a>
+                    <a name="//apple_ref/swift/Protocol/AnyPersonalInformationConfiguration" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen35AnyPersonalInformationConfigurationP">AnyPersonalInformationConfiguration</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The configuration of any component thats aware of shoppers&rsquo; personal information.</p>
+
+                        <a href="Protocols/AnyPersonalInformationConfiguration.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">AnyPersonalInformationConfiguration</span> <span class="p">:</span> <span class="kt"><a href="Protocols/AnyBasicComponentConfiguration.html">AnyBasicComponentConfiguration</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen18AnyDropInComponentP"></a>
+                    <a name="//apple_ref/swift/Protocol/AnyDropInComponent" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen18AnyDropInComponentP">AnyDropInComponent</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Any DropIn Component.</p>
+
+                        <a href="Protocols/AnyDropInComponent.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">AnyDropInComponent</span> <span class="p">:</span> <span class="kt"><a href="Protocols/PresentableComponent.html">PresentableComponent</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen15DeviceDependentP"></a>
+                    <a name="//apple_ref/swift/Protocol/DeviceDependent" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen15DeviceDependentP">DeviceDependent</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Represents any structure/object whose behavior is device dependent.</p>
+
+                        <a href="Protocols/DeviceDependent.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DeviceDependent</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen15ComponentLoaderP"></a>
+                    <a name="//apple_ref/swift/Protocol/ComponentLoader" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen15ComponentLoaderP">ComponentLoader</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Any <code><a href="Protocols/Component.html">Component</a></code> that shows a loading state of some kind when initiating another <code><a href="Protocols/PaymentComponent.html">PaymentComponent</a></code>.</p>
+
+                        <a href="Protocols/ComponentLoader.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ComponentLoader</span> <span class="p">:</span> <span class="kt"><a href="Protocols/LoadingComponent.html">LoadingComponent</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen16LoadingComponentP"></a>
+                    <a name="//apple_ref/swift/Protocol/LoadingComponent" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen16LoadingComponentP">LoadingComponent</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Any <code><a href="Protocols/Component.html">Component</a></code> that show a loading state of some kind</p>
+
+                        <a href="Protocols/LoadingComponent.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">LoadingComponent</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen18PaymentMethodAwareP"></a>
+                    <a name="//apple_ref/swift/Protocol/PaymentMethodAware" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen18PaymentMethodAwareP">PaymentMethodAware</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Any Object that is aware of a <code><a href="Protocols/PaymentMethod.html">PaymentMethod</a></code>.</p>
+
+                        <a href="Protocols/PaymentMethodAware.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">PaymentMethodAware</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen11CancellableP"></a>
+                    <a name="//apple_ref/swift/Protocol/Cancellable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen11CancellableP">Cancellable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Represents any object than can handle a cancel event.</p>
+
+                        <a href="Protocols/Cancellable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Cancellable</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen16AnyNavigationBarP"></a>
+                    <a name="//apple_ref/swift/Protocol/AnyNavigationBar" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen16AnyNavigationBarP">AnyNavigationBar</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Represents navigation bar on top of presentable components.</p>
+
+                        <a href="Protocols/AnyNavigationBar.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">AnyNavigationBar</span> <span class="p">:</span> <span class="kt">UIView</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen37ReadyToSubmitPaymentComponentDelegateP"></a>
+                    <a name="//apple_ref/swift/Protocol/ReadyToSubmitPaymentComponentDelegate" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen37ReadyToSubmitPaymentComponentDelegateP">ReadyToSubmitPaymentComponentDelegate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The delegate that handles shopper confirmation UI when the balance of the gift card is sufficient to pay.</p>
+
+                        <a href="Protocols/ReadyToSubmitPaymentComponentDelegate.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ReadyToSubmitPaymentComponentDelegate</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen15OpaqueEncodableP"></a>
+                    <a name="//apple_ref/swift/Protocol/OpaqueEncodable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen15OpaqueEncodableP">OpaqueEncodable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Provides an encodable object without exposing the concrete type.</p>
+
+                        <a href="Protocols/OpaqueEncodable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">OpaqueEncodable</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen18FormValueItemStyleP"></a>
+                    <a name="//apple_ref/swift/Protocol/FormValueItemStyle" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen18FormValueItemStyleP">FormValueItemStyle</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A style of form elements in which a value can be entered.</p>
+
+                        <a href="Protocols/FormValueItemStyle.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">FormValueItemStyle</span> <span class="p">:</span> <span class="kt"><a href="Protocols/TintableStyle.html">TintableStyle</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen9ViewStyleP"></a>
+                    <a name="//apple_ref/swift/Protocol/ViewStyle" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen9ViewStyleP">ViewStyle</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Contains the styling customization options for any views.</p>
+
+                        <a href="Protocols/ViewStyle.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ViewStyle</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen13TintableStyleP"></a>
+                    <a name="//apple_ref/swift/Protocol/TintableStyle" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen13TintableStyleP">TintableStyle</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Contains the styling customization options for views with accent color.</p>
+
+                        <a href="Protocols/TintableStyle.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">TintableStyle</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ViewStyle.html">ViewStyle</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen0A8ObserverP"></a>
+                    <a name="//apple_ref/swift/Protocol/AdyenObserver" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen0A8ObserverP">AdyenObserver</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Conforming to the Observer protocol will make the observe and binding functions available for use.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">AdyenObserver</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen14EventPublisherP"></a>
+                    <a name="//apple_ref/swift/Protocol/EventPublisher" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen14EventPublisherP">EventPublisher</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Conforming types can publish observable events.</p>
+
+                        <a href="Protocols/EventPublisher.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">EventPublisher</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen23APIContextInitializableP"></a>
+                    <a name="//apple_ref/swift/Protocol/APIContextInitializable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen23APIContextInitializableP">APIContextInitializable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Represents any structure/class that can be initialized without any parameters.</p>
+
+                        <a href="Protocols/APIContextInitializable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">APIContextInitializable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen30AnyWeChatPaySDKActionComponentP"></a>
+                    <a name="//apple_ref/swift/Protocol/AnyWeChatPaySDKActionComponent" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen30AnyWeChatPaySDKActionComponentP">AnyWeChatPaySDKActionComponent</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Describes the expected interface from any ActionComponent that handles WeChat Pay sdk action.</p>
+
+                        <a href="Protocols/AnyWeChatPaySDKActionComponent.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">AnyWeChatPaySDKActionComponent</span> <span class="p">:</span> <span class="kt"><a href="Protocols/APIContextInitializable.html">APIContextInitializable</a></span><span class="p">,</span> <span class="kt"><a href="Protocols/ActionComponent.html">ActionComponent</a></span><span class="p">,</span> <span class="kt"><a href="Protocols/DeviceDependent.html">DeviceDependent</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen23ActionHandlingComponentP"></a>
+                    <a name="//apple_ref/swift/Protocol/ActionHandlingComponent" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen23ActionHandlingComponentP">ActionHandlingComponent</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Any component that can handle an <code><a href="Enums/Action.html">Action</a></code> object.</p>
+
+                        <a href="Protocols/ActionHandlingComponent.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ActionHandlingComponent</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Component.html">Component</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen29AnyCardComponentConfigurationP"></a>
+                    <a name="//apple_ref/swift/Protocol/AnyCardComponentConfiguration" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen29AnyCardComponentConfigurationP">AnyCardComponentConfiguration</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Describes any configuration for the card component.</p>
+
+                        <a href="Protocols/AnyCardComponentConfiguration.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">AnyCardComponentConfiguration</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5Adyen25ApplePayComponentDelegateP"></a>
+                    <a name="//apple_ref/swift/Protocol/ApplePayComponentDelegate" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5Adyen25ApplePayComponentDelegateP">ApplePayComponentDelegate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Delegates methods that respond to shopper interactions with payment authorization view controller.</p>
+
+                        <a href="Protocols/ApplePayComponentDelegate.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ApplePayComponentDelegate</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
 
                         </div>
                       </div>
@@ -826,9 +1781,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2021 <a class="link" href="https://adyen.com" target="_blank" rel="external">Adyen</a>. All rights reserved. (Last updated: 2021-09-06)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2022 <a class="link" href="https://adyen.com" target="_blank" rel="external noopener">Adyen</a>. All rights reserved. (Last updated: 2022-05-20)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
-</div>
 </html>
