@@ -99,7 +99,7 @@ mv $PROJECT_NAME/build/Release-iphonesimulator/Adyen/$FRAMEWORK_NAME.doccarchive
 
 $(xcrun --find docc) process-archive \
 transform-for-static-hosting $FINAL_DOC_PATH/$FRAMEWORK_NAME.doccarchive \
---output-path docs \
+--output-path docc-Docs \
 --hosting-base-path adyen.github.io/adyen-ios/
 
 # Clean up.
