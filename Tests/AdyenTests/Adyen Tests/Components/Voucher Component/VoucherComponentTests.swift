@@ -209,7 +209,7 @@ class VoucherComponentTests: XCTestCase {
             model.logoUrl,
             LogoURLProvider.logoURL(
                 withName: action.anyAction.paymentMethodType.rawValue,
-                environment: Dummy.context.environment,
+                environment: Dummy.apiContext.environment,
                 size: .medium
             )
         )

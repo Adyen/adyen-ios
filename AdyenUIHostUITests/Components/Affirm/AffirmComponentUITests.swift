@@ -20,7 +20,7 @@ class AffirmComponentUITests: XCTestCase {
         try super.setUpWithError()
         print(app.debugDescription)
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Affirm")
-        context = AdyenContext(apiContext: Dummy.context)
+        context = AdyenContext(apiContext: Dummy.apiContext)
         style = FormComponentStyle()
         sut = AffirmComponent(paymentMethod: paymentMethod,
                               context: context,

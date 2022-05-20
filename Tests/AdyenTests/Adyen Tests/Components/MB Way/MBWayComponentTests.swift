@@ -21,7 +21,7 @@ class MBWayComponentTests: XCTestCase {
         try super.setUpWithError()
 
         analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
 
         paymentMethod = MBWayPaymentMethod(type: .mbWay, name: "test_name")
         payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")

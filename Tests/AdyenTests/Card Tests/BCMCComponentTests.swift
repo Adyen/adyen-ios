@@ -18,7 +18,7 @@ class BCMCComponentTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
         delegate = PaymentComponentDelegateMock()
     }
 
@@ -151,7 +151,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context)
-        PublicKeyProvider.publicKeysCache[Dummy.context.clientKey] = Dummy.publicKey
+        PublicKeyProvider.publicKeysCache[Dummy.apiContext.clientKey] = Dummy.publicKey
         sut.delegate = delegate
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         

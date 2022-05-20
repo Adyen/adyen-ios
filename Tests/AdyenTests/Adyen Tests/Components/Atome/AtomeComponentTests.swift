@@ -13,15 +13,13 @@ class AtomeComponentTests: XCTestCase {
     private var analyticsProviderMock: AnalyticsProviderMock!
     private var context: AdyenContext!
     private var paymentMethod: PaymentMethod!
-    private var apiContext: APIContext!
     private var style: FormComponentStyle!
     private var sut: AtomeComponent!
 
     override func setUpWithError() throws {
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Atome")
-        apiContext = Dummy.context
         analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: apiContext, analyticsProvider: analyticsProviderMock)
+        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
         style = FormComponentStyle()
         sut = AtomeComponent(paymentMethod: paymentMethod,
                              context: context,
@@ -32,7 +30,6 @@ class AtomeComponentTests: XCTestCase {
         analyticsProviderMock = nil
         context = nil
         paymentMethod = nil
-        apiContext = nil
         style = nil
         sut = nil
         try super.tearDownWithError()

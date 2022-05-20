@@ -49,8 +49,8 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
 
     func testWrappedComponent() {
         let sut = ThreeDS2CompactActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration())
-        XCTAssertEqual(sut.wrappedComponent.context.apiContext.clientKey, Dummy.context.clientKey)
-        XCTAssertEqual(sut.wrappedComponent.context.apiContext.environment.baseURL, Dummy.context.environment.baseURL)
+        XCTAssertEqual(sut.wrappedComponent.context.apiContext.clientKey, Dummy.apiContext.clientKey)
+        XCTAssertEqual(sut.wrappedComponent.context.apiContext.environment.baseURL, Dummy.apiContext.environment.baseURL)
 
         sut._isDropIn = false
         XCTAssertEqual(sut.wrappedComponent._isDropIn, false)

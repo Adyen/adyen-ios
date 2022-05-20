@@ -15,7 +15,7 @@ class OXXOShareableVoucherViewProviderTests: XCTestCase {
     func testOXXOVoucher() throws {
         let viewProvider = VoucherShareableViewProvider(
             style: VoucherComponentStyle(),
-            environment: Dummy.context.environment
+            environment: Dummy.apiContext.environment
         )
 
         let oxxoDecoded = try Coder.decode(oxxoAction) as OXXOVoucherAction

@@ -18,7 +18,7 @@ class StoredCardComponentTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
     }
 
     override func tearDownWithError() throws {
@@ -69,7 +69,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryYear: "22",
                                              holderName: "holderName")
         let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
-        PublicKeyProvider.publicKeysCache[Dummy.context.clientKey] = Dummy.publicKey
+        PublicKeyProvider.publicKeysCache[Dummy.apiContext.clientKey] = Dummy.publicKey
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment

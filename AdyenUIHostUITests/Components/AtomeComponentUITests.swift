@@ -20,7 +20,7 @@ class AtomeComponentUITests: XCTestCase {
         try super.setUpWithError()
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Atome")
         app.launchArguments = ["SG", "SGD"]
-        context = AdyenContext(apiContext: Dummy.context)
+        context = AdyenContext(apiContext: Dummy.apiContext)
         style = FormComponentStyle()
         sut = AtomeComponent(paymentMethod: paymentMethod,
                              context: context,

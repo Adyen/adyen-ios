@@ -24,7 +24,7 @@ class InstantPaymentComponentTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
 
         delegate = PaymentComponentDelegateMock()
         paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "name", brand: "brand")
