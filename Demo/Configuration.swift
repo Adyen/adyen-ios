@@ -39,7 +39,7 @@ internal enum ConfigurationConstants {
         return try! APIContext(environment: componentsEnvironment, clientKey: "local_DUMMYKEYFORTESTING")
     }
 
-    static var adyenContext = AdyenContext(apiContext: apiContext)
+    static var context = AdyenContext(apiContext: apiContext)
     
     static let clientKey = "{YOUR_CLIENT_KEY}"
 

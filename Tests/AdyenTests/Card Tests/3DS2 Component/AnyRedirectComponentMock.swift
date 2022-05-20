@@ -14,7 +14,7 @@ final class AnyRedirectComponentMock: AnyRedirectComponent {
     
     let apiContext = Dummy.context
 
-    var adyenContext: AdyenContext {
+    var context: AdyenContext {
         return .init(apiContext: apiContext)
     }
 

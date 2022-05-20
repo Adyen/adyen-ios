@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -20,14 +20,14 @@ public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
     ///
     /// - Parameters:
     ///   - paymentMethod: The Qiwi Wallet payment method.
-    ///   - adyenContext: The Adyen context.
+    ///   - context: The Adyen context.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: QiwiWalletPaymentMethod,
-                adyenContext: AdyenContext,
+                context: AdyenContext,
                 configuration: Configuration = .init()) {
         self.qiwiWalletPaymentMethod = paymentMethod
         super.init(paymentMethod: paymentMethod,
-                   adyenContext: adyenContext,
+                   context: context,
                    fields: [.phone],
                    configuration: configuration)
     }

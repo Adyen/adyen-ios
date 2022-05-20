@@ -12,19 +12,19 @@ import XCTest
 class BCMCComponentTests: XCTestCase {
 
     var analyticsProviderMock: AnalyticsProviderMock!
-    var adyenContext: AdyenContext!
+    var context: AdyenContext!
     var delegate: PaymentComponentDelegateMock!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        context = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
         delegate = PaymentComponentDelegateMock()
     }
 
     override func tearDownWithError() throws {
         analyticsProviderMock = nil
-        adyenContext = nil
+        context = nil
         delegate = nil
         try super.tearDownWithError()
     }
@@ -33,7 +33,7 @@ class BCMCComponentTests: XCTestCase {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.accel])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                adyenContext: adyenContext,
+                                context: context,
                                 configuration: CardComponent.Configuration())
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
@@ -45,7 +45,7 @@ class BCMCComponentTests: XCTestCase {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.chinaUnionPay])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                adyenContext: adyenContext,
+                                context: context,
                                 configuration: CardComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -68,7 +68,7 @@ class BCMCComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                adyenContext: adyenContext,
+                                context: context,
                                 configuration: configuration)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -91,7 +91,7 @@ class BCMCComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.showsStorePaymentMethodField = false
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                adyenContext: adyenContext,
+                                context: context,
                                 configuration: configuration)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -111,7 +111,7 @@ class BCMCComponentTests: XCTestCase {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.bcmc])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                adyenContext: adyenContext)
+                                context: context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         wait(for: .milliseconds(300))
@@ -124,7 +124,7 @@ class BCMCComponentTests: XCTestCase {
         
         let cardNumberItem = cardNumberItemView!.item
         XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 1)
-        XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.url, LogoURLProvider.logoURL(withName: "bcmc", environment: adyenContext.apiContext.environment))
+        XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.url, LogoURLProvider.logoURL(withName: "bcmc", environment: context.apiContext.environment))
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.cardTypeLogos"))
     }
     
@@ -132,7 +132,7 @@ class BCMCComponentTests: XCTestCase {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.maestro])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                adyenContext: adyenContext)
+                                context: context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
@@ -150,7 +150,7 @@ class BCMCComponentTests: XCTestCase {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.masterCard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                adyenContext: adyenContext)
+                                context: context)
         PublicKeyProvider.publicKeysCache[Dummy.context.clientKey] = Dummy.publicKey
         sut.delegate = delegate
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -206,7 +206,7 @@ class BCMCComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.americanExpress])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                adyenContext: adyenContext)
+                                context: context)
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -232,7 +232,7 @@ class BCMCComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.masterCard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                adyenContext: adyenContext)
+                                context: context)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -257,7 +257,7 @@ class BCMCComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.argencard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                adyenContext: adyenContext)
+                                context: context)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -282,7 +282,7 @@ class BCMCComponentTests: XCTestCase {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.maestro])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                adyenContext: adyenContext)
+                                context: context)
         sut.delegate = delegate
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -323,7 +323,7 @@ class BCMCComponentTests: XCTestCase {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.visa])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                adyenContext: adyenContext)
+                                context: context)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         wait(for: .milliseconds(300))
@@ -339,7 +339,7 @@ class BCMCComponentTests: XCTestCase {
                                                   brands: [.visa, .americanExpress, .masterCard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                adyenContext: adyenContext)
+                                context: context)
 
         // When
         sut.cardViewController.viewWillAppear(true)

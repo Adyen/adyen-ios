@@ -17,7 +17,7 @@ import UIKit
 public final class AdyenActionComponent: ActionComponent, ActionHandlingComponent {
 
     /// The Adyen context.
-    public let adyenContext: AdyenContext
+    public let context: AdyenContext
 
     /// The object that acts as the delegate of the action component.
     public weak var delegate: ActionComponentDelegate?
@@ -72,9 +72,9 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     internal var currentActionComponent: Component?
     
     /// :nodoc:
-    public init(adyenContext: AdyenContext,
+    public init(context: AdyenContext,
                 configuration: Configuration = Configuration()) {
-        self.adyenContext = adyenContext
+        self.context = context
         self.configuration = configuration
     }
     
@@ -109,7 +109,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     // MARK: - Private
     
     private func handle(_ action: RedirectAction) {
-        let component = RedirectComponent(adyenContext: adyenContext)
+        let component = RedirectComponent(context: context)
         component.configuration.style = configuration.style.redirectComponentStyle
         component.delegate = delegate
         component._isDropIn = _isDropIn
@@ -134,7 +134,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     }
 
     private func createThreeDS2Component() -> ThreeDS2Component {
-        let component = ThreeDS2Component(adyenContext: adyenContext)
+        let component = ThreeDS2Component(context: context)
         component.configuration.requestorAppURL = configuration.threeDS.requestorAppURL
         component._isDropIn = _isDropIn
         component.delegate = delegate
@@ -167,7 +167,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
             return
         }
         
-        let weChatPaySDKActionComponent = classObject.init(adyenContext: adyenContext)
+        let weChatPaySDKActionComponent = classObject.init(context: context)
         weChatPaySDKActionComponent._isDropIn = _isDropIn
         weChatPaySDKActionComponent.delegate = delegate
         weChatPaySDKActionComponent.handle(action)
@@ -176,7 +176,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     }
     
     private func handle(_ action: AwaitAction) {
-        let component = AwaitComponent(adyenContext: adyenContext)
+        let component = AwaitComponent(context: context)
         component.configuration.style = configuration.style.awaitComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate
@@ -188,7 +188,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     }
     
     private func handle(_ action: VoucherAction) {
-        let component = VoucherComponent(adyenContext: adyenContext)
+        let component = VoucherComponent(context: context)
         component.configuration.style = configuration.style.voucherComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate
@@ -200,7 +200,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     }
     
     private func handle(_ action: QRCodeAction) {
-        let component = QRCodeComponent(adyenContext: adyenContext)
+        let component = QRCodeComponent(context: context)
         component.configuration.style = configuration.style.qrCodeComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate
@@ -212,7 +212,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     }
     
     private func handle(_ action: DocumentAction) {
-        let component = DocumentComponent(adyenContext: adyenContext)
+        let component = DocumentComponent(context: context)
         component.configuration.style = configuration.style.documentActionComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate

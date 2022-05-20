@@ -18,7 +18,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     // MARK: - Properties
 
     /// The Adyen context.
-    public let adyenContext: AdyenContext
+    public let context: AdyenContext
     
     /// :nodoc:
     public let paymentMethod: PaymentMethod
@@ -55,15 +55,15 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     /// Initializes the MB Way component.
     ///
     /// - Parameter paymentMethod: The payment method.
-    /// - Parameter adyenContext: The Adyen context.
+    /// - Parameter context: The Adyen context.
     /// - Parameter fields: The component's fields.
     /// - Parameter configuration: The Component's configuration.
     public init(paymentMethod: PaymentMethod,
-                adyenContext: AdyenContext,
+                context: AdyenContext,
                 fields: [PersonalInformation],
                 configuration: Configuration) {
         self.paymentMethod = paymentMethod
-        self.adyenContext = adyenContext
+        self.context = context
         self.fields = fields
         self.configuration = configuration
     }

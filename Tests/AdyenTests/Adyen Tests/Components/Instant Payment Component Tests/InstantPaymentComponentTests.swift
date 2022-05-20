@@ -16,7 +16,7 @@ class InstantPaymentComponentTests: XCTestCase {
     private var delegate: PaymentComponentDelegateMock!
     private var sut: InstantPaymentComponent!
     private var analyticsProviderMock: AnalyticsProviderMock!
-    private var adyenContext: AdyenContext!
+    private var context: AdyenContext!
 
     override func setUp() {
         super.setUp()
@@ -24,19 +24,19 @@ class InstantPaymentComponentTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        context = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
 
         delegate = PaymentComponentDelegateMock()
         paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "name", brand: "brand")
         sut = InstantPaymentComponent(paymentMethod: paymentMethod,
                                       paymentData: paymentComponentData,
-                                            adyenContext: adyenContext)
+                                            context: context)
         sut.delegate = delegate
     }
 
     override func tearDownWithError() throws {
         analyticsProviderMock = nil
-        adyenContext = nil
+        context = nil
         paymentMethod = nil
         delegate = nil
         sut = nil

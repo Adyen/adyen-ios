@@ -21,7 +21,7 @@ import Foundation
         private static let universalLink = "https://www.adyen.com/"
 
         /// :nodoc:
-        public var adyenContext: AdyenContext
+        public var context: AdyenContext
     
         /// :nodoc:
         public weak var delegate: ActionComponentDelegate?
@@ -30,8 +30,8 @@ import Foundation
         private var currentlyHandledAction: WeChatPaySDKAction?
     
         /// :nodoc:
-        public init(adyenContext: AdyenContext) {
-            self.adyenContext = adyenContext
+        public init(context: AdyenContext) {
+            self.context = context
         }
     
         /// :nodoc:
@@ -47,7 +47,7 @@ import Foundation
              Handling multiple WeChatPaySDKAction's in parallel is not supported.
             """)
         
-            Analytics.sendEvent(component: "wechatpaySDK", flavor: _isDropIn ? .dropin : .components, context: adyenContext.apiContext)
+            Analytics.sendEvent(component: "wechatpaySDK", flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         
             currentlyHandledAction = action
         
@@ -115,14 +115,14 @@ import Foundation
     public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
 
         /// :nodoc:
-        public let adyenContext: AdyenContext
+        public let context: AdyenContext
 
         /// :nodoc:
         public weak var delegate: ActionComponentDelegate?
 
         /// :nodoc:
-        public init(adyenContext: AdyenContext) {
-            self.adyenContext = adyenContext
+        public init(context: AdyenContext) {
+            self.context = context
         }
 
         /// :nodoc:

@@ -13,7 +13,7 @@ public protocol AdyenContextAware: AnyObject {
 
     /// :nodoc:
     /// The Adyen context.
-    var adyenContext: AdyenContext { get }
+    var context: AdyenContext { get }
 }
 
 /// Struct that defines API context for retrieving internal resources.

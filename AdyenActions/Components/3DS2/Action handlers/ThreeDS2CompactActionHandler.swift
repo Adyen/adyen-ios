@@ -42,16 +42,16 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
 
     /// Initializes the 3D Secure 2 action handler.
     ///
-    /// - Parameter adyenContext: The Adyen context.
+    /// - Parameter context: The Adyen context.
     /// - Parameter fingerprintSubmitter: The fingerprint submitter.
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
     /// :nodoc:
-    internal convenience init(adyenContext: AdyenContext,
+    internal convenience init(context: AdyenContext,
                               fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter? = nil,
                               service: AnyADYService,
                               appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
-        self.init(adyenContext: adyenContext,
+        self.init(context: context,
                   appearanceConfiguration: appearanceConfiguration)
         if let fingerprintSubmitter = fingerprintSubmitter {
             self.fingerprintSubmitter = fingerprintSubmitter
@@ -60,9 +60,9 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     }
 
     /// Initializes the 3D Secure 2 action handler.
-    internal init(adyenContext: AdyenContext,
+    internal init(context: AdyenContext,
                   appearanceConfiguration: ADYAppearanceConfiguration) {
-        self.coreActionHandler = ThreeDS2CoreActionHandler(adyenContext: adyenContext,
+        self.coreActionHandler = ThreeDS2CoreActionHandler(context: context,
                                                            appearanceConfiguration: appearanceConfiguration)
     }
 
@@ -77,7 +77,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
                          completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         let event = Analytics.Event(component: "\(threeDS2EventName).fingerprint",
                                     flavor: _isDropIn ? .dropin : .components,
-                                    environment: adyenContext.apiContext.environment)
+                                    environment: context.apiContext.environment)
         coreActionHandler.handle(fingerprintAction, event: event) { [weak self] result in
             switch result {
             case let .success(encodedFingerprint):
@@ -101,7 +101,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
                          completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         let event = Analytics.Event(component: "\(threeDS2EventName).challenge",
                                     flavor: _isDropIn ? .dropin : .components,
-                                    environment: adyenContext.apiContext.environment)
+                                    environment: context.apiContext.environment)
         coreActionHandler.handle(challengeAction, event: event) { [weak self] result in
             switch result {
             case let .success(result):
@@ -122,7 +122,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
 
     /// :nodoc:
     private lazy var fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter =
-        ThreeDS2FingerprintSubmitter(apiContext: adyenContext.apiContext)
+        ThreeDS2FingerprintSubmitter(apiContext: context.apiContext)
 
     private let threeDS2EventName = "3ds2"
 

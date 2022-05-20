@@ -19,7 +19,7 @@ public struct PaymentMethodListConfiguration {
 internal final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable, Cancellable {
     
     /// :nodoc:
-    internal let adyenContext: AdyenContext
+    internal let context: AdyenContext
     
     /// The components that are displayed in the list.
     internal private(set) var componentSections: [ComponentsSection]
@@ -35,13 +35,13 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     
     /// Initializes the list component.
     ///
-    /// - Parameter adyenContext: The Adyen context.
+    /// - Parameter context: The Adyen context.
     /// - Parameter components: The components to display in the list.
     /// - Parameter style: The component's UI style.
-    internal init(adyenContext: AdyenContext,
+    internal init(context: AdyenContext,
                   components: [ComponentsSection],
                   style: ListComponentStyle = ListComponentStyle()) {
-        self.adyenContext = adyenContext
+        self.context = context
         self.componentSections = components
         self.style = style
     }
@@ -90,7 +90,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
                                 canModifyIcon: !isProtected)
         listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
         listItem.imageURL = LogoURLProvider.logoURL(withName: displayInformation.logoName,
-                                                    environment: adyenContext.apiContext.environment)
+                                                    environment: context.apiContext.environment)
         listItem.trailingText = displayInformation.disclosureText
         listItem.subtitle = displayInformation.subtitle
         listItem.selectionHandler = { [weak self, weak component] in
@@ -159,7 +159,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     // MARK: - Private
 
     private func sendTelemetryEvent() {
-        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: .dropIn(paymentMethods: []))
+        context.analyticsProvider.trackTelemetryEvent(flavor: .dropIn(paymentMethods: []))
     }
 }
 

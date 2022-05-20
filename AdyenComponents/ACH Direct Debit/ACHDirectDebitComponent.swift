@@ -23,7 +23,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     }
     
     /// The Adyen context
-    public let adyenContext: AdyenContext
+    public let context: AdyenContext
     
     /// :nodoc:
     public var paymentMethod: PaymentMethod {
@@ -58,25 +58,25 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     /// Initializes the ACH Direct Debit component.
     /// - Parameters:
     ///   - paymentMethod: The ACH Direct Debit payment method.
-    ///   - adyenContext: The Adyen context.
+    ///   - context: The Adyen context.
     ///   - configuration: Configuration for the component.
     public convenience init(paymentMethod: ACHDirectDebitPaymentMethod,
-                            adyenContext: AdyenContext,
+                            context: AdyenContext,
                             configuration: Configuration = .init()) {
         self.init(paymentMethod: paymentMethod,
-                  adyenContext: adyenContext,
+                  context: context,
                   configuration: configuration,
-                  publicKeyProvider: PublicKeyProvider(apiContext: adyenContext.apiContext))
+                  publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
     
     /// :nodoc:
     internal init(paymentMethod: ACHDirectDebitPaymentMethod,
-                  adyenContext: AdyenContext,
+                  context: AdyenContext,
                   configuration: Configuration = .init(),
                   publicKeyProvider: AnyPublicKeyProvider) {
         self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
-        self.adyenContext = adyenContext
+        self.context = context
         self.configuration = configuration
         self.publicKeyProvider = publicKeyProvider
     }
@@ -256,7 +256,7 @@ extension ACHDirectDebitComponent: ViewControllerDelegate {
     public func viewDidLoad(viewController: UIViewController) {
         Analytics.sendEvent(component: paymentMethod.type.rawValue,
                             flavor: _isDropIn ? .dropin : .components,
-                            context: adyenContext.apiContext)
+                            context: context.apiContext)
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
     }

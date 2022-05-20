@@ -12,7 +12,7 @@ import UIKit
 
 internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, AdyenContextAware, Localizable {
     
-    internal let adyenContext: AdyenContext
+    internal let context: AdyenContext
     private let paymentMethod: StoredCardPaymentMethod
     private let amount: Amount?
 
@@ -21,13 +21,13 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
     internal var localizationParameters: LocalizationParameters?
     
     internal init(paymentMethod: StoredCardPaymentMethod,
-                  adyenContext: AdyenContext,
+                  context: AdyenContext,
                   amount: Amount?) {
-        self.adyenContext = adyenContext
+        self.context = context
         self.paymentMethod = paymentMethod
         self.amount = amount
         
-        self.publicKeyProvider = PublicKeyProvider(apiContext: adyenContext.apiContext)
+        self.publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
     }
     
     // MARK: - CVC length

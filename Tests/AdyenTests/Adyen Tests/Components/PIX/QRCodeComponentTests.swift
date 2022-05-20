@@ -10,15 +10,15 @@ import XCTest
 
 class QRCodeComponentTests: XCTestCase {
 
-    var adyenContext: AdyenContext!
+    var context: AdyenContext!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        adyenContext = Dummy.adyenContext
+        context = Dummy.context
     }
 
     override func tearDownWithError() throws {
-        adyenContext = nil
+        context = nil
         try super.tearDownWithError()
     }
 
@@ -56,7 +56,7 @@ class QRCodeComponentTests: XCTestCase {
         
         style.backgroundColor = UIColor.Adyen.componentSeparator
         
-        let sut = QRCodeComponent(adyenContext: adyenContext)
+        let sut = QRCodeComponent(context: context)
         sut.configuration.style = style
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
@@ -121,7 +121,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeComponent(adyenContext: adyenContext,
+        let sut = QRCodeComponent(context: context,
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         let componentDelegate = ActionComponentDelegateMock()
@@ -163,7 +163,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeComponent(adyenContext: adyenContext,
+        let sut = QRCodeComponent(context: context,
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         
@@ -210,7 +210,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeComponent(adyenContext: adyenContext,
+        let sut = QRCodeComponent(context: context,
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         
@@ -248,7 +248,7 @@ class QRCodeComponentTests: XCTestCase {
     func testCopyButton() {
         let dummyExpectation = expectation(description: "Dummy Expectation")
         
-        let sut = QRCodeComponent(adyenContext: adyenContext)
+        let sut = QRCodeComponent(context: context)
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         

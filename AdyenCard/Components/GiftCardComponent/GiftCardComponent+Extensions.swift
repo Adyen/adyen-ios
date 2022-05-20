@@ -17,7 +17,7 @@ extension GiftCardComponent: ViewControllerDelegate {
     public func viewDidLoad(viewController: UIViewController) {
         Analytics.sendEvent(component: paymentMethod.type.rawValue,
                             flavor: _isDropIn ? .dropin : .components,
-                            context: adyenContext.apiContext)
+                            context: context.apiContext)
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
     }

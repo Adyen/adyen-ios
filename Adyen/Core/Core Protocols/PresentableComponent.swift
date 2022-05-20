@@ -73,6 +73,6 @@ extension TrackableComponent where Self: PaymentMethodAware {
 
     public func sendTelemetryEvent() {
         let flavor: TelemetryFlavor = _isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
-        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: flavor)
+        context.analyticsProvider.trackTelemetryEvent(flavor: flavor)
     }
 }

@@ -12,7 +12,7 @@ import XCTest
 class BoletoComponentTests: XCTestCase {
 
     private var analyticsProviderMock: AnalyticsProviderMock!
-    private var adyenContext: AdyenContext!
+    private var context: AdyenContext!
 
     private var sut: BoletoComponent!
     private var method = BoletoPaymentMethod(type: .boleto, name: "Boleto Bancario")
@@ -20,12 +20,12 @@ class BoletoComponentTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        context = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
     }
 
     override func tearDownWithError() throws {
         analyticsProviderMock = nil
-        adyenContext = nil
+        context = nil
         try super.tearDownWithError()
     }
 
@@ -81,7 +81,7 @@ class BoletoComponentTests: XCTestCase {
         )
         
         sut = BoletoComponent(paymentMethod: method,
-                              adyenContext: adyenContext,
+                              context: context,
                               configuration: getConfiguration(style: style, showEmailAddress: true))
         
         let sutVC = sut.viewController
@@ -141,7 +141,7 @@ class BoletoComponentTests: XCTestCase {
         let brazilSocialSecurityNumberFormatter = BrazilSocialSecurityNumberFormatter()
         
         sut = BoletoComponent(paymentMethod: method,
-                              adyenContext: adyenContext,
+                              context: context,
                               configuration: getConfiguration(with: prefilledInformation, showEmailAddress: true))
         
         let sutVC = sut.viewController
@@ -188,7 +188,7 @@ class BoletoComponentTests: XCTestCase {
     
     func testNoPrefilledInformation() {
         sut = BoletoComponent(paymentMethod: method,
-                              adyenContext: adyenContext,
+                              context: context,
                               configuration: getConfiguration(showEmailAddress: true))
         
         let sutVC = sut.viewController
@@ -234,7 +234,7 @@ class BoletoComponentTests: XCTestCase {
     
     func testNoEmailSection() {
         sut = BoletoComponent(paymentMethod: method,
-                              adyenContext: adyenContext,
+                              context: context,
                               configuration: getConfiguration(showEmailAddress: false))
         
         let sutVC = sut.viewController
@@ -255,7 +255,7 @@ class BoletoComponentTests: XCTestCase {
     
     func testEmailFieldHiding() {
         sut = BoletoComponent(paymentMethod: method,
-                              adyenContext: adyenContext,
+                              context: context,
                               configuration: getConfiguration(with: dummyFullPrefilledInformation, showEmailAddress: true))
         
         let sutVC = sut.viewController
@@ -306,7 +306,7 @@ class BoletoComponentTests: XCTestCase {
         }
         
         sut = BoletoComponent(paymentMethod: method,
-                              adyenContext: adyenContext,
+                              context: context,
                               configuration: mockConfiguration)
         sut.delegate = mockDelegate
         
@@ -340,7 +340,7 @@ class BoletoComponentTests: XCTestCase {
         }
 
         sut = BoletoComponent(paymentMethod: method,
-                              adyenContext: adyenContext,
+                              context: context,
                               configuration: mockConfiguration)
         sut.delegate = mockDelegate
 
@@ -358,7 +358,7 @@ class BoletoComponentTests: XCTestCase {
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
         sut = BoletoComponent(paymentMethod: method,
-                              adyenContext: adyenContext,
+                              context: context,
                               configuration: getConfiguration(with: dummyFullPrefilledInformation, showEmailAddress: true))
 
         // When

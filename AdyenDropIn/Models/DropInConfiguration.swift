@@ -38,7 +38,7 @@ public extension DropInComponent {
         public var shopper: PrefilledShopperInformation?
 
         /// The Adyen context.
-        public let adyenContext: AdyenContext
+        public let context: AdyenContext
         
         /// Indicates the localization parameters, leave it nil to use the default parameters.
         public var localizationParameters: LocalizationParameters?
@@ -60,15 +60,15 @@ public extension DropInComponent {
         
         /// Initializes the drop in configuration.
         /// - Parameters:
-        ///   - adyenContext: The Adyen context.
+        ///   - context: The Adyen context.
         ///   - style: The UI styles of the components.
         ///   - allowsSkippingPaymentList: Boolean to enable skipping payment list when there is only one one non-instant payment method.
         ///   - allowPreselectedPaymentView: Boolean to enable the preselected stored payment method view step.
-        public init(adyenContext: AdyenContext,
+        public init(context: AdyenContext,
                     style: Style = Style(),
                     allowsSkippingPaymentList: Bool = false,
                     allowPreselectedPaymentView: Bool = true) {
-            self.adyenContext = adyenContext
+            self.context = context
             self.style = style
             self.allowsSkippingPaymentList = allowsSkippingPaymentList
             self.allowPreselectedPaymentView = allowPreselectedPaymentView

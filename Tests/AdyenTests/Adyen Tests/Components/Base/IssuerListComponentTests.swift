@@ -11,22 +11,22 @@ import XCTest
 class IssuerListComponentTests: XCTestCase {
 
     private var analyticsProviderMock: AnalyticsProviderMock!
-    private var adyenContext: AdyenContext!
+    private var context: AdyenContext!
     private var paymentMethod: IssuerListPaymentMethod!
     private var sut: IssuerListComponent!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        context = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
 
         paymentMethod = try! Coder.decode(issuerListDictionary) as IssuerListPaymentMethod
-        sut = IssuerListComponent(paymentMethod: paymentMethod, adyenContext: adyenContext)
+        sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
     }
 
     override func tearDownWithError() throws {
         analyticsProviderMock = nil
-        adyenContext = nil
+        context = nil
         paymentMethod = nil
         sut = nil
         try super.tearDownWithError()

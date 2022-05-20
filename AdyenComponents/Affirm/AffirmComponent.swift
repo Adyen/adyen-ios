@@ -32,10 +32,10 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenO
     /// Initializes the Affirm component.
     /// - Parameters:
     ///   - paymentMethod: The Affirm payment method.
-    ///   - adyenContext: The Adyen context.
+    ///   - context: The Adyen context.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: PaymentMethod,
-                adyenContext: AdyenContext,
+                context: AdyenContext,
                 configuration: Configuration = .init()) {
         personalDetailsHeaderItem = FormLabelItem(text: "", style: configuration.style.sectionHeader)
         deliveryAddressToggleItem = FormToggleItem(style: configuration.style.toggle)
@@ -54,7 +54,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenO
         ]
         
         super.init(paymentMethod: paymentMethod,
-                   adyenContext: adyenContext,
+                   context: context,
                    fields: fields,
                    configuration: configuration)
 
@@ -110,8 +110,8 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenO
               let telephoneNumber = phoneItem?.value,
               let billingAddress = addressItem?.value,
               let deliveryAddress = deliveryAddressItem?.value else {
-                  throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
-              }
+            throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
+        }
         
         let shopperName = ShopperName(firstName: firstName, lastName: lastName)
         let affirmDetails = AffirmDetails(paymentMethod: paymentMethod,

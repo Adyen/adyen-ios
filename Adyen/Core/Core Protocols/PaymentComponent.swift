@@ -16,7 +16,7 @@ public protocol PaymentMethodAware: AnyObject {
 public protocol PaymentComponent: PaymentAwareComponent, PaymentMethodAware {
 
     /// The Adyen context
-    var adyenContext: AdyenContext { get }
+    var context: AdyenContext { get }
     
     /// The delegate of the payment component.
     var delegate: PaymentComponentDelegate? { get set }

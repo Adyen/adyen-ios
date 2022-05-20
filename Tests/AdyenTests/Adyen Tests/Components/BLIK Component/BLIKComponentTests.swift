@@ -13,15 +13,15 @@ import XCTest
 class BLIKComponentTests: XCTestCase {
 
     var analyticsProviderMock: AnalyticsProviderMock!
-    var adyenContext: AdyenContext!
+    var context: AdyenContext!
     lazy var method = BLIKPaymentMethod(type: .blik, name: "test_name")
     let payment = Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
     var sut: BLIKComponent!
 
     override func setUp() {
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
-        sut = BLIKComponent(paymentMethod: method, adyenContext: adyenContext)
+        context = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        sut = BLIKComponent(paymentMethod: method, context: context)
         sut.payment = payment
     }
 
@@ -95,7 +95,7 @@ class BLIKComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        sut = BLIKComponent(paymentMethod: method, adyenContext: adyenContext, configuration: .init(style: style))
+        sut = BLIKComponent(paymentMethod: method, context: context, configuration: .init(style: style))
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -172,7 +172,7 @@ class BLIKComponentTests: XCTestCase {
 
     func testRequiresModalPresentation() {
         let blikPaymentMethod = BLIKPaymentMethod(type: .blik, name: "Test name")
-        let sut = BLIKComponent(paymentMethod: blikPaymentMethod, adyenContext: adyenContext)
+        let sut = BLIKComponent(paymentMethod: blikPaymentMethod, context: context)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 

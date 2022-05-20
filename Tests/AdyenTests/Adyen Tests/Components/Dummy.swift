@@ -18,7 +18,7 @@ enum Dummy: Error {
     
     internal static let context = try! APIContext(environment: Environment.test, clientKey: "local_DUMMYKEYFORTESTING")
 
-    internal static let adyenContext = AdyenContext(apiContext: context)
+    internal static let context = AdyenContext(apiContext: context)
 
     internal static let visaCard = Card(number: "4917 6100 0000 0000",
                                         securityCode: "737",

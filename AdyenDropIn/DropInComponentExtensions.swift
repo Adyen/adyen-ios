@@ -22,7 +22,7 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
 
     internal func didLoad(_ paymentMethodListComponent: PaymentMethodListComponent) {
         let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
-        adyenContext.analyticsProvider.trackTelemetryEvent(flavor: .dropIn(paymentMethods: paymentMethodTypes))
+        context.analyticsProvider.trackTelemetryEvent(flavor: .dropIn(paymentMethods: paymentMethodTypes))
     }
     
     internal func didSelect(_ component: PaymentComponent,

@@ -11,16 +11,16 @@ import XCTest
 
 class AssertsTests: XCTestCase {
 
-    var adyenContext: AdyenContext!
+    var context: AdyenContext!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        adyenContext = Dummy.adyenContext
+        context = Dummy.context
     }
 
     override func tearDownWithError() throws {
         AdyenAssertion.listener = nil
-        adyenContext = nil
+        context = nil
         try super.tearDownWithError()
     }
 
@@ -70,7 +70,7 @@ class AssertsTests: XCTestCase {
     }
 
     func testAwaitVComponentPresentationDelegateAssertion() {
-        let sut = AwaitComponent(adyenContext: adyenContext)
+        let sut = AwaitComponent(context: context)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in
@@ -85,7 +85,7 @@ class AssertsTests: XCTestCase {
     }
 
     func testVoucherComponentPresentationDelegateAssertion() {
-        let sut = VoucherComponent(adyenContext: adyenContext)
+        let sut = VoucherComponent(context: context)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in
@@ -138,10 +138,10 @@ class AssertsTests: XCTestCase {
     }
 
     class MockComponent: Component {
-        let adyenContext: AdyenContext
+        let context: AdyenContext
         
-        init(adyenContext: AdyenContext = Dummy.adyenContext) {
-            self.adyenContext = adyenContext
+        init(context: AdyenContext = Dummy.context) {
+            self.context = context
         }
     }
 

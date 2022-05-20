@@ -13,7 +13,7 @@ import Foundation
 internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, ComponentWrapper {
     
     /// :nodoc
-    internal let adyenContext: AdyenContext
+    internal let context: AdyenContext
 
     /// :nodoc:
     internal var wrappedComponent: Component { coreActionHandler }
@@ -49,19 +49,19 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
     /// :nodoc:
-    internal convenience init(adyenContext: AdyenContext,
+    internal convenience init(context: AdyenContext,
                               service: AnyADYService,
                               appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
-        self.init(adyenContext: adyenContext,
+        self.init(context: context,
                   appearanceConfiguration: appearanceConfiguration)
         self.coreActionHandler.service = service
     }
 
     /// Initializes the 3D Secure 2 action handler.
-    internal init(adyenContext: AdyenContext,
+    internal init(context: AdyenContext,
                   appearanceConfiguration: ADYAppearanceConfiguration) {
-        self.adyenContext = adyenContext
-        self.coreActionHandler = ThreeDS2CoreActionHandler(adyenContext: adyenContext,
+        self.context = context
+        self.coreActionHandler = ThreeDS2CoreActionHandler(context: context,
                                                            appearanceConfiguration: appearanceConfiguration)
     }
 
@@ -77,7 +77,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
         let event = Analytics.Event(
             component: fingerprintEventName,
             flavor: _isDropIn ? .dropin : .components,
-            environment: adyenContext.apiContext.environment
+            environment: context.apiContext.environment
         )
         coreActionHandler.handle(fingerprintAction, event: event) { result in
             switch result {
@@ -103,7 +103,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
         let event = Analytics.Event(
             component: challengeEventName,
             flavor: _isDropIn ? .dropin : .components,
-            environment: adyenContext.apiContext.environment
+            environment: context.apiContext.environment
         )
         coreActionHandler.handle(challengeAction, event: event) { [weak self] result in
             switch result {

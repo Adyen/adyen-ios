@@ -15,7 +15,7 @@ final class PollingHandlerMock: AnyPollingHandler {
     
     let apiContext = Dummy.context
 
-    var adyenContext: AdyenContext {
+    var context: AdyenContext {
         return .init(apiContext: apiContext)
     }
 
@@ -58,7 +58,7 @@ class AwaitComponentTests: XCTestCase {
 
     func testLocalizationWithCustomTableName() {
 
-        let sut = AwaitComponent(adyenContext: Dummy.adyenContext)
+        let sut = AwaitComponent(context: Dummy.context)
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
@@ -112,7 +112,7 @@ class AwaitComponentTests: XCTestCase {
             }, onQRHandler: nil
         )
 
-        let sut = AwaitComponent(adyenContext: Dummy.adyenContext, awaitComponentBuilder: handlerProvider)
+        let sut = AwaitComponent(context: Dummy.context, awaitComponentBuilder: handlerProvider)
         sut.configuration.style = style
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 

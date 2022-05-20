@@ -18,7 +18,7 @@ internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
 public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent {
 
     /// The Adyen context.
-    public let adyenContext: AdyenContext
+    public let context: AdyenContext
     
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
@@ -58,7 +58,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     /// :nodoc:
     private lazy var apiClient: APIClientProtocol = {
         let scheduler = SimpleScheduler(maximumCount: 3)
-        return APIClient(apiContext: adyenContext.apiContext)
+        return APIClient(apiContext: context.apiContext)
             .retryAPIClient(with: scheduler)
             .retryOnErrorAPIClient()
     }()
@@ -79,29 +79,29 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
 
     /// Initializes the `VoucherComponent`.
     ///
-    /// - Parameter adyenContext: The Adyen context.
+    /// - Parameter context: The Adyen context.
     /// - Parameter configuration: The voucher component configurations.
-    public convenience init(adyenContext: AdyenContext,
+    public convenience init(context: AdyenContext,
                             configuration: Configuration = Configuration()) {
-        self.init(adyenContext: adyenContext,
+        self.init(context: context,
                   voucherShareableViewProvider: nil,
                   configuration: configuration,
-                  passProvider: AppleWalletPassProvider(adyenContext: adyenContext))
+                  passProvider: AppleWalletPassProvider(context: context))
     }
 
     /// Initializes the `AwaitComponent`.
-    /// - Parameter adyenContext: The Adyen context.
+    /// - Parameter context: The Adyen context.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
-    internal init(adyenContext: AdyenContext,
+    internal init(context: AdyenContext,
                   voucherShareableViewProvider: AnyVoucherShareableViewProvider?,
                   configuration: Configuration = Configuration(),
                   passProvider: AnyAppleWalletPassProvider?) {
-        self.adyenContext = adyenContext
+        self.context = context
         self.configuration = configuration
         self.voucherShareableViewProvider = voucherShareableViewProvider ??
-            VoucherShareableViewProvider(style: configuration.style, environment: adyenContext.apiContext.environment)
-        self.passProvider = passProvider ?? AppleWalletPassProvider(adyenContext: adyenContext)
+            VoucherShareableViewProvider(style: configuration.style, environment: context.apiContext.environment)
+        self.passProvider = passProvider ?? AppleWalletPassProvider(context: context)
     }
 
     /// :nodoc:
@@ -111,7 +111,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     ///
     /// - Parameter action: The await action object.
     public func handle(_ action: VoucherAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: adyenContext.apiContext)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         fetchAndCacheAppleWalletPassIfNeeded(with: action.anyAction)
 
         voucherShareableViewProvider.localizationParameters = configuration.localizationParameters
@@ -181,7 +181,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
             currency: comps.formattedCurrencySymbol,
             logoUrl: LogoURLProvider.logoURL(
                 withName: anyAction.paymentMethodType.rawValue,
-                environment: adyenContext.apiContext.environment,
+                environment: context.apiContext.environment,
                 size: .medium
             ),
             mainButton: getPrimaryButtonTitle(with: action),

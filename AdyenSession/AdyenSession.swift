@@ -24,7 +24,7 @@ public final class AdyenSession {
         
         internal let initialSessionData: String
         
-        internal let adyenContext: AdyenContext
+        internal let context: AdyenContext
         
         internal let actionComponent: AdyenActionComponent.Configuration
         
@@ -33,15 +33,15 @@ public final class AdyenSession {
         /// - Parameters:
         ///   - sessionIdentifier: The session identifier.
         ///   - initialSessionData: The initial session data.
-        ///   - adyenContext: The Adyen context.
+        ///   - context: The Adyen context.
         ///   - actionComponent: The action handling configuration.
         public init(sessionIdentifier: String,
                     initialSessionData: String,
-                    adyenContext: AdyenContext,
+                    context: AdyenContext,
                     actionComponent: AdyenActionComponent.Configuration = .init()) {
             self.sessionIdentifier = sessionIdentifier
             self.initialSessionData = initialSessionData
-            self.adyenContext = adyenContext
+            self.context = context
             self.actionComponent = actionComponent
         }
     }
@@ -89,7 +89,7 @@ public final class AdyenSession {
                                   delegate: AdyenSessionDelegate,
                                   presentationDelegate: PresentationDelegate,
                                   completion: @escaping ((Result<AdyenSession, Error>) -> Void)) {
-        let baseAPIClient = APIClient(apiContext: configuration.adyenContext.apiContext)
+        let baseAPIClient = APIClient(apiContext: configuration.context.apiContext)
             .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
             .retryOnErrorAPIClient()
         initialize(with: configuration,
@@ -148,7 +148,7 @@ public final class AdyenSession {
     // MARK: - Action Handling for Components
 
     internal lazy var actionComponent: ActionHandlingComponent = {
-        let handler = AdyenActionComponent(adyenContext: configuration.adyenContext,
+        let handler = AdyenActionComponent(context: configuration.context,
                                            configuration: configuration.actionComponent)
         handler.delegate = self
         handler.presentationDelegate = presentationDelegate
@@ -160,7 +160,7 @@ public final class AdyenSession {
     internal let configuration: Configuration
     
     internal lazy var apiClient: APIClientProtocol = {
-        let apiClient = SessionAPIClient(apiClient: APIClient(apiContext: configuration.adyenContext.apiContext), session: self)
+        let apiClient = SessionAPIClient(apiClient: APIClient(apiContext: configuration.context.apiContext), session: self)
         return apiClient
             .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
             .retryOnErrorAPIClient()

@@ -34,7 +34,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     public var paymentMethod: PaymentMethod { bacsPaymentMethod }
 
     /// The Adyen context
-    public let adyenContext: AdyenContext
+    public let context: AdyenContext
 
     /// The object that acts as the presentation delegate of the component.
     public weak var presentationDelegate: PresentationDelegate?
@@ -64,13 +64,13 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// Creates and returns a BACS Direct Debit component.
     /// - Parameters:
     ///   - paymentMethod: The BACS Direct Debit payment method.
-    ///   - adyenContext: The Adyen context.
+    ///   - context: The Adyen context.
     ///   - configuration: Configuration for the component.
     public init(paymentMethod: BACSDirectDebitPaymentMethod,
-                adyenContext: AdyenContext,
+                context: AdyenContext,
                 configuration: Configuration = Configuration()) {
         self.bacsPaymentMethod = paymentMethod
-        self.adyenContext = adyenContext
+        self.context = context
         self.configuration = configuration
         self.inputFormViewController = BACSInputFormViewController(title: paymentMethod.name,
                                                                    styleProvider: configuration.style)
@@ -78,8 +78,8 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
                                                     style: configuration.style)
         
         let tracker = BACSDirectDebitComponentTracker(paymentMethod: bacsPaymentMethod,
-                                                      apiContext: adyenContext.apiContext,
-                                                      telemetryTracker: adyenContext.analyticsProvider,
+                                                      apiContext: context.apiContext,
+                                                      telemetryTracker: context.analyticsProvider,
                                                       isDropIn: _isDropIn)
         let itemsFactory = BACSItemsFactory(styleProvider: configuration.style,
                                             localizationParameters: configuration.localizationParameters,

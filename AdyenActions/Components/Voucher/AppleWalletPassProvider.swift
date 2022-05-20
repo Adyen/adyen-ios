@@ -22,22 +22,22 @@ internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
     AdyenContextAware {
     
     /// :nodoc:
-    internal let adyenContext: AdyenContext
+    internal let context: AdyenContext
     
     /// :nodoc:
-    internal convenience init(adyenContext: AdyenContext) {
-        self.init(adyenContext: adyenContext,
+    internal convenience init(context: AdyenContext) {
+        self.init(context: context,
                   apiClient: nil)
     }
     
     /// :nodoc:
-    internal init(adyenContext: AdyenContext, apiClient: AnyRetryAPIClient? = nil) {
-        self.adyenContext = adyenContext
+    internal init(context: AdyenContext, apiClient: AnyRetryAPIClient? = nil) {
+        self.context = context
         if let apiClient = apiClient {
             self.retryApiClient = apiClient
         } else {
             let scheduler = SimpleScheduler(maximumCount: 2)
-            self.retryApiClient = APIClient(apiContext: adyenContext.apiContext)
+            self.retryApiClient = APIClient(apiContext: context.apiContext)
                 .retryAPIClient(with: scheduler)
         }
     }

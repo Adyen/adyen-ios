@@ -22,7 +22,7 @@ class GiftCardComponentTests: XCTestCase {
 
     var analyticsProviderMock: AnalyticsProviderMock!
 
-    var adyenContext: AdyenContext!
+    var context: AdyenContext!
 
     var sut: GiftCardComponent!
 
@@ -50,10 +50,10 @@ class GiftCardComponentTests: XCTestCase {
         publicKeyProvider = PublicKeyProviderMock()
 
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        context = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
 
         sut = GiftCardComponent(paymentMethod: paymentMethod,
-                                adyenContext: adyenContext,
+                                context: context,
                                 publicKeyProvider: publicKeyProvider)
         delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
@@ -67,7 +67,7 @@ class GiftCardComponentTests: XCTestCase {
         paymentMethod = nil
         publicKeyProvider = nil
         analyticsProviderMock = nil
-        adyenContext = nil
+        context = nil
         delegateMock = nil
         partialPaymentDelegate = nil
         sut = nil

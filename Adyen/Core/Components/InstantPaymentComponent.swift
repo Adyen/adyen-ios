@@ -10,7 +10,7 @@ import Foundation
 public final class InstantPaymentComponent: PaymentComponent {
 
     /// The Adyen context.
-    public let adyenContext: AdyenContext
+    public let context: AdyenContext
 
     /// The ready to submit payment data.
     public let paymentData: PaymentComponentData?
@@ -24,10 +24,10 @@ public final class InstantPaymentComponent: PaymentComponent {
     /// :nodoc:
     public init(paymentMethod: PaymentMethod,
                 paymentData: PaymentComponentData?,
-                adyenContext: AdyenContext) {
+                context: AdyenContext) {
         self.paymentMethod = paymentMethod
         self.paymentData = paymentData
-        self.adyenContext = adyenContext
+        self.context = context
     }
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.

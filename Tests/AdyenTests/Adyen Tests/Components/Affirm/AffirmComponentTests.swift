@@ -12,7 +12,7 @@ class AffirmComponentTests: XCTestCase {
 
     private var analyticsProviderMock: AnalyticsProviderMock!
     private var paymentMethod: PaymentMethod!
-    private var adyenContext: AdyenContext!
+    private var context: AdyenContext!
     private var style: FormComponentStyle!
     private var sut: AffirmComponent!
 
@@ -20,10 +20,10 @@ class AffirmComponentTests: XCTestCase {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
         paymentMethod = AffirmPaymentMethod(type: .affirm, name: "Affirm")
-        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        context = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
         style = FormComponentStyle()
         sut = AffirmComponent(paymentMethod: paymentMethod,
-                              adyenContext: adyenContext,
+                              context: context,
                               configuration: AffirmComponent.Configuration(style: style))
     }
     
@@ -111,7 +111,7 @@ class AffirmComponentTests: XCTestCase {
     func testSubmitForm_shouldCallDelegateWithProperParameters() throws {
         // Given
         let sut = AffirmComponent(paymentMethod: paymentMethod,
-                                  adyenContext: adyenContext,
+                                  context: context,
                                   configuration: AffirmComponent.Configuration(style: style))
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -179,7 +179,7 @@ class AffirmComponentTests: XCTestCase {
         // Given
         let config = AffirmComponent.Configuration(style: style, shopperInformation: shopperInformation)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
-                                         adyenContext: adyenContext,
+                                         context: context,
                                          configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
@@ -226,7 +226,7 @@ class AffirmComponentTests: XCTestCase {
         // Given
         let config = AffirmComponent.Configuration(style: style, shopperInformation: shopperInformationNoDeliveryAddress)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
-                                         adyenContext: adyenContext,
+                                         context: context,
                                          configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 

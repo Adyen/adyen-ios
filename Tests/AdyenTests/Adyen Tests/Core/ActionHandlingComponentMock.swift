@@ -14,7 +14,7 @@ internal final class ActionHandlingComponentMock: ActionHandlingComponent {
     
     internal let apiContext: APIContext = Dummy.context
 
-    internal var adyenContext: AdyenContext {
+    internal var context: AdyenContext {
         return .init(apiContext: apiContext)
     }
     

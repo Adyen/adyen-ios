@@ -12,7 +12,7 @@ import UIKit
 public final class DocumentComponent: ActionComponent, ShareableComponent {
 
     /// The Adyen context.
-    public let adyenContext: AdyenContext
+    public let context: AdyenContext
     
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
@@ -51,11 +51,11 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     
     /// Initializes the `DocumentComponent`.
     ///
-    /// - Parameter adyenContext: The Adyen context.
+    /// - Parameter context: The Adyen context.
     /// - Parameter configuration: The Component configurations.
-    public init(adyenContext: AdyenContext,
+    public init(context: AdyenContext,
                 configuration: Configuration = .init()) {
-        self.adyenContext = adyenContext
+        self.context = context
         self.configuration = configuration
     }
     
@@ -63,10 +63,10 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     ///
     /// - Parameter action: The document action object.
     public func handle(_ action: DocumentAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: adyenContext.apiContext)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         
         let imageURL = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue,
-                                               environment: adyenContext.apiContext.environment,
+                                               environment: context.apiContext.environment,
                                                size: .medium)
         let viewModel = DocumentActionViewModel(action: action,
                                                 message: localizedString(.bacsDownloadMandate, configuration.localizationParameters),

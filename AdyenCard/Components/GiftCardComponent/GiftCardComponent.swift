@@ -19,7 +19,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     AdyenObserver {
     
     /// The Adyen context.
-    public let adyenContext: AdyenContext
+    public let context: AdyenContext
     
     /// :nodoc:
     private let giftCardPaymentMethod: GiftCardPaymentMethod
@@ -48,23 +48,23 @@ public final class GiftCardComponent: PartialPaymentComponent,
     ///   - paymentMethod: The gift card payment method.
     ///   -  clientKey: The client key that corresponds to the web service user you will use for initiating the payment.
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
-    ///   - adyenContext: The Adyen context.
+    ///   - context: The Adyen context.
     ///   - style:  The Component's UI style.
     public convenience init(paymentMethod: GiftCardPaymentMethod,
-                            adyenContext: AdyenContext,
+                            context: AdyenContext,
                             style: FormComponentStyle = FormComponentStyle()) {
         self.init(paymentMethod: paymentMethod,
-                  adyenContext: adyenContext,
+                  context: context,
                   style: style,
-                  publicKeyProvider: PublicKeyProvider(apiContext: adyenContext.apiContext))
+                  publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
     
     internal init(paymentMethod: GiftCardPaymentMethod,
-                  adyenContext: AdyenContext,
+                  context: AdyenContext,
                   style: FormComponentStyle = FormComponentStyle(),
                   publicKeyProvider: AnyPublicKeyProvider) {
         self.giftCardPaymentMethod = paymentMethod
-        self.adyenContext = adyenContext
+        self.context = context
         self.style = style
         self.publicKeyProvider = publicKeyProvider
     }
@@ -267,7 +267,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         
         let component = InstantPaymentComponent(paymentMethod: paymentMethod,
                                                 paymentData: paymentData,
-                                                adyenContext: adyenContext)
+                                                context: context)
         delegate.showConfirmation(for: component, with: paymentData.order)
     }
 

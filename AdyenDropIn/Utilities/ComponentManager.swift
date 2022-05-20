@@ -26,12 +26,12 @@ internal final class ComponentManager {
 
     internal let order: PartialPaymentOrder?
     
-    internal let adyenContext: AdyenContext
+    internal let context: AdyenContext
 
     internal weak var presentationDelegate: PresentationDelegate?
     
     internal init(paymentMethods: PaymentMethods,
-                  adyenContext: AdyenContext,
+                  context: AdyenContext,
                   configuration: DropInComponent.Configuration,
                   partialPaymentEnabled: Bool = true,
                   remainingAmount: Amount? = nil,
@@ -39,7 +39,7 @@ internal final class ComponentManager {
                   supportsEditingStoredPaymentMethods: Bool = false,
                   presentationDelegate: PresentationDelegate) {
         self.paymentMethods = paymentMethods
-        self.adyenContext = adyenContext
+        self.context = context
         self.configuration = configuration
         self.partialPaymentEnabled = partialPaymentEnabled
         self.remainingAmount = remainingAmount
@@ -152,7 +152,7 @@ internal final class ComponentManager {
         cardConfiguration.localizationParameters = configuration.localizationParameters
         cardConfiguration.shopperInformation = configuration.shopper
         return CardComponent(paymentMethod: paymentMethod,
-                             adyenContext: adyenContext,
+                             context: context,
                              configuration: cardConfiguration)
     }
     
@@ -167,7 +167,7 @@ internal final class ComponentManager {
                                                         storedCardConfiguration: cardConfiguration.stored)
 
         return BCMCComponent(paymentMethod: paymentMethod,
-                             adyenContext: adyenContext,
+                             context: context,
                              configuration: configuration)
     }
     
@@ -181,7 +181,7 @@ internal final class ComponentManager {
             let preApplePayConfig = PreApplePayComponent.Configuration(style: configuration.style.applePay,
                                                                        localizationParameters: configuration.localizationParameters)
             return try PreApplePayComponent(paymentMethod: paymentMethod,
-                                            adyenContext: adyenContext,
+                                            context: context,
                                             configuration: preApplePayConfig,
                                             applePayConfiguration: applePay)
         } catch {
@@ -194,7 +194,7 @@ internal final class ComponentManager {
         let config = SEPADirectDebitComponent.Configuration(style: configuration.style.formComponent,
                                                             localizationParameters: configuration.localizationParameters)
         return SEPADirectDebitComponent(paymentMethod: paymentMethod,
-                                        adyenContext: adyenContext,
+                                        context: context,
                                         configuration: config)
     }
 
@@ -202,7 +202,7 @@ internal final class ComponentManager {
         let bacsConfiguration = BACSDirectDebitComponent.Configuration(style: configuration.style.formComponent,
                                                                        localizationParameters: configuration.localizationParameters)
         let bacsDirectDebitComponent = BACSDirectDebitComponent(paymentMethod: paymentMethod,
-                                                                adyenContext: adyenContext,
+                                                                context: context,
                                                                 configuration: bacsConfiguration)
         bacsDirectDebitComponent.presentationDelegate = presentationDelegate
         return bacsDirectDebitComponent
@@ -213,7 +213,7 @@ internal final class ComponentManager {
                                                            shopperInformation: configuration.shopper,
                                                            localizationParameters: configuration.localizationParameters)
         return ACHDirectDebitComponent(paymentMethod: paymentMethod,
-                                       adyenContext: adyenContext,
+                                       context: context,
                                        configuration: config)
     }
     
@@ -222,7 +222,7 @@ internal final class ComponentManager {
                                                        shopperInformation: configuration.shopper,
                                                        localizationParameters: configuration.localizationParameters)
         return QiwiWalletComponent(paymentMethod: paymentMethod,
-                                   adyenContext: adyenContext,
+                                   context: context,
                                    configuration: config)
     }
     
@@ -231,20 +231,20 @@ internal final class ComponentManager {
                                                   shopperInformation: configuration.shopper,
                                                   localizationParameters: configuration.localizationParameters)
         return MBWayComponent(paymentMethod: paymentMethod,
-                              adyenContext: adyenContext,
+                              context: context,
                               configuration: config)
     }
 
     private func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {
         BLIKComponent(paymentMethod: paymentMethod,
-                      adyenContext: adyenContext,
+                      context: context,
                       configuration: .init(style: configuration.style.formComponent,
                                            localizationParameters: configuration.localizationParameters))
     }
     
     private func createBoletoComponent(_ paymentMethod: BoletoPaymentMethod) -> BoletoComponent {
         BoletoComponent(paymentMethod: paymentMethod,
-                        adyenContext: adyenContext,
+                        context: context,
                         configuration: BoletoComponent.Configuration(style: configuration.style.formComponent,
                                                                      localizationParameters: configuration.localizationParameters,
                                                                      shopperInformation: configuration.shopper,
@@ -263,12 +263,12 @@ extension ComponentManager: PaymentComponentBuilder {
     
     /// :nodoc:
     internal func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
-        StoredPaymentMethodComponent(paymentMethod: paymentMethod, adyenContext: adyenContext)
+        StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
     }
     
     /// :nodoc:
     internal func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent? {
-        StoredPaymentMethodComponent(paymentMethod: paymentMethod, adyenContext: adyenContext)
+        StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
     }
     
     /// :nodoc:
@@ -284,7 +284,7 @@ extension ComponentManager: PaymentComponentBuilder {
     /// :nodoc:
     internal func build(paymentMethod: IssuerListPaymentMethod) -> PaymentComponent? {
         IssuerListComponent(paymentMethod: paymentMethod,
-                            adyenContext: adyenContext,
+                            context: context,
                             configuration: .init(style: configuration.style.listComponent,
                                                  localizationParameters: configuration.localizationParameters))
     }
@@ -315,7 +315,7 @@ extension ComponentManager: PaymentComponentBuilder {
         guard classObject.isDeviceSupported() else { return nil }
         return InstantPaymentComponent(paymentMethod: paymentMethod,
                                        paymentData: nil,
-                                       adyenContext: adyenContext)
+                                       context: context)
     }
     
     /// :nodoc:
@@ -339,7 +339,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                                                   shopperInformation: configuration.shopper,
                                                                   localizationParameters: configuration.localizationParameters)
         return BasicPersonalInfoFormComponent(paymentMethod: paymentMethod,
-                                              adyenContext: adyenContext,
+                                              context: context,
                                               configuration: config)
     }
 
@@ -349,7 +349,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                                  shopperInformation: configuration.shopper,
                                                  localizationParameters: configuration.localizationParameters)
         return DokuComponent(paymentMethod: paymentMethod,
-                             adyenContext: adyenContext,
+                             context: context,
                              configuration: config)
     }
 
@@ -357,7 +357,7 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {
         guard partialPaymentEnabled else { return nil }
         return GiftCardComponent(paymentMethod: paymentMethod,
-                                 adyenContext: adyenContext,
+                                 context: context,
                                  style: configuration.style.formComponent)
     }
     
@@ -372,7 +372,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                                    shopperInformation: configuration.shopper,
                                                    localizationParameters: configuration.localizationParameters)
         return AffirmComponent(paymentMethod: paymentMethod,
-                               adyenContext: adyenContext,
+                               context: context,
                                configuration: config)
     }
     
@@ -380,7 +380,7 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
         InstantPaymentComponent(paymentMethod: paymentMethod,
                                 paymentData: nil,
-                                adyenContext: adyenContext)
+                                context: context)
     }
 
     /// :nodoc:
@@ -389,7 +389,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                                   shopperInformation: configuration.shopper,
                                                   localizationParameters: configuration.localizationParameters)
         return AtomeComponent(paymentMethod: paymentMethod,
-                              adyenContext: adyenContext,
+                              context: context,
                               configuration: config)
     }
 

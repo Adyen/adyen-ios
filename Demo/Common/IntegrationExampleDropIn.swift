@@ -40,7 +40,7 @@ extension IntegrationExample {
     internal func dropInComponent(from paymentMethods: PaymentMethods?) -> DropInComponent? {
         guard let paymentMethods = paymentMethods else { return nil }
 
-        let configuration = DropInComponent.Configuration(adyenContext: ConfigurationConstants.adyenContext)
+        let configuration = DropInComponent.Configuration(context: ConfigurationConstants.context)
 
         if let applePayPayment = try? ApplePayPayment(payment: payment, brand: ConfigurationConstants.appName) {
             configuration.applePay = .init(payment: applePayPayment,
@@ -53,7 +53,7 @@ extension IntegrationExample {
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
         
         let component = DropInComponent(paymentMethods: paymentMethods,
-                                        adyenContext: ConfigurationConstants.adyenContext,
+                                        context: ConfigurationConstants.context,
                                         configuration: configuration,
                                         title: ConfigurationConstants.appName)
         

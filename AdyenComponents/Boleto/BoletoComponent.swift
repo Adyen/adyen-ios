@@ -12,7 +12,7 @@ import UIKit
 public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent, AdyenObserver {
 
     /// The Adyen context
-    public let adyenContext: AdyenContext
+    public let context: AdyenContext
     
     /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
@@ -31,13 +31,13 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     /// Initializes the Boleto Component
     /// - Parameters:
     ///   - paymentMethod: Boleto Payment Method
-    ///   - adyenContext: The Adyen context.
+    ///   - context: The Adyen context.
     ///   - configuration: The Component's configuration.
     public init(paymentMethod: BoletoPaymentMethod,
-                adyenContext: AdyenContext,
+                context: AdyenContext,
                 configuration: Configuration) {
         self.boletoPaymentMethod = paymentMethod
-        self.adyenContext = adyenContext
+        self.context = context
         self.configuration = configuration
         socialSecurityNumberItem.isHidden.wrappedValue = false
     }
@@ -85,18 +85,18 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
                                                                                shopperInformation: configuration.shopperInformation,
                                                                                localizationParameters: configuration.localizationParameters)
         let component = FormComponent(paymentMethod: paymentMethod,
-                                                   adyenContext: adyenContext,
+                                      context: context,
                                       fields: formFields,
                                       configuration: configuration,
                                       onCreatePaymentDetails: { [weak self] in
-            var paymentMethodDetails: PaymentMethodDetails?
-            do {
-                paymentMethodDetails = try self?.createPaymentDetails()
-            } catch let error {
-                adyenPrint(error)
-            }
-            return paymentMethodDetails
-        })
+                                          var paymentMethodDetails: PaymentMethodDetails?
+                                          do {
+                                              paymentMethodDetails = try self?.createPaymentDetails()
+                                          } catch {
+                                              adyenPrint(error)
+                                          }
+                                          return paymentMethodDetails
+                                      })
 
         if let emailItem = component.emailItem {
             bind(sendCopyByEmailItem.publisher, to: emailItem, at: \.isHidden.wrappedValue, with: { !$0 })
@@ -224,14 +224,14 @@ extension BoletoComponent {
         
         /// :nodoc:
         fileprivate init(paymentMethod: PaymentMethod,
-                         adyenContext: AdyenContext,
+                         context: AdyenContext,
                          fields: [PersonalInformation],
                          configuration: AbstractPersonalInformationComponent.Configuration,
                          onCreatePaymentDetails: @escaping () -> PaymentMethodDetails?) {
             self.onCreatePaymentDetails = onCreatePaymentDetails
             
             super.init(paymentMethod: paymentMethod,
-                       adyenContext: adyenContext,
+                       context: context,
                        fields: fields,
                        configuration: configuration)
         }

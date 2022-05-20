@@ -20,14 +20,14 @@ public final class MBWayComponent: AbstractPersonalInformationComponent {
     /// Initializes the MB Way component.
     /// - Parameters:
     ///   - paymentMethod: The MB Way payment method.
-    ///   - adyenContext: The Adyen context.
+    ///   - context: The Adyen context.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: MBWayPaymentMethod,
-                adyenContext: AdyenContext,
+                context: AdyenContext,
                 configuration: Configuration = .init()) {
         self.mbWayPaymentMethod = paymentMethod
         super.init(paymentMethod: paymentMethod,
-                   adyenContext: adyenContext,
+                   context: context,
                    fields: [.phone],
                    configuration: configuration)
     }

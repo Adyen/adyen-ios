@@ -44,7 +44,7 @@ internal final class IntegrationExample: APIClientAware {
     // MARK: - Action Handling for Components
 
     internal lazy var adyenActionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(adyenContext: ConfigurationConstants.adyenContext)
+        let handler = AdyenActionComponent(context: ConfigurationConstants.context)
         handler.delegate = self
         handler.presentationDelegate = self
         return handler
@@ -92,7 +92,7 @@ internal final class IntegrationExample: APIClientAware {
     private func initializeSession(with sessionId: String, data: String) {
         let configuration = AdyenSession.Configuration(sessionIdentifier: sessionId,
                                                        initialSessionData: data,
-                                                       adyenContext: ConfigurationConstants.adyenContext)
+                                                       context: ConfigurationConstants.context)
         AdyenSession.initialize(with: configuration, delegate: self, presentationDelegate: self) { [weak self] result in
             switch result {
             case let .success(session):

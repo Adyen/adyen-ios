@@ -11,7 +11,7 @@ import XCTest
 class AtomeComponentUITests: XCTestCase {
 
     private var paymentMethod: PaymentMethod!
-    private var adyenContext: AdyenContext!
+    private var context: AdyenContext!
     private var style: FormComponentStyle!
     private var sut: AtomeComponent!
     private let app = XCUIApplication()
@@ -20,16 +20,16 @@ class AtomeComponentUITests: XCTestCase {
         try super.setUpWithError()
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Atome")
         app.launchArguments = ["SG", "SGD"]
-        adyenContext = AdyenContext(apiContext: Dummy.context)
+        context = AdyenContext(apiContext: Dummy.context)
         style = FormComponentStyle()
         sut = AtomeComponent(paymentMethod: paymentMethod,
-                             adyenContext: adyenContext,
+                             context: context,
                              configuration: AtomeComponent.Configuration(style: style))
     }
 
     override func tearDownWithError() throws {
         paymentMethod = nil
-        adyenContext = nil
+        context = nil
         style = nil
         sut = nil
         try super.tearDownWithError()
@@ -39,7 +39,7 @@ class AtomeComponentUITests: XCTestCase {
         let config = AtomeComponent.Configuration(style: style, shopperInformation: shopperInformation)
         UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
         let sut = AtomeComponent(paymentMethod: paymentMethod,
-                                 adyenContext: adyenContext,
+                                 context: context,
                                  configuration: config)
 
         let view: UIView = sut.viewController.view
@@ -61,7 +61,7 @@ class AtomeComponentUITests: XCTestCase {
     func testSubmitForm_shouldCallDelegateWithProperParameters() {
         let config = AtomeComponent.Configuration(style: style, shopperInformation: shopperInformation)
         let sut = AtomeComponent(paymentMethod: paymentMethod,
-                                 adyenContext: adyenContext,
+                                 context: context,
                                  configuration: config)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
