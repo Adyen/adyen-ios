@@ -52,7 +52,7 @@ public protocol PresentableComponent: Component {
 /// A component that provides a view controller for the shopper to fill payment details.
 public extension PresentableComponent {
     
-    /// Provides default value of `false`
+    @_spi(AdyenInternal)
     var requiresModalPresentation: Bool { false }
     
     @_spi(AdyenInternal)

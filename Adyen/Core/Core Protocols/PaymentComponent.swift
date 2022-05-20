@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// Any Object thats aware of a `PaymentMethod`.
+/// Any Object that is aware of a `PaymentMethod`.
 public protocol PaymentMethodAware: AnyObject {
     /// The payment method for which to gather payment details.
     var paymentMethod: PaymentMethod { get }

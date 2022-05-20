@@ -7,7 +7,7 @@
 import Foundation
 import UIKit
 
-@_spi(AdyenInternal)
+///  A component that handle stored payment methods.
 public final class StoredPaymentMethodComponent: PaymentComponent, PresentableComponent, Localizable {
 
     /// The context object for this component.

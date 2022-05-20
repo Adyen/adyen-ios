@@ -29,6 +29,24 @@ target '$PROJECT_NAME' do
   pod 'Adyen', :path => '../'
   pod 'Adyen/SwiftUI', :path => '../'
 end
+
+# post_install do |installer|
+#     installer.pods_project.targets.each do |target|
+#       if target.name == \"Adyen\"
+#         source_files = target.resources_build_phase.files
+#         source_files.each do |fileref|
+#           puts(fileref.file_ref.path)
+#           if fileref.file_ref.path.include? \"Adyen.docc\"
+#             puts(\"Adyen.docc Found\")
+#             # build_phase = target.frameworks_build_phase
+#             # build_phase.add_file_reference(fileref)
+#           end
+#         end
+#         # folderReference = installer.pods_project.add_file_reference(\"$(pwd)/../Adyen.docc)\", installer.pods_project.pod_group(\"Actions\"), true)
+#         # target.source_build_phase.add_file_reference(btsdata, true)
+#       end
+#     end
+# end
 " >> Podfile
 
 # Install the pods.
@@ -46,6 +64,11 @@ cd ../../
 rm -rf $FINAL_DOC_PATH/$FRAMEWORK_NAME.doccarchive
 
 mv $PROJECT_NAME/build/Release-maccatalyst/Adyen/$FRAMEWORK_NAME.doccarchive $FINAL_DOC_PATH/$FRAMEWORK_NAME.doccarchive
+
+$(xcrun --find docc) process-archive \
+transform-for-static-hosting $FINAL_DOC_PATH/$FRAMEWORK_NAME.doccarchive \
+--output-path docs \
+--hosting-base-path adyen.github.io/adyen-ios/
 
 # Clean up.
 rm -rf $PROJECT_NAME
