@@ -17,7 +17,38 @@ mkdir -p $PROJECT_NAME $FINAL_DOC_PATH && cd $PROJECT_NAME
 
 # Create a new Xcode project.
 swift package init
+
+echo "// swift-tools-version: 5.6
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
+import PackageDescription
+
+let package = Package(
+    name: \"TempProject\",
+    platforms: [
+        .iOS(.v11)
+    ],
+    products: [
+        .library(
+            name: \"TempProject\",
+            targets: [\"TempProject\"]),
+    ],
+    dependencies: [
+    ],
+    targets: [
+        .target(
+            name: \"TempProject\",
+            dependencies: []),
+        .testTarget(
+            name: \"TempProjectTests\",
+            dependencies: [\"TempProject\"]),
+    ]
+)
+" > Package.swift
+
+swift package update
 swift package generate-xcodeproj
+
 
 # Create a Podfile with our pod as dependency.
 echo "
@@ -57,14 +88,14 @@ pod install
 cd Pods
 xcodebuild docbuild -project Pods.xcodeproj \
  -scheme Adyen DEVELOPMENT_TEAM=B2NYSS5932 \
- -destination="generic/platform=iOS" \
+ -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max' \
  -configuration Release
 
 cd ../../
 
 rm -rf $FINAL_DOC_PATH/$FRAMEWORK_NAME.doccarchive
 
-mv $PROJECT_NAME/build/Release-maccatalyst/Adyen/$FRAMEWORK_NAME.doccarchive $FINAL_DOC_PATH/$FRAMEWORK_NAME.doccarchive
+mv $PROJECT_NAME/build/Release-iphonesimulator/Adyen/$FRAMEWORK_NAME.doccarchive $FINAL_DOC_PATH/$FRAMEWORK_NAME.doccarchive
 
 $(xcrun --find docc) process-archive \
 transform-for-static-hosting $FINAL_DOC_PATH/$FRAMEWORK_NAME.doccarchive \
