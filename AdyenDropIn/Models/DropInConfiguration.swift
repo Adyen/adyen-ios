@@ -45,7 +45,7 @@ public extension DropInComponent {
         public var localizationParameters: LocalizationParameters?
 
         /// The payment information.
-        public var payment: Adyen.Payment?
+        public var payment: Payment?
         
         /// Determines whether to enable skipping payment list step
         /// when there is only one non-instant payment method.

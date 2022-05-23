@@ -7,7 +7,7 @@
 import Foundation
 
 /// Represents any numeric field formatter. intended to be subclassed.
-open class NumericFormatter: Adyen.Formatter {
+open class NumericFormatter: Formatter {
     
     public init() { /* empty init */ }
     
