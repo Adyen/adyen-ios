@@ -7,7 +7,7 @@
 import AdyenNetworking
 import Foundation
 
-/// A class that defines a set of attributes to set the behaviour for all components for a payment.
+/// A class that defines a set of attributes to set the behaviour for all components in a payment.
 /// An `AdyenContext` instance should be created per payment session.
 public final class AdyenContext {
 
