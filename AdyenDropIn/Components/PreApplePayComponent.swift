@@ -36,7 +36,8 @@ internal final class PreApplePayComponent: PresentableComponent,
 
     private let applePayComponent: ApplePayComponent
 
-    /// The Adyen context
+    /// :nodoc:
+    /// The context object for this component.
     internal let context: AdyenContext
     
     /// :nodoc:

@@ -11,7 +11,8 @@ import UIKit
 /// A component that handles document actions.
 public final class DocumentComponent: ActionComponent, ShareableComponent {
 
-    /// The Adyen context.
+    /// :nodoc:
+    /// The context object for this component.
     public let context: AdyenContext
     
     /// :nodoc:

@@ -9,7 +9,8 @@ import Foundation
 /// A component that handles payment methods that don't need any payment detail to be filled.
 public final class InstantPaymentComponent: PaymentComponent {
 
-    /// The Adyen context.
+    /// :nodoc:
+    /// The context object for this component.
     public let context: AdyenContext
 
     /// The ready to submit payment data.

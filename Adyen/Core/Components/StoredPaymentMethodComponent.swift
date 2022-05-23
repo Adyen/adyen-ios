@@ -10,7 +10,8 @@ import UIKit
 /// :nodoc:
 public final class StoredPaymentMethodComponent: PaymentComponent, PresentableComponent, Localizable {
 
-    /// The Adyen context.
+    /// :nodoc:
+    /// The context object for this component.
     public let context: AdyenContext
 
     /// :nodoc:

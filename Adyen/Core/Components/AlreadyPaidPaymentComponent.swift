@@ -10,7 +10,8 @@ import Foundation
 /// :nodoc:
 public final class AlreadyPaidPaymentComponent: PaymentComponent {
 
-    /// The Adyen context.
+    /// :nodoc:
+    /// The context object for this component.
     public let context: AdyenContext
     
     /// :nodoc:

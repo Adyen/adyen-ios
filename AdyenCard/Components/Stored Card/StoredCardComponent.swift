@@ -11,7 +11,8 @@ import UIKit
 /// A component that provides a form for stored card payments.
 internal final class StoredCardComponent: PaymentComponent, PresentableComponent, Localizable {
     
-    /// The Adyen context.
+    /// :nodoc:
+    /// The context object for this component.
     internal let context: AdyenContext
     
     /// The card payment method.

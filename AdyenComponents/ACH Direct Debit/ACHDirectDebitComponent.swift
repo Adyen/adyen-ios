@@ -22,7 +22,8 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         static let payButtonItem = "payButtonItem"
     }
     
-    /// The Adyen context
+    /// :nodoc:
+    /// The context object for this component.
     public let context: AdyenContext
     
     /// :nodoc:

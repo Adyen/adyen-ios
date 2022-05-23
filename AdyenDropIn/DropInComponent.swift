@@ -39,7 +39,8 @@ public final class DropInComponent: NSObject,
     /// The title text on the first page of drop in component.
     public let title: String
 
-    /// The Adyen context.
+    /// :nodoc:
+    /// The context object for this component.
     public var context: AdyenContext
     
     /// Initializes the drop in component.

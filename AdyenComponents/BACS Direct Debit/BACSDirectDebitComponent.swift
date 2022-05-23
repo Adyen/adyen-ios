@@ -33,7 +33,8 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// The BACS Direct Debit payment method.
     public var paymentMethod: PaymentMethod { bacsPaymentMethod }
 
-    /// The Adyen context
+    /// :nodoc:
+    /// The context object for this component.
     public let context: AdyenContext
 
     /// The object that acts as the presentation delegate of the component.

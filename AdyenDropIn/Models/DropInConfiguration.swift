@@ -37,7 +37,8 @@ public extension DropInComponent {
         /// Shopper related information
         public var shopper: PrefilledShopperInformation?
 
-        /// The Adyen context.
+        /// :nodoc:
+    /// The context object for this component.
         public let context: AdyenContext
         
         /// Indicates the localization parameters, leave it nil to use the default parameters.

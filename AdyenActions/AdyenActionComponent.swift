@@ -16,7 +16,8 @@ import UIKit
  */
 public final class AdyenActionComponent: ActionComponent, ActionHandlingComponent {
 
-    /// The Adyen context.
+    /// :nodoc:
+    /// The context object for this component.
     public let context: AdyenContext
 
     /// The object that acts as the delegate of the action component.

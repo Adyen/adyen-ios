@@ -14,7 +14,8 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
     /// Configuration for BLIK Component.
     public typealias Configuration = BasicComponentConfiguration
     
-    /// The Adyen context
+    /// :nodoc:
+    /// The context object for this component.
     public let context: AdyenContext
     
     /// :nodoc:

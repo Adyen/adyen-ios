@@ -12,7 +12,7 @@ import Foundation
 public protocol AdyenContextAware: AnyObject {
 
     /// :nodoc:
-    /// The Adyen context.
+    /// The context object for this component.
     var context: AdyenContext { get }
 }
 

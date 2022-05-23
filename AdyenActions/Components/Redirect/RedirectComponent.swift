@@ -36,7 +36,8 @@ public final class RedirectComponent: ActionComponent {
         }
     }
     
-    /// The Adyen context.
+    /// :nodoc:
+    /// The context object for this component.
     public let context: AdyenContext
     
     /// :nodoc:

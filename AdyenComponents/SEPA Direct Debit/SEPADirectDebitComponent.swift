@@ -14,7 +14,8 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     /// Configuration for SEPA Direct Debit Component
     public typealias Configuration = BasicComponentConfiguration
     
-    /// The Adyen context.
+    /// :nodoc:
+    /// The context object for this component.
     public let context: AdyenContext
     
     /// Component's configuration
