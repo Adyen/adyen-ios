@@ -33,7 +33,7 @@ public final class AdyenSession {
         /// - Parameters:
         ///   - sessionIdentifier: The session identifier.
         ///   - initialSessionData: The initial session data.
-        ///   - context: The Adyen context.
+        ///   - context: The context object for this component.
         ///   - actionComponent: The action handling configuration.
         public init(sessionIdentifier: String,
                     initialSessionData: String,

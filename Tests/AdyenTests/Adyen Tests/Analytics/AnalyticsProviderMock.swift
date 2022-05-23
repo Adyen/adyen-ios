@@ -11,14 +11,14 @@ import Foundation
 
 class AnalyticsProviderMock: AnalyticsProviderProtocol {
 
-    // MARK: - trackTelemetryEvent
+    // MARK: - sendTelemetryEvent
 
-    var trackTelemetryEventCallsCount = 0
-    var trackTelemetryEventCalled: Bool {
-        trackTelemetryEventCallsCount > 0
+    var sendTelemetryEventCallsCount = 0
+    var sendTelemetryEventCalled: Bool {
+        sendTelemetryEventCallsCount > 0
     }
 
-    func trackTelemetryEvent(flavor: TelemetryFlavor) {
-        trackTelemetryEventCallsCount += 1
+    func sendTelemetryEvent(flavor: TelemetryFlavor) {
+        sendTelemetryEventCallsCount += 1
     }
 }

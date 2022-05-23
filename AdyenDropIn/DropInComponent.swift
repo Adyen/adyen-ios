@@ -47,7 +47,7 @@ public final class DropInComponent: NSObject,
     ///
     /// - Parameters:
     ///   - paymentMethods: The payment methods to display.
-    ///   - context: The Adyen context.
+    ///   - context: The context object for this component.
     ///   - configuration: The payment method specific configuration.
     ///   - title: Name of the application. To be displayed on a first payment page.
     ///            If no external value provided, the Main Bundle's name would be used.

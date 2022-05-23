@@ -61,7 +61,7 @@ public final class ThreeDS2Component: ActionComponent {
     
     /// Initializes the 3D Secure 2 component.
     ///
-    /// - Parameter context: The Adyen context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component's configuration.
     public init(context: AdyenContext,
                 configuration: Configuration = Configuration()) {

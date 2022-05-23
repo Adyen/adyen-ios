@@ -52,7 +52,7 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     
     /// Initializes the `DocumentComponent`.
     ///
-    /// - Parameter context: The Adyen context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The Component configurations.
     public init(context: AdyenContext,
                 configuration: Configuration = .init()) {

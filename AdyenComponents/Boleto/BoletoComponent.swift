@@ -32,7 +32,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     /// Initializes the Boleto Component
     /// - Parameters:
     ///   - paymentMethod: Boleto Payment Method
-    ///   - context: The Adyen context.
+    ///   - context: The context object for this component.
     ///   - configuration: The Component's configuration.
     public init(paymentMethod: BoletoPaymentMethod,
                 context: AdyenContext,

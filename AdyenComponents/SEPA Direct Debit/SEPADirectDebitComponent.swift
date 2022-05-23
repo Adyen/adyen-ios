@@ -32,7 +32,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     /// Initializes the SEPA Direct Debit component.
     ///
     /// - Parameter paymentMethod: The SEPA Direct Debit payment method.
-    /// - Parameter context: The Adyen context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: Configuration for the component.
     public init(paymentMethod: SEPADirectDebitPaymentMethod,
                 context: AdyenContext,

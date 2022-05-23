@@ -35,7 +35,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     
     /// Initializes the list component.
     ///
-    /// - Parameter context: The Adyen context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter components: The components to display in the list.
     /// - Parameter style: The component's UI style.
     internal init(context: AdyenContext,
@@ -159,7 +159,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     // MARK: - Private
 
     private func sendTelemetryEvent() {
-        context.analyticsProvider.trackTelemetryEvent(flavor: .dropIn(paymentMethods: []))
+        context.analyticsProvider.sendTelemetryEvent(flavor: .dropIn(paymentMethods: []))
     }
 }
 

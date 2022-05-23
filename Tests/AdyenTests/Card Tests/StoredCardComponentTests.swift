@@ -358,7 +358,7 @@ class StoredCardComponentTests: XCTestCase {
         sut.viewController.viewDidLoad()
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
     }
 
     // MARK: - Private

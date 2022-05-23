@@ -64,7 +64,7 @@ class InstantPaymentComponentTests: XCTestCase {
         sut.initiatePayment()
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
     }
 
     // MARK: - Private

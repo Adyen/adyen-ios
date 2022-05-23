@@ -345,6 +345,6 @@ class BCMCComponentTests: XCTestCase {
         sut.cardViewController.viewWillAppear(true)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
     }
 }

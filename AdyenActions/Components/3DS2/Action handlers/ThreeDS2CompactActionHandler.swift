@@ -42,7 +42,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
 
     /// Initializes the 3D Secure 2 action handler.
     ///
-    /// - Parameter context: The Adyen context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter fingerprintSubmitter: The fingerprint submitter.
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.

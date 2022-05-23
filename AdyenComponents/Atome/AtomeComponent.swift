@@ -27,7 +27,7 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
     /// Initializes the Atome component.
     /// - Parameters:
     ///   - paymentMethod: The Atome payment method.
-    ///   - context: The Adyen context.
+    ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: PaymentMethod,
                 context: AdyenContext,

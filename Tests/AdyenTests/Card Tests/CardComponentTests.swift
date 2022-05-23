@@ -1963,7 +1963,7 @@ class CardComponentTests: XCTestCase {
         sut.cardViewController.viewWillAppear(false)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
     }
 
     // MARK: - Private

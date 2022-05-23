@@ -49,7 +49,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     ///   - paymentMethod: The gift card payment method.
     ///   -  clientKey: The client key that corresponds to the web service user you will use for initiating the payment.
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
-    ///   - context: The Adyen context.
+    ///   - context: The context object for this component.
     ///   - style:  The Component's UI style.
     public convenience init(paymentMethod: GiftCardPaymentMethod,
                             context: AdyenContext,

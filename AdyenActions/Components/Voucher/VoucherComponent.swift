@@ -80,7 +80,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
 
     /// Initializes the `VoucherComponent`.
     ///
-    /// - Parameter context: The Adyen context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The voucher component configurations.
     public convenience init(context: AdyenContext,
                             configuration: Configuration = Configuration()) {
@@ -91,7 +91,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     }
 
     /// Initializes the `AwaitComponent`.
-    /// - Parameter context: The Adyen context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
     internal init(context: AdyenContext,

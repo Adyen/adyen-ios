@@ -18,7 +18,7 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
     /// Initializes the component.
     /// - Parameters:
     ///   - paymentMethod: The payment method.
-    ///   - context: The Adyen context.
+    ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: PaymentMethod,
                 context: AdyenContext,

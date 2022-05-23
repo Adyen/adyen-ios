@@ -65,7 +65,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// Creates and returns a BACS Direct Debit component.
     /// - Parameters:
     ///   - paymentMethod: The BACS Direct Debit payment method.
-    ///   - context: The Adyen context.
+    ///   - context: The context object for this component.
     ///   - configuration: Configuration for the component.
     public init(paymentMethod: BACSDirectDebitPaymentMethod,
                 context: AdyenContext,
@@ -96,6 +96,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
 // MARK: - BACSDirectDebitRouterProtocol
 
+/// :nodoc:
 extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 
     internal func presentConfirmation(with data: BACSDirectDebitData) {
@@ -142,9 +143,9 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 
 // MARK: - LoadingComponent
 
+/// :nodoc:
 extension BACSDirectDebitComponent: LoadingComponent {
 
-    /// :nodoc:
     /// Stops any processing animation that the component is running.
     public func stopLoading() {
         confirmationPresenter?.stopLoading()
@@ -153,9 +154,9 @@ extension BACSDirectDebitComponent: LoadingComponent {
 
 // MARK: - Cancellable
 
+/// :nodoc:
 extension BACSDirectDebitComponent: Cancellable {
 
-    /// :nodoc:
     /// Called when the user cancels the component.
     public func didCancel() {
         if confirmationViewPresented == false {

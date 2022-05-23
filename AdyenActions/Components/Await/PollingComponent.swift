@@ -33,7 +33,7 @@ internal final class PollingComponent: AnyPollingHandler {
     /// :nodoc:
     /// Initializes the Polling Await component.
     ///
-    /// - Parameter context: The Adyen context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter apiClient: The API client.
     internal init(context: AdyenContext,
                   apiClient: AnyRetryAPIClient) {

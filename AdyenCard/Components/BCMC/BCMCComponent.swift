@@ -15,7 +15,7 @@ public final class BCMCComponent: CardComponent {
     /// Initializes the BCMC Component.
     /// - Parameters:
     ///   - paymentMethod: BCMC payment method.
-    ///   - context: The Adyen context.
+    ///   - context: The context object for this component.
     ///   - configuration: The configuration of the component.
     public init(paymentMethod: BCMCPaymentMethod,
                 context: AdyenContext,

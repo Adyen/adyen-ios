@@ -73,7 +73,7 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
     
     /// Initializes the `QRCodeComponent`.
     ///
-    /// - Parameter context: The Adyen context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component configurations
     public convenience init(context: AdyenContext,
                             configuration: Configuration = .init()) {
@@ -85,7 +85,7 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
     
     /// Initializes the `QRCodeComponent`.
     ///
-    /// - Parameter context: The Adyen context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component configurations
     /// - Parameter pollingComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter timeoutInterval: QR Code expiration timeout

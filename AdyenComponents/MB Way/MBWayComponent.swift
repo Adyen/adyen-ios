@@ -20,7 +20,7 @@ public final class MBWayComponent: AbstractPersonalInformationComponent {
     /// Initializes the MB Way component.
     /// - Parameters:
     ///   - paymentMethod: The MB Way payment method.
-    ///   - context: The Adyen context.
+    ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: MBWayPaymentMethod,
                 context: AdyenContext,

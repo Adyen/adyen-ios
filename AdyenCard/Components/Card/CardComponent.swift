@@ -67,7 +67,7 @@ public class CardComponent: PublicKeyConsumer,
     ///
     /// - Parameters:
     ///   - paymentMethod: The card payment method.
-    ///   - context: The Adyen context.
+    ///   - context: The context object for this component.
     ///   - configuration: The configuration of the component.
     public convenience init(paymentMethod: AnyCardPaymentMethod,
                             context: AdyenContext,
@@ -88,7 +88,7 @@ public class CardComponent: PublicKeyConsumer,
     ///
     /// - Parameters:
     ///   - paymentMethod: The card payment method.
-    ///   - context: The Adyen context.
+    ///   - context: The context object for this component.
     ///   - configuration: The Card component configuration.
     ///   - publicKeyProvider: The public key provider
     ///   - binProvider: Any object capable to provide a BinInfo.

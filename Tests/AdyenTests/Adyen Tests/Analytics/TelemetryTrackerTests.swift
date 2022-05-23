@@ -28,7 +28,7 @@ class TelemetryTrackerTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testTrackTelemetryEventGivenAnalyticsIsDisabledAndTelemetryIsEnabledShouldNotSendAnyRequest() throws {
+    func testSendTelemetryEventGivenAnalyticsIsDisabledAndTelemetryIsEnabledShouldNotSendAnyRequest() throws {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = false
@@ -38,13 +38,13 @@ class TelemetryTrackerTests: XCTestCase {
         let expectedRequestCalls = 0
 
         // When
-        sut.trackTelemetryEvent(flavor: .components(type: .affirm))
+        sut.sendTelemetryEvent(flavor: .components(type: .affirm))
 
         // Then
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "One or more telemetry requests were sent.")
     }
 
-    func testTrackTelemetryEventGivenTelemetryIsDisabledShouldNotSendAnyRequest() throws {
+    func testSendTelemetryEventGivenTelemetryIsDisabledShouldNotSendAnyRequest() throws {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isTelemetryEnabled = false
@@ -53,13 +53,13 @@ class TelemetryTrackerTests: XCTestCase {
         let expectedRequestCalls = 0
 
         // When
-        sut.trackTelemetryEvent(flavor: .components(type: .affirm))
+        sut.sendTelemetryEvent(flavor: .components(type: .affirm))
 
         // Then
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "One or more telemetry requests were sent.")
     }
 
-    func testTrackTelemetryEventGivenTelemetryIsEnabledAndFlavorIsDropInComponentShouldNotSendAnyRequest() throws {
+    func testSendTelemetryEventGivenTelemetryIsEnabledAndFlavorIsDropInComponentShouldNotSendAnyRequest() throws {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isTelemetryEnabled = true
@@ -69,13 +69,13 @@ class TelemetryTrackerTests: XCTestCase {
         let expectedRequestCalls = 0
 
         // When
-        sut.trackTelemetryEvent(flavor: flavor)
+        sut.sendTelemetryEvent(flavor: flavor)
 
         // Then
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "One or more telemetry requests were sent.")
     }
 
-    func testTrackTelemetryEventGivenTelemetryIsEnabledAndFlavorIsComponentsShouldSendTelemetryRequest() throws {
+    func testSendTelemetryEventGivenTelemetryIsEnabledAndFlavorIsComponentsShouldSendTelemetryRequest() throws {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isTelemetryEnabled = true
@@ -89,14 +89,14 @@ class TelemetryTrackerTests: XCTestCase {
         apiClient.mockedResults = [checkoutAttemptIdResult, telemetryResult]
 
         // When
-        sut.trackTelemetryEvent(flavor: flavor)
+        sut.sendTelemetryEvent(flavor: flavor)
 
         // Then
         wait(for: .milliseconds(1))
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "Invalid request number made.")
     }
 
-    func testTrackTelemetryEventGivenTelemetryIsEnabledAndFlavorIsDropInShouldSendTelemetryRequest() throws {
+    func testSendTelemetryEventGivenTelemetryIsEnabledAndFlavorIsDropInShouldSendTelemetryRequest() throws {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isTelemetryEnabled = true
@@ -110,7 +110,7 @@ class TelemetryTrackerTests: XCTestCase {
         apiClient.mockedResults = [checkoutAttemptIdResult, telemetryResult]
 
         // When
-        sut.trackTelemetryEvent(flavor: flavor)
+        sut.sendTelemetryEvent(flavor: flavor)
 
         // Then
         wait(for: .milliseconds(1))

@@ -290,7 +290,7 @@ class DokuComponentTests: XCTestCase {
         sut.viewWillAppear(viewController: sut.viewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
     }
 
     // MARK: - Private

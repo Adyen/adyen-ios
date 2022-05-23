@@ -560,7 +560,7 @@ class GiftCardComponentTests: XCTestCase {
         sut.viewWillAppear(viewController: mockViewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
     }
 
     private func populate(cardNumber: String, pin: String) {

@@ -365,7 +365,7 @@ class BoletoComponentTests: XCTestCase {
         sut.viewWillAppear(viewController: sut.viewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
     }
     
     private let dummyAddress = PostalAddress(
