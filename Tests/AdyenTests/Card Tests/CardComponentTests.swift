@@ -1964,20 +1964,21 @@ class CardComponentTests: XCTestCase {
 
         // Then
         XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
-    func testCardHolderNameValidatorWithEmptyName() {
-        let method = CardPaymentMethodMock(type: .card, name: "Test name", brands: [.bcmc])
-        let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "BE")
-        var configuration = CardComponent.Configuration()
-        configuration.showsHolderNameField = true
-        configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
+        func testCardHolderNameValidatorWithEmptyName() {
+            let method = CardPaymentMethodMock(type: .card, name: "Test name", brands: [.bcmc])
+            let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "BE")
+            var configuration = CardComponent.Configuration()
+            configuration.showsHolderNameField = true
+            configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
-        let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
-                                configuration: configuration)
-        sut.payment = payment
+            let sut = CardComponent(paymentMethod: method,
+                                    context: context,
+                                    configuration: configuration)
+            sut.payment = payment
 
-        var items = sut.cardViewController.items
-        XCTAssertFalse(items.holderNameItem.isValid())
+            var items = sut.cardViewController.items
+            XCTAssertFalse(items.holderNameItem.isValid())
+        }
     }
 
     func testCardHolderNameValidatorWithMinimumLength() {
@@ -1988,7 +1989,7 @@ class CardComponentTests: XCTestCase {
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
         let sut = CardComponent(paymentMethod: method,
-                                apiContext: Dummy.context,
+                                context: context,
                                 configuration: configuration)
         sut.payment = payment
 
