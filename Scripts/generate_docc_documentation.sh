@@ -130,8 +130,8 @@ mv $TEMP_PROJECT_PATH/$DERIVED_DATA_PATH/Build/Products/Release-iphonesimulator/
 # Generate the DocC html pages
 $(xcrun --find docc) process-archive \
 transform-for-static-hosting $FINAL_DOC_PATH/$FRAMEWORK_NAME.doccarchive \
---output-path docc-Docs \
---hosting-base-path adyen.github.io/adyen-ios/
+--output-path docs \
+--hosting-base-path /adyen-ios
 
 # Clean up.
 rm -rf $TEMP_PROJECT_FOLDER
