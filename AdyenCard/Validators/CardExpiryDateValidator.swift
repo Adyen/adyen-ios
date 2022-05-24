@@ -41,7 +41,7 @@ public final class CardExpiryDateValidator: Validator {
         let monthDiff = diffComponents.month ?? 0
         let yearDiff = diffComponents.year ?? 0
         
-        guard (0...Self.maxYearsDifference).contains(yearDiff), monthDiff >= -3 else { return false }
+        guard (0...Self.maxYearsDifference).contains(yearDiff), monthDiff > -3 else { return false }
         
         return true
     }
