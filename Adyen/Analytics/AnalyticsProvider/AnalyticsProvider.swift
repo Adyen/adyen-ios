@@ -15,11 +15,8 @@ public struct AnalyticsConfiguration {
     /// A Boolean value that determines whether analytics is enabled.
     public var isEnabled = true
 
-    /// A Boolean value that determines whether telemetry tracking is enabled.
+    /// :nodoc:
     public var isTelemetryEnabled = true
-
-    /// A Boolean value that determines whether the checkoutAttempt id fetch is enabled.
-    public var isCheckoutAttemptIdEnabled = true
 
     // MARK: - Initializers
 
@@ -51,9 +48,6 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
 
     internal func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
         guard configuration.isEnabled else { return }
-        guard configuration.isCheckoutAttemptIdEnabled else {
-            return completion(nil)
-        }
 
         let checkoutAttemptIdRequest = CheckoutAttemptIdRequest()
 

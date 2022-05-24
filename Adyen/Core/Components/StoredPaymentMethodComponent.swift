@@ -11,10 +11,8 @@ import UIKit
 public final class StoredPaymentMethodComponent: PaymentComponent, PresentableComponent, Localizable {
 
     /// :nodoc:
-    public let apiContext: APIContext
-
-    /// The Adyen context.
-    public let adyenContext: AdyenContext
+    /// The context object for this component.
+    public let context: AdyenContext
 
     /// :nodoc:
     public var paymentMethod: PaymentMethod { storedPaymentMethod }
@@ -24,11 +22,9 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
 
     /// :nodoc:
     public init(paymentMethod: StoredPaymentMethod,
-                apiContext: APIContext,
-                adyenContext: AdyenContext) {
+                context: AdyenContext) {
         self.storedPaymentMethod = paymentMethod
-        self.apiContext = apiContext
-        self.adyenContext = adyenContext
+        self.context = context
     }
     
     private let storedPaymentMethod: StoredPaymentMethod
@@ -40,7 +36,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
         Analytics.sendEvent(
             component: storedPaymentMethod.type.rawValue,
             flavor: _isDropIn ? .dropin : .components,
-            context: apiContext
+            context: context.apiContext
         )
         sendTelemetryEvent()
         

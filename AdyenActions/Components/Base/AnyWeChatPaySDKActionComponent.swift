@@ -11,7 +11,7 @@ import Foundation
 /// :nodoc:
 public protocol APIContextInitializable {
     /// Initializer that takes an `APIContext`.
-    init(apiContext: APIContext, adyenContext: AdyenContext)
+    init(context: AdyenContext)
 }
 
 /// Describes the expected interface from any ActionComponent that handles WeChat Pay sdk action.

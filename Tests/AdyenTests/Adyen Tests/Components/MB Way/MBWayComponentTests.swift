@@ -13,7 +13,7 @@ import XCTest
 class MBWayComponentTests: XCTestCase {
 
     private var analyticsProviderMock: AnalyticsProviderMock!
-    private var adyenContext: AdyenContext!
+    private var context: AdyenContext!
     private var paymentMethod: MBWayPaymentMethod!
     private var payment: Payment!
 
@@ -21,7 +21,7 @@ class MBWayComponentTests: XCTestCase {
         try super.setUpWithError()
 
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
 
         paymentMethod = MBWayPaymentMethod(type: .mbWay, name: "test_name")
         payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
@@ -29,7 +29,7 @@ class MBWayComponentTests: XCTestCase {
 
     override func tearDownWithError() throws {
         analyticsProviderMock = nil
-        adyenContext = nil
+        context = nil
         paymentMethod = nil
         payment = nil
         try super.tearDownWithError()
@@ -38,8 +38,7 @@ class MBWayComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() throws {
         let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
         let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 apiContext: Dummy.context,
-                                 adyenContext: adyenContext,
+                                  context: context,
                                  configuration: config)
         sut.payment = payment
 
@@ -55,8 +54,7 @@ class MBWayComponentTests: XCTestCase {
     func testLocalizationWithCustomKeySeparator() throws {
         let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 apiContext: Dummy.context,
-                                 adyenContext: adyenContext,
+                                  context: context,
                                  configuration: config)
         sut.payment = payment
 
@@ -95,8 +93,7 @@ class MBWayComponentTests: XCTestCase {
 
         let config = MBWayComponent.Configuration(style: style)
         let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 apiContext: Dummy.context,
-                                 adyenContext: adyenContext,
+                                  context: context,
                                  configuration: config)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -130,7 +127,7 @@ class MBWayComponentTests: XCTestCase {
     }
 
     func testSubmitForm() throws {
-        let sut = MBWayComponent(paymentMethod: paymentMethod, apiContext: Dummy.context)
+        let sut = MBWayComponent(paymentMethod: paymentMethod, context: context)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         sut.payment = payment
@@ -164,8 +161,7 @@ class MBWayComponentTests: XCTestCase {
 
     func testBigTitle() {
         let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 apiContext: Dummy.context,
-                                 adyenContext: adyenContext)
+                                  context: context)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -177,7 +173,7 @@ class MBWayComponentTests: XCTestCase {
 
     func testRequiresModalPresentation() {
         let mbWayPaymentMethod = MBWayPaymentMethod(type: .mbWay, name: "Test name")
-        let sut = MBWayComponent(paymentMethod: mbWayPaymentMethod, apiContext: Dummy.context, adyenContext: adyenContext)
+        let sut = MBWayComponent(paymentMethod: mbWayPaymentMethod, context: context)
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
@@ -185,8 +181,7 @@ class MBWayComponentTests: XCTestCase {
         // Given
         let config = MBWayComponent.Configuration(shopperInformation: shopperInformation)
         let prefillSut = MBWayComponent(paymentMethod: paymentMethod,
-                                        apiContext: Dummy.context,
-                                        adyenContext: adyenContext,
+                                                context: context,
                                         configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
@@ -204,8 +199,7 @@ class MBWayComponentTests: XCTestCase {
     func testMBWayGivenNoShopperInformationShouldNotPrefill() throws {
         // Given
         let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 apiContext: Dummy.context,
-                                 adyenContext: adyenContext,
+                                  context: context,
                                  configuration: MBWayComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -222,15 +216,14 @@ class MBWayComponentTests: XCTestCase {
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
         let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 apiContext: Dummy.context,
-                                 adyenContext: adyenContext,
+                                  context: context,
                                  configuration: MBWayComponent.Configuration())
 
         // When
         sut.viewWillAppear(viewController: sut.viewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
     }
 
     // MARK: - Private

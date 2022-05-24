@@ -7,19 +7,21 @@
 import AdyenNetworking
 import Foundation
 
-// TODO: - Document (consult with docs team)
+/// A class that defines a set of attributes to set the behaviour for all components in a payment.
+/// An `AdyenContext` instance should be created per payment session.
 public final class AdyenContext {
 
     // MARK: - Properties
 
-    private let apiContext: APIContext
+    /// The API context used to retrieve internal resources.
+    public let apiContext: APIContext
 
     /// :nodoc:
     public let analyticsProvider: AnalyticsProviderProtocol
 
     // MARK: - Initializers
 
-    /// Creates and returns an Adyen context with the provided API context and analytics configuration.
+    /// Creates an Adyen context with the provided API context and analytics configuration.
     /// - Parameters:
     ///   - apiContext: The API context used to retrieve internal resources.
     ///   - analyticsConfiguration: A configuration object that specifies the behavior for the analytics.

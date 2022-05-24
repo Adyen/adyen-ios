@@ -16,10 +16,8 @@ internal protocol AnyRedirectComponent: ActionComponent {
 public final class ThreeDS2Component: ActionComponent {
     
     /// :nodoc:
-    public let apiContext: APIContext
-
-    /// The Adyen context.
-    public let adyenContext: AdyenContext
+    /// The context object for this component.
+    public let context: AdyenContext
     
     /// The delegate of the component.
     public weak var delegate: ActionComponentDelegate?
@@ -63,14 +61,11 @@ public final class ThreeDS2Component: ActionComponent {
     
     /// Initializes the 3D Secure 2 component.
     ///
-    /// - Parameter apiContext: The `APIContext`.
-    /// - Parameter adyenContext: The Adyen context;
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component's configuration.
-    public init(apiContext: APIContext,
-                adyenContext: AdyenContext,
+    public init(context: AdyenContext,
                 configuration: Configuration = Configuration()) {
-        self.apiContext = apiContext
-        self.adyenContext = adyenContext
+        self.context = context
         self.configuration = configuration
         self.updateConfiguration()
     }
@@ -78,20 +73,18 @@ public final class ThreeDS2Component: ActionComponent {
     /// Initializes the 3D Secure 2 component.
     ///
     /// - Parameters:
-    ///   - apiContext: The `APIContext`.
+    ///   - context: The  Adyen context.
     ///   - threeDS2CompactFlowHandler: The internal `AnyThreeDS2ActionHandler` for the compact flow.
     ///   - threeDS2ClassicFlowHandler: The internal `AnyThreeDS2ActionHandler` for the classic flow.
     ///   - redirectComponent: The redirect component.
     ///   - redirectComponentStyle: `RedirectComponent` style.
     /// :nodoc:
-    internal convenience init(apiContext: APIContext,
-                              adyenContext: AdyenContext,
+    internal convenience init(context: AdyenContext,
                               threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
                               threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
                               redirectComponent: AnyRedirectComponent,
                               configuration: Configuration = Configuration()) {
-        self.init(apiContext: redirectComponent.apiContext,
-                  adyenContext: adyenContext,
+        self.init(context: context,
                   configuration: configuration)
         self.threeDS2CompactFlowHandler = threeDS2CompactFlowHandler
         self.threeDS2ClassicFlowHandler = threeDS2ClassicFlowHandler
@@ -186,8 +179,7 @@ public final class ThreeDS2Component: ActionComponent {
     }
 
     internal lazy var threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler = {
-        let handler = ThreeDS2CompactActionHandler(apiContext: apiContext,
-                                                   adyenContext: adyenContext,
+        let handler = ThreeDS2CompactActionHandler(context: context,
                                                    appearanceConfiguration: configuration.appearanceConfiguration)
 
         handler._isDropIn = _isDropIn
@@ -197,8 +189,7 @@ public final class ThreeDS2Component: ActionComponent {
     }()
 
     internal lazy var threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler = {
-        let handler = ThreeDS2ClassicActionHandler(apiContext: apiContext,
-                                                   adyenContext: adyenContext,
+        let handler = ThreeDS2ClassicActionHandler(context: context,
                                                    appearanceConfiguration: configuration.appearanceConfiguration)
         handler._isDropIn = _isDropIn
         handler.threeDSRequestorAppURL = configuration.requestorAppURL
@@ -207,7 +198,7 @@ public final class ThreeDS2Component: ActionComponent {
     }()
 
     private lazy var redirectComponent: AnyRedirectComponent = {
-        let component = RedirectComponent(apiContext: apiContext, adyenContext: adyenContext)
+        let component = RedirectComponent(context: context)
         component.configuration.style = configuration.redirectComponentStyle
 
         component.delegate = self

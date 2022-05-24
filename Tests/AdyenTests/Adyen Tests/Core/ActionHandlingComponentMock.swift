@@ -12,9 +12,9 @@ import AdyenActions
 
 internal final class ActionHandlingComponentMock: ActionHandlingComponent {
     
-    internal let apiContext: APIContext = Dummy.context
+    internal let apiContext: APIContext = Dummy.apiContext
 
-    internal var adyenContext: AdyenContext {
+    internal var context: AdyenContext {
         return .init(apiContext: apiContext)
     }
     

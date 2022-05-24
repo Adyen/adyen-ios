@@ -9,7 +9,7 @@ import Foundation
 
 /// :nodoc:
 internal protocol BACSDirectDebitComponentTrackerProtocol: AnyObject {
-    func sendEvent()
+    func sendTelemetryEvent()
 }
 
 /// :nodoc:
@@ -36,9 +36,9 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
 
     // MARK: - BACSDirectDebitComponentTrackerProtocol
 
-    internal func sendEvent() {
+    internal func sendTelemetryEvent() {
         let flavor: TelemetryFlavor = isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
-        telemetryTracker.trackTelemetryEvent(flavor: flavor)
+        telemetryTracker.sendTelemetryEvent(flavor: flavor)
     }
 
 }

@@ -13,17 +13,17 @@ import XCTest
 class StoredCardComponentTests: XCTestCase {
 
     private var analyticsProviderMock: AnalyticsProviderMock!
-    private var adyenContext: AdyenContext!
+    private var context: AdyenContext!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
     }
 
     override func tearDownWithError() throws {
         analyticsProviderMock = nil
-        adyenContext = nil
+        context = nil
         try super.tearDownWithError()
     }
 
@@ -38,7 +38,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -68,8 +68,8 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
-        PublicKeyProvider.publicKeysCache[Dummy.context.clientKey] = Dummy.publicKey
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
+        PublicKeyProvider.publicKeysCache[Dummy.apiContext.clientKey] = Dummy.publicKey
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -98,7 +98,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -164,7 +164,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -219,7 +219,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -272,7 +272,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -318,7 +318,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, apiContext: Dummy.context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         sut.payment = payment
@@ -350,21 +350,20 @@ class StoredCardComponentTests: XCTestCase {
 
     func testViewDidLoadShouldSendTelemetryEvent() throws {
         // Given
-        let paymentMethod = storedCardPaymentMethod(brand: "some_brand")
+        let paymentMethod = storedCardPaymentMethod(brand: .masterCard)
         let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
-                                      apiContext: Dummy.context,
-                                      adyenContext: adyenContext)
+                                      context: context)
 
         // When
         sut.viewController.viewDidLoad()
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
     }
 
     // MARK: - Private
 
-    private func storedCardPaymentMethod(brand: String) -> StoredCardPaymentMethod {
+    private func storedCardPaymentMethod(brand: CardType) -> StoredCardPaymentMethod {
         .init(type: .card,
               name: "name",
               identifier: "id",

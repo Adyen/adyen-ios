@@ -31,22 +31,17 @@ internal protocol AnyPollingHandlerProvider {
 /// :nodoc:
 internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
 
-    /// :nodoc:
-    private let apiContext: APIContext
-
     /// :nodoc
-    private let adyenContext: AdyenContext
+    private let context: AdyenContext
 
     /// :nodoc:
     private let apiClient: AnyRetryAPIClient
 
     /// :nodoc:
-    internal init(apiContext: APIContext,
-                  adyenContext: AdyenContext) {
-        self.apiContext = apiContext
-        self.adyenContext = adyenContext
+    internal init(context: AdyenContext) {
+        self.context = context
         self.apiClient = RetryAPIClient(
-            apiClient: APIClient(apiContext: apiContext),
+            apiClient: APIClient(apiContext: context.apiContext),
             scheduler: BackoffScheduler(queue: .main)
         )
     }
@@ -69,8 +64,7 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
     
     /// :nodoc:
     private func createPollingComponent() -> AnyPollingHandler {
-        PollingComponent(apiContext: apiContext,
-                         adyenContext: adyenContext,
+        PollingComponent(context: context,
                          apiClient: apiClient)
     }
     

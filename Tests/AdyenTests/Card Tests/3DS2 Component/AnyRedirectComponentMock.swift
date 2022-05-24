@@ -12,9 +12,9 @@ import Foundation
 
 final class AnyRedirectComponentMock: AnyRedirectComponent {
     
-    let apiContext = Dummy.context
+    let apiContext = Dummy.apiContext
 
-    var adyenContext: AdyenContext {
+    var context: AdyenContext {
         return .init(apiContext: apiContext)
     }
 

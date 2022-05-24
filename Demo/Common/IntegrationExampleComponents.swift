@@ -33,8 +33,7 @@ extension IntegrationExample {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
         return CardComponent(paymentMethod: paymentMethod,
-                             apiContext: ConfigurationConstants.apiContext,
-                             adyenContext: ConfigurationConstants.adyenContext)
+                             context: context)
     }
 
     // MARK: IDEAL
@@ -53,8 +52,7 @@ extension IntegrationExample {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: IssuerListPaymentMethod.self) else { return nil }
         return IdealComponent(paymentMethod: paymentMethod,
-                              apiContext: ConfigurationConstants.apiContext,
-                              adyenContext: ConfigurationConstants.adyenContext)
+                              context: context)
     }
 
     // MARK: SEPA
@@ -73,8 +71,7 @@ extension IntegrationExample {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: SEPADirectDebitPaymentMethod.self) else { return nil }
         return SEPADirectDebitComponent(paymentMethod: paymentMethod,
-                                        apiContext: ConfigurationConstants.apiContext,
-                                        adyenContext: ConfigurationConstants.adyenContext)
+                                        context: context)
     }
 
     // MARK: MBWay
@@ -95,8 +92,7 @@ extension IntegrationExample {
         let style = FormComponentStyle()
         let config = MBWayComponent.Configuration(style: style)
         return MBWayComponent(paymentMethod: paymentMethod,
-                              apiContext: ConfigurationConstants.apiContext,
-                              adyenContext: ConfigurationConstants.adyenContext,
+                              context: context,
                               configuration: config)
     }
 
@@ -127,8 +123,7 @@ extension IntegrationExample {
         config.shippingMethods = ConfigurationConstants.shippingMethods
         
         let component = try? ApplePayComponent(paymentMethod: paymentMethod,
-                                               apiContext: ConfigurationConstants.apiContext,
-                                               adyenContext: ConfigurationConstants.adyenContext,
+                                               context: context,
                                                configuration: config)
         return component
     }
@@ -149,8 +144,7 @@ extension IntegrationExample {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: EContextPaymentMethod.self) else { return nil }
         return EContextStoreComponent(paymentMethod: paymentMethod,
-                                      apiContext: ConfigurationConstants.apiContext,
-                                      adyenContext: ConfigurationConstants.adyenContext,
+                                      context: context,
                                       configuration: BasicPersonalInfoFormComponent.Configuration(style: FormComponentStyle()))
     }
 
@@ -170,8 +164,7 @@ extension IntegrationExample {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return nil }
         let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
-                                                 apiContext: ConfigurationConstants.apiContext,
-                                                 adyenContext: ConfigurationConstants.adyenContext)
+                                                 context: context)
         bacsDirectDebitPresenter = BACSDirectDebitPresentationDelegate(bacsComponent: component)
         component.presentationDelegate = bacsDirectDebitPresenter
         return component

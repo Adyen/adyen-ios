@@ -22,7 +22,7 @@ class GiftCardComponentTests: XCTestCase {
 
     var analyticsProviderMock: AnalyticsProviderMock!
 
-    var adyenContext: AdyenContext!
+    var context: AdyenContext!
 
     var sut: GiftCardComponent!
 
@@ -50,11 +50,10 @@ class GiftCardComponentTests: XCTestCase {
         publicKeyProvider = PublicKeyProviderMock()
 
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
 
         sut = GiftCardComponent(paymentMethod: paymentMethod,
-                                apiContext: Dummy.context,
-                                adyenContext: adyenContext,
+                                context: context,
                                 publicKeyProvider: publicKeyProvider)
         delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
@@ -68,7 +67,7 @@ class GiftCardComponentTests: XCTestCase {
         paymentMethod = nil
         publicKeyProvider = nil
         analyticsProviderMock = nil
-        adyenContext = nil
+        context = nil
         delegateMock = nil
         partialPaymentDelegate = nil
         sut = nil
@@ -561,7 +560,7 @@ class GiftCardComponentTests: XCTestCase {
         sut.viewWillAppear(viewController: mockViewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
     }
 
     private func populate(cardNumber: String, pin: String) {

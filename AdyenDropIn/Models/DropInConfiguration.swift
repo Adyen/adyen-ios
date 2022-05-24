@@ -20,7 +20,7 @@ import PassKit
 public extension DropInComponent {
     
     /// Contains the configuration for the drop in component and the embedded payment method components.
-    final class Configuration: APIContextAware {
+    final class Configuration: AdyenContextAware {
         
         /// Card component related configuration.
         public var card = Card()
@@ -36,12 +36,10 @@ public extension DropInComponent {
         
         /// Shopper related information
         public var shopper: PrefilledShopperInformation?
-        
-        /// API context used to retrieve internal resources.
-        public let apiContext: APIContext
 
-        /// The Adyen context.
-        public let adyenContext: AdyenContext
+        /// :nodoc:
+        /// The context object for this component.
+        public let context: AdyenContext
         
         /// Indicates the localization parameters, leave it nil to use the default parameters.
         public var localizationParameters: LocalizationParameters?
@@ -63,18 +61,15 @@ public extension DropInComponent {
         
         /// Initializes the drop in configuration.
         /// - Parameters:
-        ///   - apiContext: The API context used to retrieve internal resources.
-        ///   - adyenContext: The Adyen context.
+        ///   - context: The context object for this component.
         ///   - style: The UI styles of the components.
         ///   - allowsSkippingPaymentList: Boolean to enable skipping payment list when there is only one one non-instant payment method.
         ///   - allowPreselectedPaymentView: Boolean to enable the preselected stored payment method view step.
-        public init(apiContext: APIContext,
-                    adyenContext: AdyenContext,
+        public init(context: AdyenContext,
                     style: Style = Style(),
                     allowsSkippingPaymentList: Bool = false,
                     allowPreselectedPaymentView: Bool = true) {
-            self.apiContext = apiContext
-            self.adyenContext = adyenContext
+            self.context = context
             self.style = style
             self.allowsSkippingPaymentList = allowsSkippingPaymentList
             self.allowPreselectedPaymentView = allowPreselectedPaymentView

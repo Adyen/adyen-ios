@@ -37,10 +37,8 @@ public final class RedirectComponent: ActionComponent {
     }
     
     /// :nodoc:
-    public let apiContext: APIContext
-
-    /// The Adyen context.
-    public let adyenContext: AdyenContext
+    /// The context object for this component.
+    public let context: AdyenContext
     
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
@@ -57,14 +55,11 @@ public final class RedirectComponent: ActionComponent {
     
     /// Initializes the component.
     ///
-    /// - Parameter apiContext: The API context.
-    /// - Parameter adyenContext: The Adyen context
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component configurations.
-    public init(apiContext: APIContext,
-                adyenContext: AdyenContext,
+    public init(context: AdyenContext,
                 configuration: Configuration = Configuration()) {
-        self.apiContext = apiContext
-        self.adyenContext = adyenContext
+        self.context = context
         self.configuration = configuration
     }
     
@@ -74,7 +69,7 @@ public final class RedirectComponent: ActionComponent {
     public func handle(_ action: RedirectAction) {
         Analytics.sendEvent(component: configuration.componentName,
                             flavor: _isDropIn ? .dropin : .components,
-                            context: apiContext)
+                            context: context.apiContext)
         
         if action.url.adyen.isHttp {
             openHttpSchemeUrl(action)
@@ -111,8 +106,7 @@ public final class RedirectComponent: ActionComponent {
 
     private func openInAppBrowser(_ action: RedirectAction) {
         let component = BrowserComponent(url: action.url,
-                                         apiContext: apiContext,
-                                         adyenContext: adyenContext,
+                                         context: context,
                                          style: configuration.style)
         component.delegate = self
         browserComponent = component

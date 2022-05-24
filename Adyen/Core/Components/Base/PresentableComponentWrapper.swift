@@ -15,10 +15,11 @@ public final class PresentableComponentWrapper: PresentableComponent,
     LoadingComponent {
     
     /// :nodoc:
-    public var apiContext: APIContext { component.apiContext }
+    public var apiContext: APIContext { component.context.apiContext }
 
-    /// The Adyen context.
-    public var adyenContext: AdyenContext { component.adyenContext }
+    /// :nodoc:
+    /// The context object for this component.
+    public var context: AdyenContext { component.context }
     
     /// :nodoc:
     public let viewController: UIViewController

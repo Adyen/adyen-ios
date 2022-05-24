@@ -7,7 +7,7 @@
 import Foundation
 
 /// A component provides payment method-specific UI and handling.
-public protocol Component: APIContextAware {}
+public protocol Component: AdyenContextAware {}
 
 /// :nodoc:
 extension Component {

@@ -33,7 +33,8 @@ internal final class IntegrationExample: APIClientAware {
     internal var sessionPaymentMethods: PaymentMethods?
 
     internal weak var presenter: Presenter?
-    
+
+    internal let context: AdyenContext
     internal var session: AdyenSession?
     
     internal lazy var palApiClient: APIClientProtocol = {
@@ -44,12 +45,17 @@ internal final class IntegrationExample: APIClientAware {
     // MARK: - Action Handling for Components
 
     internal lazy var adyenActionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(apiContext: ConfigurationConstants.apiContext,
-                                           adyenContext: ConfigurationConstants.adyenContext)
+        let handler = AdyenActionComponent(context: context)
         handler.delegate = self
         handler.presentationDelegate = self
         return handler
     }()
+
+    // MARK: - Initializers
+
+    internal init() {
+        self.context = AdyenContext(apiContext: ConfigurationConstants.apiContext, analyticsConfiguration: .init())
+    }
 
     // MARK: - Networking
     
@@ -93,8 +99,7 @@ internal final class IntegrationExample: APIClientAware {
     private func initializeSession(with sessionId: String, data: String) {
         let configuration = AdyenSession.Configuration(sessionIdentifier: sessionId,
                                                        initialSessionData: data,
-                                                       apiContext: ConfigurationConstants.apiContext,
-                                                       adyenContext: ConfigurationConstants.adyenContext)
+                                                       context: context)
         AdyenSession.initialize(with: configuration, delegate: self, presentationDelegate: self) { [weak self] result in
             switch result {
             case let .success(session):

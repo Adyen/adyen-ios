@@ -15,10 +15,8 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     public typealias Configuration = BasicComponentConfiguration
     
     /// :nodoc:
-    public let apiContext: APIContext
-
-    /// The Adyen context
-    public let adyenContext: AdyenContext
+    /// The context object for this component.
+    public let context: AdyenContext
     
     /// Component's configuration
     public var configuration: Configuration
@@ -34,16 +32,13 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     /// Initializes the SEPA Direct Debit component.
     ///
     /// - Parameter paymentMethod: The SEPA Direct Debit payment method.
-    /// - Parameter apiContext: The API context.
-    /// - Parameter adyenContext: The Adyen context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: Configuration for the component.
     public init(paymentMethod: SEPADirectDebitPaymentMethod,
-                apiContext: APIContext,
-                adyenContext: AdyenContext,
+                context: AdyenContext,
                 configuration: Configuration = .init()) {
         self.sepaDirectDebitPaymentMethod = paymentMethod
-        self.apiContext = apiContext
-        self.adyenContext = adyenContext
+        self.context = context
         self.configuration = configuration
     }
     

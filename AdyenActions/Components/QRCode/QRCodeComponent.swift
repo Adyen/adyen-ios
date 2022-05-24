@@ -21,10 +21,8 @@ internal enum QRCodeComponentError: LocalizedError {
 public final class QRCodeComponent: ActionComponent, Cancellable {
     
     /// :nodoc:
-    public let apiContext: APIContext
-
-    /// The Adyen context.
-    public let adyenContext: AdyenContext
+    /// The context object for this component.
+    public let context: AdyenContext
     
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
@@ -75,33 +73,27 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
     
     /// Initializes the `QRCodeComponent`.
     ///
-    /// - Parameter apiContext: the `APIContext`.
-    /// - Parameter adyenContext: The Adyen context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component configurations
-    public convenience init(apiContext: APIContext,
-                            adyenContext: AdyenContext,
+    public convenience init(context: AdyenContext,
                             configuration: Configuration = .init()) {
-        self.init(apiContext: apiContext,
-                  adyenContext: adyenContext,
+        self.init(context: context,
                   configuration: configuration,
-                  pollingComponentBuilder: PollingHandlerProvider(apiContext: apiContext, adyenContext: adyenContext),
+                  pollingComponentBuilder: PollingHandlerProvider(context: context),
                   timeoutInterval: 60 * 15)
     }
     
     /// Initializes the `QRCodeComponent`.
     ///
-    /// - Parameter apiContext: the `APIContext`.
-    /// - Parameter adyenContext: The Adyen context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component configurations
     /// - Parameter pollingComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter timeoutInterval: QR Code expiration timeout
-    internal init(apiContext: APIContext,
-                  adyenContext: AdyenContext,
+    internal init(context: AdyenContext,
                   configuration: Configuration = .init(),
                   pollingComponentBuilder: AnyPollingHandlerProvider,
                   timeoutInterval: TimeInterval) {
-        self.apiContext = apiContext
-        self.adyenContext = adyenContext
+        self.context = context
         self.configuration = configuration
         self.pollingComponentBuilder = pollingComponentBuilder
         self.expirationTimeout = timeoutInterval
@@ -169,7 +161,7 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
     
     /// :nodoc:
     private func createModel(with action: QRCodeAction) -> QRCodeView.Model {
-        let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: apiContext.environment)
+        let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment)
         return QRCodeView.Model(
             action: action,
             instruction: localizedString(.pixInstructions,

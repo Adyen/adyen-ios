@@ -36,10 +36,9 @@ internal final class PreApplePayComponent: PresentableComponent,
 
     private let applePayComponent: ApplePayComponent
 
-    internal let apiContext: APIContext
-
-    /// The Adyen context
-    internal let adyenContext: AdyenContext
+    /// :nodoc:
+    /// The context object for this component.
+    internal let context: AdyenContext
     
     /// :nodoc:
     internal let paymentMethod: PaymentMethod
@@ -64,18 +63,15 @@ internal final class PreApplePayComponent: PresentableComponent,
     
     /// :nodoc:
     internal init(paymentMethod: ApplePayPaymentMethod,
-                  apiContext: APIContext,
-                  adyenContext: AdyenContext,
+                  context: AdyenContext,
                   configuration: Configuration,
                   applePayConfiguration: ApplePayComponent.Configuration) throws {
-        self.apiContext = apiContext
-        self.adyenContext = adyenContext
+        self.context = context
         self.paymentMethod = paymentMethod
         self.configuration = configuration
         self.payment = applePayConfiguration.applePayPayment.payment
         self.applePayComponent = try ApplePayComponent(paymentMethod: paymentMethod,
-                                                       apiContext: apiContext,
-                                                       adyenContext: adyenContext,
+                                                       context: context,
                                                        configuration: applePayConfiguration)
         self.applePayComponent.delegate = self
     }

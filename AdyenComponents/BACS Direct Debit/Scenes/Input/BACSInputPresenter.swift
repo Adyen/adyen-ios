@@ -56,7 +56,7 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
     // MARK: - BACSInputPresenterProtocol
 
     internal func viewDidLoad() {
-        tracker.sendEvent()
+        tracker.sendTelemetryEvent()
         createItems()
         setupView()
     }

@@ -16,10 +16,8 @@ internal protocol BrowserComponentDelegate: AnyObject {
 /// A component that opens a URL in web browsed and presents it.
 internal final class BrowserComponent: NSObject, PresentableComponent {
 
-    internal let apiContext: APIContext
-
     /// :nodoc
-    internal let adyenContext: AdyenContext
+    internal let context: AdyenContext
 
     private let url: URL
     private let style: RedirectComponentStyle?
@@ -49,12 +47,10 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     /// - Parameter apiContext: The API context.
     /// - Parameter style: The component's UI style.
     internal init(url: URL,
-                  apiContext: APIContext,
-                  adyenContext: AdyenContext,
+                  context: AdyenContext,
                   style: RedirectComponentStyle? = nil) {
         self.url = url
-        self.apiContext = apiContext
-        self.adyenContext = adyenContext
+        self.context = context
         self.style = style
         super.init()
     }

@@ -12,10 +12,8 @@ import UIKit
 public final class DocumentComponent: ActionComponent, ShareableComponent {
 
     /// :nodoc:
-    public let apiContext: APIContext
-
-    /// The Adyen context.
-    public let adyenContext: AdyenContext
+    /// The context object for this component.
+    public let context: AdyenContext
     
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
@@ -54,14 +52,11 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     
     /// Initializes the `DocumentComponent`.
     ///
-    /// - Parameter apiContext: The API context.
-    /// - Parameter adyenContext: The Adyen context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The Component configurations.
-    public init(apiContext: APIContext,
-                adyenContext: AdyenContext,
+    public init(context: AdyenContext,
                 configuration: Configuration = .init()) {
-        self.apiContext = apiContext
-        self.adyenContext = adyenContext
+        self.context = context
         self.configuration = configuration
     }
     
@@ -69,10 +64,10 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     ///
     /// - Parameter action: The document action object.
     public func handle(_ action: DocumentAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         
         let imageURL = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue,
-                                               environment: apiContext.environment,
+                                               environment: context.apiContext.environment,
                                                size: .medium)
         let viewModel = DocumentActionViewModel(action: action,
                                                 message: localizedString(.bacsDownloadMandate, configuration.localizationParameters),

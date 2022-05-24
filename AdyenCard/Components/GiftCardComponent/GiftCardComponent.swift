@@ -19,11 +19,9 @@ public final class GiftCardComponent: PartialPaymentComponent,
     AdyenObserver {
     
     /// :nodoc:
-    public let apiContext: APIContext
-
-    /// The Adyen context.
-    public let adyenContext: AdyenContext
-
+    /// The context object for this component.
+    public let context: AdyenContext
+    
     /// :nodoc:
     private let giftCardPaymentMethod: GiftCardPaymentMethod
 
@@ -51,28 +49,23 @@ public final class GiftCardComponent: PartialPaymentComponent,
     ///   - paymentMethod: The gift card payment method.
     ///   -  clientKey: The client key that corresponds to the web service user you will use for initiating the payment.
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
-    ///   - apiContext: The API context
-    ///   - adyenContext: The AdyenContext
+    ///   - context: The context object for this component.
     ///   - style:  The Component's UI style.
     public convenience init(paymentMethod: GiftCardPaymentMethod,
-                            apiContext: APIContext,
-                            adyenContext: AdyenContext,
+                            context: AdyenContext,
                             style: FormComponentStyle = FormComponentStyle()) {
         self.init(paymentMethod: paymentMethod,
-                  apiContext: apiContext,
-                  adyenContext: adyenContext,
+                  context: context,
                   style: style,
-                  publicKeyProvider: PublicKeyProvider(apiContext: apiContext))
+                  publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
     
     internal init(paymentMethod: GiftCardPaymentMethod,
-                  apiContext: APIContext,
-                  adyenContext: AdyenContext,
+                  context: AdyenContext,
                   style: FormComponentStyle = FormComponentStyle(),
                   publicKeyProvider: AnyPublicKeyProvider) {
         self.giftCardPaymentMethod = paymentMethod
-        self.apiContext = apiContext
-        self.adyenContext = adyenContext
+        self.context = context
         self.style = style
         self.publicKeyProvider = publicKeyProvider
     }
@@ -275,8 +268,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         
         let component = InstantPaymentComponent(paymentMethod: paymentMethod,
                                                 paymentData: paymentData,
-                                                apiContext: apiContext,
-                                                adyenContext: adyenContext)
+                                                context: context)
         delegate.showConfirmation(for: component, with: paymentData.order)
     }
 

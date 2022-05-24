@@ -8,15 +8,12 @@ import AdyenNetworking
 import Foundation
 
 /// :nodoc:
-/// An object that needs an API context to retrieve internal resources
-public protocol APIContextAware: AnyObject {
-    
-    /// :nodoc:
-    /// The API context
-    var apiContext: APIContext { get }
+/// An object that needs an Adyen context.
+public protocol AdyenContextAware: AnyObject {
 
-    /// The Adyen context.
-    var adyenContext: AdyenContext { get }
+    /// :nodoc:
+    /// The context object for this component.
+    var context: AdyenContext { get }
 }
 
 /// Struct that defines API context for retrieving internal resources.

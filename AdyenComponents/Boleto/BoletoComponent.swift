@@ -10,12 +10,10 @@ import UIKit
 
 /// A component that provides a form for Boleto payment.
 public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent, AdyenObserver {
-    
-    /// :nodoc:
-    public let apiContext: APIContext
 
-    /// The Adyen context
-    public let adyenContext: AdyenContext
+    /// :nodoc:
+    /// The context object for this component.
+    public let context: AdyenContext
     
     /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
@@ -34,16 +32,13 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     /// Initializes the Boleto Component
     /// - Parameters:
     ///   - paymentMethod: Boleto Payment Method
-    ///   - apiContext: The component's API context.
-    ///   - adyenContext: The Adyen context.
+    ///   - context: The context object for this component.
     ///   - configuration: The Component's configuration.
     public init(paymentMethod: BoletoPaymentMethod,
-                apiContext: APIContext,
-                adyenContext: AdyenContext,
+                context: AdyenContext,
                 configuration: Configuration) {
         self.boletoPaymentMethod = paymentMethod
-        self.apiContext = apiContext
-        self.adyenContext = adyenContext
+        self.context = context
         self.configuration = configuration
         socialSecurityNumberItem.isHidden.wrappedValue = false
     }
@@ -91,19 +86,18 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
                                                                                shopperInformation: configuration.shopperInformation,
                                                                                localizationParameters: configuration.localizationParameters)
         let component = FormComponent(paymentMethod: paymentMethod,
-                                      apiContext: apiContext,
-                                      adyenContext: adyenContext,
+                                      context: context,
                                       fields: formFields,
                                       configuration: configuration,
                                       onCreatePaymentDetails: { [weak self] in
-            var paymentMethodDetails: PaymentMethodDetails?
-            do {
-                paymentMethodDetails = try self?.createPaymentDetails()
-            } catch let error {
-                adyenPrint(error)
-            }
-            return paymentMethodDetails
-        })
+                                          var paymentMethodDetails: PaymentMethodDetails?
+                                          do {
+                                              paymentMethodDetails = try self?.createPaymentDetails()
+                                          } catch {
+                                              adyenPrint(error)
+                                          }
+                                          return paymentMethodDetails
+                                      })
 
         if let emailItem = component.emailItem {
             bind(sendCopyByEmailItem.publisher, to: emailItem, at: \.isHidden.wrappedValue, with: { !$0 })
@@ -231,16 +225,14 @@ extension BoletoComponent {
         
         /// :nodoc:
         fileprivate init(paymentMethod: PaymentMethod,
-                         apiContext: APIContext,
-                         adyenContext: AdyenContext,
+                         context: AdyenContext,
                          fields: [PersonalInformation],
                          configuration: AbstractPersonalInformationComponent.Configuration,
                          onCreatePaymentDetails: @escaping () -> PaymentMethodDetails?) {
             self.onCreatePaymentDetails = onCreatePaymentDetails
             
             super.init(paymentMethod: paymentMethod,
-                       apiContext: apiContext,
-                       adyenContext: adyenContext,
+                       context: context,
                        fields: fields,
                        configuration: configuration)
         }

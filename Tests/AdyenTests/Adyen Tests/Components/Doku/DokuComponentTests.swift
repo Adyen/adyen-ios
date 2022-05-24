@@ -13,14 +13,14 @@ import XCTest
 class DokuComponentTests: XCTestCase {
 
     private var analyticsProviderMock: AnalyticsProviderMock!
-    private var adyenContext: AdyenContext!
+    private var context: AdyenContext!
     private var paymentMethod: DokuPaymentMethod!
     private var payment: Payment!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
-        adyenContext = AdyenContext(apiContext: Dummy.context, analyticsProvider: analyticsProviderMock)
+        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
 
         paymentMethod = DokuPaymentMethod(type: .dokuAlfamart, name: "test_name")
         payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
@@ -28,7 +28,7 @@ class DokuComponentTests: XCTestCase {
 
     override func tearDownWithError() throws {
         analyticsProviderMock = nil
-        adyenContext = nil
+        context = nil
         paymentMethod = nil
         payment = nil
         try super.tearDownWithError()
@@ -37,8 +37,7 @@ class DokuComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() throws {
         let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
         let sut = DokuComponent(paymentMethod: paymentMethod,
-                                apiContext: Dummy.context,
-                                adyenContext: adyenContext,
+                                context: context,
                                 configuration: config)
         sut.payment = payment
 
@@ -61,8 +60,7 @@ class DokuComponentTests: XCTestCase {
     func testLocalizationWithCustomKeySeparator() throws {
         let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = DokuComponent(paymentMethod: paymentMethod,
-                                apiContext: Dummy.context,
-                                adyenContext: adyenContext,
+                                context: context,
                                 configuration: config)
         sut.payment = payment
 
@@ -109,8 +107,7 @@ class DokuComponentTests: XCTestCase {
 
         let config = DokuComponent.Configuration(style: style)
         let sut = DokuComponent(paymentMethod: paymentMethod,
-                                apiContext: Dummy.context,
-                                adyenContext: adyenContext,
+                                context: context,
                                 configuration: config)
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -167,7 +164,9 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testSubmitForm() throws {
-        let sut = DokuComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, configuration: DokuComponent.Configuration())
+        let sut = DokuComponent(paymentMethod: paymentMethod, 
+                                context: context, 
+                                configuration: DokuComponent.Configuration())
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         sut.payment = payment
@@ -208,8 +207,7 @@ class DokuComponentTests: XCTestCase {
 
     func testBigTitle() {
         let sut = DokuComponent(paymentMethod: paymentMethod,
-                                apiContext: Dummy.context,
-                                adyenContext: adyenContext,
+                                context: context,
                                 configuration: DokuComponent.Configuration())
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -223,8 +221,7 @@ class DokuComponentTests: XCTestCase {
     func testRequiresModalPresentation() {
         let dokuPaymentMethod = DokuPaymentMethod(type: .dokuWallet, name: "Test name")
         let sut = DokuComponent(paymentMethod: dokuPaymentMethod,
-                                apiContext: Dummy.context,
-                                adyenContext: adyenContext,
+                                context: context,
                                 configuration: DokuComponent.Configuration())
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
@@ -233,8 +230,7 @@ class DokuComponentTests: XCTestCase {
         // Given
         let config = DokuComponent.Configuration(shopperInformation: shopperInformation)
         let prefillSut = DokuComponent(paymentMethod: paymentMethod,
-                                       apiContext: Dummy.context,
-                                       adyenContext: adyenContext,
+                                              context: context,
                                        configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
@@ -262,8 +258,7 @@ class DokuComponentTests: XCTestCase {
     func testDokuGivenNoShopperInformationShouldNotPrefill() throws {
         // Given
         let sut = DokuComponent(paymentMethod: paymentMethod,
-                                apiContext: Dummy.context,
-                                adyenContext: adyenContext,
+                                context: context,
                                 configuration: DokuComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -288,15 +283,14 @@ class DokuComponentTests: XCTestCase {
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
         let sut = DokuComponent(paymentMethod: paymentMethod,
-                                apiContext: Dummy.context,
-                                adyenContext: adyenContext,
+                                context: context,
                                 configuration: DokuComponent.Configuration())
 
         // When
         sut.viewWillAppear(viewController: sut.viewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
     }
 
     // MARK: - Private

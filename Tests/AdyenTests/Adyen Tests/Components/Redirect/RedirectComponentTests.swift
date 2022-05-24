@@ -16,8 +16,7 @@ class RedirectComponentTests: XCTestCase {
         let style = RedirectComponentStyle(preferredBarTintColor: UIColor.red,
                                            preferredControlTintColor: UIColor.black,
                                            modalPresentationStyle: .fullScreen)
-        let sut = BrowserComponent(url: action.url, apiContext: Dummy.context,
-                                   adyenContext: Dummy.adyenContext,
+        let sut = BrowserComponent(url: action.url, context: Dummy.context,
                                    style: style)
         XCTAssertNotNil(sut.viewController as? SFSafariViewController)
         XCTAssertEqual(sut.viewController.modalPresentationStyle, .fullScreen)
@@ -26,7 +25,7 @@ class RedirectComponentTests: XCTestCase {
     }
     
     func testOpenCustomSchemeSuccess() {
-        let sut = RedirectComponent(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
+        let sut = RedirectComponent(context: Dummy.context)
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let appLauncher = AppLauncherMock()
@@ -56,7 +55,7 @@ class RedirectComponentTests: XCTestCase {
     }
     
     func testOpenCustomSchemeFailure() {
-        let sut = RedirectComponent(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
+        let sut = RedirectComponent(context: Dummy.context)
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let appLauncher = AppLauncherMock()
@@ -90,7 +89,7 @@ class RedirectComponentTests: XCTestCase {
     }
     
     func testOpenUniversalLinkSuccess() {
-        let sut = RedirectComponent(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
+        let sut = RedirectComponent(context: Dummy.context)
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let appLauncher = AppLauncherMock()
@@ -120,7 +119,7 @@ class RedirectComponentTests: XCTestCase {
     }
     
     func testOpenUniversalLinkFailure() {
-        let sut = RedirectComponent(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
+        let sut = RedirectComponent(context: Dummy.context)
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let appLauncher = AppLauncherMock()
@@ -160,7 +159,7 @@ class RedirectComponentTests: XCTestCase {
     }
 
     func testOpenHttpWebLink() {
-        let sut = RedirectComponent(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
+        let sut = RedirectComponent(context: Dummy.context)
         sut.presentationDelegate = UIViewController.findTopPresenter()
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
@@ -196,7 +195,7 @@ class RedirectComponentTests: XCTestCase {
 
     @available(iOS 13.0, *)
     func testOpenHttpWebLinkAndDragedDown() {
-        let sut = RedirectComponent(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
+        let sut = RedirectComponent(context: Dummy.context)
         sut.presentationDelegate = UIViewController.findTopPresenter()
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
@@ -224,7 +223,7 @@ class RedirectComponentTests: XCTestCase {
 
     func testRedirectResult() {
         // Given
-        let sut = RedirectComponent(apiContext: Dummy.context, adyenContext: Dummy.adyenContext)
+        let sut = RedirectComponent(context: Dummy.context)
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         let delegate = ActionComponentDelegateMock()

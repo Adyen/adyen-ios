@@ -15,8 +15,9 @@ public protocol PaymentMethodAware: AnyObject {
 /// A component that handles the initial phase of getting payment details to initiate a payment.
 public protocol PaymentComponent: PaymentAwareComponent, PaymentMethodAware {
 
-    /// The Adyen context
-    var adyenContext: AdyenContext { get }
+    /// :nodoc:
+    /// The context object for this component.
+    var context: AdyenContext { get }
     
     /// The delegate of the payment component.
     var delegate: PaymentComponentDelegate? { get set }

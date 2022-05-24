@@ -19,10 +19,7 @@ internal final class PollingComponent: AnyPollingHandler {
     private var errorCount = 0
 
     /// :nodoc:
-    internal let apiContext: APIContext
-
-    /// :nodoc:
-    internal let adyenContext: AdyenContext
+    internal let context: AdyenContext
     
     /// :nodoc:
     internal weak var presentationDelegate: PresentationDelegate?
@@ -36,13 +33,11 @@ internal final class PollingComponent: AnyPollingHandler {
     /// :nodoc:
     /// Initializes the Polling Await component.
     ///
-    /// - Parameter apiContext: The API context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter apiClient: The API client.
-    internal init(apiContext: APIContext,
-                  adyenContext: AdyenContext,
+    internal init(context: AdyenContext,
                   apiClient: AnyRetryAPIClient) {
-        self.apiContext = apiContext
-        self.adyenContext = adyenContext
+        self.context = context
         self.apiClient = apiClient
     }
     
@@ -51,7 +46,7 @@ internal final class PollingComponent: AnyPollingHandler {
     ///
     /// - Parameter action: The await action object.
     internal func handle(_ action: PaymentDataAware) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         startPolling(action)
     }
     

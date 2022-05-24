@@ -20,17 +20,14 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
     /// Initializes the Doku component.
     /// - Parameters:
     ///   - paymentMethod: The Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
-    ///   - apiContext: The component's UI style.
-    ///   - adyenContext: The Adyen context.
+    ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: DokuPaymentMethod,
-                apiContext: APIContext,
-                adyenContext: AdyenContext,
+                context: AdyenContext,
                 configuration: Configuration = .init()) {
         self.dokuPaymentMethod = paymentMethod
         super.init(paymentMethod: paymentMethod,
-                   apiContext: apiContext,
-                   adyenContext: adyenContext,
+                   context: context,
                    fields: [.firstName, .lastName, .email],
                    configuration: configuration)
     }
@@ -43,8 +40,8 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
         guard let firstNameItem = firstNameItem,
               let lastNameItem = lastNameItem,
               let emailItem = emailItem else {
-                  throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
-              }
+            throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
+        }
         return DokuDetails(paymentMethod: paymentMethod,
                            firstName: firstNameItem.value,
                            lastName: lastNameItem.value,

@@ -28,11 +28,9 @@ public class CardComponent: PublicKeyConsumer,
     }
     
     /// :nodoc:
-    public let apiContext: APIContext
-
-    /// The Adyen context.
-    public let adyenContext: AdyenContext
-
+    /// The context object for this component.
+    public let context: AdyenContext
+    
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
     /// :nodoc:
@@ -69,20 +67,17 @@ public class CardComponent: PublicKeyConsumer,
     ///
     /// - Parameters:
     ///   - paymentMethod: The card payment method.
-    ///   - apiContext: The API context.
-    ///   - adyenContext: The Adyen context.
+    ///   - context: The context object for this component.
     ///   - configuration: The configuration of the component.
     public convenience init(paymentMethod: AnyCardPaymentMethod,
-                            apiContext: APIContext,
-                            adyenContext: AdyenContext,
+                            context: AdyenContext,
                             configuration: Configuration = .init()) {
-        let publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
-        let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: apiContext),
+        let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
+        let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: context.apiContext),
                                               publicKeyProvider: publicKeyProvider,
                                               minBinLength: Constant.privateBinLength)
         self.init(paymentMethod: paymentMethod,
-                  apiContext: apiContext,
-                  adyenContext: adyenContext,
+                  context: context,
                   configuration: configuration,
                   publicKeyProvider: publicKeyProvider,
                   binProvider: binInfoProvider)
@@ -93,20 +88,17 @@ public class CardComponent: PublicKeyConsumer,
     ///
     /// - Parameters:
     ///   - paymentMethod: The card payment method.
-    ///   - apiContext: The API context.
-    ///   - adyenContext: The Adyen context.
+    ///   - context: The context object for this component.
     ///   - configuration: The Card component configuration.
     ///   - publicKeyProvider: The public key provider
     ///   - binProvider: Any object capable to provide a BinInfo.
     internal init(paymentMethod: AnyCardPaymentMethod,
-                  apiContext: APIContext,
-                  adyenContext: AdyenContext,
+                  context: AdyenContext,
                   configuration: Configuration,
                   publicKeyProvider: AnyPublicKeyProvider,
                   binProvider: AnyBinInfoProvider) {
         self.cardPaymentMethod = paymentMethod
-        self.apiContext = apiContext
-        self.adyenContext = adyenContext
+        self.context = context
         self.configuration = configuration
         self.publicKeyProvider = publicKeyProvider
         self.binInfoProvider = binProvider
@@ -142,11 +134,11 @@ public class CardComponent: PublicKeyConsumer,
         }
         var component: PaymentComponent & PresentableComponent
         if configuration.stored.showsSecurityCodeField {
-            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, apiContext: apiContext, adyenContext: adyenContext)
+            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context)
             storedComponent.localizationParameters = configuration.localizationParameters
             component = storedComponent
         } else {
-            let storedComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext, adyenContext: adyenContext)
+            let storedComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
             storedComponent.localizationParameters = configuration.localizationParameters
             component = storedComponent
         }
@@ -167,7 +159,7 @@ public class CardComponent: PublicKeyConsumer,
                                                     shopperInformation: configuration.shopperInformation,
                                                     formStyle: configuration.style,
                                                     payment: payment,
-                                                    logoProvider: LogoURLProvider(environment: apiContext.environment),
+                                                    logoProvider: LogoURLProvider(environment: context.apiContext.environment),
                                                     supportedCardTypes: supportedCardTypes,
                                                     scope: String(describing: self),
                                                     localizationParameters: configuration.localizationParameters)

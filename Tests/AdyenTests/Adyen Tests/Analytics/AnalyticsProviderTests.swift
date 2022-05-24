@@ -34,15 +34,13 @@ class AnalyticsProviderTests: XCTestCase {
 
         // Then
         XCTAssertTrue(sut.configuration.isEnabled)
-        XCTAssertTrue(sut.configuration.isCheckoutAttemptIdEnabled)
         XCTAssertTrue(sut.configuration.isTelemetryEnabled)
     }
 
-    func testFetchCheckoutAttemptIdWhenAnalyticsIsEnabledGivenCheckoutAttemptIdIsEnabledShouldTriggerRequest() throws {
+    func testFetchCheckoutAttemptIdWhenAnalyticsIsEnabledShouldTriggerRequest() throws {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = true
-        analyticsConfiguration.isCheckoutAttemptIdEnabled = true
         sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
@@ -82,29 +80,11 @@ class AnalyticsProviderTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    func testFetchCheckoutAttemptIdWhenCheckoutAttemptIdIsDisabledShouldCallCompletionWithNilValue() throws {
+
+    func testFetchCheckoutAttemptIdWhenRequestSucceedShouldCallCompletionWithNonNilValue() throws {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isCheckoutAttemptIdEnabled = false
-        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
-
-        let fetchCheckoutAttemptIdExpection = expectation(description: "checkoutAttemptId completion")
-
-        // When
-        sut.fetchCheckoutAttemptId { receivedCheckoutAttemptId in
-
-            // Then
-            XCTAssertNil(receivedCheckoutAttemptId, "The checkoutAttemptId is not nil.")
-            fetchCheckoutAttemptIdExpection.fulfill()
-        }
-
-        waitForExpectations(timeout: 1)
-    }
-
-    func testFetchCheckoutAttemptIdWhenCheckoutAttemptIdIsEnabledGivenSuccessShouldCallCompletionWithNonNilValue() throws {
-        // Given
-        var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isCheckoutAttemptIdEnabled = true
+        analyticsConfiguration.isEnabled = true
         sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
@@ -130,7 +110,7 @@ class AnalyticsProviderTests: XCTestCase {
     func testFetchCheckoutAttemptIdWhenCheckoutAttemptIdIsEnabledGivenFailureShouldCallCompletionWithNilValue() throws {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isCheckoutAttemptIdEnabled = true
+        analyticsConfiguration.isEnabled = true
         sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         let error = NSError(domain: "", code: 500, userInfo: [NSLocalizedDescriptionKey: "Internal Server Error"])

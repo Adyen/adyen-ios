@@ -15,10 +15,8 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
     public typealias Configuration = BasicComponentConfiguration
     
     /// :nodoc:
-    public let apiContext: APIContext
-
-    /// The Adyen context
-    public let adyenContext: AdyenContext
+    /// The context object for this component.
+    public let context: AdyenContext
     
     /// :nodoc:
     public var paymentMethod: PaymentMethod { blikPaymentMethod }
@@ -42,16 +40,13 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
     /// Initializes the BLIK component.
     ///
     /// - Parameter paymentMethod: The BLIK payment method.
-    /// - Parameter apiContext: The API context.
-    /// - Parameter adyenContext: The Adyen context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: BLIKPaymentMethod,
-                apiContext: APIContext,
-                adyenContext: AdyenContext,
+                context: AdyenContext,
                 configuration: Configuration = .init()) {
         self.blikPaymentMethod = paymentMethod
-        self.apiContext = apiContext
-        self.adyenContext = adyenContext
+        self.context = context
         self.configuration = configuration
     }
 

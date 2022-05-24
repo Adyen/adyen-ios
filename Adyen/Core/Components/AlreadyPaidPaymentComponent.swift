@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,11 +11,9 @@ import Foundation
 public final class AlreadyPaidPaymentComponent: PaymentComponent {
 
     /// :nodoc:
-    public let apiContext: APIContext
-
-    /// The Adyen context.
-    public let adyenContext: AdyenContext
-
+    /// The context object for this component.
+    public let context: AdyenContext
+    
     /// :nodoc:
     public let paymentMethod: PaymentMethod
 
@@ -24,10 +22,8 @@ public final class AlreadyPaidPaymentComponent: PaymentComponent {
 
     /// :nodoc:
     public init(paymentMethod: PaymentMethod,
-                apiContext: APIContext,
-                adyenContext: AdyenContext) {
+                context: AdyenContext) {
         self.paymentMethod = paymentMethod
-        self.apiContext = apiContext
-        self.adyenContext = adyenContext
+        self.context = context
     }
 }

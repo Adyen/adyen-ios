@@ -30,7 +30,7 @@ public enum TelemetryFlavor {
 
 /// : nodoc:
 public protocol TelemetryTrackerProtocol {
-    func trackTelemetryEvent(flavor: TelemetryFlavor)
+    func sendTelemetryEvent(flavor: TelemetryFlavor)
 }
 
 // MARK: - TelemetryTrackerProtocol
@@ -38,7 +38,7 @@ public protocol TelemetryTrackerProtocol {
 /// : nodoc:
 extension AnalyticsProvider: TelemetryTrackerProtocol {
 
-    internal func trackTelemetryEvent(flavor: TelemetryFlavor) {
+    internal func sendTelemetryEvent(flavor: TelemetryFlavor) {
         guard configuration.isEnabled else { return }
         guard configuration.isTelemetryEnabled else { return }
         if case .dropInComponent = flavor { return }

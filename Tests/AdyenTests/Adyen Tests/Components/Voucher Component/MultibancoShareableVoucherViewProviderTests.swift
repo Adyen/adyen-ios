@@ -15,7 +15,7 @@ class MultibancoShareableVoucherViewProviderTests: XCTestCase {
     func testMultibancoVoucher() throws {
         let viewProvider = VoucherShareableViewProvider(
             style: VoucherComponentStyle(),
-            environment: Dummy.context.environment
+            environment: Dummy.apiContext.environment
         )
 
         let multibancoDecoded = try Coder.decode(multibancoVoucher) as MultibancoVoucherAction

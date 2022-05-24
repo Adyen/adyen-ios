@@ -12,8 +12,7 @@ class AffirmComponentTests: XCTestCase {
 
     private var analyticsProviderMock: AnalyticsProviderMock!
     private var paymentMethod: PaymentMethod!
-    private var apiContext: APIContext!
-    private var adyenContext: AdyenContext!
+    private var context: AdyenContext!
     private var style: FormComponentStyle!
     private var sut: AffirmComponent!
 
@@ -21,18 +20,15 @@ class AffirmComponentTests: XCTestCase {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
         paymentMethod = AffirmPaymentMethod(type: .affirm, name: "Affirm")
-        apiContext = Dummy.context
-        adyenContext = AdyenContext(apiContext: apiContext, analyticsProvider: analyticsProviderMock)
+        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
         style = FormComponentStyle()
         sut = AffirmComponent(paymentMethod: paymentMethod,
-                              apiContext: apiContext,
-                              adyenContext: adyenContext,
+                              context: context,
                               configuration: AffirmComponent.Configuration(style: style))
     }
     
     override func tearDownWithError() throws {
         paymentMethod = nil
-        apiContext = nil
         style = nil
         sut = nil
         try super.tearDownWithError()
@@ -115,8 +111,7 @@ class AffirmComponentTests: XCTestCase {
     func testSubmitForm_shouldCallDelegateWithProperParameters() throws {
         // Given
         let sut = AffirmComponent(paymentMethod: paymentMethod,
-                                  apiContext: apiContext,
-                                  adyenContext: adyenContext,
+                                  context: context,
                                   configuration: AffirmComponent.Configuration(style: style))
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -184,8 +179,7 @@ class AffirmComponentTests: XCTestCase {
         // Given
         let config = AffirmComponent.Configuration(style: style, shopperInformation: shopperInformation)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
-                                         apiContext: apiContext,
-                                         adyenContext: adyenContext,
+                                         context: context,
                                          configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
@@ -232,8 +226,7 @@ class AffirmComponentTests: XCTestCase {
         // Given
         let config = AffirmComponent.Configuration(style: style, shopperInformation: shopperInformationNoDeliveryAddress)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
-                                         apiContext: apiContext,
-                                         adyenContext: adyenContext,
+                                         context: context,
                                          configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
@@ -323,7 +316,7 @@ class AffirmComponentTests: XCTestCase {
         sut.viewWillAppear(viewController: mockViewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.trackTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
     }
 
     // MARK: - Private

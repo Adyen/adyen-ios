@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,16 +18,13 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
     /// Initializes the component.
     /// - Parameters:
     ///   - paymentMethod: The payment method.
-    ///   - apiContext: The component's API context.
-    ///   - adyenContext: The Adyen context.
+    ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: PaymentMethod,
-                apiContext: APIContext,
-                adyenContext: AdyenContext,
+                context: AdyenContext,
                 configuration: Configuration = .init()) {
         super.init(paymentMethod: paymentMethod,
-                   apiContext: apiContext,
-                   adyenContext: adyenContext,
+                   context: context,
                    fields: [.firstName, .lastName, .phone, .email],
                    configuration: configuration)
     }
@@ -46,8 +43,8 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
               let lastNameItem = lastNameItem,
               let emailItem = emailItem,
               let phoneItem = phoneItem else {
-                  throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
-              }
+            throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
+        }
         return BasicPersonalInfoFormDetails(paymentMethod: paymentMethod,
                                             firstName: firstNameItem.value,
                                             lastName: lastNameItem.value,

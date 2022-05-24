@@ -27,11 +27,10 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
     /// Initializes the Atome component.
     /// - Parameters:
     ///   - paymentMethod: The Atome payment method.
-    ///   - apiContext: The component's API context.
+    ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: PaymentMethod,
-                apiContext: APIContext,
-                adyenContext: AdyenContext,
+                context: AdyenContext,
                 configuration: Configuration = .init()) {
         personalDetailsHeaderItem = FormLabelItem(text: "", style: configuration.style.sectionHeader)
 
@@ -46,8 +45,7 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
         ]
 
         super.init(paymentMethod: paymentMethod,
-                   apiContext: apiContext,
-                   adyenContext: adyenContext,
+                   context: context,
                    fields: fields,
                    configuration: configuration)
 
