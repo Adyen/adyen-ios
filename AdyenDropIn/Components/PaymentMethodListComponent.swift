@@ -18,12 +18,7 @@ public struct PaymentMethodListConfiguration {
 /// A component that presents a list of items for each payment method with a component.
 internal final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable, Cancellable {
     
-<<<<<<< HEAD
-    /// :nodoc:
     internal let context: AdyenContext
-=======
-    internal let apiContext: APIContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     
     /// The components that are displayed in the list.
     internal private(set) var componentSections: [ComponentsSection]

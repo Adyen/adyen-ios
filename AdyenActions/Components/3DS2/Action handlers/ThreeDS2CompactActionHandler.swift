@@ -42,12 +42,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     /// - Parameter fingerprintSubmitter: The fingerprint submitter.
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
-<<<<<<< HEAD
-    /// :nodoc:
     internal convenience init(context: AdyenContext,
-=======
-    internal convenience init(apiContext: APIContext,
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
                               fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter? = nil,
                               service: AnyADYService,
                               appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
@@ -118,13 +113,8 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
 
     // MARK: - Private
 
-<<<<<<< HEAD
-    /// :nodoc:
     private lazy var fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter =
         ThreeDS2FingerprintSubmitter(apiContext: context.apiContext)
-=======
-    private lazy var fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter = ThreeDS2FingerprintSubmitter(apiContext: apiContext)
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
 
     private let threeDS2EventName = "3ds2"
 

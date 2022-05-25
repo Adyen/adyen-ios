@@ -36,13 +36,9 @@ public final class RedirectComponent: ActionComponent {
         }
     }
     
-<<<<<<< HEAD
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
-=======
-    public let apiContext: APIContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     
     public weak var delegate: ActionComponentDelegate?
 

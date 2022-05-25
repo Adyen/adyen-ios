@@ -9,17 +9,11 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for Boleto payment.
-<<<<<<< HEAD
 public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent, AdyenObserver {
 
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
-=======
-public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent {
-    
-    public let apiContext: APIContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     
     public weak var delegate: PaymentComponentDelegate?
         
@@ -179,12 +173,10 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     }
 }
 
-<<<<<<< HEAD
+@_spi(AdyenInternal)
 extension BoletoComponent: TrackableComponent {}
 
-=======
 @_spi(AdyenInternal)
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
 extension BoletoComponent: ViewControllerDelegate {
 
     public func viewDidLoad(viewController: UIViewController) {}
@@ -240,6 +232,3 @@ extension BoletoComponent {
         }
     }
 }
-
-@_spi(AdyenInternal)
-extension BoletoComponent: AdyenObserver {}

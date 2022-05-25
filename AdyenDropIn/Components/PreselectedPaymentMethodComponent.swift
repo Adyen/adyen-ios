@@ -28,15 +28,9 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     private let title: String
     private let defaultComponent: PaymentComponent
     
-<<<<<<< HEAD
-    /// :nodoc:
     internal var apiContext: APIContext { defaultComponent.context.apiContext }
 
-    /// :nodoc:
     internal var context: AdyenContext { defaultComponent.context }
-=======
-    internal var apiContext: APIContext { defaultComponent.apiContext }
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
 
     internal var paymentMethod: PaymentMethod { defaultComponent.paymentMethod }
     

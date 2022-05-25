@@ -22,13 +22,9 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         static let payButtonItem = "payButtonItem"
     }
     
-<<<<<<< HEAD
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
-=======
-    public let apiContext: APIContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     
     public var paymentMethod: PaymentMethod {
         achDirectDebitPaymentMethod
@@ -244,19 +240,12 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     }()
 }
 
-<<<<<<< HEAD
-/// :nodoc:
+@_spi(AdyenInternal)
 extension ACHDirectDebitComponent: TrackableComponent {}
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension ACHDirectDebitComponent: ViewControllerDelegate {
 
-    /// :nodoc:
-=======
-@_spi(AdyenInternal)
-extension ACHDirectDebitComponent: TrackableComponent {
-    
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     public func viewDidLoad(viewController: UIViewController) {
         Analytics.sendEvent(component: paymentMethod.type.rawValue,
                             flavor: _isDropIn ? .dropin : .components,

@@ -27,23 +27,12 @@ internal protocol AnyPollingHandlerProvider {
 
 internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
 
-<<<<<<< HEAD
-    /// :nodoc
     private let context: AdyenContext
-=======
-    private let apiContext: APIContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
 
     private let apiClient: AnyRetryAPIClient
 
-<<<<<<< HEAD
-    /// :nodoc:
     internal init(context: AdyenContext) {
         self.context = context
-=======
-    internal init(apiContext: APIContext) {
-        self.apiContext = apiContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
         self.apiClient = RetryAPIClient(
             apiClient: APIClient(apiContext: context.apiContext),
             scheduler: BackoffScheduler(queue: .main)

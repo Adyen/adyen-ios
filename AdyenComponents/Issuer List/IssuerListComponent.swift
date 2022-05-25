@@ -12,13 +12,9 @@ import UIKit
 /// This component will provide a list in which the user can select their issuer.
 public final class IssuerListComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
-<<<<<<< HEAD
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
-=======
-    public let apiContext: APIContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     
     /// The issuer list payment method.
     public var paymentMethod: PaymentMethod {
@@ -90,14 +86,15 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     }()
 }
 
+@_spi(AdyenInternal)
 extension IssuerListComponent: ViewControllerDelegate {
 
-    /// :nodoc:
     public func viewWillAppear(viewController: UIViewController) {
         sendTelemetryEvent()
     }
 }
 
+@_spi(AdyenInternal)
 extension IssuerListComponent: TrackableComponent {}
 
 extension IssuerListComponent {
@@ -139,9 +136,3 @@ public typealias EntercashComponent = IssuerListComponent
 
 /// Provides an issuer selection list for OpenBanking payments.
 public typealias OpenBankingComponent = IssuerListComponent
-<<<<<<< HEAD
-=======
-
-@_spi(AdyenInternal)
-extension IssuerListComponent: TrackableComponent {}
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)

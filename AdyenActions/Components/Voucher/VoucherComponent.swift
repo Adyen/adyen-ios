@@ -17,15 +17,10 @@ internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
 /// A component that handles voucher action.
 public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent {
 
-<<<<<<< HEAD
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
     
-=======
-    public let apiContext: APIContext
-
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
 

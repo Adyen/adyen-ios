@@ -10,13 +10,9 @@ import Foundation
 /// A component that handles Await action's.
 public final class AwaitComponent: ActionComponent, Cancellable {
     
-<<<<<<< HEAD
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
-=======
-    public let apiContext: APIContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?

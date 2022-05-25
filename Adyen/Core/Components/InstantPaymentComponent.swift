@@ -46,7 +46,7 @@ public final class InstantPaymentComponent: PaymentComponent {
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension InstantPaymentComponent: TrackableComponent {}
 
 /// Describes a payment details that contains nothing but the payment method type name.

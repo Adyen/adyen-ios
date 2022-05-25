@@ -21,13 +21,9 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     internal let applePayPaymentMethod: ApplePayPaymentMethod
 
-<<<<<<< HEAD
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
-=======
-    public let apiContext: APIContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
 
     /// The Apple Pay payment method.
     public var paymentMethod: PaymentMethod { applePayPaymentMethod }
@@ -140,8 +136,10 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     }
 }
 
+@_spi(AdyenInternal)
 extension ApplePayComponent: TrackableComponent {}
 
+@_spi(AdyenInternal)
 extension ApplePayComponent: ViewControllerDelegate {
     public func viewDidLoad(viewController: UIViewController) { /* Empty implementation */ }
 

@@ -16,16 +16,10 @@ public final class GiftCardComponent: PresentableComponent,
     LoadingComponent,
     AdyenObserver {
     
-<<<<<<< HEAD
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
     
-    /// :nodoc:
-=======
-    public let apiContext: APIContext
-
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     private let giftCardPaymentMethod: GiftCardPaymentMethod
 
     @_spi(AdyenInternal)

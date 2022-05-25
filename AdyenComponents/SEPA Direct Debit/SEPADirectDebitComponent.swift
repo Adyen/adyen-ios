@@ -14,13 +14,9 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     /// Configuration for SEPA Direct Debit Component
     public typealias Configuration = BasicComponentConfiguration
     
-<<<<<<< HEAD
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
-=======
-    public let apiContext: APIContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     
     /// Component's configuration
     public var configuration: Configuration
@@ -141,7 +137,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
 @_spi(AdyenInternal)
 extension SEPADirectDebitComponent: TrackableComponent {}
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension SEPADirectDebitComponent: ViewControllerDelegate {
 
     public func viewWillAppear(viewController: UIViewController) {

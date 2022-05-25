@@ -8,11 +8,10 @@ import AdyenNetworking
 import Foundation
 
 /// An object that needs an Adyen context.
-@_spi(AdyenInternal)
 public protocol AdyenContextAware: AnyObject {
 
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     var context: AdyenContext { get }
 }
 

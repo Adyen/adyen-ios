@@ -39,13 +39,9 @@ public final class DropInComponent: NSObject,
     /// The title text on the first page of drop in component.
     public let title: String
 
-<<<<<<< HEAD
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public var context: AdyenContext
-=======
-    public var apiContext: APIContext { configuration.apiContext }
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     
     /// Initializes the drop in component.
     ///

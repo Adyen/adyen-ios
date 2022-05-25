@@ -19,27 +19,19 @@ import Foundation
     public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
 
         private static let universalLink = "https://www.adyen.com/"
-<<<<<<< HEAD
 
-        /// :nodoc:
+        @_spi(AdyenInternal)
         public var context: AdyenContext
-=======
-    
-        public let apiContext: APIContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     
         public weak var delegate: ActionComponentDelegate?
     
         private var currentlyHandledAction: WeChatPaySDKAction?
-    
-<<<<<<< HEAD
-        /// :nodoc:
+        
+        /// Initializes a new instance of `WeChatPaySDKActionComponent`
+        ///
+        /// - Parameter context: The context object.
         public init(context: AdyenContext) {
             self.context = context
-=======
-        public init(apiContext: APIContext) {
-            self.apiContext = apiContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
         }
     
         public func handle(_ action: WeChatPaySDKAction) {
@@ -118,23 +110,16 @@ import Foundation
     /// Action component to handle WeChat Pay SDK action.
     public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
 
-<<<<<<< HEAD
-        /// :nodoc:
+        @_spi(AdyenInternal)
         public let context: AdyenContext
-=======
-        public let apiContext: APIContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
 
         public weak var delegate: ActionComponentDelegate?
 
-<<<<<<< HEAD
-        /// :nodoc:
+        /// Initializes a new instance of `WeChatPaySDKActionComponent`
+        ///
+        /// - Parameter context: The context object.
         public init(context: AdyenContext) {
             self.context = context
-=======
-        public init(apiContext: APIContext) {
-            self.apiContext = apiContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
         }
 
         public func handle(_ action: WeChatPaySDKAction) {

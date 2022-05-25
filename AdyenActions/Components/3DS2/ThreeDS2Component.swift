@@ -15,13 +15,9 @@ internal protocol AnyRedirectComponent: ActionComponent {
 /// Handles the 3D Secure 2 fingerprint and challenge.
 public final class ThreeDS2Component: ActionComponent {
     
-<<<<<<< HEAD
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
-=======
-    public let apiContext: APIContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     
     /// The delegate of the component.
     public weak var delegate: ActionComponentDelegate?
@@ -82,12 +78,7 @@ public final class ThreeDS2Component: ActionComponent {
     ///   - threeDS2ClassicFlowHandler: The internal `AnyThreeDS2ActionHandler` for the classic flow.
     ///   - redirectComponent: The redirect component.
     ///   - redirectComponentStyle: `RedirectComponent` style.
-<<<<<<< HEAD
-    /// :nodoc:
     internal convenience init(context: AdyenContext,
-=======
-    internal convenience init(apiContext: APIContext,
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
                               threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
                               threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
                               redirectComponent: AnyRedirectComponent,

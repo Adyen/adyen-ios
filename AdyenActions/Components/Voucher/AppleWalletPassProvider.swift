@@ -18,11 +18,8 @@ internal protocol AnyAppleWalletPassProvider {
 internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
     AdyenContextAware {
     
-<<<<<<< HEAD
-    /// :nodoc:
     internal let context: AdyenContext
     
-    /// :nodoc:
     internal convenience init(context: AdyenContext) {
         self.init(context: context,
                   apiClient: nil)
@@ -31,16 +28,6 @@ internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
     /// :nodoc:
     internal init(context: AdyenContext, apiClient: AnyRetryAPIClient? = nil) {
         self.context = context
-=======
-    internal let apiContext: APIContext
-    
-    internal convenience init(apiContext: APIContext) {
-        self.init(apiContext: apiContext, apiClient: nil)
-    }
-    
-    internal init(apiContext: APIContext, apiClient: AnyRetryAPIClient? = nil) {
-        self.apiContext = apiContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
         if let apiClient = apiClient {
             self.retryApiClient = apiClient
         } else {

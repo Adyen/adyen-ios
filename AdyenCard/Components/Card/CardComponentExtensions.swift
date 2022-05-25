@@ -55,19 +55,12 @@ extension CardComponent {
     }
 }
 
-<<<<<<< HEAD
-/// :nodoc:
+@_spi(AdyenInternal)
 extension CardComponent: TrackableComponent {}
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension CardComponent: ViewControllerDelegate {
 
-    /// :nodoc:
-=======
-@_spi(AdyenInternal)
-extension CardComponent: TrackableComponent {
-    
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     public func viewDidLoad(viewController: UIViewController) {
         Analytics.sendEvent(component: paymentMethod.type.rawValue,
                             flavor: _isDropIn ? .dropin : .components,
@@ -76,7 +69,6 @@ extension CardComponent: TrackableComponent {
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
     }
 
-    /// :nodoc:
     public func viewWillAppear(viewController: UIViewController) {
         sendTelemetryEvent()
     }

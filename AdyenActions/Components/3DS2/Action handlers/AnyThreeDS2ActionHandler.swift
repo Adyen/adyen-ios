@@ -26,14 +26,9 @@ internal protocol ComponentWrapper: Component {
 
 extension ComponentWrapper {
 
-<<<<<<< HEAD
-    /// :nodoc:
     internal var apiContext: APIContext { wrappedComponent.context.apiContext }
 
     internal var context: AdyenContext { wrappedComponent.context }
-=======
-    internal var apiContext: APIContext { wrappedComponent.apiContext }
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
 
     internal var _isDropIn: Bool { // swiftlint:disable:this identifier_name
         get {

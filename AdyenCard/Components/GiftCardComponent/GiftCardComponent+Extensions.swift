@@ -7,19 +7,12 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-<<<<<<< HEAD:AdyenCard/Components/GiftCardComponent/GiftCardComponent+Extensions.swift
-/// :nodoc:
+@_spi(AdyenInternal)
 extension GiftCardComponent: TrackableComponent {}
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension GiftCardComponent: ViewControllerDelegate {
 
-    /// :nodoc:
-=======
-@_spi(AdyenInternal)
-extension GiftCardComponent: TrackableComponent {
-    
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle):AdyenCard/Components/GiftCardComponent/GiftCardComponentExtensions.swift
     public func viewDidLoad(viewController: UIViewController) {
         Analytics.sendEvent(component: paymentMethod.type.rawValue,
                             flavor: _isDropIn ? .dropin : .components,

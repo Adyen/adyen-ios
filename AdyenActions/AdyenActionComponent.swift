@@ -71,17 +71,12 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
 
     internal var currentActionComponent: Component?
     
-<<<<<<< HEAD
-    /// :nodoc:
-    public init(context: AdyenContext,
-=======
     /// Initializes a new instance of `AdyenActionComponent`
     ///
     /// - Parameters:
-    ///   - apiContext: The API context.
+    ///   - context: The context object.
     ///   - configuration: The configuration.
-    public init(apiContext: APIContext,
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
+    public init(context: AdyenContext,
                 configuration: Configuration = Configuration()) {
         self.context = context
         self.configuration = configuration

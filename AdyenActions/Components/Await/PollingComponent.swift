@@ -17,12 +17,7 @@ internal final class PollingComponent: AnyPollingHandler {
 
     private var errorCount = 0
 
-<<<<<<< HEAD
-    /// :nodoc:
     internal let context: AdyenContext
-=======
-    internal let apiContext: APIContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     
     internal weak var presentationDelegate: PresentationDelegate?
     

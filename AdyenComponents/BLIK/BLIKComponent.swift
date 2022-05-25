@@ -9,18 +9,14 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for BLIK payments.
-public final class BLIKComponent: PaymentComponent, PresentableComponent, LoadingComponent, ViewControllerDelegate {
+public final class BLIKComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
     /// Configuration for BLIK Component.
     public typealias Configuration = BasicComponentConfiguration
     
-<<<<<<< HEAD
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
-=======
-    public let apiContext: APIContext
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     
     public var paymentMethod: PaymentMethod { blikPaymentMethod }
 
@@ -48,17 +44,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
         self.context = context
         self.configuration = configuration
     }
-
-<<<<<<< HEAD
-    // MARK: - ViewControllerDelegate
-
-    public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
-    }
-
-    /// :nodoc:
-=======
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
+    
     public func stopLoading() {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
@@ -130,3 +116,12 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
 
 @_spi(AdyenInternal)
 extension BLIKComponent: TrackableComponent {}
+
+@_spi(AdyenInternal)
+extension BLIKComponent: ViewControllerDelegate {
+    // MARK: - ViewControllerDelegate
+
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
+    }
+}

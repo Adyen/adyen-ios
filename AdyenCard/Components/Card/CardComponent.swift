@@ -26,15 +26,10 @@ public class CardComponent: PresentableComponent,
         internal static let publicPanSuffixLength = 4
     }
     
-<<<<<<< HEAD
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
     
-=======
-    public let apiContext: APIContext
-
->>>>>>> 1829b75d (feature: Adds support for DocC documentation bundle)
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
     @_spi(AdyenInternal)
