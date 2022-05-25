@@ -1,21 +1,18 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 
 /// A form item into which a card's security code (CVC/CVV) is entered.
 internal final class FormCardSecurityCodeItem: FormTextItem {
 
-    /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
     
-    /// :nodoc:
     @AdyenObservable(nil) internal var selectedCard: CardType?
 
-    /// :nodoc:
     @AdyenObservable(false) internal var isOptional: Bool {
         didSet {
             updateFormState()

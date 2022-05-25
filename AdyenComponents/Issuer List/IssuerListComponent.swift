@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
@@ -12,8 +12,8 @@ import UIKit
 /// This component will provide a list in which the user can select their issuer.
 public final class IssuerListComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
     
     /// The issuer list payment method.
@@ -52,7 +52,6 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
         listViewController.stopLoading()
     }
     
-    /// :nodoc:
     public var requiresModalPresentation: Bool = true
     
     // MARK: - Private
@@ -87,14 +86,15 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     }()
 }
 
+@_spi(AdyenInternal)
 extension IssuerListComponent: ViewControllerDelegate {
 
-    /// :nodoc:
     public func viewWillAppear(viewController: UIViewController) {
         sendTelemetryEvent()
     }
 }
 
+@_spi(AdyenInternal)
 extension IssuerListComponent: TrackableComponent {}
 
 extension IssuerListComponent {
@@ -105,7 +105,6 @@ extension IssuerListComponent {
         /// The UI style of the component.
         public var style: ListComponentStyle
         
-        /// :nodoc:
         public var localizationParameters: LocalizationParameters?
         
         /// Initializes the configuration for Issuer list type components.

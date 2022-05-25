@@ -26,18 +26,16 @@ public struct BCMCPaymentMethod: AnyCardPaymentMethod {
     
     public var fundingSource: CardFundingSource? { cardPaymentMethod.fundingSource }
     
-    /// :nodoc:
     internal init(cardPaymentMethod: CardPaymentMethod) {
         self.cardPaymentMethod = cardPaymentMethod
     }
     
-    /// :nodoc:
     public init(from decoder: Decoder) throws {
         let cardPaymentMethod = try CardPaymentMethod(from: decoder)
         self.init(cardPaymentMethod: cardPaymentMethod)
     }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }

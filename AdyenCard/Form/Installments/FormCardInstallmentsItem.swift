@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 
 /// A form element that handles the display and selection of installment options based on the configuration.
 internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentElement>, AdyenObserver {
@@ -93,7 +93,6 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
         selectableValues = newValues.map(\.pickerElement)
     }
     
-    /// :nodoc:
     override internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }

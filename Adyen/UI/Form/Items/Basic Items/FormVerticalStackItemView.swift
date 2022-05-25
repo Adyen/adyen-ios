@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,7 @@ import UIKit
 
 /// A view representing a vertical stack of items.
 /// Items are created from the `subitems` property of the `item`
-/// :nodoc:
+@_spi(AdyenInternal)
 open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormItemType> {
 
     public private(set) var views: [AnyFormItemView] = []
@@ -42,7 +42,6 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
         stackView.spacing = itemSpacing
     }
 
-    /// :nodoc:
     override public var childItemViews: [AnyFormItemView] { views }
 
     // MARK: - Layout

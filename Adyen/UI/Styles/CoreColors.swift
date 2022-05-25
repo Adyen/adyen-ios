@@ -1,23 +1,20 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import UIKit
 
-/// :nodoc:
+// Adyen colors
 extension UIColor {
     
-    /// :nodoc:
     public enum Adyen {
 
-        /// :nodoc:
         public static var dimmBackground: UIColor {
             componentSeparator
         }
 
-        /// :nodoc:
         public static var componentBackground: UIColor {
             if #available(iOS 13.0, *) {
                 return .systemBackground
@@ -26,7 +23,6 @@ extension UIColor {
             }
         }
         
-        /// :nodoc:
         public static var secondaryComponentBackground: UIColor {
             if #available(iOS 13.0, *) {
                 return .secondarySystemBackground
@@ -35,7 +31,6 @@ extension UIColor {
             }
         }
 
-        /// :nodoc:
         public static var componentLabel: UIColor {
             if #available(iOS 13.0, *) {
                 return .label
@@ -44,7 +39,6 @@ extension UIColor {
             }
         }
 
-        /// :nodoc:
         public static var componentSecondaryLabel: UIColor {
             if #available(iOS 13.0, *) {
                 return .secondaryLabel
@@ -53,7 +47,6 @@ extension UIColor {
             }
         }
 
-        /// :nodoc:
         public static var componentTertiaryLabel: UIColor {
             if #available(iOS 13.0, *) {
                 return .tertiaryLabel
@@ -62,7 +55,6 @@ extension UIColor {
             }
         }
 
-        /// :nodoc:
         public static var componentQuaternaryLabel: UIColor {
             if #available(iOS 13.0, *) {
                 return .quaternaryLabel
@@ -71,7 +63,6 @@ extension UIColor {
             }
         }
 
-        /// :nodoc:
         public static var componentPlaceholderText: UIColor {
             if #available(iOS 13.0, *) {
                 return .placeholderText
@@ -80,7 +71,6 @@ extension UIColor {
             }
         }
 
-        /// :nodoc:
         public static var componentSeparator: UIColor {
             if #available(iOS 13.0, *) {
                 return .separator
@@ -89,46 +79,36 @@ extension UIColor {
             }
         }
 
-        /// :nodoc:
         public static var componentLoadingMessageColor: UIColor {
             UIColor(named: "awaitLoadingMessageColor",
                     in: Bundle.coreInternalResources,
                     compatibleWith: nil) ?? componentPlaceholderText
         }
 
-        /// :nodoc:
         public static var paidSectionFooterTitleColor: UIColor {
             UIColor(named: "paidPartialPaymentSectionFooterTitleColor",
                     in: Bundle.coreInternalResources,
                     compatibleWith: nil) ?? orange
         }
 
-        /// :nodoc:
         public static var paidSectionFooterTitleBackgroundColor: UIColor {
             UIColor(named: "paidPartialPaymentSectionFooterTitleBackgroundColor",
                     in: Bundle.coreInternalResources,
                     compatibleWith: nil) ?? yellow
         }
 
-        /// :nodoc:
         public static let defaultBlue = color(hex: 0x007AFF)
 
-        /// :nodoc:
         public static let defaultRed = color(hex: 0xFF3B30)
 
-        /// :nodoc:
         public static let errorRed = color(hex: 0xD10244)
 
-        /// :nodoc:
         public static let lightGray = color(hex: 0xE6E9EB)
 
-        /// :nodoc:
         private static let yellow = color(hex: 0xFFEACC)
 
-        /// :nodoc:
         private static let orange = color(hex: 0x7F4A00)
         
-        /// :nodoc:
         public static let green40 = color(hex: 0x0ABF53)
 
         /// Create new UIColor from hex value.

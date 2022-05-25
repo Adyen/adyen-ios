@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,10 +7,9 @@
 import Foundation
 import UIKit
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class LoadingView: UIControl {
 
-    /// :nodoc:
     private lazy var activityIndicatorView: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView(style: activityIndicatorStyle)
         activityIndicatorView.backgroundColor = .clear
@@ -29,13 +28,10 @@ public final class LoadingView: UIControl {
 
     private let contentView: UIView
     
-    /// :nodoc:
     public var disableUserInteractionWhileLoading: Bool = false
     
-    /// :nodoc:
     public var spinnerAppearanceDelay: DispatchTimeInterval = .seconds(1)
 
-    /// :nodoc:
     public init(contentView: UIView) {
         self.contentView = contentView
         super.init(frame: .zero)
@@ -50,7 +46,6 @@ public final class LoadingView: UIControl {
         ])
     }
 
-    /// :nodoc:
     @available(*, unavailable)
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

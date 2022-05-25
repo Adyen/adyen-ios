@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 
 /// Contains the details supplied by the Atome component.
 public struct AtomeDetails: PaymentMethodDetails, ShopperInformation {
@@ -39,7 +39,6 @@ public struct AtomeDetails: PaymentMethodDetails, ShopperInformation {
     
     // MARK: - Private
     
-    /// :nodoc:
     private enum CodingKeys: CodingKey {
         case type
     }

@@ -4,10 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
-/// :nodoc:
 internal protocol BACSDirectDebitRouterProtocol: AnyObject {
     func presentConfirmation(with data: BACSDirectDebitData)
     func confirmPayment(with data: BACSDirectDebitData)
@@ -21,10 +20,8 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     
     // MARK: - PresentableComponent
 
-    /// :nodoc:
     public let viewController: UIViewController
 
-    /// :nodoc:
     public var requiresModalPresentation: Bool = true
 
     /// The object that acts as the delegate of the component.
@@ -33,8 +30,8 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// The BACS Direct Debit payment method.
     public var paymentMethod: PaymentMethod { bacsPaymentMethod }
 
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
 
     /// The object that acts as the presentation delegate of the component.

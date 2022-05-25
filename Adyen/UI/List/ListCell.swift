@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,10 +7,9 @@
 import UIKit
 
 /// A cell in a ListViewController.
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class ListCell: UITableViewCell {
     
-    /// :nodoc:
     override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -20,7 +19,6 @@ public final class ListCell: UITableViewCell {
         configureConstraints()
     }
     
-    /// :nodoc:
     @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

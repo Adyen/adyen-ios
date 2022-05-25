@@ -6,8 +6,8 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-@testable import Adyen
-@testable import AdyenActions
+@_spi(AdyenInternal) @testable import Adyen
+@_spi(AdyenInternal) @testable import AdyenActions
 import AdyenNetworking
 import XCTest
 

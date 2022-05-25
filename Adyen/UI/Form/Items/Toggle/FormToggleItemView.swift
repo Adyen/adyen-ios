@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import UIKit
 
 /// A view representing a switch item.
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemStyle, FormToggleItem> {
 
     // MARK: - UI elements
@@ -76,7 +76,6 @@ public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemSty
 
     // MARK: - Public
 
-    /// :nodoc:
     @discardableResult
     override public func accessibilityActivate() -> Bool {
         switchControl.isOn = !switchControl.isOn
@@ -85,7 +84,6 @@ public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemSty
         return true
     }
 
-    /// :nodoc:
     override public func reset() {
         item.value = false
     }

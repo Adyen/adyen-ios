@@ -15,7 +15,7 @@ public struct BACSDirectDebitPaymentMethod: PaymentMethod {
     
     public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }

@@ -7,10 +7,8 @@
 import AdyenNetworking
 import Foundation
 
-/// :nodoc:
 internal struct TelemetryResponse: Response { /* Empty response */ }
 
-/// :nodoc:
 internal struct TelemetryRequest: APIRequest {
 
     internal typealias ResponseType = TelemetryResponse

@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Adyen3DS2
 import Foundation
 
@@ -15,8 +15,8 @@ internal protocol AnyRedirectComponent: ActionComponent {
 /// Handles the 3D Secure 2 fingerprint and challenge.
 public final class ThreeDS2Component: ActionComponent {
     
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
     
     /// The delegate of the component.
@@ -78,7 +78,6 @@ public final class ThreeDS2Component: ActionComponent {
     ///   - threeDS2ClassicFlowHandler: The internal `AnyThreeDS2ActionHandler` for the classic flow.
     ///   - redirectComponent: The redirect component.
     ///   - redirectComponentStyle: `RedirectComponent` style.
-    /// :nodoc:
     internal convenience init(context: AdyenContext,
                               threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
                               threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,

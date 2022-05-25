@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,6 @@
 import UIKit
 
 /// Contains the styling customization options for an error item in a form.
-/// :nodoc:
 public struct FormErrorItemStyle: ViewStyle {
 
     /// The message style.
@@ -18,7 +17,6 @@ public struct FormErrorItemStyle: ViewStyle {
     /// The corners style of the text item.
     public var cornerRounding: CornerRounding = .fixed(6)
 
-    /// :nodoc:
     public var backgroundColor = UIColor.Adyen.errorRed.withAlphaComponent(0.1)
 
     /// Initializes the form error item style.

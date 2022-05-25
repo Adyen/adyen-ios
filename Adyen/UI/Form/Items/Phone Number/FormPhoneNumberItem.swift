@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes a phone number entry form item.
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class FormPhoneNumberItem: FormTextItem {
     
     /// The phone prefix picker item.
@@ -42,7 +42,6 @@ public final class FormPhoneNumberItem: FormTextItem {
         keyboardType = .numberPad
     }
     
-    /// :nodoc:
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-@testable import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 
 class AnalyticsProviderMock: AnalyticsProviderProtocol {
 

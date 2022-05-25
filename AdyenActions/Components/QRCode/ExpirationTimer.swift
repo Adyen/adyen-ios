@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,22 +9,16 @@ import Foundation
 /// A class for handling expiration timers
 internal final class ExpirationTimer {
     
-    /// :nodoc:
     private let expirationTimeout: TimeInterval
     
-    /// :nodoc:
     private var timeLeft: TimeInterval
     
-    /// :nodoc:
     private let tickInterval: TimeInterval
     
-    /// :nodoc:
     private var timer: Timer?
     
-    /// :nodoc:
     private let onTick: (TimeInterval) -> Void
     
-    /// :nodoc:
     private let onExpiration: () -> Void
     
     /// Initializes `ExpirationTimer` object
@@ -46,20 +40,17 @@ internal final class ExpirationTimer {
         self.onExpiration = onExpiration
     }
     
-    /// :nodoc:
     internal func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: tickInterval, repeats: true) { [weak self] _ in
             self?.onTimerTick()
         }
     }
     
-    /// :nodoc
     internal func stopTimer() {
         timer?.invalidate()
         timer = nil
     }
     
-    /// :nodoc:
     private func onTimerTick() {
         timeLeft -= 1
         

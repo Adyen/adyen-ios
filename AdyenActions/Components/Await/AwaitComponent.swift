@@ -4,23 +4,21 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// A component that handles Await action's.
 public final class AwaitComponent: ActionComponent, Cancellable {
     
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
     
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
     
-    /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
     
-    /// :nodoc:
     public let requiresModalPresentation: Bool = true
     
     /// The await component configurations.
@@ -47,7 +45,6 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     /// The await component configurations.
     public var configuration: Configuration
     
-    /// :nodoc:
     private let awaitComponentBuilder: AnyPollingHandlerProvider
     
     /// Initializes the `AwaitComponent`.
@@ -74,7 +71,6 @@ public final class AwaitComponent: ActionComponent, Cancellable {
         self.awaitComponentBuilder = awaitComponentBuilder
     }
     
-    /// :nodoc:
     private let componentName = "await"
     
     /// Handles await action.
@@ -101,12 +97,10 @@ public final class AwaitComponent: ActionComponent, Cancellable {
         paymentMethodSpecificPollingComponent?.handle(action)
     }
     
-    /// :nodoc:
     public func didCancel() {
         paymentMethodSpecificPollingComponent?.didCancel()
     }
     
-    /// :nodoc:
     private var paymentMethodSpecificPollingComponent: AnyPollingHandler?
     
 }

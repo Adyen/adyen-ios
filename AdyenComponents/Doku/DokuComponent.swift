@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
@@ -14,7 +14,6 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
     /// Configuration for Doku Component
     public typealias Configuration = PersonalInformationConfiguration
     
-    /// :nodoc:
     private let dokuPaymentMethod: DokuPaymentMethod
 
     /// Initializes the Doku component.
@@ -32,10 +31,12 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
                    configuration: configuration)
     }
 
+    @_spi(AdyenInternal)
     override public func submitButtonTitle() -> String {
         localizedString(.confirmPurchase, configuration.localizationParameters)
     }
 
+    @_spi(AdyenInternal)
     override public func createPaymentDetails() throws -> PaymentMethodDetails {
         guard let firstNameItem = firstNameItem,
               let lastNameItem = lastNameItem,

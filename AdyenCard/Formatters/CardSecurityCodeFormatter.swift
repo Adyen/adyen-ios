@@ -1,14 +1,14 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Formats a card's security code (CVC/CVV).
-public final class CardSecurityCodeFormatter: NumericFormatter, AdyenObserver {
+public final class CardSecurityCodeFormatter: NumericFormatter {
     
     /// Indicate is validating CVV belong to a Amex card
     private var cardType: CardType?
@@ -26,7 +26,6 @@ public final class CardSecurityCodeFormatter: NumericFormatter, AdyenObserver {
         bind(publisher, to: self, at: \.cardType)
     }
     
-    /// :nodoc:
     override public func formattedValue(for value: String) -> String {
         let value = super.formattedValue(for: value)
         
@@ -38,3 +37,6 @@ public final class CardSecurityCodeFormatter: NumericFormatter, AdyenObserver {
     }
     
 }
+
+@_spi(AdyenInternal)
+extension CardSecurityCodeFormatter: AdyenObserver {}

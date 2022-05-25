@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
@@ -69,10 +69,13 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         }
     }
 
-    /// :nodoc:
     internal var currentActionComponent: Component?
     
-    /// :nodoc:
+    /// Initializes a new instance of `AdyenActionComponent`
+    ///
+    /// - Parameters:
+    ///   - context: The context object.
+    ///   - configuration: The configuration.
     public init(context: AdyenContext,
                 configuration: Configuration = Configuration()) {
         self.context = context

@@ -45,14 +45,13 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
     /// The name of the cardholder.
     public var holderName: String? { storedCardPaymentMethod.holderName }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
     
     // MARK: - Decoding
     
-    /// :nodoc:
     public init(from decoder: Decoder) throws {
         self.storedCardPaymentMethod = try StoredCardPaymentMethod(from: decoder)
     }

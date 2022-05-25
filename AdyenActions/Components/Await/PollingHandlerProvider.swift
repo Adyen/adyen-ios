@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import Foundation
 
@@ -18,26 +18,19 @@ internal protocol AnyPollingHandler: ActionComponent, Cancellable {
     func handle(_ action: PaymentDataAware)
 }
 
-/// :nodoc:
 internal protocol AnyPollingHandlerProvider {
 
-    /// :nodoc:
     func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler
     
-    /// :nodoc:
     func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler
 }
 
-/// :nodoc:
 internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
 
-    /// :nodoc
     private let context: AdyenContext
 
-    /// :nodoc:
     private let apiClient: AnyRetryAPIClient
 
-    /// :nodoc:
     internal init(context: AdyenContext) {
         self.context = context
         self.apiClient = RetryAPIClient(
@@ -46,7 +39,6 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
         )
     }
 
-    /// :nodoc:
     internal func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler {
         switch paymentMethodType {
         case .mbway, .blik:
@@ -54,7 +46,6 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
         }
     }
     
-    /// :nodoc:
     internal func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler {
         switch qrPaymentMethodType {
         case .pix:
@@ -62,7 +53,6 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
         }
     }
     
-    /// :nodoc:
     private func createPollingComponent() -> AnyPollingHandler {
         PollingComponent(context: context,
                          apiClient: apiClient)

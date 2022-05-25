@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,10 +9,10 @@ import Foundation
 import QuartzCore
 import UIKit
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension NSTextAlignment: AdyenCompatible {}
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public extension AdyenScope where Base == NSTextAlignment {
     var caAlignmentMode: CATextLayerAlignmentMode {
         switch base {

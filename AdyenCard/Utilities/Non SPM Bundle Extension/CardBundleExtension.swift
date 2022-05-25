@@ -1,15 +1,14 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// This is excluded from the Swift Package, since swift packages has different code to access internal resources.
 /// The Bundle extension in `BundleSPMExtension.swift` is used instead.
-/// :nodoc:
 extension Bundle {
 
     /// The main bundle of the framework.

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -23,12 +23,12 @@ public protocol Validator {
     
 }
 
-/// :nodoc:
+/// Defines the `||` operator for two `Validator` operands.
 public func || (lhs: Validator, rhs: Validator) -> Validator {
     ORValidator(lhs: lhs, rhs: rhs)
 }
 
-/// :nodoc:
+/// Defines the `&&` operator for two `Validator` operands.
 public func && (lhs: Validator, rhs: Validator) -> Validator {
     ANDValidator(lhs: lhs, rhs: rhs)
 }

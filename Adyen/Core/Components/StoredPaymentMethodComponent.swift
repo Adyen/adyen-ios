@@ -7,20 +7,22 @@
 import Foundation
 import UIKit
 
-/// :nodoc:
+///  A component that handle stored payment methods.
 public final class StoredPaymentMethodComponent: PaymentComponent, PresentableComponent, Localizable {
 
-    /// :nodoc:
     /// The context object for this component.
     public let context: AdyenContext
 
-    /// :nodoc:
+    /// The stored payment method.
     public var paymentMethod: PaymentMethod { storedPaymentMethod }
 
-    /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
-
-    /// :nodoc:
+    
+    /// Initializes new instance of `StoredPaymentMethodComponent`.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The stored payment method.
+    ///   - context: The context object.
     public init(paymentMethod: StoredPaymentMethod,
                 context: AdyenContext) {
         self.storedPaymentMethod = paymentMethod
@@ -31,7 +33,6 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
     
     // MARK: - PresentableComponent
 
-    /// :nodoc:
     public lazy var viewController: UIViewController = {
         Analytics.sendEvent(
             component: storedPaymentMethod.type.rawValue,
@@ -65,22 +66,23 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
         return alertController
     }()
     
-    /// :nodoc:
     public var localizationParameters: LocalizationParameters?
     
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension StoredPaymentMethodComponent: TrackableComponent {}
 
-/// :nodoc:
+/// Store payment method details.
 public struct StoredPaymentDetails: PaymentMethodDetails {
     
     internal let type: PaymentMethodType
     
     internal let storedPaymentMethodIdentifier: String
-
-    /// :nodoc:
+    
+    /// Initializes a new instance of `StoredPaymentDetails`
+    ///
+    /// - Parameter paymentMethod: The payment method.
     public init(paymentMethod: StoredPaymentMethod) {
         self.type = paymentMethod.type
         self.storedPaymentMethodIdentifier = paymentMethod.identifier

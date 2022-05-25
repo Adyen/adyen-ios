@@ -14,16 +14,13 @@ public protocol Localizable {
     var localizationParameters: LocalizationParameters? { get set }
 }
 
-/// :nodoc:
 /// Represents any object than can handle a cancel event.
 public protocol Cancellable: AnyObject {
     
-    /// :nodoc:
     /// Called when the user cancels the component.
     func didCancel()
 }
 
-/// :nodoc:
 /// Represents navigation bar on top of presentable components.
 public protocol AnyNavigationBar: UIView {
     
@@ -31,7 +28,7 @@ public protocol AnyNavigationBar: UIView {
     
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public enum NavigationBarType {
     case regular
     case custom(AnyNavigationBar)
@@ -48,27 +45,28 @@ public protocol PresentableComponent: Component {
     var viewController: UIViewController { get }
     
     /// Indicates whether Component implements a custom Navigation bar.
+    @_spi(AdyenInternal)
     var navBarType: NavigationBarType { get }
 }
 
-/// :nodoc:
+/// A component that provides a view controller for the shopper to fill payment details.
 public extension PresentableComponent {
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     var requiresModalPresentation: Bool { false }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     var navBarType: NavigationBarType { .regular }
     
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public protocol TrackableComponent: Component {
 
     func sendTelemetryEvent()
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension TrackableComponent where Self: PaymentMethodAware {
 
     public func sendTelemetryEvent() {

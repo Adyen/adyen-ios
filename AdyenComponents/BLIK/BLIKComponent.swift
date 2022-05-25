@@ -4,37 +4,32 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
 /// A component that provides a form for BLIK payments.
-public final class BLIKComponent: PaymentComponent, PresentableComponent, LoadingComponent, ViewControllerDelegate {
+public final class BLIKComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
     /// Configuration for BLIK Component.
     public typealias Configuration = BasicComponentConfiguration
     
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
     
-    /// :nodoc:
     public var paymentMethod: PaymentMethod { blikPaymentMethod }
 
-    /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
 
-    /// :nodoc:
     public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
                                                                              style: configuration.style)
     
     /// Component's configuration
     public var configuration: Configuration
 
-    /// :nodoc:
     public let requiresModalPresentation: Bool = true
 
-    /// :nodoc:
     private let blikPaymentMethod: BLIKPaymentMethod
 
     /// Initializes the BLIK component.
@@ -49,14 +44,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
         self.context = context
         self.configuration = configuration
     }
-
-    // MARK: - ViewControllerDelegate
-
-    public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
-    }
-
-    /// :nodoc:
+    
     public func stopLoading() {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
@@ -126,4 +114,14 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
     }
 }
 
+@_spi(AdyenInternal)
 extension BLIKComponent: TrackableComponent {}
+
+@_spi(AdyenInternal)
+extension BLIKComponent: ViewControllerDelegate {
+    // MARK: - ViewControllerDelegate
+
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
+    }
+}

@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 internal final class WrapperViewController: UIViewController {
@@ -99,7 +99,6 @@ extension ModalViewController {
 
     /// Enables any `UIViewController` to recalculate it's content's size form modal presentation ,
     /// e.g `viewController.adyen.finalPresentationFrame(in:keyboardRect:)`.
-    /// :nodoc:
     internal func finalPresentationFrame(with keyboardRect: CGRect = .zero) -> CGRect {
         view.layer.layoutIfNeeded()
         let expectedWidth = Dimensions.greatestPresentableWidth

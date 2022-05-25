@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import Foundation
 import UIKit
@@ -15,8 +15,7 @@ import UIKit
  - SeeAlso:
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
-public class CardComponent: PublicKeyConsumer,
-    PresentableComponent,
+public class CardComponent: PresentableComponent,
     LoadingComponent {
 
     internal enum Constant {
@@ -27,13 +26,13 @@ public class CardComponent: PublicKeyConsumer,
         internal static let publicPanSuffixLength = 4
     }
     
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
     
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public let publicKeyProvider: AnyPublicKeyProvider
 
     internal let binInfoProvider: AnyBinInfoProvider
@@ -83,7 +82,6 @@ public class CardComponent: PublicKeyConsumer,
                   binProvider: binInfoProvider)
     }
     
-    /// :nodoc:
     /// Initializes the card component.
     ///
     /// - Parameters:
@@ -110,7 +108,6 @@ public class CardComponent: PublicKeyConsumer,
     
     // MARK: - Presentable Component Protocol
     
-    /// :nodoc:
     public var viewController: UIViewController {
         if let storedCardComponent = storedCardComponent {
             return storedCardComponent.viewController
@@ -118,10 +115,8 @@ public class CardComponent: PublicKeyConsumer,
         return securedViewController
     }
     
-    /// :nodoc:
     public var requiresModalPresentation: Bool { storedCardComponent?.requiresModalPresentation ?? true }
     
-    /// :nodoc:
     public func stopLoading() {
         cardViewController.stopLoading()
     }
@@ -185,3 +180,6 @@ extension CardComponent: CardViewControllerDelegate {
     }
     
 }
+
+@_spi(AdyenInternal)
+extension CardComponent: PublicKeyConsumer {}

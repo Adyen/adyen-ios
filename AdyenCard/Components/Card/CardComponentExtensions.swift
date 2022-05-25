@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
@@ -55,13 +55,12 @@ extension CardComponent {
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension CardComponent: TrackableComponent {}
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension CardComponent: ViewControllerDelegate {
 
-    /// :nodoc:
     public func viewDidLoad(viewController: UIViewController) {
         Analytics.sendEvent(component: paymentMethod.type.rawValue,
                             flavor: _isDropIn ? .dropin : .components,
@@ -70,7 +69,6 @@ extension CardComponent: ViewControllerDelegate {
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
     }
 
-    /// :nodoc:
     public func viewWillAppear(viewController: UIViewController) {
         sendTelemetryEvent()
     }

@@ -1,18 +1,17 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension URL: AdyenCompatible {}
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension AdyenScope where Base == URL {
     
-    /// :nodoc:
     public var queryParameters: [String: String] {
         let components = URLComponents(url: base, resolvingAgainstBaseURL: true)
         let queryItems = components?.queryItems ?? []
@@ -22,7 +21,6 @@ extension AdyenScope where Base == URL {
         })
     }
 
-    /// :nodoc:
     public var isHttp: Bool {
         base.scheme == "http" || base.scheme == "https"
     }

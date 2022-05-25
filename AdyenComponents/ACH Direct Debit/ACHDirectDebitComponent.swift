@@ -4,14 +4,14 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
 import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
-public final class ACHDirectDebitComponent: PaymentComponent, PresentableComponent, LoadingComponent, PublicKeyConsumer {
+public final class ACHDirectDebitComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
     private enum ViewIdentifier {
         static let headerItem = "headerItem"
@@ -22,32 +22,27 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         static let payButtonItem = "payButtonItem"
     }
     
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
     
-    /// :nodoc:
     public var paymentMethod: PaymentMethod {
         achDirectDebitPaymentMethod
     }
 
-    /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
     
     /// Component configuration
     public var configuration: Configuration
 
-    /// :nodoc:
     public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
                                                                              style: configuration.style)
 
-    /// :nodoc:
     public let requiresModalPresentation: Bool = true
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public let publicKeyProvider: AnyPublicKeyProvider
     
-    /// :nodoc:
     private var defaultCountryCode: String {
         payment?.countryCode ?? configuration.billingAddressCountryCodes.first ?? "US"
     }
@@ -70,7 +65,6 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
                   publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
     
-    /// :nodoc:
     internal init(paymentMethod: ACHDirectDebitPaymentMethod,
                   context: AdyenContext,
                   configuration: Configuration = .init(),
@@ -82,7 +76,6 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         self.publicKeyProvider = publicKeyProvider
     }
     
-    /// :nodoc:
     public func stopLoading() {
         payButton.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
@@ -247,13 +240,12 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     }()
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension ACHDirectDebitComponent: TrackableComponent {}
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension ACHDirectDebitComponent: ViewControllerDelegate {
 
-    /// :nodoc:
     public func viewDidLoad(viewController: UIViewController) {
         Analytics.sendEvent(component: paymentMethod.type.rawValue,
                             flavor: _isDropIn ? .dropin : .components,
@@ -279,7 +271,6 @@ extension ACHDirectDebitComponent {
         /// The shopper's information to be prefilled.
         public var shopperInformation: PrefilledShopperInformation?
         
-        /// :nodoc:
         public var localizationParameters: LocalizationParameters?
         
         /// Determines whether the billing address should be displayed or not.
@@ -312,3 +303,6 @@ extension ACHDirectDebitComponent {
         }
     }
 }
+
+@_spi(AdyenInternal)
+extension ACHDirectDebitComponent: PublicKeyConsumer {}

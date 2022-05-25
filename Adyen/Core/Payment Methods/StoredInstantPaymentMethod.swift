@@ -19,7 +19,7 @@ public struct StoredInstantPaymentMethod: StoredPaymentMethod {
 
     public let supportedShopperInteractions: [ShopperInteraction]
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }

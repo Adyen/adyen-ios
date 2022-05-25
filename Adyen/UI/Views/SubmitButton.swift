@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,10 +7,9 @@
 import UIKit
 
 /// A rounded submit button used to submit details.
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class SubmitButton: UIControl {
     
-    /// :nodoc:
     private let style: ButtonStyle
     
     /// Initializes the submit button.
@@ -32,7 +31,6 @@ public final class SubmitButton: UIControl {
         configureConstraints()
     }
     
-    /// :nodoc:
     @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -67,7 +65,6 @@ public final class SubmitButton: UIControl {
         return titleLabel
     }()
     
-    /// :nodoc:
     override public var accessibilityIdentifier: String? {
         didSet {
             titleLabel.accessibilityIdentifier = accessibilityIdentifier.map {
@@ -145,7 +142,6 @@ public final class SubmitButton: UIControl {
     
     // MARK: - State
     
-    /// :nodoc:
     override public var isHighlighted: Bool {
         didSet {
             backgroundView.isHighlighted = isHighlighted

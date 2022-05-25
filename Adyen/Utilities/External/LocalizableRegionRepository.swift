@@ -7,7 +7,7 @@
 import Foundation
 
 /// Model for any geographic region.
-/// :nodoc:
+@_spi(AdyenInternal)
 public struct Region: Decodable, CustomStringConvertible, Equatable {
 
     /// Unique identifier.
@@ -16,12 +16,10 @@ public struct Region: Decodable, CustomStringConvertible, Equatable {
     /// Localized human-friendly name.
     public let name: String
 
-    /// :nodoc:
     public var description: String {
         name
     }
 
-    /// :nodoc:
     internal enum CodingKeys: String, CodingKey {
         case identifier = "id"
         case name
@@ -29,7 +27,6 @@ public struct Region: Decodable, CustomStringConvertible, Equatable {
 }
 
 /// Fetch localized geographic regions from external.
-/// :nodoc:
 internal enum RegionRepository {
 
     internal static func regions(from locale: NSLocale, countryCodes: [String]? = nil) -> [Region] {

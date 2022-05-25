@@ -8,29 +8,25 @@ import Foundation
 import UIKit
 
 /// A component that wraps any `Component` to make it a `PresentableComponent`.
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class PresentableComponentWrapper: PresentableComponent,
     Cancellable,
     FinalizableComponent,
     LoadingComponent {
     
-    /// :nodoc:
     public var apiContext: APIContext { component.context.apiContext }
 
-    /// :nodoc:
     /// The context object for this component.
     public var context: AdyenContext { component.context }
     
-    /// :nodoc:
     public let viewController: UIViewController
     
     /// The wrapped component.
     public let component: Component
     
-    /// :nodoc:
     public let requiresModalPresentation: Bool = true
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public var navBarType: NavigationBarType
     
     /// Initializes the wrapper component.

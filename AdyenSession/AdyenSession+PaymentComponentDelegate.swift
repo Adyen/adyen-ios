@@ -4,13 +4,13 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenActions)
-    import AdyenActions
+    @_spi(AdyenInternal) import AdyenActions
 #endif
 import Foundation
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension AdyenSession: PaymentComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         let handler = delegate?.handlerForPayments(in: component, session: self) ?? self
@@ -34,7 +34,7 @@ extension AdyenSession: PaymentComponentDelegate {
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension AdyenSession: AdyenSessionPaymentsHandler {
     public func didSubmit(_ paymentComponentData: PaymentComponentData,
                           from component: Component,

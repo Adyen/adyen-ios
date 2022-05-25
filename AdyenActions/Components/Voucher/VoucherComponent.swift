@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import PassKit
 import UIKit
@@ -17,17 +17,15 @@ internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
 /// A component that handles voucher action.
 public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent {
 
-    /// :nodoc:
     /// The context object for this component.
+    @_spi(AdyenInternal)
     public let context: AdyenContext
     
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
 
-    /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
 
-    /// :nodoc:
     public let requiresModalPresentation: Bool = true
     
     /// The voucher component configurations.
@@ -53,10 +51,8 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     /// The voucher component configurations.
     public var configuration: Configuration
 
-    /// :nodoc:
     internal var voucherShareableViewProvider: AnyVoucherShareableViewProvider
 
-    /// :nodoc:
     private lazy var apiClient: APIClientProtocol = {
         let scheduler = SimpleScheduler(maximumCount: 3)
         return APIClient(apiContext: context.apiContext)
@@ -64,18 +60,14 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
             .retryOnErrorAPIClient()
     }()
     
-    /// :nodoc:
     internal func canAddPasses(action: AnyVoucherAction) -> Bool {
         PKAddPassesViewController.canAddPasses() && action.passCreationToken != nil
     }
 
-    /// :nodoc:
     private let componentName = "voucher"
 
-    /// :nodoc:
     internal let passProvider: AnyAppleWalletPassProvider
     
-    /// :nodoc:
     internal var view: VoucherView?
 
     /// Initializes the `VoucherComponent`.
@@ -105,7 +97,6 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
         self.passProvider = passProvider ?? AppleWalletPassProvider(context: context)
     }
 
-    /// :nodoc:
     public func didCancel() {}
 
     /// Handles await action.

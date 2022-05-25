@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Contains the details supplied by the SEPA Direct Debit component.
@@ -21,7 +21,6 @@ public struct SEPADirectDebitDetails: PaymentMethodDetails {
     
     /// Initializes the SEPA Direct Debit details.
     ///
-    /// :nodoc:
     ///
     /// - Parameters:
     ///   - paymentMethod: The SEPA Direct Debit payment method.

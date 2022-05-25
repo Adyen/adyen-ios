@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 /// A component that provides a form for Atome payment.
@@ -19,7 +19,6 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
 
     // MARK: - Items
 
-    /// :nodoc:
     private let personalDetailsHeaderItem: FormLabelItem
 
     // MARK: - Initializers
@@ -54,7 +53,6 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
 
     // MARK: - Private
 
-    /// :nodoc:
     private func setupItems() {
         personalDetailsHeaderItem.text = localizedString(.boletoPersonalDetails, configuration.localizationParameters)
         phoneItem?.title = localizedString(.phoneNumberTitle, configuration.localizationParameters)
@@ -62,12 +60,12 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
 
     // MARK: - Public
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     override public func submitButtonTitle() -> String {
         localizedString(.continueTitle, configuration.localizationParameters)
     }
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     override public func createPaymentDetails() throws -> PaymentMethodDetails {
         guard let firstName = firstNameItem?.value,
               let lastName = lastNameItem?.value,
@@ -84,13 +82,13 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
         return atomeDetails
     }
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     override public func phoneExtensions() -> [PhoneExtension] {
         let query = PhoneExtensionsQuery(paymentMethod: .generic)
         return PhoneExtensionsRepository.get(with: query)
     }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     override public func addressViewModelBuilder() -> AddressViewModelBuilder {
         AtomeAddressViewModelBuilder()
     }

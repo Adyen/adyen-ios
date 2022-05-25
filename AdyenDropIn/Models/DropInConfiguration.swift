@@ -4,15 +4,15 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenCard)
-    import AdyenCard
+    @_spi(AdyenInternal) import AdyenCard
 #endif
 #if canImport(AdyenComponents)
     import AdyenComponents
 #endif
 #if canImport(AdyenActions)
-    import AdyenActions
+    @_spi(AdyenInternal) import AdyenActions
 #endif
 import Foundation
 import PassKit
@@ -45,7 +45,7 @@ public extension DropInComponent {
         public var localizationParameters: LocalizationParameters?
 
         /// The payment information.
-        public var payment: Adyen.Payment?
+        public var payment: Payment?
         
         /// Determines whether to enable skipping payment list step
         /// when there is only one non-instant payment method.

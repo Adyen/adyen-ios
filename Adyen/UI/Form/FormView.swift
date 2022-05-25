@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,6 @@
 import UIKit
 
 /// Displays a form for the user to enter details.
-/// :nodoc:
 internal final class FormView: UIScrollView {
 
     /// Initializes the form view.
@@ -20,7 +19,6 @@ internal final class FormView: UIScrollView {
         configureConstraints()
     }
     
-    /// :nodoc:
     @available(*, unavailable)
     internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

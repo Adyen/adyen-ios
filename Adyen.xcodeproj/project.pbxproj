@@ -728,6 +728,10 @@
 		F9CA6BC127D5E76A00D7BE6E /* CreateOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CA6BC027D5E76A00D7BE6E /* CreateOrderRequest.swift */; };
 		F9CA6BC427D5E99000D7BE6E /* CancelOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CA6BC327D5E99000D7BE6E /* CancelOrderRequest.swift */; };
 		F9CA6BC627D7503200D7BE6E /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CA6BC527D7503200D7BE6E /* SessionTests.swift */; };
+		F9CFB05A28351709002F3B72 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CFB05928351709002F3B72 /* APIRequest.swift */; };
+		F9CFB05B28351709002F3B72 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CFB05928351709002F3B72 /* APIRequest.swift */; };
+		F9CFB05D283541DC002F3B72 /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CFB05C283541DC002F3B72 /* UIView+Helpers.swift */; };
+		F9CFB05E283541DC002F3B72 /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CFB05C283541DC002F3B72 /* UIView+Helpers.swift */; };
 		F9D5453F26872CFE00C9DF41 /* UIViewAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D5453E26872CFE00C9DF41 /* UIViewAnimation.swift */; };
 		F9D5750E237475DB009C18B5 /* CardEncryptorCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D5750D237475DB009C18B5 /* CardEncryptorCardTests.swift */; };
 		F9D5751223756BD0009C18B5 /* CardPublicKeyValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D5751123756BD0009C18B5 /* CardPublicKeyValidator.swift */; };
@@ -1705,6 +1709,7 @@
 		F99F08592383EAC800EBB948 /* FormatterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterMock.swift; sourceTree = "<group>"; };
 		F99F08632383F2B000EBB948 /* FormTextItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextItemViewTests.swift; sourceTree = "<group>"; };
 		F99F08652383F2D300EBB948 /* FormTextItemViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextItemViewDelegateMock.swift; sourceTree = "<group>"; };
+		F9A1B477283B689F005F3145 /* Adyen.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Adyen.docc; sourceTree = "<group>"; };
 		F9A2D01125DBF104008944BE /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
 		F9A53C3E2549887F009000A7 /* DefaultAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultAPIClient.swift; sourceTree = "<group>"; };
 		F9A53C402549887F009000A7 /* Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
@@ -1756,6 +1761,8 @@
 		F9CA6BC027D5E76A00D7BE6E /* CreateOrderRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOrderRequest.swift; sourceTree = "<group>"; };
 		F9CA6BC327D5E99000D7BE6E /* CancelOrderRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelOrderRequest.swift; sourceTree = "<group>"; };
 		F9CA6BC527D7503200D7BE6E /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
+		F9CFB05928351709002F3B72 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
+		F9CFB05C283541DC002F3B72 /* UIView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		F9D5453E26872CFE00C9DF41 /* UIViewAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewAnimation.swift; sourceTree = "<group>"; };
 		F9D5750D237475DB009C18B5 /* CardEncryptorCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardEncryptorCardTests.swift; sourceTree = "<group>"; };
 		F9D5751123756BD0009C18B5 /* CardPublicKeyValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPublicKeyValidator.swift; sourceTree = "<group>"; };
@@ -2635,6 +2642,7 @@
 		E2C0E02922097916008616F6 = {
 			isa = PBXGroup;
 			children = (
+				F9A1B477283B689F005F3145 /* Adyen.docc */,
 				F94B870925EFB71100D270A6 /* MIGRATION.md */,
 				E27B8EAD22B79CD20075BB6A /* README.md */,
 				E2289B3A23D04B57002844BF /* .jazzy.yaml */,
@@ -2727,6 +2735,7 @@
 				E2C0E07F220B0399008616F6 /* AppDelegate.swift */,
 				E24FECF4226EF9AB00A65122 /* ComponentsViewController.swift */,
 				E24FECF6226EF9D800A65122 /* ComponentsView.swift */,
+				F9CFB05C283541DC002F3B72 /* UIView+Helpers.swift */,
 				E9909FB322B7C815008DE50C /* PaymentMethods.json */,
 				E97B970A2297ED0D00505476 /* LaunchScreen.storyboard */,
 				E2C0E086220B039B008616F6 /* Assets.xcassets */,
@@ -4174,6 +4183,7 @@
 				F9A53C402549887F009000A7 /* Environment.swift */,
 				F9A53C412549887F009000A7 /* PaymentDetailsRequest.swift */,
 				F9A53C422549887F009000A7 /* PaymentsRequest.swift */,
+				F9CFB05928351709002F3B72 /* APIRequest.swift */,
 				F9A53C432549887F009000A7 /* PaymentMethodsRequest.swift */,
 				F99E73AA2624845F00EA5B78 /* BalanceCheckRequest.swift */,
 				F9FE248326258F6E001874BB /* CancelOrderRequest.swift */,
@@ -5834,6 +5844,7 @@
 				E7D18A1025D44769006AD3B7 /* IntegrationExampleComponents.swift in Sources */,
 				F9885430272C078E00F34557 /* DisableStoredPaymentMethodRequest.swift in Sources */,
 				E24FECFC226EFD3C00A65122 /* ComponentsItem.swift in Sources */,
+				F9CFB05D283541DC002F3B72 /* UIView+Helpers.swift in Sources */,
 				F9A53C442549887F009000A7 /* DefaultAPIClient.swift in Sources */,
 				E24FED0D2270915A00A65122 /* CodingHelpers.swift in Sources */,
 				C9454C37276A340B0086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */,
@@ -5847,6 +5858,7 @@
 				A09ADA0E2806E72D00BF6802 /* IntegrationExampleSession.swift in Sources */,
 				5A545FC72642F77500724A87 /* ConfigurationViewModel.swift in Sources */,
 				E24FECF5226EF9AB00A65122 /* ComponentsViewController.swift in Sources */,
+				F9CFB05A28351709002F3B72 /* APIRequest.swift in Sources */,
 				5A54600F264433CD00724A87 /* SearchBar.swift in Sources */,
 				E24FECF7226EF9D800A65122 /* ComponentsView.swift in Sources */,
 				E7D18A0425D44610006AD3B7 /* IntegrationExampleDropIn.swift in Sources */,
@@ -6075,12 +6087,14 @@
 				F9FE24DA26259267001874BB /* CreateOrderRequest.swift in Sources */,
 				F9FE24C32625913F001874BB /* CancelOrderRequest.swift in Sources */,
 				F9A53C542549887F009000A7 /* PaymentMethodsRequest.swift in Sources */,
+				F9CFB05B28351709002F3B72 /* APIRequest.swift in Sources */,
 				F9885431272C078E00F34557 /* DisableStoredPaymentMethodRequest.swift in Sources */,
 				F99E73CB2624847100EA5B78 /* BalanceCheckRequest.swift in Sources */,
 				F95B6D982527454E002C9062 /* AppDelegate.swift in Sources */,
 				F9A53C4B2549887F009000A7 /* Environment.swift in Sources */,
 				F9A53C512549887F009000A7 /* PaymentsRequest.swift in Sources */,
 				F95B6DD4252B294C002C9062 /* IntegrationExample.swift in Sources */,
+				F9CFB05E283541DC002F3B72 /* UIView+Helpers.swift in Sources */,
 				F9A53C4E2549887F009000A7 /* PaymentDetailsRequest.swift in Sources */,
 				E7D18A0525D44610006AD3B7 /* IntegrationExampleDropIn.swift in Sources */,
 				F9A53D6325499B13009000A7 /* Configuration.swift in Sources */,
