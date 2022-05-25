@@ -16,7 +16,7 @@ public final class AdyenContext {
     /// The API context used to retrieve internal resources.
     public let apiContext: APIContext
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public let analyticsProvider: AnalyticsProviderProtocol
 
     // MARK: - Initializers
@@ -33,7 +33,6 @@ public final class AdyenContext {
                                                    configuration: analyticsConfiguration)
     }
 
-    /// :nodoc:
     internal init(apiContext: APIContext,
                   analyticsProvider: AnalyticsProviderProtocol) {
         self.apiContext = apiContext

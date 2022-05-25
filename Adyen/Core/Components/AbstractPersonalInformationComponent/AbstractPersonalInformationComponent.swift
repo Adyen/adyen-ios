@@ -11,7 +11,6 @@ import UIKit
 /// who's form consists of a combination of personal information pieces like first name, last name, phone, email, and billing address.
 open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent {
 
-    /// :nodoc:
     public typealias Configuration = PersonalInformationConfiguration
     
     // MARK: - Properties
@@ -34,7 +33,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     
     private let fields: [PersonalInformation]
 
-    /// :nodoc:
     internal lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(style: configuration.style)
         formViewController.localizationParameters = configuration.localizationParameters

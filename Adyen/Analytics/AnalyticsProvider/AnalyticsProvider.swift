@@ -15,7 +15,7 @@ public struct AnalyticsConfiguration {
     /// A Boolean value that determines whether analytics is enabled.
     public var isEnabled = true
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public var isTelemetryEnabled = true
 
     // MARK: - Initializers
@@ -23,10 +23,9 @@ public struct AnalyticsConfiguration {
     public init() { /* Empty implementation */ }
 }
 
-/// : nodoc:
+@_spi(AdyenInternal)
 public protocol AnalyticsProviderProtocol: TelemetryTrackerProtocol {}
 
-/// : nodoc:
 internal final class AnalyticsProvider: AnalyticsProviderProtocol {
 
     // MARK: - Properties

@@ -20,7 +20,7 @@ public protocol ViewControllerDelegate: AnyObject {
     func viewWillAppear(viewController: UIViewController)
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension ViewControllerDelegate {
 
     public func viewDidLoad(viewController: UIViewController) { /* Empty implementation */ }

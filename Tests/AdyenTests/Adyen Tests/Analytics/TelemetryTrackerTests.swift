@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenNetworking
 
 
