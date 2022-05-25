@@ -13,10 +13,16 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
     /// The context object for this component.
     public let context: AdyenContext
 
+    /// The stored payment method.
     public var paymentMethod: PaymentMethod { storedPaymentMethod }
 
     public weak var delegate: PaymentComponentDelegate?
-
+    
+    /// Initializes new instance of `StoredPaymentMethodComponent`.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The stored payment method.
+    ///   - context: The context object.
     public init(paymentMethod: StoredPaymentMethod,
                 context: AdyenContext) {
         self.storedPaymentMethod = paymentMethod
