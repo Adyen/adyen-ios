@@ -12,7 +12,8 @@ import UIKit
 internal final class StoredCardComponent: PaymentComponent, PresentableComponent, Localizable {
     
     /// :nodoc:
-    internal let apiContext: APIContext
+    /// The context object for this component.
+    internal let context: AdyenContext
     
     /// The card payment method.
     internal var paymentMethod: PaymentMethod { storedCardPaymentMethod }
@@ -31,9 +32,9 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
     
     /// :nodoc:
     internal init(storedCardPaymentMethod: StoredCardPaymentMethod,
-                  apiContext: APIContext) {
+                  context: AdyenContext) {
         self.storedCardPaymentMethod = storedCardPaymentMethod
-        self.apiContext = apiContext
+        self.context = context
     }
     
     /// :nodoc:
@@ -46,11 +47,12 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
         Analytics.sendEvent(
             component: paymentMethod.type.rawValue,
             flavor: _isDropIn ? .dropin : .components,
-            context: apiContext
+            context: context.apiContext
         )
+        sendTelemetryEvent()
         
         let manager = StoredCardAlertManager(paymentMethod: storedCardPaymentMethod,
-                                             apiContext: apiContext,
+                                             context: context,
                                              amount: payment?.amount)
         
         manager.localizationParameters = localizationParameters
@@ -67,5 +69,7 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
         
         return manager
     }()
-
 }
+
+/// :nodoc:
+extension StoredCardComponent: TrackableComponent {}

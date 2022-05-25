@@ -20,6 +20,10 @@ class GiftCardComponentTests: XCTestCase {
 
     var publicKeyProvider: PublicKeyProviderMock!
 
+    var analyticsProviderMock: AnalyticsProviderMock!
+
+    var context: AdyenContext!
+
     var sut: GiftCardComponent!
 
     var paymentMethod: GiftCardPaymentMethod!
@@ -40,17 +44,34 @@ class GiftCardComponentTests: XCTestCase {
         sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.payButtonItem.button")
     }
 
-    override func setUp() {
-        super.setUp()
+    override func setUpWithError() throws {
+        try super.setUpWithError()
         paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
         publicKeyProvider = PublicKeyProviderMock()
-        sut = GiftCardComponent(paymentMethod: paymentMethod, apiContext: Dummy.context, publicKeyProvider: publicKeyProvider)
+
+        analyticsProviderMock = AnalyticsProviderMock()
+        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+
+        sut = GiftCardComponent(paymentMethod: paymentMethod,
+                                context: context,
+                                publicKeyProvider: publicKeyProvider)
         delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
         partialPaymentDelegate = PartialPaymentDelegateMock()
         sut.partialPaymentDelegate = partialPaymentDelegate
         readyToSubmitPaymentComponentDelegate = ReadyToSubmitPaymentComponentDelegateMock()
         sut.readyToSubmitComponentDelegate = readyToSubmitPaymentComponentDelegate
+    }
+
+    override func tearDownWithError() throws {
+        paymentMethod = nil
+        publicKeyProvider = nil
+        analyticsProviderMock = nil
+        context = nil
+        delegateMock = nil
+        partialPaymentDelegate = nil
+        sut = nil
+        try super.tearDownWithError()
     }
 
     func testCheckBalanceFailure() throws {
@@ -529,6 +550,17 @@ class GiftCardComponentTests: XCTestCase {
         XCTAssertEqual(sut.errorItem.message, "An unknown error occurred")
 
         waitForExpectations(timeout: 10, handler: nil)
+    }
+
+    func testViewWillAppearShouldSendTelemetryEvent() throws {
+        // Given
+        let mockViewController = UIViewController()
+
+        // When
+        sut.viewWillAppear(viewController: mockViewController)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
     }
 
     private func populate(cardNumber: String, pin: String) {

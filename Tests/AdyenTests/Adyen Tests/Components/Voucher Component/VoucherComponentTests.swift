@@ -18,7 +18,7 @@ class VoucherComponentTests: XCTestCase {
     override func setUp() {
         super.setUp()
         presentationDelegate = PresentationDelegateMock()
-        sut = VoucherComponent(apiContext: Dummy.context)
+        sut = VoucherComponent(context: Dummy.context)
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "test_table")
         sut.presentationDelegate = presentationDelegate
     }
@@ -209,7 +209,7 @@ class VoucherComponentTests: XCTestCase {
             model.logoUrl,
             LogoURLProvider.logoURL(
                 withName: action.anyAction.paymentMethodType.rawValue,
-                environment: Dummy.context.environment,
+                environment: Dummy.apiContext.environment,
                 size: .medium
             )
         )

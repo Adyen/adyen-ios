@@ -9,13 +9,14 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for BLIK payments.
-public final class BLIKComponent: PaymentComponent, PresentableComponent, LoadingComponent {
+public final class BLIKComponent: PaymentComponent, PresentableComponent, LoadingComponent, ViewControllerDelegate {
     
     /// Configuration for BLIK Component.
     public typealias Configuration = BasicComponentConfiguration
     
     /// :nodoc:
-    public let apiContext: APIContext
+    /// The context object for this component.
+    public let context: AdyenContext
     
     /// :nodoc:
     public var paymentMethod: PaymentMethod { blikPaymentMethod }
@@ -39,14 +40,20 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
     /// Initializes the BLIK component.
     ///
     /// - Parameter paymentMethod: The BLIK payment method.
-    /// - Parameter apiContext: The API context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: BLIKPaymentMethod,
-                apiContext: APIContext,
+                context: AdyenContext,
                 configuration: Configuration = .init()) {
         self.blikPaymentMethod = paymentMethod
-        self.apiContext = apiContext
+        self.context = context
         self.configuration = configuration
+    }
+
+    // MARK: - ViewControllerDelegate
+
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
     }
 
     /// :nodoc:
@@ -104,6 +111,8 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
         }
         return item
     }()
+
+    // MARK: - Private
 
     private func didSelectSubmitButton() {
         guard formViewController.validate() else { return }

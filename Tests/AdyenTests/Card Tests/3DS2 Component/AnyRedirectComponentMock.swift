@@ -12,7 +12,11 @@ import Foundation
 
 final class AnyRedirectComponentMock: AnyRedirectComponent {
     
-    let apiContext = Dummy.context
+    let apiContext = Dummy.apiContext
+
+    var context: AdyenContext {
+        return .init(apiContext: apiContext)
+    }
 
     var delegate: ActionComponentDelegate?
 

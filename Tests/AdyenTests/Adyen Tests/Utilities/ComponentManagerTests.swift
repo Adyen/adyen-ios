@@ -56,20 +56,24 @@ class ComponentManagerTests: XCTestCase {
     let numberOfExpectedRegularComponents = 19
 
     var presentationDelegate: PresentationDelegateMock!
+    var context: AdyenContext!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         presentationDelegate = PresentationDelegateMock()
+        context = Dummy.context
     }
 
     override func tearDownWithError() throws {
         presentationDelegate = nil
+        context = nil
         try super.tearDownWithError()
     }
 
     func testClientKeyInjectionAndProtocolConfromance() throws {
-        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(context: context)
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
                                    configuration: config,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -77,8 +81,8 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.storedComponents.count, 4)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
 
-        XCTAssertEqual(sut.storedComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, 4)
-        XCTAssertEqual(sut.regularComponents.filter { $0.apiContext.clientKey == Dummy.context.clientKey }.count, numberOfExpectedRegularComponents)
+        XCTAssertEqual(sut.storedComponents.filter { $0.context.apiContext.clientKey == Dummy.apiContext.clientKey }.count, 4)
+        XCTAssertEqual(sut.regularComponents.filter { $0.context.apiContext.clientKey == Dummy.apiContext.clientKey }.count, numberOfExpectedRegularComponents)
 
         XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 15)
         XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 15)
@@ -86,9 +90,10 @@ class ComponentManagerTests: XCTestCase {
     }
 
     func testApplePayPaymentMethod() {
-        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(context: context)
         config.applePay = .init(payment: Dummy.createTestApplePayPayment(), merchantIdentifier: "merchant.com.test")
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
                                    configuration: config,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -102,11 +107,12 @@ class ComponentManagerTests: XCTestCase {
     }
     
     func testLocalizationWithCustomTableName() throws {
-        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(context: context)
         config.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
                                    configuration: config,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -118,11 +124,12 @@ class ComponentManagerTests: XCTestCase {
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
-        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(context: Dummy.context)
         config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         config.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
                                    configuration: config,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -134,7 +141,7 @@ class ComponentManagerTests: XCTestCase {
     }
 
     func testOrderInjection() throws {
-        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(context: Dummy.context)
         config.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
 
         let order = PartialPaymentOrder(pspReference: "test pspRef", orderData: "test order data")
@@ -152,6 +159,7 @@ class ComponentManagerTests: XCTestCase {
         ]
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
                                    configuration: config,
                                    order: order,
                                    presentationDelegate: presentationDelegate)
@@ -168,9 +176,10 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnAffirmComponent() throws {
         // Given
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        let configuration = DropInComponent.Configuration(context: Dummy.context)
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
                                    configuration: configuration,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -186,9 +195,10 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnDokuComponent() throws {
         // Given
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        let configuration = DropInComponent.Configuration(context: Dummy.context)
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
                                    configuration: configuration,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -204,9 +214,10 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnMBWayComponent() throws {
         // Given
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        let configuration = DropInComponent.Configuration(context: Dummy.context)
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
                                    configuration: configuration,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -222,9 +233,10 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnBasicPersonalInfoFormComponent() throws {
         // Given
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        let configuration = DropInComponent.Configuration(context: Dummy.context)
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
                                    configuration: configuration,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -240,9 +252,10 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnBoletoComponent() throws {
         // Given
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        let configuration = DropInComponent.Configuration(context: Dummy.context)
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
                                    configuration: configuration,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -258,9 +271,10 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnCardComponent() throws {
         // Given
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        let configuration = DropInComponent.Configuration(context: Dummy.context)
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
                                    configuration: configuration,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
@@ -276,9 +290,10 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnAtomeComponent() throws {
         // Given
         let paymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        let configuration = DropInComponent.Configuration(apiContext: Dummy.context)
+        let configuration = DropInComponent.Configuration(context: context)
         configuration.shopper = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
                                    configuration: configuration,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)

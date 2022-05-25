@@ -10,8 +10,10 @@ import UIKit
 
 /// A component that handles document actions.
 public final class DocumentComponent: ActionComponent, ShareableComponent {
+
     /// :nodoc:
-    public let apiContext: APIContext
+    /// The context object for this component.
+    public let context: AdyenContext
     
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
@@ -50,10 +52,11 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     
     /// Initializes the `DocumentComponent`.
     ///
-    /// - Parameter apiContext: The API context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The Component configurations.
-    public init(apiContext: APIContext, configuration: Configuration = .init()) {
-        self.apiContext = apiContext
+    public init(context: AdyenContext,
+                configuration: Configuration = .init()) {
+        self.context = context
         self.configuration = configuration
     }
     
@@ -61,10 +64,10 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     ///
     /// - Parameter action: The document action object.
     public func handle(_ action: DocumentAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         
         let imageURL = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue,
-                                               environment: apiContext.environment,
+                                               environment: context.apiContext.environment,
                                                size: .medium)
         let viewModel = DocumentActionViewModel(action: action,
                                                 message: localizedString(.bacsDownloadMandate, configuration.localizationParameters),

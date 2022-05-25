@@ -13,7 +13,11 @@ import XCTest
 
 final class PollingHandlerMock: AnyPollingHandler {
     
-    let apiContext = Dummy.context
+    let apiContext = Dummy.apiContext
+
+    var context: AdyenContext {
+        return .init(apiContext: apiContext)
+    }
 
     var delegate: ActionComponentDelegate?
 
@@ -54,7 +58,7 @@ class AwaitComponentTests: XCTestCase {
 
     func testLocalizationWithCustomTableName() {
 
-        let sut = AwaitComponent(apiContext: Dummy.context)
+        let sut = AwaitComponent(context: Dummy.context)
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
@@ -108,7 +112,7 @@ class AwaitComponentTests: XCTestCase {
             }, onQRHandler: nil
         )
 
-        let sut = AwaitComponent(apiContext: Dummy.context, awaitComponentBuilder: handlerProvider)
+        let sut = AwaitComponent(context: Dummy.context, awaitComponentBuilder: handlerProvider)
         sut.configuration.style = style
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 

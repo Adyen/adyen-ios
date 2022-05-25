@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,7 +19,7 @@ internal final class PollingComponent: AnyPollingHandler {
     private var errorCount = 0
 
     /// :nodoc:
-    internal let apiContext: APIContext
+    internal let context: AdyenContext
     
     /// :nodoc:
     internal weak var presentationDelegate: PresentationDelegate?
@@ -33,11 +33,11 @@ internal final class PollingComponent: AnyPollingHandler {
     /// :nodoc:
     /// Initializes the Polling Await component.
     ///
-    /// - Parameter apiContext: The API context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter apiClient: The API client.
-    internal init(apiContext: APIContext,
+    internal init(context: AdyenContext,
                   apiClient: AnyRetryAPIClient) {
-        self.apiContext = apiContext
+        self.context = context
         self.apiClient = apiClient
     }
     
@@ -46,7 +46,7 @@ internal final class PollingComponent: AnyPollingHandler {
     ///
     /// - Parameter action: The await action object.
     internal func handle(_ action: PaymentDataAware) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         startPolling(action)
     }
     

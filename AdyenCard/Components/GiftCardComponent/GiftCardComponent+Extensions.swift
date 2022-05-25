@@ -8,12 +8,23 @@ import Adyen
 import UIKit
 
 /// :nodoc:
-extension GiftCardComponent: TrackableComponent {
+extension GiftCardComponent: TrackableComponent {}
+
+/// :nodoc:
+extension GiftCardComponent: ViewControllerDelegate {
+
     /// :nodoc:
     public func viewDidLoad(viewController: UIViewController) {
-        Analytics.sendEvent(component: paymentMethod.type.rawValue, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(component: paymentMethod.type.rawValue,
+                            flavor: _isDropIn ? .dropin : .components,
+                            context: context.apiContext)
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
+    }
+
+    /// :nodoc:
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
     }
 }
 

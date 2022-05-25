@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,9 +10,10 @@ import UIKit
 
 /// A component that provides a form for Boleto payment.
 public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent, AdyenObserver {
-    
+
     /// :nodoc:
-    public let apiContext: APIContext
+    /// The context object for this component.
+    public let context: AdyenContext
     
     /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
@@ -31,17 +32,18 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     /// Initializes the Boleto Component
     /// - Parameters:
     ///   - paymentMethod: Boleto Payment Method
-    ///   - apiContext: The API Context.
+    ///   - context: The context object for this component.
     ///   - configuration: The Component's configuration.
     public init(paymentMethod: BoletoPaymentMethod,
-                apiContext: APIContext,
+                context: AdyenContext,
                 configuration: Configuration) {
-        self.configuration = configuration
-        self.apiContext = apiContext
         self.boletoPaymentMethod = paymentMethod
-        
+        self.context = context
+        self.configuration = configuration
         socialSecurityNumberItem.isHidden.wrappedValue = false
     }
+
+    // MARK: - Private
     
     /// :nodoc:
     private lazy var socialSecurityNumberItem: FormTextInputItem = {
@@ -84,18 +86,18 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
                                                                                shopperInformation: configuration.shopperInformation,
                                                                                localizationParameters: configuration.localizationParameters)
         let component = FormComponent(paymentMethod: paymentMethod,
-                                      apiContext: apiContext,
+                                      context: context,
                                       fields: formFields,
                                       configuration: configuration,
                                       onCreatePaymentDetails: { [weak self] in
-            var paymentMethodDetails: PaymentMethodDetails?
-            do {
-                paymentMethodDetails = try self?.createPaymentDetails()
-            } catch let error {
-                adyenPrint(error)
-            }
-            return paymentMethodDetails
-        })
+                                          var paymentMethodDetails: PaymentMethodDetails?
+                                          do {
+                                              paymentMethodDetails = try self?.createPaymentDetails()
+                                          } catch {
+                                              adyenPrint(error)
+                                          }
+                                          return paymentMethodDetails
+                                      })
 
         if let emailItem = component.emailItem {
             bind(sendCopyByEmailItem.publisher, to: emailItem, at: \.isHidden.wrappedValue, with: { !$0 })
@@ -175,12 +177,16 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
 
         return nil
     }
+
+    // MARK: - Public
     
     /// :nodoc:
     public func stopLoading() {
         formComponent.stopLoading()
     }
 }
+
+extension BoletoComponent: TrackableComponent {}
 
 extension BoletoComponent: ViewControllerDelegate {
 
@@ -192,6 +198,7 @@ extension BoletoComponent: ViewControllerDelegate {
 
     /// :nodoc:
     public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
         prefillFields(for: formComponent)
     }
 }
@@ -218,14 +225,14 @@ extension BoletoComponent {
         
         /// :nodoc:
         fileprivate init(paymentMethod: PaymentMethod,
-                         apiContext: APIContext,
+                         context: AdyenContext,
                          fields: [PersonalInformation],
                          configuration: AbstractPersonalInformationComponent.Configuration,
                          onCreatePaymentDetails: @escaping () -> PaymentMethodDetails?) {
             self.onCreatePaymentDetails = onCreatePaymentDetails
             
             super.init(paymentMethod: paymentMethod,
-                       apiContext: apiContext,
+                       context: context,
                        fields: fields,
                        configuration: configuration)
         }

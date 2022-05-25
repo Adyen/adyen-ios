@@ -10,28 +10,31 @@ import XCTest
 
 class AtomeComponentTests: XCTestCase {
 
+    private var analyticsProviderMock: AnalyticsProviderMock!
+    private var context: AdyenContext!
     private var paymentMethod: PaymentMethod!
-    private var apiContext: APIContext!
     private var style: FormComponentStyle!
     private var sut: AtomeComponent!
 
     override func setUpWithError() throws {
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Atome")
-        apiContext = Dummy.context
+        analyticsProviderMock = AnalyticsProviderMock()
+        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
         style = FormComponentStyle()
         sut = AtomeComponent(paymentMethod: paymentMethod,
-                              apiContext: apiContext,
-                              configuration: AtomeComponent.Configuration(style: style))
+                             context: context,
+                             configuration: AtomeComponent.Configuration(style: style))
     }
 
     override func tearDownWithError() throws {
+        analyticsProviderMock = nil
+        context = nil
         paymentMethod = nil
-        apiContext = nil
         style = nil
         sut = nil
         try super.tearDownWithError()
     }
-  
+
     func testComponent_ShouldPaymentMethodTypeBeAtome() throws {
         // Given
         let expectedPaymentMethodType: PaymentMethodType = .atome
@@ -58,13 +61,13 @@ class AtomeComponentTests: XCTestCase {
         
         // Action
         let paymentDetails = try sut.createPaymentDetails()
-    
+
         let shopperInformation = try XCTUnwrap(paymentDetails as? ShopperInformation)
         let firstName = try XCTUnwrap(shopperInformation.shopperName?.firstName)
         let lastName = try XCTUnwrap(shopperInformation.shopperName?.lastName)
         let phoneNumber = try XCTUnwrap(shopperInformation.telephoneNumber)
         let billingAddress = try XCTUnwrap(shopperInformation.billingAddress)
-    
+
         // Assert
         XCTAssertEqual(firstName, "John")
         XCTAssertEqual(lastName, "smith")

@@ -37,7 +37,8 @@ public final class RedirectComponent: ActionComponent {
     }
     
     /// :nodoc:
-    public let apiContext: APIContext
+    /// The context object for this component.
+    public let context: AdyenContext
     
     /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
@@ -54,11 +55,11 @@ public final class RedirectComponent: ActionComponent {
     
     /// Initializes the component.
     ///
-    /// - Parameter apiContext: The API context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component configurations.
-    public init(apiContext: APIContext,
+    public init(context: AdyenContext,
                 configuration: Configuration = Configuration()) {
-        self.apiContext = apiContext
+        self.context = context
         self.configuration = configuration
     }
     
@@ -68,7 +69,7 @@ public final class RedirectComponent: ActionComponent {
     public func handle(_ action: RedirectAction) {
         Analytics.sendEvent(component: configuration.componentName,
                             flavor: _isDropIn ? .dropin : .components,
-                            context: apiContext)
+                            context: context.apiContext)
         
         if action.url.adyen.isHttp {
             openHttpSchemeUrl(action)
@@ -105,7 +106,7 @@ public final class RedirectComponent: ActionComponent {
 
     private func openInAppBrowser(_ action: RedirectAction) {
         let component = BrowserComponent(url: action.url,
-                                         apiContext: apiContext,
+                                         context: context,
                                          style: configuration.style)
         component.delegate = self
         browserComponent = component

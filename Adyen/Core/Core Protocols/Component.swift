@@ -7,7 +7,7 @@
 import Foundation
 
 /// A component provides payment method-specific UI and handling.
-public protocol Component: APIContextAware {}
+public protocol Component: AdyenContextAware {}
 
 /// :nodoc:
 extension Component {
@@ -61,7 +61,7 @@ public extension Component {
             objc_setAssociatedObject(self, &AssociatedKeys.isDropIn, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    
+
 }
 
 private enum AssociatedKeys {

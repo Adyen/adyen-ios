@@ -29,7 +29,10 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     private let defaultComponent: PaymentComponent
     
     /// :nodoc:
-    internal var apiContext: APIContext { defaultComponent.apiContext }
+    internal var apiContext: APIContext { defaultComponent.context.apiContext }
+
+    /// :nodoc:
+    internal var context: AdyenContext { defaultComponent.context }
 
     /// :nodoc:
     internal var paymentMethod: PaymentMethod { defaultComponent.paymentMethod }
@@ -101,7 +104,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
         var listItem = ListItem(title: displayInformation.title, style: self.listItemStyle)
         listItem.imageURL = LogoURLProvider.logoURL(withName: displayInformation.logoName,
-                                                    environment: apiContext.environment)
+                                                    environment: context.apiContext.environment)
         listItem.subtitle = displayInformation.subtitle
         listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "defaultComponent")
         return listItem
@@ -157,4 +160,4 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
 }
 
-extension PreselectedPaymentMethodComponent: TrackableComponent {}
+extension PreselectedPaymentMethodComponent: ViewControllerDelegate {}

@@ -40,20 +40,24 @@ public final class DropInComponent: NSObject,
     public let title: String
 
     /// :nodoc:
-    public var apiContext: APIContext { configuration.apiContext }
+    /// The context object for this component.
+    public var context: AdyenContext
     
     /// Initializes the drop in component.
     ///
     /// - Parameters:
     ///   - paymentMethods: The payment methods to display.
+    ///   - context: The context object for this component.
     ///   - configuration: The payment method specific configuration.
     ///   - title: Name of the application. To be displayed on a first payment page.
     ///            If no external value provided, the Main Bundle's name would be used.
     public init(paymentMethods: PaymentMethods,
+                context: AdyenContext,
                 configuration: Configuration,
                 title: String? = nil) {
         self.title = title ?? Bundle.main.displayName
         self.configuration = configuration
+        self.context = context
         self.paymentMethods = paymentMethods
         super.init()
     }
@@ -92,7 +96,7 @@ public final class DropInComponent: NSObject,
     /// :nodoc:
     private lazy var apiClient: APIClientProtocol = {
         let scheduler = SimpleScheduler(maximumCount: 3)
-        return APIClient(apiContext: apiContext)
+        return APIClient(apiContext: context.apiContext)
             .retryAPIClient(with: scheduler)
             .retryOnErrorAPIClient()
     }()
@@ -146,6 +150,7 @@ public final class DropInComponent: NSObject,
     private func createComponentManager(_ order: PartialPaymentOrder?,
                                         _ remainingAmount: Amount?) -> ComponentManager {
         ComponentManager(paymentMethods: paymentMethods,
+                         context: context,
                          configuration: configuration,
                          partialPaymentEnabled: partialPaymentDelegate != nil,
                          remainingAmount: remainingAmount,
@@ -176,7 +181,7 @@ public final class DropInComponent: NSObject,
     )
 
     private lazy var actionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(apiContext: apiContext)
+        let handler = AdyenActionComponent(context: context)
         handler.configuration.style = configuration.style.actionComponent
         handler._isDropIn = true
         handler.delegate = self
@@ -188,7 +193,7 @@ public final class DropInComponent: NSObject,
     
     internal func paymentMethodListComponent(onCancel: (() -> Void)?) -> PaymentMethodListComponent {
         let paymentComponents = componentManager.sections
-        let component = PaymentMethodListComponent(apiContext: apiContext,
+        let component = PaymentMethodListComponent(context: context,
                                                    components: paymentComponents,
                                                    style: configuration.style.listComponent)
         component.onCancel = onCancel

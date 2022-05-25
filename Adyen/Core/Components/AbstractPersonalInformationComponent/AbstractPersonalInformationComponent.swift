@@ -10,7 +10,7 @@ import UIKit
 /// An abstract class that needs to be subclassed to abstract away any component
 /// who's form consists of a combination of personal information pieces like first name, last name, phone, email, and billing address.
 /// :nodoc:
-open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent {
+open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent, ViewControllerDelegate {
 
     /// :nodoc:
     public typealias Configuration = PersonalInformationConfiguration
@@ -18,7 +18,8 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     // MARK: - Properties
 
     /// :nodoc:
-    public let apiContext: APIContext
+    /// The context object for this component.
+    public let context: AdyenContext
     
     /// :nodoc:
     public let paymentMethod: PaymentMethod
@@ -38,21 +39,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     
     private let fields: [PersonalInformation]
 
-    /// Initializes the MB Way component.
-    ///
-    /// - Parameter paymentMethod: The payment method.
-    /// - Parameter configuration: The Component's configuration.
-    /// - Parameter style: The Component's UI style.
-    public init(paymentMethod: PaymentMethod,
-                apiContext: APIContext,
-                fields: [PersonalInformation],
-                configuration: Configuration) {
-        self.paymentMethod = paymentMethod
-        self.configuration = configuration
-        self.apiContext = apiContext
-        self.fields = fields
-    }
-
     /// :nodoc:
     internal lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(style: configuration.style)
@@ -64,6 +50,34 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
 
         return formViewController
     }()
+
+    // MARK: - Initializers
+
+    /// Initializes the MB Way component.
+    ///
+    /// - Parameter paymentMethod: The payment method.
+    /// - Parameter context: The context object for this component.
+    /// - Parameter fields: The component's fields.
+    /// - Parameter configuration: The Component's configuration.
+    public init(paymentMethod: PaymentMethod,
+                context: AdyenContext,
+                fields: [PersonalInformation],
+                configuration: Configuration) {
+        self.paymentMethod = paymentMethod
+        self.context = context
+        self.fields = fields
+        self.configuration = configuration
+    }
+
+    // MARK: - ViewControllerDelegate
+
+    /// :nodoc:
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
+        populateFields()
+    }
+
+    // MARK: - Private
 
     /// :nodoc:
     private func build(_ formViewController: FormViewController) {

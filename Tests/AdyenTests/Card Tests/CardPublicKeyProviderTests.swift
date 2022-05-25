@@ -21,8 +21,8 @@ class PublicKeyProviderTests: XCTestCase {
     func testMultipleFetchCallsAndOneRequestDispatched() throws {
         var baseApiClient = APIClientMock()
         var apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
-        var sut = PublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: Dummy.context.clientKey))
-        PublicKeyProvider.publicKeysCache[Dummy.context.clientKey] = nil
+        var sut = PublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: Dummy.apiContext.clientKey))
+        PublicKeyProvider.publicKeysCache[Dummy.apiContext.clientKey] = nil
 
         baseApiClient.mockedResults = [.success(ClientKeyResponse(cardPublicKey: "test_public_key"))]
 
@@ -48,7 +48,7 @@ class PublicKeyProviderTests: XCTestCase {
 
         baseApiClient = APIClientMock()
         apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
-        sut = PublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: Dummy.context.clientKey))
+        sut = PublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: Dummy.apiContext.clientKey))
 
         let secondFetchExpectation = expectation(description: "second PublicKeyProvider.fetch() completion handler must be called.")
         sut.fetch { result in
@@ -88,7 +88,7 @@ class PublicKeyProviderTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
 
         XCTAssertEqual(baseApiClient.counter, 1)
-        XCTAssertEqual(PublicKeyProvider.publicKeysCache[Dummy.context.clientKey], "test_public_key")
+        XCTAssertEqual(PublicKeyProvider.publicKeysCache[Dummy.apiContext.clientKey], "test_public_key")
         XCTAssertEqual(PublicKeyProvider.publicKeysCache["different_client_key"], "another_test_public_key")
     }
 

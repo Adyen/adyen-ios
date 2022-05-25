@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,24 +19,25 @@ internal protocol AnyAppleWalletPassProvider {
 
 /// :nodoc:
 internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
-    APIContextAware {
+    AdyenContextAware {
     
     /// :nodoc:
-    internal let apiContext: APIContext
+    internal let context: AdyenContext
     
     /// :nodoc:
-    internal convenience init(apiContext: APIContext) {
-        self.init(apiContext: apiContext, apiClient: nil)
+    internal convenience init(context: AdyenContext) {
+        self.init(context: context,
+                  apiClient: nil)
     }
     
     /// :nodoc:
-    internal init(apiContext: APIContext, apiClient: AnyRetryAPIClient? = nil) {
-        self.apiContext = apiContext
+    internal init(context: AdyenContext, apiClient: AnyRetryAPIClient? = nil) {
+        self.context = context
         if let apiClient = apiClient {
             self.retryApiClient = apiClient
         } else {
             let scheduler = SimpleScheduler(maximumCount: 2)
-            self.retryApiClient = APIClient(apiContext: apiContext)
+            self.retryApiClient = APIClient(apiContext: context.apiContext)
                 .retryAPIClient(with: scheduler)
         }
     }

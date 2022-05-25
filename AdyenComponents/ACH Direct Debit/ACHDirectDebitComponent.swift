@@ -23,7 +23,8 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     }
     
     /// :nodoc:
-    public let apiContext: APIContext
+    /// The context object for this component.
+    public let context: AdyenContext
     
     /// :nodoc:
     public var paymentMethod: PaymentMethod {
@@ -58,24 +59,25 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     /// Initializes the ACH Direct Debit component.
     /// - Parameters:
     ///   - paymentMethod: The ACH Direct Debit payment method.
-    ///   - apiContext: The component's API context.
+    ///   - context: The context object for this component.
     ///   - configuration: Configuration for the component.
     public convenience init(paymentMethod: ACHDirectDebitPaymentMethod,
-                            apiContext: APIContext,
+                            context: AdyenContext,
                             configuration: Configuration = .init()) {
         self.init(paymentMethod: paymentMethod,
-                  apiContext: apiContext,
+                  context: context,
                   configuration: configuration,
-                  publicKeyProvider: PublicKeyProvider(apiContext: apiContext))
+                  publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
     
     /// :nodoc:
     internal init(paymentMethod: ACHDirectDebitPaymentMethod,
-                  apiContext: APIContext,
+                  context: AdyenContext,
                   configuration: Configuration = .init(),
                   publicKeyProvider: AnyPublicKeyProvider) {
-        self.apiContext = apiContext
+        self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
+        self.context = context
         self.configuration = configuration
         self.publicKeyProvider = publicKeyProvider
     }
@@ -218,6 +220,8 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         }
         return item
     }()
+
+    // MARK: - Private
     
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(style: configuration.style)
@@ -244,13 +248,23 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
 }
 
 /// :nodoc:
-extension ACHDirectDebitComponent: TrackableComponent {
-    
+extension ACHDirectDebitComponent: TrackableComponent {}
+
+/// :nodoc:
+extension ACHDirectDebitComponent: ViewControllerDelegate {
+
     /// :nodoc:
     public func viewDidLoad(viewController: UIViewController) {
-        Analytics.sendEvent(component: paymentMethod.type.rawValue, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(component: paymentMethod.type.rawValue,
+                            flavor: _isDropIn ? .dropin : .components,
+                            context: context.apiContext)
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
+    }
+
+    /// :nodoc:
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
     }
 }
 

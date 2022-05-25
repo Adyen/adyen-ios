@@ -37,7 +37,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             redirectComponent.delegate?.didProvide(mockedData, from: redirectComponent)
         }
 
-        let sut = ThreeDS2Component(apiContext: Dummy.context,
+        let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: threeDSActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
@@ -76,7 +76,7 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         }
 
-        let sut = ThreeDS2Component(apiContext: Dummy.context,
+        let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
@@ -114,7 +114,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(apiContext: Dummy.context,
+        let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
@@ -153,7 +153,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(apiContext: Dummy.context,
+        let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
@@ -193,7 +193,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(apiContext: Dummy.context,
+        let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
@@ -224,7 +224,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(apiContext: Dummy.context,
+        let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)
@@ -258,7 +258,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(apiContext: Dummy.context,
+        let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     threeDS2ClassicFlowHandler: threeDS2ActionHandler,
                                     redirectComponent: redirectComponent)
@@ -289,7 +289,7 @@ class ThreeDS2ComponentTests: XCTestCase {
     }
     
     func testSettingRequestorAppURL() throws {
-        let sut = ThreeDS2Component(apiContext: Dummy.context)
+        let sut = ThreeDS2Component(context: Dummy.context)
         sut.configuration.requestorAppURL = URL(string: "http://google.com")
         XCTAssertEqual(sut.threeDS2CompactFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
         XCTAssertEqual(sut.threeDS2ClassicFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
@@ -297,7 +297,7 @@ class ThreeDS2ComponentTests: XCTestCase {
     
     func testSettingRequestorAppURLWithInitializer() throws {
         let configuration = ThreeDS2Component.Configuration.init(requestorAppURL: URL(string: "http://google.com"))
-        let sut = ThreeDS2Component(apiContext: Dummy.context,
+        let sut = ThreeDS2Component(context: Dummy.context,
                                     configuration: configuration)
         XCTAssertEqual(sut.threeDS2CompactFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
         XCTAssertEqual(sut.threeDS2ClassicFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
@@ -308,7 +308,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         let threeDS2ClassicFlowHandler = AnyThreeDS2ActionHandlerMock()
         let redirectComponent = AnyRedirectComponentMock()
         let configuration = ThreeDS2Component.Configuration.init(requestorAppURL: URL(string: "http://google.com"))
-        let sut = ThreeDS2Component(apiContext: Dummy.context,
+        let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: threeDS2CompactFlowHandler,
                                     threeDS2ClassicFlowHandler: threeDS2ClassicFlowHandler,
                                     redirectComponent: redirectComponent,
@@ -330,7 +330,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(apiContext: Dummy.context,
+        let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     threeDS2ClassicFlowHandler: threeDS2ActionHandler,
                                     redirectComponent: redirectComponent)
@@ -375,7 +375,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(apiContext: Dummy.context,
+        let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     redirectComponent: redirectComponent)

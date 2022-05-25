@@ -13,15 +13,23 @@ import XCTest
 
 class AppleWalletPassProviderTests: XCTestCase {
 
-    override func tearDown() {
-        super.tearDown()
+    var context: AdyenContext!
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        context = Dummy.context
+    }
+
+    override func tearDownWithError() throws {
+        context = nil
         AdyenAssertion.listener = nil
+        try super.tearDownWithError()
     }
 
     func testMultipleFetchCallsAndOneRequestDispatched() throws {
         let baseApiClient = APIClientMock()
         let apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
-        let sut = AppleWalletPassProvider(apiContext: Dummy.context,
+        let sut = AppleWalletPassProvider(context: context,
                                           apiClient: apiClient)
 
         baseApiClient.mockedResults = [.success(try! AppleWalletPassResponse(passBase64String: "123".data(using: .utf8)!.base64EncodedString()))]

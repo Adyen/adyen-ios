@@ -11,7 +11,8 @@ import Foundation
 public final class AwaitComponent: ActionComponent, Cancellable {
     
     /// :nodoc:
-    public let apiContext: APIContext
+    /// The context object for this component.
+    public let context: AdyenContext
     
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
@@ -51,24 +52,24 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     
     /// Initializes the `AwaitComponent`.
     ///
-    /// - Parameter apiContext: The API context.
+    /// - Parameter adyeContext: The context object for this component.
     /// - Parameter configuration: The await component configurations.
-    public convenience init(apiContext: APIContext,
+    public convenience init(context: AdyenContext,
                             configuration: Configuration = .init()) {
-        self.init(apiContext: apiContext,
-                  awaitComponentBuilder: PollingHandlerProvider(apiContext: apiContext),
+        self.init(context: context,
+                  awaitComponentBuilder: PollingHandlerProvider(context: context),
                   configuration: configuration)
     }
     
     /// Initializes the `AwaitComponent`.
     ///
-    /// - Parameter apiContext: The API context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter configuration: The Component UI style.
-    internal init(apiContext: APIContext,
+    internal init(context: AdyenContext,
                   awaitComponentBuilder: AnyPollingHandlerProvider,
                   configuration: Configuration = .init()) {
-        self.apiContext = apiContext
+        self.context = context
         self.configuration = configuration
         self.awaitComponentBuilder = awaitComponentBuilder
     }
@@ -80,7 +81,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     ///
     /// - Parameter action: The await action object.
     public func handle(_ action: AwaitAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         
         let viewModel = AwaitComponentViewModel.viewModel(with: action.paymentMethodType,
                                                           localizationParameters: configuration.localizationParameters)

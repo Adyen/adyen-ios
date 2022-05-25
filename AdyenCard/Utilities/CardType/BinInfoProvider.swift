@@ -29,7 +29,6 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     
     /// Create a new instance of CardTypeProvider.
     /// - Parameters:
-    ///   - apiContext: The API context,
     ///   - publicKeyProvider: Any instance of `AnyPublicKeyProvider`.
     ///   - fallbackCardTypeProvider: Any instance of `AnyCardBrandProvider` to be used as a fallback
     ///   if API not available or BIN too short.

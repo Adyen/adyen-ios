@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,4 +21,14 @@ public protocol ViewControllerDelegate: AnyObject {
     /// :nodoc
     /// Handles the UIViewController.viewWillAppear() event.
     func viewWillAppear(viewController: UIViewController)
+}
+
+/// :nodoc:
+extension ViewControllerDelegate {
+
+    public func viewDidLoad(viewController: UIViewController) { /* Empty implementation */ }
+
+    public func viewDidAppear(viewController: UIViewController) { /* Empty implementation */ }
+
+    public func viewWillAppear(viewController: UIViewController) { /* Empty implementation */ }
 }

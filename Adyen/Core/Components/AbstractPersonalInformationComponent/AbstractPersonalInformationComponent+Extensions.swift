@@ -30,13 +30,7 @@ extension AbstractPersonalInformationComponent: LoadingComponent {
     }
 }
 
-extension AbstractPersonalInformationComponent: TrackableComponent {
-
-    /// :nodoc:
-    public func viewWillAppear(viewController: UIViewController) {
-        populateFields()
-    }
-}
+extension AbstractPersonalInformationComponent: TrackableComponent {}
 
 /// :nodoc:
 public enum PersonalInformation: Equatable {

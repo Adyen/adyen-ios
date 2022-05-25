@@ -17,7 +17,7 @@ class DocumentComponentTests: XCTestCase {
     
     func testUI() {
         let style = DocumentComponentStyle()
-        let sut = DocumentComponent(apiContext: Dummy.context)
+        let sut = DocumentComponent(context: Dummy.context)
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "test_table")

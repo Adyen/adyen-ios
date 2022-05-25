@@ -20,7 +20,7 @@ import PassKit
 public extension DropInComponent {
     
     /// Contains the configuration for the drop in component and the embedded payment method components.
-    final class Configuration: APIContextAware {
+    final class Configuration: AdyenContextAware {
         
         /// Card component related configuration.
         public var card = Card()
@@ -36,9 +36,10 @@ public extension DropInComponent {
         
         /// Shopper related information
         public var shopper: PrefilledShopperInformation?
-        
-        /// API context used to retrieve internal resources.
-        public let apiContext: APIContext
+
+        /// :nodoc:
+        /// The context object for this component.
+        public let context: AdyenContext
         
         /// Indicates the localization parameters, leave it nil to use the default parameters.
         public var localizationParameters: LocalizationParameters?
@@ -60,19 +61,19 @@ public extension DropInComponent {
         
         /// Initializes the drop in configuration.
         /// - Parameters:
-        ///   - apiContext: The API context used to retrieve internal resources.
-        ///   - allowsSkippingPaymentList: Boolean to enable skipping payment list when there is only one one non-instant payment method.
+        ///   - context: The context object for this component.
         ///   - style: The UI styles of the components.
-        public init(apiContext: APIContext,
+        ///   - allowsSkippingPaymentList: Boolean to enable skipping payment list when there is only one one non-instant payment method.
+        ///   - allowPreselectedPaymentView: Boolean to enable the preselected stored payment method view step.
+        public init(context: AdyenContext,
                     style: Style = Style(),
                     allowsSkippingPaymentList: Bool = false,
                     allowPreselectedPaymentView: Bool = true) {
-            self.apiContext = apiContext
+            self.context = context
             self.style = style
             self.allowsSkippingPaymentList = allowsSkippingPaymentList
             self.allowPreselectedPaymentView = allowPreselectedPaymentView
         }
-
     }
     
     struct ActionComponentConfiguration {
