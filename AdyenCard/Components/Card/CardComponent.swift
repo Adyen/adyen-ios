@@ -140,7 +140,10 @@ public class CardComponent: PresentableComponent,
         component.payment = payment
         return component
     }()
-
+    
+    /// Updates the visibility of the store payment method switch.
+    ///
+    /// - Parameter isVisible: Indicates whether to show the switch if `true` or to hide it if `false`.
     public func update(storePaymentMethodFieldVisibility isVisible: Bool) {
         cardViewController.update(storePaymentMethodFieldVisibility: isVisible)
     }

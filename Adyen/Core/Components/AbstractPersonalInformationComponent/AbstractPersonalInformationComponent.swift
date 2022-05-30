@@ -217,7 +217,8 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     private var defaultCountryCode: String {
         payment?.countryCode ?? Locale.current.regionCode ?? "US"
     }
-
+    
+    @_spi(AdyenInternal)
     public func showValidation() {
         formViewController.showValidation()
     }

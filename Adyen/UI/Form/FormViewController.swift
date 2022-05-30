@@ -176,6 +176,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         return false
     }
 
+    @_spi(AdyenInternal)
     public func showValidation() {
         itemManager.flatItemViews
             .compactMap { $0 as? AnyFormValueItemView }

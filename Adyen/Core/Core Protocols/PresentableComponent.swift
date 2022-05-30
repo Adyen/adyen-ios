@@ -21,7 +21,7 @@ public protocol Cancellable: AnyObject {
     func didCancel()
 }
 
-/// Represents navigation bar on top of presentable components.
+@_spi(AdyenInternal)
 public protocol AnyNavigationBar: UIView {
     
     var onCancelHandler: (() -> Void)? { get set }
