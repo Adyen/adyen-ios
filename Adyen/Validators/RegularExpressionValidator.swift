@@ -10,7 +10,13 @@ import Foundation
 public class RegularExpressionValidator: LengthValidator {
     
     private let regularExpression: String
-
+    
+    /// Initializes a new instance of `RegularExpressionValidator`
+    ///
+    /// - Parameters:
+    ///   - regularExpression: The regex to validate against
+    ///   - minimumLength: The minimum length allowed.
+    ///   - maximumLength: The maximum length allowed.
     public init(regularExpression: String, minimumLength: Int? = nil, maximumLength: Int? = nil) {
         self.regularExpression = regularExpression
         super.init(minimumLength: minimumLength, maximumLength: maximumLength)

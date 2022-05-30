@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// : nodoc:
+@_spi(AdyenInternal)
 public enum TelemetryFlavor {
     case components(type: PaymentMethodType)
     case dropIn(type: String = "dropin", paymentMethods: [String])
@@ -28,14 +28,14 @@ public enum TelemetryFlavor {
     }
 }
 
-/// : nodoc:
+@_spi(AdyenInternal)
 public protocol TelemetryTrackerProtocol {
     func sendTelemetryEvent(flavor: TelemetryFlavor)
 }
 
 // MARK: - TelemetryTrackerProtocol
 
-/// : nodoc:
+@_spi(AdyenInternal)
 extension AnalyticsProvider: TelemetryTrackerProtocol {
 
     internal func sendTelemetryEvent(flavor: TelemetryFlavor) {
