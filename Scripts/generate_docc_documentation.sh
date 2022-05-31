@@ -10,11 +10,14 @@ set -e
 TEMP_PROJECT_FOLDER=TempProject
 TEMP_PROJECT_PATH=$TEMP_PROJECT_FOLDER/Adyen
 FRAMEWORK_NAME=Adyen
-FINAL_DOC_PATH=Docc_archive
+DOCS_ROOT=docs
+FINAL_DOCC_ARCHIVE_PATH=$DOCS_ROOT/docc_archive
 
 rm -rf $TEMP_PROJECT_FOLDER
 
-mkdir -p $TEMP_PROJECT_FOLDER $TEMP_PROJECT_PATH $FINAL_DOC_PATH
+mkdir -p $DOCS_ROOT
+
+mkdir -p $TEMP_PROJECT_FOLDER $TEMP_PROJECT_PATH $FINAL_DOCC_ARCHIVE_PATH
 
 cd $TEMP_PROJECT_PATH
  
@@ -122,16 +125,28 @@ xcodebuild docbuild \
 cd ../../
 
 # Delete old DocC archive
-rm -rf $FINAL_DOC_PATH/$FRAMEWORK_NAME.doccarchive
+rm -rf $FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive
 
 # Move the new DocC archive to the its final place
-mv $TEMP_PROJECT_PATH/$DERIVED_DATA_PATH/Build/Products/Release-iphonesimulator/$FRAMEWORK_NAME.doccarchive $FINAL_DOC_PATH/$FRAMEWORK_NAME.doccarchive
+mv $TEMP_PROJECT_PATH/$DERIVED_DATA_PATH/Build/Products/Release-iphonesimulator/$FRAMEWORK_NAME.doccarchive $FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive
+
+CURRENT_MARKETING_VERSION=$(agvtool what-marketing-version -terse1)
 
 # Generate the DocC html pages
 $(xcrun --find docc) process-archive \
-transform-for-static-hosting $FINAL_DOC_PATH/$FRAMEWORK_NAME.doccarchive \
---output-path docs \
---hosting-base-path /adyen-ios
+transform-for-static-hosting $FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive \
+--output-path $DOCS_ROOT/html \
+--hosting-base-path /adyen-ios/$CURRENT_MARKETING_VERSION
 
 # Clean up.
 rm -rf $TEMP_PROJECT_FOLDER
+
+REDIRECT_FOLDER=$DOCS_ROOT/redirect
+
+mkdir -p $REDIRECT_FOLDER
+
+cd $REDIRECT_FOLDER
+
+echo "<head>
+  <meta http-equiv=\"Refresh\" content=\"0; url='/adyen-ios/$CURRENT_MARKETING_VERSION'\" />
+</head>" > index.html

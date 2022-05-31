@@ -1,0 +1,31 @@
+name: Generate Docs
+on: [workflow_dispatch]
+jobs:
+
+  Generate:
+    runs-on: macos-12
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - uses: n1hility/cancel-previous-runs@v2
+      with:
+        token: ${{ secrets.MANUAL_ACTION_TOKEN }}
+
+    - name: Select latest Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+
+    - name: Deploy 🚀
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/html
+        destination_dir: ${{ agvtool what-marketing-version -terse1 }}
+    - name: Deploy redirect 🚀
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/redirect
+        keep_files: true
