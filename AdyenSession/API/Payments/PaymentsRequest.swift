@@ -50,6 +50,7 @@ internal struct PaymentsRequest: APIRequest {
         try container.encodeIfPresent(data.deliveryAddress, forKey: .deliveryAddress)
         try container.encodeIfPresent(data.socialSecurityNumber, forKey: .socialSecurityNumber)
         try container.encodeIfPresent(data.browserInfo, forKey: .browserInfo)
+        try container.encodeIfPresent(data.checkoutAttemptId, forKey: .checkoutAttemptId)
         try container.encodeIfPresent(data.order?.compactOrder, forKey: .order)
     }
     
@@ -59,6 +60,7 @@ internal struct PaymentsRequest: APIRequest {
         case storePaymentMethod
         case shopperEmail
         case browserInfo
+        case checkoutAttemptId
         case shopperName
         case telephoneNumber
         case billingAddress
