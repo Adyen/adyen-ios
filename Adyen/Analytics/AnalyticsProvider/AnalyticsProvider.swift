@@ -32,6 +32,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
 
     internal let apiClient: APIClientProtocol
     internal let configuration: AnalyticsConfiguration
+    internal var checkoutAttemptId: String?
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<CheckoutAttemptIdResponse>
 
     // MARK: - Initializers
@@ -50,9 +51,10 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
 
         let checkoutAttemptIdRequest = CheckoutAttemptIdRequest()
 
-        uniqueAssetAPIClient.perform(checkoutAttemptIdRequest) { result in
+        uniqueAssetAPIClient.perform(checkoutAttemptIdRequest) { [weak self] result in
             switch result {
             case let .success(response):
+                self?.checkoutAttemptId = response.identifier
                 completion(response.identifier)
             case .failure:
                 completion(nil)

@@ -28,6 +28,7 @@ public protocol PaymentComponent: PaymentAwareComponent, PaymentMethodAware {
 extension PaymentComponent {
     
     public func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
+        // data.checkoutAttemptId = component?.context.analyticsProvider
         guard data.browserInfo == nil else {
             delegate?.didSubmit(data, from: component ?? self)
             return

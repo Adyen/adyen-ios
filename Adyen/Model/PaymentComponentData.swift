@@ -50,6 +50,9 @@ public struct PaymentComponentData {
     /// Indicates the device default browser info.
     public let browserInfo: BrowserInfo?
 
+    // TODO: - Document checkoutAttemptId
+    public let checkoutAttemptId: String?
+
     /// The billing address information.
     public var billingAddress: PostalAddress? {
         guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
@@ -77,6 +80,7 @@ public struct PaymentComponentData {
     ///   - order: The partial payment order if any.
     ///   - storePaymentMethod: Whether the user has chosen to store the payment method.
     ///   - browserInfo: The device default browser info.
+    ///   - checkoutAttemptId: The checkoutAttempt identifier.
     ///   - installments: Installments selection if specified.
     @_spi(AdyenInternal)
     public init(paymentMethodDetails: PaymentMethodDetails,
@@ -84,12 +88,14 @@ public struct PaymentComponentData {
                 order: PartialPaymentOrder?,
                 storePaymentMethod: Bool = false,
                 browserInfo: BrowserInfo? = nil,
+                checkoutAttemptId: String? = nil,
                 installments: Installments? = nil) {
         self.paymentMethod = paymentMethodDetails
+        self.amount = amount
+        self.order = order
         self.storePaymentMethod = storePaymentMethod
         self.browserInfo = browserInfo
-        self.order = order
-        self.amount = amount
+        self.checkoutAttemptId = checkoutAttemptId
         self.installments = installments
     }
 
