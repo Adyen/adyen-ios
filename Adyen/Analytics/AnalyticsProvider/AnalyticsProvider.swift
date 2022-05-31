@@ -24,7 +24,11 @@ public struct AnalyticsConfiguration {
 }
 
 @_spi(AdyenInternal)
-public protocol AnalyticsProviderProtocol: TelemetryTrackerProtocol {}
+public protocol AnalyticsProviderProtocol: TelemetryTrackerProtocol {
+
+    /// :nodoc:
+    var checkoutAttemptId: String? { get }
+}
 
 internal final class AnalyticsProvider: AnalyticsProviderProtocol {
 

@@ -51,7 +51,7 @@ public struct PaymentComponentData {
     public let browserInfo: BrowserInfo?
 
     // TODO: - Document checkoutAttemptId
-    public let checkoutAttemptId: String?
+    public internal(set) var checkoutAttemptId: String?
 
     /// The billing address information.
     public var billingAddress: PostalAddress? {
