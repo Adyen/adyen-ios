@@ -19,8 +19,6 @@ jobs:
 
     - name: Generate Docs
       run: |
-        gem install cocoapods
-        gem install jazzy
         Scripts/generate_docc_documentation.sh
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
