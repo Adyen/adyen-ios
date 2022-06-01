@@ -1,10 +1,6 @@
 name: Deploy Docs
-on: 
-  workflow_dispatch:
-    inputs:
-      versionToDeploy:
-        description: 'To which version to deploy?'
-        required: true
+on: [workflow_dispatch]
+
 jobs:
 
   Deploy:
@@ -20,12 +16,16 @@ jobs:
       with:
         xcode-version: latest-stable
 
+    - name: Set current marketing version
+      run: echo '::set-output name=MARKETING_VERSION::$(agvtool what-marketing-version -terse1)'
+      id: get-current-marketing-version
+
     - name: Deploy to current version 🚀
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs/html
-        destination_dir: ./${{ github.event.inputs.versionToDeploy }}
+        destination_dir: ./${{ steps.get-current-marketing-version.outputs.MARKETING_VERSION }}
     - name: Deploy to root 🚀
       uses: peaceiris/actions-gh-pages@v3
       with:
