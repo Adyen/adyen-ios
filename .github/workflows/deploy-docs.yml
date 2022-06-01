@@ -1,5 +1,8 @@
 name: Generate Docs
-on: [workflow_dispatch]
+on:
+  push:
+    branches:
+    - update-docs-github-action
 jobs:
 
   Generate:
@@ -22,7 +25,7 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs/html
-        destination_dir: ${{ agvtool what-marketing-version -terse1 }}
+        destination_dir: ./5.0.0
     - name: Deploy redirect 🚀
       uses: peaceiris/actions-gh-pages@v3
       with:
