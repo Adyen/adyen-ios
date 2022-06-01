@@ -150,5 +150,5 @@ mkdir -p $REDIRECT_FOLDER
 cd $REDIRECT_FOLDER
 
 echo "<head>
-  <meta http-equiv=\"Refresh\" content=\"0; url='/adyen-ios/$CURRENT_MARKETING_VERSION'\" />
+  <meta http-equiv=\"Refresh\" content=\"0; url='/adyen-ios/$CURRENT_MARKETING_VERSION/documentation/adyen'\" />
 </head>" > index.html

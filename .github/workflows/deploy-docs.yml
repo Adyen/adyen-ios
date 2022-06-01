@@ -1,11 +1,11 @@
-name: Generate Docs
+name: Deploy Docs
 on:
   push:
     branches:
     - update-docs-github-action
 jobs:
 
-  Generate:
+  Deploy:
     runs-on: macos-12
     steps:
     - uses: actions/checkout@v2
@@ -20,13 +20,13 @@ jobs:
       with:
         xcode-version: latest-stable
 
-    - name: Deploy 🚀
+    - name: Deploy current version 🚀
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs/html
         destination_dir: ./5.0.0
-    - name: Deploy redirect 🚀
+    - name: Deploy root 🚀
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
