@@ -15,6 +15,8 @@ FINAL_DOCC_ARCHIVE_PATH=$DOCS_ROOT/docc_archive
 
 rm -rf $TEMP_PROJECT_FOLDER
 
+rm -rf $DOCS_ROOT
+
 mkdir -p $DOCS_ROOT
 
 mkdir -p $TEMP_PROJECT_FOLDER $TEMP_PROJECT_PATH $FINAL_DOCC_ARCHIVE_PATH
@@ -148,5 +150,5 @@ mkdir -p $REDIRECT_FOLDER
 cd $REDIRECT_FOLDER
 
 echo "<head>
-  <meta http-equiv=\"Refresh\" content=\"0; url='/adyen-ios/$CURRENT_MARKETING_VERSION'\" />
+  <meta http-equiv=\"Refresh\" content=\"0; url='/adyen-ios/$LATEST_VERSION/documentation/adyen'\" />
 </head>" > index.html

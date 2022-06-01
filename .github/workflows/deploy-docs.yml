@@ -1,13 +1,16 @@
-name: Generate Docs
-on: [workflow_dispatch]
+name: Deploy Docs
+on: 
+  workflow_dispatch:
+    inputs:
+      versionToDeploy:
+        description: 'To which version to deploy?'
+        required: true
 jobs:
 
-  Generate:
+  Deploy:
     runs-on: macos-12
     steps:
     - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
     - uses: n1hility/cancel-previous-runs@v2
       with:
         token: ${{ secrets.MANUAL_ACTION_TOKEN }}
@@ -17,13 +20,13 @@ jobs:
       with:
         xcode-version: latest-stable
 
-    - name: Deploy 🚀
+    - name: Deploy to current version 🚀
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs/html
-        destination_dir: ${{ agvtool what-marketing-version -terse1 }}
-    - name: Deploy redirect 🚀
+        destination_dir: ./${{ github.event.inputs.versionToDeploy }}
+    - name: Deploy to root 🚀
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
