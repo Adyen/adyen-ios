@@ -47,7 +47,7 @@ let package = Package(
         .package(
             name: "Adyen3DS2",
             url: "https://github.com/Adyen/adyen-3ds2-ios",
-            .exact(Version(2, 2, 5))
+            .exact(Version(2, 2, 6))
         ),
         .package(
             name: "AdyenNetworking",
