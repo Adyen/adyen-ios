@@ -17,7 +17,7 @@ jobs:
         xcode-version: latest-stable
 
     - name: Set current marketing version
-      run: echo '::set-output name=MARKETING_VERSION::$(agvtool what-marketing-version -terse1)'
+      run: echo "::set-output name=MARKETING_VERSION::$(agvtool what-marketing-version -terse1)"
       id: get-current-marketing-version
 
     - name: Deploy to current version 🚀
