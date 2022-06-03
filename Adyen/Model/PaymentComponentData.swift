@@ -51,7 +51,7 @@ public struct PaymentComponentData {
     public let browserInfo: BrowserInfo?
 
     // TODO: - Document checkoutAttemptId
-    public internal(set) var checkoutAttemptId: String?
+    public let checkoutAttemptId: String?
 
     /// The billing address information.
     public var billingAddress: PostalAddress? {
@@ -132,6 +132,7 @@ public struct PaymentComponentData {
                                             order: order,
                                             storePaymentMethod: storePaymentMethod,
                                             browserInfo: $0,
+                                            checkoutAttemptId: checkoutAttemptId,
                                             installments: installments))
         }
     }
