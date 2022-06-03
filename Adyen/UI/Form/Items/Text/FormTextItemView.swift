@@ -116,7 +116,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         textField.autocapitalizationType = item.autocapitalizationType
         textField.keyboardType = item.keyboardType
         textField.returnKeyType = .next
-        textField.accessibilityLabel = item.title
         textField.delegate = self
         textField.textContentType = item.contentType
         
@@ -270,16 +269,19 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
             hideAlertLabel(true)
             highlightSeparatorView(color: tintColor)
             titleLabel.textColor = tintColor
+            textField.accessibilityLabel = item.title
         } else if forceShowValidationStatus {
             accessory = .invalid
             hideAlertLabel(false)
             highlightSeparatorView(color: item.style.errorColor)
             titleLabel.textColor = item.style.errorColor
+            textField.accessibilityLabel = item.validationFailureMessage
         } else {
             removeAccessoryIfNeeded()
             hideAlertLabel(true)
             isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
             titleLabel.textColor = defaultTitleColor
+            textField.accessibilityLabel = item.title
         }
     }
     
