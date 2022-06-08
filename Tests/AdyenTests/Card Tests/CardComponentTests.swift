@@ -518,7 +518,7 @@ class CardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        var config: CardComponent.Configuration = CardComponent.Configuration()
+        var config = CardComponent.Configuration()
         config.stored.showsSecurityCodeField = false
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,

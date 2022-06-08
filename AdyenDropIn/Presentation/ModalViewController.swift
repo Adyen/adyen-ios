@@ -38,7 +38,7 @@ internal final class ModalViewController: UIViewController {
         self.style = style
         self.cancelButtonHandler = cancelButtonHandler
         
-      super.init(nibName: nil, bundle: Bundle(for: ModalViewController.self))
+        super.init(nibName: nil, bundle: Bundle(for: ModalViewController.self))
     }
     
     /// :nodoc:
