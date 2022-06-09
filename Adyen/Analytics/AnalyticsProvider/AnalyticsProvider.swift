@@ -36,7 +36,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
 
     internal let apiClient: APIClientProtocol
     internal let configuration: AnalyticsConfiguration
-    internal var checkoutAttemptId: String?
+    internal private(set) var checkoutAttemptId: String?
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<CheckoutAttemptIdResponse>
 
     // MARK: - Initializers
