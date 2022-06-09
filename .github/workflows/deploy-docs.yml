@@ -1,0 +1,34 @@
+name: Deploy Docs
+on: [workflow_dispatch]
+
+jobs:
+
+  Deploy:
+    runs-on: macos-12
+    steps:
+    - uses: actions/checkout@v2
+    - uses: n1hility/cancel-previous-runs@v2
+      with:
+        token: ${{ secrets.MANUAL_ACTION_TOKEN }}
+
+    - name: Select latest Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+
+    - name: Set current marketing version
+      run: echo "::set-output name=MARKETING_VERSION::$(agvtool what-marketing-version -terse1)"
+      id: get-current-marketing-version
+
+    - name: Deploy to current version 🚀
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/html
+        destination_dir: ./${{ steps.get-current-marketing-version.outputs.MARKETING_VERSION }}
+    - name: Deploy to root 🚀
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/redirect
+        keep_files: true

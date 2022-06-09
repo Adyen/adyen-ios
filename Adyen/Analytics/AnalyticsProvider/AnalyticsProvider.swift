@@ -19,7 +19,8 @@ public struct AnalyticsConfiguration {
     public var isTelemetryEnabled = true
 
     // MARK: - Initializers
-
+    
+    /// Initializes a new instance of `AnalyticsConfiguration`
     public init() { /* Empty implementation */ }
 }
 

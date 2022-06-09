@@ -57,6 +57,7 @@ public final class TextField: UITextField {
     }
 }
 
+@_spi(AdyenInternal)
 extension TextField {
 
     public func apply(placeholderText: String?, with style: TextStyle?) {

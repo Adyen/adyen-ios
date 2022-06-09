@@ -75,7 +75,12 @@ public struct PhoneExtension: Decodable, Equatable {
     public var countryDisplayName: String {
         Locale.current.localizedString(forRegionCode: countryCode) ?? ""
     }
-
+    
+    /// Initializes a new instance of `PhoneExtension`.
+    ///
+    /// - Parameters:
+    ///   - value: The phone extension.
+    ///   - countryCode: The ISO country code.
     public init(value: String, countryCode: String) {
         self.value = value
         self.countryCode = countryCode
