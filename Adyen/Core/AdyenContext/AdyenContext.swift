@@ -7,8 +7,8 @@
 import AdyenNetworking
 import Foundation
 
-/// A class that defines the behavior of the components in a payment session.
-/// Create an `AdyenContext` instance for each payment session and use it for all the components.
+/// A class that defines the behavior of the components in a payment flow.
+/// Create an `AdyenContext` instance for each payment flow and use it for all the components.
 public final class AdyenContext {
 
     // MARK: - Properties

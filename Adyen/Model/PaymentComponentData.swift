@@ -50,7 +50,7 @@ public struct PaymentComponentData {
     /// Indicates the device default browser info.
     public let browserInfo: BrowserInfo?
 
-    // TODO: - Document checkoutAttemptId
+    /// A unique ID that identifies the current transaction.
     public let checkoutAttemptId: String?
 
     /// The billing address information.
