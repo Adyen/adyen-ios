@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,6 @@
 import Foundation
 import UIKit
 
-/// :nodoc:
 /// Contains the styling customization options for any views.
 public protocol ViewStyle {
     
@@ -16,7 +15,6 @@ public protocol ViewStyle {
     
 }
 
-/// :nodoc:
 /// Contains the styling customization options for views with accent color.
 public protocol TintableStyle: ViewStyle {
     

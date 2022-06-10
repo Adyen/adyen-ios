@@ -1,14 +1,13 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import Foundation
 
-/// :nodoc:
 /// A specific await component thats keeps polling the `/status` endpoint to check the payment status.
 internal final class PollingComponent: AnyPollingHandler {
     
@@ -18,47 +17,38 @@ internal final class PollingComponent: AnyPollingHandler {
 
     private var errorCount = 0
 
-    /// :nodoc:
-    internal let apiContext: APIContext
+    internal let context: AdyenContext
     
-    /// :nodoc:
     internal weak var presentationDelegate: PresentationDelegate?
     
-    /// :nodoc:
     internal weak var delegate: ActionComponentDelegate?
     
-    /// :nodoc:
     internal let componentName = "mbWayAwait"
     
-    /// :nodoc:
     /// Initializes the Polling Await component.
     ///
-    /// - Parameter apiContext: The API context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter apiClient: The API client.
-    internal init(apiContext: APIContext,
+    internal init(context: AdyenContext,
                   apiClient: AnyRetryAPIClient) {
-        self.apiContext = apiContext
+        self.context = context
         self.apiClient = apiClient
     }
     
-    /// :nodoc:
     /// Handles await action.
     ///
     /// - Parameter action: The await action object.
     internal func handle(_ action: PaymentDataAware) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         startPolling(action)
     }
     
-    /// :nodoc:
     private var isCancelled: Bool = false
     
-    /// :nodoc:
     internal func didCancel() {
         isCancelled = true
     }
     
-    /// :nodoc:
     /// Starts polling the status end point to check the payment status.
     ///
     /// - Parameter action: The action object.
@@ -74,7 +64,6 @@ internal final class PollingComponent: AnyPollingHandler {
         })
     }
     
-    /// :nodoc:
     /// Decides whether the status request should be repeated.
     ///
     /// - Parameter result: The request result.
@@ -92,7 +81,6 @@ internal final class PollingComponent: AnyPollingHandler {
         }
     }
     
-    /// :nodoc:
     /// Decides whether the status request should be repeated.
     ///
     /// - Parameter response: The request response.
@@ -107,7 +95,6 @@ internal final class PollingComponent: AnyPollingHandler {
         }
     }
     
-    /// :nodoc:
     /// Handles the final request result.
     ///
     /// - Parameter result: The request result.
@@ -125,7 +112,6 @@ internal final class PollingComponent: AnyPollingHandler {
         }
     }
     
-    /// :nodoc:
     private func deliverData(_ response: PaymentStatusResponse, paymentData: String) {
         let additionalDetails = AwaitActionDetails(payload: response.payload)
         let actionData = ActionComponentData(details: additionalDetails, paymentData: paymentData)

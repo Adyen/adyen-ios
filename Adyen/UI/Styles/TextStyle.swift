@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -22,7 +22,6 @@ public struct TextStyle: ViewStyle {
     /// The technique to use for aligning the text.
     public var textAlignment: NSTextAlignment = .center
     
-    /// :nodoc:
     public var backgroundColor: UIColor = .clear
 
     /// The corners style of the text item.

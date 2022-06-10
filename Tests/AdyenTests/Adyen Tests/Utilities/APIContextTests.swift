@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 import XCTest
 
 class APIContextTests: XCTestCase {
@@ -30,18 +30,18 @@ class APIContextTests: XCTestCase {
     }
     
     func testQueryParameters() {
-        let sut = Dummy.context.queryParameters
+        let sut = Dummy.apiContext.queryParameters
         
         XCTAssertEqual(sut.count, 1)
         
         let clientKeyParameter = sut.first
         XCTAssertNotNil(clientKeyParameter)
         XCTAssertEqual(clientKeyParameter!.name, "clientKey")
-        XCTAssertEqual(clientKeyParameter!.value, Dummy.context.clientKey)
+        XCTAssertEqual(clientKeyParameter!.value, Dummy.apiContext.clientKey)
     }
     
     func testHeaders() {
-        let sut = Dummy.context.headers
+        let sut = Dummy.apiContext.headers
         
         XCTAssertEqual(sut.count, 1)
         

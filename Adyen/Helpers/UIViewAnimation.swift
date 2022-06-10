@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,7 +10,7 @@ private enum AssociatedKeys {
     internal static var animations = "animations"
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public class AnimationContext: NSObject {
     fileprivate let animationKey: String
     
@@ -24,7 +24,6 @@ public class AnimationContext: NSObject {
     
     fileprivate let completion: ((Bool) -> Void)?
     
-    /// :nodoc:
     public init(animationKey: String,
                 duration: TimeInterval,
                 delay: TimeInterval = 0,
@@ -40,12 +39,11 @@ public class AnimationContext: NSObject {
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class KeyFrameAnimationContext: AnimationContext {
     
     fileprivate let keyFrameOptions: UIView.KeyframeAnimationOptions
     
-    /// :nodoc:
     public init(animationKey: String,
                 duration: TimeInterval,
                 delay: TimeInterval = 0,
@@ -62,13 +60,12 @@ public final class KeyFrameAnimationContext: AnimationContext {
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class SpringAnimationContext: AnimationContext {
 
     fileprivate let dampingRatio: CGFloat
     fileprivate let velocity: CGFloat
 
-    /// :nodoc:
     public init(animationKey: String,
                 duration: TimeInterval,
                 delay: TimeInterval = 0,
@@ -88,8 +85,9 @@ public final class SpringAnimationContext: AnimationContext {
     }
 }
 
+@_spi(AdyenInternal)
 extension AdyenScope where Base: UIView {
-    /// :nodoc:
+    
     public func animate(context: AnimationContext) {
         base.animations.append(context)
         
@@ -129,8 +127,9 @@ extension AdyenScope where Base: UIView {
     }
 }
 
+@_spi(AdyenInternal)
 private extension UIView {
-    /// :nodoc:
+
     var animations: [AnimationContext] {
         get {
             objc_getAssociatedObject(self, &AssociatedKeys.animations) as? [AnimationContext] ?? []

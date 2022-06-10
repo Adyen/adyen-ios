@@ -39,7 +39,6 @@ public struct IssuerListPaymentMethod: PaymentMethod {
     
     // MARK: - Coding
     
-    /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.type = try container.decode(PaymentMethodType.self, forKey: .type)
@@ -66,7 +65,7 @@ public struct IssuerListPaymentMethod: PaymentMethod {
         }
     }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }

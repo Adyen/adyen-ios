@@ -4,30 +4,31 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
 import XCTest
 
 class AffirmComponentTests: XCTestCase {
-    
+
+    private var analyticsProviderMock: AnalyticsProviderMock!
     private var paymentMethod: PaymentMethod!
-    private var apiContext: APIContext!
+    private var context: AdyenContext!
     private var style: FormComponentStyle!
     private var sut: AffirmComponent!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
+        analyticsProviderMock = AnalyticsProviderMock()
         paymentMethod = AffirmPaymentMethod(type: .affirm, name: "Affirm")
-        apiContext = Dummy.context
+        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
         style = FormComponentStyle()
         sut = AffirmComponent(paymentMethod: paymentMethod,
-                              apiContext: apiContext,
+                              context: context,
                               configuration: AffirmComponent.Configuration(style: style))
     }
     
     override func tearDownWithError() throws {
         paymentMethod = nil
-        apiContext = nil
         style = nil
         sut = nil
         try super.tearDownWithError()
@@ -110,7 +111,7 @@ class AffirmComponentTests: XCTestCase {
     func testSubmitForm_shouldCallDelegateWithProperParameters() throws {
         // Given
         let sut = AffirmComponent(paymentMethod: paymentMethod,
-                                  apiContext: apiContext,
+                                  context: context,
                                   configuration: AffirmComponent.Configuration(style: style))
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -134,7 +135,7 @@ class AffirmComponentTests: XCTestCase {
             didSubmitExpectation.fulfill()
         }
         
-        wait(for: .milliseconds(300))
+        wait(for: .seconds(1))
         
         let view: UIView = sut.viewController.view
         
@@ -178,11 +179,11 @@ class AffirmComponentTests: XCTestCase {
         // Given
         let config = AffirmComponent.Configuration(style: style, shopperInformation: shopperInformation)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
-                                         apiContext: apiContext,
+                                         context: context,
                                          configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .seconds(1))
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -225,11 +226,11 @@ class AffirmComponentTests: XCTestCase {
         // Given
         let config = AffirmComponent.Configuration(style: style, shopperInformation: shopperInformationNoDeliveryAddress)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
-                                         apiContext: apiContext,
+                                         context: context,
                                          configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .seconds(1))
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -272,7 +273,7 @@ class AffirmComponentTests: XCTestCase {
         // Given
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .seconds(1))
 
         // Then
         let view: UIView = sut.viewController.view
@@ -305,6 +306,17 @@ class AffirmComponentTests: XCTestCase {
         let expectedDeliveryAddress = PostalAddressMocks.emptyUSPostalAddress
         let deliveryAddress = deliveryAddressView.item.value
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
+    }
+
+    private func testViewWillAppear_shouldSendTelemetryEvent() throws {
+        // Given
+        let mockViewController = UIViewController()
+
+        // When
+        sut.viewWillAppear(viewController: mockViewController)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
     }
 
     // MARK: - Private

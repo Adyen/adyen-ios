@@ -4,10 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
-/// :nodoc:
 internal protocol BACSDirectDebitRouterProtocol: AnyObject {
     func presentConfirmation(with data: BACSDirectDebitData)
     func confirmPayment(with data: BACSDirectDebitData)
@@ -21,10 +20,8 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     
     // MARK: - PresentableComponent
 
-    /// :nodoc:
     public let viewController: UIViewController
 
-    /// :nodoc:
     public var requiresModalPresentation: Bool = true
 
     /// The object that acts as the delegate of the component.
@@ -33,16 +30,16 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// The BACS Direct Debit payment method.
     public var paymentMethod: PaymentMethod { bacsPaymentMethod }
 
-    /// :nodoc:
-    public let apiContext: APIContext
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
 
     /// The object that acts as the presentation delegate of the component.
     public weak var presentationDelegate: PresentationDelegate?
     
     /// Component's configuration
     public var configuration: Configuration
-    
-    /// The payment information.
+
     public var payment: Payment? {
         didSet {
             inputPresenter?.amount = payment?.amount
@@ -65,13 +62,13 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// Creates and returns a BACS Direct Debit component.
     /// - Parameters:
     ///   - paymentMethod: The BACS Direct Debit payment method.
-    ///   - apiContext: The API context.
+    ///   - context: The context object for this component.
     ///   - configuration: Configuration for the component.
     public init(paymentMethod: BACSDirectDebitPaymentMethod,
-                apiContext: APIContext,
+                context: AdyenContext,
                 configuration: Configuration = Configuration()) {
         self.bacsPaymentMethod = paymentMethod
-        self.apiContext = apiContext
+        self.context = context
         self.configuration = configuration
         self.inputFormViewController = BACSInputFormViewController(title: paymentMethod.name,
                                                                    styleProvider: configuration.style)
@@ -79,7 +76,8 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
                                                     style: configuration.style)
         
         let tracker = BACSDirectDebitComponentTracker(paymentMethod: bacsPaymentMethod,
-                                                      apiContext: apiContext,
+                                                      apiContext: context.apiContext,
+                                                      telemetryTracker: context.analyticsProvider,
                                                       isDropIn: _isDropIn)
         let itemsFactory = BACSItemsFactory(styleProvider: configuration.style,
                                             localizationParameters: configuration.localizationParameters,
@@ -95,6 +93,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
 // MARK: - BACSDirectDebitRouterProtocol
 
+/// :nodoc:
 extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 
     internal func presentConfirmation(with data: BACSDirectDebitData) {
@@ -141,9 +140,9 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 
 // MARK: - LoadingComponent
 
+/// :nodoc:
 extension BACSDirectDebitComponent: LoadingComponent {
 
-    /// :nodoc:
     /// Stops any processing animation that the component is running.
     public func stopLoading() {
         confirmationPresenter?.stopLoading()
@@ -152,9 +151,9 @@ extension BACSDirectDebitComponent: LoadingComponent {
 
 // MARK: - Cancellable
 
+/// :nodoc:
 extension BACSDirectDebitComponent: Cancellable {
 
-    /// :nodoc:
     /// Called when the user cancels the component.
     public func didCancel() {
         if confirmationViewPresented == false {

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// A space form item in terms of number of layout margins.
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class FormSpacerItemView: FormItemView<FormSpacerItem> {
 
     /// Initializes the spacer item view.

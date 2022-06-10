@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,7 +39,6 @@ public enum Action: Decodable {
     
     // MARK: - Coding
     
-    /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(ActionType.self, forKey: .type)
@@ -64,7 +63,6 @@ public enum Action: Decodable {
         }
     }
     
-    /// :nodoc:
     private static func handleQRCodeType(from decoder: Decoder) throws -> Action {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         if (try? container.decode(QRCodePaymentMethod.self, forKey: .paymentMethodType)) != nil {

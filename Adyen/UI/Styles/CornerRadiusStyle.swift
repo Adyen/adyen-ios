@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -22,9 +22,9 @@ public enum CornerRounding {
     
 }
 
+@_spi(AdyenInternal)
 extension CornerRounding: Equatable {
     
-    /// :nodoc:
     public static func == (lhs: CornerRounding, rhs: CornerRounding) -> Bool {
         switch (lhs, rhs) {
         case let (.fixed(lhsValue), .fixed(rhsValue)):

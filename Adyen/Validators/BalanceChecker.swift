@@ -1,12 +1,12 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public struct BalanceChecker {
 
     /// Indicates balance related errors.
@@ -28,25 +28,20 @@ public struct BalanceChecker {
         }
     }
 
-    /// :nodoc:
     /// The balance check result.
     public struct Result {
 
-        /// :nodoc:
         /// Indicates whether the balance is enough to pay a certain amount.
         public let isBalanceEnough: Bool
 
-        /// :nodoc:
         /// The remaining amount in the balance after payment.
         /// It is at minimum zero when the whole available balance covers part or all the amount to be paid.
         public let remainingBalanceAmount: Amount
 
-        /// :nodoc:
         /// The amount that can be paid.
         public let amountToPay: Amount
     }
 
-    /// :nodoc:
     public init() { /* Empty initializer */ }
 
     /// Check if a Balance is enough to pay an amount.
@@ -57,7 +52,6 @@ public struct BalanceChecker {
     /// - Throws: `Error.zeroBalance` in case the balance has zero available amount
     /// - Throws: `Error.unexpectedCurrencyCode` in case there is inconsistencies regarding currency codes.
     /// - Returns: an instance of `BalanceValidator.Result`.
-    /// :nodoc:
     public func check(balance: Balance, isEnoughToPay amount: Amount) throws -> Result {
         guard balance.availableAmount.value > 0 else {
             throw Error.zeroBalance

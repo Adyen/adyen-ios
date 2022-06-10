@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Adyen3DS2
 import Foundation
 
@@ -15,8 +15,9 @@ internal protocol AnyRedirectComponent: ActionComponent {
 /// Handles the 3D Secure 2 fingerprint and challenge.
 public final class ThreeDS2Component: ActionComponent {
     
-    /// :nodoc:
-    public let apiContext: APIContext
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
     
     /// The delegate of the component.
     public weak var delegate: ActionComponentDelegate?
@@ -60,11 +61,11 @@ public final class ThreeDS2Component: ActionComponent {
     
     /// Initializes the 3D Secure 2 component.
     ///
-    /// - Parameter apiContext: The `APIContext`.
-    /// - Parameter redirectComponentStyle: `RedirectComponent` style
-    public init(apiContext: APIContext,
+    /// - Parameter context: The context object for this component.
+    /// - Parameter configuration: The component's configuration.
+    public init(context: AdyenContext,
                 configuration: Configuration = Configuration()) {
-        self.apiContext = apiContext
+        self.context = context
         self.configuration = configuration
         self.updateConfiguration()
     }
@@ -72,18 +73,17 @@ public final class ThreeDS2Component: ActionComponent {
     /// Initializes the 3D Secure 2 component.
     ///
     /// - Parameters:
-    ///   - apiContext: The `APIContext`.
+    ///   - context: The  Adyen context.
     ///   - threeDS2CompactFlowHandler: The internal `AnyThreeDS2ActionHandler` for the compact flow.
     ///   - threeDS2ClassicFlowHandler: The internal `AnyThreeDS2ActionHandler` for the classic flow.
     ///   - redirectComponent: The redirect component.
     ///   - redirectComponentStyle: `RedirectComponent` style.
-    /// :nodoc:
-    internal convenience init(apiContext: APIContext,
+    internal convenience init(context: AdyenContext,
                               threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
                               threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
                               redirectComponent: AnyRedirectComponent,
                               configuration: Configuration = Configuration()) {
-        self.init(apiContext: redirectComponent.apiContext,
+        self.init(context: context,
                   configuration: configuration)
         self.threeDS2CompactFlowHandler = threeDS2CompactFlowHandler
         self.threeDS2ClassicFlowHandler = threeDS2ClassicFlowHandler
@@ -178,7 +178,7 @@ public final class ThreeDS2Component: ActionComponent {
     }
 
     internal lazy var threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler = {
-        let handler = ThreeDS2CompactActionHandler(apiContext: apiContext,
+        let handler = ThreeDS2CompactActionHandler(context: context,
                                                    appearanceConfiguration: configuration.appearanceConfiguration)
 
         handler._isDropIn = _isDropIn
@@ -188,7 +188,7 @@ public final class ThreeDS2Component: ActionComponent {
     }()
 
     internal lazy var threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler = {
-        let handler = ThreeDS2ClassicActionHandler(apiContext: apiContext,
+        let handler = ThreeDS2ClassicActionHandler(context: context,
                                                    appearanceConfiguration: configuration.appearanceConfiguration)
         handler._isDropIn = _isDropIn
         handler.threeDSRequestorAppURL = configuration.requestorAppURL
@@ -197,7 +197,7 @@ public final class ThreeDS2Component: ActionComponent {
     }()
 
     private lazy var redirectComponent: AnyRedirectComponent = {
-        let component = RedirectComponent(apiContext: apiContext)
+        let component = RedirectComponent(context: context)
         component.configuration.style = configuration.redirectComponentStyle
 
         component.delegate = self

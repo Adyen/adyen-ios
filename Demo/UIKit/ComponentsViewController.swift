@@ -136,19 +136,29 @@ internal final class ComponentsViewController: UIViewController, Presenter {
         present(viewController: alertController, completion: nil)
     }
 
-    internal func presentAlert(withTitle title: String) {
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+    internal func presentAlert(withTitle title: String, message: String?) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default))
 
         present(viewController: alertController, completion: nil)
     }
 
     internal func present(viewController: UIViewController, completion: (() -> Void)?) {
-        adyen.topPresenter.present(viewController, animated: true, completion: completion)
+        topPresenter.present(viewController, animated: true, completion: completion)
     }
 
     internal func dismiss(completion: (() -> Void)?) {
         dismiss(animated: true, completion: completion)
+    }
+}
+
+extension UIViewController {
+    var topPresenter: UIViewController {
+        var topController: UIViewController = self
+        while let presenter = topController.presentedViewController {
+            topController = presenter
+        }
+        return topController
     }
 }
 

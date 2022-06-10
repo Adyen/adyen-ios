@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,33 +7,28 @@
 import UIKit
 
 /// Picker item identifier.
-/// :nodoc:
+@_spi(AdyenInternal)
 public protocol PickerElement: Equatable, CustomStringConvertible {
 
     /// Picker item identifier.
-    /// :nodoc:
     var identifier: String { get }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public struct BasePickerElement<ElementType: CustomStringConvertible>: PickerElement {
 
     /// Picker item identifier.
-    /// :nodoc:
     public let identifier: String
 
     /// Picker item value.
-    /// :nodoc:
     public let element: ElementType
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.identifier == rhs.identifier
     }
 
-    /// :nodoc:
     public var description: String { element.description }
     
-    /// :nodoc:
     public init(identifier: String, element: ElementType) {
         self.identifier = identifier
         self.element = element
@@ -42,11 +37,10 @@ public struct BasePickerElement<ElementType: CustomStringConvertible>: PickerEle
 }
 
 /// Describes a picker item.
-/// :nodoc:
+@_spi(AdyenInternal)
 open class BaseFormPickerItem<ElementType: CustomStringConvertible>: FormValueItem<BasePickerElement<ElementType>, FormTextItemStyle>,
     InputViewRequiringFormItem, Hidable {
 
-    /// :nodoc:
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
     /// The complete list of selectable values, as observable.

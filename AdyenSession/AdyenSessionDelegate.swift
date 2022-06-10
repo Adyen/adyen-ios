@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenActions)
-    import AdyenActions
+    @_spi(AdyenInternal) import AdyenActions
 #endif
 import AdyenNetworking
 import Foundation
@@ -59,7 +59,7 @@ public protocol AdyenSessionDelegate: AnyObject {
     func handlerForAdditionalDetails(in component: ActionComponent, session: AdyenSession) -> AdyenSessionPaymentDetailsHandler?
 }
 
-/// :nodoc:
+/// Provides default empty implementation for `AdyenSessionDelegate`
 public extension AdyenSessionDelegate {
 
     func handlerForPayments(in component: PaymentComponent, session: AdyenSession) -> AdyenSessionPaymentsHandler? { nil }
@@ -75,7 +75,12 @@ public protocol AdyenSessionPaymentsHandler {
     /// - Parameters:
     ///   - paymentComponentData: The data supplied by the payment component.
     ///   - component: The payment component from which the payment details were submitted.
-    func didSubmit(_ paymentComponentData: PaymentComponentData, from component: Component, session: AdyenSession)
+    ///   - dropInComponent: The DropIn Component instance if any.
+    ///   - session: The `AdyenSession` instance.
+    func didSubmit(_ paymentComponentData: PaymentComponentData,
+                   from component: Component,
+                   dropInComponent: AnyDropInComponent?,
+                   session: AdyenSession)
 }
 
 /// Describes the interface to take over the step where additional data is provided for making the payment details call.

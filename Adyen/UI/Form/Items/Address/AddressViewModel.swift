@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 import UIKit
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public enum AddressField: String, CaseIterable {
     case street
     case houseNumberOrName
@@ -18,13 +18,13 @@ public enum AddressField: String, CaseIterable {
     case country
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public enum AddressFormScheme {
     case item(AddressField)
     case split(AddressField, AddressField)
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public struct AddressViewModel {
 
     internal var labels: [AddressField: LocalizationKey]

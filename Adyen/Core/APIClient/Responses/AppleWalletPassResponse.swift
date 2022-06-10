@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,13 +7,11 @@
 import AdyenNetworking
 import Foundation
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public struct AppleWalletPassResponse: Response {
 
-    /// :nodoc:
     public let passData: Data
 
-    /// :nodoc:
     public init(passBase64String: String) throws {
         guard let passData = Data(base64Encoded: passBase64String) else {
             throw AppleWalletError.failedToAddToAppleWallet
@@ -32,7 +30,6 @@ public struct AppleWalletPassResponse: Response {
         self.passData = passData
     }
 
-    /// :nodoc:
     internal enum CodingKeys: String, CodingKey {
         case passBase64String = "passData"
     }

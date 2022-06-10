@@ -145,7 +145,6 @@ public struct PaymentMethods: Decodable {
     
     // MARK: - Decoding
     
-    /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.regular = try container.decode([AnyPaymentMethod].self, forKey: .regular).compactMap(\.value)

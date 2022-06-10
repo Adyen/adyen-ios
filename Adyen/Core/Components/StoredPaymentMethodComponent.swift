@@ -7,36 +7,39 @@
 import Foundation
 import UIKit
 
-/// :nodoc:
+///  A component that handle stored payment methods.
 public final class StoredPaymentMethodComponent: PaymentComponent, PresentableComponent, Localizable {
 
-    /// :nodoc:
-    public let apiContext: APIContext
-    
-    /// :nodoc:
+    /// The context object for this component.
+    public let context: AdyenContext
+
+    /// The stored payment method.
     public var paymentMethod: PaymentMethod { storedPaymentMethod }
 
-    /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
-
-    /// :nodoc:
+    
+    /// Initializes new instance of `StoredPaymentMethodComponent`.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The stored payment method.
+    ///   - context: The context object.
     public init(paymentMethod: StoredPaymentMethod,
-                apiContext: APIContext) {
+                context: AdyenContext) {
         self.storedPaymentMethod = paymentMethod
-        self.apiContext = apiContext
+        self.context = context
     }
     
     private let storedPaymentMethod: StoredPaymentMethod
     
     // MARK: - PresentableComponent
 
-    /// :nodoc:
     public lazy var viewController: UIViewController = {
         Analytics.sendEvent(
             component: storedPaymentMethod.type.rawValue,
             flavor: _isDropIn ? .dropin : .components,
-            context: apiContext
+            context: context.apiContext
         )
+        sendTelemetryEvent()
         
         let displayInformation = storedPaymentMethod.displayInformation(using: localizationParameters)
         let alertController = UIAlertController(title: localizedString(.dropInStoredTitle,
@@ -63,19 +66,23 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
         return alertController
     }()
     
-    /// :nodoc:
     public var localizationParameters: LocalizationParameters?
     
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
+extension StoredPaymentMethodComponent: TrackableComponent {}
+
+/// Store payment method details.
 public struct StoredPaymentDetails: PaymentMethodDetails {
     
     internal let type: PaymentMethodType
     
     internal let storedPaymentMethodIdentifier: String
-
-    /// :nodoc:
+    
+    /// Initializes a new instance of `StoredPaymentDetails`
+    ///
+    /// - Parameter paymentMethod: The payment method.
     public init(paymentMethod: StoredPaymentMethod) {
         self.type = paymentMethod.type
         self.storedPaymentMethodIdentifier = paymentMethod.identifier

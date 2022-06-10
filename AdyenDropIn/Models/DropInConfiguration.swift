@@ -4,15 +4,15 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenCard)
-    import AdyenCard
+    @_spi(AdyenInternal) import AdyenCard
 #endif
 #if canImport(AdyenComponents)
     import AdyenComponents
 #endif
 #if canImport(AdyenActions)
-    import AdyenActions
+    @_spi(AdyenInternal) import AdyenActions
 #endif
 import Foundation
 import PassKit
@@ -20,7 +20,7 @@ import PassKit
 public extension DropInComponent {
     
     /// Contains the configuration for the drop in component and the embedded payment method components.
-    final class Configuration: APIContextAware {
+    final class Configuration: AdyenContextAware {
         
         /// Card component related configuration.
         public var card = Card()
@@ -36,15 +36,16 @@ public extension DropInComponent {
         
         /// Shopper related information
         public var shopper: PrefilledShopperInformation?
-        
-        /// API context used to retrieve internal resources.
-        public let apiContext: APIContext
+
+        /// :nodoc:
+        /// The context object for this component.
+        public let context: AdyenContext
         
         /// Indicates the localization parameters, leave it nil to use the default parameters.
         public var localizationParameters: LocalizationParameters?
 
         /// The payment information.
-        public var payment: Adyen.Payment?
+        public var payment: Payment?
         
         /// Determines whether to enable skipping payment list step
         /// when there is only one non-instant payment method.
@@ -60,21 +61,22 @@ public extension DropInComponent {
         
         /// Initializes the drop in configuration.
         /// - Parameters:
-        ///   - apiContext: The API context used to retrieve internal resources.
-        ///   - allowsSkippingPaymentList: Boolean to enable skipping payment list when there is only one one non-instant payment method.
+        ///   - context: The context object for this component.
         ///   - style: The UI styles of the components.
-        public init(apiContext: APIContext,
+        ///   - allowsSkippingPaymentList: Boolean to enable skipping payment list when there is only one one non-instant payment method.
+        ///   - allowPreselectedPaymentView: Boolean to enable the preselected stored payment method view step.
+        public init(context: AdyenContext,
                     style: Style = Style(),
                     allowsSkippingPaymentList: Bool = false,
                     allowPreselectedPaymentView: Bool = true) {
-            self.apiContext = apiContext
+            self.context = context
             self.style = style
             self.allowsSkippingPaymentList = allowsSkippingPaymentList
             self.allowPreselectedPaymentView = allowPreselectedPaymentView
         }
-
     }
     
+    /// Action components related configurations.
     struct ActionComponentConfiguration {
         /// Three DS configurations
         public var threeDS: AdyenActionComponent.Configuration.ThreeDS = .init()

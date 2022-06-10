@@ -6,13 +6,17 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-@testable import AdyenActions
-@testable import AdyenCard
+@_spi(AdyenInternal) @testable import AdyenActions
+@testable @_spi(AdyenInternal) import AdyenCard
 import Foundation
 
 final class AnyRedirectComponentMock: AnyRedirectComponent {
     
-    let apiContext = Dummy.context
+    let apiContext = Dummy.apiContext
+
+    var context: AdyenContext {
+        return .init(apiContext: apiContext)
+    }
 
     var delegate: ActionComponentDelegate?
 

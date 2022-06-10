@@ -48,9 +48,9 @@ public protocol ActionComponentDelegate: AnyObject {
     
 }
 
+/// provides a default empty implementation for ``didOpenExternalApplication(component:)``.
 public extension ActionComponentDelegate {
     
-    /// :nodoc:
     func didOpenExternalApplication(component: ActionComponent) {}
     
 }

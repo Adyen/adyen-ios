@@ -6,7 +6,7 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-@testable import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
 import Foundation
 
@@ -14,12 +14,12 @@ class BACSDirectDebitComponentTrackerProtocolMock: BACSDirectDebitComponentTrack
 
     // MARK: - sendEvent
 
-    var sendEventCallsCount = 0
-    var sendEventCalled: Bool {
-        sendEventCallsCount > 0
+    var sendTelemetryEventCallsCount = 0
+    var sendTelemetryEventCalled: Bool {
+        sendTelemetryEventCallsCount > 0
     }
 
-    func sendEvent() {
-        sendEventCallsCount += 1
+    func sendTelemetryEvent() {
+        sendTelemetryEventCallsCount += 1
     }
 }

@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import Adyen
-@testable import AdyenCard
+@_spi(AdyenInternal) @testable import Adyen
+@testable @_spi(AdyenInternal) import AdyenCard
 @testable import AdyenDropIn
 import XCTest
 
@@ -33,7 +33,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
     var delegate: PreselectedPaymentComponentDelegateMock!
     
     override func setUp() {
-        component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), apiContext: Dummy.context)
+        component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), context: Dummy.context)
         component.payment = payment
         sut = PreselectedPaymentMethodComponent(component: component, title: "Test title", style: FormComponentStyle(), listItemStyle: ListItemStyle())
         
@@ -117,7 +117,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
         listStyle.title.color = .white
         listStyle.subtitle.color = .white
         
-        component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), apiContext: Dummy.context)
+        component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), context: Dummy.context)
         sut = PreselectedPaymentMethodComponent(component: component, title: "", style: formStyle, listItemStyle: listStyle)
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -167,7 +167,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
     }
     
     func testPaypalComponent() {
-        component = StoredPaymentMethodComponent(paymentMethod: getStoredPaypal(), apiContext: Dummy.context)
+        component = StoredPaymentMethodComponent(paymentMethod: getStoredPaypal(), context: Dummy.context)
         sut = PreselectedPaymentMethodComponent(component: component, title: "", style: FormComponentStyle(), listItemStyle: ListItemStyle())
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -181,7 +181,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
     }
     
     func testStoredCardComponent() {
-        component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), apiContext: Dummy.context)
+        component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), context: Dummy.context)
         sut = PreselectedPaymentMethodComponent(component: component, title: "", style: FormComponentStyle(), listItemStyle: ListItemStyle())
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController

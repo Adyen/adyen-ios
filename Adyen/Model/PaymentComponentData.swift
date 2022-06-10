@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -70,7 +70,6 @@ public struct PaymentComponentData {
     
     /// Initializes the payment component data.
     ///
-    /// :nodoc:
     ///
     /// - Parameters:
     ///   - paymentMethodDetails: The payment method details submitted from the payment component.
@@ -79,6 +78,7 @@ public struct PaymentComponentData {
     ///   - storePaymentMethod: Whether the user has chosen to store the payment method.
     ///   - browserInfo: The device default browser info.
     ///   - installments: Installments selection if specified.
+    @_spi(AdyenInternal)
     public init(paymentMethodDetails: PaymentMethodDetails,
                 amount: Amount?,
                 order: PartialPaymentOrder?,
@@ -93,7 +93,7 @@ public struct PaymentComponentData {
         self.installments = installments
     }
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func replacingOrder(with order: PartialPaymentOrder) -> PaymentComponentData {
         PaymentComponentData(paymentMethodDetails: paymentMethod,
                              amount: amount,
@@ -103,7 +103,7 @@ public struct PaymentComponentData {
                              installments: installments)
     }
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func replacingAmount(with amount: Amount) -> PaymentComponentData {
         PaymentComponentData(paymentMethodDetails: paymentMethod,
                              amount: amount,
@@ -118,6 +118,7 @@ public struct PaymentComponentData {
     ///
     /// - Parameters:
     ///   - completion: The completion closure that is called with the new `PaymentComponentData` instance.
+    @_spi(AdyenInternal)
     public func dataByAddingBrowserInfo(completion: @escaping ((_ newData: PaymentComponentData) -> Void)) {
         BrowserInfo.initialize {
             completion(PaymentComponentData(paymentMethodDetails: paymentMethod,

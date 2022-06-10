@@ -1,11 +1,12 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 import UIKit
+@_spi(AdyenInternal) import Adyen
 
 // MARK: - DimmingPresentationController
 
@@ -41,7 +42,6 @@ internal final class DimmingPresentationController: UIPresentationController {
         return containerView.frame
     }
     
-    /// :nodoc:
     override internal func presentationTransitionWillBegin() {
         super.presentationTransitionWillBegin()
         
@@ -53,12 +53,10 @@ internal final class DimmingPresentationController: UIPresentationController {
         })
     }
     
-    /// :nodoc:
     override internal func presentationTransitionDidEnd(_ completed: Bool) {
         super.presentationTransitionDidEnd(completed)
     }
     
-    /// :nodoc:
     override internal func dismissalTransitionWillBegin() {
         super.dismissalTransitionWillBegin()
         

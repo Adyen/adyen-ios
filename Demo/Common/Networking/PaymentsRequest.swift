@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -81,24 +81,52 @@ internal struct PaymentsRequest: APIRequest {
 }
 
 internal struct PaymentsResponse: Response {
+
+    internal static var received: PaymentsResponse = .init()
     
     internal let resultCode: ResultCode
     
     internal let action: Action?
 
     internal let order: PartialPaymentOrder?
+
+    internal let refusalReason: String?
+
+    internal let refusalReasonCode: String?
+
+    internal let amount: Amount?
     
     internal init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.resultCode = try container.decode(ResultCode.self, forKey: .resultCode)
         self.action = try container.decodeIfPresent(Action.self, forKey: .action)
         self.order = try container.decodeIfPresent(PartialPaymentOrder.self, forKey: .order)
+        self.refusalReasonCode = try container.decodeIfPresent(String.self, forKey: .refusalReasonCode)
+        self.amount = try container.decodeIfPresent(Amount.self, forKey: .amount)
+        if let additionalData = try? container.nestedContainer(keyedBy: CodingKeys.self, forKey: .additionalData) {
+            self.refusalReason = try additionalData.decodeIfPresent(String.self, forKey: .refusalReason)
+        } else {
+            self.refusalReason = nil
+        }
+    }
+
+    private init() {
+        resultCode = .received
+        action = nil
+        order = nil
+        amount = nil
+        refusalReasonCode = nil
+        refusalReason = nil
     }
     
     private enum CodingKeys: String, CodingKey {
         case resultCode
         case action
         case order
+        case refusalReason = "refusalReasonRaw"
+        case refusalReasonCode
+        case additionalData
+        case amount
     }
     
 }

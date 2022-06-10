@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,14 +7,14 @@
 import Foundation
 
 /// The editing style.
-/// :nodoc:
+@_spi(AdyenInternal)
 public enum EditingStyle {
     case delete
     case none
 }
 
 /// A section of items in a ListViewController.
-/// :nodoc:
+@_spi(AdyenInternal)
 public struct ListSection: Hashable {
     
     /// The title of the section.
@@ -26,7 +26,6 @@ public struct ListSection: Hashable {
     /// The footer title of the section.
     public let footer: ListSectionFooter?
     
-    /// :nodoc:
     public var isEditable: Bool {
         header?.editingStyle != EditingStyle.none
     }
@@ -68,22 +67,18 @@ public struct ListSection: Hashable {
 }
 
 /// A list section header.
-/// :nodoc:
+@_spi(AdyenInternal)
 public struct ListSectionHeader: Hashable {
 
     /// The header title.
-    /// :nodoc:
     public var title: String
 
     /// The header style.
-    /// :nodoc:
     public var style: ListSectionHeaderStyle
     
     /// The editing style.
-    /// :nodoc:
     public var editingStyle: EditingStyle = .none
 
-    /// :nodoc:
     /// - Parameters:
     ///   - title: The header title
     ///   - style: The UI style.
@@ -104,18 +99,14 @@ public struct ListSectionHeader: Hashable {
 }
 
 /// A list section footer.
-/// :nodoc:
 public struct ListSectionFooter: Hashable {
 
     /// The footer title.
-    /// :nodoc:
     public var title: String
 
     /// The footer style.
-    /// :nodoc:
     public var style: ListSectionFooterStyle
 
-    /// :nodoc:
     /// - Parameters:
     ///   - title: The footer title
     ///   - style: The UI style.

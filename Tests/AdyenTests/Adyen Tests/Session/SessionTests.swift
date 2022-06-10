@@ -8,12 +8,24 @@
 
 import XCTest
 @testable import AdyenSession
-import Adyen
-import AdyenActions
+@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) import AdyenActions
 import AdyenComponents
 import AdyenDropIn
 
 class SessionTests: XCTestCase {
+
+    var context: AdyenContext!
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        context = Dummy.context
+    }
+
+    override func tearDownWithError() throws {
+        context = nil
+        try super.tearDownWithError()
+    }
 
     func testInitialization() throws {
         let apiClient = APIClientMock()
@@ -38,7 +50,7 @@ class SessionTests: XCTestCase {
         let expectation = expectation(description: "Expect session object to be initialized")
         AdyenSession.initialize(with: .init(sessionIdentifier: "session_id",
                                             initialSessionData: "session_data_0",
-                                            apiContext: Dummy.context),
+                                            context: context),
                                 delegate: SessionDelegateMock(),
                                 presentationDelegate: PresentationDelegateMock(),
                                 baseAPIClient: apiClient) { result in
@@ -75,7 +87,7 @@ class SessionTests: XCTestCase {
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
-                                       apiContext: Dummy.context)
+                                              context: context)
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
         apiClient.mockedResults = [.success(PaymentsResponse(resultCode: .authorised,
@@ -122,7 +134,7 @@ class SessionTests: XCTestCase {
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
-                                       apiContext: Dummy.context)
+                                              context: context)
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
         let expectedAction = RedirectAction(
@@ -168,7 +180,7 @@ class SessionTests: XCTestCase {
                     ),
                     paymentData: "payment_data"
                 )
-                sut.didProvide(data, from: RedirectComponent(apiContext: Dummy.context))
+                sut.didProvide(data, from: RedirectComponent(context: self.context))
             default:
                 XCTFail()
             }
@@ -196,9 +208,10 @@ class SessionTests: XCTestCase {
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
-                                       apiContext: Dummy.context)
+                                              context: context)
         let dropInComponent = DropInComponent(paymentMethods: expectedPaymentMethods,
-                                              configuration: .init(apiContext: Dummy.context),
+                                              context: context,
+                                              configuration: .init(context: context),
                                               title: nil)
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
@@ -338,7 +351,6 @@ class SessionTests: XCTestCase {
         
         apiClient.mockedResults = [.success(CreateOrderResponse(pspReference: "ref",
                                                                 orderData: "data",
-                                                                remainingAmount: Amount(value: 10, currencyCode: "EUR"),
                                                                 sessionData: "session_data2"))]
         
         let expectation = expectation(description: "Expect API call to be made")
@@ -433,7 +445,7 @@ class SessionTests: XCTestCase {
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
-                                       apiContext: Dummy.context)
+                                              context: context)
         sut.didSubmit(data, from: component)
         wait(for: [didSubmitExpectation], timeout: 2)
     }
@@ -456,16 +468,17 @@ class SessionTests: XCTestCase {
             ),
             paymentData: "payment_data"
         )
-        sut.didProvide(data, from: RedirectComponent(apiContext: Dummy.context))
+        sut.didProvide(data, from: RedirectComponent(context: context))
         wait(for: [didProvideExpectation], timeout: 2)
     }
     
     func testSessionAsDropInDelegate() throws {
-        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(context: context)
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         let dropIn = DropInComponent(paymentMethods: paymenMethods,
+                                     context: context,
                                      configuration: config)
         let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
         let sessionHandlerMock = SessionAdvancedHandlerMock()
@@ -476,7 +489,7 @@ class SessionTests: XCTestCase {
         
         let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
         let paymentComponent = PaymentComponentMock(paymentMethod: paymentMethod)
-        let actionComponent = QRCodeComponent(apiContext: Dummy.context)
+        let actionComponent = QRCodeComponent(context: context)
         
         let didFailExpectation = expectation(description: "didFail should be called")
         sessionDelegate.onDidFail = { (error, component, session) in
@@ -532,7 +545,7 @@ class SessionTests: XCTestCase {
         )
         
         dropIn.didFail(with: ComponentError.paymentMethodNotSupported, from: paymentComponent)
-        dropIn.didOpenExternalApplication(component: QRCodeComponent(apiContext: Dummy.context))
+        dropIn.didOpenExternalApplication(component: QRCodeComponent(context: context))
         dropIn.didSubmit(paymentData, from: paymentComponent)
         dropIn.didProvide(actionData, from: actionComponent)
         sut.sessionContext.resultCode = .authorised
@@ -568,7 +581,7 @@ class SessionTests: XCTestCase {
             ),
             paymentData: "payment_data"
         )
-        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context))
+        sut.didProvide(actionData, from: QRCodeComponent(context: context))
         wait(for: [didCompleteExpectation], timeout: 2)
     }
     
@@ -599,7 +612,7 @@ class SessionTests: XCTestCase {
             ),
             paymentData: "payment_data"
         )
-        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context))
+        sut.didProvide(actionData, from: QRCodeComponent(context: context))
         wait(for: [didCompleteExpectation], timeout: 2)
     }
     
@@ -630,7 +643,7 @@ class SessionTests: XCTestCase {
             ),
             paymentData: "payment_data"
         )
-        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context))
+        sut.didProvide(actionData, from: QRCodeComponent(context: context))
         wait(for: [didCompleteExpectation], timeout: 2)
     }
     
@@ -661,7 +674,7 @@ class SessionTests: XCTestCase {
             ),
             paymentData: "payment_data"
         )
-        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context))
+        sut.didProvide(actionData, from: QRCodeComponent(context: context))
         wait(for: [didCompleteExpectation], timeout: 2)
     }
     
@@ -692,7 +705,7 @@ class SessionTests: XCTestCase {
             ),
             paymentData: "payment_data"
         )
-        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context))
+        sut.didProvide(actionData, from: QRCodeComponent(context: context))
         wait(for: [didCompleteExpectation], timeout: 2)
     }
     
@@ -762,7 +775,7 @@ class SessionTests: XCTestCase {
             ),
             paymentData: "payment_data"
         )
-        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context))
+        sut.didProvide(actionData, from: QRCodeComponent(context: context))
         wait(for: [didCompleteExpectation], timeout: 2)
     }
     
@@ -793,7 +806,7 @@ class SessionTests: XCTestCase {
             ),
             paymentData: "payment_data"
         )
-        sut.didProvide(actionData, from: QRCodeComponent(apiContext: Dummy.context))
+        sut.didProvide(actionData, from: QRCodeComponent(context: context))
         wait(for: [didCompleteExpectation], timeout: 2)
     }
     
@@ -818,7 +831,7 @@ class SessionTests: XCTestCase {
         let initializationExpectation = expectation(description: "Expect session object to be initialized")
         AdyenSession.initialize(with: .init(sessionIdentifier: "session_id",
                                             initialSessionData: "session_data_0",
-                                            apiContext: Dummy.context),
+                                            context: context),
                                 delegate: delegate,
                                 presentationDelegate: PresentationDelegateMock(),
                                 baseAPIClient: apiClient) { result in

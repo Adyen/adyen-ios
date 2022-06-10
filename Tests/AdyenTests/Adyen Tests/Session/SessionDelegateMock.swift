@@ -6,8 +6,8 @@
 //  Copyright © 2022 Adyen. All rights reserved.
 //
 
-import Adyen
-import AdyenActions
+@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) import AdyenActions
 import AdyenComponents
 import AdyenDropIn
 import AdyenSession
@@ -45,7 +45,10 @@ class SessionAdvancedHandlerMock: AdyenSessionPaymentsHandler, AdyenSessionPayme
     var onDidSubmit: ((PaymentComponentData, Component, AdyenSession) -> Void)?
     var onDidProvide: ((ActionComponentData, Component, AdyenSession) -> Void)?
     
-    func didSubmit(_ paymentComponentData: PaymentComponentData, from component: Component, session: AdyenSession) {
+    func didSubmit(_ paymentComponentData: PaymentComponentData,
+                   from component: Component,
+                   dropInComponent: AnyDropInComponent?,
+                   session: AdyenSession) {
         onDidSubmit?(paymentComponentData, component, session)
     }
     

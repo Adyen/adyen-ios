@@ -6,25 +6,32 @@
 
 import Foundation
 
-/// :nodoc:
+/// Any component's most basic configuration.
 public protocol AnyBasicComponentConfiguration: Localizable {
     
+    /// The form component style.
     var style: FormComponentStyle { get }
 }
 
-/// :nodoc:
+/// The configuration of any component thats aware of shoppers' personal information.
 public protocol AnyPersonalInformationConfiguration: AnyBasicComponentConfiguration {
     
+    /// The shopper information to be prefilled.
     var shopperInformation: PrefilledShopperInformation? { get }
 }
 
-/// :nodoc:
+/// Any component's most basic configuration.
 public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     
     public var style: FormComponentStyle
     
     public var localizationParameters: LocalizationParameters?
     
+    /// Initializes a new instance of `BasicComponentConfiguration`
+    ///
+    /// - Parameters:
+    ///   - style: The form style.
+    ///   - localizationParameters: The localization parameters.
     public init(style: FormComponentStyle = FormComponentStyle(),
                 localizationParameters: LocalizationParameters? = nil) {
         self.style = style
@@ -32,7 +39,7 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     }
 }
 
-/// :nodoc:
+/// The configuration of any component thats aware of shoppers' personal information.
 public struct PersonalInformationConfiguration: AnyPersonalInformationConfiguration {
     public var style: FormComponentStyle
     
@@ -40,6 +47,12 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
     
     public var localizationParameters: LocalizationParameters?
     
+    /// Initializes a new instance of `PersonalInformationConfiguration`
+    ///
+    /// - Parameters:
+    ///   - style: The form style.
+    ///   - shopperInformation: The shopper information to be prefilled.
+    ///   - localizationParameters: The localization parameters.
     public init(style: FormComponentStyle = FormComponentStyle(),
                 shopperInformation: PrefilledShopperInformation? = nil,
                 localizationParameters: LocalizationParameters? = nil) {

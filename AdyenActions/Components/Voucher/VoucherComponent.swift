@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import PassKit
 import UIKit
@@ -17,16 +17,15 @@ internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
 /// A component that handles voucher action.
 public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent {
 
-    /// :nodoc:
-    public let apiContext: APIContext
-
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
+    
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
 
-    /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
 
-    /// :nodoc:
     public let requiresModalPresentation: Bool = true
     
     /// The voucher component configurations.
@@ -52,69 +51,59 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     /// The voucher component configurations.
     public var configuration: Configuration
 
-    /// :nodoc:
     internal var voucherShareableViewProvider: AnyVoucherShareableViewProvider
 
-    /// :nodoc:
     private lazy var apiClient: APIClientProtocol = {
         let scheduler = SimpleScheduler(maximumCount: 3)
-        return APIClient(apiContext: apiContext)
+        return APIClient(apiContext: context.apiContext)
             .retryAPIClient(with: scheduler)
             .retryOnErrorAPIClient()
     }()
     
-    /// :nodoc:
     internal func canAddPasses(action: AnyVoucherAction) -> Bool {
         PKAddPassesViewController.canAddPasses() && action.passCreationToken != nil
     }
 
-    /// :nodoc:
     private let componentName = "voucher"
 
-    /// :nodoc:
     internal let passProvider: AnyAppleWalletPassProvider
     
-    /// :nodoc:
     internal var view: VoucherView?
 
     /// Initializes the `VoucherComponent`.
     ///
-    /// - Parameter apiContext: The API context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The voucher component configurations.
-    public convenience init(apiContext: APIContext, configuration: Configuration = Configuration()) {
-        self.init(
-            apiContext: apiContext,
-            voucherShareableViewProvider: nil,
-            configuration: configuration,
-            passProvider: AppleWalletPassProvider(apiContext: apiContext)
-        )
+    public convenience init(context: AdyenContext,
+                            configuration: Configuration = Configuration()) {
+        self.init(context: context,
+                  voucherShareableViewProvider: nil,
+                  configuration: configuration,
+                  passProvider: AppleWalletPassProvider(context: context))
     }
 
     /// Initializes the `AwaitComponent`.
-    /// - Parameter apiContext: The API context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
-    internal init(
-        apiContext: APIContext,
-        voucherShareableViewProvider: AnyVoucherShareableViewProvider?,
-        configuration: Configuration = Configuration(),
-        passProvider: AnyAppleWalletPassProvider?
-    ) {
-        self.apiContext = apiContext
+    internal init(context: AdyenContext,
+                  voucherShareableViewProvider: AnyVoucherShareableViewProvider?,
+                  configuration: Configuration = Configuration(),
+                  passProvider: AnyAppleWalletPassProvider?) {
+        self.context = context
         self.configuration = configuration
         self.voucherShareableViewProvider = voucherShareableViewProvider ??
-            VoucherShareableViewProvider(style: configuration.style, environment: apiContext.environment)
-        self.passProvider = passProvider ?? AppleWalletPassProvider(apiContext: apiContext)
+            VoucherShareableViewProvider(style: configuration.style, environment: context.apiContext.environment)
+        self.passProvider = passProvider ?? AppleWalletPassProvider(context: context)
     }
 
-    /// :nodoc:
     public func didCancel() {}
 
     /// Handles await action.
     ///
     /// - Parameter action: The await action object.
     public func handle(_ action: VoucherAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         fetchAndCacheAppleWalletPassIfNeeded(with: action.anyAction)
 
         voucherShareableViewProvider.localizationParameters = configuration.localizationParameters
@@ -184,7 +173,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
             currency: comps.formattedCurrencySymbol,
             logoUrl: LogoURLProvider.logoURL(
                 withName: anyAction.paymentMethodType.rawValue,
-                environment: apiContext.environment,
+                environment: context.apiContext.environment,
                 size: .medium
             ),
             mainButton: getPrimaryButtonTitle(with: action),

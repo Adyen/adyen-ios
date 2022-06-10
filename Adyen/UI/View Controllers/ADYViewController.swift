@@ -1,16 +1,15 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import UIKit
 
-/// :nodoc:
 /// `ADYViewController` serves as a height-aware `UIViewController`
+@_spi(AdyenInternal)
 public final class ADYViewController: UIViewController {
     
-    /// :nodoc:
     private let contentView: UIView
     
     /// Initializes the `ADYViewController` instance with given view and an optional title
@@ -19,7 +18,7 @@ public final class ADYViewController: UIViewController {
     ///   - title: The title of the `ADYViewController`
     public init(view: UIView, title: String? = nil) {
         self.contentView = view
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil, bundle: Bundle(for: ADYViewController.self))
         self.title = title
     }
     

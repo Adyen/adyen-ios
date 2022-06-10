@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import AdyenCard
+@testable @_spi(AdyenInternal) import AdyenCard
 import XCTest
 
 class CardExpiryDateValidatorTests: XCTestCase {
@@ -24,11 +24,8 @@ class CardExpiryDateValidatorTests: XCTestCase {
         // Test date 30 years in the future from reference date 01/01/2020.
         XCTAssertTrue(validator.isValid("0150"))
         
-        // Test date less than 3 months in the past from reference date 01/01/2020.
+        // Test date 3 months in the past from reference date 01/01/2020.
         XCTAssertTrue(validator.isValid("1019"))
-        
-        // Test date 3 months from reference date 01/01/2020.
-        XCTAssertTrue(validator.isValid("0919"))
     }
     
     private func getReferenceDate() -> Date {
@@ -58,6 +55,7 @@ class CardExpiryDateValidatorTests: XCTestCase {
         XCTAssertFalse(validator.isValid("0917"))
         XCTAssertFalse(validator.isValid("0101"))
         XCTAssertFalse(validator.isValid("0819"))
+        XCTAssertFalse(validator.isValid("0919"))
         
         // More than 30 years in the future from reference date 01/01/2020.
         XCTAssertFalse(validator.isValid("0151"))

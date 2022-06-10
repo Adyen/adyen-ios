@@ -22,7 +22,6 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
     
     // MARK: - Decoding
     
-    /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.type = try container.decode(PaymentMethodType.self, forKey: .type)
@@ -31,7 +30,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
         self.fundingSource = try container.decodeIfPresent(CardFundingSource.self, forKey: .fundingSource)
     }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
@@ -79,7 +78,7 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
                                   logoName: brand.rawValue)
     }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }

@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
 import XCTest
 
@@ -16,7 +16,8 @@ class ApplePayDetailsTest: XCTestCase {
                                   token: "test_token",
                                   network: "test_network",
                                   billingContact: nil,
-                                  shippingContact: nil)
+                                  shippingContact: nil,
+                                  shippingMethod: nil)
         
         let encoder = JSONEncoder()
         let data = try encoder.encode(sut.encodable)

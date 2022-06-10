@@ -6,8 +6,8 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-@testable import Adyen
-@testable import AdyenActions
+@_spi(AdyenInternal) @testable import Adyen
+@_spi(AdyenInternal) @testable import AdyenActions
 @testable import AdyenDropIn
 import XCTest
 
@@ -17,7 +17,7 @@ class DocumentComponentTests: XCTestCase {
     
     func testUI() {
         let style = DocumentComponentStyle()
-        let sut = DocumentComponent(apiContext: Dummy.context)
+        let sut = DocumentComponent(context: Dummy.context)
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "test_table")

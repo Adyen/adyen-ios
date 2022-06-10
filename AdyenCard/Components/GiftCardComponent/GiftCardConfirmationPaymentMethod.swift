@@ -4,10 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 
 /// A payment method wrapper, with custom `DisplayInformation`.
-/// :nodoc:
 internal struct GiftCardConfirmationPaymentMethod: PaymentMethod {
     
     internal var type: PaymentMethodType {
@@ -23,19 +22,16 @@ internal struct GiftCardConfirmationPaymentMethod: PaymentMethod {
         set { paymentMethod.merchantProvidedDisplayInformation = newValue }
     }
     
-    /// :nodoc:
     private var paymentMethod: GiftCardPaymentMethod
     
     private let lastFour: String
     
     private let remainingAmount: Amount
     
-    /// :nodoc:
     internal func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         paymentMethod.buildComponent(using: builder)
     }
     
-    /// :nodoc:
     internal func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let footnote = localizedString(.partialPaymentRemainingBalance,
                                        parameters,
@@ -46,7 +42,6 @@ internal struct GiftCardConfirmationPaymentMethod: PaymentMethod {
                                   footnoteText: footnote)
     }
     
-    /// :nodoc:
     internal init(paymentMethod: GiftCardPaymentMethod,
                   lastFour: String,
                   remainingAmount: Amount) {
@@ -55,7 +50,6 @@ internal struct GiftCardConfirmationPaymentMethod: PaymentMethod {
         self.remainingAmount = remainingAmount
     }
     
-    /// :nodoc:
     internal init(from decoder: Decoder) throws {
         fatalError("This class should never be decoded.")
     }

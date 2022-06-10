@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import Foundation
 import UIKit
@@ -15,8 +15,7 @@ import UIKit
  - SeeAlso:
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
-public class CardComponent: PublicKeyConsumer,
-    PresentableComponent,
+public class CardComponent: PresentableComponent,
     LoadingComponent {
 
     internal enum Constant {
@@ -27,12 +26,13 @@ public class CardComponent: PublicKeyConsumer,
         internal static let publicPanSuffixLength = 4
     }
     
-    /// :nodoc:
-    public let apiContext: APIContext
-
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
+    
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public let publicKeyProvider: AnyPublicKeyProvider
 
     internal let binInfoProvider: AnyBinInfoProvider
@@ -56,7 +56,6 @@ public class CardComponent: PublicKeyConsumer,
         }
     }
 
-    /// The payment information.
     public var payment: Payment? {
         didSet {
             storedCardComponent?.payment = payment
@@ -67,38 +66,37 @@ public class CardComponent: PublicKeyConsumer,
     ///
     /// - Parameters:
     ///   - paymentMethod: The card payment method.
-    ///   - apiContext: The API context.
+    ///   - context: The context object for this component.
     ///   - configuration: The configuration of the component.
     public convenience init(paymentMethod: AnyCardPaymentMethod,
-                            apiContext: APIContext,
+                            context: AdyenContext,
                             configuration: Configuration = .init()) {
-        let publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
-        let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: apiContext),
+        let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
+        let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: context.apiContext),
                                               publicKeyProvider: publicKeyProvider,
                                               minBinLength: Constant.privateBinLength)
         self.init(paymentMethod: paymentMethod,
-                  apiContext: apiContext,
+                  context: context,
                   configuration: configuration,
                   publicKeyProvider: publicKeyProvider,
                   binProvider: binInfoProvider)
     }
     
-    /// :nodoc:
     /// Initializes the card component.
     ///
     /// - Parameters:
     ///   - paymentMethod: The card payment method.
-    ///   - apiContext: The API context.
+    ///   - context: The context object for this component.
     ///   - configuration: The Card component configuration.
     ///   - publicKeyProvider: The public key provider
     ///   - binProvider: Any object capable to provide a BinInfo.
     internal init(paymentMethod: AnyCardPaymentMethod,
-                  apiContext: APIContext,
+                  context: AdyenContext,
                   configuration: Configuration,
                   publicKeyProvider: AnyPublicKeyProvider,
                   binProvider: AnyBinInfoProvider) {
         self.cardPaymentMethod = paymentMethod
-        self.apiContext = apiContext
+        self.context = context
         self.configuration = configuration
         self.publicKeyProvider = publicKeyProvider
         self.binInfoProvider = binProvider
@@ -110,7 +108,6 @@ public class CardComponent: PublicKeyConsumer,
     
     // MARK: - Presentable Component Protocol
     
-    /// :nodoc:
     public var viewController: UIViewController {
         if let storedCardComponent = storedCardComponent {
             return storedCardComponent.viewController
@@ -118,10 +115,8 @@ public class CardComponent: PublicKeyConsumer,
         return securedViewController
     }
     
-    /// :nodoc:
     public var requiresModalPresentation: Bool { storedCardComponent?.requiresModalPresentation ?? true }
     
-    /// :nodoc:
     public func stopLoading() {
         cardViewController.stopLoading()
     }
@@ -134,18 +129,21 @@ public class CardComponent: PublicKeyConsumer,
         }
         var component: PaymentComponent & PresentableComponent
         if configuration.stored.showsSecurityCodeField {
-            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, apiContext: apiContext)
+            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context)
             storedComponent.localizationParameters = configuration.localizationParameters
             component = storedComponent
         } else {
-            let storedComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext)
+            let storedComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
             storedComponent.localizationParameters = configuration.localizationParameters
             component = storedComponent
         }
         component.payment = payment
         return component
     }()
-
+    
+    /// Updates the visibility of the store payment method switch.
+    ///
+    /// - Parameter isVisible: Indicates whether to show the switch if `true` or to hide it if `false`.
     public func update(storePaymentMethodFieldVisibility isVisible: Bool) {
         cardViewController.update(storePaymentMethodFieldVisibility: isVisible)
     }
@@ -163,7 +161,7 @@ public class CardComponent: PublicKeyConsumer,
                                                     shopperInformation: configuration.shopperInformation,
                                                     formStyle: configuration.style,
                                                     payment: payment,
-                                                    logoProvider: LogoURLProvider(environment: apiContext.environment),
+                                                    logoProvider: LogoURLProvider(environment: context.apiContext.environment),
                                                     supportedCardTypes: supportedCardTypes,
                                                     scope: String(describing: self),
                                                     localizationParameters: configuration.localizationParameters)
@@ -189,3 +187,6 @@ extension CardComponent: CardViewControllerDelegate {
     }
     
 }
+
+@_spi(AdyenInternal)
+extension CardComponent: PublicKeyConsumer {}

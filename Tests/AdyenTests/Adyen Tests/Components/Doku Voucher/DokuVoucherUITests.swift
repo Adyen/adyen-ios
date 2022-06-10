@@ -4,14 +4,14 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
-@testable import AdyenActions
+@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import AdyenActions
 import XCTest
 
 class DokuVoucherUITests: XCTestCase {
 
     func testDokuIndomaretVoucherCustomLocalization() throws {
-        let viewControllerProvider = VoucherShareableViewProvider(style: VoucherComponentStyle(), environment: Dummy.context.environment)
+        let viewControllerProvider = VoucherShareableViewProvider(style: VoucherComponentStyle(), environment: Dummy.apiContext.environment)
         viewControllerProvider.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
         let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
@@ -50,7 +50,7 @@ class DokuVoucherUITests: XCTestCase {
     }
 
     func testDokuIndomaretVoucher() throws {
-        let viewProvider = VoucherShareableViewProvider(style: VoucherComponentStyle(), environment: Dummy.context.environment)
+        let viewProvider = VoucherShareableViewProvider(style: VoucherComponentStyle(), environment: Dummy.apiContext.environment)
 
         let dokuAction = try Coder.decode(dokuIndomaretAction) as DokuVoucherAction
         let action: VoucherAction = .dokuIndomaret(dokuAction)
@@ -88,7 +88,7 @@ class DokuVoucherUITests: XCTestCase {
     }
 
     func testDokuAlfamartVoucher() throws {
-        let viewProvider = VoucherShareableViewProvider(style: VoucherComponentStyle(), environment: Dummy.context.environment)
+        let viewProvider = VoucherShareableViewProvider(style: VoucherComponentStyle(), environment: Dummy.apiContext.environment)
 
         let dokuAction = try Coder.decode(dokuAlfamartAction) as DokuVoucherAction
         let action: VoucherAction = .dokuAlfamart(dokuAction)

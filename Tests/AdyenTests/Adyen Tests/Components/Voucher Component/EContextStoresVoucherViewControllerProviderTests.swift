@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
-@testable import AdyenActions
+@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import AdyenActions
 import UIKit
 import XCTest
 
@@ -17,7 +17,7 @@ class EContextStoresVoucherViewControllerProviderTests: XCTestCase {
 
         let viewProvider = VoucherShareableViewProvider(
             style: VoucherComponentStyle(),
-            environment: Dummy.context.environment
+            environment: Dummy.apiContext.environment
         )
         viewProvider.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost")
 

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,10 +7,9 @@
 import Foundation
 
 /// A selectable item displayed in the list.
-/// :nodoc:
+@_spi(AdyenInternal)
 public class ListItem: FormItem {
 
-    /// :nodoc:
     public var subitems: [FormItem] = []
     
     /// The list item style.
@@ -73,7 +72,7 @@ public class ListItem: FormItem {
 
 // MARK: - Hashable & Equatable
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension ListItem: Hashable {
     
     public func hash(into hasher: inout Hasher) {

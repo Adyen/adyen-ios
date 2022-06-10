@@ -9,7 +9,7 @@
 import XCTest
 @testable import AdyenSession
 import AdyenNetworking
-import Adyen
+@_spi(AdyenInternal) import Adyen
 
 extension SessionSetupResponse: Equatable {
     public static func == (lhs: SessionSetupResponse, rhs: SessionSetupResponse) -> Bool {

@@ -26,7 +26,7 @@ public struct StoredPayPalPaymentMethod: StoredPaymentMethod {
     /// The email address of the PayPal account.
     public let emailAddress: String
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }

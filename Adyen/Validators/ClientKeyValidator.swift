@@ -13,23 +13,17 @@ public enum ClientKeyError: Error, LocalizedError {
     case invalidClientKey
 
     public var errorDescription: String? {
-        switch self {
-        case .invalidClientKey:
-            return
-                """
-                The entered client key is invalid.
-                Valid client key starts with environment name (e.x. `live_XXXXXXXXXX`).
-                """
-        }
+        """
+        The entered client key is invalid.
+        Valid client key starts with environment name (e.x. `live_XXXXXXXXXX`).
+        """
     }
 
 }
 
-/// :nodoc:
 /// Validates a client key https://docs.adyen.com/user-management/client-side-authentication
 public final class ClientKeyValidator: RegularExpressionValidator {
 
-    /// :nodoc:
     public init() {
         let regex = #"^[a-z]{4,8}_[a-zA-Z0-9]{8,128}$"#
         super.init(regularExpression: regex, minimumLength: 13, maximumLength: 140)

@@ -8,6 +8,7 @@ import Adyen
 import AdyenActions
 import AdyenCard
 import AdyenComponents
+import PassKit
 import UIKit
 
 extension IntegrationExample {
@@ -31,7 +32,8 @@ extension IntegrationExample {
     internal func cardComponent(from paymentMethods: PaymentMethods?) -> CardComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
-        return CardComponent(paymentMethod: paymentMethod, apiContext: ConfigurationConstants.apiContext)
+        return CardComponent(paymentMethod: paymentMethod,
+                             context: context)
     }
 
     // MARK: IDEAL
@@ -49,7 +51,8 @@ extension IntegrationExample {
     internal func idealComponent(from paymentMethods: PaymentMethods?) -> IdealComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: IssuerListPaymentMethod.self) else { return nil }
-        return IdealComponent(paymentMethod: paymentMethod, apiContext: ConfigurationConstants.apiContext)
+        return IdealComponent(paymentMethod: paymentMethod,
+                              context: context)
     }
 
     // MARK: SEPA
@@ -67,7 +70,8 @@ extension IntegrationExample {
     internal func sepaComponent(from paymentMethods: PaymentMethods?) -> SEPADirectDebitComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: SEPADirectDebitPaymentMethod.self) else { return nil }
-        return SEPADirectDebitComponent(paymentMethod: paymentMethod, apiContext: ConfigurationConstants.apiContext)
+        return SEPADirectDebitComponent(paymentMethod: paymentMethod,
+                                        context: context)
     }
 
     // MARK: MBWay
@@ -88,7 +92,7 @@ extension IntegrationExample {
         let style = FormComponentStyle()
         let config = MBWayComponent.Configuration(style: style)
         return MBWayComponent(paymentMethod: paymentMethod,
-                              apiContext: ConfigurationConstants.apiContext,
+                              context: context,
                               configuration: config)
     }
 
@@ -107,13 +111,19 @@ extension IntegrationExample {
     internal func applePayComponent(from paymentMethods: PaymentMethods?) -> ApplePayComponent? {
         guard
             let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self),
-            let applePayPayment = try? ApplePayPayment(payment: payment)
+            let applePayPayment = try? ApplePayPayment(payment: payment, brand: ConfigurationConstants.appName)
         else { return nil }
-        let config = ApplePayComponent.Configuration(payment: applePayPayment,
-                                                     merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
-                                                     allowOnboarding: true)
+        var config = ApplePayComponent.Configuration(payment: applePayPayment,
+                                                     merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
+        config.allowOnboarding = true
+        config.supportsCouponCode = true
+        config.shippingType = .delivery
+        config.requiredShippingContactFields = [.postalAddress]
+        config.requiredBillingContactFields = [.postalAddress]
+        config.shippingMethods = ConfigurationConstants.shippingMethods
+        
         let component = try? ApplePayComponent(paymentMethod: paymentMethod,
-                                               apiContext: ConfigurationConstants.apiContext,
+                                               context: context,
                                                configuration: config)
         return component
     }
@@ -134,7 +144,7 @@ extension IntegrationExample {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: EContextPaymentMethod.self) else { return nil }
         return EContextStoreComponent(paymentMethod: paymentMethod,
-                                      apiContext: ConfigurationConstants.apiContext,
+                                      context: context,
                                       configuration: BasicPersonalInfoFormComponent.Configuration(style: FormComponentStyle()))
     }
 
@@ -154,7 +164,7 @@ extension IntegrationExample {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return nil }
         let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
-                                                 apiContext: ConfigurationConstants.apiContext)
+                                                 context: context)
         bacsDirectDebitPresenter = BACSDirectDebitPresentationDelegate(bacsComponent: component)
         component.presentationDelegate = bacsDirectDebitPresenter
         return component
@@ -184,11 +194,11 @@ extension IntegrationExample {
         let navigation = UINavigationController(rootViewController: component.viewController)
         component.viewController.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel,
                                                                            target: self,
-                                                                           action: #selector(cancelDidPress))
+                                                                           action: #selector(cancelPressed))
         presenter?.present(viewController: navigation, completion: nil)
     }
 
-    @objc private func cancelDidPress() {
+    @objc private func cancelPressed() {
         currentComponent?.cancelIfNeeded()
         presenter?.dismiss(completion: nil)
     }
@@ -205,7 +215,7 @@ extension IntegrationExample {
                       remainingAmount.value > 0 {
                 handle(order)
             } else {
-                finish(with: response.resultCode)
+                finish(with: response)
             }
         case let .failure(error):
             finish(with: error)
@@ -244,7 +254,7 @@ extension IntegrationExample: ActionComponentDelegate {
     }
 
     internal func didComplete(from component: ActionComponent) {
-        finish(with: .authorised)
+        finish(with: PaymentsResponse.ResultCode.received)
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
@@ -276,4 +286,50 @@ extension IntegrationExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {
         present(component, delegate: self)
     }
+}
+
+extension IntegrationExample: ApplePayComponentDelegate {
+    func didUpdate(contact: PKContact,
+                   for payment: ApplePayPayment,
+                   completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void) {
+        var items = payment.summaryItems
+        print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
+        if let last = items.last {
+            items = items.dropLast()
+            let cityLabel = contact.postalAddress?.city ?? "Somewhere"
+            items.append(.init(label: "Shipping \(cityLabel)",
+                               amount: NSDecimalNumber(value: 5.0)))
+            items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue + 5.0)))
+        }
+        completion(.init(paymentSummaryItems: items))
+    }
+
+    func didUpdate(shippingMethod: PKShippingMethod,
+                   for payment: ApplePayPayment,
+                   completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void) {
+        var items = payment.summaryItems
+        print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
+        if let last = items.last {
+            items = items.dropLast()
+            items.append(shippingMethod)
+            items.append(.init(label: last.label,
+                               amount: NSDecimalNumber(value: last.amount.floatValue + shippingMethod.amount.floatValue)))
+        }
+        completion(.init(paymentSummaryItems: items))
+    }
+
+    @available(iOS 15.0, *)
+    func didUpdate(couponCode: String,
+                   for payment: ApplePayPayment,
+                   completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void) {
+        var items = payment.summaryItems
+        print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
+        if let last = items.last {
+            items = items.dropLast()
+            items.append(.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0)))
+            items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue - 5.0)))
+        }
+        completion(.init(paymentSummaryItems: items))
+    }
+
 }

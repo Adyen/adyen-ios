@@ -18,7 +18,7 @@ public struct ApplePayPaymentMethod: PaymentMethod {
     /// List of networks enabled on CA.
     public let brands: [String]?
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }

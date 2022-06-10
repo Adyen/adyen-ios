@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,45 +8,36 @@ import AdyenNetworking
 import Foundation
 import UIKit
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public class Analytics {
     
-    /// :nodoc:
     public enum Flavor: String {
         case components, dropin
     }
 
-    /// :nodoc:
     public struct Event {
 
-        /// :nodoc:
         fileprivate var component: String
 
-        /// :nodoc:
         fileprivate var flavor: Flavor
 
-        /// :nodoc:
         fileprivate var environment: AnyAPIEnvironment
 
-        /// :nodoc:
         public init(component: String, flavor: Flavor, environment: AnyAPIEnvironment) {
             self.component = component
             self.flavor = flavor
             self.environment = environment
         }
         
-        /// :nodoc
         public init(component: String, flavor: Flavor, context: APIContext) {
             self.init(component: component,
                       flavor: flavor,
                       environment: context.environment)
         }
     }
-    
-    /// :nodoc:
+
     public static var isEnabled = true
     
-    /// :nodoc:
     public static func sendEvent(component: String, flavor: Flavor, environment: AnyAPIEnvironment) {
         guard isEnabled, let url = urlFor(component: component, flavor: flavor, environment: environment) else {
             return
@@ -55,12 +46,10 @@ public class Analytics {
         urlSession.dataTask(with: url).resume()
     }
     
-    /// :nodoc:
     public static func sendEvent(component: String, flavor: Flavor, context: APIContext) {
         sendEvent(component: component, flavor: flavor, environment: context.environment)
     }
     
-    /// :nodoc:
     public static func sendEvent(_ event: Event) {
         sendEvent(component: event.component, flavor: event.flavor, environment: event.environment)
     }

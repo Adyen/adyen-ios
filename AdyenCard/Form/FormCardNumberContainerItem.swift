@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 /// A form item which consists of card number item and the supported card icons below.
@@ -55,9 +55,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     }
     
     internal func update(brands: [CardBrand]) {
-        // reduce alpha of supported card icons if brand is detected
-        let supportedBrands = brands.filter(\.isSupported)
-        supportedCardLogosItem.alpha = supportedBrands.isEmpty ? 1 : 0.3
+        supportedCardLogosItem.update(brands: brands)
         numberItem.update(brands: brands)
     }
 }
@@ -71,20 +69,30 @@ internal final class FormCardLogosItem: FormItem, Hidable {
     
     internal var subitems: [FormItem] = []
     
-    internal let cardLogos: [CardTypeLogo]
-    
     internal let style: FormTextItemStyle
     
-    /// Observable property to update the owner view's alpha.
-    @AdyenObservable(1) internal var alpha: CGFloat
+    @AdyenObservable([]) internal var cardLogos: [CardTypeLogo]
     
     internal init(cardLogos: [CardTypeLogo], style: FormTextItemStyle) {
-        self.cardLogos = cardLogos
         self.style = style
+        self.cardLogos = cardLogos
     }
     
     internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
+    }
+    
+    fileprivate func update(brands: [CardBrand]) {
+        let containsSupportedBrand = brands.contains(where: \.isSupported)
+        cardLogos = cardLogos.map { logo in
+            var logoCopy = logo
+            if containsSupportedBrand {
+                logoCopy.alpha = brands.contains { $0.type == logoCopy.type } ? 1 : 0.3
+            } else {
+                logoCopy.alpha = 1
+            }
+            return logoCopy
+        }
     }
     
 }
@@ -95,7 +103,7 @@ extension FormItemViewBuilder {
     }
     
     internal func build(with item: FormCardNumberContainerItem) -> FormItemView<FormCardNumberContainerItem> {
-        FormVerticalStackItemView<FormCardNumberContainerItem>(item: item, itemSpacing: 0)
+        FormCardNumberContainerItemView(item: item, itemSpacing: 0)
     }
 }
 
@@ -108,16 +116,19 @@ extension FormCardLogosItem {
         /// The URL of the card type logo.
         internal let url: URL
         
+        internal var alpha: Float
+        
         /// Initializes the card type logo.
         ///
         /// - Parameter cardType: The card type for which to initialize the logo.
-        internal init(url: URL, type: CardType) {
+        internal init(url: URL, type: CardType, alpha: Float = 1) {
             self.url = url
             self.type = type
+            self.alpha = alpha
         }
         
         internal static func == (lhs: FormCardLogosItem.CardTypeLogo, rhs: FormCardLogosItem.CardTypeLogo) -> Bool {
-            lhs.url == rhs.url && lhs.type == rhs.type
+            lhs.url == rhs.url && lhs.type == rhs.type && lhs.alpha == rhs.alpha
         }
     }
 }

@@ -4,17 +4,17 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenActions)
-    import AdyenActions
+    @_spi(AdyenInternal) import AdyenActions
 #endif
 import Foundation
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension AdyenSession: PaymentComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         let handler = delegate?.handlerForPayments(in: component, session: self) ?? self
-        handler.didSubmit(data, from: component, session: self)
+        handler.didSubmit(data, from: component, dropInComponent: nil, session: self)
     }
     
     internal func finish(with resultCode: SessionPaymentResultCode, component: Component) {
@@ -34,57 +34,71 @@ extension AdyenSession: PaymentComponentDelegate {
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension AdyenSession: AdyenSessionPaymentsHandler {
     public func didSubmit(_ paymentComponentData: PaymentComponentData,
                           from component: Component,
+                          dropInComponent: AnyDropInComponent?,
                           session: AdyenSession) {
         let request = PaymentsRequest(sessionId: sessionContext.identifier,
                                       sessionData: sessionContext.data,
                                       data: paymentComponentData)
         apiClient.perform(request) { [weak self] in
-            self?.handle(paymentResponseResult: $0, for: component)
+            self?.handle(paymentResponseResult: $0, for: component, in: dropInComponent)
         }
     }
     
     internal func handle(paymentResponseResult: Result<PaymentsResponse, Error>,
-                         for currentComponent: Component) {
+                         for currentComponent: Component,
+                         in dropInComponent: AnyDropInComponent? = nil) {
         switch paymentResponseResult {
         case let .success(response):
-            handle(paymentResponse: response, for: currentComponent)
+            handle(paymentResponse: response, for: currentComponent, in: dropInComponent)
         case let .failure(error):
             finish(with: error, component: currentComponent)
         }
     }
     
     private func handle(paymentResponse response: PaymentsResponse,
-                        for currentComponent: Component) {
+                        for currentComponent: Component,
+                        in dropInComponent: AnyDropInComponent?) {
         if let action = response.action {
-            handle(action: action, for: currentComponent)
+            handle(action: action, for: currentComponent, in: dropInComponent)
         } else if let order = response.order,
                   let remainingAmount = order.remainingAmount,
                   remainingAmount.value > 0 {
-            handle(order: order, for: currentComponent)
+            handle(order: order, for: currentComponent, in: dropInComponent)
         } else {
             finish(with: SessionPaymentResultCode(paymentResultCode: response.resultCode),
                    component: currentComponent)
         }
     }
     
-    private func handle(action: Action, for currentComponent: Component) {
-        if let component = currentComponent as? ActionHandlingComponent {
-            component.handle(action)
+    private func handle(action: Action,
+                        for currentComponent: Component,
+                        in dropInComponent: AnyDropInComponent?) {
+        if let dropInComponent = dropInComponent as? ActionHandlingComponent {
+            dropInComponent.handle(action)
         } else {
             actionComponent.handle(action)
         }
     }
     
-    private func handle(order: PartialPaymentOrder, for currentComponent: Component) {
+    private func handle(order: PartialPaymentOrder,
+                        for currentComponent: Component,
+                        in dropInComponent: AnyDropInComponent?) {
+        guard let dropInComponent = dropInComponent else {
+            finish(with: PartialPaymentError.notSupportedForComponent,
+                   component: currentComponent)
+            return
+        }
         Self.makeSetupCall(with: configuration,
                            baseAPIClient: apiClient,
                            order: order) { [weak self] result in
             self?.updateContext(with: result, component: currentComponent)
-            self?.reload(currentComponent: currentComponent, with: order)
+            self?.reload(dropInComponent: dropInComponent,
+                         with: order,
+                         currentComponent: currentComponent)
         }
     }
     
@@ -97,12 +111,11 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
         }
     }
     
-    private func reload(currentComponent: Component, with order: PartialPaymentOrder) {
+    private func reload(dropInComponent: AnyDropInComponent,
+                        with order: PartialPaymentOrder,
+                        currentComponent: Component) {
         do {
-            guard let currentComponent = currentComponent as? AnyDropInComponent else {
-                throw PartialPaymentError.notSupportedForComponent
-            }
-            try currentComponent.reload(with: order, sessionContext.paymentMethods)
+            try dropInComponent.reload(with: order, sessionContext.paymentMethods)
         } catch {
             finish(with: error, component: currentComponent)
         }

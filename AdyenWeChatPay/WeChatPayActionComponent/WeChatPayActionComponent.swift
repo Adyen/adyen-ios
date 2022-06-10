@@ -5,10 +5,10 @@
 //
 
 #if canImport(AdyenActions)
-    import AdyenActions
+    @_spi(AdyenInternal) import AdyenActions
 #endif
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 #if !targetEnvironment(simulator) && canImport(AdyenWeChatPayInternal)
@@ -19,22 +19,21 @@ import Foundation
     public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
 
         private static let universalLink = "https://www.adyen.com/"
+
+        @_spi(AdyenInternal)
+        public var context: AdyenContext
     
-        /// :nodoc:
-        public let apiContext: APIContext
-    
-        /// :nodoc:
         public weak var delegate: ActionComponentDelegate?
     
-        /// :nodoc:
         private var currentlyHandledAction: WeChatPaySDKAction?
-    
-        /// :nodoc:
-        public init(apiContext: APIContext) {
-            self.apiContext = apiContext
+        
+        /// Initializes a new instance of `WeChatPaySDKActionComponent`
+        ///
+        /// - Parameter context: The context object.
+        public init(context: AdyenContext) {
+            self.context = context
         }
     
-        /// :nodoc:
         public func handle(_ action: WeChatPaySDKAction) {
             guard Self.isDeviceSupported() else {
                 delegate?.didFail(with: ComponentError.paymentMethodNotSupported, from: self)
@@ -47,7 +46,7 @@ import Foundation
              Handling multiple WeChatPaySDKAction's in parallel is not supported.
             """)
         
-            Analytics.sendEvent(component: "wechatpaySDK", flavor: _isDropIn ? .dropin : .components, context: apiContext)
+            Analytics.sendEvent(component: "wechatpaySDK", flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         
             currentlyHandledAction = action
         
@@ -77,10 +76,9 @@ import Foundation
 
     }
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     extension WeChatPaySDKActionComponent: WXApiDelegate {
 
-        /// :nodoc:
         public func onResp(_ resp: BaseResp) {
             guard let currentlyHandledAction = currentlyHandledAction else {
                 return AdyenAssertion.assertionFailure(message: "no WeChatPaySDKAction were handled")
@@ -93,9 +91,8 @@ import Foundation
     
     }
 
-    /// :nodoc:
     private extension PayReq {
-        /// :nodoc:
+        
         convenience init(actionData: WeChatPaySDKData) {
             self.init()
         
@@ -110,22 +107,21 @@ import Foundation
     }
 #else
 
-    /// :nodoc:
     /// Action component to handle WeChat Pay SDK action.
     public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
 
-        /// :nodoc:
-        public let apiContext: APIContext
+        @_spi(AdyenInternal)
+        public let context: AdyenContext
 
-        /// :nodoc:
         public weak var delegate: ActionComponentDelegate?
 
-        /// :nodoc:
-        public init(apiContext: APIContext) {
-            self.apiContext = apiContext
+        /// Initializes a new instance of `WeChatPaySDKActionComponent`
+        ///
+        /// - Parameter context: The context object.
+        public init(context: AdyenContext) {
+            self.context = context
         }
 
-        /// :nodoc:
         public func handle(_ action: WeChatPaySDKAction) {
             AdyenAssertion.assertionFailure(message: "WeChatPaySDKActionComponent can only work on a real device.")
         }

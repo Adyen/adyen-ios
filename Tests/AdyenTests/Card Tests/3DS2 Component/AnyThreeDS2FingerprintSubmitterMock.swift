@@ -6,7 +6,7 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-@testable import AdyenActions
+@_spi(AdyenInternal) @testable import AdyenActions
 import Foundation
 
 final class AnyThreeDS2FingerprintSubmitterMock: AnyThreeDS2FingerprintSubmitter {

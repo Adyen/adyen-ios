@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import PassKit
 
@@ -13,21 +13,33 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     private let paymentRequest: PKPaymentRequest
 
+    internal var applePayPayment: ApplePayPayment
+
     internal var resultConfirmed: Bool = false
 
     internal var viewControllerDidFinish: Bool = false
 
     internal let applePayPaymentMethod: ApplePayPaymentMethod
 
-    /// :nodoc:
-    public let apiContext: APIContext
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
 
     /// The Apple Pay payment method.
     public var paymentMethod: PaymentMethod { applePayPaymentMethod }
 
-    /// Read-only payment property. Set `payment` is not supported on ApplePayComponent.
     public var payment: Payment? {
-        configuration.applePayPayment.payment
+        get {
+            applePayPayment.payment
+        }
+
+        set {
+            do {
+                try update(payment: newValue)
+            } catch {
+                delegate?.didFail(with: error, from: self)
+            }
+        }
     }
 
     internal let configuration: Configuration
@@ -40,6 +52,9 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
+
+    /// The delegate changes of ApplePay payment state.
+    public weak var applePayDelegate: ApplePayComponentDelegate?
     
     /// Initializes the component.
     /// - Warning: Do not dismiss this component.
@@ -47,14 +62,14 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     ///  Dismissal should occur within `completion` block.
     ///
     /// - Parameter paymentMethod: The Apple Pay payment method. Must include country code.
-    /// - Parameter apiContext: The API environment and credentials.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: Apple Pay component configuration
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment`.
     /// if user can't make payments on any of the payment request’s supported networks.
     /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplyPay` if the current device's hardware doesn't support ApplePay.
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment` if user can't make payments on any of the supported networks.
     public init(paymentMethod: ApplePayPaymentMethod,
-                apiContext: APIContext,
+                context: AdyenContext,
                 configuration: Configuration) throws {
         guard PKPaymentAuthorizationViewController.canMakePayments() else {
             throw Error.deviceDoesNotSupportApplyPay
@@ -72,9 +87,10 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         }
 
         self.configuration = configuration
-        self.apiContext = apiContext
+        self.context = context
         self.paymentAuthorizationViewController = viewController
         self.applePayPaymentMethod = paymentMethod
+        self.applePayPayment = configuration.applePayPayment
         super.init()
 
         viewController.delegate = self
@@ -95,6 +111,14 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         }
     }
 
+    internal func update(payment: Payment?) throws {
+        guard let payment = payment else {
+            throw ApplePayComponent.Error.negativeGrandTotal
+        }
+
+        applePayPayment = try ApplePayPayment(payment: payment, brand: applePayPayment.brand)
+    }
+
     // MARK: - Private
 
     private func createPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController {
@@ -110,5 +134,18 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     private static func canMakePaymentWith(_ networks: [PKPaymentNetwork]) -> Bool {
         PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks)
     }
+}
 
+@_spi(AdyenInternal)
+extension ApplePayComponent: TrackableComponent {}
+
+@_spi(AdyenInternal)
+extension ApplePayComponent: ViewControllerDelegate {
+    public func viewDidLoad(viewController: UIViewController) { /* Empty implementation */ }
+
+    public func viewDidAppear(viewController: UIViewController) { /* Empty implementation */ }
+
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
+    }
 }

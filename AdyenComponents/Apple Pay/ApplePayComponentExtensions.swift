@@ -4,14 +4,13 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import PassKit
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     
-    /// :nodoc:
     public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
         paymentAuthorizationViewController = nil
         if resultConfirmed {
@@ -21,7 +20,6 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         }
     }
     
-    /// :nodoc:
     public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
                                                    didAuthorizePayment payment: PKPayment,
                                                    completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
@@ -34,14 +32,72 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         paymentAuthorizationCompletion = completion
         let token = payment.token.paymentData.base64EncodedString()
         let network = payment.token.paymentMethod.network?.rawValue ?? ""
-        let billingContact = payment.billingContact
-        let shippingContact = payment.shippingContact
         let details = ApplePayDetails(paymentMethod: applePayPaymentMethod,
                                       token: token,
                                       network: network,
-                                      billingContact: billingContact,
-                                      shippingContact: shippingContact)
+                                      billingContact: payment.billingContact,
+                                      shippingContact: payment.shippingContact,
+                                      shippingMethod: payment.shippingMethod)
         
         submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.amountToPay, order: order))
     }
+
+    public func paymentAuthorizationViewController(
+        _ controller: PKPaymentAuthorizationViewController,
+        didSelectShippingContact contact: PKContact,
+        handler completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void
+    ) {
+        guard let applePayDelegate = applePayDelegate else {
+            return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
+        }
+
+        applePayDelegate.didUpdate(contact: contact,
+                                   for: applePayPayment) { [weak self] result in
+            guard let self = self else { return }
+            self.updateApplePayPayment(result)
+            completion(result)
+        }
+    }
+
+    public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
+                                                   didSelect shippingMethod: PKShippingMethod,
+                                                   handler completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void) {
+        guard let applePayDelegate = applePayDelegate else {
+            return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
+        }
+
+        applePayDelegate.didUpdate(shippingMethod: shippingMethod,
+                                   for: applePayPayment) { [weak self] result in
+            guard let self = self else { return }
+            self.updateApplePayPayment(result)
+            completion(result)
+        }
+    }
+
+    @available(iOS 15.0, *)
+    public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
+                                                   didChangeCouponCode couponCode: String,
+                                                   handler completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void) {
+        guard let applePayDelegate = applePayDelegate else {
+            return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
+        }
+
+        applePayDelegate.didUpdate(couponCode: couponCode,
+                                   for: applePayPayment) { [weak self] result in
+            guard let self = self else { return }
+            self.updateApplePayPayment(result)
+            completion(result)
+        }
+    }
+
+    private func updateApplePayPayment<T: PKPaymentRequestUpdate>(_ result: T) {
+        if result.status == .success, result.paymentSummaryItems.count > 0 {
+            do {
+                applePayPayment = try applePayPayment.update(with: result.paymentSummaryItems)
+            } catch {
+                delegate?.didFail(with: error, from: self)
+            }
+        }
+    }
+
 }

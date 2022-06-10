@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,10 +8,9 @@ import Foundation
 import UIKit
 
 /// Simple form item to wrap another item and provide a margin around it.
-/// :nodoc:
+@_spi(AdyenInternal)
 public class FormContainerItem: FormItem {
 
-    /// :nodoc:
     public var subitems: [FormItem]
 
     /// Create a new instance of FormContainerItem, that wraps `content` item with `padding`.
@@ -25,7 +24,6 @@ public class FormContainerItem: FormItem {
         self.padding = padding
     }
 
-    /// :nodoc:
     public var identifier: String?
 
     /// The content of container.
@@ -36,7 +34,6 @@ public class FormContainerItem: FormItem {
     /// The margin around content.
     public var padding: UIEdgeInsets
 
-    /// :nodoc:
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         let container = FormContainerView()
         let contentView = content.build(with: builder)
@@ -54,15 +51,13 @@ public class FormContainerItem: FormItem {
             contentView.adyen.anchor(inside: self.layoutMarginsGuide, with: padding)
         }
         
-        /// :nodoc:
         internal func reset() { /* Do nothing */ }
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension FormItem {
 
-    /// :nodoc:
     public func addingDefaultMargins() -> FormContainerItem {
         FormContainerItem(content: self, padding: .zero)
     }

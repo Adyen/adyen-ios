@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,16 +7,14 @@
 import Foundation
 
 /// A form item that represents a single button with a spinner.
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class FormButtonItem: FormItem {
 
-    /// :nodoc:
     public var subitems: [FormItem] = []
     
     /// Indicates the item's UI styling.
     public let style: FormButtonItemStyle
     
-    /// :nodoc:
     public var identifier: String?
     
     /// The title of the button.
@@ -38,7 +36,6 @@ public final class FormButtonItem: FormItem {
         self.style = style
     }
     
-    /// :nodoc:
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }

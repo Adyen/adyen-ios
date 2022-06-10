@@ -1,16 +1,14 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import Foundation
 
-/// :nodoc:
 internal protocol AnyBinInfoProvider: AnyObject {
-    /// :nodoc:
     func provide(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void)
 }
 
@@ -29,7 +27,6 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     
     /// Create a new instance of CardTypeProvider.
     /// - Parameters:
-    ///   - apiContext: The API context,
     ///   - publicKeyProvider: Any instance of `AnyPublicKeyProvider`.
     ///   - fallbackCardTypeProvider: Any instance of `AnyCardBrandProvider` to be used as a fallback
     ///   if API not available or BIN too short.

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,13 +7,12 @@
 import UIKit
 
 /// Displays a list from which items can be selected.
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class ListViewController: UITableViewController {
     
     /// Indicates the list view controller UI style.
     public let style: ViewStyle
 
-    /// :nodoc:
     /// Delegate to handle different viewController events.
     public weak var delegate: ViewControllerDelegate?
     
@@ -25,13 +24,11 @@ public final class ListViewController: UITableViewController {
         super.init(style: .grouped)
     }
     
-    /// :nodoc:
     @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /// :nodoc:
     override public var preferredContentSize: CGSize {
         get { tableView.contentSize }
         
@@ -45,10 +42,8 @@ public final class ListViewController: UITableViewController {
     
     // MARK: - Data Source
     
-    /// :nodoc:
     public var sections: [ListSection] { dataSource.sections }
     
-    /// :nodoc:
     private lazy var dataSource: ListViewControllerDataSource = {
         if #available(iOS 13, *) {
             return DiffableListDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, _ in
@@ -59,13 +54,11 @@ public final class ListViewController: UITableViewController {
         }
     }()
     
-    /// :nodoc:
     public func reload(newSections: [ListSection], animated: Bool = false) {
         dataSource.reload(newSections: newSections, tableView: tableView, animated: animated)
         adyen.updatePreferredContentSize()
     }
     
-    /// :nodoc:
     public func deleteItem(at indexPath: IndexPath, animated: Bool = true) {
         dataSource.deleteItem(at: indexPath, tableView: tableView, animated: animated)
         adyen.updatePreferredContentSize()
@@ -73,7 +66,6 @@ public final class ListViewController: UITableViewController {
     
     // MARK: - View
     
-    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
         
@@ -93,7 +85,6 @@ public final class ListViewController: UITableViewController {
         delegate?.viewDidLoad(viewController: self)
     }
 
-    /// :nodoc:
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         delegate?.viewDidAppear(viewController: self)
@@ -101,7 +92,6 @@ public final class ListViewController: UITableViewController {
     
     // MARK: - UITableViewDelegate
     
-    /// :nodoc:
     override public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerItem = sections[section].header else { return nil }
         
@@ -147,12 +137,10 @@ public final class ListViewController: UITableViewController {
         sections[section].footer == nil ? 0 : 55
     }
     
-    /// :nodoc:
     override public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         sections[section].header == nil ? 0 : 44.0
     }
     
-    /// :nodoc:
     override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -160,7 +148,6 @@ public final class ListViewController: UITableViewController {
         item.selectionHandler?()
     }
     
-    /// :nodoc:
     override public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         sections[indexPath.section].header?.editingStyle.tableViewEditingStyle ?? .none
     }

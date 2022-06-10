@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import AdyenActions
+@_spi(AdyenInternal) @testable import AdyenActions
 import XCTest
 
 class RedirectListenerTests: XCTestCase {

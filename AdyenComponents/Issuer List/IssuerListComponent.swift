@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
@@ -12,8 +12,9 @@ import UIKit
 /// This component will provide a list in which the user can select their issuer.
 public final class IssuerListComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
-    /// :nodoc:
-    public let apiContext: APIContext
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
     
     /// The issuer list payment method.
     public var paymentMethod: PaymentMethod {
@@ -29,13 +30,13 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     /// Initializes the issuer list component.
     ///
     /// - Parameter paymentMethod: The issuer list payment method.
-    /// - Parameter apiContext: The API context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: IssuerListPaymentMethod,
-                apiContext: APIContext,
+                context: AdyenContext,
                 configuration: Configuration = .init()) {
         self.issuerListPaymentMethod = paymentMethod
-        self.apiContext = apiContext
+        self.context = context
         self.configuration = configuration
     }
     
@@ -51,7 +52,6 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
         listViewController.stopLoading()
     }
     
-    /// :nodoc:
     public var requiresModalPresentation: Bool = true
     
     // MARK: - Private
@@ -63,12 +63,10 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
         let items = issuers.map { issuer -> ListItem in
             var listItem = ListItem(title: issuer.name, style: configuration.style.listItem)
             listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
-            listItem.imageURL = LogoURLProvider.logoURL(
-                for: issuer,
-                localizedParameters: configuration.localizationParameters,
-                paymentMethod: issuerListPaymentMethod,
-                environment: apiContext.environment
-            )
+            listItem.imageURL = LogoURLProvider.logoURL(for: issuer,
+                                                        localizedParameters: configuration.localizationParameters,
+                                                        paymentMethod: issuerListPaymentMethod,
+                                                        environment: context.apiContext.environment)
             listItem.selectionHandler = { [weak self] in
                 guard let self = self else { return }
                 
@@ -88,6 +86,17 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     }()
 }
 
+@_spi(AdyenInternal)
+extension IssuerListComponent: ViewControllerDelegate {
+
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
+    }
+}
+
+@_spi(AdyenInternal)
+extension IssuerListComponent: TrackableComponent {}
+
 extension IssuerListComponent {
     
     /// Configuration for Issuer List type components.
@@ -96,7 +105,6 @@ extension IssuerListComponent {
         /// The UI style of the component.
         public var style: ListComponentStyle
         
-        /// :nodoc:
         public var localizationParameters: LocalizationParameters?
         
         /// Initializes the configuration for Issuer list type components.
@@ -128,5 +136,3 @@ public typealias EntercashComponent = IssuerListComponent
 
 /// Provides an issuer selection list for OpenBanking payments.
 public typealias OpenBankingComponent = IssuerListComponent
-
-extension IssuerListComponent: TrackableComponent {}

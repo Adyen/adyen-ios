@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenActions)
-    import AdyenActions
+    @_spi(AdyenInternal) import AdyenActions
 #endif
 import AdyenNetworking
 import Foundation
@@ -24,7 +24,7 @@ public final class AdyenSession {
         
         internal let initialSessionData: String
         
-        internal let apiContext: APIContext
+        internal let context: AdyenContext
         
         internal let actionComponent: AdyenActionComponent.Configuration
         
@@ -33,15 +33,15 @@ public final class AdyenSession {
         /// - Parameters:
         ///   - sessionIdentifier: The session identifier.
         ///   - initialSessionData: The initial session data.
-        ///   - apiContext: The API context.
+        ///   - context: The context object for this component.
         ///   - actionComponent: The action handling configuration.
         public init(sessionIdentifier: String,
                     initialSessionData: String,
-                    apiContext: APIContext,
+                    context: AdyenContext,
                     actionComponent: AdyenActionComponent.Configuration = .init()) {
             self.sessionIdentifier = sessionIdentifier
             self.initialSessionData = initialSessionData
-            self.apiContext = apiContext
+            self.context = context
             self.actionComponent = actionComponent
         }
     }
@@ -89,7 +89,7 @@ public final class AdyenSession {
                                   delegate: AdyenSessionDelegate,
                                   presentationDelegate: PresentationDelegate,
                                   completion: @escaping ((Result<AdyenSession, Error>) -> Void)) {
-        let baseAPIClient = APIClient(apiContext: configuration.apiContext)
+        let baseAPIClient = APIClient(apiContext: configuration.context.apiContext)
             .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
             .retryOnErrorAPIClient()
         initialize(with: configuration,
@@ -148,7 +148,8 @@ public final class AdyenSession {
     // MARK: - Action Handling for Components
 
     internal lazy var actionComponent: ActionHandlingComponent = {
-        let handler = AdyenActionComponent(apiContext: configuration.apiContext)
+        let handler = AdyenActionComponent(context: configuration.context,
+                                           configuration: configuration.actionComponent)
         handler.delegate = self
         handler.presentationDelegate = presentationDelegate
         return handler
@@ -159,7 +160,7 @@ public final class AdyenSession {
     internal let configuration: Configuration
     
     internal lazy var apiClient: APIClientProtocol = {
-        let apiClient = SessionAPIClient(apiClient: APIClient(apiContext: configuration.apiContext), session: self)
+        let apiClient = SessionAPIClient(apiClient: APIClient(apiContext: configuration.context.apiContext), session: self)
         return apiClient
             .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
             .retryOnErrorAPIClient()

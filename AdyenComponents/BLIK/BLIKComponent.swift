@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
@@ -14,42 +14,37 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
     /// Configuration for BLIK Component.
     public typealias Configuration = BasicComponentConfiguration
     
-    /// :nodoc:
-    public let apiContext: APIContext
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
     
-    /// :nodoc:
     public var paymentMethod: PaymentMethod { blikPaymentMethod }
 
-    /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
 
-    /// :nodoc:
     public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
                                                                              style: configuration.style)
     
     /// Component's configuration
     public var configuration: Configuration
 
-    /// :nodoc:
     public let requiresModalPresentation: Bool = true
 
-    /// :nodoc:
     private let blikPaymentMethod: BLIKPaymentMethod
 
     /// Initializes the BLIK component.
     ///
     /// - Parameter paymentMethod: The BLIK payment method.
-    /// - Parameter apiContext: The API context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: BLIKPaymentMethod,
-                apiContext: APIContext,
+                context: AdyenContext,
                 configuration: Configuration = .init()) {
         self.blikPaymentMethod = paymentMethod
-        self.apiContext = apiContext
+        self.context = context
         self.configuration = configuration
     }
-
-    /// :nodoc:
+    
     public func stopLoading() {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
@@ -105,6 +100,8 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
         return item
     }()
 
+    // MARK: - Private
+
     private func didSelectSubmitButton() {
         guard formViewController.validate() else { return }
 
@@ -117,4 +114,14 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
     }
 }
 
+@_spi(AdyenInternal)
 extension BLIKComponent: TrackableComponent {}
+
+@_spi(AdyenInternal)
+extension BLIKComponent: ViewControllerDelegate {
+    // MARK: - ViewControllerDelegate
+
+    public func viewWillAppear(viewController: UIViewController) {
+        sendTelemetryEvent()
+    }
+}

@@ -6,8 +6,8 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-import Adyen
-@testable import AdyenActions
+@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import AdyenActions
 import XCTest
 
 class OXXOShareableVoucherViewProviderTests: XCTestCase {
@@ -15,7 +15,7 @@ class OXXOShareableVoucherViewProviderTests: XCTestCase {
     func testOXXOVoucher() throws {
         let viewProvider = VoucherShareableViewProvider(
             style: VoucherComponentStyle(),
-            environment: Dummy.context.environment
+            environment: Dummy.apiContext.environment
         )
 
         let oxxoDecoded = try Coder.decode(oxxoAction) as OXXOVoucherAction

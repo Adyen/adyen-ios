@@ -4,7 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import AdyenCard
+@testable @_spi(AdyenInternal) import Adyen
+@testable @_spi(AdyenInternal) import AdyenCard
 import XCTest
 
 class ThrottlerTests: XCTestCase {

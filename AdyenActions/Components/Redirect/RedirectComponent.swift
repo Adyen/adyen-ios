@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 extension RedirectComponent: AnyRedirectComponent {}
@@ -36,16 +36,15 @@ public final class RedirectComponent: ActionComponent {
         }
     }
     
-    /// :nodoc:
-    public let apiContext: APIContext
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
     
-    /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
 
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
     
-    /// :nodoc:
     internal var appLauncher: AnyAppLauncher = AppLauncher()
     private var browserComponent: BrowserComponent?
     
@@ -54,11 +53,11 @@ public final class RedirectComponent: ActionComponent {
     
     /// Initializes the component.
     ///
-    /// - Parameter apiContext: The API context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component configurations.
-    public init(apiContext: APIContext,
+    public init(context: AdyenContext,
                 configuration: Configuration = Configuration()) {
-        self.apiContext = apiContext
+        self.context = context
         self.configuration = configuration
     }
     
@@ -68,7 +67,7 @@ public final class RedirectComponent: ActionComponent {
     public func handle(_ action: RedirectAction) {
         Analytics.sendEvent(component: configuration.componentName,
                             flavor: _isDropIn ? .dropin : .components,
-                            context: apiContext)
+                            context: context.apiContext)
         
         if action.url.adyen.isHttp {
             openHttpSchemeUrl(action)
@@ -105,7 +104,7 @@ public final class RedirectComponent: ActionComponent {
 
     private func openInAppBrowser(_ action: RedirectAction) {
         let component = BrowserComponent(url: action.url,
-                                         apiContext: apiContext,
+                                         context: context,
                                          style: configuration.style)
         component.delegate = self
         browserComponent = component
@@ -142,7 +141,6 @@ public final class RedirectComponent: ActionComponent {
 
 extension RedirectComponent: BrowserComponentDelegate {
 
-    /// :nodoc:
     internal func didCancel() {
         if browserComponent != nil {
             browserComponent = nil
@@ -150,32 +148,27 @@ extension RedirectComponent: BrowserComponentDelegate {
         }
     }
 
-    /// :nodoc:
     internal func didOpenExternalApplication() {
         delegate?.didOpenExternalApplication(component: self)
     }
     
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension RedirectComponent: ActionComponentDelegate {
     
-    /// :nodoc:
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         delegate?.didProvide(data, from: self)
     }
 
-    /// :nodoc:
     public func didComplete(from component: ActionComponent) {
         delegate?.didComplete(from: self)
     }
     
-    /// :nodoc:
     public func didFail(with error: Swift.Error, from component: ActionComponent) {
         delegate?.didFail(with: error, from: self)
     }
     
-    /// :nodoc:
     public func didOpenExternalApplication(component: ActionComponent) {
         delegate?.didOpenExternalApplication(component: self)
     }

@@ -4,16 +4,17 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import UIKit
 
 /// A component that handles document actions.
 public final class DocumentComponent: ActionComponent, ShareableComponent {
-    /// :nodoc:
-    public let apiContext: APIContext
+
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
     
-    /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
     
     /// Delegates `PresentableComponent`'s presentation.
@@ -42,18 +43,17 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     /// The document component configurations.
     public var configuration: Configuration = .init()
     
-    /// :nodoc:
     internal let presenterViewController = UIViewController()
     
-    /// :nodoc:
     private let componentName = "documentAction"
     
     /// Initializes the `DocumentComponent`.
     ///
-    /// - Parameter apiContext: The API context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The Component configurations.
-    public init(apiContext: APIContext, configuration: Configuration = .init()) {
-        self.apiContext = apiContext
+    public init(context: AdyenContext,
+                configuration: Configuration = .init()) {
+        self.context = context
         self.configuration = configuration
     }
     
@@ -61,10 +61,10 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     ///
     /// - Parameter action: The document action object.
     public func handle(_ action: DocumentAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         
         let imageURL = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue,
-                                               environment: apiContext.environment,
+                                               environment: context.apiContext.environment,
                                                size: .medium)
         let viewModel = DocumentActionViewModel(action: action,
                                                 message: localizedString(.bacsDownloadMandate, configuration.localizationParameters),

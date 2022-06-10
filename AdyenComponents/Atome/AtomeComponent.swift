@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 /// A component that provides a form for Atome payment.
@@ -19,7 +19,6 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
 
     // MARK: - Items
 
-    /// :nodoc:
     private let personalDetailsHeaderItem: FormLabelItem
 
     // MARK: - Initializers
@@ -27,10 +26,10 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
     /// Initializes the Atome component.
     /// - Parameters:
     ///   - paymentMethod: The Atome payment method.
-    ///   - apiContext: The component's API context.
+    ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: PaymentMethod,
-                apiContext: APIContext,
+                context: AdyenContext,
                 configuration: Configuration = .init()) {
         personalDetailsHeaderItem = FormLabelItem(text: "", style: configuration.style.sectionHeader)
 
@@ -45,7 +44,7 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
         ]
 
         super.init(paymentMethod: paymentMethod,
-                   apiContext: apiContext,
+                   context: context,
                    fields: fields,
                    configuration: configuration)
 
@@ -54,45 +53,44 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
 
     // MARK: - Private
 
-    /// :nodoc:
     private func setupItems() {
         personalDetailsHeaderItem.text = localizedString(.boletoPersonalDetails, configuration.localizationParameters)
-        phoneItem?.title =  localizedString(.phoneNumberTitle, configuration.localizationParameters)
+        phoneItem?.title = localizedString(.phoneNumberTitle, configuration.localizationParameters)
     }
 
     // MARK: - Public
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     override public func submitButtonTitle() -> String {
         localizedString(.continueTitle, configuration.localizationParameters)
     }
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     override public func createPaymentDetails() throws -> PaymentMethodDetails {
         guard let firstName = firstNameItem?.value,
               let lastName = lastNameItem?.value,
               let telephoneNumber = phoneItem?.value,
               let billingAddress = addressItem?.value else {
-                  throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration")
+            throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration")
         }
 
         let shopperName = ShopperName(firstName: firstName, lastName: lastName)
         let atomeDetails = AtomeDetails(paymentMethod: paymentMethod,
-                                          shopperName: shopperName,
-                                          telephoneNumber: telephoneNumber,
-                                          billingAddress: billingAddress)
+                                        shopperName: shopperName,
+                                        telephoneNumber: telephoneNumber,
+                                        billingAddress: billingAddress)
         return atomeDetails
     }
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     override public func phoneExtensions() -> [PhoneExtension] {
         let query = PhoneExtensionsQuery(paymentMethod: .generic)
         return PhoneExtensionsRepository.get(with: query)
     }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     override public func addressViewModelBuilder() -> AddressViewModelBuilder {
-        return AtomeAddressViewModelBuilder()
+        AtomeAddressViewModelBuilder()
     }
 
 }

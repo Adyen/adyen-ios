@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenDropIn
 import XCTest
 
@@ -121,17 +121,26 @@ class DropInTests: XCTestCase {
         """
 
     var sut: DropInComponent!
+    var context: AdyenContext!
 
-    override func tearDown() {
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        context = Dummy.context
+    }
+
+    override func tearDownWithError() throws {
         sut = nil
+        context = nil
+        try super.tearDownWithError()
     }
 
     func testOpenDropInAsList() {
-        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(context: context)
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymentMethods,
+                              context: context,
                               configuration: config)
 
         let root = UIViewController()
@@ -146,10 +155,11 @@ class DropInTests: XCTestCase {
     }
 
     func testOpenDropInAsOneClickPayment() {
-        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(context: context)
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymentMethods,
+                              context: context,
                               configuration: config)
 
         let root = UIViewController()
@@ -161,10 +171,11 @@ class DropInTests: XCTestCase {
     }
 
     func testOpenDropInWithNoOneClickPayment() {
-        let config = DropInComponent.Configuration(apiContext: Dummy.context, allowPreselectedPaymentView: false)
+        let config = DropInComponent.Configuration(context: context, allowPreselectedPaymentView: false)
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymentMethods,
+                              context: context,
                               configuration: config)
 
         let root = UIViewController()
@@ -176,12 +187,13 @@ class DropInTests: XCTestCase {
     }
 
     func testOpenApplePay() {
-        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(context: context)
         config.applePay = .init(payment: Dummy.createTestApplePayPayment(), merchantIdentifier: "")
         config.payment = .init(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymentMethods,
+                              context: context,
                               configuration: config)
 
         let root = UIViewController()
@@ -198,7 +210,7 @@ class DropInTests: XCTestCase {
     }
 
     func testGiftCard() {
-        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(context: context)
         config.payment = Payment(amount: Amount(value: 10000, currencyCode: "CNY"), countryCode: "CN")
 
         var paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
@@ -213,6 +225,7 @@ class DropInTests: XCTestCase {
                                amount: Amount(value: 3000, currencyCode: "CNY"))
         ]
         sut = DropInComponent(paymentMethods: paymentMethods,
+                              context: context,
                               configuration: config)
 
         let root = UIViewController()
@@ -229,11 +242,12 @@ class DropInTests: XCTestCase {
     }
 
     func testSinglePaymentMethodSkippingPaymentList() {
-        let config = DropInComponent.Configuration(apiContext: Dummy.context, allowsSkippingPaymentList: true)
+        let config = DropInComponent.Configuration(context: context, allowsSkippingPaymentList: true)
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleNonInstant.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymentMethods,
+                              context: context,
                               configuration: config)
         
         let root = UIViewController()
@@ -249,11 +263,12 @@ class DropInTests: XCTestCase {
     }
     
     func testSinglePaymentMethodNotSkippingPaymentList() {
-        let config = DropInComponent.Configuration(apiContext: Dummy.context, allowsSkippingPaymentList: true)
+        let config = DropInComponent.Configuration(context: context, allowsSkippingPaymentList: true)
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymentMethods,
+                              context: context,
                               configuration: config)
         
         let root = UIViewController()

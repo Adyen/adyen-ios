@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Validates a card's expiration date.
@@ -16,17 +16,14 @@ public final class CardExpiryDateValidator: Validator {
     
     private static let maxYearsDifference: Int = 30
     
-    /// :nodoc:
     public init() {
         self.referenceDate = Date()
     }
     
-    /// :nodoc:
     internal init(referenceDate: Date = Date()) {
         self.referenceDate = referenceDate
     }
     
-    /// :nodoc:
     public func isValid(_ string: String) -> Bool {
         guard string.count == maximumLength(for: string) else { return false }
         
@@ -41,7 +38,7 @@ public final class CardExpiryDateValidator: Validator {
         let monthDiff = diffComponents.month ?? 0
         let yearDiff = diffComponents.year ?? 0
         
-        guard (0...Self.maxYearsDifference).contains(yearDiff), monthDiff >= -3 else { return false }
+        guard (0...Self.maxYearsDifference).contains(yearDiff), monthDiff > -3 else { return false }
         
         return true
     }
@@ -60,7 +57,6 @@ public final class CardExpiryDateValidator: Validator {
         return endOfMonthDate
     }
     
-    /// :nodoc:
     public func maximumLength(for value: String) -> Int {
         4
     }

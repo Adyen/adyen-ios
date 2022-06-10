@@ -1,24 +1,23 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public protocol AddressViewModelBuilder {
     func build(countryCode: String) -> AddressViewModel
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
     
-    /// :nodoc:
     public init() {}
 
-    /// :nodoc:
     // swiftlint:disable function_body_length
+    @_spi(AdyenInternal)
     public func build(countryCode: String) -> AddressViewModel {
         var viewModel = AddressViewModel(labels: [.city: .cityFieldTitle,
                                                   .houseNumberOrName: .houseNumberFieldTitle,

@@ -6,8 +6,8 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-import Adyen
-@testable import AdyenActions
+@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import AdyenActions
 import XCTest
 
 class MultibancoShareableVoucherViewProviderTests: XCTestCase {
@@ -15,7 +15,7 @@ class MultibancoShareableVoucherViewProviderTests: XCTestCase {
     func testMultibancoVoucher() throws {
         let viewProvider = VoucherShareableViewProvider(
             style: VoucherComponentStyle(),
-            environment: Dummy.context.environment
+            environment: Dummy.apiContext.environment
         )
 
         let multibancoDecoded = try Coder.decode(multibancoVoucher) as MultibancoVoucherAction

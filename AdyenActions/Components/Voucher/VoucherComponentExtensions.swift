@@ -4,14 +4,13 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import PassKit
 import UIKit
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension VoucherComponent: VoucherViewDelegate, DocumentActionViewDelegate {
     
-    /// :nodoc:
     private static let maximumDisplayedCodeLength = 10
     
     private func isCodeShortEnoughToBeRead(action: VoucherAction) -> Bool {

@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import Foundation
 import UIKit
@@ -15,19 +15,19 @@ public final class BCMCComponent: CardComponent {
     /// Initializes the BCMC Component.
     /// - Parameters:
     ///   - paymentMethod: BCMC payment method.
-    ///   - apiContext: The API context.
+    ///   - context: The context object for this component.
     ///   - configuration: The configuration of the component.
     public init(paymentMethod: BCMCPaymentMethod,
-                apiContext: APIContext,
+                context: AdyenContext,
                 configuration: CardComponent.Configuration = .init()) {
         let configuration = configuration.bcmcConfiguration()
         
-        let publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
-        let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: apiContext),
+        let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
+        let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: context.apiContext),
                                               publicKeyProvider: publicKeyProvider,
                                               minBinLength: Constant.privateBinLength)
         super.init(paymentMethod: paymentMethod,
-                   apiContext: apiContext,
+                   context: context,
                    configuration: configuration,
                    publicKeyProvider: publicKeyProvider,
                    binProvider: binInfoProvider)

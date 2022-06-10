@@ -6,6 +6,7 @@
 
 import Foundation
 
+/// The type of a payment method
 public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     case card
     case scheme
@@ -53,7 +54,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     case other(String)
     
     // swiftlint:disable cyclomatic_complexity function_body_length
-    
+
     public init?(rawValue: String) {
         switch rawValue {
         case "card": self = .card
@@ -102,9 +103,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         default: self = .other(rawValue)
         }
     }
-    
-    // swiftlint:enable cyclomatic_complexity function_body_length
-    
+
     public var rawValue: String {
         switch self {
         case .card: return "card"
@@ -153,4 +152,6 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case let .other(value): return value
         }
     }
+
+    // swiftlint:enable cyclomatic_complexity function_body_length
 }

@@ -1,9 +1,14 @@
 name: Generate Docs
-on: [workflow_dispatch]
+on: 
+  workflow_dispatch:
+    inputs:
+      latestVersion:
+        description: 'Whats the latest version of the SDK?'
+        required: true
 jobs:
 
   Generate:
-    runs-on: macos-11
+    runs-on: macos-12
     steps:
     - uses: actions/checkout@v2
       with:
@@ -19,9 +24,9 @@ jobs:
 
     - name: Generate Docs
       run: |
-        gem install cocoapods
-        gem install jazzy
-        Scripts/generate_documentation.sh
+        Scripts/generate_docc_documentation.sh
+      env:
+        LATEST_VERSION: ${{ github.event.inputs.latestVersion }}
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:

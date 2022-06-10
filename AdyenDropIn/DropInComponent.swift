@@ -4,15 +4,15 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenComponents)
     import AdyenComponents
 #endif
 #if canImport(AdyenActions)
-    import AdyenActions
+    @_spi(AdyenInternal) import AdyenActions
 #endif
 #if canImport(AdyenCard)
-    import AdyenCard
+    @_spi(AdyenInternal) import AdyenCard
 #endif
 import AdyenNetworking
 import UIKit
@@ -39,21 +39,25 @@ public final class DropInComponent: NSObject,
     /// The title text on the first page of drop in component.
     public let title: String
 
-    /// :nodoc:
-    public var apiContext: APIContext { configuration.apiContext }
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public var context: AdyenContext
     
     /// Initializes the drop in component.
     ///
     /// - Parameters:
     ///   - paymentMethods: The payment methods to display.
+    ///   - context: The context object for this component.
     ///   - configuration: The payment method specific configuration.
     ///   - title: Name of the application. To be displayed on a first payment page.
     ///            If no external value provided, the Main Bundle's name would be used.
     public init(paymentMethods: PaymentMethods,
+                context: AdyenContext,
                 configuration: Configuration,
                 title: String? = nil) {
         self.title = title ?? Bundle.main.displayName
         self.configuration = configuration
+        self.context = context
         self.paymentMethods = paymentMethods
         super.init()
     }
@@ -74,7 +78,6 @@ public final class DropInComponent: NSObject,
     
     // MARK: - Presentable Component Protocol
     
-    /// :nodoc:
     public var viewController: UIViewController { navigationController }
 
     // MARK: - Handling Actions
@@ -89,10 +92,9 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Handling Partial Payments
 
-    /// :nodoc:
     private lazy var apiClient: APIClientProtocol = {
         let scheduler = SimpleScheduler(maximumCount: 3)
-        return APIClient(apiContext: apiContext)
+        return APIClient(apiContext: context.apiContext)
             .retryAPIClient(with: scheduler)
             .retryOnErrorAPIClient()
     }()
@@ -146,6 +148,7 @@ public final class DropInComponent: NSObject,
     private func createComponentManager(_ order: PartialPaymentOrder?,
                                         _ remainingAmount: Amount?) -> ComponentManager {
         ComponentManager(paymentMethods: paymentMethods,
+                         context: context,
                          configuration: configuration,
                          partialPaymentEnabled: partialPaymentDelegate != nil,
                          remainingAmount: remainingAmount,
@@ -176,7 +179,7 @@ public final class DropInComponent: NSObject,
     )
 
     private lazy var actionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(apiContext: apiContext)
+        let handler = AdyenActionComponent(context: context)
         handler.configuration.style = configuration.style.actionComponent
         handler._isDropIn = true
         handler.delegate = self
@@ -188,7 +191,7 @@ public final class DropInComponent: NSObject,
     
     internal func paymentMethodListComponent(onCancel: (() -> Void)?) -> PaymentMethodListComponent {
         let paymentComponents = componentManager.sections
-        let component = PaymentMethodListComponent(apiContext: apiContext,
+        let component = PaymentMethodListComponent(context: context,
                                                    components: paymentComponents,
                                                    style: configuration.style.listComponent)
         component.onCancel = onCancel

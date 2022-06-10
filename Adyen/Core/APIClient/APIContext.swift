@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,14 +7,12 @@
 import AdyenNetworking
 import Foundation
 
-/// :nodoc:
-/// An object that needs an API context to retrieve internal resources
-public protocol APIContextAware: AnyObject {
-    
-    /// :nodoc:
-    /// The API context
-    var apiContext: APIContext { get }
-    
+/// An object that needs an Adyen context.
+public protocol AdyenContextAware: AnyObject {
+
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    var context: AdyenContext { get }
 }
 
 /// Struct that defines API context for retrieving internal resources.
@@ -34,7 +32,7 @@ public struct APIContext: AnyAPIContext {
     /// The client key that corresponds to the web service user you will use for initiating the payment.
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
     public let clientKey: String
-    
+
     /// Initializes the APIContext
     /// - Parameters:
     ///   - environment: The environment to retrieve internal resources from.
@@ -48,5 +46,5 @@ public struct APIContext: AnyAPIContext {
         self.environment = environment
         self.clientKey = clientKey
     }
-            
+
 }

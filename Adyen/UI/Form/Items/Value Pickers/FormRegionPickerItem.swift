@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,11 +8,11 @@ import Foundation
 import UIKit
 
 /// Describes a single text picker item in the list of selectable items.
-/// :nodoc:
+@_spi(AdyenInternal)
 public typealias RegionPickerItem = BasePickerElement<Region>
 
 /// Describes a picker item.
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class FormRegionPickerItem: BaseFormPickerItem<Region> {
 
     internal init(preselectedValue: Region, selectableValues: [Region], style: FormTextItemStyle) {
@@ -21,7 +21,6 @@ public final class FormRegionPickerItem: BaseFormPickerItem<Region> {
                    style: style)
     }
 
-    // :nodoc:
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }

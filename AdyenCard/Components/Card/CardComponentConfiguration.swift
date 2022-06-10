@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 
-/// :nodoc:
+/// Describes any configuration for the card component.
 public protocol AnyCardComponentConfiguration {
     
     /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
@@ -82,7 +82,6 @@ extension CardComponent {
         /// The shopper's information to be prefilled.
         public var shopperInformation: PrefilledShopperInformation?
         
-        /// :nodoc:
         public var localizationParameters: LocalizationParameters?
 
         /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.

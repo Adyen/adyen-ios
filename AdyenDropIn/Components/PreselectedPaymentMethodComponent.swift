@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
@@ -28,10 +28,10 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     private let title: String
     private let defaultComponent: PaymentComponent
     
-    /// :nodoc:
-    internal var apiContext: APIContext { defaultComponent.apiContext }
+    internal var apiContext: APIContext { defaultComponent.context.apiContext }
 
-    /// :nodoc:
+    internal var context: AdyenContext { defaultComponent.context }
+
     internal var paymentMethod: PaymentMethod { defaultComponent.paymentMethod }
     
     /// Delegate actions.
@@ -101,7 +101,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
         var listItem = ListItem(title: displayInformation.title, style: self.listItemStyle)
         listItem.imageURL = LogoURLProvider.logoURL(withName: displayInformation.logoName,
-                                                    environment: apiContext.environment)
+                                                    environment: context.apiContext.environment)
         listItem.subtitle = displayInformation.subtitle
         listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "defaultComponent")
         return listItem
@@ -152,9 +152,8 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
     // MARK: - Localization
     
-    /// :nodoc:
     public var localizationParameters: LocalizationParameters?
     
 }
 
-extension PreselectedPaymentMethodComponent: TrackableComponent {}
+extension PreselectedPaymentMethodComponent: ViewControllerDelegate {}

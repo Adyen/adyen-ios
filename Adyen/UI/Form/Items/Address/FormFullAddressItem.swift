@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,10 +7,9 @@
 import Foundation
 
 /// A full address form, suitable for all countries.
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, AdyenObserver, CompoundFormItem, Hidable {
     
-    /// :nodoc:
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
     private var items: [FormItem] = []
@@ -18,6 +17,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     private let localizationParameters: LocalizationParameters?
     
     private var observers: [AddressField: Observation] = [:]
+    
     private var publisherObservers: [AddressField: Observation] = [:]
     
     private var initialCountry: String
@@ -192,7 +192,6 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         
     // MARK: - Public
     
-    /// :nodoc:
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }

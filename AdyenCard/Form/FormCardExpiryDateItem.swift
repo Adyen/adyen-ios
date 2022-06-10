@@ -1,18 +1,16 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 
 /// A form item into which card expiry date is entered, formatted and validated.
 internal final class FormCardExpiryDateItem: FormTextItem, Hidable {
     
-    /// :nodoc:
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    internal var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
-    /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
     
     /// Flag determining this forms state. Validation changes based on this.
@@ -37,7 +35,6 @@ internal final class FormCardExpiryDateItem: FormTextItem, Hidable {
         keyboardType = .numberPad
     }
     
-    /// :nodoc:
     override internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }

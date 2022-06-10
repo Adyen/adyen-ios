@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
-import AdyenNetworking
+@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) import AdyenNetworking
 import Foundation
 
 internal struct CreateOrderRequest: APIRequest {
@@ -46,8 +46,6 @@ internal struct CreateOrderResponse: SessionResponse {
 
     internal let orderData: String
 
-    internal let remainingAmount: Amount
-
     internal let sessionData: String
 
     internal var order: PartialPaymentOrder {
@@ -57,7 +55,6 @@ internal struct CreateOrderResponse: SessionResponse {
     private enum CodingKeys: String, CodingKey {
         case pspReference
         case orderData
-        case remainingAmount
         case sessionData
     }
 }

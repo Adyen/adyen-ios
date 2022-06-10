@@ -20,15 +20,15 @@ public struct DisplayInformation: Equatable {
     public let subtitle: String?
 
     /// The name of the logo resource.
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public let logoName: String
 
     /// The trailing disclosure text.
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public let disclosureText: String?
 
     /// The footnote if any.
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public let footnoteText: String?
 
     /// Initializes a`DisplayInformation`.

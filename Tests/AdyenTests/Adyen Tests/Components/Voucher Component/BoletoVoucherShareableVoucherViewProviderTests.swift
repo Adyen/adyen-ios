@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
-@testable import AdyenActions
+@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import AdyenActions
 import XCTest
 
 class BoletoVoucherShareableVoucherViewProviderTests: XCTestCase {
@@ -13,7 +13,7 @@ class BoletoVoucherShareableVoucherViewProviderTests: XCTestCase {
     func testBoletoBancairoVoucher() throws {
         let viewProvider = VoucherShareableViewProvider(
             style: VoucherComponentStyle(),
-            environment: Dummy.context.environment
+            environment: Dummy.apiContext.environment
         )
 
         let boletoDecoded = try Coder.decode(boletoAction) as BoletoVoucherAction

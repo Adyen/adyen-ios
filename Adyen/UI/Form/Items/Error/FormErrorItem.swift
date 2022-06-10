@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 /// A form item that represents an error.
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class FormErrorItem: FormItem, Hidable {
 
     /// Indicates the error message.
@@ -19,13 +19,10 @@ public final class FormErrorItem: FormItem, Hidable {
     /// The error item style.
     public let style: FormErrorItemStyle
 
-    /// :nodoc:
     public var identifier: String?
 
-    /// :nodoc:
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(true)
 
-    /// :nodoc:
     public var subitems: [FormItem] = []
 
     /// Initializes the separator item.
@@ -39,7 +36,6 @@ public final class FormErrorItem: FormItem, Hidable {
         self.message = message
     }
 
-    /// :nodoc:
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }

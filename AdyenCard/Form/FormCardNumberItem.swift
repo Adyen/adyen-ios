@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 /// A form item into which a card number is entered.
@@ -36,7 +36,6 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     /// Current detected brands, mainly used for dual-branded cards.
     internal private(set) var detectedBrands: [CardBrand] = []
     
-    /// :nodoc:
     private let localizationParameters: LocalizationParameters?
     
     /// Initializes the form card number item.

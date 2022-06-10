@@ -1,14 +1,14 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 /// A component that provides a form for Affirm payment.
-public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenObserver {
+public final class AffirmComponent: AbstractPersonalInformationComponent {
     
     /// Configuration for Affirm Component
     public typealias Configuration = PersonalInformationConfiguration
@@ -21,10 +21,8 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenO
     
     // MARK: - Items
     
-    /// :nodoc:
     private let personalDetailsHeaderItem: FormLabelItem
     
-    /// :nodoc:
     internal let deliveryAddressToggleItem: FormToggleItem
 
     // MARK: - Initializers
@@ -32,10 +30,10 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenO
     /// Initializes the Affirm component.
     /// - Parameters:
     ///   - paymentMethod: The Affirm payment method.
-    ///   - apiContext: The component's API context.
+    ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
     public init(paymentMethod: PaymentMethod,
-                apiContext: APIContext,
+                context: AdyenContext,
                 configuration: Configuration = .init()) {
         personalDetailsHeaderItem = FormLabelItem(text: "", style: configuration.style.sectionHeader)
         deliveryAddressToggleItem = FormToggleItem(style: configuration.style.toggle)
@@ -54,7 +52,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenO
         ]
         
         super.init(paymentMethod: paymentMethod,
-                   apiContext: apiContext,
+                   context: context,
                    fields: fields,
                    configuration: configuration)
 
@@ -63,7 +61,6 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenO
     
     // MARK: - Private
     
-    /// :nodoc:
     private func setupItems() {
         personalDetailsHeaderItem.text = localizedString(.boletoPersonalDetails, configuration.localizationParameters)
         emailItem?.autocapitalizationType = .none
@@ -73,12 +70,10 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenO
         setupShopperInformation()
     }
     
-    /// :nodoc:
     private func setupDeliveryAddressItem() {
         deliveryAddressItem?.title = localizedString(.deliveryAddressSectionTitle, configuration.localizationParameters)
     }
     
-    /// :nodoc:
     private func setupDeliveryAddressToggleItem() {
         guard let deliveryAddressItem = deliveryAddressItem else { return }
         deliveryAddressToggleItem.title = localizedString(.affirmDeliveryAddressToggleTitle, configuration.localizationParameters)
@@ -88,7 +83,6 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenO
         bind(deliveryAddressToggleItem.publisher, to: deliveryAddressItem, at: \.isHidden.wrappedValue, with: { !$0 })
     }
     
-    /// :nodoc:
     private func setupShopperInformation() {
         if configuration.shopperInformation?.deliveryAddress != nil {
             deliveryAddressToggleItem.value = true
@@ -97,12 +91,12 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenO
     
     // MARK: - Public
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     override public func submitButtonTitle() -> String {
         localizedString(.confirmPurchase, configuration.localizationParameters)
     }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     override public func createPaymentDetails() throws -> PaymentMethodDetails {
         guard let firstName = firstNameItem?.value,
               let lastName = lastNameItem?.value,
@@ -110,8 +104,8 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenO
               let telephoneNumber = phoneItem?.value,
               let billingAddress = addressItem?.value,
               let deliveryAddress = deliveryAddressItem?.value else {
-                  throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
-              }
+            throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
+        }
         
         let shopperName = ShopperName(firstName: firstName, lastName: lastName)
         let affirmDetails = AffirmDetails(paymentMethod: paymentMethod,
@@ -123,9 +117,12 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, AdyenO
         return affirmDetails
     }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     override public func phoneExtensions() -> [PhoneExtension] {
         let query = PhoneExtensionsQuery(paymentMethod: .generic)
         return PhoneExtensionsRepository.get(with: query)
     }
 }
+
+@_spi(AdyenInternal)
+extension AffirmComponent: AdyenObserver {}

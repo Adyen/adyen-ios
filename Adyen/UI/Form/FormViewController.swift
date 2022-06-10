@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,8 +7,8 @@
 import UIKit
 
 /// Displays a form for the user to enter details.
-/// :nodoc:
 @objc(ADYFormViewController)
+@_spi(AdyenInternal)
 open class FormViewController: UIViewController, Localizable, KeyboardObserver, AdyenObserver, PreferredContentSizeConsumer {
 
     fileprivate enum Animations {
@@ -16,13 +16,11 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         fileprivate static let firstResponder = "firstResponder"
     }
 
-    /// :nodoc:
     public var requiresKeyboardInput: Bool { formRequiresInputView() }
 
     /// Indicates the `FormViewController` UI styling.
     public let style: ViewStyle
 
-    /// :nodoc:
     /// Delegate to handle different viewController events.
     public weak var delegate: ViewControllerDelegate?
 
@@ -33,7 +31,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     /// - Parameter style: The `FormViewController` UI style.
     public init(style: ViewStyle) {
         self.style = style
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil, bundle: Bundle(for: FormViewController.self))
         startObserving()
     }
 
@@ -43,7 +41,6 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
 
     // MARK: - View lifecycle
 
-    /// :nodoc:
     override open func viewDidLoad() {
         super.viewDidLoad()
         addFormView()
@@ -51,13 +48,11 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         delegate?.viewDidLoad(viewController: self)
     }
 
-    /// :nodoc:
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         delegate?.viewWillAppear(viewController: self)
     }
 
-    /// :nodoc:
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         delegate?.viewDidAppear(viewController: self)
@@ -70,13 +65,11 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
                                                      }))
     }
 
-    /// :nodoc:
     override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         resignFirstResponder()
     }
 
-    /// :nodoc:
     override open func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         resetForm()
@@ -87,7 +80,6 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         fatalError("init(coder:) has not been implemented")
     }
 
-    /// :nodoc:
     override public var preferredContentSize: CGSize {
         get { formView.intrinsicContentSize }
 
@@ -101,10 +93,8 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
 
     // MARK: - KeyboardObserver
 
-    /// :nodoc:
     public var keyboardObserver: Any?
 
-    /// :nodoc:
     public func startObserving() {
         startObserving { [weak self] in
             self?.keyboardRect = $0
@@ -120,10 +110,8 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
 
     // MARK: - PreferredContentSizeConsumer
 
-    /// :nodoc:
     public func willUpdatePreferredContentSize() { /* Empty implementation */ }
 
-    /// :nodoc:
     public func didUpdatePreferredContentSize() {
         let bottomInset: CGFloat = keyboardRect.height - view.safeAreaInsets.bottom
         let context = AnimationContext(animationKey: Animations.keyboardBottomInset,
@@ -141,6 +129,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     ///
     /// - Parameters:
     ///   - item: The item to append.
+    @_spi(AdyenInternal)
     public func append<T: FormItem>(_ item: T) {
         let itemView = itemManager.append(item)
         observerVisibility(of: item, and: itemView)
@@ -166,7 +155,6 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
 
     // MARK: - Localizable
 
-    /// :nodoc:
     public var localizationParameters: LocalizationParameters?
 
     // MARK: - Validity
@@ -188,7 +176,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         return false
     }
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func showValidation() {
         itemManager.flatItemViews
             .compactMap { $0 as? AnyFormValueItemView }
@@ -248,14 +236,13 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
 
 // MARK: - FormTextItemViewDelegate
 
+@_spi(AdyenInternal)
 extension FormViewController: FormTextItemViewDelegate {
 
-    /// :nodoc:
     public func didReachMaximumLength<T: FormTextItem>(in itemView: FormTextItemView<T>) {
         handleReturnKey(from: itemView)
     }
 
-    /// :nodoc:
     public func didSelectReturnKey<T: FormTextItem>(in itemView: FormTextItemView<T>) {
         handleReturnKey(from: itemView)
     }

@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 internal final class DropInNavigationController: UINavigationController, KeyboardObserver, PreferredContentSizeConsumer {
@@ -22,7 +22,7 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
     internal init(rootComponent: PresentableComponent, style: NavigationStyle, cancelHandler: @escaping CancelHandler) {
         self.style = style
         self.cancelHandler = cancelHandler
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil, bundle: Bundle(for: DropInNavigationController.self))
         setup(root: rootComponent)
         startObserving()
     }

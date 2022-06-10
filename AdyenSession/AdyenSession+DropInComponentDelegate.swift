@@ -4,14 +4,14 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension AdyenSession: DropInComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
         let handler = delegate?.handlerForPayments(in: component, session: self) ?? self
-        handler.didSubmit(data, from: component, session: self)
+        handler.didSubmit(data, from: component, dropInComponent: dropInComponent, session: self)
     }
     
     public func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {

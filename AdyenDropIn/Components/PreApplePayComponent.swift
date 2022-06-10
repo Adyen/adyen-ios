@@ -4,14 +4,13 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import PassKit
 import UIKit
 #if canImport(AdyenComponents)
     import AdyenComponents
 #endif
 
-/// :nodoc:
 internal final class PreApplePayComponent: PresentableComponent,
     FinalizableComponent,
     PaymentComponent,
@@ -36,8 +35,11 @@ internal final class PreApplePayComponent: PresentableComponent,
 
     private let applePayComponent: ApplePayComponent
 
-    internal let apiContext: APIContext
-
+    /// :nodoc:
+    /// The context object for this component.
+    internal let context: AdyenContext
+    
+    /// :nodoc:
     internal let paymentMethod: PaymentMethod
 
     internal weak var delegate: PaymentComponentDelegate?
@@ -46,7 +48,6 @@ internal final class PreApplePayComponent: PresentableComponent,
 
     internal let configuration: Configuration
     
-    /// :nodoc:
     internal lazy var viewController: UIViewController = {
         let view = PreApplePayView(model: createModel(with: payment.amount))
         let viewController = ADYViewController(view: view, title: "Apple Pay")
@@ -55,20 +56,18 @@ internal final class PreApplePayComponent: PresentableComponent,
         return viewController
     }()
     
-    /// :nodoc:
     internal let requiresModalPresentation: Bool = true
     
-    /// :nodoc:
     internal init(paymentMethod: ApplePayPaymentMethod,
-                  apiContext: APIContext,
+                  context: AdyenContext,
                   configuration: Configuration,
                   applePayConfiguration: ApplePayComponent.Configuration) throws {
-        self.apiContext = apiContext
+        self.context = context
         self.paymentMethod = paymentMethod
         self.configuration = configuration
         self.payment = applePayConfiguration.applePayPayment.payment
         self.applePayComponent = try ApplePayComponent(paymentMethod: paymentMethod,
-                                                       apiContext: apiContext,
+                                                       context: context,
                                                        configuration: applePayConfiguration)
         self.applePayComponent.delegate = self
     }
@@ -104,7 +103,6 @@ extension PreApplePayComponent: PaymentComponentDelegate {
 
 extension PreApplePayComponent: PreApplePayViewDelegate {
     
-    /// :nodoc:
     internal func pay() {
         isPresenting = true
         presentationDelegate?.present(component: applePayComponent)

@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 /// Contains the styling customization options for the QR code component.
@@ -32,7 +32,6 @@ public struct QRCodeComponentStyle: ViewStyle {
     /// The corner rounding for the logo
     public var logoCornerRounding: CornerRounding = .fixed(5)
         
-    /// :nodoc:
     public var backgroundColor = UIColor.Adyen.componentBackground
     
     /// Initializes the QR code component style with the default style

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -24,7 +24,6 @@ public struct ImageStyle: TintableStyle {
     /// A flag used to determine how to lay out the image in its bounds.
     public var contentMode: UIView.ContentMode
     
-    /// :nodoc:
     public var backgroundColor = UIColor.Adyen.componentBackground
     
     /// The tint color of the icon.

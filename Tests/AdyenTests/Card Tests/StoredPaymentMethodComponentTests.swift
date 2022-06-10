@@ -4,16 +4,32 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import Adyen
-@testable import AdyenCard
+@_spi(AdyenInternal) @testable import Adyen
+@testable @_spi(AdyenInternal) import AdyenCard
 @testable import AdyenDropIn
 import XCTest
 
 class StoredPaymentMethodComponentTests: XCTestCase {
-    
-    func testLocalizationWithCustomTableName() {
+
+    private var analyticsProviderMock: AnalyticsProviderMock!
+    private var context: AdyenContext!
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        analyticsProviderMock = AnalyticsProviderMock()
+        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+    }
+
+    override func tearDownWithError() throws {
+        analyticsProviderMock = nil
+        context = nil
+        try super.tearDownWithError()
+    }
+
+    func testLocalizationWithCustomTableName() throws {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
-        let sut = StoredPaymentMethodComponent(paymentMethod: method, apiContext: Dummy.context)
+        let sut = StoredPaymentMethodComponent(paymentMethod: method,
+                                                              context: context)
         let payment = Payment(amount: Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
@@ -25,9 +41,10 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
     }
 
-    func testLocalizationWithZeroPayment() {
+    func testLocalizationWithZeroPayment() throws {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
-        let sut = StoredPaymentMethodComponent(paymentMethod: method, apiContext: Dummy.context)
+        let sut = StoredPaymentMethodComponent(paymentMethod: method,
+                                                              context: context)
         let payment = Payment(amount: Amount(value: 0, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
 
@@ -40,9 +57,10 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         XCTAssertEqual(viewController?.actions.last?.title, "Confirm preauthorization")
     }
     
-    func testLocalizationWithCustomKeySeparator() {
+    func testLocalizationWithCustomKeySeparator() throws {
         let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
-        let sut = StoredPaymentMethodComponent(paymentMethod: method, apiContext: Dummy.context)
+        let sut = StoredPaymentMethodComponent(paymentMethod: method,
+                                                              context: context)
         let payment = Payment(amount: Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
         sut.payment = payment
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
@@ -54,12 +72,13 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters))
     }
 
-    func testUI() {
+    func testUI() throws {
         let method = StoredPaymentMethodMock(identifier: "id",
                                              supportedShopperInteractions: [.shopperPresent],
                                              type: .other("type"),
                                              name: "name")
-        let sut = StoredPaymentMethodComponent(paymentMethod: method, apiContext: Dummy.context)
+        let sut = StoredPaymentMethodComponent(paymentMethod: method,
+                                                              context: context)
 
         let delegate = PaymentComponentDelegateMock()
 
@@ -99,5 +118,20 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         }
         waitForExpectations(timeout: 10, handler: nil)
     }
-    
+
+    func testViewDidLoadShouldSendTelemetryEvent() throws {
+        // Given
+        let method = StoredPaymentMethodMock(identifier: "id",
+                                             supportedShopperInteractions: [.shopperPresent],
+                                             type: .other("type"),
+                                             name: "name")
+        let sut = StoredPaymentMethodComponent(paymentMethod: method,
+                                                              context: context)
+
+        // When
+        sut.viewController.viewDidLoad()
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+    }
 }

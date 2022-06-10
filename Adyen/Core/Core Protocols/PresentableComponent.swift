@@ -14,24 +14,21 @@ public protocol Localizable {
     var localizationParameters: LocalizationParameters? { get set }
 }
 
-/// :nodoc:
 /// Represents any object than can handle a cancel event.
 public protocol Cancellable: AnyObject {
     
-    /// :nodoc:
     /// Called when the user cancels the component.
     func didCancel()
 }
 
-/// :nodoc:
-/// Represents navigation bar on top of presentable components.
+@_spi(AdyenInternal)
 public protocol AnyNavigationBar: UIView {
     
     var onCancelHandler: (() -> Void)? { get set }
     
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public enum NavigationBarType {
     case regular
     case custom(AnyNavigationBar)
@@ -48,33 +45,32 @@ public protocol PresentableComponent: Component {
     var viewController: UIViewController { get }
     
     /// Indicates whether Component implements a custom Navigation bar.
+    @_spi(AdyenInternal)
     var navBarType: NavigationBarType { get }
 }
 
-/// :nodoc:
+/// A component that provides a view controller for the shopper to fill payment details.
 public extension PresentableComponent {
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     var requiresModalPresentation: Bool { false }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     var navBarType: NavigationBarType { .regular }
     
 }
 
-/// :nodoc:
-public protocol TrackableComponent: Component, PaymentMethodAware, ViewControllerDelegate {}
+@_spi(AdyenInternal)
+public protocol TrackableComponent: Component {
 
-/// :nodoc:
-extension TrackableComponent {
-    /// :nodoc:
-    public func viewDidLoad(viewController: UIViewController) {
-        Analytics.sendEvent(component: paymentMethod.type.rawValue, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+    func sendTelemetryEvent()
+}
+
+@_spi(AdyenInternal)
+extension TrackableComponent where Self: PaymentMethodAware {
+
+    public func sendTelemetryEvent() {
+        let flavor: TelemetryFlavor = _isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
+        context.analyticsProvider.sendTelemetryEvent(flavor: flavor)
     }
-
-    /// :nodoc:
-    public func viewDidAppear(viewController: UIViewController) { /* Empty Implementation */ }
-
-    /// :nodoc:
-    public func viewWillAppear(viewController: UIViewController) { /* Empty Implementation */ }
 }

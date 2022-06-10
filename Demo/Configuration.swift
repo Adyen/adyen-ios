@@ -38,7 +38,7 @@ internal enum ConfigurationConstants {
         // swiftlint:disable:next force_try
         return try! APIContext(environment: componentsEnvironment, clientKey: "local_DUMMYKEYFORTESTING")
     }
-    
+
     static let clientKey = "{YOUR_CLIENT_KEY}"
 
     static let demoServerAPIKey = "{YOUR_DEMO_SERVER_API_KEY}"
@@ -53,6 +53,18 @@ internal enum ConfigurationConstants {
                              "amountExcludingTax": "248",
                              "taxAmount": "52",
                              "id": "Item #2"]]
+
+    static var shippingMethods: [PKShippingMethod] = {
+        var shippingByCar = PKShippingMethod(label: "By car", amount: NSDecimalNumber(5.0))
+        shippingByCar.identifier = "car"
+        shippingByCar.detail = "Tomorrow"
+
+        var shippingByPlane = PKShippingMethod(label: "By Plane", amount: NSDecimalNumber(50.0))
+        shippingByPlane.identifier = "plane"
+        shippingByPlane.detail = "Today"
+        
+        return [shippingByCar, shippingByPlane]
+    }()
     
     static var current = Configuration.loadConfiguration() {
         didSet { Configuration.saveConfiguration(current) }
@@ -65,9 +77,9 @@ internal enum ConfigurationConstants {
 internal struct Configuration: Codable {
     private static let defaultsKey = "ConfigurationKey"
     
-    internal let countryCode: String
+    internal var countryCode: String
     internal let value: Int
-    internal let currencyCode: String
+    internal var currencyCode: String
     internal let apiVersion: Int
     internal let merchantAccount: String
     
@@ -83,9 +95,17 @@ internal struct Configuration: Codable {
     )
     
     fileprivate static func loadConfiguration() -> Configuration {
-        UserDefaults.standard.data(forKey: defaultsKey)
+        var config = UserDefaults.standard.data(forKey: defaultsKey)
             .flatMap { try? JSONDecoder().decode(Configuration.self, from: $0) }
             ?? defaultConfiguration
+        switch CommandLine.arguments.first {
+        case "SG":
+            config.countryCode = "SG"
+            config.currencyCode = "SGD"
+        default:
+            return config
+        }
+        return config
     }
     
     fileprivate static func saveConfiguration(_ configuration: Configuration) {

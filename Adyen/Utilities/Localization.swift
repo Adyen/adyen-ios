@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,13 +21,13 @@ private struct LocalizationInput {
 /// This method will try first to get the string from main bundle.
 /// If no localization is available on main bundle, it'll return from internal one.
 ///
-/// :nodoc:
 ///
 /// - Parameters:
 ///   - key: The key used to identify the localized string.
 ///   - parameters: The localization parameters.
 ///   - arguments: The arguments to substitute in the templated localized string.
 /// - Returns: The localized string for the given key, or the key itself if the localized string could not be found.
+@_spi(AdyenInternal)
 public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
     
     // Use fallback in case attempt result is nil or empty
@@ -99,7 +99,7 @@ private func attempt(_ input: LocalizationInput) -> String? {
     return nil
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public enum PaymentStyle {
     case needsRedirectToThirdParty(String)
 
@@ -108,11 +108,11 @@ public enum PaymentStyle {
 
 /// Helper function to create a localized submit button title. Optionally, the button title can include the given amount.
 ///
-/// :nodoc:
 ///
 /// - Parameter amount: The amount to include in the submit button title.
 /// - Parameter paymentMethodName: The payment method name.
 /// - Parameter parameters: The localization parameters.
+@_spi(AdyenInternal)
 public func localizedSubmitButtonTitle(with amount: Amount?,
                                        style: PaymentStyle,
                                        _ parameters: LocalizationParameters?) -> String {

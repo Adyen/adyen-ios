@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import PassKit
 
@@ -36,7 +36,6 @@ extension ApplePayComponent {
         /// Indicates that the token was generated incorrectly.
         case invalidToken
 
-        /// :nodoc:
         public var errorDescription: String? {
             switch self {
             case .userCannotMakePayment:

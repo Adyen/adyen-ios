@@ -4,11 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import AdyenCard
+@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable @_spi(AdyenInternal) import AdyenCard
 
 final class PublicKeyProviderMock: AnyPublicKeyProvider {
     
-    let apiContext: APIContext = Dummy.context
+    let apiContext: APIContext = Dummy.apiContext
 
     var onFetch: ((_ completion: @escaping CompletionHandler) -> Void)?
 

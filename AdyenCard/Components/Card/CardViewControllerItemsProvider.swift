@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 extension CardViewController {
@@ -117,7 +117,7 @@ extension CardViewController {
             let holderNameItem = FormTextInputItem(style: formStyle.textField)
             holderNameItem.title = localizedString(.cardNameItemTitle, localizationParameters)
             holderNameItem.placeholder = localizedString(.cardNameItemPlaceholder, localizationParameters)
-            holderNameItem.validator = LengthValidator(minimumLength: 2)
+            holderNameItem.validator = LengthValidator(minimumLength: 1)
             holderNameItem.validationFailureMessage = localizedString(.cardNameItemInvalid, localizationParameters)
             holderNameItem.autocapitalizationType = .words
             holderNameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "holderNameItem")

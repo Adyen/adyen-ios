@@ -4,27 +4,25 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
 import UIKit
 
 /// A component that provides a form for gift card payments.
-public final class GiftCardComponent: PartialPaymentComponent,
-    PublicKeyConsumer,
-    PresentableComponent,
+public final class GiftCardComponent: PresentableComponent,
     Localizable,
     LoadingComponent,
     AdyenObserver {
     
-    /// :nodoc:
-    public let apiContext: APIContext
-
-    /// :nodoc:
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
+    
     private let giftCardPaymentMethod: GiftCardPaymentMethod
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public let publicKeyProvider: AnyPublicKeyProvider
 
     /// The gift card payment method.
@@ -48,32 +46,31 @@ public final class GiftCardComponent: PartialPaymentComponent,
     ///   - paymentMethod: The gift card payment method.
     ///   -  clientKey: The client key that corresponds to the web service user you will use for initiating the payment.
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
-    ///   -  style: The Component's UI style.
+    ///   - context: The context object for this component.
+    ///   - style:  The Component's UI style.
     public convenience init(paymentMethod: GiftCardPaymentMethod,
-                            apiContext: APIContext,
+                            context: AdyenContext,
                             style: FormComponentStyle = FormComponentStyle()) {
         self.init(paymentMethod: paymentMethod,
-                  apiContext: apiContext,
+                  context: context,
                   style: style,
-                  publicKeyProvider: PublicKeyProvider(apiContext: apiContext))
+                  publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
     
     internal init(paymentMethod: GiftCardPaymentMethod,
-                  apiContext: APIContext,
+                  context: AdyenContext,
                   style: FormComponentStyle = FormComponentStyle(),
                   publicKeyProvider: AnyPublicKeyProvider) {
         self.giftCardPaymentMethod = paymentMethod
+        self.context = context
         self.style = style
-        self.apiContext = apiContext
         self.publicKeyProvider = publicKeyProvider
     }
 
     // MARK: - Presentable Component Protocol
 
-    /// :nodoc:
     public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
 
-    /// :nodoc:
     public var requiresModalPresentation: Bool { true }
 
     private lazy var formViewController: FormViewController = {
@@ -137,18 +134,15 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
     // MARK: - Localizable Protocol
 
-    /// :nodoc:
     public var localizationParameters: LocalizationParameters?
 
     // MARK: - Loading Component Protocol
 
-    /// :nodoc:
     public func stopLoading() {
         button.showsActivityIndicator = false
         viewController.view.isUserInteractionEnabled = true
     }
 
-    /// :nodoc:
     internal func startLoading() {
         button.showsActivityIndicator = true
         viewController.view.isUserInteractionEnabled = false
@@ -259,12 +253,14 @@ public final class GiftCardComponent: PartialPaymentComponent,
                                   remainingAmount: Amount,
                                   paymentData: PaymentComponentData) {
         let lastFourDigits = String(numberItem.value.suffix(4))
-        let paymentMethod = GiftCardConfirmationPaymentMethod(
-            paymentMethod: giftCardPaymentMethod,
-            lastFour: lastFourDigits,
-            remainingAmount: remainingAmount
-        )
-        let component = InstantPaymentComponent(paymentMethod: paymentMethod, paymentData: paymentData, apiContext: apiContext)
+
+        let paymentMethod = GiftCardConfirmationPaymentMethod(paymentMethod: giftCardPaymentMethod,
+                                                              lastFour: lastFourDigits,
+                                                              remainingAmount: remainingAmount)
+        
+        let component = InstantPaymentComponent(paymentMethod: paymentMethod,
+                                                paymentData: paymentData,
+                                                context: context)
         delegate.showConfirmation(for: component, with: paymentData.order)
     }
 
@@ -324,9 +320,9 @@ public final class GiftCardComponent: PartialPaymentComponent,
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public extension Result {
-    /// :nodoc:
+    
     func handle(success: (Success) -> Void, failure: (Failure) -> Void) {
         switch self {
         case let .success(successObject):
@@ -336,3 +332,9 @@ public extension Result {
         }
     }
 }
+
+@_spi(AdyenInternal)
+extension GiftCardComponent: PartialPaymentComponent {}
+
+@_spi(AdyenInternal)
+extension GiftCardComponent: PublicKeyConsumer {}

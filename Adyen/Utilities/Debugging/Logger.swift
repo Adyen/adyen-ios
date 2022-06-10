@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -17,9 +17,9 @@ public enum AdyenLogging {
     }
 }
 
-/// :nodoc:
 /// Copies the interface of `Swift.print()`,
 /// and `Swift.print()` is called inside after checking first if `AdyenLogging.isEnabled` is `true`, and returns if `false`.
+@_spi(AdyenInternal)
 public func adyenPrint(_ items: Any..., separator: String = " ", terminator: String = "\n") {
     guard AdyenLogging.isEnabled else { return }
     var idx = items.startIndex

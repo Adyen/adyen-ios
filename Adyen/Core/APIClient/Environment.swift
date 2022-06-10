@@ -10,13 +10,12 @@ import Foundation
 /// Struct that defines the environment to retrieve resources from.
 public struct Environment: AnyAPIEnvironment {
     
-    /// :nodoc:
     public var baseURL: URL
 
     /// Adyen's test environment.
     public static let test = Environment(baseURL: URL(string: "https://checkoutshopper-test.adyen.com/")!)
-
-    /// :nodoc:
+    
+    @_spi(AdyenInternal)
     public static let beta = Environment(baseURL: URL(string: "https://checkoutshopper-beta.adyen.com/")!)
 
     /// Adyen's default live environment.
@@ -35,6 +34,9 @@ public struct Environment: AnyAPIEnvironment {
 
     /// Adyen's United States live environment.
     public static let liveUnitedStates = Environment(baseURL: URL(string: "https://checkoutshopper-live-us.adyen.com/")!)
+
+    /// Adyen's apse live  environment.
+    public static let liveApse = Environment(baseURL: URL(string: "https://checkoutshopper-live-apse.adyen.com/")!)
 
     /// Initializes an `Environment` object.
     ///

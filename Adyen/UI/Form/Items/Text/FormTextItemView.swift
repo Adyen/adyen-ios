@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import UIKit
 
 /// The interface of the delegate of a text item view.
-/// :nodoc:
+@_spi(AdyenInternal)
 public protocol FormTextItemViewDelegate: AnyObject {
     
     /// Invoked when the text entered in the item view's text field has reached the maximum length.
@@ -23,7 +23,7 @@ public protocol FormTextItemViewDelegate: AnyObject {
 }
 
 /// Defines any form text item view.
-/// :nodoc:
+@_spi(AdyenInternal)
 public protocol AnyFormTextItemView: AnyFormItemView {
 
     /// Delegate text related events.
@@ -31,7 +31,7 @@ public protocol AnyFormTextItemView: AnyFormItemView {
 }
 
 /// A view representing a basic logic of text item.
-/// :nodoc:
+@_spi(AdyenInternal)
 open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, FormTextItemStyle, ItemType>,
     UITextFieldDelegate,
     AnyFormTextItemView {
@@ -58,7 +58,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         }
     }
     
-    /// :nodoc:
     override public func reset() {
         item.value = ""
         resetValidationStatus()
@@ -116,7 +115,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         textField.autocapitalizationType = item.autocapitalizationType
         textField.keyboardType = item.keyboardType
         textField.returnKeyType = .next
-        textField.accessibilityLabel = item.title
         textField.delegate = self
         textField.textContentType = item.contentType
         
@@ -179,7 +177,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     
     // MARK: - Validation
     
-    /// :nodoc:
     override public func validate() {
         guard !isHidden else { return }
         updateValidationStatus(forced: true)
@@ -193,7 +190,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     
     // MARK: - Layout
     
-    /// :nodoc:
     override open func configureSeparatorView() {
         let constraints = [
             separatorView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
@@ -215,31 +211,26 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     
     // MARK: - Interaction
     
-    /// :nodoc:
     override open var canBecomeFirstResponder: Bool {
         textField.canBecomeFirstResponder
     }
     
-    /// :nodoc:
     @discardableResult
     override open func becomeFirstResponder() -> Bool {
         textField.becomeFirstResponder()
     }
     
-    /// :nodoc:
     @discardableResult
     override open func resignFirstResponder() -> Bool {
         textField.resignFirstResponder()
     }
     
-    /// :nodoc:
     override open var isFirstResponder: Bool {
         textField.isFirstResponder
     }
     
     // MARK: - UITextFieldDelegate
     
-    /// :nodoc:
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         delegate?.didSelectReturnKey(in: self)
         return true
@@ -247,19 +238,16 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     
     /// This method updates UI according to a validity state.
     /// Subclasses can override this method to stay notified when the text field resigns its first responder status.
-    /// :nodoc:
     open func textFieldDidEndEditing(_ textField: UITextField) {
         isEditing = false
     }
     
     /// This method hides validation accessories icons.
     /// Subclasses can override this method to stay notified when textField became the first responder.
-    /// :nodoc:
     open func textFieldDidBeginEditing(_ textField: UITextField) {
         isEditing = true
     }
 
-    /// :nodoc:
     open func updateValidationStatus(forced: Bool = false) {
         let textFieldNotEmpty = textField.text.map(\.isEmpty) == false
         // if validation check is allowed during editing, ignore editing check
@@ -270,20 +258,22 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
             hideAlertLabel(true)
             highlightSeparatorView(color: tintColor)
             titleLabel.textColor = tintColor
+            textField.accessibilityLabel = item.title
         } else if forceShowValidationStatus {
             accessory = .invalid
             hideAlertLabel(false)
             highlightSeparatorView(color: item.style.errorColor)
             titleLabel.textColor = item.style.errorColor
+            textField.accessibilityLabel = item.validationFailureMessage
         } else {
             removeAccessoryIfNeeded()
             hideAlertLabel(true)
             isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
             titleLabel.textColor = defaultTitleColor
+            textField.accessibilityLabel = item.title
         }
     }
     
-    /// :nodoc:
     public func notifyDelegateOfMaxLengthIfNeeded() {
         let maximumLength = item.validator?.maximumLength(for: item.value) ?? .max
         if item.value.count == maximumLength {
@@ -291,7 +281,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         }
     }
 
-    /// :nodoc:
     internal func resetValidationStatus() {
         removeAccessoryIfNeeded()
         hideAlertLabel(true, animated: false)
@@ -313,10 +302,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public extension FormTextItemView {
 
-    /// :nodoc:
     enum AccessoryType: Equatable {
         case invalid
         case valid
@@ -324,10 +312,8 @@ public extension FormTextItemView {
         case none
     }
 
-    /// :nodoc:
     private final class AccessoryLogo: UIImageView {
 
-        /// :nodoc:
         init(success: Bool) {
             let resource = "verification_" + success.description
             let bundle = Bundle.coreInternalResources
@@ -338,7 +324,6 @@ public extension FormTextItemView {
             setContentCompressionResistancePriority(.required, for: .horizontal)
         }
 
-        /// :nodoc:
         @available(*, unavailable)
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")

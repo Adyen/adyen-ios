@@ -40,9 +40,9 @@ extension IntegrationExample {
     internal func dropInComponent(from paymentMethods: PaymentMethods?) -> DropInComponent? {
         guard let paymentMethods = paymentMethods else { return nil }
 
-        let configuration = DropInComponent.Configuration(apiContext: ConfigurationConstants.apiContext)
+        let configuration = DropInComponent.Configuration(context: context)
 
-        if let applePayPayment = try? ApplePayPayment(payment: payment) {
+        if let applePayPayment = try? ApplePayPayment(payment: payment, brand: ConfigurationConstants.appName) {
             configuration.applePay = .init(payment: applePayPayment,
                                            merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         }
@@ -53,6 +53,7 @@ extension IntegrationExample {
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
         
         let component = DropInComponent(paymentMethods: paymentMethods,
+                                        context: context,
                                         configuration: configuration,
                                         title: ConfigurationConstants.appName)
         
@@ -60,23 +61,6 @@ extension IntegrationExample {
     }
 
     // MARK: - Payment response handling
-
-    private func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
-        switch result {
-        case let .success(response):
-            if let action = response.action {
-                handle(action)
-            } else if let order = response.order,
-                      let remainingAmount = order.remainingAmount,
-                      remainingAmount.value > 0 {
-                handle(order)
-            } else {
-                finish(with: response.resultCode)
-            }
-        case let .failure(error):
-            finish(with: error)
-        }
-    }
 
     internal func handle(_ order: PartialPaymentOrder) {
         requestPaymentMethods(order: order) { [weak self] paymentMethods in

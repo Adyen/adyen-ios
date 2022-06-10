@@ -9,7 +9,7 @@ jobs:
   build:
     env:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
-    runs-on: macos-11
+    runs-on: macos-12
 
     steps:
     - uses: actions/checkout@v2
@@ -28,6 +28,7 @@ jobs:
     - name: Install Tools
       run: |
         brew install sonar-scanner
+        brew install chargepoint/xcparse/xcparse
         gem install slather
 
     - name: Validate 3DS2 SDK version
@@ -40,11 +41,11 @@ jobs:
         xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -resultBundlePath TestResults'
+        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
         scheme: 'AdyenUIHost'
         destination: 'name=iPhone 11'
 
-    - name: Slather
+    - name: Code Coverage
       run: |
         slather coverage --sonarqube-xml ${params} ${project}
       env:

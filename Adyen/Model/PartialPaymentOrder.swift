@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -64,7 +64,6 @@ public struct PartialPaymentOrder: Codable, Equatable {
                                          orderData: orderData)
     }
 
-    /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.pspReference = try container.decode(String.self, forKey: .pspReference)
@@ -72,7 +71,7 @@ public struct PartialPaymentOrder: Codable, Equatable {
         self.reference = try container.decodeIfPresent(String.self, forKey: .reference)
         self.amount = try container.decodeIfPresent(Amount.self, forKey: .amount)
         self.remainingAmount = try container.decodeIfPresent(Amount.self, forKey: .remainingAmount)
-        self.expiresAt = try container.decodeIfPresent(Date.self, forKey: .expiresAt)
+        self.expiresAt = nil
         self.compactOrder = CompactOrder(pspReference: pspReference,
                                          orderData: orderData)
     }

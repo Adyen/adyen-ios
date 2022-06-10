@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -34,7 +34,6 @@ open class LengthValidator: Validator {
         self.maximumLength = exactLength
     }
     
-    /// :nodoc:
     open func isValid(_ value: String) -> Bool {
         let length = value.count
         
@@ -49,7 +48,6 @@ open class LengthValidator: Validator {
         return true
     }
     
-    /// :nodoc:
     public func maximumLength(for value: String) -> Int {
         maximumLength ?? .max
     }

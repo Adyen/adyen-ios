@@ -7,7 +7,7 @@
 //
 
 import Adyen3DS2
-@testable import AdyenActions
+@_spi(AdyenInternal) @testable import AdyenActions
 import Foundation
 
 final class AnyADYServiceMock: AnyADYService {

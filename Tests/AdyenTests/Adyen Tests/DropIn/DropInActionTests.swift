@@ -4,26 +4,35 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
-import AdyenActions
+@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) import AdyenActions
 import AdyenDropIn
 import SafariServices
 import XCTest
 
 class DropInActionsTests: XCTestCase {
 
+    var context: AdyenContext!
     var sut: DropInComponent!
 
-    override func tearDown() {
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        context = Dummy.context
+    }
+
+    override func tearDownWithError() throws {
+        context =  nil
         sut = nil
+        try super.tearDownWithError()
     }
 
     func testOpenRedirectActionOnDropIn() {
-        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(context: context)
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymentMethods,
+                              context: context,
                               configuration: config)
 
         let waitExpectation = expectation(description: "Expect SafariViewController to open")
@@ -43,7 +52,7 @@ class DropInActionsTests: XCTestCase {
     }
 
     func testOpenExternalApp() {
-        let config = DropInComponent.Configuration(apiContext: Dummy.context)
+        let config = DropInComponent.Configuration(context: context)
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let waitExpectation = expectation(description: "Expect a callback")
@@ -51,6 +60,7 @@ class DropInActionsTests: XCTestCase {
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymenMethods,
+                              context: context,
                               configuration: config)
         sut.delegate = mock
 
@@ -62,7 +72,7 @@ class DropInActionsTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = root
 
         root.present(sut.viewController, animated: true) {
-            self.sut.didOpenExternalApplication(component: RedirectComponent(apiContext: Dummy.context))
+            self.sut.didOpenExternalApplication(component: RedirectComponent(context: Dummy.context))
         }
 
         waitForExpectations(timeout: 15, handler: nil)

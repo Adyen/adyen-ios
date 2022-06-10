@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 internal enum ThreeDSActionHandlerResult: Decodable {
@@ -15,7 +15,6 @@ internal enum ThreeDSActionHandlerResult: Decodable {
 
     // MARK: - Coding
 
-    /// :nodoc:
     internal init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(ActionType.self, forKey: .type)

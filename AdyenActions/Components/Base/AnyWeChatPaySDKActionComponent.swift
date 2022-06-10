@@ -4,18 +4,16 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Represents any structure/class that can be initialized without any parameters.
-/// :nodoc:
 public protocol APIContextInitializable {
     /// Initializer that takes an `APIContext`.
-    init(apiContext: APIContext)
+    init(context: AdyenContext)
 }
 
 /// Describes the expected interface from any ActionComponent that handles WeChat Pay sdk action.
-/// :nodoc:
 public protocol AnyWeChatPaySDKActionComponent: ActionComponent, DeviceDependent, APIContextInitializable {
 
     /// Handles the action.
@@ -26,7 +24,7 @@ public protocol AnyWeChatPaySDKActionComponent: ActionComponent, DeviceDependent
 }
 
 /// Loads the concrete WeChatPaySDKActionComponent Class dynamically.
-/// :nodoc:
+@_spi(AdyenInternal)
 public func loadTheConcreteWeChatPaySDKActionComponentClass() -> AnyWeChatPaySDKActionComponent.Type? {
     ["AdyenWeChatPay.WeChatPaySDKActionComponent",
      "Adyen.WeChatPaySDKActionComponent"].compactMap { NSClassFromString($0) as? AnyWeChatPaySDKActionComponent.Type }.first

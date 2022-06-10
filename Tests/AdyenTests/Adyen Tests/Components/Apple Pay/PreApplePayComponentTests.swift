@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
 @testable import AdyenDropIn
 import PassKit
@@ -22,7 +22,7 @@ class PreApplePayComponentTests: XCTestCase {
         applePayStyle.paymentButtonType = .inStore
         let preApplePayConfig = PreApplePayComponent.Configuration(style: applePayStyle)
         sut = try! PreApplePayComponent(paymentMethod: ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil),
-                                        apiContext: Dummy.context,
+                                                context: Dummy.context,
                                         configuration: preApplePayConfig,
                                         applePayConfiguration: configuration)
     }

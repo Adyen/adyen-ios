@@ -1,6 +1,6 @@
 //
 
-@testable import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
 import XCTest
 
@@ -64,7 +64,7 @@ class BACSInputPresenterTests: XCTestCase {
         sut.viewDidLoad()
 
         // Then
-        XCTAssertEqual(tracker.sendEventCallsCount, 1)
+        XCTAssertEqual(tracker.sendTelemetryEventCallsCount, 1)
     }
 
     func testContinuePaymentWhenButtonTappedShouldDisplayValidationOnView() throws {

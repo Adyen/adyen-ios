@@ -7,54 +7,49 @@
 import AdyenNetworking
 import Foundation
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public struct OrderStatusResponse: Response {
 
     /// The remaining amount to be paid.
-    /// :nodoc:
     public let remainingAmount: Amount
 
     /// The payment methods already used to partially pay.
-    /// :nodoc:
     public let paymentMethods: [OrderPaymentMethod]?
-
-    /// :nodoc:
+    
+    /// Initializes an instance of `OrderStatusResponse`.
+    ///
+    /// - Parameters:
+    ///   - remainingAmount: The remaining amount to be paid.
+    ///   - paymentMethods: The payment methods already used to partially pay.
     public init(remainingAmount: Amount,
                 paymentMethods: [OrderPaymentMethod]?) {
         self.remainingAmount = remainingAmount
         self.paymentMethods = paymentMethods
     }
 
-    /// :nodoc:
     internal enum CodingKeys: String, CodingKey {
         case remainingAmount
         case paymentMethods
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public struct OrderPaymentMethod: PaymentMethod {
 
-    /// :nodoc:
     public var name: String {
         String.Adyen.securedString + lastFour
     }
     
     public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
-    /// :nodoc:
     public let lastFour: String
 
-    /// :nodoc:
     public let type: PaymentMethodType
 
-    /// :nodoc:
     public let transactionLimit: Amount?
 
-    /// :nodoc:
     public let amount: Amount
 
-    /// :nodoc:
     public init(lastFour: String,
                 type: PaymentMethodType,
                 transactionLimit: Amount?,
@@ -65,7 +60,7 @@ public struct OrderPaymentMethod: PaymentMethod {
         self.amount = amount
     }
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let disclosureText = AmountFormatter.formatted(amount: -amount.value,
                                                        currencyCode: amount.currencyCode,
@@ -76,8 +71,10 @@ public struct OrderPaymentMethod: PaymentMethod {
                                   disclosureText: disclosureText)
     }
 
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        AlreadyPaidPaymentComponent(paymentMethod: self, apiContext: builder.apiContext)
+        AlreadyPaidPaymentComponent(paymentMethod: self,
+                                    context: builder.context)
     }
 
     private enum CodingKeys: String, CodingKey {

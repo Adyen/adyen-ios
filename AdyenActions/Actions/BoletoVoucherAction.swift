@@ -4,14 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
-/// :nodoc:
 /// Describes a voucher that can be downloaded.
 internal protocol Downloadable {
     
-    /// :nodoc:
     /// Download URL.
     var downloadUrl: URL { get }
 }
@@ -34,10 +32,9 @@ public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadabl
     /// Download URL
     public let downloadUrl: URL
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public let passCreationToken: String?
     
-    /// :nodoc:
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
@@ -63,7 +60,6 @@ public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadabl
         }
     }
     
-    /// :nodoc:
     internal init(paymentMethodType: VoucherPaymentMethod,
                   totalAmount: Amount,
                   reference: String,

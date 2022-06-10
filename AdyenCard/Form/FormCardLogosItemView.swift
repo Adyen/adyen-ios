@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
@@ -33,8 +33,8 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
         collectionView.register(CardLogoCell.self, forCellWithReuseIdentifier: CardLogoCell.reuseIdentifier)
         collectionView.dataSource = self
         
-        observe(item.$alpha) { [weak self] alpha in
-            self?.collectionView.alpha = alpha
+        observe(item.$cardLogos) { [weak self] _ in
+            self?.collectionView.reloadSections([0])
         }
     }
     
@@ -49,7 +49,7 @@ extension FormCardLogosItemView: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardLogoCell.reuseIdentifier, for: indexPath)
         if let cell = cell as? CardLogoCell,
            let logo = item.cardLogos.adyen[safeIndex: indexPath.row] {
-            cell.update(imageUrl: logo.url, style: item.style.icon)
+            cell.update(imageUrl: logo.url, style: item.style.icon, alpha: CGFloat(logo.alpha))
         }
         return cell
     }
@@ -100,9 +100,10 @@ extension FormCardLogosItemView {
             fatalError("init(coder:) has not been implemented")
         }
         
-        internal func update(imageUrl: URL, style: ImageStyle) {
+        internal func update(imageUrl: URL, style: ImageStyle, alpha: CGFloat) {
             cardTypeImageView.imageURL = imageUrl
             
+            cardTypeImageView.alpha = alpha
             cardTypeImageView.layer.masksToBounds = style.clipsToBounds
             cardTypeImageView.layer.borderWidth = style.borderWidth
             cardTypeImageView.layer.borderColor = style.borderColor?.cgColor
