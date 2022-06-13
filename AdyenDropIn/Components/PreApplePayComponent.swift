@@ -100,7 +100,7 @@ extension PreApplePayComponent: PaymentComponentDelegate {
                                                browserInfo: data.browserInfo,
                                                checkoutAttemptId: checkoutAttemptId,
                                                installments: data.installments)
-        delegate?.didSubmit(updatedData, from: self)
+        submit(data: updatedData, component: self)
     }
     
     internal func didFail(with error: Error, from component: PaymentComponent) {
