@@ -46,7 +46,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testSubmitWithAnalyticsProviderCheckoutAttemptIdNotNilShouldSetCheckoutAttemptIdInPaymentComponentData() throws {
+    func testSubmitWithAnalyticsEnabledShouldSetCheckoutAttemptIdInPaymentComponentData() throws {
         // Given
         let expectedCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
         analyticsProviderMock.underlyingCheckoutAttemptId = expectedCheckoutAttemptId
@@ -63,7 +63,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         }
     }
 
-    func testSubmitWithAnalyticsProviderCheckoutAttemptIdNilShouldNotSetCheckoutAttemptIdInPaymentComponentData() throws {
+    func testSubmitWithAnalyticsDisabledShouldNotSetCheckoutAttemptIdInPaymentComponentData() throws {
         // Given
         analyticsProviderMock.underlyingCheckoutAttemptId = nil
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
