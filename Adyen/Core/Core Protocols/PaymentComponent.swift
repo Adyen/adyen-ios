@@ -30,13 +30,20 @@ extension PaymentComponent {
     public func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
         let component = component ?? self
         let checkoutAttemptId = component.context.analyticsProvider.checkoutAttemptId
-        let updatedData = PaymentComponentData(paymentMethodDetails: data.paymentMethod,
+        var updatedData: PaymentComponentData
+
+        if data.checkoutAttemptId == checkoutAttemptId {
+            updatedData = data
+        } else {
+            updatedData = PaymentComponentData(paymentMethodDetails: data.paymentMethod,
                                                amount: data.amount,
                                                order: data.order,
                                                storePaymentMethod: data.storePaymentMethod,
                                                browserInfo: data.browserInfo,
                                                checkoutAttemptId: checkoutAttemptId,
                                                installments: data.installments)
+
+        }
 
         guard updatedData.browserInfo == nil else {
             delegate?.didSubmit(updatedData, from: component)
