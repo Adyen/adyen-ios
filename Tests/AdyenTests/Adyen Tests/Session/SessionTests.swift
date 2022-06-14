@@ -8,21 +8,25 @@
 
 import XCTest
 @testable import AdyenSession
-@_spi(AdyenInternal) import Adyen
-@_spi(AdyenInternal) import AdyenActions
+@_spi(AdyenInternal) @testable import Adyen
+@_spi(AdyenInternal) @testable import AdyenActions
 import AdyenComponents
 import AdyenDropIn
 
 class SessionTests: XCTestCase {
 
+    var analyticsProviderMock: AnalyticsProviderMock!
     var context: AdyenContext!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        context = Dummy.context
+        analyticsProviderMock = AnalyticsProviderMock()
+        analyticsProviderMock.underlyingCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
+        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
     }
 
     override func tearDownWithError() throws {
+        analyticsProviderMock = nil
         context = nil
         try super.tearDownWithError()
     }
@@ -101,6 +105,64 @@ class SessionTests: XCTestCase {
         sut.didSubmit(data, from: component)
         waitForExpectations(timeout: 2, handler: nil)
     }
+
+    func testDidSubmitWithCheckoutAttemptIdNonNilShouldIncludeCheckoutAttemptIdInPaymentComponentData() throws {
+        // Given
+        let expectedCheckoutAttemptId = try XCTUnwrap(analyticsProviderMock.underlyingCheckoutAttemptId)
+
+        let sessionAdvancedHandlerMock = SessionAdvancedHandlerMock()
+        let sessionDelegateMock = SessionDelegateMock()
+        sessionDelegateMock.handlerMock = sessionAdvancedHandlerMock
+
+        let paymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sut = try initializeSession(expectedPaymentMethods: paymentMethods, delegate: sessionDelegateMock)
+
+        let paymentMethod = try XCTUnwrap(paymentMethods.regular.last as? MBWayPaymentMethod)
+        let component = MBWayComponent(paymentMethod: paymentMethod, context: context)
+        component.delegate = sut
+
+        let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
+        let amount = Amount(value: 85, currencyCode: "USD")
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: amount, order: nil)
+
+        // When
+        XCTAssertNil(paymentComponentData.checkoutAttemptId)
+        component.submit(data: paymentComponentData, component: component)
+
+        sessionAdvancedHandlerMock.onDidSubmit = { data, _, _ in
+            // Then
+            XCTAssertEqual(expectedCheckoutAttemptId, data.checkoutAttemptId)
+        }
+    }
+
+    func testDidSubmitWithCheckoutAttemptIdNilShouldNotIncludeCheckoutAttemptIdInPaymentComponentData() throws {
+        // Given
+        analyticsProviderMock.underlyingCheckoutAttemptId = nil
+
+        let sessionAdvancedHandlerMock = SessionAdvancedHandlerMock()
+        let sessionDelegateMock = SessionDelegateMock()
+        sessionDelegateMock.handlerMock = sessionAdvancedHandlerMock
+
+        let paymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sut = try initializeSession(expectedPaymentMethods: paymentMethods, delegate: sessionDelegateMock)
+
+        let paymentMethod = try XCTUnwrap(paymentMethods.regular.last as? MBWayPaymentMethod)
+        let component = MBWayComponent(paymentMethod: paymentMethod, context: context)
+        component.delegate = sut
+
+        let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
+        let amount = Amount(value: 85, currencyCode: "USD")
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: amount, order: nil)
+
+        // When
+        XCTAssertNil(paymentComponentData.checkoutAttemptId)
+        component.submit(data: paymentComponentData, component: component)
+
+        sessionAdvancedHandlerMock.onDidSubmit = { data, _, _ in
+            // Then
+            XCTAssertNil(data.checkoutAttemptId)
+        }
+    }
     
     private let paymentMethodsDictionary = [
         "storedPaymentMethods": [
@@ -134,7 +196,7 @@ class SessionTests: XCTestCase {
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
-                                              context: context)
+                                       context: context)
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
         let expectedAction = RedirectAction(
@@ -208,7 +270,7 @@ class SessionTests: XCTestCase {
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
-                                              context: context)
+                                       context: context)
         let dropInComponent = DropInComponent(paymentMethods: expectedPaymentMethods,
                                               context: context,
                                               configuration: .init(context: context),
@@ -445,7 +507,7 @@ class SessionTests: XCTestCase {
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
-                                              context: context)
+                                       context: context)
         sut.didSubmit(data, from: component)
         wait(for: [didSubmitExpectation], timeout: 2)
     }

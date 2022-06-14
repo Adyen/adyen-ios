@@ -244,7 +244,7 @@ public final class GiftCardComponent: PresentableComponent,
                              remainingAmount: remainingAmount,
                              paymentData: paymentData)
         } else {
-            delegate?.didSubmit(paymentData, from: self)
+            submit(data: paymentData, component: self)
         }
         return .success(())
     }
