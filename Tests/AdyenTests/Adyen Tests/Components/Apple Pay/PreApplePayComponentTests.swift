@@ -144,7 +144,7 @@ class PreApplePayComponentTests: XCTestCase {
 
         // When
         XCTAssertNil(paymentComponentData.checkoutAttemptId)
-        sut.submit(data: paymentComponentData, component: sut)
+        sut.didSubmit(paymentComponentData, from: sut)
 
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
@@ -167,7 +167,7 @@ class PreApplePayComponentTests: XCTestCase {
 
         // When
         XCTAssertNil(paymentComponentData.checkoutAttemptId)
-        sut.submit(data: paymentComponentData, component: sut)
+        sut.didSubmit(paymentComponentData, from: sut)
 
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
