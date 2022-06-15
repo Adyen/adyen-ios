@@ -12,6 +12,7 @@ import UIKit
 
 internal protocol CardViewControllerProtocol {
     func update(storePaymentMethodFieldVisibility isVisible: Bool)
+    func update(storePaymentMethodFieldValue isOn: Bool)
 }
 
 internal class CardViewController: FormViewController {
@@ -301,7 +302,13 @@ extension FormValueItem where ValueType == String {
 
 extension CardViewController: CardViewControllerProtocol {
     func update(storePaymentMethodFieldVisibility isVisible: Bool) {
-        items.storeDetailsItem.value = false
+        if !isVisible {
+            items.storeDetailsItem.value = false
+        }
         items.storeDetailsItem.isVisible = isVisible
+    }
+
+    func update(storePaymentMethodFieldValue isOn: Bool) {
+        items.storeDetailsItem.value = items.storeDetailsItem.isVisible && isOn
     }
 }
