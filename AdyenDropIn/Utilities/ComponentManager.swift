@@ -30,6 +30,15 @@ internal final class ComponentManager {
 
     internal weak var presentationDelegate: PresentationDelegate?
     
+    internal var payment: Payment? {
+        if let amount = remainingAmount ?? configuration.payment?.amount,
+           let countryCode = configuration.payment?.countryCode {
+            return Payment(amount: amount, countryCode: countryCode)
+        } else {
+            return configuration.payment
+        }
+    }
+    
     internal init(paymentMethods: PaymentMethods,
                   context: AdyenContext,
                   configuration: DropInComponent.Configuration,
@@ -127,7 +136,7 @@ internal final class ComponentManager {
             paymentComponent.localizationParameters = configuration.localizationParameters
         }
 
-        paymentComponent.payment = configuration.payment
+        paymentComponent.payment = payment
         paymentComponent.order = order
         return paymentComponent
     }

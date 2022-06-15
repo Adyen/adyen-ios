@@ -265,7 +265,7 @@ public final class DropInComponent: NSObject,
         (component as? PreApplePayComponent)?.presentationDelegate = self
         
         component._isDropIn = true
-        component.payment = configuration.payment
+        component.payment = componentManager.payment
     }
 }
 
