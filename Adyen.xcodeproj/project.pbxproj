@@ -11,7 +11,8 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = C96A8E2B26CA800A000BB8C6 /* Build configuration list for PBXAggregateTarget "Localization" */;
 			buildPhases = (
-				C96A8E2C26CA801E000BB8C6 /* ShellScript */,
+				C96A8E2C26CA801E000BB8C6 /* Update Localization strings files */,
+				F986B551285B4208002A471C /* Update the LocalizationKey.swift file */,
 			);
 			dependencies = (
 			);
@@ -4550,7 +4551,6 @@
 			buildConfigurationList = E2C0E04722097917008616F6 /* Build configuration list for PBXNativeTarget "Adyen" */;
 			buildPhases = (
 				E2C0E02E22097917008616F6 /* Headers */,
-				5A238BB3263A881F00758FEF /* Generate localization keys */,
 				E2C0E02F22097917008616F6 /* Sources */,
 				E2C0E03022097917008616F6 /* Frameworks */,
 				E2C0E03122097917008616F6 /* Resources */,
@@ -5090,7 +5090,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		5A238BB3263A881F00758FEF /* Generate localization keys */ = {
+		C96A8E2C26CA801E000BB8C6 /* Update Localization strings files */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -5098,34 +5098,17 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Adyen/Assets/en-US.lproj/Localizable.strings",
+				"",
 			);
-			name = "Generate localization keys";
+			name = "Update Localization strings files";
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(SRCROOT)/Adyen/Assets/Generated/LocalizationKey.swift",
+				"",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\nif [ \"${CONFIGURATION}\" = \"Debug\" ] &&\n   (! [ -z $(git diff HEAD --name-only $SCRIPT_INPUT_FILE_0) ]) && \n   [ -f $SRCROOT/Scripts/generate_localization_keys ]\nthen\n    echo \"Detected changes in Localizable.strings. Generating new LocalizationKey.swift\"\n    $SRCROOT/Scripts/generate_localization_keys $SCRIPT_INPUT_FILE_0 $SCRIPT_OUTPUT_FILE_0\nfi\n\n\n";
-		};
-		C96A8E2C26CA801E000BB8C6 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ -f $SRCROOT/Internal/localization.sh ]; then\n   $SRCROOT/Internal/localization.sh\nfi\n";
+			shellScript = "#!/bin/bash\n\nif [ ! -f $SRCROOT/Internal/localization.sh ]; then\n   exit 0\nfi\n\n$SRCROOT/Internal/localization.sh\n";
 		};
 		E7388FC1260B68C400291DE7 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5288,6 +5271,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh \"$SRCROOT/$TARGETNAME\"\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/$TARGETNAME\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
+		};
+		F986B551285B4208002A471C /* Update the LocalizationKey.swift file */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Adyen/Assets/en-US.lproj/Localizable.strings",
+			);
+			name = "Update the LocalizationKey.swift file";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/Adyen/Assets/Generated/LocalizationKey.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\n\nif [ ! -f $SRCROOT/Internal/generate_localization_keys.swift ]; then\n   exit 0\nfi\n\nif [ ! -z $(git diff HEAD --name-only $SCRIPT_INPUT_FILE_0) ]\nthen\n    echo \"Detected changes in Localizable.strings. Generating new LocalizationKey.swift\"\n    swift $SRCROOT/Internal/generate_localization_keys.swift $SCRIPT_INPUT_FILE_0 $SCRIPT_OUTPUT_FILE_0\nfi\n";
 		};
 		F9A4A3012373235800D774E8 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
