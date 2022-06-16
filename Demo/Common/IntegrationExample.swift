@@ -54,7 +54,9 @@ internal final class IntegrationExample: APIClientAware {
     // MARK: - Initializers
 
     internal init() {
-        self.context = AdyenContext(apiContext: ConfigurationConstants.apiContext, analyticsConfiguration: .init())
+        var analyticsConfiguration = AnalyticsConfiguration()
+        analyticsConfiguration.isEnabled = true
+        self.context = AdyenContext(apiContext: ConfigurationConstants.apiContext, analyticsConfiguration: analyticsConfiguration)
     }
 
     // MARK: - Networking

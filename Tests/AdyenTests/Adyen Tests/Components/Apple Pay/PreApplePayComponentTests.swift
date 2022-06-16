@@ -11,20 +11,44 @@ import PassKit
 import XCTest
 
 class PreApplePayComponentTests: XCTestCase {
-    
+
+    var analyticsProviderMock: AnalyticsProviderMock!
+    var amount: Amount!
+    var paymentMethod: ApplePayPaymentMethod!
+    var context: AdyenContext!
+    var paymentComponentDelegate: PaymentComponentDelegateMock!
     var sut: PreApplePayComponent!
     lazy var applePayPayment = Dummy.createTestApplePayPayment()
 
-    override func setUp() {
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        amount = Amount(value: 100, currencyCode: "USD")
+        paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
+
+        analyticsProviderMock = AnalyticsProviderMock()
+        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        paymentComponentDelegate = PaymentComponentDelegateMock()
+
         let configuration = ApplePayComponent.Configuration(payment: applePayPayment,
                                                             merchantIdentifier: "test_id")
         var applePayStyle = ApplePayStyle()
         applePayStyle.paymentButtonType = .inStore
         let preApplePayConfig = PreApplePayComponent.Configuration(style: applePayStyle)
         sut = try! PreApplePayComponent(paymentMethod: ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil),
-                                                context: Dummy.context,
+                                        context: Dummy.context,
                                         configuration: preApplePayConfig,
                                         applePayConfiguration: configuration)
+        sut.delegate = paymentComponentDelegate
+    }
+
+    override func tearDownWithError() throws {
+        analyticsProviderMock = nil
+        amount = nil
+        paymentMethod = nil
+        context = nil
+        paymentComponentDelegate = nil
+        sut = nil
+        try super.tearDownWithError()
     }
     
     func testUIConfiguration() {
@@ -104,4 +128,50 @@ class PreApplePayComponentTests: XCTestCase {
         XCTAssertEqual(hintLabel?.text, self.applePayPayment.payment.amount.formatted)
     }
 
+    func testSubmitWithAnalyticsEnabledShouldSetCheckoutAttemptIdInPaymentComponentData() throws {
+        // Given
+        let expectedCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
+        analyticsProviderMock.underlyingCheckoutAttemptId = expectedCheckoutAttemptId
+        let paymentMethodDetails = ApplePayDetails(paymentMethod: paymentMethod,
+                                                   token: "test_token",
+                                                   network: "test_network",
+                                                   billingContact: nil,
+                                                   shippingContact: nil,
+                                                   shippingMethod: nil)
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails,
+                                                        amount: amount,
+                                                        order: nil)
+
+        // When
+        XCTAssertNil(paymentComponentData.checkoutAttemptId)
+        sut.didSubmit(paymentComponentData, from: sut)
+
+        // Then
+        paymentComponentDelegate.onDidSubmit = { data, _ in
+            XCTAssertEqual(expectedCheckoutAttemptId, data.checkoutAttemptId)
+        }
+    }
+
+    func testSubmitWithAnalyticsDisabledShouldNotSetCheckoutAttemptIdInPaymentComponentData() throws {
+        // Given
+        analyticsProviderMock.underlyingCheckoutAttemptId = nil
+        let paymentMethodDetails = ApplePayDetails(paymentMethod: paymentMethod,
+                                                   token: "test_token",
+                                                   network: "test_network",
+                                                   billingContact: nil,
+                                                   shippingContact: nil,
+                                                   shippingMethod: nil)
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails,
+                                                        amount: amount,
+                                                        order: nil)
+
+        // When
+        XCTAssertNil(paymentComponentData.checkoutAttemptId)
+        sut.didSubmit(paymentComponentData, from: sut)
+
+        // Then
+        paymentComponentDelegate.onDidSubmit = { data, _ in
+            XCTAssertNil(data.checkoutAttemptId)
+        }
+    }
 }
