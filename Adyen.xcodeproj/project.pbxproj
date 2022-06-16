@@ -5125,7 +5125,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"$SRCROOT\"\n./Scripts/localization.sh\n";
+			shellScript = "if [ -f $SRCROOT/Internal/localization.sh ]; then\n   $SRCROOT/Internal/localization.sh\nfi\n";
 		};
 		E7388FC1260B68C400291DE7 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
