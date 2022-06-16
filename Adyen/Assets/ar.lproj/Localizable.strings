@@ -2,6 +2,7 @@
 "adyen.submitButton.formatted" = "دفع %@";
 "adyen.cancelButton" = "إلغاء";
 "adyen.dismissButton" = "موافق";
+"adyen.removeButton" = "إزالة";
 "adyen.error.title" = "خطأ";
 "adyen.error.unknown" = "حدث خطأ غير معروف";
 "adyen.validationAlert.title" = "إدخال غير صحيح";
@@ -116,6 +117,8 @@
 "adyen.boleto.download.pdf" = "تنزيل ملف PDF";
 "adyen.giftcard.currencyError" = "لا تسري بطاقات الهدايا إلا بالعملة التي صدرت بها";
 "adyen.giftcard.noBalance" = "لا يوجد رصيد ببطاقة الهدايا هذه";
+"adyen.giftcard.remove.title" = "تأكيد إزالة البطاقة";
+"adyen.giftcard.remove.message" = "هل ترغب في إزالة بطاقات الهدايا المضافة؟";
 "adyen.partialPayment.remainingBalance" = "سيبلغ الرصيد المتبقي %@";
 "adyen.partialPayment.payRemainingAmount" = "تحديد طريقة الدفع لمبلغ %@ المتبقي";
 "adyen.card.taxNumber.label" = "تاريخ ميلاد حامل البطاقة (يوم شهر سنة) أو رقم تسجيل الشركة (10 أرقام)";

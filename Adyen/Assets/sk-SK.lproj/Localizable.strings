@@ -2,6 +2,7 @@
 "adyen.submitButton.formatted" = "Zaplatiť %@";
 "adyen.cancelButton" = "Zrušiť";
 "adyen.dismissButton" = "OK";
+"adyen.removeButton" = "Odstrániť";
 "adyen.error.title" = "Chyba";
 "adyen.error.unknown" = "Vyskytla sa neznáma chyba";
 "adyen.validationAlert.title" = "Neplatný vstup";
@@ -116,6 +117,8 @@
 "adyen.boleto.download.pdf" = "Stiahnuť vo formáte PDF";
 "adyen.giftcard.currencyError" = "Darčekové karty sú platné iba v mene, v ktorej boli vydané";
 "adyen.giftcard.noBalance" = "Táto darčeková karta má nulový zostatok";
+"adyen.giftcard.remove.title" = "Potvrďte odstránenie karty";
+"adyen.giftcard.remove.message" = "Odstrániť pridané darčekové karty?";
 "adyen.partialPayment.remainingBalance" = "Zvyšný zostatok bude %@";
 "adyen.partialPayment.payRemainingAmount" = "Vyberte spôsob platby pre zvyšné %@";
 "adyen.card.taxNumber.label" = "Dátum narodenia držiteľa karty (RRRMMDD) alebo identifikačné číslo organizácie (10 číslic)";

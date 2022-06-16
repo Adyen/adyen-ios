@@ -2,6 +2,7 @@
 "adyen.submitButton.formatted" = "Pagar %@";
 "adyen.cancelButton" = "Cancelar";
 "adyen.dismissButton" = "Okay";
+"adyen.removeButton" = "Eliminar";
 "adyen.error.title" = "Error";
 "adyen.error.unknown" = "Se ha producido un error desconocido";
 "adyen.validationAlert.title" = "Entrada no válida";
@@ -116,6 +117,8 @@
 "adyen.boleto.download.pdf" = "Descargar PDF";
 "adyen.giftcard.currencyError" = "Las tarjetas regalo solo son válidas en la moneda en que fueron emitidas";
 "adyen.giftcard.noBalance" = "Esta tarjeta regalo no tiene saldo";
+"adyen.giftcard.remove.title" = "Confirmar retirada de tarjeta";
+"adyen.giftcard.remove.message" = "¿Quiere retirar las tarjetas de regalo añadidas?";
 "adyen.partialPayment.remainingBalance" = "El saldo restante será %@";
 "adyen.partialPayment.payRemainingAmount" = "Seleccione el método de pago para la cantidad restante: %@";
 "adyen.card.taxNumber.label" = "Fecha de nacimiento del titular de la tarjeta (AAMMDD) o número de registro comercial (10 dígitos)";

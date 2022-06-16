@@ -2,6 +2,7 @@
 "adyen.submitButton.formatted" = "%@ betalen";
 "adyen.cancelButton" = "Annuleer";
 "adyen.dismissButton" = "Oké";
+"adyen.removeButton" = "Verwijderen";
 "adyen.error.title" = "Fout";
 "adyen.error.unknown" = "Er is een onbekende fout opgetreden";
 "adyen.validationAlert.title" = "Ongeldige invoer";
@@ -116,6 +117,8 @@
 "adyen.boleto.download.pdf" = "PDF downloaden";
 "adyen.giftcard.currencyError" = "Cadeaukaarten zijn alleen geldig in de valuta waarin ze zijn uitgegeven";
 "adyen.giftcard.noBalance" = "Deze cadeaukaart heeft geen saldo";
+"adyen.giftcard.remove.title" = "Verwijdering van kaart bevestigen";
+"adyen.giftcard.remove.message" = "Toegevoegde cadeaukaarten verwijderen?";
 "adyen.partialPayment.remainingBalance" = "Het resterende saldo is %@";
 "adyen.partialPayment.payRemainingAmount" = "Selecteer betaalmethode voor de resterende %@";
 "adyen.card.taxNumber.label" = "Geboortedatum (JJ-MM-DD) of bedrijfsregistratienummer (10 cijfers) van kaarthouder";

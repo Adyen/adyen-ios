@@ -2,6 +2,7 @@
 "adyen.submitButton.formatted" = "Betal %@";
 "adyen.cancelButton" = "Avbryt";
 "adyen.dismissButton" = "Ok";
+"adyen.removeButton" = "Fjern";
 "adyen.error.title" = "Feil";
 "adyen.error.unknown" = "En ukjent feil oppstod";
 "adyen.validationAlert.title" = "Ugyldige inndata";
@@ -116,6 +117,8 @@
 "adyen.boleto.download.pdf" = "Last ned PDF";
 "adyen.giftcard.currencyError" = "Gavekort er kun gyldige i den valutaen de ble utstedt i";
 "adyen.giftcard.noBalance" = "Dette gavekortet har en saldo på null";
+"adyen.giftcard.remove.title" = "Bekreft fjerning av kort";
+"adyen.giftcard.remove.message" = "Vil du fjerne gavekort som er lagt til?";
 "adyen.partialPayment.remainingBalance" = "Gjenværende saldo vil være %@";
 "adyen.partialPayment.payRemainingAmount" = "Velg betalingsmetode for de gjenstående %@";
 "adyen.card.taxNumber.label" = "Kortholders fødselsdato (YYMMDD) eller bedriftsregistreringsnummer (10 siffer)";

@@ -2,6 +2,7 @@
 "adyen.submitButton.formatted" = "Fizetendő: %@";
 "adyen.cancelButton" = "Mégse";
 "adyen.dismissButton" = "OK";
+"adyen.removeButton" = "Eltávolítás";
 "adyen.error.title" = "Hiba";
 "adyen.error.unknown" = "Ismeretlen hiba történt";
 "adyen.validationAlert.title" = "Érvénytelen bevitel";
@@ -116,6 +117,8 @@
 "adyen.boleto.download.pdf" = "PDF letöltése";
 "adyen.giftcard.currencyError" = "Az ajándékkártyák csak abban a pénznemben érvényesek, amelyre kiállították azokat";
 "adyen.giftcard.noBalance" = "Az ajándékkártya egyenlege nulla";
+"adyen.giftcard.remove.title" = "Kártya eltávolításának megerősítése";
+"adyen.giftcard.remove.message" = "Eltávolítja a hozzáadott ajándékkártyákat?";
 "adyen.partialPayment.remainingBalance" = "A fennmaradó egyenleg %@ lesz";
 "adyen.partialPayment.payRemainingAmount" = "Fizetési mód választása a fennmaradó %@ számára";
 "adyen.card.taxNumber.label" = "Kártyatulajdonos születési dátuma (ÉÉHHNN) vagy cégjegyzékszám (10 számjegyű)";

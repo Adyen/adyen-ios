@@ -2,6 +2,7 @@
 "adyen.submitButton.formatted" = "%@のお支払い";
 "adyen.cancelButton" = "キャンセル";
 "adyen.dismissButton" = "OK";
+"adyen.removeButton" = "削除";
 "adyen.error.title" = "エラー";
 "adyen.error.unknown" = "不明なエラーが発生しました";
 "adyen.validationAlert.title" = "無効な入力";
@@ -116,6 +117,8 @@
 "adyen.boleto.download.pdf" = "PDFをダウンロード";
 "adyen.giftcard.currencyError" = "ギフトカードは、発行された通貨でのみ有効です。";
 "adyen.giftcard.noBalance" = "このギフトカードの残高はゼロです";
+"adyen.giftcard.remove.title" = "カードの削除を確認する";
+"adyen.giftcard.remove.message" = "追加したギフトカードを削除しますか？";
 "adyen.partialPayment.remainingBalance" = "残りの残高は%@になります";
 "adyen.partialPayment.payRemainingAmount" = "残りの%@の支払方法を選択してください";
 "adyen.card.taxNumber.label" = "カード所有者の生年月日（YYMMDD）または法人登録番号（10桁）";

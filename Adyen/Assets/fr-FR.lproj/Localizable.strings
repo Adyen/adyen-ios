@@ -2,6 +2,7 @@
 "adyen.submitButton.formatted" = "Payer %@";
 "adyen.cancelButton" = "Annuler";
 "adyen.dismissButton" = "Ok";
+"adyen.removeButton" = "Supprimer";
 "adyen.error.title" = "Erreur";
 "adyen.error.unknown" = "Une erreur inconnue s'est produite";
 "adyen.validationAlert.title" = "Saisie incorrecte";
@@ -116,6 +117,8 @@
 "adyen.boleto.download.pdf" = "Télécharger le PDF";
 "adyen.giftcard.currencyError" = "Les cartes cadeaux sont valables uniquement dans la devise dans laquelle elles ont été émises";
 "adyen.giftcard.noBalance" = "Aucun solde n'est disponible sur cette carte cadeau";
+"adyen.giftcard.remove.title" = "Confirmer la suppression de la carte";
+"adyen.giftcard.remove.message" = "Supprimer les cartes-cadeaux ajoutées ?";
 "adyen.partialPayment.remainingBalance" = "Le solde restant sera de %@";
 "adyen.partialPayment.payRemainingAmount" = "Sélectionnez un mode de paiement pour régler le solde de %@";
 "adyen.card.taxNumber.label" = "Date de naissance du porteur de carte (au format AAMMJJ) ou numéro d'identification de l'entreprise (à 10 chiffres)";
