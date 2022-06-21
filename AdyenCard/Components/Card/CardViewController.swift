@@ -110,7 +110,7 @@ internal class CardViewController: FormViewController {
     }
 
     internal var address: PostalAddress? {
-        switch configuration.billingAddressMode {
+        switch configuration.billingAddress.billingAddressMode {
         case .full:
             return items.billingAddressItem.value
         case .postalCode:
@@ -165,6 +165,15 @@ internal class CardViewController: FormViewController {
         }
         issuingCountryCode = binInfo.issuingCountryCode
         items.numberContainerItem.update(brands: brands)
+        
+        updateBillingAddressOptionalStatus(brands: brands)
+    }
+    
+    private func updateBillingAddressOptionalStatus(brands: [CardBrand]) {
+        let optionalBrands = configuration.billingAddress.billingAddressOptionalForBrands
+        let isOptional = optionalBrands.isDisjoint(with: brands.map(\.type)) == false
+        items.billingAddressItem.context.isOptional = isOptional
+        items.postalCodeItem.updateOptionalStatus(isOptional: isOptional)
     }
     
     /// Observe the current brand changes to update all other fields.
@@ -217,7 +226,7 @@ internal class CardViewController: FormViewController {
             append(installmentsItem)
         }
 
-        switch configuration.billingAddressMode {
+        switch configuration.billingAddress.billingAddressMode {
         case .full:
             append(items.billingAddressItem)
         case .postalCode:

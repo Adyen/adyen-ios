@@ -6,6 +6,24 @@
 
 @_spi(AdyenInternal) import Adyen
 
+/// Billing address fields configurations
+public struct BillingAddressConfiguration {
+    
+    /// Initializes a new instance of `BillingAddressConfiguration`.
+    public init() { /* Empty initializer */ }
+    
+    /// Indicates the display mode of the billing address form. Defaults to none.
+    public var billingAddressMode: CardComponent.AddressFormType = .none
+    
+    /// List of ISO country codes that is supported for the billing address.
+    /// When nil, all countries are provided.
+    public var billingAddressCountryCodes: [String]?
+    
+    /// Card brands for which the billing address fields should be optional.
+    public var billingAddressOptionalForBrands: Set<CardType> = []
+    
+}
+
 /// Describes any configuration for the card component.
 public protocol AnyCardComponentConfiguration {
     
@@ -26,8 +44,8 @@ public protocol AnyCardComponentConfiguration {
     /// In `auto` mode the field will appear based on card bin lookup.
     var socialSecurityNumberMode: CardComponent.FieldVisibility { get }
 
-    /// Indicates the display mode of the billing address form. Defaults to none.
-    var billingAddressMode: CardComponent.AddressFormType { get }
+    /// Billing address fields configurations
+    var billingAddress: BillingAddressConfiguration { get }
 
     /// Stored card configuration.
     var stored: StoredCardConfiguration { get }
@@ -39,10 +57,6 @@ public protocol AnyCardComponentConfiguration {
 
     /// Installments options to present to the user.
     var installmentConfiguration: InstallmentConfiguration? { get }
-    
-    /// List of ISO country codes that is supported for the billing address.
-    /// When nil, all countries are provided.
-    var billingAddressCountryCodes: [String]? { get }
 }
 
 extension CardComponent {
@@ -101,9 +115,6 @@ extension CardComponent {
         /// In `auto` mode the field will appear based on card bin lookup.
         public var socialSecurityNumberMode: FieldVisibility
 
-        /// Indicates the display mode of the billing address form. Defaults to none.
-        public var billingAddressMode: AddressFormType
-
         /// Stored card configuration.
         public var stored: StoredCardConfiguration
 
@@ -118,9 +129,8 @@ extension CardComponent {
         /// Installments options to present to the user.
         public var installmentConfiguration: InstallmentConfiguration?
         
-        /// List of ISO country codes that is supported for the billing address.
-        /// When nil, all countries are provided.
-        public var billingAddressCountryCodes: [String]?
+        /// Billing address fields configurations.
+        public var billingAddress: BillingAddressConfiguration
 
         /// Configuration of Card component.
         /// - Parameters:
@@ -136,13 +146,10 @@ extension CardComponent {
         ///   - koreanAuthenticationMode: Indicates the visibility option for the security fields for South Korea issued cards.
         ///   Defaults to `.auto`.
         ///   - socialSecurityNumberMode: Indicates the visibility option for the security code field. Defaults to `.auto`
-        ///   - billingAddressMode: Indicates mode of how to display the billing address form.
-        ///   Defaults to none.
         ///   - storedCardConfiguration: Stored card configuration.
         ///   - allowedCardTypes: The enforced list of allowed card types.
         ///   - installmentConfiguration: Configuration for installments. Defaults to `nil`.
-        ///   - billingAddressCountryCodes: List of ISO country codes that is supported for the billing address.
-        ///   Defaults to `nil`, which equals to all countries.
+        ///   - billingAddress: Billing address fields configurations.
         public init(style: FormComponentStyle = FormComponentStyle(),
                     shopperInformation: PrefilledShopperInformation? = nil,
                     localizationParameters: LocalizationParameters? = nil,
@@ -151,11 +158,10 @@ extension CardComponent {
                     showsSecurityCodeField: Bool = true,
                     koreanAuthenticationMode: FieldVisibility = .auto,
                     socialSecurityNumberMode: FieldVisibility = .auto,
-                    billingAddressMode: AddressFormType = .none,
                     storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
                     allowedCardTypes: [CardType]? = nil,
                     installmentConfiguration: InstallmentConfiguration? = nil,
-                    billingAddressCountryCodes: [String]? = nil) {
+                    billingAddress: BillingAddressConfiguration = .init()) {
             self.style = style
             self.shopperInformation = shopperInformation
             self.localizationParameters = localizationParameters
@@ -164,11 +170,10 @@ extension CardComponent {
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
             self.stored = storedCardConfiguration
             self.allowedCardTypes = allowedCardTypes
-            self.billingAddressMode = billingAddressMode
             self.koreanAuthenticationMode = koreanAuthenticationMode
             self.socialSecurityNumberMode = socialSecurityNumberMode
             self.installmentConfiguration = installmentConfiguration
-            self.billingAddressCountryCodes = billingAddressCountryCodes
+            self.billingAddress = billingAddress
         }
 
         internal func bcmcConfiguration() -> Configuration {
@@ -177,7 +182,6 @@ extension CardComponent {
             var configuration = Configuration(showsHolderNameField: showsHolderNameField,
                                               showsStorePaymentMethodField: showsStorePaymentMethodField,
                                               showsSecurityCodeField: false,
-                                              billingAddressMode: .none,
                                               storedCardConfiguration: storedCardConfiguration,
                                               allowedCardTypes: [.bcmc])
             configuration.excludedCardTypes = []

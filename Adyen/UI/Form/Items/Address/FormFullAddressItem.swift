@@ -12,6 +12,12 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
+    public var context: AddressViewModelBuilderContext {
+        didSet {
+            reloadFields()
+        }
+    }
+    
     private var items: [FormItem] = []
     
     private let localizationParameters: LocalizationParameters?
@@ -58,14 +64,15 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         self.localizationParameters = localizationParameters
         self.supportedCountryCodes = supportedCountryCodes
         self.addressViewModelBuilder = addressViewModelBuilder
+        self.context = .init(countryCode: initialCountry, isOptional: false)
         super.init(value: PostalAddress(), style: style)
 
         self.identifier = identifier
-        update(for: initialCountry)
+        reloadFields()
         
         bind(countrySelectItem.publisher, at: \.identifier, to: self, at: \.value.country)
         observe(countrySelectItem.publisher, eventHandler: { [weak self] event in
-            self?.update(for: event.element.identifier)
+            self?.context.countryCode = event.element.identifier
         })
     }
     
@@ -91,9 +98,9 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     // MARK: - Private
     
-    private func update(for countryCode: String) {
-        let subRegions = RegionRepository.subRegions(for: countryCode)
-        let viewModel = addressViewModelBuilder.build(countryCode: countryCode)
+    private func reloadFields() {
+        let subRegions = RegionRepository.subRegions(for: context.countryCode)
+        let viewModel = addressViewModelBuilder.build(context: context)
         
         items = [FormSpacerItem(),
                  headerItem.addingDefaultMargins(),

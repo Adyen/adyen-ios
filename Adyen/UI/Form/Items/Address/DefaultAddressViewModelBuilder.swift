@@ -7,8 +7,14 @@
 import Foundation
 
 @_spi(AdyenInternal)
+public struct AddressViewModelBuilderContext {
+    public var countryCode: String
+    public var isOptional: Bool
+}
+
+@_spi(AdyenInternal)
 public protocol AddressViewModelBuilder {
-    func build(countryCode: String) -> AddressViewModel
+    func build(context: AddressViewModelBuilderContext) -> AddressViewModel
 }
 
 @_spi(AdyenInternal)
@@ -18,7 +24,7 @@ public struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
 
     // swiftlint:disable function_body_length
     @_spi(AdyenInternal)
-    public func build(countryCode: String) -> AddressViewModel {
+    public func build(context: AddressViewModelBuilderContext) -> AddressViewModel {
         var viewModel = AddressViewModel(labels: [.city: .cityFieldTitle,
                                                   .houseNumberOrName: .houseNumberFieldTitle,
                                                   .street: .streetFieldTitle,
@@ -31,9 +37,9 @@ public struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
                                                        .stateOrProvince: .provinceOrTerritoryFieldPlaceholder,
                                                        .postalCode: .postalCodeFieldPlaceholder,
                                                        .apartment: .apartmentSuiteFieldPlaceholder],
-                                         optionalFields: [.apartment],
+                                         optionalFields: context.isOptional ? AddressField.allCases : [.apartment],
                                          scheme: AddressField.allCases.filter { $0 != .country }.map { .item($0) })
-        switch countryCode {
+        switch context.countryCode {
         case "BR":
             viewModel.labels[.stateOrProvince] = .stateFieldTitle
             viewModel.placeholder[.stateOrProvince] = .selectStateOrProvinceFieldPlaceholder
