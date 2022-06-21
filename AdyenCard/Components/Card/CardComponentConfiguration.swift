@@ -13,14 +13,14 @@ public struct BillingAddressConfiguration {
     public init() { /* Empty initializer */ }
     
     /// Indicates the display mode of the billing address form. Defaults to none.
-    public var billingAddressMode: CardComponent.AddressFormType = .none
+    public var mode: CardComponent.AddressFormType = .none
     
     /// List of ISO country codes that is supported for the billing address.
     /// When nil, all countries are provided.
-    public var billingAddressCountryCodes: [String]?
+    public var countryCodes: [String]?
     
     /// Card brands for which the billing address fields should be optional.
-    public var billingAddressOptionalForBrands: Set<CardType> = []
+    public var optionalForBrands: Set<CardType> = []
     
 }
 

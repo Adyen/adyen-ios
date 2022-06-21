@@ -55,7 +55,7 @@ extension CardViewController {
             // check and match the initial country from shopper prefill info
             // with the supported countries
             let initialCountry: String?
-            if let countryCodes = configuration.billingAddress.billingAddressCountryCodes, !countryCodes.isEmpty {
+            if let countryCodes = configuration.billingAddress.countryCodes, !countryCodes.isEmpty {
                 if let prefillCountryCode = shopperInformation?.billingAddress?.country,
                    countryCodes.contains(prefillCountryCode) {
                     initialCountry = prefillCountryCode
@@ -70,7 +70,7 @@ extension CardViewController {
                                        style: formStyle.addressStyle,
                                        localizationParameters: localizationParameters,
                                        identifier: identifier,
-                                       supportedCountryCodes: configuration.billingAddress.billingAddressCountryCodes,
+                                       supportedCountryCodes: configuration.billingAddress.countryCodes,
                                        addressViewModelBuilder: addressViewModelBuilder)
             shopperInformation?.billingAddress.map { item.value = $0 }
             item.style.backgroundColor = UIColor.Adyen.lightGray
