@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -108,7 +108,7 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
                                              bankLocationId: data.bankLocationId)
         confirmationPresenter?.startLoading()
         let data = PaymentComponentData(paymentMethodDetails: details,
-                                        amount: amountToPay,
+                                        amount: payment?.amount,
                                         order: order)
         submit(data: data)
     }

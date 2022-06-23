@@ -70,6 +70,13 @@ public class CardComponent: PublicKeyConsumer,
         }
     }
     
+    /// The partial payment order if any.
+    public var order: PartialPaymentOrder? {
+        didSet {
+            storedCardComponent?.order = order
+        }
+    }
+    
     /// Initializes the card component.
     ///
     /// - Parameters:

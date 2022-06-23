@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -40,7 +40,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
                                       billingContact: billingContact,
                                       shippingContact: shippingContact)
         
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.amountToPay, order: order))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.payment?.amount, order: order))
     }
 }
 

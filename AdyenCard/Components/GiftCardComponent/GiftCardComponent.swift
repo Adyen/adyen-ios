@@ -320,7 +320,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
                                           encryptedSecurityCode: securityCode)
 
             return .success(PaymentComponentData(paymentMethodDetails: details,
-                                                 amount: amountToPay,
+                                                 amount: payment?.amount,
                                                  order: order,
                                                  storePaymentMethod: false))
         } catch {
