@@ -311,7 +311,7 @@ public final class GiftCardComponent: PresentableComponent,
                                           encryptedSecurityCode: securityCode)
 
             return .success(PaymentComponentData(paymentMethodDetails: details,
-                                                 amount: amountToPay,
+                                                 amount: payment?.amount,
                                                  order: order,
                                                  storePaymentMethod: false))
         } catch {

@@ -265,7 +265,12 @@ public final class DropInComponent: NSObject,
         (component as? PreApplePayComponent)?.presentationDelegate = self
         
         component._isDropIn = true
-        component.payment = configuration.payment
+        
+        if let payment = configuration.payment, let remainingAmount = component.order?.remainingAmount {
+            component.payment = Payment(amount: remainingAmount, countryCode: payment.countryCode)
+        } else {
+            component.payment = configuration.payment
+        }
     }
 }
 
