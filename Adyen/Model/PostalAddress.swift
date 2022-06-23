@@ -64,12 +64,12 @@ public struct PostalAddress: Equatable, Encodable {
             .joined(separator: " ")
             .adyen.nilIfEmpty
 
-        try container.encode(city ?? PostalAddress.invalidValue, forKey: .city)
-        try container.encode(country ?? PostalAddress.invalidCountry, forKey: .country)
+        try container.encode(city.adyen.nilIfEmpty ?? PostalAddress.invalidValue, forKey: .city)
+        try container.encode(country.adyen.nilIfEmpty ?? PostalAddress.invalidCountry, forKey: .country)
         try container.encode(houseNumberOrNameValue ?? PostalAddress.invalidValue, forKey: .houseNumberOrName)
-        try container.encode(postalCode ?? PostalAddress.invalidValue, forKey: .postalCode)
-        try container.encode(stateOrProvince ?? PostalAddress.invalidValue, forKey: .stateOrProvince)
-        try container.encode(street ?? PostalAddress.invalidValue, forKey: .street)
+        try container.encode(postalCode.adyen.nilIfEmpty ?? PostalAddress.invalidValue, forKey: .postalCode)
+        try container.encode(stateOrProvince.adyen.nilIfEmpty ?? PostalAddress.invalidValue, forKey: .stateOrProvince)
+        try container.encode(street.adyen.nilIfEmpty ?? PostalAddress.invalidValue, forKey: .street)
     }
 
     private enum CodingKeys: String, CodingKey {
