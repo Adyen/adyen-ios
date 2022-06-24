@@ -175,21 +175,27 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         let item = item
         switch field {
         case .street:
+            item.value = value.street ?? ""
             observers[.street] = bind(item.publisher, to: self, at: \.value.street)
             publisherObservers[.street] = observe(publisher) { item.value = $0.street ?? "" }
         case .houseNumberOrName:
+            item.value = value.houseNumberOrName ?? ""
             observers[.houseNumberOrName] = bind(item.publisher, to: self, at: \.value.houseNumberOrName)
             publisherObservers[.houseNumberOrName] = observe(publisher) { item.value = $0.houseNumberOrName ?? "" }
         case .apartment:
+            item.value = value.apartment ?? ""
             observers[.apartment] = bind(item.publisher, to: self, at: \.value.apartment)
             publisherObservers[.apartment] = observe(publisher) { item.value = $0.apartment ?? "" }
         case .postalCode:
+            item.value = value.postalCode ?? ""
             observers[.postalCode] = bind(item.publisher, to: self, at: \.value.postalCode)
             publisherObservers[.postalCode] = observe(publisher) { item.value = $0.postalCode ?? "" }
         case .city:
+            item.value = value.city ?? ""
             observers[.city] = bind(item.publisher, to: self, at: \.value.city)
             publisherObservers[.city] = observe(publisher) { item.value = $0.city ?? "" }
         case .stateOrProvince:
+            item.value = value.stateOrProvince ?? ""
             observers[.stateOrProvince] = bind(item.publisher, to: self, at: \.value.stateOrProvince)
             publisherObservers[.stateOrProvince] = observe(publisher) { item.value = $0.stateOrProvince ?? "" }
         case .country:

@@ -2061,7 +2061,6 @@ class CardComponentTests: XCTestCase {
             XCTAssertTrue(data.paymentMethod is CardDetails)
 
             XCTAssertEqual(data.billingAddress, self.shopperInformation.billingAddress)
-            XCTAssertEqual(data.deliveryAddress, self.shopperInformation.deliveryAddress)
 
             sut.stopLoadingIfNeeded()
             delegateExpectation.fulfill()

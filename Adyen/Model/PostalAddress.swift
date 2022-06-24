@@ -81,6 +81,26 @@ public struct PostalAddress: Equatable, Encodable {
         case street
     }
 
+    public static func == (lhs: PostalAddress, rhs: PostalAddress) -> Bool {
+        let lhsFields = [lhs.city,
+                         lhs.postalCode,
+                         lhs.street,
+                         lhs.stateOrProvince,
+                         lhs.country,
+                         lhs.apartment,
+                         lhs.houseNumberOrName]
+            .map { $0?.trimmingCharacters(in: .whitespaces).adyen.nilIfEmpty }
+        
+        let rhsFields = [rhs.city,
+                         rhs.postalCode,
+                         rhs.street,
+                         rhs.stateOrProvince,
+                         rhs.country,
+                         rhs.apartment,
+                         rhs.houseNumberOrName]
+            .map { $0?.trimmingCharacters(in: .whitespaces).adyen.nilIfEmpty }
+        return zip(lhsFields, rhsFields).allSatisfy { $0 == $1 }
+    }
 }
 
 extension PostalAddress {
