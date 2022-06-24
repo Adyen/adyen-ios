@@ -49,8 +49,7 @@ extension IntegrationExample {
         
         configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         configuration.payment = payment
-        configuration.card.billingAddress.mode = .full
-        configuration.card.billingAddress.optionalForBrands = [.bcmc]
+        configuration.card.billingAddress.mode = .postalCode
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
         
         let component = DropInComponent(paymentMethods: paymentMethods,
