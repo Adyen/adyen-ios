@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -22,7 +22,7 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
         }
     }
 
-    /// Initializes the form card number item.
+    /// Initializes the form security code item.
     internal init(style: FormTextItemStyle = FormTextItemStyle(),
                   localizationParameters: LocalizationParameters? = nil) {
         self.localizationParameters = localizationParameters

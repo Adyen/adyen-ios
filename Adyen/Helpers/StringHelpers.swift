@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -27,6 +27,12 @@ public extension AdyenScope where Base == String? {
     /// Returns true if optional string is null or not empty.
     var isNullOrEmpty: Bool {
         base == nil || base?.isEmpty == false
+    }
+    
+    /// Returns nil string is empty or actual value.
+    var nilIfEmpty: String? {
+        guard let base = base else { return nil }
+        return base.isEmpty ? nil : base
     }
 
 }
