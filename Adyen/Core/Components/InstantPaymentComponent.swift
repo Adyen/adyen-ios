@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -34,7 +34,7 @@ public final class InstantPaymentComponent: PaymentComponent {
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     public func initiatePayment() {
         let details = InstantPaymentDetails(type: paymentMethod.type)
-        let paymentData = self.paymentData ?? PaymentComponentData(paymentMethodDetails: details, amount: amountToPay, order: order)
+        let paymentData = self.paymentData ?? PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order)
         submit(data: paymentData)
     }
 }

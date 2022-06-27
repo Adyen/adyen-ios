@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -38,7 +38,7 @@ extension CardComponent {
                                       socialSecurityNumber: cardViewController.socialSecurityNumber)
             
             let data = PaymentComponentData(paymentMethodDetails: details,
-                                            amount: amountToPay,
+                                            amount: payment?.amount,
                                             order: order,
                                             storePaymentMethod: cardViewController.storePayment,
                                             installments: cardViewController.installments)
