@@ -30,7 +30,7 @@ public final class FormPostalCodeItem: FormTextItem {
             title = localizedString(.postalCodeFieldTitle,
                                     localizationParameters) + " " + localizedString(.fieldTitleOptional,
                                                                                     localizationParameters)
-            validator = NumericStringValidator(exactLength: 0) || LengthValidator(minimumLength: 2, maximumLength: 30)
+            validator = LengthValidator(minimumLength: 0, maximumLength: 30)
         } else {
             title = localizedString(.cardCvcItemTitle, localizationParameters)
             validator = LengthValidator(minimumLength: 2, maximumLength: 30)
