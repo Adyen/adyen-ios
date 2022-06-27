@@ -12,7 +12,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
-    public var context: AddressViewModelBuilderContext {
+    private var context: AddressViewModelBuilderContext {
         didSet {
             reloadFields()
         }
@@ -95,6 +95,10 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "country")
         return item
     }()
+    
+    public func updateOptionalStatus(isOptional: Bool) {
+        context.isOptional = isOptional
+    }
     
     // MARK: - Private
     
