@@ -19,7 +19,7 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
         }
     }
 
-    /// Initializes the form card number item.
+    /// Initializes the form security code item.
     internal init(style: FormTextItemStyle = FormTextItemStyle(),
                   localizationParameters: LocalizationParameters? = nil) {
         self.localizationParameters = localizationParameters

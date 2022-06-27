@@ -102,9 +102,6 @@ public extension DropInComponent {
         /// In `auto` mode the field will appear based on card bin lookup.
         public var socialSecurityNumberMode: CardComponent.FieldVisibility
 
-        /// Indicates the display mode of the billing address form. Defaults to none.
-        public var billingAddressMode: CardComponent.AddressFormType
-
         /// Stored card configuration.
         public var stored: StoredCardConfiguration
 
@@ -119,30 +116,43 @@ public extension DropInComponent {
         /// Installments options to present to the user.
         public var installmentConfiguration: InstallmentConfiguration?
         
-        /// List of ISO country codes that is supported for the billing address.
-        /// When nil, all countries are provided.
-        public var billingAddressCountryCodes: [String]?
+        /// Billing address fields configurations.
+        public var billingAddress: BillingAddressConfiguration
         
+        /// Configuration of Card component.
+        ///
+        /// - Parameters:
+        ///   - showsHolderNameField: Indicates if the field for entering the holder name should be displayed in the form.
+        ///   Defaults to `false`.
+        ///   - showsStorePaymentMethodField: Indicates if the field for storing the card payment method should be displayed in the form.
+        ///   Defaults to `true`.
+        ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
+        ///   Defaults to `true`.
+        ///   - koreanAuthenticationMode: Indicates the visibility option for the security fields for South Korea issued cards.
+        ///   Defaults to `.auto`.
+        ///   - socialSecurityNumberMode: Indicates the visibility option for the security code field. Defaults to `.auto`
+        ///   - storedCardConfiguration: Stored card configuration.
+        ///   - allowedCardTypes: The enforced list of allowed card types.
+        ///   - installmentConfiguration: Configuration for installments. Defaults to `nil`.
+        ///   - billingAddress: Billing address fields configurations.
         public init(showsHolderNameField: Bool = false,
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,
                     koreanAuthenticationMode: CardComponent.FieldVisibility = .auto,
                     socialSecurityNumberMode: CardComponent.FieldVisibility = .auto,
-                    billingAddressMode: CardComponent.AddressFormType = .none,
                     storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
                     allowedCardTypes: [CardType]? = nil,
                     installmentConfiguration: InstallmentConfiguration? = nil,
-                    billingAddressCountryCodes: [String]? = nil) {
+                    billingAddress: BillingAddressConfiguration = .init()) {
             self.showsHolderNameField = showsHolderNameField
             self.showsSecurityCodeField = showsSecurityCodeField
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
             self.stored = storedCardConfiguration
             self.allowedCardTypes = allowedCardTypes
-            self.billingAddressMode = billingAddressMode
             self.koreanAuthenticationMode = koreanAuthenticationMode
             self.socialSecurityNumberMode = socialSecurityNumberMode
             self.installmentConfiguration = installmentConfiguration
-            self.billingAddressCountryCodes = billingAddressCountryCodes
+            self.billingAddress = billingAddress
         }
         
         public var cardComponentConfiguration: CardComponent.Configuration {
@@ -151,11 +161,10 @@ public extension DropInComponent {
                                         showsSecurityCodeField: showsSecurityCodeField,
                                         koreanAuthenticationMode: koreanAuthenticationMode,
                                         socialSecurityNumberMode: socialSecurityNumberMode,
-                                        billingAddressMode: billingAddressMode,
                                         storedCardConfiguration: stored,
                                         allowedCardTypes: allowedCardTypes,
                                         installmentConfiguration: installmentConfiguration,
-                                        billingAddressCountryCodes: billingAddressCountryCodes)
+                                        billingAddress: billingAddress)
         }
         
     }
