@@ -6,11 +6,13 @@
 
 import UIKit
 
-internal final class ListHeaderView: UITableViewHeaderFooterView {
+/// Custom header view with a trailing button
+@_spi(AdyenInternal)
+public final class ListHeaderView: UITableViewHeaderFooterView {
     
     internal static let reuseIdentifier = String(describing: ListHeaderView.self)
     
-    internal var onTrailingButtonTap: (() -> Void)?
+    private var onTrailingButtonTap: (() -> Void)?
     
     override internal init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -45,20 +47,22 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
         
         trailingButton.adyen.apply(item.style.trailingButton)
         
-        updateTrailingButtonTitle(with: item)
+        updateTrailingButton()
+        
+        onTrailingButtonTap = { [weak self] in
+            item.onTrailingButtonTap?(self)
+        }
     }
     
     internal var isEditing: Bool = false {
         didSet {
-            updateTrailingButtonTitle(with: headerItem)
+            updateTrailingButton()
         }
     }
     
-    private func updateTrailingButtonTitle(with item: ListSectionHeader?) {
+    private func updateTrailingButton() {
         guard let item = headerItem else { return }
-        let localizedEdit = Bundle.Adyen.localizedEditCopy
-        let localizedDone = Bundle.Adyen.localizedDoneCopy
-        let localizedTitle = isEditing ? localizedDone : localizedEdit
+        let localizedTitle = isEditing ? item.trailingButtonEditingTitle : item.trailingButtonTitle
         switch item.editingStyle {
         case .delete:
             trailingButton.setTitle(localizedTitle, for: .normal)

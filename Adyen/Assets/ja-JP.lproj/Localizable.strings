@@ -9,6 +9,7 @@
 "adyen.paymentMethods.otherMethods" = "その他";
 "adyen.paymentMethods.storedMethods" = "保存済み";
 "adyen.paymentMethods.title" = "お支払い方法";
+"adyen.paymentMethod.removeButton" = "はい、削除します";
 "adyen.sepa.ibanItem.title" = "口座番号 (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "口座番号の入力間違い";
 "adyen.sepa.nameItem.title" = "口座名義";
@@ -119,6 +120,7 @@
 "adyen.giftcard.noBalance" = "このギフトカードの残高はゼロです";
 "adyen.giftcard.remove.title" = "カードの削除を確認する";
 "adyen.giftcard.remove.message" = "追加したギフトカードを削除しますか？";
+"adyen.giftcard.paymentMethod.title" = "追加したギフトカード";
 "adyen.partialPayment.remainingBalance" = "残りの残高は%@になります";
 "adyen.partialPayment.payRemainingAmount" = "残りの%@の支払方法を選択してください";
 "adyen.card.taxNumber.label" = "カード所有者の生年月日（YYMMDD）または法人登録番号（10桁）";

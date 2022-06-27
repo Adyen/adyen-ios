@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -76,7 +76,7 @@ internal final class DiffableListDataSource: UITableViewDiffableDataSource<ListS
     private func deleteItem(at indexPath: IndexPath, _ snapshot: inout DataSnapshot) {
         // Delete the item in sections array.
         let deletedItem = sections[indexPath.section].items[indexPath.item]
-        sections[indexPath.section].deleteItem(index: indexPath.item)
+        sections[indexPath.section].deleteItem(at: indexPath.item)
         
         // Delete the item in the current NSDiffableDataSourceSnapshot.
         snapshot.deleteItems([deletedItem])
@@ -112,7 +112,7 @@ extension Array where Element == ListSection {
     }
     
     internal mutating func deleteItem(at indexPath: IndexPath) {
-        self[indexPath.section].deleteItem(index: indexPath.item)
+        self[indexPath.section].deleteItem(at: indexPath.item)
         self = self.filter { $0.items.isEmpty == false }
     }
 }

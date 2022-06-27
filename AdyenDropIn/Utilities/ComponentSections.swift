@@ -13,4 +13,12 @@ internal struct ComponentsSection {
     internal var components: [PaymentComponent]
 
     internal var footer: ListSectionFooter?
+    
+    internal var type: SectionType
+    
+    internal enum SectionType: String {
+        case regular
+        case paid
+        case stored
+    }
 }

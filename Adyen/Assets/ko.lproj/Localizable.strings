@@ -9,6 +9,7 @@
 "adyen.paymentMethods.otherMethods" = "기타";
 "adyen.paymentMethods.storedMethods" = "저장됨";
 "adyen.paymentMethods.title" = "결제 수단";
+"adyen.paymentMethod.removeButton" = "예, 삭제합니다";
 "adyen.sepa.ibanItem.title" = "계좌 번호(IBAN)";
 "adyen.sepa.ibanItem.invalid" = "유효하지 않은 계좌 번호";
 "adyen.sepa.nameItem.title" = "소유자 이름";
@@ -119,6 +120,7 @@
 "adyen.giftcard.noBalance" = "이 기프트 카드에는 잔액이 없습니다";
 "adyen.giftcard.remove.title" = "카드 삭제 확인";
 "adyen.giftcard.remove.message" = "추가된 기프트 카드를 삭제할까요?";
+"adyen.giftcard.paymentMethod.title" = "추가된 기프트카드";
 "adyen.partialPayment.remainingBalance" = "남은 잔액은 %@입니다";
 "adyen.partialPayment.payRemainingAmount" = "남은 %@에 대한 결제 수단 선택";
 "adyen.card.taxNumber.label" = "카드 소유자 생년월일(예: 870130) 또는 법인 등록 번호(10자리)";

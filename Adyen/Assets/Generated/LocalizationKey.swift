@@ -29,6 +29,8 @@ public struct LocalizationKey {
     public static let paymentMethodsStoredMethods = LocalizationKey(key: "adyen.paymentMethods.storedMethods")
     /// Payment Methods
     public static let paymentMethodsTitle = LocalizationKey(key: "adyen.paymentMethods.title")
+    /// Yes, remove
+    public static let paymentMethodRemoveButton = LocalizationKey(key: "adyen.paymentMethod.removeButton")
     /// Account Number (IBAN)
     public static let sepaIbanItemTitle = LocalizationKey(key: "adyen.sepa.ibanItem.title")
     /// Invalid account number
@@ -249,6 +251,8 @@ public struct LocalizationKey {
     public static let giftcardRemoveTitle = LocalizationKey(key: "adyen.giftcard.remove.title")
     /// Remove added giftcards?
     public static let giftcardRemoveMessage = LocalizationKey(key: "adyen.giftcard.remove.message")
+    /// Added giftcard
+    public static let giftcardPaymentMethodTitle = LocalizationKey(key: "adyen.giftcard.paymentMethod.title")
     /// Remaining balance will be %@
     public static let partialPaymentRemainingBalance = LocalizationKey(key: "adyen.partialPayment.remainingBalance")
     /// Select payment method for the remaining %@

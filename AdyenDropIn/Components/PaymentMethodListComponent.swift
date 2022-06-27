@@ -73,11 +73,30 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     }
     
     private func createListSections() -> [ListSection] {
-        componentSections.map { section in
-            ListSection(header: section.header,
-                        items: section.components.map(item(for:)),
-                        footer: section.footer)
+        componentSections.map(listSection(from:))
+    }
+    
+    private func listSection(from componentSection: ComponentsSection) -> ListSection {
+        var header = componentSection.header
+        
+        switch componentSection.type {
+        case .paid:
+            header?.onTrailingButtonTap = { [weak self] _ in
+                self?.showRemovalAlert()
+            }
+            
+        case .stored:
+            header?.onTrailingButtonTap = { [weak self] headerView in
+                self?.listViewController.toggleEditing(with: headerView)
+            }
+        case .regular:
+            break
         }
+        
+        let items = componentSection.components.map(item(for:))
+        let footer = componentSection.footer
+        
+        return ListSection(header: header, items: items, footer: footer)
     }
     
     private func item(for component: PaymentComponent) -> ListItem {
@@ -103,6 +122,27 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
         
         return listItem
     }
+    
+    private func showRemovalAlert() {
+        let alertController = UIAlertController(title: localizedString(.giftcardRemoveTitle,
+                                                                       localizationParameters),
+                                                message: localizedString(.giftcardRemoveMessage,
+                                                                         localizationParameters),
+                                                preferredStyle: .alert)
+
+        let cancelAction = UIAlertAction(title: localizedString(.cancelButton, localizationParameters), style: .cancel)
+        
+        let submitAction = UIAlertAction(title: localizedString(.paymentMethodRemoveButton, localizationParameters),
+                                         style: .default) { [weak self] _ in
+            self?.startCancelOrder()
+        }
+        alertController.addAction(cancelAction)
+        alertController.addAction(submitAction)
+        
+        listViewController.present(alertController, animated: true)
+    }
+    
+    private func startCancelOrder() {}
     
     private func delete(component: PaymentComponent?, at indexPath: IndexPath, completion: @escaping Completion<Bool>) {
         guard let component = component else { return }

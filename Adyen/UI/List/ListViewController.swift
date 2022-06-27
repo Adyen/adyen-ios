@@ -109,14 +109,12 @@ public final class ListViewController: UITableViewController {
 
         headerView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListViewController",
                                                                          postfix: "headerView.\(section)")
-        headerView.onTrailingButtonTap = { [weak self, weak headerView] in
-            self?.toggleEditingMode(headerView)
-        }
 
         return headerView
     }
     
-    private func toggleEditingMode(_ headerView: ListHeaderView?) {
+    /// Toggles editing mode for the tableView and the given headerView
+    public func toggleEditing(with headerView: ListHeaderView?) {
         var isEditingModeOn = tableView.isEditing
         isEditingModeOn.toggle()
         headerView?.isEditing = isEditingModeOn

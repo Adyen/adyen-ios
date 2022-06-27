@@ -9,6 +9,7 @@
 "adyen.paymentMethods.otherMethods" = "muut";
 "adyen.paymentMethods.storedMethods" = "Tallennettu";
 "adyen.paymentMethods.title" = "Maksutavat";
+"adyen.paymentMethod.removeButton" = "Kyllä, poista";
 "adyen.sepa.ibanItem.title" = "Tilinumero (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Väärä tilin numero";
 "adyen.sepa.nameItem.title" = "Haltijan nimi";
@@ -119,6 +120,7 @@
 "adyen.giftcard.noBalance" = "Lahjakortin saldo on nolla";
 "adyen.giftcard.remove.title" = "Vahvista kortin poisto";
 "adyen.giftcard.remove.message" = "Poistetaanko lisätyt lahjakortit?";
+"adyen.giftcard.paymentMethod.title" = "Lisätty lahjakortti";
 "adyen.partialPayment.remainingBalance" = "Jäljellä oleva saldo on %@";
 "adyen.partialPayment.payRemainingAmount" = "Valitse maksutapa jäljelle jääneelle prosentille %@";
 "adyen.card.taxNumber.label" = "Kortinhaltijan syntymäpäivä (VVKKPP) tai yrityksen rekisterinumero (10 lukua)";

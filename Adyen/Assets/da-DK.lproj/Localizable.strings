@@ -9,6 +9,7 @@
 "adyen.paymentMethods.otherMethods" = "andre";
 "adyen.paymentMethods.storedMethods" = "Gemt";
 "adyen.paymentMethods.title" = "Betalingsmåder";
+"adyen.paymentMethod.removeButton" = "Ja, fjern";
 "adyen.sepa.ibanItem.title" = "Kontonummer (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Ugyldigt kontonummer";
 "adyen.sepa.nameItem.title" = "Kontohavernavn";
@@ -119,6 +120,7 @@
 "adyen.giftcard.noBalance" = "Saldoen på gavekortet er 0";
 "adyen.giftcard.remove.title" = "Bekræft fjernelse af kort";
 "adyen.giftcard.remove.message" = "Fjern tilføjede gavekort?";
+"adyen.giftcard.paymentMethod.title" = "Gavekort tilføjet";
 "adyen.partialPayment.remainingBalance" = "Restbeløbet vil være %@";
 "adyen.partialPayment.payRemainingAmount" = "Vælg betalingsmåden for de resterende %@";
 "adyen.card.taxNumber.label" = "Kortholders fødselsdato (ÅÅMMDD) eller virksomheds registreringsnummer (10 cifre)";

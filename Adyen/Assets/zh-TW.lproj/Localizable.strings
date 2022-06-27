@@ -9,6 +9,7 @@
 "adyen.paymentMethods.otherMethods" = "其他";
 "adyen.paymentMethods.storedMethods" = "已儲存";
 "adyen.paymentMethods.title" = "付款方式";
+"adyen.paymentMethod.removeButton" = "是，請移除";
 "adyen.sepa.ibanItem.title" = "帳戶號碼 (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "帳戶號碼無效";
 "adyen.sepa.nameItem.title" = "持有人名稱";
@@ -116,6 +117,7 @@
 "adyen.giftcard.noBalance" = "此禮品卡的餘額為零";
 "adyen.giftcard.remove.title" = "確認移除該卡";
 "adyen.giftcard.remove.message" = "移除已新增禮品卡？";
+"adyen.giftcard.paymentMethod.title" = "已新增禮品卡";
 "adyen.partialPayment.remainingBalance" = "餘額將為 %@";
 "adyen.partialPayment.payRemainingAmount" = "選取付款方式來支付剩餘的 %@";
 "adyen.card.taxNumber.label" = "持卡人生日（年月日）或公司註冊號碼（10 位數）";

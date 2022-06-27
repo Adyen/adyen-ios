@@ -64,14 +64,20 @@ internal final class ComponentManager {
         // Paid section
         let amountString: String = remainingAmount.map(\.formatted) ??
             localizedString(.amount, configuration.localizationParameters).lowercased()
-        let footerTitle = localizedString(.partialPaymentPayRemainingAmount,
-                                          configuration.localizationParameters,
-                                          amountString)
-        let paidFooter = ListSectionFooter(title: footerTitle,
+        let paidHeader = ListSectionHeader(title: localizedString(.giftcardPaymentMethodTitle,
+                                                                  configuration.localizationParameters),
+                                           editingStyle: partialPaymentEnabled ? .delete : .none,
+                                           style: ListSectionHeaderStyle(),
+                                           trailingButtonTitle: localizedString(.removeButton,
+                                                                                configuration.localizationParameters))
+        let paidFooter = ListSectionFooter(title: localizedString(.partialPaymentPayRemainingAmount,
+                                                                  configuration.localizationParameters,
+                                                                  amountString),
                                            style: configuration.style.listComponent.partialPaymentSectionFooter)
-        let paidSection = ComponentsSection(header: nil,
+        let paidSection = ComponentsSection(header: paidHeader,
                                             components: paidComponents,
-                                            footer: paidFooter)
+                                            footer: paidFooter,
+                                            type: .paid)
 
         // Stored section
         let storedSection: ComponentsSection
@@ -79,14 +85,18 @@ internal final class ComponentManager {
         if supportsEditingStoredPaymentMethods {
             let allowDeleting = configuration.paymentMethodsList.allowDisablingStoredPaymentMethods
             let editingStyle: EditingStyle = allowDeleting ? .delete : .none
-            storedSection = ComponentsSection(header: .init(title: localizedString(.paymentMethodsStoredMethods,
-                                                                                   configuration.localizationParameters),
-                                                            editingStyle: editingStyle,
-                                                            style: ListSectionHeaderStyle()),
+            let storedHeader = ListSectionHeader(title: localizedString(.paymentMethodsStoredMethods,
+                                                                        configuration.localizationParameters),
+                                                 editingStyle: editingStyle,
+                                                 style: ListSectionHeaderStyle(),
+                                                 trailingButtonTitle: Bundle.Adyen.localizedEditCopy,
+                                                 trailingButtonEditingTitle: Bundle.Adyen.localizedDoneCopy)
+            storedSection = ComponentsSection(header: storedHeader,
                                               components: storedComponents,
-                                              footer: nil)
+                                              footer: nil,
+                                              type: .stored)
         } else {
-            storedSection = ComponentsSection(components: storedComponents)
+            storedSection = ComponentsSection(components: storedComponents, type: .stored)
         }
         
         // Regular section
@@ -95,7 +105,10 @@ internal final class ComponentManager {
         let regularHeader: ListSectionHeader? = regularSectionTitle.map {
             ListSectionHeader(title: $0, style: configuration.style.listComponent.sectionHeader)
         }
-        let regularSection = ComponentsSection(header: regularHeader, components: regularComponents, footer: nil)
+        let regularSection = ComponentsSection(header: regularHeader,
+                                               components: regularComponents,
+                                               footer: nil,
+                                               type: .regular)
         
         return [paidSection, storedSection, regularSection].filter {
             $0.components.isEmpty == false

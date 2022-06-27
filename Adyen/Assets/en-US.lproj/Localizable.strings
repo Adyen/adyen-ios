@@ -9,6 +9,7 @@
 "adyen.paymentMethods.otherMethods" = "others";
 "adyen.paymentMethods.storedMethods" = "Stored";
 "adyen.paymentMethods.title" = "Payment Methods";
+"adyen.paymentMethod.removeButton" = "Yes, remove";
 "adyen.sepa.ibanItem.title" = "Account Number (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Invalid account number";
 "adyen.sepa.nameItem.title" = "Holder Name";
@@ -119,6 +120,7 @@
 "adyen.giftcard.noBalance" = "This gift card has zero balance";
 "adyen.giftcard.remove.title" = "Confirm card removal";
 "adyen.giftcard.remove.message" = "Remove added giftcards?";
+"adyen.giftcard.paymentMethod.title" = "Added giftcard";
 "adyen.partialPayment.remainingBalance" = "Remaining balance will be %@";
 "adyen.partialPayment.payRemainingAmount" = "Select payment method for the remaining %@";
 "adyen.card.taxNumber.label" = "Cardholder birthdate (YYMMDD) or Corporate registration number (10 digits)";

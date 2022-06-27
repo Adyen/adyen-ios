@@ -47,7 +47,7 @@ public struct ListSection: Hashable {
     
     private let identifier: String
     
-    internal mutating func deleteItem(index: Int) {
+    internal mutating func deleteItem(at index: Int) {
         guard items.indices.contains(index) else { return }
         items.remove(at: index)
     }
@@ -78,23 +78,42 @@ public struct ListSectionHeader: Hashable {
     
     /// The editing style.
     public var editingStyle: EditingStyle = .none
+    
+    /// Title for the trailing button.
+    public var trailingButtonTitle: String?
+    
+    /// Title for the trailing button in editing mode.
+    public var trailingButtonEditingTitle: String?
+    
+    /// Closure that is called when the trailing button is tapped.
+    public var onTrailingButtonTap: ((ListHeaderView?) -> Void)?
 
     /// - Parameters:
     ///   - title: The header title
     ///   - style: The UI style.
-    public init(title: String, editingStyle: EditingStyle = .none, style: ListSectionHeaderStyle) {
+    public init(title: String,
+                editingStyle: EditingStyle = .none,
+                style: ListSectionHeaderStyle,
+                trailingButtonTitle: String? = nil,
+                trailingButtonEditingTitle: String? = nil) {
         self.title = title
         self.editingStyle = editingStyle
         self.style = style
+        self.trailingButtonTitle = trailingButtonTitle
+        self.trailingButtonEditingTitle = trailingButtonEditingTitle
     }
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(title)
         hasher.combine(editingStyle)
+        hasher.combine(trailingButtonTitle)
     }
     
     public static func == (lhs: ListSectionHeader, rhs: ListSectionHeader) -> Bool {
-        lhs.title == rhs.title && lhs.editingStyle == rhs.editingStyle
+        lhs.title == rhs.title
+            && lhs.editingStyle == rhs.editingStyle
+            && lhs.trailingButtonTitle == rhs.trailingButtonTitle
+            && lhs.trailingButtonEditingTitle == rhs.trailingButtonEditingTitle
     }
 }
 

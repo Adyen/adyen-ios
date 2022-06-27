@@ -9,6 +9,7 @@
 "adyen.paymentMethods.otherMethods" = "Otros";
 "adyen.paymentMethods.storedMethods" = "Guardado";
 "adyen.paymentMethods.title" = "Métodos de pago";
+"adyen.paymentMethod.removeButton" = "Sí, eliminar";
 "adyen.sepa.ibanItem.title" = "Número de cuenta (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Número de cuenta no válido";
 "adyen.sepa.nameItem.title" = "Nombre del titular de cuenta";
@@ -119,6 +120,7 @@
 "adyen.giftcard.noBalance" = "Esta tarjeta regalo no tiene saldo";
 "adyen.giftcard.remove.title" = "Confirmar retirada de tarjeta";
 "adyen.giftcard.remove.message" = "¿Quiere retirar las tarjetas de regalo añadidas?";
+"adyen.giftcard.paymentMethod.title" = "Tarjeta de regalo añadida";
 "adyen.partialPayment.remainingBalance" = "El saldo restante será %@";
 "adyen.partialPayment.payRemainingAmount" = "Seleccione el método de pago para la cantidad restante: %@";
 "adyen.card.taxNumber.label" = "Fecha de nacimiento del titular de la tarjeta (AAMMDD) o número de registro comercial (10 dígitos)";

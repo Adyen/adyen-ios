@@ -9,6 +9,7 @@
 "adyen.paymentMethods.otherMethods" = "andra";
 "adyen.paymentMethods.storedMethods" = "Lagrat";
 "adyen.paymentMethods.title" = "Betalningsmetoder";
+"adyen.paymentMethod.removeButton" = "Ja, ta bort";
 "adyen.sepa.ibanItem.title" = "Kontonummer (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Ogiltigt kontonummer";
 "adyen.sepa.nameItem.title" = "Känt av kontoinnehavaren";
@@ -119,6 +120,7 @@
 "adyen.giftcard.noBalance" = "Saldot för detta presentkort är noll";
 "adyen.giftcard.remove.title" = "Bekräfta borttagning av kort";
 "adyen.giftcard.remove.message" = "Ta bort tillagda presentkort?";
+"adyen.giftcard.paymentMethod.title" = "Tillagt presentkort";
 "adyen.partialPayment.remainingBalance" = "Återstående saldo blir %@";
 "adyen.partialPayment.payRemainingAmount" = "Välj betalningssätt för återstående %@";
 "adyen.card.taxNumber.label" = "Kortinnehavarens födelsedatum (ÅÅMMDD) eller företagets organisationsnummer (10 siffror)";
