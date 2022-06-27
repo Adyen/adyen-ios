@@ -22,9 +22,10 @@ internal enum FormScheme {
     case split(AddressField, AddressField)
 }
 
-internal struct AddressViewModelBuilderContext {
-    internal var countryCode: String
-    internal var isOptional: Bool
+/// :nodoc:
+public struct AddressViewModelBuilderContext {
+    public var countryCode: String
+    public var isOptional: Bool
 }
 
 internal struct AddressViewModel {

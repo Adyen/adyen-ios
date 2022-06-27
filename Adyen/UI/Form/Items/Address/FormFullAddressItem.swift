@@ -32,7 +32,8 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     internal let supportedCountryCodes: [String]?
     
-    internal var context: AddressViewModelBuilderContext {
+    /// :nodoc:
+    public var context: AddressViewModelBuilderContext {
         didSet {
             reloadFields()
         }
