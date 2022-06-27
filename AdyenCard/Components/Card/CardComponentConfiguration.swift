@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -74,6 +74,9 @@ extension CardComponent {
         /// List of ISO country codes that is supported for the billing address.
         /// When nil, all countries are provided.
         public var billingAddressCountryCodes: [String]?
+        
+        /// Card brands for which the billing address fields should be optional.
+        public var billingAddressOptionalForBrands: Set<CardType> = []
 
         /// Configuration of Card component.
         /// - Parameters:
@@ -92,6 +95,7 @@ extension CardComponent {
         ///   - installmentConfiguration: Configuration for installments. Defaults to `nil`.
         ///   - billingAddressCountryCodes: List of ISO country codes that is supported for the billing address.
         ///   Defaults to `nil`, which equals to all countries.
+        ///   - billingAddressOptionalForBrands: Card brands for which the billing address fields should be optional.
         public init(showsHolderNameField: Bool = false,
                     showsStorePaymentMethodField: Bool = true,
                     showsSecurityCodeField: Bool = true,
@@ -101,7 +105,8 @@ extension CardComponent {
                     storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
                     allowedCardTypes: [CardType]? = nil,
                     installmentConfiguration: InstallmentConfiguration? = nil,
-                    billingAddressCountryCodes: [String]? = nil) {
+                    billingAddressCountryCodes: [String]? = nil,
+                    billingAddressOptionalForBrands: Set<CardType> = []) {
             self.showsHolderNameField = showsHolderNameField
             self.showsSecurityCodeField = showsSecurityCodeField
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
@@ -112,6 +117,7 @@ extension CardComponent {
             self.socialSecurityNumberMode = socialSecurityNumberMode
             self.installmentConfiguration = installmentConfiguration
             self.billingAddressCountryCodes = billingAddressCountryCodes
+            self.billingAddressOptionalForBrands = billingAddressOptionalForBrands
         }
 
         internal func bcmcConfiguration() -> Configuration {

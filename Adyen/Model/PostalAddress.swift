@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -64,12 +64,12 @@ public struct PostalAddress: Equatable, Encodable {
             .joined(separator: " ")
             .adyen.nilIfEmpty
 
-        try container.encode(city ?? PostalAddress.invalidValue, forKey: .city)
-        try container.encode(country ?? PostalAddress.invalidCountry, forKey: .country)
+        try container.encode(city.adyen.nilIfEmpty ?? PostalAddress.invalidValue, forKey: .city)
+        try container.encode(country.adyen.nilIfEmpty ?? PostalAddress.invalidCountry, forKey: .country)
         try container.encode(houseNumberOrNameValue ?? PostalAddress.invalidValue, forKey: .houseNumberOrName)
-        try container.encode(postalCode ?? PostalAddress.invalidValue, forKey: .postalCode)
-        try container.encode(stateOrProvince ?? PostalAddress.invalidValue, forKey: .stateOrProvince)
-        try container.encode(street ?? PostalAddress.invalidValue, forKey: .street)
+        try container.encode(postalCode.adyen.nilIfEmpty ?? PostalAddress.invalidValue, forKey: .postalCode)
+        try container.encode(stateOrProvince.adyen.nilIfEmpty ?? PostalAddress.invalidValue, forKey: .stateOrProvince)
+        try container.encode(street.adyen.nilIfEmpty ?? PostalAddress.invalidValue, forKey: .street)
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -79,6 +79,28 @@ public struct PostalAddress: Equatable, Encodable {
         case postalCode
         case stateOrProvince
         case street
+    }
+    
+    /// :nodoc:
+    public static func == (lhs: PostalAddress, rhs: PostalAddress) -> Bool {
+        let lhsFields = [lhs.city,
+                         lhs.postalCode,
+                         lhs.street,
+                         lhs.stateOrProvince,
+                         lhs.country,
+                         lhs.apartment,
+                         lhs.houseNumberOrName]
+            .map { $0?.trimmingCharacters(in: .whitespaces).adyen.nilIfEmpty }
+        
+        let rhsFields = [rhs.city,
+                         rhs.postalCode,
+                         rhs.street,
+                         rhs.stateOrProvince,
+                         rhs.country,
+                         rhs.apartment,
+                         rhs.houseNumberOrName]
+            .map { $0?.trimmingCharacters(in: .whitespaces).adyen.nilIfEmpty }
+        return zip(lhsFields, rhsFields).allSatisfy { $0 == $1 }
     }
 
 }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -22,6 +22,11 @@ internal enum FormScheme {
     case split(AddressField, AddressField)
 }
 
+internal struct AddressViewModelBuilderContext {
+    internal var countryCode: String
+    internal var isOptional: Bool
+}
+
 internal struct AddressViewModel {
 
     internal var labels: [AddressField: LocalizationKey]
@@ -30,7 +35,7 @@ internal struct AddressViewModel {
     internal var schema: [FormScheme]
 
     // swiftlint:disable function_body_length explicit_acl
-    internal static subscript(countryCode: String) -> AddressViewModel {
+    internal static subscript(context: AddressViewModelBuilderContext) -> AddressViewModel {
         var viewModel = AddressViewModel(labels: [.city: .cityFieldTitle,
                                                   .houseNumberOrName: .houseNumberFieldTitle,
                                                   .street: .streetFieldTitle,
@@ -43,9 +48,9 @@ internal struct AddressViewModel {
                                                        .stateOrProvince: .provinceOrTerritoryFieldPlaceholder,
                                                        .postalCode: .postalCodeFieldPlaceholder,
                                                        .apartment: .apartmentSuiteFieldPlaceholder],
-                                         optionalFields: [.apartment],
+                                         optionalFields: context.isOptional ? AddressField.allCases : [.apartment],
                                          schema: AddressField.allCases.filter { $0 != .country }.map { .item($0) })
-        switch countryCode {
+        switch context.countryCode {
         case "BR":
             viewModel.labels[.stateOrProvince] = .stateFieldTitle
             viewModel.placeholder[.stateOrProvince] = .selectStateOrProvinceFieldPlaceholder
@@ -56,7 +61,7 @@ internal struct AddressViewModel {
             viewModel.placeholder[.houseNumberOrName] = .apartmentSuiteFieldPlaceholder
             viewModel.placeholder[.stateOrProvince] = .provinceOrTerritoryFieldPlaceholder
             viewModel.placeholder[.street] = .addressFieldPlaceholder
-            viewModel.optionalFields = [.houseNumberOrName]
+            viewModel.optionalFields = context.isOptional ? AddressField.allCases : [.houseNumberOrName]
             viewModel.schema = [.street, .houseNumberOrName, .city, .postalCode, .stateOrProvince].map { .item($0) }
         case "GB":
             viewModel.labels[.city] = .cityTownFieldTitle
@@ -71,7 +76,7 @@ internal struct AddressViewModel {
             viewModel.placeholder[.houseNumberOrName] = .apartmentSuiteFieldPlaceholder
             viewModel.placeholder[.stateOrProvince] = .selectStateFieldPlaceholder
             viewModel.placeholder[.street] = .addressFieldPlaceholder
-            viewModel.optionalFields = [.houseNumberOrName]
+            viewModel.optionalFields = context.isOptional ? AddressField.allCases : [.houseNumberOrName]
             viewModel.schema = [.item(.street),
                                 .item(.houseNumberOrName),
                                 .item(.city),
