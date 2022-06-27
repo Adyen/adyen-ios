@@ -11,7 +11,7 @@ internal struct AtomeAddressViewModelBuilder: AddressViewModelBuilder {
 
     internal init() {}
 
-    internal func build(countryCode: String) -> AddressViewModel {
+    internal func build(context: AddressViewModelBuilderContext) -> AddressViewModel {
         AddressViewModel(labels: [.street: .streetFieldTitle,
                                   .apartment: .apartmentSuiteFieldTitle,
                                   .houseNumberOrName: .houseNumberFieldTitle,
