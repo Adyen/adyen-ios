@@ -1955,13 +1955,13 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
         config.billingAddress.mode = .full
-        config.billingAddress.countryCodes = ["UK"]
+        config.billingAddress.countryCodes = ["US"]
         config.billingAddress.optionalForBrands = [.visa]
         
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(brands: [CardBrand(type: .visa)],
-                                 issuingCountryCode: "UK"))
+                                 issuingCountryCode: "US"))
         }
         
         let sut = CardComponent(paymentMethod: method,
@@ -1973,7 +1973,7 @@ class CardComponentTests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         
-        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
+        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let view: UIView = sut.cardViewController.view
@@ -2018,14 +2018,14 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
         config.billingAddress.mode = .full
-        config.billingAddress.countryCodes = ["UK"]
+        config.billingAddress.countryCodes = ["US"]
         config.billingAddress.optionalForBrands = [.visa]
         config.shopperInformation = shopperInformation
         
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(brands: [CardBrand(type: .visa)],
-                                 issuingCountryCode: "UK"))
+                                 issuingCountryCode: "US"))
         }
         
         let sut = CardComponent(paymentMethod: method,
@@ -2075,14 +2075,14 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
         config.billingAddress.mode = .postalCode
-        config.billingAddress.countryCodes = ["UK"]
+        config.billingAddress.countryCodes = ["US"]
         config.billingAddress.optionalForBrands = [.visa]
         config.shopperInformation = shopperInformation
         
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(brands: [CardBrand(type: .visa)],
-                                 issuingCountryCode: "UK"))
+                                 issuingCountryCode: "US"))
         }
         
         let sut = CardComponent(paymentMethod: method,
@@ -2094,7 +2094,7 @@ class CardComponentTests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         
-        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
+        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let view: UIView = sut.cardViewController.view
@@ -2135,13 +2135,13 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
         config.billingAddress.mode = .postalCode
-        config.billingAddress.countryCodes = ["UK"]
+        config.billingAddress.countryCodes = ["US"]
         config.billingAddress.optionalForBrands = [.visa]
         
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(brands: [CardBrand(type: .visa)],
-                                 issuingCountryCode: "UK"))
+                                 issuingCountryCode: "US"))
         }
         
         let sut = CardComponent(paymentMethod: method,
@@ -2153,7 +2153,7 @@ class CardComponentTests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         
-        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
+        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let view: UIView = sut.cardViewController.view

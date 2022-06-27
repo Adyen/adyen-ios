@@ -50,7 +50,7 @@ public struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
             viewModel.placeholder[.houseNumberOrName] = .apartmentSuiteFieldPlaceholder
             viewModel.placeholder[.stateOrProvince] = .provinceOrTerritoryFieldPlaceholder
             viewModel.placeholder[.street] = .addressFieldPlaceholder
-            viewModel.optionalFields = [.houseNumberOrName]
+            viewModel.optionalFields = context.isOptional ? AddressField.allCases : [.houseNumberOrName]
             viewModel.scheme = [.street, .houseNumberOrName, .city, .postalCode, .stateOrProvince].map { .item($0) }
         case "GB":
             viewModel.labels[.city] = .cityTownFieldTitle
@@ -65,7 +65,7 @@ public struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
             viewModel.placeholder[.houseNumberOrName] = .apartmentSuiteFieldPlaceholder
             viewModel.placeholder[.stateOrProvince] = .selectStateFieldPlaceholder
             viewModel.placeholder[.street] = .addressFieldPlaceholder
-            viewModel.optionalFields = [.houseNumberOrName]
+            viewModel.optionalFields = context.isOptional ? AddressField.allCases : [.houseNumberOrName]
             viewModel.scheme = [.item(.street),
                                 .item(.houseNumberOrName),
                                 .item(.city),

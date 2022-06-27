@@ -134,13 +134,13 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     }
     
     private func createPickerItem(from viewModel: AddressViewModel, subRegions: [Region]) -> FormItem {
-        let defaultRegion = subRegions.first { $0.identifier == initialCountry } ?? subRegions[0]
+        let defaultRegion = subRegions.first { $0.identifier == value.stateOrProvince } ?? subRegions[0]
         let item = FormRegionPickerItem(preselectedValue: defaultRegion,
                                         selectableValues: subRegions,
                                         style: style.textField)
         item.title = viewModel.labels[.stateOrProvince].map { localizedString($0, localizationParameters) }
         
-        bind(item: item, to: .stateOrProvince)
+        bind(item: item, to: .stateOrProvince, subRegions: subRegions)
         return item
     }
     
@@ -163,9 +163,20 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         return item
     }
     
-    private func bind(item: FormRegionPickerItem, to field: AddressField) {
+    private func bind(item: FormRegionPickerItem, to field: AddressField, subRegions: [Region]) {
         observers[field].map(remove)
+        publisherObservers[field].map(remove)
         observers[field] = bind(item.publisher, at: \.identifier, to: self, at: \.value.stateOrProvince)
+        func update(address: PostalAddress) {
+            let region = subRegions.first { subRegion in
+                subRegion.identifier == address.stateOrProvince
+            }
+            if let region = region {
+                item.value = RegionPickerItem(identifier: region.identifier, element: region)
+            }
+        }
+        update(address: value)
+        publisherObservers[.stateOrProvince] = observe(publisher, eventHandler: update(address:))
     }
     
     private func bind(item: FormTextInputItem, to field: AddressField) {
