@@ -40,7 +40,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
                                       billingContact: billingContact,
                                       shippingContact: shippingContact)
         
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.payment?.amount, order: order))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: internalPayment.amount, order: order))
     }
 }
 
@@ -114,6 +114,18 @@ extension ApplePayComponent {
             paymentRequest.requiredShippingContactFields = requiredShippingContactFields
             paymentRequest.billingContact = billingContact
             return paymentRequest
+        }
+
+        public mutating func update(amount: Amount, localeIdentifier: String?) {
+            var newItems = summaryItems
+            guard let lastItem = newItems.last else { return }
+
+            newItems = newItems.dropLast()
+            let newAmount = AmountFormatter.decimalAmount(amount.value,
+                                                          currencyCode: amount.currencyCode,
+                                                          localeIdentifier: localeIdentifier)
+            newItems.append(PKPaymentSummaryItem(label: lastItem.label, amount: newAmount))
+            summaryItems = newItems
         }
     }
 

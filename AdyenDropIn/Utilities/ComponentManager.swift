@@ -172,7 +172,7 @@ internal final class ComponentManager {
     }
     
     private func createPreApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
-        guard let applePay = configuration.applePay else {
+        guard var applePay = configuration.applePay else {
             adyenPrint("Failed to instantiate ApplePayComponent because ApplePayConfiguration is missing")
             return nil
         }
@@ -180,6 +180,18 @@ internal final class ComponentManager {
         guard let payment = configuration.payment else {
             adyenPrint("Failed to instantiate ApplePayComponent because payment is missing")
             return nil
+        }
+
+        if let amount = order?.remainingAmount ?? remainingAmount {
+            applePay.update(amount: amount, localeIdentifier: configuration.localizationParameters?.locale)
+            if let component = try? PreApplePayComponent(paymentMethod: paymentMethod,
+                                                         apiContext: apiContext,
+                                                         payment: Payment(amount: amount,
+                                                                          countryCode: payment.countryCode),
+                                                         configuration: applePay,
+                                                         style: style.applePay) {
+                return component
+            }
         }
         
         do {

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,7 +15,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     internal var success: Bool = false
     
     /// :nodoc:
-    private let payment: Payment
+    internal let internalPayment: Payment
 
     /// :nodoc:
     internal let applePayPaymentMethod: ApplePayPaymentMethod
@@ -37,6 +37,11 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
+
+    public var payment: Payment? {
+        get { internalPayment }
+        set {} // swiftlint:disable:this unused_setter_value
+    }
     
     /// Initializes the component.
     /// - Warning: didFinalize() must be called before dismissing this component.
@@ -92,9 +97,10 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         self.apiContext = apiContext
         self.paymentAuthorizationViewController = viewController
         self.applePayPaymentMethod = paymentMethod
-        self.payment = payment
+        self.internalPayment = payment
         super.init()
 
+        self.payment = internalPayment
         viewController.delegate = self
     }
     
@@ -129,7 +135,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     private func createPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController {
         if paymentAuthorizationViewController == nil {
             let supportedNetworks = applePayPaymentMethod.supportedNetworks
-            let request = configuration.createPaymentRequest(payment: payment, supportedNetworks: supportedNetworks)
+            let request = configuration.createPaymentRequest(payment: internalPayment, supportedNetworks: supportedNetworks)
             paymentAuthorizationViewController = ApplePayComponent.createPaymentAuthorizationViewController(from: request)
             paymentAuthorizationViewController?.delegate = self
             paymentAuthorizationCompletion = nil

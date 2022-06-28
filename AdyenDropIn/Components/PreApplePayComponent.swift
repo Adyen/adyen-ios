@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,8 +19,10 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     /// :nodoc:
     internal let paymentMethod: PaymentMethod
     
-    /// :nodoc:
-    private var payment: Payment? { _payment }
+    internal var payment: Payment? {
+        get { _payment }
+        set {} // swiftlint:disable:this unused_setter_value
+    }
     
     /// :nodoc:
     private let _payment: Payment
