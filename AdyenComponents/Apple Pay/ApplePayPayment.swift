@@ -14,10 +14,10 @@ import PassKit
 public struct ApplePayPayment {
 
     /// The amount for this payment.
-    public let payment: Payment
+    public private(set) var payment: Payment
 
     /// The public key used for encrypting card details.
-    public let summaryItems: [PKPaymentSummaryItem]
+    public private(set) var summaryItems: [PKPaymentSummaryItem]
 
     /// The code of the country in which the payment is made.
     public var countryCode: String { payment.countryCode }
@@ -66,7 +66,7 @@ public struct ApplePayPayment {
     /// Create a new instance of ApplePayPayment.
     /// - Parameters:
     ///   - payment: The combination of amount and country code.
-    ///   - localizationParameters: The localization parameters to control how strings are localized.
+    ///   - localizationParameters: The localization parameters to control how monetary amount are localized.
     ///   - brand: The business name shopper will see when they look for the charge on their bank or credit card statement.
     /// - Throws: `ApplePayComponent.Error.negativeGrandTotal` if the grand total is negative.
     /// - Throws: `ApplePayComponent.Error.invalidSummaryItem` if at least one of the summary items has an invalid amount.
@@ -92,6 +92,23 @@ public struct ApplePayPayment {
         self.init(payment: payment,
                   summaryItems: [PKPaymentSummaryItem(label: brand, amount: decimalValue)],
                   brand: brand)
+    }
+
+    /// Updates Apple Pay payment with new amount
+    /// - Parameters:
+    ///   - amount: The new amount value
+    ///   - localeIdentifier: The localization parameters to control how monetary amount are localized.
+    internal mutating func update(amount: Amount, localeIdentifier: String?) {
+        var newItems = summaryItems
+        guard let lastItem = newItems.last else { return }
+
+        newItems = newItems.dropLast()
+        let decimalAmount = AmountFormatter.decimalAmount(amount.value,
+                                                          currencyCode: amount.currencyCode,
+                                                          localeIdentifier: localeIdentifier)
+        newItems.append(PKPaymentSummaryItem(label: lastItem.label, amount: decimalAmount))
+        summaryItems = newItems
+        payment = Payment(amount: amount, countryCode: payment.countryCode)
     }
 
     private init(payment: Payment, summaryItems: [PKPaymentSummaryItem], brand: String) {
