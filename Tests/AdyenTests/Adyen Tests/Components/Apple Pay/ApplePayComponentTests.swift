@@ -51,20 +51,6 @@ class ApplePayComponentTest: XCTestCase {
         UIApplication.shared.keyWindow!.rootViewController = emptyVC
     }
 
-    func testApplePayCallDelegateDidFailOnInvalidPayment() {
-        sut.delegate = mockDelegate
-        let onDidFailExpectation = expectation(description: "Wait for delegate call")
-        mockDelegate.onDidFail = { error, component in
-            XCTAssertEqual(error as! ApplePayComponent.Error, ApplePayComponent.Error.invalidCurrencyCode)
-            onDidFailExpectation.fulfill()
-            self.mockDelegate = nil // to prevent false triggering
-        }
-
-        sut.payment = Payment(amount: Amount(value: 100, unsafeCurrencyCode: "123"), unsafeCountryCode: "US")
-
-        waitForExpectations(timeout: 10)
-    }
-
     func testApplePayViewControllerShouldCallDelegateDidFail() {
         guard Available.iOS12 else { return }
 
