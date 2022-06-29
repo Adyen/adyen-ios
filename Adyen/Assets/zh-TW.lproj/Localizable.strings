@@ -2,12 +2,15 @@
 "adyen.submitButton.formatted" = "支付 %@";
 "adyen.cancelButton" = "取消";
 "adyen.dismissButton" = "確定";
+"adyen.removeButton" = "移除";
 "adyen.error.title" = "錯誤";
 "adyen.error.unknown" = "發生未知錯誤";
 "adyen.validationAlert.title" = "輸入無效";
 "adyen.paymentMethods.otherMethods" = "其他";
 "adyen.paymentMethods.storedMethods" = "已儲存";
 "adyen.paymentMethods.title" = "付款方式";
+"adyen.paymentMethod.removeButton" = "是，請移除";
+"adyen.payment.refused.messeage" = "付款被拒絕。請再試一次。";
 "adyen.sepa.ibanItem.title" = "帳戶號碼 (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "帳戶號碼無效";
 "adyen.sepa.nameItem.title" = "持有人名稱";
@@ -113,6 +116,9 @@
 "adyen.boleto.download.pdf" = "下載 PDF";
 "adyen.giftcard.currencyError" = "禮品卡只能以其簽發時所使用的貨幣進行結算";
 "adyen.giftcard.noBalance" = "此禮品卡的餘額為零";
+"adyen.giftcard.remove.title" = "確認移除該卡";
+"adyen.giftcard.remove.message" = "移除已新增禮品卡？";
+"adyen.giftcard.paymentMethod.title" = "已新增禮品卡";
 "adyen.partialPayment.remainingBalance" = "餘額將為 %@";
 "adyen.partialPayment.payRemainingAmount" = "選取付款方式來支付剩餘的 %@";
 "adyen.card.taxNumber.label" = "持卡人生日（年月日）或公司註冊號碼（10 位數）";

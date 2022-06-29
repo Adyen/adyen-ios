@@ -9,6 +9,7 @@
     @_spi(AdyenInternal) import AdyenActions
 #endif
 import Foundation
+import UIKit
 
 @_spi(AdyenInternal)
 extension AdyenSession: PaymentComponentDelegate {
@@ -67,11 +68,40 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
         } else if let order = response.order,
                   let remainingAmount = order.remainingAmount,
                   remainingAmount.value > 0 {
-            handle(order: order, for: currentComponent, in: dropInComponent)
+            let handleOrderBlock: (() -> Void) = { [weak self] in
+                self?.handle(order: order, for: currentComponent, in: dropInComponent)
+            }
+            
+            if response.resultCode == .refused {
+                showPaymentFailedAlert(completion: handleOrderBlock)
+            } else {
+                handleOrderBlock()
+            }
         } else {
             finish(with: SessionPaymentResultCode(paymentResultCode: response.resultCode),
                    component: currentComponent)
         }
+    }
+    
+    private func showPaymentFailedAlert(completion: @escaping (() -> Void)) {
+        guard let presentedViewController = UIApplication.shared.keyWindow?.rootViewController?.presentedViewController else {
+            completion()
+            return
+        }
+        let alertController = UIAlertController(title: localizedString(.errorTitle,
+                                                                       configuration.localizationParameters),
+                                                message: localizedString(.paymentRefusedMesseage,
+                                                                         configuration.localizationParameters),
+                                                preferredStyle: .alert)
+        
+        let doneAction = UIAlertAction(title: localizedString(.dismissButton,
+                                                                configuration.localizationParameters),
+                                       style: .default) { _ in
+            completion()
+        }
+        alertController.addAction(doneAction)
+        
+        presentedViewController.present(alertController, animated: true)
     }
     
     private func handle(action: Action,

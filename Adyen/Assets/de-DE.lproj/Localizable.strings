@@ -2,12 +2,15 @@
 "adyen.submitButton.formatted" = "%@ zahlen";
 "adyen.cancelButton" = "Abbrechen";
 "adyen.dismissButton" = "OK";
+"adyen.removeButton" = "Entfernen";
 "adyen.error.title" = "Fehler";
 "adyen.error.unknown" = "Es ist ein unbekannter Fehler aufgetreten.";
 "adyen.validationAlert.title" = "Ungültige Eingabe";
 "adyen.paymentMethods.otherMethods" = "andere";
 "adyen.paymentMethods.storedMethods" = "Gespeichert";
 "adyen.paymentMethods.title" = "Zahlungsmethoden";
+"adyen.paymentMethod.removeButton" = "Ja, entfernen";
+"adyen.payment.refused.messeage" = "Die Zahlung wurde abgelehnt. Bitte versuchen Sie es erneut.";
 "adyen.sepa.ibanItem.title" = "Kontonummer (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Ungültige Kontonummer";
 "adyen.sepa.nameItem.title" = "Name des Kontoinhabers";
@@ -116,6 +119,9 @@
 "adyen.boleto.download.pdf" = "PDF herunterladen";
 "adyen.giftcard.currencyError" = "Geschenkkarten sind nur in der Währung gültig, in der sie ausgestellt wurden";
 "adyen.giftcard.noBalance" = "Auf dieser Geschenkkarte ist kein Guthaben vorhanden";
+"adyen.giftcard.remove.title" = "Entfernen der Karte bestätigen";
+"adyen.giftcard.remove.message" = "Hinzugefügte Geschenkgutscheine entfernen?";
+"adyen.giftcard.paymentMethod.title" = "Geschenkgutschein hinzugefügt";
 "adyen.partialPayment.remainingBalance" = "Es verbleibt ein Restbetrag von %@";
 "adyen.partialPayment.payRemainingAmount" = "Wählen Sie eine Zahlungsmethode für den verbleibenden Betrag von %@ aus";
 "adyen.card.taxNumber.label" = "Geburtsdatum des Karteninhabers (JJMMTT) oder Unternehmensregistrierungsnummer (10-stellig)";
