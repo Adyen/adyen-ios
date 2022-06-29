@@ -31,7 +31,7 @@ internal final class PreApplePayComponent: PresentableComponent,
 
     private var isPresenting: Bool = false
 
-    private let amount: Amount
+    internal let amount: Amount
 
     private let applePayComponent: ApplePayComponent
 
