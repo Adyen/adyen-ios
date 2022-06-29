@@ -181,7 +181,8 @@ internal final class ComponentManager {
                                                                    localizationParameters: configuration.localizationParameters)
 
         if let amount = order?.remainingAmount ?? remainingAmount {
-            let configuration = applePay.updated(amount: amount, localeIdentifier: configuration.localizationParameters?.locale)
+            let localIdentifier = amount.localeIdentifier ?? configuration.localizationParameters?.locale
+            let configuration = applePay.updating(amount: amount, localeIdentifier: localIdentifier)
             if let component = try? PreApplePayComponent(paymentMethod: paymentMethod,
                                                          context: context,
                                                          configuration: preApplePayConfig,
