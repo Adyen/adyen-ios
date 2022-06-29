@@ -25,12 +25,14 @@ Some payment methods need additional configuration. For example `ApplePayCompone
 let summaryItems = [
                       PKPaymentSummaryItem(label: "Item A", amount: 75, type: .final),
                       PKPaymentSummaryItem(label: "Item B", amount: 25, type: .final),
-                      PKPaymentSummaryItem(label: "Total", amount: 100, type: .final)
+                      PKPaymentSummaryItem(label: "My Company", amount: 100, type: .final)
                    ]
+let applePayment = try ApplePayPayment(countryCode: "US",
+                                       currencyCode: "USD",
+                                       summaryItems: summaryItems)
 
 let configuration = DropInComponent.Configuration(apiContext: apiContext)
-configuration.payment = payment
-configuration.applePay = .init(summaryItems: summaryItems,
+configuration.applePay = .init(payment: applePayment,
                                merchantIdentifier: "merchant.com.adyen.MY_MERCHANT_ID")
 ```
 

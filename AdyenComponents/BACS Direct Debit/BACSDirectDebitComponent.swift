@@ -115,7 +115,7 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
                                              bankLocationId: data.bankLocationId)
         confirmationPresenter?.startLoading()
         let data = PaymentComponentData(paymentMethodDetails: details,
-                                        amount: amountToPay,
+                                        amount: payment?.amount,
                                         order: order)
         submit(data: data)
     }

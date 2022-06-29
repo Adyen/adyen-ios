@@ -17,7 +17,7 @@ extension ApplePayComponent {
     public struct Configuration {
 
         /// The context of a current payment. Contains
-        public let applePayPayment: ApplePayPayment
+        public private(set) var applePayPayment: ApplePayPayment
 
         /// The merchant identifier for apple pay.
         public let merchantIdentifier: String
@@ -100,6 +100,14 @@ extension ApplePayComponent {
 
             return paymentRequest
         }
+
+        @_spi(AdyenInternal)
+        public func updating(amount: Amount, localeIdentifier: String?) -> Self {
+            var newConfig = self
+            newConfig.applePayPayment.update(amount: amount, localeIdentifier: localeIdentifier)
+            return newConfig
+        }
+
     }
 
     // Adyen supports: interac, visa, mc, electron, maestro, amex, jcb, discover, elodebit, elo.
