@@ -59,7 +59,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
         let submitAction = UIAlertAction(title: submitActionTitle, style: .default) { [weak self] _ in
             guard let self = self else { return }
             let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
-            self.submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.amountToPay, order: self.order))
+            self.submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.payment?.amount, order: self.order))
         }
         alertController.addAction(submitAction)
         

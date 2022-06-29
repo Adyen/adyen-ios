@@ -62,6 +62,13 @@ public class CardComponent: PresentableComponent,
         }
     }
     
+    /// The partial payment order if any.
+    public var order: PartialPaymentOrder? {
+        didSet {
+            storedCardComponent?.order = order
+        }
+    }
+    
     /// Initializes the card component.
     ///
     /// - Parameters:

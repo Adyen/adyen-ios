@@ -110,7 +110,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: amountToPay, order: order))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
     }
 }
 

@@ -105,10 +105,6 @@ extension PaymentAwareComponent {
             objc_setAssociatedObject(self, &AssociatedKeys.order, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY)
         }
     }
-
-    public var amountToPay: Amount? {
-        order?.remainingAmount ?? payment?.amount
-    }
 }
 
 private enum AssociatedKeys {
