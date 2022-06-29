@@ -169,7 +169,8 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.regularComponents.filter { $0.order == order }.count, numberOfExpectedRegularComponents)
 
         // Test Pre-ApplePay
-        XCTAssertEqual(sut.regularComponents.first(where: { $0.paymentMethod.type == "applepay" })?.payment?.amount, order.remainingAmount)
+        let preApplepayComponent = sut.regularComponents.first(where: { $0.paymentMethod.type == "applepay" }) as! PreApplePayComponent
+        XCTAssertEqual(preApplepayComponent.amount, order.remainingAmount)
     }
 
     func testShopperInformationInjectionShouldSetShopperInformationOnAffirmComponent() throws {

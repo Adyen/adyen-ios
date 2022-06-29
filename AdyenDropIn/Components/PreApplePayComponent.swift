@@ -19,13 +19,8 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     /// :nodoc:
     internal let paymentMethod: PaymentMethod
     
-    internal var payment: Payment? {
-        get { _payment }
-        set {} // swiftlint:disable:this unused_setter_value
-    }
-    
     /// :nodoc:
-    private let _payment: Payment
+    internal let amount: Amount
     
     /// :nodoc:
     internal weak var delegate: PaymentComponentDelegate?
@@ -44,7 +39,7 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     
     /// :nodoc:
     internal lazy var viewController: UIViewController = {
-        let view = PreApplePayView(model: createModel(with: _payment.amount))
+        let view = PreApplePayView(model: createModel(with: amount))
         let viewController = ADYViewController(view: view, title: "Apple Pay")
         view.delegate = self
         
@@ -61,7 +56,7 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
                   configuration: ApplePayComponent.Configuration,
                   style: ApplePayStyle) throws {
         self.apiContext = apiContext
-        self._payment = payment
+        self.amount = payment.amount
         self.paymentMethod = paymentMethod
         self.style = style
 
