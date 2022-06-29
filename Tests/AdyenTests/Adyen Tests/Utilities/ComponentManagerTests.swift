@@ -139,7 +139,9 @@ class ComponentManagerTests: XCTestCase {
         config.applePay = .init(summaryItems: summaryItems, merchantIdentifier: merchantIdentifier)
         config.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
 
-        let order = PartialPaymentOrder(pspReference: "test pspRef", orderData: "test order data")
+        let order = PartialPaymentOrder(pspReference: "test pspRef",
+                                        orderData: "test order data",
+                                        remainingAmount: Amount(value: 123456, currencyCode: "EUR"))
 
         paymentMethods.paid = [
             OrderPaymentMethod(lastFour: "1234",
@@ -165,6 +167,10 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.paidComponents.filter { $0.order == order }.count, 2)
         XCTAssertEqual(sut.storedComponents.filter { $0.order == order }.count, 4)
         XCTAssertEqual(sut.regularComponents.filter { $0.order == order }.count, numberOfExpectedRegularComponents)
+
+        // Test Pre-ApplePay
+        let preApplepayComponent = sut.regularComponents.first(where: { $0.paymentMethod.type == "applepay" }) as! PreApplePayComponent
+        XCTAssertEqual(preApplepayComponent.amount, order.remainingAmount)
     }
 
     func testShopperInformationInjectionShouldSetShopperInformationOnAffirmComponent() throws {

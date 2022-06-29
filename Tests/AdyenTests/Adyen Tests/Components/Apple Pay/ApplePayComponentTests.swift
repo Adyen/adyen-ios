@@ -86,6 +86,12 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertTrue(viewController !== self.sut.viewController)
     }
 
+    func testPaymentMatches() {
+        XCTAssertEqual(sut.payment?.countryCode, payment.countryCode)
+        XCTAssertEqual(sut.payment?.amount.currencyCode, payment.amount.currencyCode)
+        XCTAssertEqual(sut.payment?.amount.value, payment.amount.value)
+    }
+
     func testInvalidCurrencyCode() {
         let paymentMethod = ApplePayPaymentMethod(type: "test_type", name: "test_name", brands: nil)
         let amount = Amount(value: 2, unsafeCurrencyCode: "ZZZ")

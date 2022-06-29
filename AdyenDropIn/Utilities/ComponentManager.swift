@@ -70,7 +70,6 @@ internal final class ComponentManager {
 
         // Stored section
         let storedSection: ComponentsSection
-        
         if supportsEditingStoredPaymentMethods {
             let allowDeleting = configuration.paymentMethodsList.allowDisablingStoredPaymentMethods
             let editingStyle: EditingStyle = allowDeleting ? .delete : .none
@@ -172,7 +171,7 @@ internal final class ComponentManager {
     }
     
     private func createPreApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
-        guard let applePay = configuration.applePay else {
+        guard var applePay = configuration.applePay else {
             adyenPrint("Failed to instantiate ApplePayComponent because ApplePayConfiguration is missing")
             return nil
         }
@@ -180,6 +179,19 @@ internal final class ComponentManager {
         guard let payment = configuration.payment else {
             adyenPrint("Failed to instantiate ApplePayComponent because payment is missing")
             return nil
+        }
+
+        if let amount = order?.remainingAmount ?? remainingAmount {
+            let localeIdentifier = amount.localeIdentifier ?? configuration.localizationParameters?.locale
+            applePay.update(amount: amount, localeIdentifier: localeIdentifier)
+            if let component = try? PreApplePayComponent(paymentMethod: paymentMethod,
+                                                         apiContext: apiContext,
+                                                         payment: Payment(amount: amount,
+                                                                          countryCode: payment.countryCode),
+                                                         configuration: applePay,
+                                                         style: style.applePay) {
+                return component
+            }
         }
         
         do {
@@ -254,59 +266,48 @@ internal final class ComponentManager {
 
 extension ComponentManager: PaymentComponentBuilder {
     
-    /// :nodoc:
     internal func build(paymentMethod: StoredCardPaymentMethod) -> PaymentComponent? {
         createCardComponent(with: paymentMethod)
     }
-    
-    /// :nodoc:
+
     internal func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext)
     }
-    
-    /// :nodoc:
+
     internal func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext)
     }
-    
-    /// :nodoc:
+
     internal func build(paymentMethod: CardPaymentMethod) -> PaymentComponent? {
         createCardComponent(with: paymentMethod)
     }
-    
-    /// :nodoc:
+
     internal func build(paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
         createBancontactComponent(with: paymentMethod)
     }
-    
-    /// :nodoc:
+
     internal func build(paymentMethod: IssuerListPaymentMethod) -> PaymentComponent? {
         IssuerListComponent(paymentMethod: paymentMethod,
                             apiContext: apiContext,
                             style: style.listComponent)
     }
-    
-    /// :nodoc:
+
     internal func build(paymentMethod: SEPADirectDebitPaymentMethod) -> PaymentComponent? {
         createSEPAComponent(paymentMethod)
     }
 
-    /// :nodoc:
     internal func build(paymentMethod: BACSDirectDebitPaymentMethod) -> PaymentComponent? {
         createBACSDirectDebit(paymentMethod)
     }
-    
-    /// :nodoc:
+
     internal func build(paymentMethod: ACHDirectDebitPaymentMethod) -> PaymentComponent? {
         createACHDirectDebitComponent(paymentMethod)
     }
-    
-    /// :nodoc:
+
     internal func build(paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
         createPreApplePayComponent(with: paymentMethod)
     }
-    
-    /// :nodoc:
+
     internal func build(paymentMethod: WeChatPayPaymentMethod) -> PaymentComponent? {
         guard let classObject = loadTheConcreteWeChatPaySDKActionComponentClass() else { return nil }
         guard classObject.isDeviceSupported() else { return nil }
@@ -314,23 +315,19 @@ extension ComponentManager: PaymentComponentBuilder {
                                        paymentData: nil,
                                        apiContext: apiContext)
     }
-    
-    /// :nodoc:
+
     internal func build(paymentMethod: QiwiWalletPaymentMethod) -> PaymentComponent? {
         createQiwiWalletComponent(paymentMethod)
     }
-    
-    /// :nodoc:
+
     internal func build(paymentMethod: MBWayPaymentMethod) -> PaymentComponent? {
         createMBWayComponent(paymentMethod)
     }
 
-    /// :nodoc:
     internal func build(paymentMethod: BLIKPaymentMethod) -> PaymentComponent? {
         createBLIKComponent(paymentMethod)
     }
 
-    /// :nodoc:
     internal func build(paymentMethod: EContextPaymentMethod) -> PaymentComponent? {
         BasicPersonalInfoFormComponent(paymentMethod: paymentMethod,
                                        apiContext: apiContext,
@@ -338,50 +335,43 @@ extension ComponentManager: PaymentComponentBuilder {
                                        style: style.formComponent)
     }
 
-    /// :nodoc:
     internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
         DokuComponent(paymentMethod: paymentMethod,
                       apiContext: apiContext,
                       shopperInformation: configuration.shopper,
                       style: style.formComponent)
     }
-    
-    /// :nodoc:
+
     internal func build(paymentMethod: OXXOPaymentMethod) -> PaymentComponent? {
         InstantPaymentComponent(paymentMethod: paymentMethod,
                                 paymentData: nil,
                                 apiContext: apiContext)
     }
-    
-    /// :nodoc:
+
     internal func build(paymentMethod: MultibancoPaymentMethod) -> PaymentComponent? {
         InstantPaymentComponent(paymentMethod: paymentMethod,
                                 paymentData: nil,
                                 apiContext: apiContext)
     }
 
-    /// :nodoc:
     internal func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {
         guard partialPaymentEnabled else { return nil }
         return GiftCardComponent(paymentMethod: paymentMethod,
                                  apiContext: apiContext,
                                  style: style.formComponent)
     }
-    
-    /// :nodoc:
+
     internal func build(paymentMethod: BoletoPaymentMethod) -> PaymentComponent? {
         createBoletoComponent(paymentMethod)
     }
-    
-    /// :nodoc:
+
     internal func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent? {
         AffirmComponent(paymentMethod: paymentMethod,
                         apiContext: apiContext,
                         shopperInformation: configuration.shopper,
                         style: style.formComponent)
     }
-    
-    /// :nodoc:
+
     internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
         InstantPaymentComponent(paymentMethod: paymentMethod,
                                 paymentData: nil,
