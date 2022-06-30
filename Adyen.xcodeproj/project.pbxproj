@@ -339,6 +339,7 @@
 		E7D18A1025D44769006AD3B7 /* IntegrationExampleComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D18A0F25D44769006AD3B7 /* IntegrationExampleComponents.swift */; };
 		E7D18A1125D44769006AD3B7 /* IntegrationExampleComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D18A0F25D44769006AD3B7 /* IntegrationExampleComponents.swift */; };
 		E7D3ED84243B667500E73F59 /* FormCardNumberItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D3ED83243B667500E73F59 /* FormCardNumberItemViewTests.swift */; };
+		E7D418B1286E4C5900E9A7F4 /* PaymentAwareComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D418B0286E4C5900E9A7F4 /* PaymentAwareComponent.swift */; };
 		E7D5311424462D87000046B4 /* FormButtonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5311124462D87000046B4 /* FormButtonItemView.swift */; };
 		E7D5311524462D87000046B4 /* FormButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5311224462D87000046B4 /* FormButtonItem.swift */; };
 		E7D531192446F525000046B4 /* FormSeparatorItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D531172446F525000046B4 /* FormSeparatorItemView.swift */; };
@@ -1406,6 +1407,7 @@
 		E7D18A0325D44610006AD3B7 /* IntegrationExampleDropIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationExampleDropIn.swift; sourceTree = "<group>"; };
 		E7D18A0F25D44769006AD3B7 /* IntegrationExampleComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationExampleComponents.swift; sourceTree = "<group>"; };
 		E7D3ED83243B667500E73F59 /* FormCardNumberItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardNumberItemViewTests.swift; sourceTree = "<group>"; };
+		E7D418B0286E4C5900E9A7F4 /* PaymentAwareComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentAwareComponent.swift; sourceTree = "<group>"; };
 		E7D5311124462D87000046B4 /* FormButtonItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormButtonItemView.swift; sourceTree = "<group>"; };
 		E7D5311224462D87000046B4 /* FormButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormButtonItem.swift; sourceTree = "<group>"; };
 		E7D531172446F525000046B4 /* FormSeparatorItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormSeparatorItemView.swift; sourceTree = "<group>"; };
@@ -3707,6 +3709,7 @@
 				F9FE25D52626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift */,
 				F9B8AF5A27DA4A4C00DC0894 /* AnyDropInComponent.swift */,
 				E226F54A229803130013A463 /* DropInComponentDelegate.swift */,
+				E7D418B0286E4C5900E9A7F4 /* PaymentAwareComponent.swift */,
 			);
 			path = "Core Protocols";
 			sourceTree = "<group>";
@@ -5440,6 +5443,7 @@
 				F9620DB023C75430005209FC /* WeChatPayPaymentMethod.swift in Sources */,
 				E7E0E2382762005B001DF0C9 /* NSConstraintHelper.swift in Sources */,
 				F9EDB78423914B4400CFB3C9 /* CurrencyCodeValidator.swift in Sources */,
+				E7D418B1286E4C5900E9A7F4 /* PaymentAwareComponent.swift in Sources */,
 				F9AC61BB24374CE00062A00D /* AppLauncher.swift in Sources */,
 				F9B8C49423FC32FB00C4D0FB /* FormItemViewBuilder.swift in Sources */,
 				F97FA024264AD5FE004AFD0C /* ListFooterView.swift in Sources */,

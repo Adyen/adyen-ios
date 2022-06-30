@@ -27,6 +27,10 @@ public protocol PaymentComponent: Component, PaymentMethodAware {
 @_spi(AdyenInternal)
 extension PaymentComponent {
     
+    /// Submits payment data to the payment delegate.
+    /// - Parameters:
+    ///   - data: The Payment data to be submited
+    ///   - component: The component from which the payment originates.
     public func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
         let component = component ?? self
         let checkoutAttemptId = component.context.analyticsProvider.checkoutAttemptId
@@ -62,41 +66,3 @@ public protocol PaymentComponentDelegate: AnyObject {
     
 }
 
-/// Any component with a payment property.
-public protocol PaymentAwareComponent: Component {
-
-    /// The payment information.
-    var payment: Payment? { get set }
-
-    /// The partial payment order if any.
-    var order: PartialPaymentOrder? { get set }
-}
-
-@_spi(AdyenInternal)
-extension PaymentAwareComponent {
-    
-    public var payment: Payment? {
-        get {
-            objc_getAssociatedObject(self, &AssociatedKeys.payment) as? Payment
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedKeys.payment, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY)
-        }
-    }
-
-    public var order: PartialPaymentOrder? {
-        get {
-            objc_getAssociatedObject(self, &AssociatedKeys.order) as? PartialPaymentOrder
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedKeys.order, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY)
-        }
-    }
-}
-
-private enum AssociatedKeys {
-
-    internal static var payment = "paymentObject"
-
-    internal static var order = "orderObject"
-}
