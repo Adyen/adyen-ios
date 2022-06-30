@@ -22,8 +22,6 @@ internal final class ComponentManager {
     
     private let supportsEditingStoredPaymentMethods: Bool
 
-    internal let remainingAmount: Amount?
-
     internal let order: PartialPaymentOrder?
     
     internal let context: AdyenContext
@@ -34,7 +32,6 @@ internal final class ComponentManager {
                   context: AdyenContext,
                   configuration: DropInComponent.Configuration,
                   partialPaymentEnabled: Bool = true,
-                  remainingAmount: Amount? = nil,
                   order: PartialPaymentOrder?,
                   supportsEditingStoredPaymentMethods: Bool = false,
                   presentationDelegate: PresentationDelegate) {
@@ -42,7 +39,6 @@ internal final class ComponentManager {
         self.context = context
         self.configuration = configuration
         self.partialPaymentEnabled = partialPaymentEnabled
-        self.remainingAmount = remainingAmount
         self.order = order
         self.supportsEditingStoredPaymentMethods = supportsEditingStoredPaymentMethods
         self.presentationDelegate = presentationDelegate
@@ -53,7 +49,7 @@ internal final class ComponentManager {
     internal lazy var sections: [ComponentsSection] = {
 
         // Paid section
-        let amountString: String = remainingAmount.map(\.formatted) ??
+        let amountString: String = order?.remainingAmount.map(\.formatted) ??
             localizedString(.amount, configuration.localizationParameters).lowercased()
         let footerTitle = localizedString(.partialPaymentPayRemainingAmount,
                                           configuration.localizationParameters,
@@ -127,8 +123,11 @@ internal final class ComponentManager {
             paymentComponent.localizationParameters = configuration.localizationParameters
         }
 
-        paymentComponent.payment = configuration.payment
-        paymentComponent.order = order
+        if let paymentAwareComponent = (paymentComponent as? PaymentAwareComponent) {
+            paymentAwareComponent.payment = configuration.payment
+            paymentAwareComponent.order = order
+        }
+
         return paymentComponent
     }
 
@@ -180,7 +179,7 @@ internal final class ComponentManager {
         let preApplePayConfig = PreApplePayComponent.Configuration(style: configuration.style.applePay,
                                                                    localizationParameters: configuration.localizationParameters)
 
-        if let amount = order?.remainingAmount ?? remainingAmount {
+        if let amount = order?.remainingAmount {
             let localIdentifier = amount.localeIdentifier ?? configuration.localizationParameters?.locale
             let configuration = applePay.updating(amount: amount, localeIdentifier: localIdentifier)
             if let component = try? PreApplePayComponent(paymentMethod: paymentMethod,

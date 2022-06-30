@@ -100,8 +100,7 @@ public final class DropInComponent: NSObject,
     }()
     
     internal func reloadComponentManager() {
-        componentManager = createComponentManager(componentManager.order,
-                                                  componentManager.remainingAmount)
+        componentManager = createComponentManager(componentManager.order)
     }
 
     /// Reloads the DropIn with a partial payment order and a new `PaymentMethods` object.
@@ -133,7 +132,7 @@ public final class DropInComponent: NSObject,
             return
         }
         paymentMethods.paid = response.paymentMethods ?? []
-        componentManager = createComponentManager(order, response.remainingAmount)
+        componentManager = createComponentManager(order)
         paymentInProgress = false
         showPaymentMethodsList(onCancel: { [weak self] in
             guard let self = self else { return }
@@ -143,15 +142,13 @@ public final class DropInComponent: NSObject,
     
     // MARK: - Private
 
-    private lazy var componentManager = createComponentManager(nil, nil)
+    private lazy var componentManager = createComponentManager(nil)
 
-    private func createComponentManager(_ order: PartialPaymentOrder?,
-                                        _ remainingAmount: Amount?) -> ComponentManager {
+    private func createComponentManager(_ order: PartialPaymentOrder?) -> ComponentManager {
         ComponentManager(paymentMethods: paymentMethods,
                          context: context,
                          configuration: configuration,
                          partialPaymentEnabled: partialPaymentDelegate != nil,
-                         remainingAmount: remainingAmount,
                          order: order,
                          supportsEditingStoredPaymentMethods: storedPaymentMethodsDelegate != nil,
                          presentationDelegate: self)
@@ -266,6 +263,8 @@ public final class DropInComponent: NSObject,
         
         component._isDropIn = true
         
+        guard let component = (component as? PaymentAwareComponent) else { return }
+
         if let payment = configuration.payment, let remainingAmount = component.order?.remainingAmount {
             component.payment = Payment(amount: remainingAmount, countryCode: payment.countryCode)
         } else {

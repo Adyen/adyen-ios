@@ -13,7 +13,7 @@ public protocol PaymentMethodAware: AnyObject {
 }
 
 /// A component that handles the initial phase of getting payment details to initiate a payment.
-public protocol PaymentComponent: PaymentAwareComponent, PaymentMethodAware {
+public protocol PaymentComponent: Component, PaymentMethodAware {
 
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -30,20 +30,7 @@ extension PaymentComponent {
     public func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
         let component = component ?? self
         let checkoutAttemptId = component.context.analyticsProvider.checkoutAttemptId
-        var updatedData: PaymentComponentData
-
-        if data.checkoutAttemptId == checkoutAttemptId {
-            updatedData = data
-        } else {
-            updatedData = PaymentComponentData(paymentMethodDetails: data.paymentMethod,
-                                               amount: data.amount,
-                                               order: data.order,
-                                               storePaymentMethod: data.storePaymentMethod,
-                                               browserInfo: data.browserInfo,
-                                               checkoutAttemptId: checkoutAttemptId,
-                                               installments: data.installments)
-
-        }
+        let updatedData = data.replacingCheckoutAttemptID(with: checkoutAttemptId)
 
         guard updatedData.browserInfo == nil else {
             delegate?.didSubmit(updatedData, from: component)

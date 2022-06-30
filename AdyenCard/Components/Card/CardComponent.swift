@@ -16,6 +16,7 @@ import UIKit
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
 public class CardComponent: PresentableComponent,
+    PaymentAwareComponent,
     LoadingComponent {
 
     internal enum Constant {
@@ -130,11 +131,11 @@ public class CardComponent: PresentableComponent,
     
     // MARK: - Stored Card
     
-    internal lazy var storedCardComponent: (PaymentComponent & PresentableComponent)? = {
+    internal lazy var storedCardComponent: (PaymentComponent & PresentableComponent & PaymentAwareComponent)? = {
         guard let paymentMethod = paymentMethod as? StoredCardPaymentMethod else {
             return nil
         }
-        var component: PaymentComponent & PresentableComponent
+        var component: PaymentComponent & PresentableComponent & PaymentAwareComponent
         if configuration.stored.showsSecurityCodeField {
             let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context)
             storedComponent.localizationParameters = configuration.localizationParameters

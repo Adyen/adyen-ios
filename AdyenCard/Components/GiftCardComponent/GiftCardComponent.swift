@@ -12,6 +12,7 @@ import UIKit
 
 /// A component that provides a form for gift card payments.
 public final class GiftCardComponent: PresentableComponent,
+    PaymentAwareComponent,
     Localizable,
     LoadingComponent,
     AdyenObserver {

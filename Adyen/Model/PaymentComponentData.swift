@@ -106,6 +106,7 @@ public struct PaymentComponentData {
                              order: order,
                              storePaymentMethod: storePaymentMethod,
                              browserInfo: browserInfo,
+                             checkoutAttemptId: checkoutAttemptId,
                              installments: installments)
     }
 
@@ -116,7 +117,21 @@ public struct PaymentComponentData {
                              order: order,
                              storePaymentMethod: storePaymentMethod,
                              browserInfo: browserInfo,
+                             checkoutAttemptId: checkoutAttemptId,
                              installments: installments)
+    }
+
+    @_spi(AdyenInternal)
+    public func replacingCheckoutAttemptID(with checkoutAttemptId: String?) -> PaymentComponentData {
+        guard let checkoutAttemptId = checkoutAttemptId else { return self }
+
+        return PaymentComponentData(paymentMethodDetails: paymentMethod,
+                                    amount: amount,
+                                    order: order,
+                                    storePaymentMethod: storePaymentMethod,
+                                    browserInfo: browserInfo,
+                                    checkoutAttemptId: checkoutAttemptId,
+                                    installments: installments)
     }
     
     /// Creates a new `PaymentComponentData` by populating the `browserInfo`,

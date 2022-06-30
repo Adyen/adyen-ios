@@ -9,7 +9,11 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for Boleto payment.
-public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent, AdyenObserver {
+public final class BoletoComponent: PaymentComponent,
+    PaymentAwareComponent,
+    LoadingComponent,
+    PresentableComponent,
+    AdyenObserver {
 
     /// The context object for this component.
     @_spi(AdyenInternal)

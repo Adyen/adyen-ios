@@ -11,7 +11,10 @@
 import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
-public final class ACHDirectDebitComponent: PaymentComponent, PresentableComponent, LoadingComponent {
+public final class ACHDirectDebitComponent: PaymentComponent,
+    PaymentAwareComponent,
+    PresentableComponent,
+    LoadingComponent {
     
     private enum ViewIdentifier {
         static let headerItem = "headerItem"

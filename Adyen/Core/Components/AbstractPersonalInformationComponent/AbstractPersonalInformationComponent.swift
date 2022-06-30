@@ -9,7 +9,7 @@ import UIKit
 
 /// An abstract class that needs to be subclassed to abstract away any component
 /// who's form consists of a combination of personal information pieces like first name, last name, phone, email, and billing address.
-open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent {
+open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent, PaymentAwareComponent {
 
     public typealias Configuration = PersonalInformationConfiguration
     

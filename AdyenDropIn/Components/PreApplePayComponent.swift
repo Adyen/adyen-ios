@@ -92,15 +92,7 @@ internal final class PreApplePayComponent: PresentableComponent,
 extension PreApplePayComponent: PaymentComponentDelegate {
     
     internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        let checkoutAttemptId = component.context.analyticsProvider.checkoutAttemptId
-        let updatedData = PaymentComponentData(paymentMethodDetails: data.paymentMethod,
-                                               amount: data.amount,
-                                               order: data.order,
-                                               storePaymentMethod: data.storePaymentMethod,
-                                               browserInfo: data.browserInfo,
-                                               checkoutAttemptId: checkoutAttemptId,
-                                               installments: data.installments)
-        submit(data: updatedData, component: self)
+        delegate?.didSubmit(data, from: component)
     }
     
     internal func didFail(with error: Error, from component: PaymentComponent) {

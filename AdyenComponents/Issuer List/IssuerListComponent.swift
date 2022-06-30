@@ -10,7 +10,7 @@ import UIKit
 
 /// A generic component for "issuer-based" payment methods, such as iDEAL and MOLPay.
 /// This component will provide a list in which the user can select their issuer.
-public final class IssuerListComponent: PaymentComponent, PresentableComponent, LoadingComponent {
+public final class IssuerListComponent: PaymentComponent, PaymentAwareComponent, PresentableComponent, LoadingComponent {
     
     /// The context object for this component.
     @_spi(AdyenInternal)

@@ -8,7 +8,10 @@ import Foundation
 import UIKit
 
 ///  A component that handle stored payment methods.
-public final class StoredPaymentMethodComponent: PaymentComponent, PresentableComponent, Localizable {
+public final class StoredPaymentMethodComponent: PaymentComponent,
+    PresentableComponent,
+    PaymentAwareComponent,
+    Localizable {
 
     /// The context object for this component.
     public let context: AdyenContext

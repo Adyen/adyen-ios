@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for BLIK payments.
-public final class BLIKComponent: PaymentComponent, PresentableComponent, LoadingComponent {
+public final class BLIKComponent: PaymentComponent, PresentableComponent, PaymentAwareComponent, LoadingComponent {
     
     /// Configuration for BLIK Component.
     public typealias Configuration = BasicComponentConfiguration
