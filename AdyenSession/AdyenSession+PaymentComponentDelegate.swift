@@ -73,7 +73,7 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
             }
             
             if response.resultCode == .refused {
-                showPaymentFailedAlert(completion: handleOrderBlock)
+                showPaymentFailedAlert(on: dropInComponent, completion: handleOrderBlock)
             } else {
                 handleOrderBlock()
             }
@@ -83,8 +83,8 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
         }
     }
     
-    private func showPaymentFailedAlert(completion: @escaping (() -> Void)) {
-        guard let presentedViewController = UIApplication.shared.keyWindow?.rootViewController?.presentedViewController else {
+    private func showPaymentFailedAlert(on dropInComponent: AnyDropInComponent?, completion: @escaping (() -> Void)) {
+        guard let dropInComponent = dropInComponent else {
             completion()
             return
         }
@@ -95,13 +95,13 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
                                                 preferredStyle: .alert)
         
         let doneAction = UIAlertAction(title: localizedString(.dismissButton,
-                                                                configuration.localizationParameters),
+                                                              configuration.localizationParameters),
                                        style: .default) { _ in
             completion()
         }
         alertController.addAction(doneAction)
         
-        presentedViewController.present(alertController, animated: true)
+        dropInComponent.viewController.present(alertController, animated: true)
     }
     
     private func handle(action: Action,
