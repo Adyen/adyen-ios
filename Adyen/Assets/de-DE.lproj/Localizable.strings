@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "Gespeichert";
 "adyen.paymentMethods.title" = "Zahlungsmethoden";
 "adyen.paymentMethod.removeButton" = "Ja, entfernen";
-"adyen.payment.refused.messeage" = "Die Zahlung wurde abgelehnt. Bitte versuchen Sie es erneut.";
+"adyen.payment.refused.message" = "Die Zahlung wurde abgelehnt. Bitte versuchen Sie es erneut.";
 "adyen.sepa.ibanItem.title" = "Kontonummer (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Ungültige Kontonummer";
 "adyen.sepa.nameItem.title" = "Name des Kontoinhabers";

@@ -26,8 +26,6 @@ public final class AdyenSession {
         
         internal let context: AdyenContext
         
-        internal let localizationParameters: LocalizationParameters?
-        
         internal let actionComponent: AdyenActionComponent.Configuration
         
         /// Initializes a new Configuration object
@@ -41,12 +39,10 @@ public final class AdyenSession {
         public init(sessionIdentifier: String,
                     initialSessionData: String,
                     context: AdyenContext,
-                    localizationParameters: LocalizationParameters? = nil,
                     actionComponent: AdyenActionComponent.Configuration = .init()) {
             self.sessionIdentifier = sessionIdentifier
             self.initialSessionData = initialSessionData
             self.context = context
-            self.localizationParameters = localizationParameters
             self.actionComponent = actionComponent
         }
     }

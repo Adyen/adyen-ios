@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "Сохраненные";
 "adyen.paymentMethods.title" = "Способы оплаты";
 "adyen.paymentMethod.removeButton" = "Да, удалить";
-"adyen.payment.refused.messeage" = "Платеж отклонен. Повторите попытку.";
+"adyen.payment.refused.message" = "Платеж отклонен. Повторите попытку.";
 "adyen.sepa.ibanItem.title" = "Номер счета (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Недействительный номер счета";
 "adyen.sepa.nameItem.title" = "Имя владельца";

@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "Lagret";
 "adyen.paymentMethods.title" = "Betalingsmetoder";
 "adyen.paymentMethod.removeButton" = "Ja, fjern";
-"adyen.payment.refused.messeage" = "Betalingen ble avvist. Vennligst prøv igjen.";
+"adyen.payment.refused.message" = "Betalingen ble avvist. Vennligst prøv igjen.";
 "adyen.sepa.ibanItem.title" = "Kontonummer (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Ugyldig kontonummer";
 "adyen.sepa.nameItem.title" = "Kortholders navn";

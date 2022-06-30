@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "已儲存";
 "adyen.paymentMethods.title" = "付款方式";
 "adyen.paymentMethod.removeButton" = "是，請移除";
-"adyen.payment.refused.messeage" = "付款被拒絕。請再試一次。";
+"adyen.payment.refused.message" = "付款被拒絕。請再試一次。";
 "adyen.sepa.ibanItem.title" = "帳戶號碼 (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "帳戶號碼無效";
 "adyen.sepa.nameItem.title" = "持有人名稱";

@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "Tallennettu";
 "adyen.paymentMethods.title" = "Maksutavat";
 "adyen.paymentMethod.removeButton" = "Kyllä, poista";
-"adyen.payment.refused.messeage" = "Maksu hylättiin. Yritä uudelleen.";
+"adyen.payment.refused.message" = "Maksu hylättiin. Yritä uudelleen.";
 "adyen.sepa.ibanItem.title" = "Tilinumero (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Väärä tilin numero";
 "adyen.sepa.nameItem.title" = "Haltijan nimi";

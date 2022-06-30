@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "저장됨";
 "adyen.paymentMethods.title" = "결제 수단";
 "adyen.paymentMethod.removeButton" = "예, 삭제합니다";
-"adyen.payment.refused.messeage" = "결제 거부되었습니다. 다시 시도해 주세요.";
+"adyen.payment.refused.message" = "결제 거부되었습니다. 다시 시도해 주세요.";
 "adyen.sepa.ibanItem.title" = "계좌 번호(IBAN)";
 "adyen.sepa.ibanItem.invalid" = "유효하지 않은 계좌 번호";
 "adyen.sepa.nameItem.title" = "소유자 이름";

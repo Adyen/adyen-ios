@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "Gemt";
 "adyen.paymentMethods.title" = "Betalingsmåder";
 "adyen.paymentMethod.removeButton" = "Ja, fjern";
-"adyen.payment.refused.messeage" = "Betalingen blev afvist. Prøv igen.";
+"adyen.payment.refused.message" = "Betalingen blev afvist. Prøv igen.";
 "adyen.sepa.ibanItem.title" = "Kontonummer (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Ugyldigt kontonummer";
 "adyen.sepa.nameItem.title" = "Kontohavernavn";

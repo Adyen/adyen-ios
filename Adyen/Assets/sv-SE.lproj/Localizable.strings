@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "Lagrat";
 "adyen.paymentMethods.title" = "Betalningsmetoder";
 "adyen.paymentMethod.removeButton" = "Ja, ta bort";
-"adyen.payment.refused.messeage" = "Betalningen avvisades. Försök igen.";
+"adyen.payment.refused.message" = "Betalningen avvisades. Försök igen.";
 "adyen.sepa.ibanItem.title" = "Kontonummer (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Ogiltigt kontonummer";
 "adyen.sepa.nameItem.title" = "Känt av kontoinnehavaren";

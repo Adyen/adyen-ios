@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "Opgeslagen";
 "adyen.paymentMethods.title" = "Betaalmethodes";
 "adyen.paymentMethod.removeButton" = "Ja, verwijderen";
-"adyen.payment.refused.messeage" = "De betaling is geweigerd. Probeer het opnieuw.";
+"adyen.payment.refused.message" = "De betaling is geweigerd. Probeer het opnieuw.";
 "adyen.sepa.ibanItem.title" = "Rekeningnummer (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Ongeldig rekeningnummer";
 "adyen.sepa.nameItem.title" = "Ten name van";

@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "已存储";
 "adyen.paymentMethods.title" = "支付方式";
 "adyen.paymentMethod.removeButton" = "是，删除";
-"adyen.payment.refused.messeage" = "付款已被拒。请重试。";
+"adyen.payment.refused.message" = "付款已被拒。请重试。";
 "adyen.sepa.ibanItem.title" = "账号 (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "无效的账号";
 "adyen.sepa.nameItem.title" = "持卡人姓名";

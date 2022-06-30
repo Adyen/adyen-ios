@@ -88,15 +88,15 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
             completion()
             return
         }
-        let alertController = UIAlertController(title: localizedString(.errorTitle,
-                                                                       configuration.localizationParameters),
-                                                message: localizedString(.paymentRefusedMesseage,
-                                                                         configuration.localizationParameters),
+        let localizationParameters = (dropInComponent as? Localizable)?.localizationParameters
+        let title = localizedString(.errorTitle, localizationParameters)
+        let message = localizedString(.paymentRefusedMessage, localizationParameters)
+        let alertController = UIAlertController(title: title,
+                                                message: message,
                                                 preferredStyle: .alert)
         
-        let doneAction = UIAlertAction(title: localizedString(.dismissButton,
-                                                              configuration.localizationParameters),
-                                       style: .default) { _ in
+        let doneTitle = localizedString(.dismissButton, localizationParameters)
+        let doneAction = UIAlertAction(title: doneTitle, style: .default) { _ in
             completion()
         }
         alertController.addAction(doneAction)

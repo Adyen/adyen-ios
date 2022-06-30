@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "Przechowywane";
 "adyen.paymentMethods.title" = "Metody płatności";
 "adyen.paymentMethod.removeButton" = "Tak, usuń";
-"adyen.payment.refused.messeage" = "Płatność została odrzucona. Prosimy spróbować ponownie.";
+"adyen.payment.refused.message" = "Płatność została odrzucona. Prosimy spróbować ponownie.";
 "adyen.sepa.ibanItem.title" = "Numer rachunku (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Nieprawidłowy numer rachunku";
 "adyen.sepa.nameItem.title" = "Imię i nazwisko posiadacza karty";

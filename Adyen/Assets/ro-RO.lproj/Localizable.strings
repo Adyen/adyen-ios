@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "Salvat";
 "adyen.paymentMethods.title" = "Metode de plată";
 "adyen.paymentMethod.removeButton" = "Da, șterge";
-"adyen.payment.refused.messeage" = "Plata a fost refuzată. Vă rugăm să încercați din nou.";
+"adyen.payment.refused.message" = "Plata a fost refuzată. Vă rugăm să încercați din nou.";
 "adyen.sepa.ibanItem.title" = "Număr cont (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Numărul de cont este incorect";
 "adyen.sepa.nameItem.title" = "Nume posesor";

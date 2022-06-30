@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "Tárolt";
 "adyen.paymentMethods.title" = "Fizetési módok";
 "adyen.paymentMethod.removeButton" = "Igen, eltávolítom";
-"adyen.payment.refused.messeage" = "A fizetés elutasítva. Próbálkozzon újra.";
+"adyen.payment.refused.message" = "A fizetés elutasítva. Próbálkozzon újra.";
 "adyen.sepa.ibanItem.title" = "Számlaszám (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Érvénytelen számlaszám";
 "adyen.sepa.nameItem.title" = "Számlatulajdonos neve";

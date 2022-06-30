@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "Αποθηκευμένοι";
 "adyen.paymentMethods.title" = "Τρόποι πληρωμής";
 "adyen.paymentMethod.removeButton" = "Ναι, αφαίρεση";
-"adyen.payment.refused.messeage" = "Η πληρωμή απορρίφθηκε. Προσπαθήστε ξανά.";
+"adyen.payment.refused.message" = "Η πληρωμή απορρίφθηκε. Προσπαθήστε ξανά.";
 "adyen.sepa.ibanItem.title" = "Αριθμός λογαριασμού (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Μη έγκυρος αριθμός λογαριασμού";
 "adyen.sepa.nameItem.title" = "Όνομα κατόχου";

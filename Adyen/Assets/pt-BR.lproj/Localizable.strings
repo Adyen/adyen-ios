@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "Armazenado";
 "adyen.paymentMethods.title" = "Meios de pagamento";
 "adyen.paymentMethod.removeButton" = "Sim, remover";
-"adyen.payment.refused.messeage" = "O pagamento foi recusado. Tente novamente.";
+"adyen.payment.refused.message" = "O pagamento foi recusado. Tente novamente.";
 "adyen.sepa.ibanItem.title" = "Número de conta (NIB)";
 "adyen.sepa.ibanItem.invalid" = "Número de conta inválido";
 "adyen.sepa.nameItem.title" = "Nome do titular da conta bancária";

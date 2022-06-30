@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "Uložené";
 "adyen.paymentMethods.title" = "Spôsob platby";
 "adyen.paymentMethod.removeButton" = "Áno, odstrániť";
-"adyen.payment.refused.messeage" = "Platba bola zamietnutá. Skúste to znova.";
+"adyen.payment.refused.message" = "Platba bola zamietnutá. Skúste to znova.";
 "adyen.sepa.ibanItem.title" = "Číslo účtu (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Neplatné číslo účtu";
 "adyen.sepa.nameItem.title" = "Meno držiteľa";

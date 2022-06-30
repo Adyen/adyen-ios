@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "保存済み";
 "adyen.paymentMethods.title" = "お支払い方法";
 "adyen.paymentMethod.removeButton" = "はい、削除します";
-"adyen.payment.refused.messeage" = "支払が拒否されました。再度お試し下さい。";
+"adyen.payment.refused.message" = "支払が拒否されました。再度お試し下さい。";
 "adyen.sepa.ibanItem.title" = "口座番号 (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "口座番号の入力間違い";
 "adyen.sepa.nameItem.title" = "口座名義";

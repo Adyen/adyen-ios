@@ -32,7 +32,7 @@ public struct LocalizationKey {
     /// Yes, remove
     public static let paymentMethodRemoveButton = LocalizationKey(key: "adyen.paymentMethod.removeButton")
     /// The payment was refused. Please try again.
-    public static let paymentRefusedMesseage = LocalizationKey(key: "adyen.payment.refused.messeage")
+    public static let paymentRefusedMessage = LocalizationKey(key: "adyen.payment.refused.message")
     /// Account Number (IBAN)
     public static let sepaIbanItemTitle = LocalizationKey(key: "adyen.sepa.ibanItem.title")
     /// Invalid account number

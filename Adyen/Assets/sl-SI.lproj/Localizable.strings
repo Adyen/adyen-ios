@@ -10,7 +10,7 @@
 "adyen.paymentMethods.storedMethods" = "Shranjeno";
 "adyen.paymentMethods.title" = "Načini plačila";
 "adyen.paymentMethod.removeButton" = "Da, odstrani";
-"adyen.payment.refused.messeage" = "Plačilo je bilo zavrnjeno. Poskusite znova.";
+"adyen.payment.refused.message" = "Plačilo je bilo zavrnjeno. Poskusite znova.";
 "adyen.sepa.ibanItem.title" = "Številka računa (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Neveljavna številka računa";
 "adyen.sepa.nameItem.title" = "Ime imetnika";
