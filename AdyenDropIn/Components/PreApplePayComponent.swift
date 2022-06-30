@@ -8,7 +8,7 @@
 import PassKit
 import UIKit
 #if canImport(AdyenComponents)
-    import AdyenComponents
+    @_spi(AdyenInternal) import AdyenComponents
 #endif
 
 internal final class PreApplePayComponent: PresentableComponent,
@@ -65,7 +65,7 @@ internal final class PreApplePayComponent: PresentableComponent,
         self.context = context
         self.paymentMethod = paymentMethod
         self.configuration = configuration
-        self.amount = applePayConfiguration.applePayPayment.payment.amount
+        self.amount = applePayConfiguration.applePayPayment.amount
         self.applePayComponent = try ApplePayComponent(paymentMethod: paymentMethod,
                                                        context: context,
                                                        configuration: applePayConfiguration)

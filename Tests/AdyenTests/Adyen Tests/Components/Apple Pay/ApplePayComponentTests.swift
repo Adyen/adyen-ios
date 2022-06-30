@@ -122,14 +122,14 @@ class ApplePayComponentTest: XCTestCase {
         let onShippingSelected = expectation(description: "Wait for didFinalize call")
         let selectedShippingMethod: PKShippingMethod? = shippingMethods.first
 
-        XCTAssertEqual(sut.payment?.amount.value, 20000)
+        XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 20000)
         XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 5)
         XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "summary_4")
 
         sut.paymentAuthorizationViewController(sut!.viewController as! PKPaymentAuthorizationViewController,
                                                didSelect: selectedShippingMethod!) { update in
             XCTAssertEqual(self.mockApplePayDelegate.shippingMethod, shippingMethods.first)
-            XCTAssertEqual(self.sut.payment?.amount.value, 222200)
+            XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 222200)
             XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 2)
             XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "New Item 2")
             onShippingSelected.fulfill()
@@ -156,14 +156,14 @@ class ApplePayComponentTest: XCTestCase {
         contact.name!.givenName = "Test"
         contact.name!.familyName = "Testovich"
 
-        XCTAssertEqual(sut.payment?.amount.value, 20000)
+        XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 20000)
         XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 5)
         XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "summary_4")
         sut.paymentAuthorizationViewController(sut!.viewController as! PKPaymentAuthorizationViewController,
                                                didSelectShippingContact: contact ) { update in
 
             XCTAssertEqual(self.mockApplePayDelegate.contact, contact)
-            XCTAssertEqual(self.sut.payment?.amount.value, 222200)
+            XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 222200)
             XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 2)
             XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "New Item 2")
             onContactSelected.fulfill()
@@ -187,14 +187,14 @@ class ApplePayComponentTest: XCTestCase {
         wait(for: .seconds(1))
         let onContactSelected = expectation(description: "Wait for didFinalize call")
 
-        XCTAssertEqual(sut.payment?.amount.value, 20000)
+        XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 20000)
         XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 5)
         XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "summary_4")
         sut.paymentAuthorizationViewController(sut!.viewController as! PKPaymentAuthorizationViewController,
                                                didChangeCouponCode: "Coupon" ) { update in
 
             XCTAssertEqual(self.mockApplePayDelegate.couponCode, "Coupon")
-            XCTAssertEqual(self.sut.payment?.amount.value, 222200)
+            XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 222200)
             XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 2)
             XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "New Item 2")
             onContactSelected.fulfill()

@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@testable import AdyenComponents
+@_spi(AdyenInternal) @testable import AdyenComponents
 @testable import AdyenDropIn
 import PassKit
 import XCTest
@@ -59,7 +59,7 @@ class PreApplePayComponentTests: XCTestCase {
                                           hintLabel: .init(font: .boldSystemFont(ofSize: 16),
                                                            color: .red,
                                                            textAlignment: .center))
-        let model = PreApplePayView.Model(hint: applePayPayment.payment.amount.formatted,
+        let model = PreApplePayView.Model(hint: applePayPayment.amount.formatted,
                                           style: applePayStyle)
         
         let view = PreApplePayView(model: model)
@@ -125,7 +125,7 @@ class PreApplePayComponentTests: XCTestCase {
         let hintLabel = self.sut.viewController.view.findView(by: "hintLabel") as? UILabel
         
         XCTAssertNotNil(hintLabel)
-        XCTAssertEqual(hintLabel?.text, self.applePayPayment.payment.amount.formatted)
+        XCTAssertEqual(hintLabel?.text, self.applePayPayment.amount.formatted)
     }
 
     func testSubmitWithAnalyticsEnabledShouldSetCheckoutAttemptIdInPaymentComponentData() throws {
