@@ -198,8 +198,7 @@ internal class CardViewController: FormViewController {
     }
     
     private func updateBillingAddressOptionalStatus(brands: [CardBrand]) {
-        let optionalBrands = configuration.billingAddress.optionalForBrands
-        let isOptional = optionalBrands.isDisjoint(with: brands.map(\.type)) == false
+        let isOptional = configuration.billingAddress.isOptional(for: brands.map(\.type))
         switch configuration.billingAddress.mode {
         case .full:
             items.billingAddressItem.updateOptionalStatus(isOptional: isOptional)
