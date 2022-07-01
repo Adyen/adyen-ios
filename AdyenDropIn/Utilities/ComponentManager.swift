@@ -349,9 +349,10 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     internal func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {
-        guard partialPaymentEnabled else { return nil }
+        guard let amount = configuration.payment?.amount, partialPaymentEnabled else { return nil }
         return GiftCardComponent(paymentMethod: paymentMethod,
                                  context: context,
+                                 amount: amount,
                                  style: configuration.style.formComponent)
     }
     

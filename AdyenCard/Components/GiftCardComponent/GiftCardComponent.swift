@@ -12,10 +12,11 @@ import UIKit
 
 /// A component that provides a form for gift card payments.
 public final class GiftCardComponent: PresentableComponent,
-    PaymentAwareComponent,
     Localizable,
     LoadingComponent,
     AdyenObserver {
+
+    internal let amount: Amount
     
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -45,27 +46,33 @@ public final class GiftCardComponent: PresentableComponent,
     ///
     /// - Parameters:
     ///   - paymentMethod: The gift card payment method.
-    ///   -  clientKey: The client key that corresponds to the web service user you will use for initiating the payment.
+    ///   - context:The context object for this component.
+    ///   - amount: The amount to pay.
+    ///   - style: The form style.
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
     ///   - context: The context object for this component.
     ///   - style:  The Component's UI style.
     public convenience init(paymentMethod: GiftCardPaymentMethod,
                             context: AdyenContext,
+                            amount: Amount,
                             style: FormComponentStyle = FormComponentStyle()) {
         self.init(paymentMethod: paymentMethod,
                   context: context,
+                  amount: amount,
                   style: style,
                   publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
     
     internal init(paymentMethod: GiftCardPaymentMethod,
                   context: AdyenContext,
+                  amount: Amount,
                   style: FormComponentStyle = FormComponentStyle(),
                   publicKeyProvider: AnyPublicKeyProvider) {
         self.giftCardPaymentMethod = paymentMethod
         self.context = context
         self.style = style
         self.publicKeyProvider = publicKeyProvider
+        self.amount = amount
     }
 
     // MARK: - Presentable Component Protocol
@@ -184,7 +191,7 @@ public final class GiftCardComponent: PresentableComponent,
             result
                 .mapError(Error.otherError)
                 .flatMap {
-                    self.check(balance: $0, toPay: paymentData.amount)
+                    self.check(balance: $0, toPay: self.amount)
                 }
                 .flatMap { balanceCheckResult in
                     if balanceCheckResult.isBalanceEnough {
@@ -222,11 +229,7 @@ public final class GiftCardComponent: PresentableComponent,
 
     // MARK: - Balance check
 
-    private func check(balance: Balance, toPay amount: Amount?) -> Result<BalanceChecker.Result, Swift.Error> {
-        guard let amount = amount else {
-            AdyenAssertion.assertionFailure(message: Error.invalidPayment.localizedDescription)
-            return .failure(Error.invalidPayment)
-        }
+    private func check(balance: Balance, toPay amount: Amount) -> Result<BalanceChecker.Result, Swift.Error> {
         do {
             return .success(try BalanceChecker().check(balance: balance, isEnoughToPay: amount))
         } catch {
@@ -312,7 +315,6 @@ public final class GiftCardComponent: PresentableComponent,
                                           encryptedSecurityCode: securityCode)
 
             return .success(PaymentComponentData(paymentMethodDetails: details,
-                                                 amount: payment?.amount,
                                                  order: order,
                                                  storePaymentMethod: false))
         } catch {
