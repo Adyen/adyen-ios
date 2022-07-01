@@ -1956,7 +1956,7 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddress.mode = .full
         config.billingAddress.countryCodes = ["US"]
-        config.billingAddress.optionalForBrands = [.visa]
+        config.billingAddress.requirementPolicy = .optionalForCardTypes([.visa])
         
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
@@ -2019,7 +2019,7 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddress.mode = .full
         config.billingAddress.countryCodes = ["US"]
-        config.billingAddress.optionalForBrands = [.visa]
+        config.billingAddress.requirementPolicy = .optionalForCardTypes([.visa])
         config.shopperInformation = shopperInformation
         
         let cardTypeProviderMock = BinInfoProviderMock()
@@ -2076,7 +2076,7 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddress.mode = .postalCode
         config.billingAddress.countryCodes = ["US"]
-        config.billingAddress.optionalForBrands = [.visa]
+        config.billingAddress.requirementPolicy = .optionalForCardTypes([.visa])
         config.shopperInformation = shopperInformation
         
         let cardTypeProviderMock = BinInfoProviderMock()
@@ -2136,7 +2136,7 @@ class CardComponentTests: XCTestCase {
         var config = CardComponent.Configuration()
         config.billingAddress.mode = .postalCode
         config.billingAddress.countryCodes = ["US"]
-        config.billingAddress.optionalForBrands = [.visa]
+        config.billingAddress.requirementPolicy = .optionalForCardTypes([.visa])
         
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {

@@ -19,8 +19,33 @@ public struct BillingAddressConfiguration {
     /// When nil, all countries are provided.
     public var countryCodes: [String]?
     
-    /// Card brands for which the billing address fields should be optional.
-    public var optionalForBrands: Set<CardType> = []
+    /// Indicates the requirement level of a field.
+    public var requirementPolicy: RequirementPolicy = .required
+    
+    /// Indicates the requirement level of a field.
+    public enum RequirementPolicy {
+
+        /// Field is required.
+        case required
+
+        /// Field is optional.
+        case optional
+
+        /// Field is optional only for provided card types.
+        case optionalForCardTypes(Set<CardType>)
+    }
+    
+    @_spi(AdyenInternal)
+    public func isOptional(for cardTypes: [CardType]) -> Bool {
+        switch requirementPolicy {
+        case .required:
+            return false
+        case .optional:
+            return true
+        case let .optionalForCardTypes(optionalCardTypes):
+            return optionalCardTypes.isDisjoint(with: cardTypes) == false
+        }
+    }
     
 }
 
