@@ -118,14 +118,18 @@ internal final class ComponentManager {
         }
 
         guard let paymentComponent = paymentMethod.buildComponent(using: self) else { return nil }
+        paymentComponent.order = order
 
         if var paymentComponent = paymentComponent as? Localizable {
             paymentComponent.localizationParameters = configuration.localizationParameters
         }
 
         if let paymentAwareComponent = (paymentComponent as? PaymentAwareComponent) {
-            paymentAwareComponent.payment = configuration.payment
-            paymentAwareComponent.order = order
+            if let payment = configuration.payment, let remainingAmount = order?.remainingAmount {
+                paymentAwareComponent.payment = Payment(amount: remainingAmount, countryCode: payment.countryCode)
+            } else {
+                paymentAwareComponent.payment = configuration.payment
+            }
         }
 
         return paymentComponent

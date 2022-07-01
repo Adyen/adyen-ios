@@ -6,14 +6,20 @@
 
 import Foundation
 
+/// Any component with a partial payment property.
+public protocol PartialPaymentOrderAware: Component {
+
+    /// The partial payment order if any.
+    var order: PartialPaymentOrder? { get set }
+
+}
+
 /// Any component with a payment property.
 public protocol PaymentAwareComponent: Component {
 
     /// The payment information.
     var payment: Payment? { get set }
 
-    /// The partial payment order if any.
-    var order: PartialPaymentOrder? { get set }
 }
 
 @_spi(AdyenInternal)
@@ -27,6 +33,10 @@ extension PaymentAwareComponent {
             objc_setAssociatedObject(self, &AssociatedKeys.payment, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY)
         }
     }
+}
+
+@_spi(AdyenInternal)
+extension PartialPaymentOrderAware {
 
     public var order: PartialPaymentOrder? {
         get {

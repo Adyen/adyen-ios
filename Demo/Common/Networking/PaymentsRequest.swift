@@ -29,7 +29,7 @@ internal struct PaymentsRequest: APIRequest {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         let currentConfiguration = ConfigurationConstants.current
-        let amount = data.amount ?? currentConfiguration.amount
+        let amount = data.order?.remainingAmount ?? currentConfiguration.amount
         
         try container.encode(data.paymentMethod.encodable, forKey: .details)
         try container.encode(data.storePaymentMethod, forKey: .storePaymentMethod)

@@ -13,7 +13,7 @@ extension CardViewController {
 
         private let formStyle: FormComponentStyle
 
-        private let payment: Payment?
+        private let amount: Amount?
 
         private var localizationParameters: LocalizationParameters?
 
@@ -39,7 +39,7 @@ extension CardViewController {
                       localizationParameters: LocalizationParameters?,
                       addressViewModelBuilder: AddressViewModelBuilder) {
             self.formStyle = formStyle
-            self.payment = payment
+            self.amount = payment?.amount
             self.configuration = configuration
             self.shopperInformation = shopperInformation
             self.cardLogos = cardLogos
@@ -178,7 +178,7 @@ extension CardViewController {
             guard let installmentsConfiguration = configuration.installmentConfiguration else { return nil }
             let installmentsItem = FormCardInstallmentsItem(installmentConfiguration: installmentsConfiguration,
                                                             style: formStyle.textField,
-                                                            amount: payment?.amount,
+                                                            amount: amount,
                                                             localizationParameters: localizationParameters)
             installmentsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "installmentsItem")
             return installmentsItem
@@ -187,7 +187,7 @@ extension CardViewController {
         internal lazy var button: FormButtonItem = {
             let item = FormButtonItem(style: formStyle.mainButtonItem)
             item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "payButtonItem")
-            item.title = localizedSubmitButtonTitle(with: payment?.amount,
+            item.title = localizedSubmitButtonTitle(with: amount,
                                                     style: .immediate,
                                                     localizationParameters)
             return item

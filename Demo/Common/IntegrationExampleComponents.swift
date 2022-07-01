@@ -91,9 +91,11 @@ extension IntegrationExample {
               let paymentMethod = paymentMethods.paymentMethod(ofType: MBWayPaymentMethod.self) else { return nil }
         let style = FormComponentStyle()
         let config = MBWayComponent.Configuration(style: style)
-        return MBWayComponent(paymentMethod: paymentMethod,
-                              context: context,
-                              configuration: config)
+        let component = MBWayComponent(paymentMethod: paymentMethod,
+                                       context: context,
+                                       configuration: config)
+        component.payment = payment
+        return component
     }
 
     // MARK: Apple Pay
@@ -143,9 +145,11 @@ extension IntegrationExample {
     internal func convenienceStoreComponent(from paymentMethods: PaymentMethods?) -> EContextStoreComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: EContextPaymentMethod.self) else { return nil }
-        return EContextStoreComponent(paymentMethod: paymentMethod,
-                                      context: context,
-                                      configuration: BasicPersonalInfoFormComponent.Configuration(style: FormComponentStyle()))
+        let component = EContextStoreComponent(paymentMethod: paymentMethod,
+                                               context: context,
+                                               configuration: BasicPersonalInfoFormComponent.Configuration(style: FormComponentStyle()))
+        component.payment = payment
+        return component
     }
 
     // MARK: BACS
@@ -167,16 +171,13 @@ extension IntegrationExample {
                                                  context: context)
         bacsDirectDebitPresenter = BACSDirectDebitPresentationDelegate(bacsComponent: component)
         component.presentationDelegate = bacsDirectDebitPresenter
+        component.payment = payment
         return component
     }
 
     // MARK: - Presentation
 
     private func present(_ component: PresentableComponent, delegate: (PaymentComponentDelegate & ActionComponentDelegate)?) {
-        if let component = component as? PaymentAwareComponent {
-            component.payment = payment
-        }
-
         if let paymentComponent = component as? PaymentComponent {
             paymentComponent.delegate = delegate
         }
