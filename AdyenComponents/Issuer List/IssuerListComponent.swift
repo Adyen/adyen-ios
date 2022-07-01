@@ -72,7 +72,7 @@ public final class IssuerListComponent: PaymentComponent, PaymentAwareComponent,
                 
                 let details = IssuerListDetails(paymentMethod: self.issuerListPaymentMethod,
                                                 issuer: issuer.identifier)
-                self.submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.payment?.amount, order: self.order))
+                self.submit(data: PaymentComponentData(paymentMethodDetails: details, order: self.order))
                 listViewController.startLoading(for: listItem)
             }
             

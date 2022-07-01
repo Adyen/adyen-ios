@@ -38,7 +38,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
                                       billingContact: payment.billingContact,
                                       shippingContact: payment.shippingContact,
                                       shippingMethod: payment.shippingMethod)
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: applePayPayment.amount, order: order))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
     }
 
     public func paymentAuthorizationViewController(

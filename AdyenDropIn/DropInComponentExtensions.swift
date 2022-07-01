@@ -59,7 +59,6 @@ extension DropInComponent: PaymentComponentDelegate {
             updatedData = data
         } else {
             updatedData = PaymentComponentData(paymentMethodDetails: data.paymentMethod,
-                                               amount: data.amount,
                                                order: data.order,
                                                storePaymentMethod: data.storePaymentMethod,
                                                browserInfo: data.browserInfo,
