@@ -15,6 +15,8 @@ class StoredCardComponentTests: XCTestCase {
     private var analyticsProviderMock: AnalyticsProviderMock!
     private var context: AdyenContext!
 
+    let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
@@ -38,10 +40,8 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, payment: payment, context: context)
 
-        let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payment
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -68,11 +68,8 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, payment: payment, context: context)
         PublicKeyProvider.publicKeysCache[Dummy.apiContext.clientKey] = Dummy.publicKey
-
-        let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payment
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -98,10 +95,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
-
-        let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payment
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, payment: payment, context: context)
 
         let delegateExpectation = expectation(description: "expect delegate to be called.")
         let delegate = PaymentComponentDelegateMock()
@@ -164,10 +158,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
-
-        let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payment
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, payment: payment, context: context)
 
         let delegate = PaymentComponentDelegateMock()
         delegate.onDidSubmit = { _, _ in
@@ -219,10 +210,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
-
-        let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payment
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, payment: payment, context: context)
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -272,10 +260,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
-
-        let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payment
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, payment: payment, context: context)
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -318,10 +303,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
-
-        let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
-        sut.payment = payment
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, payment: payment, context: context)
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -352,6 +334,7 @@ class StoredCardComponentTests: XCTestCase {
         // Given
         let paymentMethod = storedCardPaymentMethod(brand: .masterCard)
         let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
+                                      payment: payment,
                                       context: context)
 
         // When

@@ -8,7 +8,7 @@ import Foundation
 
 /// Provides a placeholder for payment methods that are already paid, just for display.
 @_spi(AdyenInternal)
-public final class AlreadyPaidPaymentComponent: PaymentComponent, PaymentAwareComponent {
+public final class AlreadyPaidPaymentComponent: PaymentComponent {
 
     /// The context object for this component.
     public let context: AdyenContext

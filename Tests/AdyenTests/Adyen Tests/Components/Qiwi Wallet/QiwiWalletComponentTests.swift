@@ -32,7 +32,6 @@ class QiwiWalletComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() throws {
         let config = QiwiWalletComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
         let sut = QiwiWalletComponent(paymentMethod: method, context: context, configuration: config)
-        sut.payment = payment
         
         let expectedSelectableValues = phoneExtensions.map { PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0) }
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
@@ -51,7 +50,6 @@ class QiwiWalletComponentTests: XCTestCase {
     func testLocalizationWithCustomKeySeparator() throws {
         let config = QiwiWalletComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = QiwiWalletComponent(paymentMethod: method, context: context, configuration: config)
-        sut.payment = payment
         
         let expectedSelectableValues = phoneExtensions.map { PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0) }
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)

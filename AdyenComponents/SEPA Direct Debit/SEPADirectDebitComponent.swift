@@ -17,6 +17,10 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAwareCompo
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext
+
+    public var payment: Payment? {
+        configuration.payment
+    }
     
     /// Component's configuration
     public var configuration: Configuration

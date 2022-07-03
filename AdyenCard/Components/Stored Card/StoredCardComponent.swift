@@ -13,6 +13,8 @@ internal final class StoredCardComponent: PaymentComponent, PaymentAwareComponen
     
     /// The context object for this component.
     internal let context: AdyenContext
+
+    public var payment: Payment?
     
     /// The card payment method.
     internal var paymentMethod: PaymentMethod { storedCardPaymentMethod }
@@ -27,9 +29,11 @@ internal final class StoredCardComponent: PaymentComponent, PaymentAwareComponen
     private let storedCardPaymentMethod: StoredCardPaymentMethod
     
     internal init(storedCardPaymentMethod: StoredCardPaymentMethod,
+                  payment: Payment? = nil,
                   context: AdyenContext) {
         self.storedCardPaymentMethod = storedCardPaymentMethod
         self.context = context
+        self.payment = payment
     }
     
     internal var viewController: UIViewController {

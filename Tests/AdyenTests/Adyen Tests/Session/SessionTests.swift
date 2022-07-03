@@ -83,11 +83,6 @@ class SessionTests: XCTestCase {
                 paymentMethod: paymentMethod,
                 telephoneNumber: "telephone"
             ),
-            amount: .init(
-                value: 20,
-                currencyCode: "USD",
-                localeIdentifier: nil
-            ),
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
@@ -122,8 +117,7 @@ class SessionTests: XCTestCase {
         component.delegate = sut
 
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let amount = Amount(value: 85, currencyCode: "USD")
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: amount, order: nil)
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, order: nil)
 
         // When
         XCTAssertNil(paymentComponentData.checkoutAttemptId)
@@ -151,8 +145,7 @@ class SessionTests: XCTestCase {
         component.delegate = sut
 
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let amount = Amount(value: 85, currencyCode: "USD")
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: amount, order: nil)
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, order: nil)
 
         // When
         XCTAssertNil(paymentComponentData.checkoutAttemptId)
@@ -187,11 +180,6 @@ class SessionTests: XCTestCase {
             paymentMethodDetails: MBWayDetails(
                 paymentMethod: paymentMethod,
                 telephoneNumber: "telephone"
-            ),
-            amount: .init(
-                value: 20,
-                currencyCode: "USD",
-                localeIdentifier: nil
             ),
             order: nil
         )
@@ -262,11 +250,6 @@ class SessionTests: XCTestCase {
                 paymentMethod: paymentMethod,
                 telephoneNumber: "telephone"
             ),
-            amount: .init(
-                value: 20,
-                currencyCode: "USD",
-                localeIdentifier: nil
-            ),
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
@@ -332,8 +315,7 @@ class SessionTests: XCTestCase {
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
         let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
         let details = GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc")
-        let amount = Amount(value: 34, currencyCode: "EUR")
-        let paymentData = PaymentComponentData(paymentMethodDetails: details, amount: amount, order: nil)
+        let paymentData = PaymentComponentData(paymentMethodDetails: details, order: nil)
         let apiClient = APIClientMock()
         sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
         
@@ -359,8 +341,7 @@ class SessionTests: XCTestCase {
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
         let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
         let details = GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc")
-        let amount = Amount(value: 34, currencyCode: "EUR")
-        let paymentData = PaymentComponentData(paymentMethodDetails: details, amount: amount, order: nil)
+        let paymentData = PaymentComponentData(paymentMethodDetails: details, order: nil)
         let apiClient = APIClientMock()
         sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
         
@@ -385,8 +366,7 @@ class SessionTests: XCTestCase {
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
         let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
         let details = GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc")
-        let amount = Amount(value: 34, currencyCode: "EUR")
-        let paymentData = PaymentComponentData(paymentMethodDetails: details, amount: amount, order: nil)
+        let paymentData = PaymentComponentData(paymentMethodDetails: details, order: nil)
         let apiClient = APIClientMock()
         sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
         
@@ -499,11 +479,6 @@ class SessionTests: XCTestCase {
                 paymentMethod: paymentMethod,
                 telephoneNumber: "telephone"
             ),
-            amount: .init(
-                value: 20,
-                currencyCode: "USD",
-                localeIdentifier: nil
-            ),
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
@@ -590,11 +565,6 @@ class SessionTests: XCTestCase {
             paymentMethodDetails: MBWayDetails(
                 paymentMethod: paymentMethod,
                 telephoneNumber: "telephone"
-            ),
-            amount: .init(
-                value: 20,
-                currencyCode: "USD",
-                localeIdentifier: nil
             ),
             order: nil
         )
@@ -798,11 +768,6 @@ class SessionTests: XCTestCase {
             paymentMethodDetails: MBWayDetails(
                 paymentMethod: paymentMethod,
                 telephoneNumber: "telephone"
-            ),
-            amount: .init(
-                value: 20,
-                currencyCode: "USD",
-                localeIdentifier: nil
             ),
             order: nil
         )

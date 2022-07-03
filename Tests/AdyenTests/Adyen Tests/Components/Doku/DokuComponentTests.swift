@@ -39,7 +39,6 @@ class DokuComponentTests: XCTestCase {
         let sut = DokuComponent(paymentMethod: paymentMethod,
                                 context: context,
                                 configuration: config)
-        sut.payment = payment
 
         XCTAssertEqual(sut.firstNameItem?.title, localizedString(.firstName, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(.firstName, sut.configuration.localizationParameters))
@@ -62,7 +61,6 @@ class DokuComponentTests: XCTestCase {
         let sut = DokuComponent(paymentMethod: paymentMethod,
                                 context: context,
                                 configuration: config)
-        sut.payment = payment
 
         XCTAssertEqual(sut.firstNameItem?.title, localizedString(LocalizationKey(key: "adyen_firstName"), sut.configuration.localizationParameters))
         XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(LocalizationKey(key: "adyen_firstName"), sut.configuration.localizationParameters))
@@ -169,7 +167,6 @@ class DokuComponentTests: XCTestCase {
                                 configuration: DokuComponent.Configuration())
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
-        sut.payment = payment
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidSubmit = { data, component in

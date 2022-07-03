@@ -28,6 +28,10 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext
+
+    public var payment: Payment? {
+        configuration.payment
+    }
     
     public var paymentMethod: PaymentMethod {
         achDirectDebitPaymentMethod
@@ -268,6 +272,8 @@ extension ACHDirectDebitComponent {
     /// Configuration for the ACH Direct Debit Component
     public struct Configuration: AnyPersonalInformationConfiguration {
 
+        public var payment: Payment?
+
         /// Describes the component's UI style.
         public var style: FormComponentStyle
 
@@ -293,7 +299,9 @@ extension ACHDirectDebitComponent {
         ///   Defaults to `true`.
         ///   - billingAddressCountryCodes: ISO country codes that is supported for the billing address.
         ///   Defaults to ["US", "PR"].
+        ///   - payment: The payment information.
         public init(style: FormComponentStyle = FormComponentStyle(),
+                    payment: Payment? = nil,
                     shopperInformation: PrefilledShopperInformation? = nil,
                     localizationParameters: LocalizationParameters? = nil,
                     showsBillingAddress: Bool = true,
@@ -303,6 +311,7 @@ extension ACHDirectDebitComponent {
             self.localizationParameters = localizationParameters
             self.showsBillingAddress = showsBillingAddress
             self.billingAddressCountryCodes = billingAddressCountryCodes
+            self.payment = payment
         }
     }
 }

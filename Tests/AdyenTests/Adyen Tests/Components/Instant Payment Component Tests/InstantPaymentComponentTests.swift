@@ -71,7 +71,6 @@ class InstantPaymentComponentTests: XCTestCase {
 
     private var paymentComponentData: PaymentComponentData {
         let details = GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc")
-        let amount = Amount(value: 34, currencyCode: "EUR")
-        return PaymentComponentData(paymentMethodDetails: details, amount: amount, order: nil)
+        return PaymentComponentData(paymentMethodDetails: details, order: nil)
     }
 }

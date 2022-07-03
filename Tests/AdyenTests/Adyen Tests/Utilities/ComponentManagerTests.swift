@@ -168,9 +168,9 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.storedComponents.count, 4)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
 
-        XCTAssertEqual(sut.paidComponents.filter { ($0 as? PaymentAwareComponent)?.order == order }.count, 2)
-        XCTAssertEqual(sut.storedComponents.filter { ($0 as? PaymentAwareComponent)?.order == order }.count, 4)
-        XCTAssertEqual(sut.regularComponents.filter { ($0 as? PaymentAwareComponent)?.order == order }.count, numberOfExpectedRegularComponents)
+        XCTAssertEqual(sut.paidComponents.filter { $0.order == order }.count, 2)
+        XCTAssertEqual(sut.storedComponents.filter { $0.order == order }.count, 4)
+        XCTAssertEqual(sut.regularComponents.filter { $0.order == order }.count, numberOfExpectedRegularComponents)
     }
 
     func testOrderInjectionOnApplePay() throws {

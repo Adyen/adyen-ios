@@ -114,6 +114,8 @@ extension CardComponent {
 
     /// Card component configuration.
     public struct Configuration: AnyCardComponentConfiguration, AnyPersonalInformationConfiguration {
+
+        public var payment: Payment?
         
         /// Describes the component's UI style.
         public var style: FormComponentStyle
@@ -175,7 +177,9 @@ extension CardComponent {
         ///   - allowedCardTypes: The enforced list of allowed card types.
         ///   - installmentConfiguration: Configuration for installments. Defaults to `nil`.
         ///   - billingAddress: Billing address fields configurations.
+        ///   - payment: The payment information.
         public init(style: FormComponentStyle = FormComponentStyle(),
+                    payment: Payment? = nil,
                     shopperInformation: PrefilledShopperInformation? = nil,
                     localizationParameters: LocalizationParameters? = nil,
                     showsHolderNameField: Bool = false,
@@ -199,6 +203,7 @@ extension CardComponent {
             self.socialSecurityNumberMode = socialSecurityNumberMode
             self.installmentConfiguration = installmentConfiguration
             self.billingAddress = billingAddress
+            self.payment = payment
         }
 
         internal func bcmcConfiguration() -> Configuration {

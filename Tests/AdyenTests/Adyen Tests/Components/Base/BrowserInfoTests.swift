@@ -20,7 +20,7 @@ class BrowserInfoTests: XCTestCase {
     
     func testPaymentComponentDataBrowserInfo() {
         let browserInfoExpectation = expectation(description: "Expect the BrowserInfo.initialize() to return a valid instance")
-        let data = PaymentComponentData(paymentMethodDetails: InstantPaymentDetails(type: .payPal), amount: nil, order: nil)
+        let data = PaymentComponentData(paymentMethodDetails: InstantPaymentDetails(type: .payPal), order: nil)
         data.dataByAddingBrowserInfo {
             XCTAssertNotNil($0.browserInfo?.userAgent)
             browserInfoExpectation.fulfill()

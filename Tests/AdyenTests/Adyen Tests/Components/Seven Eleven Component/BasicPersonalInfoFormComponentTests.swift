@@ -20,7 +20,6 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         let sut = SevenElevenComponent(paymentMethod: paymentMethod,
                                               context: Dummy.context,
                                        configuration: config)
-        sut.payment = payment
 
         XCTAssertEqual(sut.firstNameItem?.title, localizedString(.firstName, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(.firstName, sut.configuration.localizationParameters))
@@ -165,7 +164,6 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
                                        configuration: BasicPersonalInfoFormComponent.Configuration())
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
-        sut.payment = payment
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidSubmit = { data, component in

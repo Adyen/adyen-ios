@@ -17,6 +17,10 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext
+
+    public var payment: Payment? {
+        configuration.payment
+    }
     
     public var paymentMethod: PaymentMethod { blikPaymentMethod }
 

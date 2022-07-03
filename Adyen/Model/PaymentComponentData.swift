@@ -22,6 +22,11 @@ public struct PaymentComponentData {
 
     /// The partial payment order if any.
     public let order: PartialPaymentOrder?
+
+    /// The payment amount.
+    public var amount: Amount? {
+        order?.remainingAmount
+    }
     
     /// The installments object.
     public let installments: Installments?

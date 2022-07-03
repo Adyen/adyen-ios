@@ -139,7 +139,6 @@ class PreApplePayComponentTests: XCTestCase {
                                                    shippingContact: nil,
                                                    shippingMethod: nil)
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails,
-                                                        amount: amount,
                                                         order: nil)
 
         // When
@@ -162,7 +161,6 @@ class PreApplePayComponentTests: XCTestCase {
                                                    shippingContact: nil,
                                                    shippingMethod: nil)
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails,
-                                                        amount: amount,
                                                         order: nil)
 
         // When

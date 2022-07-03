@@ -16,6 +16,8 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
     /// The context object for this component.
     public let context: AdyenContext
 
+    public var payment: Payment?
+
     /// The stored payment method.
     public var paymentMethod: PaymentMethod { storedPaymentMethod }
 
@@ -26,10 +28,13 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
     /// - Parameters:
     ///   - paymentMethod: The stored payment method.
     ///   - context: The context object.
+    ///   - payment: The payment information.
     public init(paymentMethod: StoredPaymentMethod,
+                payment: Payment? = nil,
                 context: AdyenContext) {
         self.storedPaymentMethod = paymentMethod
         self.context = context
+        self.payment = payment
     }
     
     private let storedPaymentMethod: StoredPaymentMethod

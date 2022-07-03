@@ -45,6 +45,8 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
 
     /// Call back when the list is dismissed.
     internal var onCancel: (() -> Void)?
+
+    internal var payment: Payment?
     
     /// Initializes the list component.
     ///
@@ -56,11 +58,13 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     internal init(component: PaymentComponent,
                   title: String,
                   style: FormComponentStyle,
+                  payment: Payment? = nil,
                   listItemStyle: ListItemStyle) {
         self.title = title
         self.style = style
         self.listItemStyle = listItemStyle
         self.defaultComponent = component
+        self.payment = payment
     }
 
     // MARK: - Cancellable

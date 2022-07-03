@@ -16,6 +16,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
     var analyticsProviderMock: AnalyticsProviderMock!
     var context: AdyenContext!
 
+    let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
+
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
@@ -42,13 +44,14 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
     func testLocalizationWithCustomTableName() throws {
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
-        let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
-        let config = ACHDirectDebitComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil), billingAddressCountryCodes: ["US", "UK"])
+
+        let config = ACHDirectDebitComponent.Configuration(payment: payment,
+                                                           localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil),
+                                                           billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: method,
                                           context: context,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
-        sut.payment = payment
         
         XCTAssertEqual(sut.headerItem.text, localizedString(.achBankAccountTitle, sut.configuration.localizationParameters))
         
@@ -160,14 +163,12 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testPrefillInfo() throws {
         // Given
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
-        let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
-        let config = ACHDirectDebitComponent.Configuration(shopperInformation: shopperInformation, billingAddressCountryCodes: ["US", "UK"])
+        let config = ACHDirectDebitComponent.Configuration(payment: payment, shopperInformation: shopperInformation, billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: method,
                                           context: context,
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
         
-        sut.payment = payment
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .milliseconds(300))
@@ -248,9 +249,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           context: context,
-                                          configuration: .init(showsBillingAddress: false),
+                                          configuration: .init(payment: payment, showsBillingAddress: false),
                                           publicKeyProvider: PublicKeyProviderMock())
-        sut.payment = Payment(amount: Amount(value: 2, currencyCode: "USD"), countryCode: "US")
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 

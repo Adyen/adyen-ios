@@ -30,6 +30,10 @@ public class CardComponent: PresentableComponent,
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext
+
+    public var payment: Payment? {
+        configuration.payment
+    }
     
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
@@ -54,12 +58,6 @@ public class CardComponent: PresentableComponent,
     public weak var delegate: PaymentComponentDelegate? {
         didSet {
             storedCardComponent?.delegate = delegate
-        }
-    }
-
-    public var payment: Payment? {
-        didSet {
-            storedCardComponent?.payment = payment
         }
     }
     
@@ -137,15 +135,14 @@ public class CardComponent: PresentableComponent,
         }
         var component: PaymentComponent & PresentableComponent & PaymentAwareComponent
         if configuration.stored.showsSecurityCodeField {
-            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context)
+            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, payment: payment, context: context)
             storedComponent.localizationParameters = configuration.localizationParameters
             component = storedComponent
         } else {
-            let storedComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
+            let storedComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod, payment: payment, context: context)
             storedComponent.localizationParameters = configuration.localizationParameters
             component = storedComponent
         }
-        component.payment = payment
         return component
     }()
     

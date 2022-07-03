@@ -65,4 +65,3 @@ public protocol PaymentComponentDelegate: AnyObject {
     func didFail(with error: Error, from component: PaymentComponent)
     
 }
-

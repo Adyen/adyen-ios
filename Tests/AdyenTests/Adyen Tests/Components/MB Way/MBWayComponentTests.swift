@@ -40,7 +40,6 @@ class MBWayComponentTests: XCTestCase {
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                   context: context,
                                  configuration: config)
-        sut.payment = payment
 
         XCTAssertEqual(sut.phoneItem?.title, localizedString(.phoneNumberTitle, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(.phoneNumberPlaceholder, sut.configuration.localizationParameters))
@@ -56,7 +55,6 @@ class MBWayComponentTests: XCTestCase {
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                   context: context,
                                  configuration: config)
-        sut.payment = payment
 
         XCTAssertEqual(sut.phoneItem?.title, localizedString(LocalizationKey(key: "adyen_phoneNumber_title"), sut.configuration.localizationParameters))
         XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(LocalizationKey(key: "adyen_phoneNumber_placeholder"), sut.configuration.localizationParameters))
@@ -130,7 +128,6 @@ class MBWayComponentTests: XCTestCase {
         let sut = MBWayComponent(paymentMethod: paymentMethod, context: context)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
-        sut.payment = payment
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidSubmit = { data, component in

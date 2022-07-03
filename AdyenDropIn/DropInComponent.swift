@@ -203,8 +203,8 @@ public final class DropInComponent: NSObject,
         let component = PreselectedPaymentMethodComponent(component: paymentComponent,
                                                           title: title,
                                                           style: configuration.style.formComponent,
+                                                          payment: configuration.payment,
                                                           listItemStyle: configuration.style.listComponent.listItem)
-        component.payment = configuration.payment
         component.localizationParameters = configuration.localizationParameters
         component.delegate = self
         component.onCancel = onCancel

@@ -46,7 +46,7 @@ internal class CardViewController: FormViewController {
     internal init(configuration: CardComponent.Configuration,
                   shopperInformation: PrefilledShopperInformation?,
                   formStyle: FormComponentStyle,
-                  payment: Payment?,
+                  payment: Payment? = nil,
                   logoProvider: LogoURLProvider,
                   supportedCardTypes: [CardType],
                   scope: String,

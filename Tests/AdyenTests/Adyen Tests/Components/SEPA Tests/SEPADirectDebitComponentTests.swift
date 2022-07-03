@@ -38,8 +38,8 @@ class SEPADirectDebitComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() throws {
         let method = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "test_name")
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
-        let sut = SEPADirectDebitComponent(paymentMethod: method, context: context)
-        sut.payment = payment
+        let sut = SEPADirectDebitComponent(paymentMethod: method, context: context, configuration: .init(payment: payment))
+        
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
         XCTAssertEqual(sut.nameItem.title, localizedString(.sepaNameItemTitle, sut.configuration.localizationParameters))
@@ -55,8 +55,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
     func testLocalizationWithZeroPayment() throws {
         let method = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "test_name")
         let payment = Payment(amount: Amount(value: 0, currencyCode: "EUR"), countryCode: "DE")
-        let sut = SEPADirectDebitComponent(paymentMethod: method, context: context)
-        sut.payment = payment
+        let sut = SEPADirectDebitComponent(paymentMethod: method, context: context, configuration: .init(payment: payment))
 
         XCTAssertEqual(sut.nameItem.title, localizedString(.sepaNameItemTitle, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.nameItem.placeholder, localizedString(.sepaNameItemPlaceholder, sut.configuration.localizationParameters))
@@ -73,8 +72,8 @@ class SEPADirectDebitComponentTests: XCTestCase {
     func testLocalizationWithCustomKeySeparator() throws {
         let method = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "test_name")
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
-        let sut = SEPADirectDebitComponent(paymentMethod: method, context: context)
-        sut.payment = payment
+        let sut = SEPADirectDebitComponent(paymentMethod: method, context: context, configuration: .init(payment: payment))
+        
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
         XCTAssertEqual(sut.nameItem.title, localizedString(LocalizationKey(key: "adyen_sepa_nameItem_title"), sut.configuration.localizationParameters))

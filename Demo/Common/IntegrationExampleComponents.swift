@@ -32,8 +32,11 @@ extension IntegrationExample {
     internal func cardComponent(from paymentMethods: PaymentMethods?) -> CardComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
+        let style = FormComponentStyle()
+        let config = CardComponent.Configuration(style: style, payment: payment)
         return CardComponent(paymentMethod: paymentMethod,
-                             context: context)
+                             context: context,
+                             configuration: config)
     }
 
     // MARK: IDEAL
@@ -70,8 +73,11 @@ extension IntegrationExample {
     internal func sepaComponent(from paymentMethods: PaymentMethods?) -> SEPADirectDebitComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: SEPADirectDebitPaymentMethod.self) else { return nil }
+        let style = FormComponentStyle()
+        let config = SEPADirectDebitComponent.Configuration(style: style, payment: payment)
         return SEPADirectDebitComponent(paymentMethod: paymentMethod,
-                                        context: context)
+                                        context: context,
+                                        configuration: config)
     }
 
     // MARK: MBWay
@@ -90,11 +96,10 @@ extension IntegrationExample {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: MBWayPaymentMethod.self) else { return nil }
         let style = FormComponentStyle()
-        let config = MBWayComponent.Configuration(style: style)
+        let config = MBWayComponent.Configuration(style: style, payment: payment)
         let component = MBWayComponent(paymentMethod: paymentMethod,
                                        context: context,
                                        configuration: config)
-        component.payment = payment
         return component
     }
 
@@ -145,11 +150,10 @@ extension IntegrationExample {
     internal func convenienceStoreComponent(from paymentMethods: PaymentMethods?) -> EContextStoreComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: EContextPaymentMethod.self) else { return nil }
-        let component = EContextStoreComponent(paymentMethod: paymentMethod,
-                                               context: context,
-                                               configuration: BasicPersonalInfoFormComponent.Configuration(style: FormComponentStyle()))
-        component.payment = payment
-        return component
+        let config = PersonalInformationConfiguration(style: FormComponentStyle(), payment: payment)
+        return EContextStoreComponent(paymentMethod: paymentMethod,
+                                      context: context,
+                                      configuration: config)
     }
 
     // MARK: BACS
@@ -167,11 +171,12 @@ extension IntegrationExample {
     internal func bacsComponent(from paymentMethods: PaymentMethods?) -> BACSDirectDebitComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return nil }
+        let config = BasicComponentConfiguration(style: FormComponentStyle(), payment: payment)
         let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
-                                                 context: context)
+                                                 context: context,
+                                                 configuration: config)
         bacsDirectDebitPresenter = BACSDirectDebitPresentationDelegate(bacsComponent: component)
         component.presentationDelegate = bacsDirectDebitPresenter
-        component.payment = payment
         return component
     }
 

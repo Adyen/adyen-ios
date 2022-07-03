@@ -8,9 +8,14 @@ import Foundation
 
 /// Any component's most basic configuration.
 public protocol AnyBasicComponentConfiguration: Localizable {
+
+    associatedtype StyleType
     
     /// The form component style.
-    var style: FormComponentStyle { get }
+    var style: StyleType { get }
+
+    /// The payment information.
+    var payment: Payment? { get }
 }
 
 /// The configuration of any component thats aware of shoppers' personal information.
@@ -22,7 +27,9 @@ public protocol AnyPersonalInformationConfiguration: AnyBasicComponentConfigurat
 
 /// Any component's most basic configuration.
 public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
-    
+
+    public var payment: Payment?
+
     public var style: FormComponentStyle
     
     public var localizationParameters: LocalizationParameters?
@@ -32,15 +39,21 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     /// - Parameters:
     ///   - style: The form style.
     ///   - localizationParameters: The localization parameters.
+    ///   - payment: The payment information.
     public init(style: FormComponentStyle = FormComponentStyle(),
+                payment: Payment? = nil,
                 localizationParameters: LocalizationParameters? = nil) {
         self.style = style
         self.localizationParameters = localizationParameters
+        self.payment = payment
     }
 }
 
 /// The configuration of any component thats aware of shoppers' personal information.
 public struct PersonalInformationConfiguration: AnyPersonalInformationConfiguration {
+
+    public var payment: Payment?
+
     public var style: FormComponentStyle
     
     public var shopperInformation: PrefilledShopperInformation?
@@ -53,11 +66,14 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
     ///   - style: The form style.
     ///   - shopperInformation: The shopper information to be prefilled.
     ///   - localizationParameters: The localization parameters.
+    ///   - payment: The payment information.
     public init(style: FormComponentStyle = FormComponentStyle(),
+                payment: Payment? = nil,
                 shopperInformation: PrefilledShopperInformation? = nil,
                 localizationParameters: LocalizationParameters? = nil) {
         self.style = style
         self.shopperInformation = shopperInformation
         self.localizationParameters = localizationParameters
+        self.payment = payment
     }
 }

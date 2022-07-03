@@ -51,7 +51,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         let expectedCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
         analyticsProviderMock.underlyingCheckoutAttemptId = expectedCheckoutAttemptId
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: amount, order: nil)
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, order: nil)
 
         // When
         XCTAssertNil(paymentComponentData.checkoutAttemptId)
@@ -67,7 +67,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         // Given
         analyticsProviderMock.underlyingCheckoutAttemptId = nil
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: amount, order: nil)
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, order: nil)
 
         // When
         XCTAssertNil(paymentComponentData.checkoutAttemptId)
@@ -82,7 +82,7 @@ class PaymentComponentSubjectTests: XCTestCase {
     func testSubmitWhenBrowserInfoIsNilShouldSetBrowserInfoInPaymentComponentData() throws {
         // Given
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: amount, order: nil)
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, order: nil)
 
         // When
         XCTAssertNil(paymentComponentData.browserInfo)
@@ -99,7 +99,6 @@ class PaymentComponentSubjectTests: XCTestCase {
         let expectedBrowserInfo = BrowserInfo(userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)")
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails,
-                                                        amount: amount,
                                                         order: nil,
                                                         browserInfo: expectedBrowserInfo)
 

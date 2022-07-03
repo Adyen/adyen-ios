@@ -7,7 +7,7 @@
 import Foundation
 
 /// A component that handles payment methods that don't need any payment detail to be filled.
-public final class InstantPaymentComponent: PaymentComponent, PaymentAwareComponent {
+public final class InstantPaymentComponent: PaymentComponent {
 
     /// The context object for this component.
     @_spi(AdyenInternal)

@@ -18,21 +18,8 @@ public protocol PartialPaymentOrderAware: Component {
 public protocol PaymentAwareComponent: Component {
 
     /// The payment information.
-    var payment: Payment? { get set }
+    var payment: Payment? { get }
 
-}
-
-@_spi(AdyenInternal)
-extension PaymentAwareComponent {
-
-    public var payment: Payment? {
-        get {
-            objc_getAssociatedObject(self, &AssociatedKeys.payment) as? Payment
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedKeys.payment, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY)
-        }
-    }
 }
 
 @_spi(AdyenInternal)

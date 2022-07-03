@@ -18,6 +18,10 @@ public final class BoletoComponent: PaymentComponent,
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext
+
+    public var payment: Payment? {
+        configuration.payment
+    }
     
     public weak var delegate: PaymentComponentDelegate?
         

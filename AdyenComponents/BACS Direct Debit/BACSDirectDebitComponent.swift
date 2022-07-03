@@ -41,9 +41,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PaymentAwareCompo
     public var configuration: Configuration
 
     public var payment: Payment? {
-        didSet {
-            inputPresenter?.amount = payment?.amount
-        }
+        configuration.payment
     }
 
     // MARK: - Properties
@@ -86,6 +84,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PaymentAwareCompo
                                                  router: self,
                                                  tracker: tracker,
                                                  itemsFactory: itemsFactory)
+        inputPresenter?.amount = payment?.amount
         inputFormViewController.presenter = inputPresenter
         
     }

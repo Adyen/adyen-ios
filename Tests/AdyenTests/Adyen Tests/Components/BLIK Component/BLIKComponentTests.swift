@@ -21,8 +21,7 @@ class BLIKComponentTests: XCTestCase {
     override func setUp() {
         analyticsProviderMock = AnalyticsProviderMock()
         context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
-        sut = BLIKComponent(paymentMethod: method, context: context)
-        sut.payment = payment
+        sut = BLIKComponent(paymentMethod: method, context: context, configuration: .init(payment: payment))
     }
 
     override func tearDown() {
@@ -43,7 +42,8 @@ class BLIKComponentTests: XCTestCase {
 
     func testLocalizationWithZeroPayment() throws {
         let payment = Payment(amount: Amount(value: 0, currencyCode: "PLN"), countryCode: "PL")
-        sut.payment = payment
+        sut = BLIKComponent(paymentMethod: method, context: context, configuration: .init(payment: payment))
+        
         XCTAssertEqual(sut.hintLabelItem.text, localizedString(.blikHelp, sut.configuration.localizationParameters))
 
         XCTAssertEqual(sut.codeItem.title, localizedString(.blikCode, sut.configuration.localizationParameters))
