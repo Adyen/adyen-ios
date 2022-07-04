@@ -1360,7 +1360,7 @@ class CardComponentTests: XCTestCase {
     func testInstallmentsWithDefaultAndCardBasedOptions() {
         let method = CardPaymentMethod(type: "visa", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
-                                                                            InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
+            InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
         let config = CardComponent.Configuration(installmentConfiguration: InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions, defaultOptions: defaultInstallmentOptions))
         let cardTypeProviderMock = BinInfoProviderMock()
@@ -1443,7 +1443,7 @@ class CardComponentTests: XCTestCase {
     func testInstallmentsWitCardBasedOptions() {
         let method = CardPaymentMethod(type: "visa", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc"])
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
-                                                                            InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
+            InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
         let config = CardComponent.Configuration(installmentConfiguration: InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions))
         let cardTypeProviderMock = BinInfoProviderMock()
         

@@ -122,8 +122,8 @@ extension ApplePayComponent {
 
             newItems = newItems.dropLast()
             let decimalAmount = AmountFormatter.decimalAmount(amount.value,
-                                                          currencyCode: amount.currencyCode,
-                                                          localeIdentifier: localeIdentifier)
+                                                              currencyCode: amount.currencyCode,
+                                                              localeIdentifier: localeIdentifier)
             newItems.append(PKPaymentSummaryItem(label: lastItem.label, amount: decimalAmount))
             summaryItems = newItems
         }
