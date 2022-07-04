@@ -43,7 +43,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: BLIKPaymentMethod,
                 context: AdyenContext,
-                configuration: Configuration = .init()) {
+                configuration: Configuration = .init(payment: nil)) {
         self.blikPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration

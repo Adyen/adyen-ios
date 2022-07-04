@@ -95,7 +95,7 @@ class BLIKComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        sut = BLIKComponent(paymentMethod: method, context: context, configuration: .init(style: style))
+        sut = BLIKComponent(paymentMethod: method, context: context, configuration: .init(style: style, payment: nil))
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 

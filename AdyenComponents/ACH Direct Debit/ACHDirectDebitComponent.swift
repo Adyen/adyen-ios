@@ -65,7 +65,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     ///   - configuration: Configuration for the component.
     public convenience init(paymentMethod: ACHDirectDebitPaymentMethod,
                             context: AdyenContext,
-                            configuration: Configuration = .init()) {
+                            configuration: Configuration = .init(payment: nil)) {
         self.init(paymentMethod: paymentMethod,
                   context: context,
                   configuration: configuration,
@@ -74,7 +74,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     
     internal init(paymentMethod: ACHDirectDebitPaymentMethod,
                   context: AdyenContext,
-                  configuration: Configuration = .init(),
+                  configuration: Configuration = .init(payment: nil),
                   publicKeyProvider: AnyPublicKeyProvider) {
         self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
@@ -301,7 +301,7 @@ extension ACHDirectDebitComponent {
         ///   Defaults to ["US", "PR"].
         ///   - payment: The payment information.
         public init(style: FormComponentStyle = FormComponentStyle(),
-                    payment: Payment? = nil,
+                    payment: Payment?,
                     shopperInformation: PrefilledShopperInformation? = nil,
                     localizationParameters: LocalizationParameters? = nil,
                     showsBillingAddress: Bool = true,

@@ -24,7 +24,8 @@ class AffirmComponentUITests: XCTestCase {
         style = FormComponentStyle()
         sut = AffirmComponent(paymentMethod: paymentMethod,
                               context: context,
-                              configuration: AffirmComponent.Configuration(style: style))
+                              configuration: AffirmComponent.Configuration(style: style,
+                                                                           payment: nil))
     }
 
     override func tearDownWithError() throws {
@@ -39,7 +40,8 @@ class AffirmComponentUITests: XCTestCase {
         // Given
         let sut = AffirmComponent(paymentMethod: paymentMethod,
                                   context: context,
-                                  configuration: AffirmComponent.Configuration(style: style))
+                                  configuration: AffirmComponent.Configuration(style: style,
+                                                                               payment: nil))
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         let expectedBillingAddress = PostalAddressMocks.newYorkPostalAddress
@@ -96,7 +98,9 @@ class AffirmComponentUITests: XCTestCase {
 
     func testAffirmPrefilling_givenDeliveryAddressIsSet() throws {
         // Given
-        let config = AffirmComponent.Configuration(style: style, shopperInformation: shopperInformation)
+        let config = AffirmComponent.Configuration(style: style,
+                                                   payment: nil,
+                                                   shopperInformation: shopperInformation)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          context: context,
                                          configuration: config)
@@ -143,7 +147,9 @@ class AffirmComponentUITests: XCTestCase {
 
     func testAffirmPrefilling_givenDeliveryAddressIsNotSet() throws {
         // Given
-        let config = AffirmComponent.Configuration(style: style, shopperInformation: shopperInformationNoDeliveryAddress)
+        let config = AffirmComponent.Configuration(style: style,
+                                                   payment: nil,
+                                                   shopperInformation: shopperInformationNoDeliveryAddress)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          context: context,
                                          configuration: config)

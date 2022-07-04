@@ -58,7 +58,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     internal init(component: PaymentComponent,
                   title: String,
                   style: FormComponentStyle,
-                  payment: Payment? = nil,
+                  payment: Payment?,
                   listItemStyle: ListItemStyle) {
         self.title = title
         self.style = style

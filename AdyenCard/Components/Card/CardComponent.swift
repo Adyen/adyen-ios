@@ -76,7 +76,7 @@ public class CardComponent: PresentableComponent,
     ///   - configuration: The configuration of the component.
     public convenience init(paymentMethod: AnyCardPaymentMethod,
                             context: AdyenContext,
-                            configuration: Configuration = .init()) {
+                            configuration: Configuration = .init(payment: nil)) {
         let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: context.apiContext),
                                               publicKeyProvider: publicKeyProvider,

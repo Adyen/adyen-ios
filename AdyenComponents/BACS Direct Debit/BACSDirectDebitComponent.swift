@@ -64,7 +64,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PaymentAwareCompo
     ///   - configuration: Configuration for the component.
     public init(paymentMethod: BACSDirectDebitPaymentMethod,
                 context: AdyenContext,
-                configuration: Configuration = Configuration()) {
+                configuration: Configuration = Configuration(payment: nil)) {
         self.bacsPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration

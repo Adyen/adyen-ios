@@ -41,7 +41,7 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     ///   - localizationParameters: The localization parameters.
     ///   - payment: The payment information.
     public init(style: FormComponentStyle = FormComponentStyle(),
-                payment: Payment? = nil,
+                payment: Payment?,
                 localizationParameters: LocalizationParameters? = nil) {
         self.style = style
         self.localizationParameters = localizationParameters
@@ -68,7 +68,7 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
     ///   - localizationParameters: The localization parameters.
     ///   - payment: The payment information.
     public init(style: FormComponentStyle = FormComponentStyle(),
-                payment: Payment? = nil,
+                payment: Payment?,
                 shopperInformation: PrefilledShopperInformation? = nil,
                 localizationParameters: LocalizationParameters? = nil) {
         self.style = style

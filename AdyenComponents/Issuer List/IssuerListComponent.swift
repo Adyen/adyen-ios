@@ -34,7 +34,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: IssuerListPaymentMethod,
                 context: AdyenContext,
-                configuration: Configuration = .init()) {
+                configuration: Configuration = .init(payment: nil)) {
         self.issuerListPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
@@ -113,10 +113,13 @@ extension IssuerListComponent {
         /// - Parameters:
         ///   - style: The UI style of the component.
         ///   - localizationParameters: Localization parameters.
+        ///   - payment: The payment information.
         public init(style: ListComponentStyle = .init(),
+                    payment: Payment?,
                     localizationParameters: LocalizationParameters? = nil) {
             self.style = style
             self.localizationParameters = localizationParameters
+            self.payment = payment
         }
     }
 }

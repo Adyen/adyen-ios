@@ -40,7 +40,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAwareCompo
     /// - Parameter configuration: Configuration for the component.
     public init(paymentMethod: SEPADirectDebitPaymentMethod,
                 context: AdyenContext,
-                configuration: Configuration = .init()) {
+                configuration: Configuration = .init(payment: nil)) {
         self.sepaDirectDebitPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration

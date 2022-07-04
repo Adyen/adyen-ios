@@ -13,6 +13,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
     var analyticsProviderMock: AnalyticsProviderMock!
     var context: AdyenContext!
+    let method = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "test_name")
 
     override func setUpWithError() throws {
        try super.setUpWithError()
@@ -27,7 +28,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
     }
 
     func testRequiresKeyboardInput() {
-        let method = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "test_name")
         let sut = SEPADirectDebitComponent(paymentMethod: method, context: context)
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
@@ -36,7 +36,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
     }
     
     func testLocalizationWithCustomTableName() throws {
-        let method = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "test_name")
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
         let sut = SEPADirectDebitComponent(paymentMethod: method, context: context, configuration: .init(payment: payment))
         
@@ -53,7 +52,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
     }
 
     func testLocalizationWithZeroPayment() throws {
-        let method = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "test_name")
         let payment = Payment(amount: Amount(value: 0, currencyCode: "EUR"), countryCode: "DE")
         let sut = SEPADirectDebitComponent(paymentMethod: method, context: context, configuration: .init(payment: payment))
 
@@ -70,7 +68,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
-        let method = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "test_name")
         let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
         let sut = SEPADirectDebitComponent(paymentMethod: method, context: context, configuration: .init(payment: payment))
         
@@ -112,9 +109,10 @@ class SEPADirectDebitComponentTests: XCTestCase {
         sepaComponentStyle.textField.backgroundColor = .red
         
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
+        let configuration = SEPADirectDebitComponent.Configuration(style: sepaComponentStyle, payment: nil)
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod,
-                                                      context: context,
-                                           configuration: SEPADirectDebitComponent.Configuration(style: sepaComponentStyle))
+                                           context: context,
+                                           configuration: configuration)
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         

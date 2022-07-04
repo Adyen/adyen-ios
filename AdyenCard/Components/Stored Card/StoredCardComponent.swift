@@ -29,7 +29,7 @@ internal final class StoredCardComponent: PaymentComponent, PaymentAwareComponen
     private let storedCardPaymentMethod: StoredCardPaymentMethod
     
     internal init(storedCardPaymentMethod: StoredCardPaymentMethod,
-                  payment: Payment? = nil,
+                  payment: Payment?,
                   context: AdyenContext) {
         self.storedCardPaymentMethod = storedCardPaymentMethod
         self.context = context

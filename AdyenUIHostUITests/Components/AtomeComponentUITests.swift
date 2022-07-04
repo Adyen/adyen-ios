@@ -24,7 +24,8 @@ class AtomeComponentUITests: XCTestCase {
         style = FormComponentStyle()
         sut = AtomeComponent(paymentMethod: paymentMethod,
                              context: context,
-                             configuration: AtomeComponent.Configuration(style: style))
+                             configuration: AtomeComponent.Configuration(style: style,
+                                                                         payment: nil))
     }
 
     override func tearDownWithError() throws {
@@ -36,7 +37,9 @@ class AtomeComponentUITests: XCTestCase {
     }
 
     func testAllRequiredTextField_shouldExist() throws {
-        let config = AtomeComponent.Configuration(style: style, shopperInformation: shopperInformation)
+        let config = AtomeComponent.Configuration(style: style,
+                                                  payment: nil,
+                                                  shopperInformation: shopperInformation)
         UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
         let sut = AtomeComponent(paymentMethod: paymentMethod,
                                  context: context,
@@ -59,7 +62,9 @@ class AtomeComponentUITests: XCTestCase {
     }
 
     func testSubmitForm_shouldCallDelegateWithProperParameters() {
-        let config = AtomeComponent.Configuration(style: style, shopperInformation: shopperInformation)
+        let config = AtomeComponent.Configuration(style: style,
+                                                  payment: nil,
+                                                  shopperInformation: shopperInformation)
         let sut = AtomeComponent(paymentMethod: paymentMethod,
                                  context: context,
                                  configuration: config)

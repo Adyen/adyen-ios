@@ -40,7 +40,7 @@ extension IntegrationExample {
     internal func dropInComponent(from paymentMethods: PaymentMethods?) -> DropInComponent? {
         guard let paymentMethods = paymentMethods else { return nil }
 
-        let configuration = DropInComponent.Configuration(context: context)
+        let configuration = DropInComponent.Configuration(context: context, payment: payment)
 
         if let applePayPayment = try? ApplePayPayment(payment: payment, brand: ConfigurationConstants.appName) {
             configuration.applePay = .init(payment: applePayPayment,
@@ -48,7 +48,6 @@ extension IntegrationExample {
         }
         
         configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
-        configuration.payment = payment
         configuration.card.billingAddress.mode = .postalCode
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
         

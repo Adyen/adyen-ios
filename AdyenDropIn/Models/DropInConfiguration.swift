@@ -65,14 +65,17 @@ public extension DropInComponent {
         ///   - style: The UI styles of the components.
         ///   - allowsSkippingPaymentList: Boolean to enable skipping payment list when there is only one one non-instant payment method.
         ///   - allowPreselectedPaymentView: Boolean to enable the preselected stored payment method view step.
+        ///   - payment: The payment information.
         public init(context: AdyenContext,
                     style: Style = Style(),
+                    payment: Payment?,
                     allowsSkippingPaymentList: Bool = false,
                     allowPreselectedPaymentView: Bool = true) {
             self.context = context
             self.style = style
             self.allowsSkippingPaymentList = allowsSkippingPaymentList
             self.allowPreselectedPaymentView = allowPreselectedPaymentView
+            self.payment = payment
         }
     }
     
@@ -156,7 +159,8 @@ public extension DropInComponent {
         }
         
         public var cardComponentConfiguration: CardComponent.Configuration {
-            CardComponent.Configuration(showsHolderNameField: showsHolderNameField,
+            CardComponent.Configuration(payment: nil,
+                                        showsHolderNameField: showsHolderNameField,
                                         showsStorePaymentMethodField: showsStorePaymentMethodField,
                                         showsSecurityCodeField: showsSecurityCodeField,
                                         koreanAuthenticationMode: koreanAuthenticationMode,

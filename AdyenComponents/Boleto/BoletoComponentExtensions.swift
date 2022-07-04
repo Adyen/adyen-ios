@@ -32,7 +32,7 @@ extension BoletoComponent {
         ///   - showEmailAddress: Indicates whether to show `sendCopyByEmail` checkbox and email text field
         ///   - payment: The payment information.
         public init(style: FormComponentStyle = FormComponentStyle(),
-                    payment: Payment? = nil,
+                    payment: Payment?,
                     localizationParameters: LocalizationParameters? = nil,
                     shopperInformation: PrefilledShopperInformation?,
                     showEmailAddress: Bool) {

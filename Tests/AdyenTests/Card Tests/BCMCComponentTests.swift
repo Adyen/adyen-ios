@@ -34,7 +34,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context,
-                                configuration: CardComponent.Configuration())
+                                configuration: CardComponent.Configuration(payment: nil))
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
 
@@ -46,7 +46,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context,
-                                configuration: CardComponent.Configuration())
+                                configuration: CardComponent.Configuration(payment: nil))
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         XCTAssertEqual(sut.configuration.allowedCardTypes, [.bcmc])
@@ -65,7 +65,7 @@ class BCMCComponentTests: XCTestCase {
     func testShowHolderNameField() {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.argencard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponent.Configuration(payment: nil)
         configuration.showsHolderNameField = true
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context,
@@ -88,7 +88,7 @@ class BCMCComponentTests: XCTestCase {
     func testHideStorePaymentMethodField() {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.bcmc])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponent.Configuration(payment: nil)
         configuration.showsStorePaymentMethodField = false
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context,

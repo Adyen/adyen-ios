@@ -50,6 +50,7 @@ extension ComponentManager: PaymentComponentBuilder {
         IssuerListComponent(paymentMethod: paymentMethod,
                             context: context,
                             configuration: .init(style: configuration.style.listComponent,
+                                                 payment: nil,
                                                  localizationParameters: configuration.localizationParameters))
     }
 
@@ -148,7 +149,7 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
-        var cardConfiguration = configuration.card.cardComponentConfiguration
+        var cardConfiguration = configuration.card
         cardConfiguration.style = configuration.style.formComponent
         cardConfiguration.localizationParameters = configuration.localizationParameters
         cardConfiguration.shopperInformation = configuration.shopper

@@ -399,6 +399,7 @@ class BoletoComponentTests: XCTestCase {
         showEmailAddress: Bool
     ) -> BoletoComponent.Configuration {
         BoletoComponent.Configuration(style: style,
+                                      payment: nil,
                                       shopperInformation: shopperInfo,
                                       showEmailAddress: showEmailAddress)
     }

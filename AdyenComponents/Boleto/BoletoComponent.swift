@@ -84,6 +84,7 @@ public final class BoletoComponent: PaymentComponent,
     
     private lazy var formComponent: FormComponent = {
         let configuration = AbstractPersonalInformationComponent.Configuration(style: configuration.style,
+                                                                               payment: payment,
                                                                                shopperInformation: configuration.shopperInformation,
                                                                                localizationParameters: configuration.localizationParameters)
         let component = FormComponent(paymentMethod: paymentMethod,

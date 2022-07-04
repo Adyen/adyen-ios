@@ -30,7 +30,7 @@ extension CardViewController {
         private let addressViewModelBuilder: AddressViewModelBuilder
 
         internal init(formStyle: FormComponentStyle,
-                      payment: Payment? = nil,
+                      payment: Payment?,
                       configuration: CardComponent.Configuration,
                       shopperInformation: PrefilledShopperInformation?,
                       cardLogos: [FormCardLogosItem.CardTypeLogo],

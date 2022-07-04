@@ -101,7 +101,9 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           context: context,
-                                          configuration: .init(style: achComponentStyle, billingAddressCountryCodes: ["US", "UK"]),
+                                          configuration: .init(style: achComponentStyle,
+                                                               payment: nil,
+                                                               billingAddressCountryCodes: ["US", "UK"]),
                                           publicKeyProvider: PublicKeyProviderMock())
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -184,7 +186,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
     
     func testBigTitle() {
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
-        let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
+        let config = ACHDirectDebitComponent.Configuration(payment: nil,
+                                                           billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: method,
                                           context: context,
                                           configuration: config,
@@ -199,7 +202,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     
     func testRequiresModalPresentation() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
-        let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
+        let config = ACHDirectDebitComponent.Configuration(payment: nil, billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           context: context,
                                           configuration: config,
@@ -209,7 +212,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
     func testStopLoading() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
-        let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
+        let config = ACHDirectDebitComponent.Configuration(payment: nil, billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           context: context,
                                           configuration: config,
@@ -290,7 +293,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           context: context,
-                                          configuration: .init(showsBillingAddress: false),
+                                          configuration: .init(payment: nil, showsBillingAddress: false),
                                           publicKeyProvider: PublicKeyProviderMock())
 
         // When

@@ -23,7 +23,7 @@ public final class MBWayComponent: AbstractPersonalInformationComponent {
     ///   - configuration: The component's configuration.
     public init(paymentMethod: MBWayPaymentMethod,
                 context: AdyenContext,
-                configuration: Configuration = .init()) {
+                configuration: Configuration = .init(payment: nil)) {
         self.mbWayPaymentMethod = paymentMethod
         super.init(paymentMethod: paymentMethod,
                    context: context,

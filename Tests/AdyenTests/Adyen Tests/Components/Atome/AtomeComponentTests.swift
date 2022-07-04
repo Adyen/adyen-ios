@@ -23,7 +23,8 @@ class AtomeComponentTests: XCTestCase {
         style = FormComponentStyle()
         sut = AtomeComponent(paymentMethod: paymentMethod,
                              context: context,
-                             configuration: AtomeComponent.Configuration(style: style))
+                             configuration: AtomeComponent.Configuration(style: style,
+                                                                         payment: nil))
     }
 
     override func tearDownWithError() throws {

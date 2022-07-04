@@ -36,7 +36,8 @@ class MBWayComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomTableName() throws {
-        let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
+        let config = MBWayComponent.Configuration(payment: nil,
+                                                  localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                   context: context,
                                  configuration: config)
@@ -51,7 +52,7 @@ class MBWayComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomKeySeparator() throws {
-        let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
+        let config = MBWayComponent.Configuration(payment: nil, localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                   context: context,
                                  configuration: config)
@@ -89,7 +90,7 @@ class MBWayComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        let config = MBWayComponent.Configuration(style: style)
+        let config = MBWayComponent.Configuration(style: style, payment: nil)
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                   context: context,
                                  configuration: config)
@@ -176,7 +177,7 @@ class MBWayComponentTests: XCTestCase {
 
     func testMBWayPrefilling() throws {
         // Given
-        let config = MBWayComponent.Configuration(shopperInformation: shopperInformation)
+        let config = MBWayComponent.Configuration(payment: nil, shopperInformation: shopperInformation)
         let prefillSut = MBWayComponent(paymentMethod: paymentMethod,
                                                 context: context,
                                         configuration: config)
@@ -197,7 +198,7 @@ class MBWayComponentTests: XCTestCase {
         // Given
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                   context: context,
-                                 configuration: MBWayComponent.Configuration())
+                                 configuration: MBWayComponent.Configuration(payment: nil))
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .milliseconds(300))
@@ -214,7 +215,7 @@ class MBWayComponentTests: XCTestCase {
         // Given
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                   context: context,
-                                 configuration: MBWayComponent.Configuration())
+                                 configuration: MBWayComponent.Configuration(payment: nil))
 
         // When
         sut.viewWillAppear(viewController: sut.viewController)

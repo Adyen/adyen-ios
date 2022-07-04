@@ -23,7 +23,7 @@ class PaymentComponentSubject: PaymentComponent {
 
     public init(context: AdyenContext,
                 delegate: PaymentComponentDelegate,
-                payment: Payment? = nil,
+                payment: Payment?,
                 order: PartialPaymentOrder?,
                 paymentMethod: PaymentMethod) {
         self.context = context
@@ -31,5 +31,6 @@ class PaymentComponentSubject: PaymentComponent {
         self.payment = payment
         self.order = order
         self.paymentMethod = paymentMethod
+        self.payment = payment
     }
 }

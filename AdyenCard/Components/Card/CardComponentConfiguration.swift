@@ -179,7 +179,7 @@ extension CardComponent {
         ///   - billingAddress: Billing address fields configurations.
         ///   - payment: The payment information.
         public init(style: FormComponentStyle = FormComponentStyle(),
-                    payment: Payment? = nil,
+                    payment: Payment?,
                     shopperInformation: PrefilledShopperInformation? = nil,
                     localizationParameters: LocalizationParameters? = nil,
                     showsHolderNameField: Bool = false,
@@ -209,7 +209,9 @@ extension CardComponent {
         internal func bcmcConfiguration() -> Configuration {
             var storedCardConfiguration = stored
             storedCardConfiguration.showsSecurityCodeField = false
-            var configuration = Configuration(showsHolderNameField: showsHolderNameField,
+            var configuration = Configuration(style: style,
+                                              payment: payment,
+                                              showsHolderNameField: showsHolderNameField,
                                               showsStorePaymentMethodField: showsStorePaymentMethodField,
                                               showsSecurityCodeField: false,
                                               storedCardConfiguration: storedCardConfiguration,

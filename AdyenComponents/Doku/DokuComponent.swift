@@ -23,7 +23,7 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
     ///   - configuration: The component's configuration.
     public init(paymentMethod: DokuPaymentMethod,
                 context: AdyenContext,
-                configuration: Configuration = .init()) {
+                configuration: Configuration = .init(payment: nil)) {
         self.dokuPaymentMethod = paymentMethod
         super.init(paymentMethod: paymentMethod,
                    context: context,

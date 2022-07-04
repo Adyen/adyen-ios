@@ -256,7 +256,8 @@ class SessionTests: XCTestCase {
                                        context: context)
         let dropInComponent = DropInComponent(paymentMethods: expectedPaymentMethods,
                                               context: context,
-                                              configuration: .init(context: context),
+                                              configuration: .init(context: context,
+                                                                   payment: nil),
                                               title: nil)
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
@@ -510,7 +511,8 @@ class SessionTests: XCTestCase {
     }
     
     func testSessionAsDropInDelegate() throws {
-        let config = DropInComponent.Configuration(context: context)
+        let config = DropInComponent.Configuration(context: context,
+                                                   payment: nil)
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)

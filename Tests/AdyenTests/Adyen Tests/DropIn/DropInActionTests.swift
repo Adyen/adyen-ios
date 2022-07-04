@@ -27,7 +27,8 @@ class DropInActionsTests: XCTestCase {
     }
 
     func testOpenRedirectActionOnDropIn() {
-        let config = DropInComponent.Configuration(context: context)
+        let config = DropInComponent.Configuration(context: context,
+                                                   payment: nil)
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
@@ -52,7 +53,8 @@ class DropInActionsTests: XCTestCase {
     }
 
     func testOpenExternalApp() {
-        let config = DropInComponent.Configuration(context: context)
+        let config = DropInComponent.Configuration(context: context,
+                                                   payment: nil)
         config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
 
         let waitExpectation = expectation(description: "Expect a callback")

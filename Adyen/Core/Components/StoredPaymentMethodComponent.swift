@@ -30,7 +30,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
     ///   - context: The context object.
     ///   - payment: The payment information.
     public init(paymentMethod: StoredPaymentMethod,
-                payment: Payment? = nil,
+                payment: Payment?,
                 context: AdyenContext) {
         self.storedPaymentMethod = paymentMethod
         self.context = context
