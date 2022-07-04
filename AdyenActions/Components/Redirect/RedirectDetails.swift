@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -52,7 +52,7 @@ public struct RedirectDetails: AdditionalDetails {
     }
     
     internal func extractKeyValuesFromURL() -> [(CodingKeys, String)]? {
-        let queryParameters = returnURL.queryParameters
+        let queryParameters = returnURL.adyen.queryParameters
 
         if let redirectResult = queryParameters[CodingKeys.redirectResult.rawValue]?.removingPercentEncoding {
             return [(.redirectResult, redirectResult)]

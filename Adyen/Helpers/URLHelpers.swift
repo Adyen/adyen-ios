@@ -1,15 +1,21 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
+/// So that any `URL` instance will inherit the `adyen` scope.
 /// :nodoc:
-public extension URL {
+extension URL: AdyenCompatible {}
+
+/// Adds helper functionality to any `URL` instance through the `adyen` property.
+/// :nodoc:
+public extension AdyenScope where Base == URL {
+
     var queryParameters: [String: String] {
-        let components = URLComponents(url: self, resolvingAgainstBaseURL: true)
+        let components = URLComponents(url: base, resolvingAgainstBaseURL: true)
         let queryItems = components?.queryItems ?? []
         
         return Dictionary(uniqueKeysWithValues: queryItems.map {
@@ -18,6 +24,6 @@ public extension URL {
     }
     
     var isHttp: Bool {
-        scheme == "http" || scheme == "https"
+        base.scheme == "http" || base.scheme == "https"
     }
 }
