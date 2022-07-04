@@ -75,8 +75,33 @@ extension CardComponent {
         /// When nil, all countries are provided.
         public var billingAddressCountryCodes: [String]?
         
-        /// Card brands for which the billing address fields should be optional.
-        public var billingAddressOptionalForBrands: Set<CardType> = []
+        /// Indicates the requirement level of the address fields.
+        public var billingAddressRequirementPolicy: RequirementPolicy = .required
+        
+        /// Indicates the requirement level of a field.
+        public enum RequirementPolicy {
+            
+            /// Field is required.
+            case required
+            
+            /// Field is optional.
+            case optional
+            
+            /// Field is optional only for provided card types.
+            case optionalForCardTypes(Set<CardType>)
+        }
+        
+        /// :nodoc:
+        internal func isBillingAddressOptional(for cardTypes: [CardType]) -> Bool {
+            switch billingAddressRequirementPolicy {
+            case .required:
+                return false
+            case .optional:
+                return true
+            case let .optionalForCardTypes(optionalCardTypes):
+                return optionalCardTypes.isDisjoint(with: cardTypes) == false
+            }
+        }
 
         /// Configuration of Card component.
         /// - Parameters:
@@ -106,7 +131,7 @@ extension CardComponent {
                     allowedCardTypes: [CardType]? = nil,
                     installmentConfiguration: InstallmentConfiguration? = nil,
                     billingAddressCountryCodes: [String]? = nil,
-                    billingAddressOptionalForBrands: Set<CardType> = []) {
+                    billingAddressRequirementPolicy: RequirementPolicy = .required) {
             self.showsHolderNameField = showsHolderNameField
             self.showsSecurityCodeField = showsSecurityCodeField
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
@@ -117,7 +142,7 @@ extension CardComponent {
             self.socialSecurityNumberMode = socialSecurityNumberMode
             self.installmentConfiguration = installmentConfiguration
             self.billingAddressCountryCodes = billingAddressCountryCodes
-            self.billingAddressOptionalForBrands = billingAddressOptionalForBrands
+            self.billingAddressRequirementPolicy = billingAddressRequirementPolicy
         }
 
         internal func bcmcConfiguration() -> Configuration {
