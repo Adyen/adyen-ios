@@ -113,7 +113,7 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
                                              bankAccountNumber: data.bankAccountNumber,
                                              bankLocationId: data.bankLocationId)
         confirmationPresenter?.startLoading()
-        submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
     }
 
     // MARK: - Private

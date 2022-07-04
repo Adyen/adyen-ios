@@ -21,7 +21,9 @@ extension AbstractPersonalInformationComponent: LoadingComponent {
         formViewController.view.isUserInteractionEnabled = false
         do {
             let details = try createPaymentDetails()
-            submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
+            submit(data: PaymentComponentData(paymentMethodDetails: details,
+                                              amount: payment?.amount,
+                                              order: order))
         } catch {
             delegate?.didFail(with: error, from: self)
         }

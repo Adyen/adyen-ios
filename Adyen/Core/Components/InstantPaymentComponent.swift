@@ -7,7 +7,9 @@
 import Foundation
 
 /// A component that handles payment methods that don't need any payment detail to be filled.
-public final class InstantPaymentComponent: PaymentComponent {
+public final class InstantPaymentComponent: PaymentComponent, PaymentAwareComponent {
+
+    public var payment: Payment?
 
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -39,7 +41,9 @@ public final class InstantPaymentComponent: PaymentComponent {
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     public func initiatePayment() {
         let details = InstantPaymentDetails(type: paymentMethod.type)
-        let paymentData = self.paymentData ?? PaymentComponentData(paymentMethodDetails: details, order: order)
+        let paymentData = self.paymentData ?? PaymentComponentData(paymentMethodDetails: details,
+                                                                   amount: payment?.amount,
+                                                                   order: order)
 
         sendTelemetryEvent()
         submit(data: paymentData)

@@ -13,6 +13,8 @@ import Foundation
  [API Reference](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__example_payments-klarna)
  */
 public struct PaymentComponentData {
+
+    internal let internalAmount: Amount?
     
     /// The payment method details submitted by the payment component.
     public let paymentMethod: PaymentMethodDetails
@@ -25,7 +27,7 @@ public struct PaymentComponentData {
 
     /// The payment amount.
     public var amount: Amount? {
-        order?.remainingAmount
+        internalAmount ?? order?.remainingAmount
     }
     
     /// The installments object.
@@ -86,11 +88,13 @@ public struct PaymentComponentData {
     ///   - installments: Installments selection if specified.
     @_spi(AdyenInternal)
     public init(paymentMethodDetails: PaymentMethodDetails,
+                amount: Amount?,
                 order: PartialPaymentOrder?,
                 storePaymentMethod: Bool = false,
                 browserInfo: BrowserInfo? = nil,
                 checkoutAttemptId: String? = nil,
                 installments: Installments? = nil) {
+        self.internalAmount = amount
         self.paymentMethod = paymentMethodDetails
         self.order = order
         self.storePaymentMethod = storePaymentMethod
@@ -102,6 +106,7 @@ public struct PaymentComponentData {
     @_spi(AdyenInternal)
     public func replacingOrder(with order: PartialPaymentOrder) -> PaymentComponentData {
         PaymentComponentData(paymentMethodDetails: paymentMethod,
+                             amount: internalAmount,
                              order: order,
                              storePaymentMethod: storePaymentMethod,
                              browserInfo: browserInfo,
@@ -112,6 +117,7 @@ public struct PaymentComponentData {
     @_spi(AdyenInternal)
     public func replacingAmount(with amount: Amount) -> PaymentComponentData {
         PaymentComponentData(paymentMethodDetails: paymentMethod,
+                             amount: internalAmount,
                              order: order,
                              storePaymentMethod: storePaymentMethod,
                              browserInfo: browserInfo,
@@ -124,6 +130,7 @@ public struct PaymentComponentData {
         guard let checkoutAttemptId = checkoutAttemptId else { return self }
 
         return PaymentComponentData(paymentMethodDetails: paymentMethod,
+                                    amount: internalAmount,
                                     order: order,
                                     storePaymentMethod: storePaymentMethod,
                                     browserInfo: browserInfo,
@@ -140,6 +147,7 @@ public struct PaymentComponentData {
     public func dataByAddingBrowserInfo(completion: @escaping ((_ newData: PaymentComponentData) -> Void)) {
         BrowserInfo.initialize {
             completion(PaymentComponentData(paymentMethodDetails: paymentMethod,
+                                            amount: internalAmount,
                                             order: order,
                                             storePaymentMethod: storePaymentMethod,
                                             browserInfo: $0,

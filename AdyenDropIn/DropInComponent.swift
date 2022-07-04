@@ -27,7 +27,7 @@ public final class DropInComponent: NSObject,
     AnyDropInComponent,
     ActionHandlingComponent {
 
-    private var configuration: Configuration
+    internal var configuration: Configuration
 
     internal var paymentInProgress: Bool = false
 
@@ -42,6 +42,11 @@ public final class DropInComponent: NSObject,
     /// The context object for this component.
     @_spi(AdyenInternal)
     public var context: AdyenContext
+
+    /// The payment information
+    public var payment: Payment? {
+        configuration.payment
+    }
     
     /// Initializes the drop in component.
     ///

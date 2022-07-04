@@ -20,6 +20,11 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     public var paymentMethod: PaymentMethod {
         issuerListPaymentMethod
     }
+
+    /// The payment information.
+    public var payment: Payment? {
+        configuration.payment
+    }
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -72,7 +77,9 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
                 
                 let details = IssuerListDetails(paymentMethod: self.issuerListPaymentMethod,
                                                 issuer: issuer.identifier)
-                self.submit(data: PaymentComponentData(paymentMethodDetails: details, order: self.order))
+                self.submit(data: PaymentComponentData(paymentMethodDetails: details,
+                                                       amount: self.payment?.amount,
+                                                       order: self.order))
                 listViewController.startLoading(for: listItem)
             }
             

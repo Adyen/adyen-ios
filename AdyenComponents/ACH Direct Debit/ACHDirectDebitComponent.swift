@@ -116,7 +116,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
                                                 encryptedBankRoutingNumber: encryptedBankRoutingNumber,
                                                 billingAddress: billingAddressItem.value)
             
-            submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
+            submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
         } catch {
             delegate?.didFail(with: error, from: self)
         }

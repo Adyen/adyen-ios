@@ -38,6 +38,7 @@ extension CardComponent {
                                       socialSecurityNumber: cardViewController.socialSecurityNumber)
             
             let data = PaymentComponentData(paymentMethodDetails: details,
+                                            amount: payment?.amount,
                                             order: order,
                                             storePaymentMethod: cardViewController.storePayment,
                                             installments: cardViewController.installments)
