@@ -199,7 +199,7 @@ class ComponentManagerTests: XCTestCase {
 
     func testShopperInformationInjectionShouldSetShopperInformationOnAffirmComponent() throws {
         // Given
-        configuration.shopper = shopperInformation
+        configuration.shopperInformation = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    context: context,
                                    configuration: configuration,
@@ -216,7 +216,7 @@ class ComponentManagerTests: XCTestCase {
 
     func testShopperInformationInjectionShouldSetShopperInformationOnDokuComponent() throws {
         // Given
-        configuration.shopper = shopperInformation
+        configuration.shopperInformation = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    context: context,
                                    configuration: configuration,
@@ -233,7 +233,7 @@ class ComponentManagerTests: XCTestCase {
 
     func testShopperInformationInjectionShouldSetShopperInformationOnMBWayComponent() throws {
         // Given
-        configuration.shopper = shopperInformation
+        configuration.shopperInformation = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    context: context,
                                    configuration: configuration,
@@ -250,7 +250,7 @@ class ComponentManagerTests: XCTestCase {
 
     func testShopperInformationInjectionShouldSetShopperInformationOnBasicPersonalInfoFormComponent() throws {
         // Given
-        configuration.shopper = shopperInformation
+        configuration.shopperInformation = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    context: context,
                                    configuration: configuration,
@@ -267,7 +267,7 @@ class ComponentManagerTests: XCTestCase {
 
     func testShopperInformationInjectionShouldSetShopperInformationOnBoletoComponent() throws {
         // Given
-        configuration.shopper = shopperInformation
+        configuration.shopperInformation = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    context: context,
                                    configuration: configuration,
@@ -284,7 +284,7 @@ class ComponentManagerTests: XCTestCase {
 
     func testShopperInformationInjectionShouldSetShopperInformationOnCardComponent() throws {
         // Given
-        configuration.shopper = shopperInformation
+        configuration.shopperInformation = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    context: context,
                                    configuration: configuration,
@@ -302,7 +302,7 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnAtomeComponent() throws {
         // Given
 
-        configuration.shopper = shopperInformation
+        configuration.shopperInformation = shopperInformation
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    context: context,
                                    configuration: configuration,
