@@ -39,6 +39,9 @@ public class ListItem: FormItem {
 
     /// The flag to indicate if an icon is a custom image that should not be tempered.
     public let canModifyIcon: Bool
+
+    /// The flag to indicate if the icon image can be hidden or not.
+    public var canHideIcon: Bool
     
     /// Initializes the list item.
     ///
@@ -50,18 +53,21 @@ public class ListItem: FormItem {
     ///                               should be shown in the item's cell.
     ///   - selectionHandler: The closure to execute when an item is selected.
     ///   - canModifyIcon: The flag to indicate that image could be tampered.
+    ///   - canHideIcon: The flag to indicate if the icon image can be hidden or not.
     public init(title: String,
                 imageURL: URL? = nil,
                 trailingText: String? = nil,
                 style: ListItemStyle = ListItemStyle(),
                 selectionHandler: (() -> Void)? = nil,
-                canModifyIcon: Bool = true) {
+                canModifyIcon: Bool = true,
+                canHideIcon: Bool = false) {
         self.title = title
         self.imageURL = imageURL
         self.trailingText = trailingText
         self.style = style
         self.selectionHandler = selectionHandler
         self.canModifyIcon = canModifyIcon
+        self.canHideIcon = canHideIcon
     }
     
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {

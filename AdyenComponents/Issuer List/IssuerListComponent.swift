@@ -61,15 +61,21 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
         listViewController.delegate = self
         let issuers = issuerListPaymentMethod.issuers
         let items = issuers.map { issuer -> ListItem in
+
             var listItem = ListItem(title: issuer.name, style: configuration.style.listItem)
             listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
-            listItem.imageURL = LogoURLProvider.logoURL(for: issuer,
-                                                        localizedParameters: configuration.localizationParameters,
-                                                        paymentMethod: issuerListPaymentMethod,
-                                                        environment: context.apiContext.environment)
+            if issuerListPaymentMethod.type == .onlineBankingCZ || issuerListPaymentMethod.type == .onlineBankingSK {
+                listItem.canHideIcon = true
+            } else {
+                listItem.imageURL = LogoURLProvider.logoURL(for: issuer,
+                                                               localizedParameters: configuration.localizationParameters,
+                                                               paymentMethod: issuerListPaymentMethod,
+                                                               environment: context.apiContext.environment)
+            }
             listItem.selectionHandler = { [weak self] in
                 guard let self = self else { return }
                 
+                // open a intermidiate view then on click of continue button open issuers details list
                 let details = IssuerListDetails(paymentMethod: self.issuerListPaymentMethod,
                                                 issuer: issuer.identifier)
                 self.submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.amountToPay, order: self.order))
@@ -136,3 +142,6 @@ public typealias EntercashComponent = IssuerListComponent
 
 /// Provides an issuer selection list for OpenBanking payments.
 public typealias OpenBankingComponent = IssuerListComponent
+
+/// Provides an issuer selection list for OnlineBanking payments.
+public typealias OnlineBankingComponent = IssuerListComponent

@@ -12,6 +12,7 @@ import UIKit
 public final class ListItemView: UIView, AnyFormItemView {
     
     public var childItemViews: [AnyFormItemView] = []
+    private var viewConstraints: [NSLayoutConstraint] = []
     
     /// Initializes the list item view.
     public init() {
@@ -65,7 +66,6 @@ public final class ListItemView: UIView, AnyFormItemView {
         trailingTextLabel.accessibilityIdentifier = item?.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "trailingTextLabel")
         }
-        
         imageView.imageURL = item?.imageURL
     }
     
@@ -74,7 +74,11 @@ public final class ListItemView: UIView, AnyFormItemView {
         guard item?.canModifyIcon == true else {
             return imageView.layer.borderWidth = 0
         }
-
+        if item?.canHideIcon == true {
+            viewConstraints.removeAll()
+            imageSize = .zero
+            configureConstraints()
+        }
         imageView.clipsToBounds = style.image.clipsToBounds
         imageView.layer.borderWidth = style.image.borderWidth
         imageView.layer.borderColor = style.image.borderColor?.cgColor
@@ -141,10 +145,10 @@ public final class ListItemView: UIView, AnyFormItemView {
     
     // MARK: - Layout
     
-    private let imageSize = CGSize(width: 40, height: 26)
+    private var imageSize = CGSize(width: 40, height: 26)
     
     private func configureConstraints() {
-        let constraints = [
+        viewConstraints = [
             imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
             imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             imageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
@@ -168,7 +172,7 @@ public final class ListItemView: UIView, AnyFormItemView {
 
         trailingTextLabel.setContentHuggingPriority(.required, for: .horizontal)
         
-        NSLayoutConstraint.activate(constraints)
+        NSLayoutConstraint.activate(viewConstraints)
     }
     
     // MARK: - Trait Collection
