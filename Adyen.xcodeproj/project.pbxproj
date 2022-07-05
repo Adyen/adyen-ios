@@ -268,7 +268,6 @@
 		E76EC6882412581E009C6E2F /* FormTextInputItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC6872412581E009C6E2F /* FormTextInputItem.swift */; };
 		E76EC6972417F36A009C6E2F /* FormTextInputItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC6962417F36A009C6E2F /* FormTextInputItemView.swift */; };
 		E76EEDA7267CEA3F00BEB3C6 /* CardComponentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EEDA6267CEA3F00BEB3C6 /* CardComponentDelegate.swift */; };
-		E77377D72631695000BCE511 /* RegionRepositoryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77377D62631695000BCE511 /* RegionRepositoryTest.swift */; };
 		E77377E6263171D000BCE511 /* JSON in Resources */ = {isa = PBXBuildFile; fileRef = E77377E5263171D000BCE511 /* JSON */; };
 		E773EA3A25221C4600119499 /* ThrottlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E773EA3925221C4600119499 /* ThrottlerTests.swift */; };
 		E773EA3C2523432B00119499 /* CardTypeProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E773EA3B2523432B00119499 /* CardTypeProviderMock.swift */; };
@@ -1232,7 +1231,6 @@
 		E76EC6872412581E009C6E2F /* FormTextInputItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextInputItem.swift; sourceTree = "<group>"; };
 		E76EC6962417F36A009C6E2F /* FormTextInputItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextInputItemView.swift; sourceTree = "<group>"; };
 		E76EEDA6267CEA3F00BEB3C6 /* CardComponentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentDelegate.swift; sourceTree = "<group>"; };
-		E77377D62631695000BCE511 /* RegionRepositoryTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionRepositoryTest.swift; sourceTree = "<group>"; };
 		E77377E5263171D000BCE511 /* JSON */ = {isa = PBXFileReference; lastKnownFileType = folder; path = JSON; sourceTree = "<group>"; };
 		E773EA35251E26BE00119499 /* Throttler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throttler.swift; sourceTree = "<group>"; };
 		E773EA3925221C4600119499 /* ThrottlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrottlerTests.swift; sourceTree = "<group>"; };
@@ -3126,7 +3124,6 @@
 				F923283925A49559002C5BC4 /* PhoneExtensionsRepositoryTests.swift */,
 				F9838D22263193E000963483 /* BalanceCheckerTests.swift */,
 				E774A23B25DD72D300503C40 /* LogoGeneratorTests.swift */,
-				E77377D62631695000BCE511 /* RegionRepositoryTest.swift */,
 				E7768BDB26B416C3000851B3 /* DateValidationTests.swift */,
 			);
 			path = Utilities;
@@ -5158,7 +5155,6 @@
 				E73C567F25EFCC4200B57758 /* IssuerListComponentTests.swift in Sources */,
 				E9E3DAC6221ECF6300697074 /* CardNumberValidatorTests.swift in Sources */,
 				F9D644E424D2FA310059CBE3 /* EmailValidatorTests.swift in Sources */,
-				E77377D72631695000BCE511 /* RegionRepositoryTest.swift in Sources */,
 				F9639B4D24E298C70073F38A /* SimpleSchedulerTests.swift in Sources */,
 				C9BB460427622D9B00E6730B /* BACSConfirmationViewProtocolMock.swift in Sources */,
 				F9D644E724D40C7C0059CBE3 /* MBWayComponentTests.swift in Sources */,
