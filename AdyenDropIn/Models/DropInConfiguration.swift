@@ -113,9 +113,6 @@ public extension DropInComponent {
         /// Use this property to enforce a custom collection of card types.
         public var allowedCardTypes: [CardType]?
 
-        /// Indicates the card brands excluded from the supported brands.
-        public var excludedCardTypes: Set<CardType> = [.bcmc]
-
         /// Installments options to present to the user.
         public var installmentConfiguration: InstallmentConfiguration?
         
@@ -158,8 +155,8 @@ public extension DropInComponent {
             self.billingAddress = billingAddress
         }
         
-        public var cardComponentConfiguration: CardComponent.Configuration {
-            CardComponent.Configuration(payment: nil,
+        internal var cardComponentConfiguration: CardComponent.Configuration {
+            CardComponent.Configuration(payment: nil, // value will be set by ComponentManager
                                         showsHolderNameField: showsHolderNameField,
                                         showsStorePaymentMethodField: showsStorePaymentMethodField,
                                         showsSecurityCodeField: showsSecurityCodeField,

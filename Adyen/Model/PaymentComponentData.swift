@@ -27,7 +27,7 @@ public struct PaymentComponentData {
 
     /// The payment amount.
     public var amount: Amount? {
-        internalAmount ?? order?.remainingAmount
+        order?.remainingAmount ?? internalAmount
     }
     
     /// The installments object.
@@ -117,7 +117,7 @@ public struct PaymentComponentData {
     @_spi(AdyenInternal)
     public func replacingAmount(with amount: Amount) -> PaymentComponentData {
         PaymentComponentData(paymentMethodDetails: paymentMethod,
-                             amount: internalAmount,
+                             amount: amount,
                              order: order,
                              storePaymentMethod: storePaymentMethod,
                              browserInfo: browserInfo,

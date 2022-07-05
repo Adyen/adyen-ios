@@ -58,9 +58,6 @@ public final class InstantPaymentComponent: PaymentComponent {
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     public func initiatePayment() {
-
-        let paymentData = self.paymentData
-
         sendTelemetryEvent()
         submit(data: paymentData)
     }

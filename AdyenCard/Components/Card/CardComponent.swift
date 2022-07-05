@@ -129,11 +129,11 @@ public class CardComponent: PresentableComponent,
     
     // MARK: - Stored Card
     
-    internal lazy var storedCardComponent: (PaymentComponent & PresentableComponent & PaymentAwareComponent)? = {
+    internal lazy var storedCardComponent: (PaymentComponent & PresentableComponent)? = {
         guard let paymentMethod = paymentMethod as? StoredCardPaymentMethod else {
             return nil
         }
-        var component: PaymentComponent & PresentableComponent & PaymentAwareComponent
+        var component: PaymentComponent & PresentableComponent
         if configuration.stored.showsSecurityCodeField {
             let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, payment: payment, context: context)
             storedComponent.localizationParameters = configuration.localizationParameters

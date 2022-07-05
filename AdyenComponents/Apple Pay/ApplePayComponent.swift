@@ -35,8 +35,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     internal var paymentAuthorizationCompletion: ((PKPaymentAuthorizationStatus) -> Void)?
 
     internal var finalizeCompletion: (() -> Void)?
-
-    internal let order: PartialPaymentOrder?
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -79,7 +77,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         self.paymentAuthorizationViewController = viewController
         self.applePayPaymentMethod = paymentMethod
         self.applePayPayment = configuration.applePayPayment
-        self.order = nil
         super.init()
 
         viewController.delegate = self
