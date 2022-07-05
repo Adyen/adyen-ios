@@ -7,16 +7,14 @@
 import Foundation
 
 /// A component that handles payment methods that don't need any payment detail to be filled.
-public final class InstantPaymentComponent: PaymentComponent, PaymentAwareComponent {
-
-    public var payment: Payment?
+public final class InstantPaymentComponent: PaymentComponent {
 
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext
 
     /// The ready to submit payment data.
-    public let paymentData: PaymentComponentData?
+    public let paymentData: PaymentComponentData
 
     /// The payment method.
     public let paymentMethod: PaymentMethod
@@ -29,21 +27,39 @@ public final class InstantPaymentComponent: PaymentComponent, PaymentAwareCompon
     /// - Parameters:
     ///   - paymentMethod: The payment method.
     ///   - paymentData: The ready to submit payment data.
-    ///   - apiContext: The API context.
+    ///   - context: The context object for this component.
     public init(paymentMethod: PaymentMethod,
-                paymentData: PaymentComponentData?,
+                paymentData: PaymentComponentData,
                 context: AdyenContext) {
         self.paymentMethod = paymentMethod
         self.paymentData = paymentData
         self.context = context
     }
 
+    /// Initializes a new instance of `InstantPaymentComponent`.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The payment method.
+    ///   - context: The context object for this component.
+    ///   - amount: The amount for this payment.
+    ///   - order: The partial order for this payment.
+    public init(paymentMethod: PaymentMethod,
+                context: AdyenContext,
+                amount: Amount?,
+                order: PartialPaymentOrder?) {
+        self.paymentMethod = paymentMethod
+        self.context = context
+
+        let details = InstantPaymentDetails(type: paymentMethod.type)
+        self.paymentData = PaymentComponentData(paymentMethodDetails: details,
+                                                amount: amount,
+                                                order: order)
+    }
+
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     public func initiatePayment() {
-        let details = InstantPaymentDetails(type: paymentMethod.type)
-        let paymentData = self.paymentData ?? PaymentComponentData(paymentMethodDetails: details,
-                                                                   amount: payment?.amount,
-                                                                   order: order)
+
+        let paymentData = self.paymentData
 
         sendTelemetryEvent()
         submit(data: paymentData)

@@ -31,11 +31,17 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     internal func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
-        StoredPaymentMethodComponent(paymentMethod: paymentMethod, payment: paymen, context: context)
+        StoredPaymentMethodComponent(paymentMethod: paymentMethod,
+                                     context: context,
+                                     configuration: .init(payment: paymen,
+                                                          localizationParameters: configuration.localizationParameters))
     }
 
     internal func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent? {
-        StoredPaymentMethodComponent(paymentMethod: paymentMethod, payment: paymen, context: context)
+        StoredPaymentMethodComponent(paymentMethod: paymentMethod,
+                                     context: context,
+                                     configuration: .init(payment: paymen,
+                                                          localizationParameters: configuration.localizationParameters))
     }
 
     internal func build(paymentMethod: CardPaymentMethod) -> PaymentComponent? {
@@ -74,8 +80,9 @@ extension ComponentManager: PaymentComponentBuilder {
         guard let classObject = loadTheConcreteWeChatPaySDKActionComponentClass() else { return nil }
         guard classObject.isDeviceSupported() else { return nil }
         return InstantPaymentComponent(paymentMethod: paymentMethod,
-                                       paymentData: nil,
-                                       context: context)
+                                       context: context,
+                                       amount: paymen?.amount,
+                                       order: order)
     }
 
     internal func build(paymentMethod: QiwiWalletPaymentMethod) -> PaymentComponent? {
@@ -134,8 +141,9 @@ extension ComponentManager: PaymentComponentBuilder {
 
     internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
         InstantPaymentComponent(paymentMethod: paymentMethod,
-                                paymentData: nil,
-                                context: context)
+                                context: context,
+                                amount: paymen?.amount,
+                                order: order)
     }
 
     internal func build(paymentMethod: AtomePaymentMethod) -> PaymentComponent? {

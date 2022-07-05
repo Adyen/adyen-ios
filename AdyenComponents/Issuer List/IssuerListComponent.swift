@@ -107,7 +107,7 @@ extension IssuerListComponent: TrackableComponent {}
 extension IssuerListComponent {
     
     /// Configuration for Issuer List type components.
-    public struct Configuration: AnyBasicComponentConfiguration {
+    public struct Configuration: AnyPresentableComponentConfiguration {
 
         public var payment: Payment?
         

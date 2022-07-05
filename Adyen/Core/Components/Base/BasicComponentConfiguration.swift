@@ -9,24 +9,29 @@ import Foundation
 /// Any component's most basic configuration.
 public protocol AnyBasicComponentConfiguration: Localizable {
 
-    associatedtype StyleType
-    
-    /// The form component style.
-    var style: StyleType { get }
-
     /// The payment information.
     var payment: Payment? { get }
 }
 
+/// Any presentable payment component basic configuration.
+public protocol AnyPresentableComponentConfiguration: AnyBasicComponentConfiguration {
+
+    associatedtype StyleType
+
+    /// The UI style of the component.
+    var style: StyleType { get }
+
+}
+
 /// The configuration of any component thats aware of shoppers' personal information.
-public protocol AnyPersonalInformationConfiguration: AnyBasicComponentConfiguration {
+public protocol AnyPersonalInformationConfiguration: AnyPresentableComponentConfiguration {
     
     /// The shopper information to be prefilled.
     var shopperInformation: PrefilledShopperInformation? { get }
 }
 
 /// Any component's most basic configuration.
-public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
+public struct BasicComponentConfiguration: AnyPresentableComponentConfiguration {
 
     public var payment: Payment?
 

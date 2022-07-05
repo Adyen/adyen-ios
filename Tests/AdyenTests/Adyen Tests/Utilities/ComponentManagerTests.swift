@@ -118,7 +118,7 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.storedComponents.count, 4)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
         
-        XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters?.tableName == "AdyenUIHost" }.count, 2)
+        XCTAssertEqual(sut.storedComponents.compactMap { ($0 as? StoredPaymentMethodComponent)?.configuration.localizationParameters }.filter { $0.tableName == "AdyenUIHost" }.count, 2)
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
@@ -134,7 +134,7 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.storedComponents.count, 4)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
         
-        XCTAssertEqual(sut.storedComponents.compactMap { $0 as? Localizable }.filter { $0.localizationParameters == configuration.localizationParameters }.count, 2)
+        XCTAssertEqual(sut.storedComponents.compactMap { ($0 as? StoredPaymentMethodComponent)?.configuration.localizationParameters }.filter { $0.keySeparator == "_" }.count, 2)
     }
 
     func testOrderInjection() throws {

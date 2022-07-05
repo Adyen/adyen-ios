@@ -139,8 +139,12 @@ public class CardComponent: PresentableComponent,
             storedComponent.localizationParameters = configuration.localizationParameters
             component = storedComponent
         } else {
-            let storedComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod, payment: payment, context: context)
-            storedComponent.localizationParameters = configuration.localizationParameters
+            let storedConfiguration: StoredPaymentMethodComponent.Configuration
+            storedConfiguration = .init(payment: payment,
+                                        localizationParameters: configuration.localizationParameters)
+            let storedComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod,
+                                                               context: context,
+                                                               configuration: storedConfiguration)
             component = storedComponent
         }
         return component
