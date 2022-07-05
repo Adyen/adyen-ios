@@ -29,7 +29,7 @@ extension PaymentComponent {
     
     /// Submits payment data to the payment delegate.
     /// - Parameters:
-    ///   - data: The Payment data to be submited
+    ///   - data: The Payment data to be submitted
     ///   - component: The component from which the payment originates.
     public func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
         let component = component ?? self
