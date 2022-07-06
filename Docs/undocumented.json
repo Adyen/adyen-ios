@@ -29,6 +29,13 @@
       "warning": "undocumented"
     },
     {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenComponents/Apple Pay/ApplePayComponentExtensions.swift",
+      "line": 119,
+      "symbol": "ApplePayComponent.Configuration.update(amount:localeIdentifier:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenDropIn/DropInComponentDelegate.swift",
       "line": 62,
       "symbol": "StoredPaymentMethodsDelegate",
