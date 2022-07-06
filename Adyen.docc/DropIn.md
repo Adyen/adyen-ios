@@ -1,22 +1,47 @@
 # DropIn
 
-The Drop-in handles the presentation of available payment methods and the subsequent entry of a customer's payment details. It is initialized with the response of `/paymentMethods`, and provides everything you need to make an API call to `/payments` and `/payments/details`.
+The Drop-in handles the presentation of available payment methods and the subsequent entry of a customer's payment details. It is initialized with the payment methods of the `/sessions` response, and handles the entire checkout flow under the hood for most of your cases.
 
-### Presenting the Drop-in
+### Setting up the Drop-in
 
-The Drop-in requires the response of the `/paymentMethods` endpoint to be initialized. To pass the response to Drop-in, decode the response to the `PaymentMethods` structure:
-
-```swift
-let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: response)
-```
-
-All Components need an `APIContext`. An instance of `APIContext` wraps your client key and an environment.
-Please read more [here](https://docs.adyen.com/development-resources/client-side-authentication) about the client key and how to get.
+All Components need an `AdyenContext`. An instance of `AdyenContext` wraps your client key, environment, analytics configuration and so on.
+Please read more [here](https://docs.adyen.com/development-resources/client-side-authentication) about the client key and how to get one.
 Use **Environment.test** for environment. When you're ready to accept live payments, change the value to one of our [live environments](https://adyen.github.io/adyen-ios/Docs/Structs/Environment.html)
 
 ```swift
 let apiContext = APIContext(clientKey: clientKey, environment: Environment.test)
-let configuration = DropInComponent.Configuration(apiContext: apiContext)
+let context = AdyenContext(apiContext: apiContext, analyticsConfiguration: analyticsConfiguration)
+let configuration = DropInComponent.Configuration(context: context)
+```
+
+Create an instance of `AdyenSession.Configuration` with the response you received from the `/sessions` call and the `AdyenContext` instance.
+
+```swift
+let configuration = AdyenSession.Configuration(sessionIdentifier: response.sessionId,
+                                               initialSessionData: response.sessionData,
+                                               context: context)
+```
+
+Call the static `initialize` function of the `AdyenSession` by providing the configuration and the delegates, which will asynchronously create and return the session instance.
+
+```swift
+AdyenSession.initialize(with: configuration, delegate: self, presentationDelegate: self) { [weak self] result in
+    switch result {
+    case let .success(session):
+        // store the session object
+        self?.session = session
+    case let .failure(error):
+        // handle the error
+    }
+}
+```
+
+Create a configuration object for `DropInComponent`. Check specific payment method pages to confirm if you need to include additional required parameters.
+
+```swift
+// Check specific payment method pages to confirm if you need to configure additional required parameters.
+let dropInConfiguration = DropInComponent.Configuration(context: context)
+
 ```
 
 Some payment methods need additional configuration. For example `ApplePayComponent`. These payment method specific configuration parameters can be set in an instance of `DropInComponent.Configuration`:
@@ -31,63 +56,51 @@ let applePayment = try ApplePayPayment(countryCode: "US",
                                        currencyCode: "USD",
                                        summaryItems: summaryItems)
 
-let configuration = DropInComponent.Configuration(apiContext: apiContext)
+let dropInConfiguration = DropInComponent.Configuration(context: context)
 configuration.applePay = .init(payment: applePayment,
                                merchantIdentifier: "merchant.com.adyen.MY_MERCHANT_ID")
 ```
 
-Also for voucher payment methods like Doku variants, in order for the `DokuComponent` to enable the shopper to save the voucher, access to the shopper photos is requested, so a suitable text need to be added to key  `NSPhotoLibraryAddUsageDescription` in the application Info.plist.
+Also for voucher payment methods like Doku variants, in order for the `DokuComponent` to enable the shopper to save the voucher, access to the shopper photos is requested, so a suitable text needs to be added to the `NSPhotoLibraryAddUsageDescription` key in the application `Info.plist`.
 
-After serializing the payment methods and creating the configuration, the Drop-in is ready to be initialized. Assign a `delegate` and use the `viewController` property to present the Drop-in on the screen:
+### Presenting the Drop-in
+
+Initialize the `DropInComponent` class and set the `AdyenSession` instance as the `delegate` and `partialPaymentDelegate` (if needed) of the `DropInComponent` instance.
 
 ```swift
-let dropInComponent = DropInComponent(paymentMethods: paymentMethods, configuration: configuration)
-dropInComponent.delegate = self
+let dropInComponent = DropInComponent(paymentMethods: session.sessionContext.paymentMethods,
+                                     configuration: dropInConfiguration)
+ 
+// Keep the Drop-in instance to avoid it being destroyed after the function is executed.
+self.dropInComponent = dropInComponent
+ 
+// Set session as the delegate for Drop-in
+dropInComponent.delegate = session
+dropInComponent.partialPaymentDelegate = session
+ 
 present(dropInComponent.viewController, animated: true)
-```
-#### Implementing DropInComponentDelegate
 
-To handle the results of the Drop-in, the following methods of `DropInComponentDelegate` should be implemented:
+```
+
+#### Implementing `AdyenSessionDelegate`
+
+`AdyenSession` makes the necessary calls to handle the whole flow and notifies your application through its delegate, `AdyenSessionDelegate`. To handle the results of the Drop-in, the following methods of `AdyenSessionDelegate` should be implemented:
 
 ---
 
 ```swift
-func didSubmit(_ data: PaymentComponentData, for paymentMethod: PaymentMethod, from component: DropInComponent)
+func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession)
 ```
 
-This method is invoked when the customer has selected a payment method and entered its payment details. The payment details can be read from `data.paymentMethod` and can be submitted as-is to `/payments`.
+This method will be invoked when the component finishes without any further steps needed by the application. The application just needs to dismiss the `DropInComponent`.
 
 ---
 
 ```swift
-func didProvide(_ data: ActionComponentData, from component: DropInComponent)
-```
-
-This method is invoked when additional details are provided by the Drop-in after the first call to `/payments`. This happens, for example, during the 3D Secure 2 authentication flow or any redirect flow. The additional details can be retrieved from `data.details` and can be submitted to `/payments/details`.
-
----
-
-```swift
-func didFail(with error: Error, from component: DropInComponent)
+func didFail(with error: Error, from component: Component, session: AdyenSession)
 ```
 
 This method is invoked when an error occurred during the use of the Drop-in. Dismiss the Drop-in's view controller and display an error message.
-
----
-
-```swift
-func didComplete(from component: DropInComponent)
-```
-
-This method is invoked when the action component finishes, without any further steps needed by the application, for example in case of voucher payment methods. The application just needs to dismiss the `DropInComponent`.
-
----
-
-```swift
-func didCancel(component: PaymentComponent, from dropInComponent: DropInComponent)
-```
-
-This optional method is invoked when user closes a payment component managed by Drop-in.
 
 ---
 
@@ -101,36 +114,8 @@ This optional method is invoked after a redirect to an external application has 
 
 ### Handling an action
 
-When `/payments` or `/payments/details` responds with a non-final result and an `action`, you can use one of the following techniques.
+Handling an action is handled by the Drop-in via its delegate `AdyenSession`.
 
-#### Using Drop-in
-
-In case of Drop-in integration you must use build-in action handler on the current instance of `DropInComponent`:
-
-```swift
-let action = try JSONDecoder().decode(Action.self, from: actionData)
-dropInComponent.handle(action)
-```
-
-#### Using components
-
-In case of using individual components - not Drop-in -, create and persist an instance of `AdyenActionComponent`:
-
-```swift
-lazy var actionComponent: AdyenActionComponent = {
-    let handler = AdyenActionComponent(apiContext: apiContext)
-    handler.delegate = self
-    handler.presentationDelegate = self
-    return handler
-}()
-```
-
-Than use it to handle the action:
-
-```swift
-let action = try JSONDecoder().decode(Action.self, from: actionData)
-actionComponent.handle(action)
-```
 
 #### Receiving redirect
 
