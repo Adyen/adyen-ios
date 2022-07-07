@@ -121,7 +121,7 @@ internal final class ComponentManager {
             return nil
         }
 
-        guard let paymentComponent = paymentMethod.buildComponent(using: self) else { return nil }
+        guard var paymentComponent = paymentMethod.buildComponent(using: self) else { return nil }
         paymentComponent.order = order
 
         if var paymentComponent = paymentComponent as? Localizable {

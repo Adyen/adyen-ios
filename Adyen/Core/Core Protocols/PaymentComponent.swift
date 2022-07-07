@@ -7,9 +7,11 @@
 import Foundation
 
 /// Any Object that is aware of a `PaymentMethod`.
-public protocol PaymentMethodAware: AnyObject {
+public protocol PaymentMethodAware {
+
     /// The payment method for which to gather payment details.
     var paymentMethod: PaymentMethod { get }
+    
 }
 
 /// A component that handles the initial phase of getting payment details to initiate a payment.

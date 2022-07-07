@@ -7,7 +7,7 @@
 import Foundation
 
 /// Any component with a partial payment property.
-public protocol PartialPaymentOrderAware: AnyObject {
+public protocol PartialPaymentOrderAware {
 
     /// The partial payment order if any.
     var order: PartialPaymentOrder? { get set }
