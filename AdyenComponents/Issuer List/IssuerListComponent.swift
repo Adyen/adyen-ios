@@ -21,7 +21,6 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
         issuerListPaymentMethod
     }
 
-    /// The payment information.
     public var payment: Payment? {
         configuration.payment
     }
@@ -107,7 +106,7 @@ extension IssuerListComponent: TrackableComponent {}
 extension IssuerListComponent {
     
     /// Configuration for Issuer List type components.
-    public struct Configuration: AnyPresentableComponentConfiguration {
+    public struct Configuration: AnyBasicComponentConfiguration {
 
         public var payment: Payment?
         

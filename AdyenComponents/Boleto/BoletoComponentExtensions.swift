@@ -14,6 +14,7 @@ extension BoletoComponent {
 
         public var payment: Payment?
         
+        /// Describes the component's UI style.
         public let style: FormComponentStyle
         
         public var localizationParameters: LocalizationParameters?

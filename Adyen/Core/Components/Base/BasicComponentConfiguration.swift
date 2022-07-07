@@ -7,34 +7,21 @@
 import Foundation
 
 /// Any component's most basic configuration.
-public protocol AnyBasicComponentConfiguration: Localizable {
-
-    /// The payment information.
-    var payment: Payment? { get }
-}
-
-/// Any presentable payment component basic configuration.
-public protocol AnyPresentableComponentConfiguration: AnyBasicComponentConfiguration {
-
-    associatedtype StyleType
-
-    /// The UI style of the component.
-    var style: StyleType { get }
-
-}
+public protocol AnyBasicComponentConfiguration: Localizable, PaymentAware {}
 
 /// The configuration of any component thats aware of shoppers' personal information.
-public protocol AnyPersonalInformationConfiguration: AnyPresentableComponentConfiguration {
+public protocol AnyPersonalInformationConfiguration: AnyBasicComponentConfiguration {
     
     /// The shopper information to be prefilled.
     var shopperInformation: PrefilledShopperInformation? { get }
 }
 
 /// Any component's most basic configuration.
-public struct BasicComponentConfiguration: AnyPresentableComponentConfiguration {
+public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
 
     public var payment: Payment?
 
+    /// The UI style of the component.
     public var style: FormComponentStyle
     
     public var localizationParameters: LocalizationParameters?
@@ -52,6 +39,7 @@ public struct BasicComponentConfiguration: AnyPresentableComponentConfiguration 
         self.localizationParameters = localizationParameters
         self.payment = payment
     }
+
 }
 
 /// The configuration of any component thats aware of shoppers' personal information.
@@ -59,6 +47,7 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
 
     public var payment: Payment?
 
+    /// The UI style of the component.
     public var style: FormComponentStyle
     
     public var shopperInformation: PrefilledShopperInformation?
@@ -81,4 +70,5 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
         self.localizationParameters = localizationParameters
         self.payment = payment
     }
+
 }
