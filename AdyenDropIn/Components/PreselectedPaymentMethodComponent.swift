@@ -21,7 +21,7 @@ internal protocol PreselectedPaymentMethodComponentDelegate: AnyObject {
 /// A component that presents a single preselected payment method and option to open more payment methods.
 internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     PresentableComponent,
-    PaymentAwareComponent,
+    PaymentAware,
     Localizable,
     Cancellable {
     

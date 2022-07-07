@@ -12,7 +12,7 @@ import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
 public final class ACHDirectDebitComponent: PaymentComponent,
-    PaymentAwareComponent,
+    PaymentAware,
     PresentableComponent,
     LoadingComponent {
     

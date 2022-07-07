@@ -10,7 +10,7 @@ import UIKit
 ///  A component that handle stored payment methods.
 public final class StoredPaymentMethodComponent: PaymentComponent,
     PresentableComponent,
-    PaymentAwareComponent {
+    PaymentAware {
 
     /// Component's configuration.
     public var configuration: Configuration
