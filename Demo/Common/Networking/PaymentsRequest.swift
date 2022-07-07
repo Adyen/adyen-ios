@@ -32,7 +32,7 @@ internal struct PaymentsRequest: APIRequest {
 
         // Important: for the demo purpose we are setting amount here.
         // If you choose not to provide amount to the payment component - it could be specified by your backend.
-        let amount = data.amount ?? currentConfiguration.amount
+        let amount = data.amountToPay ?? currentConfiguration.amount
         
         try container.encode(data.paymentMethod.encodable, forKey: .details)
         try container.encode(data.storePaymentMethod, forKey: .storePaymentMethod)

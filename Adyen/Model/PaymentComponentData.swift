@@ -14,7 +14,7 @@ import Foundation
  */
 public struct PaymentComponentData {
 
-    internal let internalAmount: Amount?
+    internal let amount: Amount?
     
     /// The payment method details submitted by the payment component.
     public let paymentMethod: PaymentMethodDetails
@@ -26,8 +26,8 @@ public struct PaymentComponentData {
     public let order: PartialPaymentOrder?
 
     /// The payment amount.
-    public var amount: Amount? {
-        order?.remainingAmount ?? internalAmount
+    public var amountToPay: Amount? {
+        order?.remainingAmount ?? amount
     }
     
     /// The installments object.
@@ -94,7 +94,7 @@ public struct PaymentComponentData {
                 browserInfo: BrowserInfo? = nil,
                 checkoutAttemptId: String? = nil,
                 installments: Installments? = nil) {
-        self.internalAmount = amount
+        self.amount = amount
         self.paymentMethod = paymentMethodDetails
         self.order = order
         self.storePaymentMethod = storePaymentMethod
@@ -106,7 +106,7 @@ public struct PaymentComponentData {
     @_spi(AdyenInternal)
     public func replacingOrder(with order: PartialPaymentOrder) -> PaymentComponentData {
         PaymentComponentData(paymentMethodDetails: paymentMethod,
-                             amount: internalAmount,
+                             amount: amount,
                              order: order,
                              storePaymentMethod: storePaymentMethod,
                              browserInfo: browserInfo,
@@ -130,7 +130,7 @@ public struct PaymentComponentData {
         guard let checkoutAttemptId = checkoutAttemptId else { return self }
 
         return PaymentComponentData(paymentMethodDetails: paymentMethod,
-                                    amount: internalAmount,
+                                    amount: amount,
                                     order: order,
                                     storePaymentMethod: storePaymentMethod,
                                     browserInfo: browserInfo,
@@ -147,7 +147,7 @@ public struct PaymentComponentData {
     public func dataByAddingBrowserInfo(completion: @escaping ((_ newData: PaymentComponentData) -> Void)) {
         BrowserInfo.initialize {
             completion(PaymentComponentData(paymentMethodDetails: paymentMethod,
-                                            amount: internalAmount,
+                                            amount: amount,
                                             order: order,
                                             storePaymentMethod: storePaymentMethod,
                                             browserInfo: $0,
