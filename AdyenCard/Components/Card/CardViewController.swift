@@ -12,6 +12,7 @@ import UIKit
 
 internal protocol CardViewControllerProtocol {
     func update(storePaymentMethodFieldVisibility isVisible: Bool)
+    func update(storePaymentMethodFieldValue isOn: Bool)
 }
 
 internal class CardViewController: FormViewController {
@@ -107,9 +108,37 @@ internal class CardViewController: FormViewController {
     internal var selectedBrand: String? {
         items.numberContainerItem.numberItem.currentBrand?.type.rawValue
     }
+    
+    internal var validAddress: PostalAddress? {
+        guard let address = address, isAddressValid(address: address) else { return nil }
+        return address
+    }
+    
+    private func isAddressValid(address: PostalAddress) -> Bool {
+        let fieldsValues: [String?]
+        
+        switch configuration.billingAddress.mode {
+        case .full:
+            fieldsValues = [address.city,
+                            address.country,
+                            address.postalCode,
+                            address.stateOrProvince,
+                            address.street,
+                            address.houseNumberOrName]
+        case .postalCode:
+            fieldsValues = [address.postalCode]
+        case .none:
+            fieldsValues = []
+        }
+        
+        let trimmedFieldsValues = fieldsValues.map {
+            $0?.trimmingCharacters(in: .whitespaces).adyen.nilIfEmpty
+        }
+        return trimmedFieldsValues.compactMap { $0 }.count == fieldsValues.count
+    }
 
-    internal var address: PostalAddress? {
-        switch configuration.billingAddressMode {
+    private var address: PostalAddress? {
+        switch configuration.billingAddress.mode {
         case .full:
             return items.billingAddressItem.value
         case .postalCode:
@@ -164,6 +193,21 @@ internal class CardViewController: FormViewController {
         }
         issuingCountryCode = binInfo.issuingCountryCode
         items.numberContainerItem.update(brands: brands)
+        
+        updateBillingAddressOptionalStatus(brands: brands)
+    }
+    
+    private func updateBillingAddressOptionalStatus(brands: [CardBrand]) {
+        let isOptional = configuration.billingAddress.isOptional(for: brands.map(\.type))
+        switch configuration.billingAddress.mode {
+        case .full:
+            items.billingAddressItem.updateOptionalStatus(isOptional: isOptional)
+        case .postalCode:
+            items.postalCodeItem.updateOptionalStatus(isOptional: isOptional)
+        case .none:
+            break
+        }
+        
     }
     
     /// Observe the current brand changes to update all other fields.
@@ -216,7 +260,7 @@ internal class CardViewController: FormViewController {
             append(installmentsItem)
         }
 
-        switch configuration.billingAddressMode {
+        switch configuration.billingAddress.mode {
         case .full:
             append(items.billingAddressItem)
         case .postalCode:
@@ -301,7 +345,13 @@ extension FormValueItem where ValueType == String {
 
 extension CardViewController: CardViewControllerProtocol {
     func update(storePaymentMethodFieldVisibility isVisible: Bool) {
-        items.storeDetailsItem.value = false
+        if !isVisible {
+            items.storeDetailsItem.value = false
+        }
         items.storeDetailsItem.isVisible = isVisible
+    }
+
+    func update(storePaymentMethodFieldValue isOn: Bool) {
+        items.storeDetailsItem.value = items.storeDetailsItem.isVisible && isOn
     }
 }

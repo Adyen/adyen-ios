@@ -107,7 +107,7 @@ class AnalyticsProviderTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    func testFetchCheckoutAttemptIdWhenCheckoutAttemptIdIsEnabledGivenFailureShouldCallCompletionWithNilValue() throws {
+    func testFetchCheckoutAttemptIdWhenAnalyticsIsEnabledGivenFailureShouldCallCompletionWithNilValue() throws {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = true
@@ -128,6 +128,44 @@ class AnalyticsProviderTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1)
+    }
+
+    func testFetchCheckoutAttemptIdWhenAnalyticsIsEnabledShouldSetCheckoutAttemptIdProperty() throws {
+        // Given
+        var analyticsConfiguration = AnalyticsConfiguration()
+        analyticsConfiguration.isEnabled = true
+        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
+
+        let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
+
+        let checkoutAttemptIdResponse = CheckoutAttemptIdResponse(identifier: expectedCheckoutAttemptId)
+        let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
+        apiClient.mockedResults = [checkoutAttemptIdResult]
+
+        // When
+        sut.fetchCheckoutAttemptId { _ in
+
+            // Then
+            XCTAssertEqual(expectedCheckoutAttemptId, self.sut.checkoutAttemptId)
+        }
+    }
+
+    func testFetchCheckoutAttemptIdWhenAnalyticsIsDisabledShouldNotSetCheckoutAttemptIdProperty() throws {
+        // Given
+        var analyticsConfiguration = AnalyticsConfiguration()
+        analyticsConfiguration.isEnabled = false
+        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
+
+        let checkoutAttemptIdResponse = CheckoutAttemptIdResponse(identifier: checkoutAttemptIdMockValue)
+        let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
+        apiClient.mockedResults = [checkoutAttemptIdResult]
+
+        // When
+        sut.fetchCheckoutAttemptId { _ in
+
+            // Then
+            XCTAssertNil(self.sut.checkoutAttemptId)
+        }
     }
 
     // MARK - Private

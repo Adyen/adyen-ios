@@ -33,13 +33,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
             applePayPayment.payment
         }
 
-        set {
-            do {
-                try update(payment: newValue)
-            } catch {
-                delegate?.didFail(with: error, from: self)
-            }
-        }
+        set {} // swiftlint:disable:this unused_setter_value
     }
 
     internal let configuration: Configuration

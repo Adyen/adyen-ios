@@ -9,7 +9,7 @@
     @_spi(AdyenInternal) import AdyenCard
 #endif
 #if canImport(AdyenComponents)
-    import AdyenComponents
+    @_spi(AdyenInternal) import AdyenComponents
 #endif
 #if canImport(AdyenActions)
     @_spi(AdyenInternal) import AdyenActions
@@ -176,10 +176,22 @@ internal final class ComponentManager {
             adyenPrint("Failed to instantiate ApplePayComponent because ApplePayConfiguration is missing")
             return nil
         }
+
+        let preApplePayConfig = PreApplePayComponent.Configuration(style: configuration.style.applePay,
+                                                                   localizationParameters: configuration.localizationParameters)
+
+        if let amount = order?.remainingAmount ?? remainingAmount {
+            let localIdentifier = amount.localeIdentifier ?? configuration.localizationParameters?.locale
+            let configuration = applePay.updating(amount: amount, localeIdentifier: localIdentifier)
+            if let component = try? PreApplePayComponent(paymentMethod: paymentMethod,
+                                                         context: context,
+                                                         configuration: preApplePayConfig,
+                                                         applePayConfiguration: configuration) {
+                return component
+            }
+        }
         
         do {
-            let preApplePayConfig = PreApplePayComponent.Configuration(style: configuration.style.applePay,
-                                                                       localizationParameters: configuration.localizationParameters)
             return try PreApplePayComponent(paymentMethod: paymentMethod,
                                             context: context,
                                             configuration: preApplePayConfig,

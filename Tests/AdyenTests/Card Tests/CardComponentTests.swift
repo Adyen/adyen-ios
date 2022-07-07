@@ -688,7 +688,7 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard])
         // Dummy public key
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .full
+        config.billingAddress.mode = .full
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: config,
@@ -824,7 +824,7 @@ class CardComponentTests: XCTestCase {
                                        fundingSource: .credit,
                                        brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .full
+        config.billingAddress.mode = .full
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: config)
@@ -882,7 +882,7 @@ class CardComponentTests: XCTestCase {
                                        fundingSource: .credit,
                                        brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .full
+        config.billingAddress.mode = .full
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: config)
@@ -934,7 +934,7 @@ class CardComponentTests: XCTestCase {
     func testAddressUK() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .full
+        config.billingAddress.mode = .full
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: config)
@@ -967,7 +967,7 @@ class CardComponentTests: XCTestCase {
     func testAddressSelectCountry() throws {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .full
+        config.billingAddress.mode = .full
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: config)
@@ -1022,7 +1022,7 @@ class CardComponentTests: XCTestCase {
     func testPostalCode() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .postalCode
+        config.billingAddress.mode = .postalCode
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: config,
@@ -1056,7 +1056,7 @@ class CardComponentTests: XCTestCase {
         
         self.fillCard(on: sut.viewController.view, with: Dummy.visaCard)
 
-        let postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.postalCodeItem")
+        let postalCodeItemView: FormTextItemView<FormPostalCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.postalCodeItem")
         XCTAssertEqual(postalCodeItemView!.titleLabel.text, "Postal code")
         XCTAssertTrue(postalCodeItemView!.alertLabel.isHidden)
         self.populate(textItemView: postalCodeItemView!, with: "12345")
@@ -1222,7 +1222,7 @@ class CardComponentTests: XCTestCase {
                                        fundingSource: .credit,
                                        brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .postalCode
+        config.billingAddress.mode = .postalCode
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: config)
@@ -1542,7 +1542,7 @@ class CardComponentTests: XCTestCase {
                                        fundingSource: .credit,
                                        brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .postalCode
+        config.billingAddress.mode = .postalCode
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: config)
@@ -1570,7 +1570,7 @@ class CardComponentTests: XCTestCase {
                                        fundingSource: .credit,
                                        brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .postalCode
+        config.billingAddress.mode = .postalCode
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: config)
@@ -1598,7 +1598,7 @@ class CardComponentTests: XCTestCase {
                                        fundingSource: .credit,
                                        brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .postalCode
+        config.billingAddress.mode = .postalCode
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: config)
@@ -1626,7 +1626,7 @@ class CardComponentTests: XCTestCase {
                                        fundingSource: .credit,
                                        brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .postalCode
+        config.billingAddress.mode = .postalCode
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: config)
@@ -1654,7 +1654,7 @@ class CardComponentTests: XCTestCase {
                                        fundingSource: .credit,
                                        brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration(showsHolderNameField: true)
-        config.billingAddressMode = .postalCode
+        config.billingAddress.mode = .postalCode
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: config)
@@ -1682,7 +1682,7 @@ class CardComponentTests: XCTestCase {
                                        fundingSource: .credit,
                                        brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .postalCode
+        config.billingAddress.mode = .postalCode
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: config)
@@ -1717,7 +1717,7 @@ class CardComponentTests: XCTestCase {
                                        fundingSource: .credit,
                                        brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .full
+        config.billingAddress.mode = .full
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: config)
@@ -1745,7 +1745,7 @@ class CardComponentTests: XCTestCase {
                                        brands: [.visa, .americanExpress, .masterCard])
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
-        configuration.billingAddressMode = .full
+        configuration.billingAddress.mode = .full
         configuration.shopperInformation = shopperInformation
 
         let prefilledSut = CardComponent(paymentMethod: method,
@@ -1784,7 +1784,7 @@ class CardComponentTests: XCTestCase {
                                        brands: [.visa, .americanExpress, .masterCard])
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
-        configuration.billingAddressMode = .postalCode
+        configuration.billingAddress.mode = .postalCode
         configuration.shopperInformation = shopperInformation
 
         let prefilledSut = CardComponent(paymentMethod: method,
@@ -1809,7 +1809,7 @@ class CardComponentTests: XCTestCase {
         let socialSecurityNumber = socialSecurityNumberView.item.value
         XCTAssertEqual(expectedSocialSecurityNumber, socialSecurityNumber)
 
-        let postalCodeView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.zipCode))
+        let postalCodeView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.zipCode))
         let expectedPostalCode = try XCTUnwrap(shopperInformation.billingAddress?.postalCode)
         let postalCode = postalCodeView.item.value
         XCTAssertEqual(expectedPostalCode, postalCode)
@@ -1823,7 +1823,7 @@ class CardComponentTests: XCTestCase {
                                        brands: [.visa, .americanExpress, .masterCard])
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
-        configuration.billingAddressMode = .full
+        configuration.billingAddress.mode = .full
 
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
@@ -1859,7 +1859,7 @@ class CardComponentTests: XCTestCase {
                                        brands: [.visa, .americanExpress, .masterCard])
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
-        configuration.billingAddressMode = .postalCode
+        configuration.billingAddress.mode = .postalCode
 
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
@@ -1881,7 +1881,7 @@ class CardComponentTests: XCTestCase {
         let socialSecurityNumber = socialSecurityNumberView.item.value
         XCTAssertTrue(socialSecurityNumber.isEmpty)
 
-        let postalCodeView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.zipCode))
+        let postalCodeView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.zipCode))
         let postalCode = postalCodeView.item.value
         XCTAssertTrue(postalCode.isEmpty)
     }
@@ -1889,8 +1889,8 @@ class CardComponentTests: XCTestCase {
     func testAddressWithSupportedCountries() {
         let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .full
-        config.billingAddressCountryCodes = ["UK"]
+        config.billingAddress.mode = .full
+        config.billingAddress.countryCodes = ["UK"]
         
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
@@ -1910,8 +1910,8 @@ class CardComponentTests: XCTestCase {
     func testAddressWithSupportedCountriesWithMatchingPrefill() {
         let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .full
-        config.billingAddressCountryCodes = ["US", "JP"]
+        config.billingAddress.mode = .full
+        config.billingAddress.countryCodes = ["US", "JP"]
         config.shopperInformation = shopperInformation
         
         let sut = CardComponent(paymentMethod: method,
@@ -1932,8 +1932,8 @@ class CardComponentTests: XCTestCase {
     func testAddressWithSupportedCountriesWithNonMatchingPrefill() {
         let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard])
         var config = CardComponent.Configuration()
-        config.billingAddressMode = .full
-        config.billingAddressCountryCodes = ["UK"]
+        config.billingAddress.mode = .full
+        config.billingAddress.countryCodes = ["UK"]
         config.shopperInformation = shopperInformation
         
         let sut = CardComponent(paymentMethod: method,
@@ -1949,6 +1949,242 @@ class CardComponentTests: XCTestCase {
         
         XCTAssertEqual(sut.cardViewController.items.billingAddressItem.supportedCountryCodes, ["UK"])
         XCTAssertEqual(countryItemView?.inputControl.label, "United Kingdom")
+    }
+    
+    func testOptionalInvalidFullAddressWithCertainSchemes() throws {
+        let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard])
+        var config = CardComponent.Configuration()
+        config.billingAddress.mode = .full
+        config.billingAddress.countryCodes = ["US"]
+        config.billingAddress.requirementPolicy = .optionalForCardTypes([.visa])
+        
+        let cardTypeProviderMock = BinInfoProviderMock()
+        cardTypeProviderMock.onFetch = {
+            $0(BinLookupResponse(brands: [CardBrand(type: .visa)],
+                                 issuingCountryCode: "US"))
+        }
+        
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: config,
+                                publicKeyProvider: PublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
+        
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+        
+        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        let view: UIView = sut.cardViewController.view
+
+        wait(for: .milliseconds(300))
+        
+        let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
+        let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
+        let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
+        
+        let postalCodeField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.fullAddressZipCode))
+        
+        let cityField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.city))
+        
+        populate(textItemView: securityCodeField, with: "737")
+        populate(textItemView: numberField, with: "4111 1120 1426 7661")
+        populate(textItemView: expiryDateField, with: "12/30")
+        
+        populate(textItemView: postalCodeField, with: "123")
+        populate(textItemView: cityField, with: "Amsterdam")
+        
+        wait(for: .milliseconds(800))
+        
+        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertTrue(data.paymentMethod is CardDetails)
+
+            XCTAssertNil(data.billingAddress)
+
+            sut.stopLoadingIfNeeded()
+            delegateExpectation.fulfill()
+        }
+        
+        tapSubmitButton(on: sut.viewController.view)
+
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func testOptionalValidFullAddressWithCertainSchemes() throws {
+        let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard])
+        var config = CardComponent.Configuration()
+        config.billingAddress.mode = .full
+        config.billingAddress.countryCodes = ["US"]
+        config.billingAddress.requirementPolicy = .optionalForCardTypes([.visa])
+        config.shopperInformation = shopperInformation
+        
+        let cardTypeProviderMock = BinInfoProviderMock()
+        cardTypeProviderMock.onFetch = {
+            $0(BinLookupResponse(brands: [CardBrand(type: .visa)],
+                                 issuingCountryCode: "US"))
+        }
+        
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: config,
+                                publicKeyProvider: PublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
+        
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+        
+        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "GBP"), countryCode: "GB")
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        let view: UIView = sut.cardViewController.view
+
+        wait(for: .milliseconds(300))
+        
+        let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
+        let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
+        let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
+        
+        populate(textItemView: securityCodeField, with: "737")
+        populate(textItemView: numberField, with: "4111 1120 1426 7661")
+        populate(textItemView: expiryDateField, with: "12/30")
+        
+        wait(for: .milliseconds(800))
+        
+        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertTrue(data.paymentMethod is CardDetails)
+
+            XCTAssertEqual(data.billingAddress, self.shopperInformation.billingAddress)
+
+            sut.stopLoadingIfNeeded()
+            delegateExpectation.fulfill()
+        }
+        
+        tapSubmitButton(on: sut.viewController.view)
+
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func testOptionalValidPostalAddressWithCertainSchemes() throws {
+        let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard])
+        var config = CardComponent.Configuration()
+        config.billingAddress.mode = .postalCode
+        config.billingAddress.countryCodes = ["US"]
+        config.billingAddress.requirementPolicy = .optionalForCardTypes([.visa])
+        config.shopperInformation = shopperInformation
+        
+        let cardTypeProviderMock = BinInfoProviderMock()
+        cardTypeProviderMock.onFetch = {
+            $0(BinLookupResponse(brands: [CardBrand(type: .visa)],
+                                 issuingCountryCode: "US"))
+        }
+        
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: config,
+                                publicKeyProvider: PublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
+        
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+        
+        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        let view: UIView = sut.cardViewController.view
+
+        wait(for: .milliseconds(300))
+        
+        let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
+        let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
+        let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
+        
+        let postalCodeField: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.zipCode))
+        
+        populate(textItemView: securityCodeField, with: "737")
+        populate(textItemView: numberField, with: "4111 1120 1426 7661")
+        populate(textItemView: expiryDateField, with: "12/30")
+        populate(textItemView: postalCodeField, with: "123")
+        
+        wait(for: .milliseconds(800))
+        
+        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertTrue(data.paymentMethod is CardDetails)
+
+            XCTAssertEqual(data.billingAddress, PostalAddress(postalCode: "123"))
+
+            sut.stopLoadingIfNeeded()
+            delegateExpectation.fulfill()
+        }
+        
+        tapSubmitButton(on: sut.viewController.view)
+
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+    
+    func testOptionalInvalidPostalAddressWithCertainSchemes() throws {
+        let method = CardPaymentMethod(type: .card, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard])
+        var config = CardComponent.Configuration()
+        config.billingAddress.mode = .postalCode
+        config.billingAddress.countryCodes = ["US"]
+        config.billingAddress.requirementPolicy = .optionalForCardTypes([.visa])
+        
+        let cardTypeProviderMock = BinInfoProviderMock()
+        cardTypeProviderMock.onFetch = {
+            $0(BinLookupResponse(brands: [CardBrand(type: .visa)],
+                                 issuingCountryCode: "US"))
+        }
+        
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: config,
+                                publicKeyProvider: PublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
+        
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+        
+        sut.payment = Payment(amount: Amount(value: 100, currencyCode: "USD"), countryCode: "US")
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        let view: UIView = sut.cardViewController.view
+
+        wait(for: .milliseconds(300))
+        
+        let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
+        let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
+        let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
+        
+        populate(textItemView: securityCodeField, with: "737")
+        populate(textItemView: numberField, with: "4111 1120 1426 7661")
+        populate(textItemView: expiryDateField, with: "12/30")
+        
+        wait(for: .milliseconds(800))
+        
+        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertTrue(data.paymentMethod is CardDetails)
+
+            XCTAssertNil(data.billingAddress)
+
+            sut.stopLoadingIfNeeded()
+            delegateExpectation.fulfill()
+        }
+        
+        tapSubmitButton(on: sut.viewController.view)
+
+        waitForExpectations(timeout: 10, handler: nil)
     }
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
@@ -2008,7 +2244,15 @@ class CardComponentTests: XCTestCase {
         static let holdername = "AdyenCard.CardComponent.holderNameItem"
         static let billingAddress = "AdyenCard.CardComponent.billingAddress"
         static let zipCode = "AdyenCard.CardComponent.postalCodeItem"
+        static let fullAddressZipCode = "AdyenCard.CardComponent.billingAddress.postalCode"
+        static let city = "AdyenCard.CardComponent.billingAddress.city"
+        static let houseNumberOrName = "AdyenCard.CardComponent.billingAddress.houseNumberOrName"
+        static let street = "AdyenCard.CardComponent.billingAddress.street"
+        static let stateOrProvince = "AdyenCard.CardComponent.billingAddress.stateOrProvince"
         static let socialSecurityNumber = "AdyenCard.CardComponent.socialSecurityNumberItem"
+        static let securityCode = "AdyenCard.CardComponent.securityCodeItem"
+        static let expiryDate = "AdyenCard.CardComponent.expiryDateItem"
+        static let cardNumber = "AdyenCard.FormCardNumberContainerItem.numberItem"
     }
 
     private var shopperInformation: PrefilledShopperInformation {

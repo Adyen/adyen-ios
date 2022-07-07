@@ -62,6 +62,13 @@ public class CardComponent: PresentableComponent,
         }
     }
     
+    /// The partial payment order if any.
+    public var order: PartialPaymentOrder? {
+        didSet {
+            storedCardComponent?.order = order
+        }
+    }
+    
     /// Initializes the card component.
     ///
     /// - Parameters:
@@ -146,6 +153,10 @@ public class CardComponent: PresentableComponent,
     /// - Parameter isVisible: Indicates whether to show the switch if `true` or to hide it if `false`.
     public func update(storePaymentMethodFieldVisibility isVisible: Bool) {
         cardViewController.update(storePaymentMethodFieldVisibility: isVisible)
+    }
+
+    public func update(storePaymentMethodFieldValue isOn: Bool) {
+        cardViewController.update(storePaymentMethodFieldValue: isOn)
     }
 
     // MARK: - Form Items

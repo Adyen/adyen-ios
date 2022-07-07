@@ -73,7 +73,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
                 // open a intermidiate view then on click of continue button open issuers details list
                 let details = IssuerListDetails(paymentMethod: self.issuerListPaymentMethod,
                                                 issuer: issuer.identifier)
-                self.submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.amountToPay, order: self.order))
+                self.submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.payment?.amount, order: self.order))
                 listViewController.startLoading(for: listItem)
             }
             

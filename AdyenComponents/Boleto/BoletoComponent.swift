@@ -193,7 +193,7 @@ extension BoletoComponent: ViewControllerDelegate {
 extension BoletoComponent: PaymentComponentDelegate {
     
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        delegate?.didSubmit(data, from: self)
+        submit(data: data, component: self)
     }
     
     public func didFail(with error: Error, from component: PaymentComponent) {

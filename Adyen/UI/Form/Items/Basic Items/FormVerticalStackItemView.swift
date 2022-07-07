@@ -107,7 +107,6 @@ extension FormVerticalStackItemView: SelfRenderingFormItemDelegate {
         removeObservers()
         prepareSubItems()
         stackView.setNeedsLayout()
-        views.first { $0.canBecomeFirstResponder }?.becomeFirstResponder()
     }
 
 }

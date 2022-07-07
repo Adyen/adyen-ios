@@ -31,7 +31,7 @@ internal final class PreApplePayComponent: PresentableComponent,
 
     private var isPresenting: Bool = false
 
-    private let payment: Payment
+    internal let amount: Amount
 
     private let applePayComponent: ApplePayComponent
 
@@ -49,7 +49,7 @@ internal final class PreApplePayComponent: PresentableComponent,
     internal let configuration: Configuration
     
     internal lazy var viewController: UIViewController = {
-        let view = PreApplePayView(model: createModel(with: payment.amount))
+        let view = PreApplePayView(model: createModel(with: amount))
         let viewController = ADYViewController(view: view, title: "Apple Pay")
         view.delegate = self
         
@@ -65,7 +65,7 @@ internal final class PreApplePayComponent: PresentableComponent,
         self.context = context
         self.paymentMethod = paymentMethod
         self.configuration = configuration
-        self.payment = applePayConfiguration.applePayPayment.payment
+        self.amount = applePayConfiguration.applePayPayment.payment.amount
         self.applePayComponent = try ApplePayComponent(paymentMethod: paymentMethod,
                                                        context: context,
                                                        configuration: applePayConfiguration)
@@ -92,7 +92,15 @@ internal final class PreApplePayComponent: PresentableComponent,
 extension PreApplePayComponent: PaymentComponentDelegate {
     
     internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        delegate?.didSubmit(data, from: self)
+        let checkoutAttemptId = component.context.analyticsProvider.checkoutAttemptId
+        let updatedData = PaymentComponentData(paymentMethodDetails: data.paymentMethod,
+                                               amount: data.amount,
+                                               order: data.order,
+                                               storePaymentMethod: data.storePaymentMethod,
+                                               browserInfo: data.browserInfo,
+                                               checkoutAttemptId: checkoutAttemptId,
+                                               installments: data.installments)
+        submit(data: updatedData, component: self)
     }
     
     internal func didFail(with error: Error, from component: PaymentComponent) {

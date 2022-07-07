@@ -28,13 +28,30 @@ public protocol PaymentComponent: PaymentAwareComponent, PaymentMethodAware {
 extension PaymentComponent {
     
     public func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
-        guard data.browserInfo == nil else {
-            delegate?.didSubmit(data, from: component ?? self)
+        let component = component ?? self
+        let checkoutAttemptId = component.context.analyticsProvider.checkoutAttemptId
+        var updatedData: PaymentComponentData
+
+        if data.checkoutAttemptId == checkoutAttemptId {
+            updatedData = data
+        } else {
+            updatedData = PaymentComponentData(paymentMethodDetails: data.paymentMethod,
+                                               amount: data.amount,
+                                               order: data.order,
+                                               storePaymentMethod: data.storePaymentMethod,
+                                               browserInfo: data.browserInfo,
+                                               checkoutAttemptId: checkoutAttemptId,
+                                               installments: data.installments)
+
+        }
+
+        guard updatedData.browserInfo == nil else {
+            delegate?.didSubmit(updatedData, from: component)
             return
         }
-        data.dataByAddingBrowserInfo { [weak self] in
+        updatedData.dataByAddingBrowserInfo { [weak self] in
             guard let self = self else { return }
-            self.delegate?.didSubmit($0, from: component ?? self)
+            self.delegate?.didSubmit($0, from: component)
         }
     }
 }
@@ -87,10 +104,6 @@ extension PaymentAwareComponent {
         set {
             objc_setAssociatedObject(self, &AssociatedKeys.order, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_COPY)
         }
-    }
-
-    public var amountToPay: Amount? {
-        order?.remainingAmount ?? payment?.amount
     }
 }
 

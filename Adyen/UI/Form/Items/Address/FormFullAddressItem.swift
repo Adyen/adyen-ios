@@ -12,6 +12,12 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
+    private var context: AddressViewModelBuilderContext {
+        didSet {
+            reloadFields()
+        }
+    }
+    
     private var items: [FormItem] = []
     
     private let localizationParameters: LocalizationParameters?
@@ -58,14 +64,15 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         self.localizationParameters = localizationParameters
         self.supportedCountryCodes = supportedCountryCodes
         self.addressViewModelBuilder = addressViewModelBuilder
+        self.context = .init(countryCode: initialCountry, isOptional: false)
         super.init(value: PostalAddress(), style: style)
 
         self.identifier = identifier
-        update(for: initialCountry)
+        reloadFields()
         
         bind(countrySelectItem.publisher, at: \.identifier, to: self, at: \.value.country)
         observe(countrySelectItem.publisher, eventHandler: { [weak self] event in
-            self?.update(for: event.element.identifier)
+            self?.context.countryCode = event.element.identifier
         })
     }
     
@@ -89,11 +96,15 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         return item
     }()
     
+    public func updateOptionalStatus(isOptional: Bool) {
+        context.isOptional = isOptional
+    }
+    
     // MARK: - Private
     
-    private func update(for countryCode: String) {
-        let subRegions = RegionRepository.subRegions(for: countryCode)
-        let viewModel = addressViewModelBuilder.build(countryCode: countryCode)
+    private func reloadFields() {
+        let subRegions = RegionRepository.subRegions(for: context.countryCode)
+        let viewModel = addressViewModelBuilder.build(context: context)
         
         items = [FormSpacerItem(),
                  headerItem.addingDefaultMargins(),
@@ -127,13 +138,13 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     }
     
     private func createPickerItem(from viewModel: AddressViewModel, subRegions: [Region]) -> FormItem {
-        let defaultRegion = subRegions.first { $0.identifier == initialCountry } ?? subRegions[0]
+        let defaultRegion = subRegions.first { $0.identifier == value.stateOrProvince } ?? subRegions[0]
         let item = FormRegionPickerItem(preselectedValue: defaultRegion,
                                         selectableValues: subRegions,
                                         style: style.textField)
         item.title = viewModel.labels[.stateOrProvince].map { localizedString($0, localizationParameters) }
         
-        bind(item: item, to: .stateOrProvince)
+        bind(item: item, to: .stateOrProvince, subRegions: subRegions)
         return item
     }
     
@@ -156,9 +167,20 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         return item
     }
     
-    private func bind(item: FormRegionPickerItem, to field: AddressField) {
+    private func bind(item: FormRegionPickerItem, to field: AddressField, subRegions: [Region]) {
         observers[field].map(remove)
+        publisherObservers[field].map(remove)
         observers[field] = bind(item.publisher, at: \.identifier, to: self, at: \.value.stateOrProvince)
+        func update(address: PostalAddress) {
+            let region = subRegions.first { subRegion in
+                subRegion.identifier == address.stateOrProvince
+            }
+            if let region = region {
+                item.value = RegionPickerItem(identifier: region.identifier, element: region)
+            }
+        }
+        update(address: value)
+        publisherObservers[.stateOrProvince] = observe(publisher, eventHandler: update(address:))
     }
     
     private func bind(item: FormTextInputItem, to field: AddressField) {
@@ -168,21 +190,27 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         let item = item
         switch field {
         case .street:
+            item.value = value.street ?? ""
             observers[.street] = bind(item.publisher, to: self, at: \.value.street)
             publisherObservers[.street] = observe(publisher) { item.value = $0.street ?? "" }
         case .houseNumberOrName:
+            item.value = value.houseNumberOrName ?? ""
             observers[.houseNumberOrName] = bind(item.publisher, to: self, at: \.value.houseNumberOrName)
             publisherObservers[.houseNumberOrName] = observe(publisher) { item.value = $0.houseNumberOrName ?? "" }
         case .apartment:
+            item.value = value.apartment ?? ""
             observers[.apartment] = bind(item.publisher, to: self, at: \.value.apartment)
             publisherObservers[.apartment] = observe(publisher) { item.value = $0.apartment ?? "" }
         case .postalCode:
+            item.value = value.postalCode ?? ""
             observers[.postalCode] = bind(item.publisher, to: self, at: \.value.postalCode)
             publisherObservers[.postalCode] = observe(publisher) { item.value = $0.postalCode ?? "" }
         case .city:
+            item.value = value.city ?? ""
             observers[.city] = bind(item.publisher, to: self, at: \.value.city)
             publisherObservers[.city] = observe(publisher) { item.value = $0.city ?? "" }
         case .stateOrProvince:
+            item.value = value.stateOrProvince ?? ""
             observers[.stateOrProvince] = bind(item.publisher, to: self, at: \.value.stateOrProvince)
             publisherObservers[.stateOrProvince] = observe(publisher) { item.value = $0.stateOrProvince ?? "" }
         case .country:

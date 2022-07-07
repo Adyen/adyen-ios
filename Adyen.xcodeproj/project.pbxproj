@@ -11,7 +11,8 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = C96A8E2B26CA800A000BB8C6 /* Build configuration list for PBXAggregateTarget "Localization" */;
 			buildPhases = (
-				C96A8E2C26CA801E000BB8C6 /* ShellScript */,
+				C96A8E2C26CA801E000BB8C6 /* Update Localization strings files */,
+				F986B551285B4208002A471C /* Update the LocalizationKey.swift file */,
 			);
 			dependencies = (
 			);
@@ -158,6 +159,8 @@
 		C97C16AA28059A5A00534419 /* TelemetryTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16A928059A5A00534419 /* TelemetryTrackerTests.swift */; };
 		C97C16AC280702B200534419 /* TelemetryFlavorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16AB280702B200534419 /* TelemetryFlavorTests.swift */; };
 		C97C16AD2807076400534419 /* AnalyticsProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0005B280468E100CE2EEC /* AnalyticsProviderMock.swift */; };
+		C981254E2851E9AF006D1374 /* PaymentComponentSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981254C2851E903006D1374 /* PaymentComponentSubject.swift */; };
+		C98125502851E9E4006D1374 /* PaymentComponentSubjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981254F2851E9E4006D1374 /* PaymentComponentSubjectTests.swift */; };
 		C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFD726946F0800AED849 /* AffirmComponent.swift */; };
 		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
 		C9B6683527C7CB7A006950B9 /* TelemetryTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B6683427C7CB7A006950B9 /* TelemetryTracker.swift */; };
@@ -659,6 +662,7 @@
 		F9838D392631AD1900963483 /* Balance.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9838D382631AD1900963483 /* Balance.swift */; };
 		F9838D452631AD3700963483 /* BalanceChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9838D442631AD3700963483 /* BalanceChecker.swift */; };
 		F9842CD025710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9842CCF25710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift */; };
+		F986B55728620289002A471C /* FormPostalCodeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F986B55628620289002A471C /* FormPostalCodeItem.swift */; };
 		F9885430272C078E00F34557 /* DisableStoredPaymentMethodRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F988542F272C078E00F34557 /* DisableStoredPaymentMethodRequest.swift */; };
 		F9885431272C078E00F34557 /* DisableStoredPaymentMethodRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F988542F272C078E00F34557 /* DisableStoredPaymentMethodRequest.swift */; };
 		F9885435272C17BD00F34557 /* PaymentMethodListComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9885432272C167800F34557 /* PaymentMethodListComponentDelegateMock.swift */; };
@@ -1202,6 +1206,8 @@
 		C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardSecurityCodeItemViewTests.swift; sourceTree = "<group>"; };
 		C97C16A928059A5A00534419 /* TelemetryTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryTrackerTests.swift; sourceTree = "<group>"; };
 		C97C16AB280702B200534419 /* TelemetryFlavorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryFlavorTests.swift; sourceTree = "<group>"; };
+		C981254C2851E903006D1374 /* PaymentComponentSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentSubject.swift; sourceTree = "<group>"; };
+		C981254F2851E9E4006D1374 /* PaymentComponentSubjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentSubjectTests.swift; sourceTree = "<group>"; };
 		C982FFD726946F0800AED849 /* AffirmComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponent.swift; sourceTree = "<group>"; };
 		C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmPaymentMethod.swift; sourceTree = "<group>"; };
 		C9B6683427C7CB7A006950B9 /* TelemetryTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryTracker.swift; sourceTree = "<group>"; };
@@ -1704,6 +1710,7 @@
 		F9842C66256D7A010063CE5A /* ThreeDSActionHandlerResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSActionHandlerResult.swift; sourceTree = "<group>"; };
 		F9842C9E256EBF5F0063CE5A /* ThreeDS2ClassicActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ClassicActionHandler.swift; sourceTree = "<group>"; };
 		F9842CCF25710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ClassicActionHandlerTests.swift; sourceTree = "<group>"; };
+		F986B55628620289002A471C /* FormPostalCodeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPostalCodeItem.swift; sourceTree = "<group>"; };
 		F988542F272C078E00F34557 /* DisableStoredPaymentMethodRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisableStoredPaymentMethodRequest.swift; sourceTree = "<group>"; };
 		F9885432272C167800F34557 /* PaymentMethodListComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListComponentDelegateMock.swift; sourceTree = "<group>"; };
 		F99262C324EECB9F00C9A60D /* ApplePayComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayComponentExtensions.swift; sourceTree = "<group>"; };
@@ -2333,6 +2340,15 @@
 			path = CardSecurityCodeItem;
 			sourceTree = "<group>";
 		};
+		C981254B2851E8E2006D1374 /* PaymentComponent */ = {
+			isa = PBXGroup;
+			children = (
+				C981254C2851E903006D1374 /* PaymentComponentSubject.swift */,
+				C981254F2851E9E4006D1374 /* PaymentComponentSubjectTests.swift */,
+			);
+			path = PaymentComponent;
+			sourceTree = "<group>";
+		};
 		C982FFD626945FCE00AED849 /* Affirm */ = {
 			isa = PBXGroup;
 			children = (
@@ -2918,6 +2934,7 @@
 			isa = PBXGroup;
 			children = (
 				E7085911261F1C8E00D0153B /* FormFullAddressItem.swift */,
+				F986B55628620289002A471C /* FormPostalCodeItem.swift */,
 				E7085CB6262DE14A00D0153B /* AddressStyle.swift */,
 				E795A27526404E9400321C48 /* AddressViewModel.swift */,
 				00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */,
@@ -3283,6 +3300,7 @@
 		E97B9717229D533B00505476 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				C981254B2851E8E2006D1374 /* PaymentComponent */,
 				F919DFA124ED599D0027976E /* AdyenActionComponentTests.swift */,
 				A009837B279859BE007E68C4 /* ACH Direct Debit */,
 				C96688BD26A6F72900DC7297 /* Affirm */,
@@ -4581,7 +4599,6 @@
 			buildConfigurationList = E2C0E04722097917008616F6 /* Build configuration list for PBXNativeTarget "Adyen" */;
 			buildPhases = (
 				E2C0E02E22097917008616F6 /* Headers */,
-				5A238BB3263A881F00758FEF /* Generate localization keys */,
 				E2C0E02F22097917008616F6 /* Sources */,
 				E2C0E03022097917008616F6 /* Frameworks */,
 				E2C0E03122097917008616F6 /* Resources */,
@@ -5121,7 +5138,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		5A238BB3263A881F00758FEF /* Generate localization keys */ = {
+		C96A8E2C26CA801E000BB8C6 /* Update Localization strings files */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -5129,34 +5146,17 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Adyen/Assets/en-US.lproj/Localizable.strings",
+				"",
 			);
-			name = "Generate localization keys";
+			name = "Update Localization strings files";
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(SRCROOT)/Adyen/Assets/Generated/LocalizationKey.swift",
+				"",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\nif [ \"${CONFIGURATION}\" = \"Debug\" ] &&\n   (! [ -z $(git diff HEAD --name-only $SCRIPT_INPUT_FILE_0) ]) && \n   [ -f $SRCROOT/Scripts/generate_localization_keys ]\nthen\n    echo \"Detected changes in Localizable.strings. Generating new LocalizationKey.swift\"\n    $SRCROOT/Scripts/generate_localization_keys $SCRIPT_INPUT_FILE_0 $SCRIPT_OUTPUT_FILE_0\nfi\n\n\n";
-		};
-		C96A8E2C26CA801E000BB8C6 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"$SRCROOT\"\n./Scripts/localization.sh\n";
+			shellScript = "#!/bin/bash\n\nif [ ! -f $SRCROOT/Internal/localization.sh ]; then\n   exit 0\nfi\n\n$SRCROOT/Internal/localization.sh\n";
 		};
 		E7388FC1260B68C400291DE7 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5319,6 +5319,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh \"$SRCROOT/$TARGETNAME\"\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/$TARGETNAME\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
+		};
+		F986B551285B4208002A471C /* Update the LocalizationKey.swift file */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Adyen/Assets/en-US.lproj/Localizable.strings",
+			);
+			name = "Update the LocalizationKey.swift file";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/Adyen/Assets/Generated/LocalizationKey.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\n\nif [ ! -f $SRCROOT/Internal/generate_localization_keys.swift ]; then\n   exit 0\nfi\n\nif [ ! -z $(git diff HEAD --name-only $SCRIPT_INPUT_FILE_0) ]\nthen\n    echo \"Detected changes in Localizable.strings. Generating new LocalizationKey.swift\"\n    swift $SRCROOT/Internal/generate_localization_keys.swift $SCRIPT_INPUT_FILE_0 $SCRIPT_OUTPUT_FILE_0\nfi\n";
 		};
 		F9A4A3012373235800D774E8 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5490,6 +5510,7 @@
 				F9EDB782239149AF00CFB3C9 /* CountryCodeValidator.swift in Sources */,
 				F9D5453F26872CFE00C9DF41 /* UIViewAnimation.swift in Sources */,
 				E9021DAA225789B1009CF7F4 /* Localization.swift in Sources */,
+				F986B55728620289002A471C /* FormPostalCodeItem.swift in Sources */,
 				E787C9D3246EC71B00B401E0 /* UIFontHelpers.swift in Sources */,
 				F96F44DD23BE487500871C1F /* LocalizationParameters.swift in Sources */,
 				E7085A8D2627132B00D0153B /* PostalAddress.swift in Sources */,
@@ -5685,6 +5706,7 @@
 				C9338020276A09E7005B66CD /* BACSDirectDebitComponentTrackerProtocolMock.swift in Sources */,
 				E9E3DABB221EA22F00697074 /* CardExpiryDateFormatterTests.swift in Sources */,
 				F9639B5624E3DB190073F38A /* PollingComponentTests.swift in Sources */,
+				C98125502851E9E4006D1374 /* PaymentComponentSubjectTests.swift in Sources */,
 				F9976BB526D90C6700D2D7CE /* MultibancoShareableVoucherViewProviderTests.swift in Sources */,
 				E7877803282409FF004A6366 /* ApplePayDelegateMock.swift in Sources */,
 				F99F08642383F2B000EBB948 /* FormTextItemViewTests.swift in Sources */,
@@ -5781,6 +5803,7 @@
 				F9885435272C17BD00F34557 /* PaymentMethodListComponentDelegateMock.swift in Sources */,
 				F9BA21BF246D36AC00D36A63 /* LazyOptionalTests.swift in Sources */,
 				E9021DF2225CC6D0009CF7F4 /* RedirectDetailsTests.swift in Sources */,
+				C981254E2851E9AF006D1374 /* PaymentComponentSubject.swift in Sources */,
 				F96F44E123BF5C2000871C1F /* LocalizationTests.swift in Sources */,
 				007D79232823BE7800382D31 /* UIApplicationExtension.swift in Sources */,
 				F9D5750E237475DB009C18B5 /* CardEncryptorCardTests.swift in Sources */,

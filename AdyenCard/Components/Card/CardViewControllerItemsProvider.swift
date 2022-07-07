@@ -55,7 +55,7 @@ extension CardViewController {
             // check and match the initial country from shopper prefill info
             // with the supported countries
             let initialCountry: String?
-            if let countryCodes = configuration.billingAddressCountryCodes, !countryCodes.isEmpty {
+            if let countryCodes = configuration.billingAddress.countryCodes, !countryCodes.isEmpty {
                 if let prefillCountryCode = shopperInformation?.billingAddress?.country,
                    countryCodes.contains(prefillCountryCode) {
                     initialCountry = prefillCountryCode
@@ -70,21 +70,16 @@ extension CardViewController {
                                        style: formStyle.addressStyle,
                                        localizationParameters: localizationParameters,
                                        identifier: identifier,
-                                       supportedCountryCodes: configuration.billingAddressCountryCodes,
+                                       supportedCountryCodes: configuration.billingAddress.countryCodes,
                                        addressViewModelBuilder: addressViewModelBuilder)
             shopperInformation?.billingAddress.map { item.value = $0 }
             item.style.backgroundColor = UIColor.Adyen.lightGray
             return item
         }()
 
-        internal lazy var postalCodeItem: FormTextItem = {
-            let zipCodeItem = FormTextInputItem(style: formStyle.textField)
-            zipCodeItem.title = localizedString(.postalCodeFieldTitle, localizationParameters)
-            zipCodeItem.placeholder = localizedString(.postalCodeFieldPlaceholder, localizationParameters)
-            zipCodeItem.validator = LengthValidator(minimumLength: 2, maximumLength: 30)
-            zipCodeItem.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
+        internal lazy var postalCodeItem: FormPostalCodeItem = {
+            let zipCodeItem = FormPostalCodeItem(style: formStyle.textField, localizationParameters: localizationParameters)
             zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "postalCodeItem")
-            zipCodeItem.contentType = .postalCode
             return zipCodeItem
         }()
 

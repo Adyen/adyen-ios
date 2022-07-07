@@ -11,6 +11,14 @@ import Foundation
 
 class AnalyticsProviderMock: AnalyticsProviderProtocol {
 
+    // MARK: - checkoutAttemptId
+
+    var checkoutAttemptId: String? {
+        get { return underlyingCheckoutAttemptId }
+        set(value) { underlyingCheckoutAttemptId = value }
+    }
+    var underlyingCheckoutAttemptId: String?
+
     // MARK: - sendTelemetryEvent
 
     var sendTelemetryEventCallsCount = 0
