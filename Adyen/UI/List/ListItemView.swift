@@ -74,11 +74,6 @@ public final class ListItemView: UIView, AnyFormItemView {
         guard item?.canModifyIcon == true else {
             return imageView.layer.borderWidth = 0
         }
-        if item?.canHideIcon == true {
-            viewConstraints.removeAll()
-            imageSize = .zero
-            configureConstraints()
-        }
         imageView.clipsToBounds = style.image.clipsToBounds
         imageView.layer.borderWidth = style.image.borderWidth
         imageView.layer.borderColor = style.image.borderColor?.cgColor

@@ -41,7 +41,6 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     }
     
     private let issuerListPaymentMethod: IssuerListPaymentMethod
-    
     // MARK: - Presentable Component Protocol
     
     public var viewController: UIViewController {
@@ -53,7 +52,6 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     }
     
     public var requiresModalPresentation: Bool = true
-    
     // MARK: - Private
     
     private lazy var listViewController: ListViewController = {
@@ -64,14 +62,11 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
 
             var listItem = ListItem(title: issuer.name, style: configuration.style.listItem)
             listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
-            if issuerListPaymentMethod.type == .onlineBankingCZ || issuerListPaymentMethod.type == .onlineBankingSK {
-                listItem.canHideIcon = true
-            } else {
-                listItem.imageURL = LogoURLProvider.logoURL(for: issuer,
-                                                               localizedParameters: configuration.localizationParameters,
-                                                               paymentMethod: issuerListPaymentMethod,
-                                                               environment: context.apiContext.environment)
-            }
+            listItem.imageURL = LogoURLProvider.logoURL(for: issuer,
+                                                           localizedParameters: configuration.localizationParameters,
+                                                           paymentMethod: issuerListPaymentMethod,
+                                                           environment: context.apiContext.environment)
+
             listItem.selectionHandler = { [weak self] in
                 guard let self = self else { return }
                 
@@ -142,6 +137,3 @@ public typealias EntercashComponent = IssuerListComponent
 
 /// Provides an issuer selection list for OpenBanking payments.
 public typealias OpenBankingComponent = IssuerListComponent
-
-/// Provides an issuer selection list for OnlineBanking payments.
-public typealias OnlineBankingComponent = IssuerListComponent

@@ -45,9 +45,3 @@ public typealias EntercashDetails = IssuerListDetails
 
 /// Contains the details supplied by the OpenBanking component.
 public typealias OpenBankingDetails = IssuerListDetails
-
-/// Contains the details supplied by the OnlineBanking_CK component.
-public typealias OnlineBankingCZDetails = IssuerListDetails
-
-/// Contains the details supplied by the OnlineBanking_SK component.
-public typealias OnlineBankingSKDetails = IssuerListDetails

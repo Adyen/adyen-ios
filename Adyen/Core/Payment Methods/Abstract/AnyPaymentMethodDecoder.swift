@@ -75,8 +75,7 @@ internal enum AnyPaymentMethodDecoder {
         .boleto: BoletoPaymentMethodDecoder(),
         .affirm: AffirmPaymentMethodDecoder(),
         .atome: AtomePaymentMethodDecoder(),
-        .onlineBankingCZ: IssuerListPaymentMethodDecoder(),
-        .onlineBankingSK: IssuerListPaymentMethodDecoder()
+        .onlineBanking: OnlineBankingPaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = InstantPaymentMethodDecoder()
@@ -89,6 +88,11 @@ internal enum AnyPaymentMethodDecoder {
             let brand = try? container.decode(String.self, forKey: .brand)
             let isIssuersList = try container.containsValue(.issuers)
 
+            let paymentDecoder = PaymentMethodType(rawValue: type).map { decoders[$0, default: defaultDecoder] } ?? defaultDecoder
+
+            if type == "onlineBanking_CZ" || type == "onlineBanking_SK" {
+                return try OnlineBankingPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
+            }
             if isIssuersList {
                 return try IssuerListPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
             }
@@ -104,9 +108,6 @@ internal enum AnyPaymentMethodDecoder {
             if isStored, brand == "bcmc", type == "scheme" {
                 return try decoders[.bcmc, default: defaultDecoder].decode(from: decoder, isStored: true)
             }
-            
-            let paymentDecoder = PaymentMethodType(rawValue: type).map { decoders[$0, default: defaultDecoder] } ?? defaultDecoder
-            
             return try paymentDecoder.decode(from: decoder, isStored: isStored)
         } catch {
             return .none
@@ -273,5 +274,11 @@ private struct AffirmPaymentMethodDecoder: PaymentMethodDecoder {
 private struct AtomePaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         .atome(try AtomePaymentMethod(from: decoder))
+    }
+}
+
+private struct OnlineBankingPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
+        .onlineBanking(try OnlineBankingPaymentMethod(from: decoder))
     }
 }
