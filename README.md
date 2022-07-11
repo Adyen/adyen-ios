@@ -37,6 +37,7 @@ The `Adyen/SwiftUI` module needs to be explicitly added to use the SwiftUI speci
 pod 'Adyen'               // Add DropIn with all modules except WeChat Pay and SwiftUI.
 // Add individual modules
 pod 'Adyen/Card'          // Card components.
+pod 'Adyen/Session'       // Simplified checkout flow.
 pod 'Adyen/Encryption'    // Encryption module.
 pod 'Adyen/Components'    // All other payment components except WeChat Pay.
 pod 'Adyen/Actions'       // Action Components.
@@ -55,6 +56,7 @@ pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
 You can add all modules or select individual modules to add to your integration. But make sure to include each module dependency modules.
 
 * `AdyenDropIn`: DropInComponent.
+* `AdyenSesson`: For the simplified checkout flow.
 * `AdyenCard`: the card components.
 * `AdyenComponents`: all other payment components except WeChat Pay.
 * `AdyenActions`:  action components.
@@ -78,7 +80,7 @@ The `AdyenWeChatPay` module needs to be explicitly added to support WeChat Pay.
 The `AdyenSwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
 
 * `AdyenDropIn`: all modules except `AdyenWeChatPay`.
-* `AdyenSesson`: For the new, simplified checkout flow.
+* `AdyenSesson`: For the simplified checkout flow.
 * `AdyenCard`: the card components.
 * `AdyenComponents`: all other payment components except WeChat Pay.
 * `AdyenActions`:  action components.
@@ -153,7 +155,7 @@ let applePayment = try ApplePayPayment(countryCode: "US",
                                        summaryItems: summaryItems)
 
 let dropInConfiguration = DropInComponent.Configuration(context: context)
-configuration.applePay = .init(payment: applePayment,
+dropInConfiguration.applePay = .init(payment: applePayment,
                                merchantIdentifier: "merchant.com.adyen.MY_MERCHANT_ID")
 ```
 
@@ -210,7 +212,7 @@ This optional method is invoked after a redirect to an external application has 
 
 #### Handling an action
 
-Handling an action is handled by the Drop-in via its delegate `AdyenSession`.
+Actions are handled by the Drop-in via its delegate `AdyenSession`.
 
 
 ##### Receiving redirect

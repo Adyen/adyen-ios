@@ -57,7 +57,7 @@ let applePayment = try ApplePayPayment(countryCode: "US",
                                        summaryItems: summaryItems)
 
 let dropInConfiguration = DropInComponent.Configuration(context: context)
-configuration.applePay = .init(payment: applePayment,
+dropInConfiguration.applePay = .init(payment: applePayment,
                                merchantIdentifier: "merchant.com.adyen.MY_MERCHANT_ID")
 ```
 
@@ -114,7 +114,7 @@ This optional method is invoked after a redirect to an external application has 
 
 ### Handling an action
 
-Handling an action is handled by the Drop-in via its delegate `AdyenSession`.
+Actions are handled by the Drop-in via its delegate `AdyenSession`.
 
 
 #### Receiving redirect
