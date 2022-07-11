@@ -1,6 +1,8 @@
 # DropIn
 
-The Drop-in handles the presentation of available payment methods and the subsequent entry of a customer's payment details. It is initialized with the payment methods of the `/sessions` response, and handles the entire checkout flow under the hood for most of your cases.
+The Drop-in handles the presentation of available payment methods and the subsequent entry of a customer's payment details. It is initialized with the payment methods of the `/sessions` response, and handles the entire checkout flow under the hood for most of use cases.
+
+If the simplified checkout flow with the `/sessions` endpoint does not work for you, or you prefer to have more control over the whole flow, please refer to [**implementation via the three endpoints**](DropInThreeAPIs.md).
 
 ### Setting up the Drop-in
 
