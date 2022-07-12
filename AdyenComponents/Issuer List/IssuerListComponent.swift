@@ -20,10 +20,6 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     public var paymentMethod: PaymentMethod {
         issuerListPaymentMethod
     }
-
-    public var payment: Payment? {
-        configuration.payment
-    }
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -38,7 +34,7 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: IssuerListPaymentMethod,
                 context: AdyenContext,
-                configuration: Configuration = .init(payment: nil)) {
+                configuration: Configuration = .init()) {
         self.issuerListPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
@@ -107,8 +103,6 @@ extension IssuerListComponent {
     
     /// Configuration for Issuer List type components.
     public struct Configuration: AnyBasicComponentConfiguration {
-
-        public var payment: Payment?
         
         /// The UI style of the component.
         public var style: ListComponentStyle
@@ -121,11 +115,9 @@ extension IssuerListComponent {
         ///   - localizationParameters: Localization parameters.
         ///   - payment: The payment information.
         public init(style: ListComponentStyle = .init(),
-                    payment: Payment?,
                     localizationParameters: LocalizationParameters? = nil) {
             self.style = style
             self.localizationParameters = localizationParameters
-            self.payment = payment
         }
     }
 }

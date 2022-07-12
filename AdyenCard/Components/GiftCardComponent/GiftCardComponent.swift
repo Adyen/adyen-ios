@@ -263,8 +263,8 @@ public final class GiftCardComponent: PresentableComponent,
                                                               remainingAmount: remainingAmount)
         
         let component = InstantPaymentComponent(paymentMethod: paymentMethod,
-                                                paymentData: paymentData,
-                                                context: context)
+                                                context: context,
+                                                paymentData: paymentData)
         delegate.showConfirmation(for: component, with: paymentData.order)
     }
 

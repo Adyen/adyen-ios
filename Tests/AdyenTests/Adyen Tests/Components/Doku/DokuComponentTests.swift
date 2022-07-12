@@ -12,22 +12,19 @@ import XCTest
 
 class DokuComponentTests: XCTestCase {
 
-    private var analyticsProviderMock: AnalyticsProviderMock!
     private var context: AdyenContext!
     private var paymentMethod: DokuPaymentMethod!
     private var payment: Payment!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context
 
         paymentMethod = DokuPaymentMethod(type: .dokuAlfamart, name: "test_name")
         payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
     }
 
     override func tearDownWithError() throws {
-        analyticsProviderMock = nil
         context = nil
         paymentMethod = nil
         payment = nil
@@ -35,8 +32,8 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomTableName() throws {
-        let config = DokuComponent.Configuration(payment: nil,
-                                                 localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
+        let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost",
+                                                                                                keySeparator: nil))
         let sut = DokuComponent(paymentMethod: paymentMethod,
                                 context: context,
                                 configuration: config)
@@ -58,7 +55,8 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomKeySeparator() throws {
-        let config = DokuComponent.Configuration(payment: nil, localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
+        let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator",
+                                                                                                keySeparator: "_"))
         let sut = DokuComponent(paymentMethod: paymentMethod,
                                 context: context,
                                 configuration: config)
@@ -104,7 +102,7 @@ class DokuComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        let config = DokuComponent.Configuration(style: style, payment: nil)
+        let config = DokuComponent.Configuration(style: style)
         let sut = DokuComponent(paymentMethod: paymentMethod,
                                 context: context,
                                 configuration: config)
@@ -165,7 +163,7 @@ class DokuComponentTests: XCTestCase {
     func testSubmitForm() throws {
         let sut = DokuComponent(paymentMethod: paymentMethod, 
                                 context: context, 
-                                configuration: DokuComponent.Configuration(payment: nil))
+                                configuration: DokuComponent.Configuration())
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
@@ -206,7 +204,7 @@ class DokuComponentTests: XCTestCase {
     func testBigTitle() {
         let sut = DokuComponent(paymentMethod: paymentMethod,
                                 context: context,
-                                configuration: DokuComponent.Configuration(payment: nil))
+                                configuration: DokuComponent.Configuration())
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
@@ -220,13 +218,13 @@ class DokuComponentTests: XCTestCase {
         let dokuPaymentMethod = DokuPaymentMethod(type: .dokuWallet, name: "Test name")
         let sut = DokuComponent(paymentMethod: dokuPaymentMethod,
                                 context: context,
-                                configuration: DokuComponent.Configuration(payment: nil))
+                                configuration: DokuComponent.Configuration())
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
     func testDokuPrefilling() throws {
         // Given
-        let config = DokuComponent.Configuration(payment: nil, shopperInformation: shopperInformation)
+        let config = DokuComponent.Configuration(shopperInformation: shopperInformation)
         let prefillSut = DokuComponent(paymentMethod: paymentMethod,
                                               context: context,
                                        configuration: config)
@@ -257,7 +255,7 @@ class DokuComponentTests: XCTestCase {
         // Given
         let sut = DokuComponent(paymentMethod: paymentMethod,
                                 context: context,
-                                configuration: DokuComponent.Configuration(payment: nil))
+                                configuration: DokuComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .milliseconds(300))
@@ -280,9 +278,11 @@ class DokuComponentTests: XCTestCase {
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
         let sut = DokuComponent(paymentMethod: paymentMethod,
                                 context: context,
-                                configuration: DokuComponent.Configuration(payment: nil))
+                                configuration: DokuComponent.Configuration())
 
         // When
         sut.viewWillAppear(viewController: sut.viewController)

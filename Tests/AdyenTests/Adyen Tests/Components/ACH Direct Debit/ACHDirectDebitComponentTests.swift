@@ -13,19 +13,14 @@ import XCTest
 
 class ACHDirectDebitComponentTests: XCTestCase {
 
-    var analyticsProviderMock: AnalyticsProviderMock!
     var context: AdyenContext!
-
-    let payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context
     }
 
     override func tearDownWithError() throws {
-        analyticsProviderMock = nil
         context = nil
         try super.tearDownWithError()
     }
@@ -45,8 +40,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() throws {
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
 
-        let config = ACHDirectDebitComponent.Configuration(payment: payment,
-                                                           localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil),
+        let config = ACHDirectDebitComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil),
                                                            billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: method,
                                           context: context,
@@ -102,7 +96,6 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           context: context,
                                           configuration: .init(style: achComponentStyle,
-                                                               payment: nil,
                                                                billingAddressCountryCodes: ["US", "UK"]),
                                           publicKeyProvider: PublicKeyProviderMock())
         
@@ -165,7 +158,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testPrefillInfo() throws {
         // Given
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
-        let config = ACHDirectDebitComponent.Configuration(payment: payment, shopperInformation: shopperInformation, billingAddressCountryCodes: ["US", "UK"])
+        let config = ACHDirectDebitComponent.Configuration(shopperInformation: shopperInformation,
+                                                           billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: method,
                                           context: context,
                                           configuration: config,
@@ -186,8 +180,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     
     func testBigTitle() {
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
-        let config = ACHDirectDebitComponent.Configuration(payment: nil,
-                                                           billingAddressCountryCodes: ["US", "UK"])
+        let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: method,
                                           context: context,
                                           configuration: config,
@@ -202,7 +195,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     
     func testRequiresModalPresentation() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
-        let config = ACHDirectDebitComponent.Configuration(payment: nil, billingAddressCountryCodes: ["US", "UK"])
+        let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           context: context,
                                           configuration: config,
@@ -212,7 +205,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
     func testStopLoading() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
-        let config = ACHDirectDebitComponent.Configuration(payment: nil, billingAddressCountryCodes: ["US", "UK"])
+        let config = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: ["US", "UK"])
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           context: context,
                                           configuration: config,
@@ -252,7 +245,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           context: context,
-                                          configuration: .init(payment: payment, showsBillingAddress: false),
+                                          configuration: .init(showsBillingAddress: false),
                                           publicKeyProvider: PublicKeyProviderMock())
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
@@ -289,11 +282,16 @@ class ACHDirectDebitComponentTests: XCTestCase {
     }
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
+        
         // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = AdyenContext(apiContext: Dummy.apiContext,
+                               payment: Dummy.payment,
+                               analyticsProvider: analyticsProviderMock)
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           context: context,
-                                          configuration: .init(payment: nil, showsBillingAddress: false),
+                                          configuration: .init(showsBillingAddress: false),
                                           publicKeyProvider: PublicKeyProviderMock())
 
         // When

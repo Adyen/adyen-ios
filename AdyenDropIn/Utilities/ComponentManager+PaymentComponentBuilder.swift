@@ -18,14 +18,6 @@ import Foundation
 
 extension ComponentManager: PaymentComponentBuilder {
 
-    private var payment: Payment? {
-        if let payment = configuration.payment, let remainingAmount = order?.remainingAmount {
-            return Payment(amount: remainingAmount, countryCode: payment.countryCode)
-        } else {
-            return configuration.payment
-        }
-    }
-
     internal func build(paymentMethod: StoredCardPaymentMethod) -> PaymentComponent? {
         createCardComponent(with: paymentMethod)
     }
@@ -33,15 +25,13 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod,
                                      context: context,
-                                     configuration: .init(payment: payment,
-                                                          localizationParameters: configuration.localizationParameters))
+                                     configuration: .init(localizationParameters: configuration.localizationParameters))
     }
 
     internal func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod,
                                      context: context,
-                                     configuration: .init(payment: payment,
-                                                          localizationParameters: configuration.localizationParameters))
+                                     configuration: .init(localizationParameters: configuration.localizationParameters))
     }
 
     internal func build(paymentMethod: CardPaymentMethod) -> PaymentComponent? {
@@ -56,7 +46,6 @@ extension ComponentManager: PaymentComponentBuilder {
         IssuerListComponent(paymentMethod: paymentMethod,
                             context: context,
                             configuration: .init(style: configuration.style.listComponent,
-                                                 payment: nil,
                                                  localizationParameters: configuration.localizationParameters))
     }
 
@@ -81,7 +70,6 @@ extension ComponentManager: PaymentComponentBuilder {
         guard classObject.isDeviceSupported() else { return nil }
         return InstantPaymentComponent(paymentMethod: paymentMethod,
                                        context: context,
-                                       amount: payment?.amount,
                                        order: order)
     }
 
@@ -99,7 +87,6 @@ extension ComponentManager: PaymentComponentBuilder {
 
     internal func build(paymentMethod: EContextPaymentMethod) -> PaymentComponent? {
         let config = BasicPersonalInfoFormComponent.Configuration(style: configuration.style.formComponent,
-                                                                  payment: payment,
                                                                   shopperInformation: configuration.shopperInformation,
                                                                   localizationParameters: configuration.localizationParameters)
         return BasicPersonalInfoFormComponent(paymentMethod: paymentMethod,
@@ -109,7 +96,6 @@ extension ComponentManager: PaymentComponentBuilder {
 
     internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
         let config = DokuComponent.Configuration(style: configuration.style.formComponent,
-                                                 payment: payment,
                                                  shopperInformation: configuration.shopperInformation,
                                                  localizationParameters: configuration.localizationParameters)
         return DokuComponent(paymentMethod: paymentMethod,
@@ -118,7 +104,7 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     internal func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {
-        guard let amount = configuration.payment?.amount, partialPaymentEnabled else { return nil }
+        guard let amount = context.payment?.amount, partialPaymentEnabled else { return nil }
         return GiftCardComponent(paymentMethod: paymentMethod,
                                  context: context,
                                  amount: amount,
@@ -131,7 +117,6 @@ extension ComponentManager: PaymentComponentBuilder {
 
     internal func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent? {
         let config = AffirmComponent.Configuration(style: configuration.style.formComponent,
-                                                   payment: payment,
                                                    shopperInformation: configuration.shopperInformation,
                                                    localizationParameters: configuration.localizationParameters)
         return AffirmComponent(paymentMethod: paymentMethod,
@@ -142,13 +127,11 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
         InstantPaymentComponent(paymentMethod: paymentMethod,
                                 context: context,
-                                amount: payment?.amount,
                                 order: order)
     }
 
     internal func build(paymentMethod: AtomePaymentMethod) -> PaymentComponent? {
         let config = AtomeComponent.Configuration(style: configuration.style.formComponent,
-                                                  payment: payment,
                                                   shopperInformation: configuration.shopperInformation,
                                                   localizationParameters: configuration.localizationParameters)
         return AtomeComponent(paymentMethod: paymentMethod,
@@ -161,7 +144,6 @@ extension ComponentManager: PaymentComponentBuilder {
         cardConfiguration.style = configuration.style.formComponent
         cardConfiguration.localizationParameters = configuration.localizationParameters
         cardConfiguration.shopperInformation = configuration.shopperInformation
-        cardConfiguration.payment = payment
         return CardComponent(paymentMethod: paymentMethod,
                              context: context,
                              configuration: cardConfiguration)
@@ -170,7 +152,6 @@ extension ComponentManager: PaymentComponentBuilder {
     private func createBancontactComponent(with paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
         let cardConfiguration = configuration.card
         let configuration = CardComponent.Configuration(style: configuration.style.formComponent,
-                                                        payment: payment,
                                                         shopperInformation: configuration.shopperInformation,
                                                         localizationParameters: configuration.localizationParameters,
                                                         showsHolderNameField: cardConfiguration.showsHolderNameField,
@@ -216,7 +197,6 @@ extension ComponentManager: PaymentComponentBuilder {
 
     private func createSEPAComponent(_ paymentMethod: SEPADirectDebitPaymentMethod) -> SEPADirectDebitComponent {
         let config = SEPADirectDebitComponent.Configuration(style: configuration.style.formComponent,
-                                                            payment: payment,
                                                             localizationParameters: configuration.localizationParameters)
         return SEPADirectDebitComponent(paymentMethod: paymentMethod,
                                         context: context,
@@ -225,7 +205,6 @@ extension ComponentManager: PaymentComponentBuilder {
 
     private func createBACSDirectDebit(_ paymentMethod: BACSDirectDebitPaymentMethod) -> BACSDirectDebitComponent {
         let bacsConfiguration = BACSDirectDebitComponent.Configuration(style: configuration.style.formComponent,
-                                                                       payment: payment,
                                                                        localizationParameters: configuration.localizationParameters)
         let bacsDirectDebitComponent = BACSDirectDebitComponent(paymentMethod: paymentMethod,
                                                                 context: context,
@@ -236,7 +215,6 @@ extension ComponentManager: PaymentComponentBuilder {
 
     private func createACHDirectDebitComponent(_ paymentMethod: ACHDirectDebitPaymentMethod) -> ACHDirectDebitComponent {
         let config = ACHDirectDebitComponent.Configuration(style: configuration.style.formComponent,
-                                                           payment: payment,
                                                            shopperInformation: configuration.shopperInformation,
                                                            localizationParameters: configuration.localizationParameters)
         return ACHDirectDebitComponent(paymentMethod: paymentMethod,
@@ -246,7 +224,6 @@ extension ComponentManager: PaymentComponentBuilder {
 
     private func createQiwiWalletComponent(_ paymentMethod: QiwiWalletPaymentMethod) -> QiwiWalletComponent {
         let config = QiwiWalletComponent.Configuration(style: configuration.style.formComponent,
-                                                       payment: payment,
                                                        shopperInformation: configuration.shopperInformation,
                                                        localizationParameters: configuration.localizationParameters)
         return QiwiWalletComponent(paymentMethod: paymentMethod,
@@ -256,7 +233,6 @@ extension ComponentManager: PaymentComponentBuilder {
 
     private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
         let config = MBWayComponent.Configuration(style: configuration.style.formComponent,
-                                                  payment: payment,
                                                   shopperInformation: configuration.shopperInformation,
                                                   localizationParameters: configuration.localizationParameters)
         return MBWayComponent(paymentMethod: paymentMethod,
@@ -266,7 +242,6 @@ extension ComponentManager: PaymentComponentBuilder {
 
     private func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {
         let config = BLIKComponent.Configuration(style: configuration.style.formComponent,
-                                                 payment: payment,
                                                  localizationParameters: configuration.localizationParameters)
         return BLIKComponent(paymentMethod: paymentMethod,
                              context: context,
@@ -275,7 +250,6 @@ extension ComponentManager: PaymentComponentBuilder {
 
     private func createBoletoComponent(_ paymentMethod: BoletoPaymentMethod) -> BoletoComponent {
         let config = BoletoComponent.Configuration(style: configuration.style.formComponent,
-                                                   payment: payment,
                                                    localizationParameters: configuration.localizationParameters,
                                                    shopperInformation: configuration.shopperInformation,
                                                    showEmailAddress: true)

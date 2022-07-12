@@ -20,8 +20,6 @@ class GiftCardComponentTests: XCTestCase {
 
     var publicKeyProvider: PublicKeyProviderMock!
 
-    var analyticsProviderMock: AnalyticsProviderMock!
-
     var context: AdyenContext!
 
     var sut: GiftCardComponent!
@@ -51,8 +49,7 @@ class GiftCardComponentTests: XCTestCase {
         paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
         publicKeyProvider = PublicKeyProviderMock()
 
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context
 
         sut = GiftCardComponent(paymentMethod: paymentMethod,
                                 context: context,
@@ -69,7 +66,6 @@ class GiftCardComponentTests: XCTestCase {
     override func tearDownWithError() throws {
         paymentMethod = nil
         publicKeyProvider = nil
-        analyticsProviderMock = nil
         context = nil
         delegateMock = nil
         partialPaymentDelegate = nil
@@ -502,6 +498,14 @@ class GiftCardComponentTests: XCTestCase {
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+
+        sut = GiftCardComponent(paymentMethod: paymentMethod,
+                                context: context,
+                                amount: amountToPay,
+                                publicKeyProvider: publicKeyProvider)
+
         let mockViewController = UIViewController()
 
         // When

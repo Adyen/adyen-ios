@@ -23,7 +23,7 @@ public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
     ///   - configuration: The component's configuration.
     public init(paymentMethod: QiwiWalletPaymentMethod,
                 context: AdyenContext,
-                configuration: Configuration = .init(payment: nil)) {
+                configuration: Configuration = .init()) {
         self.qiwiWalletPaymentMethod = paymentMethod
         super.init(paymentMethod: paymentMethod,
                    context: context,

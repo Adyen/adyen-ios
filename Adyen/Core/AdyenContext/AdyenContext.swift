@@ -8,12 +8,15 @@ import AdyenNetworking
 import Foundation
 
 /// A class that defines the behavior of the components in a payment flow.
-public final class AdyenContext {
+public final class AdyenContext: PaymentAware {
 
     // MARK: - Properties
 
     /// The API context used to retrieve internal resources.
     public let apiContext: APIContext
+
+    /// The payment informnation..
+    public let payment: Payment?
 
     @_spi(AdyenInternal)
     public let analyticsProvider: AnalyticsProviderProtocol
@@ -24,8 +27,10 @@ public final class AdyenContext {
     /// - Parameters:
     ///   - apiContext: The API context used to retrieve internal resources.
     ///   - analyticsConfiguration: A configuration object that specifies the behavior for the analytics.
-    public init(apiContext: APIContext, analyticsConfiguration: AnalyticsConfiguration = .init()) {
+    ///   - payment: The payment information.
+    public init(apiContext: APIContext, payment: Payment?, analyticsConfiguration: AnalyticsConfiguration = .init()) {
         self.apiContext = apiContext
+        self.payment = payment
 
         let apiClient = APIClient(apiContext: apiContext)
         self.analyticsProvider = AnalyticsProvider(apiClient: apiClient,
@@ -33,8 +38,17 @@ public final class AdyenContext {
     }
 
     internal init(apiContext: APIContext,
+                  payment: Payment?,
                   analyticsProvider: AnalyticsProviderProtocol) {
         self.apiContext = apiContext
         self.analyticsProvider = analyticsProvider
+        self.payment = payment
+    }
+
+    @_spi(AdyenInternal)
+    public func updated(with payment: Payment?) -> AdyenContext {
+        AdyenContext(apiContext: self.apiContext,
+                     payment: payment,
+                     analyticsProvider: self.analyticsProvider)
     }
 }

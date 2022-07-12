@@ -29,8 +29,8 @@ public final class InstantPaymentComponent: PaymentComponent {
     ///   - paymentData: The ready to submit payment data.
     ///   - context: The context object for this component.
     public init(paymentMethod: PaymentMethod,
-                paymentData: PaymentComponentData,
-                context: AdyenContext) {
+                context: AdyenContext,
+                paymentData: PaymentComponentData) {
         self.paymentMethod = paymentMethod
         self.paymentData = paymentData
         self.context = context
@@ -45,14 +45,13 @@ public final class InstantPaymentComponent: PaymentComponent {
     ///   - order: The partial order for this payment.
     public init(paymentMethod: PaymentMethod,
                 context: AdyenContext,
-                amount: Amount?,
                 order: PartialPaymentOrder?) {
         self.paymentMethod = paymentMethod
         self.context = context
 
         let details = InstantPaymentDetails(type: paymentMethod.type)
         self.paymentData = PaymentComponentData(paymentMethodDetails: details,
-                                                amount: amount,
+                                                amount: context.payment?.amount,
                                                 order: order)
     }
 

@@ -30,10 +30,6 @@ public class CardComponent: PresentableComponent,
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext
-
-    public var payment: Payment? {
-        configuration.payment
-    }
     
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
@@ -76,7 +72,7 @@ public class CardComponent: PresentableComponent,
     ///   - configuration: The configuration of the component.
     public convenience init(paymentMethod: AnyCardPaymentMethod,
                             context: AdyenContext,
-                            configuration: Configuration = .init(payment: nil)) {
+                            configuration: Configuration = .init()) {
         let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: context.apiContext),
                                               publicKeyProvider: publicKeyProvider,
@@ -135,13 +131,12 @@ public class CardComponent: PresentableComponent,
         }
         var component: PaymentComponent & PresentableComponent
         if configuration.stored.showsSecurityCodeField {
-            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, payment: payment, context: context)
+            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context)
             storedComponent.localizationParameters = configuration.localizationParameters
             component = storedComponent
         } else {
             let storedConfiguration: StoredPaymentMethodComponent.Configuration
-            storedConfiguration = .init(payment: payment,
-                                        localizationParameters: configuration.localizationParameters)
+            storedConfiguration = .init(localizationParameters: configuration.localizationParameters)
             let storedComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod,
                                                                context: context,
                                                                configuration: storedConfiguration)

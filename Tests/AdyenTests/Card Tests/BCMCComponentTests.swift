@@ -17,13 +17,11 @@ class BCMCComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context
         delegate = PaymentComponentDelegateMock()
     }
 
     override func tearDownWithError() throws {
-        analyticsProviderMock = nil
         context = nil
         delegate = nil
         try super.tearDownWithError()
@@ -34,7 +32,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context,
-                                configuration: CardComponent.Configuration(payment: nil))
+                                configuration: CardComponent.Configuration())
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
 
@@ -46,7 +44,7 @@ class BCMCComponentTests: XCTestCase {
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context,
-                                configuration: CardComponent.Configuration(payment: nil))
+                                configuration: CardComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         XCTAssertEqual(sut.configuration.allowedCardTypes, [.bcmc])
@@ -65,7 +63,7 @@ class BCMCComponentTests: XCTestCase {
     func testShowHolderNameField() {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.argencard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
-        var configuration = CardComponent.Configuration(payment: nil)
+        var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context,
@@ -88,7 +86,7 @@ class BCMCComponentTests: XCTestCase {
     func testHideStorePaymentMethodField() {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.bcmc])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
-        var configuration = CardComponent.Configuration(payment: nil)
+        var configuration = CardComponent.Configuration()
         configuration.showsStorePaymentMethodField = false
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context,
@@ -333,6 +331,8 @@ class BCMCComponentTests: XCTestCase {
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
         let cardPaymentMethod = CardPaymentMethod(type: .card,
                                                   name: "Test name",
                                                   fundingSource: .credit,

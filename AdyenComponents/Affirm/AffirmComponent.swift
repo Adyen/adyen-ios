@@ -34,7 +34,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent {
     ///   - configuration: The component's configuration.
     public init(paymentMethod: PaymentMethod,
                 context: AdyenContext,
-                configuration: Configuration = .init(payment: nil)) {
+                configuration: Configuration = .init()) {
         personalDetailsHeaderItem = FormLabelItem(text: "", style: configuration.style.sectionHeader)
         deliveryAddressToggleItem = FormToggleItem(style: configuration.style.toggle)
         

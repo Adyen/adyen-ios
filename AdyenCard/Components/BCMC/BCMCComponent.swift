@@ -19,7 +19,7 @@ public final class BCMCComponent: CardComponent {
     ///   - configuration: The configuration of the component.
     public init(paymentMethod: BCMCPaymentMethod,
                 context: AdyenContext,
-                configuration: CardComponent.Configuration = .init(payment: nil)) {
+                configuration: CardComponent.Configuration = .init()) {
         let configuration = configuration.bcmcConfiguration()
         
         let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)

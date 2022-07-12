@@ -28,10 +28,6 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext
-
-    public var payment: Payment? {
-        configuration.payment
-    }
     
     public var paymentMethod: PaymentMethod {
         achDirectDebitPaymentMethod
@@ -65,7 +61,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     ///   - configuration: Configuration for the component.
     public convenience init(paymentMethod: ACHDirectDebitPaymentMethod,
                             context: AdyenContext,
-                            configuration: Configuration = .init(payment: nil)) {
+                            configuration: Configuration = .init()) {
         self.init(paymentMethod: paymentMethod,
                   context: context,
                   configuration: configuration,
@@ -74,7 +70,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     
     internal init(paymentMethod: ACHDirectDebitPaymentMethod,
                   context: AdyenContext,
-                  configuration: Configuration = .init(payment: nil),
+                  configuration: Configuration = .init(),
                   publicKeyProvider: AnyPublicKeyProvider) {
         self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
@@ -272,8 +268,6 @@ extension ACHDirectDebitComponent {
     /// Configuration for the ACH Direct Debit Component
     public struct Configuration: AnyPersonalInformationConfiguration {
 
-        public var payment: Payment?
-
         /// Describes the component's UI style.
         public var style: FormComponentStyle
 
@@ -301,7 +295,6 @@ extension ACHDirectDebitComponent {
         ///   Defaults to ["US", "PR"].
         ///   - payment: The payment information.
         public init(style: FormComponentStyle = FormComponentStyle(),
-                    payment: Payment?,
                     shopperInformation: PrefilledShopperInformation? = nil,
                     localizationParameters: LocalizationParameters? = nil,
                     showsBillingAddress: Bool = true,
@@ -311,7 +304,6 @@ extension ACHDirectDebitComponent {
             self.localizationParameters = localizationParameters
             self.showsBillingAddress = showsBillingAddress
             self.billingAddressCountryCodes = billingAddressCountryCodes
-            self.payment = payment
         }
     }
 }

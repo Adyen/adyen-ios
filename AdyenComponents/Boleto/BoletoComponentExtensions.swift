@@ -11,8 +11,6 @@ extension BoletoComponent {
     
     /// Boleto component configuration.
     public struct Configuration: AnyPersonalInformationConfiguration {
-
-        public var payment: Payment?
         
         /// Describes the component's UI style.
         public let style: FormComponentStyle
@@ -33,7 +31,6 @@ extension BoletoComponent {
         ///   - showEmailAddress: Indicates whether to show `sendCopyByEmail` checkbox and email text field
         ///   - payment: The payment information.
         public init(style: FormComponentStyle = FormComponentStyle(),
-                    payment: Payment?,
                     localizationParameters: LocalizationParameters? = nil,
                     shopperInformation: PrefilledShopperInformation?,
                     showEmailAddress: Bool) {
@@ -41,7 +38,6 @@ extension BoletoComponent {
             self.localizationParameters = localizationParameters
             self.shopperInformation = shopperInformation
             self.showEmailAddress = showEmailAddress
-            self.payment = payment
         }
     }
     

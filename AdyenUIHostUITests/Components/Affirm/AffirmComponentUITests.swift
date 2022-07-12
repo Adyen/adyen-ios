@@ -11,7 +11,7 @@ import XCTest
 class AffirmComponentUITests: XCTestCase {
 
     private var paymentMethod: PaymentMethod!
-    private var context: AdyenContext!
+    private var context = Dummy.context
     private var style: FormComponentStyle!
     private var sut: AffirmComponent!
     private let app = XCUIApplication()
@@ -20,17 +20,14 @@ class AffirmComponentUITests: XCTestCase {
         try super.setUpWithError()
         print(app.debugDescription)
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Affirm")
-        context = AdyenContext(apiContext: Dummy.apiContext)
         style = FormComponentStyle()
         sut = AffirmComponent(paymentMethod: paymentMethod,
                               context: context,
-                              configuration: AffirmComponent.Configuration(style: style,
-                                                                           payment: nil))
+                              configuration: AffirmComponent.Configuration(style: style))
     }
 
     override func tearDownWithError() throws {
         paymentMethod = nil
-        context = nil
         style = nil
         sut = nil
         try super.tearDownWithError()
@@ -39,9 +36,8 @@ class AffirmComponentUITests: XCTestCase {
     func testSubmitForm_shouldCallDelegateWithProperParameters() throws {
         // Given
         let sut = AffirmComponent(paymentMethod: paymentMethod,
-                                  context: context,
-                                  configuration: AffirmComponent.Configuration(style: style,
-                                                                               payment: nil))
+                                  context: context.updated(with: nil),
+                                  configuration: AffirmComponent.Configuration(style: style))
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         let expectedBillingAddress = PostalAddressMocks.newYorkPostalAddress
@@ -99,7 +95,6 @@ class AffirmComponentUITests: XCTestCase {
     func testAffirmPrefilling_givenDeliveryAddressIsSet() throws {
         // Given
         let config = AffirmComponent.Configuration(style: style,
-                                                   payment: nil,
                                                    shopperInformation: shopperInformation)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          context: context,
@@ -148,10 +143,9 @@ class AffirmComponentUITests: XCTestCase {
     func testAffirmPrefilling_givenDeliveryAddressIsNotSet() throws {
         // Given
         let config = AffirmComponent.Configuration(style: style,
-                                                   payment: nil,
                                                    shopperInformation: shopperInformationNoDeliveryAddress)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
-                                         context: context,
+                                         context: Dummy.context(with: nil),
                                          configuration: config)
         UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
 
@@ -196,6 +190,10 @@ class AffirmComponentUITests: XCTestCase {
 
     func testAffirm_givenNoShopperInformation_shouldNotPrefill() throws {
         // Given
+        let context = Dummy.context(with: Payment(amount: .init(value: 100, currencyCode: "USD"),
+                                                  countryCode: "US"))
+        let sut = AffirmComponent(paymentMethod: paymentMethod,
+                                  context: context)
         UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
 
         wait(for: .milliseconds(300))

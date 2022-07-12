@@ -33,7 +33,7 @@ extension IntegrationExample {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
         let style = FormComponentStyle()
-        let config = CardComponent.Configuration(style: style, payment: payment)
+        let config = CardComponent.Configuration(style: style)
         return CardComponent(paymentMethod: paymentMethod,
                              context: context,
                              configuration: config)
@@ -74,7 +74,7 @@ extension IntegrationExample {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: SEPADirectDebitPaymentMethod.self) else { return nil }
         let style = FormComponentStyle()
-        let config = SEPADirectDebitComponent.Configuration(style: style, payment: payment)
+        let config = SEPADirectDebitComponent.Configuration(style: style)
         return SEPADirectDebitComponent(paymentMethod: paymentMethod,
                                         context: context,
                                         configuration: config)
@@ -96,7 +96,7 @@ extension IntegrationExample {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: MBWayPaymentMethod.self) else { return nil }
         let style = FormComponentStyle()
-        let config = MBWayComponent.Configuration(style: style, payment: payment)
+        let config = MBWayComponent.Configuration(style: style)
         let component = MBWayComponent(paymentMethod: paymentMethod,
                                        context: context,
                                        configuration: config)
@@ -118,7 +118,8 @@ extension IntegrationExample {
     internal func applePayComponent(from paymentMethods: PaymentMethods?) -> ApplePayComponent? {
         guard
             let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self),
-            let applePayPayment = try? ApplePayPayment(payment: payment, brand: ConfigurationConstants.appName)
+            let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
+                                                       brand: ConfigurationConstants.appName)
         else { return nil }
         var config = ApplePayComponent.Configuration(payment: applePayPayment,
                                                      merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
@@ -150,7 +151,7 @@ extension IntegrationExample {
     internal func convenienceStoreComponent(from paymentMethods: PaymentMethods?) -> EContextStoreComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: EContextPaymentMethod.self) else { return nil }
-        let config = EContextStoreComponent.Configuration(style: FormComponentStyle(), payment: payment)
+        let config = EContextStoreComponent.Configuration(style: FormComponentStyle())
         return EContextStoreComponent(paymentMethod: paymentMethod,
                                       context: context,
                                       configuration: config)
@@ -172,7 +173,7 @@ extension IntegrationExample {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return nil }
         let style = FormComponentStyle()
-        let config = BACSDirectDebitComponent.Configuration(style: style, payment: payment)
+        let config = BACSDirectDebitComponent.Configuration(style: style)
         let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
                                                  context: context,
                                                  configuration: config)

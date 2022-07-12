@@ -40,12 +40,18 @@ internal final class ComponentManager {
                   supportsEditingStoredPaymentMethods: Bool = false,
                   presentationDelegate: PresentationDelegate) {
         self.paymentMethods = paymentMethods
-        self.context = context
         self.configuration = configuration
         self.partialPaymentEnabled = partialPaymentEnabled
         self.order = order
         self.supportsEditingStoredPaymentMethods = supportsEditingStoredPaymentMethods
         self.presentationDelegate = presentationDelegate
+
+        if let payment = context.payment, let remainingAmount = order?.remainingAmount {
+            let payment = Payment(amount: remainingAmount, countryCode: payment.countryCode)
+            self.context = context.updated(with: payment)
+        } else {
+            self.context = context
+        }
     }
     
     // MARK: - Internal

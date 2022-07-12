@@ -11,43 +11,33 @@ import XCTest
 
 class StoredPaymentMethodComponentTests: XCTestCase {
 
-    private var analyticsProviderMock: AnalyticsProviderMock!
-    private var context: AdyenContext!
-    let payment = Payment(amount: Amount(value: 34, currencyCode: "EUR"), countryCode: "DE")
+    private var context = Dummy.context
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
-    }
-
-    override func tearDownWithError() throws {
-        analyticsProviderMock = nil
-        context = nil
-        try super.tearDownWithError()
-    }
+    private let method = StoredPaymentMethodMock(identifier: "id",
+                                         supportedShopperInteractions: [.shopperPresent],
+                                         type: .other("type"),
+                                         name: "name")
 
     func testLocalizationWithCustomTableName() throws {
-        let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
         let localizationParams = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let sut = StoredPaymentMethodComponent(paymentMethod: method,
                                                context: context,
-                                               configuration: .init(payment: payment,
-                                                                    localizationParameters: localizationParams))
+                                               configuration: .init(localizationParameters: localizationParams))
 
         let viewController = sut.viewController as? UIAlertController
         XCTAssertNotNil(viewController)
         XCTAssertEqual(viewController?.actions.count, 2)
         XCTAssertEqual(viewController?.actions.first?.title, localizedString(.cancelButton, localizationParams))
-        XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, localizationParams))
+        XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, localizationParams))
     }
 
     func testLocalizationWithZeroPayment() throws {
         let payment = Payment(amount: Amount(value: 0, currencyCode: "EUR"), countryCode: "DE")
-        let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
+        let context = Dummy.context(with: payment)
+
         let sut = StoredPaymentMethodComponent(paymentMethod: method,
                                                context: context,
-                                               configuration: .init(payment: payment))
+                                               configuration: .init())
 
         let viewController = sut.viewController as? UIAlertController
         XCTAssertNotNil(viewController)
@@ -59,28 +49,22 @@ class StoredPaymentMethodComponentTests: XCTestCase {
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
-        let method = StoredPaymentMethodMock(identifier: "id", supportedShopperInteractions: [.shopperNotPresent], type: .other("test_type"), name: "test_name")
         let localizationParams = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         let sut = StoredPaymentMethodComponent(paymentMethod: method,
                                                context: context,
-                                               configuration: .init(payment: payment,
-                                                                    localizationParameters: localizationParams))
+                                               configuration: .init(localizationParameters: localizationParams))
 
         let viewController = sut.viewController as? UIAlertController
         XCTAssertNotNil(viewController)
         XCTAssertEqual(viewController?.actions.count, 2)
         XCTAssertEqual(viewController?.actions.first?.title, localizedString(.cancelButton, localizationParams))
-        XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, localizationParams))
+        XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, localizationParams))
     }
 
     func testUI() throws {
-        let method = StoredPaymentMethodMock(identifier: "id",
-                                             supportedShopperInteractions: [.shopperPresent],
-                                             type: .other("type"),
-                                             name: "name")
         let sut = StoredPaymentMethodComponent(paymentMethod: method,
                                                context: context,
-                                               configuration: .init(payment: payment))
+                                               configuration: .init())
 
         let delegate = PaymentComponentDelegateMock()
 
@@ -107,9 +91,9 @@ class StoredPaymentMethodComponentTests: XCTestCase {
             let alertController = sut.viewController as! UIAlertController
 
             XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
-            XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: self.payment.amount, style: .immediate, nil) })
+            XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, nil) })
 
-            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: self.payment.amount, style: .immediate, nil) }!
+            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, nil) }!
 
             payAction.tap()
 
@@ -120,10 +104,9 @@ class StoredPaymentMethodComponentTests: XCTestCase {
 
     func testViewDidLoadShouldSendTelemetryEvent() throws {
         // Given
-        let method = StoredPaymentMethodMock(identifier: "id",
-                                             supportedShopperInteractions: [.shopperPresent],
-                                             type: .other("type"),
-                                             name: "name")
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+
         let sut = StoredPaymentMethodComponent(paymentMethod: method,
                                                context: context)
 

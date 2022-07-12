@@ -21,7 +21,6 @@ internal protocol PreselectedPaymentMethodComponentDelegate: AnyObject {
 /// A component that presents a single preselected payment method and option to open more payment methods.
 internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     PresentableComponent,
-    PaymentAware,
     Localizable,
     Cancellable {
     
@@ -45,8 +44,6 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
 
     /// Call back when the list is dismissed.
     internal var onCancel: (() -> Void)?
-
-    internal var payment: Payment?
     
     /// Initializes the list component.
     ///
@@ -58,13 +55,11 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     internal init(component: PaymentComponent,
                   title: String,
                   style: FormComponentStyle,
-                  payment: Payment?,
                   listItemStyle: ListItemStyle) {
         self.title = title
         self.style = style
         self.listItemStyle = listItemStyle
         self.defaultComponent = component
-        self.payment = payment
     }
 
     // MARK: - Cancellable
@@ -112,12 +107,13 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     }()
     
     private lazy var submitButtonItem: FormButtonItem = {
+        let component = self.defaultComponent
         let item = FormButtonItem(style: style.mainButtonItem)
-        item.title = localizedSubmitButtonTitle(with: payment?.amount,
+        item.title = localizedSubmitButtonTitle(with: component.context.payment?.amount,
                                                 style: .immediate,
                                                 localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "submitButton")
-        let component = self.defaultComponent
+
         item.buttonSelectionHandler = { [weak self] in
             self?.delegate?.didProceed(with: component)
         }

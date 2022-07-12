@@ -18,10 +18,6 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
     /// The context object for this component.
     public let context: AdyenContext
 
-    public var payment: Payment? {
-        configuration.payment
-    }
-
     /// The stored payment method.
     public var paymentMethod: PaymentMethod { storedPaymentMethod }
 
@@ -35,7 +31,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
     ///   - configuration: The configuration for the component.
     public init(paymentMethod: StoredPaymentMethod,
                 context: AdyenContext,
-                configuration: Configuration = .init(payment: nil)) {
+                configuration: Configuration = .init()) {
         self.storedPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
@@ -89,18 +85,14 @@ extension StoredPaymentMethodComponent {
     /// Configuration for Stored Payment type components.
     public struct Configuration: AnyBasicComponentConfiguration {
 
-        public var payment: Payment?
-
         public var localizationParameters: LocalizationParameters?
 
         /// Initializes the configuration for Issuer list type components.
         /// - Parameters:
         ///   - localizationParameters: Localization parameters.
         ///   - payment: The payment information.
-        public init(payment: Payment?,
-                    localizationParameters: LocalizationParameters? = nil) {
+        public init(localizationParameters: LocalizationParameters? = nil) {
             self.localizationParameters = localizationParameters
-            self.payment = payment
         }
     }
 

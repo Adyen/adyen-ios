@@ -10,22 +10,19 @@ import XCTest
 
 class IssuerListComponentTests: XCTestCase {
 
-    private var analyticsProviderMock: AnalyticsProviderMock!
     private var context: AdyenContext!
     private var paymentMethod: IssuerListPaymentMethod!
     private var sut: IssuerListComponent!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context
 
         paymentMethod = try! Coder.decode(issuerListDictionary) as IssuerListPaymentMethod
         sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
     }
 
     override func tearDownWithError() throws {
-        analyticsProviderMock = nil
         context = nil
         paymentMethod = nil
         sut = nil
@@ -51,6 +48,10 @@ class IssuerListComponentTests: XCTestCase {
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+
+        sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
         let mockViewController = UIViewController()
 
         // When

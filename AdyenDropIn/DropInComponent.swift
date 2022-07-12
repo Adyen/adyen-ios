@@ -42,11 +42,6 @@ public final class DropInComponent: NSObject,
     /// The context object for this component.
     @_spi(AdyenInternal)
     public var context: AdyenContext
-
-    /// The payment information
-    public var payment: Payment? {
-        configuration.payment
-    }
     
     /// Initializes the drop in component.
     ///
@@ -58,7 +53,7 @@ public final class DropInComponent: NSObject,
     ///            If no external value provided, the Main Bundle's name would be used.
     public init(paymentMethods: PaymentMethods,
                 context: AdyenContext,
-                configuration: Configuration,
+                configuration: Configuration = .init(),
                 title: String? = nil) {
         self.title = title ?? Bundle.main.displayName
         self.configuration = configuration
@@ -208,7 +203,6 @@ public final class DropInComponent: NSObject,
         let component = PreselectedPaymentMethodComponent(component: paymentComponent,
                                                           title: title,
                                                           style: configuration.style.formComponent,
-                                                          payment: configuration.payment,
                                                           listItemStyle: configuration.style.listComponent.listItem)
         component.localizationParameters = configuration.localizationParameters
         component.delegate = self

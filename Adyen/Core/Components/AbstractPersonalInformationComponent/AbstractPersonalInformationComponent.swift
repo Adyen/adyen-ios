@@ -15,10 +15,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     
     // MARK: - Properties
 
-    public var payment: Payment? {
-        configuration.payment
-    }
-
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext

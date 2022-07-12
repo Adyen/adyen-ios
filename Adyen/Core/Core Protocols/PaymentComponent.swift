@@ -43,6 +43,15 @@ extension PaymentComponent {
             self.delegate?.didSubmit($0, from: component)
         }
     }
+
+}
+
+extension AdyenContextAware where Self: PaymentAware {
+
+    public var payment: Payment? {
+        context.payment
+    }
+
 }
 
 /// Describes the methods a delegate of the payment component needs to implement.

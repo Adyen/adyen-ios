@@ -12,36 +12,23 @@ import XCTest
 
 class StoredCardComponentTests: XCTestCase {
 
-    private var analyticsProviderMock: AnalyticsProviderMock!
-    private var context: AdyenContext!
+    private var context = Dummy.context
 
-    let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+    let method = StoredCardPaymentMethod(type: .card,
+                                         name: "name",
+                                         identifier: "id",
+                                         fundingSource: .credit,
+                                         supportedShopperInteractions: [.shopperPresent],
+                                         brand: .visa,
+                                         lastFour: "1234",
+                                         expiryMonth: "12",
+                                         expiryYear: "22",
+                                         holderName: "holderName")
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
-    }
-
-    override func tearDownWithError() throws {
-        analyticsProviderMock = nil
-        context = nil
-        try super.tearDownWithError()
-    }
+    //let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
 
     func testUIWithClientKey() throws {
-        let method = StoredCardPaymentMethod(type: .card,
-                                             name: "name",
-                                             identifier: "id",
-                                             fundingSource: .credit,
-                                             supportedShopperInteractions: [.shopperPresent],
-                                             brand: .visa,
-                                             lastFour: "1234",
-                                             expiryMonth: "12",
-                                             expiryYear: "22",
-                                             holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, payment: payment, context: context)
-
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -52,23 +39,13 @@ class StoredCardComponentTests: XCTestCase {
         XCTAssertNotNil(textField)
 
         XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
-        XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) })
+        XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) })
 
         alertController.dismiss(animated: false, completion: nil)
     }
 
     func testUIWithPublicKey() throws {
-        let method = StoredCardPaymentMethod(type: .card,
-                                             name: "name",
-                                             identifier: "id",
-                                             fundingSource: .credit,
-                                             supportedShopperInteractions: [.shopperPresent],
-                                             brand: .masterCard,
-                                             lastFour: "1234",
-                                             expiryMonth: "12",
-                                             expiryYear: "22",
-                                             holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, payment: payment, context: context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
         PublicKeyProvider.publicKeysCache[Dummy.apiContext.clientKey] = Dummy.publicKey
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
@@ -79,23 +56,13 @@ class StoredCardComponentTests: XCTestCase {
         XCTAssertNotNil(textField)
 
         XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
-        XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) })
+        XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) })
 
         alertController.dismiss(animated: false, completion: nil)
     }
 
     func testPaymentSubmitWithSuccessfulCardPublicKeyFetching() throws {
-        let method = StoredCardPaymentMethod(type: .card,
-                                             name: "name",
-                                             identifier: "id",
-                                             fundingSource: .credit,
-                                             supportedShopperInteractions: [.shopperPresent],
-                                             brand: .visa,
-                                             lastFour: "1234",
-                                             expiryMonth: "12",
-                                             expiryYear: "22",
-                                             holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, payment: payment, context: context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
         let delegateExpectation = expectation(description: "expect delegate to be called.")
         let delegate = PaymentComponentDelegateMock()
@@ -135,7 +102,7 @@ class StoredCardComponentTests: XCTestCase {
         textField!.text = "737"
         textField!.sendActions(for: .editingChanged)
 
-        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
+        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) }!
 
         payAction.tap()
         
@@ -148,17 +115,7 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testPaymentSubmitWithFailedCardPublicKeyFetching() throws {
-        let method = StoredCardPaymentMethod(type: .card,
-                                             name: "name",
-                                             identifier: "id",
-                                             fundingSource: .credit,
-                                             supportedShopperInteractions: [.shopperPresent],
-                                             brand: .accel,
-                                             lastFour: "1234",
-                                             expiryMonth: "12",
-                                             expiryYear: "22",
-                                             holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, payment: payment, context: context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
         let delegate = PaymentComponentDelegateMock()
         delegate.onDidSubmit = { _, _ in
@@ -191,7 +148,7 @@ class StoredCardComponentTests: XCTestCase {
         textField.text = "737"
         textField.sendActions(for: .editingChanged)
 
-        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
+        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) }!
 
         payAction.tap()
 
@@ -210,7 +167,7 @@ class StoredCardComponentTests: XCTestCase {
                                              expiryMonth: "12",
                                              expiryYear: "22",
                                              holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, payment: payment, context: context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -218,7 +175,7 @@ class StoredCardComponentTests: XCTestCase {
         
         let alertController = sut.viewController as! UIAlertController
         let textField: UITextField! = alertController.textFields!.first
-        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
+        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) }!
 
         textField.insertText("a")
         textField?.sendActions(for: .editingChanged)
@@ -250,17 +207,7 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testCVCLimitForNonAMEX() throws {
-        let method = StoredCardPaymentMethod(type: .card,
-                                             name: "name",
-                                             identifier: "id",
-                                             fundingSource: .credit,
-                                             supportedShopperInteractions: [.shopperPresent],
-                                             brand: .masterCard,
-                                             lastFour: "1234",
-                                             expiryMonth: "12",
-                                             expiryYear: "22",
-                                             holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, payment: payment, context: context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -268,7 +215,7 @@ class StoredCardComponentTests: XCTestCase {
         
         let alertController = sut.viewController as! UIAlertController
         let textField: UITextField! = alertController.textFields!.first
-        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
+        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) }!
 
         textField.text = "11"
         textField?.sendActions(for: .editingChanged)
@@ -293,17 +240,7 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testCVCLimitForUnknownCardType() throws {
-        let method = StoredCardPaymentMethod(type: .card,
-                                             name: "name",
-                                             identifier: "id",
-                                             fundingSource: .credit,
-                                             supportedShopperInteractions: [.shopperPresent],
-                                             brand: .argencard,
-                                             lastFour: "1234",
-                                             expiryMonth: "12",
-                                             expiryYear: "22",
-                                             holderName: "holderName")
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, payment: payment, context: context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
         UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
 
@@ -311,7 +248,7 @@ class StoredCardComponentTests: XCTestCase {
         
         let alertController = sut.viewController as! UIAlertController
         let textField: UITextField! = alertController.textFields!.first
-        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
+        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) }!
 
         textField.text = "11"
         textField?.sendActions(for: .editingChanged)
@@ -332,9 +269,10 @@ class StoredCardComponentTests: XCTestCase {
 
     func testViewDidLoadShouldSendTelemetryEvent() throws {
         // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
         let paymentMethod = storedCardPaymentMethod(brand: .masterCard)
         let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
-                                      payment: payment,
                                       context: context)
 
         // When

@@ -26,7 +26,7 @@ class PreApplePayComponentTests: XCTestCase {
         paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
 
         analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context(with: analyticsProviderMock)
         paymentComponentDelegate = PaymentComponentDelegateMock()
 
         let configuration = ApplePayComponent.Configuration(payment: applePayPayment,

@@ -11,7 +11,6 @@ import XCTest
 
 class BoletoComponentTests: XCTestCase {
 
-    private var analyticsProviderMock: AnalyticsProviderMock!
     private var context: AdyenContext!
 
     private var sut: BoletoComponent!
@@ -19,12 +18,10 @@ class BoletoComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context
     }
 
     override func tearDownWithError() throws {
-        analyticsProviderMock = nil
         context = nil
         try super.tearDownWithError()
     }
@@ -357,6 +354,8 @@ class BoletoComponentTests: XCTestCase {
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
         sut = BoletoComponent(paymentMethod: method,
                               context: context,
                               configuration: getConfiguration(with: dummyFullPrefilledInformation, showEmailAddress: true))
@@ -399,7 +398,6 @@ class BoletoComponentTests: XCTestCase {
         showEmailAddress: Bool
     ) -> BoletoComponent.Configuration {
         BoletoComponent.Configuration(style: style,
-                                      payment: nil,
                                       shopperInformation: shopperInfo,
                                       showEmailAddress: showEmailAddress)
     }

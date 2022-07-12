@@ -40,10 +40,6 @@ public final class BACSDirectDebitComponent: PaymentComponent, PaymentAware, Pre
     /// Component's configuration
     public var configuration: Configuration
 
-    public var payment: Payment? {
-        configuration.payment
-    }
-
     // MARK: - Properties
 
     internal let bacsPaymentMethod: BACSDirectDebitPaymentMethod
@@ -64,7 +60,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PaymentAware, Pre
     ///   - configuration: Configuration for the component.
     public init(paymentMethod: BACSDirectDebitPaymentMethod,
                 context: AdyenContext,
-                configuration: Configuration = Configuration(payment: nil)) {
+                configuration: Configuration = .init()) {
         self.bacsPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration

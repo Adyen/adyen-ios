@@ -22,7 +22,7 @@ class SessionTests: XCTestCase {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
         analyticsProviderMock.underlyingCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context(with: analyticsProviderMock)
     }
 
     override func tearDownWithError() throws {
@@ -258,9 +258,7 @@ class SessionTests: XCTestCase {
         let component = MBWayComponent(paymentMethod: paymentMethod,
                                        context: context)
         let dropInComponent = DropInComponent(paymentMethods: expectedPaymentMethods,
-                                              context: context,
-                                              configuration: .init(context: context,
-                                                                   payment: nil),
+                                              context: Dummy.context,
                                               title: nil)
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
@@ -515,9 +513,7 @@ class SessionTests: XCTestCase {
     }
     
     func testSessionAsDropInDelegate() throws {
-        let config = DropInComponent.Configuration(context: context,
-                                                   payment: nil)
-        config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
+        let config = DropInComponent.Configuration()
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         let dropIn = DropInComponent(paymentMethods: paymenMethods,

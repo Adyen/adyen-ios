@@ -57,17 +57,19 @@ class ComponentManagerTests: XCTestCase {
 
     var presentationDelegate: PresentationDelegateMock!
     var context: AdyenContext!
-    var configuration = DropInComponent.Configuration(context: Dummy.context, payment: nil)
+    var configuration: DropInComponent.Configuration!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         presentationDelegate = PresentationDelegateMock()
         context = Dummy.context
+        configuration = DropInComponent.Configuration()
     }
 
     override func tearDownWithError() throws {
         presentationDelegate = nil
         context = nil
+        configuration = nil
         try super.tearDownWithError()
     }
 
@@ -106,7 +108,6 @@ class ComponentManagerTests: XCTestCase {
     }
     
     func testLocalizationWithCustomTableName() throws {
-        configuration.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
@@ -123,7 +124,6 @@ class ComponentManagerTests: XCTestCase {
     
     func testLocalizationWithCustomKeySeparator() throws {
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-        configuration.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
 
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    context: context,
@@ -138,8 +138,6 @@ class ComponentManagerTests: XCTestCase {
     }
 
     func testOrderInjection() throws {
-        configuration.payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
-
         let order = PartialPaymentOrder(pspReference: "test pspRef", orderData: "test order data")
 
         var paymentMethods = paymentMethods
@@ -171,7 +169,6 @@ class ComponentManagerTests: XCTestCase {
 
     func testOrderInjectionOnApplePay() throws {
         let payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
-        configuration.payment = payment
         configuration.applePay = .init(payment: try .init(payment: payment, brand: "TEST"), merchantIdentifier: "test_test")
 
         let order = PartialPaymentOrder(pspReference: "test pspRef",

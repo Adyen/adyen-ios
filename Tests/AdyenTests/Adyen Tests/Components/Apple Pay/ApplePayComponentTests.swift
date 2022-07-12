@@ -12,8 +12,6 @@ import XCTest
 class ApplePayComponentTest: XCTestCase {
 
     var mockDelegate: PaymentComponentDelegateMock!
-    var analyticsProviderMock: AnalyticsProviderMock!
-    var context: AdyenContext!
     var mockApplePayDelegate: ApplePayDelegateMock!
     var sut: ApplePayComponent!
     lazy var amount = Amount(value: 2, currencyCode: "USD")
@@ -29,10 +27,8 @@ class ApplePayComponentTest: XCTestCase {
     override func setUp() {
         let configuration = ApplePayComponent.Configuration(payment: Dummy.createTestApplePayPayment(),
                                                             merchantIdentifier: "test_id")                                                 
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
         sut = try! ApplePayComponent(paymentMethod: paymentMethod,
-                                          context: context,
+                                     context: Dummy.context,
                                      configuration: configuration)
         mockDelegate = PaymentComponentDelegateMock()
         if #available(iOS 15.0, *) {
@@ -43,8 +39,6 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     override func tearDown() {
-        analyticsProviderMock = nil
-        context = nil
         sut = nil
         mockDelegate = nil
         UIApplication.shared.keyWindow!.rootViewController?.dismiss(animated: false)
@@ -108,7 +102,7 @@ class ApplePayComponentTest: XCTestCase {
         configuration.shippingMethods = shippingMethods
 
         sut = try! ApplePayComponent(paymentMethod: paymentMethod,
-                                     context: context,
+                                     context: Dummy.context,
                                      configuration: configuration)
         sut.applePayDelegate = mockApplePayDelegate
         mockApplePayDelegate.onShippingMethodChange = { method, payment in
@@ -319,7 +313,15 @@ class ApplePayComponentTest: XCTestCase {
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
         let mockViewController = UIViewController()
+
+        let configuration = ApplePayComponent.Configuration(payment: Dummy.createTestApplePayPayment(),
+                                                            merchantIdentifier: "test_id")
+        sut = try! ApplePayComponent(paymentMethod: paymentMethod,
+                                     context: context,
+                                     configuration: configuration)
 
         // When
         sut.viewWillAppear(viewController: mockViewController)

@@ -15,7 +15,6 @@ class InstantPaymentComponentTests: XCTestCase {
     private var paymentMethod: GiftCardPaymentMethod!
     private var delegate: PaymentComponentDelegateMock!
     private var sut: InstantPaymentComponent!
-    private var analyticsProviderMock: AnalyticsProviderMock!
     private var context: AdyenContext!
 
     override func setUp() {
@@ -23,19 +22,17 @@ class InstantPaymentComponentTests: XCTestCase {
     }
     override func setUpWithError() throws {
         try super.setUpWithError()
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context
 
         delegate = PaymentComponentDelegateMock()
         paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "name", brand: "brand")
         sut = InstantPaymentComponent(paymentMethod: paymentMethod,
-                                      paymentData: paymentComponentData,
-                                            context: context)
+                                      context: context,
+                                      paymentData: paymentComponentData)
         sut.delegate = delegate
     }
 
     override func tearDownWithError() throws {
-        analyticsProviderMock = nil
         context = nil
         paymentMethod = nil
         delegate = nil
@@ -60,6 +57,13 @@ class InstantPaymentComponentTests: XCTestCase {
     }
 
     func testInitiatePaymentShouldSendTelemetryEvent() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        sut = InstantPaymentComponent(paymentMethod: paymentMethod,
+                                      context: context,
+                                      paymentData: paymentComponentData)
+
         // When
         sut.initiatePayment()
 

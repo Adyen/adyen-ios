@@ -7,7 +7,7 @@
 import Foundation
 
 /// Any component's most basic configuration.
-public protocol AnyBasicComponentConfiguration: Localizable, PaymentAware {}
+public protocol AnyBasicComponentConfiguration: Localizable {}
 
 /// The configuration of any component thats aware of shoppers' personal information.
 public protocol AnyPersonalInformationConfiguration: AnyBasicComponentConfiguration {
@@ -19,8 +19,6 @@ public protocol AnyPersonalInformationConfiguration: AnyBasicComponentConfigurat
 /// Any component's most basic configuration.
 public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
 
-    public var payment: Payment?
-
     /// The UI style of the component.
     public var style: FormComponentStyle
     
@@ -31,21 +29,16 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     /// - Parameters:
     ///   - style: The form style.
     ///   - localizationParameters: The localization parameters.
-    ///   - payment: The payment information.
     public init(style: FormComponentStyle = FormComponentStyle(),
-                payment: Payment?,
                 localizationParameters: LocalizationParameters? = nil) {
         self.style = style
         self.localizationParameters = localizationParameters
-        self.payment = payment
     }
 
 }
 
 /// The configuration of any component thats aware of shoppers' personal information.
 public struct PersonalInformationConfiguration: AnyPersonalInformationConfiguration {
-
-    public var payment: Payment?
 
     /// The UI style of the component.
     public var style: FormComponentStyle
@@ -60,15 +53,12 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
     ///   - style: The form style.
     ///   - shopperInformation: The shopper information to be prefilled.
     ///   - localizationParameters: The localization parameters.
-    ///   - payment: The payment information.
     public init(style: FormComponentStyle = FormComponentStyle(),
-                payment: Payment?,
                 shopperInformation: PrefilledShopperInformation? = nil,
                 localizationParameters: LocalizationParameters? = nil) {
         self.style = style
         self.shopperInformation = shopperInformation
         self.localizationParameters = localizationParameters
-        self.payment = payment
     }
 
 }

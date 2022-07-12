@@ -19,10 +19,6 @@ public final class BoletoComponent: PaymentComponent,
     @_spi(AdyenInternal)
     public let context: AdyenContext
 
-    public var payment: Payment? {
-        configuration.payment
-    }
-    
     public weak var delegate: PaymentComponentDelegate?
         
     public var paymentMethod: PaymentMethod { boletoPaymentMethod }
@@ -84,7 +80,6 @@ public final class BoletoComponent: PaymentComponent,
     
     private lazy var formComponent: FormComponent = {
         let configuration = AbstractPersonalInformationComponent.Configuration(style: configuration.style,
-                                                                               payment: payment,
                                                                                shopperInformation: configuration.shopperInformation,
                                                                                localizationParameters: configuration.localizationParameters)
         let component = FormComponent(paymentMethod: paymentMethod,

@@ -53,7 +53,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
         let payment = Payment(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
         sut = BACSDirectDebitComponent(paymentMethod: paymentMethod,
                                        context: context,
-                                       configuration: .init(payment: payment))
+                                       configuration: .init())
 
         let presenter: BACSInputPresenter = sut.inputPresenter as! BACSInputPresenter
         let expectedConsentTitle1 = presenter.itemsFactory.createConsentText(with: payment.amount)

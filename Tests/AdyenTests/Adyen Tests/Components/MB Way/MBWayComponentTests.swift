@@ -12,7 +12,6 @@ import XCTest
 
 class MBWayComponentTests: XCTestCase {
 
-    private var analyticsProviderMock: AnalyticsProviderMock!
     private var context: AdyenContext!
     private var paymentMethod: MBWayPaymentMethod!
     private var payment: Payment!
@@ -20,15 +19,13 @@ class MBWayComponentTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context
 
         paymentMethod = MBWayPaymentMethod(type: .mbWay, name: "test_name")
         payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
     }
 
     override func tearDownWithError() throws {
-        analyticsProviderMock = nil
         context = nil
         paymentMethod = nil
         payment = nil
@@ -36,8 +33,7 @@ class MBWayComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomTableName() throws {
-        let config = MBWayComponent.Configuration(payment: nil,
-                                                  localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
+        let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                   context: context,
                                  configuration: config)
@@ -52,7 +48,7 @@ class MBWayComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomKeySeparator() throws {
-        let config = MBWayComponent.Configuration(payment: nil, localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
+        let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                   context: context,
                                  configuration: config)
@@ -90,7 +86,7 @@ class MBWayComponentTests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        let config = MBWayComponent.Configuration(style: style, payment: nil)
+        let config = MBWayComponent.Configuration(style: style)
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                   context: context,
                                  configuration: config)
@@ -177,7 +173,7 @@ class MBWayComponentTests: XCTestCase {
 
     func testMBWayPrefilling() throws {
         // Given
-        let config = MBWayComponent.Configuration(payment: nil, shopperInformation: shopperInformation)
+        let config = MBWayComponent.Configuration(shopperInformation: shopperInformation)
         let prefillSut = MBWayComponent(paymentMethod: paymentMethod,
                                                 context: context,
                                         configuration: config)
@@ -198,7 +194,7 @@ class MBWayComponentTests: XCTestCase {
         // Given
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                   context: context,
-                                 configuration: MBWayComponent.Configuration(payment: nil))
+                                 configuration: MBWayComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         wait(for: .milliseconds(300))
@@ -213,9 +209,11 @@ class MBWayComponentTests: XCTestCase {
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                   context: context,
-                                 configuration: MBWayComponent.Configuration(payment: nil))
+                                 configuration: MBWayComponent.Configuration())
 
         // When
         sut.viewWillAppear(viewController: sut.viewController)

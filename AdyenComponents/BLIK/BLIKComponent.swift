@@ -17,10 +17,6 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext
-
-    public var payment: Payment? {
-        configuration.payment
-    }
     
     public var paymentMethod: PaymentMethod { blikPaymentMethod }
 
@@ -43,7 +39,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: BLIKPaymentMethod,
                 context: AdyenContext,
-                configuration: Configuration = .init(payment: nil)) {
+                configuration: Configuration = .init()) {
         self.blikPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration

@@ -24,7 +24,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         try super.setUpWithError()
 
         analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context(with: analyticsProviderMock)
         paymentComponentDelegate = PaymentComponentDelegateMock()
 
         amount = Amount(value: 100, currencyCode: "USD")
@@ -43,6 +43,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         payment = nil
         paymentMethod = nil
         sut = nil
+        analyticsProviderMock = nil
         try super.tearDownWithError()
     }
 
