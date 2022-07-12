@@ -19,7 +19,7 @@ public final class RedirectComponent: ActionComponent {
         /// Indicates that no app is installed that can handle the payment.
         case appNotFound
         
-        /// Indicates that invalid paarameters are passed back from the issuer.
+        /// Indicates that invalid parameters are passed back from the issuer.
         case invalidRedirectParameters
         
         public var errorDescription: String? {
