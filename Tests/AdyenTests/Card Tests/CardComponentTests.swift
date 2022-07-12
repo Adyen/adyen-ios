@@ -485,7 +485,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
         let vc = sut.viewController as? UIAlertController
         XCTAssertEqual(vc?.message, "•••• 1234")
-        XCTAssertEqual(vc?.title, "Confirm name payment")
+        XCTAssertEqual(vc?.title, "Confirm Test name payment")
         XCTAssertEqual(vc?.actions[0].title, "Cancel")
         XCTAssertEqual(vc?.actions[1].title, "Pay €1.00")
     }
@@ -501,7 +501,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
         let vc = sut.viewController as? UIAlertController
         XCTAssertEqual(vc?.message, "•••• 1234")
-        XCTAssertEqual(vc?.title, "Confirm name payment")
+        XCTAssertEqual(vc?.title, "Confirm Test name payment")
         XCTAssertEqual(vc?.actions[0].title, "Cancel")
         XCTAssertEqual(vc?.actions[1].title, "Pay")
     }

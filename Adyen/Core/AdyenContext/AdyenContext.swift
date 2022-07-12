@@ -15,7 +15,7 @@ public final class AdyenContext: PaymentAware {
     /// The API context used to retrieve internal resources.
     public let apiContext: APIContext
 
-    /// The payment informnation..
+    /// The payment information.
     public let payment: Payment?
 
     @_spi(AdyenInternal)
