@@ -36,9 +36,7 @@ class AtomeComponentUITests: XCTestCase {
     }
 
     func testAllRequiredTextField_shouldExist() throws {
-        let config = AtomeComponent.Configuration(style: style,
-                                                  
-                                                  shopperInformation: shopperInformation)
+        let config = AtomeComponent.Configuration(shopperInformation: shopperInformation)
         UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
         let sut = AtomeComponent(paymentMethod: paymentMethod,
                                  context: context,
@@ -61,8 +59,7 @@ class AtomeComponentUITests: XCTestCase {
     }
 
     func testSubmitForm_shouldCallDelegateWithProperParameters() {
-        let config = AtomeComponent.Configuration(style: style,
-                                                  shopperInformation: shopperInformation)
+        let config = AtomeComponent.Configuration(shopperInformation: shopperInformation)
         let sut = AtomeComponent(paymentMethod: paymentMethod,
                                  context: context,
                                  configuration: config)

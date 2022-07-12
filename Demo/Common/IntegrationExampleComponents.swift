@@ -151,7 +151,8 @@ extension IntegrationExample {
     internal func convenienceStoreComponent(from paymentMethods: PaymentMethods?) -> EContextStoreComponent? {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: EContextPaymentMethod.self) else { return nil }
-        let config = EContextStoreComponent.Configuration(style: FormComponentStyle())
+        let style = FormComponentStyle()
+        let config = EContextStoreComponent.Configuration(style: style)
         return EContextStoreComponent(paymentMethod: paymentMethod,
                                       context: context,
                                       configuration: config)

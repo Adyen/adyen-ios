@@ -293,7 +293,6 @@ extension ACHDirectDebitComponent {
         ///   Defaults to `true`.
         ///   - billingAddressCountryCodes: ISO country codes that is supported for the billing address.
         ///   Defaults to ["US", "PR"].
-        ///   - payment: The payment information.
         public init(style: FormComponentStyle = FormComponentStyle(),
                     shopperInformation: PrefilledShopperInformation? = nil,
                     localizationParameters: LocalizationParameters? = nil,

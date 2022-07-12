@@ -13,8 +13,8 @@ import XCTest
 class PreApplePayComponentTests: XCTestCase {
 
     var analyticsProviderMock: AnalyticsProviderMock!
-    var amount: Amount!
-    var paymentMethod: ApplePayPaymentMethod!
+    let amount = Dummy.payment.amount
+    var paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
     var context: AdyenContext!
     var paymentComponentDelegate: PaymentComponentDelegateMock!
     var sut: PreApplePayComponent!
@@ -22,9 +22,6 @@ class PreApplePayComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        amount = Amount(value: 100, currencyCode: "USD")
-        paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
-
         analyticsProviderMock = AnalyticsProviderMock()
         context = Dummy.context(with: analyticsProviderMock)
         paymentComponentDelegate = PaymentComponentDelegateMock()
@@ -43,8 +40,6 @@ class PreApplePayComponentTests: XCTestCase {
 
     override func tearDownWithError() throws {
         analyticsProviderMock = nil
-        amount = nil
-        paymentMethod = nil
         context = nil
         paymentComponentDelegate = nil
         sut = nil

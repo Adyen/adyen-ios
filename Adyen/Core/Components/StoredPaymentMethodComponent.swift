@@ -90,7 +90,6 @@ extension StoredPaymentMethodComponent {
         /// Initializes the configuration for Issuer list type components.
         /// - Parameters:
         ///   - localizationParameters: Localization parameters.
-        ///   - payment: The payment information.
         public init(localizationParameters: LocalizationParameters? = nil) {
             self.localizationParameters = localizationParameters
         }

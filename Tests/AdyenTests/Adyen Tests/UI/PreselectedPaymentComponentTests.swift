@@ -168,6 +168,20 @@ class PreselectedPaymentComponentTests: XCTestCase {
         
         XCTAssertEqual(submitButtonLabel.text, "Pay €1.00")
     }
+
+    func testPayButtonTitleNoPayment() {
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), context: Dummy.context(with: nil))
+        sut = PreselectedPaymentMethodComponent(component: component, title: "", style: .init(),  listItemStyle: .init())
+
+        let submitButtonContainer = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton")
+        let submitButton = submitButtonContainer!.findView(by: "button")
+        let submitButtonLabel: UILabel! = submitButton!.findView(by: "titleLabel")
+
+        wait(for: .milliseconds(300))
+
+        XCTAssertEqual(submitButtonLabel.text, "Pay")
+    }
     
     func testPaypalComponent() {
         component = StoredPaymentMethodComponent(paymentMethod: getStoredPaypal(), context: Dummy.context)

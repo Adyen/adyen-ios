@@ -41,7 +41,6 @@ public final class InstantPaymentComponent: PaymentComponent {
     /// - Parameters:
     ///   - paymentMethod: The payment method.
     ///   - context: The context object for this component.
-    ///   - amount: The amount for this payment.
     ///   - order: The partial order for this payment.
     public init(paymentMethod: PaymentMethod,
                 context: AdyenContext,

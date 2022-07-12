@@ -15,9 +15,8 @@ class PaymentComponentSubjectTests: XCTestCase {
     var analyticsProviderMock: AnalyticsProviderMock!
     var context: AdyenContext!
     var paymentComponentDelegate: PaymentComponentDelegateMock!
-    var payment: Payment!
-    var paymentMethod: PaymentMethod!
-    var amount: Amount!
+    var payment = Dummy.payment
+    var paymentMethod = MBWayPaymentMethod(type: .mbWay, name: "MBWay")
     var sut: PaymentComponentSubject!
 
     override func setUpWithError() throws {
@@ -26,10 +25,6 @@ class PaymentComponentSubjectTests: XCTestCase {
         analyticsProviderMock = AnalyticsProviderMock()
         context = Dummy.context(with: analyticsProviderMock)
         paymentComponentDelegate = PaymentComponentDelegateMock()
-
-        amount = Amount(value: 100, currencyCode: "USD")
-        payment = .init(amount: amount, countryCode: "US")
-        paymentMethod = MBWayPaymentMethod(type: .mbWay, name: "MBWay")
         sut = PaymentComponentSubject(context: context,
                                       delegate: paymentComponentDelegate,
                                       payment: payment,
@@ -40,8 +35,6 @@ class PaymentComponentSubjectTests: XCTestCase {
     override func tearDownWithError() throws {
         context = nil
         paymentComponentDelegate = nil
-        payment = nil
-        paymentMethod = nil
         sut = nil
         analyticsProviderMock = nil
         try super.tearDownWithError()

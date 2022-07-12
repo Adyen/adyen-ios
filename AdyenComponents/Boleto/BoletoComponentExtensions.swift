@@ -29,7 +29,6 @@ extension BoletoComponent {
         ///   - localizationParameters: Localization parameters.
         ///   - shopperInformation: Pre-filled optional personal information about the shopper
         ///   - showEmailAddress: Indicates whether to show `sendCopyByEmail` checkbox and email text field
-        ///   - payment: The payment information.
         public init(style: FormComponentStyle = FormComponentStyle(),
                     localizationParameters: LocalizationParameters? = nil,
                     shopperInformation: PrefilledShopperInformation?,

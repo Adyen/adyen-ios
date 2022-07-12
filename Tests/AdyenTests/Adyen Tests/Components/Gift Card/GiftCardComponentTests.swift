@@ -26,7 +26,7 @@ class GiftCardComponentTests: XCTestCase {
 
     var paymentMethod: GiftCardPaymentMethod!
 
-    let amountToPay = Amount(value: 100, currencyCode: "EUR")
+    var amountToPay: Amount { Dummy.payment.amount }
 
     var errorView: FormErrorItemView? {
         sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.errorItem")

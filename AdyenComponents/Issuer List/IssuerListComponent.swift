@@ -113,7 +113,6 @@ extension IssuerListComponent {
         /// - Parameters:
         ///   - style: The UI style of the component.
         ///   - localizationParameters: Localization parameters.
-        ///   - payment: The payment information.
         public init(style: ListComponentStyle = .init(),
                     localizationParameters: LocalizationParameters? = nil) {
             self.style = style
