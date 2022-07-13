@@ -174,8 +174,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                                                    localizationParameters: configuration.localizationParameters)
 
         if let amount = order?.remainingAmount {
-            let localIdentifier = amount.localeIdentifier ?? configuration.localizationParameters?.locale
-            let configuration = applePay.updating(amount: amount, localeIdentifier: localIdentifier)
+            let configuration = applePay.replacing(amount: amount)
             if let component = try? PreApplePayComponent(paymentMethod: paymentMethod,
                                                          context: context,
                                                          configuration: preApplePayConfig,

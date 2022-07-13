@@ -109,14 +109,14 @@ public struct ApplePayPayment {
     /// - Parameters:
     ///   - amount: The new amount value
     ///   - localeIdentifier: The localization parameters to control how monetary amount are localized.
-    internal mutating func update(amount: Amount, localeIdentifier: String?) {
+    internal mutating func update(amount: Amount) {
         var newItems = summaryItems
         guard let lastItem = newItems.last else { return }
 
         newItems = newItems.dropLast()
         let decimalAmount = AmountFormatter.decimalAmount(amount.value,
                                                           currencyCode: amount.currencyCode,
-                                                          localeIdentifier: localeIdentifier)
+                                                          localeIdentifier: amount.localeIdentifier)
         newItems.append(PKPaymentSummaryItem(label: lastItem.label, amount: decimalAmount))
         summaryItems = newItems
         amountMinorUnits = amount.value
@@ -145,7 +145,7 @@ extension ApplePayPayment {
         Amount(value: amountMinorUnits, currencyCode: currencyCode)
     }
 
-    internal func update(with summaryItems: [PKPaymentSummaryItem]) throws -> ApplePayPayment {
+    internal func replacing(summaryItems: [PKPaymentSummaryItem]) throws -> ApplePayPayment {
         try ApplePayPayment(countryCode: self.countryCode,
                             currencyCode: currencyCode,
                             summaryItems: summaryItems,

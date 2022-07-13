@@ -46,6 +46,29 @@ class IssuerListComponentTests: XCTestCase {
         XCTAssertFalse(cell.showsActivityIndicator)
     }
 
+    func testSelection() {
+        // Given
+        let listViewController = sut.viewController as! ListViewController
+        let expectedIssuer = paymentMethod.issuers[0]
+
+        let expectation = expectation(description: "Call didSubmit")
+        let mockDelegate = PaymentComponentDelegateMock()
+        mockDelegate.onDidSubmit = { paymentData, paymentComponent in
+            XCTAssertEqual(paymentData.amountToPay, Dummy.payment.amount)
+            
+            XCTAssertTrue(paymentData.paymentMethod is IssuerListDetails)
+            let details = paymentData.paymentMethod as! IssuerListDetails
+            XCTAssertEqual(details.issuer, expectedIssuer.identifier)
+
+            expectation.fulfill()
+        }
+
+        sut.delegate = mockDelegate
+        listViewController.tableView(listViewController.tableView, didSelectRowAt: .init(item: 0, section: 0))
+
+        waitForExpectations(timeout: 5)
+    }
+
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()

@@ -92,7 +92,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     private func updateApplePayPayment<T: PKPaymentRequestUpdate>(_ result: T) {
         if result.status == .success, result.paymentSummaryItems.count > 0 {
             do {
-                applePayPayment = try applePayPayment.update(with: result.paymentSummaryItems)
+                applePayPayment = try applePayPayment.replacing(summaryItems: result.paymentSummaryItems)
             } catch {
                 delegate?.didFail(with: error, from: self)
             }

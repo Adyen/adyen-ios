@@ -46,7 +46,7 @@ public final class AdyenContext: PaymentAware {
     }
 
     @_spi(AdyenInternal)
-    public func updated(with payment: Payment?) -> AdyenContext {
+    public func replacing(payment: Payment?) -> AdyenContext {
         AdyenContext(apiContext: self.apiContext,
                      payment: payment,
                      analyticsProvider: self.analyticsProvider)
