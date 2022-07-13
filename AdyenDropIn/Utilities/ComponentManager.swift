@@ -46,11 +46,10 @@ internal final class ComponentManager {
         self.supportsEditingStoredPaymentMethods = supportsEditingStoredPaymentMethods
         self.presentationDelegate = presentationDelegate
 
+        self.context = context
         if let payment = context.payment, let remainingAmount = order?.remainingAmount {
             let payment = Payment(amount: remainingAmount, countryCode: payment.countryCode)
-            self.context = context.replacing(payment: payment)
-        } else {
-            self.context = context
+            context.update(payment: payment)
         }
     }
     

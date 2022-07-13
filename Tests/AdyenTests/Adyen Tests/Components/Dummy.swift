@@ -20,7 +20,9 @@ enum Dummy: Error {
     
     internal static let apiContext = try! APIContext(environment: Environment.test, clientKey: "local_DUMMYKEYFORTESTING")
 
-    internal static let context = AdyenContext(apiContext: apiContext, payment: payment)
+    internal static var context: AdyenContext {
+        AdyenContext(apiContext: apiContext, payment: payment)
+    }
 
     internal static func context(with payment: Payment?) -> AdyenContext {
         AdyenContext(apiContext: apiContext, payment: payment)

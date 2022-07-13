@@ -331,6 +331,8 @@
 		E7B3DE9F25A61B9200CA4D2B /* UIViewConstraintsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B3DE9E25A61B9200CA4D2B /* UIViewConstraintsHelper.swift */; };
 		E7B627FD24ED32CC000CEC6E /* BinLookupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B627FC24ED32CC000CEC6E /* BinLookupService.swift */; };
 		E7CC63D2287EFFC00034108B /* DummyHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CC63D1287EFFC00034108B /* DummyHelper.swift */; };
+		E7CC63D3287F0D600034108B /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF8CD4C26691D3A00102339 /* Dummy.swift */; };
+		E7CC63D4287F0D630034108B /* DummyHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CC63D1287EFFC00034108B /* DummyHelper.swift */; };
 		E7CD107E25544C970057C52D /* FormContainerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CD107D25544C970057C52D /* FormContainerItem.swift */; };
 		E7D0DAAE265E66D70013A5F3 /* AddressFormItemInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D0DAAD265E66D70013A5F3 /* AddressFormItemInjector.swift */; };
 		E7D189B025D31936006AD3B7 /* DropInActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */; };
@@ -5384,10 +5386,12 @@
 			files = (
 				007D7918281FC51500382D31 /* PostalAddressMocks.swift in Sources */,
 				007D79222823BE6A00382D31 /* UIApplicationExtension.swift in Sources */,
+				E7CC63D3287F0D600034108B /* Dummy.swift in Sources */,
 				007D791F2823A84C00382D31 /* AffirmComponentUITests.swift in Sources */,
 				007D7919281FC61000382D31 /* UIView+Search.swift in Sources */,
 				007D791B281FC63500382D31 /* XCTestCase+FormAddressItem.swift in Sources */,
 				007D791C281FC6B000382D31 /* XCTestCaseExtensions.swift in Sources */,
+				E7CC63D4287F0D630034108B /* DummyHelper.swift in Sources */,
 				007D7917281FC4FA00382D31 /* PaymentComponentDelegateMock.swift in Sources */,
 				007D791A281FC62E00382D31 /* XCTestCaseExtension.swift in Sources */,
 				007D790C2812C81400382D31 /* AtomeComponentUITests.swift in Sources */,
