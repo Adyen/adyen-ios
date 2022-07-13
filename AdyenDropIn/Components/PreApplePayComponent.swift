@@ -92,7 +92,7 @@ internal final class PreApplePayComponent: PresentableComponent,
 extension PreApplePayComponent: PaymentComponentDelegate {
     
     internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        delegate?.didSubmit(data, from: component)
+        submit(data: data, component: component)
     }
     
     internal func didFail(with error: Error, from component: PaymentComponent) {

@@ -36,7 +36,7 @@ class AffirmComponentUITests: XCTestCase {
     func testSubmitForm_shouldCallDelegateWithProperParameters() throws {
         // Given
         let sut = AffirmComponent(paymentMethod: paymentMethod,
-                                  context: context.updated(with: nil),
+                                  context: Dummy.context(with: nil),
                                   configuration: AffirmComponent.Configuration(style: style))
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
