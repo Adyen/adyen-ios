@@ -53,7 +53,7 @@ extension DropInComponent: PaymentComponentDelegate {
         paymentInProgress = true
 
         let checkoutAttemptId = component.context.analyticsProvider.checkoutAttemptId
-        let updatedData = data.replacingCheckoutAttemptID(with: checkoutAttemptId)
+        let updatedData = data.replacing(checkoutAttemptId: checkoutAttemptId)
 
         guard updatedData.browserInfo == nil else {
             delegate?.didSubmit(updatedData, from: component, in: self)
