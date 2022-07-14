@@ -2,12 +2,15 @@
 "adyen.submitButton.formatted" = "Заплатить %@";
 "adyen.cancelButton" = "Отменить";
 "adyen.dismissButton" = "ОК";
+"adyen.removeButton" = "Удалить";
 "adyen.error.title" = "Ошибка";
 "adyen.error.unknown" = "Возникла неизвестная ошибка";
 "adyen.validationAlert.title" = "Неверные данные";
 "adyen.paymentMethods.otherMethods" = "Прочие";
 "adyen.paymentMethods.storedMethods" = "Сохраненные";
 "adyen.paymentMethods.title" = "Способы оплаты";
+"adyen.paymentMethod.removeButton" = "Да, удалить";
+"adyen.payment.refused.message" = "Платеж отклонен. Повторите попытку.";
 "adyen.sepa.ibanItem.title" = "Номер счета (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Недействительный номер счета";
 "adyen.sepa.nameItem.title" = "Имя владельца";
@@ -116,6 +119,9 @@
 "adyen.boleto.download.pdf" = "Загрузить PDF";
 "adyen.giftcard.currencyError" = "Принимаются только подарочные карты соответствующей валюты";
 "adyen.giftcard.noBalance" = "На этой подарочной карте нет средств";
+"adyen.giftcard.remove.title" = "Подтвердите удаление карты";
+"adyen.giftcard.remove.message" = "Удалить добавленные подарочные карты?";
+"adyen.giftcard.paymentMethod.title" = "Подарочные карты";
 "adyen.partialPayment.remainingBalance" = "Остаток на балансе составит %@";
 "adyen.partialPayment.payRemainingAmount" = "Выбрать другой способ оплаты оставшейся суммы %@";
 "adyen.card.taxNumber.label" = "Дата рождения владельца карты (ГГММДД) или регистрационный номер предприятия (10 цифр)";

@@ -2,12 +2,15 @@
 "adyen.submitButton.formatted" = "Betal %@";
 "adyen.cancelButton" = "Avbryt";
 "adyen.dismissButton" = "Ok";
+"adyen.removeButton" = "Fjern";
 "adyen.error.title" = "Feil";
 "adyen.error.unknown" = "En ukjent feil oppstod";
 "adyen.validationAlert.title" = "Ugyldige inndata";
 "adyen.paymentMethods.otherMethods" = "andre";
 "adyen.paymentMethods.storedMethods" = "Lagret";
 "adyen.paymentMethods.title" = "Betalingsmetoder";
+"adyen.paymentMethod.removeButton" = "Ja, fjern";
+"adyen.payment.refused.message" = "Betalingen ble avvist. Vennligst prøv igjen.";
 "adyen.sepa.ibanItem.title" = "Kontonummer (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Ugyldig kontonummer";
 "adyen.sepa.nameItem.title" = "Kortholders navn";
@@ -116,6 +119,9 @@
 "adyen.boleto.download.pdf" = "Last ned PDF";
 "adyen.giftcard.currencyError" = "Gavekort er kun gyldige i den valutaen de ble utstedt i";
 "adyen.giftcard.noBalance" = "Dette gavekortet har en saldo på null";
+"adyen.giftcard.remove.title" = "Bekreft fjerning av kort";
+"adyen.giftcard.remove.message" = "Vil du fjerne gavekort som er lagt til?";
+"adyen.giftcard.paymentMethod.title" = "La til gavekort";
 "adyen.partialPayment.remainingBalance" = "Gjenværende saldo vil være %@";
 "adyen.partialPayment.payRemainingAmount" = "Velg betalingsmetode for de gjenstående %@";
 "adyen.card.taxNumber.label" = "Kortholders fødselsdato (YYMMDD) eller bedriftsregistreringsnummer (10 siffer)";

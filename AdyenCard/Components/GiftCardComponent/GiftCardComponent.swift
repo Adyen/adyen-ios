@@ -189,7 +189,13 @@ public final class GiftCardComponent: PresentableComponent,
         partialPaymentDelegate?.checkBalance(with: paymentData, component: self) { [weak self] result in
             guard let self = self else { return }
             result
-                .mapError(Error.otherError)
+                .mapError { error in
+                    if error is BalanceChecker.Error {
+                        return error
+                    } else {
+                        return Error.otherError(error)
+                    }
+                }
                 .flatMap {
                     self.check(balance: $0, toPay: self.amount)
                 }

@@ -312,6 +312,114 @@ class SessionTests: XCTestCase {
         XCTAssertEqual(sut.sessionContext.data, "session_data_xxx")
     }
     
+    func testDidSubmitFailure() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let paymentMethod = expectedPaymentMethods.regular.last as! MBWayPaymentMethod
+        let data = PaymentComponentData(
+            paymentMethodDetails: MBWayDetails(
+                paymentMethod: paymentMethod,
+                telephoneNumber: "telephone"
+            ),
+            amount: .init(
+                value: 20,
+                currencyCode: "USD",
+                localeIdentifier: nil
+            ),
+            order: nil
+        )
+        let component = MBWayComponent(paymentMethod: paymentMethod,
+                                       context: context)
+        let apiClient = APIClientMock()
+        sut.apiClient = apiClient
+        
+        apiClient.mockedResults = [.failure(Dummy.error)]
+        let didSubmitExpectation = expectation(description: "Expect payments call to be made")
+        apiClient.onExecute = {
+            didSubmitExpectation.fulfill()
+        }
+        sut.didSubmit(data, from: component)
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+    
+    func testDidSubmitOrderRefused() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        
+        let dropInComponent = DropInComponent(paymentMethods: expectedPaymentMethods,
+                                              context: context,
+                                              title: nil)
+        
+        UIApplication.shared.keyWindow?.rootViewController = dropInComponent.viewController
+
+        wait(for: .milliseconds(300))
+        
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let paymentMethod = expectedPaymentMethods.regular.last as! MBWayPaymentMethod
+        let data = PaymentComponentData(
+            paymentMethodDetails: MBWayDetails(
+                paymentMethod: paymentMethod,
+                telephoneNumber: "telephone"
+            ),
+            amount: .init(
+                value: 20,
+                currencyCode: "USD",
+                localeIdentifier: nil
+            ),
+            order: nil
+        )
+        let component = MBWayComponent(paymentMethod: paymentMethod,
+                                       context: context)
+        let apiClient = APIClientMock()
+        sut.apiClient = apiClient
+        
+        let expectedOrder = PartialPaymentOrder(pspReference: "pspReference",
+                                                orderData: "order_data",
+                                                reference: "reference",
+                                                amount: .init(
+                                                    value: 220,
+                                                    currencyCode: "USD",
+                                                    localeIdentifier: nil
+                                                ),
+                                                remainingAmount: .init(
+                                                    value: 20,
+                                                    currencyCode: "USD",
+                                                    localeIdentifier: nil
+                                                ),
+                                                expiresAt: Date())
+        
+        let expectedAmount = Amount(
+            value: 440,
+            currencyCode: "EGP",
+            localeIdentifier: nil
+        )
+        
+        apiClient.mockedResults = [
+            .success(
+                PaymentsResponse(
+                    resultCode: .refused,
+                    action: nil,
+                    order: expectedOrder,
+                    sessionData: "session_data"
+                )
+            ),
+            .success(
+                SessionSetupResponse(countryCode: "EG",
+                                     shopperLocale: "EG",
+                                     paymentMethods: expectedPaymentMethods,
+                                     amount: expectedAmount,
+                                     sessionData: "session_data_xxx")
+            )
+        ]
+        let didSubmitExpectation = expectation(description: "Expect payments call to be made")
+        apiClient.onExecute = {
+            didSubmitExpectation.fulfill()
+        }
+        
+        
+        sut.didSubmit(data, from: component, in: dropInComponent)
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+    
     func testCheckBalanceCheckSuccess() throws {
         let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)

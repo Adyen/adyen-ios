@@ -2,12 +2,15 @@
 "adyen.submitButton.formatted" = "Zapłać %@";
 "adyen.cancelButton" = "Anuluj";
 "adyen.dismissButton" = "Ok";
+"adyen.removeButton" = "Usuń";
 "adyen.error.title" = "Błąd";
 "adyen.error.unknown" = "Wystąpił nieoczekiwany błąd";
 "adyen.validationAlert.title" = "Nieprawidłowe dane wejściowe";
 "adyen.paymentMethods.otherMethods" = "Inne";
 "adyen.paymentMethods.storedMethods" = "Przechowywane";
 "adyen.paymentMethods.title" = "Metody płatności";
+"adyen.paymentMethod.removeButton" = "Tak, usuń";
+"adyen.payment.refused.message" = "Płatność została odrzucona. Prosimy spróbować ponownie.";
 "adyen.sepa.ibanItem.title" = "Numer rachunku (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Nieprawidłowy numer rachunku";
 "adyen.sepa.nameItem.title" = "Imię i nazwisko posiadacza karty";
@@ -116,6 +119,9 @@
 "adyen.boleto.download.pdf" = "Pobierz PDF";
 "adyen.giftcard.currencyError" = "Karty podarunkowe są ważne tylko w walucie, w której zostały wydane";
 "adyen.giftcard.noBalance" = "Saldo karty podarunkowej jest puste";
+"adyen.giftcard.remove.title" = "Potwierdź usunięcie karty";
+"adyen.giftcard.remove.message" = "Usunąć dodane karty podarunkowe?";
+"adyen.giftcard.paymentMethod.title" = "Dodano kartę podarunkową";
 "adyen.partialPayment.remainingBalance" = "Pozostałe saldo wynosi %@";
 "adyen.partialPayment.payRemainingAmount" = "Wybierz metodę płatności dla pozostałych %@";
 "adyen.card.taxNumber.label" = "Data urodzenia posiadacza karty (RRMMDD) lub firmowy numer rejestracyjny (10 cyfr)";

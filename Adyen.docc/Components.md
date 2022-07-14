@@ -22,3 +22,7 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - ``BLIKComponent``
 - ``DokuComponent``
 - ``BoletoComponent``
+- ``ACHDirectDebitComponent``
+- ``AffirmComponent``
+- ``AtomeComponent``
+- ``BACSDirectDebitComponent``

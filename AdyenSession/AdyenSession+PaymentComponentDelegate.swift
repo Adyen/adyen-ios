@@ -9,6 +9,7 @@
     @_spi(AdyenInternal) import AdyenActions
 #endif
 import Foundation
+import UIKit
 
 @_spi(AdyenInternal)
 extension AdyenSession: PaymentComponentDelegate {
@@ -67,11 +68,40 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
         } else if let order = response.order,
                   let remainingAmount = order.remainingAmount,
                   remainingAmount.value > 0 {
-            handle(order: order, for: currentComponent, in: dropInComponent)
+            let handleOrderBlock: (() -> Void) = { [weak self] in
+                self?.handle(order: order, for: currentComponent, in: dropInComponent)
+            }
+            
+            if response.resultCode == .refused {
+                showPaymentFailedAlert(on: dropInComponent, completion: handleOrderBlock)
+            } else {
+                handleOrderBlock()
+            }
         } else {
             finish(with: SessionPaymentResultCode(paymentResultCode: response.resultCode),
                    component: currentComponent)
         }
+    }
+    
+    private func showPaymentFailedAlert(on dropInComponent: AnyDropInComponent?, completion: @escaping (() -> Void)) {
+        guard let dropInComponent = dropInComponent else {
+            completion()
+            return
+        }
+        let localizationParameters = (dropInComponent as? Localizable)?.localizationParameters
+        let title = localizedString(.errorTitle, localizationParameters)
+        let message = localizedString(.paymentRefusedMessage, localizationParameters)
+        let alertController = UIAlertController(title: title,
+                                                message: message,
+                                                preferredStyle: .alert)
+        
+        let doneTitle = localizedString(.dismissButton, localizationParameters)
+        let doneAction = UIAlertAction(title: doneTitle, style: .default) { _ in
+            completion()
+        }
+        alertController.addAction(doneAction)
+        
+        dropInComponent.viewController.present(alertController, animated: true)
     }
     
     private func handle(action: Action,
