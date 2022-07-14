@@ -3246,6 +3246,7 @@
 				E759E1F325CB371800B1F8DC /* DropIn Tests */,
 				F9F1A98526CCFD090005CB1D /* Encryption Tests */,
 				F967581327D25B0200A16FB6 /* Session Tests */,
+				C92F6DBC26AFF289004BD516 /* DummyData */,
 				C92F6DBF26B0297A004BD516 /* Helpers */,
 				E2C0E04322097917008616F6 /* Info.plist */,
 			);
@@ -3298,7 +3299,6 @@
 				C9C0005A280468B800CE2EEC /* Analytics */,
 				F91760A52594C5C000D653BE /* Assets */,
 				E97B9718229D54C600505476 /* Core */,
-				C92F6DBC26AFF289004BD516 /* DummyData */,
 				E9E3DABC221EA44900697074 /* Extension */,
 				E7CC63D5288016080034108B /* Mocks */,
 				F99F085B2383EBFF00EBB948 /* UI */,
@@ -4183,9 +4183,6 @@
 			children = (
 				F99F08602383F28800EBB948 /* Form */,
 				F9DC6BA423AA291500863F3A /* List Component */,
-				E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */,
-				E7D5311B2447065B000046B4 /* PreselectedPaymentComponentTests.swift */,
-				E767F4DB25A603A50077029E /* ModalToolbarTests.swift */,
 				F9FE39E22679E09200F02A9B /* LoadingViewTests.swift */,
 			);
 			path = UI;
