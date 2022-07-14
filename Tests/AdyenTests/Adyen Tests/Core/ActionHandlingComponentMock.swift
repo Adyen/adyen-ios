@@ -11,11 +11,9 @@ import Foundation
 @_spi(AdyenInternal) import AdyenActions
 
 internal final class ActionHandlingComponentMock: ActionHandlingComponent {
-    
-    internal let apiContext: APIContext = Dummy.apiContext
 
     internal var context: AdyenContext {
-        return .init(apiContext: apiContext)
+        return Dummy.context
     }
     
     internal var onAction: ((Action) -> Void)?

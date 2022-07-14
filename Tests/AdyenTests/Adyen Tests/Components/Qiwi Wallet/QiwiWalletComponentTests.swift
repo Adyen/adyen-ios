@@ -10,17 +10,14 @@ import XCTest
 
 class QiwiWalletComponentTests: XCTestCase {
 
-    var analyticsProviderMock: AnalyticsProviderMock!
     var context: AdyenContext!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context
     }
 
     override func tearDownWithError() throws {
-        analyticsProviderMock = nil
         context = nil
         try super.tearDownWithError()
     }
@@ -32,7 +29,6 @@ class QiwiWalletComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() throws {
         let config = QiwiWalletComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
         let sut = QiwiWalletComponent(paymentMethod: method, context: context, configuration: config)
-        sut.payment = payment
         
         let expectedSelectableValues = phoneExtensions.map { PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0) }
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
@@ -51,7 +47,6 @@ class QiwiWalletComponentTests: XCTestCase {
     func testLocalizationWithCustomKeySeparator() throws {
         let config = QiwiWalletComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = QiwiWalletComponent(paymentMethod: method, context: context, configuration: config)
-        sut.payment = payment
         
         let expectedSelectableValues = phoneExtensions.map { PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0) }
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.selectableValues, expectedSelectableValues)
@@ -189,6 +184,8 @@ class QiwiWalletComponentTests: XCTestCase {
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
         let phoneExtensions = [PhoneExtension(value: "+3", countryCode: "UK")]
         let paymentMethod = QiwiWalletPaymentMethod(type: .qiwiWallet, name: "test_name", phoneExtensions: phoneExtensions)
         let sut = QiwiWalletComponent(paymentMethod: paymentMethod,

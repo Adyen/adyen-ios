@@ -34,8 +34,10 @@ class PreselectedPaymentComponentTests: XCTestCase {
     
     override func setUp() {
         component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), context: Dummy.context)
-        component.payment = payment
-        sut = PreselectedPaymentMethodComponent(component: component, title: "Test title", style: FormComponentStyle(), listItemStyle: ListItemStyle())
+        sut = PreselectedPaymentMethodComponent(component: component,
+                                                title: "Test title",
+                                                style: FormComponentStyle(),
+                                                listItemStyle: ListItemStyle())
         
         delegate = PreselectedPaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -156,6 +158,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
     
     func testPayButtonTitle() {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        sut = PreselectedPaymentMethodComponent(component: component, title: "", style: .init(),  listItemStyle: .init())
         
         let submitButtonContainer = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton")
         let submitButton = submitButtonContainer!.findView(by: "button")
@@ -163,6 +166,20 @@ class PreselectedPaymentComponentTests: XCTestCase {
         
         wait(for: .milliseconds(300))
         
+        XCTAssertEqual(submitButtonLabel.text, "Pay €1.00")
+    }
+
+    func testPayButtonTitleNoPayment() {
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), context: Dummy.context(with: nil))
+        sut = PreselectedPaymentMethodComponent(component: component, title: "", style: .init(),  listItemStyle: .init())
+
+        let submitButtonContainer = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton")
+        let submitButton = submitButtonContainer!.findView(by: "button")
+        let submitButtonLabel: UILabel! = submitButton!.findView(by: "titleLabel")
+
+        wait(for: .milliseconds(300))
+
         XCTAssertEqual(submitButtonLabel.text, "Pay")
     }
     

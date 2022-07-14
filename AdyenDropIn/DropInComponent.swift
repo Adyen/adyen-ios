@@ -27,7 +27,7 @@ public final class DropInComponent: NSObject,
     AnyDropInComponent,
     ActionHandlingComponent {
 
-    private var configuration: Configuration
+    internal var configuration: Configuration
 
     internal var paymentInProgress: Bool = false
 
@@ -53,7 +53,7 @@ public final class DropInComponent: NSObject,
     ///            If no external value provided, the Main Bundle's name would be used.
     public init(paymentMethods: PaymentMethods,
                 context: AdyenContext,
-                configuration: Configuration,
+                configuration: Configuration = .init(),
                 title: String? = nil) {
         self.title = title ?? Bundle.main.displayName
         self.configuration = configuration
@@ -100,8 +100,7 @@ public final class DropInComponent: NSObject,
     }()
     
     internal func reloadComponentManager() {
-        componentManager = createComponentManager(componentManager.order,
-                                                  componentManager.remainingAmount)
+        componentManager = createComponentManager(componentManager.order)
     }
 
     /// Reloads the DropIn with a partial payment order and a new `PaymentMethods` object.
@@ -133,7 +132,7 @@ public final class DropInComponent: NSObject,
             return
         }
         paymentMethods.paid = response.paymentMethods ?? []
-        componentManager = createComponentManager(order, response.remainingAmount)
+        componentManager = createComponentManager(order)
         paymentInProgress = false
         showPaymentMethodsList(onCancel: { [weak self] in
             guard let self = self else { return }
@@ -143,15 +142,13 @@ public final class DropInComponent: NSObject,
     
     // MARK: - Private
 
-    private lazy var componentManager = createComponentManager(nil, nil)
+    private lazy var componentManager = createComponentManager(nil)
 
-    private func createComponentManager(_ order: PartialPaymentOrder?,
-                                        _ remainingAmount: Amount?) -> ComponentManager {
+    private func createComponentManager(_ order: PartialPaymentOrder?) -> ComponentManager {
         ComponentManager(paymentMethods: paymentMethods,
                          context: context,
                          configuration: configuration,
                          partialPaymentEnabled: partialPaymentDelegate != nil,
-                         remainingAmount: remainingAmount,
                          order: order,
                          supportsEditingStoredPaymentMethods: storedPaymentMethodsDelegate != nil,
                          presentationDelegate: self)
@@ -207,7 +204,6 @@ public final class DropInComponent: NSObject,
                                                           title: title,
                                                           style: configuration.style.formComponent,
                                                           listItemStyle: configuration.style.listComponent.listItem)
-        component.payment = configuration.payment
         component.localizationParameters = configuration.localizationParameters
         component.delegate = self
         component.onCancel = onCancel
@@ -265,12 +261,6 @@ public final class DropInComponent: NSObject,
         (component as? PreApplePayComponent)?.presentationDelegate = self
         
         component._isDropIn = true
-        
-        if let payment = configuration.payment, let remainingAmount = component.order?.remainingAmount {
-            component.payment = Payment(amount: remainingAmount, countryCode: payment.countryCode)
-        } else {
-            component.payment = configuration.payment
-        }
     }
 }
 

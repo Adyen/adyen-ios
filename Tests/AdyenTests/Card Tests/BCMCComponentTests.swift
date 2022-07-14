@@ -17,13 +17,11 @@ class BCMCComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context
         delegate = PaymentComponentDelegateMock()
     }
 
     override func tearDownWithError() throws {
-        analyticsProviderMock = nil
         context = nil
         delegate = nil
         try super.tearDownWithError()
@@ -333,6 +331,8 @@ class BCMCComponentTests: XCTestCase {
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
         let cardPaymentMethod = CardPaymentMethod(type: .card,
                                                   name: "Test name",
                                                   fundingSource: .credit,

@@ -12,17 +12,13 @@ import XCTest
 
 class BLIKComponentTests: XCTestCase {
 
-    var analyticsProviderMock: AnalyticsProviderMock!
-    var context: AdyenContext!
     lazy var method = BLIKPaymentMethod(type: .blik, name: "test_name")
     let payment = Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
+    var context: AdyenContext { Dummy.context(with: payment) }
     var sut: BLIKComponent!
 
     override func setUp() {
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
         sut = BLIKComponent(paymentMethod: method, context: context)
-        sut.payment = payment
     }
 
     override func tearDown() {
@@ -43,7 +39,9 @@ class BLIKComponentTests: XCTestCase {
 
     func testLocalizationWithZeroPayment() throws {
         let payment = Payment(amount: Amount(value: 0, currencyCode: "PLN"), countryCode: "PL")
-        sut.payment = payment
+        let context: AdyenContext = Dummy.context(with: payment)
+        sut = BLIKComponent(paymentMethod: method, context: context)
+        
         XCTAssertEqual(sut.hintLabelItem.text, localizedString(.blikHelp, sut.configuration.localizationParameters))
 
         XCTAssertEqual(sut.codeItem.title, localizedString(.blikCode, sut.configuration.localizationParameters))
@@ -178,6 +176,9 @@ class BLIKComponentTests: XCTestCase {
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // When
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        sut = BLIKComponent(paymentMethod: method, context: context)
         sut.viewWillAppear(viewController: sut.viewController)
 
         // Then

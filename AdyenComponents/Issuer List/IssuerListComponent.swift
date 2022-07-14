@@ -10,7 +10,7 @@ import UIKit
 
 /// A generic component for "issuer-based" payment methods, such as iDEAL and MOLPay.
 /// This component will provide a list in which the user can select their issuer.
-public final class IssuerListComponent: PaymentComponent, PresentableComponent, LoadingComponent {
+public final class IssuerListComponent: PaymentComponent, PaymentAware, PresentableComponent, LoadingComponent {
     
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -72,7 +72,9 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
                 
                 let details = IssuerListDetails(paymentMethod: self.issuerListPaymentMethod,
                                                 issuer: issuer.identifier)
-                self.submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.payment?.amount, order: self.order))
+                self.submit(data: PaymentComponentData(paymentMethodDetails: details,
+                                                       amount: self.payment?.amount,
+                                                       order: self.order))
                 listViewController.startLoading(for: listItem)
             }
             
@@ -100,7 +102,7 @@ extension IssuerListComponent: TrackableComponent {}
 extension IssuerListComponent {
     
     /// Configuration for Issuer List type components.
-    public struct Configuration {
+    public struct Configuration: AnyBasicComponentConfiguration {
         
         /// The UI style of the component.
         public var style: ListComponentStyle

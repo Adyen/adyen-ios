@@ -13,10 +13,8 @@ import XCTest
 
 final class PollingHandlerMock: AnyPollingHandler {
     
-    let apiContext = Dummy.apiContext
-
     var context: AdyenContext {
-        return .init(apiContext: apiContext)
+        Dummy.context
     }
 
     var delegate: ActionComponentDelegate?

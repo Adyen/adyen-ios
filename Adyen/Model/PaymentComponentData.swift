@@ -13,6 +13,8 @@ import Foundation
  [API Reference](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__example_payments-klarna)
  */
 public struct PaymentComponentData {
+
+    internal let amount: Amount?
     
     /// The payment method details submitted by the payment component.
     public let paymentMethod: PaymentMethodDetails
@@ -24,7 +26,9 @@ public struct PaymentComponentData {
     public let order: PartialPaymentOrder?
 
     /// The payment amount.
-    public let amount: Amount?
+    public var amountToPay: Amount? {
+        order?.remainingAmount ?? amount
+    }
     
     /// The installments object.
     public let installments: Installments?
@@ -90,8 +94,8 @@ public struct PaymentComponentData {
                 browserInfo: BrowserInfo? = nil,
                 checkoutAttemptId: String? = nil,
                 installments: Installments? = nil) {
-        self.paymentMethod = paymentMethodDetails
         self.amount = amount
+        self.paymentMethod = paymentMethodDetails
         self.order = order
         self.storePaymentMethod = storePaymentMethod
         self.browserInfo = browserInfo
@@ -106,6 +110,7 @@ public struct PaymentComponentData {
                              order: order,
                              storePaymentMethod: storePaymentMethod,
                              browserInfo: browserInfo,
+                             checkoutAttemptId: checkoutAttemptId,
                              installments: installments)
     }
 
@@ -116,7 +121,21 @@ public struct PaymentComponentData {
                              order: order,
                              storePaymentMethod: storePaymentMethod,
                              browserInfo: browserInfo,
+                             checkoutAttemptId: checkoutAttemptId,
                              installments: installments)
+    }
+
+    @_spi(AdyenInternal)
+    public func replacingCheckoutAttemptID(with checkoutAttemptId: String?) -> PaymentComponentData {
+        guard let checkoutAttemptId = checkoutAttemptId else { return self }
+
+        return PaymentComponentData(paymentMethodDetails: paymentMethod,
+                                    amount: amount,
+                                    order: order,
+                                    storePaymentMethod: storePaymentMethod,
+                                    browserInfo: browserInfo,
+                                    checkoutAttemptId: checkoutAttemptId,
+                                    installments: installments)
     }
     
     /// Creates a new `PaymentComponentData` by populating the `browserInfo`,

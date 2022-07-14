@@ -13,7 +13,7 @@ internal protocol BACSDirectDebitRouterProtocol: AnyObject {
 }
 
 /// A component that provides a form for BACS Direct Debit payments.
-public final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent {
+public final class BACSDirectDebitComponent: PaymentComponent, PaymentAware, PresentableComponent {
 
     /// Configuration for BACS Direct Debit Component.
     public typealias Configuration = BasicComponentConfiguration
@@ -40,12 +40,6 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     /// Component's configuration
     public var configuration: Configuration
 
-    public var payment: Payment? {
-        didSet {
-            inputPresenter?.amount = payment?.amount
-        }
-    }
-
     // MARK: - Properties
 
     internal let bacsPaymentMethod: BACSDirectDebitPaymentMethod
@@ -66,7 +60,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     ///   - configuration: Configuration for the component.
     public init(paymentMethod: BACSDirectDebitPaymentMethod,
                 context: AdyenContext,
-                configuration: Configuration = Configuration()) {
+                configuration: Configuration = .init()) {
         self.bacsPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
@@ -86,6 +80,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
                                                  router: self,
                                                  tracker: tracker,
                                                  itemsFactory: itemsFactory)
+        inputPresenter?.amount = payment?.amount
         inputFormViewController.presenter = inputPresenter
         
     }
@@ -114,10 +109,7 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
                                              bankAccountNumber: data.bankAccountNumber,
                                              bankLocationId: data.bankLocationId)
         confirmationPresenter?.startLoading()
-        let data = PaymentComponentData(paymentMethodDetails: details,
-                                        amount: payment?.amount,
-                                        order: order)
-        submit(data: data)
+        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
     }
 
     // MARK: - Private

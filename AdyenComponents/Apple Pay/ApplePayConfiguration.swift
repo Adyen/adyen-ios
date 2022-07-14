@@ -102,9 +102,9 @@ extension ApplePayComponent {
         }
 
         @_spi(AdyenInternal)
-        public func updating(amount: Amount, localeIdentifier: String?) -> Self {
+        public func replacing(amount: Amount) -> Self {
             var newConfig = self
-            newConfig.applePayPayment.update(amount: amount, localeIdentifier: localeIdentifier)
+            newConfig.applePayPayment.update(amount: amount)
             return newConfig
         }
 

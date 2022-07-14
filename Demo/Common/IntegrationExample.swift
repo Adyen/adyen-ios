@@ -25,8 +25,6 @@ internal protocol Presenter: AnyObject {
 }
 
 internal final class IntegrationExample: APIClientAware {
-    
-    internal var payment: Payment { ConfigurationConstants.current.payment }
 
     internal var paymentMethods: PaymentMethods?
     internal var currentComponent: PresentableComponent?
@@ -56,7 +54,9 @@ internal final class IntegrationExample: APIClientAware {
     internal init() {
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = true
-        self.context = AdyenContext(apiContext: ConfigurationConstants.apiContext, analyticsConfiguration: analyticsConfiguration)
+        self.context = AdyenContext(apiContext: ConfigurationConstants.apiContext,
+                                    payment: ConfigurationConstants.current.payment,
+                                    analyticsConfiguration: analyticsConfiguration)
     }
 
     // MARK: - Networking

@@ -20,7 +20,7 @@ class AtomeComponentUITests: XCTestCase {
         try super.setUpWithError()
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Atome")
         app.launchArguments = ["SG", "SGD"]
-        context = AdyenContext(apiContext: Dummy.apiContext)
+        context = Dummy.context
         style = FormComponentStyle()
         sut = AtomeComponent(paymentMethod: paymentMethod,
                              context: context,
@@ -36,7 +36,7 @@ class AtomeComponentUITests: XCTestCase {
     }
 
     func testAllRequiredTextField_shouldExist() throws {
-        let config = AtomeComponent.Configuration(style: style, shopperInformation: shopperInformation)
+        let config = AtomeComponent.Configuration(shopperInformation: shopperInformation)
         UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
         let sut = AtomeComponent(paymentMethod: paymentMethod,
                                  context: context,
@@ -59,7 +59,7 @@ class AtomeComponentUITests: XCTestCase {
     }
 
     func testSubmitForm_shouldCallDelegateWithProperParameters() {
-        let config = AtomeComponent.Configuration(style: style, shopperInformation: shopperInformation)
+        let config = AtomeComponent.Configuration(shopperInformation: shopperInformation)
         let sut = AtomeComponent(paymentMethod: paymentMethod,
                                  context: context,
                                  configuration: config)

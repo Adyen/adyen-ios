@@ -31,5 +31,6 @@ class PaymentComponentSubject: PaymentComponent {
         self.payment = payment
         self.order = order
         self.paymentMethod = paymentMethod
+        self.payment = payment
     }
 }

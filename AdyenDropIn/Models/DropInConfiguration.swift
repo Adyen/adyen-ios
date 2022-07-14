@@ -20,7 +20,7 @@ import PassKit
 public extension DropInComponent {
     
     /// Contains the configuration for the drop in component and the embedded payment method components.
-    final class Configuration: AdyenContextAware {
+    final class Configuration: AnyPersonalInformationConfiguration {
         
         /// Card component related configuration.
         public var card = Card()
@@ -35,17 +35,10 @@ public extension DropInComponent {
         public var actionComponent = ActionComponentConfiguration()
         
         /// Shopper related information
-        public var shopper: PrefilledShopperInformation?
-
-        /// :nodoc:
-        /// The context object for this component.
-        public let context: AdyenContext
+        public var shopperInformation: PrefilledShopperInformation?
         
         /// Indicates the localization parameters, leave it nil to use the default parameters.
         public var localizationParameters: LocalizationParameters?
-
-        /// The payment information.
-        public var payment: Payment?
         
         /// Determines whether to enable skipping payment list step
         /// when there is only one non-instant payment method.
@@ -61,15 +54,12 @@ public extension DropInComponent {
         
         /// Initializes the drop in configuration.
         /// - Parameters:
-        ///   - context: The context object for this component.
         ///   - style: The UI styles of the components.
         ///   - allowsSkippingPaymentList: Boolean to enable skipping payment list when there is only one one non-instant payment method.
         ///   - allowPreselectedPaymentView: Boolean to enable the preselected stored payment method view step.
-        public init(context: AdyenContext,
-                    style: Style = Style(),
+        public init(style: Style = Style(),
                     allowsSkippingPaymentList: Bool = false,
                     allowPreselectedPaymentView: Bool = true) {
-            self.context = context
             self.style = style
             self.allowsSkippingPaymentList = allowsSkippingPaymentList
             self.allowPreselectedPaymentView = allowPreselectedPaymentView
@@ -109,9 +99,6 @@ public extension DropInComponent {
         /// By default list of supported cards is extracted from component's `AnyCardPaymentMethod`.
         /// Use this property to enforce a custom collection of card types.
         public var allowedCardTypes: [CardType]?
-
-        /// Indicates the card brands excluded from the supported brands.
-        public var excludedCardTypes: Set<CardType> = [.bcmc]
 
         /// Installments options to present to the user.
         public var installmentConfiguration: InstallmentConfiguration?
@@ -155,7 +142,7 @@ public extension DropInComponent {
             self.billingAddress = billingAddress
         }
         
-        public var cardComponentConfiguration: CardComponent.Configuration {
+        internal var cardComponentConfiguration: CardComponent.Configuration {
             CardComponent.Configuration(showsHolderNameField: showsHolderNameField,
                                         showsStorePaymentMethodField: showsStorePaymentMethodField,
                                         showsSecurityCodeField: showsSecurityCodeField,

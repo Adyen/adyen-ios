@@ -13,11 +13,11 @@ class BACSDirectDebitComponentTests: XCTestCase {
     var context: AdyenContext!
     var sut: BACSDirectDebitComponent!
 
+    let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit,
+                                                     name: "BACS Direct Debit")
+
     override func setUpWithError() throws {
         try super.setUpWithError()
-        let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit,
-                                                         name: "BACS Direct Debit")
-
         inputPresenter = BACSInputPresenterProtocolMock()
         confirmationPresenter = BACSConfirmationPresenterProtocolMock()
         presentationDelegate = PresentationDelegateMock()
@@ -50,16 +50,17 @@ class BACSDirectDebitComponentTests: XCTestCase {
     }
     
     func testUpdatingAmount() throws {
-        sut.payment = Payment(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
+        let payment = Payment(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
+        sut = BACSDirectDebitComponent(paymentMethod: paymentMethod,
+                                       context: context,
+                                       configuration: .init())
+
         let presenter: BACSInputPresenter = sut.inputPresenter as! BACSInputPresenter
-        let expectedConsentTitle1 = presenter.itemsFactory.createConsentText(with: Amount(value: 100, currencyCode: "EUR"))
+        let expectedConsentTitle1 = presenter.itemsFactory.createConsentText(with: payment.amount)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         wait(for: .milliseconds(200))
-        XCTAssertEqual(presenter.amountConsentToggleItem?.title, expectedConsentTitle1)
         
-        sut.payment = Payment(amount: .init(value: 1000, currencyCode: "EUR"), countryCode: "NL")
-        let expectedConsentTitle2 = presenter.itemsFactory.createConsentText(with: Amount(value: 1000, currencyCode: "EUR"))
-        XCTAssertEqual(presenter.amountConsentToggleItem?.title, expectedConsentTitle2)
+        XCTAssertEqual(presenter.amountConsentToggleItem?.title, expectedConsentTitle1)
     }
 
     func testPresentConfirmationShouldCallPresentationDelegatePresent() throws {

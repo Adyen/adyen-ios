@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@testable import AdyenComponents
+@_spi(AdyenInternal) @testable import AdyenComponents
 @testable import AdyenDropIn
 import PassKit
 import XCTest
@@ -13,8 +13,8 @@ import XCTest
 class PreApplePayComponentTests: XCTestCase {
 
     var analyticsProviderMock: AnalyticsProviderMock!
-    var amount: Amount!
-    var paymentMethod: ApplePayPaymentMethod!
+    let amount = Dummy.payment.amount
+    var paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
     var context: AdyenContext!
     var paymentComponentDelegate: PaymentComponentDelegateMock!
     var sut: PreApplePayComponent!
@@ -22,11 +22,8 @@ class PreApplePayComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        amount = Amount(value: 100, currencyCode: "USD")
-        paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
-
         analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context(with: analyticsProviderMock)
         paymentComponentDelegate = PaymentComponentDelegateMock()
 
         let configuration = ApplePayComponent.Configuration(payment: applePayPayment,
@@ -43,8 +40,6 @@ class PreApplePayComponentTests: XCTestCase {
 
     override func tearDownWithError() throws {
         analyticsProviderMock = nil
-        amount = nil
-        paymentMethod = nil
         context = nil
         paymentComponentDelegate = nil
         sut = nil
@@ -59,7 +54,7 @@ class PreApplePayComponentTests: XCTestCase {
                                           hintLabel: .init(font: .boldSystemFont(ofSize: 16),
                                                            color: .red,
                                                            textAlignment: .center))
-        let model = PreApplePayView.Model(hint: applePayPayment.payment.amount.formatted,
+        let model = PreApplePayView.Model(hint: applePayPayment.amount.formatted,
                                           style: applePayStyle)
         
         let view = PreApplePayView(model: model)
@@ -125,7 +120,7 @@ class PreApplePayComponentTests: XCTestCase {
         let hintLabel = self.sut.viewController.view.findView(by: "hintLabel") as? UILabel
         
         XCTAssertNotNil(hintLabel)
-        XCTAssertEqual(hintLabel?.text, self.applePayPayment.payment.amount.formatted)
+        XCTAssertEqual(hintLabel?.text, self.applePayPayment.amount.formatted)
     }
 
     func testSubmitWithAnalyticsEnabledShouldSetCheckoutAttemptIdInPaymentComponentData() throws {
@@ -139,7 +134,7 @@ class PreApplePayComponentTests: XCTestCase {
                                                    shippingContact: nil,
                                                    shippingMethod: nil)
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails,
-                                                        amount: amount,
+                                                        amount: nil,
                                                         order: nil)
 
         // When
@@ -162,7 +157,7 @@ class PreApplePayComponentTests: XCTestCase {
                                                    shippingContact: nil,
                                                    shippingMethod: nil)
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails,
-                                                        amount: amount,
+                                                        amount: nil,
                                                         order: nil)
 
         // When

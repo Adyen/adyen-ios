@@ -28,14 +28,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// The Apple Pay payment method.
     public var paymentMethod: PaymentMethod { applePayPaymentMethod }
 
-    public var payment: Payment? {
-        get {
-            applePayPayment.payment
-        }
-
-        set {} // swiftlint:disable:this unused_setter_value
-    }
-
     internal let configuration: Configuration
 
     internal var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
