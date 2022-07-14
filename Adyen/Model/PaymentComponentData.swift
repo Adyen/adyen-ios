@@ -104,7 +104,7 @@ public struct PaymentComponentData {
     }
 
     @_spi(AdyenInternal)
-    public func replacingOrder(with order: PartialPaymentOrder) -> PaymentComponentData {
+    public func replacing(order: PartialPaymentOrder) -> PaymentComponentData {
         PaymentComponentData(paymentMethodDetails: paymentMethod,
                              amount: amount,
                              order: order,
@@ -115,7 +115,7 @@ public struct PaymentComponentData {
     }
 
     @_spi(AdyenInternal)
-    public func replacingAmount(with amount: Amount) -> PaymentComponentData {
+    public func replacing(amount: Amount) -> PaymentComponentData {
         PaymentComponentData(paymentMethodDetails: paymentMethod,
                              amount: amount,
                              order: order,
@@ -126,7 +126,7 @@ public struct PaymentComponentData {
     }
 
     @_spi(AdyenInternal)
-    public func replacingCheckoutAttemptID(with checkoutAttemptId: String?) -> PaymentComponentData {
+    public func replacing(checkoutAttemptId: String?) -> PaymentComponentData {
         guard let checkoutAttemptId = checkoutAttemptId else { return self }
 
         return PaymentComponentData(paymentMethodDetails: paymentMethod,

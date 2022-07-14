@@ -198,7 +198,7 @@ public final class GiftCardComponent: PresentableComponent,
                         return self.onReadyToPayFullAmount(remainingAmount: balanceCheckResult.remainingBalanceAmount,
                                                            paymentData: paymentData)
                     } else {
-                        let newPaymentData = paymentData.replacingAmount(with: balanceCheckResult.amountToPay)
+                        let newPaymentData = paymentData.replacing(amount: balanceCheckResult.amountToPay)
                         return self.startPartialPaymentFlow(paymentData: newPaymentData)
                     }
                 }
@@ -297,7 +297,7 @@ public final class GiftCardComponent: PresentableComponent,
     // MARK: - Submit payment
 
     private func submit(order: PartialPaymentOrder, paymentData: PaymentComponentData) {
-        submit(data: paymentData.replacingOrder(with: order), component: self)
+        submit(data: paymentData.replacing(order: order), component: self)
     }
 
     // MARK: - PaymentData creation
