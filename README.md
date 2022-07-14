@@ -37,7 +37,7 @@ The `Adyen/SwiftUI` module needs to be explicitly added to use the SwiftUI speci
 pod 'Adyen'               // Add DropIn with all modules except WeChat Pay and SwiftUI.
 // Add individual modules
 pod 'Adyen/Card'          // Card components.
-pod 'Adyen/Session'       // Simplified checkout flow.
+pod 'Adyen/Session'       // Handler for the simplified checkout flow.
 pod 'Adyen/Encryption'    // Encryption module.
 pod 'Adyen/Components'    // All other payment components except WeChat Pay.
 pod 'Adyen/Actions'       // Action Components.
@@ -56,7 +56,7 @@ pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
 You can add all modules or select individual modules to add to your integration. But make sure to include each module dependency modules.
 
 * `AdyenDropIn`: DropInComponent.
-* `AdyenSesson`: For the simplified checkout flow.
+* `AdyenSession`: handler for the simplified checkout flow.
 * `AdyenCard`: the card components.
 * `AdyenComponents`: all other payment components except WeChat Pay.
 * `AdyenActions`:  action components.
@@ -80,7 +80,7 @@ The `AdyenWeChatPay` module needs to be explicitly added to support WeChat Pay.
 The `AdyenSwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
 
 * `AdyenDropIn`: all modules except `AdyenWeChatPay`.
-* `AdyenSesson`: For the simplified checkout flow.
+* `AdyenSession`: handler for the simplified checkout flow.
 * `AdyenCard`: the card components.
 * `AdyenComponents`: all other payment components except WeChat Pay.
 * `AdyenActions`:  action components.
@@ -190,7 +190,7 @@ present(dropInComponent.viewController, animated: true)
 func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession)
 ```
 
-This method will be invoked when the component finishes without any further steps needed by the application. The application just needs to dismiss the `DropInComponent`.
+This method will be invoked when the component finishes without any further steps needed by the application. The application just needs to dismiss the current component, ideally after calling `finalizeIfNeeded` on the component.
 
 ---
 
@@ -198,7 +198,8 @@ This method will be invoked when the component finishes without any further step
 func didFail(with error: Error, from component: Component, session: AdyenSession)
 ```
 
-This method is invoked when an error occurred during the use of the Drop-in. Dismiss the Drop-in's view controller and display an error message.
+This method is invoked when an error occurred during the use of the Drop-in or the components. 
+You can then call the `finalizeIfNeeded` on the component, dismiss the component's view controller in the completion callback and display an error message.
 
 ---
 

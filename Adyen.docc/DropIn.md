@@ -94,7 +94,7 @@ present(dropInComponent.viewController, animated: true)
 func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession)
 ```
 
-This method will be invoked when the component finishes without any further steps needed by the application. The application just needs to dismiss the `DropInComponent`.
+This method will be invoked when the component finishes without any further steps needed by the application. The application just needs to dismiss the current component, ideally after calling `finalizeIfNeeded` on the component.
 
 ---
 
@@ -102,7 +102,8 @@ This method will be invoked when the component finishes without any further step
 func didFail(with error: Error, from component: Component, session: AdyenSession)
 ```
 
-This method is invoked when an error occurred during the use of the Drop-in. Dismiss the Drop-in's view controller and display an error message.
+This method is invoked when an error occurred during the use of the Drop-in or the components. 
+You can then call the `finalizeIfNeeded` on the component, dismiss the component's view controller in the completion callback and display an error message.
 
 ---
 
