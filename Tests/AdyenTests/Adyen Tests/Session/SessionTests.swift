@@ -347,7 +347,6 @@ class SessionTests: XCTestCase {
         
         let dropInComponent = DropInComponent(paymentMethods: expectedPaymentMethods,
                                               context: context,
-                                              configuration: .init(context: context),
                                               title: nil)
         
         UIApplication.shared.keyWindow?.rootViewController = dropInComponent.viewController
