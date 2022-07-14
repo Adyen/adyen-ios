@@ -49,7 +49,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     
     /// Initializes the `AwaitComponent`.
     ///
-    /// - Parameter adyeContext: The context object for this component.
+    /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The await component configurations.
     public convenience init(context: AdyenContext,
                             configuration: Configuration = .init()) {

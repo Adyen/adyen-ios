@@ -22,7 +22,7 @@ class SessionTests: XCTestCase {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
         analyticsProviderMock.underlyingCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context(with: analyticsProviderMock)
     }
 
     override func tearDownWithError() throws {
@@ -83,11 +83,7 @@ class SessionTests: XCTestCase {
                 paymentMethod: paymentMethod,
                 telephoneNumber: "telephone"
             ),
-            amount: .init(
-                value: 20,
-                currencyCode: "USD",
-                localeIdentifier: nil
-            ),
+            amount: nil,
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
@@ -122,8 +118,7 @@ class SessionTests: XCTestCase {
         component.delegate = sut
 
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let amount = Amount(value: 85, currencyCode: "USD")
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: amount, order: nil)
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
 
         // When
         XCTAssertNil(paymentComponentData.checkoutAttemptId)
@@ -151,8 +146,7 @@ class SessionTests: XCTestCase {
         component.delegate = sut
 
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let amount = Amount(value: 85, currencyCode: "USD")
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: amount, order: nil)
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
 
         // When
         XCTAssertNil(paymentComponentData.checkoutAttemptId)
@@ -188,11 +182,7 @@ class SessionTests: XCTestCase {
                 paymentMethod: paymentMethod,
                 telephoneNumber: "telephone"
             ),
-            amount: .init(
-                value: 20,
-                currencyCode: "USD",
-                localeIdentifier: nil
-            ),
+            amount: nil,
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
@@ -262,18 +252,13 @@ class SessionTests: XCTestCase {
                 paymentMethod: paymentMethod,
                 telephoneNumber: "telephone"
             ),
-            amount: .init(
-                value: 20,
-                currencyCode: "USD",
-                localeIdentifier: nil
-            ),
+            amount: nil,
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
                                        context: context)
         let dropInComponent = DropInComponent(paymentMethods: expectedPaymentMethods,
-                                              context: context,
-                                              configuration: .init(context: context),
+                                              context: Dummy.context,
                                               title: nil)
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
@@ -441,8 +426,7 @@ class SessionTests: XCTestCase {
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
         let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
         let details = GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc")
-        let amount = Amount(value: 34, currencyCode: "EUR")
-        let paymentData = PaymentComponentData(paymentMethodDetails: details, amount: amount, order: nil)
+        let paymentData = PaymentComponentData(paymentMethodDetails: details, amount: nil, order: nil)
         let apiClient = APIClientMock()
         sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
         
@@ -468,8 +452,7 @@ class SessionTests: XCTestCase {
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
         let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
         let details = GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc")
-        let amount = Amount(value: 34, currencyCode: "EUR")
-        let paymentData = PaymentComponentData(paymentMethodDetails: details, amount: amount, order: nil)
+        let paymentData = PaymentComponentData(paymentMethodDetails: details, amount: nil, order: nil)
         let apiClient = APIClientMock()
         sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
         
@@ -494,8 +477,7 @@ class SessionTests: XCTestCase {
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
         let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
         let details = GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc")
-        let amount = Amount(value: 34, currencyCode: "EUR")
-        let paymentData = PaymentComponentData(paymentMethodDetails: details, amount: amount, order: nil)
+        let paymentData = PaymentComponentData(paymentMethodDetails: details, amount: nil, order: nil)
         let apiClient = APIClientMock()
         sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
         
@@ -608,11 +590,7 @@ class SessionTests: XCTestCase {
                 paymentMethod: paymentMethod,
                 telephoneNumber: "telephone"
             ),
-            amount: .init(
-                value: 20,
-                currencyCode: "USD",
-                localeIdentifier: nil
-            ),
+            amount: nil,
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
@@ -644,8 +622,7 @@ class SessionTests: XCTestCase {
     }
     
     func testSessionAsDropInDelegate() throws {
-        let config = DropInComponent.Configuration(context: context)
-        config.payment = Payment(amount: Amount(value: 100, currencyCode: "CNY"), countryCode: "CN")
+        let config = DropInComponent.Configuration()
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         let dropIn = DropInComponent(paymentMethods: paymenMethods,
@@ -700,11 +677,7 @@ class SessionTests: XCTestCase {
                 paymentMethod: paymentMethod,
                 telephoneNumber: "telephone"
             ),
-            amount: .init(
-                value: 20,
-                currencyCode: "USD",
-                localeIdentifier: nil
-            ),
+            amount: nil,
             order: nil
         )
         
@@ -908,11 +881,7 @@ class SessionTests: XCTestCase {
                 paymentMethod: paymentMethod,
                 telephoneNumber: "telephone"
             ),
-            amount: .init(
-                value: 20,
-                currencyCode: "USD",
-                localeIdentifier: nil
-            ),
+            amount: nil,
             order: nil
         )
         sut.didSubmit(paymentData, from: paymentComponent)

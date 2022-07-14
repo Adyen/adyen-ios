@@ -16,11 +16,11 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     let payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
 
     func testLocalizationWithCustomTableName() throws {
-        let config = BasicPersonalInfoFormComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
+        let localization = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
+        let config = BasicPersonalInfoFormComponent.Configuration(localizationParameters: localization)
         let sut = SevenElevenComponent(paymentMethod: paymentMethod,
                                               context: Dummy.context,
                                        configuration: config)
-        sut.payment = payment
 
         XCTAssertEqual(sut.firstNameItem?.title, localizedString(.firstName, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(.firstName, sut.configuration.localizationParameters))
@@ -165,7 +165,6 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
                                        configuration: BasicPersonalInfoFormComponent.Configuration())
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
-        sut.payment = payment
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidSubmit = { data, component in

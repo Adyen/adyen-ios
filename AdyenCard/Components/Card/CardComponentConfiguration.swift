@@ -114,7 +114,7 @@ extension CardComponent {
 
     /// Card component configuration.
     public struct Configuration: AnyCardComponentConfiguration, AnyPersonalInformationConfiguration {
-        
+
         /// Describes the component's UI style.
         public var style: FormComponentStyle
         
@@ -204,7 +204,8 @@ extension CardComponent {
         internal func bcmcConfiguration() -> Configuration {
             var storedCardConfiguration = stored
             storedCardConfiguration.showsSecurityCodeField = false
-            var configuration = Configuration(showsHolderNameField: showsHolderNameField,
+            var configuration = Configuration(style: style,
+                                              showsHolderNameField: showsHolderNameField,
                                               showsStorePaymentMethodField: showsStorePaymentMethodField,
                                               showsSecurityCodeField: false,
                                               storedCardConfiguration: storedCardConfiguration,

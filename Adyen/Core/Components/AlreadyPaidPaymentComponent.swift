@@ -22,4 +22,5 @@ public final class AlreadyPaidPaymentComponent: PaymentComponent {
         self.paymentMethod = paymentMethod
         self.context = context
     }
+    
 }

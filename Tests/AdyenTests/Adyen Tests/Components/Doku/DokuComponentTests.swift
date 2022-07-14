@@ -12,22 +12,19 @@ import XCTest
 
 class DokuComponentTests: XCTestCase {
 
-    private var analyticsProviderMock: AnalyticsProviderMock!
     private var context: AdyenContext!
     private var paymentMethod: DokuPaymentMethod!
     private var payment: Payment!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context
 
         paymentMethod = DokuPaymentMethod(type: .dokuAlfamart, name: "test_name")
         payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
     }
 
     override func tearDownWithError() throws {
-        analyticsProviderMock = nil
         context = nil
         paymentMethod = nil
         payment = nil
@@ -35,11 +32,11 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomTableName() throws {
-        let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
+        let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost",
+                                                                                                keySeparator: nil))
         let sut = DokuComponent(paymentMethod: paymentMethod,
                                 context: context,
                                 configuration: config)
-        sut.payment = payment
 
         XCTAssertEqual(sut.firstNameItem?.title, localizedString(.firstName, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(.firstName, sut.configuration.localizationParameters))
@@ -58,11 +55,11 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomKeySeparator() throws {
-        let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
+        let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator",
+                                                                                                keySeparator: "_"))
         let sut = DokuComponent(paymentMethod: paymentMethod,
                                 context: context,
                                 configuration: config)
-        sut.payment = payment
 
         XCTAssertEqual(sut.firstNameItem?.title, localizedString(LocalizationKey(key: "adyen_firstName"), sut.configuration.localizationParameters))
         XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(LocalizationKey(key: "adyen_firstName"), sut.configuration.localizationParameters))
@@ -169,7 +166,6 @@ class DokuComponentTests: XCTestCase {
                                 configuration: DokuComponent.Configuration())
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
-        sut.payment = payment
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidSubmit = { data, component in
@@ -282,6 +278,8 @@ class DokuComponentTests: XCTestCase {
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
         let sut = DokuComponent(paymentMethod: paymentMethod,
                                 context: context,
                                 configuration: DokuComponent.Configuration())

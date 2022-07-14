@@ -10,7 +10,6 @@ import XCTest
 
 class AtomeComponentTests: XCTestCase {
 
-    private var analyticsProviderMock: AnalyticsProviderMock!
     private var context: AdyenContext!
     private var paymentMethod: PaymentMethod!
     private var style: FormComponentStyle!
@@ -18,19 +17,16 @@ class AtomeComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Atome")
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context
         style = FormComponentStyle()
         sut = AtomeComponent(paymentMethod: paymentMethod,
                              context: context,
-                             configuration: AtomeComponent.Configuration(style: style))
+                             configuration: AtomeComponent.Configuration())
     }
 
     override func tearDownWithError() throws {
-        analyticsProviderMock = nil
         context = nil
         paymentMethod = nil
-        style = nil
         sut = nil
         try super.tearDownWithError()
     }
@@ -81,6 +77,21 @@ class AtomeComponentTests: XCTestCase {
         
         // Assert
         XCTAssertFalse(phoneExtensions.isEmpty)
+    }
+
+    func testViewWillAppearShouldSendTelemetryEvent() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        sut = AtomeComponent(paymentMethod: paymentMethod,
+                             context: context)
+        let mockViewController = UIViewController()
+
+        // When
+        sut.viewWillAppear(viewController: mockViewController)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
     }
 
 }

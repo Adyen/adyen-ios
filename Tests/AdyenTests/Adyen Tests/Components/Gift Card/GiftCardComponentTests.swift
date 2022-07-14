@@ -20,13 +20,13 @@ class GiftCardComponentTests: XCTestCase {
 
     var publicKeyProvider: PublicKeyProviderMock!
 
-    var analyticsProviderMock: AnalyticsProviderMock!
-
     var context: AdyenContext!
 
     var sut: GiftCardComponent!
 
     var paymentMethod: GiftCardPaymentMethod!
+
+    var amountToPay: Amount { Dummy.payment.amount }
 
     var errorView: FormErrorItemView? {
         sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.errorItem")
@@ -49,11 +49,11 @@ class GiftCardComponentTests: XCTestCase {
         paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
         publicKeyProvider = PublicKeyProviderMock()
 
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context
 
         sut = GiftCardComponent(paymentMethod: paymentMethod,
                                 context: context,
+                                amount: amountToPay,
                                 publicKeyProvider: publicKeyProvider)
         delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
@@ -66,7 +66,6 @@ class GiftCardComponentTests: XCTestCase {
     override func tearDownWithError() throws {
         paymentMethod = nil
         publicKeyProvider = nil
-        analyticsProviderMock = nil
         context = nil
         delegateMock = nil
         partialPaymentDelegate = nil
@@ -125,8 +124,6 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        sut.payment = Payment(amount: .init(value: 10, currencyCode: "EUR"), countryCode: "NL")
-
         delegateMock.onDidFail = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
         }
@@ -165,14 +162,12 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        sut.payment = Payment(amount: .init(value: 10, currencyCode: "USD"), countryCode: "US")
-
         delegateMock.onDidFail = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
         }
 
         let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
-        let balance = Balance(availableAmount: .init(value: 200, currencyCode: "EUR"), transactionLimit: .init(value: 1000, currencyCode: "EUR"))
+        let balance = Balance(availableAmount: .init(value: 200, currencyCode: "USD"), transactionLimit: .init(value: 1000, currencyCode: "USD"))
         partialPaymentDelegate.onCheckBalance = { _, completion in
             completion(.success(balance))
             onCheckBalanceExpectation.fulfill()
@@ -205,8 +200,6 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        sut.payment = Payment(amount: .init(value: 10, currencyCode: "EUR"), countryCode: "US")
-
         delegateMock.onDidFail = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
         }
@@ -236,44 +229,6 @@ class GiftCardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testMissingPaymentObject() throws {
-
-        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
-        publicKeyProviderExpectation.expectedFulfillmentCount = 2
-        publicKeyProvider.onFetch = { completion in
-            publicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.publicKey))
-        }
-
-        delegateMock.onDidFail = { error, component in
-            XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
-        }
-
-        let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
-        let balance = Balance(availableAmount: .init(value: 200, currencyCode: "EUR"), transactionLimit: .init(value: 1000, currencyCode: "EUR"))
-        partialPaymentDelegate.onCheckBalance = { _, completion in
-            completion(.success(balance))
-            onCheckBalanceExpectation.fulfill()
-        }
-
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(300))
-
-        XCTAssertTrue(errorView!.isHidden)
-
-        populate(cardNumber: "60643650100000000000", pin: "73737")
-
-        payButtonItemViewButton?.sendActions(for: .touchUpInside)
-
-        wait(for: .seconds(1))
-
-        XCTAssertFalse(errorView!.isHidden)
-        XCTAssertEqual(sut.errorItem.message, "An unknown error occurred")
-
-        waitForExpectations(timeout: 10, handler: nil)
-    }
-
     func testEnoughBalanceIsAvailableWithNilReadyToSubmitDelegate() throws {
 
         let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
@@ -283,7 +238,6 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        sut.payment = Payment(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
         sut.readyToSubmitComponentDelegate = nil
 
         delegateMock.onDidFail = { error, component in
@@ -303,7 +257,6 @@ class GiftCardComponentTests: XCTestCase {
 
         let onSubmitExpectation = expectation(description: "Expect delegateMock.onDidSubmit to be called.")
         delegateMock.onDidSubmit = { data, component in
-            XCTAssertEqual(data.amount, self.sut.payment!.amount)
             XCTAssertNil(data.order)
             XCTAssertTrue(component === self.sut)
             onSubmitExpectation.fulfill()
@@ -335,8 +288,6 @@ class GiftCardComponentTests: XCTestCase {
             publicKeyProviderExpectation.fulfill()
             completion(.success(Dummy.publicKey))
         }
-
-        sut.payment = Payment(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
 
         delegateMock.onDidFail = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
@@ -390,8 +341,6 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        sut.payment = Payment(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
-
         delegateMock.onDidFail = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
         }
@@ -413,7 +362,6 @@ class GiftCardComponentTests: XCTestCase {
         let onSubmitExpectation = expectation(description: "Expect delegateMock.onDidSubmit to be called.")
         delegateMock.onDidSubmit = { data, component in
             XCTAssertEqual(data.order, expectedOrder)
-            XCTAssertEqual(data.amount, .init(value: 50, currencyCode: "EUR"))
             onSubmitExpectation.fulfill()
         }
 
@@ -448,7 +396,6 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        sut.payment = Payment(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
         sut.order = PartialPaymentOrder(pspReference: "pspreference", orderData: "data")
 
         delegateMock.onDidFail = { error, component in
@@ -470,7 +417,6 @@ class GiftCardComponentTests: XCTestCase {
         let onSubmitExpectation = expectation(description: "Expect delegateMock.onDidSubmit to be called.")
         delegateMock.onDidSubmit = { data, component in
             XCTAssertEqual(data.order, expectedOrder)
-            XCTAssertEqual(data.amount, .init(value: 50, currencyCode: "EUR"))
             onSubmitExpectation.fulfill()
         }
 
@@ -504,8 +450,6 @@ class GiftCardComponentTests: XCTestCase {
             publicKeyProviderExpectation.fulfill()
             completion(.success(Dummy.publicKey))
         }
-
-        sut.payment = Payment(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
 
         let onDidFailExpectation = expectation(description: "Expect delegateMock.onDidFail to be called.")
         delegateMock.onDidFail = { error, component in
@@ -554,6 +498,14 @@ class GiftCardComponentTests: XCTestCase {
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+
+        sut = GiftCardComponent(paymentMethod: paymentMethod,
+                                context: context,
+                                amount: amountToPay,
+                                publicKeyProvider: publicKeyProvider)
+
         let mockViewController = UIViewController()
 
         // When

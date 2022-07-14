@@ -10,7 +10,6 @@ import XCTest
 
 class AffirmComponentTests: XCTestCase {
 
-    private var analyticsProviderMock: AnalyticsProviderMock!
     private var paymentMethod: PaymentMethod!
     private var context: AdyenContext!
     private var style: FormComponentStyle!
@@ -18,9 +17,8 @@ class AffirmComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        analyticsProviderMock = AnalyticsProviderMock()
         paymentMethod = AffirmPaymentMethod(type: .affirm, name: "Affirm")
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context(with: nil)
         style = FormComponentStyle()
         sut = AffirmComponent(paymentMethod: paymentMethod,
                               context: context,
@@ -177,7 +175,8 @@ class AffirmComponentTests: XCTestCase {
 
     func testAffirmPrefilling_givenDeliveryAddressIsSet() throws {
         // Given
-        let config = AffirmComponent.Configuration(style: style, shopperInformation: shopperInformation)
+        let config = AffirmComponent.Configuration(style: style,
+                                                   shopperInformation: shopperInformation)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          context: context,
                                          configuration: config)
@@ -224,7 +223,8 @@ class AffirmComponentTests: XCTestCase {
 
     func testAffirmPrefilling_givenDeliveryAddressIsNotSet() throws {
         // Given
-        let config = AffirmComponent.Configuration(style: style, shopperInformation: shopperInformationNoDeliveryAddress)
+        let config = AffirmComponent.Configuration(style: style,
+                                                   shopperInformation: shopperInformationNoDeliveryAddress)
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          context: context,
                                          configuration: config)
@@ -310,6 +310,9 @@ class AffirmComponentTests: XCTestCase {
 
     private func testViewWillAppear_shouldSendTelemetryEvent() throws {
         // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        sut = AffirmComponent(paymentMethod: paymentMethod, context: context)
         let mockViewController = UIViewController()
 
         // When

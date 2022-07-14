@@ -12,7 +12,6 @@ import XCTest
 
 class MBWayComponentTests: XCTestCase {
 
-    private var analyticsProviderMock: AnalyticsProviderMock!
     private var context: AdyenContext!
     private var paymentMethod: MBWayPaymentMethod!
     private var payment: Payment!
@@ -20,15 +19,13 @@ class MBWayComponentTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, analyticsProvider: analyticsProviderMock)
+        context = Dummy.context
 
         paymentMethod = MBWayPaymentMethod(type: .mbWay, name: "test_name")
         payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
     }
 
     override func tearDownWithError() throws {
-        analyticsProviderMock = nil
         context = nil
         paymentMethod = nil
         payment = nil
@@ -40,7 +37,6 @@ class MBWayComponentTests: XCTestCase {
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                   context: context,
                                  configuration: config)
-        sut.payment = payment
 
         XCTAssertEqual(sut.phoneItem?.title, localizedString(.phoneNumberTitle, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(.phoneNumberPlaceholder, sut.configuration.localizationParameters))
@@ -56,7 +52,6 @@ class MBWayComponentTests: XCTestCase {
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                   context: context,
                                  configuration: config)
-        sut.payment = payment
 
         XCTAssertEqual(sut.phoneItem?.title, localizedString(LocalizationKey(key: "adyen_phoneNumber_title"), sut.configuration.localizationParameters))
         XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(LocalizationKey(key: "adyen_phoneNumber_placeholder"), sut.configuration.localizationParameters))
@@ -130,7 +125,6 @@ class MBWayComponentTests: XCTestCase {
         let sut = MBWayComponent(paymentMethod: paymentMethod, context: context)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
-        sut.payment = payment
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidSubmit = { data, component in
@@ -215,6 +209,8 @@ class MBWayComponentTests: XCTestCase {
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                   context: context,
                                  configuration: MBWayComponent.Configuration())

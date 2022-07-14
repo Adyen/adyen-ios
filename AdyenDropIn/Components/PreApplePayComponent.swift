@@ -8,7 +8,7 @@
 import PassKit
 import UIKit
 #if canImport(AdyenComponents)
-    import AdyenComponents
+    @_spi(AdyenInternal) import AdyenComponents
 #endif
 
 internal final class PreApplePayComponent: PresentableComponent,
@@ -65,7 +65,7 @@ internal final class PreApplePayComponent: PresentableComponent,
         self.context = context
         self.paymentMethod = paymentMethod
         self.configuration = configuration
-        self.amount = applePayConfiguration.applePayPayment.payment.amount
+        self.amount = applePayConfiguration.applePayPayment.amount
         self.applePayComponent = try ApplePayComponent(paymentMethod: paymentMethod,
                                                        context: context,
                                                        configuration: applePayConfiguration)
@@ -92,15 +92,7 @@ internal final class PreApplePayComponent: PresentableComponent,
 extension PreApplePayComponent: PaymentComponentDelegate {
     
     internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        let checkoutAttemptId = component.context.analyticsProvider.checkoutAttemptId
-        let updatedData = PaymentComponentData(paymentMethodDetails: data.paymentMethod,
-                                               amount: data.amount,
-                                               order: data.order,
-                                               storePaymentMethod: data.storePaymentMethod,
-                                               browserInfo: data.browserInfo,
-                                               checkoutAttemptId: checkoutAttemptId,
-                                               installments: data.installments)
-        submit(data: updatedData, component: self)
+        submit(data: data, component: component)
     }
     
     internal func didFail(with error: Error, from component: PaymentComponent) {

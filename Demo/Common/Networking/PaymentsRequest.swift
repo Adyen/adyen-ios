@@ -29,7 +29,10 @@ internal struct PaymentsRequest: APIRequest {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         let currentConfiguration = ConfigurationConstants.current
-        let amount = data.amount ?? currentConfiguration.amount
+
+        // Important: for the demo purpose we are setting amount here.
+        // If you choose not to provide amount to the payment component - it could be specified by your backend.
+        let amount = data.amountToPay ?? currentConfiguration.amount
         
         try container.encode(data.paymentMethod.encodable, forKey: .details)
         try container.encode(data.storePaymentMethod, forKey: .storePaymentMethod)
