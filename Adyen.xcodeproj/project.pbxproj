@@ -3105,7 +3105,7 @@
 			path = Errors;
 			sourceTree = "<group>";
 		};
-		E7975F932880238800A12C40 /* Actions */ = {
+		E7975F932880238800A12C40 /* Actions Tests */ = {
 			isa = PBXGroup;
 			children = (
 				E7975F952880253400A12C40 /* ActionComponent */,
@@ -3113,7 +3113,7 @@
 				E9021DF0225CC6BD009CF7F4 /* Redirect */,
 				F9C5F0DB25CAB8DB005A6E54 /* Voucher */,
 			);
-			path = Actions;
+			path = "Actions Tests";
 			sourceTree = "<group>";
 		};
 		E7975F94288024CD00A12C40 /* IssuerList */ = {
@@ -3240,7 +3240,9 @@
 				F95D76052565445E0088A353 /* Assets */,
 				E97B9716229D530F00505476 /* Adyen Tests */,
 				F9615FB0252DDA4800FA8EDD /* AdyenSwiftUI Tests */,
+				E7975F932880238800A12C40 /* Actions Tests */,
 				E9E3DAB0221D79A800697074 /* Card Tests */,
+				E97B9717229D533B00505476 /* Components Tests */,
 				E759E1F325CB371800B1F8DC /* DropIn Tests */,
 				F9F1A98526CCFD090005CB1D /* Encryption Tests */,
 				F967581327D25B0200A16FB6 /* Session Tests */,
@@ -3293,20 +3295,19 @@
 		E97B9716229D530F00505476 /* Adyen Tests */ = {
 			isa = PBXGroup;
 			children = (
-				E7975F932880238800A12C40 /* Actions */,
 				C9C0005A280468B800CE2EEC /* Analytics */,
 				F91760A52594C5C000D653BE /* Assets */,
-				E97B9717229D533B00505476 /* Components */,
 				E97B9718229D54C600505476 /* Core */,
 				C92F6DBC26AFF289004BD516 /* DummyData */,
-				E9E3DABC221EA44900697074 /* Extension Tests */,
+				E9E3DABC221EA44900697074 /* Extension */,
+				E7CC63D5288016080034108B /* Mocks */,
 				F99F085B2383EBFF00EBB948 /* UI */,
 				E9E3DB042226B3A100697074 /* Utilities */,
 			);
 			path = "Adyen Tests";
 			sourceTree = "<group>";
 		};
-		E97B9717229D533B00505476 /* Components */ = {
+		E97B9717229D533B00505476 /* Components Tests */ = {
 			isa = PBXGroup;
 			children = (
 				A009837B279859BE007E68C4 /* ACH Direct Debit */,
@@ -3327,13 +3328,12 @@
 				E9021DEF225CC650009CF7F4 /* SEPA Tests */,
 				F96AE5032603812B009F82BD /* Seven Eleven Component */,
 			);
-			path = Components;
+			path = "Components Tests";
 			sourceTree = "<group>";
 		};
 		E97B9718229D54C600505476 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				E7CC63D5288016080034108B /* Mocks */,
 				E97B9719229D54D600505476 /* ActionTests.swift */,
 				5AF730E92667C3F10091C573 /* APIContextTests.swift */,
 				F90FB7BD2446EBB9005BFE0E /* BrowserInfoTests.swift */,
@@ -3463,7 +3463,7 @@
 			path = "Card Tests";
 			sourceTree = "<group>";
 		};
-		E9E3DABC221EA44900697074 /* Extension Tests */ = {
+		E9E3DABC221EA44900697074 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
 				E9E3DABD221EA47800697074 /* StringExtensionsTests.swift */,
@@ -3473,7 +3473,7 @@
 				5AD40F42263150F90090E01C /* UILabelHelpersTests.swift */,
 				5AD40F4E263157D50090E01C /* UIButtonHelpersTests.swift */,
 			);
-			path = "Extension Tests";
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		E9E3DAC3221ECF4800697074 /* Formatters */ = {
