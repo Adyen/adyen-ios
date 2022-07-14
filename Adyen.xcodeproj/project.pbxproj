@@ -1968,30 +1968,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		007D790A2812C81400382D31 /* AdyenUIHostUITests */ = {
+		007D790A2812C81400382D31 /* UITests */ = {
 			isa = PBXGroup;
 			children = (
 				007D79202823BE4C00382D31 /* Helpers */,
 				007D79142812EFD300382D31 /* Components */,
 			);
-			path = AdyenUIHostUITests;
+			path = UITests;
 			sourceTree = "<group>";
 		};
 		007D79142812EFD300382D31 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				E7975F97288040BF00A12C40 /* Atome */,
 				007D791D2823A83100382D31 /* Affirm */,
-				007D79152812EFF600382D31 /* Atome */,
-				007D790B2812C81400382D31 /* AtomeComponentUITests.swift */,
 			);
 			path = Components;
-			sourceTree = "<group>";
-		};
-		007D79152812EFF600382D31 /* Atome */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Atome;
 			sourceTree = "<group>";
 		};
 		007D791D2823A83100382D31 /* Affirm */ = {
@@ -2682,7 +2674,7 @@
 				F9620D8323C73B0D005209FC /* AdyenWeChatPay */,
 				E7E58BF725ADDF8400E869F9 /* Demo */,
 				E7E58BF825ADDFA000E869F9 /* Tests */,
-				007D790A2812C81400382D31 /* AdyenUIHostUITests */,
+				007D790A2812C81400382D31 /* UITests */,
 				E2C0E03422097917008616F6 /* Products */,
 				E2D12C01221ECBB000EF682F /* Frameworks */,
 			);
@@ -3139,6 +3131,14 @@
 				F9AC61C1243751A70062A00D /* ActionComponentDelegateMock.swift */,
 			);
 			path = ActionComponent;
+			sourceTree = "<group>";
+		};
+		E7975F97288040BF00A12C40 /* Atome */ = {
+			isa = PBXGroup;
+			children = (
+				007D790B2812C81400382D31 /* AtomeComponentUITests.swift */,
+			);
+			path = Atome;
 			sourceTree = "<group>";
 		};
 		E7B6280124ED6450000CEC6E /* CardType */ = {
