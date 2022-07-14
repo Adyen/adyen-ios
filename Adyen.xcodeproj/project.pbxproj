@@ -3047,6 +3047,9 @@
 				F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */,
 				E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */,
 				E74CE3DE26727EB1008231D2 /* DropInDelegateMock.swift */,
+				E767F4DB25A603A50077029E /* ModalToolbarTests.swift */,
+				E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */,
+				E7D5311B2447065B000046B4 /* PreselectedPaymentComponentTests.swift */,
 			);
 			path = "DropIn Tests";
 			sourceTree = "<group>";

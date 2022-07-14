@@ -118,8 +118,8 @@ schemes:
 
 mkdir -p Tests
 mkdir -p Source
-cp "../Tests/DropIn/DropInTests.swift" Tests/DropInTests.swift
-cp "../Tests/DropIn/XCTestCaseExtensions.swift" Tests/XCTestCaseExtensions.swift
+cp "../Tests/DropIn Tests/DropInTests.swift" Tests/DropInTests.swift
+cp "../Tests/DropIn Tests/XCTestCaseExtensions.swift" Tests/XCTestCaseExtensions.swift
 cp "../Tests/DummyData/Dummy.swift" Tests/Dummy.swift
 cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/
