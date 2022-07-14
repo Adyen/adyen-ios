@@ -106,7 +106,6 @@
 		A0414C322791C9BB00DF3FE9 /* BankPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C312791C9BB00DF3FE9 /* BankPayload.swift */; };
 		A0414C342791D9EC00DF3FE9 /* BankDetailsEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C332791D9EC00DF3FE9 /* BankDetailsEncryptor.swift */; };
 		A04E60CD27DFA2BD0051C72C /* SessionAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60CC27DFA2BD0051C72C /* SessionAPIClient.swift */; };
-		A04E60D327E0E6280051C72C /* XCTestCase+Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60D227E0E6280051C72C /* XCTestCase+Result.swift */; };
 		A04E60D527EDDF4F0051C72C /* AdyenSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60D427EDDF4F0051C72C /* AdyenSessionDelegate.swift */; };
 		A04E60DB27F30D900051C72C /* SessionDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60DA27F30D900051C72C /* SessionDelegateMock.swift */; };
 		A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */; };
@@ -326,6 +325,7 @@
 		E788A5072658045D00089448 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = E788A5062658045D00089448 /* Amount.swift */; };
 		E795A27626404E9400321C48 /* AddressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795A27526404E9400321C48 /* AddressViewModel.swift */; };
 		E7975F9628803F4B00A12C40 /* PaymentComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */; };
+		E7975F982880421600A12C40 /* XCTestCase+Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60D227E0E6280051C72C /* XCTestCase+Result.swift */; };
 		E79A64812490D98F00368E9F /* CardComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A64802490D98F00368E9F /* CardComponentDelegateMock.swift */; };
 		E7B3DE9F25A61B9200CA4D2B /* UIViewConstraintsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B3DE9E25A61B9200CA4D2B /* UIViewConstraintsHelper.swift */; };
 		E7B627FD24ED32CC000CEC6E /* BinLookupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B627FC24ED32CC000CEC6E /* BinLookupService.swift */; };
@@ -1548,7 +1548,7 @@
 		F92980C327CF558E000CA5CA /* AdyenSession+ActionComponentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AdyenSession+ActionComponentDelegate.swift"; sourceTree = "<group>"; };
 		F92980C527CF563C000CA5CA /* AdyenSession+PartialPaymentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AdyenSession+PartialPaymentDelegate.swift"; sourceTree = "<group>"; };
 		F92980CD27CF650F000CA5CA /* ActionComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionComponent.swift; sourceTree = "<group>"; };
-		F931DDC4270B0874004B012C /* XCTestCase+Available.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "XCTestCase+Available.swift"; path = "Tests/Adyen Tests/Helpers/XCTestCase+Available.swift"; sourceTree = SOURCE_ROOT; };
+		F931DDC4270B0874004B012C /* XCTestCase+Available.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "XCTestCase+Available.swift"; path = "Tests/Helpers/XCTestCase+Available.swift"; sourceTree = SOURCE_ROOT; };
 		F9354BE623A7B4E200A6760B /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
 		F9354BE823A7B5AC00A6760B /* ViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStyle.swift; sourceTree = "<group>"; };
 		F9354BEC23A7C34D00A6760B /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
@@ -2218,6 +2218,7 @@
 				C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */,
 				5A56E15426B6DEF800744CA0 /* XCTestCase+Style.swift */,
 				A04E60D227E0E6280051C72C /* XCTestCase+Result.swift */,
+				F92385B62757AE8B0082F7B7 /* XCTestCaseExtensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -3044,7 +3045,6 @@
 				F9EDB79023965FFC00CFB3C9 /* Payment Method List */,
 				E759E1F425CB373F00B1F8DC /* DropInTests.swift */,
 				F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */,
-				F92385B62757AE8B0082F7B7 /* XCTestCaseExtensions.swift */,
 				E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */,
 				E74CE3DE26727EB1008231D2 /* DropInDelegateMock.swift */,
 			);
@@ -3244,6 +3244,7 @@
 				E759E1F325CB371800B1F8DC /* DropIn Tests */,
 				F9F1A98526CCFD090005CB1D /* Encryption Tests */,
 				F967581327D25B0200A16FB6 /* Session Tests */,
+				C92F6DBF26B0297A004BD516 /* Helpers */,
 				E2C0E04322097917008616F6 /* Info.plist */,
 			);
 			path = Tests;
@@ -3299,7 +3300,6 @@
 				E97B9718229D54C600505476 /* Core */,
 				C92F6DBC26AFF289004BD516 /* DummyData */,
 				E9E3DABC221EA44900697074 /* Extension Tests */,
-				C92F6DBF26B0297A004BD516 /* Helpers */,
 				F99F085B2383EBFF00EBB948 /* UI */,
 				E9E3DB042226B3A100697074 /* Utilities */,
 			);
@@ -5780,6 +5780,7 @@
 				C927083827590B7500D15EA0 /* BACSInputFormViewProtocolMock.swift in Sources */,
 				C92708422759106500D15EA0 /* BACSRouterProtocolMock.swift in Sources */,
 				F9DC6BA623AA293500863F3A /* ListViewControllerTests.swift in Sources */,
+				E7975F982880421600A12C40 /* XCTestCase+Result.swift in Sources */,
 				F90FB7BE2446EBB9005BFE0E /* BrowserInfoTests.swift in Sources */,
 				00F621C527F1AF5A00C04097 /* AtomeComponentTests.swift in Sources */,
 				E73C567F25EFCC4200B57758 /* IssuerListComponentTests.swift in Sources */,
@@ -6089,7 +6090,6 @@
 				F9CA6BC427D5E99000D7BE6E /* CancelOrderRequest.swift in Sources */,
 				F967581227D207C600A16FB6 /* PaymentDetailsRequest.swift in Sources */,
 				F92980C227CF550C000CA5CA /* AdyenSession+PaymentComponentDelegate.swift in Sources */,
-				A04E60D327E0E6280051C72C /* XCTestCase+Result.swift in Sources */,
 				F967580E27D1253000A16FB6 /* SelfRetainingAPIClient.swift in Sources */,
 				F9B8AF5E27DA4EA400DC0894 /* AdyenSession+DropInComponentDelegate.swift in Sources */,
 				F92980B227CE2B55000CA5CA /* AdyenSession.swift in Sources */,
