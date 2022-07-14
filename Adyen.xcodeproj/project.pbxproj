@@ -325,6 +325,7 @@
 		E788A4FB2658034400089448 /* ShopperInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E788A4FA2658034400089448 /* ShopperInformation.swift */; };
 		E788A5072658045D00089448 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = E788A5062658045D00089448 /* Amount.swift */; };
 		E795A27626404E9400321C48 /* AddressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795A27526404E9400321C48 /* AddressViewModel.swift */; };
+		E7975F9628803F4B00A12C40 /* PaymentComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */; };
 		E79A64812490D98F00368E9F /* CardComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A64802490D98F00368E9F /* CardComponentDelegateMock.swift */; };
 		E7B3DE9F25A61B9200CA4D2B /* UIViewConstraintsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B3DE9E25A61B9200CA4D2B /* UIViewConstraintsHelper.swift */; };
 		E7B627FD24ED32CC000CEC6E /* BinLookupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B627FC24ED32CC000CEC6E /* BinLookupService.swift */; };
@@ -770,7 +771,7 @@
 		F9EDB79A239664B500CFB3C9 /* StoredPaymentMethodComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB799239664B500CFB3C9 /* StoredPaymentMethodComponentTests.swift */; };
 		F9EDB79C2396652000CFB3C9 /* StoredPaymentMethodMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79B2396652000CFB3C9 /* StoredPaymentMethodMock.swift */; };
 		F9EDB79E2397AEF400CFB3C9 /* ComponentManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */; };
-		F9EDB7A02397BD8500CFB3C9 /* TestPaymentMethodsJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79F2397BD8500CFB3C9 /* TestPaymentMethodsJson.swift */; };
+		F9EDB7A02397BD8500CFB3C9 /* DummyPaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79F2397BD8500CFB3C9 /* DummyPaymentMethods.swift */; };
 		F9F1A98226CCEAB20005CB1D /* JWAEncryptionAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1A98126CCEAB20005CB1D /* JWAEncryptionAlgorithm.swift */; };
 		F9F1A98426CCEB650005CB1D /* JWAA256CBCHS512Algorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1A98326CCEB650005CB1D /* JWAA256CBCHS512Algorithm.swift */; };
 		F9F1A98726CCFD1F0005CB1D /* JWAA256CBCHS512AlgorithmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1A98626CCFD1F0005CB1D /* JWAA256CBCHS512AlgorithmTests.swift */; };
@@ -1808,7 +1809,7 @@
 		F9EDB799239664B500CFB3C9 /* StoredPaymentMethodComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPaymentMethodComponentTests.swift; sourceTree = "<group>"; };
 		F9EDB79B2396652000CFB3C9 /* StoredPaymentMethodMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPaymentMethodMock.swift; sourceTree = "<group>"; };
 		F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentManagerTests.swift; sourceTree = "<group>"; };
-		F9EDB79F2397BD8500CFB3C9 /* TestPaymentMethodsJson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPaymentMethodsJson.swift; sourceTree = "<group>"; };
+		F9EDB79F2397BD8500CFB3C9 /* DummyPaymentMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyPaymentMethods.swift; sourceTree = "<group>"; };
 		F9F1A98126CCEAB20005CB1D /* JWAEncryptionAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWAEncryptionAlgorithm.swift; sourceTree = "<group>"; };
 		F9F1A98326CCEB650005CB1D /* JWAA256CBCHS512Algorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWAA256CBCHS512Algorithm.swift; sourceTree = "<group>"; };
 		F9F1A98626CCFD1F0005CB1D /* JWAA256CBCHS512AlgorithmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWAA256CBCHS512AlgorithmTests.swift; sourceTree = "<group>"; };
@@ -2206,14 +2207,15 @@
 			path = Input;
 			sourceTree = "<group>";
 		};
-		C92F6DBC26AFF289004BD516 /* DataMocks */ = {
+		C92F6DBC26AFF289004BD516 /* DummyData */ = {
 			isa = PBXGroup;
 			children = (
 				5AF8CD4C26691D3A00102339 /* Dummy.swift */,
 				E7CC63D1287EFFC00034108B /* DummyHelper.swift */,
+				F9EDB79F2397BD8500CFB3C9 /* DummyPaymentMethods.swift */,
 				C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */,
 			);
-			path = DataMocks;
+			path = DummyData;
 			sourceTree = "<group>";
 		};
 		C92F6DBF26B0297A004BD516 /* Helpers */ = {
@@ -3295,7 +3297,7 @@
 				F91760A52594C5C000D653BE /* Assets */,
 				E97B9717229D533B00505476 /* Components */,
 				E97B9718229D54C600505476 /* Core */,
-				C92F6DBC26AFF289004BD516 /* DataMocks */,
+				C92F6DBC26AFF289004BD516 /* DummyData */,
 				E9E3DABC221EA44900697074 /* Extension Tests */,
 				C92F6DBF26B0297A004BD516 /* Helpers */,
 				F99F085B2383EBFF00EBB948 /* UI */,
@@ -3324,7 +3326,6 @@
 				F926D55323FBF18000D058D3 /* Qiwi Wallet */,
 				E9021DEF225CC650009CF7F4 /* SEPA Tests */,
 				F96AE5032603812B009F82BD /* Seven Eleven Component */,
-				F97BC2AC2668C63200F1D242 /* AppleWalletPassProviderTests.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -3337,7 +3338,6 @@
 				5AF730E92667C3F10091C573 /* APIContextTests.swift */,
 				F90FB7BD2446EBB9005BFE0E /* BrowserInfoTests.swift */,
 				E262128C22A8FE6700F2B133 /* PaymentMethodTests.swift */,
-				F9EDB79F2397BD8500CFB3C9 /* TestPaymentMethodsJson.swift */,
 				F9639B4624E283060073F38A /* BackoffSchedulerTests.swift */,
 				F9639B4C24E298C70073F38A /* SimpleSchedulerTests.swift */,
 				A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */,
@@ -4292,6 +4292,7 @@
 		F9C5F0DB25CAB8DB005A6E54 /* Voucher */ = {
 			isa = PBXGroup;
 			children = (
+				F97BC2AC2668C63200F1D242 /* AppleWalletPassProviderTests.swift */,
 				5A988C332657D5290007F4C0 /* BoletoVoucherShareableVoucherViewProviderTests.swift */,
 				F9B997A325C8554F00891084 /* DokuVoucherUITests.swift */,
 				F9B019432611E965001F23FC /* EContextATMShareableVoucherViewProviderTests.swift */,
@@ -5380,6 +5381,7 @@
 				007D791C281FC6B000382D31 /* XCTestCaseExtensions.swift in Sources */,
 				E7CC63D4287F0D630034108B /* DummyHelper.swift in Sources */,
 				007D791A281FC62E00382D31 /* XCTestCaseExtension.swift in Sources */,
+				E7975F9628803F4B00A12C40 /* PaymentComponentDelegateMock.swift in Sources */,
 				007D790C2812C81400382D31 /* AtomeComponentUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5770,7 +5772,7 @@
 				E262128D22A8FE6700F2B133 /* PaymentMethodTests.swift in Sources */,
 				F931DDC5270B0874004B012C /* XCTestCase+Available.swift in Sources */,
 				F9F1A99426CD39740005CB1D /* RSAOAEP256AlgorithmTests.swift in Sources */,
-				F9EDB7A02397BD8500CFB3C9 /* TestPaymentMethodsJson.swift in Sources */,
+				F9EDB7A02397BD8500CFB3C9 /* DummyPaymentMethods.swift in Sources */,
 				F9AC61BE243750BB0062A00D /* RedirectComponentTests.swift in Sources */,
 				F9EDB79C2396652000CFB3C9 /* StoredPaymentMethodMock.swift in Sources */,
 				E757EFFE25D2ECDB007C813D /* APIClientMock.swift in Sources */,
