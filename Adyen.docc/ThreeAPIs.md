@@ -8,7 +8,7 @@ In contrast to the simplified flow, your server will need to make two additional
 
 The Drop-in is initialized with the response of `/paymentMethods`, and provides everything you need to make an API call to `/payments` and `/payments/details`.
 
-### Presenting the Drop-in
+## Presenting the Drop-in
 
 The Drop-in requires the response of the `/paymentMethods` endpoint to be initialized. To pass the response to Drop-in, decode the response to the `PaymentMethods` structure:
 
@@ -19,10 +19,15 @@ let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: respons
 All Components need an `APIContext`. An instance of `APIContext` wraps your client key and an environment.
 Please read more [here](https://docs.adyen.com/development-resources/client-side-authentication) about the client key and how to get.
 Use **Environment.test** for environment. When you're ready to accept live payments, change the value to one of our [live environments](https://adyen.github.io/adyen-ios/Docs/Structs/Environment.html)
+We recommend creating a new context for each payment attempt.
 
 ```swift
-let apiContext = APIContext(clientKey: clientKey, environment: Environment.test)
-let configuration = DropInComponent.Configuration(apiContext: apiContext)
+var context: AdyenContext {
+    let apiContext = APIContext(clientKey: clientKey, environment: Environment.test)
+    return AdyenContext(apiContext: apiContext,
+                        payment: payment,
+                        analyticsConfiguration: analyticsConfiguration)
+}
 ```
 
 Some payment methods need additional configuration. For example `ApplePayComponent`. These payment method specific configuration parameters can be set in an instance of `DropInComponent.Configuration`:
@@ -37,9 +42,9 @@ let applePayment = try ApplePayPayment(countryCode: "US",
                                        currencyCode: "USD",
                                        summaryItems: summaryItems)
 
-let configuration = DropInComponent.Configuration(apiContext: apiContext)
-configuration.applePay = .init(payment: applePayment,
-                               merchantIdentifier: "merchant.com.adyen.MY_MERCHANT_ID")
+let dropInConfiguration = DropInComponent.Configuration()
+dropInConfiguration.applePay = .init(payment: applePayment,
+                                     merchantIdentifier: "merchant.com.adyen.MY_MERCHANT_ID")
 ```
 
 Also for voucher payment methods like Doku variants, in order for the `DokuComponent` to enable the shopper to save the voucher, access to the shopper photos is requested, so a suitable text need to be added to key  `NSPhotoLibraryAddUsageDescription` in the application Info.plist.
@@ -47,11 +52,15 @@ Also for voucher payment methods like Doku variants, in order for the `DokuCompo
 After serializing the payment methods and creating the configuration, the Drop-in is ready to be initialized. Assign a `delegate` and use the `viewController` property to present the Drop-in on the screen:
 
 ```swift
-let dropInComponent = DropInComponent(paymentMethods: paymentMethods, configuration: configuration)
+let dropInComponent = DropInComponent(paymentMethods: paymentMethods,
+                                      context: context,
+                                      configuration: dropInConfiguration)
+
+self.dropInComponent = dropInComponent
 dropInComponent.delegate = self
 present(dropInComponent.viewController, animated: true)
 ```
-#### Implementing DropInComponentDelegate
+### Implementing DropInComponentDelegate
 
 To handle the results of the Drop-in, the following methods of `DropInComponentDelegate` should be implemented:
 
@@ -105,11 +114,11 @@ This optional method is invoked after a redirect to an external application has 
 
 ---
 
-### Handling an action
+## Handling an action
 
 When `/payments` or `/payments/details` responds with a non-final result and an `action`, you can use one of the following techniques.
 
-#### Using Drop-in
+### Using Drop-in
 
 In case of Drop-in integration you must use build-in action handler on the current instance of `DropInComponent`:
 
@@ -118,13 +127,13 @@ let action = try JSONDecoder().decode(Action.self, from: actionData)
 dropInComponent.handle(action)
 ```
 
-#### Using components
+### Using components
 
-In case of using individual components - not Drop-in -, create and persist an instance of `AdyenActionComponent`:
+In case of using individual components, create and persist an instance of `AdyenActionComponent`:
 
 ```swift
 lazy var actionComponent: AdyenActionComponent = {
-    let handler = AdyenActionComponent(apiContext: apiContext)
+    let handler = AdyenActionComponent(context: context)
     handler.delegate = self
     handler.presentationDelegate = self
     return handler
@@ -138,7 +147,7 @@ let action = try JSONDecoder().decode(Action.self, from: actionData)
 actionComponent.handle(action)
 ```
 
-#### Receiving redirect
+## Receiving redirect
 
 In case the customer is redirected to an external URL or App, make sure to let the `RedirectComponent` know when the user returns to your app. Do this by implementing the following in your `UIApplicationDelegate`:
 
