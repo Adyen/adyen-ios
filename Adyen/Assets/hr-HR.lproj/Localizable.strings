@@ -2,12 +2,15 @@
 "adyen.submitButton.formatted" = "Platiti %@";
 "adyen.cancelButton" = "Otkaži";
 "adyen.dismissButton" = "U redu";
+"adyen.removeButton" = "Ukloni";
 "adyen.error.title" = "Greška";
 "adyen.error.unknown" = "Dogodila se nepoznata greška";
 "adyen.validationAlert.title" = "Pogrešan unos";
 "adyen.paymentMethods.otherMethods" = "drugi";
 "adyen.paymentMethods.storedMethods" = "Pohranjeno";
 "adyen.paymentMethods.title" = "Način plaćanja";
+"adyen.paymentMethod.removeButton" = "Da, ukloni";
+"adyen.payment.refused.message" = "Plaćanje je odbijeno. Pokušajte ponovno.";
 "adyen.sepa.ibanItem.title" = "Broj računa (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Nevažeći broj računa";
 "adyen.sepa.nameItem.title" = "Ime vlasnika";
@@ -116,6 +119,9 @@
 "adyen.boleto.download.pdf" = "Preuzmite PDF";
 "adyen.giftcard.currencyError" = "Poklon-kartice vrijede samo u valuti u kojoj su izdane";
 "adyen.giftcard.noBalance" = "Stanje na ovoj poklon-kartici iznosi nula";
+"adyen.giftcard.remove.title" = "Potvrdite uklanjanje kartice";
+"adyen.giftcard.remove.message" = "Ukloniti dodane poklon-kartice?";
+"adyen.giftcard.paymentMethod.title" = "Dodana poklon-kartica";
 "adyen.partialPayment.remainingBalance" = "Preostalo stanje na računu iznosit će %@";
 "adyen.partialPayment.payRemainingAmount" = "Odaberite način plaćanja za preostali iznos %@";
 "adyen.card.taxNumber.label" = "Datum rođenja vlasnika kartice (GGMMDD) ili registracijski broj tvrtke (10 znamenki)";
@@ -153,3 +159,4 @@
 "adyen.ach.accountNumberField.invalid" = "Nevažeći broj računa";
 "adyen.ach.accountLocationField.title" = "ABA identifikacijski broj";
 "adyen.ach.accountLocationField.invalid" = "Nevažeći ABA identifikacijski broj";
+"idealIssuer.selectField.title" = "Banka";

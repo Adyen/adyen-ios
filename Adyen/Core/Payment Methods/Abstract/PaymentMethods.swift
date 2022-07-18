@@ -248,7 +248,6 @@ internal enum AnyPaymentMethod: Decodable {
             return paymentMethod
         case let .onlineBanking(paymentMethod):
             return paymentMethod
-
         case .none:
             return nil
         }

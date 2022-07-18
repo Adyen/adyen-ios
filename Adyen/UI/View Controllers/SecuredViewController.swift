@@ -78,6 +78,10 @@ public final class SecuredViewController: UIViewController {
         delegate?.viewWillAppear(viewController: self)
     }
 
+    public func getChildViewController() -> UIViewController {
+        return childViewController
+    }
+
     @LazyOptional(initialize: UIVisualEffectView())
     private var blurEffectView: UIVisualEffectView
 

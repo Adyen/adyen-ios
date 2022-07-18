@@ -2,12 +2,15 @@
 "adyen.submitButton.formatted" = "Πληρωμή %@";
 "adyen.cancelButton" = "Άκυρο";
 "adyen.dismissButton" = "ΟΚ";
+"adyen.removeButton" = "Αφαίρεση";
 "adyen.error.title" = "Σφάλμα";
 "adyen.error.unknown" = "Προέκυψε άγνωστο σφάλμα";
 "adyen.validationAlert.title" = "Μη έγκυρη είσοδος";
 "adyen.paymentMethods.otherMethods" = "άλλοι";
 "adyen.paymentMethods.storedMethods" = "Αποθηκευμένοι";
 "adyen.paymentMethods.title" = "Τρόποι πληρωμής";
+"adyen.paymentMethod.removeButton" = "Ναι, αφαίρεση";
+"adyen.payment.refused.message" = "Η πληρωμή απορρίφθηκε. Προσπαθήστε ξανά.";
 "adyen.sepa.ibanItem.title" = "Αριθμός λογαριασμού (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Μη έγκυρος αριθμός λογαριασμού";
 "adyen.sepa.nameItem.title" = "Όνομα κατόχου";
@@ -116,6 +119,9 @@
 "adyen.boleto.download.pdf" = "Λήψη PDF";
 "adyen.giftcard.currencyError" = "Οι δωροκάρτες ισχύουν μόνο για το νόμισμα στο οποίο εκδόθηκαν";
 "adyen.giftcard.noBalance" = "Η συγκεκριμένη δωροκάρτα έχει μηδενικό υπόλοιπο";
+"adyen.giftcard.remove.title" = "Επιβεβαίωση αφαίρεσης κάρτας";
+"adyen.giftcard.remove.message" = "Αφαίρεση των προστεθειμένων δωροκαρτών;";
+"adyen.giftcard.paymentMethod.title" = "Προστέθηκε δωροκάρτα";
 "adyen.partialPayment.remainingBalance" = "Το υπόλοιπο θα είναι %@";
 "adyen.partialPayment.payRemainingAmount" = "Επιλέξτε έναν τρόπο πληρωμής για το εναπομείναν ποσό %@";
 "adyen.card.taxNumber.label" = "Ημερομηνία γέννησης κατόχου κάρτας (YYMMDD) ή αριθμός μητρώου εταιρειών (10 ψηφία)";
@@ -153,3 +159,4 @@
 "adyen.ach.accountNumberField.invalid" = "Μη έγκυρος αριθμός λογαριασμού";
 "adyen.ach.accountLocationField.title" = "Αριθμός δρομολόγησης ABA";
 "adyen.ach.accountLocationField.invalid" = "Μη έγκυρος αριθμός δρομολόγησης ABA";
+"idealIssuer.selectField.title" = "Τράπεζα";

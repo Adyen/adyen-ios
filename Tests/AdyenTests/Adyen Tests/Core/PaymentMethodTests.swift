@@ -453,24 +453,6 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(idealPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
     }
 
-    func testOverridingDisplayInformationOnlineBankingCZ() throws {
-        paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .onlineBankingCZ,
-                                                  with: .init(title: "custom title",
-                                                              subtitle: "custom subtitle"))
-        let onlineBankingPaymentMethod = paymentMethods.paymentMethod(ofType: .onlineBankingCZ)
-        XCTAssertEqual(onlineBankingPaymentMethod?.displayInformation(using: nil).title, "custom title")
-        XCTAssertEqual(onlineBankingPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
-    }
-
-    func testOverridingDisplayInformationOnlineBankingSK() throws {
-        paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .onlineBankingSK,
-                                                  with: .init(title: "custom title",
-                                                              subtitle: "custom subtitle"))
-        let onlineBankingPaymentMethod = paymentMethods.paymentMethod(ofType: .onlineBankingSK)
-        XCTAssertEqual(onlineBankingPaymentMethod?.displayInformation(using: nil).title, "custom title")
-        XCTAssertEqual(onlineBankingPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
-    }
-
     func testDecodingPaymentMethodsWithNullValues() throws {
 
         let json = """
@@ -854,14 +836,4 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.type.rawValue, "ach")
         XCTAssertEqual(paymentMethod.name, "ACH Direct Debit")
     }
-}
-
-internal extension Coder {
-    
-    static func decode<T: Decodable>(_ dictionary: [String: Any]) throws -> T {
-        let data = try! JSONSerialization.data(withJSONObject: dictionary, options: [])
-        
-        return try decode(data)
-    }
-    
 }

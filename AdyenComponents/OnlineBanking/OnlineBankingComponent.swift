@@ -8,7 +8,7 @@
 import UIKit
 
 /// A component that provides a form for Online Banking payment.
-public final class OnlineBankingComponent: PaymentComponent, PresentableComponent, LoadingComponent {
+public final class OnlineBankingComponent: PaymentComponent, PresentableComponent, ComponentLoader {
 
     /// Configuration for Online Banking Component.
     public typealias Configuration = BasicComponentConfiguration
@@ -33,23 +33,23 @@ public final class OnlineBankingComponent: PaymentComponent, PresentableComponen
 
     private var selectedIssuer: Issuer
 
-    public func stopLoading() {
-        continueButton.showsActivityIndicator = false
-        formViewController.view.isUserInteractionEnabled = true
-    }
-
     // MARK: - Items
 
+    private var tAndcLink: String {
+        return paymentMethod.type == .onlineBankingCZ ? "https://static.payu.com/sites/terms/files/payu_privacy_policy_cs.pdf" : "https://static.payu.com/sites/terms/files/payu_privacy_policy_sk.pdf"
+    }
+
     /// The terms and condition message item.
-    internal lazy var termsAndConditionLabelItem: FormLabelItem = .init(text: "By clicking continue you agree with the term and conditions",
-                                                                        style: configuration.style.footnoteLabel,
-                                                                        identifier: ViewIdentifierBuilder.build(scopeInstance: self,
-                                                                        postfix: "OnlineBankingTAndCLabel"))
+    // swiftlint:disable line_length
+    internal lazy var tAndcLabelItem: FormAttributedLabelItem = .init(tAndCText: "By clicking continue you agree with the #terms and conditions#",
+                                                                      link: tAndcLink,
+                                                                      style: configuration.style.footnoteLabel,
+                                                                      identifier: ViewIdentifierBuilder.build(scopeInstance: "AdyenDropIn.OnlineBankingComponent", postfix: "OnlineBankingTAndCLabel"))
 
     /// The continue button item.
     internal lazy var continueButton: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "continueButtonItem")
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: "AdyenDropIn.OnlineBankingComponent", postfix: "continueButtonItem")
         item.title = localizedString(.continueTitle, configuration.localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectContinueButton()
@@ -57,6 +57,7 @@ public final class OnlineBankingComponent: PaymentComponent, PresentableComponen
         return item
     }()
 
+    /// The Issuer List item.
     internal lazy var issuerListItem: FormIssuersPickerItem = {
         let defaultIssuer = onlineBankingPaymentMethod.issuers[0]
 
@@ -66,8 +67,8 @@ public final class OnlineBankingComponent: PaymentComponent, PresentableComponen
         let issuerPickerItem = FormIssuersPickerItem(preselectedValue: issuerListPickerItem[0],
                                         selectableValues: issuerListPickerItem,
                                         style: configuration.style.textField)
-        issuerPickerItem.title = "Bank"
-        issuerPickerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "issuersList")
+        issuerPickerItem.title = localizedString(.selectFieldTitle, configuration.localizationParameters)
+        issuerPickerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: "AdyenDropIn.OnlineBankingComponent", postfix: "issuersList")
         _ = issuerPickerItem.publisher.addEventHandler({ issuerPickerITem in
             self.selectedIssuer = issuerPickerITem.element
         })
@@ -88,6 +89,16 @@ public final class OnlineBankingComponent: PaymentComponent, PresentableComponen
         self.selectedIssuer = onlineBankingPaymentMethod.issuers[0]
     }
 
+    public func stopLoading() {
+        continueButton.showsActivityIndicator = false
+        formViewController.view.isUserInteractionEnabled = true
+    }
+
+    public func startLoading(for component: PaymentComponent) {
+        continueButton.showsActivityIndicator = true
+        formViewController.view.isUserInteractionEnabled = false
+    }
+
     // MARK: - Private
 
     private func didSelectContinueButton() {
@@ -104,13 +115,13 @@ public final class OnlineBankingComponent: PaymentComponent, PresentableComponen
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(style: configuration.style)
         formViewController.localizationParameters = configuration.localizationParameters
-        formViewController.title = "Online Banking"
+        formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         formViewController.append(issuerListItem)
         formViewController.append(FormSpacerItem(numberOfSpaces: 4))
         formViewController.append(continueButton)
         formViewController.append(FormSpacerItem())
-        formViewController.append(termsAndConditionLabelItem.addingDefaultMargins())
+        formViewController.append(tAndcLabelItem.addingDefaultMargins())
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
 
         return formViewController

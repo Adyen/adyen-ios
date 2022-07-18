@@ -491,3 +491,30 @@ let atome = [
     "name": "Atome",
     "type": "atome"
 ]
+
+let onlineBankingDictionary = [
+    "type": "onlineBanking_CZ",
+    "name": "onlineBanking_CZ",
+    "issuers": [
+            [
+                "id": "jp",
+                "name": "Apple Pay"
+            ],
+            [
+                "id": "ap",
+                "name": "Google Pay"
+            ],
+            [
+                "id": "cs",
+                "name": "Česká spořitelna"
+            ],
+            [
+                "id": "kb",
+                "name": "Komerční banka"
+            ],
+            [
+                "id": "c",
+                "name": "Płatność online kartą płatniczą"
+            ]
+    ]
+] as [String: Any]

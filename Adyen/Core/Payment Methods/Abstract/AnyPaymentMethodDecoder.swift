@@ -75,7 +75,8 @@ internal enum AnyPaymentMethodDecoder {
         .boleto: BoletoPaymentMethodDecoder(),
         .affirm: AffirmPaymentMethodDecoder(),
         .atome: AtomePaymentMethodDecoder(),
-        .onlineBanking: OnlineBankingPaymentMethodDecoder()
+        .onlineBankingCZ: OnlineBankingPaymentMethodDecoder(),
+        .onlineBankingSK: OnlineBankingPaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = InstantPaymentMethodDecoder()

@@ -2,12 +2,15 @@
 "adyen.submitButton.formatted" = "Plătiți %@";
 "adyen.cancelButton" = "Anulare";
 "adyen.dismissButton" = "Ok";
+"adyen.removeButton" = "Ștergere";
 "adyen.error.title" = "Eroare";
 "adyen.error.unknown" = "S-a produs o eroare necunoscută";
 "adyen.validationAlert.title" = "Informațiile sunt incorecte";
 "adyen.paymentMethods.otherMethods" = "altele";
 "adyen.paymentMethods.storedMethods" = "Salvat";
 "adyen.paymentMethods.title" = "Metode de plată";
+"adyen.paymentMethod.removeButton" = "Da, șterge";
+"adyen.payment.refused.message" = "Plata a fost refuzată. Vă rugăm să încercați din nou.";
 "adyen.sepa.ibanItem.title" = "Număr cont (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Numărul de cont este incorect";
 "adyen.sepa.nameItem.title" = "Nume posesor";
@@ -116,6 +119,9 @@
 "adyen.boleto.download.pdf" = "Descărcați PDF";
 "adyen.giftcard.currencyError" = "Cardurile cadou sunt valabile numai în moneda în care au fost emise";
 "adyen.giftcard.noBalance" = "Acest card cadou are soldul zero";
+"adyen.giftcard.remove.title" = "Confirmați eliminarea cardului";
+"adyen.giftcard.remove.message" = "Eliminați cardurile cadou adăugate?";
+"adyen.giftcard.paymentMethod.title" = "Card cadou adăugat";
 "adyen.partialPayment.remainingBalance" = "Soldul rămas va fi de %@";
 "adyen.partialPayment.payRemainingAmount" = "Selectați metoda de plată pentru suma de %@ rămasă";
 "adyen.card.taxNumber.label" = "Data de naștere a posesorului de card (AALLZZ) sau numărul de înregistrare al societății (10 cifre).";
@@ -153,3 +159,4 @@
 "adyen.ach.accountNumberField.invalid" = "Numărul de cont este incorect";
 "adyen.ach.accountLocationField.title" = "Număr de direcționare ABA";
 "adyen.ach.accountLocationField.invalid" = "Număr de direcționare ABA incorect";
+"idealIssuer.selectField.title" = "Bancă";

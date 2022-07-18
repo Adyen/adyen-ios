@@ -2,12 +2,15 @@
 "adyen.submitButton.formatted" = "Paga %@";
 "adyen.cancelButton" = "Annulla";
 "adyen.dismissButton" = "OK";
+"adyen.removeButton" = "Rimuovi";
 "adyen.error.title" = "Errore";
 "adyen.error.unknown" = "Si è verificato un errore sconosciuto";
 "adyen.validationAlert.title" = "Dati inseriti non validi";
 "adyen.paymentMethods.otherMethods" = "altri";
 "adyen.paymentMethods.storedMethods" = "Salvato";
 "adyen.paymentMethods.title" = "Metodo di Pagamento";
+"adyen.paymentMethod.removeButton" = "Sì, rimuoverli";
+"adyen.payment.refused.message" = "Il pagamento è stato respinto. Riprova.";
 "adyen.sepa.ibanItem.title" = "Numero di conto (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Numero di conto non valido";
 "adyen.sepa.nameItem.title" = "Nome Intestatario Conto";
@@ -116,6 +119,9 @@
 "adyen.boleto.download.pdf" = "Scarica PDF";
 "adyen.giftcard.currencyError" = "I buono regalo sono validi solo nella valuta in cui sono state emessi";
 "adyen.giftcard.noBalance" = "Questo buono regalo ha un saldo pari a zero";
+"adyen.giftcard.remove.title" = "Conferma rimozione della carta";
+"adyen.giftcard.remove.message" = "Rimuovere le carte regalo aggiunte?";
+"adyen.giftcard.paymentMethod.title" = "Carta regalo aggiunta";
 "adyen.partialPayment.remainingBalance" = "Il saldo rimanente sarà di %@";
 "adyen.partialPayment.payRemainingAmount" = "Seleziona metodo di pagamento per i restanti %@";
 "adyen.card.taxNumber.label" = "Data di nascita del titolare della carta (AAMMGG) o numero di registrazione aziendale (10 cifre)";
@@ -153,3 +159,4 @@
 "adyen.ach.accountNumberField.invalid" = "Numero di conto non valido";
 "adyen.ach.accountLocationField.title" = "Codice ABA";
 "adyen.ach.accountLocationField.invalid" = "Codice ABA non valido";
+"idealIssuer.selectField.title" = "Banca";

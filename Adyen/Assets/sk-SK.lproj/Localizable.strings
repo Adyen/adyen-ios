@@ -2,12 +2,15 @@
 "adyen.submitButton.formatted" = "Zaplatiť %@";
 "adyen.cancelButton" = "Zrušiť";
 "adyen.dismissButton" = "OK";
+"adyen.removeButton" = "Odstrániť";
 "adyen.error.title" = "Chyba";
 "adyen.error.unknown" = "Vyskytla sa neznáma chyba";
 "adyen.validationAlert.title" = "Neplatný vstup";
 "adyen.paymentMethods.otherMethods" = "ďalšie";
 "adyen.paymentMethods.storedMethods" = "Uložené";
 "adyen.paymentMethods.title" = "Spôsob platby";
+"adyen.paymentMethod.removeButton" = "Áno, odstrániť";
+"adyen.payment.refused.message" = "Platba bola zamietnutá. Skúste to znova.";
 "adyen.sepa.ibanItem.title" = "Číslo účtu (IBAN)";
 "adyen.sepa.ibanItem.invalid" = "Neplatné číslo účtu";
 "adyen.sepa.nameItem.title" = "Meno držiteľa";
@@ -116,6 +119,9 @@
 "adyen.boleto.download.pdf" = "Stiahnuť vo formáte PDF";
 "adyen.giftcard.currencyError" = "Darčekové karty sú platné iba v mene, v ktorej boli vydané";
 "adyen.giftcard.noBalance" = "Táto darčeková karta má nulový zostatok";
+"adyen.giftcard.remove.title" = "Potvrďte odstránenie karty";
+"adyen.giftcard.remove.message" = "Odstrániť pridané darčekové karty?";
+"adyen.giftcard.paymentMethod.title" = "Pridaná darčeková karta";
 "adyen.partialPayment.remainingBalance" = "Zvyšný zostatok bude %@";
 "adyen.partialPayment.payRemainingAmount" = "Vyberte spôsob platby pre zvyšné %@";
 "adyen.card.taxNumber.label" = "Dátum narodenia držiteľa karty (RRRMMDD) alebo identifikačné číslo organizácie (10 číslic)";
@@ -153,3 +159,4 @@
 "adyen.ach.accountNumberField.invalid" = "Neplatné číslo účtu";
 "adyen.ach.accountLocationField.title" = "Smerovacie číslo ABA";
 "adyen.ach.accountLocationField.invalid" = "Neplatné smerovacie číslo ABA";
+"idealIssuer.selectField.title" = "Banka";
