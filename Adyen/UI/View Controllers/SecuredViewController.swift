@@ -78,7 +78,7 @@ public final class SecuredViewController: UIViewController {
         delegate?.viewWillAppear(viewController: self)
     }
 
-    public func getChildViewController() -> UIViewController {
+    public var getChildViewController: UIViewController {
         return childViewController
     }
 

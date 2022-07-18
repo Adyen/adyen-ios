@@ -89,8 +89,6 @@ internal enum AnyPaymentMethodDecoder {
             let brand = try? container.decode(String.self, forKey: .brand)
             let isIssuersList = try container.containsValue(.issuers)
 
-            let paymentDecoder = PaymentMethodType(rawValue: type).map { decoders[$0, default: defaultDecoder] } ?? defaultDecoder
-
             if type == "onlineBanking_CZ" || type == "onlineBanking_SK" {
                 return try OnlineBankingPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
             }
@@ -109,6 +107,8 @@ internal enum AnyPaymentMethodDecoder {
             if isStored, brand == "bcmc", type == "scheme" {
                 return try decoders[.bcmc, default: defaultDecoder].decode(from: decoder, isStored: true)
             }
+
+            let paymentDecoder = PaymentMethodType(rawValue: type).map { decoders[$0, default: defaultDecoder] } ?? defaultDecoder
             return try paymentDecoder.decode(from: decoder, isStored: isStored)
         } catch {
             return .none

@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// Describes a phone number entry form item.
+/// Describes a Issuer list item.
 @_spi(AdyenInternal)
 public final class FormIssuerListItem: FormTextItem {
 

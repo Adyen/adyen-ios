@@ -12,10 +12,10 @@ public class FormAttributedLabelItem: FormItem {
 
     public var subitems: [FormItem] = []
 
-    public init(tAndCText: String, link: String, style: TextStyle, identifier: String? = nil) {
+    public init(termsAndConditionsText: String, link: String, style: TextStyle, identifier: String? = nil) {
         self.identifier = identifier
         self.style = style
-        self.tAndCText = tAndCText
+        self.termsAndConditionsText = termsAndConditionsText
         self.link = link
     }
 
@@ -25,7 +25,7 @@ public class FormAttributedLabelItem: FormItem {
     public var style: TextStyle
 
     /// The text of the label.
-    public var tAndCText: String
+    public var termsAndConditionsText: String
 
     // The link label.
     public var link: String
@@ -36,9 +36,9 @@ public class FormAttributedLabelItem: FormItem {
         label.textAlignment = style.textAlignment
         label.textColor = style.color
 
-        let attributedString = NSMutableAttributedString(string: tAndCText.replacingOccurrences(of: "#", with: " "))
-        let rangeOfTAndCText = getTandCSubstringStartIndexes(mainString: tAndCText)
-        attributedString.addAttribute(.foregroundColor, value: UIColor.Adyen.defaultBlue, range: rangeOfTAndCText)
+        let attributedString = NSMutableAttributedString(string: termsAndConditionsText.replacingOccurrences(of: "#", with: " "))
+        let rangeOfTermsAndConditionsText = getTermsandConditionsSubstringRange(mainString: termsAndConditionsText)
+        attributedString.addAttribute(.foregroundColor, value: UIColor.Adyen.defaultBlue, range: rangeOfTermsAndConditionsText)
 
         label.attributedText = attributedString
         label.accessibilityIdentifier = identifier
@@ -59,10 +59,9 @@ public class FormAttributedLabelItem: FormItem {
         }
     }
 
-    private func getTandCSubstringStartIndexes(mainString: String) -> NSRange {
-        let tAndCLinkText = mainString.split(separator: "#")[1]
-        print(tAndCLinkText)
-        if let range = mainString.range(of: tAndCLinkText) {
+    private func getTermsandConditionsSubstringRange(mainString: String) -> NSRange {
+        let termsAndConditionsText = mainString.split(separator: "#")[1]
+        if let range = mainString.range(of: termsAndConditionsText) {
             return NSRange(range, in: mainString)
         }
         return NSRange(location: 0, length: 0)

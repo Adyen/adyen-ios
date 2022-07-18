@@ -44,7 +44,7 @@ public final class OnlineBankingComponent: PaymentComponent,
 
     /// The terms and condition message item.
     // swiftlint:disable line_length
-    internal lazy var tAndcLabelItem: FormAttributedLabelItem = .init(tAndCText: "By clicking continue you agree with the #terms and conditions#",
+    internal lazy var termsAndConditionsLabelItem: FormAttributedLabelItem = .init(termsAndConditionsText: "By clicking continue you agree with the #terms and conditions#",
                                                                       link: tAndcLink,
                                                                       style: configuration.style.footnoteLabel,
                                                                       identifier: ViewIdentifierBuilder.build(scopeInstance: "AdyenDropIn.OnlineBankingComponent", postfix: "OnlineBankingTAndCLabel"))
@@ -124,7 +124,7 @@ public final class OnlineBankingComponent: PaymentComponent,
         formViewController.append(FormSpacerItem(numberOfSpaces: 4))
         formViewController.append(continueButton)
         formViewController.append(FormSpacerItem())
-        formViewController.append(tAndcLabelItem.addingDefaultMargins())
+        formViewController.append(termsAndConditionsLabelItem.addingDefaultMargins())
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
 
         return formViewController

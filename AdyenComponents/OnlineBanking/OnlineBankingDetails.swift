@@ -13,7 +13,7 @@ public struct OnlineBankingDetails: PaymentMethodDetails {
     public let type: PaymentMethodType
 
     ///  Selected issuer
-    public let issuer: String?
+    public let issuer: String
 
     /// Initializes the Online Banking details.
     /// - Parameters:
