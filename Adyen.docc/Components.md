@@ -65,10 +65,10 @@ AdyenSession.initialize(with: configuration, delegate: self, presentationDelegat
 }
 ```
 
-Fetch `paymentMethod` from `paymentMethods` response or create one manually. 
+Fetch `paymentMethod` from `session.sessionContext.paymentMethods` response or create one manually.
 
 ```swift
-guard let paymentMethods = paymentMethods,
+guard let paymentMethods = self.session?.sessionContext.paymentMethods,
       let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
 ```
 
@@ -109,7 +109,7 @@ Also for voucher payment methods like Doku variants, in order for the `DokuCompo
 ## Presenting the component
 
 Initialize a choosen component class and set the `AdyenSession` instance as the `delegate` and `partialPaymentDelegate` (if needed) of the component instance.
-Some components designed to be embedded into another `UIViewContolller` (ex. `UINavigationController`); others must be presented "as-is". 
+Some components designed to be embedded into another `UIViewContolller` (ex. `UINavigationController`); others must be presented "as-is".
 
 ```swift
 private func present(component: PresentableComponent) {
@@ -120,7 +120,7 @@ private func present(component: PresentableComponent) {
     // Keep the component instance to avoid it being destroyed after the function is executed.
     self.component = component
 
-    // Check if component can be presented as is or needs extra navigation layer. 
+    // Check if component can be presented as is or needs extra navigation layer.
     guard component.requiresModalPresentation else {
         presenter?.present(viewController: component.viewController, completion: nil)
         return
@@ -152,7 +152,7 @@ This method will be invoked when the component finishes without any further step
 func didFail(with error: Error, from component: Component, session: AdyenSession)
 ```
 
-This method is invoked when an error occurred during the use of the components. 
+This method is invoked when an error occurred during the use of the components.
 You can then call the `finalizeIfNeeded` on the component, dismiss the component's view controller in the completion callback and display an error message.
 
 ---
