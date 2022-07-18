@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for stored card payments.
-internal final class StoredCardComponent: PaymentComponent, PresentableComponent, Localizable {
+internal final class StoredCardComponent: PaymentComponent, PaymentAware, PresentableComponent, Localizable {
     
     /// The context object for this component.
     internal let context: AdyenContext
@@ -54,7 +54,9 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
             
             switch result {
             case let .success(details):
-                self.submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.payment?.amount, order: self.order))
+                self.submit(data: PaymentComponentData(paymentMethodDetails: details,
+                                                       amount: self.payment?.amount,
+                                                       order: self.order))
             case let .failure(error):
                 self.delegate?.didFail(with: error, from: self)
             }

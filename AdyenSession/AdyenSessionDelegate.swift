@@ -65,6 +65,8 @@ public extension AdyenSessionDelegate {
     func handlerForPayments(in component: PaymentComponent, session: AdyenSession) -> AdyenSessionPaymentsHandler? { nil }
     
     func handlerForAdditionalDetails(in component: ActionComponent, session: AdyenSession) -> AdyenSessionPaymentDetailsHandler? { nil }
+    
+    func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {}
 }
 
 /// Describes the interface to take over the step where data is provided for the payments call.

@@ -12,6 +12,7 @@ extension BoletoComponent {
     /// Boleto component configuration.
     public struct Configuration: AnyPersonalInformationConfiguration {
         
+        /// Describes the component's UI style.
         public let style: FormComponentStyle
         
         public var localizationParameters: LocalizationParameters?
@@ -28,7 +29,7 @@ extension BoletoComponent {
         ///   - localizationParameters: Localization parameters.
         ///   - shopperInformation: Pre-filled optional personal information about the shopper
         ///   - showEmailAddress: Indicates whether to show `sendCopyByEmail` checkbox and email text field
-        public init(style: FormComponentStyle,
+        public init(style: FormComponentStyle = FormComponentStyle(),
                     localizationParameters: LocalizationParameters? = nil,
                     shopperInformation: PrefilledShopperInformation?,
                     showEmailAddress: Bool) {

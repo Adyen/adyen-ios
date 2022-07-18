@@ -40,7 +40,7 @@ pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
 You can add all modules or select individual modules to add to your integration. But make sure to include each module dependency modules.
 
 * `AdyenDropIn`: DropInComponent.
-* `AdyenSession`: For the new Sessions integration.
+* `AdyenSession`: For the new, simplified checkout flow.
 * `AdyenCard`: the card components.
 * `AdyenComponents`: all other payment components except WeChat Pay.
 * `AdyenActions`:  action components.
@@ -63,8 +63,8 @@ You can add all modules or select individual modules to add to your integration.
 The `AdyenWeChatPay` module needs to be explicitly added to support WeChat Pay.
 The `AdyenSwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
 
-* `AdyenDropIn`: all modules except `AdyenWeChatPay`, `AdyenSwiftUI` and `AdyenSesson`.
-* `AdyenSesson`: For the new Sessions integration.
+* `AdyenDropIn`: all modules except `AdyenWeChatPay`, `AdyenSwiftUI` and `AdyenSession`.
+* `AdyenSession`: handler for the simplified checkout flow.
 * `AdyenCard`: the card components.
 * `AdyenComponents`: all other payment components except WeChat Pay.
 * `AdyenActions`:  action components.

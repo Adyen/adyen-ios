@@ -38,8 +38,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
                                       billingContact: payment.billingContact,
                                       shippingContact: payment.shippingContact,
                                       shippingMethod: payment.shippingMethod)
-        let amount = applePayPayment.payment.amount
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: amount, order: order))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: applePayPayment.amount, order: order))
     }
 
     public func paymentAuthorizationViewController(
@@ -93,7 +92,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     private func updateApplePayPayment<T: PKPaymentRequestUpdate>(_ result: T) {
         if result.status == .success, result.paymentSummaryItems.count > 0 {
             do {
-                applePayPayment = try applePayPayment.update(with: result.paymentSummaryItems)
+                applePayPayment = try applePayPayment.replacing(summaryItems: result.paymentSummaryItems)
             } catch {
                 delegate?.didFail(with: error, from: self)
             }

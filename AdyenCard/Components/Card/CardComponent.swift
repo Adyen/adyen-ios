@@ -16,6 +16,7 @@ import UIKit
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
 public class CardComponent: PresentableComponent,
+    PaymentAware,
     LoadingComponent {
 
     internal enum Constant {
@@ -53,12 +54,6 @@ public class CardComponent: PresentableComponent,
     public weak var delegate: PaymentComponentDelegate? {
         didSet {
             storedCardComponent?.delegate = delegate
-        }
-    }
-
-    public var payment: Payment? {
-        didSet {
-            storedCardComponent?.payment = payment
         }
     }
     
@@ -140,11 +135,13 @@ public class CardComponent: PresentableComponent,
             storedComponent.localizationParameters = configuration.localizationParameters
             component = storedComponent
         } else {
-            let storedComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
-            storedComponent.localizationParameters = configuration.localizationParameters
+            let storedConfiguration: StoredPaymentMethodComponent.Configuration
+            storedConfiguration = .init(localizationParameters: configuration.localizationParameters)
+            let storedComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod,
+                                                               context: context,
+                                                               configuration: storedConfiguration)
             component = storedComponent
         }
-        component.payment = payment
         return component
     }()
     

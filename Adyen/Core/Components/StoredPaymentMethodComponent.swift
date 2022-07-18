@@ -8,7 +8,12 @@ import Foundation
 import UIKit
 
 ///  A component that handle stored payment methods.
-public final class StoredPaymentMethodComponent: PaymentComponent, PresentableComponent, Localizable {
+public final class StoredPaymentMethodComponent: PaymentComponent,
+    PresentableComponent,
+    PaymentAware {
+
+    /// Component's configuration.
+    public var configuration: Configuration
 
     /// The context object for this component.
     public let context: AdyenContext
@@ -23,10 +28,13 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
     /// - Parameters:
     ///   - paymentMethod: The stored payment method.
     ///   - context: The context object.
+    ///   - configuration: The configuration for the component.
     public init(paymentMethod: StoredPaymentMethod,
-                context: AdyenContext) {
+                context: AdyenContext,
+                configuration: Configuration = .init()) {
         self.storedPaymentMethod = paymentMethod
         self.context = context
+        self.configuration = configuration
     }
     
     private let storedPaymentMethod: StoredPaymentMethod
@@ -40,10 +48,12 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
             context: context.apiContext
         )
         sendTelemetryEvent()
-        
+
+        let localizationParameters = configuration.localizationParameters
         let displayInformation = storedPaymentMethod.displayInformation(using: localizationParameters)
         let alertController = UIAlertController(title: localizedString(.dropInStoredTitle,
-                                                                       localizationParameters, storedPaymentMethod.name),
+                                                                       localizationParameters,
+                                                                       storedPaymentMethod.name),
                                                 message: displayInformation.title,
                                                 preferredStyle: .alert)
 
@@ -59,15 +69,32 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
         let submitAction = UIAlertAction(title: submitActionTitle, style: .default) { [weak self] _ in
             guard let self = self else { return }
             let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
-            self.submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.payment?.amount, order: self.order))
+            self.submit(data: PaymentComponentData(paymentMethodDetails: details,
+                                                   amount: self.payment?.amount,
+                                                   order: self.order))
         }
         alertController.addAction(submitAction)
         
         return alertController
     }()
     
-    public var localizationParameters: LocalizationParameters?
-    
+}
+
+extension StoredPaymentMethodComponent {
+
+    /// Configuration for Stored Payment type components.
+    public struct Configuration: AnyBasicComponentConfiguration {
+
+        public var localizationParameters: LocalizationParameters?
+
+        /// Initializes the configuration for Issuer list type components.
+        /// - Parameters:
+        ///   - localizationParameters: Localization parameters.
+        public init(localizationParameters: LocalizationParameters? = nil) {
+            self.localizationParameters = localizationParameters
+        }
+    }
+
 }
 
 @_spi(AdyenInternal)

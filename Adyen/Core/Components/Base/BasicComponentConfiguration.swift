@@ -7,11 +7,7 @@
 import Foundation
 
 /// Any component's most basic configuration.
-public protocol AnyBasicComponentConfiguration: Localizable {
-    
-    /// The form component style.
-    var style: FormComponentStyle { get }
-}
+public protocol AnyBasicComponentConfiguration: Localizable {}
 
 /// The configuration of any component thats aware of shoppers' personal information.
 public protocol AnyPersonalInformationConfiguration: AnyBasicComponentConfiguration {
@@ -22,7 +18,8 @@ public protocol AnyPersonalInformationConfiguration: AnyBasicComponentConfigurat
 
 /// Any component's most basic configuration.
 public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
-    
+
+    /// The UI style of the component.
     public var style: FormComponentStyle
     
     public var localizationParameters: LocalizationParameters?
@@ -37,10 +34,13 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
         self.style = style
         self.localizationParameters = localizationParameters
     }
+
 }
 
 /// The configuration of any component thats aware of shoppers' personal information.
 public struct PersonalInformationConfiguration: AnyPersonalInformationConfiguration {
+
+    /// The UI style of the component.
     public var style: FormComponentStyle
     
     public var shopperInformation: PrefilledShopperInformation?
@@ -60,4 +60,5 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
         self.shopperInformation = shopperInformation
         self.localizationParameters = localizationParameters
     }
+
 }

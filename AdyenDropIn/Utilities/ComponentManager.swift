@@ -18,11 +18,13 @@ import Foundation
 
 internal final class ComponentManager {
 
-    private let partialPaymentEnabled: Bool
+    internal let paymentMethods: PaymentMethods
+    
+    internal let configuration: DropInComponent.Configuration
+
+    internal let partialPaymentEnabled: Bool
     
     private let supportsEditingStoredPaymentMethods: Bool
-
-    internal let remainingAmount: Amount?
 
     internal let order: PartialPaymentOrder?
     
@@ -34,18 +36,21 @@ internal final class ComponentManager {
                   context: AdyenContext,
                   configuration: DropInComponent.Configuration,
                   partialPaymentEnabled: Bool = true,
-                  remainingAmount: Amount? = nil,
                   order: PartialPaymentOrder?,
                   supportsEditingStoredPaymentMethods: Bool = false,
                   presentationDelegate: PresentationDelegate) {
         self.paymentMethods = paymentMethods
-        self.context = context
         self.configuration = configuration
         self.partialPaymentEnabled = partialPaymentEnabled
-        self.remainingAmount = remainingAmount
         self.order = order
         self.supportsEditingStoredPaymentMethods = supportsEditingStoredPaymentMethods
         self.presentationDelegate = presentationDelegate
+
+        self.context = context
+        if let payment = context.payment, let remainingAmount = order?.remainingAmount {
+            let payment = Payment(amount: remainingAmount, countryCode: payment.countryCode)
+            context.update(payment: payment)
+        }
     }
     
     // MARK: - Internal
@@ -53,7 +58,7 @@ internal final class ComponentManager {
     internal lazy var sections: [ComponentsSection] = {
 
         // Paid section
-        let amountString: String = remainingAmount.map(\.formatted) ??
+        let amountString: String = order?.remainingAmount.map(\.formatted) ??
             localizedString(.amount, configuration.localizationParameters).lowercased()
         let footerTitle = localizedString(.partialPaymentPayRemainingAmount,
                                           configuration.localizationParameters,
@@ -121,14 +126,13 @@ internal final class ComponentManager {
             return nil
         }
 
-        guard let paymentComponent = paymentMethod.buildComponent(using: self) else { return nil }
+        guard var paymentComponent = paymentMethod.buildComponent(using: self) else { return nil }
+        paymentComponent.order = order
 
         if var paymentComponent = paymentComponent as? Localizable {
             paymentComponent.localizationParameters = configuration.localizationParameters
         }
 
-        paymentComponent.payment = configuration.payment
-        paymentComponent.order = order
         return paymentComponent
     }
 
@@ -139,255 +143,6 @@ internal final class ComponentManager {
 
     private func isVoucherPaymentMethod(_ paymentMethod: PaymentMethod) -> Bool {
         VoucherPaymentMethod.allCases.map(\.rawValue).contains(paymentMethod.type.rawValue)
-    }
-    
-    // MARK: - Private
-    
-    private let paymentMethods: PaymentMethods
-    private let configuration: DropInComponent.Configuration
-    
-    private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
-        var cardConfiguration = configuration.card.cardComponentConfiguration
-        cardConfiguration.style = configuration.style.formComponent
-        cardConfiguration.localizationParameters = configuration.localizationParameters
-        cardConfiguration.shopperInformation = configuration.shopper
-        return CardComponent(paymentMethod: paymentMethod,
-                             context: context,
-                             configuration: cardConfiguration)
-    }
-    
-    private func createBancontactComponent(with paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
-        let cardConfiguration = configuration.card
-        let configuration = CardComponent.Configuration(style: configuration.style.formComponent,
-                                                        shopperInformation: configuration.shopper,
-                                                        localizationParameters: configuration.localizationParameters,
-                                                        showsHolderNameField: cardConfiguration.showsHolderNameField,
-                                                        showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
-                                                        showsSecurityCodeField: cardConfiguration.showsSecurityCodeField,
-                                                        storedCardConfiguration: cardConfiguration.stored)
-
-        return BCMCComponent(paymentMethod: paymentMethod,
-                             context: context,
-                             configuration: configuration)
-    }
-    
-    private func createPreApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
-        guard let applePay = configuration.applePay else {
-            adyenPrint("Failed to instantiate ApplePayComponent because ApplePayConfiguration is missing")
-            return nil
-        }
-
-        let preApplePayConfig = PreApplePayComponent.Configuration(style: configuration.style.applePay,
-                                                                   localizationParameters: configuration.localizationParameters)
-
-        if let amount = order?.remainingAmount ?? remainingAmount {
-            let localIdentifier = amount.localeIdentifier ?? configuration.localizationParameters?.locale
-            let configuration = applePay.updating(amount: amount, localeIdentifier: localIdentifier)
-            if let component = try? PreApplePayComponent(paymentMethod: paymentMethod,
-                                                         context: context,
-                                                         configuration: preApplePayConfig,
-                                                         applePayConfiguration: configuration) {
-                return component
-            }
-        }
-        
-        do {
-            return try PreApplePayComponent(paymentMethod: paymentMethod,
-                                            context: context,
-                                            configuration: preApplePayConfig,
-                                            applePayConfiguration: applePay)
-        } catch {
-            adyenPrint("Failed to instantiate ApplePayComponent because of error: \(error.localizedDescription)")
-            return nil
-        }
-    }
-    
-    private func createSEPAComponent(_ paymentMethod: SEPADirectDebitPaymentMethod) -> SEPADirectDebitComponent {
-        let config = SEPADirectDebitComponent.Configuration(style: configuration.style.formComponent,
-                                                            localizationParameters: configuration.localizationParameters)
-        return SEPADirectDebitComponent(paymentMethod: paymentMethod,
-                                        context: context,
-                                        configuration: config)
-    }
-
-    private func createBACSDirectDebit(_ paymentMethod: BACSDirectDebitPaymentMethod) -> BACSDirectDebitComponent {
-        let bacsConfiguration = BACSDirectDebitComponent.Configuration(style: configuration.style.formComponent,
-                                                                       localizationParameters: configuration.localizationParameters)
-        let bacsDirectDebitComponent = BACSDirectDebitComponent(paymentMethod: paymentMethod,
-                                                                context: context,
-                                                                configuration: bacsConfiguration)
-        bacsDirectDebitComponent.presentationDelegate = presentationDelegate
-        return bacsDirectDebitComponent
-    }
-    
-    private func createACHDirectDebitComponent(_ paymentMethod: ACHDirectDebitPaymentMethod) -> ACHDirectDebitComponent {
-        let config = ACHDirectDebitComponent.Configuration(style: configuration.style.formComponent,
-                                                           shopperInformation: configuration.shopper,
-                                                           localizationParameters: configuration.localizationParameters)
-        return ACHDirectDebitComponent(paymentMethod: paymentMethod,
-                                       context: context,
-                                       configuration: config)
-    }
-    
-    private func createQiwiWalletComponent(_ paymentMethod: QiwiWalletPaymentMethod) -> QiwiWalletComponent {
-        let config = QiwiWalletComponent.Configuration(style: configuration.style.formComponent,
-                                                       shopperInformation: configuration.shopper,
-                                                       localizationParameters: configuration.localizationParameters)
-        return QiwiWalletComponent(paymentMethod: paymentMethod,
-                                   context: context,
-                                   configuration: config)
-    }
-    
-    private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
-        let config = MBWayComponent.Configuration(style: configuration.style.formComponent,
-                                                  shopperInformation: configuration.shopper,
-                                                  localizationParameters: configuration.localizationParameters)
-        return MBWayComponent(paymentMethod: paymentMethod,
-                              context: context,
-                              configuration: config)
-    }
-
-    private func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {
-        BLIKComponent(paymentMethod: paymentMethod,
-                      context: context,
-                      configuration: .init(style: configuration.style.formComponent,
-                                           localizationParameters: configuration.localizationParameters))
-    }
-    
-    private func createBoletoComponent(_ paymentMethod: BoletoPaymentMethod) -> BoletoComponent {
-        BoletoComponent(paymentMethod: paymentMethod,
-                        context: context,
-                        configuration: BoletoComponent.Configuration(style: configuration.style.formComponent,
-                                                                     localizationParameters: configuration.localizationParameters,
-                                                                     shopperInformation: configuration.shopper,
-                                                                     showEmailAddress: true))
-    }
-}
-
-// MARK: - PaymentComponentBuilder
-
-extension ComponentManager: PaymentComponentBuilder {
-    
-    internal func build(paymentMethod: StoredCardPaymentMethod) -> PaymentComponent? {
-        createCardComponent(with: paymentMethod)
-    }
-    
-    internal func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
-        StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
-    }
-    
-    internal func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent? {
-        StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
-    }
-    
-    internal func build(paymentMethod: CardPaymentMethod) -> PaymentComponent? {
-        createCardComponent(with: paymentMethod)
-    }
-    
-    internal func build(paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
-        createBancontactComponent(with: paymentMethod)
-    }
-    
-    internal func build(paymentMethod: IssuerListPaymentMethod) -> PaymentComponent? {
-        IssuerListComponent(paymentMethod: paymentMethod,
-                            context: context,
-                            configuration: .init(style: configuration.style.listComponent,
-                                                 localizationParameters: configuration.localizationParameters))
-    }
-    
-    internal func build(paymentMethod: SEPADirectDebitPaymentMethod) -> PaymentComponent? {
-        createSEPAComponent(paymentMethod)
-    }
-
-    internal func build(paymentMethod: BACSDirectDebitPaymentMethod) -> PaymentComponent? {
-        createBACSDirectDebit(paymentMethod)
-    }
-    
-    internal func build(paymentMethod: ACHDirectDebitPaymentMethod) -> PaymentComponent? {
-        createACHDirectDebitComponent(paymentMethod)
-    }
-    
-    internal func build(paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
-        createPreApplePayComponent(with: paymentMethod)
-    }
-    
-    internal func build(paymentMethod: WeChatPayPaymentMethod) -> PaymentComponent? {
-        guard let classObject = loadTheConcreteWeChatPaySDKActionComponentClass() else { return nil }
-        guard classObject.isDeviceSupported() else { return nil }
-        return InstantPaymentComponent(paymentMethod: paymentMethod,
-                                       paymentData: nil,
-                                       context: context)
-    }
-    
-    internal func build(paymentMethod: QiwiWalletPaymentMethod) -> PaymentComponent? {
-        createQiwiWalletComponent(paymentMethod)
-    }
-    
-    internal func build(paymentMethod: MBWayPaymentMethod) -> PaymentComponent? {
-        createMBWayComponent(paymentMethod)
-    }
-
-    internal func build(paymentMethod: BLIKPaymentMethod) -> PaymentComponent? {
-        createBLIKComponent(paymentMethod)
-    }
-
-    internal func build(paymentMethod: EContextPaymentMethod) -> PaymentComponent? {
-        let config = BasicPersonalInfoFormComponent.Configuration(style: configuration.style.formComponent,
-                                                                  shopperInformation: configuration.shopper,
-                                                                  localizationParameters: configuration.localizationParameters)
-        return BasicPersonalInfoFormComponent(paymentMethod: paymentMethod,
-                                              context: context,
-                                              configuration: config)
-    }
-
-    internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
-        let config = DokuComponent.Configuration(style: configuration.style.formComponent,
-                                                 shopperInformation: configuration.shopper,
-                                                 localizationParameters: configuration.localizationParameters)
-        return DokuComponent(paymentMethod: paymentMethod,
-                             context: context,
-                             configuration: config)
-    }
-
-    internal func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {
-        guard partialPaymentEnabled else { return nil }
-        return GiftCardComponent(paymentMethod: paymentMethod,
-                                 context: context,
-                                 style: configuration.style.formComponent)
-    }
-    
-    internal func build(paymentMethod: BoletoPaymentMethod) -> PaymentComponent? {
-        createBoletoComponent(paymentMethod)
-    }
-    
-    internal func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent? {
-        let config = AffirmComponent.Configuration(style: configuration.style.formComponent,
-                                                   shopperInformation: configuration.shopper,
-                                                   localizationParameters: configuration.localizationParameters)
-        return AffirmComponent(paymentMethod: paymentMethod,
-                               context: context,
-                               configuration: config)
-    }
-    
-    internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
-        InstantPaymentComponent(paymentMethod: paymentMethod,
-                                paymentData: nil,
-                                context: context)
-    }
-
-    internal func build(paymentMethod: AtomePaymentMethod) -> PaymentComponent? {
-        let config = AtomeComponent.Configuration(style: configuration.style.formComponent,
-                                                  shopperInformation: configuration.shopper,
-                                                  localizationParameters: configuration.localizationParameters)
-        return AtomeComponent(paymentMethod: paymentMethod,
-                              context: context,
-                              configuration: config)
-    }
-
-    internal func build(paymentMethod: OnlineBankingPaymentMethod) -> PaymentComponent? {
-        return OnlineBankingComponent(paymentMethod: paymentMethod,
-                                      context: context,
-                                      configuration: .init(style: configuration.style.formComponent))
     }
 
 }

@@ -118,9 +118,9 @@ schemes:
 
 mkdir -p Tests
 mkdir -p Source
-cp "../Tests/AdyenTests/Adyen Tests/DropIn/DropInTests.swift" Tests/DropInTests.swift
-cp "../Tests/AdyenTests/Adyen Tests/DropIn/XCTestCaseExtensions.swift" Tests/XCTestCaseExtensions.swift
-cp "../Tests/AdyenTests/Adyen Tests/Components/Dummy.swift" Tests/Dummy.swift
+cp "../Tests/DropIn Tests/DropInTests.swift" Tests/DropInTests.swift
+cp "../Tests/Helpers/XCTestCaseExtensions.swift" Tests/XCTestCaseExtensions.swift
+cp "../Tests/DummyData/Dummy.swift" Tests/Dummy.swift
 cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/
 cp "../Demo/Configuration.swift" Source/Configuration.swift

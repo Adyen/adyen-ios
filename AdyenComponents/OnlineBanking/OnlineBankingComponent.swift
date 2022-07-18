@@ -8,7 +8,10 @@
 import UIKit
 
 /// A component that provides a form for Online Banking payment.
-public final class OnlineBankingComponent: PaymentComponent, PresentableComponent, ComponentLoader {
+public final class OnlineBankingComponent: PaymentComponent,
+                                           PresentableComponent,
+                                           ComponentLoader,
+                                           PaymentAware {
 
     /// Configuration for Online Banking Component.
     public typealias Configuration = BasicComponentConfiguration
