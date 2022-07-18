@@ -46,6 +46,7 @@
 		00EACBC9288013AE0082B360 /* XCTestCase+Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBC5288013990082B360 /* XCTestCase+Coder.swift */; };
 		00EACBCA288013AF0082B360 /* XCTestCase+Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBC5288013990082B360 /* XCTestCase+Coder.swift */; };
 		00EACBD1288558A00082B360 /* APIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E757F02525D2ED4C007C813D /* APIClientMock.swift */; };
+		00EACBD428855D190082B360 /* OnlineBankingComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBD328855D190082B360 /* OnlineBankingComponentUITests.swift */; };
 		00F621BE27EB132500C04097 /* AtomeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621BD27EB132500C04097 /* AtomeComponent.swift */; };
 		00F621C027EB153400C04097 /* AtomeDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621BF27EB153400C04097 /* AtomeDetails.swift */; };
 		00F621C227EB1E3100C04097 /* AtomePaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621C127EB1E3100C04097 /* AtomePaymentMethod.swift */; };
@@ -1107,6 +1108,7 @@
 		00EACBBC2876F9DC0082B360 /* FormAttributedLabelItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAttributedLabelItem.swift; sourceTree = "<group>"; };
 		00EACBBF287EF1D50082B360 /* OnlineBankingComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineBankingComponentTests.swift; sourceTree = "<group>"; };
 		00EACBC5288013990082B360 /* XCTestCase+Coder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Coder.swift"; sourceTree = "<group>"; };
+		00EACBD328855D190082B360 /* OnlineBankingComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineBankingComponentUITests.swift; sourceTree = "<group>"; };
 		00F621BD27EB132500C04097 /* AtomeComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeComponent.swift; sourceTree = "<group>"; };
 		00F621BF27EB153400C04097 /* AtomeDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeDetails.swift; sourceTree = "<group>"; };
 		00F621C127EB1E3100C04097 /* AtomePaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomePaymentMethod.swift; sourceTree = "<group>"; };
@@ -2001,6 +2003,7 @@
 		007D79142812EFD300382D31 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				00EACBD228855CF70082B360 /* Online Banking */,
 				E7975F97288040BF00A12C40 /* Atome */,
 				007D791D2823A83100382D31 /* Affirm */,
 			);
@@ -2050,12 +2053,20 @@
 			path = "Issuer List Picker";
 			sourceTree = "<group>";
 		};
-		00EACBBE287EF1AE0082B360 /* OnlineBanking */ = {
+		00EACBBE287EF1AE0082B360 /* Online Banking */ = {
 			isa = PBXGroup;
 			children = (
 				00EACBBF287EF1D50082B360 /* OnlineBankingComponentTests.swift */,
 			);
-			path = OnlineBanking;
+			path = "Online Banking";
+			sourceTree = "<group>";
+		};
+		00EACBD228855CF70082B360 /* Online Banking */ = {
+			isa = PBXGroup;
+			children = (
+				00EACBD328855D190082B360 /* OnlineBankingComponentUITests.swift */,
+			);
+			path = "Online Banking";
 			sourceTree = "<group>";
 		};
 		00F621BC27EB12FA00C04097 /* Atome */ = {
@@ -3376,7 +3387,7 @@
 				A009837B279859BE007E68C4 /* ACH Direct Debit */,
 				C96688BD26A6F72900DC7297 /* Affirm */,
 				00F621C327F1AF0900C04097 /* Atome */,
-				00EACBBE287EF1AE0082B360 /* OnlineBanking */,
+				00EACBBE287EF1AE0082B360 /* Online Banking */,
 				F960FB06237181DC00AEF74B /* Apple Pay */,
 				C90D26AF2757C270001A488F /* BACS Direct Debit */,
 				E72521EC25517E8F00533E35 /* BLIK Component */,
@@ -5439,6 +5450,7 @@
 				007D79222823BE6A00382D31 /* UIApplicationExtension.swift in Sources */,
 				E7CC63D3287F0D600034108B /* Dummy.swift in Sources */,
 				007D791F2823A84C00382D31 /* AffirmComponentUITests.swift in Sources */,
+				00EACBD428855D190082B360 /* OnlineBankingComponentUITests.swift in Sources */,
 				007D7919281FC61000382D31 /* UIView+Search.swift in Sources */,
 				00EACBCA288013AF0082B360 /* XCTestCase+Coder.swift in Sources */,
 				007D791B281FC63500382D31 /* XCTestCase+FormAddressItem.swift in Sources */,
