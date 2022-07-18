@@ -11,10 +11,10 @@
 import AdyenNetworking
 import Foundation
 
-/// `AdyenSession` acts as the delegate for the checkout payment flow.
+/// ``AdyenSession`` acts as the delegate for the checkout payment flow.
 /// It can handle the required steps internally such as `/payments` and `/payment/details`
 /// calls and partial payment calls, then provide feedback
-/// via `AdyenSessionDelegate` methods.
+/// via ``AdyenSessionDelegate`` methods.
 public final class AdyenSession {
     
     /// Session configuration.
@@ -81,7 +81,7 @@ public final class AdyenSession {
     /// The delegate object.
     public private(set) weak var delegate: AdyenSessionDelegate?
     
-    /// Initializes an instance of `AdyenSession` asynchronously.
+    /// Initializes an instance of ``AdyenSession`` asynchronously.
     /// - Parameter configuration: The session configuration.
     /// - Parameter delegate: The session delegate.
     /// - Parameter presentationDelegate: The presentation delegate.

@@ -16,7 +16,7 @@ The Drop-in requires the response of the `/paymentMethods` endpoint to be initia
 let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: response)
 ```
 
-All Components need an `APIContext`. An instance of `APIContext` wraps your client key and an environment.
+All Components need an ``APIContext``. An instance of `APIContext` wraps your client key and an environment.
 Please read more [here](https://docs.adyen.com/development-resources/client-side-authentication) about the client key and how to get.
 Use **Environment.test** for environment. When you're ready to accept live payments, change the value to one of our [live environments](https://adyen.github.io/adyen-ios/Docs/Structs/Environment.html)
 We recommend creating a new context for each payment attempt.
@@ -30,7 +30,7 @@ var context: AdyenContext {
 }
 ```
 
-Some payment methods need additional configuration. For example `ApplePayComponent`. These payment method specific configuration parameters can be set in an instance of `DropInComponent.Configuration`:
+Some payment methods need additional configuration. For example ``ApplePayComponent``. These payment method specific configuration parameters can be set in an instance of `DropInComponent.Configuration`:
 
 ```swift
 let summaryItems = [
@@ -47,7 +47,7 @@ dropInConfiguration.applePay = .init(payment: applePayment,
                                      merchantIdentifier: "merchant.com.adyen.MY_MERCHANT_ID")
 ```
 
-Also for voucher payment methods like Doku variants, in order for the `DokuComponent` to enable the shopper to save the voucher, access to the shopper photos is requested, so a suitable text need to be added to key  `NSPhotoLibraryAddUsageDescription` in the application Info.plist.
+Also for voucher payment methods like Doku variants, in order for the ``DokuComponent`` to enable the shopper to save the voucher, access to the shopper photos is requested, so a suitable text need to be added to key  `NSPhotoLibraryAddUsageDescription` in the application Info.plist.
 
 After serializing the payment methods and creating the configuration, the Drop-in is ready to be initialized. Assign a `delegate` and use the `viewController` property to present the Drop-in on the screen:
 
@@ -62,7 +62,7 @@ present(dropInComponent.viewController, animated: true)
 ```
 ### Implementing DropInComponentDelegate
 
-To handle the results of the Drop-in, the following methods of `DropInComponentDelegate` should be implemented:
+To handle the results of the Drop-in, the following methods of ``DropInComponentDelegate`` should be implemented:
 
 ---
 
@@ -94,7 +94,7 @@ This method is invoked when an error occurred during the use of the Drop-in. Dis
 func didComplete(from component: DropInComponent)
 ```
 
-This method is invoked when the action component finishes, without any further steps needed by the application, for example in case of voucher payment methods. The application just needs to dismiss the `DropInComponent`.
+This method is invoked when the action component finishes, without any further steps needed by the application, for example in case of voucher payment methods. The application just needs to dismiss the ``DropInComponent``.
 
 ---
 
@@ -120,7 +120,7 @@ When `/payments` or `/payments/details` responds with a non-final result and an 
 
 ### Using Drop-in
 
-In case of Drop-in integration you must use build-in action handler on the current instance of `DropInComponent`:
+In case of Drop-in integration you must use build-in action handler on the current instance of ``DropInComponent``:
 
 ```swift
 let action = try JSONDecoder().decode(Action.self, from: actionData)
@@ -129,7 +129,7 @@ dropInComponent.handle(action)
 
 ### Using components
 
-In case of using individual components, create and persist an instance of `AdyenActionComponent`:
+In case of using individual components, create and persist an instance of ``AdyenActionComponent``:
 
 ```swift
 lazy var actionComponent: AdyenActionComponent = {
@@ -149,7 +149,7 @@ actionComponent.handle(action)
 
 ## Receiving redirect
 
-In case the customer is redirected to an external URL or App, make sure to let the `RedirectComponent` know when the user returns to your app. Do this by implementing the following in your `UIApplicationDelegate`:
+In case the customer is redirected to an external URL or App, make sure to let the ``RedirectComponent`` know when the user returns to your app. Do this by implementing the following in your `UIApplicationDelegate`:
 
 ```swift
 func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {

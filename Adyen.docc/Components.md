@@ -29,7 +29,7 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 
 ## Setting up the Component
 
-All Components need an `AdyenContext`. An instance of `AdyenContext` wraps your client key, environment, payment, analytics configuration and so on.
+All Components need an ``AdyenContext``. An instance of ``AdyenContext`` wraps your client key, environment, payment, analytics configuration and so on.
 Please read more [here](https://docs.adyen.com/development-resources/client-side-authentication) about the client key and how to get one.
 Use **Environment.test** for environment. When you're ready to accept live payments, change the value to one of our [live environments](https://adyen.github.io/adyen-ios/Docs/Structs/Environment.html).
 We recommend creating a new context for each payment attempt.
@@ -43,7 +43,7 @@ var context: AdyenContext {
 }
 ```
 
-Create an instance of `AdyenSession.Configuration` with the response you received from the `/sessions` call and the `AdyenContext` instance.
+Create an instance of ``AdyenSession.Configuration`` with the response you received from the `/sessions` call and the ``AdyenContext`` instance.
 
 ```swift
 let configuration = AdyenSession.Configuration(sessionIdentifier: response.sessionId,
@@ -51,7 +51,7 @@ let configuration = AdyenSession.Configuration(sessionIdentifier: response.sessi
                                                context: context)
 ```
 
-Call the static `initialize` function of the `AdyenSession` by providing the configuration and the delegates, which will asynchronously create and return the session instance.
+Call the static `initialize` function of the ``AdyenSession`` by providing the configuration and the delegates, which will asynchronously create and return the session instance.
 
 ```swift
 AdyenSession.initialize(with: configuration, delegate: self, presentationDelegate: self) { [weak self] result in
@@ -84,7 +84,7 @@ return CardComponent(paymentMethod: paymentMethod,
                      configuration: configuration)
 ```
 
-Some payment methods need additional configuration. For example `ApplePayComponent`. These payment method specific configuration parameters can be set in an instance of `DropInComponent.Configuration`:
+Some payment methods need additional configuration. For example ``ApplePayComponent``. These payment method specific configuration parameters can be set in an instance of `DropInComponent.Configuration`:
 
 ```swift
 let summaryItems = [
@@ -104,11 +104,11 @@ return try? ApplePayComponent(paymentMethod: paymentMethod,
                               configuration: config)
 ```
 
-Also for voucher payment methods like Doku variants, in order for the `DokuComponent` to enable the shopper to save the voucher, access to the shopper photos is requested, so a suitable text needs to be added to the `NSPhotoLibraryAddUsageDescription` key in the application `Info.plist`.
+Also for voucher payment methods like Doku variants, in order for the ``DokuComponent`` to enable the shopper to save the voucher, access to the shopper photos is requested, so a suitable text needs to be added to the `NSPhotoLibraryAddUsageDescription` key in the application `Info.plist`.
 
 ## Presenting the component
 
-Initialize a choosen component class and set the `AdyenSession` instance as the `delegate` and `partialPaymentDelegate` (if needed) of the component instance.
+Initialize a choosen component class and set the ``AdyenSession`` instance as the `delegate` and `partialPaymentDelegate` (if needed) of the component instance.
 Some components designed to be embedded into another `UIViewContolller` (ex. `UINavigationController`); others must be presented "as-is".
 
 ```swift
@@ -136,7 +136,7 @@ private func present(component: PresentableComponent) {
 
 ### Implementing `AdyenSessionDelegate`
 
-`AdyenSession` makes the necessary calls to handle the whole flow and notifies your application through its delegate, `AdyenSessionDelegate`. To handle the results of the Drop-in, the following methods of `AdyenSessionDelegate` should be implemented:
+``AdyenSession`` makes the necessary calls to handle the whole flow and notifies your application through its delegate, ``AdyenSessionDelegate``. To handle the results of the Drop-in, the following methods of ``AdyenSessionDelegate`` should be implemented:
 
 ---
 
@@ -167,12 +167,12 @@ This optional method is invoked after a redirect to an external application has 
 
 ## Handling an action
 
-Actions are handled by the `AdyenSession`.
+Actions are handled by the ``AdyenSession``.
 
 
 ### Receiving redirect
 
-In case the customer is redirected to an external URL or App, make sure to let the `RedirectComponent` know when the user returns to your app. Do this by implementing the following in your `UIApplicationDelegate`:
+In case the customer is redirected to an external URL or App, make sure to let the ``RedirectComponent`` know when the user returns to your app. Do this by implementing the following in your `UIApplicationDelegate`:
 
 ```swift
 func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {

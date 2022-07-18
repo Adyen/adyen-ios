@@ -6,7 +6,7 @@ If the simplified checkout flow with the `/sessions` endpoint does not work for 
 
 ## Setting up the Drop-in
 
-All Components need an `AdyenContext`. An instance of `AdyenContext` wraps your client key, environment, payment, analytics configuration and so on.
+All Components need an ``AdyenContext``. An instance of ``AdyenContext`` wraps your client key, environment, payment, analytics configuration and so on.
 Please read more [here](https://docs.adyen.com/development-resources/client-side-authentication) about the client key and how to get one.
 Use **Environment.test** for environment. When you're ready to accept live payments, change the value to one of our [live environments](https://adyen.github.io/adyen-ios/Docs/Structs/Environment.html).
 We recommend creating a new context for each payment attempt.
@@ -20,7 +20,7 @@ var context: AdyenContext {
 }
 ```
 
-Create an instance of `AdyenSession.Configuration` with the response you received from the `/sessions` call and the `AdyenContext` instance.
+Create an instance of `AdyenSession.Configuration` with the response you received from the `/sessions` call and the ``AdyenContext`` instance.
 
 ```swift
 let configuration = AdyenSession.Configuration(sessionIdentifier: response.sessionId,
@@ -28,7 +28,7 @@ let configuration = AdyenSession.Configuration(sessionIdentifier: response.sessi
                                                context: context)
 ```
 
-Call the static `initialize` function of the `AdyenSession` by providing the configuration and the delegates, which will asynchronously create and return the session instance.
+Call the static `initialize` function of the ``AdyenSession`` by providing the configuration and the delegates, which will asynchronously create and return the session instance.
 
 ```swift
 AdyenSession.initialize(with: configuration, delegate: self, presentationDelegate: self) { [weak self] result in
@@ -42,7 +42,7 @@ AdyenSession.initialize(with: configuration, delegate: self, presentationDelegat
 }
 ```
 
-Create a configuration object for `DropInComponent`. Check specific payment method pages to confirm if you need to include additional required parameters.
+Create a configuration object for ``DropInComponent``. Check specific payment method pages to confirm if you need to include additional required parameters.
 
 ```swift
 // Check specific payment method pages to confirm if you need to configure additional required parameters.
@@ -53,7 +53,7 @@ let component = DropInComponent(paymentMethods: paymentMethods,
 
 ```
 
-Some payment methods need additional configuration. For example `ApplePayComponent`. These payment method specific configuration parameters can be set in an instance of `DropInComponent.Configuration`:
+Some payment methods need additional configuration. For example ``ApplePayComponent``. These payment method specific configuration parameters can be set in an instance of ``DropInComponent.Configuration``:
 
 ```swift
 let summaryItems = [
@@ -70,11 +70,11 @@ dropInConfiguration.applePay = .init(payment: applePayment,
                                merchantIdentifier: "merchant.com.adyen.MY_MERCHANT_ID")
 ```
 
-Also for voucher payment methods like Doku variants, in order for the `DokuComponent` to enable the shopper to save the voucher, access to the shopper photos is requested, so a suitable text needs to be added to the `NSPhotoLibraryAddUsageDescription` key in the application `Info.plist`.
+Also for voucher payment methods like Doku variants, in order for the ``DokuComponent`` to enable the shopper to save the voucher, access to the shopper photos is requested, so a suitable text needs to be added to the `NSPhotoLibraryAddUsageDescription` key in the application `Info.plist`.
 
 ## Presenting the Drop-in
 
-Initialize the `DropInComponent` class and set the `AdyenSession` instance as the `delegate` and `partialPaymentDelegate` (if needed) of the `DropInComponent` instance.
+Initialize the ``DropInComponent`` class and set the ``AdyenSession`` instance as the `delegate` and `partialPaymentDelegate` (if needed) of the ``DropInComponent`` instance.
 
 ```swift
 let dropInComponent = DropInComponent(paymentMethods: paymentMethods,
@@ -94,7 +94,7 @@ present(dropInComponent.viewController, animated: true)
 
 ### Implementing `AdyenSessionDelegate`
 
-`AdyenSession` makes the necessary calls to handle the whole flow and notifies your application through its delegate, `AdyenSessionDelegate`. To handle the results of the Drop-in, the following methods of `AdyenSessionDelegate` should be implemented:
+``AdyenSession`` makes the necessary calls to handle the whole flow and notifies your application through its delegate, ``AdyenSessionDelegate``. To handle the results of the Drop-in, the following methods of ``AdyenSessionDelegate`` should be implemented:
 
 ---
 
@@ -110,7 +110,7 @@ This method will be invoked when the component finishes without any further step
 func didFail(with error: Error, from component: Component, session: AdyenSession)
 ```
 
-This method is invoked when an error occurred during the use of the Drop-in or the components. 
+This method is invoked when an error occurred during the use of the Drop-in or the components.
 You can then call the `finalizeIfNeeded` on the component, dismiss the component's view controller in the completion callback and display an error message.
 
 ---
@@ -125,12 +125,12 @@ This optional method is invoked after a redirect to an external application has 
 
 ## Handling an action
 
-Actions are handled by the Drop-in via its delegate `AdyenSession`.
+Actions are handled by the Drop-in via its delegate ``AdyenSession``.
 
 
 ### Receiving redirect
 
-In case the customer is redirected to an external URL or App, make sure to let the `RedirectComponent` know when the user returns to your app. Do this by implementing the following in your `UIApplicationDelegate`:
+In case the customer is redirected to an external URL or App, make sure to let the ``RedirectComponent`` know when the user returns to your app. Do this by implementing the following in your `UIApplicationDelegate`:
 
 ```swift
 func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
