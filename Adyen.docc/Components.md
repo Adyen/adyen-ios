@@ -95,10 +95,13 @@ let summaryItems = [
 let applePayment = try ApplePayPayment(countryCode: "US",
                                        currencyCode: "USD",
                                        summaryItems: summaryItems)
+                                       
+var config = ApplePayComponent.Configuration(payment: applePayPayment,
+                                             merchantIdentifier: "merchant.com.adyen.MY_MERCHANT_ID")
 
-let dropInConfiguration = DropInComponent.Configuration()
-dropInConfiguration.applePay = .init(payment: applePayment,
-                               merchantIdentifier: "merchant.com.adyen.MY_MERCHANT_ID")
+return try? ApplePayComponent(paymentMethod: paymentMethod,
+                              context: context,
+                              configuration: config)
 ```
 
 Also for voucher payment methods like Doku variants, in order for the `DokuComponent` to enable the shopper to save the voucher, access to the shopper photos is requested, so a suitable text needs to be added to the `NSPhotoLibraryAddUsageDescription` key in the application `Info.plist`.
