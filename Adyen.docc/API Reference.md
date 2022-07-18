@@ -2,21 +2,21 @@
 
 The Adyen DropIn/Components SDK API Reference.
 
-### Adyen Session
+## Adyen Session
 
 - ``AdyenSession``
 - ``AdyenSessionDelegate``
 - ``AdyenSessionPaymentsHandler``
 - ``AdyenSessionPaymentDetailsHandler``
 
-### Drop In Component
+## Drop In Component
 
 - ``DropInComponent``
 - ``DropInComponentDelegate``
 - ``PaymentMethodListConfiguration``
 - ``StoredPaymentMethodsDelegate``
 
-### Styling
+## Styling
 
 - ``TextStyle``
 - ``ButtonStyle``
@@ -42,6 +42,8 @@ The Adyen DropIn/Components SDK API Reference.
 - ``ProgressViewStyle``
 - ``ApplePayStyle``
 
+## Payment Methods
+
 ### Basic Payment Methods
 
 - ``PaymentMethod``
@@ -60,7 +62,7 @@ The Adyen DropIn/Components SDK API Reference.
 - ``StoredBCMCPaymentMethod``
 - ``StoredBLIKPaymentMethod``
 
-### Actions
+## Actions
 
 - ``Action``
 - ``RedirectAction``
@@ -94,7 +96,7 @@ The Adyen DropIn/Components SDK API Reference.
 - ``WeChatPaySDKActionComponent``
 - ``DocumentComponent``
 
-### Card Component
+## Card Component
 
 - ``AnyCardPaymentMethod``
 - ``CardPaymentMethod``
@@ -120,13 +122,15 @@ The Adyen DropIn/Components SDK API Reference.
 - ``InstallmentOptions``
 - ``Installments``
 
-### 3D Secure 2 Component
+## 3D Secure 2
 
 - ``ThreeDS2Component``
 - ``ThreeDS2Details``
 - ``ThreeDS2Action``
 - ``ThreeDS2FingerprintAction``
 - ``ThreeDS2ChallengeAction``
+
+## Components
 
 ### Apple Pay Component
 
@@ -242,7 +246,7 @@ The Adyen DropIn/Components SDK API Reference.
 - ``DokuComponent``
 - ``DokuDetails``
     
-### Public Protocols
+## Public Protocols
 
 - ``Component``
 - ``ComponentError``
@@ -265,7 +269,7 @@ The Adyen DropIn/Components SDK API Reference.
 - ``PartialPaymentDelegate``
 - ``StoredPaymentMethodsDelegate``
     
-### Models
+## Models
 
 - ``APIContext``
 - ``Payment``
@@ -283,7 +287,7 @@ The Adyen DropIn/Components SDK API Reference.
 - ``PaymentComponentData``
 - ``ActionComponentData``
     
-### Encryption
+## Encryption
 
 - ``CardEncryptor``
 - ``BankDetailsEncryptor``
@@ -291,7 +295,7 @@ The Adyen DropIn/Components SDK API Reference.
 - ``EncryptedCard``
 - ``EncryptionError``
     
-### Utilities
+## Utilities
 
 - ``AdyenLogging``
 - ``Formatter``

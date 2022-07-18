@@ -2,31 +2,33 @@
 
 Adyen Components for iOS allows you to accept in-app payments by providing you with the building blocks you need to create a checkout experience.
 
-## Topics
-
-### Installation
+## Installation
 
 - <doc:Installation>
 
-### DropIn
+## Integration
+
+### Session
 
 - <doc:DropIn>
 
-### Components
-
 - <doc:Components>
 
-### Customization
+### Three API
+
+- <doc:ThreeAPIs>
+
+## Customization
 
 - <doc:Customization>
 
-### Other
+## API Reference
+
+- <doc:API-Reference>
+
+## See Also
 
 - <doc:Support>
 - <doc:Contributing>
 - <doc:License>
-
-### API Reference
-
-- <doc:API-Reference>
 

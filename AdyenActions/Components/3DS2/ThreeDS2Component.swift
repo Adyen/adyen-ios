@@ -35,7 +35,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// Three DS2 component configurations.
     public struct Configuration {
         
-        /// `RedirectComponent` style
+        /// ``RedirectComponent`` style
         public var redirectComponentStyle: RedirectComponentStyle?
         
         /// The appearance configuration of the 3D Secure 2 challenge UI.

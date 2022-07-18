@@ -11,7 +11,7 @@
 import AdyenNetworking
 import Foundation
 
-/// Describes the methods a delegate of `AdyenSession` needs to implement.
+/// Describes the methods a delegate of ``AdyenSession`` needs to implement.
 public protocol AdyenSessionDelegate: AnyObject {
     
     /// Invoked when the component finishes without any further steps needed by the application.
@@ -45,8 +45,8 @@ public protocol AdyenSessionDelegate: AnyObject {
     /// - Parameters:
     ///   - component: The current payment component object.
     ///   - session: The session object.
-    /// - Returns: An instance conforming to the `AdyenSessionPaymentsHandler`
-    /// protocol to take over, or nil to let `AdyenSession` handle the flow.
+    /// - Returns: An instance conforming to the ``AdyenSessionPaymentsHandler``
+    /// protocol to take over, or nil to let ``AdyenSession`` handle the flow.
     func handlerForPayments(in component: PaymentComponent, session: AdyenSession) -> AdyenSessionPaymentsHandler?
     
     /// Returns a handler for handling the additional data provided that is required for the payment details call.
@@ -54,12 +54,12 @@ public protocol AdyenSessionDelegate: AnyObject {
     /// - Parameters:
     ///   - component: The current action component object.
     ///   - session: The session object.
-    /// - Returns: An instance conforming to the `AdyenSessionPaymentDetailsHandler`
-    /// protocol to take over, or nil to let `AdyenSession` handle the flow.
+    /// - Returns: An instance conforming to the ``AdyenSessionPaymentDetailsHandler``
+    /// protocol to take over, or nil to let ``AdyenSession`` handle the flow.
     func handlerForAdditionalDetails(in component: ActionComponent, session: AdyenSession) -> AdyenSessionPaymentDetailsHandler?
 }
 
-/// Provides default empty implementation for `AdyenSessionDelegate`
+/// Provides default empty implementation for ``AdyenSessionDelegate``
 public extension AdyenSessionDelegate {
 
     func handlerForPayments(in component: PaymentComponent, session: AdyenSession) -> AdyenSessionPaymentsHandler? { nil }
@@ -78,7 +78,7 @@ public protocol AdyenSessionPaymentsHandler {
     ///   - paymentComponentData: The data supplied by the payment component.
     ///   - component: The payment component from which the payment details were submitted.
     ///   - dropInComponent: The DropIn Component instance if any.
-    ///   - session: The `AdyenSession` instance.
+    ///   - session: The ``AdyenSession`` instance.
     func didSubmit(_ paymentComponentData: PaymentComponentData,
                    from component: Component,
                    dropInComponent: AnyDropInComponent?,
@@ -96,7 +96,7 @@ public protocol AdyenSessionPaymentDetailsHandler {
     func didProvide(_ actionComponentData: ActionComponentData, from component: ActionComponent, session: AdyenSession)
 }
 
-/// Represents the result of a payment via `AdyenSession`.
+/// Represents the result of a payment via ``AdyenSession``.
 public enum SessionPaymentResultCode: String {
     /// Indicates the payment was successfully authorised.
     case authorised = "Authorised"
