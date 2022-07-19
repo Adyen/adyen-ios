@@ -39,12 +39,6 @@ public struct FormItemViewBuilder {
     public func build(with item: FormRegionPickerItem) -> BaseFormPickerItemView<Region> {
         FormRegionPickerItemView(item: item)
     }
-    
-    /// Builds `IssuersItemView` from `IssuersItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormIssuerListItem) -> FormItemView<FormIssuerListItem> {
-        FormIssuerItemView(item: item)
-    }
 
     /// Builds `FormIssuerPickerItemView` from `FormIssuerPickerItem`.
     @_spi(AdyenInternal)

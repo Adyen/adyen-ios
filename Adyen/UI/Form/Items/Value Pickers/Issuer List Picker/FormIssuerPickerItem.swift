@@ -13,7 +13,7 @@ public typealias IssuerPickerItem = BasePickerElement<Issuer>
 public final class FormIssuersPickerItem: BaseFormPickerItem<Issuer> {
 
     public override init(preselectedValue: IssuerPickerItem, selectableValues: [IssuerPickerItem], style: FormTextItemStyle) {
-        assert(selectableValues.count > 0)
+        AdyenAssertion.assert(message: "selectableValues should be greater than 0", condition: selectableValues.count <= 0)
         super.init(preselectedValue: preselectedValue, selectableValues: selectableValues, style: style)
     }
 

@@ -37,8 +37,6 @@
 		00EACBAE2872EDEC0082B360 /* OnlineBankingDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBAD2872EDEC0082B360 /* OnlineBankingDetails.swift */; };
 		00EACBB02872F0D90082B360 /* OnlineBankingPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBAF2872F0D90082B360 /* OnlineBankingPaymentMethod.swift */; };
 		00EACBB3287327C00082B360 /* FormIssuerPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBB2287327C00082B360 /* FormIssuerPickerItem.swift */; };
-		00EACBB6287379340082B360 /* FormIssuerListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBB5287379340082B360 /* FormIssuerListItem.swift */; };
-		00EACBB828737CD10082B360 /* FormIssuerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBB728737CD10082B360 /* FormIssuerItemView.swift */; };
 		00EACBBA28737E540082B360 /* FormIssuersPickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBB928737E540082B360 /* FormIssuersPickerItemView.swift */; };
 		00EACBBD2876F9DC0082B360 /* FormAttributedLabelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBBC2876F9DC0082B360 /* FormAttributedLabelItem.swift */; };
 		00EACBC0287EF1D50082B360 /* OnlineBankingComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBBF287EF1D50082B360 /* OnlineBankingComponentTests.swift */; };
@@ -1102,8 +1100,6 @@
 		00EACBAD2872EDEC0082B360 /* OnlineBankingDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineBankingDetails.swift; sourceTree = "<group>"; };
 		00EACBAF2872F0D90082B360 /* OnlineBankingPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineBankingPaymentMethod.swift; sourceTree = "<group>"; };
 		00EACBB2287327C00082B360 /* FormIssuerPickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormIssuerPickerItem.swift; sourceTree = "<group>"; };
-		00EACBB5287379340082B360 /* FormIssuerListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormIssuerListItem.swift; sourceTree = "<group>"; };
-		00EACBB728737CD10082B360 /* FormIssuerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormIssuerItemView.swift; sourceTree = "<group>"; };
 		00EACBB928737E540082B360 /* FormIssuersPickerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormIssuersPickerItemView.swift; sourceTree = "<group>"; };
 		00EACBBC2876F9DC0082B360 /* FormAttributedLabelItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAttributedLabelItem.swift; sourceTree = "<group>"; };
 		00EACBBF287EF1D50082B360 /* OnlineBankingComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineBankingComponentTests.swift; sourceTree = "<group>"; };
@@ -2035,15 +2031,6 @@
 			path = OnlineBanking;
 			sourceTree = "<group>";
 		};
-		00EACBB4287379080082B360 /* IssuerList */ = {
-			isa = PBXGroup;
-			children = (
-				00EACBB5287379340082B360 /* FormIssuerListItem.swift */,
-				00EACBB728737CD10082B360 /* FormIssuerItemView.swift */,
-			);
-			path = IssuerList;
-			sourceTree = "<group>";
-		};
 		00EACBBB2876C7D10082B360 /* Issuer List Picker */ = {
 			isa = PBXGroup;
 			children = (
@@ -2489,7 +2476,6 @@
 				E216D3BB221AAB240013CBCF /* FormItem.swift */,
 				E2C0E0BB220B2976008616F6 /* FormItemView.swift */,
 				F9B8C50A23FE960E00C4D0FB /* Phone Number */,
-				00EACBB4287379080082B360 /* IssuerList */,
 				E7D531162446F525000046B4 /* Separator */,
 				F9A6C4B92657AFD900D8CD3E /* Spacer */,
 				E21895E222A7CC3B001B6EE0 /* Split */,
@@ -5589,7 +5575,6 @@
 				F926D52023F4217A00D058D3 /* DeviceDependent.swift in Sources */,
 				F9A6C4BB2657AFF600D8CD3E /* FormSpacerItem.swift in Sources */,
 				F9D5753123828EBB009C18B5 /* AnyCardPaymentMethod.swift in Sources */,
-				00EACBB6287379340082B360 /* FormIssuerListItem.swift in Sources */,
 				E2B317A92265EBD200C1BB30 /* EventPublisher.swift in Sources */,
 				E755BF7226B40C90007AAB25 /* DateValidator.swift in Sources */,
 				00EACBB02872F0D90082B360 /* OnlineBankingPaymentMethod.swift in Sources */,
@@ -5678,7 +5663,6 @@
 				F99E7278261F6C6F00EA5B78 /* KeyboardObserver.swift in Sources */,
 				E21895E622A7CC56001B6EE0 /* FormSplitItemView.swift in Sources */,
 				E9021DF8225E2240009CF7F4 /* ListSection.swift in Sources */,
-				00EACBB828737CD10082B360 /* FormIssuerItemView.swift in Sources */,
 				E787C9AC24696A8900B401E0 /* CornerRadiusStyle.swift in Sources */,
 				F9D5752A237C6084009C18B5 /* StoredBCMCPaymentMethod.swift in Sources */,
 				E2289B3C23D0BBB1002844BF /* ListSectionHeaderStyle.swift in Sources */,

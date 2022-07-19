@@ -14,7 +14,7 @@ public final class SecuredViewController: UIViewController {
 
     private let notificationCenter = NotificationCenter.default
 
-    private let childViewController: UIViewController
+    internal let childViewController: UIViewController
 
     private let style: ViewStyle
 
@@ -76,10 +76,6 @@ public final class SecuredViewController: UIViewController {
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         delegate?.viewWillAppear(viewController: self)
-    }
-
-    public var getChildViewController: UIViewController {
-        return childViewController
     }
 
     @LazyOptional(initialize: UIVisualEffectView())

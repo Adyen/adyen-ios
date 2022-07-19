@@ -12,7 +12,6 @@ import UIKit
 public final class ListItemView: UIView, AnyFormItemView {
     
     public var childItemViews: [AnyFormItemView] = []
-    private var viewConstraints: [NSLayoutConstraint] = []
     
     /// Initializes the list item view.
     public init() {
@@ -140,10 +139,10 @@ public final class ListItemView: UIView, AnyFormItemView {
     
     // MARK: - Layout
     
-    private var imageSize = CGSize(width: 40, height: 26)
+    private let imageSize = CGSize(width: 40, height: 26)
     
     private func configureConstraints() {
-        viewConstraints = [
+        let constraints = [
             imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
             imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             imageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
@@ -167,7 +166,7 @@ public final class ListItemView: UIView, AnyFormItemView {
 
         trailingTextLabel.setContentHuggingPriority(.required, for: .horizontal)
         
-        NSLayoutConstraint.activate(viewConstraints)
+        NSLayoutConstraint.activate(constraints)
     }
     
     // MARK: - Trait Collection

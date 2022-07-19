@@ -10,7 +10,7 @@ import UIKit
 /// A component that provides a form for Online Banking payment.
 public final class OnlineBankingComponent: PaymentComponent,
                                            PresentableComponent,
-                                           ComponentLoader,
+                                           LoadingComponent,
                                            PaymentAware {
 
     /// Configuration for Online Banking Component.
@@ -95,11 +95,6 @@ public final class OnlineBankingComponent: PaymentComponent,
     public func stopLoading() {
         continueButton.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
-    }
-
-    public func startLoading(for component: PaymentComponent) {
-        continueButton.showsActivityIndicator = true
-        formViewController.view.isUserInteractionEnabled = false
     }
 
     // MARK: - Private

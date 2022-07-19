@@ -59,39 +59,25 @@ class OnlineBankingComponentUITests: XCTestCase {
             XCTAssertTrue(component === self.sut)
             let details = data.paymentMethod as! OnlineBankingDetails
             XCTAssertEqual(details.type, .onlineBankingCZ)
-            XCTAssertEqual(details.issuer!, "jp")
+            XCTAssertEqual(details.issuer, "jp")
             self.sut.stopLoadingIfNeeded()
             didContnueExpectation.fulfill()
         }
         wait(for: .milliseconds(300))
     }
 
-    func testExample() throws {
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        func testContinueButtonLoading() {
-            // Given
-            UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
+    func testContinueButtonLoading() {
+        // Given
+        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
 
-            // Then
-            let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenDropIn.OnlineBankingComponent.continueButtonItem.button")
+        // Then
+        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenDropIn.OnlineBankingComponent.continueButtonItem.button")
 
-            // Assert
-            XCTAssertFalse(button.showsActivityIndicator)
+        // Then
+        self.sut.stopLoading()
 
-            // Then
-            sut.startLoading(for: sut)
-            wait(for: .milliseconds(300))
-
-            //Assert
-            XCTAssertTrue(button.showsActivityIndicator)
-
-            // Then
-            self.sut.stopLoadingIfNeeded()
-
-            //Assert
-            XCTAssertFalse(button.showsActivityIndicator)
-        }
+        // Assert
+        XCTAssertFalse(button.showsActivityIndicator)
     }
 
 }

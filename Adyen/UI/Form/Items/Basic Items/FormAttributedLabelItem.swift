@@ -55,7 +55,7 @@ public class FormAttributedLabelItem: FormItem {
 
     @objc private func labelTapped(gesture: UITapGestureRecognizer) {
         if let url = URL(string: link) {
-            AppLauncher().openCustomSchemeUrl(url, completion: nil)
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
 
