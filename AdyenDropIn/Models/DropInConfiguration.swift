@@ -43,14 +43,14 @@ public extension DropInComponent {
         /// Determines whether to enable skipping payment list step
         /// when there is only one non-instant payment method.
         /// Default value: `false`.
-        public let allowsSkippingPaymentList: Bool
+        public var allowsSkippingPaymentList: Bool
 
         /// Determines whether to enable preselected stored payment method view step.
         /// Default value: `true`.
-        public let allowPreselectedPaymentView: Bool
+        public var allowPreselectedPaymentView: Bool
         
         /// Indicates the UI configuration of the drop in component.
-        public let style: DropInComponent.Style
+        public var style: DropInComponent.Style
         
         /// Initializes the drop in configuration.
         /// - Parameters:
