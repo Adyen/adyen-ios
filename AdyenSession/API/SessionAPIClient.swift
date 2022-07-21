@@ -8,7 +8,7 @@
 import AdyenNetworking
 import Foundation
 
-/// API Client to handle `AdyenSession` related requests.
+/// API Client to handle ``AdyenSession`` related requests.
 /// All session related responses containing `sessionData` require updating the session data of the main `session` property,
 /// which is passed as a weak reference to this class.
 internal final class SessionAPIClient: APIClientProtocol {

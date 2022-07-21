@@ -32,7 +32,14 @@ internal final class IntegrationExample: APIClientAware {
 
     internal weak var presenter: Presenter?
 
-    internal let context: AdyenContext
+    internal var context: AdyenContext {
+        var analyticsConfiguration = AnalyticsConfiguration()
+        analyticsConfiguration.isEnabled = true
+        return AdyenContext(apiContext: ConfigurationConstants.apiContext,
+                            payment: ConfigurationConstants.current.payment,
+                            analyticsConfiguration: analyticsConfiguration)
+    }
+
     internal var session: AdyenSession?
     
     internal lazy var palApiClient: APIClientProtocol = {
@@ -51,13 +58,7 @@ internal final class IntegrationExample: APIClientAware {
 
     // MARK: - Initializers
 
-    internal init() {
-        var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isEnabled = true
-        self.context = AdyenContext(apiContext: ConfigurationConstants.apiContext,
-                                    payment: ConfigurationConstants.current.payment,
-                                    analyticsConfiguration: analyticsConfiguration)
-    }
+    internal init() {}
 
     // MARK: - Networking
     
