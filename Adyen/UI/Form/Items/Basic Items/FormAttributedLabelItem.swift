@@ -12,9 +12,14 @@ public class FormAttributedLabelItem: FormItem {
 
     public var subitems: [FormItem] = []
 
-    public init(termsAndConditionsText: String, link: String, style: TextStyle, identifier: String? = nil) {
+    public init(termsAndConditionsText: String,
+                link: String,
+                style: TextStyle,
+                linkTextStyle: TextStyle,
+                identifier: String? = nil) {
         self.identifier = identifier
         self.style = style
+        self.linkTextStyle = linkTextStyle
         self.termsAndConditionsText = termsAndConditionsText
         self.link = link
     }
@@ -23,6 +28,9 @@ public class FormAttributedLabelItem: FormItem {
 
     /// The style of the label.
     public var style: TextStyle
+
+    /// The style of the link text.
+    public var linkTextStyle: TextStyle
 
     /// The text of the label.
     public var termsAndConditionsText: String
@@ -35,15 +43,19 @@ public class FormAttributedLabelItem: FormItem {
         label.numberOfLines = 0
         label.textAlignment = style.textAlignment
         label.textColor = style.color
-
+        label.font = style.font
+        label.backgroundColor = style.backgroundColor
         let attributedString = NSMutableAttributedString(string: termsAndConditionsText.replacingOccurrences(of: "#", with: " "))
-        let rangeOfTermsAndConditionsText = getTermsandConditionsSubstringRange(mainString: termsAndConditionsText)
-        attributedString.addAttribute(.foregroundColor, value: UIColor.Adyen.defaultBlue, range: rangeOfTermsAndConditionsText)
+
+        let linkRanges = getLinkRangesInString()
+
+        let attributes = createAttributes(from: linkTextStyle)
+        for linkRange in linkRanges {
+            attributedString.addAttributes(attributes, range: linkRange)
+        }
 
         label.attributedText = attributedString
         label.accessibilityIdentifier = identifier
-        label.font = style.font
-        label.backgroundColor = style.backgroundColor
         label.adyen.round(using: style.cornerRounding)
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
@@ -65,6 +77,30 @@ public class FormAttributedLabelItem: FormItem {
             return NSRange(range, in: mainString)
         }
         return NSRange(location: 0, length: 0)
+    }
+
+    private func getLinkRangesInString() -> [NSRange] {
+        let pattern = "#(.+?)#"
+        var ranges: [NSRange] = []
+        do {
+            let regex = try NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options.caseInsensitive)
+            // swiftlint:disable:next line_length
+            let matches = regex.matches(in: termsAndConditionsText, options: [], range: NSRange(location: 0, length: termsAndConditionsText.utf16.count))
+
+            matches.forEach({ match in
+                let range = match.range(at: 0)
+                ranges.append(range)
+            })
+        } catch let error {
+            adyenPrint(error)
+        }
+        return ranges
+    }
+
+    private func createAttributes(from style: TextStyle) -> [NSAttributedString.Key: Any] {
+        return [.foregroundColor: style.color,
+                .font: style.font,
+                .backgroundColor: style.backgroundColor]
     }
 
 }

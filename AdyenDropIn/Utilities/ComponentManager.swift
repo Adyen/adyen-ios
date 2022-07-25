@@ -144,5 +144,5 @@ internal final class ComponentManager {
     private func isVoucherPaymentMethod(_ paymentMethod: PaymentMethod) -> Bool {
         VoucherPaymentMethod.allCases.map(\.rawValue).contains(paymentMethod.type.rawValue)
     }
-
+    
 }

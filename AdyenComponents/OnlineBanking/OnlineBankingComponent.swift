@@ -47,6 +47,7 @@ public final class OnlineBankingComponent: PaymentComponent,
     internal lazy var termsAndConditionsLabelItem: FormAttributedLabelItem = .init(termsAndConditionsText: "By clicking continue you agree with the #terms and conditions#",
                                                                       link: tAndcLink,
                                                                       style: configuration.style.footnoteLabel,
+                                                                      linkTextStyle: configuration.style.linkTextLabel,
                                                                       identifier: ViewIdentifierBuilder.build(scopeInstance: "AdyenDropIn.OnlineBankingComponent", postfix: "OnlineBankingTAndCLabel"))
 
     /// The continue button item.

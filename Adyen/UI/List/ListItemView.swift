@@ -65,6 +65,7 @@ public final class ListItemView: UIView, AnyFormItemView {
         trailingTextLabel.accessibilityIdentifier = item?.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "trailingTextLabel")
         }
+        
         imageView.imageURL = item?.imageURL
     }
     
@@ -73,6 +74,7 @@ public final class ListItemView: UIView, AnyFormItemView {
         guard item?.canModifyIcon == true else {
             return imageView.layer.borderWidth = 0
         }
+
         imageView.clipsToBounds = style.image.clipsToBounds
         imageView.layer.borderWidth = style.image.borderWidth
         imageView.layer.borderColor = style.image.borderColor?.cgColor
