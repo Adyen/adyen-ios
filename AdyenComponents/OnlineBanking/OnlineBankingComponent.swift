@@ -38,14 +38,14 @@ public final class OnlineBankingComponent: PaymentComponent,
 
     // MARK: - Items
 
-    private var tAndcLink: String {
+    private var termsAndConditionsLink: String {
         return paymentMethod.type == .onlineBankingCZ ? "https://static.payu.com/sites/terms/files/payu_privacy_policy_cs.pdf" : "https://static.payu.com/sites/terms/files/payu_privacy_policy_sk.pdf"
     }
 
     /// The terms and condition message item.
     // swiftlint:disable line_length
     internal lazy var termsAndConditionsLabelItem: FormAttributedLabelItem = .init(termsAndConditionsText: "By clicking continue you agree with the #terms and conditions#",
-                                                                      link: tAndcLink,
+                                                                      link: termsAndConditionsLink,
                                                                       style: configuration.style.footnoteLabel,
                                                                       linkTextStyle: configuration.style.linkTextLabel,
                                                                       identifier: ViewIdentifierBuilder.build(scopeInstance: "AdyenDropIn.OnlineBankingComponent", postfix: "OnlineBankingTAndCLabel"))
