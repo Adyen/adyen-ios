@@ -160,3 +160,4 @@
 "adyen.ach.accountLocationField.title" = "Маршрутный номер ABA";
 "adyen.ach.accountLocationField.invalid" = "Недействительный маршрутный номер ABA";
 "idealIssuer.selectField.title" = "Банк";
+"adyen.onlineBanking.termsAndConditions" = "Нажимая кнопку «Продолжить», вы соглашаетесь с #условиями#";

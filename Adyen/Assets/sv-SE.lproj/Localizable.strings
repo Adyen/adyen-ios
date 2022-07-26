@@ -160,3 +160,4 @@
 "adyen.ach.accountLocationField.title" = "ABA-nummer";
 "adyen.ach.accountLocationField.invalid" = "Ogiltigt ABA-nummer";
 "idealIssuer.selectField.title" = "Bank";
+"adyen.onlineBanking.termsAndConditions" = "Genom att klicka på Fortsätt godkänner du #villkoren#";

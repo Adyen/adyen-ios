@@ -160,3 +160,4 @@
 "adyen.ach.accountLocationField.title" = "رقم توجيه ABA";
 "adyen.ach.accountLocationField.invalid" = "رقم توجيه ABA غير صحيح";
 "idealIssuer.selectField.title" = "البنك";
+"adyen.onlineBanking.termsAndConditions" = "بالنقر فوق متابعة، فإنك توافق على #الشروط والخدمات#";

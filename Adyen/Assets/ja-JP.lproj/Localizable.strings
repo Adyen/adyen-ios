@@ -160,3 +160,4 @@
 "adyen.ach.accountLocationField.title" = "ABAナンバー";
 "adyen.ach.accountLocationField.invalid" = "無効なABAナンバー";
 "idealIssuer.selectField.title" = "銀行";
+"adyen.onlineBanking.termsAndConditions" = "[続行] をクリックすると、#利用規約#に同意したことになります";

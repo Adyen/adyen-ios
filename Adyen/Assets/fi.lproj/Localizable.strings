@@ -160,3 +160,4 @@
 "adyen.ach.accountLocationField.title" = "ABA-reititysnumero";
 "adyen.ach.accountLocationField.invalid" = "Ei-kelvollinen ABA-reititysnumero";
 "idealIssuer.selectField.title" = "Pankki";
+"adyen.onlineBanking.termsAndConditions" = "Napsauttamalla Jatka hyväksyt #käyttöehdot#";

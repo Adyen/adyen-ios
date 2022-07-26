@@ -160,3 +160,4 @@
 "adyen.ach.accountLocationField.title" = "Smerovacie číslo ABA";
 "adyen.ach.accountLocationField.invalid" = "Neplatné smerovacie číslo ABA";
 "idealIssuer.selectField.title" = "Banka";
+"adyen.onlineBanking.termsAndConditions" = "Kliknutím na tlačidlo pokračovať súhlasíte so #zmluvnými podmienkami#";

@@ -160,3 +160,4 @@
 "adyen.ach.accountLocationField.title" = "Koda banke ABA";
 "adyen.ach.accountLocationField.invalid" = "Neveljavna koda banke ABA";
 "idealIssuer.selectField.title" = "Banka";
+"adyen.onlineBanking.termsAndConditions" = "Če kliknete »Nadaljuj«, to pomeni, da se strinjate s #pogoji in določili#";

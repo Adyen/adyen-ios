@@ -55,7 +55,6 @@
 "adyen.blik.invalid" = "输入 6 位数";
 "adyen.blik.code" = "6 位数代码";
 "adyen.blik.help" = "从您的银行应用中获取代码。";
-"adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "预先授权 %@";
 "adyen.confirmPreauthorization" = "确认预先授权";
 "adyen.card.cvcItem.title.optional" = "CVC / CVV（可选）";
@@ -73,8 +72,6 @@
 "adyen.button.copy" = "复制";
 "adyen.voucher.introduction" = "感谢您的购买，请使用以下信息完成支付。";
 "adyen.voucher.readInstructions" = "阅读说明";
-"adyen.voucher.saveImage" = "";
-"adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "金额";
 "adyen.voucher.entity" = "实体";
@@ -160,3 +157,4 @@
 "adyen.ach.accountLocationField.title" = "ABA 路由电汇编码";
 "adyen.ach.accountLocationField.invalid" = "无效的 ABA 路由电汇编码";
 "idealIssuer.selectField.title" = "银行";
+"adyen.onlineBanking.termsAndConditions" = "点击“继续”，即表示您同意#条款和细则#";

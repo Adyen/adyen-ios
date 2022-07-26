@@ -160,3 +160,4 @@
 "adyen.ach.accountLocationField.title" = "Code ABA";
 "adyen.ach.accountLocationField.invalid" = "Code ABA incorrect";
 "idealIssuer.selectField.title" = "Banque";
+"adyen.onlineBanking.termsAndConditions" = "En cliquant sur «Continuer», vous acceptez les #conditions générales#";

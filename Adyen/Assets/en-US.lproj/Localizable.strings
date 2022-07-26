@@ -160,3 +160,4 @@
 "adyen.ach.accountLocationField.title" = "ABA routing number";
 "adyen.ach.accountLocationField.invalid" = "Invalid ABA routing number";
 "idealIssuer.selectField.title" = "Bank";
+"adyen.onlineBanking.termsAndConditions" = "By clicking continue you agree with the #terms and conditions#";

@@ -44,7 +44,7 @@ public final class OnlineBankingComponent: PaymentComponent,
 
     /// The terms and condition message item.
     // swiftlint:disable line_length
-    internal lazy var termsAndConditionsLabelItem: FormAttributedLabelItem = .init(termsAndConditionsText: "By clicking continue you agree with the #terms and conditions#",
+    internal lazy var termsAndConditionsLabelItem: FormAttributedLabelItem = .init(termsAndConditionsText: localizedString(.onlineBankingTermsAndConditions, configuration.localizationParameters),
                                                                       link: termsAndConditionsLink,
                                                                       style: configuration.style.footnoteLabel,
                                                                       linkTextStyle: configuration.style.linkTextLabel,

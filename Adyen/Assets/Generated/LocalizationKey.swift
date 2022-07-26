@@ -331,6 +331,8 @@ public struct LocalizationKey {
     public static let achAccountLocationFieldInvalid = LocalizationKey(key: "adyen.ach.accountLocationField.invalid")
     /// Bank
     public static let selectFieldTitle = LocalizationKey(key: "idealIssuer.selectField.title")
+    /// By clicking continue you agree with the #terms and conditions#
+    public static let onlineBankingTermsAndConditions = LocalizationKey(key: "adyen.onlineBanking.termsAndConditions")
     
     internal let key: String
     
