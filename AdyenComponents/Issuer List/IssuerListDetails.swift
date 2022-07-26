@@ -16,9 +16,6 @@ public struct IssuerListDetails: PaymentMethodDetails {
     /// The selected issuer.
     public let issuer: String
     
-    @_spi(AdyenInternal)
-    public let isNativeMobileRedirectEnabled: Bool = true
-    
     /// Initializes the Issuer List details.
     ///
     /// - Parameters:

@@ -92,10 +92,34 @@ public final class RedirectComponent: ActionComponent {
             openCustomSchemeUrl(action)
         }
     }
+    
+    @Persisted(defaultValue: nil, key: "stored_redirect_action")
+    private static var storedRedirectAction: RedirectAction?
 
     // MARK: - Returning From a Redirect
 
     /// This function should be invoked from the application's delegate when the application is opened through a URL.
+    /// Supports redirects back with a cold start of the application.
+    ///
+    /// - Parameter url: The URL through which the application was opened.
+    /// - Returns: A boolean value indicating whether the URL was handled by the redirect component.
+    @discardableResult
+    public func applicationDidOpen(from url: URL) -> Bool {
+        if RedirectListener.applicationDidOpen(from: url) {
+            return true
+        }
+        
+        if let storedAction = Self.storedRedirectAction {
+            didOpen(url: url, storedAction)
+            Self.storedRedirectAction = nil
+            return true
+        }
+        
+        return false
+    }
+    
+    /// This function should be invoked from the application's delegate when the application is opened through a URL.
+    /// Doesn't supports redirects back with a cold start of the application.
     ///
     /// - Parameter url: The URL through which the application was opened.
     /// - Returns: A boolean value indicating whether the URL was handled by the redirect component.
@@ -145,18 +169,23 @@ public final class RedirectComponent: ActionComponent {
     // MARK: - Helpers
 
     private func registerRedirectBounceBackListener(_ action: RedirectAction) {
+        Self.storedRedirectAction = action
         RedirectListener.registerForURL { [weak self] returnURL in
             guard let self = self else { return }
-            
-            self.didReturnFromIssuer(withReturnURL: returnURL, action)
+
+            self.didOpen(url: returnURL, action)
         }
     }
     
-    private func didReturnFromIssuer(withReturnURL returnURL: URL, _ action: RedirectAction) {
-        if let redirectStateData = action.nativeMobileRedirectData?.redirectStateData {
+    private func didOpen(url returnURL: URL, _ action: RedirectAction) {
+        if let redirectStateData = action.nativeRedirectData {
             handleNativeMobileRedirect(withReturnURL: returnURL, redirectStateData: redirectStateData, action)
         } else {
-            callDidProvide(returnURL: returnURL, action)
+            do {
+                callDidProvide(redirectDetails: try RedirectDetails(returnURL: returnURL), action)
+            } catch {
+                delegate?.didFail(with: error, from: self)
+            }
         }
     }
     
@@ -166,23 +195,22 @@ public final class RedirectComponent: ActionComponent {
             delegate?.didFail(with: Error.invalidRedirectParameters, from: self)
             return
         }
-        let request = ReturnFromIssuerRequest(redirectId: redirectId,
-                                              redirectData: redirectStateData,
-                                              returnQueryString: queryString)
+        let request = NativeRedirectResultRequest(redirectId: redirectId,
+                                                  redirectData: redirectStateData,
+                                                  returnQueryString: queryString)
         apiClient.perform(request) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case let .failure(error):
                 self.delegate?.didFail(with: error, from: self)
             case let .success(response):
-                self.callDidProvide(returnURL: response.returnUrl, action)
+                self.callDidProvide(redirectDetails: response, action)
             }
         }
     }
     
-    private func callDidProvide(returnURL: URL, _ action: RedirectAction) {
-        let additionalDetails = RedirectDetails(returnURL: returnURL)
-        let actionData = ActionComponentData(details: additionalDetails, paymentData: action.paymentData)
+    private func callDidProvide(redirectDetails: RedirectDetails, _ action: RedirectAction) {
+        let actionData = ActionComponentData(details: redirectDetails, paymentData: action.paymentData)
         delegate?.didProvide(actionData, from: self)
     }
     

@@ -8,12 +8,12 @@ import AdyenNetworking
 import Foundation
 @_spi(AdyenInternal) import Adyen
 
-internal struct ReturnFromIssuerRequest: Request {
-    internal typealias ResponseType = ReturnFromIssuerResponse
+internal struct NativeRedirectResultRequest: Request {
+    internal typealias ResponseType = RedirectDetails
     
     internal typealias ErrorResponseType = APIError
     
-    internal let path: String = "checkoutshopper/v1/didReturnFromIssuer"
+    internal let path: String = "checkoutshopper/v1/nativeRedirect/redirectResult"
     
     internal var counter: UInt = 0
     
@@ -42,10 +42,4 @@ internal struct ReturnFromIssuerRequest: Request {
     }
 }
 
-internal struct ReturnFromIssuerResponse: Response {
-    internal let returnUrl: URL
-    
-    private enum CodingKeys: String, CodingKey {
-        case returnUrl
-    }
-}
+extension RedirectDetails: Response {}

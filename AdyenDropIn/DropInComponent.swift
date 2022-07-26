@@ -89,6 +89,11 @@ public final class DropInComponent: NSObject,
         rootComponent.stopLoadingIfNeeded()
         actionComponent.handle(action)
     }
+    
+    @discardableResult
+    public func applicationDidOpen(from url: URL) -> Bool {
+        actionComponent.applicationDidOpen(from: url)
+    }
 
     // MARK: - Handling Partial Payments
 

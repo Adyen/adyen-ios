@@ -110,17 +110,36 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         }
     }
     
+    @discardableResult
+    public func applicationDidOpen(from url: URL) -> Bool {
+        let component: RedirectComponent
+        
+        if let currentActionComponent = currentActionComponent as? RedirectComponent {
+            component = currentActionComponent
+        } else {
+            component = createRedirectComponent()
+        }
+        
+        currentActionComponent = component
+        return component.applicationDidOpen(from: url)
+    }
+    
     // MARK: - Private
     
     private func handle(_ action: RedirectAction) {
+        let component = createRedirectComponent()
+        currentActionComponent = component
+        
+        component.handle(action)
+    }
+    
+    private func createRedirectComponent() -> RedirectComponent {
         let component = RedirectComponent(context: context)
         component.configuration.style = configuration.style.redirectComponentStyle
         component.delegate = delegate
         component._isDropIn = _isDropIn
         component.presentationDelegate = presentationDelegate
-        currentActionComponent = component
-        
-        component.handle(action)
+        return component
     }
 
     private func handle(_ action: ThreeDS2Action) {

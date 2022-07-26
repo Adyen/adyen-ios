@@ -10,6 +10,7 @@ import AdyenCard
 import AdyenComponents
 import PassKit
 import UIKit
+import AdyenSession
 
 extension IntegrationExample {
 
@@ -193,6 +194,8 @@ extension IntegrationExample {
         if let actionComponent = component as? ActionComponent {
             actionComponent.delegate = delegate
         }
+        
+        isSessionIntegration = delegate is AdyenSession
 
         currentComponent = component
         guard component.requiresModalPresentation else {
@@ -230,15 +233,27 @@ extension IntegrationExample {
             finish(with: error)
         }
     }
-
-    internal func handle(_ action: Action) {
+    
+    internal var actionHandlingComponent: ActionHandlingComponent {
         if let dropInAsActionComponent = currentComponent as? ActionHandlingComponent {
             /// In case current component is a `DropInComponent` that implements `ActionHandlingComponent`
-            dropInAsActionComponent.handle(action)
-        } else {
-            /// In case current component is an individual component like `CardComponent`
-            adyenActionComponent.handle(action)
+            return dropInAsActionComponent
         }
+        
+        /// In case current component is an individual component like `CardComponent`
+        return adyenActionComponent
+    }
+
+    internal func handle(_ action: Action) {
+        actionHandlingComponent.handle(action)
+    }
+    
+    @discardableResult
+    internal func applicationDidOpen(from url: URL) -> Bool {
+        if let session = session, isSessionIntegration {
+            return session.applicationDidOpen(from: url)
+        }
+        return actionHandlingComponent.applicationDidOpen(from: url)
     }
 
 }

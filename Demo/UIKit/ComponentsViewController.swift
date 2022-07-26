@@ -11,7 +11,7 @@ internal final class ComponentsViewController: UIViewController, Presenter {
     
     private lazy var componentsView = ComponentsView()
 
-    private lazy var integrationExample: IntegrationExample = {
+    internal lazy var integrationExample: IntegrationExample = {
         let integrationExample = IntegrationExample()
         integrationExample.presenter = self
         return integrationExample

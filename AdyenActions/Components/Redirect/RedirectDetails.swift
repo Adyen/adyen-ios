@@ -8,35 +8,45 @@
 import Foundation
 
 /// Contains the details supplied by the redirect component.
-public struct RedirectDetails: AdditionalDetails {
+public struct RedirectDetails: AdditionalDetails, Decodable {
     
-    /// The URL through which the user returned to the app after a redirect.
-    public let returnURL: URL
+    internal enum Error: LocalizedError {
+        case invalidUrl
+        
+        internal var errorDescription: String? {
+            "Couldn't find payload, redirectResult or PaRes/md keys in the query parameters."
+        }
+    }
+    
+    internal var payload: String?
+    
+    internal var redirectResult: String?
+    
+    internal var paymentResponse: String?
+    
+    internal var merchantData: String?
+    
+    internal var queryString: String?
     
     /// Initializes the redirect payment details.
     ///
     /// - Parameter:
     ///   - returnURL: The URL through which the user returned to the app after a redirect.
-    public init(returnURL: URL) {
-        self.returnURL = returnURL
-    }
-    
-    // MARK: - Encoding
-    
-    public func encode(to encoder: Encoder) throws {
-        guard let codingKeysValuesPairs = extractKeyValuesFromURL() else {
-            let context = EncodingError.Context(codingPath: [CodingKeys.payload,
-                                                             .redirectResult,
-                                                             .merchantData,
-                                                             .paymentResponse],
-                                                debugDescription: "Did not find payload, redirectResult or PaRes/md keys")
-            throw EncodingError.invalidValue(encoder, context)
-        }
-        
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try codingKeysValuesPairs.forEach { codingKey, value in
-            try container.encode(value, forKey: codingKey)
+    public init(returnURL: URL) throws {
+        let queryParameters = returnURL.adyen.queryParameters
+
+        if let redirectResult = queryParameters[CodingKeys.redirectResult.rawValue]?.removingPercentEncoding {
+            self.redirectResult = redirectResult
+        } else if let payload = queryParameters[CodingKeys.payload.rawValue]?.removingPercentEncoding {
+            self.payload = payload
+        } else if let paymentResponse = queryParameters[CodingKeys.paymentResponse.rawValue]?.removingPercentEncoding,
+                  let merchantData = queryParameters[CodingKeys.merchantData.rawValue]?.removingPercentEncoding {
+            self.paymentResponse = paymentResponse
+            self.merchantData = merchantData
+        } else if let queryString = returnURL.query {
+            self.queryString = queryString
+        } else {
+            throw Error.invalidUrl
         }
     }
     
@@ -48,23 +58,6 @@ public struct RedirectDetails: AdditionalDetails {
         case paymentResponse = "PaRes"
         case merchantData = "MD"
         case queryString = "returnUrlQueryString"
-    }
-    
-    internal func extractKeyValuesFromURL() -> [(CodingKeys, String)]? {
-        let queryParameters = returnURL.adyen.queryParameters
-
-        if let redirectResult = queryParameters[CodingKeys.redirectResult.rawValue]?.removingPercentEncoding {
-            return [(.redirectResult, redirectResult)]
-        } else if let payload = queryParameters[CodingKeys.payload.rawValue]?.removingPercentEncoding {
-            return [(.payload, payload)]
-        } else if let paymentResponse = queryParameters[CodingKeys.paymentResponse.rawValue]?.removingPercentEncoding,
-                  let merchantData = queryParameters[CodingKeys.merchantData.rawValue]?.removingPercentEncoding {
-            return [(.paymentResponse, paymentResponse), (.merchantData, merchantData)]
-        } else if let queryString = returnURL.query {
-            return [(.queryString, queryString)]
-        }
-        
-        return nil
     }
     
 }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,6 +11,8 @@ import UIKit
 internal class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     internal var window: UIWindow?
+    
+    internal lazy var paymentsViewModel: PaymentsViewModel = .init()
 
     internal func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -19,7 +21,7 @@ internal class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // session are new (see `application:configurationForConnectingSceneSession` instead).
 
         // Create the SwiftUI view that provides the window contents.
-        let contentView = ComponentsView()
+        let contentView = ComponentsView(viewModel: paymentsViewModel)
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
@@ -61,7 +63,7 @@ internal class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     internal func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         guard let url = URLContexts.first?.url else { return }
-        RedirectComponent.applicationDidOpen(from: url)
+        paymentsViewModel.integrationExample.applicationDidOpen(from: url)
     }
 
 }

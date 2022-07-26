@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes an action in which the user is redirected to a URL.
-public struct RedirectAction: Decodable {
+public struct RedirectAction: Codable {
     
     /// The URL to which to redirect the user.
     public let url: URL
@@ -15,35 +15,19 @@ public struct RedirectAction: Decodable {
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     public let paymentData: String?
     
-    /// Native Mobile redirect data.
-    public let nativeMobileRedirectData: NativeMobileRedirectData?
+    /// Native redirect data.
+    public let nativeRedirectData: String?
     
     /// Initializes a redirect action.
     ///
     /// - Parameters:
     ///   - url: The URL to which to redirect the user.
     ///   - paymentData: The server-generated payment data that should be submitted to the `/payments/details` endpoint.
-    ///   - nativeMobileRedirectData: Native Mobile redirect data.
-    public init(url: URL, paymentData: String?, nativeMobileRedirectData: NativeMobileRedirectData? = nil) {
+    ///   - nativeRedirectData: Native redirect data.
+    public init(url: URL, paymentData: String?, nativeRedirectData: String? = nil) {
         self.url = url
         self.paymentData = paymentData
-        self.nativeMobileRedirectData = nativeMobileRedirectData
+        self.nativeRedirectData = nativeRedirectData
     }
     
-}
-
-/// Native Mobile redirect data.
-public struct NativeMobileRedirectData: Decodable {
-    
-    ///  The redirect state data.
-    public let redirectStateData: String
-    
-    /// Native Mobile redirect data.
-    ///
-    /// - Parameters:
-    ///   - redirectId: The redirect identifier.
-    ///   - redirectStateData: The redirect state data.
-    public init(redirectStateData: String) {
-        self.redirectStateData = redirectStateData
-    }
 }

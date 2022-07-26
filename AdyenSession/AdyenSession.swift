@@ -156,6 +156,16 @@ public final class AdyenSession {
         return handler
     }()
     
+    /// This function should be invoked from the application's delegate when the application is opened through a URL.
+    /// Supports redirects back with a cold start of the application.
+    ///
+    /// - Parameter url: The URL through which the application was opened.
+    /// - Returns: A boolean value indicating whether the URL was handled by the redirect component.
+    @discardableResult
+    public func applicationDidOpen(from url: URL) -> Bool {
+        actionComponent.applicationDidOpen(from: url)
+    }
+    
     // MARK: - Private
     
     internal let configuration: Configuration

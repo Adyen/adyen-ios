@@ -8,7 +8,7 @@ import SwiftUI
 
 internal final class PaymentsViewModel: ObservableObject, Identifiable, Presenter {
 
-    private lazy var integrationExample: IntegrationExample = {
+    internal lazy var integrationExample: IntegrationExample = {
         let integrationExample = IntegrationExample()
         integrationExample.presenter = self
         return integrationExample

@@ -14,4 +14,10 @@ public protocol ActionHandlingComponent: Component {
     /// - Parameters:
     ///   - action: The action object.
     func handle(_ action: Action)
+    
+    /// This function should be invoked from the application's delegate when the application is opened through a URL.
+    ///
+    /// - Parameter url: The URL through which the application was opened.
+    /// - Returns: A boolean value indicating whether the URL was handled by the redirect component.
+    func applicationDidOpen(from url: URL) -> Bool
 }
