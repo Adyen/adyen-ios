@@ -30,7 +30,7 @@ internal final class IntegrationExample: APIClientAware {
     internal var currentComponent: PresentableComponent?
     internal var sessionPaymentMethods: PaymentMethods?
     
-    internal var isSessionIntegration: Bool
+    internal var isSessionIntegration: Bool = false
 
     internal weak var presenter: Presenter?
 
