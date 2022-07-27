@@ -21,4 +21,9 @@ internal final class ActionHandlingComponentMock: ActionHandlingComponent {
     internal func handle(_ action: Action) {
         onAction?(action)
     }
+    
+    internal func applicationDidOpen(from url: URL) -> Bool {
+        // do Nothing
+        return false
+    }
 }

@@ -10,10 +10,10 @@ import Foundation
 /// Contains the details supplied by the redirect component.
 public struct RedirectDetails: AdditionalDetails, Decodable {
     
-    internal enum Error: LocalizedError {
+    public enum Error: LocalizedError {
         case invalidUrl
         
-        internal var errorDescription: String? {
+        public var errorDescription: String? {
             "Couldn't find payload, redirectResult or PaRes/md keys in the query parameters."
         }
     }
