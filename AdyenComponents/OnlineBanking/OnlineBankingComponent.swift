@@ -19,6 +19,11 @@ public final class OnlineBankingComponent: PaymentComponent,
         static let issuerListItem = "issuersList"
     }
 
+    private enum TermsAndConditionsURL {
+        static let onlineBankingCZ = "https://static.payu.com/sites/terms/files/payu_privacy_policy_cs.pdf"
+        static let onlineBankingSK = "https://static.payu.com/sites/terms/files/payu_privacy_policy_sk.pdf"
+    }
+
     /// Configuration for Online Banking Component.
     public typealias Configuration = BasicComponentConfiguration
 
@@ -45,7 +50,7 @@ public final class OnlineBankingComponent: PaymentComponent,
     // MARK: - Items
 
     private var termsAndConditionsLink: String {
-        return paymentMethod.type == .onlineBankingCZ ? "https://static.payu.com/sites/terms/files/payu_privacy_policy_cs.pdf" : "https://static.payu.com/sites/terms/files/payu_privacy_policy_sk.pdf"
+        return paymentMethod.type == .onlineBankingCZ ? TermsAndConditionsURL.onlineBankingCZ : TermsAndConditionsURL.onlineBankingSK
     }
 
     /// The terms and condition message item.
@@ -72,9 +77,9 @@ public final class OnlineBankingComponent: PaymentComponent,
 
     /// The Issuer List item.
     internal lazy var issuerListItem: FormIssuersPickerItem = {
-        let issuerListPickerItem: [IssuerPickerItem] = onlineBankingPaymentMethod.issuers.map({
-            IssuerPickerItem(identifier: $0.identifier, element: $0)
-        })
+        let issuerListPickerItem: [IssuerPickerItem] = onlineBankingPaymentMethod.issuers.map {
+            IssuerPickerItem(identifier: $0.identifier, element: $0) }
+
         AdyenAssertion.assert(message: "Issuer list should not be empty", condition: issuerListPickerItem.count <= 0)
 
         let issuerPickerItem = FormIssuersPickerItem(preselectedValue: issuerListPickerItem[0],
