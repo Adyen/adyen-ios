@@ -75,13 +75,13 @@ public final class OnlineBankingComponent: PaymentComponent,
 
     /// The Issuer List item.
     internal lazy var issuerListPickerItem: FormIssuersPickerItem = {
-        let issuerListPickerItem: [IssuerPickerItem] = onlineBankingPaymentMethod.issuers.map {
+        let issuerListPickerItems: [IssuerPickerItem] = onlineBankingPaymentMethod.issuers.map {
             IssuerPickerItem(identifier: $0.identifier, element: $0) }
 
-        AdyenAssertion.assert(message: "Issuer list should not be empty", condition: issuerListPickerItem.count <= 0)
+        AdyenAssertion.assert(message: "Issuer list should not be empty", condition: issuerListPickerItems.count <= 0)
 
-        let issuerPickerItem = FormIssuersPickerItem(preselectedValue: issuerListPickerItem[0],
-                                        selectableValues: issuerListPickerItem,
+        let issuerPickerItem = FormIssuersPickerItem(preselectedValue: issuerListPickerItems[0],
+                                        selectableValues: issuerListPickerItems,
                                         style: configuration.style.textField)
         issuerPickerItem.title = localizedString(.selectFieldTitle, configuration.localizationParameters)
         issuerPickerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
