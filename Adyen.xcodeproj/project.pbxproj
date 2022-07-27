@@ -251,7 +251,7 @@
 		E7085B162628B29600D0153B /* FormPhoneExtensionPickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085B0E2628B29600D0153B /* FormPhoneExtensionPickerItemView.swift */; };
 		E7085B172628B29600D0153B /* PhoneExtensionInputControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085B0F2628B29600D0153B /* PhoneExtensionInputControl.swift */; };
 		E7085B182628B29600D0153B /* FormPhoneExtensionPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085B102628B29600D0153B /* FormPhoneExtensionPickerItem.swift */; };
-		E7085C1E2629FDD700D0153B /* RedirectListnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085C1D2629FDD700D0153B /* RedirectListnerTests.swift */; };
+		E7085C1E2629FDD700D0153B /* RedirectListnerTestssd.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085C1D2629FDD700D0153B /* RedirectListnerTestssd.swift */; };
 		E7085C80262DD44E00D0153B /* PhoneExtensionsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085C7E262DD44D00D0153B /* PhoneExtensionsRepository.swift */; };
 		E7085C81262DD44E00D0153B /* AllCountriesPhoneExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085C7F262DD44E00D0153B /* AllCountriesPhoneExtensions.swift */; };
 		E7085C8D262DD4F800D0153B /* FormRegionPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085C8C262DD4F800D0153B /* FormRegionPickerItem.swift */; };
@@ -404,6 +404,7 @@
 		E9E3DAFF2225488900697074 /* Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAFE2225488900697074 /* Completion.swift */; };
 		E9E3DB03222548E100697074 /* Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DB02222548E100697074 /* Coder.swift */; };
 		E9E3DB062226B3B200697074 /* CoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DB052226B3B200697074 /* CoderTests.swift */; };
+		F9074443289129320098FA06 /* PersistedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9074442289129320098FA06 /* PersistedTests.swift */; };
 		F90E95F02726B625007E382B /* DropInComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90E95EF2726B625007E382B /* DropInComponentExtensions.swift */; };
 		F90E95F227280BD5007E382B /* CoreListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90E95F127280BD5007E382B /* CoreListDataSource.swift */; };
 		F90E95F62728106D007E382B /* DiffableListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90E95F52728106D007E382B /* DiffableListDataSource.swift */; };
@@ -1323,7 +1324,7 @@
 		E7085B0E2628B29600D0153B /* FormPhoneExtensionPickerItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormPhoneExtensionPickerItemView.swift; sourceTree = "<group>"; };
 		E7085B0F2628B29600D0153B /* PhoneExtensionInputControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneExtensionInputControl.swift; sourceTree = "<group>"; };
 		E7085B102628B29600D0153B /* FormPhoneExtensionPickerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormPhoneExtensionPickerItem.swift; sourceTree = "<group>"; };
-		E7085C1D2629FDD700D0153B /* RedirectListnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectListnerTests.swift; sourceTree = "<group>"; };
+		E7085C1D2629FDD700D0153B /* RedirectListnerTestssd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectListnerTestssd.swift; sourceTree = "<group>"; };
 		E7085C7E262DD44D00D0153B /* PhoneExtensionsRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneExtensionsRepository.swift; sourceTree = "<group>"; };
 		E7085C7F262DD44E00D0153B /* AllCountriesPhoneExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllCountriesPhoneExtensions.swift; sourceTree = "<group>"; };
 		E7085C8C262DD4F800D0153B /* FormRegionPickerItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormRegionPickerItem.swift; sourceTree = "<group>"; };
@@ -1497,6 +1498,7 @@
 		E9E3DAFE2225488900697074 /* Completion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Completion.swift; sourceTree = "<group>"; };
 		E9E3DB02222548E100697074 /* Coder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coder.swift; sourceTree = "<group>"; };
 		E9E3DB052226B3B200697074 /* CoderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoderTests.swift; sourceTree = "<group>"; };
+		F9074442289129320098FA06 /* PersistedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistedTests.swift; sourceTree = "<group>"; };
 		F90E95EF2726B625007E382B /* DropInComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInComponentExtensions.swift; sourceTree = "<group>"; };
 		F90E95F127280BD5007E382B /* CoreListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreListDataSource.swift; sourceTree = "<group>"; };
 		F90E95F52728106D007E382B /* DiffableListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableListDataSource.swift; sourceTree = "<group>"; };
@@ -3295,7 +3297,8 @@
 			children = (
 				F9AC61BD243750BB0062A00D /* RedirectComponentTests.swift */,
 				E9021DF1225CC6D0009CF7F4 /* RedirectDetailsTests.swift */,
-				E7085C1D2629FDD700D0153B /* RedirectListnerTests.swift */,
+				F9074442289129320098FA06 /* PersistedTests.swift */,
+				E7085C1D2629FDD700D0153B /* RedirectListnerTestssd.swift */,
 			);
 			path = Redirect;
 			sourceTree = "<group>";
@@ -5678,6 +5681,7 @@
 				F97BC2AD2668C63200F1D242 /* AppleWalletPassProviderTests.swift in Sources */,
 				E270FDE6225CB40A006C2CD0 /* ObservableTests.swift in Sources */,
 				F957AA6A2552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift in Sources */,
+				F9074443289129320098FA06 /* PersistedTests.swift in Sources */,
 				A07355D7276B350F00530562 /* DocumentActionViewDelegateMock.swift in Sources */,
 				F99F085A2383EAC800EBB948 /* FormatterMock.swift in Sources */,
 				F91760A72594C5DF00D653BE /* AssetsAccessTests.swift in Sources */,
@@ -5772,7 +5776,7 @@
 				F919DF9924EA64680027976E /* CardPublicKeyProviderTests.swift in Sources */,
 				E7620EAD23C3466B00A492C3 /* ModalViewControllerTests.swift in Sources */,
 				C9C21914276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift in Sources */,
-				E7085C1E2629FDD700D0153B /* RedirectListnerTests.swift in Sources */,
+				E7085C1E2629FDD700D0153B /* RedirectListnerTestssd.swift in Sources */,
 				E74CE3DF26727EB1008231D2 /* DropInDelegateMock.swift in Sources */,
 				F967581527D25B1600A16FB6 /* SelfRetainingAPIClientTests.swift in Sources */,
 				E262128D22A8FE6700F2B133 /* PaymentMethodTests.swift in Sources */,
