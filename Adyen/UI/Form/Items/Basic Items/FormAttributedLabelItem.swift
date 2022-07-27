@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Simple form item that represent a single attributed UILabel element.
 @_spi(AdyenInternal)
@@ -12,7 +13,7 @@ public class FormAttributedLabelItem: FormItem {
 
     public var subitems: [FormItem] = []
 
-    public init(termsAndConditionsText: String,
+    public init(originalText: String,
                 link: String,
                 style: TextStyle,
                 linkTextStyle: TextStyle,
@@ -20,7 +21,7 @@ public class FormAttributedLabelItem: FormItem {
         self.identifier = identifier
         self.style = style
         self.linkTextStyle = linkTextStyle
-        self.termsAndConditionsText = termsAndConditionsText
+        self.originalText = originalText
         self.link = link
     }
 
@@ -33,7 +34,7 @@ public class FormAttributedLabelItem: FormItem {
     public var linkTextStyle: TextStyle
 
     /// The text of the label.
-    public var termsAndConditionsText: String
+    public var originalText: String
 
     // The link label.
     public var link: String
@@ -45,9 +46,9 @@ public class FormAttributedLabelItem: FormItem {
         label.textColor = style.color
         label.font = style.font
         label.backgroundColor = style.backgroundColor
-        let attributedString = NSMutableAttributedString(string: termsAndConditionsText.replacingOccurrences(of: "#", with: " "))
+        let attributedString = NSMutableAttributedString(string: originalText.replacingOccurrences(of: "#", with: " "))
 
-        let linkRanges = getLinkRangesInString()
+        let linkRanges = linkRangesInString()
 
         let attributes = createAttributes(from: linkTextStyle)
         for linkRange in linkRanges {
@@ -71,21 +72,12 @@ public class FormAttributedLabelItem: FormItem {
         }
     }
 
-    private func getTermsandConditionsSubstringRange(mainString: String) -> NSRange {
-        let termsAndConditionsText = mainString.split(separator: "#")[1]
-        if let range = mainString.range(of: termsAndConditionsText) {
-            return NSRange(range, in: mainString)
-        }
-        return NSRange(location: 0, length: 0)
-    }
-
-    private func getLinkRangesInString() -> [NSRange] {
+    private func linkRangesInString() -> [NSRange] {
         let pattern = "#(.+?)#"
         var ranges: [NSRange] = []
         do {
             let regex = try NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options.caseInsensitive)
-            // swiftlint:disable:next line_length
-            let matches = regex.matches(in: termsAndConditionsText, options: [], range: NSRange(location: 0, length: termsAndConditionsText.utf16.count))
+            let matches = regex.matches(in: originalText, options: [], range: NSRange(location: 0, length: originalText.utf16.count))
 
             matches.forEach({ match in
                 let range = match.range(at: 0)

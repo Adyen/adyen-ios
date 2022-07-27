@@ -89,10 +89,10 @@ internal enum AnyPaymentMethodDecoder {
             let brand = try? container.decode(String.self, forKey: .brand)
             let isIssuersList = try container.containsValue(.issuers)
 
-            if type == "onlineBanking_CZ" || type == "onlineBanking_SK" {
-                return try OnlineBankingPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
-            }
             if isIssuersList {
+                if type == "onlineBanking_CZ" || type == "onlineBanking_SK" {
+                    return try OnlineBankingPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
+                }
                 return try IssuerListPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
             }
             

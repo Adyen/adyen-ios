@@ -38,9 +38,9 @@ class OnlineBankingComponentUITests: XCTestCase {
 
     func testUIElements() {
         // Assert
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenDropIn.OnlineBankingComponent.issuersList"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenDropIn.OnlineBankingComponent.continueButtonItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenDropIn.OnlineBankingComponent.OnlineBankingTAndCLabel"))
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.issuersList"))
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton"))
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.OnlineBankingTermsAndConditionLabel"))
     }
 
     func testPressContinueButton() {
@@ -49,7 +49,7 @@ class OnlineBankingComponentUITests: XCTestCase {
         sut.delegate = delegate
 
         // Then
-        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenDropIn.OnlineBankingComponent.continueButtonItem.button")
+        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
         button.sendActions(for: .touchUpInside)
 
         let didContnueExpectation = XCTestExpectation(description: "Dummy Expectation")
@@ -71,7 +71,7 @@ class OnlineBankingComponentUITests: XCTestCase {
         UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
 
         // Then
-        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenDropIn.OnlineBankingComponent.continueButtonItem.button")
+        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
 
         // Then
         self.sut.stopLoading()

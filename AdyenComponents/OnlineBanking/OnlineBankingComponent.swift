@@ -13,6 +13,12 @@ public final class OnlineBankingComponent: PaymentComponent,
                                            LoadingComponent,
                                            PaymentAware {
 
+    private enum ViewIdentifier {
+        static let termsAndConditionsLabelItem = "OnlineBankingTermsAndConditionLabel"
+        static let continueButtonItem = "continueButton"
+        static let issuerListItem = "issuersList"
+    }
+
     /// Configuration for Online Banking Component.
     public typealias Configuration = BasicComponentConfiguration
 
@@ -43,17 +49,20 @@ public final class OnlineBankingComponent: PaymentComponent,
     }
 
     /// The terms and condition message item.
-    // swiftlint:disable line_length
-    internal lazy var termsAndConditionsLabelItem: FormAttributedLabelItem = .init(termsAndConditionsText: localizedString(.onlineBankingTermsAndConditions, configuration.localizationParameters),
-                                                                      link: termsAndConditionsLink,
-                                                                      style: configuration.style.footnoteLabel,
-                                                                      linkTextStyle: configuration.style.linkTextLabel,
-                                                                      identifier: ViewIdentifierBuilder.build(scopeInstance: "AdyenDropIn.OnlineBankingComponent", postfix: "OnlineBankingTAndCLabel"))
+    internal lazy var termsAndConditionsLabelItem: FormAttributedLabelItem = .init(originalText:
+                        localizedString(.onlineBankingTermsAndConditions,
+                        configuration.localizationParameters),
+                        link: termsAndConditionsLink,
+                        style: configuration.style.footnoteLabel,
+                        linkTextStyle: configuration.style.linkTextLabel,
+                        identifier: ViewIdentifierBuilder.build(scopeInstance: self,
+                        postfix: ViewIdentifier.termsAndConditionsLabelItem))
 
     /// The continue button item.
     internal lazy var continueButton: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: "AdyenDropIn.OnlineBankingComponent", postfix: "continueButtonItem")
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
+                                                      postfix: ViewIdentifier.continueButtonItem)
         item.title = localizedString(.continueTitle, configuration.localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectContinueButton()
@@ -63,8 +72,6 @@ public final class OnlineBankingComponent: PaymentComponent,
 
     /// The Issuer List item.
     internal lazy var issuerListItem: FormIssuersPickerItem = {
-        let defaultIssuer = onlineBankingPaymentMethod.issuers[0]
-
         let issuerListPickerItem: [IssuerPickerItem] = onlineBankingPaymentMethod.issuers.map({
             return IssuerPickerItem(identifier: $0.identifier, element: $0)
         })
@@ -72,7 +79,8 @@ public final class OnlineBankingComponent: PaymentComponent,
                                         selectableValues: issuerListPickerItem,
                                         style: configuration.style.textField)
         issuerPickerItem.title = localizedString(.selectFieldTitle, configuration.localizationParameters)
-        issuerPickerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: "AdyenDropIn.OnlineBankingComponent", postfix: "issuersList")
+        issuerPickerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
+                                                                  postfix: ViewIdentifier.issuerListItem)
         _ = issuerPickerItem.publisher.addEventHandler({ issuerPickerITem in
             self.selectedIssuer = issuerPickerITem.element
         })
