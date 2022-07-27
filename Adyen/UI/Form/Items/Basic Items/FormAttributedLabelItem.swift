@@ -57,7 +57,6 @@ public class FormAttributedLabelItem: FormItem {
 
         label.attributedText = attributedString
         label.accessibilityIdentifier = identifier
-        label.adyen.round(using: style.cornerRounding)
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
         label.addGestureRecognizer(tapGesture)

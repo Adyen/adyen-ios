@@ -69,8 +69,7 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
 
             listItem.selectionHandler = { [weak self] in
                 guard let self = self else { return }
-                
-                // open a intermediate view then on click of continue button open issuers details list
+
                 let details = IssuerListDetails(paymentMethod: self.issuerListPaymentMethod,
                                                 issuer: issuer.identifier)
                 self.submit(data: PaymentComponentData(paymentMethodDetails: details,

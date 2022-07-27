@@ -73,7 +73,7 @@ public final class OnlineBankingComponent: PaymentComponent,
     /// The Issuer List item.
     internal lazy var issuerListItem: FormIssuersPickerItem = {
         let issuerListPickerItem: [IssuerPickerItem] = onlineBankingPaymentMethod.issuers.map({
-            return IssuerPickerItem(identifier: $0.identifier, element: $0)
+            IssuerPickerItem(identifier: $0.identifier, element: $0)
         })
         AdyenAssertion.assert(message: "Issuer list should not be empty", condition: issuerListPickerItem.count <= 0)
 
