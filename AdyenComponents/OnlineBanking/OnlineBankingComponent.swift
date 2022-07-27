@@ -75,15 +75,17 @@ public final class OnlineBankingComponent: PaymentComponent,
         let issuerListPickerItem: [IssuerPickerItem] = onlineBankingPaymentMethod.issuers.map({
             return IssuerPickerItem(identifier: $0.identifier, element: $0)
         })
+        AdyenAssertion.assert(message: "Issuer list should not be empty", condition: issuerListPickerItem.count <= 0)
+
         let issuerPickerItem = FormIssuersPickerItem(preselectedValue: issuerListPickerItem[0],
                                         selectableValues: issuerListPickerItem,
                                         style: configuration.style.textField)
         issuerPickerItem.title = localizedString(.selectFieldTitle, configuration.localizationParameters)
         issuerPickerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                                   postfix: ViewIdentifier.issuerListItem)
-        _ = issuerPickerItem.publisher.addEventHandler({ issuerPickerITem in
+        observe(issuerPickerItem.publisher) { issuerPickerITem in
             self.selectedIssuer = issuerPickerITem.element
-        })
+        }
         return issuerPickerItem
     }()
 
