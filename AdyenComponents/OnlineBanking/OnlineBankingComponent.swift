@@ -45,8 +45,6 @@ public final class OnlineBankingComponent: PaymentComponent,
 
     private let onlineBankingPaymentMethod: OnlineBankingPaymentMethod
 
-    private var selectedIssuer: Issuer
-
     // MARK: - Items
 
     private var termsAndConditionsLink: String {
@@ -55,13 +53,13 @@ public final class OnlineBankingComponent: PaymentComponent,
 
     /// The terms and condition message item.
     internal lazy var termsAndConditionsLabelItem: FormAttributedLabelItem = .init(originalText:
-                        localizedString(.onlineBankingTermsAndConditions,
-                        configuration.localizationParameters),
-                        link: termsAndConditionsLink,
-                        style: configuration.style.footnoteLabel,
-                        linkTextStyle: configuration.style.linkTextLabel,
-                        identifier: ViewIdentifierBuilder.build(scopeInstance: self,
-                        postfix: ViewIdentifier.termsAndConditionsLabelItem))
+                                                                                    localizedString(.onlineBankingTermsAndConditions,
+                                                                                                    configuration.localizationParameters),
+                                                                                   link: termsAndConditionsLink,
+                                                                                   style: configuration.style.footnoteLabel,
+                                                                                   linkTextStyle: configuration.style.linkTextLabel,
+                                                                                   identifier: ViewIdentifierBuilder.build(scopeInstance: self,
+                                                                                                                           postfix: ViewIdentifier.termsAndConditionsLabelItem))
 
     /// The continue button item.
     internal lazy var continueButton: FormButtonItem = {
@@ -76,7 +74,7 @@ public final class OnlineBankingComponent: PaymentComponent,
     }()
 
     /// The Issuer List item.
-    internal lazy var issuerListItem: FormIssuersPickerItem = {
+    internal lazy var issuerListPickerItem: FormIssuersPickerItem = {
         let issuerListPickerItem: [IssuerPickerItem] = onlineBankingPaymentMethod.issuers.map {
             IssuerPickerItem(identifier: $0.identifier, element: $0) }
 
@@ -88,9 +86,6 @@ public final class OnlineBankingComponent: PaymentComponent,
         issuerPickerItem.title = localizedString(.selectFieldTitle, configuration.localizationParameters)
         issuerPickerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                                   postfix: ViewIdentifier.issuerListItem)
-        observe(issuerPickerItem.publisher) { issuerPickerITem in
-            self.selectedIssuer = issuerPickerITem.element
-        }
         return issuerPickerItem
     }()
 
@@ -105,7 +100,6 @@ public final class OnlineBankingComponent: PaymentComponent,
         self.onlineBankingPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
-        self.selectedIssuer = onlineBankingPaymentMethod.issuers[0]
     }
 
     public func stopLoading() {
@@ -119,7 +113,7 @@ public final class OnlineBankingComponent: PaymentComponent,
         guard formViewController.validate() else { return }
 
         let details = OnlineBankingDetails(paymentMethod: paymentMethod,
-                                           issuer: selectedIssuer.identifier)
+                                           issuer: issuerListPickerItem.value.identifier)
         continueButton.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
@@ -131,7 +125,7 @@ public final class OnlineBankingComponent: PaymentComponent,
         formViewController.localizationParameters = configuration.localizationParameters
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
-        formViewController.append(issuerListItem)
+        formViewController.append(issuerListPickerItem)
         formViewController.append(FormSpacerItem(numberOfSpaces: 4))
         formViewController.append(continueButton)
         formViewController.append(FormSpacerItem())
