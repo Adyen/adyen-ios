@@ -69,7 +69,10 @@ public protocol PaymentComponentBuilder: AdyenContextAware {
     
     /// Builds a certain `PaymentComponent` based on a `AtomePaymentMethod`.
     func build(paymentMethod: AtomePaymentMethod) -> PaymentComponent?
-    
+
+    /// Builds a certain `PaymentComponent` based on  `OnlineBankingPaymentMethod`
+    func build(paymentMethod: OnlineBankingPaymentMethod) -> PaymentComponent?
+
     /// Builds a certain `PaymentComponent` based on any `PaymentMethod`, as a default case.
     func build(paymentMethod: PaymentMethod) -> PaymentComponent?
     

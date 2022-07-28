@@ -159,3 +159,5 @@
 "adyen.ach.accountNumberField.invalid" = "Ugyldig kontonummer";
 "adyen.ach.accountLocationField.title" = "ABA-dirigeringsnummer";
 "adyen.ach.accountLocationField.invalid" = "Ugyldig ABA-dirigeringsnummer";
+"idealIssuer.selectField.title" = "Bank";
+"adyen.onlineBanking.termsAndConditions" = "Ved å klikke på Fortsett godtar du #vilkårene#";

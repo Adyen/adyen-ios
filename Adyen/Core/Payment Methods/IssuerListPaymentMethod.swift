@@ -18,25 +18,6 @@ public struct IssuerListPaymentMethod: PaymentMethod {
     /// The available issuers.
     public let issuers: [Issuer]
     
-    // MARK: - Issuer
-    
-    /// An issuer (typically a bank) in an issuer list payment method.
-    public struct Issuer: Decodable {
-        
-        /// The unique identifier of the issuer.
-        public let identifier: String
-        
-        /// The name of the issuer.
-        public let name: String
-        
-        // MARK: - Coding
-        
-        private enum CodingKeys: String, CodingKey {
-            case identifier = "id"
-            case name
-        }
-    }
-    
     // MARK: - Coding
     
     public init(from decoder: Decoder) throws {
