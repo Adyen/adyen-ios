@@ -245,6 +245,12 @@ The Adyen DropIn/Components SDK API Reference.
 - ``DokuPaymentMethod``
 - ``DokuComponent``
 - ``DokuDetails``
+
+### Online Banking Component
+
+- ``OnlineBankingPaymentMethod``
+- ``OnlineBankingComponent``
+- ``OnlineBankingDetails``
     
 ## Public Protocols
 
