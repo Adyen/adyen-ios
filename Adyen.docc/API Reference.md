@@ -271,6 +271,7 @@ The Adyen DropIn/Components SDK API Reference.
     
 ## Models
 
+- ``AdyenContext``
 - ``APIContext``
 - ``Payment``
 - ``Amount``
@@ -283,6 +284,7 @@ The Adyen DropIn/Components SDK API Reference.
 - ``BrowserInfo``
 - ``ShopperInformation``
 - ``PrefilledShopperInformation``
+- ``AnalyticsConfiguration``
 - ``PartialPaymentOrder``
 - ``PaymentComponentData``
 - ``ActionComponentData``
