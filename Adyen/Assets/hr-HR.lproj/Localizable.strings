@@ -159,3 +159,5 @@
 "adyen.ach.accountNumberField.invalid" = "Nevažeći broj računa";
 "adyen.ach.accountLocationField.title" = "ABA identifikacijski broj";
 "adyen.ach.accountLocationField.invalid" = "Nevažeći ABA identifikacijski broj";
+"idealIssuer.selectField.title" = "Banka";
+"adyen.onlineBanking.termsAndConditions" = "Klikom na nastavak slažete se s #uvjetima i odredbama#";

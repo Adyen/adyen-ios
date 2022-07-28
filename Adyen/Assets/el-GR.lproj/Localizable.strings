@@ -159,3 +159,5 @@
 "adyen.ach.accountNumberField.invalid" = "Μη έγκυρος αριθμός λογαριασμού";
 "adyen.ach.accountLocationField.title" = "Αριθμός δρομολόγησης ABA";
 "adyen.ach.accountLocationField.invalid" = "Μη έγκυρος αριθμός δρομολόγησης ABA";
+"idealIssuer.selectField.title" = "Τράπεζα";
+"adyen.onlineBanking.termsAndConditions" = "Αν κάνετε κλικ στη «Συνέχεια», αποδέχεστε τους #Όρους και προϋποθέσεις#";

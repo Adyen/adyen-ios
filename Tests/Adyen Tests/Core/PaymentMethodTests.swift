@@ -837,13 +837,3 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.name, "ACH Direct Debit")
     }
 }
-
-internal extension Coder {
-    
-    static func decode<T: Decodable>(_ dictionary: [String: Any]) throws -> T {
-        let data = try! JSONSerialization.data(withJSONObject: dictionary, options: [])
-        
-        return try decode(data)
-    }
-    
-}

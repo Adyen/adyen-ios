@@ -159,3 +159,5 @@
 "adyen.ach.accountNumberField.invalid" = "Numero di conto non valido";
 "adyen.ach.accountLocationField.title" = "Codice ABA";
 "adyen.ach.accountLocationField.invalid" = "Codice ABA non valido";
+"idealIssuer.selectField.title" = "Banca";
+"adyen.onlineBanking.termsAndConditions" = "Facendo clic su Continua, accetti #i termini e le condizioni#";

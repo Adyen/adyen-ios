@@ -159,3 +159,5 @@
 "adyen.ach.accountNumberField.invalid" = "Número de conta inválido";
 "adyen.ach.accountLocationField.title" = "Número de roteamento ABA";
 "adyen.ach.accountLocationField.invalid" = "Número de roteamento ABA inválido";
+"idealIssuer.selectField.title" = "Banco";
+"adyen.onlineBanking.termsAndConditions" = "Ao clicar em continuar, você concorda com os #termos e condições#";

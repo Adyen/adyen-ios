@@ -159,3 +159,5 @@
 "adyen.ach.accountNumberField.invalid" = "Érvénytelen számlaszám";
 "adyen.ach.accountLocationField.title" = "ABA-irányítószám";
 "adyen.ach.accountLocationField.invalid" = "Érvénytelen ABA-irányítószám";
+"idealIssuer.selectField.title" = "Bank";
+"adyen.onlineBanking.termsAndConditions" = "A folytatásra kattintva elfogadja az #általános szerződési feltételeket#";

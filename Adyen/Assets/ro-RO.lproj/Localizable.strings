@@ -159,3 +159,5 @@
 "adyen.ach.accountNumberField.invalid" = "Numărul de cont este incorect";
 "adyen.ach.accountLocationField.title" = "Număr de direcționare ABA";
 "adyen.ach.accountLocationField.invalid" = "Număr de direcționare ABA incorect";
+"idealIssuer.selectField.title" = "Bancă";
+"adyen.onlineBanking.termsAndConditions" = "Făcând clic pe Continuați, sunteți de acord cu #Termenii și condițiile#";

@@ -159,3 +159,5 @@
 "adyen.ach.accountNumberField.invalid" = "Neplatné číslo účtu";
 "adyen.ach.accountLocationField.title" = "Směrovací tranzitní číslo ABA";
 "adyen.ach.accountLocationField.invalid" = "Neplatné směrovací tranzitní číslo ABA";
+"idealIssuer.selectField.title" = "Banka";
+"adyen.onlineBanking.termsAndConditions" = "Kliknutím na tlačítko Pokračovat souhlasíte se #smluvními podmínkami#";
