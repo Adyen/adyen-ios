@@ -105,13 +105,12 @@ public final class RedirectComponent: ActionComponent {
     /// - Returns: A boolean value indicating whether the URL was handled by the redirect component.
     @discardableResult
     public func applicationDidOpen(from url: URL) -> Bool {
-        if RedirectListener.applicationDidOpen(from: url) {
+        if Self.applicationDidOpen(from: url) {
             return true
         }
         
         if let storedAction = Self.storedRedirectAction {
             didOpen(url: url, storedAction)
-            Self.storedRedirectAction = nil
             return true
         }
         
@@ -125,7 +124,9 @@ public final class RedirectComponent: ActionComponent {
     /// - Returns: A boolean value indicating whether the URL was handled by the redirect component.
     @discardableResult
     public static func applicationDidOpen(from url: URL) -> Bool {
-        RedirectListener.applicationDidOpen(from: url)
+        let result = RedirectListener.applicationDidOpen(from: url)
+        Self.storedRedirectAction = nil
+        return result
     }
     
     // MARK: - Http link handling
@@ -187,6 +188,7 @@ public final class RedirectComponent: ActionComponent {
                 delegate?.didFail(with: error, from: self)
             }
         }
+        Self.storedRedirectAction = nil
     }
     
     private func handleNativeMobileRedirect(withReturnURL returnURL: URL, redirectStateData: String, _ action: RedirectAction) {
