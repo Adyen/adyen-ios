@@ -34,3 +34,5 @@
 - `StoredCardPaymentMethod.brands` is now a strongly typed Array of `CardType`.
 - `StoredCardPaymentMethod.brand` is now a strongly typed `CardType`.
 - `PaymentMethods` now has a convenient function `overrideDisplayInformation(ofPaymentMethod:with:)` to override a specific payment method title/subtitle in the DropIn list.
+- Every component needs to be initialized with an `AdyenContext` instance that defines the behavior for a payment flow.
+- `AnalyticsConfiguration` is the object that defines the behavior of analytics within the SDK. Merchants can enable/disable analytics.
