@@ -37,6 +37,9 @@ public struct Environment: AnyAPIEnvironment {
     /// Adyen's United States live environment.
     public static let liveUnitedStates = Environment(baseURL: URL(string: "https://checkoutshopper-live-us.adyen.com/")!)
 
+    /// Adyen's India live  environment.
+    public static let liveIndia = Environment(baseURL: URL(string: "https://checkoutshopper-live-in.adyen.com/")!)
+
     /// Initializes an `Environment` object.
     ///
     /// - Parameters:
