@@ -33,7 +33,8 @@ class SelfRetainingAPIClientTests: XCTestCase {
             shopperLocale: "EG",
             paymentMethods: PaymentMethods(regular: [], stored: []),
             amount: .init(value: 2, currencyCode: "USD", localeIdentifier: nil),
-            sessionData: "data"
+            sessionData: "data",
+            configuration: nil
         )
         baseApiClient.mockedResults = [
             .failure(Dummy.error),
@@ -72,7 +73,8 @@ class SelfRetainingAPIClientTests: XCTestCase {
             shopperLocale: "EG",
             paymentMethods: PaymentMethods(regular: [], stored: []),
             amount: .init(value: 2, currencyCode: "USD", localeIdentifier: nil),
-            sessionData: "data"
+            sessionData: "data",
+            configuration: nil
         )
         apiClient.mockedResults = [
             .success(expectedResponse),
