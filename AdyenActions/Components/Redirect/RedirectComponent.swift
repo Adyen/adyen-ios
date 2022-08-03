@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenNetworking
 import UIKit
 
 extension RedirectComponent: AnyRedirectComponent {}
@@ -13,10 +14,22 @@ extension RedirectComponent: AnyRedirectComponent {}
 public final class RedirectComponent: ActionComponent {
     
     /// Describes the types of errors that can be returned by the component.
-    public enum Error: Swift.Error {
+    public enum Error: LocalizedError {
         
         /// Indicates that no app is installed that can handle the payment.
         case appNotFound
+        
+        /// Indicates that invalid parameters are passed back from the issuer.
+        case invalidRedirectParameters
+        
+        public var errorDescription: String? {
+            switch self {
+            case .appNotFound:
+                return "No app installed that can handle the payment."
+            case .invalidRedirectParameters:
+                return "Invalid parameters are passed back from the issuer."
+            }
+        }
         
     }
     
@@ -46,6 +59,11 @@ public final class RedirectComponent: ActionComponent {
     public weak var presentationDelegate: PresentationDelegate?
     
     internal var appLauncher: AnyAppLauncher = AppLauncher()
+    
+    internal lazy var apiClient: AnyRetryAPIClient = {
+        APIClient(apiContext: context.apiContext).retryAPIClient(with: SimpleScheduler(maximumCount: 2))
+    }()
+    
     private var browserComponent: BrowserComponent?
     
     /// The component configurations.
@@ -130,11 +148,43 @@ public final class RedirectComponent: ActionComponent {
     private func registerRedirectBounceBackListener(_ action: RedirectAction) {
         RedirectListener.registerForURL { [weak self] returnURL in
             guard let self = self else { return }
-            
-            let additionalDetails = RedirectDetails(returnURL: returnURL)
-            let actionData = ActionComponentData(details: additionalDetails, paymentData: action.paymentData)
-            self.delegate?.didProvide(actionData, from: self)
+            self.didOpen(url: returnURL, action)
         }
+    }
+    
+    private func didOpen(url returnURL: URL, _ action: RedirectAction) {
+        if let redirectStateData = action.nativeRedirectData {
+            handleNativeMobileRedirect(withReturnURL: returnURL, redirectStateData: redirectStateData, action)
+        } else {
+            do {
+                callDidProvide(redirectDetails: try RedirectDetails(returnURL: returnURL), action)
+            } catch {
+                delegate?.didFail(with: error, from: self)
+            }
+        }
+    }
+    
+    private func handleNativeMobileRedirect(withReturnURL returnURL: URL, redirectStateData: String, _ action: RedirectAction) {
+        guard let queryString = returnURL.query else {
+            delegate?.didFail(with: Error.invalidRedirectParameters, from: self)
+            return
+        }
+        let request = NativeRedirectResultRequest(redirectData: redirectStateData,
+                                                  returnQueryString: queryString)
+        apiClient.perform(request) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case let .failure(error):
+                self.delegate?.didFail(with: error, from: self)
+            case let .success(response):
+                self.callDidProvide(redirectDetails: response, action)
+            }
+        }
+    }
+
+    private func callDidProvide(redirectDetails: RedirectDetails, _ action: RedirectAction) {
+        let actionData = ActionComponentData(details: redirectDetails, paymentData: action.paymentData)
+        delegate?.didProvide(actionData, from: self)
     }
     
 }

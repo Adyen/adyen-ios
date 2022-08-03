@@ -22,7 +22,7 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         let mockedAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data")
 
-        let mockedDetails = RedirectDetails(returnURL: URL(string: "https://www.adyen.com")!)
+        let mockedDetails = try RedirectDetails(returnURL: URL(string: "https://google.com?redirectResult=some")!)
         let mockedData = ActionComponentData(details: mockedDetails, paymentData: "data")
 
         let threeDSActionHandler = AnyThreeDS2ActionHandlerMock()
@@ -49,7 +49,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTAssertTrue(component === sut)
             XCTAssertEqual(data.paymentData, mockedData.paymentData)
             let details = data.details as! RedirectDetails
-            XCTAssertEqual(details.returnURL, mockedDetails.returnURL)
+            XCTAssertEqual(details.redirectResult, "some")
 
             delegateExpectation.fulfill()
         }
