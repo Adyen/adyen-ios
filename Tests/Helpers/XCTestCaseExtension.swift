@@ -17,6 +17,15 @@ extension XCTestCase {
         textView.sendActions(for: .editingChanged)
     }
     
+    internal func populateSimulatingKeystrokes<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U, with text: String) {
+        let textView = textItemView.textField
+        for char in text {
+            textView.text?.append(char)
+            wait(for: .milliseconds(20))
+            textView.sendActions(for: .editingChanged)
+        }
+    }
+    
     internal func populate<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U?, with text: String) {
         guard let textItemView = textItemView else { return }
         populate(textItemView: textItemView, with: text)

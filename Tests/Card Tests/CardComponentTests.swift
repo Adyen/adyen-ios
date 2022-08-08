@@ -1054,7 +1054,7 @@ class CardComponentTests: XCTestCase {
         let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: false)])
         sut.cardViewController.update(binInfo: newResponse)
 
-        wait(for: .milliseconds(700))
+        wait(for: .milliseconds(900))
 
         XCTAssertTrue(brazilSSNItemView!.isHidden)
 

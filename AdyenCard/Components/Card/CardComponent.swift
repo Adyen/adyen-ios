@@ -22,8 +22,7 @@ public class CardComponent: PresentableComponent,
     internal enum Constant {
         internal static let defaultCountryCode = "US"
         internal static let secondsThrottlingDelay = 0.5
-        internal static let publicBinLength = 6
-        internal static let privateBinLength = 11
+        internal static let thresholdBINLength = 11
         internal static let publicPanSuffixLength = 4
     }
     
@@ -76,7 +75,7 @@ public class CardComponent: PresentableComponent,
         let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: context.apiContext),
                                               publicKeyProvider: publicKeyProvider,
-                                              minBinLength: Constant.privateBinLength)
+                                              minBinLength: Constant.thresholdBINLength)
         self.init(paymentMethod: paymentMethod,
                   context: context,
                   configuration: configuration,
@@ -178,9 +177,12 @@ public class CardComponent: PresentableComponent,
 
 extension CardComponent: CardViewControllerDelegate {
     
-    func didChangeBIN(_ value: String) {
-        self.cardComponentDelegate?.didChangeBIN(String(value.prefix(Constant.publicBinLength)), component: self)
-        binInfoProvider.provide(for: value, supportedTypes: supportedCardTypes) { [weak self] binInfo in
+    func didChange(bin: String) {
+        self.cardComponentDelegate?.didChangeBIN(bin, component: self)
+    }
+    
+    func didChange(pan: String) {
+        binInfoProvider.provide(for: pan, supportedTypes: supportedCardTypes) { [weak self] binInfo in
             guard let self = self else { return }
             // update response with sorted brands
             var binInfo = binInfo

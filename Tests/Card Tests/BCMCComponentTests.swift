@@ -226,7 +226,7 @@ class BCMCComponentTests: XCTestCase {
         wait(for: [expectationCardType], timeout: 5)
     }
 
-    func testDelegateCallledCorrectBIN() {
+    func testDelegateCalledCorrectBIN() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.masterCard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
@@ -249,6 +249,66 @@ class BCMCComponentTests: XCTestCase {
         populate(textItemView: cardNumberItemView!, with: Dummy.bancontactCard.number!)
 
         wait(for: [expectationBin], timeout: 5)
+    }
+    
+    func testDelegateNotCalledUntilCardNumberIsValid() {
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.masterCard])
+        let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
+        let sut = BCMCComponent(paymentMethod: paymentMethod,
+                                context: context)
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let expectationBin = XCTestExpectation(description: "Bin Expectation")
+        expectationBin.isInverted = true
+        let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
+            XCTAssertEqual(value, "670344")
+            expectationBin.fulfill()
+        },
+                                                     onCardBrandChange: { _ in },
+                                                     onSubmitLastFour: { _ in })
+        sut.cardComponentDelegate = delegateMock
+
+        wait(for: .milliseconds(300))
+        
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
+        populate(textItemView: cardNumberItemView!, with: "6703 4444 4444")
+
+        wait(for: [expectationBin], timeout: 1)
+    }
+    
+    func testDelegateCalledWith8DigitsBIN() {
+        let cardTypeProviderMock = BinInfoProviderMock()
+        cardTypeProviderMock.onFetch = {
+            $0(BinLookupResponse(brands: [CardBrand(type: .bcmc, panLength: 19)]))
+        }
+        
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.masterCard])
+        let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
+        let sut = BCMCComponent(paymentMethod: paymentMethod,
+                                context: context,
+                                configuration: .init(),
+                                publicKeyProvider: PublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let expectationBin = XCTestExpectation(description: "Bin Expectation")
+        expectationBin.expectedFulfillmentCount = 1
+        let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
+            XCTAssertEqual(value, "67030000")
+            expectationBin.fulfill()
+        },
+                                                     onCardBrandChange: { _ in },
+                                                     onSubmitLastFour: { _ in })
+        sut.cardComponentDelegate = delegateMock
+
+        wait(for: .milliseconds(300))
+        
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
+        populateSimulatingKeystrokes(textItemView: cardNumberItemView!, with: Dummy.longBancontactCard.number!)
+
+        wait(for: [expectationBin], timeout: 1)
     }
     
     func testDelegateIncorrectCard() {
