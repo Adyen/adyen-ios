@@ -190,6 +190,7 @@ internal enum AnyPaymentMethod: Decodable {
     case boleto(BoletoPaymentMethod)
     case affirm(AffirmPaymentMethod)
     case atome(AtomePaymentMethod)
+    case onlineBanking(OnlineBankingPaymentMethod)
     
     case none
     
@@ -245,7 +246,8 @@ internal enum AnyPaymentMethod: Decodable {
             return paymentMethod
         case let .atome(paymentMethod):
             return paymentMethod
-
+        case let .onlineBanking(paymentMethod):
+            return paymentMethod
         case .none:
             return nil
         }

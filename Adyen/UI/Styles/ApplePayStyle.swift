@@ -14,7 +14,7 @@ public struct ApplePayStyle {
     /// Style of the payment button. When nil, it's set to automatic based on Dark or Light Mode.
     public var paymentButtonStyle: PKPaymentButtonStyle?
     
-    /// Type of the Apple Pay payment button. Default is `.plain`
+    /// Type of the Apple Pay payment button. Default is `.inStore`
     public var paymentButtonType: PKPaymentButtonType
     
     /// Corner radius for the payment button. iOS 12 or above. Defaults to 4 points.
@@ -29,12 +29,12 @@ public struct ApplePayStyle {
     /// Initializes an Apple Pay style instance with default values.
     /// - Parameters:
     ///   - paymentButtonStyle: Style of the payment button.
-    ///   - paymentButtonType: Type of the Apple Pay payment button. Default is `.plain`
+    ///   - paymentButtonType: Type of the Apple Pay payment button. Default is `.inStore`
     ///   - cornerRadius: Corner radius for the payment button. iOS 12 or above. Defaults to 4 points.
     ///   - backgroundColor: Background color for the Apple Pay component.
     ///   - hintLabel: Stying for the label that contains the formatted amount text.
     public init(paymentButtonStyle: PKPaymentButtonStyle? = nil,
-                paymentButtonType: PKPaymentButtonType = .plain,
+                paymentButtonType: PKPaymentButtonType = .inStore,
                 cornerRadius: CGFloat = 4,
                 backgroundColor: UIColor = UIColor.Adyen.componentBackground,
                 hintLabel: TextStyle = TextStyle(font: .preferredFont(forTextStyle: .footnote),

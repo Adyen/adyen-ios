@@ -72,7 +72,6 @@
 "adyen.button.copy" = "複製";
 "adyen.voucher.introduction" = "多謝惠顧，請使用以下資訊完成付款。";
 "adyen.voucher.readInstructions" = "閱覽說明";
-"adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "金額";
 "adyen.voucher.entity" = "實體";
 "adyen.pix.instructions" = "";
@@ -156,3 +155,5 @@
 "adyen.ach.accountNumberField.invalid" = "帳戶號碼無效";
 "adyen.ach.accountLocationField.title" = "ABA 匯款路徑編號";
 "adyen.ach.accountLocationField.invalid" = "ABA 匯款路徑編號無效";
+"idealIssuer.selectField.title" = "銀行";
+"adyen.onlineBanking.termsAndConditions" = "按一下「繼續」即表示您同意#條款及細則#";

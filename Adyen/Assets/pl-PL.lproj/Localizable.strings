@@ -159,3 +159,5 @@
 "adyen.ach.accountNumberField.invalid" = "Nieprawidłowy numer rachunku";
 "adyen.ach.accountLocationField.title" = "Kod bankowy ABA Routing Number";
 "adyen.ach.accountLocationField.invalid" = "Nieprawidłowy kod bankowy ABA Routing Number";
+"idealIssuer.selectField.title" = "Bank";
+"adyen.onlineBanking.termsAndConditions" = "Klikając Dalej, akceptujesz #Warunki świadczenia usług#";

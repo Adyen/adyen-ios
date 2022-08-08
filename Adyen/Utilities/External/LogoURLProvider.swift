@@ -36,7 +36,7 @@ public final class LogoURLProvider {
     /// - Parameter paymentMethod: The issuer payment method.
     /// - Parameter environment: The environment to be used.
     /// - Returns: The URL for the issuer logo.
-    public static func logoURL(for issuer: IssuerListPaymentMethod.Issuer,
+    public static func logoURL(for issuer: Issuer,
                                localizedParameters: LocalizationParameters?,
                                paymentMethod: IssuerListPaymentMethod,
                                environment: AnyAPIEnvironment) -> URL {

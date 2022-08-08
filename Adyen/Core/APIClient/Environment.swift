@@ -38,6 +38,9 @@ public struct Environment: AnyAPIEnvironment {
     /// Adyen's apse live  environment.
     public static let liveApse = Environment(baseURL: URL(string: "https://checkoutshopper-live-apse.adyen.com/")!)
 
+    /// Adyen's India live  environment.
+    public static let liveIndia = Environment(baseURL: URL(string: "https://checkoutshopper-live-in.adyen.com/")!)
+
     /// Initializes an `Environment` object.
     ///
     /// - Parameters:

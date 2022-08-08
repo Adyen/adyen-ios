@@ -159,3 +159,5 @@
 "adyen.ach.accountNumberField.invalid" = "유효하지 않은 계좌 번호";
 "adyen.ach.accountLocationField.title" = "ABA 라우팅 번호";
 "adyen.ach.accountLocationField.invalid" = "유효하지 않은 ABA 라우팅 번호";
+"idealIssuer.selectField.title" = "은행";
+"adyen.onlineBanking.termsAndConditions" = "#이용약관#에 동의하는 경우 계속을 클릭합니다";

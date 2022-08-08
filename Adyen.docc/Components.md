@@ -26,6 +26,7 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - ``AffirmComponent``
 - ``AtomeComponent``
 - ``BACSDirectDebitComponent``
+- ``OnlineBankingComponent``
 
 ## Setting up the Component
 

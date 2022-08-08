@@ -159,3 +159,5 @@
 "adyen.ach.accountNumberField.invalid" = "Número de cuenta no válido";
 "adyen.ach.accountLocationField.title" = "Número de ruta ABA";
 "adyen.ach.accountLocationField.invalid" = "El número de ruta ABA no es válido";
+"idealIssuer.selectField.title" = "Banco";
+"adyen.onlineBanking.termsAndConditions" = "Al hacer clic en Continuar, usted acepta los #Términos y condiciones#";

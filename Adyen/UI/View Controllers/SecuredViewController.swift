@@ -14,7 +14,7 @@ public final class SecuredViewController: UIViewController {
 
     private let notificationCenter = NotificationCenter.default
 
-    private let childViewController: UIViewController
+    internal let childViewController: UIViewController
 
     private let style: ViewStyle
 
