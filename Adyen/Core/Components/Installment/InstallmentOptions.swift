@@ -14,14 +14,12 @@ public protocol InstallmentConfigurationAware {
 /// Details to configure Installment Options.
 /// These always include regular monthly installments,
 /// but in some countries `revolving` option may be added.
-public struct InstallmentOptions: Equatable, Decodable {
+public struct InstallmentOptions: Equatable, Decodable, Encodable {
     
     /// Month options for regular installments.
-    @_spi(AdyenInternal)
     public let regularInstallmentMonths: [UInt]
     
     /// Determines if revolving installment is an option.
-    @_spi(AdyenInternal)
     public let includesRevolving: Bool
     
     /// Creates a new instance of installment options.
@@ -52,7 +50,7 @@ public struct InstallmentOptions: Equatable, Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.regularInstallmentMonths = try container.decodeIfPresent([UInt].self, forKey: .regularInstallmentMonths) ?? []
         let plans = try container.decode([String].self, forKey: .plans)
-        self.includesRevolving = plans.contains(Constants.revolving)
+        self.includesRevolving = plans.contains(Installments.Plan.revolving.rawValue)
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -60,8 +58,16 @@ public struct InstallmentOptions: Equatable, Decodable {
         case regularInstallmentMonths = "values"
     }
     
-    private enum Constants {
-        static let revolving = "revolving"
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        var plans = [Installments.Plan.regular.rawValue]
+        if includesRevolving {
+            plans.append(Installments.Plan.revolving.rawValue)
+        }
+        
+        try container.encode(plans, forKey: .plans)
+        try container.encode(regularInstallmentMonths, forKey: .regularInstallmentMonths)
     }
 }
 
@@ -69,11 +75,9 @@ public struct InstallmentOptions: Equatable, Decodable {
 public struct InstallmentConfiguration: Decodable {
     
     /// The option that apply to all card types, unless included `cardTypeBased` options.
-    @_spi(AdyenInternal)
     public let defaultOptions: InstallmentOptions?
     
     /// Options that are specific to given card types
-    @_spi(AdyenInternal)
     public let cardBasedOptions: [CardType: InstallmentOptions]?
     
     /// Determines whether to show the money amount in the installment selection.
