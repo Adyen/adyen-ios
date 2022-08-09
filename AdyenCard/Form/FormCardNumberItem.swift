@@ -24,12 +24,13 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     /// Supported card type logos.
     internal let cardTypeLogos: [FormCardLogosItem.CardTypeLogo]
     
-    /// The observable of the card's BIN value.
-    /// The value contains up to 6 first digits of card' PAN.
-    @AdyenObservable("") internal var binValue: String
-    
     /// The card's PAN value.
+    /// Reported with every entered digit.
     @AdyenObservable("") internal var panValue: String
+    
+    /// The card's BIN value up to 8 digits.
+    /// Reported with every entered digit.
+    @AdyenObservable("") internal var binValue: String
     
     /// Currently selected brand for the entered bin.
     @AdyenObservable(nil) internal private(set) var currentBrand: CardBrand?
@@ -75,9 +76,8 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     }
     
     private func updateBINIfNeeded() {
-        guard isValid() else { return }
-        switch value {
-        case _ where value.count > Constants.minimumPANLength:
+        switch (value, isValid()) {
+        case (_, true) where value.count > Constants.minimumPANLength:
             binValue = String(value.prefix(Constants.largeBinLength))
         default:
             binValue = String(value.prefix(Constants.smallBinLength))

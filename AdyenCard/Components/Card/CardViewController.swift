@@ -23,8 +23,6 @@ internal class CardViewController: FormViewController {
 
     private let supportedCardTypes: [CardType]
 
-    private let throttler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
-
     private let formStyle: FormComponentStyle
 
     internal var items: ItemsProvider
@@ -107,6 +105,10 @@ internal class CardViewController: FormViewController {
     
     internal var selectedBrand: String? {
         items.numberContainerItem.numberItem.currentBrand?.type.rawValue
+    }
+    
+    internal var cardBIN: String {
+        items.numberContainerItem.numberItem.binValue
     }
     
     internal var validAddress: PostalAddress? {
@@ -300,9 +302,7 @@ internal class CardViewController: FormViewController {
 
     private func didChange(pan: String) {
         items.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: pan)
-        throttler.throttle { [weak self] in
-            self?.cardDelegate?.didChange(pan: pan)
-        }
+        cardDelegate?.didChange(pan: pan)
     }
     
     private func didChange(bin: String) {

@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable @_spi(AdyenInternal) import AdyenCard
+@testable import AdyenEncryption
 @testable import AdyenDropIn
 import XCTest
 
@@ -193,14 +194,12 @@ class BCMCComponentTests: XCTestCase {
         self.populate(textItemView: expiryDateItemView!, with: expiryDate)
         
         // Tap submit button
-        let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.payButtonItem.button")
-        XCTAssertNotNil(submitButton)
-        submitButton!.sendActions(for: .touchUpInside)
+        tapSubmitButton(on: sut.viewController.view)
         
         wait(for: [didSubmitExpectation], timeout: 10)
     }
     
-    func testDelegateCallledCorrectCard() {
+    func testDelegateCalledCorrectCard() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.americanExpress])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
@@ -215,7 +214,9 @@ class BCMCComponentTests: XCTestCase {
             XCTAssertEqual(value, mockedBrands)
             expectationCardType.fulfill()
         },
-                                                     onSubmitLastFour: { _ in })
+                                                     onSubmitLastFour: { _, _ in
+            XCTFail("form not submited yet onSubmitLastFour is called")
+        })
         sut.cardComponentDelegate = delegateMock
         
         wait(for: .milliseconds(300))
@@ -235,12 +236,17 @@ class BCMCComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
+        expectationBin.expectedFulfillmentCount = 1
+        expectationBin.assertForOverFulfill = true
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
-            XCTAssertEqual(value, "670344")
+            XCTAssertTrue("670344".hasPrefix(value))
+            XCTAssertTrue(value.count <= 6)
             expectationBin.fulfill()
         },
                                                      onCardBrandChange: { _ in },
-                                                     onSubmitLastFour: { _ in })
+                                                     onSubmitLastFour: { _, _ in
+            XCTFail("form not submited yet onSubmitLastFour is called")
+        })
         sut.cardComponentDelegate = delegateMock
 
         wait(for: .milliseconds(300))
@@ -251,7 +257,7 @@ class BCMCComponentTests: XCTestCase {
         wait(for: [expectationBin], timeout: 5)
     }
     
-    func testDelegateNotCalledUntilCardNumberIsValid() {
+    func testOnSubmitLastFourNotCalledUntilCardNumberIsValidAndSubmitted() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.masterCard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
@@ -260,13 +266,16 @@ class BCMCComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
-        expectationBin.isInverted = true
+        expectationBin.expectedFulfillmentCount = 1
+        expectationBin.assertForOverFulfill = true
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
             XCTAssertEqual(value, "670344")
             expectationBin.fulfill()
         },
                                                      onCardBrandChange: { _ in },
-                                                     onSubmitLastFour: { _ in })
+                                                     onSubmitLastFour: { _, _ in
+            XCTFail("form not submited yet onSubmitLastFour is called")
+        })
         sut.cardComponentDelegate = delegateMock
 
         wait(for: .milliseconds(300))
@@ -277,7 +286,7 @@ class BCMCComponentTests: XCTestCase {
         wait(for: [expectationBin], timeout: 1)
     }
     
-    func testDelegateCalledWith8DigitsBIN() {
+    func testDelegateCalledWith6DigitsBINThenFinal6DigitsBIN() {
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(brands: [CardBrand(type: .bcmc, panLength: 19)]))
@@ -294,24 +303,32 @@ class BCMCComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
-        expectationBin.expectedFulfillmentCount = 1
+        expectationBin.expectedFulfillmentCount = 2
+        expectationBin.assertForOverFulfill = true
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
-            XCTAssertEqual(value, "67030000")
-            expectationBin.fulfill()
+            XCTAssertTrue("670344".hasPrefix(value))
+            XCTAssertTrue(value.count <= 6)
+            if value == "670344" {
+                expectationBin.fulfill()
+            }
         },
                                                      onCardBrandChange: { _ in },
-                                                     onSubmitLastFour: { _ in })
+                                                     onSubmitLastFour: { _, finalBin in
+            XCTAssertEqual(finalBin, "670344")
+            expectationBin.fulfill()
+        })
         sut.cardComponentDelegate = delegateMock
 
         wait(for: .milliseconds(300))
         
-        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
-        populateSimulatingKeystrokes(textItemView: cardNumberItemView!, with: Dummy.longBancontactCard.number!)
+        fillCard(on: sut.viewController.view, with: Dummy.bancontactCard, simulateKeyStrokes: true)
+        
+        tapSubmitButton(on: sut.viewController.view)
 
         wait(for: [expectationBin], timeout: 1)
     }
     
-    func testDelegateCalledWith6DigitsBIN() {
+    func testDelegateCalledWith8DigitsBINThenFinal8DigitsBIN() {
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(brands: [CardBrand(type: .bcmc, isLuhnCheckEnabled: false)]))
@@ -328,61 +345,27 @@ class BCMCComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
-        expectationBin.expectedFulfillmentCount = 1
-        let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
-            XCTAssertEqual(value, "670344")
-            expectationBin.fulfill()
-        },
-                                                     onCardBrandChange: { _ in },
-                                                     onSubmitLastFour: { _ in })
-        sut.cardComponentDelegate = delegateMock
-
-        wait(for: .milliseconds(300))
-        
-        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
-        populateSimulatingKeystrokes(textItemView: cardNumberItemView!, with: Dummy.bancontactCard.number!)
-
-        wait(for: [expectationBin], timeout: 1)
-    }
-    
-    func testDelegateCalledWith6DigitsBINThen8DigitsBIN() {
-        let cardTypeProviderMock = BinInfoProviderMock()
-        cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [CardBrand(type: .bcmc, isLuhnCheckEnabled: false, panLength: 19)]))
-        }
-        
-        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.masterCard])
-        let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
-        let sut = BCMCComponent(paymentMethod: paymentMethod,
-                                context: context,
-                                configuration: .init(),
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock)
-
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        let expectationBin = XCTestExpectation(description: "Bin Expectation")
         expectationBin.expectedFulfillmentCount = 2
-        var counter = 0
+        expectationBin.assertForOverFulfill = true
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
-            if counter == 0 {
-                XCTAssertEqual(value, "670300")
-            } else {
-                XCTAssertEqual(value, "67030000")
+            XCTAssertTrue("67030000".hasPrefix(value))
+            XCTAssertTrue(value.count <= 8)
+            if value == "67030000" {
+                expectationBin.fulfill()
             }
-            counter += 1
-            expectationBin.fulfill()
         },
                                                      onCardBrandChange: { _ in },
-                                                     onSubmitLastFour: { _ in })
+                                                     onSubmitLastFour: { _, finalBin in
+            XCTAssertEqual(finalBin, "67030000")
+            expectationBin.fulfill()
+        })
         sut.cardComponentDelegate = delegateMock
 
         wait(for: .milliseconds(300))
         
-        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
-        populateSimulatingKeystrokes(textItemView: cardNumberItemView!, with: "6703 0000 0000 0000")
-        wait(for: .milliseconds(500))
-        populateSimulatingKeystrokes(textItemView: cardNumberItemView!, with: "0000")
+        fillCard(on: sut.viewController.view, with: Dummy.longBancontactCard, simulateKeyStrokes: true)
+        
+        tapSubmitButton(on: sut.viewController.view)
 
         wait(for: [expectationBin], timeout: 1)
     }
@@ -401,7 +384,9 @@ class BCMCComponentTests: XCTestCase {
             XCTAssertEqual(value, [])
             expectationCardType.fulfill()
         },
-                                                     onSubmitLastFour: { _ in })
+                                                     onSubmitLastFour: { _, _ in
+            XCTFail("form not submited yet onSubmitLastFour is called")
+        })
         sut.cardComponentDelegate = delegateMock
         
         wait(for: .milliseconds(300))
@@ -441,9 +426,7 @@ class BCMCComponentTests: XCTestCase {
         self.populate(textItemView: expiryDateItemView, with: "10/20")
         
         // Tap submit button
-        let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.payButtonItem.button")
-        XCTAssertNotNil(submitButton)
-        submitButton!.sendActions(for: .touchUpInside)
+        tapSubmitButton(on: sut.viewController.view)
         
         wait(for: .milliseconds(300))
         
@@ -482,5 +465,26 @@ class BCMCComponentTests: XCTestCase {
 
         // Then
         XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+    }
+    
+    func fillCard(on view: UIView, with card: Card, simulateKeyStrokes: Bool = false) {
+        let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
+        let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem")
+        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = view.findView(with: "AdyenCard.BCMCComponent.securityCodeItem")
+
+        if simulateKeyStrokes {
+            populateSimulatingKeystrokes(textItemView: cardNumberItemView!, with: card.number ?? "")
+        } else {
+            populate(textItemView: cardNumberItemView!, with: card.number ?? "")
+        }
+        populate(textItemView: expiryDateItemView!, with: "\(card.expiryMonth ?? "") \(card.expiryYear ?? "")")
+        if let securityCode = card.securityCode {
+            populate(textItemView: securityCodeItemView!, with: securityCode)
+        }
+    }
+    
+    func tapSubmitButton(on view: UIView) {
+        let payButtonItemViewButton: UIControl? = view.findView(with: "AdyenCard.BCMCComponent.payButtonItem.button")
+        payButtonItemViewButton?.sendActions(for: .touchUpInside)
     }
 }

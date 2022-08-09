@@ -38,6 +38,7 @@ public final class BCMCComponent: CardComponent {
                            configuration: Configuration,
                            publicKeyProvider: AnyPublicKeyProvider,
                            binProvider: AnyBinInfoProvider) {
+        let configuration = configuration.bcmcConfiguration()
         super.init(paymentMethod: paymentMethod,
                    context: context,
                    configuration: configuration,

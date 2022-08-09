@@ -173,15 +173,27 @@ public class CardComponent: PresentableComponent,
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         return formViewController
     }()
+    
+    private let panThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
+    private let binThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
 }
 
 extension CardComponent: CardViewControllerDelegate {
     
-    func didChange(bin: String) {
-        self.cardComponentDelegate?.didChangeBIN(bin, component: self)
+    func didChange(pan: String) {
+        panThrottler.throttle { [weak self] in
+            self?.updateBrand(with: pan)
+        }
     }
     
-    func didChange(pan: String) {
+    func didChange(bin: String) {
+        binThrottler.throttle { [weak self] in
+            guard let self = self else { return }
+            self.cardComponentDelegate?.didChangeBIN(bin, component: self)
+        }
+    }
+    
+    private func updateBrand(with pan: String) {
         binInfoProvider.provide(for: pan, supportedTypes: supportedCardTypes) { [weak self] binInfo in
             guard let self = self else { return }
             // update response with sorted brands
