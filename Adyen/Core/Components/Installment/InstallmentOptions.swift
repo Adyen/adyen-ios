@@ -14,7 +14,7 @@ public protocol InstallmentConfigurationAware {
 /// Details to configure Installment Options.
 /// These always include regular monthly installments,
 /// but in some countries `revolving` option may be added.
-public struct InstallmentOptions: Equatable, Decodable, Encodable {
+public struct InstallmentOptions: Equatable, Codable {
     
     /// Month options for regular installments.
     public let regularInstallmentMonths: [UInt]

@@ -48,7 +48,7 @@ public class CardComponent: PresentableComponent,
     public let supportedCardTypes: [CardType]
 
     /// Card component configuration.
-    public var configuration: Configuration
+    public private(set) var configuration: Configuration
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate? {
