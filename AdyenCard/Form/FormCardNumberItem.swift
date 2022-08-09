@@ -137,6 +137,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
                                         isEnteredBrandSupported: isBrandSupported,
                                         panLength: currentBrand?.panLength)
         self.currentBrand = currentBrand
+        updateBINIfNeeded()
     }
     
 }

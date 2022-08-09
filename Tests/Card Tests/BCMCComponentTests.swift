@@ -311,6 +311,82 @@ class BCMCComponentTests: XCTestCase {
         wait(for: [expectationBin], timeout: 1)
     }
     
+    func testDelegateCalledWith6DigitsBIN() {
+        let cardTypeProviderMock = BinInfoProviderMock()
+        cardTypeProviderMock.onFetch = {
+            $0(BinLookupResponse(brands: [CardBrand(type: .bcmc, isLuhnCheckEnabled: false)]))
+        }
+        
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.masterCard])
+        let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
+        let sut = BCMCComponent(paymentMethod: paymentMethod,
+                                context: context,
+                                configuration: .init(),
+                                publicKeyProvider: PublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let expectationBin = XCTestExpectation(description: "Bin Expectation")
+        expectationBin.expectedFulfillmentCount = 1
+        let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
+            XCTAssertEqual(value, "670344")
+            expectationBin.fulfill()
+        },
+                                                     onCardBrandChange: { _ in },
+                                                     onSubmitLastFour: { _ in })
+        sut.cardComponentDelegate = delegateMock
+
+        wait(for: .milliseconds(300))
+        
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
+        populateSimulatingKeystrokes(textItemView: cardNumberItemView!, with: Dummy.bancontactCard.number!)
+
+        wait(for: [expectationBin], timeout: 1)
+    }
+    
+    func testDelegateCalledWith6DigitsBINThen8DigitsBIN() {
+        let cardTypeProviderMock = BinInfoProviderMock()
+        cardTypeProviderMock.onFetch = {
+            $0(BinLookupResponse(brands: [CardBrand(type: .bcmc, isLuhnCheckEnabled: false, panLength: 19)]))
+        }
+        
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.masterCard])
+        let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
+        let sut = BCMCComponent(paymentMethod: paymentMethod,
+                                context: context,
+                                configuration: .init(),
+                                publicKeyProvider: PublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let expectationBin = XCTestExpectation(description: "Bin Expectation")
+        expectationBin.expectedFulfillmentCount = 2
+        var counter = 0
+        let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
+            if counter == 0 {
+                XCTAssertEqual(value, "670300")
+            } else {
+                XCTAssertEqual(value, "67030000")
+            }
+            counter += 1
+            expectationBin.fulfill()
+        },
+                                                     onCardBrandChange: { _ in },
+                                                     onSubmitLastFour: { _ in })
+        sut.cardComponentDelegate = delegateMock
+
+        wait(for: .milliseconds(300))
+        
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
+        populateSimulatingKeystrokes(textItemView: cardNumberItemView!, with: "6703 0000 0000 0000")
+        wait(for: .milliseconds(500))
+        populateSimulatingKeystrokes(textItemView: cardNumberItemView!, with: "0000")
+
+        wait(for: [expectationBin], timeout: 1)
+    }
+    
     func testDelegateIncorrectCard() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.argencard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
