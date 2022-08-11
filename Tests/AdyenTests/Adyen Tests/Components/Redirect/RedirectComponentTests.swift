@@ -6,6 +6,7 @@
 
 @testable import Adyen
 @testable import AdyenActions
+import AdyenNetworking
 import SafariServices
 import XCTest
 
@@ -219,7 +220,133 @@ class RedirectComponentTests: XCTestCase {
 
         waitForExpectations(timeout: 10, handler: nil)
     }
+
+    func testRedirectResult() {
+        // Given
+        let sut = RedirectComponent(apiContext: Dummy.context)
+        let presentationDelegate = PresentationDelegateMock()
+        sut.presentationDelegate = presentationDelegate
+        let delegate = ActionComponentDelegateMock()
+        sut.delegate = delegate
+        let action = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data")
+
+        let presentExpectation = expectation(description: "Expect in app browser to be presented")
+        presentationDelegate.doPresent = { component in
+            presentExpectation.fulfill()
+        }
+
+        let redirectExpectation = expectation(description: "Expect redirect to be proccessed")
+        delegate.onDidProvide = { (data, component) in
+            XCTAssertTrue(component === sut)
+            XCTAssertNotNil(data.details)
+            redirectExpectation.fulfill()
+        }
+        delegate.onDidFail = { (_,_) in XCTFail("Should not call onDidFail") }
+
+        // When
+        // action handled
+        sut.handle(action)
+        wait(for: .seconds(1))
+
+        // and redirect received
+        RedirectComponent.applicationDidOpen(from: URL(string: "https://www.adyen.com?redirectResult=XXX")!)
+
+        // Then
+        waitForExpectations(timeout: 5, handler: nil)
+    }
     
+    func testNativeRedirectHappyScenario() {
+        let apiClient = APIClientMock()
+        let sut = RedirectComponent(apiContext: Dummy.context, apiClient: apiClient.retryAPIClient(with: SimpleScheduler(maximumCount: 2)))
+        apiClient.mockedResults = [.success(try! RedirectDetails(returnURL: URL(string: "url://?redirectResult=test_redirectResult")!))]
+        
+        let appLauncher = AppLauncherMock()
+        sut.appLauncher = appLauncher
+        let appLauncherExpectation = expectation(description: "Expect appLauncher.openUniversalAppUrl() to be called")
+        appLauncher.onOpenUniversalAppUrl = { url, completion in
+            XCTAssertEqual(url, URL(string: "http://google.com")!)
+            completion?(true)
+            appLauncherExpectation.fulfill()
+        }
+        
+        let delegate = ActionComponentDelegateMock()
+        sut.delegate = delegate
+        let redirectExpectation = expectation(description: "Expect redirect to be proccessed")
+        delegate.onDidProvide = { (data, component) in
+            XCTAssertTrue(component === sut)
+            XCTAssertNotNil(data.details)
+            redirectExpectation.fulfill()
+        }
+        delegate.onDidFail = { (_,_) in XCTFail("Should not call onDidFail") }
+        
+        let action = RedirectAction(url: URL(string: "http://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
+        sut.handle(action)
+        _ = RedirectListener.applicationDidOpen(from: URL(string: "url://?queryParam=value")!)
+        
+        waitForExpectations(timeout: 2)
+    }
+    
+    func testNativeRedirectReturnUrlMissingQueryParameters() {
+        let sut = RedirectComponent(apiContext: Dummy.context)
+        
+        let appLauncher = AppLauncherMock()
+        sut.appLauncher = appLauncher
+        let appLauncherExpectation = expectation(description: "Expect appLauncher.openUniversalAppUrl() to be called")
+        appLauncher.onOpenUniversalAppUrl = { url, completion in
+            XCTAssertEqual(url, URL(string: "http://google.com")!)
+            completion?(true)
+            appLauncherExpectation.fulfill()
+        }
+        
+        let delegate = ActionComponentDelegateMock()
+        sut.delegate = delegate
+        let redirectExpectation = expectation(description: "Expect redirect to be proccessed")
+        delegate.onDidProvide = { (data, component) in
+            XCTFail("Should not call onDidProvide")
+        }
+        delegate.onDidFail = { (error,_) in
+            XCTAssertEqual(error as! RedirectComponent.Error, .invalidRedirectParameters)
+            redirectExpectation.fulfill()
+        }
+        
+        let action = RedirectAction(url: URL(string: "http://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
+        sut.handle(action)
+        _ = RedirectListener.applicationDidOpen(from: URL(string: "url://")!)
+        
+        waitForExpectations(timeout: 2)
+    }
+    
+    func testNativeRedirectEndpointCallFails() {
+        let apiClient = APIClientMock()
+        let sut = RedirectComponent(apiContext: Dummy.context, apiClient: apiClient.retryAPIClient(with: SimpleScheduler(maximumCount: 2)))
+        apiClient.mockedResults = [.failure(Dummy.error)]
+        
+        let appLauncher = AppLauncherMock()
+        sut.appLauncher = appLauncher
+        let appLauncherExpectation = expectation(description: "Expect appLauncher.openUniversalAppUrl() to be called")
+        appLauncher.onOpenUniversalAppUrl = { url, completion in
+            XCTAssertEqual(url, URL(string: "http://google.com")!)
+            completion?(true)
+            appLauncherExpectation.fulfill()
+        }
+        
+        let delegate = ActionComponentDelegateMock()
+        sut.delegate = delegate
+        let redirectExpectation = expectation(description: "Expect redirect to be proccessed")
+        delegate.onDidProvide = { (data, component) in
+            XCTFail("Should not call onDidProvide")
+        }
+        delegate.onDidFail = { (error,_) in
+            XCTAssertEqual(error as! Dummy, .error)
+            redirectExpectation.fulfill()
+        }
+        
+        let action = RedirectAction(url: URL(string: "http://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
+        sut.handle(action)
+        _ = RedirectListener.applicationDidOpen(from: URL(string: "url://?queryParam=value")!)
+        
+        waitForExpectations(timeout: 2)
+    }
 }
 
 extension UIViewController {

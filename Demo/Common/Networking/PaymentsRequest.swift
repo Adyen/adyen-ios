@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -32,6 +32,7 @@ internal struct PaymentsRequest: APIRequest {
         let amount = data.amount ?? currentConfiguration.amount
         
         try container.encode(data.paymentMethod.encodable, forKey: .details)
+        try container.encode(data.supportNativeRedirect, forKey: .supportNativeRedirect)
         try container.encode(data.storePaymentMethod, forKey: .storePaymentMethod)
         try container.encodeIfPresent(data.shopperName, forKey: .shopperName)
         try container.encodeIfPresent(data.emailAddress ?? ConfigurationConstants.shopperEmail, forKey: .shopperEmail)
@@ -56,6 +57,7 @@ internal struct PaymentsRequest: APIRequest {
     private enum CodingKeys: String, CodingKey {
         case details = "paymentMethod"
         case storePaymentMethod
+        case supportNativeRedirect
         case amount
         case reference
         case channel

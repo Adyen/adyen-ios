@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -45,7 +45,7 @@ public enum Action: Decodable {
         let type = try container.decode(ActionType.self, forKey: .type)
         
         switch type {
-        case .redirect:
+        case .redirect, .nativeRedirect:
             self = .redirect(try RedirectAction(from: decoder))
         case .threeDS2Fingerprint:
             self = .threeDS2Fingerprint(try ThreeDS2FingerprintAction(from: decoder))
@@ -86,6 +86,7 @@ public enum Action: Decodable {
     
     private enum ActionType: String, Decodable {
         case redirect
+        case nativeRedirect
         case threeDS2Fingerprint
         case threeDS2Challenge
         case threeDS2
