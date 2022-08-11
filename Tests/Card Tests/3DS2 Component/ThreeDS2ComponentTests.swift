@@ -22,7 +22,7 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         let mockedAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data")
 
-        let mockedDetails = try RedirectDetails(returnURL: URL(string: "https://google.com?redirectResult=some")!)
+        let mockedDetails = try RedirectDetails(returnURL: Dummy.returnUrl)
         let mockedData = ActionComponentData(details: mockedDetails, paymentData: "data")
 
         let threeDSActionHandler = AnyThreeDS2ActionHandlerMock()

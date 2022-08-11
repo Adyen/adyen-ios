@@ -55,6 +55,8 @@ enum Dummy: Error {
     internal static func createTestApplePayPayment() -> ApplePayPayment {
         return try! .init(countryCode: "US", currencyCode: "USD", summaryItems: createTestSummaryItems())
     }
+    
+    internal static let returnUrl = URL(string: "https://google.com?redirectResult=some")!
 
     internal static func createTestSummaryItems() -> [PKPaymentSummaryItem] {
         var amounts = (0...3).map { _ in

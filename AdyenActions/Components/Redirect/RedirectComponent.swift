@@ -27,7 +27,7 @@ public final class RedirectComponent: ActionComponent {
             case .appNotFound:
                 return "No app installed that can handle the payment."
             case .invalidRedirectParameters:
-                return "Invalid parameters are passed back from the issuer."
+                return "Query parameters returned by the issuer is invalid or empty."
             }
         }
         
