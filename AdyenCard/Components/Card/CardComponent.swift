@@ -180,13 +180,13 @@ public class CardComponent: PresentableComponent,
 
 extension CardComponent: CardViewControllerDelegate {
     
-    func didChange(pan: String) {
+    internal func didChange(pan: String) {
         panThrottler.throttle { [weak self] in
             self?.updateBrand(with: pan)
         }
     }
     
-    func didChange(bin: String) {
+    internal func didChange(bin: String) {
         binThrottler.throttle { [weak self] in
             guard let self = self else { return }
             self.cardComponentDelegate?.didChangeBIN(bin, component: self)
