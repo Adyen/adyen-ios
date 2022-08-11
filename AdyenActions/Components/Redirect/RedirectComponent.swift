@@ -164,7 +164,7 @@ public final class RedirectComponent: ActionComponent {
             handleNativeMobileRedirect(withReturnURL: returnURL, redirectStateData: redirectStateData, action)
         } else {
             do {
-                callDidProvide(redirectDetails: try RedirectDetails(returnURL: returnURL), action)
+                notifyDelegateDidProvide(redirectDetails: try RedirectDetails(returnURL: returnURL), action)
             } catch {
                 delegate?.didFail(with: error, from: self)
             }
@@ -184,12 +184,12 @@ public final class RedirectComponent: ActionComponent {
             case let .failure(error):
                 self.delegate?.didFail(with: error, from: self)
             case let .success(response):
-                self.callDidProvide(redirectDetails: response, action)
+                self.notifyDelegateDidProvide(redirectDetails: response, action)
             }
         }
     }
 
-    private func callDidProvide(redirectDetails: RedirectDetails, _ action: RedirectAction) {
+    private func notifyDelegateDidProvide(redirectDetails: RedirectDetails, _ action: RedirectAction) {
         let actionData = ActionComponentData(details: redirectDetails, paymentData: action.paymentData)
         delegate?.didProvide(actionData, from: self)
     }
