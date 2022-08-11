@@ -72,12 +72,18 @@ class RedirectDetailsTests: XCTestCase {
 
     func testExtractionFromURLWithoutQuery() throws {
         let url = URL(string: "url://")!
-        XCTAssertThrowsError(try RedirectDetails(returnURL: url), "", { error in XCTAssertTrue(error is RedirectDetails.Error) })
+        XCTAssertThrowsError(try RedirectDetails(returnURL: url), "", { error in
+            XCTAssertTrue(error is RedirectDetails.Error)
+            XCTAssertEqual(error.localizedDescription, "Couldn't find payload, redirectResult or PaRes/md keys in the query parameters.")
+        })
     }
 
     func testEncoding() throws {
         let url = URL(string: "badURL")!
-        XCTAssertThrowsError(try RedirectDetails(returnURL: url), "", { error in XCTAssertTrue(error is RedirectDetails.Error) })
+        XCTAssertThrowsError(try RedirectDetails(returnURL: url), "", { error in
+            XCTAssertTrue(error is RedirectDetails.Error)
+            XCTAssertEqual(error.localizedDescription, "Couldn't find payload, redirectResult or PaRes/md keys in the query parameters.")
+        })
 
     }
 }

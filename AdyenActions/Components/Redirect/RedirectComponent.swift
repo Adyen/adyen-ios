@@ -79,6 +79,13 @@ public final class RedirectComponent: ActionComponent {
         self.configuration = configuration
     }
     
+    internal convenience init(context: AdyenContext,
+                              configuration: Configuration = Configuration(),
+                              apiClient: AnyRetryAPIClient) {
+        self.init(context: context, configuration: configuration)
+        self.apiClient = apiClient
+    }
+    
     /// Handles a redirect action.
     ///
     /// - Parameter action: The redirect action object.
