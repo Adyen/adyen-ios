@@ -24,10 +24,6 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     /// Supported card type logos.
     internal let cardTypeLogos: [FormCardLogosItem.CardTypeLogo]
     
-    /// The card's PAN value.
-    /// Reported with every entered digit.
-    @AdyenObservable("") internal var panValue: String
-    
     /// The card's BIN value up to 8 digits.
     /// Reported with every entered digit.
     @AdyenObservable("") internal var binValue: String
@@ -70,7 +66,6 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     // MARK: - Value
     
     private func valueDidChange(_ value: String) {
-        panValue = value
         cardNumberFormatter.cardType = supportedCardTypes.adyen.type(forCardNumber: value)
         updateBINIfNeeded()
     }

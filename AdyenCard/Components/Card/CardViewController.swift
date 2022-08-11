@@ -292,7 +292,7 @@ internal class CardViewController: FormViewController {
     }
 
     private func setupViewRelations() {
-        observe(items.numberContainerItem.numberItem.$panValue) { [weak self] in self?.didChange(pan: $0) }
+        observe(items.numberContainerItem.numberItem.publisher) { [weak self] in self?.didChange(pan: $0) }
         observe(items.numberContainerItem.numberItem.$binValue) { [weak self] in self?.didChange(bin: $0) }
 
         items.button.buttonSelectionHandler = { [weak cardDelegate] in
