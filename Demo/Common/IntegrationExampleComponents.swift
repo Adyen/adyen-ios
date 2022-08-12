@@ -278,8 +278,9 @@ extension IntegrationExample: ActionComponentDelegate {
 }
 
 extension IntegrationExample: CardComponentDelegate {
-    func didSubmit(lastFour value: String, component: CardComponent) {
-        print("Card used: **** **** **** \(value)")
+    func didSubmit(lastFour: String, finalBIN: String, component: CardComponent) {
+        print("Card used: **** **** **** \(lastFour)")
+        print("Final BIN: \(finalBIN)")
     }
 
     internal func didChangeBIN(_ value: String, component: CardComponent) {

@@ -10,7 +10,11 @@ import UIKit
 /// A form item into which a card number is entered.
 internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     
-    private static let binLength = 12
+    private enum Constants {
+        static let smallBinLength = 6
+        static let largeBinLength = 8
+        static let minimumPANLength = 16
+    }
 
     private let cardNumberFormatter = CardNumberFormatter()
 
@@ -20,8 +24,8 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     /// Supported card type logos.
     internal let cardTypeLogos: [FormCardLogosItem.CardTypeLogo]
     
-    /// The observable of the card's BIN value.
-    /// The value contains up to 6 first digits of card' PAN.
+    /// The card's BIN value up to 8 digits.
+    /// Reported with every entered digit.
     @AdyenObservable("") internal var binValue: String
     
     /// Currently selected brand for the entered bin.
@@ -62,8 +66,17 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     // MARK: - Value
     
     private func valueDidChange(_ value: String) {
-        binValue = String(value.prefix(FormCardNumberItem.binLength))
         cardNumberFormatter.cardType = supportedCardTypes.adyen.type(forCardNumber: value)
+        updateBINIfNeeded()
+    }
+    
+    private func updateBINIfNeeded() {
+        switch (value, isValid()) {
+        case (_, true) where value.count > Constants.minimumPANLength:
+            binValue = String(value.prefix(Constants.largeBinLength))
+        default:
+            binValue = String(value.prefix(Constants.smallBinLength))
+        }
     }
     
     // MARK: - BuildableFormItem
@@ -119,6 +132,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
                                         isEnteredBrandSupported: isBrandSupported,
                                         panLength: currentBrand?.panLength)
         self.currentBrand = currentBrand
+        updateBINIfNeeded()
     }
     
 }

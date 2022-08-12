@@ -310,8 +310,9 @@ class CardComponentTests: XCTestCase {
         }, onCardBrandChange: { value in
             XCTAssertEqual(value, [CardBrand(type: .americanExpress)])
             expectationCardType.fulfill()
-        }, onSubmitLastFour: { value in
-            XCTAssertEqual(value, "4449")
+        }, onSubmitLastFour: { lastFour, finalBin in
+            XCTAssertEqual(lastFour, "4449")
+            XCTAssertEqual(finalBin, "670344")
             expectationLastFour.fulfill()
         })
         sut.cardComponentDelegate = delegateMock
@@ -1054,7 +1055,7 @@ class CardComponentTests: XCTestCase {
         let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: false)])
         sut.cardViewController.update(binInfo: newResponse)
 
-        wait(for: .milliseconds(700))
+        wait(for: .milliseconds(900))
 
         XCTAssertTrue(brazilSSNItemView!.isHidden)
 
@@ -2052,7 +2053,7 @@ extension UIView {
     }
 }
 
-extension XCTestCase {
+extension CardComponentTests {
 
     func fillCard(on view: UIView, with card: Card) {
         let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")

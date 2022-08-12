@@ -25,12 +25,25 @@ public final class BCMCComponent: CardComponent {
         let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: context.apiContext),
                                               publicKeyProvider: publicKeyProvider,
-                                              minBinLength: Constant.privateBinLength)
+                                              minBinLength: Constant.thresholdBINLength)
         super.init(paymentMethod: paymentMethod,
                    context: context,
                    configuration: configuration,
                    publicKeyProvider: publicKeyProvider,
                    binProvider: binInfoProvider)
+    }
+    
+    override internal init(paymentMethod: AnyCardPaymentMethod,
+                           context: AdyenContext,
+                           configuration: Configuration,
+                           publicKeyProvider: AnyPublicKeyProvider,
+                           binProvider: AnyBinInfoProvider) {
+        let configuration = configuration.bcmcConfiguration()
+        super.init(paymentMethod: paymentMethod,
+                   context: context,
+                   configuration: configuration,
+                   publicKeyProvider: publicKeyProvider,
+                   binProvider: binProvider)
     }
 
 }
