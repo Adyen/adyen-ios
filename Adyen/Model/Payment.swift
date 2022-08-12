@@ -31,8 +31,4 @@ public struct Payment: Codable {
         self.countryCode = unsafeCountryCode
     }
 
-    private enum CodingKeys: String, CodingKey {
-        case amount
-        case countryCode
-    }
 }
