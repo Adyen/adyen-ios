@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -28,6 +28,9 @@ public struct PaymentComponentData {
     
     /// The installments object.
     public let installments: Installments?
+    
+    /// Indicates whether the current SDK version suports native redirect without glue pages.
+    public let supportNativeRedirect: Bool = true
 
     /// Shopper name.
     public var shopperName: ShopperName? {
