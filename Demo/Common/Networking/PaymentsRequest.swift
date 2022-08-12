@@ -35,6 +35,7 @@ internal struct PaymentsRequest: APIRequest {
         let amount = data.amountToPay ?? currentConfiguration.amount
         
         try container.encode(data.paymentMethod.encodable, forKey: .details)
+        try container.encode(data.supportNativeRedirect, forKey: .supportNativeRedirect)
         try container.encode(data.storePaymentMethod, forKey: .storePaymentMethod)
         try container.encodeIfPresent(data.shopperName, forKey: .shopperName)
         try container.encodeIfPresent(data.emailAddress ?? ConfigurationConstants.shopperEmail, forKey: .shopperEmail)
@@ -60,6 +61,7 @@ internal struct PaymentsRequest: APIRequest {
     
     private enum CodingKeys: String, CodingKey {
         case details = "paymentMethod"
+        case supportNativeRedirect
         case storePaymentMethod
         case amount
         case reference

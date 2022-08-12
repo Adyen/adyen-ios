@@ -9,86 +9,81 @@ import XCTest
 
 class RedirectDetailsTests: XCTestCase {
     
-    func testPayloadExtractionFromURL() {
+    func testPayloadExtractionFromURL() throws {
         let url = URL(string: "url://?param1=abc&payload=some&param2=3")!
-        let details = RedirectDetails(returnURL: url)
-        let keyValues = details.extractKeyValuesFromURL()!
-        
-        XCTAssertEqual(keyValues.count, 1)
-        XCTAssertEqual(keyValues[0].0, RedirectDetails.CodingKeys.payload)
-        XCTAssertEqual(keyValues[0].1, "some")
+        let details = try RedirectDetails(returnURL: url)
+        XCTAssertEqual(details.payload, "some")
+        XCTAssertNil(details.queryString)
+        XCTAssertNil(details.merchantData)
+        XCTAssertNil(details.paymentResponse)
+        XCTAssertNil(details.redirectResult)
 
         XCTAssertNotNil(try? JSONEncoder().encode(details))
     }
     
-    func testRedirectResultExtractionFromURL() {
+    func testRedirectResultExtractionFromURL() throws {
         let url = URL(string: "url://?param1=abc&redirectResult=some&param2=3")!
-        let details = RedirectDetails(returnURL: url)
-        let keyValues = details.extractKeyValuesFromURL()!
-        
-        XCTAssertEqual(keyValues.count, 1)
-        XCTAssertEqual(keyValues[0].0, RedirectDetails.CodingKeys.redirectResult)
-        XCTAssertEqual(keyValues[0].1, "some")
+        let details = try RedirectDetails(returnURL: url)
+        XCTAssertEqual(details.redirectResult, "some")
+        XCTAssertNil(details.queryString)
+        XCTAssertNil(details.merchantData)
+        XCTAssertNil(details.paymentResponse)
+        XCTAssertNil(details.payload)
 
         XCTAssertNotNil(try? JSONEncoder().encode(details))
     }
     
-    func testPaResAndMDExtractionFromURL() {
+    func testPaResAndMDExtractionFromURL() throws {
         let url = URL(string: "url://?param1=abc&PaRes=some&MD=lorem")!
-        let details = RedirectDetails(returnURL: url)
-        let keyValues = details.extractKeyValuesFromURL()!
-        
-        XCTAssertEqual(keyValues.count, 2)
-        // PaRes
-        XCTAssertEqual(keyValues[0].0, RedirectDetails.CodingKeys.paymentResponse)
-        XCTAssertEqual(keyValues[0].1, "some")
-        // MD
-        XCTAssertEqual(keyValues[1].0, RedirectDetails.CodingKeys.merchantData)
-        XCTAssertEqual(keyValues[1].1, "lorem")
+        let details = try RedirectDetails(returnURL: url)
+        XCTAssertEqual(details.paymentResponse, "some")
+        XCTAssertEqual(details.merchantData, "lorem")
+        XCTAssertNil(details.queryString)
+        XCTAssertNil(details.redirectResult)
+        XCTAssertNil(details.payload)
 
         XCTAssertNotNil(try? JSONEncoder().encode(details))
     }
     
-    func testRedirectResultExtractionFromURLWithEncodedParameter() {
+    func testRedirectResultExtractionFromURLWithEncodedParameter() throws {
         let url = URL(string: "url://?param1=abc&redirectResult=encoded%21%20%40%20%24&param2=3")!
-        let details = RedirectDetails(returnURL: url)
-        let keyValues = details.extractKeyValuesFromURL()!
-        
-        XCTAssertEqual(keyValues.count, 1)
-        XCTAssertEqual(keyValues[0].0, RedirectDetails.CodingKeys.redirectResult)
-        XCTAssertEqual(keyValues[0].1, "encoded! @ $")
+        let details = try RedirectDetails(returnURL: url)
+        XCTAssertEqual(details.redirectResult, "encoded! @ $")
+        XCTAssertNil(details.queryString)
+        XCTAssertNil(details.merchantData)
+        XCTAssertNil(details.paymentResponse)
+        XCTAssertNil(details.payload)
 
         XCTAssertNotNil(try? JSONEncoder().encode(details))
     }
 
-    func testQueryStringExtractionFromURL() {
+    func testQueryStringExtractionFromURL() throws {
         let url = URL(string: "url://?param1=abc&pp=H7j5+pwnbNk8uKpS/m67rDp/K+AiJbQ==&param2=3")!
-        let details = RedirectDetails(returnURL: url)
-        let keyValues = details.extractKeyValuesFromURL()!
+        let details = try RedirectDetails(returnURL: url)
+        XCTAssertEqual(details.queryString, "param1=abc&pp=H7j5+pwnbNk8uKpS/m67rDp/K+AiJbQ==&param2=3")
+        XCTAssertNil(details.redirectResult)
+        XCTAssertNil(details.merchantData)
+        XCTAssertNil(details.paymentResponse)
+        XCTAssertNil(details.payload)
 
-        XCTAssertEqual(keyValues.count, 1)
-        XCTAssertEqual(keyValues[0].0, RedirectDetails.CodingKeys.queryString)
-        XCTAssertEqual(keyValues[0].1, "param1=abc&pp=H7j5+pwnbNk8uKpS/m67rDp/K+AiJbQ==&param2=3")
 
         XCTAssertNotNil(try? JSONEncoder().encode(details))
     }
 
-    func testExtractionFromURLWithoutQuery() {
+    func testExtractionFromURLWithoutQuery() throws {
         let url = URL(string: "url://")!
-        let details = RedirectDetails(returnURL: url)
-        
-        XCTAssertNil(details.extractKeyValuesFromURL())
-        XCTAssertThrowsError(try JSONEncoder().encode(details)) { _ in }
+        XCTAssertThrowsError(try RedirectDetails(returnURL: url), "", { error in
+            XCTAssertTrue(error is RedirectDetails.Error)
+            XCTAssertEqual(error.localizedDescription, "Couldn't find payload, redirectResult or PaRes/md keys in the query parameters.")
+        })
     }
 
-    func testEncoding() {
+    func testEncoding() throws {
         let url = URL(string: "badURL")!
-        let details = RedirectDetails(returnURL: url)
-
-        XCTAssertThrowsError(try JSONEncoder().encode(details)) { error in
-            XCTAssertTrue(error is EncodingError)
-            XCTAssertEqual((error as! EncodingError).localizedDescription, "The data couldn’t be written because it isn’t in the correct format.")
-        }
+        XCTAssertThrowsError(try RedirectDetails(returnURL: url), "", { error in
+            XCTAssertTrue(error is RedirectDetails.Error)
+            XCTAssertEqual(error.localizedDescription, "Couldn't find payload, redirectResult or PaRes/md keys in the query parameters.")
+        })
 
     }
 }

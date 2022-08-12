@@ -9,9 +9,9 @@ import UIKit
 
 /// A component that provides a form for Online Banking payment.
 public final class OnlineBankingComponent: PaymentComponent,
-                                           PresentableComponent,
-                                           LoadingComponent,
-                                           PaymentAware {
+    PresentableComponent,
+    LoadingComponent,
+    PaymentAware {
 
     private enum ViewIdentifier {
         static let termsAndConditionsLabelItem = "OnlineBankingTermsAndConditionLabel"
@@ -48,18 +48,20 @@ public final class OnlineBankingComponent: PaymentComponent,
     // MARK: - Items
 
     private var termsAndConditionsLink: String {
-        return paymentMethod.type == .onlineBankingCZ ? TermsAndConditionsURL.onlineBankingCZ : TermsAndConditionsURL.onlineBankingSK
+        paymentMethod.type == .onlineBankingCZ ? TermsAndConditionsURL.onlineBankingCZ : TermsAndConditionsURL.onlineBankingSK
     }
 
     /// The terms and condition message item.
-    internal lazy var termsAndConditionsLabelItem: FormAttributedLabelItem = .init(originalText:
-                                                                                    localizedString(.onlineBankingTermsAndConditions,
-                                                                                                    configuration.localizationParameters),
-                                                                                   link: termsAndConditionsLink,
-                                                                                   style: configuration.style.footnoteLabel,
-                                                                                   linkTextStyle: configuration.style.linkTextLabel,
-                                                                                   identifier: ViewIdentifierBuilder.build(scopeInstance: self,
-                                                                                                                           postfix: ViewIdentifier.termsAndConditionsLabelItem))
+    internal lazy var termsAndConditionsLabelItem: FormAttributedLabelItem = .init(
+        originalText:
+        localizedString(.onlineBankingTermsAndConditions,
+                        configuration.localizationParameters),
+        link: termsAndConditionsLink,
+        style: configuration.style.footnoteLabel,
+        linkTextStyle: configuration.style.linkTextLabel,
+        identifier: ViewIdentifierBuilder.build(scopeInstance: self,
+                                                postfix: ViewIdentifier.termsAndConditionsLabelItem)
+    )
 
     /// The continue button item.
     internal lazy var continueButton: FormButtonItem = {
@@ -76,13 +78,14 @@ public final class OnlineBankingComponent: PaymentComponent,
     /// The Issuer List item.
     internal lazy var issuerListPickerItem: FormIssuersPickerItem = {
         let issuerListPickerItems: [IssuerPickerItem] = onlineBankingPaymentMethod.issuers.map {
-            IssuerPickerItem(identifier: $0.identifier, element: $0) }
+            IssuerPickerItem(identifier: $0.identifier, element: $0)
+        }
 
         AdyenAssertion.assert(message: "Issuer list should not be empty", condition: issuerListPickerItems.count <= 0)
 
         let issuerPickerItem = FormIssuersPickerItem(preselectedValue: issuerListPickerItems[0],
-                                        selectableValues: issuerListPickerItems,
-                                        style: configuration.style.textField)
+                                                     selectableValues: issuerListPickerItems,
+                                                     style: configuration.style.textField)
         issuerPickerItem.title = localizedString(.selectFieldTitle, configuration.localizationParameters)
         issuerPickerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                                   postfix: ViewIdentifier.issuerListItem)
