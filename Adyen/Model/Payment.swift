@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes the current payment.
-public struct Payment {
+public struct Payment: Codable {
     
     /// The amount for this payment.
     public let amount: Amount
