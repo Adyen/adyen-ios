@@ -49,19 +49,9 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            name: "Adyen3DS2",
-            url: "https://github.com/Adyen/adyen-3ds2-ios",
-            .exact(Version(2, 2, 6))
-        ),
-        .package(
             name: "AdyenNetworking",
             url: "https://github.com/Adyen/adyen-networking-ios",
             .exact(Version(1, 0, 0))
-        ),
-        .package(
-            name: "AdyenWeChatPayInternal",
-            url: "https://github.com/Adyen/adyen-wechatpay-ios",
-            .exact(Version(2, 1, 0))
         )
     ],
     targets: [
