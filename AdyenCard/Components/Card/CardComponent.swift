@@ -22,8 +22,7 @@ public class CardComponent: PresentableComponent,
     internal enum Constant {
         internal static let defaultCountryCode = "US"
         internal static let secondsThrottlingDelay = 0.5
-        internal static let publicBinLength = 6
-        internal static let privateBinLength = 11
+        internal static let thresholdBINLength = 11
         internal static let publicPanSuffixLength = 4
     }
     
@@ -80,7 +79,7 @@ public class CardComponent: PresentableComponent,
         let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: context.apiContext),
                                               publicKeyProvider: publicKeyProvider,
-                                              minBinLength: Constant.privateBinLength)
+                                              minBinLength: Constant.thresholdBINLength)
         self.init(paymentMethod: paymentMethod,
                   context: context,
                   configuration: configuration,
@@ -178,13 +177,28 @@ public class CardComponent: PresentableComponent,
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         return formViewController
     }()
+    
+    private let panThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
+    private let binThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
 }
 
 extension CardComponent: CardViewControllerDelegate {
     
-    func didChangeBIN(_ value: String) {
-        self.cardComponentDelegate?.didChangeBIN(String(value.prefix(Constant.publicBinLength)), component: self)
-        binInfoProvider.provide(for: value, supportedTypes: supportedCardTypes) { [weak self] binInfo in
+    internal func didChange(pan: String) {
+        panThrottler.throttle { [weak self] in
+            self?.updateBrand(with: pan)
+        }
+    }
+    
+    internal func didChange(bin: String) {
+        binThrottler.throttle { [weak self] in
+            guard let self = self else { return }
+            self.cardComponentDelegate?.didChangeBIN(bin, component: self)
+        }
+    }
+    
+    private func updateBrand(with pan: String) {
+        binInfoProvider.provide(for: pan, supportedTypes: supportedCardTypes) { [weak self] binInfo in
             guard let self = self else { return }
             // update response with sorted brands
             var binInfo = binInfo

@@ -3,7 +3,6 @@
 [![carthage compatible](https://img.shields.io/badge/carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![SwiftPM](https://img.shields.io/badge/swift%20package%20manager-compatible-brightgreen.svg)](https://swiftpackageregistry.com/Adyen/adyen-ios)
 [![codecov](https://codecov.io/gh/Adyen/adyen-ios/branch/develop/graph/badge.svg)](https://codecov.io/gh/Adyen/adyen-ios)
-[![codebeat badge](https://codebeat.co/badges/dc9e34ed-f1aa-4359-ac9a-b291f1f702cd)](https://codebeat.co/projects/github-com-adyen-adyen-ios-develop-1c0e3b5f-18cc-43c2-ba3c-c0c0743a3ff6)
 
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=Adyen_adyen-ios&metric=alert_status)](https://sonarcloud.io/dashboard?id=Adyen_adyen-ios)
 [![SonarCloud Bugs](https://sonarcloud.io/api/project_badges/measure?project=Adyen_adyen-ios&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=Adyen_adyen-ios)
@@ -16,13 +15,18 @@
 
 ![Checkout iOS Logo](https://user-images.githubusercontent.com/2648655/127174806-79646a9e-24be-4c7b-8b0c-6d1657d82a37.png)
 
-# Adyen Components for iOS
+# Adyen iOS
 
-Adyen Components for iOS allows you to accept in-app payments by providing you with the building blocks you need to create a checkout experience.
+Adyen iOS provides you with the building blocks to create a checkout experience for your shoppers, allowing them to pay using the payment method of their choice.
+
+You can integrate with Adyen iOS in two ways:
+* [Web Drop-in](https://docs.adyen.com/online-payments/ios/drop-in): an all-in-one solution, the quickest way to accept payments on your website.
+* [Web Components](https://docs.adyen.com/online-payments/ios/components): one Component per payment method and combine with your own payments form logic.
+
 
 ## Installation
 
-Adyen Components for iOS are available through either [CocoaPods](http://cocoapods.org), [Carthage](https://github.com/Carthage/Carthage) or [Swift Package Manager](https://swift.org/package-manager/).
+Adyen iOS are available through either [CocoaPods](http://cocoapods.org), [Carthage](https://github.com/Carthage/Carthage) or [Swift Package Manager](https://swift.org/package-manager/).
 
 ### CocoaPods
 

@@ -545,6 +545,7 @@
 		F9354BED23A7C34D00A6760B /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9354BEC23A7C34D00A6760B /* ButtonStyle.swift */; };
 		F9354BEF23A7C87600A6760B /* ImageStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9354BEE23A7C87600A6760B /* ImageStyle.swift */; };
 		F939CD7725EE56BA00018DEC /* LoadingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F939CD7625EE56BA00018DEC /* LoadingComponent.swift */; };
+		F93E534C289A86A800BB6580 /* NativeRedirectResultRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93E534B289A86A800BB6580 /* NativeRedirectResultRequest.swift */; };
 		F94343E623FFD9A400AADF5F /* AdyenAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F94343E523FFD9A400AADF5F /* AdyenAssets.xcassets */; };
 		F94E37B82818138900617382 /* session_response.json in Resources */ = {isa = PBXBuildFile; fileRef = A023A9B328103C2D004FDCA4 /* session_response.json */; };
 		F957A9CE255051130099AD73 /* StoredPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */; };
@@ -1574,6 +1575,7 @@
 		F9354BEC23A7C34D00A6760B /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		F9354BEE23A7C87600A6760B /* ImageStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStyle.swift; sourceTree = "<group>"; };
 		F939CD7625EE56BA00018DEC /* LoadingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingComponent.swift; sourceTree = "<group>"; };
+		F93E534B289A86A800BB6580 /* NativeRedirectResultRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeRedirectResultRequest.swift; sourceTree = "<group>"; };
 		F94343E523FFD9A400AADF5F /* AdyenAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdyenAssets.xcassets; sourceTree = "<group>"; };
 		F94B870925EFB71100D270A6 /* MIGRATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = MIGRATION.md; sourceTree = "<group>"; };
 		F957A9E225514A7E0099AD73 /* Submit3DS2FingerprintRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submit3DS2FingerprintRequest.swift; sourceTree = "<group>"; };
@@ -3428,6 +3430,7 @@
 				F9780B6424338DFE00CC6C73 /* RedirectComponent.swift */,
 				E9AFF882224CF959005A0D8D /* RedirectListener.swift */,
 				E9AFF884224D0D3B005A0D8D /* RedirectDetails.swift */,
+				F93E534B289A86A800BB6580 /* NativeRedirectResultRequest.swift */,
 			);
 			path = Redirect;
 			sourceTree = "<group>";
@@ -6046,6 +6049,7 @@
 				5A93438326779D3900F8CCD1 /* QRCodeViewController.swift in Sources */,
 				F9175FBC2594996000D653BE /* WeChatPaySDKData.swift in Sources */,
 				F9175FB62594996000D653BE /* WeChatPaySDKAction.swift in Sources */,
+				F93E534C289A86A800BB6580 /* NativeRedirectResultRequest.swift in Sources */,
 				A02AF3E8275A0D0900E1636C /* DocumentComponent.swift in Sources */,
 				F917613725A30B5700D653BE /* ThreeDSResult.swift in Sources */,
 				F9175FFB259499D500D653BE /* AwaitView.swift in Sources */,

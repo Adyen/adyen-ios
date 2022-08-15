@@ -228,8 +228,8 @@ class SessionTests: XCTestCase {
                 XCTAssertEqual(redirect.paymentData, expectedAction.paymentData)
                 XCTAssertEqual(redirect.url, expectedAction.url)
                 let data = ActionComponentData(
-                    details: RedirectDetails(
-                        returnURL: URL(string: "https://google.com")!
+                    details: try! RedirectDetails(
+                        returnURL: Dummy.returnUrl
                     ),
                     paymentData: "payment_data"
                 )
@@ -614,8 +614,8 @@ class SessionTests: XCTestCase {
         let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
         let data = ActionComponentData(
-            details: RedirectDetails(
-                returnURL: URL(string: "https://google.com")!
+            details: try RedirectDetails(
+                returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
         )
@@ -684,8 +684,8 @@ class SessionTests: XCTestCase {
         )
         
         let actionData = ActionComponentData(
-            details: RedirectDetails(
-                returnURL: URL(string: "https://google.com")!
+            details: try RedirectDetails(
+                returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
         )
@@ -722,8 +722,8 @@ class SessionTests: XCTestCase {
             didCompleteExpectation.fulfill()
         }
         let actionData = ActionComponentData(
-            details: RedirectDetails(
-                returnURL: URL(string: "https://google.com")!
+            details: try RedirectDetails(
+                returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
         )
@@ -753,8 +753,8 @@ class SessionTests: XCTestCase {
             didCompleteExpectation.fulfill()
         }
         let actionData = ActionComponentData(
-            details: RedirectDetails(
-                returnURL: URL(string: "https://google.com")!
+            details: try RedirectDetails(
+                returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
         )
@@ -784,8 +784,8 @@ class SessionTests: XCTestCase {
             didCompleteExpectation.fulfill()
         }
         let actionData = ActionComponentData(
-            details: RedirectDetails(
-                returnURL: URL(string: "https://google.com")!
+            details: try RedirectDetails(
+                returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
         )
@@ -815,8 +815,8 @@ class SessionTests: XCTestCase {
             didCompleteExpectation.fulfill()
         }
         let actionData = ActionComponentData(
-            details: RedirectDetails(
-                returnURL: URL(string: "https://google.com")!
+            details: try RedirectDetails(
+                returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
         )
@@ -846,8 +846,8 @@ class SessionTests: XCTestCase {
             didCompleteExpectation.fulfill()
         }
         let actionData = ActionComponentData(
-            details: RedirectDetails(
-                returnURL: URL(string: "https://google.com")!
+            details: try RedirectDetails(
+                returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
         )
@@ -912,8 +912,8 @@ class SessionTests: XCTestCase {
             didCompleteExpectation.fulfill()
         }
         let actionData = ActionComponentData(
-            details: RedirectDetails(
-                returnURL: URL(string: "https://google.com")!
+            details: try RedirectDetails(
+                returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
         )
@@ -943,8 +943,8 @@ class SessionTests: XCTestCase {
             didCompleteExpectation.fulfill()
         }
         let actionData = ActionComponentData(
-            details: RedirectDetails(
-                returnURL: URL(string: "https://google.com")!
+            details: try RedirectDetails(
+                returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
         )
