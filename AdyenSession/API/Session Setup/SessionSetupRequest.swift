@@ -67,11 +67,22 @@ internal struct SessionSetupResponse: SessionResponse {
     
     internal let sessionData: String
     
+    internal let configuration: Configuration?
+    
     private enum CodingKeys: String, CodingKey {
         case countryCode
         case shopperLocale
         case paymentMethods
         case amount
         case sessionData
+        case configuration
+    }
+}
+
+extension SessionSetupResponse {
+    
+    internal struct Configuration: Decodable {
+        
+        internal let installmentOptions: InstallmentConfiguration?
     }
 }

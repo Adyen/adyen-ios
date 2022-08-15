@@ -70,6 +70,9 @@ public final class AdyenSession {
         
         /// Result code from the latest API call
         internal var resultCode: PaymentsResponse.ResultCode?
+        
+        /// Component related configuration object
+        internal let configuration: SessionSetupResponse.Configuration?
     }
     
     /// The session context information.
@@ -138,7 +141,8 @@ public final class AdyenSession {
                                              countryCode: response.countryCode,
                                              shopperLocale: response.shopperLocale,
                                              amount: response.amount,
-                                             paymentMethods: response.paymentMethods)
+                                             paymentMethods: response.paymentMethods,
+                                             configuration: response.configuration)
                 completion(.success(sessionContext))
             case let .failure(error):
                 completion(.failure(error))
@@ -171,4 +175,10 @@ public final class AdyenSession {
         self.sessionContext = sessionContext
         self.configuration = configuration
     }
+}
+
+@_spi(AdyenInternal)
+extension AdyenSession: InstallmentConfigurationAware {
+    
+    public var installmentConfiguration: InstallmentConfiguration? { sessionContext.configuration?.installmentOptions }
 }

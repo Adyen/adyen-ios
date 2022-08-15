@@ -38,6 +38,11 @@ internal struct SessionSetupRequest: APIRequest {
         try container.encode("iOS", forKey: .channel)
         try container.encode(ConfigurationConstants.additionalData, forKey: .additionalData)
         try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
+        
+        let installmentOptions = ["card": InstallmentOptions(monthValues: [2, 3, 5], includesRevolving: false),
+                                  "visa": InstallmentOptions(monthValues: [3, 6, 9], includesRevolving: true)]
+        
+        try container.encode(installmentOptions, forKey: .installmentOptions)
     }
     
     internal enum CodingKeys: CodingKey {
@@ -53,6 +58,7 @@ internal struct SessionSetupRequest: APIRequest {
         case channel
         case additionalData
         case lineItems
+        case installmentOptions
     }
     
 }

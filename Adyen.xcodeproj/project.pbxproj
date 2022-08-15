@@ -129,9 +129,9 @@
 		A09ADA122807142600BF6802 /* SessionSetupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09ADA102807142600BF6802 /* SessionSetupRequest.swift */; };
 		A09C704327032870004C01AA /* FormCardLogosItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09C704227032870004C01AA /* FormCardLogosItemView.swift */; };
 		A0BFC8082720259500E36516 /* CardBrandSorterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BFC8072720259500E36516 /* CardBrandSorterTests.swift */; };
+		A0C9B59B288AE34600D6BDAB /* InstallmentOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41E5526CBCA6E0089AD6C /* InstallmentOptions.swift */; };
 		A0D48FB827109B0200C0B82C /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */; };
 		A0DE8F6D26CEA04500F2F1E8 /* Installments.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE8F6C26CEA04500F2F1E8 /* Installments.swift */; };
-		A0F41E5626CBCA6E0089AD6C /* InstallmentOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41E5526CBCA6E0089AD6C /* InstallmentOptions.swift */; };
 		A0F41EAC26CD4AA50089AD6C /* FormCardInstallmentsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41EAB26CD4AA50089AD6C /* FormCardInstallmentsItem.swift */; };
 		A0FA143F26D65A5300627127 /* InstallmentPickerElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */; };
 		A0FA145726D65B6200627127 /* FormCardInstallmentsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA145626D65B6200627127 /* FormCardInstallmentsItemView.swift */; };
@@ -2633,6 +2633,7 @@
 		E28098B0220DA78B0087928F /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				A0F41E3E26CA60A80089AD6C /* Installment */,
 				F97C81AD25BAC8CF00D7F85C /* AbstractPersonalInformationComponent */,
 				E28098B1220DA7910087928F /* Base */,
 				F917308D26491ED900985310 /* InstantPaymentComponent.swift */,
@@ -3728,7 +3729,6 @@
 		F919DF9A24EA7B480027976E /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				A0F41E3E26CA60A80089AD6C /* Installment */,
 				E7798568268CE17800CECA95 /* KCP */,
 				F9FE24542624BCEC001874BB /* GiftCardComponent */,
 				F919DF9B24EA7B570027976E /* Card */,
@@ -5662,6 +5662,7 @@
 				F9354BEF23A7C87600A6760B /* ImageStyle.swift in Sources */,
 				F9FE253B2625AED6001874BB /* PartialPaymentComponent.swift in Sources */,
 				E9E3DB03222548E100697074 /* Coder.swift in Sources */,
+				A0C9B59B288AE34600D6BDAB /* InstallmentOptions.swift in Sources */,
 				E9093401228C54CD00C9F04B /* LogoURLProvider.swift in Sources */,
 				F99E7278261F6C6F00EA5B78 /* KeyboardObserver.swift in Sources */,
 				E21895E622A7CC56001B6EE0 /* FormSplitItemView.swift in Sources */,
@@ -5910,7 +5911,6 @@
 				E76EC682241125F5009C6E2F /* FormCardSecurityCodeItemView.swift in Sources */,
 				E2D12C132223E1C000EF682F /* CardTypeDetector.swift in Sources */,
 				A09C704327032870004C01AA /* FormCardLogosItemView.swift in Sources */,
-				A0F41E5626CBCA6E0089AD6C /* InstallmentOptions.swift in Sources */,
 				F9B8C49223FC287100C4D0FB /* FormCardNumberItemView.swift in Sources */,
 				F9FE25A72625B448001874BB /* GiftCardComponent.swift in Sources */,
 				F92329D225AD0240002C5BC4 /* CardBrand.swift in Sources */,

@@ -47,12 +47,16 @@ public class CardComponent: PresentableComponent,
     public let supportedCardTypes: [CardType]
 
     /// Card component configuration.
-    public let configuration: Configuration
+    public private(set) var configuration: Configuration
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate? {
         didSet {
             storedCardComponent?.delegate = delegate
+            // override installment config if using session (when session is set as delegate)
+            if let installmentAware = delegate as? InstallmentConfigurationAware {
+                configuration.installmentConfiguration = installmentAware.installmentConfiguration
+            }
         }
     }
     

@@ -50,7 +50,8 @@ class SessionTests: XCTestCase {
                                                                  shopperLocale: "US",
                                                                  paymentMethods: expectedPaymentMethods,
                                                                  amount: .init(value: 220, currencyCode: "USD"),
-                                                                 sessionData: "session_data_1"))]
+                                                                 sessionData: "session_data_1",
+                                                                 configuration: nil))]
         let expectation = expectation(description: "Expect session object to be initialized")
         AdyenSession.initialize(with: .init(sessionIdentifier: "session_id",
                                             initialSessionData: "session_data_0",
@@ -295,7 +296,8 @@ class SessionTests: XCTestCase {
                                      shopperLocale: "EG",
                                      paymentMethods: expectedPaymentMethods,
                                      amount: expectedAmount,
-                                     sessionData: "session_data_xxx")
+                                     sessionData: "session_data_xxx",
+                                     configuration: nil)
             )
         ]
         let apiCallsExpectation = expectation(description: "Expect two API calls to be made")
@@ -407,7 +409,8 @@ class SessionTests: XCTestCase {
                                      shopperLocale: "EG",
                                      paymentMethods: expectedPaymentMethods,
                                      amount: expectedAmount,
-                                     sessionData: "session_data_xxx")
+                                     sessionData: "session_data_xxx",
+                                     configuration: nil)
             )
         ]
         let didSubmitExpectation = expectation(description: "Expect payments call to be made")
@@ -949,8 +952,28 @@ class SessionTests: XCTestCase {
         wait(for: [didCompleteExpectation], timeout: 2)
     }
     
+    func testInstallmentsFromSessionConfig() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let config = try! JSONDecoder().decode(SessionSetupResponse.Configuration.self, from: sessionConfigJson.data(using: .utf8)!)
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, configuration: config)
+        let paymentMethod = expectedPaymentMethods.regular[1] as! CardPaymentMethod
+        var cardConfig = CardComponent.Configuration()
+        cardConfig.installmentConfiguration = .init(cardBasedOptions: [.americanExpress: .init(maxInstallmentMonth: 5, includesRevolving: false)], defaultOptions: .init(monthValues: [3, 5], includesRevolving: true))
+        let cardComponent = CardComponent(paymentMethod: paymentMethod, context: context)
+        cardComponent.delegate = sut
+        
+        XCTAssertEqual(cardConfig.installmentConfiguration?.defaultOptions, .init(monthValues: [3, 5], includesRevolving: true))
+        
+        XCTAssertEqual(cardConfig.installmentConfiguration?.cardBasedOptions, [.americanExpress: .init(monthValues: [2, 3, 4, 5], includesRevolving: false)])
+        
+        // card component installments config should be overriden by session response
+        XCTAssertEqual(cardComponent.configuration.installmentConfiguration?.cardBasedOptions, [.visa: .init(monthValues: [3, 6, 9], includesRevolving: true)])
+        XCTAssertEqual(cardComponent.configuration.installmentConfiguration?.defaultOptions, .init(monthValues: [2, 3, 5], includesRevolving: false))
+    }
+    
     private func initializeSession(expectedPaymentMethods: PaymentMethods,
-                                   delegate: AdyenSessionDelegate = SessionDelegateMock()) throws -> AdyenSession {
+                                   delegate: AdyenSessionDelegate = SessionDelegateMock(),
+                                   configuration: SessionSetupResponse.Configuration? = nil) throws -> AdyenSession {
         let apiClient = APIClientMock()
         apiClient.mockedResults = [
             .success(
@@ -962,7 +985,8 @@ class SessionTests: XCTestCase {
                         value: 220,
                         currencyCode: "USD"
                     ),
-                    sessionData: "session_data_1"
+                    sessionData: "session_data_1",
+                    configuration: configuration
                 )
             )
         ]
@@ -1005,3 +1029,31 @@ extension PaymentMethods: Equatable {
         return true
     }
 }
+
+
+let sessionConfigJson = """
+{
+    "installmentOptions": {
+        "card": {
+            "plans": [
+                "regular"
+            ],
+            "values": [
+                2,
+                3,
+                5
+            ]
+        },
+        "visa": {
+            "plans": [
+                "regular", "revolving"
+            ],
+            "values": [
+                3,
+                6,
+                9
+            ]
+        }
+    }
+}
+"""
