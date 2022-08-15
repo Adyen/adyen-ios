@@ -84,5 +84,7 @@ extension SessionSetupResponse {
     internal struct Configuration: Decodable {
         
         internal let installmentOptions: InstallmentConfiguration?
+        
+        internal let storePaymentMethodMode: StorePaymentMethodMode?
     }
 }

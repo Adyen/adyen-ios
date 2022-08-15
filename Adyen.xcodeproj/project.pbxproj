@@ -121,6 +121,7 @@
 		A04E60D527EDDF4F0051C72C /* AdyenSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60D427EDDF4F0051C72C /* AdyenSessionDelegate.swift */; };
 		A04E60DB27F30D900051C72C /* SessionDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60DA27F30D900051C72C /* SessionDelegateMock.swift */; };
 		A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */; };
+		A0644AB728A5120C00BBF4A9 /* StorePaymentMethodMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0644AB628A5120C00BBF4A9 /* StorePaymentMethodMode.swift */; };
 		A07355D7276B350F00530562 /* DocumentActionViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */; };
 		A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */; };
 		A09ADA0E2806E72D00BF6802 /* IntegrationExampleSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09ADA0D2806E72D00BF6802 /* IntegrationExampleSession.swift */; };
@@ -1178,6 +1179,7 @@
 		A04E60D427EDDF4F0051C72C /* AdyenSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSessionDelegate.swift; sourceTree = "<group>"; };
 		A04E60DA27F30D900051C72C /* SessionDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDelegateMock.swift; sourceTree = "<group>"; };
 		A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponentTests.swift; sourceTree = "<group>"; };
+		A0644AB628A5120C00BBF4A9 /* StorePaymentMethodMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePaymentMethodMode.swift; sourceTree = "<group>"; };
 		A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionViewDelegateMock.swift; sourceTree = "<group>"; };
 		A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatter.swift; sourceTree = "<group>"; };
 		A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatterTests.swift; sourceTree = "<group>"; };
@@ -3152,6 +3154,7 @@
 				E788A5062658045D00089448 /* Amount.swift */,
 				5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */,
 				A0DE8F6C26CEA04500F2F1E8 /* Installments.swift */,
+				A0644AB628A5120C00BBF4A9 /* StorePaymentMethodMode.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -5492,6 +5495,7 @@
 				C9B6683927C903FE006950B9 /* AdyenContext.swift in Sources */,
 				F9838D392631AD1900963483 /* Balance.swift in Sources */,
 				E9021E022264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift in Sources */,
+				A0644AB728A5120C00BBF4A9 /* StorePaymentMethodMode.swift in Sources */,
 				E7085B182628B29600D0153B /* FormPhoneExtensionPickerItem.swift in Sources */,
 				E28098BB220DB9F30087928F /* ListViewController.swift in Sources */,
 				F97C837925BF047600D7F85C /* DokuPaymentMethod.swift in Sources */,

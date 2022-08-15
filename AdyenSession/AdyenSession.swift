@@ -182,3 +182,9 @@ extension AdyenSession: InstallmentConfigurationAware {
     
     public var installmentConfiguration: InstallmentConfiguration? { sessionContext.configuration?.installmentOptions }
 }
+
+@_spi(AdyenInternal)
+extension AdyenSession: StorePaymentMethodModeAware {
+    
+    public var storePaymentMethodMode: StorePaymentMethodMode? { sessionContext.configuration?.storePaymentMethodMode }
+}

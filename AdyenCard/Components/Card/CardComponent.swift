@@ -58,6 +58,16 @@ public class CardComponent: PresentableComponent,
             if let installmentAware = delegate as? InstallmentConfigurationAware {
                 configuration.installmentConfiguration = installmentAware.installmentConfiguration
             }
+            
+            if let storePaymentMethodModeAware = delegate as? StorePaymentMethodModeAware,
+               let storePaymentMethodMode = storePaymentMethodModeAware.storePaymentMethodMode {
+                switch storePaymentMethodMode {
+                case .enabled, .disabled:
+                    configuration.showsStorePaymentMethodField = false
+                case .askForConsent:
+                    configuration.showsStorePaymentMethodField = true
+                }
+            }
         }
     }
     

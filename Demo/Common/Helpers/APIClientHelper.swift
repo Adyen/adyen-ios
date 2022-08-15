@@ -38,7 +38,7 @@ extension APIClientAware {
               let paymentMethodsData = try? Data(contentsOf: paymentMethodsUrl),
               let sessionData = try? Data(contentsOf: sessionsUrl),
               let paymentMethodsResponse = try? JSONDecoder().decode(PaymentMethodsResponse.self, from: paymentMethodsData),
-              let sessionResponse = try? JSONDecoder().decode(SessionSetupResponse.self, from: sessionData)
+              let sessionResponse = try? JSONDecoder().decode(SessionResponse.self, from: sessionData)
         else { return DefaultAPIClient() }
         
         let apiClient = APIClientMock()
