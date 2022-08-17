@@ -17,7 +17,7 @@ internal class ObservationManager {
     
     // MARK: - Adding and Removing Observations
     
-    internal func observe<T: EventPublisher>(_ eventPublisher: T, eventHandler: @escaping EventHandler<T.Event>) -> Observation {
+    internal func observe<T: EventPublisher>(_ eventPublisher: T, eventHandler: @escaping Completion<T.Event>) -> Observation {
         let eventHandlerToken = eventPublisher.addEventHandler(eventHandler)
         
         let observation = Observation(unobserveHandler: { [weak eventPublisher] in

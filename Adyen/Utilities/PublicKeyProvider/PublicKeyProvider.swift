@@ -10,11 +10,9 @@ import Foundation
 /// Interface to fetch the client public key.
 @_spi(AdyenInternal)
 public protocol AnyPublicKeyProvider: AnyObject {
-    
-    typealias CompletionHandler = (Result<String, Error>) -> Void
-    
+
     /// Fetches the client public key with a closure for success and failure.
-    func fetch(completion: @escaping CompletionHandler)
+    func fetch(completion: @escaping Completion<Result<String, Error>> )
 }
 
 /// `PublicKeyProvider` is used to fetch the client public key that is needed for encrypting data.
@@ -49,7 +47,7 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
         self.request = request
     }
     
-    public func fetch(completion: @escaping CompletionHandler) {
+    public func fetch(completion: @escaping Completion<Result<String, Error>>) {
         if let publicKey = cachedPublicKey {
             completion(.success(publicKey))
             return
@@ -69,7 +67,8 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
         return UniqueAssetAPIClient<ClientKeyResponse>(apiClient: retryOnErrorApiClient)
     }()
     
-    private func handle(_ result: Result<ClientKeyResponse, Swift.Error>, completion: @escaping CompletionHandler) {
+    private func handle(_ result: Result<ClientKeyResponse, Swift.Error>,
+                        completion: @escaping Completion<Result<String, Error>>) {
         switch result {
         case let .success(response):
             cachedPublicKey = response.cardPublicKey

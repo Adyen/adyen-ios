@@ -10,9 +10,7 @@ import Foundation
 
 internal protocol AnyAppleWalletPassProvider {
 
-    typealias CompletionHandler = (Result<Data, Error>) -> Void
-
-    func provide(with passToken: String, completion: @escaping CompletionHandler)
+    func provide(with passToken: String, completion: @escaping Completion<Result<Data, Error>>)
 }
 
 internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
@@ -37,7 +35,7 @@ internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
         }
     }
 
-    internal func provide(with passToken: String, completion: @escaping CompletionHandler) {
+    internal func provide(with passToken: String, completion: @escaping Completion<Result<Data, Error>>) {
         let request = AppleWalletPassRequest(passToken: passToken)
         apiClient.perform(request) { [weak self] result in
             self?.handle(result, completion: completion)
@@ -54,7 +52,7 @@ internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
     private let retryApiClient: AnyRetryAPIClient
 
     private func handle(_ result: Result<AppleWalletPassResponse, Swift.Error>,
-                        completion: @escaping CompletionHandler) {
+                        completion: @escaping Completion<Result<Data, Error>>) {
         switch result {
         case let .success(response):
             completion(.success(response.passData))

@@ -13,7 +13,7 @@ public protocol EventPublisher: AnyObject {
     associatedtype Event
     
     /// The event handlers that are attached to the publisher.
-    var eventHandlers: [EventHandlerToken: EventHandler<Event>] { get set }
+    var eventHandlers: [EventHandlerToken: Completion<Event>] { get set }
     
 }
 
@@ -24,7 +24,7 @@ public extension EventPublisher {
     ///
     /// - Parameter eventHandler: The event handler to add.
     /// - Returns: A token, used to identify and later remove the event handler.
-    func addEventHandler(_ eventHandler: @escaping EventHandler<Event>) -> EventHandlerToken {
+    func addEventHandler(_ eventHandler: @escaping Completion<Event>) -> EventHandlerToken {
         let token = EventHandlerToken()
         eventHandlers[token] = eventHandler
         
@@ -48,9 +48,6 @@ public extension EventPublisher {
     }
     
 }
-
-/// Alias for a closure that handles an event.
-public typealias EventHandler<Event> = (Event) -> Void
 
 /// Represents a token that references the event handler.
 public struct EventHandlerToken: Hashable {

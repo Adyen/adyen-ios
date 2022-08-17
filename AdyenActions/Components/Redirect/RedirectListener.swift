@@ -5,10 +5,7 @@
 //
 
 import Foundation
-
-/// A typealias for a closure that handles a URL through which the application was opened.
-@_spi(AdyenInternal)
-public typealias URLHandler = (URL) -> Void
+import Adyen
 
 /// Listens for the return of the shopper after a redirect.
 @_spi(AdyenInternal)
@@ -20,11 +17,11 @@ public enum RedirectListener {
     /// The handler will only be invoked once. Only one handler can be registered at the same time.
     ///
     /// - Parameter handler: The handler to invoke when the application is opened.
-    public static func registerForURL(using handler: @escaping URLHandler) {
+    public static func registerForURL(using handler: @escaping Completion<URL>) {
         urlHandler = handler
     }
     
-    private static var urlHandler: URLHandler?
+    private static var urlHandler: Completion<URL>?
     
     // MARK: - Handling a URL
     

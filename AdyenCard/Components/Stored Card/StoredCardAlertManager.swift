@@ -98,16 +98,14 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
         alertController.textFields?.first?.text = nil
         submitAction.isEnabled = false
     }
-    
-    private typealias CardKeyCompletion = (_ cardPublicKey: String) -> Void
-    
-    private func fetchCardPublicKey(successHandler: @escaping CardKeyCompletion) {
+
+    private func fetchCardPublicKey(successHandler: @escaping Completion<String>) {
         publicKeyProvider.fetch { [weak self] in
             self?.handle(result: $0, successHandler: successHandler)
         }
     }
     
-    private func handle(result: Result<String, Error>, successHandler: CardKeyCompletion) {
+    private func handle(result: Result<String, Error>, successHandler: Completion<String>) {
         switch result {
         case let .success(key):
             successHandler(key)

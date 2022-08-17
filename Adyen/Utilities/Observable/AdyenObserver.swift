@@ -19,7 +19,7 @@ public extension AdyenObserver {
     ///   - eventHandler: A handler to invoke for new events.
     /// - Returns: An observation, representing the created observation. Can be used to remove the observation later.
     @discardableResult
-    func observe<T: EventPublisher>(_ eventPublisher: T, eventHandler: @escaping EventHandler<T.Event>) -> Observation {
+    func observe<T: EventPublisher>(_ eventPublisher: T, eventHandler: @escaping Completion<T.Event>) -> Observation {
         observationManager.observe(eventPublisher, eventHandler: eventHandler)
     }
     

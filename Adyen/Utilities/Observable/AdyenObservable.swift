@@ -34,7 +34,7 @@ public final class AdyenObservable<ValueType: Equatable>: EventPublisher {
     public typealias Event = ValueType
     
     /// The event handlers attached to the observable.
-    public var eventHandlers = [EventHandlerToken: EventHandler<Event>]()
+    public var eventHandlers = [EventHandlerToken: Completion<Event>]()
     
     public var projectedValue: AdyenObservable { self }
     

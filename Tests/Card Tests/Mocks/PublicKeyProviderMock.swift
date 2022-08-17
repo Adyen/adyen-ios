@@ -11,9 +11,9 @@ final class PublicKeyProviderMock: AnyPublicKeyProvider {
     
     let apiContext: APIContext = Dummy.apiContext
 
-    var onFetch: ((_ completion: @escaping CompletionHandler) -> Void)?
+    var onFetch: ((_ completion: @escaping Completion<Result<String, Error>>) -> Void)?
 
-    func fetch(completion: @escaping CompletionHandler) {
+    func fetch(completion: @escaping Completion<Result<String, Error>>) {
         onFetch?(completion) ?? completion(.success(Dummy.publicKey))
     }
 }

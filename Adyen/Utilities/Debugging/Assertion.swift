@@ -6,14 +6,10 @@
 
 import Foundation
 
-/// A typealias for a closure that handles a URL through which the application was opened.
-@_spi(AdyenInternal)
-public typealias AssertionListener = (String) -> Void
-
 @_spi(AdyenInternal)
 public enum AdyenAssertion {
 
-    internal static var listener: AssertionListener?
+    internal static var listener: Completion<String>?
 
     /// Calls `assertionFailure` when not running Tests.
     public static func assertionFailure(message: @autoclosure () -> String) {

@@ -13,10 +13,9 @@ import Foundation
 
 /// Provide cardType detection based on BinLookup API.
 internal protocol AnyBinLookupService {
-    
-    typealias CompletionHandler = (Result<BinLookupResponse, Error>) -> Void
-    
-    func requestCardType(for bin: String, supportedCardTypes: [CardType], caller: @escaping CompletionHandler)
+
+    func requestCardType(for bin: String, supportedCardTypes: [CardType],
+                         caller: @escaping Completion<Result<BinLookupResponse, Error>>)
 }
 
 internal final class BinLookupService: AnyBinLookupService {
@@ -32,7 +31,8 @@ internal final class BinLookupService: AnyBinLookupService {
         self.apiClient = apiClient
     }
     
-    internal func requestCardType(for bin: String, supportedCardTypes: [CardType], caller: @escaping CompletionHandler) {
+    internal func requestCardType(for bin: String, supportedCardTypes: [CardType],
+                                  caller: @escaping Completion<Result<BinLookupResponse, Error>>) {
         if let cached = cache[bin] {
             return caller(.success(cached))
         }
