@@ -85,6 +85,6 @@ extension SessionSetupResponse {
         
         internal let installmentOptions: InstallmentConfiguration?
         
-        internal let storePaymentMethodMode: StorePaymentMethodMode?
+        internal let enableStoreDetails: Bool
     }
 }

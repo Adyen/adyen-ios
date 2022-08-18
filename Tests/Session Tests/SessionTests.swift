@@ -971,6 +971,43 @@ class SessionTests: XCTestCase {
         XCTAssertEqual(cardComponent.configuration.installmentConfiguration?.defaultOptions, .init(monthValues: [2, 3, 5], includesRevolving: false))
     }
     
+    func testStorePaymentMethodFieldNotNil() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let config = try! JSONDecoder().decode(SessionSetupResponse.Configuration.self, from: sessionConfigJson.data(using: .utf8)!)
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, configuration: config)
+        let paymentMethod = expectedPaymentMethods.regular[1] as! CardPaymentMethod
+        var cardConfig = CardComponent.Configuration()
+        cardConfig.showsStorePaymentMethodField = false // will be overriden as true by session response
+        
+        let cardComponent = CardComponent(paymentMethod: paymentMethod, context: context)
+        cardComponent.delegate = sut
+        
+        UIApplication.shared.keyWindow?.rootViewController = cardComponent.viewController
+        
+        wait(for: .milliseconds(300))
+        
+        XCTAssertNotNil(cardComponent.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem"))
+        XCTAssertTrue(cardComponent.configuration.showsStorePaymentMethodField)
+    }
+    
+    func testStorePaymentMethodFieldNil() throws {
+        let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let paymentMethod = expectedPaymentMethods.regular[1] as! CardPaymentMethod
+        var cardConfig = CardComponent.Configuration()
+        cardConfig.showsStorePaymentMethodField = true // will be overriden as false by session response
+        
+        let cardComponent = CardComponent(paymentMethod: paymentMethod, context: context)
+        cardComponent.delegate = sut
+        
+        UIApplication.shared.keyWindow?.rootViewController = cardComponent.viewController
+        
+        wait(for: .milliseconds(300))
+        
+        XCTAssertNil(cardComponent.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem"))
+        XCTAssertFalse(cardComponent.configuration.showsStorePaymentMethodField)
+    }
+    
     private func initializeSession(expectedPaymentMethods: PaymentMethods,
                                    delegate: AdyenSessionDelegate = SessionDelegateMock(),
                                    configuration: SessionSetupResponse.Configuration? = nil) throws -> AdyenSession {
@@ -1054,6 +1091,7 @@ let sessionConfigJson = """
                 9
             ]
         }
-    }
+    },
+    "enableStoreDetails": true
 }
 """

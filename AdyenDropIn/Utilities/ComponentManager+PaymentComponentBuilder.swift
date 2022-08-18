@@ -140,9 +140,9 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     internal func build(paymentMethod: OnlineBankingPaymentMethod) -> PaymentComponent? {
-        return OnlineBankingComponent(paymentMethod: paymentMethod,
-                                      context: context,
-                                      configuration: .init(style: configuration.style.formComponent))
+        OnlineBankingComponent(paymentMethod: paymentMethod,
+                               context: context,
+                               configuration: .init(style: configuration.style.formComponent))
     }
 
     private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
