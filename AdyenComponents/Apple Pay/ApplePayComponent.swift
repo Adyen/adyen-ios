@@ -12,7 +12,7 @@ import PassKit
 public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, Localizable, FinalizableComponent {
 
     /// :nodoc:
-    internal var success: Bool = false
+    internal var finalizeCompletion: (() -> Void)?
     
     /// :nodoc:
     internal let internalPayment: Payment
@@ -116,21 +116,22 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     /// Finalizes ApplePay payment after being processed by payment provider.
     /// - Parameter success: The status of the payment.
+    @available(*, deprecated, message: "This property will no longer be available.")
     public func didFinalize(with success: Bool) {
-        self.success = success
+        finalizeCompletion = {}
         paymentAuthorizationCompletion?(success ? .success : .failure)
-        paymentAuthorizationCompletion = nil
     }
 
-    // MARK: - Private
-
-    internal func dismiss(completion: (() -> Void)?) {
-        paymentAuthorizationViewController?.dismiss(animated: true) { [weak self] in
-            guard let self = self else { return }
-            self.paymentAuthorizationViewController = nil
+    public func didFinalize(with success: Bool, completion: (() -> Void)?) {
+        if let paymentAuthorizationCompletion = paymentAuthorizationCompletion {
+            finalizeCompletion = completion
+            paymentAuthorizationCompletion(success ? .success : .failure)
+        } else {
             completion?()
         }
     }
+
+    // MARK: - Private
     
     private func createPaymentAuthorizationViewController() -> PKPaymentAuthorizationViewController {
         if paymentAuthorizationViewController == nil {
@@ -139,7 +140,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
             paymentAuthorizationViewController = ApplePayComponent.createPaymentAuthorizationViewController(from: request)
             paymentAuthorizationViewController?.delegate = self
             paymentAuthorizationCompletion = nil
-            success = false
+            finalizeCompletion = nil
         }
         return paymentAuthorizationViewController!
     }

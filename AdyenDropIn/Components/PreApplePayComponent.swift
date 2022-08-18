@@ -69,7 +69,11 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     
     /// :nodoc
     internal func didFinalize(with success: Bool) {
-        applePayComponent.didFinalize(with: success)
+        assertionFailure("Do not call this method. Use didFinalize(with success:completion:) ")
+    }
+
+    internal func didFinalize(with success: Bool, completion: (() -> Void)?) {
+        applePayComponent.didFinalize(with: success, completion: completion)
     }
     
     /// :nodoc:
