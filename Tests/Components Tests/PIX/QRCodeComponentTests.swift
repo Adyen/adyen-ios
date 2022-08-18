@@ -56,14 +56,14 @@ class QRCodeComponentTests: XCTestCase {
         
         style.backgroundColor = UIColor.Adyen.componentSeparator
         
-        let sut = QRCodeComponent(context: context)
+        let sut = PixComponent(context: context)
         sut.configuration.style = style
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         
         presentationDelegate.doPresent = { [weak self] component in
-            XCTAssertNotNil(component.viewController as? QRCodeViewController)
-            let viewController = component.viewController as! QRCodeViewController
+            XCTAssertNotNil(component.viewController as? PixViewController)
+            let viewController = component.viewController as! PixViewController
             
             UIApplication.shared.keyWindow?.rootViewController = viewController
             
@@ -121,7 +121,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeComponent(context: context,
+        let sut = PixComponent(context: context,
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         let componentDelegate = ActionComponentDelegateMock()
@@ -137,8 +137,8 @@ class QRCodeComponentTests: XCTestCase {
         
         let presentationDelegate = PresentationDelegateMock()
         presentationDelegate.doPresent = { component in
-            XCTAssertNotNil(component.viewController as? QRCodeViewController)
-            let viewController = component.viewController as! QRCodeViewController
+            XCTAssertNotNil(component.viewController as? PixViewController)
+            let viewController = component.viewController as! PixViewController
             
             UIApplication.shared.keyWindow?.rootViewController = viewController
         }
@@ -163,7 +163,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeComponent(context: context,
+        let sut = PixComponent(context: context,
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         
@@ -184,8 +184,8 @@ class QRCodeComponentTests: XCTestCase {
         
         let presentationDelegate = PresentationDelegateMock()
         presentationDelegate.doPresent = { component in
-            XCTAssertNotNil(component.viewController as? QRCodeViewController)
-            let viewController = component.viewController as! QRCodeViewController
+            XCTAssertNotNil(component.viewController as? PixViewController)
+            let viewController = component.viewController as! PixViewController
             
             UIApplication.shared.keyWindow?.rootViewController = viewController
         }
@@ -210,7 +210,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeComponent(context: context,
+        let sut = PixComponent(context: context,
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         
@@ -231,8 +231,8 @@ class QRCodeComponentTests: XCTestCase {
         
         let presentationDelegate = PresentationDelegateMock()
         presentationDelegate.doPresent = { component in
-            XCTAssertNotNil(component.viewController as? QRCodeViewController)
-            let viewController = component.viewController as! QRCodeViewController
+            XCTAssertNotNil(component.viewController as? PixViewController)
+            let viewController = component.viewController as! PixViewController
             
             UIApplication.shared.keyWindow?.rootViewController = viewController
         }
@@ -248,13 +248,13 @@ class QRCodeComponentTests: XCTestCase {
     func testCopyButton() {
         let dummyExpectation = expectation(description: "Dummy Expectation")
         
-        let sut = QRCodeComponent(context: context)
+        let sut = PixComponent(context: context)
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         
         presentationDelegate.doPresent = { [self] component in
-            XCTAssertNotNil(component.viewController as? QRCodeViewController)
-            let viewController = component.viewController as! QRCodeViewController
+            XCTAssertNotNil(component.viewController as? PixViewController)
+            let viewController = component.viewController as! PixViewController
             
             UIApplication.shared.keyWindow?.rootViewController = viewController
             
