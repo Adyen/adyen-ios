@@ -32,6 +32,9 @@ public struct PaymentComponentData {
     
     /// The installments object.
     public let installments: Installments?
+    
+    /// Indicates whether the current SDK version suports native redirect without glue pages.
+    public let supportNativeRedirect: Bool = true
 
     /// Shopper name.
     public var shopperName: ShopperName? {

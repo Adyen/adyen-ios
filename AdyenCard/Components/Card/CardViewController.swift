@@ -23,8 +23,6 @@ internal class CardViewController: FormViewController {
 
     private let supportedCardTypes: [CardType]
 
-    private let throttler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
-
     private let formStyle: FormComponentStyle
 
     internal var items: ItemsProvider
@@ -107,6 +105,10 @@ internal class CardViewController: FormViewController {
     
     internal var selectedBrand: String? {
         items.numberContainerItem.numberItem.currentBrand?.type.rawValue
+    }
+    
+    internal var cardBIN: String {
+        items.numberContainerItem.numberItem.binValue
     }
     
     internal var validAddress: PostalAddress? {
@@ -290,18 +292,21 @@ internal class CardViewController: FormViewController {
     }
 
     private func setupViewRelations() {
-        observe(items.numberContainerItem.numberItem.$binValue) { [weak self] in self?.didReceive(bin: $0) }
+        observe(items.numberContainerItem.numberItem.publisher) { [weak self] in self?.didChange(pan: $0) }
+        observe(items.numberContainerItem.numberItem.$binValue) { [weak self] in self?.didChange(bin: $0) }
 
         items.button.buttonSelectionHandler = { [weak cardDelegate] in
             cardDelegate?.didSelectSubmitButton()
         }
     }
 
-    private func didReceive(bin: String) {
-        items.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: bin)
-        throttler.throttle { [weak cardDelegate] in
-            cardDelegate?.didChangeBIN(bin)
-        }
+    private func didChange(pan: String) {
+        items.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: pan)
+        cardDelegate?.didChange(pan: pan)
+    }
+    
+    private func didChange(bin: String) {
+        cardDelegate?.didChange(bin: bin)
     }
     
     private func shouldHideKcpItems(with countryCode: String?) -> Bool {
@@ -333,7 +338,9 @@ internal protocol CardViewControllerDelegate: AnyObject {
 
     func didSelectSubmitButton()
 
-    func didChangeBIN(_ value: String)
+    func didChange(bin: String)
+    
+    func didChange(pan: String)
 
 }
 

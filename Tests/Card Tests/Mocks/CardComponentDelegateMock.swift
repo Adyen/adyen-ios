@@ -10,11 +10,11 @@ internal class CardComponentDelegateMock: CardComponentDelegate {
     
     private let onBINDidChange: (String) -> Void
     private let onCardBrandChange: ([CardBrand]?) -> Void
-    private let onSubmitLastFour: (String) -> Void
+    private let onSubmitLastFour: (String, String) -> Void
     
     internal init(onBINDidChange: @escaping (String) -> Void,
                   onCardBrandChange: @escaping ([CardBrand]?) -> Void,
-                  onSubmitLastFour: @escaping ((String) -> Void))
+                  onSubmitLastFour: @escaping ((String, String) -> Void))
     {
         self.onBINDidChange = onBINDidChange
         self.onCardBrandChange = onCardBrandChange
@@ -29,7 +29,7 @@ internal class CardComponentDelegateMock: CardComponentDelegate {
         onCardBrandChange(value)
     }
 
-    func didSubmit(lastFour value: String, component: CardComponent) {
-        onSubmitLastFour(value)
+    func didSubmit(lastFour: String, finalBIN: String, component: CardComponent) {
+        onSubmitLastFour(lastFour, finalBIN)
     }
 }
