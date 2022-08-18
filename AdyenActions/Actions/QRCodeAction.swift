@@ -19,7 +19,7 @@ public enum QRCodePaymentMethod: String, Codable, CaseIterable {
 public struct QRCodeAction: PaymentDataAware, Decodable {
     
     /// The `paymentMethodType` for which the QR code is presented.
-    public let paymentMethodType: QRCodePaymentMethod
+    public private(set) var paymentMethodType: QRCodePaymentMethod = .pix
     
     /// The QR code data to be shown/copied.
     public let qrCodeData: String

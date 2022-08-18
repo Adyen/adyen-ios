@@ -17,8 +17,8 @@ internal enum QRCodeComponentError: LocalizedError {
     }
 }
 
-/// A component that presents a QR code.
-public final class QRCodeComponent: ActionComponent, Cancellable {
+/// A component  for Pix payment method.
+public final class PixComponent: ActionComponent, Cancellable {
     
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -144,21 +144,21 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
     }
     
     private func createViewController(with action: QRCodeAction) -> UIViewController {
-        let viewController = QRCodeViewController(viewModel: createModel(with: action))
-        viewController.qrCodeView.delegate = self
+        let viewController = PixViewController(viewModel: createModel(with: action))
+        viewController.pixView.delegate = self
         return viewController
     }
     
-    private func createModel(with action: QRCodeAction) -> QRCodeView.Model {
+    private func createModel(with action: QRCodeAction) -> PixView.Model {
         let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment)
-        return QRCodeView.Model(
+        return PixView.Model(
             action: action,
             instruction: localizedString(.pixInstructions,
                                          configuration.localizationParameters),
             logoUrl: url,
             observedProgress: progress,
             expiration: $expirationText,
-            style: QRCodeView.Model.Style(
+            style: PixView.Model.Style(
                 copyButton: configuration.style.copyButton,
                 instructionLabel: configuration.style.instructionLabel,
                 progressView: configuration.style.progressView,
@@ -180,7 +180,7 @@ public final class QRCodeComponent: ActionComponent, Cancellable {
 }
 
 @_spi(AdyenInternal)
-extension QRCodeComponent: ActionComponentDelegate {
+extension PixComponent: ActionComponentDelegate {
 
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         cleanup()
@@ -197,7 +197,7 @@ extension QRCodeComponent: ActionComponentDelegate {
 }
 
 @_spi(AdyenInternal)
-extension QRCodeComponent: QRCodeViewDelegate {
+extension PixComponent: PixViewDelegate {
     
     internal func copyToPasteboard(with action: QRCodeAction) {
         UIPasteboard.general.string = action.qrCodeData
