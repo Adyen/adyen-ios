@@ -8,23 +8,23 @@
 import Foundation
 import UIKit
 
-/// A `UIViewController` that shows the QR code action UI.
-internal final class QRCodeViewController: UIViewController {
+/// A `UIViewController` that shows the pix action UI.
+internal final class PixViewController: UIViewController {
     
     /// The view model.
-    private let viewModel: QRCodeView.Model
+    private let viewModel: PixView.Model
     
-    internal lazy var qrCodeView = QRCodeView(model: viewModel)
+    internal lazy var pixView = PixView(model: viewModel)
     
     private lazy var containerView = UIView(frame: .zero)
     
-    /// Initializes the `QRCodeViewController`.
+    /// Initializes the `PixViewController`.
     ///
     /// - Parameter viewModel: The view model.
     /// - Parameter style: The UI style.
-    internal init(viewModel: QRCodeView.Model) {
+    internal init(viewModel: PixView.Model) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: Bundle(for: QRCodeViewController.self))
+        super.init(nibName: nil, bundle: Bundle(for: PixViewController.self))
     }
     
     @available(*, unavailable)
@@ -34,25 +34,25 @@ internal final class QRCodeViewController: UIViewController {
     
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        containerView.addSubview(qrCodeView)
+        containerView.addSubview(pixView)
         view.addSubview(containerView)
         configureConstraints()
         view.backgroundColor = viewModel.style.backgroundColor
     }
     
     private func configureConstraints() {
-        qrCodeView.translatesAutoresizingMaskIntoConstraints = false
+        pixView.translatesAutoresizingMaskIntoConstraints = false
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
         containerView.adyen.anchor(inside: view.safeAreaLayoutGuide)
         let constraints = [
-            qrCodeView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            pixView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             
-            qrCodeView.topAnchor.constraint(greaterThanOrEqualTo: containerView.topAnchor),
-            qrCodeView.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor),
+            pixView.topAnchor.constraint(greaterThanOrEqualTo: containerView.topAnchor),
+            pixView.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor),
             
-            qrCodeView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            qrCodeView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
+            pixView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            pixView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
         ]
         
         NSLayoutConstraint.activate(constraints)
