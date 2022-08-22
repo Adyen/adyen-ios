@@ -27,7 +27,7 @@ internal final class PixView: UIView, Localizable, AdyenObserver {
         buildUI()
         backgroundColor = model.style.backgroundColor
         
-        accessibilityIdentifier = "adyen.pix.QRCode"
+        accessibilityIdentifier = "adyen.QRCode.pix"
     }
     
     @available(*, unavailable)

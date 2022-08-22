@@ -204,7 +204,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     }
     
     private func handle(_ action: QRCodeAction) {
-        let component = PixComponent(context: context)
+        let component = PixActionComponent(context: context)
         component.configuration.style = configuration.style.qrCodeComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate

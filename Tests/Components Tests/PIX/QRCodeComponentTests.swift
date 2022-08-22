@@ -56,7 +56,7 @@ class QRCodeComponentTests: XCTestCase {
         
         style.backgroundColor = UIColor.Adyen.componentSeparator
         
-        let sut = PixComponent(context: context)
+        let sut = PixActionComponent(context: context)
         sut.configuration.style = style
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
@@ -121,7 +121,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = PixComponent(context: context,
+        let sut = PixActionComponent(context: context,
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         let componentDelegate = ActionComponentDelegateMock()
@@ -163,7 +163,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = PixComponent(context: context,
+        let sut = PixActionComponent(context: context,
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         
@@ -210,7 +210,7 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = PixComponent(context: context,
+        let sut = PixActionComponent(context: context,
                                   pollingComponentBuilder: builder,
                                   timeoutInterval: 2.0)
         
@@ -248,7 +248,7 @@ class QRCodeComponentTests: XCTestCase {
     func testCopyButton() {
         let dummyExpectation = expectation(description: "Dummy Expectation")
         
-        let sut = PixComponent(context: context)
+        let sut = PixActionComponent(context: context)
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         

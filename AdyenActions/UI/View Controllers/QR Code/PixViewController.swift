@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-/// A `UIViewController` that shows the pix payment method UI.
+/// A `UIViewController` that shows the pix action UI.
 internal final class PixViewController: UIViewController {
     
     /// The view model.
