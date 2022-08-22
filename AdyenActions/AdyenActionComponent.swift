@@ -204,17 +204,15 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     }
     
     private func handle(_ action: QRCodeAction) {
-        if action.paymentMethodType == .pix {
-            let component = PixComponent(context: context)
-            component.configuration.style = configuration.style.qrCodeComponentStyle
-            component._isDropIn = _isDropIn
-            component.delegate = delegate
-            component.presentationDelegate = presentationDelegate
-            component.configuration.localizationParameters = configuration.localizationParameters
-
-            component.handle(action)
-            currentActionComponent = component
-        }
+        let component = PixComponent(context: context)
+        component.configuration.style = configuration.style.qrCodeComponentStyle
+        component._isDropIn = _isDropIn
+        component.delegate = delegate
+        component.presentationDelegate = presentationDelegate
+        component.configuration.localizationParameters = configuration.localizationParameters
+        
+        component.handle(action)
+        currentActionComponent = component
     }
     
     private func handle(_ action: DocumentAction) {
