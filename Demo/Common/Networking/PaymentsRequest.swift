@@ -37,6 +37,8 @@ internal struct PaymentsRequest: APIRequest {
         try container.encode(data.paymentMethod.encodable, forKey: .details)
         try container.encode(data.supportNativeRedirect, forKey: .supportNativeRedirect)
         try container.encode(data.storePaymentMethod, forKey: .storePaymentMethod)
+        try container.encodeIfPresent(DelegatedAuthenticationData(sdkOutput: "eyJkZXZpY2UiOiJpT1MifQ"),
+                                      forKey: .delegatedAuthenticationData)
         try container.encodeIfPresent(data.shopperName, forKey: .shopperName)
         try container.encodeIfPresent(data.emailAddress ?? ConfigurationConstants.shopperEmail, forKey: .shopperEmail)
         try container.encodeIfPresent(data.telephoneNumber, forKey: .telephoneNumber)
@@ -83,6 +85,7 @@ internal struct PaymentsRequest: APIRequest {
         case order
         case installments
         case lineItems
+        case delegatedAuthenticationData
     }
     
 }

@@ -549,6 +549,13 @@
 		F93E534C289A86A800BB6580 /* NativeRedirectResultRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F93E534B289A86A800BB6580 /* NativeRedirectResultRequest.swift */; };
 		F94343E623FFD9A400AADF5F /* AdyenAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F94343E523FFD9A400AADF5F /* AdyenAssets.xcassets */; };
 		F94E37B82818138900617382 /* session_response.json in Resources */ = {isa = PBXBuildFile; fileRef = A023A9B328103C2D004FDCA4 /* session_response.json */; };
+		F94F0DEB28AA3FB400C0923D /* ThreeDS2PlusDACoreActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F0DEA28AA3FB400C0923D /* ThreeDS2PlusDACoreActionHandler.swift */; };
+		F94F0DF328AA8A3100C0923D /* AdyenAuthentication.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F94F0DEE28AA6FF700C0923D /* AdyenAuthentication.xcframework */; };
+		F94F0DF428AA8A3100C0923D /* AdyenAuthentication.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F94F0DEE28AA6FF700C0923D /* AdyenAuthentication.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F94F0DF628AB7BCC00C0923D /* DelegatedAuthenticationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F0DF528AB7BCC00C0923D /* DelegatedAuthenticationData.swift */; };
+		F94F0DFC28ACDBB000C0923D /* Adyen3DS2.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F94F0DFB28ACDBB000C0923D /* Adyen3DS2.xcframework */; };
+		F94F0DFD28ACDBB000C0923D /* Adyen3DS2.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F94F0DFB28ACDBB000C0923D /* Adyen3DS2.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F94F0DFF28AD2BCE00C0923D /* AuthenticationServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F0DFE28AD2BCE00C0923D /* AuthenticationServiceMock.swift */; };
 		F957A9CE255051130099AD73 /* StoredPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */; };
 		F957AA462552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA452552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift */; };
 		F957AA5A2552D8BB0099AD73 /* ThreeDS2ComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA592552D8BB0099AD73 /* ThreeDS2ComponentTests.swift */; };
@@ -637,7 +644,6 @@
 		F970143925D139BE007E74D9 /* VoucherComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F970143825D139BE007E74D9 /* VoucherComponentStyle.swift */; };
 		F973A9192791C3B0005AA753 /* AdyenActions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9175F8C2594986900D653BE /* AdyenActions.framework */; };
 		F973A91A2791C3B0005AA753 /* AdyenActions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9175F8C2594986900D653BE /* AdyenActions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		F973A91E2791CBC0005AA753 /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = F973A91D2791CBC0005AA753 /* Adyen3DS2 */; };
 		F97842D526C2746500677458 /* OXXOVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97842D426C2746500677458 /* OXXOVoucherAction.swift */; };
 		F97842D726C2758E00677458 /* InstantPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97842D626C2758E00677458 /* InstantPaymentMethod.swift */; };
 		F97842D926C3D55200677458 /* OXXOShareableVoucherViewProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97842D826C3D55200677458 /* OXXOShareableVoucherViewProviderTests.swift */; };
@@ -1062,10 +1068,12 @@
 				F9175EEF2593955D00D653BE /* AdyenComponents.framework in Embed Frameworks */,
 				F92327C525A46EF0002C5BC4 /* AdyenEncryption.framework in Embed Frameworks */,
 				E72375D927AABF400020DCF9 /* AdyenWeChatPay.framework in Embed Frameworks */,
+				F94F0DFD28ACDBB000C0923D /* Adyen3DS2.xcframework in Embed Frameworks */,
 				F973A91A2791C3B0005AA753 /* AdyenActions.framework in Embed Frameworks */,
 				E2C0E099220B0827008616F6 /* Adyen.framework in Embed Frameworks */,
 				E9B36CB32243B2FF00EAA368 /* AdyenDropIn.framework in Embed Frameworks */,
 				E2C0E0AE220B0840008616F6 /* AdyenCard.framework in Embed Frameworks */,
+				F94F0DF428AA8A3100C0923D /* AdyenAuthentication.xcframework in Embed Frameworks */,
 				F92980AD27CE2B33000CA5CA /* AdyenSession.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -1580,6 +1588,11 @@
 		F93E534B289A86A800BB6580 /* NativeRedirectResultRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeRedirectResultRequest.swift; sourceTree = "<group>"; };
 		F94343E523FFD9A400AADF5F /* AdyenAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdyenAssets.xcassets; sourceTree = "<group>"; };
 		F94B870925EFB71100D270A6 /* MIGRATION.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = MIGRATION.md; sourceTree = "<group>"; };
+		F94F0DEA28AA3FB400C0923D /* ThreeDS2PlusDACoreActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2PlusDACoreActionHandler.swift; sourceTree = "<group>"; };
+		F94F0DEE28AA6FF700C0923D /* AdyenAuthentication.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AdyenAuthentication.xcframework; path = "../adyen-3ds2-ios/Build-AdyenAuthentication/XCFramework/Dynamic/AdyenAuthentication.xcframework"; sourceTree = "<group>"; };
+		F94F0DF528AB7BCC00C0923D /* DelegatedAuthenticationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedAuthenticationData.swift; sourceTree = "<group>"; };
+		F94F0DFB28ACDBB000C0923D /* Adyen3DS2.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Adyen3DS2.xcframework; path = "../adyen-3ds2-ios/Build-3DS2/XCFramework/Dynamic/Adyen3DS2.xcframework"; sourceTree = "<group>"; };
+		F94F0DFE28AD2BCE00C0923D /* AuthenticationServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceMock.swift; sourceTree = "<group>"; };
 		F957A9E225514A7E0099AD73 /* Submit3DS2FingerprintRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submit3DS2FingerprintRequest.swift; sourceTree = "<group>"; };
 		F957A9F025514AB70099AD73 /* Submit3DS2FingerprintResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Submit3DS2FingerprintResponse.swift; sourceTree = "<group>"; };
 		F957A9F925514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2FingerprintSubmitter.swift; sourceTree = "<group>"; };
@@ -1899,11 +1912,12 @@
 				F9175EEE2593955C00D653BE /* AdyenComponents.framework in Frameworks */,
 				F92327C425A46EF0002C5BC4 /* AdyenEncryption.framework in Frameworks */,
 				F9A2D01225DBF104008944BE /* PassKit.framework in Frameworks */,
+				F94F0DFC28ACDBB000C0923D /* Adyen3DS2.xcframework in Frameworks */,
 				F973A9192791C3B0005AA753 /* AdyenActions.framework in Frameworks */,
 				E2C0E098220B0827008616F6 /* Adyen.framework in Frameworks */,
+				F94F0DF328AA8A3100C0923D /* AdyenAuthentication.xcframework in Frameworks */,
 				F92980AC27CE2B33000CA5CA /* AdyenSession.framework in Frameworks */,
 				E9B36CB22243B2FF00EAA368 /* AdyenDropIn.framework in Frameworks */,
-				F973A91E2791CBC0005AA753 /* Adyen3DS2 in Frameworks */,
 				E2C0E0AD220B0840008616F6 /* AdyenCard.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1967,7 +1981,6 @@
 				F95B6DC32527565C002C9062 /* Adyen.framework in Frameworks */,
 				F95B6DC62527565E002C9062 /* AdyenCard.framework in Frameworks */,
 				F95B6DC82527565F002C9062 /* AdyenDropIn.framework in Frameworks */,
-				E7ED5F5F25F25F8100EE5BCA /* Adyen3DS2 in Frameworks */,
 				F95899D825FA526A00E4113F /* AdyenSwiftUI.framework in Frameworks */,
 				F92980BC27CE409D000CA5CA /* AdyenSession.framework in Frameworks */,
 			);
@@ -2896,6 +2909,8 @@
 		E2D12C01221ECBB000EF682F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F94F0DFB28ACDBB000C0923D /* Adyen3DS2.xcframework */,
+				F94F0DEE28AA6FF700C0923D /* AdyenAuthentication.xcframework */,
 				F9A2D01125DBF104008944BE /* PassKit.framework */,
 				F9789C6B23F18069000B4B2B /* Security.framework */,
 				F9789C6923F18057000B4B2B /* CoreGraphics.framework */,
@@ -3150,6 +3165,7 @@
 				F9FE25222625ADD0001874BB /* PartialPaymentOrder.swift */,
 				F9838D382631AD1900963483 /* Balance.swift */,
 				E909342722969AFF00C9F04B /* PaymentComponentData.swift */,
+				F94F0DF528AB7BCC00C0923D /* DelegatedAuthenticationData.swift */,
 				E9093402228EDADA00C9F04B /* Payment.swift */,
 				E7085A8C2627132B00D0153B /* PostalAddress.swift */,
 				F90FB7BB2446E8C8005BFE0E /* BrowserInfo.swift */,
@@ -3895,6 +3911,23 @@
 			path = Styles;
 			sourceTree = "<group>";
 		};
+		F94F0DEC28AA402200C0923D /* 3DS2+Delegated Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				F94F0DEA28AA3FB400C0923D /* ThreeDS2PlusDACoreActionHandler.swift */,
+				F94F0DFE28AD2BCE00C0923D /* AuthenticationServiceMock.swift */,
+			);
+			path = "3DS2+Delegated Authentication";
+			sourceTree = "<group>";
+		};
+		F94F0DED28AA405500C0923D /* 3DS2 Without Delegated Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				F97C7C502590C56E00D80A54 /* ThreeDS2CoreActionHandler.swift */,
+			);
+			path = "3DS2 Without Delegated Authentication";
+			sourceTree = "<group>";
+		};
 		F957A9E125514A590099AD73 /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -4221,8 +4254,9 @@
 			children = (
 				F957AA2B2551829F0099AD73 /* ThreeDS2CompactActionHandler.swift */,
 				F9842C9E256EBF5F0063CE5A /* ThreeDS2ClassicActionHandler.swift */,
-				F97C7C502590C56E00D80A54 /* ThreeDS2CoreActionHandler.swift */,
 				F9842C66256D7A010063CE5A /* ThreeDSActionHandlerResult.swift */,
+				F94F0DEC28AA402200C0923D /* 3DS2+Delegated Authentication */,
+				F94F0DED28AA405500C0923D /* 3DS2 Without Delegated Authentication */,
 				F97C7C5E2590EE0A00D80A54 /* AnyThreeDS2ActionHandler.swift */,
 			);
 			path = "Action handlers";
@@ -4705,7 +4739,6 @@
 			);
 			name = AdyenUIHost;
 			packageProductDependencies = (
-				F973A91D2791CBC0005AA753 /* Adyen3DS2 */,
 				E72375DC27AABF450020DCF9 /* AdyenWeChatPayInternal */,
 			);
 			productName = AdyenUIHost;
@@ -4858,7 +4891,6 @@
 			);
 			name = AdyenSwiftUIHost;
 			packageProductDependencies = (
-				F9C5F08325C96919005A6E54 /* Adyen3DS2 */,
 			);
 			productName = AdyenSwiftUI;
 			productReference = F95B6D952527454E002C9062 /* AdyenSwiftUIHost.app */;
@@ -5007,7 +5039,6 @@
 			);
 			mainGroup = E2C0E02922097916008616F6;
 			packageReferences = (
-				F9C5F07725C968FE005A6E54 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios" */,
 				F913B3EB26B7FAA8008F6CD2 /* XCRemoteSwiftPackageReference "adyen-networking-ios" */,
 				E72375CC27AAB7760020DCF9 /* XCRemoteSwiftPackageReference "adyen-wechatpay-ios" */,
 			);
@@ -5582,6 +5613,7 @@
 				E2B317A02265BB0B00C1BB30 /* LengthValidator.swift in Sources */,
 				E9021DFA225E2487009CF7F4 /* ListHeaderView.swift in Sources */,
 				E28098C6220DCF3F0087928F /* NetworkImageView.swift in Sources */,
+				F94F0DF628AB7BCC00C0923D /* DelegatedAuthenticationData.swift in Sources */,
 				F9E441522382A0DD00D3CD48 /* ViewIdentifierBuilder.swift in Sources */,
 				E28098B3220DA7980087928F /* Component.swift in Sources */,
 				F95B6D8E25231715002C9062 /* RegularExpressionValidator.swift in Sources */,
@@ -6130,9 +6162,11 @@
 				5A988B7B2653F1750007F4C0 /* BoletoVoucherAction.swift in Sources */,
 				F917613525A30B5700D653BE /* ThreeDS2Details.swift in Sources */,
 				A03EE72F2760A2E300470561 /* DocumentActionViewModel.swift in Sources */,
+				F94F0DEB28AA3FB400C0923D /* ThreeDS2PlusDACoreActionHandler.swift in Sources */,
 				F9B018032608F648001F23FC /* EContextStoresVoucherAction.swift in Sources */,
 				F917613825A30B5700D653BE /* ThreeDS2ComponentFingerprint.swift in Sources */,
 				F970143925D139BE007E74D9 /* VoucherComponentStyle.swift in Sources */,
+				F94F0DFF28AD2BCE00C0923D /* AuthenticationServiceMock.swift in Sources */,
 				F917613925A30B5700D653BE /* ThreeDS2ComponentFingerprintToken.swift in Sources */,
 				5A2D1951267368580082BCE9 /* ActionComponentStyle.swift in Sources */,
 			);
@@ -7618,14 +7652,6 @@
 				version = 1.0.0;
 			};
 		};
-		F9C5F07725C968FE005A6E54 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Adyen/adyen-3ds2-ios";
-			requirement = {
-				kind = exactVersion;
-				version = 2.2.6;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -7638,16 +7664,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F913B3EB26B7FAA8008F6CD2 /* XCRemoteSwiftPackageReference "adyen-networking-ios" */;
 			productName = AdyenNetworking;
-		};
-		F973A91D2791CBC0005AA753 /* Adyen3DS2 */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F9C5F07725C968FE005A6E54 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios" */;
-			productName = Adyen3DS2;
-		};
-		F9C5F08325C96919005A6E54 /* Adyen3DS2 */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F9C5F07725C968FE005A6E54 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios" */;
-			productName = Adyen3DS2;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

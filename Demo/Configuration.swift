@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import PassKit
 
@@ -13,11 +13,11 @@ internal enum ConfigurationConstants {
     // swiftlint:disable line_length
 
     /// Please use your own web server between your app and adyen checkout API.
-    static let demoServerEnvironment = DemoCheckoutAPIEnvironment.test
+    static let demoServerEnvironment = DemoCheckoutAPIEnvironment.local
     
-    static let classicAPIEnvironment = DemoClassicAPIEnvironment.test
+    static let classicAPIEnvironment = DemoClassicAPIEnvironment.local
 
-    static let componentsEnvironment = Environment.test
+    static let componentsEnvironment = Environment.local
 
     static let appName = "Adyen Demo"
 

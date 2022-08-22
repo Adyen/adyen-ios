@@ -8,10 +8,13 @@
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
+#if canImport(AdyenAuthentication)
+    import AdyenAuthentication
+#endif
 import Foundation
 
 /// Contains the details provided by the card component.
-public struct CardDetails: PaymentMethodDetails, ShopperInformation {
+public struct CardDetails: PaymentMethodDetails, ShopperInformation, DelegatedAuthenticationAware {
 
     /// The payment method type.
     public let type: PaymentMethodType
@@ -55,6 +58,9 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
     
     /// Brand of the card.
     public let selectedBrand: String?
+    
+    /// Delegated Authentication Data.
+    public let delegatedAuthenticationData: DelegatedAuthenticationData?
 
     /// Initializes the card payment details.
     ///
@@ -72,7 +78,8 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
                 selectedBrand: String? = nil,
                 billingAddress: PostalAddress? = nil,
                 kcpDetails: KCPDetails? = nil,
-                socialSecurityNumber: String? = nil) {
+                socialSecurityNumber: String? = nil,
+                delegatedAuthenticationData: DelegatedAuthenticationData? = nil) {
         self.type = paymentMethod.type
         self.encryptedCardNumber = encryptedCard.number
         self.encryptedExpiryMonth = encryptedCard.expiryMonth
@@ -86,6 +93,19 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         self.taxNumber = kcpDetails?.taxNumber
         self.password = kcpDetails?.password
         self.socialSecurityNumber = socialSecurityNumber
+        self.delegatedAuthenticationData = delegatedAuthenticationData ?? Self.createDelegatedAuthenticationData()
+    }
+    
+    private static func createDelegatedAuthenticationData() -> DelegatedAuthenticationData? {
+        #if canImport(AdyenAuthentication)
+            if #available(iOS 14.0, *) {
+                return (try? DeviceSupportChecker().checkSupport()).map { DelegatedAuthenticationData(sdkOutput: $0) }
+            } else {
+                return nil
+            }
+        #else
+            return nil
+        #endif
     }
 
     /// Initializes the card payment details for a stored card payment method.
@@ -108,6 +128,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         self.password = nil
         self.socialSecurityNumber = nil
         self.selectedBrand = nil
+        self.delegatedAuthenticationData = nil
     }
 
     // MARK: - Encoding

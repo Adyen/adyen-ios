@@ -15,7 +15,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
 
     internal var wrappedComponent: Component { coreActionHandler }
 
-    internal let coreActionHandler: ThreeDS2CoreActionHandler
+    internal let coreActionHandler: AnyThreeDS2CoreActionHandler
 
     internal var transaction: AnyADYTransaction? {
         get {
@@ -55,8 +55,18 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     internal init(context: AdyenContext,
                   appearanceConfiguration: ADYAppearanceConfiguration) {
         self.context = context
-        self.coreActionHandler = ThreeDS2CoreActionHandler(context: context,
-                                                           appearanceConfiguration: appearanceConfiguration)
+        #if canImport(AdyenAuthentication)
+            if #available(iOS 14.0, *) {
+                self.coreActionHandler = ThreeDS2PlusDACoreActionHandler(context: context,
+                                                                         appearanceConfiguration: appearanceConfiguration)
+            } else {
+                self.coreActionHandler = ThreeDS2CoreActionHandler(context: context,
+                                                                   appearanceConfiguration: appearanceConfiguration)
+            }
+        #else
+            self.coreActionHandler = ThreeDS2CoreActionHandler(context: context,
+                                                               appearanceConfiguration: appearanceConfiguration)
+        #endif
     }
 
     // MARK: - Fingerprint

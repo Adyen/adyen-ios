@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
 
 /// Contains the result of a 3DS transaction.
@@ -11,16 +12,23 @@ public struct ThreeDSResult: Decodable {
 
     /// The payload to submit to verify the authentication.
     public let payload: String
+    
+    private struct Payload: Encodable {
+        internal let authorisationToken: String?
+        
+        internal let delegatedAuthenticationSDKOutput: String?
+        
+        internal let transStatus: String?
+    }
 
-    internal init(from challengeResult: AnyChallengeResult, authorizationToken: String?) throws {
-        var payloadJson = ["transStatus": challengeResult.transactionStatus]
-
-        if let authorizationToken = authorizationToken {
-            payloadJson["authorisationToken"] = authorizationToken
-        }
-
-        let payloadData = try JSONSerialization.data(withJSONObject: payloadJson,
-                                                     options: [])
+    internal init(from challengeResult: AnyChallengeResult,
+                  delegatedAuthenticationSDKOutput: String?,
+                  authorizationToken: String?) throws {
+        let payload = Payload(authorisationToken: authorizationToken,
+                              delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
+                              transStatus: challengeResult.transactionStatus)
+        
+        let payloadData = try JSONEncoder().encode(payload)
 
         self.payload = payloadData.base64EncodedString()
     }

@@ -13,7 +13,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
 
     internal var wrappedComponent: Component { coreActionHandler }
 
-    internal let coreActionHandler: ThreeDS2CoreActionHandler
+    internal let coreActionHandler: AnyThreeDS2CoreActionHandler
     
     /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
     internal var threeDSRequestorAppURL: URL? {
@@ -57,8 +57,19 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     /// Initializes the 3D Secure 2 action handler.
     internal init(context: AdyenContext,
                   appearanceConfiguration: ADYAppearanceConfiguration) {
-        self.coreActionHandler = ThreeDS2CoreActionHandler(context: context,
-                                                           appearanceConfiguration: appearanceConfiguration)
+        #if canImport(AdyenAuthentication)
+            if #available(iOS 14.0, *) {
+                self.coreActionHandler = ThreeDS2PlusDACoreActionHandler(context: context,
+                                                                         appearanceConfiguration: appearanceConfiguration)
+            } else {
+                self.coreActionHandler = ThreeDS2CoreActionHandler(context: context,
+                                                                   appearanceConfiguration: appearanceConfiguration)
+            }
+        #else
+            self.coreActionHandler = ThreeDS2CoreActionHandler(context: context,
+                                                               appearanceConfiguration: appearanceConfiguration)
+        #endif
+        
     }
 
     // MARK: - Fingerprint

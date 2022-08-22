@@ -1,9 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Adyen3DS2
 import Foundation
 
@@ -16,8 +17,10 @@ internal extension ThreeDS2Component {
         private let sdkReferenceNumber: String
         private let sdkApplicationIdentifier: String
         private let sdkTransactionIdentifier: String
+        private let delegatedAuthenticationSDKOutput: String?
         
-        internal init(authenticationRequestParameters: AnyAuthenticationRequestParameters) throws {
+        internal init(authenticationRequestParameters: AnyAuthenticationRequestParameters,
+                      delegatedAuthenticationSDKOutput: String?) throws {
             let sdkEphemeralPublicKeyData = Data(authenticationRequestParameters.sdkEphemeralPublicKey.utf8)
             let sdkEphemeralPublicKey = try JSONDecoder().decode(EphemeralPublicKey.self, from: sdkEphemeralPublicKeyData)
             
@@ -26,6 +29,7 @@ internal extension ThreeDS2Component {
             self.sdkReferenceNumber = authenticationRequestParameters.sdkReferenceNumber
             self.sdkApplicationIdentifier = authenticationRequestParameters.sdkApplicationIdentifier
             self.sdkTransactionIdentifier = authenticationRequestParameters.sdkTransactionIdentifier
+            self.delegatedAuthenticationSDKOutput = delegatedAuthenticationSDKOutput
         }
         
         private enum CodingKeys: String, CodingKey {
@@ -34,6 +38,7 @@ internal extension ThreeDS2Component {
             case sdkReferenceNumber
             case sdkApplicationIdentifier = "sdkAppID"
             case sdkTransactionIdentifier = "sdkTransID"
+            case delegatedAuthenticationSDKOutput
         }
         
     }

@@ -8,8 +8,24 @@
 import Adyen3DS2
 import Foundation
 
+internal protocol AnyThreeDS2CoreActionHandler: Component {
+    var threeDSRequestorAppURL: URL? { get set }
+    
+    var service: AnyADYService { get set }
+    
+    var transaction: AnyADYTransaction? { get set }
+    
+    func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
+                event: Analytics.Event,
+                completionHandler: @escaping (Result<String, Error>) -> Void)
+    
+    func handle(_ challengeAction: ThreeDS2ChallengeAction,
+                event: Analytics.Event,
+                completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void)
+}
+
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
-internal class ThreeDS2CoreActionHandler: Component {
+internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     
     internal let context: AdyenContext
 
@@ -92,7 +108,8 @@ internal class ThreeDS2CoreActionHandler: Component {
             self.transaction = newTransaction
 
             let fingerprint = try ThreeDS2Component.Fingerprint(
-                authenticationRequestParameters: newTransaction.authenticationParameters
+                authenticationRequestParameters: newTransaction.authenticationParameters,
+                delegatedAuthenticationSDKOutput: nil
             )
             let encodedFingerprint = try Coder.encodeBase64(fingerprint)
 
@@ -148,6 +165,7 @@ internal class ThreeDS2CoreActionHandler: Component {
 
         do {
             let threeDSResult = try ThreeDSResult(from: challengeResult,
+                                                  delegatedAuthenticationSDKOutput: nil,
                                                   authorizationToken: authorizationToken)
 
             transaction = nil
