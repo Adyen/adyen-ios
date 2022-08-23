@@ -46,21 +46,20 @@ public final class PresentableComponentWrapper: PresentableComponent,
     
     /// :nodoc:
     public func didCancel() {
-        component.cancelIfNeeded()
         stopLoading()
+        component.cancelIfNeeded()
     }
 
     /// :nodoc:
     public func didFinalize(with success: Bool) {
-        component.finalizeIfNeeded(with: success, completion: {})
         stopLoading()
+        component.finalizeIfNeeded(with: success, completion: nil)
     }
 
     /// :nodoc:
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {
-        component.finalizeIfNeeded(with: success, completion: { [weak self] in
-            self?.stopLoading()
-        })
+        stopLoading()
+        component.finalizeIfNeeded(with: success, completion: completion)
     }
 
     /// :nodoc:

@@ -116,7 +116,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     /// Finalizes ApplePay payment after being processed by payment provider.
     /// - Parameter success: The status of the payment.
-    @available(*, deprecated, message: "This property will no longer be available.")
+    @available(*, deprecated, message: "This property will no longer be available. Use didFinalize(with:, completion:) instead.")
     public func didFinalize(with success: Bool) {
         finalizeCompletion = {}
         paymentAuthorizationCompletion?(success ? .success : .failure)

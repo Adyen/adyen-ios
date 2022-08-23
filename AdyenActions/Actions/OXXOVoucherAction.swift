@@ -21,12 +21,6 @@ public class OXXOVoucherAction: GenericVoucherAction,
     /// Download URL.
     public let downloadUrl: URL
     
-    /// The instruction url.
-    @available(*, deprecated, message: "Please use `instructionsURL` instead.")
-    public var instructionsUrl: String {
-        instructionsURL.absoluteString
-    }
-    
     /// The instruction `URL` object.
     public let instructionsURL: URL
 
