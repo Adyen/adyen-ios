@@ -63,7 +63,6 @@ class PreApplePayComponentTests: XCTestCase {
     
     func testApplePayPresented() {
         guard Available.iOS12 else { return }
-        let dummyExpectation = expectation(description: "Dummy Expectation")
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
@@ -78,28 +77,29 @@ class PreApplePayComponentTests: XCTestCase {
         XCTAssertNotNil(applePayButton)
         
         applePayButton?.sendActions(for: .touchUpInside)
+
+        wait(for: .seconds(1))
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertTrue(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController is PKPaymentAuthorizationViewController)
-            UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: false, completion: nil)
-            dummyExpectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 10, handler: nil)
+        XCTAssertTrue(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController is PKPaymentAuthorizationViewController)
+        UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: false, completion: nil)
     }
     
     func testHintLabelAmount() {
         UIApplication.shared.keyWindow?.rootViewController = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController?.present(component: sut)
-        
-        let dummyExpectation = expectation(description: "Dummy Expectation")
 
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let hintLabel = self.sut.viewController.view.findView(by: "hintLabel") as? UILabel
-            
-            XCTAssertNotNil(hintLabel)
-            XCTAssertEqual(hintLabel?.text, self.amount.formatted)
-            
+        wait(for: .seconds(1))
+
+        let hintLabel = sut.viewController.view.findView(by: "hintLabel") as? UILabel
+        
+        XCTAssertNotNil(hintLabel)
+        XCTAssertEqual(hintLabel?.text, amount.formatted)
+    }
+
+    func testFinalise() {
+
+        let dummyExpectation = expectation(description: "Dummy Expectation")
+        sut.finalizeIfNeeded(with: true) {
             dummyExpectation.fulfill()
         }
         

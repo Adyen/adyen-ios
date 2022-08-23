@@ -46,8 +46,8 @@ public final class PresentableComponentWrapper: PresentableComponent,
     
     /// :nodoc:
     public func didCancel() {
-        stopLoading()
         component.cancelIfNeeded()
+        stopLoading()
     }
 
     /// :nodoc:

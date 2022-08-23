@@ -183,6 +183,49 @@ class ApplePayComponentTest: XCTestCase {
             XCTAssertEqual(supportedNetworks, [.masterCard])
         }
     }
+
+    func testFinalise() {
+        let onFinaliseExpectation = expectation(description: "Wait for component to finalise")
+        
+        sut.finalizeIfNeeded(with: true) {
+            onFinaliseExpectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 10)
+    }
+
+    func testFinalisePayment() {
+        let mockPayment: PKPayment = .init()
+        let onApplePayFinaliseExpectation = expectation(description: "Wait for component to finalise")
+        sut.paymentAuthorizationViewController(sut.viewController as! PKPaymentAuthorizationViewController,
+                                               didAuthorizePayment: mockPayment) { _ in
+            onApplePayFinaliseExpectation.fulfill()
+        }
+
+        let onFinaliseExpectation = expectation(description: "Wait for component to finalise")
+        sut.finalizeIfNeeded(with: true) {
+            onFinaliseExpectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 10)
+    }
+
+    func testFinaliseOnSuccesfullPayment() {
+        let onPaymentProccessedExpectation = expectation(description: "Wait for component to finalise")
+        sut.paymentAuthorizationCompletion = { status in
+            XCTAssertTrue(status == .success)
+            onPaymentProccessedExpectation.fulfill()
+        }
+
+        let onFinaliseExpectation = expectation(description: "Wait for component to finalise")
+        sut.finalizeIfNeeded(with: true, completion: {
+            onFinaliseExpectation.fulfill()
+        })
+
+        sut.paymentAuthorizationViewControllerDidFinish(sut.paymentAuthorizationViewController!)
+
+        waitForExpectations(timeout: 10)
+    }
     
     private func getRandomContactFieldSet() -> Set<PKContactField> {
         let contactFieldsPool: [PKContactField] = [.emailAddress, .name, .phoneNumber, .postalAddress, .phoneticName]
