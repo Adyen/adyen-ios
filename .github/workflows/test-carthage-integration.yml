@@ -22,7 +22,7 @@ jobs:
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: latest-stable
+        xcode-version: '14.0-beta'
 
     - name: Resolve dependencies
       run: |
