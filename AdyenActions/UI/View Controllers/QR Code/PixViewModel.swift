@@ -7,7 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-extension QRCodeView {
+extension PixView {
     
     internal class Model {
         
@@ -43,7 +43,7 @@ extension QRCodeView {
                       logoUrl: URL,
                       observedProgress: Progress?,
                       expiration: AdyenObservable<String?>,
-                      style: QRCodeView.Model.Style) {
+                      style: PixView.Model.Style) {
             self.action = action
             self.instruction = instruction
             self.logoUrl = logoUrl

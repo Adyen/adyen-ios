@@ -7,17 +7,17 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-internal protocol QRCodeViewDelegate: AnyObject {
+internal protocol PixViewDelegate: AnyObject {
 
     func copyToPasteboard(with action: QRCodeAction)
 }
 
-internal final class QRCodeView: UIView, Localizable, AdyenObserver {
+internal final class PixView: UIView, Localizable, AdyenObserver {
     
     private let model: Model
     
     /// The delegate of the view
-    internal weak var delegate: QRCodeViewDelegate?
+    internal weak var delegate: PixViewDelegate?
     
     public var localizationParameters: LocalizationParameters?
     
@@ -27,7 +27,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         buildUI()
         backgroundColor = model.style.backgroundColor
         
-        accessibilityIdentifier = "adyen.QRCode"
+        accessibilityIdentifier = "adyen.QRCode.pix"
     }
     
     @available(*, unavailable)
