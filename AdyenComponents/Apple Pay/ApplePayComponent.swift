@@ -15,7 +15,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     internal var applePayPayment: ApplePayPayment
 
-    internal var resultConfirmed: Bool = false
+    internal var state: State = .initial
 
     internal var viewControllerDidFinish: Bool = false
 
@@ -32,10 +32,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     internal var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
 
-    internal var paymentAuthorizationCompletion: ((PKPaymentAuthorizationStatus) -> Void)?
-
-    internal var finalizeCompletion: (() -> Void)?
-    
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
 
@@ -87,12 +83,11 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     }
 
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {
-        self.resultConfirmed = true
-        if let paymentAuthorizationCompletion = paymentAuthorizationCompletion {
-            finalizeCompletion = completion
+        if case let .paid(paymentAuthorizationCompletion) = state {
+            state = .finalized(completion)
             paymentAuthorizationCompletion(success ? .success : .failure)
-            self.paymentAuthorizationCompletion = nil
         } else {
+            state = .initial
             completion?()
         }
     }
@@ -111,8 +106,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         if paymentAuthorizationViewController == nil {
             paymentAuthorizationViewController = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest)
             paymentAuthorizationViewController?.delegate = self
-            paymentAuthorizationCompletion = nil
-            resultConfirmed = false
+            state = .initial
         }
         return paymentAuthorizationViewController!
     }
@@ -120,6 +114,16 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     private static func canMakePaymentWith(_ networks: [PKPaymentNetwork]) -> Bool {
         PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks)
     }
+}
+
+extension ApplePayComponent {
+
+    internal enum State {
+        case initial
+        case paid((PKPaymentAuthorizationStatus) -> Void)
+        case finalized((() -> Void)?)
+    }
+
 }
 
 @_spi(AdyenInternal)
