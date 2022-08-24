@@ -15,7 +15,7 @@ extension AdyenSession: DropInComponentDelegate {
     }
     
     public func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
-        didFail(with: error, currentComponent: component)
+        failWithError(error, component)
     }
     
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
@@ -28,11 +28,11 @@ extension AdyenSession: DropInComponentDelegate {
     }
     
     public func didFail(with error: Error, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
-        didFail(with: error, currentComponent: component)
+        failWithError(error, component)
     }
     
     public func didFail(with error: Error, from dropInComponent: AnyDropInComponent) {
-        didFail(with: error, currentComponent: dropInComponent)
+        failWithError(error, dropInComponent)
     }
     
     public func didOpenExternalApplication(component: ActionComponent, in dropInComponent: AnyDropInComponent) {
