@@ -14,7 +14,7 @@ extension Component {
 
     /// Finalizes the payment if there is any, after being processed by payment provider.
     /// - Parameter success: The status of the payment.
-    @available(*, deprecated, message: "This property will no longer be available.")
+    @available(*, deprecated, message: "Use finalizeIfNeeded(with:, completion:) instead.")
     public func finalizeIfNeeded(with success: Bool) {
         stopLoadingIfNeeded()
         (self as? FinalizableComponent)?.didFinalize(with: success, completion: nil)
@@ -46,7 +46,7 @@ public protocol FinalizableComponent: Component {
 
     /// Finalizes payment after being processed by payment provider.
     /// - Parameter success: The status of the payment.
-    @available(*, deprecated, message: "This property will no longer be available. Use finalizeIfNeeded(with:, completion:) instead.")
+    @available(*, deprecated, message: "Use finalizeIfNeeded(with:, completion:) instead.")
     func didFinalize(with success: Bool)
 
     /// Finalizes payment after being processed by payment provider.
