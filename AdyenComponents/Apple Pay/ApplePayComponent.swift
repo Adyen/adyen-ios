@@ -11,6 +11,10 @@ import PassKit
 /// A component that handles Apple Pay payments.
 public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, Localizable, FinalizableComponent {
 
+    internal var isFinalised: Bool {
+        finalizeCompletion != nil
+    }
+
     /// :nodoc:
     internal var finalizeCompletion: (() -> Void)?
     
