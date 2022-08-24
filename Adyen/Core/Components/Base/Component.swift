@@ -16,7 +16,6 @@ extension Component {
     /// - Parameter success: The status of the payment.
     @available(*, deprecated, message: "Use finalizeIfNeeded(with:, completion:) instead.")
     public func finalizeIfNeeded(with success: Bool) {
-        stopLoadingIfNeeded()
         (self as? FinalizableComponent)?.didFinalize(with: success, completion: nil)
     }
 
