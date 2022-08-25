@@ -278,11 +278,31 @@ class DropInTests: XCTestCase {
         XCTAssertEqual(topVC!.sections.count, 1)
         XCTAssertEqual(topVC!.sections[0].items.count, 1)
     }
+
+    func testFinaliseIfNeededEmptyList() {
+        let config = DropInComponent.Configuration()
+
+        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
+        sut = DropInComponent(paymentMethods: paymentMethods, context: Dummy.context, configuration: config)
+
+        let root = UIViewController()
+        UIApplication.shared.keyWindow?.rootViewController = root
+        root.present(sut.viewController, animated: true, completion: nil)
+
+        let waitExpectation = expectation(description: "Expect Drop-In to finalize")
+
+        wait(for: .seconds(1))
+        sut.finalizeIfNeeded(with: true) {
+            waitExpectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 5, handler: nil)
+    }
 }
 
 extension UIViewController {
 
-    fileprivate func findChild<T: UIViewController>(of type: T.Type) -> T? {
+    internal func findChild<T: UIViewController>(of type: T.Type) -> T? {
         if self is T { return self as? T }
         var result: T?
         for child in self.children {
