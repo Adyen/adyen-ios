@@ -14,12 +14,12 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     /// :nodoc:
     public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
         paymentAuthorizationViewController = nil
-        guard isFinalised else {
+        guard case let .finalized(completion) = state else {
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
             return
         }
 
-        finalizeCompletion?()
+        completion?()
     }
     
     /// :nodoc:
@@ -32,7 +32,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
             return
         }
 
-        paymentAuthorizationCompletion = completion
+        state = .paid(completion)
         let token = payment.token.paymentData.base64EncodedString()
         let network = payment.token.paymentMethod.network?.rawValue ?? ""
         let billingContact = payment.billingContact

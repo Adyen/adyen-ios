@@ -212,10 +212,10 @@ class ApplePayComponentTest: XCTestCase {
 
     func testFinaliseOnSuccesfullPayment() {
         let onPaymentProccessedExpectation = expectation(description: "Wait for component to finalise")
-        sut.paymentAuthorizationCompletion = { status in
+        sut.state = .paid({ status in
             XCTAssertTrue(status == .success)
             onPaymentProccessedExpectation.fulfill()
-        }
+        })
 
         let onFinaliseExpectation = expectation(description: "Wait for component to finalise")
         sut.finalizeIfNeeded(with: true, completion: {

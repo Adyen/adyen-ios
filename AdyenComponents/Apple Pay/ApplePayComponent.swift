@@ -11,12 +11,8 @@ import PassKit
 /// A component that handles Apple Pay payments.
 public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, Localizable, FinalizableComponent {
 
-    internal var isFinalised: Bool {
-        finalizeCompletion != nil
-    }
-
     /// :nodoc:
-    internal var finalizeCompletion: (() -> Void)?
+    internal var state: State = .initial
     
     /// :nodoc:
     internal let internalPayment: Payment
@@ -36,9 +32,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// :nodoc:
     internal var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
 
-    /// :nodoc:
-    internal var paymentAuthorizationCompletion: ((PKPaymentAuthorizationStatus) -> Void)?
-    
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
 
@@ -122,13 +115,14 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// - Parameter success: The status of the payment.
     @available(*, deprecated, message: "Use didFinalize(with:, completion:) instead.")
     public func didFinalize(with success: Bool) {
-        finalizeCompletion = {}
-        paymentAuthorizationCompletion?(success ? .success : .failure)
+        guard case let .paid(paymentAuthorizationCompletion) = state else { return }
+        state = .finalized(nil)
+        paymentAuthorizationCompletion(success ? .success : .failure)
     }
 
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {
-        if let paymentAuthorizationCompletion = paymentAuthorizationCompletion {
-            finalizeCompletion = completion
+        if case let .paid(paymentAuthorizationCompletion) = state {
+            state = .finalized(completion)
             paymentAuthorizationCompletion(success ? .success : .failure)
         } else {
             completion?()
@@ -143,8 +137,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
             let request = configuration.createPaymentRequest(payment: internalPayment, supportedNetworks: supportedNetworks)
             paymentAuthorizationViewController = ApplePayComponent.createPaymentAuthorizationViewController(from: request)
             paymentAuthorizationViewController?.delegate = self
-            paymentAuthorizationCompletion = nil
-            finalizeCompletion = nil
+            state = .initial
         }
         return paymentAuthorizationViewController!
     }
@@ -213,6 +206,16 @@ extension ApplePayComponent {
                 return "The Apple Pay token is invalid. Make sure you are using physical device, not a Simulator."
             }
         }
+    }
+
+}
+
+extension ApplePayComponent {
+
+    internal enum State {
+        case initial
+        case paid((PKPaymentAuthorizationStatus) -> Void)
+        case finalized((() -> Void)?)
     }
 
 }
