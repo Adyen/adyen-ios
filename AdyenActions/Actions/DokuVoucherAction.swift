@@ -16,12 +16,6 @@ public final class DokuVoucherAction: GenericVoucherAction, InstructionAwareVouc
     /// The shopper email.
     public let shopperEmail: String
     
-    /// The instruction url.
-    @available(*, deprecated, message: "Please use `instructionsURL` instead.")
-    public var instructionsUrl: String {
-        instructionsURL.absoluteString
-    }
-    
     /// The instruction `URL` object.
     public let instructionsURL: URL
 

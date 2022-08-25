@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -79,25 +79,25 @@ internal final class IntegrationExample: APIClientAware {
 
     internal func finish(with resultCode: PaymentsResponse.ResultCode) {
         let success = resultCode == .authorised || resultCode == .received || resultCode == .pending
-        currentComponent?.finalizeIfNeeded(with: success)
-
-        presenter?.dismiss { [weak self] in
-            // Payment is processed. Add your code here.
-            self?.presentAlert(withTitle: resultCode.rawValue)
+        currentComponent?.finalizeIfNeeded(with: success) { [weak self] in
+            self?.presenter?.dismiss { [weak self] in
+                // Payment is processed. Add your code here.
+                self?.presentAlert(withTitle: resultCode.rawValue)
+            }
         }
     }
 
     internal func finish(with error: Error) {
-        currentComponent?.finalizeIfNeeded(with: false)
-
-        presenter?.dismiss { [weak self] in
-            // Payment is unsuccessful. Add your code here.
-            if let componentError = (error as? ComponentError), componentError == ComponentError.cancelled {
-                self?.presentAlert(withTitle: "Cancelled")
-            } else {
-                self?.presentAlert(with: error)
+        currentComponent?.finalizeIfNeeded(with: false, completion: { [weak self] in
+            self?.presenter?.dismiss { [weak self] in
+                // Payment is unsuccessful. Add your code here.
+                if let componentError = (error as? ComponentError), componentError == ComponentError.cancelled {
+                    self?.presentAlert(withTitle: "Cancelled")
+                } else {
+                    self?.presentAlert(with: error)
+                }
             }
-        }
+        })
     }
 
     internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
