@@ -47,7 +47,7 @@ internal struct PaymentsRequest: APIRequest {
         try container.encodeIfPresent(data.socialSecurityNumber, forKey: .socialSecurityNumber)
         try container.encode(Locale.current.identifier, forKey: .shopperLocale)
         try container.encodeIfPresent(data.browserInfo, forKey: .browserInfo)
-        try container.encodeIfPresent(data.checkoutAttemptId, forKey: .checkoutAttemptId)
+//        try container.encodeIfPresent(data.checkoutAttemptId, forKey: .checkoutAttemptId)
         try container.encode("iOS", forKey: .channel)
         try container.encode(amount, forKey: .amount)
         try container.encode(ConfigurationConstants.reference, forKey: .reference)

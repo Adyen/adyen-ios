@@ -29,7 +29,7 @@ internal enum ConfigurationConstants {
 
     static let shopperEmail = "checkoutShopperiOS@example.org"
     
-    static let additionalData = ["allow3DS2": true]
+    static let additionalData = ["allow3DS2": true, "executeThreeD": true]
 
     static var apiContext: APIContext {
         if let apiContext = try? APIContext(environment: componentsEnvironment, clientKey: clientKey) {
