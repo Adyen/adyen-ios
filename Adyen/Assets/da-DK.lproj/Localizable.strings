@@ -160,4 +160,6 @@
 "adyen.ach.accountLocationField.title" = "ABA-registreringsnummer";
 "adyen.ach.accountLocationField.invalid" = "Ugyldigt ABA-registreringsnummer";
 "idealIssuer.selectField.title" = "Bank";
-"adyen.onlineBanking.termsAndConditions" = "Ved at klikke på Fortsæt accepterer du #vilkår og betingelser#";
+"adyen.onlineBanking.termsAndConditions" = "Ved at fortsætte accepterer du #vilkår og betingelser#";
+"adyen.promptPay.instructionMessage" = "Tag et skærmbillede, eller gem QR-koden, åbn dit bankprogram, og upload QR-koden for at bekræfte oplysningerne og fuldføre betalingen.";
+"adyen.promptPay.timerExpirationMessage" = "Denne QR-kode er gyldig i %@";

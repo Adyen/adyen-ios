@@ -160,4 +160,6 @@
 "adyen.ach.accountLocationField.title" = "ABA routing number";
 "adyen.ach.accountLocationField.invalid" = "Invalid ABA routing number";
 "idealIssuer.selectField.title" = "Bank";
-"adyen.onlineBanking.termsAndConditions" = "By clicking continue you agree with the #terms and conditions#";
+"adyen.onlineBanking.termsAndConditions" = "By continuing you agree with the #terms and conditions#";
+"adyen.promptPay.instructionMessage" = "Take a screenshot or save the QR code, open your banking application and upload the QR code to verify the details and complete the payment.";
+"adyen.promptPay.timerExpirationMessage" = "This QR code is valid for %@";

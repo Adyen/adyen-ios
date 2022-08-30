@@ -41,7 +41,7 @@ struct AwaitActionHandlerProviderMock: AnyPollingHandlerProvider {
         onAwaitHandler?(paymentMethodType) ?? PollingHandlerMock()
     }
     
-    func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler {
+    func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler? {
         onQRHandler?(qrPaymentMethodType) ?? PollingHandlerMock()
     }
 }

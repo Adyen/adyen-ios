@@ -31,7 +31,7 @@ class ActionTests: XCTestCase {
         XCTAssertEqual(redirectAction?.paymentData, "example_data")
     }
     
-    func testQRCodeActionDecoding() {
+    func testPixQRCodeActionDecoding() {
         let json =
             """
             {
@@ -53,7 +53,30 @@ class ActionTests: XCTestCase {
         XCTAssertEqual(qrCodeAction?.paymentData, "example_data")
         XCTAssertTrue(qrCodeAction?.paymentMethodType == .some(.pix))
     }
-    
+
+    func testQRCodeActionDecoding() {
+        let json =
+            """
+            {
+                "type": "qrCode",
+                "qrCodeData": "example_data",
+                "paymentData": "example_data",
+                "paymentMethodType": "promptpay"
+            }
+            """
+
+        let action = try? JSONDecoder().decode(Action.self, from: json.data(using: .utf8)!)
+
+        var qrCodeAction: QRCodeAction?
+        if case let .qrCode(qrCode)? = action {
+            qrCodeAction = qrCode
+        }
+
+        XCTAssertNotNil(qrCodeAction)
+        XCTAssertEqual(qrCodeAction?.paymentData, "example_data")
+        XCTAssertTrue(qrCodeAction?.paymentMethodType == .some(.promptPay))
+    }
+
     func testQRCodeToRedirectActionDecoding() {
         let json =
             """

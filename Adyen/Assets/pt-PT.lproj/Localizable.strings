@@ -160,4 +160,6 @@
 "adyen.ach.accountLocationField.title" = "Número de encaminhamento da ABA";
 "adyen.ach.accountLocationField.invalid" = "Número de encaminhamento ABA inválido";
 "idealIssuer.selectField.title" = "Banco";
-"adyen.onlineBanking.termsAndConditions" = "Ao clicar em continuar, concorda com os #termos e condições#";
+"adyen.onlineBanking.termsAndConditions" = "Ao continuar, concorda com os #termos e condições#";
+"adyen.promptPay.instructionMessage" = "Faça uma captura de ecrã ou guarde o código QR, abra a sua aplicação bancária e carregue o código QR para verificar os detalhes e concluir o pagamento.";
+"adyen.promptPay.timerExpirationMessage" = "Este código QR é válido para %@";

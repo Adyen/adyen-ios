@@ -160,4 +160,6 @@
 "adyen.ach.accountLocationField.title" = "ABA-dirigeringsnummer";
 "adyen.ach.accountLocationField.invalid" = "Ugyldig ABA-dirigeringsnummer";
 "idealIssuer.selectField.title" = "Bank";
-"adyen.onlineBanking.termsAndConditions" = "Ved å klikke på Fortsett godtar du #vilkårene#";
+"adyen.onlineBanking.termsAndConditions" = "Ved å fortsette godtar du #terms and conditions#";
+"adyen.promptPay.instructionMessage" = "Ta et skjermbilde eller lagre QR-koden, åpne bankappen din og last opp QR-koden for å verifisere opplysningene og fullføre betalingen.";
+"adyen.promptPay.timerExpirationMessage" = "Denne QR-koden er gyldig i %@";

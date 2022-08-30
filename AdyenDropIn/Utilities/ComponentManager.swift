@@ -137,8 +137,12 @@ internal final class ComponentManager {
     }
 
     private func isAllowed(_ paymentMethod: PaymentMethod) -> Bool {
-        guard isVoucherPaymentMethod(paymentMethod) else { return true }
+        guard isVoucherPaymentMethod(paymentMethod) || isQRCodePaymentMethod(paymentMethod) else { return true }
         return Bundle.main.object(forInfoDictionaryKey: "NSPhotoLibraryAddUsageDescription") != nil
+    }
+
+    private func isQRCodePaymentMethod(_ paymentMethod: PaymentMethod) -> Bool {
+        QRCodePaymentMethod.allCases.map(\.rawValue).contains(paymentMethod.type.rawValue)
     }
 
     private func isVoucherPaymentMethod(_ paymentMethod: PaymentMethod) -> Bool {

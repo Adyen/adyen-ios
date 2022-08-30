@@ -160,4 +160,6 @@
 "adyen.ach.accountLocationField.title" = "Αριθμός δρομολόγησης ABA";
 "adyen.ach.accountLocationField.invalid" = "Μη έγκυρος αριθμός δρομολόγησης ABA";
 "idealIssuer.selectField.title" = "Τράπεζα";
-"adyen.onlineBanking.termsAndConditions" = "Αν κάνετε κλικ στη «Συνέχεια», αποδέχεστε τους #Όρους και προϋποθέσεις#";
+"adyen.onlineBanking.termsAndConditions" = "Αν συνεχίσετε, συνεπάγεται ότι αποδέχεστε τους #Όρους και προϋποθέσεις#";
+"adyen.promptPay.instructionMessage" = "Τραβήξτε ένα στιγμιότυπο οθόνης ή αποθηκεύστε τον κωδικό QR, ανοίξτε την εφαρμογή τραπεζικής σας και ανεβάστε τον κωδικό QR για επαλήθευση των στοιχείων και ολοκλήρωση της πληρωμής.";
+"adyen.promptPay.timerExpirationMessage" = "Αυτός ο κωδικός QR ισχύει για %@";

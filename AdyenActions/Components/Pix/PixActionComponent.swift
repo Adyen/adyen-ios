@@ -18,7 +18,7 @@ internal enum QRCodeComponentError: LocalizedError {
 }
 
 /// A component  for QRCode action.
-public final class QRCodeActionComponent: ActionComponent, Cancellable, ShareableComponent {
+public final class QRCodeActionComponent: ActionComponent, Cancellable {
     
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -28,9 +28,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     public weak var presentationDelegate: PresentationDelegate?
 
     public weak var delegate: ActionComponentDelegate?
-
-    internal let presenterViewController = UIViewController()
-
+    
     /// The QR code component configurations.
     public struct Configuration {
         
@@ -53,8 +51,8 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     
     /// The QR code component configurations.
     public var configuration: Configuration
-
-    private let pollingComponentBuilder: AnyPollingHandlerProvider?
+    
+    private let pollingComponentBuilder: AnyPollingHandlerProvider
     
     private var pollingComponent: AnyPollingHandler?
     
@@ -62,8 +60,6 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     
     private let progress = Progress()
     
-    private var qrCodeAction: QRCodeAction?
-
     @AdyenObservable(nil) private var expirationText: String?
     
     private let expirationTimeout: TimeInterval
@@ -79,7 +75,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
                   pollingComponentBuilder: PollingHandlerProvider(context: context),
                   timeoutInterval: 60 * 15)
     }
-
+    
     /// Initializes the `QRCodeComponent`.
     ///
     /// - Parameter context: The context object for this component.
@@ -88,13 +84,13 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     /// - Parameter timeoutInterval: QR Code expiration timeout
     internal init(context: AdyenContext,
                   configuration: Configuration = .init(),
-                  pollingComponentBuilder: AnyPollingHandlerProvider? = nil,
+                  pollingComponentBuilder: AnyPollingHandlerProvider,
                   timeoutInterval: TimeInterval) {
         self.context = context
         self.configuration = configuration
         self.pollingComponentBuilder = pollingComponentBuilder
         self.expirationTimeout = timeoutInterval
-
+        
         updateExpiration(timeoutInterval)
     }
 
@@ -102,28 +98,24 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     ///
     /// - Parameter action: The QR code action.
     public func handle(_ action: QRCodeAction) {
-        qrCodeAction = action
-        pollingComponent = pollingComponentBuilder?.handler(for: action.paymentMethodType)
+<<<<<<<< HEAD:AdyenActions/Components/QRCode/QRCodeActionComponent.swift
+        pollingComponent = pollingComponentBuilder.handler(for: action.paymentMethodType)
+========
+        let pollingComponent = pollingComponentBuilder.handler(for: action.paymentMethodType)
+>>>>>>>> 2824cfe6e (Added promptpay component):AdyenActions/Components/Pix/PixActionComponent.swift
         pollingComponent?.delegate = self
         
-        AdyenAssertion.assert(message: "presentationDelegate is nil", condition: presentationDelegate == nil)
+        assert(presentationDelegate != nil)
         
-        let viewController = createViewController(with: action)
-        setUpPresenterViewController(parentViewController: viewController)
-
-        if let presentationDelegate = presentationDelegate {
-            let presentableComponent = PresentableComponentWrapper(
+        presentationDelegate?.present(
+            component: PresentableComponentWrapper(
                 component: self,
-                viewController: viewController
+                viewController: createViewController(with: action)
             )
-            presentationDelegate.present(component: presentableComponent)
-        } else {
-            AdyenAssertion.assertionFailure(
-                message: "PresentationDelegate is nil. Provide a presentation delegate to QRCodeActionComponent."
-            )
-        }
+        )
         
         startTimer()
+        
         pollingComponent?.handle(action)
     }
     
@@ -144,16 +136,9 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     private func updateExpiration(_ timeLeft: TimeInterval) {
         progress.completedUnitCount = Int64(timeLeft)
         let timeLeftString = timeLeft.adyen.timeLeftString() ?? ""
-        guard let action = qrCodeAction else {return}
-        if action.paymentMethodType == .promptPay {
-            expirationText = localizedString(.promptPayTimerExpirationMessage,
-                                             configuration.localizationParameters,
-                                             timeLeftString)
-        } else {
-            expirationText = localizedString(.pixExpirationLabel,
-                                             configuration.localizationParameters,
-                                             timeLeftString)
-        }
+        expirationText = localizedString(.pixExpirationLabel,
+                                         configuration.localizationParameters,
+                                         timeLeftString)
     }
     
     private func onTimerTimeout() {
@@ -163,35 +148,23 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     }
     
     private func createViewController(with action: QRCodeAction) -> UIViewController {
-        let viewController = QRCodeViewController(viewModel: createModel(with: action))
-        viewController.qrCodeView.delegate = self
+        let viewController = PixViewController(viewModel: createModel(with: action))
+        viewController.pixView.delegate = self
         return viewController
     }
-
-    private func getQRCodeInstruction(with action: QRCodeAction) -> String {
-        if action.paymentMethodType == .promptPay {
-            return localizedString(.promptPayInstructionMessage,
-                                   configuration.localizationParameters)
-        } else {
-            return localizedString(.pixInstructions,
-                                   configuration.localizationParameters)
-        }
-    }
-
-    private func createModel(with action: QRCodeAction) -> QRCodeView.Model {
+    
+    private func createModel(with action: QRCodeAction) -> PixView.Model {
         let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment)
-        return QRCodeView.Model(
+        return PixView.Model(
             action: action,
-            instruction: getQRCodeInstruction(with: action),
-            payment: context.payment,
+            instruction: localizedString(.pixInstructions,
+                                         configuration.localizationParameters),
             logoUrl: url,
             observedProgress: progress,
             expiration: $expirationText,
-            style: QRCodeView.Model.Style(
-                copyCodeButton: configuration.style.copyCodeButton,
-                saveAsImageButton: configuration.style.saveAsImageButton,
+            style: PixView.Model.Style(
+                copyButton: configuration.style.copyCodeButton,
                 instructionLabel: configuration.style.instructionLabel,
-                amountToPayLabel: configuration.style.amountToPayLabel,
                 progressView: configuration.style.progressView,
                 expirationLabel: configuration.style.expirationLabel,
                 logoCornerRounding: configuration.style.logoCornerRounding,
@@ -199,7 +172,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
             )
         )
     }
-
+    
     public func didCancel() {
         cleanup()
     }
@@ -228,14 +201,10 @@ extension QRCodeActionComponent: ActionComponentDelegate {
 }
 
 @_spi(AdyenInternal)
-extension QRCodeActionComponent: QRCodeViewDelegate {
+extension QRCodeActionComponent: PixViewDelegate {
     
     internal func copyToPasteboard(with action: QRCodeAction) {
         UIPasteboard.general.string = action.qrCodeData
-    }
-    
-    internal func saveAsImage(qrCodeImage: UIImage?, sourceView: UIView) {
-        presentSharePopover(with: qrCodeImage as Any, sourceView: sourceView)
     }
     
 }
