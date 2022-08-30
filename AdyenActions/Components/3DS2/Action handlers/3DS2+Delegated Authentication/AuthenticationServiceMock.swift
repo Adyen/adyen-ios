@@ -16,9 +16,9 @@ import Foundation
         }
     
         internal func authenticate(with input: AuthenticationInput) async throws -> AuthenticationOutput {
-//            throw AdyenAuthenticationError.noStoredCredentialsMatch(nil)
+            throw AdyenAuthenticationError.noStoredCredentialsMatch(nil)
             // swiftlint:disable:next line_length
-            try JSONDecoder().decode(AuthenticationOutput.self, from: "eyJycElkIjoiQjJOWVNTNTkzMi5jb20uYWR5ZW4uQ2hlY2tvdXREZW1vVUlLaXQiLCJ2ZXJzaW9uIjoxLCJkZXZpY2UiOiJpT1MiLCJhc3NlcnRpb25PYmplY3QiOiJvbWx6YVdkdVlYUjFjbVZZUnpCRkFpQmxObG9HV2thc0ZkMDJrK1NTd0hLY0oxWkdrczkxeUZjaG02b2Y3UEdnbEFJaEFKK1prNzFxdkJFaGllR0xqMzFXcG5tckdjWHlZV2VsYUREUnhhV2licGtLY1dGMWRHaGxiblJwWTJGMGIzSkVZWFJoV0NVdkxjTFU2NG4zZjRpaXdcL3BVWnpTcXVXV2lWZHhwNHhETDFNZ091NWdwWDBBQUFBQUIiLCJjcmVkZW50aWFsSWQiOiIyNmZ5M1NrSkIwZVFmcFFwZ3NkQ3R5dWt2TDBEVWdBRk51XC9FaGZRa1p2QT0ifQ".dataFromBase64URL())
+//            try JSONDecoder().decode(AuthenticationOutput.self, from: "eyJycElkIjoiQjJOWVNTNTkzMi5jb20uYWR5ZW4uQ2hlY2tvdXREZW1vVUlLaXQiLCJ2ZXJzaW9uIjoxLCJkZXZpY2UiOiJpT1MiLCJhc3NlcnRpb25PYmplY3QiOiJvbWx6YVdkdVlYUjFjbVZZUnpCRkFpQmxObG9HV2thc0ZkMDJrK1NTd0hLY0oxWkdrczkxeUZjaG02b2Y3UEdnbEFJaEFKK1prNzFxdkJFaGllR0xqMzFXcG5tckdjWHlZV2VsYUREUnhhV2licGtLY1dGMWRHaGxiblJwWTJGMGIzSkVZWFJoV0NVdkxjTFU2NG4zZjRpaXdcL3BVWnpTcXVXV2lWZHhwNHhETDFNZ091NWdwWDBBQUFBQUIiLCJjcmVkZW50aWFsSWQiOiIyNmZ5M1NrSkIwZVFmcFFwZ3NkQ3R5dWt2TDBEVWdBRk51XC9FaGZRa1p2QT0ifQ".dataFromBase64URL())
         }
     
         internal func reset() throws {}
