@@ -7,18 +7,8 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-/// An error that occurred during the use of QRCodeComponent
-internal enum QRCodeComponentError: LocalizedError {
-    /// Indicates the QR code is not longer valid
-    case qrCodeExpired
-    
-    public var errorDescription: String? {
-        "QR code is no longer valid"
-    }
-}
-
-/// A component  for Pix action.
-public final class PixActionComponent: ActionComponent, Cancellable {
+/// A component  for QRCode action.
+public final class QRCodeActionComponent: ActionComponent, Cancellable, ShareableComponent {
     
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -28,6 +18,8 @@ public final class PixActionComponent: ActionComponent, Cancellable {
     public weak var presentationDelegate: PresentationDelegate?
 
     public weak var delegate: ActionComponentDelegate?
+    
+    internal let presenterViewController = UIViewController()
     
     /// The QR code component configurations.
     public struct Configuration {
@@ -49,12 +41,8 @@ public final class PixActionComponent: ActionComponent, Cancellable {
         }
     }
     
-    /// The voucher component configurations.
+    /// The QR code component configurations.
     public var configuration: Configuration
-    
-    private let pollingComponentBuilder: AnyPollingHandlerProvider
-    
-    private var pollingComponent: AnyPollingHandler?
     
     private var timeoutTimer: ExpirationTimer?
     
@@ -72,7 +60,6 @@ public final class PixActionComponent: ActionComponent, Cancellable {
                             configuration: Configuration = .init()) {
         self.init(context: context,
                   configuration: configuration,
-                  pollingComponentBuilder: PollingHandlerProvider(context: context),
                   timeoutInterval: 60 * 15)
     }
     
@@ -80,15 +67,12 @@ public final class PixActionComponent: ActionComponent, Cancellable {
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component configurations
-    /// - Parameter pollingComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter timeoutInterval: QR Code expiration timeout
     internal init(context: AdyenContext,
                   configuration: Configuration = .init(),
-                  pollingComponentBuilder: AnyPollingHandlerProvider,
                   timeoutInterval: TimeInterval) {
         self.context = context
         self.configuration = configuration
-        self.pollingComponentBuilder = pollingComponentBuilder
         self.expirationTimeout = timeoutInterval
         
         updateExpiration(timeoutInterval)
@@ -98,21 +82,24 @@ public final class PixActionComponent: ActionComponent, Cancellable {
     ///
     /// - Parameter action: The QR code action.
     public func handle(_ action: QRCodeAction) {
-        let pollingComponent = pollingComponentBuilder.handler(for: action.paymentMethodType)
-        pollingComponent.delegate = self
-        
         assert(presentationDelegate != nil)
         
-        presentationDelegate?.present(
-            component: PresentableComponentWrapper(
+        let viewController = createViewController(with: action)
+        setUpPresenterViewController(parentViewController: viewController)
+
+        if let presentationDelegate = presentationDelegate {
+            let presentableComponent = PresentableComponentWrapper(
                 component: self,
-                viewController: createViewController(with: action)
+                viewController: viewController
             )
-        )
+            presentationDelegate.present(component: presentableComponent)
+        } else {
+            AdyenAssertion.assertionFailure(
+                message: "PresentationDelegate is nil. Provide a presentation delegate to QRCodeActionComponent."
+            )
+        }
         
         startTimer()
-        
-        pollingComponent.handle(action)
     }
     
     /// :nodoc
@@ -144,23 +131,25 @@ public final class PixActionComponent: ActionComponent, Cancellable {
     }
     
     private func createViewController(with action: QRCodeAction) -> UIViewController {
-        let viewController = PixViewController(viewModel: createModel(with: action))
-        viewController.pixView.delegate = self
+        let viewController = QRCodeViewController(viewModel: createModel(with: action))
+        viewController.qrCodeView.delegate = self
         return viewController
     }
     
-    private func createModel(with action: QRCodeAction) -> PixView.Model {
+    private func createModel(with action: QRCodeAction) -> QRCodeView.Model {
         let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment)
-        return PixView.Model(
+        return QRCodeView.Model(
             action: action,
             instruction: localizedString(.pixInstructions,
                                          configuration.localizationParameters),
+            payment: context.payment,
             logoUrl: url,
             observedProgress: progress,
             expiration: $expirationText,
-            style: PixView.Model.Style(
-                copyButton: configuration.style.copyButton,
+            style: QRCodeView.Model.Style(
+                saveAsImageButton: configuration.style.saveAsImageButton,
                 instructionLabel: configuration.style.instructionLabel,
+                amountToPayLabel: configuration.style.amountToPayLabel,
                 progressView: configuration.style.progressView,
                 expirationLabel: configuration.style.expirationLabel,
                 logoCornerRounding: configuration.style.logoCornerRounding,
@@ -175,32 +164,15 @@ public final class PixActionComponent: ActionComponent, Cancellable {
     
     fileprivate func cleanup() {
         timeoutTimer?.stopTimer()
-        pollingComponent?.didCancel()
     }
+
 }
 
 @_spi(AdyenInternal)
-extension PixActionComponent: ActionComponentDelegate {
+extension QRCodeActionComponent: QRCodeViewDelegate {
 
-    public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        cleanup()
-        delegate?.didProvide(data, from: self)
-    }
-
-    public func didComplete(from component: ActionComponent) {}
-
-    public func didFail(with error: Error, from component: ActionComponent) {
-        cleanup()
-        delegate?.didFail(with: error, from: self)
-    }
-    
-}
-
-@_spi(AdyenInternal)
-extension PixActionComponent: PixViewDelegate {
-    
-    internal func copyToPasteboard(with action: QRCodeAction) {
-        UIPasteboard.general.string = action.qrCodeData
+    internal func saveAsImage(qrCodeImage: UIImage?, sourceView: UIView) {
+        presentSharePopover(with: qrCodeImage as Any, sourceView: sourceView)
     }
     
 }

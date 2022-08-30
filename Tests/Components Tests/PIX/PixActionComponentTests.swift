@@ -8,7 +8,7 @@
 @testable import AdyenActions
 import XCTest
 
-class QRCodeComponentTests: XCTestCase {
+class PixActionComponentTests: XCTestCase {
 
     var context: AdyenContext!
 
