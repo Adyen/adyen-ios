@@ -17,19 +17,20 @@ extension IntegrationExample: AdyenSessionDelegate {
     
     func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession) {
         setupSession()
-        finish(with: resultCode)
+        dismissAndShowAlert(resultCode.isSuccess, resultCode.rawValue)
     }
     
     func didFail(with error: Error, from component: Component, session: AdyenSession) {
         setupSession()
-        finish(with: error)
+        dismissAndShowAlert(false, error.localizedDescription)
     }
     
     func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {}
-    
-    private func finish(with resultCode: SessionPaymentResultCode) {
-        let resultCode = PaymentsResponse.ResultCode(rawValue: resultCode.rawValue) ?? .authorised
-        finish(with: resultCode)
+
+}
+
+extension SessionPaymentResultCode {
+    var isSuccess: Bool {
+        self == .authorised || self == .received || self == .pending
     }
-    
 }
