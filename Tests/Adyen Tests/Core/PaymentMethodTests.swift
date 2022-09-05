@@ -836,4 +836,11 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.type.rawValue, "ach")
         XCTAssertEqual(paymentMethod.name, "ACH Direct Debit")
     }
+    
+    func testDecodingStoredACHDirectDebitPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(storedACH) as StoredACHDirectDebitPaymentMethod
+        XCTAssertEqual(paymentMethod.type.rawValue, "ach")
+        XCTAssertEqual(paymentMethod.name, "ACH Direct Debit")
+        XCTAssertEqual(paymentMethod.bankAccountNumber, "123456789")
+    }
 }

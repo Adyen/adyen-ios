@@ -419,6 +419,18 @@ let storedBlik = [
     "type": "blik"
 ] as [String: Any]
 
+let storedACH = [
+    "bankLocationId" : "011000138",
+    "id" : "CWG8SF2PR2M84H82",
+    "supportedShopperInteractions" : [
+      "Ecommerce"
+    ],
+    "bankAccountNumber" : "123456789",
+    "ownerName" : "John Smith",
+    "type" : "ach",
+    "name" : "ACH Direct Debit"
+] as [String: Any]
+
 let qiwiWallet = [
     "details": [
         [
