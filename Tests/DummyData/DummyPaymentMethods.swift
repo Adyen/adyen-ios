@@ -419,7 +419,7 @@ let storedBlik = [
     "type": "blik"
 ] as [String: Any]
 
-let storedACH = [
+let storedACHDictionary = [
     "bankLocationId" : "011000138",
     "id" : "CWG8SF2PR2M84H82",
     "supportedShopperInteractions" : [

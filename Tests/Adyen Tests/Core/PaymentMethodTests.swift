@@ -35,7 +35,7 @@ class PaymentMethodTests: XCTestCase {
                 storedBcmcDictionary,
                 storedDebitCardDictionary,
                 storedBlik,
-                storedACH
+                storedACHDictionary
             ],
             "paymentMethods": [
                 creditCardDictionary,
@@ -860,7 +860,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testDecodingStoredACHDirectDebitPaymentMethod() throws {
-        let paymentMethod = try Coder.decode(storedACH) as StoredACHDirectDebitPaymentMethod
+        let paymentMethod = try Coder.decode(storedACHDictionary) as StoredACHDirectDebitPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "ach")
         XCTAssertEqual(paymentMethod.name, "ACH Direct Debit")
         XCTAssertEqual(paymentMethod.bankAccountNumber, "123456789")
