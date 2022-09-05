@@ -33,6 +33,12 @@ extension ComponentManager: PaymentComponentBuilder {
                                      context: context,
                                      configuration: .init(localizationParameters: configuration.localizationParameters))
     }
+    
+    internal func build(paymentMethod: StoredACHDirectDebitPaymentMethod) -> PaymentComponent? {
+        StoredPaymentMethodComponent(paymentMethod: paymentMethod,
+                                     context: context,
+                                     configuration: .init(localizationParameters: configuration.localizationParameters))
+    }
 
     internal func build(paymentMethod: CardPaymentMethod) -> PaymentComponent? {
         createCardComponent(with: paymentMethod)
@@ -140,9 +146,9 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     internal func build(paymentMethod: OnlineBankingPaymentMethod) -> PaymentComponent? {
-        return OnlineBankingComponent(paymentMethod: paymentMethod,
-                                      context: context,
-                                      configuration: .init(style: configuration.style.formComponent))
+        OnlineBankingComponent(paymentMethod: paymentMethod,
+                               context: context,
+                               configuration: .init(style: configuration.style.formComponent))
     }
 
     private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
