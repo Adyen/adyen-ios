@@ -216,7 +216,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         component.handle(action)
         currentActionComponent = component
     }
-    
+
     private func handle(_ action: QRCodeAction) {
         let component = QRCodeActionComponent(context: context)
         component.configuration.style = configuration.style.qrCodeComponentStyle
@@ -224,11 +224,11 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
         component.configuration.localizationParameters = configuration.localizationParameters
-        
+
         component.handle(action)
         currentActionComponent = component
     }
-    
+
     private func handle(_ action: DocumentAction) {
         let component = DocumentComponent(context: context)
         component.configuration.style = configuration.style.documentActionComponentStyle

@@ -11,7 +11,7 @@ import UIKit
 internal enum QRCodeComponentError: LocalizedError {
     /// Indicates the QR code is not longer valid
     case qrCodeExpired
-    
+
     public var errorDescription: String? {
         "QR code is no longer valid"
     }
@@ -57,7 +57,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     private let pollingComponentBuilder: AnyPollingHandlerProvider?
     
     private var pollingComponent: AnyPollingHandler?
-    
+
     private var timeoutTimer: ExpirationTimer?
     
     private let progress = Progress()
@@ -224,7 +224,7 @@ extension QRCodeActionComponent: ActionComponentDelegate {
         cleanup()
         delegate?.didFail(with: error, from: self)
     }
-    
+
 }
 
 @_spi(AdyenInternal)
@@ -233,7 +233,7 @@ extension QRCodeActionComponent: QRCodeViewDelegate {
     internal func copyToPasteboard(with action: QRCodeAction) {
         UIPasteboard.general.string = action.qrCodeData
     }
-    
+
     internal func saveAsImage(qrCodeImage: UIImage?, sourceView: UIView) {
         presentSharePopover(with: qrCodeImage as Any, sourceView: sourceView)
     }

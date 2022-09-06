@@ -144,7 +144,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         button.title = localizedString(.voucherSaveImage, localizationParameters)
         button.addTarget(self, action: #selector(saveQRCodeAsImage), for: .touchUpInside)
         button.accessibilityIdentifier = "saveAsImageButton"
-        
+
         return button
     }()
 
