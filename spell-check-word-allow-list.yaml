@@ -165,3 +165,4 @@ whiteList:
   - spi
   - utf
   - payu
+  - promptpay
