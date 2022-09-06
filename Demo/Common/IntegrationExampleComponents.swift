@@ -263,7 +263,7 @@ extension IntegrationExample: ActionComponentDelegate {
     }
 
     internal func didComplete(from component: ActionComponent) {
-        finish(with: PaymentsResponse.ResultCode.received)
+        finish(with: .received)
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {

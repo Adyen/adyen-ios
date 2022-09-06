@@ -13,7 +13,7 @@ import Foundation
 @_spi(AdyenInternal)
 extension AdyenSession: ActionComponentDelegate {
     public func didFail(with error: Error, from component: ActionComponent) {
-        didFail(with: error, currentComponent: component)
+        failWithError(error, component)
     }
 
     public func didComplete(from component: ActionComponent) {

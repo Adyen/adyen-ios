@@ -19,19 +19,30 @@ extension AdyenSession: PaymentComponentDelegate {
     }
     
     internal func finish(with resultCode: SessionPaymentResultCode, component: Component) {
-        delegate?.didComplete(with: resultCode, component: component, session: self)
+        let success = resultCode == .authorised || resultCode == .received || resultCode == .pending
+        component.finalizeIfNeeded(with: success) { [weak self] in
+            guard let self = self else { return }
+            self.delegate?.didComplete(with: resultCode, component: component, session: self)
+        }
     }
     
     internal func finish(with error: Error, component: Component) {
-        didFail(with: error, currentComponent: component)
+        failWithError(error, component)
     }
 
     public func didFail(with error: Error, from component: PaymentComponent) {
-        didFail(with: error, currentComponent: component)
+        failWithError(error, component)
     }
     
     internal func didFail(with error: Error, currentComponent: Component) {
-        delegate?.didFail(with: error, from: currentComponent, session: self)
+        failWithError(error, currentComponent)
+    }
+
+    internal func failWithError(_ error: Error, _ component: Component) {
+        component.finalizeIfNeeded(with: false) { [weak self] in
+            guard let self = self else { return }
+            self.delegate?.didFail(with: error, from: component, session: self)
+        }
     }
 }
 

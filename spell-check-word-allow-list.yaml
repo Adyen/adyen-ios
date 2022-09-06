@@ -166,3 +166,4 @@ whiteList:
   - utf
   - payu
   - promptpay
+  - rcode
