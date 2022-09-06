@@ -10,6 +10,8 @@ import UIKit
 internal protocol QRCodeViewDelegate: AnyObject {
     
     func saveAsImage(qrCodeImage: UIImage?, sourceView: UIView)
+
+    func copyToPasteboard(with action: QRCodeAction)
 }
 
 internal final class QRCodeView: UIView, Localizable, AdyenObserver {
@@ -42,7 +44,11 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         addAmountToPay()
         addProgressView()
         addExpirationLabel()
-        addSaveAsImageButton()
+        if model.action.paymentMethodType == .pix {
+            addCopyCodeButton()
+        } else {
+            addSaveAsImageButton()
+        }
     }
     
     override internal func layoutSubviews() {
@@ -120,15 +126,36 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         ])
     }
     
+    private func addCopyCodeButton() {
+        addSubview(copyCodeButton)
+        copyCodeButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            copyCodeButton.heightAnchor.constraint(equalToConstant: 50.0),
+            copyCodeButton.topAnchor.constraint(equalTo: expirationLabel.bottomAnchor, constant: 34),
+            copyCodeButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 16),
+            copyCodeButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -16),
+            copyCodeButton.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
+        ])
+    }
+
     private lazy var saveAsImageButton: SubmitButton = {
         let button = SubmitButton(style: model.style.saveAsImageButton)
         button.title = localizedString(.voucherSaveImage, localizationParameters)
         button.addTarget(self, action: #selector(saveQRCodeAsImage), for: .touchUpInside)
-        button.accessibilityIdentifier = "SaveAsImageButton"
+        button.accessibilityIdentifier = "saveAsImageButton"
+
+        return button
+    }()
+
+    private lazy var copyCodeButton: SubmitButton = {
+        let button = SubmitButton(style: model.style.copyCodeButton)
+        button.title = localizedString(.pixCopyButton, localizationParameters)
+        button.addTarget(self, action: #selector(copyCode), for: .touchUpInside)
+        button.accessibilityIdentifier = "copyCodeButton"
         
         return button
     }()
-    
+
     private lazy var logo: NetworkImageView = {
         let logo = NetworkImageView()
         let logoSize = CGSize(width: 74.0, height: 48.0)
@@ -200,5 +227,9 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     @objc private func saveQRCodeAsImage() {
         delegate?.saveAsImage(qrCodeImage: qrCodeImageView.adyen.snapShot(), sourceView: saveAsImageButton)
     }
-    
+
+    @objc private func copyCode() {
+        delegate?.copyToPasteboard(with: model.action)
+    }
+
 }

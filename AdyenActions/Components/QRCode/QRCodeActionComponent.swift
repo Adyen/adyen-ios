@@ -7,6 +7,16 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
+/// An error that occurred during the use of QRCodeComponent
+internal enum QRCodeComponentError: LocalizedError {
+    /// Indicates the QR code is not longer valid
+    case qrCodeExpired
+
+    public var errorDescription: String? {
+        "QR code is no longer valid"
+    }
+}
+
 /// A component  for QRCode action.
 public final class QRCodeActionComponent: ActionComponent, Cancellable, ShareableComponent {
     
@@ -44,6 +54,8 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     /// The QR code component configurations.
     public var configuration: Configuration
     
+    private let pollingComponentBuilder: AnyPollingHandlerProvider?
+
     private var timeoutTimer: ExpirationTimer?
     
     private let progress = Progress()
@@ -60,6 +72,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
                             configuration: Configuration = .init()) {
         self.init(context: context,
                   configuration: configuration,
+                  pollingComponentBuilder: PollingHandlerProvider(context: context),
                   timeoutInterval: 60 * 15)
     }
     
@@ -67,14 +80,17 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component configurations
+    /// - Parameter pollingComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter timeoutInterval: QR Code expiration timeout
     internal init(context: AdyenContext,
                   configuration: Configuration = .init(),
+                  pollingComponentBuilder: AnyPollingHandlerProvider? = nil,
                   timeoutInterval: TimeInterval) {
         self.context = context
         self.configuration = configuration
+        self.pollingComponentBuilder = pollingComponentBuilder
         self.expirationTimeout = timeoutInterval
-        
+
         updateExpiration(timeoutInterval)
     }
 
@@ -82,7 +98,10 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     ///
     /// - Parameter action: The QR code action.
     public func handle(_ action: QRCodeAction) {
-        assert(presentationDelegate != nil)
+        let pollingComponent = pollingComponentBuilder?.handler(for: action.paymentMethodType)
+        pollingComponent?.delegate = self
+
+        AdyenAssertion.assert(message: "presentationDelegate is nil", condition: presentationDelegate == nil)
         
         let viewController = createViewController(with: action)
         setUpPresenterViewController(parentViewController: viewController)
@@ -100,6 +119,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
         }
         
         startTimer()
+        pollingComponent?.handle(action)
     }
     
     /// :nodoc
@@ -147,6 +167,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
             observedProgress: progress,
             expiration: $expirationText,
             style: QRCodeView.Model.Style(
+                copyCodeButton: configuration.style.copyCodeButton,
                 saveAsImageButton: configuration.style.saveAsImageButton,
                 instructionLabel: configuration.style.instructionLabel,
                 amountToPayLabel: configuration.style.amountToPayLabel,
@@ -169,7 +190,28 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
 }
 
 @_spi(AdyenInternal)
+extension QRCodeActionComponent: ActionComponentDelegate {
+
+    public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
+        cleanup()
+        delegate?.didProvide(data, from: self)
+    }
+
+    public func didComplete(from component: ActionComponent) {}
+
+    public func didFail(with error: Error, from component: ActionComponent) {
+        cleanup()
+        delegate?.didFail(with: error, from: self)
+    }
+
+}
+
+@_spi(AdyenInternal)
 extension QRCodeActionComponent: QRCodeViewDelegate {
+
+    internal func copyToPasteboard(with action: QRCodeAction) {
+        UIPasteboard.general.string = action.qrCodeData
+    }
 
     internal func saveAsImage(qrCodeImage: UIImage?, sourceView: UIView) {
         presentSharePopover(with: qrCodeImage as Any, sourceView: sourceView)

@@ -11,7 +11,7 @@ import UIKit
 public struct QRCodeComponentStyle: ViewStyle {
     
     /// The copy button style.
-    public var copyButton = ButtonStyle(
+    public var copyCodeButton = ButtonStyle(
         title: TextStyle(font: .preferredFont(forTextStyle: .headline), color: .white),
         cornerRadius: 8,
         background: UIColor.Adyen.defaultBlue

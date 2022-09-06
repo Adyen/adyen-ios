@@ -27,6 +27,8 @@ extension QRCodeView {
         
         internal struct Style {
             
+            internal let copyCodeButton: ButtonStyle
+
             internal let saveAsImageButton: ButtonStyle
             
             internal let instructionLabel: TextStyle
