@@ -101,6 +101,22 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         }
         waitForExpectations(timeout: 10, handler: nil)
     }
+    
+    func testStoredACHComponent() {
+        let paymentMethod = StoredACHDirectDebitPaymentMethod(type: .achDirectDebit,
+                                                              name: "ACH",
+                                                              identifier: "ach",
+                                                              supportedShopperInteractions: [.shopperPresent],
+                                                              bankAccountNumber: "5678865")
+        let sut = StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
+        
+        let viewController = sut.viewController as? UIAlertController
+        XCTAssertNotNil(viewController)
+        XCTAssertEqual(viewController?.actions.count, 2)
+        XCTAssertEqual(viewController?.actions.first?.title, localizedString(.cancelButton, nil))
+        XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, nil))
+        XCTAssertEqual(viewController?.message, paymentMethod.defaultDisplayInformation(using: nil).title)
+    }
 
     func testViewDidLoadShouldSendTelemetryEvent() throws {
         // Given
