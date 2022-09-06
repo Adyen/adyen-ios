@@ -187,13 +187,13 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         }
         filter.setValue(data, forKey: "inputMessage")
         let transform = CGAffineTransform(scaleX: 3, y: 3)
-        
+
         guard let output = filter.outputImage?.transformed(by: transform) else {
             return UIImageView()
         }
         return UIImageView(image: UIImage(ciImage: output))
     }()
-    
+
     private lazy var amountToPayLabel: UILabel = {
         let amountToPayLabel = UILabel(style: model.style.amountToPayLabel)
         amountToPayLabel.numberOfLines = 0
