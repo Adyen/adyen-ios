@@ -34,7 +34,8 @@ class PaymentMethodTests: XCTestCase {
                 ],
                 storedBcmcDictionary,
                 storedDebitCardDictionary,
-                storedBlik
+                storedBlik,
+                storedACHDictionary
             ],
             "paymentMethods": [
                 creditCardDictionary,
@@ -69,6 +70,8 @@ class PaymentMethodTests: XCTestCase {
                 econtextStores,
                 econtextOnline,
                 oxxo,
+                achDirectDebit,
+                bacsDirectDebit,
                 giftCard1,
                 givexGiftCard,
             ]
@@ -79,7 +82,7 @@ class PaymentMethodTests: XCTestCase {
     func testDecodingPaymentMethods() throws {
         // Stored payment methods
         
-        XCTAssertEqual(paymentMethods.stored.count, 7)
+        XCTAssertEqual(paymentMethods.stored.count, 8)
         XCTAssertTrue(paymentMethods.stored[0] is StoredCardPaymentMethod)
         
         XCTAssertTrue(paymentMethods.stored[1] is StoredCardPaymentMethod)
@@ -109,6 +112,9 @@ class PaymentMethodTests: XCTestCase {
 
         XCTAssertTrue(paymentMethods.stored[6] is StoredBLIKPaymentMethod)
         XCTAssertEqual((paymentMethods.stored[6] as! StoredBLIKPaymentMethod).identifier, "8315892878479934")
+        
+        XCTAssertTrue(paymentMethods.stored[7] is StoredACHDirectDebitPaymentMethod)
+        XCTAssertEqual((paymentMethods.stored[7] as! StoredACHDirectDebitPaymentMethod).identifier, "CWG8SF2PR2M84H82")
         
         // Test StoredBCMCPaymentMethod localization
         var storedBCMCPaymentMethod = paymentMethods.stored[4] as! StoredBCMCPaymentMethod
@@ -141,7 +147,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 23)
+        XCTAssertEqual(paymentMethods.regular.count, 25)
         XCTAssertTrue(paymentMethods.regular[0] is CardPaymentMethod)
         XCTAssertEqual((paymentMethods.regular[0] as! CardPaymentMethod).fundingSource!, .credit)
         
@@ -235,6 +241,22 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[20] is OXXOPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[20].name, "OXXO")
         XCTAssertEqual(paymentMethods.regular[20].type.rawValue, "oxxo")
+        
+        XCTAssertTrue(paymentMethods.regular[21] is ACHDirectDebitPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[21].name, "ACH Direct Debit")
+        XCTAssertEqual(paymentMethods.regular[21].type.rawValue, "ach")
+        
+        XCTAssertTrue(paymentMethods.regular[22] is BACSDirectDebitPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[22].name, "BACS Direct Debit")
+        XCTAssertEqual(paymentMethods.regular[22].type.rawValue, "directdebit_GB")
+        
+        XCTAssertTrue(paymentMethods.regular[23] is GiftCardPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[23].name, "GiftFor2")
+        XCTAssertEqual(paymentMethods.regular[23].type.rawValue, "giftcard")
+        
+        XCTAssertTrue(paymentMethods.regular[24] is GiftCardPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[24].name, "Givex")
+        XCTAssertEqual(paymentMethods.regular[24].type.rawValue, "giftcard")
 
     }
     
@@ -835,5 +857,12 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try Coder.decode(achDirectDebit) as ACHDirectDebitPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "ach")
         XCTAssertEqual(paymentMethod.name, "ACH Direct Debit")
+    }
+    
+    func testDecodingStoredACHDirectDebitPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(storedACHDictionary) as StoredACHDirectDebitPaymentMethod
+        XCTAssertEqual(paymentMethod.type.rawValue, "ach")
+        XCTAssertEqual(paymentMethod.name, "ACH Direct Debit")
+        XCTAssertEqual(paymentMethod.bankAccountNumber, "123456789")
     }
 }

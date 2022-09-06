@@ -21,7 +21,8 @@ class ComponentManagerTests: XCTestCase {
             storedCreditCardDictionary,
             storedCreditCardDictionary,
             storedPayPalDictionary,
-            storedBcmcDictionary
+            storedBcmcDictionary,
+            storedACHDictionary
         ],
         "paymentMethods": [
             creditCardDictionary,
@@ -49,11 +50,13 @@ class ComponentManagerTests: XCTestCase {
             multibanco,
             boleto,
             affirm,
-            atome
+            atome,
+            achDirectDebit,
+            bacsDirectDebit
         ]
     ]
     
-    let numberOfExpectedRegularComponents = 19
+    let numberOfExpectedRegularComponents = 21
 
     var presentationDelegate: PresentationDelegateMock!
     var context: AdyenContext!
@@ -80,14 +83,14 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
 
-        XCTAssertEqual(sut.storedComponents.count, 4)
+        XCTAssertEqual(sut.storedComponents.count, 5)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
 
-        XCTAssertEqual(sut.storedComponents.filter { $0.context.apiContext.clientKey == Dummy.apiContext.clientKey }.count, 4)
+        XCTAssertEqual(sut.storedComponents.filter { $0.context.apiContext.clientKey == Dummy.apiContext.clientKey }.count, 5)
         XCTAssertEqual(sut.regularComponents.filter { $0.context.apiContext.clientKey == Dummy.apiContext.clientKey }.count, numberOfExpectedRegularComponents)
 
-        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 15)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 15)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 17)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 17)
         XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 0)
     }
 
@@ -99,11 +102,11 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
 
-        XCTAssertEqual(sut.storedComponents.count, 4)
+        XCTAssertEqual(sut.storedComponents.count, 5)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents + 1)
 
-        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 15)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 16)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 17)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 18)
         XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 1)
     }
     
@@ -116,10 +119,10 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
         
-        XCTAssertEqual(sut.storedComponents.count, 4)
+        XCTAssertEqual(sut.storedComponents.count, 5)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
         
-        XCTAssertEqual(sut.storedComponents.compactMap { ($0 as? StoredPaymentMethodComponent)?.configuration.localizationParameters }.filter { $0.tableName == "AdyenUIHost" }.count, 2)
+        XCTAssertEqual(sut.storedComponents.compactMap { ($0 as? StoredPaymentMethodComponent)?.configuration.localizationParameters }.filter { $0.tableName == "AdyenUIHost" }.count, 3)
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
@@ -131,10 +134,10 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
         
-        XCTAssertEqual(sut.storedComponents.count, 4)
+        XCTAssertEqual(sut.storedComponents.count, 5)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
         
-        XCTAssertEqual(sut.storedComponents.compactMap { ($0 as? StoredPaymentMethodComponent)?.configuration.localizationParameters }.filter { $0.keySeparator == "_" }.count, 2)
+        XCTAssertEqual(sut.storedComponents.compactMap { ($0 as? StoredPaymentMethodComponent)?.configuration.localizationParameters }.filter { $0.keySeparator == "_" }.count, 3)
     }
 
     func testOrderInjection() throws {
@@ -159,11 +162,11 @@ class ComponentManagerTests: XCTestCase {
                                    presentationDelegate: presentationDelegate)
 
         XCTAssertEqual(sut.paidComponents.count, 2)
-        XCTAssertEqual(sut.storedComponents.count, 4)
+        XCTAssertEqual(sut.storedComponents.count, 5)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
 
         XCTAssertEqual(sut.paidComponents.filter { $0.order == order }.count, 2)
-        XCTAssertEqual(sut.storedComponents.filter { $0.order == order }.count, 4)
+        XCTAssertEqual(sut.storedComponents.filter { $0.order == order }.count, 5)
         XCTAssertEqual(sut.regularComponents.filter { $0.order == order }.count, numberOfExpectedRegularComponents)
     }
 
