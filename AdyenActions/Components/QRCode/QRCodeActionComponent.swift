@@ -56,6 +56,8 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     
     private let pollingComponentBuilder: AnyPollingHandlerProvider?
 
+    private var pollingComponent: AnyPollingHandler?
+
     private var timeoutTimer: ExpirationTimer?
     
     private let progress = Progress()
@@ -98,7 +100,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     ///
     /// - Parameter action: The QR code action.
     public func handle(_ action: QRCodeAction) {
-        let pollingComponent = pollingComponentBuilder?.handler(for: action.paymentMethodType)
+        pollingComponent = pollingComponentBuilder?.handler(for: action.paymentMethodType)
         pollingComponent?.delegate = self
 
         AdyenAssertion.assert(message: "presentationDelegate is nil", condition: presentationDelegate == nil)
@@ -185,6 +187,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     
     fileprivate func cleanup() {
         timeoutTimer?.stopTimer()
+        pollingComponent?.didCancel()
     }
 
 }

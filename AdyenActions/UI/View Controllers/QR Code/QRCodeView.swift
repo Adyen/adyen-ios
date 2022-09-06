@@ -181,17 +181,18 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     
     private lazy var qrCodeImageView: UIImageView = {
         let data = model.action.qrCodeData.data(using: String.Encoding.ascii)
-        if let filter = CIFilter(name: "CIQRCodeGenerator") {
-            filter.setValue(data, forKey: "inputMessage")
-            let transform = CGAffineTransform(scaleX: 3, y: 3)
-
-            if let output = filter.outputImage?.transformed(by: transform) {
-                return UIImageView(image: UIImage(ciImage: output))
-            }
+        guard let filter = CIFilter(name: "CIQRCodeGenerator") else {
+            return UIImageView()
         }
-        return UIImageView()
+        filter.setValue(data, forKey: "inputMessage")
+        let transform = CGAffineTransform(scaleX: 3, y: 3)
+
+        guard let output = filter.outputImage?.transformed(by: transform) else {
+            return UIImageView()
+        }
+        return UIImageView(image: UIImage(ciImage: output))
     }()
-    
+
     private lazy var amountToPayLabel: UILabel = {
         let amountToPayLabel = UILabel(style: model.style.amountToPayLabel)
         amountToPayLabel.numberOfLines = 0
