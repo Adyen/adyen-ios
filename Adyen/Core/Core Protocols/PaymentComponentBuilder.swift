@@ -19,6 +19,9 @@ public protocol PaymentComponentBuilder: AdyenContextAware {
     /// Builds a certain `PaymentComponent` based on a `StoredBCMCPaymentMethod`.
     func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent?
     
+    /// Builds a certain `PaymentComponent` based on a `StoredACHDirectDebitPaymentMethod`.
+    func build(paymentMethod: StoredACHDirectDebitPaymentMethod) -> PaymentComponent?
+    
     /// Builds a certain `PaymentComponent` based on a `CardPaymentMethod`.
     func build(paymentMethod: CardPaymentMethod) -> PaymentComponent?
     
