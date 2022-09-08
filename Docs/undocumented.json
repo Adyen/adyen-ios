@@ -29,8 +29,15 @@
       "warning": "undocumented"
     },
     {
+      "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenActions/Components/Redirect/RedirectDetails.swift",
+      "line": 13,
+      "symbol": "RedirectDetails.Error",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/runner/work/adyen-ios/adyen-ios/AdyenComponents/Apple Pay/ApplePayComponentExtensions.swift",
-      "line": 119,
+      "line": 122,
       "symbol": "ApplePayComponent.Configuration.update(amount:localeIdentifier:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
