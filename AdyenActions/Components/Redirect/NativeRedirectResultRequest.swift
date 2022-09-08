@@ -1,11 +1,11 @@
 //
+import Adyen
 // Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 import AdyenNetworking
 import Foundation
-import Adyen
 
 internal struct NativeRedirectResultRequest: Request {
     internal typealias ResponseType = RedirectDetails

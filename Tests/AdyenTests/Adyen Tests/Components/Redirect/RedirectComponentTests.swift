@@ -236,12 +236,12 @@ class RedirectComponentTests: XCTestCase {
         }
 
         let redirectExpectation = expectation(description: "Expect redirect to be proccessed")
-        delegate.onDidProvide = { (data, component) in
+        delegate.onDidProvide = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertNotNil(data.details)
             redirectExpectation.fulfill()
         }
-        delegate.onDidFail = { (_,_) in XCTFail("Should not call onDidFail") }
+        delegate.onDidFail = { _, _ in XCTFail("Should not call onDidFail") }
 
         // When
         // action handled
@@ -272,12 +272,12 @@ class RedirectComponentTests: XCTestCase {
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let redirectExpectation = expectation(description: "Expect redirect to be proccessed")
-        delegate.onDidProvide = { (data, component) in
+        delegate.onDidProvide = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertNotNil(data.details)
             redirectExpectation.fulfill()
         }
-        delegate.onDidFail = { (_,_) in XCTFail("Should not call onDidFail") }
+        delegate.onDidFail = { _, _ in XCTFail("Should not call onDidFail") }
         
         let action = RedirectAction(url: URL(string: "http://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
         sut.handle(action)
@@ -301,10 +301,10 @@ class RedirectComponentTests: XCTestCase {
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let redirectExpectation = expectation(description: "Expect redirect to be proccessed")
-        delegate.onDidProvide = { (data, component) in
+        delegate.onDidProvide = { data, component in
             XCTFail("Should not call onDidProvide")
         }
-        delegate.onDidFail = { (error,_) in
+        delegate.onDidFail = { error, _ in
             XCTAssertEqual(error as! RedirectComponent.Error, .invalidRedirectParameters)
             redirectExpectation.fulfill()
         }
@@ -333,10 +333,10 @@ class RedirectComponentTests: XCTestCase {
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let redirectExpectation = expectation(description: "Expect redirect to be proccessed")
-        delegate.onDidProvide = { (data, component) in
+        delegate.onDidProvide = { data, component in
             XCTFail("Should not call onDidProvide")
         }
-        delegate.onDidFail = { (error,_) in
+        delegate.onDidFail = { error, _ in
             XCTAssertEqual(error as! Dummy, .error)
             redirectExpectation.fulfill()
         }
