@@ -44,19 +44,12 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     /// - Parameter context: The context object for this component.
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
-    internal convenience init(context: AdyenContext,
-                              service: AnyADYService,
-                              appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
-        self.init(context: context,
-                  appearanceConfiguration: appearanceConfiguration)
-        self.service = service
-    }
-
-    /// Initializes the 3D Secure 2 action handler.
     internal init(context: AdyenContext,
-                  appearanceConfiguration: ADYAppearanceConfiguration) {
+                  service: AnyADYService = ADYServiceAdapter(),
+                  appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
         self.context = context
         self.appearanceConfiguration = appearanceConfiguration
+        self.service = service
     }
 
     // MARK: - Fingerprint

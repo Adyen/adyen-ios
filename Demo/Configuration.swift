@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenActions
 import Foundation
 import PassKit
 
@@ -53,6 +54,9 @@ internal enum ConfigurationConstants {
                              "amountExcludingTax": "248",
                              "taxAmount": "52",
                              "id": "Item #2"]]
+    static let delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication = .init(localizedRegistrationReason: "Authenticate your card!",
+                                                                                                                      localizedAuthenticationReason: "Register this device!",
+                                                                                                                      appleTeamIdendtifier: "B2NYSS5932")
 
     static var shippingMethods: [PKShippingMethod] = {
         var shippingByCar = PKShippingMethod(label: "By car", amount: NSDecimalNumber(5.0))

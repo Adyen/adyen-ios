@@ -46,6 +46,10 @@
         private let delegatedAuthenticationService: AuthenticationServiceProtocol
 
         /// Initializes the 3D Secure 2 action handler.
+        ///
+        /// - Parameter context: The context object for this component.
+        /// - Parameter appearanceConfiguration: The appearance configuration.
+        /// - Parameter delegatedAuthenticationConfiguration: The delegated authentication configuration.
         internal convenience init(
             context: AdyenContext,
             appearanceConfiguration: ADYAppearanceConfiguration,
@@ -53,7 +57,6 @@
         ) {
             self.init(
                 context: context,
-                service: ADYServiceAdapter(),
                 appearanceConfiguration: appearanceConfiguration,
                 delegatedAuthenticationService: AuthenticationService(
                     configuration: delegatedAuthenticationConfiguration.authenticationServiceConfiguration()
@@ -67,9 +70,8 @@
         /// - Parameter service: The 3DS2 Service.
         /// - Parameter appearanceConfiguration: The appearance configuration.
         /// - Parameter delegatedAuthenticationService: The Delegated Authentication service.
-        /// - Parameter delegatedAuthenticationConfiguration: The delegated authentication configuration.
         internal init(context: AdyenContext,
-                      service: AnyADYService,
+                      service: AnyADYService = ADYServiceAdapter(),
                       appearanceConfiguration: ADYAppearanceConfiguration = .init(),
                       delegatedAuthenticationService: AuthenticationServiceProtocol) {
             self.delegatedAuthenticationService = delegatedAuthenticationService
@@ -83,15 +85,17 @@
         /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
         /// - Parameter event: The Analytics event.
         /// - Parameter completionHandler: The completion closure.
-        internal override func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
-                             event: Analytics.Event,
-                             completionHandler: @escaping (Result<String, Error>) -> Void) {
+        override internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
+                                      event: Analytics.Event,
+                                      completionHandler: @escaping (Result<String, Error>) -> Void) {
             super.handle(fingerprintAction, event: event) { [weak self] result in
                 switch result {
                 case let .failure(error):
                     completionHandler(.failure(error))
                 case let .success(fingerprintResult):
-                    self?.addSDKOutputIfNeeded(toFingerprintResult: fingerprintResult, fingerprintAction, completionHandler: completionHandler)
+                    self?.addSDKOutputIfNeeded(toFingerprintResult: fingerprintResult,
+                                               fingerprintAction,
+                                               completionHandler: completionHandler)
                 }
             }
         }
@@ -134,7 +138,9 @@
                                                 fingerprintResult: ThreeDS2Component.Fingerprint,
                                                 completionHandler: @escaping (Result<R, Error>) -> Void) -> String? {
             do {
-                let fingerprintResult = fingerprintResult.withDelegatedAuthenticationSDKOutput(delegatedAuthenticationSDKOutput: authenticationSDKOutput)
+                let fingerprintResult = fingerprintResult.withDelegatedAuthenticationSDKOutput(
+                    delegatedAuthenticationSDKOutput: authenticationSDKOutput
+                )
                 let encodedFingerprintResult = try Coder.encodeBase64(fingerprintResult)
                 return encodedFingerprintResult
             } catch {
@@ -150,7 +156,7 @@
         /// - Parameter challengeAction: The challenge action as received from the Checkout API.
         /// - Parameter event: The Analytics event.
         /// - Parameter completionHandler: The completion closure.
-        internal override func handle(_ challengeAction: ThreeDS2ChallengeAction,
+        override internal func handle(_ challengeAction: ThreeDS2ChallengeAction,
                                       event: Analytics.Event,
                                       completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
             super.handle(challengeAction, event: event) { [weak self] result in
@@ -173,11 +179,11 @@
                 return didFail(with: error, completionHandler: completionHandler)
             }
             
-            if self.delegatedAuthenticationState.isDeviceRegistrationFlow {
-                self.performDelegatedRegistration(token.delegatedAuthenticationSDKInput) { result in
-                    self.didFinish(with: challengeResult,
-                                   delegatedAuthenticationSDKOutput: result.successResult,
-                                   completionHandler: completionHandler)
+            if delegatedAuthenticationState.isDeviceRegistrationFlow {
+                performDelegatedRegistration(token.delegatedAuthenticationSDKInput) { [weak self] result in
+                    self?.didFinish(with: challengeResult,
+                                    delegatedAuthenticationSDKOutput: result.successResult,
+                                    completionHandler: completionHandler)
                 }
             } else {
                 completionHandler(.success(challengeResult))
@@ -205,7 +211,9 @@
                                completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
 
             do {
-                let threeDSResult = try challengeResult.withDelegatedAuthenticationSDKOutput(delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput)
+                let threeDSResult = try challengeResult.withDelegatedAuthenticationSDKOutput(
+                    delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput
+                )
 
                 transaction = nil
                 completionHandler(.success(threeDSResult))

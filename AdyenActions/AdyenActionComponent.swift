@@ -46,11 +46,15 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
             /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
             public var requestorAppURL: URL?
             
+            /// The configuration for Delegated Authentication.
+            public var delegateAuthentication: ThreeDS2Component.Configuration.DelegatedAuthentication?
+            
             /// Initializes a new instance
             ///
             /// - Parameter requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
-            public init(requestorAppURL: URL? = nil) {
+            public init(requestorAppURL: URL? = nil, delegateAuthentication: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil) {
                 self.requestorAppURL = requestorAppURL
+                self.delegateAuthentication = delegateAuthentication
             }
         }
         
