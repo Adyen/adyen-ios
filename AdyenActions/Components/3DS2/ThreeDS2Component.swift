@@ -44,6 +44,32 @@ public final class ThreeDS2Component: ActionComponent {
         /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
         public var requestorAppURL: URL?
         
+        /// The configuration for Delegated Authentication.
+        public let delegateAuthentication: DelegatedAuthentication?
+        
+        /// The configuration for Delegated Authentication.
+        public struct DelegatedAuthentication {
+            /// The localized reason string show to the user during registration.
+            public let localizedRegistrationReason: String
+
+            /// The localized reason string show to the user during authentication.
+            public let localizedAuthenticationReason: String
+
+            /// The Apple registered development team identifier.
+            public let appleTeamIdendtifier: String
+
+            /// Initializes a new instance.
+            ///
+            /// - Parameter localizedRegistrationReason: The localized reason string show to the user while registration flow.
+            /// - Parameter localizedAuthenticationReason: The localized reason string show to the user while authentication flow.
+            /// - Parameter appleTeamIdendtifier: The Apple registered development team identifier.
+            public init(localizedRegistrationReason: String, localizedAuthenticationReason: String, appleTeamIdendtifier: String) {
+                self.localizedRegistrationReason = localizedRegistrationReason
+                self.localizedAuthenticationReason = localizedAuthenticationReason
+                self.appleTeamIdendtifier = appleTeamIdendtifier
+            }
+        }
+        
         /// Initializes a new instance
         ///
         /// - Parameters:
@@ -52,10 +78,12 @@ public final class ThreeDS2Component: ActionComponent {
         ///   - requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
         public init(redirectComponentStyle: RedirectComponentStyle? = nil,
                     appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
-                    requestorAppURL: URL? = nil) {
+                    requestorAppURL: URL? = nil,
+                    delegateAuthentication: DelegatedAuthentication? = nil) {
             self.redirectComponentStyle = redirectComponentStyle
             self.appearanceConfiguration = appearanceConfiguration
             self.requestorAppURL = requestorAppURL
+            self.delegateAuthentication = delegateAuthentication
         }
     }
     
@@ -179,7 +207,8 @@ public final class ThreeDS2Component: ActionComponent {
 
     internal lazy var threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler = {
         let handler = ThreeDS2CompactActionHandler(context: context,
-                                                   appearanceConfiguration: configuration.appearanceConfiguration)
+                                                   appearanceConfiguration: configuration.appearanceConfiguration,
+                                                   delegatedAuthenticationConfiguration: configuration.delegateAuthentication)
 
         handler._isDropIn = _isDropIn
         handler.threeDSRequestorAppURL = configuration.requestorAppURL

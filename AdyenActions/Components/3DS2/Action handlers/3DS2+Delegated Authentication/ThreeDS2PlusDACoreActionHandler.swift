@@ -61,16 +61,16 @@
         internal convenience init(
             context: AdyenContext,
             appearanceConfiguration: ADYAppearanceConfiguration,
-            delegatedAuthenticationConfiguration: AuthenticationService.Configuration = .init(
-                localizedRegistrationReason: "Registration reason",
-                localizedAuthenticationReason: "Authentication reason",
-                appleTeamIdendtifier: "B2NYSS5932"
-            )
+            delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication
         ) {
-            self.init(context: context,
-                      service: ADYServiceAdapter(),
-                      appearanceConfiguration: appearanceConfiguration,
-                      delegatedAuthenticationService: AuthenticationService(configuration: delegatedAuthenticationConfiguration))
+            self.init(
+                context: context,
+                service: ADYServiceAdapter(),
+                appearanceConfiguration: appearanceConfiguration,
+                delegatedAuthenticationService: AuthenticationService(
+                    configuration: delegatedAuthenticationConfiguration.authenticationServiceConfiguration()
+                )
+            )
         }
         
         /// Initializes the 3D Secure 2 action handler.
@@ -287,6 +287,15 @@
             case .failure:
                 return nil
             }
+        }
+    }
+
+    @available(iOS 14.0, *)
+    extension ThreeDS2Component.Configuration.DelegatedAuthentication {
+        fileprivate func authenticationServiceConfiguration() -> AuthenticationService.Configuration {
+            .init(localizedRegistrationReason: localizedRegistrationReason,
+                  localizedAuthenticationReason: localizedAuthenticationReason,
+                  appleTeamIdendtifier: appleTeamIdendtifier)
         }
     }
 

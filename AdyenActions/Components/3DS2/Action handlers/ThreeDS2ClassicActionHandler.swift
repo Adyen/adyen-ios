@@ -37,36 +37,19 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
             coreActionHandler.threeDSRequestorAppURL = newValue
         }
     }
-
-    /// Initializes the 3D Secure 2 action handler.
-    ///
-    /// - Parameter context: The context object for this component.
-    /// - Parameter service: The 3DS2 Service.
-    /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
-    internal convenience init(context: AdyenContext,
-                              service: AnyADYService,
-                              appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
-        self.init(context: context,
-                  appearanceConfiguration: appearanceConfiguration)
-        self.coreActionHandler.service = service
-    }
-
-    /// Initializes the 3D Secure 2 action handler.
+    
     internal init(context: AdyenContext,
-                  appearanceConfiguration: ADYAppearanceConfiguration) {
+                  service: AnyADYService = ADYServiceAdapter(),
+                  appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
+                  coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
+                  delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil) {
+        self.coreActionHandler = coreActionHandler ?? Self.createDefaultThreeDS2CoreActionHandler(
+            context: context,
+            appearanceConfiguration: appearanceConfiguration,
+            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
+        )
         self.context = context
-        #if canImport(AdyenAuthentication)
-            if #available(iOS 14.0, *) {
-                self.coreActionHandler = ThreeDS2PlusDACoreActionHandler(context: context,
-                                                                         appearanceConfiguration: appearanceConfiguration)
-            } else {
-                self.coreActionHandler = ThreeDS2CoreActionHandler(context: context,
-                                                                   appearanceConfiguration: appearanceConfiguration)
-            }
-        #else
-            self.coreActionHandler = ThreeDS2CoreActionHandler(context: context,
-                                                               appearanceConfiguration: appearanceConfiguration)
-        #endif
+        self.coreActionHandler.service = service
     }
 
     // MARK: - Fingerprint
