@@ -23,7 +23,11 @@ jobs:
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
+<<<<<<< HEAD
         xcode-version: '13.4.1'
+=======
+        xcode-version: '13.4'
+>>>>>>> 8c5317831 (chore: use xcode 13.4 for github actions)
 
     - name: Install Tools
       run: |
