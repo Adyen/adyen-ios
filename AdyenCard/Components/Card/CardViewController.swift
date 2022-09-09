@@ -77,9 +77,9 @@ internal class CardViewController: FormViewController {
         setupView()
         setupViewRelations()
         observeNumberItem()
-        items.numberContainerItem.numberItem.value = "4917610000000000"
-        items.expiryDateItem.value = "03/30"
-        items.securityCodeItem.value = "737"
+//        items.numberContainerItem.numberItem.value = "4917610000000000"
+//        items.expiryDateItem.value = "03/30"
+//        items.securityCodeItem.value = "737"
         super.viewDidLoad()
     }
 
