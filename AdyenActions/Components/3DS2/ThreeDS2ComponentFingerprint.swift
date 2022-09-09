@@ -10,7 +10,7 @@ import Foundation
 
 internal extension ThreeDS2Component {
     
-    struct Fingerprint: Encodable { // swiftlint:disable:this explicit_acl
+    struct Fingerprint: Codable { // swiftlint:disable:this explicit_acl
         
         private let deviceInformation: String
         private let sdkEphemeralPublicKey: EphemeralPublicKey
@@ -18,6 +18,20 @@ internal extension ThreeDS2Component {
         private let sdkApplicationIdentifier: String
         private let sdkTransactionIdentifier: String
         private let delegatedAuthenticationSDKOutput: String?
+        
+        internal init(deviceInformation: String,
+                      sdkEphemeralPublicKey: ThreeDS2Component.Fingerprint.EphemeralPublicKey,
+                      sdkReferenceNumber: String,
+                      sdkApplicationIdentifier: String,
+                      sdkTransactionIdentifier: String,
+                      delegatedAuthenticationSDKOutput: String?) {
+            self.deviceInformation = deviceInformation
+            self.sdkEphemeralPublicKey = sdkEphemeralPublicKey
+            self.sdkReferenceNumber = sdkReferenceNumber
+            self.sdkApplicationIdentifier = sdkApplicationIdentifier
+            self.sdkTransactionIdentifier = sdkTransactionIdentifier
+            self.delegatedAuthenticationSDKOutput = delegatedAuthenticationSDKOutput
+        }
         
         internal init(authenticationRequestParameters: AnyAuthenticationRequestParameters,
                       delegatedAuthenticationSDKOutput: String?) throws {
@@ -30,6 +44,15 @@ internal extension ThreeDS2Component {
             self.sdkApplicationIdentifier = authenticationRequestParameters.sdkApplicationIdentifier
             self.sdkTransactionIdentifier = authenticationRequestParameters.sdkTransactionIdentifier
             self.delegatedAuthenticationSDKOutput = delegatedAuthenticationSDKOutput
+        }
+        
+        internal func withDelegatedAuthenticationSDKOutput(delegatedAuthenticationSDKOutput: String?) -> Fingerprint {
+            .init(deviceInformation: deviceInformation,
+                  sdkEphemeralPublicKey: sdkEphemeralPublicKey,
+                  sdkReferenceNumber: sdkReferenceNumber,
+                  sdkApplicationIdentifier: sdkApplicationIdentifier,
+                  sdkTransactionIdentifier: sdkTransactionIdentifier,
+                  delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput)
         }
         
         private enum CodingKeys: String, CodingKey {

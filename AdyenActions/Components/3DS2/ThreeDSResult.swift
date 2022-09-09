@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Contains the result of a 3DS transaction.
@@ -13,7 +13,7 @@ public struct ThreeDSResult: Decodable {
     /// The payload to submit to verify the authentication.
     public let payload: String
     
-    private struct Payload: Encodable {
+    private struct Payload: Codable {
         internal let authorisationToken: String?
         
         internal let delegatedAuthenticationSDKOutput: String?
@@ -36,6 +36,16 @@ public struct ThreeDSResult: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.payload = try container.decode(String.self, forKey: .payload)
+    }
+    
+    
+    internal func withDelegatedAuthenticationSDKOutput(delegatedAuthenticationSDKOutput: String?) throws -> ThreeDSResult {
+        let oldPayload: Payload = try Coder.decodeBase64(payload)
+        let newPayload = Payload(authorisationToken: oldPayload.authorisationToken,
+                                 delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
+                                 transStatus: oldPayload.transStatus)
+        let newPayloadData = try JSONEncoder().encode(newPayload)
+        return .init(payload: newPayloadData.base64EncodedString())
     }
 
     internal init(authenticated: Bool, authorizationToken: String?) throws {
