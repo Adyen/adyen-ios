@@ -14,7 +14,7 @@
 import Foundation
 
 /// Contains the details provided by the card component.
-public struct CardDetails: PaymentMethodDetails, ShopperInformation, DelegatedAuthenticationAware {
+public struct CardDetails: PaymentMethodDetails, ShopperInformation {
 
     /// The payment method type.
     public let type: PaymentMethodType
@@ -99,7 +99,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation, DelegatedAu
     private static func createDelegatedAuthenticationData() -> DelegatedAuthenticationData? {
         #if canImport(AdyenAuthentication)
             if #available(iOS 14.0, *) {
-                return (try? DeviceSupportChecker().checkSupport()).map { DelegatedAuthenticationData(sdkOutput: $0) }
+                return (try? DeviceSupportChecker().checkSupport()).map { DelegatedAuthenticationData.sdkOutput($0) }
             } else {
                 return nil
             }
@@ -149,3 +149,6 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation, DelegatedAu
     }
 
 }
+
+@_spi(AdyenInternal)
+extension CardDetails: DelegatedAuthenticationAware {}

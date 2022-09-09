@@ -70,7 +70,7 @@
             self.init(context: context,
                       service: ADYServiceAdapter(),
                       appearanceConfiguration: appearanceConfiguration,
-                      delegatedAuthenticationService: AuthenticationServiceMock())
+                      delegatedAuthenticationService: AuthenticationService(configuration: delegatedAuthenticationConfiguration))
         }
         
         /// Initializes the 3D Secure 2 action handler.
