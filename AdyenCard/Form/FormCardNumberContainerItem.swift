@@ -42,11 +42,10 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
         self.localizationParameters = localizationParameters
         self.style = style
         
-        observe(numberItem.$isActive) { [weak self] isActive in
+        observe(numberItem.$isActive) { [weak self] _ in
             guard let self = self else { return }
-            // logo item only visible when number item is active or when it's invalid
-            let hidden = !isActive && self.numberItem.isValid()
-            self.supportedCardLogosItem.isHidden.wrappedValue = hidden
+            // logo item should be visible when field is invalid
+            self.supportedCardLogosItem.isHidden.wrappedValue = self.numberItem.isValid()
         }
     }
     
@@ -55,8 +54,9 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     }
     
     internal func update(brands: [CardBrand]) {
-        supportedCardLogosItem.update(brands: brands)
         numberItem.update(brands: brands)
+        let containsSupportedBrand = brands.contains(where: \.isSupported)
+        supportedCardLogosItem.isHidden.wrappedValue = containsSupportedBrand
     }
 }
 
@@ -71,7 +71,7 @@ internal final class FormCardLogosItem: FormItem, Hidable {
     
     internal let style: FormTextItemStyle
     
-    @AdyenObservable([]) internal var cardLogos: [CardTypeLogo]
+    internal var cardLogos: [CardTypeLogo]
     
     internal init(cardLogos: [CardTypeLogo], style: FormTextItemStyle) {
         self.style = style
@@ -80,19 +80,6 @@ internal final class FormCardLogosItem: FormItem, Hidable {
     
     internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
-    }
-    
-    fileprivate func update(brands: [CardBrand]) {
-        let containsSupportedBrand = brands.contains(where: \.isSupported)
-        cardLogos = cardLogos.map { logo in
-            var logoCopy = logo
-            if containsSupportedBrand {
-                logoCopy.alpha = brands.contains { $0.type == logoCopy.type } ? 1 : 0.3
-            } else {
-                logoCopy.alpha = 1
-            }
-            return logoCopy
-        }
     }
     
 }
@@ -116,19 +103,16 @@ extension FormCardLogosItem {
         /// The URL of the card type logo.
         internal let url: URL
         
-        internal var alpha: Float
-        
         /// Initializes the card type logo.
         ///
         /// - Parameter cardType: The card type for which to initialize the logo.
-        internal init(url: URL, type: CardType, alpha: Float = 1) {
+        internal init(url: URL, type: CardType) {
             self.url = url
             self.type = type
-            self.alpha = alpha
         }
         
         internal static func == (lhs: FormCardLogosItem.CardTypeLogo, rhs: FormCardLogosItem.CardTypeLogo) -> Bool {
-            lhs.url == rhs.url && lhs.type == rhs.type && lhs.alpha == rhs.alpha
+            lhs.url == rhs.url && lhs.type == rhs.type
         }
     }
 }

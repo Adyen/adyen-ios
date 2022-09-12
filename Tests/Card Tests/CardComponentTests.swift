@@ -1346,44 +1346,24 @@ class CardComponentTests: XCTestCase {
         
         XCTAssertFalse(logoItemView!.isHidden)
         
-        // valid card but still active. logos should be visible
+        // valid card but still active. logos should be hidden
         populate(textItemView: cardNumberItemView, with: Dummy.visaCard.number!)
-        XCTAssertFalse(logoItemView!.isHidden)
+        wait(for: .seconds(1))
+        XCTAssertTrue(logoItemView!.isHidden)
         
         // with valid card and inactive, logos should hide
         numberItem.isActive = false
+        wait(for: .milliseconds(300))
         XCTAssertTrue(logoItemView!.isHidden)
         
         // invalid card and active/inactive numberitem, logos should be visible
         populate(textItemView: cardNumberItemView, with: "1234")
         numberItem.isActive = true
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         XCTAssertFalse(logoItemView!.isHidden)
         numberItem.isActive = false
-        wait(for: .seconds(1))
+        wait(for: .milliseconds(300))
         XCTAssertFalse(logoItemView!.isHidden)
-    }
-    
-    func testSupportedCardLogoAlpha() {
-        configuration.socialSecurityNumberMode = .show
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
-        
-        let logoItem = sut.cardViewController.items.numberContainerItem.supportedCardLogosItem
-        XCTAssertTrue(logoItem.cardLogos.allSatisfy { $0.alpha == 1})
-        
-        var binResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress)])
-        sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertEqual(logoItem.cardLogos[0].alpha, 0.3)
-        
-        binResponse = BinLookupResponse(brands: [])
-        sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertTrue(logoItem.cardLogos.allSatisfy { $0.alpha == 1})
-        
-        binResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress, isSupported: false)])
-        sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertEqual(logoItem.cardLogos[0].alpha, 1)
     }
 
     func testClearShouldResetPostalCodeItemToEmptyValue() throws {
