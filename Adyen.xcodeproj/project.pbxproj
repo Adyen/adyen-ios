@@ -554,7 +554,6 @@
 		F94E37B82818138900617382 /* session_response.json in Resources */ = {isa = PBXBuildFile; fileRef = A023A9B328103C2D004FDCA4 /* session_response.json */; };
 		F94F0DEB28AA3FB400C0923D /* ThreeDS2PlusDACoreActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F0DEA28AA3FB400C0923D /* ThreeDS2PlusDACoreActionHandler.swift */; };
 		F94F0DF628AB7BCC00C0923D /* DelegatedAuthenticationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F0DF528AB7BCC00C0923D /* DelegatedAuthenticationData.swift */; };
-		F94F0DFF28AD2BCE00C0923D /* AuthenticationServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F0DFE28AD2BCE00C0923D /* AuthenticationServiceMock.swift */; };
 		F957A9CE255051130099AD73 /* StoredPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */; };
 		F957AA462552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA452552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift */; };
 		F957AA5A2552D8BB0099AD73 /* ThreeDS2ComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA592552D8BB0099AD73 /* ThreeDS2ComponentTests.swift */; };
@@ -775,6 +774,8 @@
 		F9D644E724D40C7C0059CBE3 /* MBWayComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D644E624D40C7C0059CBE3 /* MBWayComponentTests.swift */; };
 		F9DC6BA623AA293500863F3A /* ListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9DC6BA523AA293500863F3A /* ListViewControllerTests.swift */; };
 		F9E441522382A0DD00D3CD48 /* ViewIdentifierBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E441512382A0DD00D3CD48 /* ViewIdentifierBuilder.swift */; };
+		F9E4725F28CF1A2100FF9550 /* ThreeDS2PlusDACoreActionHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E4725E28CF1A2100FF9550 /* ThreeDS2PlusDACoreActionHandlerTests.swift */; };
+		F9E4726228CF1D4300FF9550 /* AuthenticationServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F0DFE28AD2BCE00C0923D /* AuthenticationServiceMock.swift */; };
 		F9EDB782239149AF00CFB3C9 /* CountryCodeValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB781239149AF00CFB3C9 /* CountryCodeValidator.swift */; };
 		F9EDB78423914B4400CFB3C9 /* CurrencyCodeValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB78323914B4400CFB3C9 /* CurrencyCodeValidator.swift */; };
 		F9EDB7862391734200CFB3C9 /* UnknownError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB7852391734200CFB3C9 /* UnknownError.swift */; };
@@ -1828,6 +1829,7 @@
 		F9D644E624D40C7C0059CBE3 /* MBWayComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBWayComponentTests.swift; sourceTree = "<group>"; };
 		F9DC6BA523AA293500863F3A /* ListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewControllerTests.swift; sourceTree = "<group>"; };
 		F9E441512382A0DD00D3CD48 /* ViewIdentifierBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewIdentifierBuilder.swift; sourceTree = "<group>"; };
+		F9E4725E28CF1A2100FF9550 /* ThreeDS2PlusDACoreActionHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2PlusDACoreActionHandlerTests.swift; sourceTree = "<group>"; };
 		F9EDB781239149AF00CFB3C9 /* CountryCodeValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCodeValidator.swift; sourceTree = "<group>"; };
 		F9EDB78323914B4400CFB3C9 /* CurrencyCodeValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyCodeValidator.swift; sourceTree = "<group>"; };
 		F9EDB7852391734200CFB3C9 /* UnknownError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnknownError.swift; sourceTree = "<group>"; };
@@ -3910,7 +3912,6 @@
 			isa = PBXGroup;
 			children = (
 				F94F0DEA28AA3FB400C0923D /* ThreeDS2PlusDACoreActionHandler.swift */,
-				F94F0DFE28AD2BCE00C0923D /* AuthenticationServiceMock.swift */,
 			);
 			path = "3DS2+Delegated Authentication";
 			sourceTree = "<group>";
@@ -3947,9 +3948,11 @@
 				F957AA592552D8BB0099AD73 /* ThreeDS2ComponentTests.swift */,
 				F957AAA52552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift */,
 				F9842CCF25710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift */,
+				F9E4725E28CF1A2100FF9550 /* ThreeDS2PlusDACoreActionHandlerTests.swift */,
 				F957AAAD2552FDD70099AD73 /* AnyADYServiceMock.swift */,
 				F957AA712552DBC80099AD73 /* AnyRedirectComponentMock.swift */,
 				F957AA612552D8D20099AD73 /* AnyThreeDS2ActionHandlerMock.swift */,
+				F94F0DFE28AD2BCE00C0923D /* AuthenticationServiceMock.swift */,
 				F957AA692552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift */,
 			);
 			path = "3DS2 Component";
@@ -5845,6 +5848,7 @@
 				F97842D926C3D55200677458 /* OXXOShareableVoucherViewProviderTests.swift in Sources */,
 				F9838CCC26315E6E00963483 /* PartialPaymentDelegateMock.swift in Sources */,
 				C978F5EF2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift in Sources */,
+				F9E4725F28CF1A2100FF9550 /* ThreeDS2PlusDACoreActionHandlerTests.swift in Sources */,
 				A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */,
 				F96AE5052603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift in Sources */,
 				F9EDB78F23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift in Sources */,
@@ -5910,6 +5914,7 @@
 				F9D644E724D40C7C0059CBE3 /* MBWayComponentTests.swift in Sources */,
 				5AF730EA2667C3F10091C573 /* APIContextTests.swift in Sources */,
 				5A56E15526B6DEF800744CA0 /* XCTestCase+Style.swift in Sources */,
+				F9E4726228CF1D4300FF9550 /* AuthenticationServiceMock.swift in Sources */,
 				E767F4DC25A603A50077029E /* ModalToolbarTests.swift in Sources */,
 				E7D3ED84243B667500E73F59 /* FormCardNumberItemViewTests.swift in Sources */,
 				F957AAA62552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift in Sources */,
@@ -6169,7 +6174,6 @@
 				F9B018032608F648001F23FC /* EContextStoresVoucherAction.swift in Sources */,
 				F917613825A30B5700D653BE /* ThreeDS2ComponentFingerprint.swift in Sources */,
 				F970143925D139BE007E74D9 /* VoucherComponentStyle.swift in Sources */,
-				F94F0DFF28AD2BCE00C0923D /* AuthenticationServiceMock.swift in Sources */,
 				F917613925A30B5700D653BE /* ThreeDS2ComponentFingerprintToken.swift in Sources */,
 				5A2D1951267368580082BCE9 /* ActionComponentStyle.swift in Sources */,
 			);

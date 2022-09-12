@@ -10,14 +10,14 @@ import Foundation
 
 internal extension ThreeDS2Component {
     
-    struct Fingerprint: Codable { // swiftlint:disable:this explicit_acl
+    struct Fingerprint: Codable, Equatable { // swiftlint:disable:this explicit_acl
         
-        private let deviceInformation: String
-        private let sdkEphemeralPublicKey: EphemeralPublicKey
-        private let sdkReferenceNumber: String
-        private let sdkApplicationIdentifier: String
-        private let sdkTransactionIdentifier: String
-        private let delegatedAuthenticationSDKOutput: String?
+        internal let deviceInformation: String
+        internal let sdkEphemeralPublicKey: EphemeralPublicKey
+        internal let sdkReferenceNumber: String
+        internal let sdkApplicationIdentifier: String
+        internal let sdkTransactionIdentifier: String
+        internal let delegatedAuthenticationSDKOutput: String?
         
         internal init(deviceInformation: String,
                       sdkEphemeralPublicKey: ThreeDS2Component.Fingerprint.EphemeralPublicKey,
@@ -70,7 +70,7 @@ internal extension ThreeDS2Component {
 
 extension ThreeDS2Component.Fingerprint {
     
-    internal struct EphemeralPublicKey: Codable {
+    internal struct EphemeralPublicKey: Codable, Equatable {
         
         private let keyType: String
         private let curve: String

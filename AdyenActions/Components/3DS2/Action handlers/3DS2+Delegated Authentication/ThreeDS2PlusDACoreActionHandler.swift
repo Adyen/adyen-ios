@@ -37,9 +37,9 @@
     @available(iOS 14.0, *)
     internal class ThreeDS2PlusDACoreActionHandler: ThreeDS2CoreActionHandler {
         
-        private var delegatedAuthenticationState: DelegatedAuthenticationState = .init()
+        internal var delegatedAuthenticationState: DelegatedAuthenticationState = .init()
         
-        private struct DelegatedAuthenticationState {
+        internal struct DelegatedAuthenticationState {
             internal var isDeviceRegistrationFlow: Bool = false
         }
         
@@ -181,9 +181,9 @@
             
             if delegatedAuthenticationState.isDeviceRegistrationFlow {
                 performDelegatedRegistration(token.delegatedAuthenticationSDKInput) { [weak self] result in
-                    self?.didFinish(with: challengeResult,
-                                    delegatedAuthenticationSDKOutput: result.successResult,
-                                    completionHandler: completionHandler)
+                    self?.deliver(challengeResult: challengeResult,
+                                  delegatedAuthenticationSDKOutput: result.successResult,
+                                  completionHandler: completionHandler)
                 }
             } else {
                 completionHandler(.success(challengeResult))
@@ -206,9 +206,9 @@
             }
         }
 
-        private func didFinish(with challengeResult: ThreeDSResult,
-                               delegatedAuthenticationSDKOutput: String?,
-                               completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
+        private func deliver(challengeResult: ThreeDSResult,
+                             delegatedAuthenticationSDKOutput: String?,
+                             completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
 
             do {
                 let threeDSResult = try challengeResult.withDelegatedAuthenticationSDKOutput(
