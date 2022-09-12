@@ -15,7 +15,7 @@ public protocol DelegatedAuthenticationAware {
 /// Delegated Authentication Data.
 public enum DelegatedAuthenticationData: Codable {
     
-    /// Describes any error that occurs whle decoding the `DelegatedAuthenticationData`.
+    /// Describes any error that occurs while decoding the `DelegatedAuthenticationData`.
     public enum DecodingError: LocalizedError {
         case invalidDelegatedAuthenticationData
         

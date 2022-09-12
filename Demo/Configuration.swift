@@ -56,7 +56,7 @@ internal enum ConfigurationConstants {
                              "id": "Item #2"]]
     static let delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication = .init(localizedRegistrationReason: "Authenticate your card!",
                                                                                                                       localizedAuthenticationReason: "Register this device!",
-                                                                                                                      appleTeamIdendtifier: "B2NYSS5932")
+                                                                                                                      appleTeamIdentifier: "B2NYSS5932")
 
     static var shippingMethods: [PKShippingMethod] = {
         var shippingByCar = PKShippingMethod(label: "By car", amount: NSDecimalNumber(5.0))

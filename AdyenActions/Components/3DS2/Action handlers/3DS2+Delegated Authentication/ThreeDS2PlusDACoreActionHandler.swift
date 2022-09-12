@@ -247,7 +247,7 @@
         fileprivate func authenticationServiceConfiguration() -> AuthenticationService.Configuration {
             .init(localizedRegistrationReason: localizedRegistrationReason,
                   localizedAuthenticationReason: localizedAuthenticationReason,
-                  appleTeamIdendtifier: appleTeamIdendtifier)
+                  appleTeamIdendtifier: appleTeamIdentifier)
         }
     }
 

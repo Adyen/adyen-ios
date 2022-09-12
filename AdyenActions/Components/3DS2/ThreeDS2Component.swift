@@ -56,17 +56,17 @@ public final class ThreeDS2Component: ActionComponent {
             public let localizedAuthenticationReason: String
 
             /// The Apple registered development team identifier.
-            public let appleTeamIdendtifier: String
+            public let appleTeamIdentifier: String
 
             /// Initializes a new instance.
             ///
             /// - Parameter localizedRegistrationReason: The localized reason string show to the user while registration flow.
             /// - Parameter localizedAuthenticationReason: The localized reason string show to the user while authentication flow.
-            /// - Parameter appleTeamIdendtifier: The Apple registered development team identifier.
-            public init(localizedRegistrationReason: String, localizedAuthenticationReason: String, appleTeamIdendtifier: String) {
+            /// - Parameter appleTeamIdentifier: The Apple registered development team identifier.
+            public init(localizedRegistrationReason: String, localizedAuthenticationReason: String, appleTeamIdentifier: String) {
                 self.localizedRegistrationReason = localizedRegistrationReason
                 self.localizedAuthenticationReason = localizedAuthenticationReason
-                self.appleTeamIdendtifier = appleTeamIdendtifier
+                self.appleTeamIdentifier = appleTeamIdentifier
             }
         }
         
