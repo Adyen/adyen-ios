@@ -48,7 +48,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
                   appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
                   coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
                   delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil) {
-        self.coreActionHandler = coreActionHandler ?? Self.createDefaultThreeDS2CoreActionHandler(
+        self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,
             appearanceConfiguration: appearanceConfiguration,
             delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration

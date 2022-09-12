@@ -23,32 +23,12 @@ extension ThreeDS2CompactActionHandler {
             context: context,
             fingerprintSubmitter: fingerprintSubmitter,
             appearanceConfiguration: appearanceConfiguration,
-            coreActionHandler: Self.createDefaultThreeDS2CoreActionHandler(
+            coreActionHandler: createDefaultThreeDS2CoreActionHandler(
                 context: context,
                 appearanceConfiguration: appearanceConfiguration,
                 delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
             ),
             delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
         )
-    }
-    
-    internal static func createDefaultThreeDS2CoreActionHandler(
-        context: AdyenContext,
-        appearanceConfiguration: ADYAppearanceConfiguration,
-        delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?
-    ) -> AnyThreeDS2CoreActionHandler {
-        #if canImport(AdyenAuthentication)
-            if #available(iOS 14.0, *), let delegatedAuthenticationConfiguration = delegatedAuthenticationConfiguration {
-                return ThreeDS2PlusDACoreActionHandler(context: context,
-                                                       appearanceConfiguration: appearanceConfiguration,
-                                                       delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration)
-            } else {
-                return ThreeDS2CoreActionHandler(context: context,
-                                                 appearanceConfiguration: appearanceConfiguration)
-            }
-        #else
-            return ThreeDS2CoreActionHandler(context: context,
-                                             appearanceConfiguration: appearanceConfiguration)
-        #endif
     }
 }
