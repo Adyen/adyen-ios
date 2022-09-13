@@ -6,21 +6,6 @@
 
 import Foundation
 
-/// :nodoc:
-public extension URL {
-
-    @available(*, deprecated, renamed: "adyen.queryParameters", message: "Use .adyen.queryParameters instead")
-    var queryParameters: [String: String] {
-        adyen.queryParameters
-    }
-
-    @available(*, deprecated, renamed: "adyen.isHttp", message: "Use .adyen.isHttp instead")
-    var isHttp: Bool {
-        adyen.isHttp
-    }
-
-}
-
 /// So that any `URL` instance will inherit the `adyen` scope.
 /// :nodoc:
 extension URL: AdyenCompatible {}
