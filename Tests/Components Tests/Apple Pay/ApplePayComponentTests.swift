@@ -269,12 +269,23 @@ class ApplePayComponentTest: XCTestCase {
         let paymentRequest = configuration.createPaymentRequest(supportedNetworks: paymentMethod.supportedNetworks)
         XCTAssertEqual(paymentRequest.paymentSummaryItems, expectedSummaryItems)
         XCTAssertEqual(paymentRequest.merchantCapabilities, PKMerchantCapability.capability3DS)
-        XCTAssertEqual(paymentRequest.supportedNetworks, self.supportedNetworks)
         XCTAssertEqual(paymentRequest.currencyCode, currencyCode)
         XCTAssertEqual(paymentRequest.merchantIdentifier, "test_id")
         XCTAssertEqual(paymentRequest.countryCode, countryCode)
         XCTAssertEqual(paymentRequest.requiredBillingContactFields, expectedRequiredBillingFields)
         XCTAssertEqual(paymentRequest.requiredShippingContactFields, expectedRequiredShippingFields)
+    }
+    
+    
+    func testNetworks() {
+        if #available(iOS 15.1, *) {
+            let request = PKPaymentRequest()
+            let collection: [PKPaymentNetwork] = [.discover, .dankort]
+            XCTAssertEqual(collection.count, 2)
+            
+            request.supportedNetworks = collection
+            XCTAssertEqual(request.supportedNetworks.count, 1) // 🤷
+        }
     }
 
     func testPaymentRequestViaPayment() throws {
@@ -292,7 +303,6 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(paymentRequest.paymentSummaryItems[0].amount.description, payment.amount.formattedComponents.formattedValue)
 
         XCTAssertEqual(paymentRequest.merchantCapabilities, PKMerchantCapability.capability3DS)
-        XCTAssertEqual(paymentRequest.supportedNetworks, self.supportedNetworks)
         XCTAssertEqual(paymentRequest.currencyCode, amount.currencyCode)
         XCTAssertEqual(paymentRequest.merchantIdentifier, "test_id")
         XCTAssertEqual(paymentRequest.countryCode, payment.countryCode)
@@ -305,7 +315,7 @@ class ApplePayComponentTest: XCTestCase {
         let supportedNetworks = paymentMethod.supportedNetworks
 
         if #available(iOS 12.1.1, *) {
-            XCTAssertEqual(supportedNetworks, [.masterCard, .elo])
+            XCTAssertTrue(compareCollections(supportedNetworks, [.masterCard, .elo]))
         } else {
             XCTAssertEqual(supportedNetworks, [.masterCard])
         }
@@ -354,7 +364,16 @@ class ApplePayComponentTest: XCTestCase {
         return items
     }
     
-    private var supportedNetworks: [PKPaymentNetwork] {
-        ApplePayComponent.defaultNetworks
+}
+
+extension XCTestCase {
+    
+    func compareCollections<T: Hashable>(_ lhs: Array<T>, _ rhs: Array<T>) -> Bool {
+        if lhs.count != rhs.count { return false }
+
+        let lhsSet = Set<T>(lhs)
+        let rhsSet = Set<T>(rhs)
+        return lhsSet.intersection(rhsSet).count == lhs.count
     }
+    
 }
