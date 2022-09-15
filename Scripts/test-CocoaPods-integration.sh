@@ -107,6 +107,9 @@ fi
 # Install the pods.
 pod install
 
+# Sign Pods targets
+../Scripts/test_pod_siging.rb
+
 # Archive for generic iOS device
 echo '############# Archive for generic iOS device ###############'
 xcodebuild archive -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS'
