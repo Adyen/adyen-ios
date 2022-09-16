@@ -51,6 +51,8 @@ let package = Package(
 
 swift package update
 
+xcodebuild clean -scheme TempProject -destination 'generic/platform=iOS'
+
 # Archive for generic iOS device
 echo '############# Archive for generic iOS device ###############'
 xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS'
