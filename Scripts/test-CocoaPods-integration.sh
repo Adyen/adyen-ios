@@ -9,6 +9,11 @@ function print_help {
   echo "-w, --exclude-wechat      exclude wechat module"
 }
 
+function echo_header {
+  echo " "
+  echo "############# $1 #############"
+}
+
 set -e # Any subsequent(*) commands which fail will cause the shell script to exit immediately
 
 INCLUDE_WECHAT=true
@@ -31,7 +36,7 @@ PROJECT_NAME=TempProject
 function clean_up {
   cd ../
   rm -rf $PROJECT_NAME
-  echo "exited"
+  echo_header 'Exited'
 }
 
 # Delete the temp folder if the script exited with error.
@@ -41,7 +46,7 @@ rm -rf $PROJECT_NAME
 
 mkdir -p $PROJECT_NAME && cd $PROJECT_NAME
 
-# Create a new Xcode project.
+echo_header 'Create a new Xcode project'
 swift package init
 
 # Create the Package.swift.
@@ -108,20 +113,12 @@ fi
 pod install
 
 # Sign Pods targets
-../Scripts/test_pod_siging.rb
+../Scripts/xcodeproj_set.rb 'Pods' 'DEVELOPMENT_TEAM' 'B2NYSS5932'
 
-# Archive for generic iOS device
-echo '############# Archive for generic iOS device ###############'
-xcodebuild archive -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS'
+# Build and Archive for generic iOS device
+echo_header 'Build for generic iOS device'
+xcodebuild clean build archive -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS' | xcpretty --utf --color && exit ${PIPESTATUS[0]}
 
-# Build for generic iOS device
-echo '############# Build for generic iOS device ###############'
-xcodebuild clean build -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS'
-
-# Archive for x86_64 simulator
-echo '############# Archive for simulator ###############'
-xcodebuild archive -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS Simulator'
-
-# Build for x86_64 simulator
-echo '############# Build for simulator ###############'
-xcodebuild clean build -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS Simulator'
+# Build and Archive for x86_64 simulator
+echo_header 'Build for simulator'
+xcodebuild clean build archive -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS Simulator' | xcpretty --utf --color && exit ${PIPESTATUS[0]}

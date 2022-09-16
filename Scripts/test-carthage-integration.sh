@@ -4,7 +4,7 @@ set -e # Any subsequent(*) commands which fail will cause the shell script to ex
 
 function echo_header {
   echo " "
-  echo "===   $1"
+  echo "############# $1 #############"
 }
 
 function print_help {
@@ -16,6 +16,15 @@ function print_help {
   echo "-h, --help                show brief help"
   echo "-c, --no-clean            ignore cleanup"
 }
+
+function clean_up {
+  cd ../
+  rm -rf $PROJECT_NAME
+  echo_header 'Exited'
+}
+
+# Delete the temp folder if the script exited with error.
+trap "clean_up" 0 1 2 3 6
 
 PROJECT_NAME=TempProject
 NEED_CLEANUP=true
@@ -66,6 +75,7 @@ targets:
       base:
         INFOPLIST_FILE: Source/UIKit/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: com.adyen.$PROJECT_NAME
+        CFBundleVersion: 1
     dependencies:
       - framework: Carthage/Build/Adyen.xcframework
         embed: true
@@ -104,6 +114,10 @@ targets:
     type: bundle.ui-testing
     platform: iOS
     sources: Tests
+    settings:
+      base:
+        CFBundleVersion: 1
+        GENERATE_INFOPLIST_FILE: YES
 schemes:
   App:
     build:
@@ -128,7 +142,15 @@ cp "../Demo/Configuration.swift" Source/Configuration.swift
 xcodegen generate
 
 echo_header "Run Tests"
-xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 11" | xcpretty && exit ${PIPESTATUS[0]}
+xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 11" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+
+# Build and Archive for generic iOS device
+echo_header 'Build for generic iOS device'
+xcodebuild clean build archive -project $PROJECT_NAME.xcodeproj -scheme App -destination 'generic/platform=iOS' | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+
+# Build and Archive for x86_64 simulator
+echo_header 'Build for simulator'
+xcodebuild clean build archive -project $PROJECT_NAME.xcodeproj -scheme App -destination 'generic/platform=iOS Simulator' | xcpretty --utf --color && exit ${PIPESTATUS[0]}
 
 if [ "$NEED_CLEANUP" == true ]
 then

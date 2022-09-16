@@ -2,6 +2,20 @@
 
 set -e # Any subsequent(*) commands which fail will cause the shell script to exit immediately
 
+function echo_header {
+  echo " "
+  echo "############# $1 #############"
+}
+
+function clean_up {
+  cd ../
+  rm -rf $PROJECT_NAME
+  echo_header "Exited"
+}
+
+# Delete the temp folder if the script exited with error.
+trap "clean_up" 0 1 2 3 6
+
 PROJECT_NAME=TempProject
 
 # Clean up.
@@ -9,7 +23,7 @@ rm -rf $PROJECT_NAME
 
 mkdir -p $PROJECT_NAME && cd $PROJECT_NAME
 
-# Create the package.
+echo_header 'Create a new Xcode project'
 swift package init
 
 # Create the Package.swift.
@@ -51,23 +65,13 @@ let package = Package(
 
 swift package update
 
-xcodebuild clean -scheme TempProject -destination 'generic/platform=iOS'
+# Build and Archive for generic iOS device
+echo_header  'Build for generic iOS device'
+xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS' | xcpretty --utf --color && exit ${PIPESTATUS[0]}
 
-# Archive for generic iOS device
-echo '############# Archive for generic iOS device ###############'
-xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS'
-
-# Build for generic iOS device
-echo '############# Build for generic iOS device ###############'
-xcodebuild build -scheme TempProject -destination 'generic/platform=iOS'
-
-# Archive for x86_64 simulator
-echo '############# Archive for x86_64 simulator ###############'
-xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64
-
-# Build for x86_64 simulator
-echo '############# Build for x86_64 simulator ###############'
-xcodebuild build -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64
+# Build and Archive for x86_64 simulator
+echo_header 'Build for x86_64 simulator'
+xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 | xcpretty --utf --color && exit ${PIPESTATUS[0]}
 
 # Clean up.
 cd ../
