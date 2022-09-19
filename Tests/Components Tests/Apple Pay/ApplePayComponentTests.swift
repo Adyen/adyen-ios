@@ -280,11 +280,15 @@ class ApplePayComponentTest: XCTestCase {
     func testNetworks() {
         if #available(iOS 15.1, *) {
             let request = PKPaymentRequest()
-            let collection: [PKPaymentNetwork] = [.discover, .dankort]
-            XCTAssertEqual(collection.count, 2)
+            let collection: [PKPaymentNetwork] = [.dankort]
+            XCTAssertEqual(collection.count, 1)
             
             request.supportedNetworks = collection
-            XCTAssertEqual(request.supportedNetworks.count, 1) // 🤷
+            if #available(iOS 16.0, *) {
+                XCTAssertEqual(request.supportedNetworks.count, 0) // For some reason PKPaymentNetwork ignores dankort
+            } else {
+                XCTAssertEqual(request.supportedNetworks.count, 1)
+            }
         }
     }
 
