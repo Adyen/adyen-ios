@@ -65,10 +65,10 @@ let package = Package(
 
 echo_header 'Resolve packages'
 swift package update
+swift package resolve
 
 # This is nececery to avoid internal PIF error
-sleep 15
-swift package dump-pif > /dev/null
+xcodebuild clean -scheme TempProject -destination 'generic/platform=iOS' > /dev/null
 
 # Build and Archive for generic iOS device
 echo_header 'Build for generic iOS device'
@@ -77,7 +77,3 @@ xcodebuild clean build archive -scheme TempProject -destination 'generic/platfor
 # Build and Archive for x86_64 simulator
 echo_header 'Build for x86_64 simulator'
 xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 | xcpretty --utf --color && exit ${PIPESTATUS[0]}
-
-# Clean up.
-cd ../
-rm -rf $PROJECT_NAME
