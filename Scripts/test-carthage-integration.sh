@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -e # Any subsequent(*) commands which fail will cause the shell script to exit immediately
+# Any subsequent(*) commands which fail will cause the shell script to exit immediately
+set -eo pipefail
 
 function echo_header {
   echo " "
@@ -25,6 +26,7 @@ function clean_up {
 
 # Delete the temp folder if the script exited with error.
 trap "clean_up" 0 1 2 3 6
+
 
 PROJECT_NAME=TempProject
 NEED_CLEANUP=true
@@ -142,19 +144,12 @@ cp "../Demo/Configuration.swift" Source/Configuration.swift
 xcodegen generate
 
 echo_header "Run Tests"
-xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 11" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 11" | xcpretty --utf --color
 
 # Build and Archive for generic iOS device
 echo_header 'Build for generic iOS device'
-xcodebuild clean build archive -project $PROJECT_NAME.xcodeproj -scheme App -destination 'generic/platform=iOS' | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+xcodebuild clean build archive -project $PROJECT_NAME.xcodeproj -scheme App -destination 'generic/platform=iOS' | xcpretty --utf --color
 
 # Build and Archive for x86_64 simulator
 echo_header 'Build for simulator'
-xcodebuild clean build archive -project $PROJECT_NAME.xcodeproj -scheme App -destination 'generic/platform=iOS Simulator' | xcpretty --utf --color && exit ${PIPESTATUS[0]}
-
-if [ "$NEED_CLEANUP" == true ]
-then
-  echo_header "Clean up"
-  cd ../
-  rm -rf $PROJECT_NAME
-fi
+xcodebuild clean build archive -project $PROJECT_NAME.xcodeproj -scheme App -destination 'generic/platform=iOS Simulator' | xcpretty --utf --color

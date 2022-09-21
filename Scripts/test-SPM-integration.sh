@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -e # Any subsequent(*) commands which fail will cause the shell script to exit immediately
+# Any subsequent(*) commands which fail will cause the shell script to exit immediately
+set -euo pipefail 
 
 function echo_header {
   echo " "
@@ -72,8 +73,8 @@ xcodebuild clean -scheme TempProject -destination 'generic/platform=iOS' > /dev/
 
 # Build and Archive for generic iOS device
 echo_header 'Build for generic iOS device'
-xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS' | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS' | xcpretty --utf --color
 
 # Build and Archive for x86_64 simulator
 echo_header 'Build for x86_64 simulator'
-xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 | xcpretty --utf --color

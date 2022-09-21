@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Any subsequent(*) commands which fail will cause the shell script to exit immediately
+set -eo pipefail
+
 function print_help {
   echo "Test CocoaPods Integration"
   echo " "
@@ -7,6 +10,7 @@ function print_help {
   echo " "
   echo "options:"
   echo "-w, --exclude-wechat      exclude wechat module"
+  echo "-t, --team                set DEVELOPMENT_TEAM to all bundle modules"
 }
 
 function echo_header {
@@ -14,11 +18,10 @@ function echo_header {
   echo "############# $1 #############"
 }
 
-set -e # Any subsequent(*) commands which fail will cause the shell script to exit immediately
-
 INCLUDE_WECHAT=true
+PROJECT_NAME=TempProject
 
-while test $# -gt 0; do
+while [[ $# -ne 1 ]]; do
   case "$1" in
     -h|--help)
       print_help
@@ -28,10 +31,13 @@ while test $# -gt 0; do
       INCLUDE_WECHAT=false
       shift
       ;;
+    -t|--team)
+      DEVELOPMENT_TEAM="$2"
+      shift 2
+      ;;
   esac
 done
 
-PROJECT_NAME=TempProject
 
 function clean_up {
   cd ../
@@ -79,46 +85,48 @@ let package = Package(
 " > Package.swift
 
 swift package update
-
 swift package generate-xcodeproj
 
 # Create a Podfile with our pod as dependency.
 
-if [ "$INCLUDE_WECHAT" == false ]
-then
-  echo "platform :ios, '11.0'
+echo "platform :ios, '11.0'
 
-  target '$PROJECT_NAME' do
-    use_frameworks!
+target '$PROJECT_NAME' do
+  use_frameworks!
 
-    pod 'Adyen', :path => '../'
-    pod 'Adyen/Session', :path => '../'
-    pod 'Adyen/SwiftUI', :path => '../'
-  end
-  " >> Podfile
+  pod 'Adyen', :path => '../'
+  pod 'Adyen/Session', :path => '../'
+  pod 'Adyen/SwiftUI', :path => '../'" >> Podfile
+
+# Add dependency
+if [ "$INCLUDE_WECHAT" == false ]; then
+  echo "end" >> Podfile
 else
-  echo "platform :ios, '11.0'
+  echo "  pod 'Adyen/WeChatPay', :path => '../'" >> Podfile
+  echo "end" >> Podfile
+fi
 
-  target '$PROJECT_NAME' do
-    use_frameworks!
-
-    pod 'Adyen', :path => '../'
-    pod 'Adyen/WeChatPay', :path => '../'
-    pod 'Adyen/SwiftUI', :path => '../'
-  end
-  " >> Podfile
+# Add fix to https://github.com/CocoaPods/CocoaPods/issues/11402#issuecomment-1149585364
+if [ ! -z "$DEVELOPMENT_TEAM" ]; then
+  echo "" >> Podfile
+  echo "post_install do |installer|" >> Podfile
+  echo "  installer.generated_projects.each do |project|" >> Podfile
+  echo "    project.targets.each do |target|" >> Podfile
+  echo "        target.build_configurations.each do |config|" >> Podfile
+  echo "            config.build_settings[\"DEVELOPMENT_TEAM\"] = \"$DEVELOPMENT_TEAM\"" >> Podfile
+  echo "        end" >> Podfile
+  echo "    end" >> Podfile
+  echo "  end" >> Podfile
+  echo "end" >> Podfile
 fi
 
 # Install the pods.
 pod install
 
-# Sign Pods targets
-../Scripts/xcodeproj_set.rb 'Pods' 'DEVELOPMENT_TEAM' 'B2NYSS5932'
-
 # Build and Archive for generic iOS device
 echo_header 'Build for generic iOS device'
-xcodebuild clean build archive -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS' | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+xcodebuild clean build archive -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS' | xcpretty --utf --color
 
 # Build and Archive for x86_64 simulator
 echo_header 'Build for simulator'
-xcodebuild clean build archive -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS Simulator' | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+xcodebuild clean build archive -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS Simulator' | xcpretty --utf --color
