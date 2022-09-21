@@ -73,14 +73,14 @@ import SwiftUI
             if context.coordinator.currentlyPresentedViewController != nil {
 
                 dismiss(presenter: presenter, context: context) {
-                    self.present(viewController: viewController, presenter: presenter, context: context)
+                    Self.present(viewController: viewController, presenter: presenter, context: context)
                 }
             } else {
-                present(viewController: viewController, presenter: presenter, context: context)
+                Self.present(viewController: viewController, presenter: presenter, context: context)
             }
         }
 
-        private func present(viewController: UIViewController,
+        private static func present(viewController: UIViewController,
                              presenter: UIViewController,
                              context: UIViewControllerRepresentableContext<FullScreenView>) {
             guard !viewController.isBeingPresented, !viewController.isBeingDismissed else { return }
