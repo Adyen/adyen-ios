@@ -31,8 +31,8 @@ trap "clean_up" 0 1 2 3 6
 PROJECT_NAME=TempProject
 NEED_CLEANUP=true
 
-while test $# -gt 0; do
-  case "$1" in
+while [[ $# -ne 0 ]]; do
+  case $1 in
     -h|--help)
       print_help
       exit 0
@@ -42,7 +42,14 @@ while test $# -gt 0; do
       shift
       ;;
     -p|--project)
-      PROJECT_NAME="$1"
+      PROJECT_NAME="$2"
+      shift 2
+      ;;
+    -t|--team)
+      DEVELOPMENT_TEAM="$2"
+      shift 2
+      ;;
+    *)
       shift
       ;;
   esac
@@ -77,6 +84,7 @@ targets:
       base:
         INFOPLIST_FILE: Source/UIKit/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: com.adyen.$PROJECT_NAME
+        DEVELOPMENT_TEAM: $DEVELOPMENT_TEAM
         CFBundleVersion: 1
     dependencies:
       - framework: Carthage/Build/Adyen.xcframework

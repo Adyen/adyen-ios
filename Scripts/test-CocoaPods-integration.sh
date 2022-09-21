@@ -18,22 +18,25 @@ function echo_header {
   echo "############# $1 #############"
 }
 
-INCLUDE_WECHAT=true
+INCLUDE_WECHAT=false
 PROJECT_NAME=TempProject
 
-while [[ $# -ne 1 ]]; do
-  case "$1" in
+while [[ $# -ne 0 ]]; do
+  case $1 in
     -h|--help)
       print_help
       exit 0
       ;;
     -w|--include-wechat)
-      INCLUDE_WECHAT=false
+      INCLUDE_WECHAT=true
       shift
       ;;
     -t|--team)
       DEVELOPMENT_TEAM="$2"
       shift 2
+      ;;
+    *)
+      shift
       ;;
   esac
 done
