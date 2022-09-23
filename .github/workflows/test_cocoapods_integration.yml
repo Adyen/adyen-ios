@@ -63,5 +63,7 @@ jobs:
         cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
     - name: Test Cocoapods Integration
+      env:
+        DEVELOPMENT_TEAM: ${{ secrets.DEVELOPMENT_TEAM }}
       run: |
-        Scripts/test-CocoaPods-integration.sh -w -t secrets.DEVELOPMENT_TEAM
+        Scripts/test-CocoaPods-integration.sh -w -t "$DEVELOPMENT_TEAM"

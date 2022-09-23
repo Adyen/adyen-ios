@@ -66,6 +66,7 @@ jobs:
     - name: Test Carthage Integration
       env:
         GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DEVELOPMENT_TEAM: ${{ secrets.DEVELOPMENT_TEAM }}
       run: |
         carthage version
-        Scripts/test-carthage-integration.sh -t secrets.DEVELOPMENT_TEAM
+        Scripts/test-carthage-integration.sh -t "$DEVELOPMENT_TEAM"

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Any subsequent(*) commands which fail will cause the shell script to exit immediately
-set -euo pipefail 
+set -euo pipefail
 
 function echo_header {
   echo " "
@@ -11,7 +11,7 @@ function echo_header {
 function clean_up {
   cd ../
   rm -rf $PROJECT_NAME
-  echo_header "Exited"
+  echo_header 'Clean up and exit'
 }
 
 # Delete the temp folder if the script exited with error.
@@ -69,6 +69,7 @@ swift package update
 swift package resolve
 
 # This is nececery to avoid internal PIF error
+sleep 10
 xcodebuild clean -scheme TempProject -destination 'generic/platform=iOS' > /dev/null
 
 # Build and Archive for generic iOS device

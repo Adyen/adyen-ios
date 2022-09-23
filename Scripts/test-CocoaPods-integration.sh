@@ -45,7 +45,7 @@ done
 function clean_up {
   cd ../
   rm -rf $PROJECT_NAME
-  echo_header 'Exited'
+  echo_header 'Clean up and exit'
 }
 
 # Delete the temp folder if the script exited with error.

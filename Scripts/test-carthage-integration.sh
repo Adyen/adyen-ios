@@ -21,7 +21,7 @@ function print_help {
 function clean_up {
   cd ../
   rm -rf $PROJECT_NAME
-  echo_header 'Exited'
+  echo_header 'Clean up and exit'
 }
 
 # Delete the temp folder if the script exited with error.
@@ -160,4 +160,4 @@ xcodebuild clean build archive -project $PROJECT_NAME.xcodeproj -scheme App -des
 
 # Build and Archive for x86_64 simulator
 echo_header 'Build for simulator'
-xcodebuild clean build archive -project $PROJECT_NAME.xcodeproj -scheme App -destination 'generic/platform=iOS Simulator' | xcpretty --utf --color
+xcodebuild clean build archive -project $PROJECT_NAME.xcodeproj -scheme App -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 | xcpretty --utf --color
