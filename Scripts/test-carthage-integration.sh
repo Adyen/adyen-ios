@@ -153,11 +153,3 @@ xcodegen generate
 
 echo_header "Run Tests"
 xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 11" | xcpretty --utf --color
-
-# Build and Archive for generic iOS device
-echo_header 'Build for generic iOS device'
-xcodebuild clean build archive -project $PROJECT_NAME.xcodeproj -scheme App -destination 'generic/platform=iOS' | xcpretty --utf --color
-
-# Build and Archive for x86_64 simulator
-echo_header 'Build for simulator'
-xcodebuild clean build archive -project $PROJECT_NAME.xcodeproj -scheme App -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 | xcpretty --utf --color

@@ -69,7 +69,7 @@ swift package update
 swift package resolve
 
 # This is nececery to avoid internal PIF error
-sleep 10
+swift package dump-pif > /dev/null
 xcodebuild clean -scheme TempProject -destination 'generic/platform=iOS' > /dev/null
 
 # Build and Archive for generic iOS device
