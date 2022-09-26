@@ -218,7 +218,8 @@ public final class ThreeDS2Component: ActionComponent {
 
     internal lazy var threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler = {
         let handler = ThreeDS2ClassicActionHandler(context: context,
-                                                   appearanceConfiguration: configuration.appearanceConfiguration)
+                                                   appearanceConfiguration: configuration.appearanceConfiguration,
+                                                   delegatedAuthenticationConfiguration: configuration.delegateAuthentication)
         handler._isDropIn = _isDropIn
         handler.threeDSRequestorAppURL = configuration.requestorAppURL
 

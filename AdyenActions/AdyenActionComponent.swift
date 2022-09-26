@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import Adyen3DS2
 import Foundation
 import UIKit
 
@@ -49,12 +50,18 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
             /// The configuration for Delegated Authentication.
             public var delegateAuthentication: ThreeDS2Component.Configuration.DelegatedAuthentication?
             
+            /// ThreeDS2Component UI configuration.
+            public var appearanceConfiguration: ADYAppearanceConfiguration
+            
             /// Initializes a new instance
             ///
             /// - Parameter requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
-            public init(requestorAppURL: URL? = nil, delegateAuthentication: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil) {
+            public init(requestorAppURL: URL? = nil,
+                        delegateAuthentication: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil,
+                        appearanceConfiguration: ADYAppearanceConfiguration = .init()) {
                 self.requestorAppURL = requestorAppURL
                 self.delegateAuthentication = delegateAuthentication
+                self.appearanceConfiguration = appearanceConfiguration
             }
         }
         
@@ -142,8 +149,11 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     }
 
     private func createThreeDS2Component() -> ThreeDS2Component {
-        let component = ThreeDS2Component(context: context)
-        component.configuration.requestorAppURL = configuration.threeDS.requestorAppURL
+        let threeDS2Configuration = ThreeDS2Component.Configuration(redirectComponentStyle: configuration.style.redirectComponentStyle,
+                                                                    appearanceConfiguration: configuration.threeDS.appearanceConfiguration,
+                                                                    requestorAppURL: configuration.threeDS.requestorAppURL,
+                                                                    delegateAuthentication: configuration.threeDS.delegateAuthentication)
+        let component = ThreeDS2Component(context: context, configuration: threeDS2Configuration)
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
