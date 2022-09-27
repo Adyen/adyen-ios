@@ -48,9 +48,9 @@ public enum DelegatedAuthenticationData: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
         case let .sdkInput(sdkInput):
-            try container.encodeIfPresent(sdkInput, forKey: .sdkInput)
+            try container.encode(sdkInput, forKey: .sdkInput)
         case let .sdkOutput(sdkOutput):
-            try container.encodeIfPresent(sdkOutput, forKey: .sdkOutput)
+            try container.encode(sdkOutput, forKey: .sdkOutput)
         }
     }
     
