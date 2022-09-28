@@ -20,15 +20,15 @@ public struct RedirectDetails: AdditionalDetails, Decodable {
         }
     }
     
-    internal var payload: String?
+    public private(set) var payload: String?
     
-    internal var redirectResult: String?
+    public private(set) var redirectResult: String?
     
-    internal var paymentResponse: String?
+    public private(set) var paymentResponse: String?
     
-    internal var merchantData: String?
+    public private(set) var merchantData: String?
     
-    internal var queryString: String?
+    public private(set) var queryString: String?
     
     /// Initializes the redirect payment details.
     ///
