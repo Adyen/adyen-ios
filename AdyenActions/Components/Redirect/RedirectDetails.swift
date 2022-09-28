@@ -20,10 +20,10 @@ public struct RedirectDetails: AdditionalDetails, Decodable {
         }
     }
     
-    /// Redirect `payload` if avaliable.
+    /// Redirect `payload` if available.
     public private(set) var payload: String?
     
-    /// Redirect result if avaliable.
+    /// Redirect result if available.
     public private(set) var redirectResult: String?
     
     /// Redirect `PaRes` if available.
