@@ -20,14 +20,19 @@ public struct RedirectDetails: AdditionalDetails, Decodable {
         }
     }
     
+    /// Redirect `payload` if avaliable.
     public private(set) var payload: String?
     
+    /// Redirect result if avaliable.
     public private(set) var redirectResult: String?
     
+    /// Redirect `PaRes` if available.
     public private(set) var paymentResponse: String?
     
+    /// Redirect `MD` or merchant data if available.
     public private(set) var merchantData: String?
     
+    /// Redirect raw query parameters in case they're unrecognizable.
     public private(set) var queryString: String?
     
     /// Initializes the redirect payment details.
