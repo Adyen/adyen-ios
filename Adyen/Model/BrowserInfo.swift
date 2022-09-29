@@ -35,5 +35,5 @@ public struct BrowserInfo: Encodable {
     
     private static var webView: WKWebView?
     
-    private static var cachedUserAgent: String?
+    internal static var cachedUserAgent: String?
 }
