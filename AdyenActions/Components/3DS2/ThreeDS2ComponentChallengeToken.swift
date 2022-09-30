@@ -15,6 +15,7 @@ internal extension ThreeDS2Component {
         internal let acsSignedContent: String
         internal let acsTransactionIdentifier: String
         internal let serverTransactionIdentifier: String
+        internal let threeDSRequestorAppURL: URL?
         
         // MARK: - Decoding
         
@@ -23,6 +24,7 @@ internal extension ThreeDS2Component {
             case acsSignedContent
             case acsTransactionIdentifier = "acsTransID"
             case serverTransactionIdentifier = "threeDSServerTransID"
+            case threeDSRequestorAppURL
         }
         
     }
