@@ -34,6 +34,7 @@ internal final class ComponentsViewController: UIViewController, Presenter {
             [
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
                 ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
+                ComponentsItem(title: "Online Banking PL", selectionHandler: presentOnlineBankingPolandComponent),
                 ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
                 ComponentsItem(title: "BACS Direct Debit", selectionHandler: presentBACSDirectDebitComponent),
                 ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent),
@@ -74,6 +75,14 @@ internal final class ComponentsViewController: UIViewController, Presenter {
             integrationExample.presentIdealComponentSession()
         } else {
             integrationExample.presentIdealComponent()
+        }
+    }
+
+    internal func presentOnlineBankingPolandComponent() {
+        if componentsView.isUsingSession {
+            integrationExample.presentOnlineBankingPolandComponent()
+        } else {
+            integrationExample.presentOnlineBankingPolandComponentSession()
         }
     }
 
