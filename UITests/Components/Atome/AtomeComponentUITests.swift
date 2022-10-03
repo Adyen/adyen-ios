@@ -25,6 +25,7 @@ class AtomeComponentUITests: XCTestCase {
         sut = AtomeComponent(paymentMethod: paymentMethod,
                              context: context,
                              configuration: AtomeComponent.Configuration(style: style))
+        BrowserInfo.cachedUserAgent = "some_value"
     }
 
     override func tearDownWithError() throws {
@@ -32,6 +33,7 @@ class AtomeComponentUITests: XCTestCase {
         context = nil
         style = nil
         sut = nil
+        BrowserInfo.cachedUserAgent = nil
         try super.tearDownWithError()
     }
 
