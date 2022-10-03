@@ -21,14 +21,14 @@ class AdyenSwiftUITests: XCTestCase {
     func testDropIn() throws {
         app.launch()
 
-        XCUIApplication().tables.buttons["Drop In"].tap()
+        XCUIApplication().buttons["Drop In"].tap()
 
         wait(for: [app.buttons["Pay €174.08"], app.staticTexts["Adyen Demo"], app.buttons["Change Payment Method"]])
     }
 
     func testCardComponent() throws {
         app.launch()
-        app.tables.buttons["Card"].tap()
+        app.buttons["Card"].tap()
 
         wait(for: [app.buttons["Pay €174.08"],
                    app.staticTexts["Credit Card"],
@@ -39,7 +39,7 @@ class AdyenSwiftUITests: XCTestCase {
 
     func testSepaComponent() throws {
         app.launch()
-        app.tables.buttons["SEPA Direct Debit"].tap()
+        app.buttons["SEPA Direct Debit"].tap()
 
         wait(for: [app.buttons["Pay €174.08"],
                    app.staticTexts["SEPA Direct Debit"],

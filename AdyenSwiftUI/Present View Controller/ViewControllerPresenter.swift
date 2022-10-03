@@ -35,7 +35,7 @@ import SwiftUI
     }
 
     @available(iOS 13.0, *)
-    internal final class FullScreenView: UIViewControllerRepresentable {
+    internal struct FullScreenView: UIViewControllerRepresentable {
 
         @Binding internal var viewController: UIViewController?
 
@@ -72,17 +72,17 @@ import SwiftUI
                                                 context: UIViewControllerRepresentableContext<FullScreenView>) {
             if context.coordinator.currentlyPresentedViewController != nil {
 
-                dismiss(presenter: presenter, context: context) { [weak self] in
-                    self?.present(viewController: viewController, presenter: presenter, context: context)
+                dismiss(presenter: presenter, context: context) {
+                    Self.present(viewController: viewController, presenter: presenter, context: context)
                 }
             } else {
-                present(viewController: viewController, presenter: presenter, context: context)
+                Self.present(viewController: viewController, presenter: presenter, context: context)
             }
         }
 
-        private func present(viewController: UIViewController,
-                             presenter: UIViewController,
-                             context: UIViewControllerRepresentableContext<FullScreenView>) {
+        private static func present(viewController: UIViewController,
+                                    presenter: UIViewController,
+                                    context: UIViewControllerRepresentableContext<FullScreenView>) {
             guard !viewController.isBeingPresented, !viewController.isBeingDismissed else { return }
             presenter.present(viewController, animated: true) {
                 context.coordinator.currentlyPresentedViewController = viewController
