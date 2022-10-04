@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -129,7 +129,8 @@ internal class ThreeDS2CoreActionHandler: Component {
             return didFail(with: error, completionHandler: completionHandler)
         }
 
-        let challengeParameters = ADYChallengeParameters(from: token)
+        let challengeParameters = ADYChallengeParameters(from: token,
+                                                         threeDSRequestorAppURL: token.threeDSRequestorAppURL)
         transaction.performChallenge(with: challengeParameters) { [weak self] challengeResult, error in
             guard let result = challengeResult else {
                 let error = error ?? UnknownError(errorDescription: "Both error and result are nil, this should never happen.")
