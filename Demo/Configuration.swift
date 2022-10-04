@@ -47,6 +47,8 @@ internal enum ConfigurationConstants {
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
 
     static let merchantAccount = "{YOUR_MERCHANT_ACCOUNT}"
+    
+    static let appleTeamIdentifier = "{YOUR_APPLE_DEVELOPMENT_TEAM_ID}"
 
     static let lineItems = [["description": "Socks",
                              "quantity": "2",
@@ -54,9 +56,12 @@ internal enum ConfigurationConstants {
                              "amountExcludingTax": "248",
                              "taxAmount": "52",
                              "id": "Item #2"]]
-    static let delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication = .init(localizedRegistrationReason: "Authenticate your card!",
-                                                                                                                      localizedAuthenticationReason: "Register this device!",
-                                                                                                                      appleTeamIdentifier: "B2NYSS5932")
+    static var delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication {
+        .init(localizedRegistrationReason: "Authenticate your card!",
+              localizedAuthenticationReason: "Register this device!",
+              appleTeamIdentifier: appleTeamIdentifier)
+        
+    }
 
     static var shippingMethods: [PKShippingMethod] = {
         var shippingByCar = PKShippingMethod(label: "By car", amount: NSDecimalNumber(5.0))

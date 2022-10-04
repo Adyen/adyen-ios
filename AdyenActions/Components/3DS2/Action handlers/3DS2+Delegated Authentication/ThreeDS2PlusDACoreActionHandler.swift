@@ -232,7 +232,7 @@
     }
 
     extension Result {
-        var successResult: Success? {
+        internal var successResult: Success? {
             switch self {
             case let .success(successResult):
                 return successResult
