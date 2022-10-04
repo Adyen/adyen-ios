@@ -138,3 +138,6 @@ public typealias EntercashComponent = IssuerListComponent
 
 /// Provides an issuer selection list for OpenBanking payments.
 public typealias OpenBankingComponent = IssuerListComponent
+
+/// Provides an issuer selection list for onlineBanking Poland .
+public typealias OnlineBankingPolandComponent = IssuerListComponent

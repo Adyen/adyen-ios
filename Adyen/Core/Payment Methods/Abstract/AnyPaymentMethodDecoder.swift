@@ -50,6 +50,7 @@ internal enum AnyPaymentMethodDecoder {
         .entercash: IssuerListPaymentMethodDecoder(),
         .eps: IssuerListPaymentMethodDecoder(),
         .dotpay: IssuerListPaymentMethodDecoder(),
+        .onlineBankingPoland: IssuerListPaymentMethodDecoder(),
         .openBankingUK: IssuerListPaymentMethodDecoder(),
         .molPayEBankingFPXMY: IssuerListPaymentMethodDecoder(),
         .molPayEBankingTH: IssuerListPaymentMethodDecoder(),
