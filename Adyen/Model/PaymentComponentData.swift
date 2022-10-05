@@ -78,6 +78,11 @@ public struct PaymentComponentData {
         return shopperInfo.socialSecurityNumber
     }
     
+    public var delegatedAuthenticationData: DelegatedAuthenticationData? {
+        guard let paymentMethod = paymentMethod as? DelegatedAuthenticationAware else { return nil }
+        return paymentMethod.delegatedAuthenticationData
+    }
+    
     /// Initializes the payment component data.
     ///
     ///

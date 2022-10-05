@@ -8,8 +8,24 @@
 import Adyen3DS2
 import Foundation
 
+internal protocol AnyThreeDS2CoreActionHandler: Component {
+    var threeDSRequestorAppURL: URL? { get set }
+    
+    var service: AnyADYService { get set }
+    
+    var transaction: AnyADYTransaction? { get set }
+    
+    func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
+                event: Analytics.Event,
+                completionHandler: @escaping (Result<String, Error>) -> Void)
+    
+    func handle(_ challengeAction: ThreeDS2ChallengeAction,
+                event: Analytics.Event,
+                completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void)
+}
+
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
-internal class ThreeDS2CoreActionHandler: Component {
+internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     
     internal let context: AdyenContext
 
@@ -28,19 +44,12 @@ internal class ThreeDS2CoreActionHandler: Component {
     /// - Parameter context: The context object for this component.
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
-    internal convenience init(context: AdyenContext,
-                              service: AnyADYService,
-                              appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
-        self.init(context: context,
-                  appearanceConfiguration: appearanceConfiguration)
-        self.service = service
-    }
-
-    /// Initializes the 3D Secure 2 action handler.
     internal init(context: AdyenContext,
-                  appearanceConfiguration: ADYAppearanceConfiguration) {
+                  service: AnyADYService = ADYServiceAdapter(),
+                  appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
         self.context = context
         self.appearanceConfiguration = appearanceConfiguration
+        self.service = service
     }
 
     // MARK: - Fingerprint
@@ -92,7 +101,8 @@ internal class ThreeDS2CoreActionHandler: Component {
             self.transaction = newTransaction
 
             let fingerprint = try ThreeDS2Component.Fingerprint(
-                authenticationRequestParameters: newTransaction.authenticationParameters
+                authenticationRequestParameters: newTransaction.authenticationParameters,
+                delegatedAuthenticationSDKOutput: nil
             )
             let encodedFingerprint = try Coder.encodeBase64(fingerprint)
 
@@ -148,6 +158,7 @@ internal class ThreeDS2CoreActionHandler: Component {
 
         do {
             let threeDSResult = try ThreeDSResult(from: challengeResult,
+                                                  delegatedAuthenticationSDKOutput: nil,
                                                   authorizationToken: authorizationToken)
 
             transaction = nil
