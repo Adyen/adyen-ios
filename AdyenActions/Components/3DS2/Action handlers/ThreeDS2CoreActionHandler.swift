@@ -127,7 +127,7 @@ internal class ThreeDS2CoreActionHandler: Component {
         }
 
         let challengeParameters = ADYChallengeParameters(challengeToken: token,
-                                                         threeDSRequestorAppURL: threeDSRequestorAppURL)
+                                                         threeDSRequestorAppURL: threeDSRequestorAppURL ?? token.threeDSRequestorAppURL)
         transaction.performChallenge(with: challengeParameters) { [weak self] challengeResult, error in
             guard let result = challengeResult else {
                 let error = error ?? UnknownError(errorDescription: "Both error and result are nil, this should never happen.")

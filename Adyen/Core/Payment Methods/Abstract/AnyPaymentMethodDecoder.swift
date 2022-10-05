@@ -50,6 +50,7 @@ internal enum AnyPaymentMethodDecoder {
         .entercash: IssuerListPaymentMethodDecoder(),
         .eps: IssuerListPaymentMethodDecoder(),
         .dotpay: IssuerListPaymentMethodDecoder(),
+        .onlineBankingPoland: IssuerListPaymentMethodDecoder(),
         .openBankingUK: IssuerListPaymentMethodDecoder(),
         .molPayEBankingFPXMY: IssuerListPaymentMethodDecoder(),
         .molPayEBankingTH: IssuerListPaymentMethodDecoder(),
@@ -160,7 +161,11 @@ private struct BACSDirectDebitPaymentMethodDecoder: PaymentMethodDecoder {
 
 private struct ACHDirectDebitPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
-        .achDirectDebit(try ACHDirectDebitPaymentMethod(from: decoder))
+        if isStored {
+            return .storedAchDirectDebit(try StoredACHDirectDebitPaymentMethod(from: decoder))
+        } else {
+            return .achDirectDebit(try ACHDirectDebitPaymentMethod(from: decoder))
+        }
     }
 }
 

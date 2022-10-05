@@ -24,12 +24,14 @@ class AffirmComponentUITests: XCTestCase {
         sut = AffirmComponent(paymentMethod: paymentMethod,
                               context: context,
                               configuration: AffirmComponent.Configuration(style: style))
+        BrowserInfo.cachedUserAgent = "some_value"
     }
 
     override func tearDownWithError() throws {
         paymentMethod = nil
         style = nil
         sut = nil
+        BrowserInfo.cachedUserAgent = nil
         try super.tearDownWithError()
     }
 

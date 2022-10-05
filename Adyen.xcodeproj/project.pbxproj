@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -366,6 +366,7 @@
 		E7E0E2382762005B001DF0C9 /* NSConstraintHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E0E2372762005B001DF0C9 /* NSConstraintHelper.swift */; };
 		E7E8343C24F3C81700EC3844 /* PublicKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E8343B24F3C81700EC3844 /* PublicKeyProviderMock.swift */; };
 		E7ED5F5F25F25F8100EE5BCA /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = F9C5F08325C96919005A6E54 /* Adyen3DS2 */; };
+		E7F563EA28B7758D00082D4C /* DropInTestInternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F563E928B7758D00082D4C /* DropInTestInternal.swift */; };
 		E9021DAA225789B1009CF7F4 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9021DA9225789B1009CF7F4 /* Localization.swift */; };
 		E9021DEC225CC44C009CF7F4 /* URLExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9021DEB225CC44C009CF7F4 /* URLExtensionsTest.swift */; };
 		E9021DEE225CC46D009CF7F4 /* URLHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9021DED225CC46D009CF7F4 /* URLHelpers.swift */; };
@@ -1445,6 +1446,7 @@
 		E7DE050527F7243000CB5F83 /* NavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationDelegate.swift; sourceTree = "<group>"; };
 		E7E0E2372762005B001DF0C9 /* NSConstraintHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSConstraintHelper.swift; sourceTree = "<group>"; };
 		E7E8343B24F3C81700EC3844 /* PublicKeyProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyProviderMock.swift; sourceTree = "<group>"; };
+		E7F563E928B7758D00082D4C /* DropInTestInternal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInTestInternal.swift; sourceTree = "<group>"; };
 		E90139CA22846AD5004C74DA /* ModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewController.swift; sourceTree = "<group>"; };
 		E9021DA9225789B1009CF7F4 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		E9021DEB225CC44C009CF7F4 /* URLExtensionsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensionsTest.swift; sourceTree = "<group>"; };
@@ -3113,6 +3115,7 @@
 				E767F4DB25A603A50077029E /* ModalToolbarTests.swift */,
 				E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */,
 				E7D5311B2447065B000046B4 /* PreselectedPaymentComponentTests.swift */,
+				E7F563E928B7758D00082D4C /* DropInTestInternal.swift */,
 			);
 			path = "DropIn Tests";
 			sourceTree = "<group>";
@@ -5178,6 +5181,7 @@
 		};
 		E7388FC1260B68C400291DE7 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -5196,6 +5200,7 @@
 		};
 		E7388FC2260B68DE00291DE7 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -5232,6 +5237,7 @@
 		};
 		F9175E662593942E00D653BE /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -5250,6 +5256,7 @@
 		};
 		F9175F9F259498EA00D653BE /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -5268,6 +5275,7 @@
 		};
 		F92980C027CF5149000CA5CA /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -5322,6 +5330,7 @@
 		};
 		F9620DA223C747BD005209FC /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -5360,6 +5369,7 @@
 		};
 		F9A4A3012373235800D774E8 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -5378,6 +5388,7 @@
 		};
 		F9A4A302237323DE00D774E8 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -5396,6 +5407,7 @@
 		};
 		F9A4A303237323E700D774E8 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -5807,6 +5819,7 @@
 				A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */,
 				F96AE5052603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift in Sources */,
 				F9EDB78F23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift in Sources */,
+				E7F563EA28B7758D00082D4C /* DropInTestInternal.swift in Sources */,
 				E7768BDC26B416C3000851B3 /* DateValidationTests.swift in Sources */,
 				F97BC2CE2668EB4500F1D242 /* VoucherViewDelegateMock.swift in Sources */,
 				F9AC61C2243751A70062A00D /* ActionComponentDelegateMock.swift in Sources */,

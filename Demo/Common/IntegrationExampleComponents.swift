@@ -58,6 +58,28 @@ extension IntegrationExample {
                               context: context)
     }
 
+    // MARK: Online Banking Poland
+
+    internal func presentOnlineBankingPolandComponent() {
+        guard let component = onlineBankingPolandComponent(from: paymentMethods) else { return }
+        present(component, delegate: self)
+    }
+
+    internal func presentOnlineBankingPolandComponentSession() {
+        guard let component = onlineBankingPolandComponent(from: sessionPaymentMethods) else { return }
+        present(component, delegate: session)
+    }
+
+    internal func onlineBankingPolandComponent(from paymentMethods: PaymentMethods?) -> OnlineBankingPolandComponent? {
+        guard let paymentMethods = paymentMethods,
+              let paymentMethod = paymentMethods.paymentMethod(ofType: .onlineBankingPoland) else { return nil }
+        if let issuerList = paymentMethod as? IssuerListPaymentMethod {
+            return OnlineBankingPolandComponent(paymentMethod: issuerList,
+                                  context: context)
+        }
+        return nil
+    }
+
     // MARK: SEPA
 
     internal func presentSEPADirectDebitComponent() {
@@ -263,7 +285,7 @@ extension IntegrationExample: ActionComponentDelegate {
     }
 
     internal func didComplete(from component: ActionComponent) {
-        finish(with: PaymentsResponse.ResultCode.received)
+        finish(with: .received)
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
