@@ -17,14 +17,15 @@ extension ThreeDS2ClassicActionHandler {
     internal convenience init(context: AdyenContext,
                               appearanceConfiguration: ADYAppearanceConfiguration,
                               delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?) {
+        let defaultHandler = createDefaultThreeDS2CoreActionHandler(
+            context: context,
+            appearanceConfiguration: appearanceConfiguration,
+            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
+        )
         self.init(
             context: context,
             appearanceConfiguration: appearanceConfiguration,
-            coreActionHandler: createDefaultThreeDS2CoreActionHandler(
-                context: context,
-                appearanceConfiguration: appearanceConfiguration,
-                delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
-            ),
+            coreActionHandler: defaultHandler,
             delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
         )
     }
