@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Adyen3DS2
 import Foundation
 
@@ -16,6 +17,7 @@ internal extension ThreeDS2Component {
         internal let acsTransactionIdentifier: String
         internal let serverTransactionIdentifier: String
         internal let threeDSRequestorAppURL: URL?
+        internal let delegatedAuthenticationSDKInput: String?
         
         // MARK: - Decoding
         
@@ -25,6 +27,7 @@ internal extension ThreeDS2Component {
             case acsTransactionIdentifier = "acsTransID"
             case serverTransactionIdentifier = "threeDSServerTransID"
             case threeDSRequestorAppURL
+            case delegatedAuthenticationSDKInput
         }
         
     }

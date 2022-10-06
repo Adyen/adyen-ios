@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import Adyen3DS2
 import Foundation
 
 internal protocol AnyThreeDS2ActionHandler {
@@ -39,4 +40,24 @@ extension ComponentWrapper {
             wrappedComponent._isDropIn = newValue
         }
     }
+}
+
+internal func createDefaultThreeDS2CoreActionHandler(
+    context: AdyenContext,
+    appearanceConfiguration: ADYAppearanceConfiguration,
+    delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?
+) -> AnyThreeDS2CoreActionHandler {
+    #if canImport(AdyenAuthentication)
+        if #available(iOS 14.0, *), let delegatedAuthenticationConfiguration = delegatedAuthenticationConfiguration {
+            return ThreeDS2PlusDACoreActionHandler(context: context,
+                                                   appearanceConfiguration: appearanceConfiguration,
+                                                   delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration)
+        } else {
+            return ThreeDS2CoreActionHandler(context: context,
+                                             appearanceConfiguration: appearanceConfiguration)
+        }
+    #else
+        return ThreeDS2CoreActionHandler(context: context,
+                                         appearanceConfiguration: appearanceConfiguration)
+    #endif
 }
