@@ -4,7 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
+import AdyenActions
 import Foundation
 import PassKit
 
@@ -23,13 +24,13 @@ internal enum ConfigurationConstants {
 
     static let reference = "Test Order Reference - iOS UIHost"
 
-    static let returnUrl = "ui-host://"
+    static let returnUrl = "ui-host://payments"
     
     static let shopperReference = "iOS Checkout Shopper"
 
     static let shopperEmail = "checkoutShopperiOS@example.org"
     
-    static let additionalData = ["allow3DS2": true]
+    static let additionalData = ["allow3DS2": true, "executeThreeD": true]
 
     static var apiContext: APIContext {
         if let apiContext = try? APIContext(environment: componentsEnvironment, clientKey: clientKey) {
@@ -46,6 +47,8 @@ internal enum ConfigurationConstants {
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
 
     static let merchantAccount = "{YOUR_MERCHANT_ACCOUNT}"
+    
+    static let appleTeamIdentifier = "{YOUR_APPLE_DEVELOPMENT_TEAM_ID}"
 
     static let lineItems = [["description": "Socks",
                              "quantity": "2",
@@ -53,6 +56,12 @@ internal enum ConfigurationConstants {
                              "amountExcludingTax": "248",
                              "taxAmount": "52",
                              "id": "Item #2"]]
+    static var delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication {
+        .init(localizedRegistrationReason: "Authenticate your card!",
+              localizedAuthenticationReason: "Register this device!",
+              appleTeamIdentifier: appleTeamIdentifier)
+        
+    }
 
     static var shippingMethods: [PKShippingMethod] = {
         var shippingByCar = PKShippingMethod(label: "By car", amount: NSDecimalNumber(5.0))
