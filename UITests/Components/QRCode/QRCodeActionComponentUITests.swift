@@ -90,7 +90,7 @@ class QRCodeActionComponentUITests: XCTestCase {
             XCTAssertEqual(instructionLabel?.textAlignment, style.instructionLabel.textAlignment)
 
             // Test amountToPay label
-            XCTAssertEqual(amountToPayLabel?.font, style.amountToPayLabel.font)
+            XCTAssertEqual(amountToPayLabel?.font, UIFont.preferredFont(forTextStyle: .callout).adyen.font(with: .bold))
             XCTAssertEqual(amountToPayLabel?.textColor, style.amountToPayLabel.color)
             XCTAssertEqual(amountToPayLabel?.textAlignment, style.amountToPayLabel.textAlignment)
 
@@ -182,7 +182,7 @@ class QRCodeActionComponentUITests: XCTestCase {
             XCTAssertEqual(instructionLabel?.textAlignment, style.instructionLabel.textAlignment)
 
             // Test amountToPay label
-            XCTAssertEqual(amountToPayLabel?.font, style.amountToPayLabel.font)
+            XCTAssertEqual(amountToPayLabel?.font, UIFont.preferredFont(forTextStyle: .callout).adyen.font(with: .bold))
             XCTAssertEqual(amountToPayLabel?.textColor, style.amountToPayLabel.color)
             XCTAssertEqual(amountToPayLabel?.textAlignment, style.amountToPayLabel.textAlignment)
 
