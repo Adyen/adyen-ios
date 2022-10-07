@@ -120,7 +120,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         saveAsImageButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             saveAsImageButton.heightAnchor.constraint(equalToConstant: 50.0),
-            saveAsImageButton.topAnchor.constraint(equalTo: expirationLabel.bottomAnchor, constant: 34),
+            saveAsImageButton.topAnchor.constraint(equalTo: expirationLabel.bottomAnchor, constant: 40),
             saveAsImageButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 16),
             saveAsImageButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -16),
             saveAsImageButton.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
