@@ -160,4 +160,6 @@
 "adyen.ach.accountLocationField.title" = "ABA-irányítószám";
 "adyen.ach.accountLocationField.invalid" = "Érvénytelen ABA-irányítószám";
 "idealIssuer.selectField.title" = "Bank";
-"adyen.onlineBanking.termsAndConditions" = "A folytatásra kattintva elfogadja az #általános szerződési feltételeket#";
+"adyen.onlineBanking.termsAndConditions" = "A folytatással elfogadja az #általános szerződési feltételeket#";
+"adyen.promptPay.instructionMessage" = "Készítsen képernyőképet vagy mentse el a QR-kódot, nyissa meg a banki alkalmazást, és töltse fel a QR-kódot az adatok ellenőrzéséhez, illetve a fizetés befejezéséhez.";
+"adyen.promptPay.timerExpirationMessage" = "A QR-kód ennyi ideig érvényes: %@";

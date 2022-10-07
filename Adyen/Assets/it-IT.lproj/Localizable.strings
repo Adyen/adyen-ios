@@ -160,4 +160,6 @@
 "adyen.ach.accountLocationField.title" = "Codice ABA";
 "adyen.ach.accountLocationField.invalid" = "Codice ABA non valido";
 "idealIssuer.selectField.title" = "Banca";
-"adyen.onlineBanking.termsAndConditions" = "Facendo clic su Continua, accetti #i termini e le condizioni#";
+"adyen.onlineBanking.termsAndConditions" = "Facendo clic, accetti i #termini e le condizioni#";
+"adyen.promptPay.instructionMessage" = "Scatta uno screenshot o salva il codice QR, quindi caricalo nell'applicazione bancaria per verificare i dettagli e completare il pagamento.";
+"adyen.promptPay.timerExpirationMessage" = "Questo codice QR è valido per %@";

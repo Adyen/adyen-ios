@@ -160,4 +160,6 @@
 "adyen.ach.accountLocationField.title" = "ABA-reititysnumero";
 "adyen.ach.accountLocationField.invalid" = "Ei-kelvollinen ABA-reititysnumero";
 "idealIssuer.selectField.title" = "Pankki";
-"adyen.onlineBanking.termsAndConditions" = "Napsauttamalla Jatka hyväksyt #käyttöehdot#";
+"adyen.onlineBanking.termsAndConditions" = "Jatkamalla hyväksyt #käyttöehdot#";
+"adyen.promptPay.instructionMessage" = "Ota kuvakaappaus tai tallenna QR-koodi, avaa pankkisovelluksesi ja lataa QR-koodi, jolla varmistat tiedot, jonka jälkeen voit suorittaa maksun loppuun.";
+"adyen.promptPay.timerExpirationMessage" = "Tämä QR-koodi on voimassa %@";

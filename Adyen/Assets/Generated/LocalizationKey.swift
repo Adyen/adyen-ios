@@ -331,8 +331,12 @@ public struct LocalizationKey {
     public static let achAccountLocationFieldInvalid = LocalizationKey(key: "adyen.ach.accountLocationField.invalid")
     /// Bank
     public static let selectFieldTitle = LocalizationKey(key: "idealIssuer.selectField.title")
-    /// By clicking continue you agree with the #terms and conditions#
+    /// By continuing you agree with the #terms and conditions#
     public static let onlineBankingTermsAndConditions = LocalizationKey(key: "adyen.onlineBanking.termsAndConditions")
+    /// Take a screenshot or save the QR code, open your banking application and upload the QR code to verify the details and complete the payment.
+    public static let promptPayInstructionMessage = LocalizationKey(key: "adyen.promptPay.instructionMessage")
+    /// This QR code is valid for %@
+    public static let promptPayTimerExpirationMessage = LocalizationKey(key: "adyen.promptPay.timerExpirationMessage")
     
     internal let key: String
     

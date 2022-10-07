@@ -110,6 +110,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         expirationLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             expirationLabel.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 13.0),
+            expirationLabel.heightAnchor.constraint(equalToConstant: 20.0),
             expirationLabel.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
         ])
     }
@@ -119,7 +120,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         saveAsImageButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             saveAsImageButton.heightAnchor.constraint(equalToConstant: 50.0),
-            saveAsImageButton.topAnchor.constraint(equalTo: expirationLabel.bottomAnchor, constant: 34),
+            saveAsImageButton.topAnchor.constraint(equalTo: expirationLabel.bottomAnchor, constant: 40),
             saveAsImageButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 16),
             saveAsImageButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -16),
             saveAsImageButton.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
@@ -196,6 +197,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     private lazy var amountToPayLabel: UILabel = {
         let amountToPayLabel = UILabel(style: model.style.amountToPayLabel)
         amountToPayLabel.numberOfLines = 0
+        amountToPayLabel.font = UIFont.preferredFont(forTextStyle: .callout).adyen.font(with: .bold)
         if let currencyCode = model.payment?.amount.currencyCode {
             amountToPayLabel.text = model.payment?.amount.formatted
         }
@@ -217,7 +219,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     
     private lazy var expirationLabel: UILabel = {
         let expirationLabel = UILabel(style: model.style.expirationLabel)
-        expirationLabel.numberOfLines = 1
+        expirationLabel.numberOfLines = 0
         expirationLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "expirationLabel")
         
         bind(model.expiration, to: expirationLabel, at: \.text)

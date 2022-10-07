@@ -62,6 +62,8 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     
     private let progress = Progress()
     
+    private var qrCodeAction: QRCodeAction?
+
     @AdyenObservable(nil) private var expirationText: String?
     
     private let expirationTimeout: TimeInterval
@@ -100,6 +102,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     ///
     /// - Parameter action: The QR code action.
     public func handle(_ action: QRCodeAction) {
+        qrCodeAction = action
         pollingComponent = pollingComponentBuilder?.handler(for: action.paymentMethodType)
         pollingComponent?.delegate = self
 
@@ -141,9 +144,16 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     private func updateExpiration(_ timeLeft: TimeInterval) {
         progress.completedUnitCount = Int64(timeLeft)
         let timeLeftString = timeLeft.adyen.timeLeftString() ?? ""
-        expirationText = localizedString(.pixExpirationLabel,
-                                         configuration.localizationParameters,
-                                         timeLeftString)
+        guard let action = qrCodeAction else {return}
+        if action.paymentMethodType == .promptPay {
+            expirationText = localizedString(.promptPayTimerExpirationMessage,
+                                             configuration.localizationParameters,
+                                             timeLeftString)
+        } else {
+            expirationText = localizedString(.pixExpirationLabel,
+                                             configuration.localizationParameters,
+                                             timeLeftString)
+        }
     }
     
     private func onTimerTimeout() {
@@ -157,13 +167,22 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
         viewController.qrCodeView.delegate = self
         return viewController
     }
-    
+
+    private func getQRCodeInstruction(with action: QRCodeAction) -> String {
+        if action.paymentMethodType == .promptPay {
+            return localizedString(.promptPayInstructionMessage,
+                                          configuration.localizationParameters)
+        } else {
+            return localizedString(.pixInstructions,
+                                          configuration.localizationParameters)
+        }
+    }
+
     private func createModel(with action: QRCodeAction) -> QRCodeView.Model {
         let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment)
         return QRCodeView.Model(
             action: action,
-            instruction: localizedString(.pixInstructions,
-                                         configuration.localizationParameters),
+            instruction: getQRCodeInstruction(with: action),
             payment: context.payment,
             logoUrl: url,
             observedProgress: progress,
