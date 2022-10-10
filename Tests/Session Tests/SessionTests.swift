@@ -51,7 +51,7 @@ class SessionTests: XCTestCase {
                                                                  paymentMethods: expectedPaymentMethods,
                                                                  amount: .init(value: 220, currencyCode: "USD"),
                                                                  sessionData: "session_data_1",
-                                                                 configuration: nil))]
+                                                                 configuration: .init(installmentOptions: nil, enableStoreDetails: false)))]
         let expectation = expectation(description: "Expect session object to be initialized")
         AdyenSession.initialize(with: .init(sessionIdentifier: "session_id",
                                             initialSessionData: "session_data_0",
@@ -69,6 +69,7 @@ class SessionTests: XCTestCase {
                 XCTAssertEqual(session.sessionContext.countryCode, "US")
                 XCTAssertEqual(session.sessionContext.paymentMethods, expectedPaymentMethods)
                 XCTAssertEqual(session.sessionContext.amount, .init(value: 220, currencyCode: "USD"))
+                XCTAssertFalse(session.sessionContext.configuration.enableStoreDetails)
             }
             expectation.fulfill()
         }
@@ -297,7 +298,7 @@ class SessionTests: XCTestCase {
                                      paymentMethods: expectedPaymentMethods,
                                      amount: expectedAmount,
                                      sessionData: "session_data_xxx",
-                                     configuration: nil)
+                                     configuration: .init(installmentOptions: nil, enableStoreDetails: true))
             )
         ]
         let apiCallsExpectation = expectation(description: "Expect two API calls to be made")
@@ -312,6 +313,8 @@ class SessionTests: XCTestCase {
         XCTAssertEqual(sut.sessionContext.countryCode, "EG")
         XCTAssertEqual(sut.sessionContext.shopperLocale, "EG")
         XCTAssertEqual(sut.sessionContext.data, "session_data_xxx")
+        XCTAssertNil(sut.sessionContext.configuration.installmentOptions)
+        XCTAssertTrue(sut.sessionContext.configuration.enableStoreDetails)
     }
     
     func testDidSubmitFailure() throws {
@@ -410,7 +413,7 @@ class SessionTests: XCTestCase {
                                      paymentMethods: expectedPaymentMethods,
                                      amount: expectedAmount,
                                      sessionData: "session_data_xxx",
-                                     configuration: nil)
+                                     configuration: .init(installmentOptions: nil, enableStoreDetails: true))
             )
         ]
         let didSubmitExpectation = expectation(description: "Expect payments call to be made")
@@ -992,7 +995,7 @@ class SessionTests: XCTestCase {
     
     func testStorePaymentMethodFieldNil() throws {
         let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
-        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, configuration: .init(installmentOptions: nil, enableStoreDetails: false))
         let paymentMethod = expectedPaymentMethods.regular[1] as! CardPaymentMethod
         var cardConfig = CardComponent.Configuration()
         cardConfig.showsStorePaymentMethodField = true // will be overriden as false by session response
@@ -1010,7 +1013,7 @@ class SessionTests: XCTestCase {
     
     private func initializeSession(expectedPaymentMethods: PaymentMethods,
                                    delegate: AdyenSessionDelegate = SessionDelegateMock(),
-                                   configuration: SessionSetupResponse.Configuration? = nil) throws -> AdyenSession {
+                                   configuration: SessionSetupResponse.Configuration = .init(installmentOptions: nil, enableStoreDetails: true)) throws -> AdyenSession {
         let apiClient = APIClientMock()
         apiClient.mockedResults = [
             .success(

@@ -53,8 +53,6 @@ extension IntegrationExample {
         configuration.card.billingAddress.mode = .postalCode
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
         
-        configuration.card.installmentConfiguration = InstallmentConfiguration(defaultOptions: .init(monthValues: [3, 5, 8], includesRevolving: true))
-        
         let component = DropInComponent(paymentMethods: paymentMethods,
                                         context: context,
                                         configuration: configuration,

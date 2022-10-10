@@ -34,7 +34,7 @@ class DokuVoucherUITests: XCTestCase {
         XCTAssertEqual(expiryKeyLabel.text, "Expiration Date -- Test")
 
         let expiryValueLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
-        XCTAssertEqual(expiryValueLabel.text, "02/02/2021")
+        XCTAssertEqual(expiryValueLabel.text, "03/02/2021")
 
         let shopperNameKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.shopperNameKeyLabel")
         XCTAssertEqual(shopperNameKeyLabel.text, "Shopper Name -- Test")
@@ -72,7 +72,7 @@ class DokuVoucherUITests: XCTestCase {
         XCTAssertEqual(expiryKeyLabel.text, "Expiration Date")
 
         let expiryValueLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
-        XCTAssertEqual(expiryValueLabel.text, "02/02/2021")
+        XCTAssertEqual(expiryValueLabel.text, "03/02/2021")
 
         let shopperNameKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.shopperNameKeyLabel")
         XCTAssertEqual(shopperNameKeyLabel.text, "Shopper Name")
@@ -110,7 +110,7 @@ class DokuVoucherUITests: XCTestCase {
         XCTAssertEqual(expiryKeyLabel.text, "Expiration Date")
 
         let expiryValueLabel: UILabel! = sut.findView(by: "adyen.voucher.expirationValueLabel")
-        XCTAssertEqual(expiryValueLabel.text, "02/02/2021")
+        XCTAssertEqual(expiryValueLabel.text, "03/02/2021")
 
         let shopperNameKeyLabel: UILabel! = sut.findView(by: "adyen.voucher.shopperNameKeyLabel")
         XCTAssertEqual(shopperNameKeyLabel.text, "Shopper Name")
