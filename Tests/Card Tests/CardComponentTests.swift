@@ -1346,16 +1346,6 @@ class CardComponentTests: XCTestCase {
         
         XCTAssertFalse(logoItemView!.isHidden)
         
-        // valid card but still active. logos should be hidden
-        populate(textItemView: cardNumberItemView, with: Dummy.visaCard.number!)
-        wait(for: .seconds(1))
-        XCTAssertTrue(logoItemView!.isHidden)
-        
-        // with valid card and inactive, logos should hide
-        numberItem.isActive = false
-        wait(for: .milliseconds(300))
-        XCTAssertTrue(logoItemView!.isHidden)
-        
         // invalid card and active/inactive numberitem, logos should be visible
         populate(textItemView: cardNumberItemView, with: "1234")
         numberItem.isActive = true
@@ -1364,6 +1354,16 @@ class CardComponentTests: XCTestCase {
         numberItem.isActive = false
         wait(for: .milliseconds(300))
         XCTAssertFalse(logoItemView!.isHidden)
+        
+        // valid card but still active. logos still should be hidden
+        populate(textItemView: cardNumberItemView, with: Dummy.visaCard.number!)
+        wait(for: .seconds(1))
+        XCTAssertTrue(logoItemView!.isHidden)
+        
+        // with valid card and inactive, logos should hide
+        numberItem.isActive = false
+        wait(for: .milliseconds(300))
+        XCTAssertTrue(logoItemView!.isHidden)
     }
 
     func testClearShouldResetPostalCodeItemToEmptyValue() throws {
