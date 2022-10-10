@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -91,8 +91,8 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     public func handle(_ action: QRCodeAction) {
         self.action = action
         
-        let pollingComponent = pollingComponentBuilder.handler(for: action.paymentMethodType)
-        pollingComponent.delegate = self
+        pollingComponent = pollingComponentBuilder.handler(for: action.paymentMethodType)
+        pollingComponent?.delegate = self
         
         assert(presentationDelegate != nil)
         
@@ -105,7 +105,7 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
         
         startTimer()
         
-        pollingComponent.handle(action)
+        pollingComponent?.handle(action)
     }
     
     /// :nodoc
