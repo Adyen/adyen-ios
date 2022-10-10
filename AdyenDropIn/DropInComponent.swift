@@ -15,7 +15,6 @@
     @_spi(AdyenInternal) import AdyenCard
 #endif
 import AdyenNetworking
-import AdyenSession
 import UIKit
 
 /**
