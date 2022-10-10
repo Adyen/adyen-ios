@@ -7,7 +7,6 @@
 import Foundation
 
 @_spi(AdyenInternal)
-/// Describes the interface to have a store payment method field.
-public protocol StorePaymentMethodFieldAware: AdyenSessionAware {
-    var showStorePaymentMethodField: Bool? { get }
+public protocol AdyenSessionAware {
+    var isSession: Bool { get }
 }

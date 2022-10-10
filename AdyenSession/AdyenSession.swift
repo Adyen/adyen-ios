@@ -72,7 +72,7 @@ public final class AdyenSession {
         internal var resultCode: PaymentsResponse.ResultCode?
         
         /// Component related configuration object
-        internal let configuration: SessionSetupResponse.Configuration?
+        internal let configuration: SessionSetupResponse.Configuration
     }
     
     /// The session context information.
@@ -178,13 +178,19 @@ public final class AdyenSession {
 }
 
 @_spi(AdyenInternal)
+extension AdyenSession: AdyenSessionAware {
+    
+    public var isSession: Bool { true }
+}
+
+@_spi(AdyenInternal)
 extension AdyenSession: InstallmentConfigurationAware {
     
-    public var installmentConfiguration: InstallmentConfiguration? { sessionContext.configuration?.installmentOptions }
+    public var installmentConfiguration: InstallmentConfiguration? { sessionContext.configuration.installmentOptions }
 }
 
 @_spi(AdyenInternal)
 extension AdyenSession: StorePaymentMethodFieldAware {
     
-    public var showStorePaymentMethodField: Bool { sessionContext.configuration?.enableStoreDetails ?? false }
+    public var showStorePaymentMethodField: Bool? { sessionContext.configuration.enableStoreDetails }
 }

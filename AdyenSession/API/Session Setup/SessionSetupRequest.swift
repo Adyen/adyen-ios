@@ -67,7 +67,7 @@ internal struct SessionSetupResponse: SessionResponse {
     
     internal let sessionData: String
     
-    internal let configuration: Configuration?
+    internal let configuration: Configuration
     
     private enum CodingKeys: String, CodingKey {
         case countryCode
