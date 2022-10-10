@@ -48,6 +48,7 @@ extension IntegrationExample {
                                            merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         }
         
+        configuration.actionComponent.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
         configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         configuration.card.billingAddress.mode = .postalCode
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true

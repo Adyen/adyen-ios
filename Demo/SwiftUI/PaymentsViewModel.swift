@@ -32,6 +32,10 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
         integrationExample.presentIdealComponent()
     }
 
+    internal func presentOnlineBankingPolandComponent() {
+        integrationExample.presentOnlineBankingPolandComponent()
+    }
+
     internal func presentSEPADirectDebitComponent() {
         integrationExample.presentSEPADirectDebitComponent()
     }
@@ -48,6 +52,7 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
             [
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
                 ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
+                ComponentsItem(title: "Online Banking PL", selectionHandler: presentOnlineBankingPolandComponent),
                 ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
                 ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent)
             ]

@@ -81,6 +81,8 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Please authenticate yourself</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Save vouchers to your photos library</string>
 	<key>UILaunchStoryboardName</key>

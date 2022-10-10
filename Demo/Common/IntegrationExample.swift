@@ -51,6 +51,8 @@ internal final class IntegrationExample: APIClientAware {
 
     internal lazy var adyenActionComponent: AdyenActionComponent = {
         let handler = AdyenActionComponent(context: context)
+        handler.configuration.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
+        handler.configuration.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         handler.delegate = self
         handler.presentationDelegate = self
         return handler
@@ -100,9 +102,17 @@ internal final class IntegrationExample: APIClientAware {
     }
     
     private func initializeSession(with sessionId: String, data: String) {
-        let configuration = AdyenSession.Configuration(sessionIdentifier: sessionId,
-                                                       initialSessionData: data,
-                                                       context: context)
+        let configuration = AdyenSession.Configuration(
+            sessionIdentifier: sessionId,
+            initialSessionData: data,
+            context: context,
+            actionComponent: .init(
+                threeDS: .init(
+                    requestorAppURL: URL(string: ConfigurationConstants.returnUrl),
+                    delegateAuthentication: ConfigurationConstants.delegatedAuthenticationConfigurations
+                )
+            )
+        )
         AdyenSession.initialize(with: configuration, delegate: self, presentationDelegate: self) { [weak self] result in
             switch result {
             case let .success(session):
@@ -120,12 +130,6 @@ internal final class IntegrationExample: APIClientAware {
         finalize(success, message)
     }
 
-    internal func finish(with result: PaymentsResponse.ResultCode) {
-        let success = result == .authorised || result == .received || result == .pending
-        let message = "\(result.rawValue)"
-        finalize(success, message)
-    }
-
     internal func finish(with error: Error) {
         let message: String
         if let componentError = (error as? ComponentError), componentError == ComponentError.cancelled {
@@ -136,14 +140,18 @@ internal final class IntegrationExample: APIClientAware {
         finalize(false, message)
     }
 
+    internal func dismissAndShowAlert(_ success: Bool, _ message: String) {
+        presenter?.dismiss {
+            // Payment is processed. Add your code here.
+            let title = success ? "Success" : "Error"
+            self.presenter?.presentAlert(withTitle: title, message: message)
+        }
+    }
+
     private func finalize(_ success: Bool, _ message: String) {
         currentComponent?.finalizeIfNeeded(with: success) { [weak self] in
             guard let self = self else { return }
-            self.presenter?.dismiss {
-                // Payment is processed. Add your code here.
-                let title = success ? "Success" : "Error"
-                self.presenter?.presentAlert(withTitle: title, message: message)
-            }
+            self.dismissAndShowAlert(success, message)
         }
     }
 
