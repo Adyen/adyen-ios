@@ -14,6 +14,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     case entercash
     case eps
     case dotpay
+    case onlineBankingPoland
     case openBankingUK
     case molPayEBankingFPXMY
     case molPayEBankingTH
@@ -65,6 +66,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case "entercash": self = .entercash
         case "eps": self = .eps
         case "dotpay": self = .dotpay
+        case "onlineBanking_PL": self = .onlineBankingPoland
         case "openbanking_UK": self = .openBankingUK
         case "molpay_ebanking_fpx_MY": self = .molPayEBankingFPXMY
         case "molpay_ebanking_TH": self = .molPayEBankingTH
@@ -116,6 +118,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .entercash: return "entercash"
         case .eps: return "eps"
         case .dotpay: return "dotpay"
+        case .onlineBankingPoland: return "onlineBanking_PL"
         case .openBankingUK: return "openbanking_UK"
         case .molPayEBankingFPXMY: return "molpay_ebanking_fpx_MY"
         case .molPayEBankingTH: return "molpay_ebanking_TH"

@@ -8,6 +8,9 @@
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
+#if canImport(AdyenAuthentication)
+    import AdyenAuthentication
+#endif
 import UIKit
 
 extension CardComponent {
