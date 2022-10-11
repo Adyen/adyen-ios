@@ -8,9 +8,9 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-internal struct SessionSetupRequest: APIRequest {
+internal struct SessionRequest: APIRequest {
     
-    internal typealias ResponseType = SessionSetupResponse
+    internal typealias ResponseType = SessionResponse
     
     internal let path = "sessions"
     
@@ -43,6 +43,10 @@ internal struct SessionSetupRequest: APIRequest {
                                   "visa": InstallmentOptions(monthValues: [3, 6, 9], includesRevolving: true)]
         
         try container.encode(installmentOptions, forKey: .installmentOptions)
+        
+        // store payment method required fields
+        try container.encode("askForConsent", forKey: .storePaymentMethodMode)
+        try container.encode("UnscheduledCardOnFile", forKey: .recurringProcessingModel)
     }
     
     internal enum CodingKeys: CodingKey {
@@ -59,11 +63,13 @@ internal struct SessionSetupRequest: APIRequest {
         case additionalData
         case lineItems
         case installmentOptions
+        case storePaymentMethodMode
+        case recurringProcessingModel
     }
     
 }
 
-internal struct SessionSetupResponse: Response {
+internal struct SessionResponse: Response {
     
     internal let sessionData: String
     
