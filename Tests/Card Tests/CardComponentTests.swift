@@ -1355,9 +1355,11 @@ class CardComponentTests: XCTestCase {
         wait(for: .milliseconds(300))
         XCTAssertFalse(logoItemView!.isHidden)
         
+        wait(for: .milliseconds(300))
+        
         // valid card but still active. logos still should be hidden
         populate(textItemView: cardNumberItemView, with: Dummy.visaCard.number!)
-        wait(for: .seconds(1))
+        wait(for: .seconds(300))
         XCTAssertTrue(logoItemView!.isHidden)
         
         // with valid card and inactive, logos should hide
