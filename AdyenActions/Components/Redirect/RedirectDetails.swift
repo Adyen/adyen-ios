@@ -10,6 +10,7 @@ import Foundation
 /// Contains the details supplied by the redirect component.
 public struct RedirectDetails: AdditionalDetails, Decodable {
     
+    /// Indicates an error with the `RedirectDetails` initiallization.
     public enum Error: LocalizedError {
         
         /// Indicates that the provided url to initialize a new instance of `RedirectDetails` is invalid.
