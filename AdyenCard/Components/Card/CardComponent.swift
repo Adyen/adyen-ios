@@ -54,8 +54,14 @@ public class CardComponent: PresentableComponent,
         didSet {
             storedCardComponent?.delegate = delegate
             // override installment config if using session (when session is set as delegate)
-            if let installmentAware = delegate as? InstallmentConfigurationAware {
+            if let installmentAware = delegate as? InstallmentConfigurationAware,
+               installmentAware.isSession {
                 configuration.installmentConfiguration = installmentAware.installmentConfiguration
+            }
+            
+            if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
+               storePaymentMethodAware.isSession {
+                configuration.showsStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
             }
         }
     }

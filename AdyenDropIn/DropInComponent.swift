@@ -273,3 +273,26 @@ private extension Bundle {
     }
 
 }
+
+@_spi(AdyenInternal)
+extension DropInComponent: AdyenSessionAware {
+    public var isSession: Bool {
+        delegate is AdyenSessionAware
+    }
+}
+
+@_spi(AdyenInternal)
+extension DropInComponent: StorePaymentMethodFieldAware {
+    
+    public var showStorePaymentMethodField: Bool? {
+        (delegate as? StorePaymentMethodFieldAware)?.showStorePaymentMethodField
+    }
+}
+
+@_spi(AdyenInternal)
+extension DropInComponent: InstallmentConfigurationAware {
+    
+    public var installmentConfiguration: InstallmentConfiguration? {
+        (delegate as? InstallmentConfigurationAware)?.installmentConfiguration
+    }
+}

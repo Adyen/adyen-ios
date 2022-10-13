@@ -165,8 +165,8 @@ internal class CardViewController: FormViewController {
         return items.socialSecurityNumberItem.nonEmptyValue
     }
 
-    internal var storePayment: Bool {
-        configuration.showsStorePaymentMethodField ? items.storeDetailsItem.value : false
+    internal var storePayment: Bool? {
+        configuration.showsStorePaymentMethodField ? items.storeDetailsItem.value : nil
     }
 
     internal var installments: Installments? {

@@ -20,7 +20,7 @@ public struct PaymentComponentData {
     public let paymentMethod: PaymentMethodDetails
     
     /// Indicates whether the user has chosen to store the payment method.
-    public let storePaymentMethod: Bool
+    public let storePaymentMethod: Bool?
 
     /// The partial payment order if any.
     public let order: PartialPaymentOrder?
@@ -78,6 +78,11 @@ public struct PaymentComponentData {
         return shopperInfo.socialSecurityNumber
     }
     
+    public var delegatedAuthenticationData: DelegatedAuthenticationData? {
+        guard let paymentMethod = paymentMethod as? DelegatedAuthenticationAware else { return nil }
+        return paymentMethod.delegatedAuthenticationData
+    }
+    
     /// Initializes the payment component data.
     ///
     ///
@@ -93,7 +98,7 @@ public struct PaymentComponentData {
     public init(paymentMethodDetails: PaymentMethodDetails,
                 amount: Amount?,
                 order: PartialPaymentOrder?,
-                storePaymentMethod: Bool = false,
+                storePaymentMethod: Bool? = nil,
                 browserInfo: BrowserInfo? = nil,
                 checkoutAttemptId: String? = nil,
                 installments: Installments? = nil) {
