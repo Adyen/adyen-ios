@@ -317,6 +317,23 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertNotNil(atomeComponent.configuration.shopperInformation)
     }
 
+    func testBoletoConfiguration() throws {
+        // Given
+        configuration.boleto.showEmailAddress = false
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
+                                   configuration: configuration,
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
+
+        // When
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .boleto })
+
+        // Then
+        let boletoComponent = try XCTUnwrap(paymentComponent as? BoletoComponent)
+        XCTAssertFalse(boletoComponent.configuration.showEmailAddress)
+    }
+
     // MARK: - Private
 
     private var shopperInformation: PrefilledShopperInformation {
