@@ -41,7 +41,6 @@ Pod::Spec.new do |s|
     plugin.exclude_files = 'AdyenCard/**/BundleSPMExtension.swift'
     plugin.resource_bundles = {
         'AdyenCard' => [
-            'AdyenCard/Assets/**/*.strings',
             'AdyenCard/Assets/**/*.xcassets'
         ]
     }
