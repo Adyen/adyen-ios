@@ -9,6 +9,9 @@ import Foundation
 
 /// Contains the details provided by the card component.
 public struct GiftCardDetails: PaymentMethodDetails {
+    
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
 
     /// The payment method type.
     public let type: PaymentMethodType

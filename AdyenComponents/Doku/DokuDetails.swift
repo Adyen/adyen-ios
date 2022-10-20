@@ -9,6 +9,9 @@ import Foundation
 
 /// Contains the details supplied by the Doku component.
 public struct DokuDetails: PaymentMethodDetails {
+    
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
 
     /// The payment method type.
     public let type: PaymentMethodType

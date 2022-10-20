@@ -26,9 +26,8 @@ public struct AnalyticsConfiguration {
 
 @_spi(AdyenInternal)
 public protocol AnalyticsProviderProtocol: TelemetryTrackerProtocol {
-
-    /// :nodoc:
-    var checkoutAttemptId: String? { get }
+    
+    func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void)
 }
 
 internal final class AnalyticsProvider: AnalyticsProviderProtocol {

@@ -31,17 +31,19 @@ extension PaymentComponent {
     ///   - component: The component from which the payment originates.
     public func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
         let component = component ?? self
-        let checkoutAttemptId = component.context.analyticsProvider.checkoutAttemptId
-        let updatedData = data.replacing(checkoutAttemptId: checkoutAttemptId)
-
-        guard updatedData.browserInfo == nil else {
-            delegate?.didSubmit(updatedData, from: component)
-            return
-        }
-        updatedData.dataByAddingBrowserInfo { [weak self] in
+        component.context.analyticsProvider.fetchCheckoutAttemptId { [weak self] checkoutAttemptId in
             guard let self = self else { return }
-            self.delegate?.didSubmit($0, from: component)
+            let updatedData = data.replacing(checkoutAttemptId: checkoutAttemptId)
+
+            guard updatedData.browserInfo == nil else {
+                self.delegate?.didSubmit(updatedData, from: component)
+                return
+            }
+            updatedData.dataByAddingBrowserInfo {
+                self.delegate?.didSubmit($0, from: component)
+            }
         }
+        
     }
 
 }
