@@ -44,8 +44,6 @@ internal struct SessionRequest: APIRequest {
         
         try container.encode(installmentOptions, forKey: .installmentOptions)
         
-        // store payment method required fields
-//        try container.encode("askForConsent", forKey: .storePaymentMethodMode)
         try container.encode("UnscheduledCardOnFile", forKey: .recurringProcessingModel)
     }
     
