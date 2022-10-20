@@ -38,7 +38,14 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     internal init(cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
                   style: FormTextItemStyle,
                   localizationParameters: LocalizationParameters?) {
-        self.cardTypeLogos = cardTypeLogos
+        // these 4 US debit brands are not to be displayed
+        // but should be supported so it's done here for now
+        self.cardTypeLogos = cardTypeLogos.filter { logo in
+            logo.type != .accel &&
+                logo.type != .pulse &&
+                logo.type != .star &&
+                logo.type != .nyce
+        }
         self.localizationParameters = localizationParameters
         self.style = style
         
