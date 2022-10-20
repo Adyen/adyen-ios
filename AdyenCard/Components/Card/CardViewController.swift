@@ -212,16 +212,20 @@ internal class CardViewController: FormViewController {
         
     }
     
-    /// Observe the current brand changes to update all other fields.
+    /// Observe the brand changes to update all other fields.
     private func observeNumberItem() {
-        // `currentBrand` changes are what triggers the update for all other fields
-        // and it can be changed by both `FormCardNumberItemView` with dual brand selections
-        // and from here via binlookup response
-        observe(items.numberContainerItem.numberItem.$currentBrand) { [weak self] newBrand in
+        // `initialBrand` is udpated in cardNumberItem after binlookup response
+        observe(items.numberContainerItem.numberItem.$initialBrand) { [weak self] newBrand in
+            self?.updateFields(from: newBrand)
+        }
+        
+        // `selectedDualBrand` is updated in `FormCardNumberItemView` with dual brand selection
+        observe(items.numberContainerItem.numberItem.$selectedDualBrand) { [weak self] newBrand in
             self?.updateFields(from: newBrand)
         }
     }
     
+    /// Updates relevant other fields after number field changes
     private func updateFields(from brand: CardBrand?) {
         items.securityCodeItem.isOptional = brand?.isCVCOptional ?? false
         items.expiryDateItem.isOptional = brand?.isExpiryDateOptional ?? false
