@@ -71,6 +71,9 @@ public extension DropInComponent {
     
     /// Action components related configurations.
     struct ActionComponentConfiguration {
+        
+        public init() { /* Empty initializer */ }
+        
         /// Three DS configurations
         public var threeDS: AdyenActionComponent.Configuration.ThreeDS = .init()
     }
