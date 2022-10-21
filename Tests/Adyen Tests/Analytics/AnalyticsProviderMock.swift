@@ -13,10 +13,10 @@ class AnalyticsProviderMock: AnalyticsProviderProtocol {
 
     // MARK: - checkoutAttemptId
 
-    var checkoutAttemptId: String? {
-        get { return underlyingCheckoutAttemptId }
-        set(value) { underlyingCheckoutAttemptId = value }
+    func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
+        completion(underlyingCheckoutAttemptId)
     }
+    
     var underlyingCheckoutAttemptId: String?
 
     // MARK: - sendTelemetryEvent

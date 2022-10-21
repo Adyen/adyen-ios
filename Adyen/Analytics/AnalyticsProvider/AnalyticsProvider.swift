@@ -51,7 +51,10 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     // MARK: - Internal
 
     internal func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
-        guard configuration.isEnabled else { return }
+        guard configuration.isEnabled else {
+            completion(nil)
+            return
+        }
 
         let checkoutAttemptIdRequest = CheckoutAttemptIdRequest()
 
