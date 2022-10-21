@@ -27,6 +27,7 @@ jobs:
     - name: Lint Cocoapods
       run: |
         gem install cocoapods -v 1.10.2
+        pod repo update
         pod lib lint Adyen.podspec --allow-warnings --verbose
 
     - name: Test Cocoapods Integration
