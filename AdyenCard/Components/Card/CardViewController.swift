@@ -214,7 +214,7 @@ internal class CardViewController: FormViewController {
     
     /// Observe the brand changes to update all other fields.
     private func observeNumberItem() {
-        // `initialBrand` is udpated in cardNumberItem after binlookup response
+        // `initialBrand` is updated in cardNumberItem after binlookup response
         observe(items.numberContainerItem.numberItem.$initialBrand) { [weak self] newBrand in
             self?.updateFields(from: newBrand)
         }
