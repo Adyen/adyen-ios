@@ -46,7 +46,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     private let localizationParameters: LocalizationParameters?
     
     /// Returns the initial brand for single brand cases
-    /// For dual brands returns the brand (`selectedDualBrand`) only after it is selected by the user
+    /// or `selectedDualBrand` for dual brand cases
     internal var currentBrand: CardBrand? {
         isDualBranded ? selectedDualBrand : initialBrand
     }
