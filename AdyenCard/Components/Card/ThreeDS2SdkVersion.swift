@@ -7,4 +7,4 @@
 import Foundation
 
 /// The 3DS2 SDK version.
-public let threeDS2SdkVersion: String = "2.2.6"
+public let threeDS2SdkVersion: String = "2.3.0"
