@@ -260,6 +260,10 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - [Affirm Component][reference.AffirmComponent]
 - [Atome Component][reference.AtomeComponent]
 - [BACS Direct Debit Component][reference.BACSDirectDebitComponent]
+- [Online Banking Czech republic Component][reference.OnlineBankingComponent]
+- [Online Banking Slovakia Component][reference.OnlineBankingComponent]
+- [Online Banking Poland Component][reference.issuerListComponent]
+
 
 ## Customization
 
