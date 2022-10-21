@@ -28,7 +28,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     /// Reported with every entered digit.
     @AdyenObservable("") internal var binValue: String
     
-    /// nitial brand set after detection before any user interaction
+    /// Initial brand set after detection before any user interaction
     @AdyenObservable(nil) internal private(set) var initialBrand: CardBrand?
     
     /// Brand selected in dual branded cards, set after user selection.
