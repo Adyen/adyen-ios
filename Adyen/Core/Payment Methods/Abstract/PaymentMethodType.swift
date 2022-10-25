@@ -84,7 +84,8 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case "wechatpaySDK": self = .weChatPaySDK
         case "mbway": self = .mbWay
         case "blik": self = .blik
-        case "paywithgoogle": self = .googlePay
+        /// `paywithgoogle` and `googlepay` should be blocked on iOS
+        case "paywithgoogle", "googlepay": self = .googlePay
         case "afterpay_default": self = .afterpay
         case "androidpay": self = .androidPay
         case "amazonpay": self = .amazonPay
