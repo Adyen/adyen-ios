@@ -36,7 +36,8 @@ internal enum PaymentMethodType: String {
     case weChatPaySDK = "wechatpaySDK"
     case mbWay = "mbway"
     case blik
-    case googlePay = "paywithgoogle"
+    case payWithGoogle = "paywithgoogle"
+    case googlePay = "googlepay"
     case afterpay = "afterpay_default"
     case androidPay = "androidpay"
     case amazonPay = "amazonpay"
@@ -83,6 +84,7 @@ internal enum AnyPaymentMethodDecoder {
         .weChatMiniProgram: UnsupportedPaymentMethodDecoder(),
         .weChatQR: UnsupportedPaymentMethodDecoder(),
         .weChatPayWeb: UnsupportedPaymentMethodDecoder(),
+        .payWithGoogle: UnsupportedPaymentMethodDecoder(),
         .googlePay: UnsupportedPaymentMethodDecoder(),
         .afterpay: UnsupportedPaymentMethodDecoder(),
         .androidPay: UnsupportedPaymentMethodDecoder(),
