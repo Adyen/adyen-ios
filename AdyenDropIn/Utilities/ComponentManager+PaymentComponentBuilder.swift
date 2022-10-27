@@ -263,7 +263,7 @@ extension ComponentManager: PaymentComponentBuilder {
         let config = BoletoComponent.Configuration(style: configuration.style.formComponent,
                                                    localizationParameters: configuration.localizationParameters,
                                                    shopperInformation: configuration.shopperInformation,
-                                                   showEmailAddress: true)
+                                                   showEmailAddress: configuration.boleto.showEmailAddress)
         return BoletoComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)

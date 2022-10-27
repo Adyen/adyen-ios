@@ -11,6 +11,8 @@ import UIKit
 /// Payment methods list related configurations.
 public struct PaymentMethodListConfiguration {
     
+    public init() { /* Empty initializer */ }
+    
     /// Indicates whether to allow shoppers to disable/delete stored payment methods
     public var allowDisablingStoredPaymentMethods: Bool = false
 }

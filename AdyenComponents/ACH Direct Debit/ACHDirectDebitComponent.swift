@@ -22,6 +22,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
         static let bankAccountNumberItem = "bankAccountNumberItem"
         static let bankRoutingNumberItem = "bankRoutingNumberItem"
         static let billingAddressItem = "billingAddressItem"
+        static let storeDetailsItem = "storeDetailsItem"
         static let payButtonItem = "payButtonItem"
     }
     
@@ -33,7 +34,14 @@ public final class ACHDirectDebitComponent: PaymentComponent,
         achDirectDebitPaymentMethod
     }
 
-    public weak var delegate: PaymentComponentDelegate?
+    public weak var delegate: PaymentComponentDelegate? {
+        didSet {
+            if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
+               storePaymentMethodAware.isSession {
+                configuration.showsStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
+            }
+        }
+    }
     
     /// Component configuration
     public var configuration: Configuration
@@ -112,10 +120,17 @@ public final class ACHDirectDebitComponent: PaymentComponent,
                                                 encryptedBankRoutingNumber: encryptedBankRoutingNumber,
                                                 billingAddress: billingAddressItem.value)
             
-            submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
+            submit(data: PaymentComponentData(paymentMethodDetails: details,
+                                              amount: payment?.amount,
+                                              order: order,
+                                              storePaymentMethod: storePayment))
         } catch {
             delegate?.didFail(with: error, from: self)
         }
+    }
+    
+    private var storePayment: Bool? {
+        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : nil
     }
     
     // MARK: - Form Items
@@ -186,6 +201,14 @@ public final class ACHDirectDebitComponent: PaymentComponent,
         return textItem
     }()
     
+    internal lazy var storeDetailsItem: FormToggleItem = {
+        let storeDetailsItem = FormToggleItem(style: configuration.style.toggle)
+        storeDetailsItem.title = localizedString(.cardStoreDetailsButton, configuration.localizationParameters)
+        storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.storeDetailsItem)
+        
+        return storeDetailsItem
+    }()
+    
     internal lazy var billingAddressItem: FormAddressItem = {
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                      postfix: ViewIdentifier.billingAddressItem)
@@ -233,9 +256,14 @@ public final class ACHDirectDebitComponent: PaymentComponent,
         formViewController.append(bankAccountNumberItem)
         formViewController.append(bankRoutingNumberItem)
         formViewController.append(FormSpacerItem())
+        
         if configuration.showsBillingAddress {
             formViewController.append(billingAddressItem)
         }
+        if configuration.showsStorePaymentMethodField {
+            formViewController.append(storeDetailsItem)
+        }
+        
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         formViewController.append(payButton)
 
@@ -276,6 +304,9 @@ extension ACHDirectDebitComponent {
         
         public var localizationParameters: LocalizationParameters?
         
+        /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to `true`.
+        public var showsStorePaymentMethodField: Bool
+        
         /// Determines whether the billing address should be displayed or not.
         /// Defaults to `true`.
         public var showsBillingAddress: Bool
@@ -296,11 +327,13 @@ extension ACHDirectDebitComponent {
         public init(style: FormComponentStyle = FormComponentStyle(),
                     shopperInformation: PrefilledShopperInformation? = nil,
                     localizationParameters: LocalizationParameters? = nil,
+                    showsStorePaymentMethodField: Bool = true,
                     showsBillingAddress: Bool = true,
                     billingAddressCountryCodes: [String] = ["US", "PR"]) {
             self.style = style
             self.shopperInformation = shopperInformation
             self.localizationParameters = localizationParameters
+            self.showsStorePaymentMethodField = showsStorePaymentMethodField
             self.showsBillingAddress = showsBillingAddress
             self.billingAddressCountryCodes = billingAddressCountryCodes
         }

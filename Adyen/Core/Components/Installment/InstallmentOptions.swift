@@ -7,7 +7,8 @@
 import Foundation
 
 @_spi(AdyenInternal)
-public protocol InstallmentConfigurationAware {
+/// Describes the interface to have an installments configuration.
+public protocol InstallmentConfigurationAware: AdyenSessionAware {
     var installmentConfiguration: InstallmentConfiguration? { get }
 }
 

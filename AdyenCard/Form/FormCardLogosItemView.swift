@@ -32,10 +32,6 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
         collectionView.adyen.anchor(inside: self, with: UIEdgeInsets(top: 4, left: 16, bottom: -8, right: -16))
         collectionView.register(CardLogoCell.self, forCellWithReuseIdentifier: CardLogoCell.reuseIdentifier)
         collectionView.dataSource = self
-        
-        observe(item.$cardLogos) { [weak self] _ in
-            self?.collectionView.reloadSections([0])
-        }
     }
     
 }
@@ -49,7 +45,7 @@ extension FormCardLogosItemView: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardLogoCell.reuseIdentifier, for: indexPath)
         if let cell = cell as? CardLogoCell,
            let logo = item.cardLogos.adyen[safeIndex: indexPath.row] {
-            cell.update(imageUrl: logo.url, style: item.style.icon, alpha: CGFloat(logo.alpha))
+            cell.update(imageUrl: logo.url, style: item.style.icon)
         }
         return cell
     }
@@ -100,10 +96,9 @@ extension FormCardLogosItemView {
             fatalError("init(coder:) has not been implemented")
         }
         
-        internal func update(imageUrl: URL, style: ImageStyle, alpha: CGFloat) {
+        internal func update(imageUrl: URL, style: ImageStyle) {
             cardTypeImageView.imageURL = imageUrl
             
-            cardTypeImageView.alpha = alpha
             cardTypeImageView.layer.masksToBounds = style.clipsToBounds
             cardTypeImageView.layer.borderWidth = style.borderWidth
             cardTypeImageView.layer.borderColor = style.borderColor?.cgColor

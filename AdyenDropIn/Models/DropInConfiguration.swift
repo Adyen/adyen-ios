@@ -51,6 +51,9 @@ public extension DropInComponent {
         
         /// Indicates the UI configuration of the drop in component.
         public var style: DropInComponent.Style
+
+        /// Boleto component configuration.
+        public var boleto: Boleto = .init()
         
         /// Initializes the drop in configuration.
         /// - Parameters:
@@ -68,8 +71,17 @@ public extension DropInComponent {
     
     /// Action components related configurations.
     struct ActionComponentConfiguration {
+        
+        public init() { /* Empty initializer */ }
+        
         /// Three DS configurations
         public var threeDS: AdyenActionComponent.Configuration.ThreeDS = .init()
+    }
+
+    /// Boleto component configuration.
+    struct Boleto {
+        /// Indicates whether to show sendCopyByEmail checkbox and email text field
+        public var showEmailAddress: Bool = true
     }
     
     /// Card Component configuration specific to Drop In Component.
