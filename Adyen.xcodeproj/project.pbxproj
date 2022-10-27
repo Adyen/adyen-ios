@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -4574,6 +4574,7 @@
 		};
 		E7388FC1260B68C400291DE7 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -4592,6 +4593,7 @@
 		};
 		E7388FC2260B68DE00291DE7 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -4610,6 +4612,7 @@
 		};
 		F91664F123E42D2D00C10738 /* AdyenUIHost configuration */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -4628,6 +4631,7 @@
 		};
 		F9175E662593942E00D653BE /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -4646,6 +4650,7 @@
 		};
 		F9175F9F259498EA00D653BE /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -4664,6 +4669,7 @@
 		};
 		F95B6DD2252B1F6A002C9062 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -4700,6 +4706,7 @@
 		};
 		F9620DA223C747BD005209FC /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -4718,6 +4725,7 @@
 		};
 		F9A4A3012373235800D774E8 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -4736,6 +4744,7 @@
 		};
 		F9A4A302237323DE00D774E8 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -4754,6 +4763,7 @@
 		};
 		F9A4A303237323E700D774E8 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -4772,6 +4782,7 @@
 		};
 		F9A4A304237323EE00D774E8 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);

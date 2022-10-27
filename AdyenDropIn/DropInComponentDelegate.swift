@@ -59,6 +59,7 @@ public protocol DropInComponentDelegate: AnyObject {
     
 }
 
+/// Defines methods to disable a stored payment method by sending a request to `/v{API_VERSION}/disable` endpoint.
 public protocol StoredPaymentMethodsDelegate: AnyObject {
     /// Invoked when shopper wants to delete a stored payment method.
     ///

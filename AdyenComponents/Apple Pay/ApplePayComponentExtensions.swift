@@ -119,6 +119,7 @@ extension ApplePayComponent {
             return paymentRequest
         }
 
+        /// :nodoc:
         public mutating func update(amount: Amount, localeIdentifier: String?) {
             var newItems = summaryItems
             guard let lastItem = newItems.last else { return }

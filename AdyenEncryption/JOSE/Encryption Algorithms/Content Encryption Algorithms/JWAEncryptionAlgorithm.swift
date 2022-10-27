@@ -35,19 +35,27 @@ internal struct JWAInput {
     internal let additionalAuthenticationData: Data
 }
 
+/// Indicates an error during encryption.
 public enum EncryptionError: LocalizedError {
+    /// Key is invalid.
     case invalidKey
     
+    /// Initialization vector: is invalid
     case invalidInitializationVector
     
+    /// Encryption failed
     case encryptionFailed
     
+    /// Unknown error
     case unknownError
     
+    /// Failed to generate random data
     case failedToGenerateRandomData
     
+    /// Invalid base64 string
     case invalidBase64
     
+    /// Any other error
     case other(Error)
     
     public var errorDescription: String? {

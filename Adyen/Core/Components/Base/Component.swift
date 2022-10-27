@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,6 +19,10 @@ extension Component {
         (self as? FinalizableComponent)?.didFinalize(with: success, completion: nil)
     }
 
+    /// Finalizes the payment if there is any, after being processed by payment provider.
+    ///
+    /// - Parameter success: The status of the payment.
+    /// - Parameter completion: The completion handler.
     public func finalizeIfNeeded(with success: Bool, completion: (() -> Void)?) {
         stopLoadingIfNeeded()
         if let finalizable = self as? FinalizableComponent {
@@ -55,6 +59,7 @@ public protocol FinalizableComponent: Component {
     func didFinalize(with success: Bool, completion: (() -> Void)?)
 }
 
+/// :nodoc:
 public extension Component {
     
     /// :nodoc:
