@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -22,6 +22,7 @@ extension UILabel {
     
 }
 
+/// :nodoc:
 public extension AdyenScope where Base: UILabel {
     
     /// Applies given `TextStyle` to the UILabel

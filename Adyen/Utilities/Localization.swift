@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -101,8 +101,9 @@ private func attempt(_ input: LocalizationInput) -> String? {
 
 /// :nodoc:
 public enum PaymentStyle {
+    /// :nodoc:
     case needsRedirectToThirdParty(String)
-
+    /// :nodoc:
     case immediate
 }
 

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -32,16 +32,22 @@ public protocol ShopperInformation {
 /// :nodoc:
 public extension ShopperInformation {
     
+    /// :nodoc:
     var shopperName: ShopperName? { nil }
 
+    /// :nodoc:
     var emailAddress: String? { nil }
 
+    /// :nodoc:
     var telephoneNumber: String? { nil }
     
+    /// :nodoc:
     var billingAddress: PostalAddress? { nil }
     
+    /// :nodoc:
     var deliveryAddress: PostalAddress? { nil }
 
+    /// :nodoc:
     var socialSecurityNumber: String? { nil }
     
 }
