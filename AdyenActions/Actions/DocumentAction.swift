@@ -8,6 +8,7 @@ import Foundation
 
 /// Indicates document action payment methods.
 public enum DocumentPaymentMethod: String, Codable, CaseIterable {
+    /// BACS.
     case bacs = "directdebit_GB"
 }
 
