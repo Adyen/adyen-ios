@@ -32,7 +32,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIC
     
     // MARK: - CVC length
 
-    private var minCharactersCount: Int {
+    private var cvvLength: Int {
         switch CardType(rawValue: paymentMethod.brand) {
         case .americanExpress:
             return 4
@@ -40,8 +40,6 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIC
             return 3
         }
     }
-
-    private let maxCharactersCount: Int = 4
 
     // MARK: - Alert Controller
     
@@ -134,12 +132,12 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIC
         }
         
         let newString = (textFieldText as NSString).replacingCharacters(in: range, with: string)
-        if newString.count > maxCharactersCount {
+        if newString.count > cvvLength {
             return false
         }
         
         defer {
-            let isValidLength = (minCharactersCount...maxCharactersCount).contains(newString.count)
+            let isValidLength = newString.count == cvvLength
             submitAction.isEnabled = isValidLength
         }
         
