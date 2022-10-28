@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
+import SwiftUI
 
 /// A generic component for "issuer-based" payment methods, such as iDEAL and MOLPay.
 /// This component will provide a list in which the user can select their issuer.
@@ -38,13 +39,14 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
         self.issuerListPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
+        viewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
     }
     
     private let issuerListPaymentMethod: IssuerListPaymentMethod
     // MARK: - Presentable Component Protocol
     
     public var viewController: UIViewController {
-        listViewController
+        searchViewController
     }
     
     public func stopLoading() {
@@ -58,9 +60,19 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
         let listViewController = ListViewController(style: configuration.style)
         listViewController.delegate = self
         let issuers = issuerListPaymentMethod.issuers
+        convertIssuersToListItem(listViewController: listViewController, issuers: issuers)
+
+        return listViewController
+    }()
+
+    private lazy var searchViewController: SearchViewController = {
+        SearchViewController(childViewController: listViewController, delegate: self)
+    }()
+
+    private func convertIssuersToListItem(listViewController: ListViewController, issuers: [Issuer]) {
         let items = issuers.map { issuer -> ListItem in
 
-            var listItem = ListItem(title: issuer.name, style: configuration.style.listItem)
+            let listItem = ListItem(title: issuer.name, style: configuration.style.listItem)
             listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
             listItem.imageURL = LogoURLProvider.logoURL(for: issuer,
                                                            localizedParameters: configuration.localizationParameters,
@@ -80,12 +92,8 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
             
             return listItem
         }
-        
-        listViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
-        listViewController.reload(newSections: [ListSection(items: items)])
-        
-        return listViewController
-    }()
+        listViewController.reload(newSections: [ListSection(items: items)], animated: false)
+    }
 }
 
 @_spi(AdyenInternal)
@@ -93,6 +101,18 @@ extension IssuerListComponent: ViewControllerDelegate {
 
     public func viewWillAppear(viewController: UIViewController) {
         sendTelemetryEvent()
+    }
+}
+
+@_spi(AdyenInternal)
+extension IssuerListComponent: SearchViewControllerDelegate {
+    public func textDidChange(_ searchBar: UISearchBar, searchText: String) {
+        if searchText.isEmpty {
+            convertIssuersToListItem(listViewController: listViewController, issuers: issuerListPaymentMethod.issuers)
+        } else {
+            let filteredIssuers = issuerListPaymentMethod.issuers.filter({$0.name.range(of: searchText, options: .caseInsensitive) != nil })
+            convertIssuersToListItem(listViewController: listViewController, issuers: filteredIssuers)
+        }
     }
 }
 
