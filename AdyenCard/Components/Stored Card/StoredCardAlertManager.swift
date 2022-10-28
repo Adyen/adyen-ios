@@ -32,7 +32,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
     
     // MARK: - CVC length
 
-    private var cvvLenght: Int {
+    private var cvvLength: Int {
         switch paymentMethod.brand {
         case .americanExpress:
             return 4
@@ -132,12 +132,12 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
         }
         
         let newString = (textFieldText as NSString).replacingCharacters(in: range, with: string)
-        if newString.count > cvvLenght {
+        if newString.count > cvvLength {
             return false
         }
         
         defer {
-            let isValidLength = cvvLenght == newString.count
+            let isValidLength = cvvLength == newString.count
             submitAction.isEnabled = isValidLength
         }
         
