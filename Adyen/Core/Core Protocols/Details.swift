@@ -18,7 +18,3 @@ public protocol PaymentMethodDetails: Details {
 
 /// Contains additional details that were retrieved to complete a payment.
 public protocol AdditionalDetails: Details {}
-
-private enum AssociatedKeys {
-    internal static var checkoutAttemptId = "checkoutAttemptId"
-}

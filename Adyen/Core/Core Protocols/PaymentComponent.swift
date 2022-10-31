@@ -37,11 +37,11 @@ extension PaymentComponent {
         let updatedData = data.replacing(checkoutAttemptId: component.context.analyticsProvider.checkoutAttemptId)
 
         guard updatedData.browserInfo == nil else {
-            self.delegate?.didSubmit(updatedData, from: component)
+            delegate?.didSubmit(updatedData, from: component)
             return
         }
-        updatedData.dataByAddingBrowserInfo {
-            self.delegate?.didSubmit($0, from: component)
+        updatedData.dataByAddingBrowserInfo { [weak self] in
+            self?.delegate?.didSubmit($0, from: component)
         }
         
     }

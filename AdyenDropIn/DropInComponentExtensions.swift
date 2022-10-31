@@ -60,7 +60,8 @@ extension DropInComponent: PaymentComponentDelegate {
             self.delegate?.didSubmit(updatedData, from: component, in: self)
             return
         }
-        updatedData.dataByAddingBrowserInfo {
+        updatedData.dataByAddingBrowserInfo { [weak self] in
+            guard let self = self else { return }
             self.delegate?.didSubmit($0, from: component, in: self)
         }
         
