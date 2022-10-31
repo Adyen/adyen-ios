@@ -23,7 +23,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         textField.returnKeyType = .default
         textField.allowsEditingActions = false
         
-        observe(item.$currentBrand) { [weak self] _ in
+        observe(item.$initialBrand) { [weak self] _ in
             guard let self = self else { return }
             self.updateValidationStatus(forced: true)
             self.notifyDelegateOfMaxLengthIfNeeded()
@@ -37,7 +37,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     override internal func textFieldDidBeginEditing(_ text: UITextField) {
         super.textFieldDidBeginEditing(text)
         // change accessory back only if brand is supported or empty
-        if item.currentBrand?.isSupported ?? true {
+        if item.initialBrand?.isSupported ?? true {
             accessory = .customView(detectedBrandsView)
         }
         item.isActive = true
@@ -137,8 +137,9 @@ extension FormCardNumberItemView {
             primaryLogoView.imageURL = firstLogo.url
             primaryLogoView.alpha = selectedViewAlpha
             
-            // dual branded. allow selection
+            // dual branded. allow selection but initially neither is selected
             if let secondLogo = logos.adyen[safeIndex: 1] {
+                primaryLogoView.alpha = unselectedViewAlpha
                 secondaryLogoView.imageURL = secondLogo.url
                 secondaryLogoView.alpha = unselectedViewAlpha
                 secondaryLogoView.isHidden = false
