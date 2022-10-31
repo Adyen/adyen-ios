@@ -13,9 +13,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        ref: ${{ github.ref }}
+    
     - uses: n1hility/cancel-previous-runs@v2
       with:
         token: ${{ secrets.MANUAL_ACTION_TOKEN }}
+        
     - uses: actions/setup-java@v1
       with:
         java-version: '11'
