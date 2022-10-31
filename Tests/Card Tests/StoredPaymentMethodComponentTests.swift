@@ -14,9 +14,9 @@ class StoredPaymentMethodComponentTests: XCTestCase {
     private var context = Dummy.context
 
     private let method = StoredPaymentMethodMock(identifier: "id",
-                                         supportedShopperInteractions: [.shopperPresent],
-                                         type: .other("type"),
-                                         name: "name")
+                                                 supportedShopperInteractions: [.shopperPresent],
+                                                 type: .other("type"),
+                                                 name: "name")
 
     func testLocalizationWithCustomTableName() throws {
         let localizationParams = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)

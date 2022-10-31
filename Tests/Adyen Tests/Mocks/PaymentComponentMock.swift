@@ -9,7 +9,7 @@
 class PaymentComponentMock: PaymentComponent {
     
     var context: AdyenContext {
-        return Dummy.context
+        Dummy.context
     }
     
     var paymentMethod: PaymentMethod

@@ -14,8 +14,7 @@ internal class CardComponentDelegateMock: CardComponentDelegate {
     
     internal init(onBINDidChange: @escaping (String) -> Void,
                   onCardBrandChange: @escaping ([CardBrand]?) -> Void,
-                  onSubmitLastFour: @escaping ((String, String) -> Void))
-    {
+                  onSubmitLastFour: @escaping ((String, String) -> Void)) {
         self.onBINDidChange = onBINDidChange
         self.onCardBrandChange = onCardBrandChange
         self.onSubmitLastFour = onSubmitLastFour

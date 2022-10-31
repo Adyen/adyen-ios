@@ -75,7 +75,7 @@ extension IntegrationExample {
               let paymentMethod = paymentMethods.paymentMethod(ofType: .onlineBankingPoland) else { return nil }
         if let issuerList = paymentMethod as? IssuerListPaymentMethod {
             return OnlineBankingPolandComponent(paymentMethod: issuerList,
-                                  context: context)
+                                                context: context)
         }
         return nil
     }

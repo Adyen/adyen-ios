@@ -161,8 +161,8 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testSubmitForm() throws {
-        let sut = DokuComponent(paymentMethod: paymentMethod, 
-                                context: context, 
+        let sut = DokuComponent(paymentMethod: paymentMethod,
+                                context: context,
                                 configuration: DokuComponent.Configuration())
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -226,7 +226,7 @@ class DokuComponentTests: XCTestCase {
         // Given
         let config = DokuComponent.Configuration(shopperInformation: shopperInformation)
         let prefillSut = DokuComponent(paymentMethod: paymentMethod,
-                                              context: context,
+                                       context: context,
                                        configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 

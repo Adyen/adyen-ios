@@ -6,8 +6,8 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable @_spi(AdyenInternal) import AdyenCard
-@testable import AdyenEncryption
 @testable import AdyenDropIn
+@testable import AdyenEncryption
 import XCTest
 
 class BCMCComponentTests: XCTestCase {
@@ -211,12 +211,12 @@ class BCMCComponentTests: XCTestCase {
         let mockedBrands = [CardBrand(type: .bcmc, cvcPolicy: .optional)]
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { _ in },
                                                      onCardBrandChange: { value in
-            XCTAssertEqual(value, mockedBrands)
-            expectationCardType.fulfill()
-        },
+                                                         XCTAssertEqual(value, mockedBrands)
+                                                         expectationCardType.fulfill()
+                                                     },
                                                      onSubmitLastFour: { _, _ in
-            XCTFail("form not submited yet onSubmitLastFour is called")
-        })
+                                                         XCTFail("form not submited yet onSubmitLastFour is called")
+                                                     })
         sut.cardComponentDelegate = delegateMock
         
         wait(for: .milliseconds(300))
@@ -239,14 +239,14 @@ class BCMCComponentTests: XCTestCase {
         expectationBin.expectedFulfillmentCount = 1
         expectationBin.assertForOverFulfill = true
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
-            XCTAssertTrue("670344".hasPrefix(value))
-            XCTAssertTrue(value.count <= 6)
-            expectationBin.fulfill()
-        },
+                                                         XCTAssertTrue("670344".hasPrefix(value))
+                                                         XCTAssertTrue(value.count <= 6)
+                                                         expectationBin.fulfill()
+                                                     },
                                                      onCardBrandChange: { _ in },
                                                      onSubmitLastFour: { _, _ in
-            XCTFail("form not submited yet onSubmitLastFour is called")
-        })
+                                                         XCTFail("form not submited yet onSubmitLastFour is called")
+                                                     })
         sut.cardComponentDelegate = delegateMock
 
         wait(for: .milliseconds(300))
@@ -269,13 +269,13 @@ class BCMCComponentTests: XCTestCase {
         expectationBin.expectedFulfillmentCount = 1
         expectationBin.assertForOverFulfill = true
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
-            XCTAssertEqual(value, "670344")
-            expectationBin.fulfill()
-        },
+                                                         XCTAssertEqual(value, "670344")
+                                                         expectationBin.fulfill()
+                                                     },
                                                      onCardBrandChange: { _ in },
                                                      onSubmitLastFour: { _, _ in
-            XCTFail("form not submited yet onSubmitLastFour is called")
-        })
+                                                         XCTFail("form not submited yet onSubmitLastFour is called")
+                                                     })
         sut.cardComponentDelegate = delegateMock
 
         wait(for: .milliseconds(300))
@@ -306,17 +306,17 @@ class BCMCComponentTests: XCTestCase {
         expectationBin.expectedFulfillmentCount = 2
         expectationBin.assertForOverFulfill = true
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
-            XCTAssertTrue("670344".hasPrefix(value))
-            XCTAssertTrue(value.count <= 6)
-            if value == "670344" {
-                expectationBin.fulfill()
-            }
-        },
+                                                         XCTAssertTrue("670344".hasPrefix(value))
+                                                         XCTAssertTrue(value.count <= 6)
+                                                         if value == "670344" {
+                                                             expectationBin.fulfill()
+                                                         }
+                                                     },
                                                      onCardBrandChange: { _ in },
                                                      onSubmitLastFour: { _, finalBin in
-            XCTAssertEqual(finalBin, "670344")
-            expectationBin.fulfill()
-        })
+                                                         XCTAssertEqual(finalBin, "670344")
+                                                         expectationBin.fulfill()
+                                                     })
         sut.cardComponentDelegate = delegateMock
 
         wait(for: .milliseconds(300))
@@ -348,17 +348,17 @@ class BCMCComponentTests: XCTestCase {
         expectationBin.expectedFulfillmentCount = 2
         expectationBin.assertForOverFulfill = true
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
-            XCTAssertTrue("67030000".hasPrefix(value))
-            XCTAssertTrue(value.count <= 8)
-            if value == "67030000" {
-                expectationBin.fulfill()
-            }
-        },
+                                                         XCTAssertTrue("67030000".hasPrefix(value))
+                                                         XCTAssertTrue(value.count <= 8)
+                                                         if value == "67030000" {
+                                                             expectationBin.fulfill()
+                                                         }
+                                                     },
                                                      onCardBrandChange: { _ in },
                                                      onSubmitLastFour: { _, finalBin in
-            XCTAssertEqual(finalBin, "67030000")
-            expectationBin.fulfill()
-        })
+                                                         XCTAssertEqual(finalBin, "67030000")
+                                                         expectationBin.fulfill()
+                                                     })
         sut.cardComponentDelegate = delegateMock
 
         wait(for: .milliseconds(300))
@@ -381,12 +381,12 @@ class BCMCComponentTests: XCTestCase {
         let expectationCardType = XCTestExpectation(description: "CardType Expectation")
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { _ in },
                                                      onCardBrandChange: { value in
-            XCTAssertEqual(value, [])
-            expectationCardType.fulfill()
-        },
+                                                         XCTAssertEqual(value, [])
+                                                         expectationCardType.fulfill()
+                                                     },
                                                      onSubmitLastFour: { _, _ in
-            XCTFail("form not submited yet onSubmitLastFour is called")
-        })
+                                                         XCTFail("form not submited yet onSubmitLastFour is called")
+                                                     })
         sut.cardComponentDelegate = delegateMock
         
         wait(for: .milliseconds(300))

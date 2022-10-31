@@ -122,12 +122,12 @@ class QRCodeComponentTests: XCTestCase {
         )
         
         let sut = PixActionComponent(context: context,
-                                  pollingComponentBuilder: builder,
-                                  timeoutInterval: 2.0)
+                                     pollingComponentBuilder: builder,
+                                     timeoutInterval: 2.0)
         let componentDelegate = ActionComponentDelegateMock()
         componentDelegate.onDidFail = { error, component in
             if let qrError = error as? QRCodeComponentError,
-               case QRCodeComponentError.qrCodeExpired = qrError { }
+               case QRCodeComponentError.qrCodeExpired = qrError {}
             else {
                 XCTFail()
             }
@@ -164,8 +164,8 @@ class QRCodeComponentTests: XCTestCase {
         )
         
         let sut = PixActionComponent(context: context,
-                                  pollingComponentBuilder: builder,
-                                  timeoutInterval: 2.0)
+                                     pollingComponentBuilder: builder,
+                                     timeoutInterval: 2.0)
         
         handler.onHandle = {
             XCTAssertEqual($0.paymentData, self.action.paymentData)
@@ -211,8 +211,8 @@ class QRCodeComponentTests: XCTestCase {
         )
         
         let sut = PixActionComponent(context: context,
-                                  pollingComponentBuilder: builder,
-                                  timeoutInterval: 2.0)
+                                     pollingComponentBuilder: builder,
+                                     timeoutInterval: 2.0)
         
         handler.onHandle = {
             XCTAssertEqual($0.paymentData, self.action.paymentData)

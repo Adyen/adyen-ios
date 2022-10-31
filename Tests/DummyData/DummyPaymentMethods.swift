@@ -420,15 +420,15 @@ let storedBlik = [
 ] as [String: Any]
 
 let storedACHDictionary = [
-    "bankLocationId" : "011000138",
-    "id" : "CWG8SF2PR2M84H82",
-    "supportedShopperInteractions" : [
-      "Ecommerce"
+    "bankLocationId": "011000138",
+    "id": "CWG8SF2PR2M84H82",
+    "supportedShopperInteractions": [
+        "Ecommerce"
     ],
-    "bankAccountNumber" : "123456789",
-    "ownerName" : "John Smith",
-    "type" : "ach",
-    "name" : "ACH Direct Debit"
+    "bankAccountNumber": "123456789",
+    "ownerName": "John Smith",
+    "type": "ach",
+    "name": "ACH Direct Debit"
 ] as [String: Any]
 
 let qiwiWallet = [
@@ -508,25 +508,25 @@ let onlineBankingDictionary = [
     "type": "onlineBanking_CZ",
     "name": "onlineBanking_CZ",
     "issuers": [
-            [
-                "id": "jp",
-                "name": "Apple Pay"
-            ],
-            [
-                "id": "ap",
-                "name": "Google Pay"
-            ],
-            [
-                "id": "cs",
-                "name": "Česká spořitelna"
-            ],
-            [
-                "id": "kb",
-                "name": "Komerční banka"
-            ],
-            [
-                "id": "c",
-                "name": "Płatność online kartą płatniczą"
-            ]
+        [
+            "id": "jp",
+            "name": "Apple Pay"
+        ],
+        [
+            "id": "ap",
+            "name": "Google Pay"
+        ],
+        [
+            "id": "cs",
+            "name": "Česká spořitelna"
+        ],
+        [
+            "id": "kb",
+            "name": "Komerční banka"
+        ],
+        [
+            "id": "c",
+            "name": "Płatność online kartą płatniczą"
+        ]
     ]
 ] as [String: Any]

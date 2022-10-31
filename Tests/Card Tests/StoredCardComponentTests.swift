@@ -25,7 +25,7 @@ class StoredCardComponentTests: XCTestCase {
                                          expiryYear: "22",
                                          holderName: "holderName")
 
-    //let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+    // let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
 
     func testUIWithClientKey() throws {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)

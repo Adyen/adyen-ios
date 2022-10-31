@@ -13,7 +13,7 @@ import XCTest
 class ComponentManagerTests: XCTestCase {
 
     var paymentMethods: PaymentMethods {
-        return try! Coder.decode(dictionary) as PaymentMethods
+        try! Coder.decode(dictionary) as PaymentMethods
     }
     
     let dictionary = [
