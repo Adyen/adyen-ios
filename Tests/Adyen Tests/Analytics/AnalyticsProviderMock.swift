@@ -10,11 +10,16 @@ import Foundation
 @_spi(AdyenInternal) @testable import Adyen
 
 class AnalyticsProviderMock: AnalyticsProviderProtocol {
+    var checkoutAttemptId: String? { underlyingCheckoutAttemptId }
 
     // MARK: - checkoutAttemptId
 
     func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
         completion(underlyingCheckoutAttemptId)
+    }
+    
+    func fetchAndCacheCheckoutAttemptIdIfNeeded() {
+        fetchCheckoutAttemptId(completion: { _ in })
     }
     
     var underlyingCheckoutAttemptId: String?
