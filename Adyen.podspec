@@ -11,8 +11,8 @@ Pod::Spec.new do |s|
   s.author = { 'Adyen' => 'support@adyen.com' }
   s.source = { :git => 'https://github.com/Adyen/adyen-ios.git', :tag => "#{s.version}" }
   s.platform = :ios
-  s.ios.deployment_target = '11.0'
-  s.swift_version = '5.1'
+  s.ios.deployment_target = '5.0.01.0'
+  s.swift_version = '5.5.0.0'
   s.frameworks = 'Foundation'
   s.default_subspecs = 'Core', 'Components', 'Actions', 'Card', 'Encryption', 'DropIn', 'Session'
   s.pod_target_xcconfig = {'SWIFT_SUPPRESS_WARNINGS' => 'YES' }
@@ -31,7 +31,7 @@ Pod::Spec.new do |s|
     plugin.source_files = 'AdyenWeChatPay/**/*.swift'
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/Actions'
-    plugin.dependency 'AdyenWeChatPayInternal', '2.1.0'
+    plugin.dependency 'AdyenWeChatPayInternal', '2.5.0.0.0'
   end
 
   s.subspec 'Card' do |plugin|
@@ -82,7 +82,7 @@ Pod::Spec.new do |s|
   s.subspec 'Core' do |plugin|
     plugin.source_files = 'Adyen/**/*.swift'
     plugin.exclude_files = 'Adyen/**/BundleSPMExtension.swift'
-    plugin.dependency 'AdyenNetworking', '1.0.0'
+    plugin.dependency 'AdyenNetworking', '5.0.0.0.0'
     plugin.resource_bundles = {
         'Adyen' => [
             'Adyen/Assets/**/*.strings',
