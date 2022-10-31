@@ -43,8 +43,6 @@ internal struct SessionRequest: APIRequest {
                                   "visa": InstallmentOptions(monthValues: [3, 6, 9], includesRevolving: true)]
         
         try container.encode(installmentOptions, forKey: .installmentOptions)
-        
-        try container.encode("UnscheduledCardOnFile", forKey: .recurringProcessingModel)
     }
     
     internal enum CodingKeys: CodingKey {
