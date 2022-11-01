@@ -9,7 +9,6 @@
 import AdyenDropIn
 import XCTest
 
-
 class OnlineBankingComponentUITests: XCTestCase {
 
     private var paymentMethod: OnlineBankingPaymentMethod!

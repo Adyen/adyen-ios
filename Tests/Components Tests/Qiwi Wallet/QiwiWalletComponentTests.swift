@@ -189,7 +189,7 @@ class QiwiWalletComponentTests: XCTestCase {
         let phoneExtensions = [PhoneExtension(value: "+3", countryCode: "UK")]
         let paymentMethod = QiwiWalletPaymentMethod(type: .qiwiWallet, name: "test_name", phoneExtensions: phoneExtensions)
         let sut = QiwiWalletComponent(paymentMethod: paymentMethod,
-                                            context: context,
+                                      context: context,
                                       configuration: QiwiWalletComponent.Configuration())
 
         // When

@@ -1,12 +1,12 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Foundation
 @testable import AdyenDropIn
+import Foundation
 
 final class PresentationDelegateMock: NavigationDelegate {
 
-    var doDismiss: ( ((() -> Void)?) -> Void )?
+    var doDismiss: (((() -> Void)?) -> Void)?
 
     func dismiss(completion: (() -> Void)?) {
         doDismiss?(completion)

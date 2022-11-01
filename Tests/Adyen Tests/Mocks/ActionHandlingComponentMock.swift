@@ -13,7 +13,7 @@ import Foundation
 internal final class ActionHandlingComponentMock: ActionHandlingComponent {
 
     internal var context: AdyenContext {
-        return Dummy.context
+        Dummy.context
     }
     
     internal var onAction: ((Action) -> Void)?

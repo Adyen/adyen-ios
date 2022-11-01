@@ -78,20 +78,20 @@ public class FormAttributedLabelItem: FormItem {
             let regex = try NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options.caseInsensitive)
             let matches = regex.matches(in: originalText, options: [], range: NSRange(location: 0, length: originalText.utf16.count))
 
-            matches.forEach({ match in
+            matches.forEach { match in
                 let range = match.range(at: 0)
                 ranges.append(range)
-            })
-        } catch let error {
+            }
+        } catch {
             adyenPrint(error)
         }
         return ranges
     }
 
     private func createAttributes(from style: TextStyle) -> [NSAttributedString.Key: Any] {
-        return [.foregroundColor: style.color,
-                .font: style.font,
-                .backgroundColor: style.backgroundColor]
+        [.foregroundColor: style.color,
+         .font: style.font,
+         .backgroundColor: style.backgroundColor]
     }
 
 }

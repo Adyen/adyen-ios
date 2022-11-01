@@ -5,8 +5,8 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-import XCTest
 import AdyenComponents
+import XCTest
 
 class PaymentMethodTests: XCTestCase {
     
@@ -73,7 +73,7 @@ class PaymentMethodTests: XCTestCase {
                 achDirectDebit,
                 bacsDirectDebit,
                 giftCard1,
-                givexGiftCard,
+                givexGiftCard
             ]
         ]
         return try Coder.decode(dictionary) as PaymentMethods
@@ -337,9 +337,9 @@ class PaymentMethodTests: XCTestCase {
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"),
                                                   where: { (storeCardPaymentMethod: StoredCardPaymentMethod) -> Bool in
-            storeCardPaymentMethod.fundingSource == .credit
+                                                      storeCardPaymentMethod.fundingSource == .credit
             
-        })
+                                                  })
         let storedPaymentMethod = paymentMethods.stored.filter { $0.type == .scheme }.compactMap { $0 as? StoredCardPaymentMethod }.first { $0.fundingSource == .credit }
         XCTAssertEqual(storedPaymentMethod?.displayInformation(using: nil).title, "custom title")
         XCTAssertEqual(storedPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
@@ -355,9 +355,9 @@ class PaymentMethodTests: XCTestCase {
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"),
                                                   where: { (storeCardPaymentMethod: StoredCardPaymentMethod) -> Bool in
-            storeCardPaymentMethod.fundingSource == .debit
+                                                      storeCardPaymentMethod.fundingSource == .debit
             
-        })
+                                                  })
         let storedPaymentMethod = paymentMethods.stored.filter { $0.type == .scheme }.compactMap { $0 as? StoredCardPaymentMethod }.first { $0.fundingSource == .debit }
         XCTAssertEqual(storedPaymentMethod?.displayInformation(using: nil).title, "custom title")
         XCTAssertEqual(storedPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
@@ -382,7 +382,7 @@ class PaymentMethodTests: XCTestCase {
             ofRegularPaymentMethod: .giftcard,
             with: .init(title: "custom title",
                         subtitle: "custom subtitle"),
-            where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
+            where: { (paymentMethod: GiftCardPaymentMethod) -> Bool in
                 paymentMethod.brand == "genericgiftcard"
             }
         )
@@ -393,7 +393,7 @@ class PaymentMethodTests: XCTestCase {
         /// make sure that we override the display information of only generic giftcard payment method.
         let givexGiftCardPaymentMethod = paymentMethods.paymentMethod(
             ofType: PaymentMethodType.giftcard,
-            where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
+            where: { (paymentMethod: GiftCardPaymentMethod) -> Bool in
                 paymentMethod.brand == "givex"
             }
         )
@@ -406,13 +406,13 @@ class PaymentMethodTests: XCTestCase {
             ofRegularPaymentMethod: .giftcard,
             with: .init(title: "custom title",
                         subtitle: "custom subtitle"),
-            where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
+            where: { (paymentMethod: GiftCardPaymentMethod) -> Bool in
                 paymentMethod.brand == "givex"
             }
         )
         let givexGiftCardPaymentMethod = paymentMethods.paymentMethod(
             ofType: PaymentMethodType.giftcard,
-            where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
+            where: { (paymentMethod: GiftCardPaymentMethod) -> Bool in
                 paymentMethod.brand == "givex"
             }
         )
@@ -421,7 +421,7 @@ class PaymentMethodTests: XCTestCase {
         
         let anyGiftCardPaymentMethod = paymentMethods.paymentMethod(
             ofType: PaymentMethodType.giftcard,
-            where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
+            where: { (paymentMethod: GiftCardPaymentMethod) -> Bool in
                 paymentMethod.brand == "giftfor2card"
             }
         )
@@ -434,13 +434,13 @@ class PaymentMethodTests: XCTestCase {
             ofRegularPaymentMethod: .giftcard,
             with: .init(title: "custom title",
                         subtitle: "custom subtitle"),
-            where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
+            where: { (paymentMethod: GiftCardPaymentMethod) -> Bool in
                 paymentMethod.brand == "giftfor2card"
             }
         )
         let anyGiftCardPaymentMethod = paymentMethods.paymentMethod(
             ofType: PaymentMethodType.giftcard,
-            where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
+            where: { (paymentMethod: GiftCardPaymentMethod) -> Bool in
                 paymentMethod.brand == "giftfor2card"
             }
         )
@@ -449,7 +449,7 @@ class PaymentMethodTests: XCTestCase {
         
         let givexGiftCardPaymentMethod = paymentMethods.paymentMethod(
             ofType: PaymentMethodType.giftcard,
-            where: { (paymentMethod:GiftCardPaymentMethod) -> Bool in
+            where: { (paymentMethod: GiftCardPaymentMethod) -> Bool in
                 paymentMethod.brand == "givex"
             }
         )
@@ -478,29 +478,29 @@ class PaymentMethodTests: XCTestCase {
     func testDecodingPaymentMethodsWithNullValues() throws {
 
         let json = """
-{
-    "storedPaymentMethods": null,
-    "paymentMethods": [
         {
-            "brand": null,
-            "brands": [
-                "visa",
-                "mc",
-                "diners",
-                "discover",
-                "maestro"
-            ],
-            "issuers": null,
-            "configuration": null,
-            "fundingSource": null,
-            "group": null,
-            "inputDetails": null,
-            "name": "Card payment",
-            "type": "scheme"
+            "storedPaymentMethods": null,
+            "paymentMethods": [
+                {
+                    "brand": null,
+                    "brands": [
+                        "visa",
+                        "mc",
+                        "diners",
+                        "discover",
+                        "maestro"
+                    ],
+                    "issuers": null,
+                    "configuration": null,
+                    "fundingSource": null,
+                    "group": null,
+                    "inputDetails": null,
+                    "name": "Card payment",
+                    "type": "scheme"
+                }
+            ]
         }
-    ]
-}
-"""
+        """
 
         let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: json.data(using: .utf8)!)
         XCTAssertEqual(paymentMethods.regular.count, 1)
@@ -510,7 +510,7 @@ class PaymentMethodTests: XCTestCase {
     
     func testEquality() {
         XCTAssertFalse(BLIKPaymentMethod(type: .blik, name: "blik") ==
-                       StoredBLIKPaymentMethod(type: .blik,
+            StoredBLIKPaymentMethod(type: .blik,
                                     name: "blik",
                                     identifier: "efefew",
                                     supportedShopperInteractions: [.shopperNotPresent]))
@@ -519,13 +519,13 @@ class PaymentMethodTests: XCTestCase {
                                                  identifier: "12334",
                                                  supportedShopperInteractions: [.shopperPresent],
                                                  emailAddress: "email") ==
-                       InstantPaymentMethod(type: .payPal, name: "payPal"))
+                InstantPaymentMethod(type: .payPal, name: "payPal"))
         XCTAssertTrue(StoredPayPalPaymentMethod(type: .payPal,
                                                 name: "payPal",
                                                 identifier: "12334",
                                                 supportedShopperInteractions: [.shopperPresent],
                                                 emailAddress: "email") ==
-                      StoredPayPalPaymentMethod(type: .payPal,
+                StoredPayPalPaymentMethod(type: .payPal,
                                           name: "payPal",
                                           identifier: "12334",
                                           supportedShopperInteractions: [.shopperPresent],
@@ -535,7 +535,7 @@ class PaymentMethodTests: XCTestCase {
                                                  identifier: "XXX",
                                                  supportedShopperInteractions: [.shopperPresent],
                                                  emailAddress: "email") ==
-                       StoredPayPalPaymentMethod(type: .payPal,
+                StoredPayPalPaymentMethod(type: .payPal,
                                           name: "payPal",
                                           identifier: "12334",
                                           supportedShopperInteractions: [.shopperPresent],
@@ -545,7 +545,7 @@ class PaymentMethodTests: XCTestCase {
                                                  identifier: "XXX",
                                                  supportedShopperInteractions: [.shopperPresent],
                                                  emailAddress: "email") ==
-                       StoredPayPalPaymentMethod(type: .payPal,
+                StoredPayPalPaymentMethod(type: .payPal,
                                           name: "payPal",
                                           identifier: "12334",
                                           supportedShopperInteractions: [.shopperPresent],
@@ -555,7 +555,7 @@ class PaymentMethodTests: XCTestCase {
                                                  identifier: "XXX",
                                                  supportedShopperInteractions: [.shopperPresent],
                                                  emailAddress: "email") ==
-                       StoredPayPalPaymentMethod(type: .payPal,
+                StoredPayPalPaymentMethod(type: .payPal,
                                           name: "payPal",
                                           identifier: "12334",
                                           supportedShopperInteractions: [.shopperNotPresent],
@@ -565,7 +565,7 @@ class PaymentMethodTests: XCTestCase {
                                                  identifier: "payPal_id",
                                                  supportedShopperInteractions: [.shopperPresent],
                                                  emailAddress: "email") ==
-                       StoredBLIKPaymentMethod(type: .payPal,
+                StoredBLIKPaymentMethod(type: .payPal,
                                         name: "payPal",
                                         identifier: "payPal_id",
                                         supportedShopperInteractions: [.shopperPresent]))

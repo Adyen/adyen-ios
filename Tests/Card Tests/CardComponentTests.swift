@@ -20,21 +20,21 @@ class CardComponentTests: XCTestCase {
     let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard])
 
     let storedMethod = StoredCardPaymentMethod(type: .card,
-                                         name: "Test name",
-                                         identifier: "id",
-                                         fundingSource: .credit,
-                                         supportedShopperInteractions: [.shopperPresent],
-                                         brand: .visa,
-                                         lastFour: "1234",
-                                         expiryMonth: "12",
-                                         expiryYear: "22",
-                                         holderName: "holderName")
+                                               name: "Test name",
+                                               identifier: "id",
+                                               fundingSource: .credit,
+                                               supportedShopperInteractions: [.shopperPresent],
+                                               brand: .visa,
+                                               lastFour: "1234",
+                                               expiryMonth: "12",
+                                               expiryYear: "22",
+                                               holderName: "holderName")
 
     override func setUpWithError() throws {
         configuration = CardComponent.Configuration()
         sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+                            context: context,
+                            configuration: configuration)
         try super.setUpWithError()
     }
 
@@ -1207,7 +1207,7 @@ class CardComponentTests: XCTestCase {
     
     func testInstallmentsWithDefaultAndCardBasedOptions() {
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
-                                                                            InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
+            InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions,
                                                                           defaultOptions: defaultInstallmentOptions)
@@ -1287,7 +1287,7 @@ class CardComponentTests: XCTestCase {
 
     func testInstallmentsWitCardBasedOptions() {
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
-                                                                            InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
+            InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions)
         let cardTypeProviderMock = BinInfoProviderMock()
 
@@ -1543,8 +1543,8 @@ class CardComponentTests: XCTestCase {
         configuration.shopperInformation = shopperInformation
 
         let sut = CardComponent(paymentMethod: method,
-                                         context: context,
-                                         configuration: configuration)
+                                context: context,
+                                configuration: configuration)
 
         // When
         UIApplication.shared.keyWindow?.rootViewController = sut.cardViewController
@@ -1969,7 +1969,6 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: configuration)
-
 
         var items = sut.cardViewController.items
         XCTAssertFalse(items.holderNameItem.isValid())

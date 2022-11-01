@@ -89,9 +89,9 @@ class AtomeComponentUITests: XCTestCase {
 
         let view: UIView = sut.viewController.view
         do {
-            let submitButton: UIControl =  try XCTUnwrap(view.findView(by: AtomeViewIdentifier.payButton))
+            let submitButton: UIControl = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.payButton))
             submitButton.sendActions(for: .touchUpInside)
-        } catch let error {
+        } catch {
             print(error)
         }
         waitForExpectations(timeout: 10, handler: nil)
