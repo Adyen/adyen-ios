@@ -12,7 +12,7 @@ public typealias IssuerPickerItem = BasePickerElement<Issuer>
 @_spi(AdyenInternal)
 public final class FormIssuersPickerItem: BaseFormPickerItem<Issuer> {
 
-    public override init(preselectedValue: IssuerPickerItem, selectableValues: [IssuerPickerItem], style: FormTextItemStyle) {
+    override public init(preselectedValue: IssuerPickerItem, selectableValues: [IssuerPickerItem], style: FormTextItemStyle) {
         AdyenAssertion.assert(message: "selectableValues should be greater than 0", condition: selectableValues.count <= 0)
         super.init(preselectedValue: preselectedValue, selectableValues: selectableValues, style: style)
     }

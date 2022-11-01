@@ -22,8 +22,8 @@ class OnlineBankingComponentTests: XCTestCase {
         context = AdyenContext(apiContext: Dummy.apiContext, payment: nil, analyticsProvider: analyticsProviderMock)
         style = FormComponentStyle()
         sut = OnlineBankingComponent(paymentMethod: paymentMethod,
-                             context: context,
-                             configuration: OnlineBankingComponent.Configuration(style: style))
+                                     context: context,
+                                     configuration: OnlineBankingComponent.Configuration(style: style))
         getFormViewController().title = "Test title"
     }
 

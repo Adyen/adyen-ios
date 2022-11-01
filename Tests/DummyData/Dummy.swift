@@ -47,10 +47,10 @@ enum Dummy: Error {
                                               holder: nil)
     
     internal static let longBancontactCard = Card(number: "6703 0000 0000 0000 003",
-                                              securityCode: nil,
-                                              expiryMonth: "03",
-                                              expiryYear: "30",
-                                              holder: nil)
+                                                  securityCode: nil,
+                                                  expiryMonth: "03",
+                                                  expiryYear: "30",
+                                                  holder: nil)
 
     internal static let kcpCard = Card(number: "9490 2200 0661 1406",
                                        securityCode: "637",
@@ -59,7 +59,7 @@ enum Dummy: Error {
                                        holder: nil)
 
     internal static func createTestApplePayPayment() -> ApplePayPayment {
-        return try! .init(countryCode: "US", currencyCode: "USD", summaryItems: createTestSummaryItems())
+        try! .init(countryCode: "US", currencyCode: "USD", summaryItems: createTestSummaryItems())
     }
     
     internal static let returnUrl = URL(string: "https://google.com?redirectResult=some")!

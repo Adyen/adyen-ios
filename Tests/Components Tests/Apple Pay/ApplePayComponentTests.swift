@@ -26,7 +26,7 @@ class ApplePayComponentTest: XCTestCase {
 
     override func setUp() {
         let configuration = ApplePayComponent.Configuration(payment: Dummy.createTestApplePayPayment(),
-                                                            merchantIdentifier: "test_id")                                                 
+                                                            merchantIdentifier: "test_id")
         sut = try! ApplePayComponent(paymentMethod: paymentMethod,
                                      context: Dummy.context,
                                      configuration: configuration)
@@ -106,7 +106,7 @@ class ApplePayComponentTest: XCTestCase {
                                      configuration: configuration)
         sut.applePayDelegate = mockApplePayDelegate
         mockApplePayDelegate.onShippingMethodChange = { method, payment in
-            return .init(paymentSummaryItems: [
+            .init(paymentSummaryItems: [
                 PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
                 PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
             ])
@@ -137,7 +137,7 @@ class ApplePayComponentTest: XCTestCase {
 
         sut.applePayDelegate = mockApplePayDelegate
         mockApplePayDelegate.onShippingContactChange = { contact, payment in
-            return .init(paymentSummaryItems: [
+            .init(paymentSummaryItems: [
                 PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
                 PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
             ])
@@ -154,7 +154,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 5)
         XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "summary_4")
         sut.paymentAuthorizationViewController(sut!.viewController as! PKPaymentAuthorizationViewController,
-                                               didSelectShippingContact: contact ) { update in
+                                               didSelectShippingContact: contact) { update in
 
             XCTAssertEqual(self.mockApplePayDelegate.contact, contact)
             XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 222200)
@@ -172,7 +172,7 @@ class ApplePayComponentTest: XCTestCase {
 
         sut.applePayDelegate = mockApplePayDelegate
         (mockApplePayDelegate as! ApplePayDelegateMockiOS15).onCouponChange = { coupon, payment in
-            return .init(paymentSummaryItems: [
+            .init(paymentSummaryItems: [
                 PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
                 PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
             ])
@@ -185,7 +185,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 5)
         XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "summary_4")
         sut.paymentAuthorizationViewController(sut!.viewController as! PKPaymentAuthorizationViewController,
-                                               didChangeCouponCode: "Coupon" ) { update in
+                                               didChangeCouponCode: "Coupon") { update in
 
             XCTAssertEqual(self.mockApplePayDelegate.couponCode, "Coupon")
             XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 222200)
@@ -196,7 +196,6 @@ class ApplePayComponentTest: XCTestCase {
 
         waitForExpectations(timeout: 4)
     }
-
 
     func testInvalidCurrencyCode() {
         let amount = Amount(value: 2, unsafeCurrencyCode: "ZZZ")
@@ -275,7 +274,6 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(paymentRequest.requiredBillingContactFields, expectedRequiredBillingFields)
         XCTAssertEqual(paymentRequest.requiredShippingContactFields, expectedRequiredShippingFields)
     }
-    
     
     func testNetworks() {
         if #available(iOS 15.1, *) {
@@ -372,7 +370,7 @@ class ApplePayComponentTest: XCTestCase {
 
 extension XCTestCase {
     
-    func compareCollections<T: Hashable>(_ lhs: Array<T>, _ rhs: Array<T>) -> Bool {
+    func compareCollections<T: Hashable>(_ lhs: [T], _ rhs: [T]) -> Bool {
         if lhs.count != rhs.count { return false }
 
         let lhsSet = Set<T>(lhs)

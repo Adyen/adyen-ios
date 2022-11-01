@@ -20,6 +20,7 @@ class InstantPaymentComponentTests: XCTestCase {
     override func setUp() {
         super.setUp()
     }
+
     override func setUpWithError() throws {
         try super.setUpWithError()
         context = Dummy.context

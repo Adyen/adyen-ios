@@ -6,8 +6,8 @@
 //  Copyright © 2022 Adyen. All rights reserved.
 //
 
-import XCTest
 @testable import AdyenSession
+import XCTest
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenActions
 import AdyenComponents
@@ -89,7 +89,7 @@ class SessionTests: XCTestCase {
             order: nil
         )
         let component = MBWayComponent(paymentMethod: paymentMethod,
-                                              context: context)
+                                       context: context)
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
         apiClient.mockedResults = [.success(PaymentsResponse(resultCode: .authorised,
@@ -421,7 +421,6 @@ class SessionTests: XCTestCase {
             didSubmitExpectation.fulfill()
         }
         
-        
         sut.didSubmit(data, from: component, in: dropInComponent)
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -582,7 +581,7 @@ class SessionTests: XCTestCase {
         sessionDelegate.handlerMock = sessionHandlerMock
         
         let didSubmitExpectation = expectation(description: "handler didSubmit should be called")
-        sessionHandlerMock.onDidSubmit = { (data, component, session) in
+        sessionHandlerMock.onDidSubmit = { data, component, session in
             didSubmitExpectation.fulfill()
         }
         
@@ -610,7 +609,7 @@ class SessionTests: XCTestCase {
         sessionDelegate.handlerMock = sessionHandlerMock
         
         let didProvideExpectation = expectation(description: "handler didProvide should be called")
-        sessionHandlerMock.onDidProvide = { (data, component, session) in
+        sessionHandlerMock.onDidProvide = { data, component, session in
             didProvideExpectation.fulfill()
         }
         
@@ -645,14 +644,14 @@ class SessionTests: XCTestCase {
         let actionComponent = QRCodeActionComponent(context: context)
         
         let didFailExpectation = expectation(description: "didFail should be called")
-        sessionDelegate.onDidFail = { (error, component, session) in
+        sessionDelegate.onDidFail = { error, component, session in
             XCTAssertTrue(error is ComponentError)
             XCTAssertTrue(session === sut)
             didFailExpectation.fulfill()
         }
         
         let didCompleteExpectation = expectation(description: "didComplete should be called")
-        sessionDelegate.onDidComplete = { (result, component, session) in
+        sessionDelegate.onDidComplete = { result, component, session in
             XCTAssertTrue(session === sut)
             didCompleteExpectation.fulfill()
         }
@@ -663,19 +662,18 @@ class SessionTests: XCTestCase {
         }
         
         let didProvideExpectation = expectation(description: "handler didProvide should be called")
-        sessionHandlerMock.onDidProvide = { (data, component, session) in
+        sessionHandlerMock.onDidProvide = { data, component, session in
             XCTAssertTrue(component === actionComponent)
             XCTAssertTrue(session === sut)
             didProvideExpectation.fulfill()
         }
         
         let didSubmitExpectation = expectation(description: "handler didSubmit should be called")
-        sessionHandlerMock.onDidSubmit = { (data, component, session) in
+        sessionHandlerMock.onDidSubmit = { data, component, session in
             XCTAssertTrue(component === paymentComponent)
             XCTAssertTrue(session === sut)
             didSubmitExpectation.fulfill()
         }
-        
         
         let paymentData = PaymentComponentData(
             paymentMethodDetails: MBWayDetails(
@@ -720,7 +718,7 @@ class SessionTests: XCTestCase {
         )]
         
         let didCompleteExpectation = expectation(description: "didComplete should be called")
-        sessionDelegate.onDidComplete = { (result, _, _) in
+        sessionDelegate.onDidComplete = { result, _, _ in
             XCTAssertEqual(result, .authorised)
             didCompleteExpectation.fulfill()
         }
@@ -751,7 +749,7 @@ class SessionTests: XCTestCase {
         )]
         
         let didCompleteExpectation = expectation(description: "didComplete should be called")
-        sessionDelegate.onDidComplete = { (result, _, _) in
+        sessionDelegate.onDidComplete = { result, _, _ in
             XCTAssertEqual(result, .pending)
             didCompleteExpectation.fulfill()
         }
@@ -782,7 +780,7 @@ class SessionTests: XCTestCase {
         )]
         
         let didCompleteExpectation = expectation(description: "didComplete should be called")
-        sessionDelegate.onDidComplete = { (result, _, _) in
+        sessionDelegate.onDidComplete = { result, _, _ in
             XCTAssertEqual(result, .refused)
             didCompleteExpectation.fulfill()
         }
@@ -813,7 +811,7 @@ class SessionTests: XCTestCase {
         )]
         
         let didCompleteExpectation = expectation(description: "didComplete should be called")
-        sessionDelegate.onDidComplete = { (result, _, _) in
+        sessionDelegate.onDidComplete = { result, _, _ in
             XCTAssertEqual(result, .cancelled)
             didCompleteExpectation.fulfill()
         }
@@ -844,7 +842,7 @@ class SessionTests: XCTestCase {
         )]
         
         let didCompleteExpectation = expectation(description: "didComplete should be called")
-        sessionDelegate.onDidComplete = { (result, _, _) in
+        sessionDelegate.onDidComplete = { result, _, _ in
             XCTAssertEqual(result, .received)
             didCompleteExpectation.fulfill()
         }
@@ -875,7 +873,7 @@ class SessionTests: XCTestCase {
         )]
         
         let didCompleteExpectation = expectation(description: "didComplete should be called")
-        sessionDelegate.onDidComplete = { (result, _, _) in
+        sessionDelegate.onDidComplete = { result, _, _ in
             XCTAssertEqual(result, .presentToShopper)
             didCompleteExpectation.fulfill()
         }
@@ -910,7 +908,7 @@ class SessionTests: XCTestCase {
         )]
         
         let didCompleteExpectation = expectation(description: "didComplete should be called")
-        sessionDelegate.onDidComplete = { (result, _, _) in
+        sessionDelegate.onDidComplete = { result, _, _ in
             XCTAssertEqual(result, .error)
             didCompleteExpectation.fulfill()
         }
@@ -941,7 +939,7 @@ class SessionTests: XCTestCase {
         )]
         
         let didCompleteExpectation = expectation(description: "didComplete should be called")
-        sessionDelegate.onDidComplete = { (result, _, _) in
+        sessionDelegate.onDidComplete = { result, _, _ in
             XCTAssertEqual(result, .error)
             didCompleteExpectation.fulfill()
         }
@@ -1030,7 +1028,7 @@ class SessionTests: XCTestCase {
                 )
             )
         ]
-        var sut: AdyenSession! = nil
+        var sut: AdyenSession!
         let initializationExpectation = expectation(description: "Expect session object to be initialized")
         AdyenSession.initialize(with: .init(sessionIdentifier: "session_id",
                                             initialSessionData: "session_data_0",
@@ -1054,14 +1052,14 @@ class SessionTests: XCTestCase {
 
 extension PaymentMethods: Equatable {
     public static func == (lhs: PaymentMethods, rhs: PaymentMethods) -> Bool {
-        guard lhs.regular.count == rhs.regular.count else  { return false }
-        guard lhs.stored.count == rhs.stored.count else  { return false }
-        for (paymentMethod1, paymentMethod2) in zip(lhs.regular, rhs.regular)  {
+        guard lhs.regular.count == rhs.regular.count else { return false }
+        guard lhs.stored.count == rhs.stored.count else { return false }
+        for (paymentMethod1, paymentMethod2) in zip(lhs.regular, rhs.regular) {
             if paymentMethod1 != paymentMethod2 {
                 return false
             }
         }
-        for (paymentMethod1, paymentMethod2) in zip(lhs.stored, rhs.stored)  {
+        for (paymentMethod1, paymentMethod2) in zip(lhs.stored, rhs.stored) {
             if paymentMethod1 != paymentMethod2 {
                 return false
             }
@@ -1069,7 +1067,6 @@ extension PaymentMethods: Equatable {
         return true
     }
 }
-
 
 let sessionConfigJson = """
 {

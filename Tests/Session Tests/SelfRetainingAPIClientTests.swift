@@ -6,17 +6,17 @@
 //  Copyright © 2022 Adyen. All rights reserved.
 //
 
-import XCTest
-@testable import AdyenSession
 import AdyenNetworking
+@testable import AdyenSession
+import XCTest
 @_spi(AdyenInternal) import Adyen
 
 extension SessionSetupResponse: Equatable {
     public static func == (lhs: SessionSetupResponse, rhs: SessionSetupResponse) -> Bool {
         lhs.sessionData == rhs.sessionData &&
-        lhs.shopperLocale == rhs.shopperLocale &&
-        lhs.countryCode == rhs.countryCode &&
-        lhs.amount == rhs.amount
+            lhs.shopperLocale == rhs.shopperLocale &&
+            lhs.countryCode == rhs.countryCode &&
+            lhs.amount == rhs.amount
     }
 }
 

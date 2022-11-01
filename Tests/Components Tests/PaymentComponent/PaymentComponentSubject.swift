@@ -6,8 +6,8 @@
 //  Copyright © 2022 Adyen. All rights reserved.
 //
 
-import Foundation
 import Adyen
+import Foundation
 
 class PaymentComponentSubject: PaymentComponent {
 

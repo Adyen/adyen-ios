@@ -15,7 +15,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
     let method = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "test_name")
 
     override func setUpWithError() throws {
-       try super.setUpWithError()
+        try super.setUpWithError()
         context = Dummy.context
     }
 
@@ -245,7 +245,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let mockViewController = UIViewController()
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod,
-                                                      context: context)
+                                           context: context)
 
         // When
         sut.viewWillAppear(viewController: mockViewController)
