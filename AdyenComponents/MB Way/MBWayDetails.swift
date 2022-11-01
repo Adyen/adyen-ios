@@ -10,6 +10,9 @@ import Foundation
 /// Contains the details supplied by the MB Way component.
 public struct MBWayDetails: PaymentMethodDetails {
     
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
+    
     /// The payment method type.
     public let type: PaymentMethodType
     

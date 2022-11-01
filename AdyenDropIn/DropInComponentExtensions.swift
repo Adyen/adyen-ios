@@ -51,18 +51,20 @@ extension DropInComponent: PaymentComponentDelegate {
     
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         paymentInProgress = true
-
-        let checkoutAttemptId = component.context.analyticsProvider.checkoutAttemptId
-        let updatedData = data.replacing(checkoutAttemptId: checkoutAttemptId)
+        /// try to fetch the fetchCheckoutAttemptId to get cached if its not already cached
+        component.context.analyticsProvider.fetchAndCacheCheckoutAttemptIdIfNeeded()
+        
+        let updatedData = data.replacing(checkoutAttemptId: component.context.analyticsProvider.checkoutAttemptId)
 
         guard updatedData.browserInfo == nil else {
-            delegate?.didSubmit(updatedData, from: component, in: self)
+            self.delegate?.didSubmit(updatedData, from: component, in: self)
             return
         }
         updatedData.dataByAddingBrowserInfo { [weak self] in
             guard let self = self else { return }
             self.delegate?.didSubmit($0, from: component, in: self)
         }
+        
     }
     
     public func didFail(with error: Error, from component: PaymentComponent) {

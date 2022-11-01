@@ -70,10 +70,10 @@ class AnalyticsProviderTests: XCTestCase {
         sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         let fetchCheckoutAttemptIdExpection = expectation(description: "checkoutAttemptId completion")
-        fetchCheckoutAttemptIdExpection.isInverted = true
 
         // When
         sut.fetchCheckoutAttemptId { receivedCheckoutAttemptId in
+            XCTAssertNil(receivedCheckoutAttemptId)
             fetchCheckoutAttemptIdExpection.fulfill()
         }
 

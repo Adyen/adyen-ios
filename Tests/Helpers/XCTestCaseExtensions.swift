@@ -19,4 +19,12 @@ extension XCTestCase {
 
         wait(for: [dummyExpectation], timeout: 100)
     }
+    
+    func waitFor(predicate: @escaping () -> Bool) {
+        let dummyExpectation = XCTNSPredicateExpectation(predicate: NSPredicate(block: { _, _ in
+            predicate()
+        }), object: nil)
+
+        wait(for: [dummyExpectation], timeout: 100)
+    }
 }

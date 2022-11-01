@@ -90,6 +90,11 @@ public final class ListViewController: UITableViewController {
         delegate?.viewDidAppear(viewController: self)
     }
     
+    override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        delegate?.viewWillAppear(viewController: self)
+    }
+    
     // MARK: - UITableViewDelegate
     
     override public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

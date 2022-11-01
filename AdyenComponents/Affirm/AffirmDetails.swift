@@ -9,6 +9,9 @@
 /// Contains the details supplied by the Affirm component.
 public struct AffirmDetails: PaymentMethodDetails, ShopperInformation {
     
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
+    
     /// The payment method type.
     public let type: PaymentMethodType
     
