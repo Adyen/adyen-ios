@@ -9,6 +9,9 @@
 /// Contains the details supplied by the BACS Direct Debit component.
 public struct BACSDirectDebitDetails: PaymentMethodDetails {
     
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
+    
     /// The payment method type.
     public let type: PaymentMethodType
 

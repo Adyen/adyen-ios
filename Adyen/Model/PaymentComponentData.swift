@@ -58,7 +58,9 @@ public struct PaymentComponentData {
     public let browserInfo: BrowserInfo?
 
     /// A unique identifier for a checkout attempt.
-    public let checkoutAttemptId: String?
+    public var checkoutAttemptId: String? {
+        paymentMethod.checkoutAttemptId
+    }
 
     /// The billing address information.
     public var billingAddress: PostalAddress? {
@@ -100,14 +102,12 @@ public struct PaymentComponentData {
                 order: PartialPaymentOrder?,
                 storePaymentMethod: Bool? = nil,
                 browserInfo: BrowserInfo? = nil,
-                checkoutAttemptId: String? = nil,
                 installments: Installments? = nil) {
         self.amount = amount
         self.paymentMethod = paymentMethodDetails
         self.order = order
         self.storePaymentMethod = storePaymentMethod
         self.browserInfo = browserInfo
-        self.checkoutAttemptId = checkoutAttemptId
         self.installments = installments
     }
 
@@ -118,7 +118,6 @@ public struct PaymentComponentData {
                              order: order,
                              storePaymentMethod: storePaymentMethod,
                              browserInfo: browserInfo,
-                             checkoutAttemptId: checkoutAttemptId,
                              installments: installments)
     }
 
@@ -129,20 +128,19 @@ public struct PaymentComponentData {
                              order: order,
                              storePaymentMethod: storePaymentMethod,
                              browserInfo: browserInfo,
-                             checkoutAttemptId: checkoutAttemptId,
                              installments: installments)
     }
 
     @_spi(AdyenInternal)
     public func replacing(checkoutAttemptId: String?) -> PaymentComponentData {
         guard let checkoutAttemptId = checkoutAttemptId else { return self }
-
+        var paymentMethod = paymentMethod
+        paymentMethod.checkoutAttemptId = checkoutAttemptId
         return PaymentComponentData(paymentMethodDetails: paymentMethod,
                                     amount: amount,
                                     order: order,
                                     storePaymentMethod: storePaymentMethod,
                                     browserInfo: browserInfo,
-                                    checkoutAttemptId: checkoutAttemptId,
                                     installments: installments)
     }
     
@@ -159,7 +157,6 @@ public struct PaymentComponentData {
                                             order: order,
                                             storePaymentMethod: storePaymentMethod,
                                             browserInfo: $0,
-                                            checkoutAttemptId: checkoutAttemptId,
                                             installments: installments))
         }
     }

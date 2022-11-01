@@ -41,6 +41,7 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     }
     
     private let issuerListPaymentMethod: IssuerListPaymentMethod
+
     // MARK: - Presentable Component Protocol
     
     public var viewController: UIViewController {
@@ -52,6 +53,7 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     }
     
     public var requiresModalPresentation: Bool = true
+
     // MARK: - Private
     
     private lazy var listViewController: ListViewController = {
@@ -63,9 +65,9 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
             var listItem = ListItem(title: issuer.name, style: configuration.style.listItem)
             listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
             listItem.imageURL = LogoURLProvider.logoURL(for: issuer,
-                                                           localizedParameters: configuration.localizationParameters,
-                                                           paymentMethod: issuerListPaymentMethod,
-                                                           environment: context.apiContext.environment)
+                                                        localizedParameters: configuration.localizationParameters,
+                                                        paymentMethod: issuerListPaymentMethod,
+                                                        environment: context.apiContext.environment)
 
             listItem.selectionHandler = { [weak self] in
                 guard let self = self else { return }

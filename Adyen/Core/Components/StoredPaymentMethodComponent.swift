@@ -103,6 +103,9 @@ extension StoredPaymentMethodComponent: TrackableComponent {}
 /// Store payment method details.
 public struct StoredPaymentDetails: PaymentMethodDetails {
     
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
+    
     internal let type: PaymentMethodType
     
     internal let storedPaymentMethodIdentifier: String

@@ -9,6 +9,9 @@ import Foundation
 
 /// Contains the details supplied by the BLIK component.
 public struct BLIKDetails: PaymentMethodDetails {
+    
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
 
     /// The payment method type.
     public let type: PaymentMethodType
