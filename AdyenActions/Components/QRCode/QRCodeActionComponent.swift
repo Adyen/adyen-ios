@@ -17,7 +17,7 @@ internal enum QRCodeComponentError: LocalizedError {
     }
 }
 
-/// A component  for Pix action.
+/// A component  for QRCode action.
 public final class QRCodeActionComponent: ActionComponent, Cancellable {
     
     /// The context object for this component.
@@ -49,7 +49,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable {
         }
     }
     
-    /// The voucher component configurations.
+    /// The QR code component configurations.
     public var configuration: Configuration
     
     private let pollingComponentBuilder: AnyPollingHandlerProvider
