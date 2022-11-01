@@ -159,7 +159,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable {
             observedProgress: progress,
             expiration: $expirationText,
             style: PixView.Model.Style(
-                copyButton: configuration.style.copyButton,
+                copyButton: configuration.style.copyCodeButton,
                 instructionLabel: configuration.style.instructionLabel,
                 progressView: configuration.style.progressView,
                 expirationLabel: configuration.style.expirationLabel,
