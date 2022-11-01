@@ -31,7 +31,7 @@ class QRCodeComponentTests: XCTestCase {
         let dummyExpectation = expectation(description: "Dummy Expectation")
         var style = QRCodeComponentStyle()
         
-        style.copyButton = ButtonStyle(
+        style.copyCodeButton = ButtonStyle(
             title: TextStyle(font: .preferredFont(forTextStyle: .callout), color: .blue, textAlignment: .justified),
             cornerRadius: 4,
             background: .black
@@ -76,7 +76,7 @@ class QRCodeComponentTests: XCTestCase {
             let logo: UIImageView? = viewController.view.findView(by: "logo")
             
             // Test copy button
-            XCTAssertEqual(copyButton?.backgroundColor, style.copyButton.backgroundColor)
+            XCTAssertEqual(copyButton?.backgroundColor, style.copyCodeButton.backgroundColor)
             XCTAssertEqual(copyButton?.layer.cornerRadius, 4)
             
             // Test instruction label
