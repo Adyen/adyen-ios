@@ -18,7 +18,7 @@ internal enum QRCodeComponentError: LocalizedError {
 }
 
 /// A component  for Pix action.
-public final class PixActionComponent: ActionComponent, Cancellable {
+public final class QRCodeActionComponent: ActionComponent, Cancellable {
     
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -98,8 +98,8 @@ public final class PixActionComponent: ActionComponent, Cancellable {
     ///
     /// - Parameter action: The QR code action.
     public func handle(_ action: QRCodeAction) {
-        let pollingComponent = pollingComponentBuilder.handler(for: action.paymentMethodType)
-        pollingComponent.delegate = self
+        pollingComponent = pollingComponentBuilder.handler(for: action.paymentMethodType)
+        pollingComponent?.delegate = self
         
         assert(presentationDelegate != nil)
         
@@ -112,7 +112,7 @@ public final class PixActionComponent: ActionComponent, Cancellable {
         
         startTimer()
         
-        pollingComponent.handle(action)
+        pollingComponent?.handle(action)
     }
     
     /// :nodoc
@@ -180,7 +180,7 @@ public final class PixActionComponent: ActionComponent, Cancellable {
 }
 
 @_spi(AdyenInternal)
-extension PixActionComponent: ActionComponentDelegate {
+extension QRCodeActionComponent: ActionComponentDelegate {
 
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         cleanup()
@@ -197,7 +197,7 @@ extension PixActionComponent: ActionComponentDelegate {
 }
 
 @_spi(AdyenInternal)
-extension PixActionComponent: PixViewDelegate {
+extension QRCodeActionComponent: PixViewDelegate {
     
     internal func copyToPasteboard(with action: QRCodeAction) {
         UIPasteboard.general.string = action.qrCodeData
