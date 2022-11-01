@@ -642,7 +642,7 @@ class SessionTests: XCTestCase {
         
         let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
         let paymentComponent = PaymentComponentMock(paymentMethod: paymentMethod)
-        let actionComponent = PixActionComponent(context: context)
+        let actionComponent = QRCodeActionComponent(context: context)
         
         let didFailExpectation = expectation(description: "didFail should be called")
         sessionDelegate.onDidFail = { (error, component, session) in
@@ -694,7 +694,7 @@ class SessionTests: XCTestCase {
         )
         
         dropIn.didFail(with: ComponentError.paymentMethodNotSupported, from: paymentComponent)
-        dropIn.didOpenExternalApplication(component: PixActionComponent(context: context))
+        dropIn.didOpenExternalApplication(component: QRCodeActionComponent(context: context))
         dropIn.didSubmit(paymentData, from: paymentComponent)
         dropIn.didProvide(actionData, from: actionComponent)
         sut.sessionContext.resultCode = .authorised
@@ -730,7 +730,7 @@ class SessionTests: XCTestCase {
             ),
             paymentData: "payment_data"
         )
-        sut.didProvide(actionData, from: PixActionComponent(context: context))
+        sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
         wait(for: [didCompleteExpectation], timeout: 2)
     }
     
@@ -761,7 +761,7 @@ class SessionTests: XCTestCase {
             ),
             paymentData: "payment_data"
         )
-        sut.didProvide(actionData, from: PixActionComponent(context: context))
+        sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
         wait(for: [didCompleteExpectation], timeout: 2)
     }
     
@@ -792,7 +792,7 @@ class SessionTests: XCTestCase {
             ),
             paymentData: "payment_data"
         )
-        sut.didProvide(actionData, from: PixActionComponent(context: context))
+        sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
         wait(for: [didCompleteExpectation], timeout: 2)
     }
     
@@ -823,7 +823,7 @@ class SessionTests: XCTestCase {
             ),
             paymentData: "payment_data"
         )
-        sut.didProvide(actionData, from: PixActionComponent(context: context))
+        sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
         wait(for: [didCompleteExpectation], timeout: 2)
     }
     
@@ -854,7 +854,7 @@ class SessionTests: XCTestCase {
             ),
             paymentData: "payment_data"
         )
-        sut.didProvide(actionData, from: PixActionComponent(context: context))
+        sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
         wait(for: [didCompleteExpectation], timeout: 2)
     }
     
@@ -920,7 +920,7 @@ class SessionTests: XCTestCase {
             ),
             paymentData: "payment_data"
         )
-        sut.didProvide(actionData, from: PixActionComponent(context: context))
+        sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
         wait(for: [didCompleteExpectation], timeout: 2)
     }
     
@@ -951,7 +951,7 @@ class SessionTests: XCTestCase {
             ),
             paymentData: "payment_data"
         )
-        sut.didProvide(actionData, from: PixActionComponent(context: context))
+        sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
         wait(for: [didCompleteExpectation], timeout: 2)
     }
     
