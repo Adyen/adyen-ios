@@ -234,7 +234,7 @@ extension QRCodeActionComponent: QRCodeViewDelegate {
     internal func copyToPasteboard(with action: QRCodeAction) {
         UIPasteboard.general.string = action.qrCodeData
     }
-
+    
     internal func saveAsImage(qrCodeImage: UIImage?, sourceView: UIView) {
         presentSharePopover(with: qrCodeImage as Any, sourceView: sourceView)
     }

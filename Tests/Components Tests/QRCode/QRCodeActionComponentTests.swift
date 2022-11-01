@@ -25,7 +25,7 @@ class QRCodeActionComponentTests: XCTestCase {
     lazy var method = InstantPaymentMethod(type: .other("pix"), name: "pix")
     let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
     let componentData = ActionComponentData(details: AwaitActionDetails(payload: "DummyPayload"), paymentData: "DummyData")
-    
+
     func testComponentTimeout() {
         let dummyExpectation = expectation(description: "Dummy Expectation")
         

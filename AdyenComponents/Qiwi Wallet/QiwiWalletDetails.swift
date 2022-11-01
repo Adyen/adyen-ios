@@ -10,6 +10,9 @@ import Foundation
 /// Contains the details supplied by the Qiwi Wallet component.
 public struct QiwiWalletDetails: PaymentMethodDetails {
     
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
+    
     /// The payment method type.
     public let type: PaymentMethodType
     

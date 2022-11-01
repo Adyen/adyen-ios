@@ -66,6 +66,9 @@ extension InstantPaymentComponent: TrackableComponent {}
 
 /// Describes a payment details that contains nothing but the payment method type name.
 public struct InstantPaymentDetails: PaymentMethodDetails {
+    
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
 
     /// The payment method type name.
     public let type: PaymentMethodType

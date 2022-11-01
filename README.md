@@ -13,7 +13,8 @@
 
 <br/>
 
-![Checkout iOS Logo](https://user-images.githubusercontent.com/2648655/127174806-79646a9e-24be-4c7b-8b0c-6d1657d82a37.png)
+![iOS Logo](https://user-images.githubusercontent.com/2648655/198585678-047a1f5c-1463-4837-90b7-01e8094c9830.png)
+
 
 # Adyen iOS
 

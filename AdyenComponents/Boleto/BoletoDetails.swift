@@ -9,6 +9,9 @@ import Foundation
 
 /// Contains the details supplied by the Boleto component.
 public struct BoletoDetails: PaymentMethodDetails, ShopperInformation {
+    
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
 
     /// The type of the payment method
     public let type: PaymentMethodType

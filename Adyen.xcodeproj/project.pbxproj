@@ -22,10 +22,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		00139749291155E7000AC4BD /* QRCodeActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00139748291155E7000AC4BD /* QRCodeActionComponent.swift */; };
 		0058691528B644FB00B65A19 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691428B644FB00B65A19 /* QRCodeView.swift */; };
 		0058691728B6450900B65A19 /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691628B6450900B65A19 /* QRCodeViewController.swift */; };
 		0058691928B6451000B65A19 /* QRCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691828B6451000B65A19 /* QRCodeViewModel.swift */; };
-		0058691C28B6457700B65A19 /* QRCodeActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691B28B6457700B65A19 /* QRCodeActionComponent.swift */; };
 		0058692328B8C1FE00B65A19 /* QRCodeActionComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058692228B8C1FE00B65A19 /* QRCodeActionComponentUITests.swift */; };
 		0058692528BE0FB700B65A19 /* QRCodeViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058692428BE0FB700B65A19 /* QRCodeViewDelegateMock.swift */; };
 		007D790C2812C81400382D31 /* AtomeComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007D790B2812C81400382D31 /* AtomeComponentUITests.swift */; };
@@ -1102,10 +1102,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		00139748291155E7000AC4BD /* QRCodeActionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeActionComponent.swift; sourceTree = "<group>"; };
 		0058691428B644FB00B65A19 /* QRCodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
 		0058691628B6450900B65A19 /* QRCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
 		0058691828B6451000B65A19 /* QRCodeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewModel.swift; sourceTree = "<group>"; };
-		0058691B28B6457700B65A19 /* QRCodeActionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeActionComponent.swift; sourceTree = "<group>"; };
 		0058692228B8C1FE00B65A19 /* QRCodeActionComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeActionComponentUITests.swift; sourceTree = "<group>"; };
 		0058692428BE0FB700B65A19 /* QRCodeViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewDelegateMock.swift; sourceTree = "<group>"; };
 		007D79092812C81400382D31 /* AdyenUIHostUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdyenUIHostUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2137,8 +2137,8 @@
 		5A6456E12625A1C3001824F0 /* QRCode */ = {
 			isa = PBXGroup;
 			children = (
+				00139748291155E7000AC4BD /* QRCodeActionComponent.swift */,
 				5A22C2AC262EF99C00F12D97 /* ExpirationTimer.swift */,
-				0058691B28B6457700B65A19 /* QRCodeActionComponent.swift */,
 			);
 			path = QRCode;
 			sourceTree = "<group>";
@@ -6172,7 +6172,6 @@
 				F917618425A30B8500D653BE /* Submit3DS2FingerprintResponse.swift in Sources */,
 				F9175FE42594999C00D653BE /* AwaitActionDetails.swift in Sources */,
 				F9175FE62594999C00D653BE /* AwaitComponent.swift in Sources */,
-				0058691C28B6457700B65A19 /* QRCodeActionComponent.swift in Sources */,
 				F9175FBB2594996000D653BE /* RedirectAction.swift in Sources */,
 				F917615D25A30B6400D653BE /* ADYServiceAdapter.swift in Sources */,
 				F917617125A30B6A00D653BE /* ThreeDS2CompactActionHandler.swift in Sources */,
@@ -6182,6 +6181,7 @@
 				F97C84D925C178E900D7F85C /* VoucherComponent.swift in Sources */,
 				F97BC22C2667768B00F1D242 /* AppleWalletPassProvider.swift in Sources */,
 				F917618525A30B8500D653BE /* Submit3DS2FingerprintRequest.swift in Sources */,
+				00139749291155E7000AC4BD /* QRCodeActionComponent.swift in Sources */,
 				F9175FE52594999C00D653BE /* PollingHandlerProvider.swift in Sources */,
 				F917613425A30B5700D653BE /* ThreeDS2Component.swift in Sources */,
 				F917617025A30B6A00D653BE /* ThreeDS2CoreActionHandler.swift in Sources */,

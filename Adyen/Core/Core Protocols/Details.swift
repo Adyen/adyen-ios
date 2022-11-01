@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,7 +10,11 @@ import Foundation
 public protocol Details: OpaqueEncodable {}
 
 /// Contains the payment details entered by the user to complete payment with chosen payment method.
-public protocol PaymentMethodDetails: Details {}
+public protocol PaymentMethodDetails: Details {
+    
+    @_spi(AdyenInternal)
+    var checkoutAttemptId: String? { get set }
+}
 
 /// Contains additional details that were retrieved to complete a payment.
 public protocol AdditionalDetails: Details {}
