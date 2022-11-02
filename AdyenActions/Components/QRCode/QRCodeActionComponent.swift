@@ -238,5 +238,4 @@ extension QRCodeActionComponent: QRCodeViewDelegate {
     internal func saveAsImage(qrCodeImage: UIImage?, sourceView: UIView) {
         presentSharePopover(with: qrCodeImage as Any, sourceView: sourceView)
     }
-    
 }
