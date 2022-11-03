@@ -160,4 +160,6 @@
 "adyen.ach.accountLocationField.title" = "ABA 라우팅 번호";
 "adyen.ach.accountLocationField.invalid" = "유효하지 않은 ABA 라우팅 번호";
 "idealIssuer.selectField.title" = "은행";
-"adyen.onlineBanking.termsAndConditions" = "#이용약관#에 동의하는 경우 계속을 클릭합니다";
+"adyen.onlineBanking.termsAndConditions" = "계속 진행하는 경우 #이용약관#에 동의하게 됩니다.";
+"adyen.promptPay.instructionMessage" = "화면을 캡처하거나 QR 코드를 저장한 다음, 은행 앱을 열고 QR 코드를 업로드하여 상세 정보를 확인하고 결제를 완료하세요.";
+"adyen.promptPay.timerExpirationMessage" = "이 QR 코드는 %@ 동안 유효합니다";

@@ -7,13 +7,29 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-extension PixView {
-    
+extension QRCodeView {
+
     internal class Model {
-        
+
+        internal enum ActionButton {
+            case copyCode
+            case saveAsImage
+        }
+
         internal let action: QRCodeAction
-    
+        
+        internal var actionButtonType: ActionButton {
+            switch action.paymentMethodType {
+            case .promptPay:
+                return .saveAsImage
+            case .pix:
+                return .copyCode
+            }
+        }
+
         internal let instruction: String
+        
+        internal var payment: Payment?
         
         internal let logoUrl: URL
         
@@ -25,9 +41,13 @@ extension PixView {
         
         internal struct Style {
             
-            internal let copyButton: ButtonStyle
+            internal let copyCodeButton: ButtonStyle
+
+            internal let saveAsImageButton: ButtonStyle
             
             internal let instructionLabel: TextStyle
+            
+            internal let amountToPayLabel: TextStyle
             
             internal let progressView: ProgressViewStyle
             
@@ -40,17 +60,19 @@ extension PixView {
         
         internal init(action: QRCodeAction,
                       instruction: String,
+                      payment: Payment?,
                       logoUrl: URL,
                       observedProgress: Progress?,
                       expiration: AdyenObservable<String?>,
-                      style: PixView.Model.Style) {
+                      style: QRCodeView.Model.Style) {
             self.action = action
             self.instruction = instruction
+            self.payment = payment
             self.logoUrl = logoUrl
             self.observedProgress = observedProgress
             self.expiration = expiration
             self.style = style
         }
-    
+        
     }
 }

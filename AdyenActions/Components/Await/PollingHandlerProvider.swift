@@ -48,7 +48,7 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
     
     internal func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler {
         switch qrPaymentMethodType {
-        case .pix:
+        case .pix, .promptPay:
             return createPollingComponent()
         }
     }

@@ -16,10 +16,20 @@ public struct QRCodeComponentStyle: ViewStyle {
         cornerRadius: 8,
         background: UIColor.Adyen.defaultBlue
     )
+
+    /// The save as image button style.
+    public var saveAsImageButton = ButtonStyle(
+        title: TextStyle(font: .preferredFont(forTextStyle: .headline), color: .white),
+        cornerRadius: 8,
+        background: UIColor.Adyen.defaultBlue
+    )
     
     /// The instruction label style.
     public var instructionLabel = TextStyle(font: .preferredFont(forTextStyle: .subheadline), color: UIColor.Adyen.componentLabel)
     
+    /// The amount to pay label style.
+    public var amountToPayLabel = TextStyle(font: .preferredFont(forTextStyle: .subheadline), color: UIColor.Adyen.componentLabel)
+
     /// The progress view style.
     public var progressView = ProgressViewStyle(
         progressTintColor: UIColor.Adyen.defaultBlue,

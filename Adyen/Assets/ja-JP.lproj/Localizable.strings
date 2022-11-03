@@ -68,7 +68,7 @@
 "adyen.voucher.collectionInstitutionNumber" = "収納機関番号";
 "adyen.voucher.merchantName" = "業者";
 "adyen.voucher.expirationDate" = "有効期限";
-"adyen.voucher.paymentReferenceLabel" = "支払の参照";
+"adyen.voucher.paymentReferenceLabel" = "支払いの参照";
 "adyen.voucher.shopperName" = "購入者氏名";
 "adyen.button.copy" = "コピー";
 "adyen.voucher.introduction" = "お買い上げありがとうございます。以下の情報を使用して、お支払いを完了してください。";
@@ -160,4 +160,6 @@
 "adyen.ach.accountLocationField.title" = "ABAナンバー";
 "adyen.ach.accountLocationField.invalid" = "無効なABAナンバー";
 "idealIssuer.selectField.title" = "銀行";
-"adyen.onlineBanking.termsAndConditions" = "[続行] をクリックすると、#利用規約#に同意したことになります";
+"adyen.onlineBanking.termsAndConditions" = "続行すると、#利用規約#に同意したことになります";
+"adyen.promptPay.instructionMessage" = "スクリーンショットを撮影するかQRコードを保存して、バンキングアプリケーションを開き、QRコードをアップロードして、詳細を確認し、支払いを完了します。";
+"adyen.promptPay.timerExpirationMessage" = "このQRコードは%@有効です";

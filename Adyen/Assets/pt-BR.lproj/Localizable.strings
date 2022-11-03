@@ -160,4 +160,6 @@
 "adyen.ach.accountLocationField.title" = "Número de roteamento ABA";
 "adyen.ach.accountLocationField.invalid" = "Número de roteamento ABA inválido";
 "idealIssuer.selectField.title" = "Banco";
-"adyen.onlineBanking.termsAndConditions" = "Ao clicar em continuar, você concorda com os #termos e condições#";
+"adyen.onlineBanking.termsAndConditions" = "Ao continuar, você concorda com os #termos e condições#";
+"adyen.promptPay.instructionMessage" = "Faça uma captura de tela ou salve o QR code, abra o aplicativo do seu banco, carregue o QR code para verificar as informações e finalize o pagamento.";
+"adyen.promptPay.timerExpirationMessage" = "Este QR code é válido para %@";

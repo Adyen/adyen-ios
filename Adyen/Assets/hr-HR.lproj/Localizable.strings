@@ -160,4 +160,6 @@
 "adyen.ach.accountLocationField.title" = "ABA identifikacijski broj";
 "adyen.ach.accountLocationField.invalid" = "Nevažeći ABA identifikacijski broj";
 "idealIssuer.selectField.title" = "Banka";
-"adyen.onlineBanking.termsAndConditions" = "Klikom na nastavak slažete se s #uvjetima i odredbama#";
+"adyen.onlineBanking.termsAndConditions" = "Nastavkom prihvaćate #uvjete i odredbe#";
+"adyen.promptPay.instructionMessage" = "Napravite snimku zaslona ili spremite QR kôd, otvorite svoju bankarsku aplikaciju i prenesite QR kôd kako biste provjerili pojedinosti i završili plaćanje.";
+"adyen.promptPay.timerExpirationMessage" = "Ovaj QR kôd vrijedi za %@";

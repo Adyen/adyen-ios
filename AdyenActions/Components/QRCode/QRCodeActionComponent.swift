@@ -11,14 +11,14 @@ import UIKit
 internal enum QRCodeComponentError: LocalizedError {
     /// Indicates the QR code is not longer valid
     case qrCodeExpired
-    
+
     public var errorDescription: String? {
         "QR code is no longer valid"
     }
 }
 
 /// A component  for QRCode action.
-public final class QRCodeActionComponent: ActionComponent, Cancellable {
+public final class QRCodeActionComponent: ActionComponent, Cancellable, ShareableComponent {
     
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -28,7 +28,9 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable {
     public weak var presentationDelegate: PresentationDelegate?
 
     public weak var delegate: ActionComponentDelegate?
-    
+
+    internal let presenterViewController = UIViewController()
+
     /// The QR code component configurations.
     public struct Configuration {
         
@@ -51,15 +53,15 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable {
     
     /// The QR code component configurations.
     public var configuration: Configuration
-    
-    private let pollingComponentBuilder: AnyPollingHandlerProvider
+
+    private let pollingComponentBuilder: AnyPollingHandlerProvider?
     
     private var pollingComponent: AnyPollingHandler?
-    
+
     private var timeoutTimer: ExpirationTimer?
     
     private let progress = Progress()
-    
+
     @AdyenObservable(nil) private var expirationText: String?
     
     private let expirationTimeout: TimeInterval
@@ -75,7 +77,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable {
                   pollingComponentBuilder: PollingHandlerProvider(context: context),
                   timeoutInterval: 60 * 15)
     }
-    
+
     /// Initializes the `QRCodeComponent`.
     ///
     /// - Parameter context: The context object for this component.
@@ -84,13 +86,13 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable {
     /// - Parameter timeoutInterval: QR Code expiration timeout
     internal init(context: AdyenContext,
                   configuration: Configuration = .init(),
-                  pollingComponentBuilder: AnyPollingHandlerProvider,
+                  pollingComponentBuilder: AnyPollingHandlerProvider? = nil,
                   timeoutInterval: TimeInterval) {
         self.context = context
         self.configuration = configuration
         self.pollingComponentBuilder = pollingComponentBuilder
         self.expirationTimeout = timeoutInterval
-        
+
         updateExpiration(timeoutInterval)
     }
 
@@ -98,43 +100,60 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable {
     ///
     /// - Parameter action: The QR code action.
     public func handle(_ action: QRCodeAction) {
-        pollingComponent = pollingComponentBuilder.handler(for: action.paymentMethodType)
+        pollingComponent = pollingComponentBuilder?.handler(for: action.paymentMethodType)
         pollingComponent?.delegate = self
         
-        assert(presentationDelegate != nil)
+        AdyenAssertion.assert(message: "presentationDelegate is nil", condition: presentationDelegate == nil)
         
-        presentationDelegate?.present(
-            component: PresentableComponentWrapper(
+        let viewController = createViewController(with: action)
+        setUpPresenterViewController(parentViewController: viewController)
+
+        if let presentationDelegate = presentationDelegate {
+            let presentableComponent = PresentableComponentWrapper(
                 component: self,
-                viewController: createViewController(with: action)
+                viewController: viewController
             )
-        )
+            presentationDelegate.present(component: presentableComponent)
+        } else {
+            AdyenAssertion.assertionFailure(
+                message: "PresentationDelegate is nil. Provide a presentation delegate to QRCodeActionComponent."
+            )
+        }
         
-        startTimer()
-        
+        startTimer(qrCodeAction: action)
         pollingComponent?.handle(action)
     }
     
     /// :nodoc
-    private func startTimer() {
+    private func startTimer(qrCodeAction: QRCodeAction) {
         let unitCount = Int64(expirationTimeout)
         progress.totalUnitCount = unitCount
         progress.completedUnitCount = unitCount
         
         timeoutTimer = ExpirationTimer(
             expirationTimeout: self.expirationTimeout,
-            onTick: { [weak self] in self?.updateExpiration($0) },
+            onTick: { [weak self] in self?.updateExpiration($0, qrCodeAction: qrCodeAction) },
             onExpiration: { [weak self] in self?.onTimerTimeout() }
         )
         timeoutTimer?.startTimer()
     }
-    
-    private func updateExpiration(_ timeLeft: TimeInterval) {
+
+    private func updateExpiration(_ timeLeft: TimeInterval, qrCodeAction: QRCodeAction? = nil) {
         progress.completedUnitCount = Int64(timeLeft)
         let timeLeftString = timeLeft.adyen.timeLeftString() ?? ""
-        expirationText = localizedString(.pixExpirationLabel,
-                                         configuration.localizationParameters,
-                                         timeLeftString)
+
+        switch qrCodeAction?.paymentMethodType {
+        case .promptPay:
+            expirationText = localizedString(.promptPayTimerExpirationMessage,
+                                             configuration.localizationParameters,
+                                             timeLeftString)
+        case .pix:
+            expirationText = localizedString(.pixExpirationLabel,
+                                             configuration.localizationParameters,
+                                             timeLeftString)
+        case .none:
+            expirationText = ""
+        }
     }
     
     private func onTimerTimeout() {
@@ -144,23 +163,36 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable {
     }
     
     private func createViewController(with action: QRCodeAction) -> UIViewController {
-        let viewController = PixViewController(viewModel: createModel(with: action))
-        viewController.pixView.delegate = self
+        let viewController = QRCodeViewController(viewModel: createModel(with: action))
+        viewController.qrCodeView.delegate = self
         return viewController
     }
-    
-    private func createModel(with action: QRCodeAction) -> PixView.Model {
+
+    private func getQRCodeInstruction(with action: QRCodeAction) -> String {
+        switch action.paymentMethodType {
+        case .promptPay:
+            return localizedString(.promptPayInstructionMessage,
+                                   configuration.localizationParameters)
+        case .pix:
+            return localizedString(.pixInstructions,
+                                   configuration.localizationParameters)
+        }
+    }
+
+    private func createModel(with action: QRCodeAction) -> QRCodeView.Model {
         let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment)
-        return PixView.Model(
+        return QRCodeView.Model(
             action: action,
-            instruction: localizedString(.pixInstructions,
-                                         configuration.localizationParameters),
+            instruction: getQRCodeInstruction(with: action),
+            payment: context.payment,
             logoUrl: url,
             observedProgress: progress,
             expiration: $expirationText,
-            style: PixView.Model.Style(
-                copyButton: configuration.style.copyCodeButton,
+            style: QRCodeView.Model.Style(
+                copyCodeButton: configuration.style.copyCodeButton,
+                saveAsImageButton: configuration.style.saveAsImageButton,
                 instructionLabel: configuration.style.instructionLabel,
+                amountToPayLabel: configuration.style.amountToPayLabel,
                 progressView: configuration.style.progressView,
                 expirationLabel: configuration.style.expirationLabel,
                 logoCornerRounding: configuration.style.logoCornerRounding,
@@ -168,7 +200,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable {
             )
         )
     }
-    
+
     public func didCancel() {
         cleanup()
     }
@@ -193,14 +225,17 @@ extension QRCodeActionComponent: ActionComponentDelegate {
         cleanup()
         delegate?.didFail(with: error, from: self)
     }
-    
+
 }
 
 @_spi(AdyenInternal)
-extension QRCodeActionComponent: PixViewDelegate {
+extension QRCodeActionComponent: QRCodeViewDelegate {
     
     internal func copyToPasteboard(with action: QRCodeAction) {
         UIPasteboard.general.string = action.qrCodeData
     }
-    
+
+    internal func saveAsImage(qrCodeImage: UIImage?, sourceView: UIView) {
+        presentSharePopover(with: qrCodeImage as Any, sourceView: sourceView)
+    }
 }

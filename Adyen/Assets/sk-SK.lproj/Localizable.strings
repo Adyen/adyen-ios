@@ -160,4 +160,6 @@
 "adyen.ach.accountLocationField.title" = "Smerovacie číslo ABA";
 "adyen.ach.accountLocationField.invalid" = "Neplatné smerovacie číslo ABA";
 "idealIssuer.selectField.title" = "Banka";
-"adyen.onlineBanking.termsAndConditions" = "Kliknutím na tlačidlo pokračovať súhlasíte so #zmluvnými podmienkami#";
+"adyen.onlineBanking.termsAndConditions" = "Pokračovaním súhlasíte so #zmluvnými podmienkami#";
+"adyen.promptPay.instructionMessage" = "Urobte snímku obrazovky alebo si uložte QR kód, otvorte bankovú aplikáciu, nahrajte QR kód, overte údaje a dokončite platbu.";
+"adyen.promptPay.timerExpirationMessage" = "Tento kód QR platí %@";

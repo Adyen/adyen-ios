@@ -160,4 +160,6 @@
 "adyen.ach.accountLocationField.title" = "Număr de direcționare ABA";
 "adyen.ach.accountLocationField.invalid" = "Număr de direcționare ABA incorect";
 "idealIssuer.selectField.title" = "Bancă";
-"adyen.onlineBanking.termsAndConditions" = "Făcând clic pe Continuați, sunteți de acord cu #Termenii și condițiile#";
+"adyen.onlineBanking.termsAndConditions" = "Continuând, sunteți de acord cu #terms and conditions#";
+"adyen.promptPay.instructionMessage" = "Faceți o captură de ecran sau salvați codul QR, deschideți aplicația bancară și încărcați codul QR pentru a verifica detaliile și a finaliza plata.";
+"adyen.promptPay.timerExpirationMessage" = "Acest cod QR este valabil pentru %@";

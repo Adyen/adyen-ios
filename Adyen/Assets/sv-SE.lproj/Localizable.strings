@@ -160,4 +160,6 @@
 "adyen.ach.accountLocationField.title" = "ABA-nummer";
 "adyen.ach.accountLocationField.invalid" = "Ogiltigt ABA-nummer";
 "idealIssuer.selectField.title" = "Bank";
-"adyen.onlineBanking.termsAndConditions" = "Genom att klicka på Fortsätt godkänner du #villkoren#";
+"adyen.onlineBanking.termsAndConditions" = "Genom att fortsätta godkänner du #villkoren#";
+"adyen.promptPay.instructionMessage" = "Ta en skärmdump eller spara QR-koden, öppna din bankapp och ladda upp QR-koden för att verifiera uppgifterna och slutföra betalningen.";
+"adyen.promptPay.timerExpirationMessage" = "Denna QR-kod är giltig i %@";
