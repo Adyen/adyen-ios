@@ -5,8 +5,8 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-import XCTest
 import AdyenComponents
+import XCTest
 
 internal extension Coder {
 

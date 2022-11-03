@@ -31,7 +31,7 @@ class QRCodeComponentTests: XCTestCase {
         let dummyExpectation = expectation(description: "Dummy Expectation")
         var style = QRCodeComponentStyle()
         
-        style.copyButton = ButtonStyle(
+        style.copyCodeButton = ButtonStyle(
             title: TextStyle(font: .preferredFont(forTextStyle: .callout), color: .blue, textAlignment: .justified),
             cornerRadius: 4,
             background: .black
@@ -56,7 +56,7 @@ class QRCodeComponentTests: XCTestCase {
         
         style.backgroundColor = UIColor.Adyen.componentSeparator
         
-        let sut = PixActionComponent(context: context)
+        let sut = QRCodeActionComponent(context: context)
         sut.configuration.style = style
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
@@ -76,7 +76,7 @@ class QRCodeComponentTests: XCTestCase {
             let logo: UIImageView? = viewController.view.findView(by: "logo")
             
             // Test copy button
-            XCTAssertEqual(copyButton?.backgroundColor, style.copyButton.backgroundColor)
+            XCTAssertEqual(copyButton?.backgroundColor, style.copyCodeButton.backgroundColor)
             XCTAssertEqual(copyButton?.layer.cornerRadius, 4)
             
             // Test instruction label
@@ -121,13 +121,13 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = PixActionComponent(context: context,
-                                  pollingComponentBuilder: builder,
-                                  timeoutInterval: 2.0)
+        let sut = QRCodeActionComponent(context: context,
+                                        pollingComponentBuilder: builder,
+                                        timeoutInterval: 2.0)
         let componentDelegate = ActionComponentDelegateMock()
         componentDelegate.onDidFail = { error, component in
             if let qrError = error as? QRCodeComponentError,
-               case QRCodeComponentError.qrCodeExpired = qrError { }
+               case QRCodeComponentError.qrCodeExpired = qrError {}
             else {
                 XCTFail()
             }
@@ -163,9 +163,9 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = PixActionComponent(context: context,
-                                  pollingComponentBuilder: builder,
-                                  timeoutInterval: 2.0)
+        let sut = QRCodeActionComponent(context: context,
+                                        pollingComponentBuilder: builder,
+                                        timeoutInterval: 2.0)
         
         handler.onHandle = {
             XCTAssertEqual($0.paymentData, self.action.paymentData)
@@ -210,9 +210,9 @@ class QRCodeComponentTests: XCTestCase {
             }
         )
         
-        let sut = PixActionComponent(context: context,
-                                  pollingComponentBuilder: builder,
-                                  timeoutInterval: 2.0)
+        let sut = QRCodeActionComponent(context: context,
+                                        pollingComponentBuilder: builder,
+                                        timeoutInterval: 2.0)
         
         handler.onHandle = {
             XCTAssertEqual($0.paymentData, self.action.paymentData)
@@ -248,7 +248,7 @@ class QRCodeComponentTests: XCTestCase {
     func testCopyButton() {
         let dummyExpectation = expectation(description: "Dummy Expectation")
         
-        let sut = PixActionComponent(context: context)
+        let sut = QRCodeActionComponent(context: context)
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         

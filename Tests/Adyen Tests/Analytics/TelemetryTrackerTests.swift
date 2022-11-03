@@ -10,7 +10,6 @@ import XCTest
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenNetworking
 
-
 class TelemetryTrackerTests: XCTestCase {
 
     var apiClient: APIClientMock!
@@ -116,7 +115,6 @@ class TelemetryTrackerTests: XCTestCase {
         wait(for: .milliseconds(1))
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "Invalid request number made.")
     }
-
 
     // MARK: - Private
 

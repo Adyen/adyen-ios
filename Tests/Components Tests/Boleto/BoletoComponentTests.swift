@@ -18,7 +18,7 @@ class BoletoComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        context = Dummy.context
+        context = AdyenContext(apiContext: Dummy.apiContext, payment: Dummy.payment, analyticsProvider: AnalyticsProviderMock())
     }
 
     override func tearDownWithError() throws {
@@ -309,7 +309,9 @@ class BoletoComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        wait(for: .milliseconds(300))
+        waitFor {
+            (self.sut.viewController.view.findView(by: "payButtonItem.button") as? SubmitButton) != nil
+        }
         
         let submitButton: SubmitButton? = self.sut.viewController.view.findView(by: "payButtonItem.button") as? SubmitButton
     
@@ -343,7 +345,9 @@ class BoletoComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        wait(for: .milliseconds(300))
+        waitFor {
+            (self.sut.viewController.view.findView(by: "payButtonItem.button") as? SubmitButton) != nil
+        }
 
         let submitButton: SubmitButton? = self.sut.viewController.view.findView(by: "payButtonItem.button") as? SubmitButton
 

@@ -21,7 +21,7 @@ class DropInActionsTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        context =  nil
+        context = nil
         sut = nil
         try super.tearDownWithError()
     }

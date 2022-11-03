@@ -13,7 +13,7 @@ import XCTest
 
 class DocumentComponentTests: XCTestCase {
     
-    let action: DocumentAction = DocumentAction(downloadUrl: URL(string: "www.adyen.com")!, paymentMethodType: .bacs)
+    let action: DocumentAction = .init(downloadUrl: URL(string: "www.adyen.com")!, paymentMethodType: .bacs)
     
     func testUI() {
         let style = DocumentComponentStyle()

@@ -286,8 +286,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(apiContext: Dummy.apiContext,
-                               payment: Dummy.payment,
-                               analyticsProvider: analyticsProviderMock)
+                                   payment: Dummy.payment,
+                                   analyticsProvider: analyticsProviderMock)
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           context: context,

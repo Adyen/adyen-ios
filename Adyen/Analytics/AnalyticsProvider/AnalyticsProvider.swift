@@ -26,9 +26,10 @@ public struct AnalyticsConfiguration {
 
 @_spi(AdyenInternal)
 public protocol AnalyticsProviderProtocol: TelemetryTrackerProtocol {
-
-    /// :nodoc:
+    
     var checkoutAttemptId: String? { get }
+    
+    func fetchAndCacheCheckoutAttemptIdIfNeeded()
 }
 
 internal final class AnalyticsProvider: AnalyticsProviderProtocol {
@@ -50,9 +51,16 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     }
 
     // MARK: - Internal
+    
+    internal func fetchAndCacheCheckoutAttemptIdIfNeeded() {
+        fetchCheckoutAttemptId { _ in /* Do nothing, the point is to trigger the fetching and cache the value  */ }
+    }
 
     internal func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
-        guard configuration.isEnabled else { return }
+        guard configuration.isEnabled else {
+            completion(nil)
+            return
+        }
 
         let checkoutAttemptIdRequest = CheckoutAttemptIdRequest()
 
