@@ -224,4 +224,26 @@ class QRCodeActionComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
+    func testQRCodeViewModelSaveAsImageActionButtonType() {
+        lazy var method = InstantPaymentMethod(type: .other("promptpay"), name: "promptpay")
+        let action = QRCodeAction(paymentMethodType: .promptPay, qrCodeData: "DummyData", paymentData: "DummyData")
+
+        let sut = QRCodeActionComponent(context: context)
+
+        let qrCodeViewModel = QRCodeView.Model(action: action, instruction: localizedString(.promptPayInstructionMessage, sut.configuration.localizationParameters), payment: nil, logoUrl: LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment), observedProgress: nil, expiration: AdyenObservable(nil), style: QRCodeView.Model.Style(copyCodeButton: .init(title: .init(font: UIFont(), color: .red)), saveAsImageButton: .init(title: .init(font: UIFont(), color: .red)), instructionLabel: .init(font: UIFont(), color: .red), amountToPayLabel: .init(font: UIFont(), color: .red), progressView: .init(progressTintColor: .red, trackTintColor: .red), expirationLabel: .init(font: UIFont(), color: .red), logoCornerRounding: .fixed(5.0), backgroundColor: .red))
+
+        XCTAssertEqual(qrCodeViewModel.actionButtonType, .saveAsImage)
+    }
+
+    func testQRCodeViewModelCopyCodeActionButtonType() {
+        lazy var method = InstantPaymentMethod(type: .other("pix"), name: "pix")
+        let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
+
+        let sut = QRCodeActionComponent(context: context)
+
+        let qrCodeViewModel = QRCodeView.Model(action: action, instruction: localizedString(.promptPayInstructionMessage, sut.configuration.localizationParameters), payment: nil, logoUrl: LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment), observedProgress: nil, expiration: AdyenObservable(nil), style: QRCodeView.Model.Style(copyCodeButton: .init(title: .init(font: UIFont(), color: .red)), saveAsImageButton: .init(title: .init(font: UIFont(), color: .red)), instructionLabel: .init(font: UIFont(), color: .red), amountToPayLabel: .init(font: UIFont(), color: .red), progressView: .init(progressTintColor: .red, trackTintColor: .red), expirationLabel: .init(font: UIFont(), color: .red), logoCornerRounding: .fixed(5.0), backgroundColor: .red))
+
+        XCTAssertEqual(qrCodeViewModel.actionButtonType, .copyCode)
+    }
+
 }

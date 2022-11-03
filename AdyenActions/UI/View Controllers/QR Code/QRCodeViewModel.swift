@@ -11,14 +11,14 @@ extension QRCodeView {
 
     internal class Model {
 
-        enum ActionButton {
+        internal enum ActionButton {
             case copyCode
             case saveAsImage
         }
 
         internal let action: QRCodeAction
         
-        var actionButtonType: ActionButton {
+        internal var actionButtonType: ActionButton {
             switch action.paymentMethodType {
             case .promptPay:
                 return .saveAsImage

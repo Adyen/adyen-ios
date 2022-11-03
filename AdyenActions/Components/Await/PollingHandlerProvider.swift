@@ -22,7 +22,7 @@ internal protocol AnyPollingHandlerProvider {
 
     func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler
     
-    func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler?
+    func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler
 }
 
 internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
@@ -46,7 +46,7 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
         }
     }
     
-    internal func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler? {
+    internal func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler {
         switch qrPaymentMethodType {
         case .pix, .promptPay:
             return createPollingComponent()

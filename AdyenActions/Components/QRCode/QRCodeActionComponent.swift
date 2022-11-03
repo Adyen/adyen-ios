@@ -61,8 +61,6 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     private var timeoutTimer: ExpirationTimer?
     
     private let progress = Progress()
-    
-    private var qrCodeAction: QRCodeAction?
 
     @AdyenObservable(nil) private var expirationText: String?
     
@@ -102,7 +100,6 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     ///
     /// - Parameter action: The QR code action.
     public func handle(_ action: QRCodeAction) {
-        qrCodeAction = action
         pollingComponent = pollingComponentBuilder?.handler(for: action.paymentMethodType)
         pollingComponent?.delegate = self
         
@@ -123,30 +120,29 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
             )
         }
         
-        startTimer()
+        startTimer(qrCodeAction: action)
         pollingComponent?.handle(action)
     }
     
     /// :nodoc
-    private func startTimer() {
+    private func startTimer(qrCodeAction: QRCodeAction) {
         let unitCount = Int64(expirationTimeout)
         progress.totalUnitCount = unitCount
         progress.completedUnitCount = unitCount
         
         timeoutTimer = ExpirationTimer(
             expirationTimeout: self.expirationTimeout,
-            onTick: { [weak self] in self?.updateExpiration($0) },
+            onTick: { [weak self] in self?.updateExpiration($0, qrCodeAction: qrCodeAction) },
             onExpiration: { [weak self] in self?.onTimerTimeout() }
         )
         timeoutTimer?.startTimer()
     }
-    
-    private func updateExpiration(_ timeLeft: TimeInterval) {
+
+    private func updateExpiration(_ timeLeft: TimeInterval, qrCodeAction: QRCodeAction? = nil) {
         progress.completedUnitCount = Int64(timeLeft)
         let timeLeftString = timeLeft.adyen.timeLeftString() ?? ""
-        guard let action = qrCodeAction else {return}
 
-        switch action.paymentMethodType {
+        switch qrCodeAction?.paymentMethodType {
         case .promptPay:
             expirationText = localizedString(.promptPayTimerExpirationMessage,
                                              configuration.localizationParameters,
@@ -155,6 +151,8 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
             expirationText = localizedString(.pixExpirationLabel,
                                              configuration.localizationParameters,
                                              timeLeftString)
+        case .none:
+            expirationText = ""
         }
     }
     
