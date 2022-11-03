@@ -44,9 +44,10 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         addAmountToPay()
         addProgressView()
         addExpirationLabel()
-        if model.action.paymentMethodType == .pix {
+        switch model.actionButtonType {
+        case .copyCode:
             addCopyCodeButton()
-        } else {
+        case .saveAsImage:
             addSaveAsImageButton()
         }
     }

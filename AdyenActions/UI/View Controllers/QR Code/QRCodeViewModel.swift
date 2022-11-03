@@ -8,11 +8,25 @@
 import UIKit
 
 extension QRCodeView {
-    
+
     internal class Model {
-        
+
+        enum ActionButton {
+            case copyCode
+            case saveAsImage
+        }
+
         internal let action: QRCodeAction
         
+        var actionButtonType: ActionButton {
+            switch action.paymentMethodType {
+            case .promptPay:
+                return .saveAsImage
+            case .pix:
+                return .copyCode
+            }
+        }
+
         internal let instruction: String
         
         internal var payment: Payment?

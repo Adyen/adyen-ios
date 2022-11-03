@@ -145,11 +145,13 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
         progress.completedUnitCount = Int64(timeLeft)
         let timeLeftString = timeLeft.adyen.timeLeftString() ?? ""
         guard let action = qrCodeAction else {return}
-        if action.paymentMethodType == .promptPay {
+
+        switch action.paymentMethodType {
+        case .promptPay:
             expirationText = localizedString(.promptPayTimerExpirationMessage,
                                              configuration.localizationParameters,
                                              timeLeftString)
-        } else {
+        case .pix:
             expirationText = localizedString(.pixExpirationLabel,
                                              configuration.localizationParameters,
                                              timeLeftString)
@@ -169,10 +171,11 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     }
 
     private func getQRCodeInstruction(with action: QRCodeAction) -> String {
-        if action.paymentMethodType == .promptPay {
+        switch action.paymentMethodType {
+        case .promptPay:
             return localizedString(.promptPayInstructionMessage,
                                    configuration.localizationParameters)
-        } else {
+        case .pix:
             return localizedString(.pixInstructions,
                                    configuration.localizationParameters)
         }
