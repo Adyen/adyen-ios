@@ -161,5 +161,5 @@
 "adyen.ach.accountLocationField.invalid" = "Ongeldig routingnummer (ABA)";
 "idealIssuer.selectField.title" = "Bank";
 "adyen.onlineBanking.termsAndConditions" = "Door verder te gaan gaat u akkoord met de #algemene voorwaarden#";
-"adyen.promptPay.instructionMessage" = "Maak een schermafbeelding of sla de QR-code op, open uw bankapp en upload de QR-code om de gegevens te verifiëren en de betaling te voltooien.";
-"adyen.promptPay.timerExpirationMessage" = "Deze QR-code is %@ geldig";
+"adyen.qrCode.instructionMessage" = "Maak een schermafbeelding of sla de QR-code op, open uw bankapp en upload de QR-code om de gegevens te verifiëren en de betaling te voltooien.";
+"adyen.qrCode.timerExpirationMessage" = "Deze QR-code is %@ geldig";

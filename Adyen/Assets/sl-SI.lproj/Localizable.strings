@@ -161,5 +161,5 @@
 "adyen.ach.accountLocationField.invalid" = "Neveljavna koda banke ABA";
 "idealIssuer.selectField.title" = "Banka";
 "adyen.onlineBanking.termsAndConditions" = "Z nadaljevanjem se strinjate s #pogoji#";
-"adyen.promptPay.instructionMessage" = "Naredite posnetek zaslona ali shranite kodo QR, odprite bančno aplikacijo in naložite kodo QR, da preverite podatke in izvedete plačilo.";
-"adyen.promptPay.timerExpirationMessage" = "Ta koda QR velja za %@";
+"adyen.qrCode.instructionMessage" = "Naredite posnetek zaslona ali shranite kodo QR, odprite bančno aplikacijo in naložite kodo QR, da preverite podatke in izvedete plačilo.";
+"adyen.qrCode.timerExpirationMessage" = "Ta koda QR velja za %@";
