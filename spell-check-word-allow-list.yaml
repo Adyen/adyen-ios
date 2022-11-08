@@ -170,3 +170,5 @@ whiteList:
   - idendtifier
   - promptpay
   - rcode
+  - duitnow
+  - paynow
