@@ -157,5 +157,5 @@
 "adyen.ach.accountLocationField.invalid" = "ABA 匯款路徑編號無效";
 "idealIssuer.selectField.title" = "銀行";
 "adyen.onlineBanking.termsAndConditions" = "繼續操作即表示您同意#條款及細則#";
-"adyen.promptPay.instructionMessage" = "擷取螢幕畫面或儲存 QR 代碼，開啟您的銀行應用程式並上傳 QR 代碼以驗證詳細資料並完成付款。";
-"adyen.promptPay.timerExpirationMessage" = "此 QR 代碼對 %@ 有效";
+"adyen.qrCode.instructionMessage" = "擷取螢幕畫面或儲存 QR 代碼，開啟您的銀行應用程式並上傳 QR 代碼以驗證詳細資料並完成付款。";
+"adyen.qrCode.timerExpirationMessage" = "此 QR 代碼對 %@ 有效";

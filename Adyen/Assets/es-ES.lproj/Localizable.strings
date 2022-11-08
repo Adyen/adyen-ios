@@ -161,5 +161,5 @@
 "adyen.ach.accountLocationField.invalid" = "El número de ruta ABA no es válido";
 "idealIssuer.selectField.title" = "Banco";
 "adyen.onlineBanking.termsAndConditions" = "Al continuar, usted acepta los #Términos y condiciones#";
-"adyen.promptPay.instructionMessage" = "Tome una captura de pantalla o guarde el código QR, abra su aplicación bancaria y suba el código QR para verificar los detalles y completar el pago.";
-"adyen.promptPay.timerExpirationMessage" = "Este código QR es válido para %@";
+"adyen.qrCode.instructionMessage" = "Tome una captura de pantalla o guarde el código QR, abra su aplicación bancaria y suba el código QR para verificar los detalles y completar el pago.";
+"adyen.qrCode.timerExpirationMessage" = "Este código QR es válido para %@";
