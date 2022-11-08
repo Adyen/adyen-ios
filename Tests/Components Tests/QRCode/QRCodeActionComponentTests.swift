@@ -26,54 +26,6 @@ class QRCodeActionComponentTests: XCTestCase {
     let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
     let componentData = ActionComponentData(details: AwaitActionDetails(payload: "DummyPayload"), paymentData: "DummyData")
     
-    func testComponentTimeout() {
-        let dummyExpectation = expectation(description: "Dummy Expectation")
-        
-        let builder = AwaitActionHandlerProviderMock(
-            onAwaitHandler: nil,
-            onQRHandler: { type in
-                XCTAssertEqual(type, QRCodePaymentMethod.pix)
-                
-                let handler = PollingHandlerMock()
-                handler.onHandle = {
-                    XCTAssertEqual($0.paymentData, self.action.paymentData)
-                }
-                
-                return handler
-            }
-        )
-        
-        let sut = QRCodeActionComponent(context: context,
-                                  pollingComponentBuilder: builder,
-                                  timeoutInterval: 2.0)
-
-        let componentDelegate = ActionComponentDelegateMock()
-        componentDelegate.onDidFail = { error, component in
-            if let qrError = error as? QRCodeComponentError,
-               case QRCodeComponentError.qrCodeExpired = qrError {}
-            else {
-                XCTFail()
-            }
-            
-            dummyExpectation.fulfill()
-        }
-        
-        let presentationDelegate = PresentationDelegateMock()
-        presentationDelegate.doPresent = { component in
-            XCTAssertNotNil(component.viewController as? QRCodeViewController)
-            let viewController = component.viewController as! QRCodeViewController
-            
-            UIApplication.shared.keyWindow?.rootViewController = viewController
-        }
-        
-        sut.presentationDelegate = presentationDelegate
-        sut.delegate = componentDelegate
-        
-        sut.handle(action)
-        
-        waitForExpectations(timeout: 10, handler: nil)
-    }
-    
     func testComponentSuccess() {
         let expectationForDidProvide = expectation(description: "didProvide expectation")
         
@@ -87,8 +39,9 @@ class QRCodeActionComponentTests: XCTestCase {
         )
         
         let sut = QRCodeActionComponent(context: context,
-                                  pollingComponentBuilder: builder,
-                                  timeoutInterval: 2.0)
+                                  pollingComponentBuilder: builder)
+        
+        XCTAssertEqual(sut.timeoutDuration(for: action), 900)
         
         handler.onHandle = {
             XCTAssertEqual($0.paymentData, self.action.paymentData)
@@ -134,8 +87,7 @@ class QRCodeActionComponentTests: XCTestCase {
         )
         
         let sut = QRCodeActionComponent(context: context,
-                                  pollingComponentBuilder: builder,
-                                  timeoutInterval: 2.0)
+                                  pollingComponentBuilder: builder)
         
         handler.onHandle = {
             XCTAssertEqual($0.paymentData, self.action.paymentData)
@@ -230,7 +182,7 @@ class QRCodeActionComponentTests: XCTestCase {
 
         let sut = QRCodeActionComponent(context: context)
 
-        let qrCodeViewModel = QRCodeView.Model(action: action, instruction: localizedString(.promptPayInstructionMessage, sut.configuration.localizationParameters), payment: nil, logoUrl: LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment), observedProgress: nil, expiration: AdyenObservable(nil), style: QRCodeView.Model.Style(copyCodeButton: .init(title: .init(font: UIFont(), color: .red)), saveAsImageButton: .init(title: .init(font: UIFont(), color: .red)), instructionLabel: .init(font: UIFont(), color: .red), amountToPayLabel: .init(font: UIFont(), color: .red), progressView: .init(progressTintColor: .red, trackTintColor: .red), expirationLabel: .init(font: UIFont(), color: .red), logoCornerRounding: .fixed(5.0), backgroundColor: .red))
+        let qrCodeViewModel = QRCodeView.Model(action: action, instruction: localizedString(.qrCodeInstructionMessage, sut.configuration.localizationParameters), payment: nil, logoUrl: LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment), observedProgress: nil, expiration: AdyenObservable(nil), style: QRCodeView.Model.Style(copyCodeButton: .init(title: .init(font: UIFont(), color: .red)), saveAsImageButton: .init(title: .init(font: UIFont(), color: .red)), instructionLabel: .init(font: UIFont(), color: .red), amountToPayLabel: .init(font: UIFont(), color: .red), progressView: .init(progressTintColor: .red, trackTintColor: .red), expirationLabel: .init(font: UIFont(), color: .red), logoCornerRounding: .fixed(5.0), backgroundColor: .red))
 
         XCTAssertEqual(qrCodeViewModel.actionButtonType, .saveAsImage)
     }
@@ -241,9 +193,22 @@ class QRCodeActionComponentTests: XCTestCase {
 
         let sut = QRCodeActionComponent(context: context)
 
-        let qrCodeViewModel = QRCodeView.Model(action: action, instruction: localizedString(.promptPayInstructionMessage, sut.configuration.localizationParameters), payment: nil, logoUrl: LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment), observedProgress: nil, expiration: AdyenObservable(nil), style: QRCodeView.Model.Style(copyCodeButton: .init(title: .init(font: UIFont(), color: .red)), saveAsImageButton: .init(title: .init(font: UIFont(), color: .red)), instructionLabel: .init(font: UIFont(), color: .red), amountToPayLabel: .init(font: UIFont(), color: .red), progressView: .init(progressTintColor: .red, trackTintColor: .red), expirationLabel: .init(font: UIFont(), color: .red), logoCornerRounding: .fixed(5.0), backgroundColor: .red))
+        let qrCodeViewModel = QRCodeView.Model(action: action, instruction: localizedString(.qrCodeTimerExpirationMessage, sut.configuration.localizationParameters), payment: nil, logoUrl: LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment), observedProgress: nil, expiration: AdyenObservable(nil), style: QRCodeView.Model.Style(copyCodeButton: .init(title: .init(font: UIFont(), color: .red)), saveAsImageButton: .init(title: .init(font: UIFont(), color: .red)), instructionLabel: .init(font: UIFont(), color: .red), amountToPayLabel: .init(font: UIFont(), color: .red), progressView: .init(progressTintColor: .red, trackTintColor: .red), expirationLabel: .init(font: UIFont(), color: .red), logoCornerRounding: .fixed(5.0), backgroundColor: .red))
 
         XCTAssertEqual(qrCodeViewModel.actionButtonType, .copyCode)
+    }
+    
+    func testTimeoutForActions() {
+        let sut = QRCodeActionComponent(context: context)
+        let promptPay = QRCodeAction(paymentMethodType: .promptPay, qrCodeData: "DummyData", paymentData: "DummyData")
+        let pix = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
+        let duitNow = QRCodeAction(paymentMethodType: .duitNow, qrCodeData: "DummyData", paymentData: "DummyData")
+        let payNow = QRCodeAction(paymentMethodType: .payNow, qrCodeData: "DummyData", paymentData: "DummyData")
+        
+        XCTAssertEqual(sut.timeoutDuration(for: promptPay), 90)
+        XCTAssertEqual(sut.timeoutDuration(for: duitNow), 90)
+        XCTAssertEqual(sut.timeoutDuration(for: pix), 900)
+        XCTAssertEqual(sut.timeoutDuration(for: payNow), 180)
     }
 
 }

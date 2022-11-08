@@ -15,6 +15,12 @@ public enum QRCodePaymentMethod: String, Codable, CaseIterable {
     
     /// PromptPay
     case promptPay = "promptpay"
+    
+    /// DuitNow
+    case duitNow = "duitnow"
+    
+    /// PayNow
+    case payNow = "paynow"
 }
 
 /// Describes any QR code action.

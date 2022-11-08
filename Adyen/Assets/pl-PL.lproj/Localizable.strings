@@ -161,5 +161,5 @@
 "adyen.ach.accountLocationField.invalid" = "Nieprawidłowy kod bankowy ABA Routing Number";
 "idealIssuer.selectField.title" = "Bank";
 "adyen.onlineBanking.termsAndConditions" = "Kontynuując, zgadzasz się z #Warunkami świadczenia usług#.";
-"adyen.promptPay.instructionMessage" = "Zrób zrzut ekranu lub zapisz kod QR, otwórz aplikację bankową i prześlij kod QR, aby zweryfikować szczegóły i dokończyć płatność.";
-"adyen.promptPay.timerExpirationMessage" = "Okres ważności kodu QR: %@";
+"adyen.qrCode.instructionMessage" = "Zrób zrzut ekranu lub zapisz kod QR, otwórz aplikację bankową i prześlij kod QR, aby zweryfikować szczegóły i dokończyć płatność.";
+"adyen.qrCode.timerExpirationMessage" = "Okres ważności kodu QR: %@";

@@ -161,5 +161,5 @@
 "adyen.ach.accountLocationField.invalid" = "無効なABAナンバー";
 "idealIssuer.selectField.title" = "銀行";
 "adyen.onlineBanking.termsAndConditions" = "続行すると、#利用規約#に同意したことになります";
-"adyen.promptPay.instructionMessage" = "スクリーンショットを撮影するかQRコードを保存して、バンキングアプリケーションを開き、QRコードをアップロードして、詳細を確認し、支払いを完了します。";
-"adyen.promptPay.timerExpirationMessage" = "このQRコードは%@有効です";
+"adyen.qrCode.instructionMessage" = "スクリーンショットを撮影するかQRコードを保存して、バンキングアプリケーションを開き、QRコードをアップロードして、詳細を確認し、支払いを完了します。";
+"adyen.qrCode.timerExpirationMessage" = "このQRコードは%@有効です";

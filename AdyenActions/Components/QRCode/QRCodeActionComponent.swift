@@ -64,8 +64,6 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
 
     @AdyenObservable(nil) private var expirationText: String?
     
-    private let expirationTimeout: TimeInterval
-    
     /// Initializes the `QRCodeComponent`.
     ///
     /// - Parameter context: The context object for this component.
@@ -74,8 +72,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
                             configuration: Configuration = .init()) {
         self.init(context: context,
                   configuration: configuration,
-                  pollingComponentBuilder: PollingHandlerProvider(context: context),
-                  timeoutInterval: 60 * 15)
+                  pollingComponentBuilder: PollingHandlerProvider(context: context))
     }
 
     /// Initializes the `QRCodeComponent`.
@@ -83,17 +80,12 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component configurations
     /// - Parameter pollingComponentBuilder: The payment method specific await action handler provider.
-    /// - Parameter timeoutInterval: QR Code expiration timeout
     internal init(context: AdyenContext,
                   configuration: Configuration = .init(),
-                  pollingComponentBuilder: AnyPollingHandlerProvider? = nil,
-                  timeoutInterval: TimeInterval) {
+                  pollingComponentBuilder: AnyPollingHandlerProvider? = nil) {
         self.context = context
         self.configuration = configuration
         self.pollingComponentBuilder = pollingComponentBuilder
-        self.expirationTimeout = timeoutInterval
-
-        updateExpiration(timeoutInterval)
     }
 
     /// Handles QR code action.
@@ -120,18 +112,30 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
             )
         }
         
-        startTimer(qrCodeAction: action)
+        let timeout = timeoutDuration(for: action)
+        updateExpiration(timeout)
+        startTimer(from: timeout, qrCodeAction: action)
         pollingComponent?.handle(action)
     }
     
-    /// :nodoc
-    private func startTimer(qrCodeAction: QRCodeAction) {
-        let unitCount = Int64(expirationTimeout)
+    internal func timeoutDuration(for action: QRCodeAction) -> TimeInterval {
+        switch action.paymentMethodType {
+        case .promptPay, .duitNow:
+            return 90
+        case .payNow:
+            return 180
+        case .pix:
+            return 60 * 15
+        }
+    }
+    
+    private func startTimer(from interval: TimeInterval, qrCodeAction: QRCodeAction) {
+        let unitCount = Int64(interval)
         progress.totalUnitCount = unitCount
         progress.completedUnitCount = unitCount
         
         timeoutTimer = ExpirationTimer(
-            expirationTimeout: self.expirationTimeout,
+            expirationTimeout: interval,
             onTick: { [weak self] in self?.updateExpiration($0, qrCodeAction: qrCodeAction) },
             onExpiration: { [weak self] in self?.onTimerTimeout() }
         )
@@ -143,8 +147,8 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
         let timeLeftString = timeLeft.adyen.timeLeftString() ?? ""
 
         switch qrCodeAction?.paymentMethodType {
-        case .promptPay:
-            expirationText = localizedString(.promptPayTimerExpirationMessage,
+        case .promptPay, .duitNow, .payNow:
+            expirationText = localizedString(.qrCodeTimerExpirationMessage,
                                              configuration.localizationParameters,
                                              timeLeftString)
         case .pix:
@@ -163,15 +167,15 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     }
     
     private func createViewController(with action: QRCodeAction) -> UIViewController {
-        let viewController = QRCodeViewController(viewModel: createModel(with: action))
+        let viewController = QRCodeViewController(viewModel: createViewModel(with: action))
         viewController.qrCodeView.delegate = self
         return viewController
     }
 
-    private func getQRCodeInstruction(with action: QRCodeAction) -> String {
+    private func QRCodeInstruction(with action: QRCodeAction) -> String {
         switch action.paymentMethodType {
-        case .promptPay:
-            return localizedString(.promptPayInstructionMessage,
+        case .promptPay, .duitNow, .payNow:
+            return localizedString(.qrCodeInstructionMessage,
                                    configuration.localizationParameters)
         case .pix:
             return localizedString(.pixInstructions,
@@ -179,11 +183,11 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
         }
     }
 
-    private func createModel(with action: QRCodeAction) -> QRCodeView.Model {
+    private func createViewModel(with action: QRCodeAction) -> QRCodeView.Model {
         let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment)
         return QRCodeView.Model(
             action: action,
-            instruction: getQRCodeInstruction(with: action),
+            instruction: QRCodeInstruction(with: action),
             payment: context.payment,
             logoUrl: url,
             observedProgress: progress,
