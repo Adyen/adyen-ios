@@ -15,7 +15,7 @@ public protocol SearchViewControllerDelegate: AnyObject {
 @_spi(AdyenInternal)
 public class SearchViewController: UIViewController {
 
-    private let childViewController: UIViewController
+    internal let childViewController: UIViewController
 
     public init(childViewController: UIViewController, delegate: SearchViewControllerDelegate) {
         self.childViewController = childViewController
