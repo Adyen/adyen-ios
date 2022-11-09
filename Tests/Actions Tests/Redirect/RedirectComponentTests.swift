@@ -11,6 +11,18 @@ import SafariServices
 import XCTest
 
 class RedirectComponentTests: XCTestCase {
+    
+    override func tearDown() {
+        super.tearDown()
+        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: false)
+        wait(for: .milliseconds(300))
+    }
+    
+    override func setUp() {
+        super.setUp()
+        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: false)
+        wait(for: .milliseconds(300))
+    }
 
     func testUIConfiguration() {
         let action = RedirectAction(url: URL(string: "https://adyen.com")!, paymentData: "data")
@@ -179,19 +191,13 @@ class RedirectComponentTests: XCTestCase {
             XCTFail("delegate.didOpenExternalApplication() must not to be called")
         }
 
-        let action = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data")
+        let action = RedirectAction(url: URL(string: "https://www.adyen.com?returnUrlQueryString=anything")!, paymentData: "test_data")
         sut.handle(action)
-
-        let waitExpectation = expectation(description: "Expect in app browser to be presented and then dismissed")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-
-            let topPresentedViewController = UIViewController.findTopPresenter()
-            XCTAssertNotNil(topPresentedViewController as? SFSafariViewController)
-
-            waitExpectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 10, handler: nil)
+        
+        wait(for: .seconds(2))
+        
+        let topPresentedViewController = UIViewController.findTopPresenter()
+        XCTAssertNotNil(topPresentedViewController as? SFSafariViewController)
     }
 
     @available(iOS 13.0, *)
@@ -210,14 +216,13 @@ class RedirectComponentTests: XCTestCase {
             XCTAssertEqual(error as! ComponentError, ComponentError.cancelled)
             waitExpectation.fulfill()
         }
+        
+        wait(for: .seconds(2))
 
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
+        let topPresentedViewController = UIViewController.findTopPresenter() as? SFSafariViewController
+        XCTAssertNotNil(topPresentedViewController)
 
-            let topPresentedViewController = UIViewController.findTopPresenter() as? SFSafariViewController
-            XCTAssertNotNil(topPresentedViewController)
-
-            topPresentedViewController!.presentationController?.delegate?.presentationControllerDidDismiss?(topPresentedViewController!.presentationController!)
-        }
+        topPresentedViewController!.presentationController?.delegate?.presentationControllerDidDismiss?(topPresentedViewController!.presentationController!)
 
         waitForExpectations(timeout: 10, handler: nil)
     }
@@ -250,7 +255,7 @@ class RedirectComponentTests: XCTestCase {
         wait(for: .seconds(1))
 
         // and redirect received
-        RedirectComponent.applicationDidOpen(from: URL(string: "https://www.adyen.com?redirectResult=XXX")!)
+        XCTAssertTrue(RedirectComponent.applicationDidOpen(from: URL(string: "https://www.adyen.com?redirectResult=XXX")!))
 
         // Then
         waitForExpectations(timeout: 5, handler: nil)
@@ -282,7 +287,7 @@ class RedirectComponentTests: XCTestCase {
         
         let action = RedirectAction(url: URL(string: "http://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
         sut.handle(action)
-        _ = RedirectListener.applicationDidOpen(from: URL(string: "url://?queryParam=value")!)
+        XCTAssertTrue(RedirectComponent.applicationDidOpen(from: URL(string: "url://?queryParam=value")!))
         
         waitForExpectations(timeout: 2)
     }
@@ -301,18 +306,16 @@ class RedirectComponentTests: XCTestCase {
         
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
-        let redirectExpectation = expectation(description: "Expect redirect to be proccessed")
         delegate.onDidProvide = { data, component in
             XCTFail("Should not call onDidProvide")
         }
         delegate.onDidFail = { error, _ in
-            XCTAssertEqual(error as! RedirectComponent.Error, .invalidRedirectParameters)
-            redirectExpectation.fulfill()
+            XCTFail("Should not call onDidProvide")
         }
         
         let action = RedirectAction(url: URL(string: "http://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
         sut.handle(action)
-        _ = RedirectListener.applicationDidOpen(from: URL(string: "url://")!)
+        XCTAssertFalse(RedirectComponent.applicationDidOpen(from: URL(string: "url://")!))
         
         waitForExpectations(timeout: 2)
     }
@@ -333,7 +336,7 @@ class RedirectComponentTests: XCTestCase {
         
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
-        let redirectExpectation = expectation(description: "Expect redirect to be proccessed")
+        let redirectExpectation = expectation(description: "Expect redirect to be NOT handled by RedirectComponent")
         delegate.onDidProvide = { data, component in
             XCTFail("Should not call onDidProvide")
         }
@@ -344,7 +347,7 @@ class RedirectComponentTests: XCTestCase {
         
         let action = RedirectAction(url: URL(string: "http://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
         sut.handle(action)
-        _ = RedirectListener.applicationDidOpen(from: URL(string: "url://?queryParam=value")!)
+        XCTAssertTrue(RedirectComponent.applicationDidOpen(from: URL(string: "url://?queryParam=value")!))
         
         waitForExpectations(timeout: 2)
     }
