@@ -109,7 +109,11 @@ public final class RedirectComponent: ActionComponent {
     /// - Returns: A boolean value indicating whether the URL was handled by the redirect component.
     @discardableResult
     public static func applicationDidOpen(from url: URL) -> Bool {
-        RedirectListener.applicationDidOpen(from: url)
+        do {
+            return try RedirectListener.applicationDidOpen(from: url)
+        } catch {
+            return false
+        }
     }
     
     // MARK: - Http link handling
@@ -155,26 +159,21 @@ public final class RedirectComponent: ActionComponent {
     private func registerRedirectBounceBackListener(_ action: RedirectAction) {
         RedirectListener.registerForURL { [weak self] returnURL in
             guard let self = self else { return }
-            self.didOpen(url: returnURL, action)
+            try self.didOpen(url: returnURL, action)
         }
     }
     
-    private func didOpen(url returnURL: URL, _ action: RedirectAction) {
+    private func didOpen(url returnURL: URL, _ action: RedirectAction) throws {
         if let redirectStateData = action.nativeRedirectData {
-            handleNativeMobileRedirect(withReturnURL: returnURL, redirectStateData: redirectStateData, action)
+            try handleNativeMobileRedirect(withReturnURL: returnURL, redirectStateData: redirectStateData, action)
         } else {
-            do {
-                notifyDelegateDidProvide(redirectDetails: try RedirectDetails(returnURL: returnURL), action)
-            } catch {
-                delegate?.didFail(with: error, from: self)
-            }
+            notifyDelegateDidProvide(redirectDetails: try RedirectDetails(returnURL: returnURL), action)
         }
     }
     
-    private func handleNativeMobileRedirect(withReturnURL returnURL: URL, redirectStateData: String, _ action: RedirectAction) {
+    private func handleNativeMobileRedirect(withReturnURL returnURL: URL, redirectStateData: String, _ action: RedirectAction) throws {
         guard let queryString = returnURL.query else {
-            delegate?.didFail(with: Error.invalidRedirectParameters, from: self)
-            return
+            throw Error.invalidRedirectParameters
         }
         let request = NativeRedirectResultRequest(redirectData: redirectStateData,
                                                   returnQueryString: queryString)
