@@ -32,11 +32,14 @@ extension CardComponent {
             let card = cardViewController.card
             let encryptedCard = try CardEncryptor.encrypt(card: card, with: cardPublicKey)
             let kcpDetails = try cardViewController.kcpDetails?.encrypt(with: cardPublicKey)
+            let cardAddressValidator = CardAddressValidator.init(configuration: configuration,
+                                                                 address: cardViewController.address,
+                                                                 addressScheme: cardViewController.items.addressViewModelBuilder.scheme)
             let details = CardDetails(paymentMethod: cardPaymentMethod,
                                       encryptedCard: encryptedCard,
                                       holderName: card.holder,
                                       selectedBrand: cardViewController.selectedBrand,
-                                      billingAddress: cardViewController.validAddress,
+                                      billingAddress: cardAddressValidator.validAddress,
                                       kcpDetails: kcpDetails,
                                       socialSecurityNumber: cardViewController.socialSecurityNumber)
             
