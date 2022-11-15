@@ -40,7 +40,8 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     internal let addressViewModelBuilder: AddressViewModelBuilder
     
-    public var addressViewModel: AddressViewModel
+    @_spi(AdyenInternal)
+    public private(set) var addressViewModel: AddressViewModel
 
     override public var title: String? {
         didSet {

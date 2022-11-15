@@ -8,40 +8,21 @@
 import Foundation
 
 /// Validates a card's address field.
-public final class AddressValidator {
+internal class AddressValidator {
 
-    private var addressMode: CardComponent.AddressFormType = .none
-
-    private let address: PostalAddress
-
-    private let addressScheme: [AddressFormScheme]?
-
-    /// Create new instance of CardAddressValidator
-    /// - Parameters:
-    ///   - configuration: The configurations of the `CardComponent`.
-    ///   - address: The postal address.
-    ///   - addressScheme: The array of AddressFormScheme
-    internal init(addressMode: CardComponent.AddressFormType,
-                  address: PostalAddress,
-                  addressScheme: [AddressFormScheme]? = nil) {
-        self.addressMode = addressMode
-        self.address = address
-        self.addressScheme = addressScheme
-    }
-
-    internal func isValid() -> Bool {
+    internal func isValid(address: PostalAddress?, addressMode: CardComponent.AddressFormType, addressScheme: [AddressFormScheme]?) -> Bool {
         let fieldsValues: [String?]
 
         switch addressMode {
         case .full:
-            fieldsValues = [address.city,
-                            address.country,
-                            address.postalCode,
-                            address.stateOrProvince,
-                            address.street,
-                            address.houseNumberOrName]
+            fieldsValues = [address?.city,
+                            address?.country,
+                            address?.postalCode,
+                            address?.stateOrProvince,
+                            address?.street,
+                            address?.houseNumberOrName]
         case .postalCode:
-            fieldsValues = [address.postalCode]
+            fieldsValues = [address?.postalCode]
         case .none:
             fieldsValues = []
         }

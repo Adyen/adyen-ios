@@ -18,7 +18,7 @@ public protocol AddressViewModelBuilder {
 }
 
 @_spi(AdyenInternal)
-public class DefaultAddressViewModelBuilder: AddressViewModelBuilder {
+public struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
 
     public init() {}
 

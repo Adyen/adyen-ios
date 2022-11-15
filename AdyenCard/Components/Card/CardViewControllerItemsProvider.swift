@@ -29,8 +29,6 @@ extension CardViewController {
         
         internal let addressViewModelBuilder: AddressViewModelBuilder
 
-        internal var addressViewModel: AddressViewModel?
-
         internal init(formStyle: FormComponentStyle,
                       payment: Payment?,
                       configuration: CardComponent.Configuration,
@@ -74,7 +72,6 @@ extension CardViewController {
                                        identifier: identifier,
                                        supportedCountryCodes: configuration.billingAddress.countryCodes,
                                        addressViewModelBuilder: addressViewModelBuilder)
-            addressViewModel = item.addressViewModel
             shopperInformation?.billingAddress.map { item.value = $0 }
             item.style.backgroundColor = UIColor.Adyen.lightGray
             return item

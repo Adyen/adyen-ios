@@ -30,6 +30,8 @@ public struct AddressViewModel {
     internal var labels: [AddressField: LocalizationKey]
     internal var placeholder: [AddressField: LocalizationKey]
     internal var optionalFields: [AddressField]
+
+    @_spi(AdyenInternal)
     public var scheme: [AddressFormScheme]
 
     public init(labels: [AddressField: LocalizationKey],
