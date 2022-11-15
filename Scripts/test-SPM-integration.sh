@@ -51,6 +51,8 @@ let package = Package(
 
 swift package update
 
+# This is a hack to work around a bug with SPM
+# https://github.com/apple/swift-package-manager/issues/5767#issuecomment-1258214979
 swift package dump-pif > /dev/null || true
 xcodebuild clean -scheme TempProject -destination 'generic/platform=iOS' > /dev/null || true
 
