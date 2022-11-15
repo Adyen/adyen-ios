@@ -51,6 +51,9 @@ let package = Package(
 
 swift package update
 
+swift package dump-pif > /dev/null || true
+xcodebuild clean -scheme TempProject -destination 'generic/platform=iOS' > /dev/null || true
+
 # Archive for generic iOS device
 echo '############# Archive for generic iOS device ###############'
 xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS'

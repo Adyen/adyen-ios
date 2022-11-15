@@ -90,6 +90,16 @@ then
     pod 'Adyen/Session', :path => '../'
     pod 'Adyen/SwiftUI', :path => '../'
   end
+
+  post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['EXPANDED_CODE_SIGN_IDENTITY'] = \"\"
+            config.build_settings['CODE_SIGNING_REQUIRED'] = \"NO\"
+            config.build_settings['CODE_SIGNING_ALLOWED'] = \"NO\"
+        end
+    end
+   end
   " >> Podfile
 else
   echo "platform :ios, '11.0'
@@ -100,6 +110,16 @@ else
     pod 'Adyen', :path => '../'
     pod 'Adyen/WeChatPay', :path => '../'
     pod 'Adyen/SwiftUI', :path => '../'
+  end
+
+  post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['EXPANDED_CODE_SIGN_IDENTITY'] = \"\"
+            config.build_settings['CODE_SIGNING_REQUIRED'] = \"NO\"
+            config.build_settings['CODE_SIGNING_ALLOWED'] = \"NO\"
+        end
+    end
   end
   " >> Podfile
 fi
