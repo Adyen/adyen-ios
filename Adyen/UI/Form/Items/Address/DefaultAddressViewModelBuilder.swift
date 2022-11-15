@@ -14,14 +14,11 @@ public struct AddressViewModelBuilderContext {
 
 @_spi(AdyenInternal)
 public protocol AddressViewModelBuilder {
-    var scheme: [AddressFormScheme]? { get set }
     func build(context: AddressViewModelBuilderContext) -> AddressViewModel
 }
 
 @_spi(AdyenInternal)
 public class DefaultAddressViewModelBuilder: AddressViewModelBuilder {
-
-    public var scheme: [AddressFormScheme]?
 
     public init() {}
 
@@ -42,7 +39,6 @@ public class DefaultAddressViewModelBuilder: AddressViewModelBuilder {
                                                        .apartment: .apartmentSuiteFieldPlaceholder],
                                          optionalFields: context.isOptional ? AddressField.allCases : [.apartment],
                                          scheme: AddressField.allCases.filter { $0 != .country }.map { .item($0) })
-        self.scheme = viewModel.scheme
         switch context.countryCode {
         case "BR":
             viewModel.labels[.stateOrProvince] = .stateFieldTitle
@@ -56,12 +52,10 @@ public class DefaultAddressViewModelBuilder: AddressViewModelBuilder {
             viewModel.placeholder[.street] = .addressFieldPlaceholder
             viewModel.optionalFields = context.isOptional ? AddressField.allCases : [.houseNumberOrName]
             viewModel.scheme = [.street, .houseNumberOrName, .city, .postalCode, .stateOrProvince].map { .item($0) }
-            self.scheme = viewModel.scheme
         case "GB":
             viewModel.labels[.city] = .cityTownFieldTitle
             viewModel.placeholder[.city] = .cityTownFieldPlaceholder
             viewModel.scheme = [.houseNumberOrName, .street, .city, .postalCode].map { .item($0) }
-            self.scheme = viewModel.scheme
         case "US":
             viewModel.labels[.postalCode] = .zipCodeFieldTitle
             viewModel.labels[.houseNumberOrName] = .apartmentSuiteFieldTitle
@@ -76,7 +70,6 @@ public class DefaultAddressViewModelBuilder: AddressViewModelBuilder {
                                 .item(.houseNumberOrName),
                                 .item(.city),
                                 .split(.stateOrProvince, .postalCode)]
-            self.scheme = viewModel.scheme
         default:
             break
         }

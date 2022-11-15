@@ -30,7 +30,7 @@ public struct AddressViewModel {
     internal var labels: [AddressField: LocalizationKey]
     internal var placeholder: [AddressField: LocalizationKey]
     internal var optionalFields: [AddressField]
-    internal var scheme: [AddressFormScheme]
+    public var scheme: [AddressFormScheme]
 
     public init(labels: [AddressField: LocalizationKey],
                 placeholder: [AddressField: LocalizationKey],

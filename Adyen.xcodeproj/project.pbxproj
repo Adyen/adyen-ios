@@ -22,7 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		0055B8CF292242A000214ED5 /* CardAddressValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0055B8CE292242A000214ED5 /* CardAddressValidator.swift */; };
+		0055B8CF292242A000214ED5 /* AddressValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0055B8CE292242A000214ED5 /* AddressValidator.swift */; };
 		0058691528B644FB00B65A19 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691428B644FB00B65A19 /* QRCodeView.swift */; };
 		0058691728B6450900B65A19 /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691628B6450900B65A19 /* QRCodeViewController.swift */; };
 		0058691928B6451000B65A19 /* QRCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691828B6451000B65A19 /* QRCodeViewModel.swift */; };
@@ -1104,7 +1104,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0055B8CE292242A000214ED5 /* CardAddressValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardAddressValidator.swift; sourceTree = "<group>"; };
+		0055B8CE292242A000214ED5 /* AddressValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressValidator.swift; sourceTree = "<group>"; };
 		0058691428B644FB00B65A19 /* QRCodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
 		0058691628B6450900B65A19 /* QRCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
 		0058691828B6451000B65A19 /* QRCodeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewModel.swift; sourceTree = "<group>"; };
@@ -3531,7 +3531,7 @@
 				E9E3DACC221EEAB200697074 /* CardSecurityCodeValidator.swift */,
 				E9E3DAD0221EEE2100697074 /* CardExpiryDateValidator.swift */,
 				F9D5751123756BD0009C18B5 /* CardPublicKeyValidator.swift */,
-				0055B8CE292242A000214ED5 /* CardAddressValidator.swift */,
+				0055B8CE292242A000214ED5 /* AddressValidator.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -5977,7 +5977,7 @@
 				F96286B5256BDEA400043FE3 /* CardBundleExtension.swift in Sources */,
 				F9FE25682625B3D7001874BB /* CardExpiryDateFormatter.swift in Sources */,
 				E7451A112600EDE0000BDCCF /* StoredCardConfiguration.swift in Sources */,
-				0055B8CF292242A000214ED5 /* CardAddressValidator.swift in Sources */,
+				0055B8CF292242A000214ED5 /* AddressValidator.swift in Sources */,
 				F9FE25882625B40F001874BB /* CardNumberFormatter.swift in Sources */,
 				F919DF9724E6E2810027976E /* StoredCardComponent.swift in Sources */,
 				A0FA145726D65B6200627127 /* FormCardInstallmentsItemView.swift in Sources */,

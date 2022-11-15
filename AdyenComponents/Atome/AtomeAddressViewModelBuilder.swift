@@ -8,7 +8,6 @@ import Foundation
 @_spi(AdyenInternal) import Adyen
 
 internal struct AtomeAddressViewModelBuilder: AddressViewModelBuilder {
-    internal var scheme: [Adyen.AddressFormScheme]?
 
     internal init() {}
 

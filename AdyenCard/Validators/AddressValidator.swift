@@ -8,11 +8,11 @@
 import Foundation
 
 /// Validates a card's address field.
-public final class CardAddressValidator {
+public final class AddressValidator {
 
-    private let configuration: CardComponent.Configuration
+    private var addressMode: CardComponent.AddressFormType = .none
 
-    private let address: PostalAddress?
+    private let address: PostalAddress
 
     private let addressScheme: [AddressFormScheme]?
 
@@ -21,23 +21,18 @@ public final class CardAddressValidator {
     ///   - configuration: The configurations of the `CardComponent`.
     ///   - address: The postal address.
     ///   - addressScheme: The array of AddressFormScheme
-    internal init(configuration: CardComponent.Configuration,
-                  address: PostalAddress?,
+    internal init(addressMode: CardComponent.AddressFormType,
+                  address: PostalAddress,
                   addressScheme: [AddressFormScheme]? = nil) {
-        self.configuration = configuration
+        self.addressMode = addressMode
         self.address = address
         self.addressScheme = addressScheme
     }
 
-    internal var validAddress: PostalAddress? {
-        guard let address = address, isAddressValid(address: address) else { return nil }
-        return address
-    }
-
-    private func isAddressValid(address: PostalAddress) -> Bool {
+    internal func isValid() -> Bool {
         let fieldsValues: [String?]
 
-        switch configuration.billingAddress.mode {
+        switch addressMode {
         case .full:
             fieldsValues = [address.city,
                             address.country,

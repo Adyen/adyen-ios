@@ -58,6 +58,7 @@ internal class CardViewController: FormViewController {
         let cardLogos = supportedCardTypes.map {
             FormCardLogosItem.CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
         }
+
         self.items = ItemsProvider(formStyle: formStyle,
                                    payment: payment,
                                    configuration: configuration,
@@ -109,6 +110,16 @@ internal class CardViewController: FormViewController {
     
     internal var cardBIN: String {
         items.numberContainerItem.numberItem.binValue
+    }
+
+    internal var validAddress: PostalAddress? {
+        guard let address = address,
+              AddressValidator.init(addressMode: configuration.billingAddress.mode,
+                                    address: address,
+                                    addressScheme: items.addressViewModel?.scheme).isValid() else {
+            return nil
+        }
+        return address
     }
 
     internal var address: PostalAddress? {
