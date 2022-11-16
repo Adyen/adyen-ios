@@ -27,23 +27,28 @@ internal final class ComponentsViewController: UIViewController, Presenter {
         super.viewDidLoad()
         navigationItem.title = "Components"
         
-        componentsView.items = [
-            [
-                ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
-            ],
-            [
-                ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
-                ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
-                ComponentsItem(title: "Online Banking PL", selectionHandler: presentOnlineBankingPolandComponent),
-                ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
-                ComponentsItem(title: "BACS Direct Debit", selectionHandler: presentBACSDirectDebitComponent),
-                ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent),
-                ComponentsItem(title: "Convenience Stores", selectionHandler: presentConvenienceStore)
-            ],
-            [
-                ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)
+        if #available(iOS 13, *) {
+            componentsView.items = [
+                [
+                    ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
+                ],
+                [
+                    ComponentsItem(title: "Scan Card", selectionHandler: presentCardScanning),
+                    ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
+                    ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
+                    ComponentsItem(title: "Online Banking PL", selectionHandler: presentOnlineBankingPolandComponent),
+                    ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
+                    ComponentsItem(title: "BACS Direct Debit", selectionHandler: presentBACSDirectDebitComponent),
+                    ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent),
+                    ComponentsItem(title: "Convenience Stores", selectionHandler: presentConvenienceStore)
+                ],
+                [
+                    ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)
+                ]
             ]
-        ]
+        } else {
+            // Fallback on earlier versions
+        }
         
         requestInitialData()
         
@@ -68,6 +73,11 @@ internal final class ComponentsViewController: UIViewController, Presenter {
         } else {
             integrationExample.presentCardComponent()
         }
+    }
+    
+    @available(iOS 13, *)
+    internal func presentCardScanning() {
+        integrationExample.presentCardScanning()
     }
 
     internal func presentIdealComponent() {

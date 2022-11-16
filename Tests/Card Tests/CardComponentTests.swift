@@ -8,9 +8,24 @@
 @testable @_spi(AdyenInternal) import AdyenCard
 @testable import AdyenDropIn
 @testable import AdyenEncryption
+@testable import AdyenCardScanner
 import XCTest
 
 class CardComponentTests: XCTestCase {
+    
+    @available(iOS 13.0, *)
+    func testCardScanning() {
+        let scanner = AppleImageScanner()
+        let images = (1...6).map({ "card-\($0).png" }).compactMap { UIImage(named: $0, in: Bundle(for: CardComponentTests.self), with: nil) }
+        var cards = [DetectedCard]()
+        images.compactMap { $0 }.forEach { image in
+            scanner.scan(image: image) { card in
+                XCTAssertNotNil(card)
+            }
+        }
+        wait(for: .seconds(3))
+        XCTAssertEqual(cards.count, images.count)
+    }
 
     var context = Dummy.context
     let payment = Dummy.payment

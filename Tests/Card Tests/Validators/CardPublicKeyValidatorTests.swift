@@ -5,6 +5,7 @@
 //
 
 @testable @_spi(AdyenInternal) import AdyenCard
+@testable @_spi(AdyenInternal) import Adyen
 import XCTest
 
 class CardPublicKeyValidatorTests: XCTestCase {

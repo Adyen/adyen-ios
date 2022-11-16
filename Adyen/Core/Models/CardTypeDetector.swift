@@ -4,7 +4,6 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// So that any `Array` instance will inherit the `adyen` scope.
@@ -36,9 +35,10 @@ public extension AdyenScope where Base == [CardType] {
     }
 }
 
+@_spi(AdyenInternal)
 extension Array where Element: Hashable {
 
-    internal func minus(_ set: Set<Element>) -> [Element] {
+    public func minus(_ set: Set<Element>) -> [Element] {
         filter { !set.contains($0) }
     }
 }

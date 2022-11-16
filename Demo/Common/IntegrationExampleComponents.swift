@@ -7,6 +7,7 @@
 import Adyen
 import AdyenActions
 import AdyenCard
+import AdyenCardScanner
 import AdyenComponents
 import PassKit
 import UIKit
@@ -21,6 +22,12 @@ extension IntegrationExample {
         guard let component = cardComponent(from: paymentMethods) else { return }
         component.cardComponentDelegate = self
         present(component, delegate: self)
+    }
+    
+    @available(iOS 13, *)
+    internal func presentCardScanning() {
+        let viewController = CameraViewController()
+        presenter?.present(viewController: viewController, completion: nil)
     }
 
     internal func presentCardComponentSession() {

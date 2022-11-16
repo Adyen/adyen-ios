@@ -4,15 +4,18 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Validates a card's number.
 /// The input is expected to be sanitized.
 public final class CardNumberValidator: Validator {
     
-    private enum Constants {
-        static let maxPanLength = 19
+    /// Constants used for card number validation.
+    public enum Constants {
+        /// Maximum allowed PAN length.
+        public static let maxPanLength = 19
+        /// Minimum allowed PAN length.
+        public static let minPanLength = 12
     }
     
     /// Indicates whether to validate for luhn check
@@ -40,7 +43,7 @@ public final class CardNumberValidator: Validator {
     
     public func isValid(_ value: String) -> Bool {
         guard isEnteredBrandSupported else { return false }
-        let minimumValidCardLength = 12
+        let minimumValidCardLength = Constants.minPanLength
         let isValid = value.count >= minimumValidCardLength && (!isLuhnCheckEnabled || luhnCheck(value))
         
         return isValid
