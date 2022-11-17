@@ -26,8 +26,8 @@ extension IntegrationExample {
     
     @available(iOS 13, *)
     internal func presentCardScanning() {
-        let viewController = CameraViewController()
-        presenter?.present(viewController: viewController, completion: nil)
+//        let viewController = CameraViewController()
+//        presenter?.present(viewController: viewController, completion: nil)
     }
 
     internal func presentCardComponentSession() {

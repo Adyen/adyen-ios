@@ -183,6 +183,13 @@ extension CardViewController {
             installmentsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "installmentsItem")
             return installmentsItem
         }()
+        
+        internal lazy var scanCardButton: FormButtonItem = {
+            let item = FormButtonItem(style: formStyle.secondaryButtonItem)
+            item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "scanCardButton")
+            item.title = "Scan card"
+            return item
+        }()
 
         internal lazy var button: FormButtonItem = {
             let item = FormButtonItem(style: formStyle.mainButtonItem)

@@ -1068,6 +1068,13 @@
 			remoteGlobalIDString = E2C0E03222097917008616F6;
 			remoteInfo = Adyen;
 		};
+		F9621CCD292620290005FA4F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F9621CA12924CF070005FA4F;
+			remoteInfo = AdyenCardScanner;
+		};
 		F973A9152791AA22005AA753 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
@@ -4803,6 +4810,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				F9621CCE292620290005FA4F /* PBXTargetDependency */,
 				F91761C125A30E1B00D653BE /* PBXTargetDependency */,
 				F92326F525A3672A002C5BC4 /* PBXTargetDependency */,
 			);
@@ -6615,6 +6623,11 @@
 			isa = PBXTargetDependency;
 			target = E2C0E03222097917008616F6 /* Adyen */;
 			targetProxy = F9621CB62924D8D10005FA4F /* PBXContainerItemProxy */;
+		};
+		F9621CCE292620290005FA4F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F9621CA12924CF070005FA4F /* AdyenCardScanner */;
+			targetProxy = F9621CCD292620290005FA4F /* PBXContainerItemProxy */;
 		};
 		F973A9162791AA22005AA753 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

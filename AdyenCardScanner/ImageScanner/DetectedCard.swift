@@ -9,7 +9,6 @@
 import Foundation
 
 /// Contains the information of a card that is yet to be encrypted.
-@_spi(AdyenInternal)
 public final class DetectedCard {
 
     /// The card number.

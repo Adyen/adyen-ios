@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) import AdyenCardScanner
 import UIKit
 #if canImport(AdyenEncryption)
     import AdyenEncryption
@@ -240,6 +241,9 @@ internal class CardViewController: FormViewController {
     // MARK: Private methods
 
     private func setupView() {
+        if #available(iOS 13, *) {
+            append(items.scanCardButton)
+        }
         append(items.numberContainerItem)
 
         if configuration.showsSecurityCodeField {
@@ -301,6 +305,17 @@ internal class CardViewController: FormViewController {
 
         items.button.buttonSelectionHandler = { [weak cardDelegate] in
             cardDelegate?.didSelectSubmitButton()
+        }
+        if #available(iOS 13, *) {
+            items.scanCardButton.buttonSelectionHandler = { [weak self] in
+                
+                let cameraViewControlller = CameraViewController(onDetect: { card in
+                    guard let card = card, let number = card.numberCandidates.first else { return }
+                    self?.items.numberContainerItem.numberItem.value = number
+                    self?.adyen.topPresenter.dismiss(animated: true)
+                })
+                self?.adyen.topPresenter.present(cameraViewControlller, animated: true)
+            }
         }
     }
 
