@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,9 +11,9 @@ import UIKit
 internal final class FormCardNumberItem: FormTextItem, Observer {
     
     private static let binLength = 12
-
+    
     private let cardNumberFormatter = CardNumberFormatter()
-
+    
     /// The supported card types.
     private let supportedCardTypes: [CardType]
     
@@ -24,8 +24,11 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
     /// The value contains up to 6 first digits of card' PAN.
     @Observable("") internal var binValue: String
     
-    /// Currently selected brand for the entered bin.
-    @Observable(nil) internal private(set) var currentBrand: CardBrand?
+    /// nitial brand set after detection before any user interaction
+    @Observable(nil) internal private(set) var initialBrand: CardBrand?
+    
+    /// Brand selected in dual branded cards, set after user selection.
+    @Observable(nil) internal private(set) var selectedDualBrand: CardBrand?
     
     /// Detected brand logo(s) for the entered bin.
     @Observable([]) internal private(set) var detectedBrandLogos: [FormCardLogosItem.CardTypeLogo]
@@ -39,6 +42,15 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
     /// :nodoc:
     private let localizationParameters: LocalizationParameters?
     
+    /// Returns the initial brand for single brand cases
+    /// For dual brands returns the brand (`selectedDualBrand`) only after it is selected by the user
+    internal var currentBrand: CardBrand? {
+        isDualBranded ? selectedDualBrand : initialBrand
+    }
+    
+    /// :nodoc:
+    internal var isDualBranded: Bool = false
+    
     /// Initializes the form card number item.
     internal init(cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
                   style: FormTextItemStyle = FormTextItemStyle(),
@@ -49,7 +61,7 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
         self.localizationParameters = localizationParameters
         
         super.init(style: style)
-
+        
         observe(publisher) { [weak self] value in self?.valueDidChange(value) }
         
         title = localizedString(.cardNumberItemTitle, localizationParameters)
@@ -74,21 +86,24 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
     }
     
     /// Updates the item with the detected brands.
-    /// and sets the first supported one as the `currentBrand`.
+    /// and sets the first supported one as the `initialBrand`.
     internal func update(brands: [CardBrand]) {
         detectedBrands = brands
+        
         switch (brands.count, brands.first(where: \.isSupported)) {
         case (1, _):
-            update(currentBrand: brands.first)
+            update(initialBrand: brands.first)
         case let (2, .some(firstSupportedBrand)):
-            update(currentBrand: firstSupportedBrand)
+            update(initialBrand: firstSupportedBrand)
         case (2, nil):
             // if there are 2 brands and neither is supported,
             // need to show unsupported text
-            update(currentBrand: nil, defaultSupportedValue: false)
+            update(initialBrand: nil, defaultSupportedValue: false)
         default:
-            update(currentBrand: nil)
+            update(initialBrand: nil)
         }
+        
+        isDualBranded = brands.count == 2 && brands.allSatisfy(\.isSupported)
         
         detectedBrandLogos = brands.filter(\.isSupported)
             .compactMap { brand in
@@ -96,30 +111,33 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
             }
     }
     
-    /// Changes current brand with the given index to trigger updates
+    /// Changes the selected dual brand with the given index to trigger updates
     /// for the observing objects.
     internal func selectBrand(at index: Int) {
         let newBrand = detectedBrands.adyen[safeIndex: index]
-        update(currentBrand: newBrand)
+        updateValidation(for: newBrand)
+        self.selectedDualBrand = newBrand
     }
     
-    /// Updates the current brand and the related validation checks.
-    private func update(currentBrand: CardBrand?, defaultSupportedValue: Bool = true) {
+    /// Updates the initial brand and the related validation checks.
+    private func update(initialBrand: CardBrand?, defaultSupportedValue: Bool = true) {
+        updateValidation(for: initialBrand, defaultSupportedValue: defaultSupportedValue)
+        self.initialBrand = initialBrand
+    }
+    
+    private func updateValidation(for brand: CardBrand?, defaultSupportedValue: Bool = true) {
         // validation message will change based on if brand is supported or not
         // if brand is not supported, allow validation while editing to show the error instantly.
-        let isBrandSupported = currentBrand?.isSupported ?? defaultSupportedValue
+        let isBrandSupported = brand?.isSupported ?? defaultSupportedValue
         if isBrandSupported {
             allowsValidationWhileEditing = false
             validationFailureMessage = localizedString(.cardNumberItemInvalid, localizationParameters)
-        } else {
-            allowsValidationWhileEditing = true
             validationFailureMessage = localizedString(.cardNumberItemUnknownBrand, localizationParameters)
         }
         
-        validator = CardNumberValidator(isLuhnCheckEnabled: currentBrand?.isLuhnCheckEnabled ?? true,
+        validator = CardNumberValidator(isLuhnCheckEnabled: brand?.isLuhnCheckEnabled ?? true,
                                         isEnteredBrandSupported: isBrandSupported,
-                                        panLength: currentBrand?.panLength)
-        self.currentBrand = currentBrand
+                                        panLength: brand?.panLength)
     }
     
 }
