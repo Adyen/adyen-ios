@@ -27,7 +27,7 @@ extension CardViewController {
 
         private let defaultCountryCode: String
         
-        internal let addressViewModelBuilder: AddressViewModelBuilder
+        private let addressViewModelBuilder: AddressViewModelBuilder
 
         internal init(formStyle: FormComponentStyle,
                       payment: Payment?,

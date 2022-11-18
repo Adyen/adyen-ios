@@ -20,6 +20,12 @@ public enum AddressField: String, CaseIterable {
 
 @_spi(AdyenInternal)
 public enum AddressFormScheme {
+    public var  children: [AddressField] {
+        switch self {
+        case .item(let item): return [item]
+        case .split(let item1, let item2): return [item1, item2]
+        }
+    }
     case item(AddressField)
     case split(AddressField, AddressField)
 }
@@ -29,7 +35,9 @@ public struct AddressViewModel {
 
     internal var labels: [AddressField: LocalizationKey]
     internal var placeholder: [AddressField: LocalizationKey]
-    internal var optionalFields: [AddressField]
+
+    @_spi(AdyenInternal)
+    public var optionalFields: [AddressField]
 
     @_spi(AdyenInternal)
     public var scheme: [AddressFormScheme]
