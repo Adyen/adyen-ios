@@ -132,6 +132,8 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
         if isBrandSupported {
             allowsValidationWhileEditing = false
             validationFailureMessage = localizedString(.cardNumberItemInvalid, localizationParameters)
+        } else {
+            allowsValidationWhileEditing = true
             validationFailureMessage = localizedString(.cardNumberItemUnknownBrand, localizationParameters)
         }
         
