@@ -13,8 +13,8 @@ internal class AddressValidator {
     internal func isValid(address: PostalAddress?, addressMode: CardComponent.AddressFormType, addressViewModel: AddressViewModel) -> Bool {
 
         let fieldsValues: [String: String?]
-        let allAddressFieldsInScheme: [AddressField] = addressViewModel.scheme.flatMap({$0.children})
-        let optionalAddressField: [AddressField] = addressViewModel.optionalFields
+        var allAddressFieldsInScheme: [AddressField] = addressViewModel.scheme.flatMap({$0.children})
+        var optionalAddressField: [AddressField] = addressViewModel.optionalFields
 
         switch addressMode {
         case .full:
@@ -25,6 +25,8 @@ internal class AddressValidator {
                             AddressField.street.rawValue: address?.street,
                             AddressField.houseNumberOrName.rawValue: address?.houseNumberOrName]
         case .postalCode:
+            allAddressFieldsInScheme = [.postalCode]
+            optionalAddressField = []
             fieldsValues = [AddressField.postalCode.rawValue: address?.postalCode]
         case .none:
             fieldsValues = [:]
@@ -33,11 +35,11 @@ internal class AddressValidator {
         let allAddressFieldsInSchemeSet: Set<AddressField> = Set(allAddressFieldsInScheme)
         let optionalAddressFieldsSet: Set<AddressField> = Set(optionalAddressField)
 
-        let remaingRequiredAddressFields = allAddressFieldsInSchemeSet.subtracting(optionalAddressFieldsSet)
+        let remainingRequiredAddressFields = allAddressFieldsInSchemeSet.subtracting(optionalAddressFieldsSet)
  
-        let isAllRequiredAdddressFieldsPresent = checkIfAllFieldsPresent(fieldsValues: fieldsValues,
-                                                                         requiredAddressFields: remaingRequiredAddressFields)
-        return isAllRequiredAdddressFieldsPresent
+        let isAllRequiredAddressFieldsPresent = checkIfAllFieldsPresent(fieldsValues: fieldsValues,
+                                                                         requiredAddressFields: remainingRequiredAddressFields)
+        return isAllRequiredAddressFieldsPresent
     }
 
     private func checkIfAllFieldsPresent(fieldsValues: [String: String?], requiredAddressFields: Set<AddressField>) -> Bool {
