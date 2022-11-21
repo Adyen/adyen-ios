@@ -172,3 +172,5 @@ whiteList:
   - rcode
   - duitnow
   - paynow
+  - remains
+  - address
