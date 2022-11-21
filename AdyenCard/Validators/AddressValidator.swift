@@ -30,10 +30,6 @@ internal class AddressValidator {
             fieldsValues = [:]
         }
 
-        let trimmedFieldsValues = fieldsValues.values.map {
-            $0?.trimmingCharacters(in: .whitespaces).adyen.nilIfEmpty
-        }
-
         let allAddressFieldsInSchemeSet: Set<AddressField> = Set(allAddressFieldsInScheme)
         let optionalAddressFieldsSet: Set<AddressField> = Set(optionalAddressField)
 
@@ -41,16 +37,10 @@ internal class AddressValidator {
  
         let isAllRequiredAdddressFieldsPresent = checkIfAllFieldsPresent(fieldsValues: fieldsValues,
                                                                          requiredAddressFields: remaingRequiredAddressFields)
-        return trimmedFieldsValues.compactMap { $0 }.count == ((remaingRequiredAddressFields.count) + 1)
-        || isAllRequiredAdddressFieldsPresent
+        return isAllRequiredAdddressFieldsPresent
     }
 
     private func checkIfAllFieldsPresent(fieldsValues: [String: String?], requiredAddressFields: Set<AddressField>) -> Bool {
-        for addressFields in requiredAddressFields {
-            if fieldsValues[addressFields.rawValue] == nil {
-              return false
-            }
-        }
-        return true
+        requiredAddressFields.allSatisfy({fieldsValues[$0.rawValue] != nil })
     }
 }
