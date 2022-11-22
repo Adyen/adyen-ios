@@ -113,17 +113,21 @@ internal class CardViewController: FormViewController {
     }
 
     internal var validAddress: PostalAddress? {
-        return AddressValidator().isValid(address: address ?? nil,
-                                          addressMode: configuration.billingAddress.mode,
-                                          addressViewModel: items.billingAddressItem.addressViewModel) ? address : nil
-    }
-
-    private var address: PostalAddress? {
         switch configuration.billingAddress.mode {
         case .full:
-            return items.billingAddressItem.value
+            let address = items.billingAddressItem.value
+            guard AddressValidator().isValid(address: address,
+                                             addressMode: configuration.billingAddress.mode,
+                                             addressViewModel: items.billingAddressItem.addressViewModel) else {
+                return nil
+            }
+            return address
         case .postalCode:
-            return PostalAddress(postalCode: items.postalCodeItem.value)
+            if items.postalCodeItem.value.isEmpty {
+                return nil
+            } else {
+                return PostalAddress(postalCode: items.postalCodeItem.value)
+            }
         case .none:
             return nil
         }

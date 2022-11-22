@@ -1751,9 +1751,9 @@ class CardComponentTests: XCTestCase {
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
         let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
         let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
-        
+
         let postalCodeField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.fullAddressZipCode))
-        
+
         let cityField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.city))
         
         populate(textItemView: securityCodeField, with: "737")
@@ -1771,7 +1771,9 @@ class CardComponentTests: XCTestCase {
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
 
-            XCTAssertNil(data.billingAddress)
+            XCTAssertNotNil(sut.cardViewController.validAddress)
+            XCTAssertNotNil(data.billingAddress?.country)
+            XCTAssertNotNil(data.billingAddress?.stateOrProvince)
 
             sut.stopLoadingIfNeeded()
             delegateExpectation.fulfill()
@@ -1985,6 +1987,190 @@ class CardComponentTests: XCTestCase {
         var items = sut.cardViewController.items
         items.holderNameItem.value = "A"
         XCTAssertTrue(items.holderNameItem.isValid())
+    }
+
+    func testOptionalApartmentNameNil() throws {
+        configuration.billingAddress.mode = .full
+        configuration.billingAddress.countryCodes = ["US"]
+
+        let cardTypeProviderMock = BinInfoProviderMock()
+        cardTypeProviderMock.onFetch = {
+            $0(BinLookupResponse(brands: [CardBrand(type: .visa)],
+                                 issuingCountryCode: "US"))
+        }
+
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration,
+                                publicKeyProvider: PublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
+
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let view: UIView = sut.cardViewController.view
+
+        wait(for: .milliseconds(300))
+
+        let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
+        let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
+        let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
+ 
+        let postalCodeField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.fullAddressZipCode))
+
+        let cityField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.city))
+        let streetField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.street))
+
+        populate(textItemView: securityCodeField, with: "737")
+        populate(textItemView: numberField, with: "4111 1120 1426 7661")
+        populate(textItemView: expiryDateField, with: "12/30")
+
+        populate(textItemView: postalCodeField, with: "123")
+        populate(textItemView: cityField, with: "Seattle")
+        populate(textItemView: streetField, with: "Test Street")
+
+        wait(for: .milliseconds(800))
+
+        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertTrue(data.paymentMethod is CardDetails)
+            XCTAssertNotNil(sut.cardViewController.validAddress)
+
+            sut.stopLoadingIfNeeded()
+            delegateExpectation.fulfill()
+        }
+
+        tapSubmitButton(on: sut.viewController.view)
+
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+
+    func testOptionalApartmentNameNonNil() throws {
+        configuration.billingAddress.mode = .full
+        configuration.billingAddress.countryCodes = ["US"]
+
+        let cardTypeProviderMock = BinInfoProviderMock()
+        cardTypeProviderMock.onFetch = {
+            $0(BinLookupResponse(brands: [CardBrand(type: .visa)],
+                                 issuingCountryCode: "US"))
+        }
+
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration,
+                                publicKeyProvider: PublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
+
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let view: UIView = sut.cardViewController.view
+
+        wait(for: .milliseconds(300))
+
+        let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
+        let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
+        let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
+
+        let postalCodeField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.fullAddressZipCode))
+
+        let cityField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.city))
+        let houseNumberOrNameField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.houseNumberOrName))
+        let streetField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.street))
+
+        populate(textItemView: securityCodeField, with: "737")
+        populate(textItemView: numberField, with: "4111 1120 1426 7661")
+        populate(textItemView: expiryDateField, with: "12/30")
+
+        populate(textItemView: postalCodeField, with: "123")
+        populate(textItemView: cityField, with: "Seattle")
+        populate(textItemView: houseNumberOrNameField, with: "12")
+        populate(textItemView: streetField, with: "Test Street")
+
+        wait(for: .milliseconds(800))
+
+        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertTrue(data.paymentMethod is CardDetails)
+            XCTAssertNotNil(sut.cardViewController.validAddress)
+
+            sut.stopLoadingIfNeeded()
+            delegateExpectation.fulfill()
+        }
+
+        tapSubmitButton(on: sut.viewController.view)
+
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+
+    func testNoStateOrProvincePresentInBillingAddress() throws {
+        configuration.billingAddress.mode = .full
+        configuration.billingAddress.countryCodes = ["GB"]
+
+        let cardTypeProviderMock = BinInfoProviderMock()
+        cardTypeProviderMock.onFetch = {
+            $0(BinLookupResponse(brands: [CardBrand(type: .bijenkorfCard)],
+                                 issuingCountryCode: "GB"))
+        }
+
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration,
+                                publicKeyProvider: PublicKeyProviderMock(),
+                                binProvider: cardTypeProviderMock)
+
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let view: UIView = sut.cardViewController.view
+
+        wait(for: .milliseconds(300))
+
+        let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
+        let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
+        let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
+
+        let postalCodeField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.fullAddressZipCode))
+
+        let cityField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.city))
+        let houseNumberOrNameField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.houseNumberOrName))
+        let streetField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.street))
+
+        populate(textItemView: securityCodeField, with: "737")
+        populate(textItemView: numberField, with: "4596 1234 2345 087")
+        populate(textItemView: expiryDateField, with: "12/30")
+
+        populate(textItemView: postalCodeField, with: "123")
+        populate(textItemView: cityField, with: "London")
+        populate(textItemView: houseNumberOrNameField, with: "12")
+        populate(textItemView: streetField, with: "Test Street")
+
+        wait(for: .milliseconds(800))
+
+        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertTrue(data.paymentMethod is CardDetails)
+            XCTAssertNotNil(sut.cardViewController.validAddress)
+
+            sut.stopLoadingIfNeeded()
+            delegateExpectation.fulfill()
+        }
+
+        tapSubmitButton(on: sut.viewController.view)
+
+        waitForExpectations(timeout: 10, handler: nil)
     }
 
     // MARK: - Private

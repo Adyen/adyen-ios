@@ -13,8 +13,8 @@ internal class AddressValidator {
     internal func isValid(address: PostalAddress?, addressMode: CardComponent.AddressFormType, addressViewModel: AddressViewModel) -> Bool {
 
         let fieldsValues: [String: String?]
-        var allAddressFieldsInScheme: [AddressField] = addressViewModel.scheme.flatMap({$0.children})
-        var optionalAddressField: [AddressField] = addressViewModel.optionalFields
+        let allAddressFieldsInScheme: [AddressField] = addressViewModel.scheme.flatMap({$0.children})
+        let optionalAddressField: [AddressField] = addressViewModel.optionalFields
 
         switch addressMode {
         case .full:
@@ -25,8 +25,6 @@ internal class AddressValidator {
                             AddressField.street.rawValue: address?.street,
                             AddressField.houseNumberOrName.rawValue: address?.houseNumberOrName]
         case .postalCode:
-            allAddressFieldsInScheme = [.postalCode]
-            optionalAddressField = []
             fieldsValues = [AddressField.postalCode.rawValue: address?.postalCode]
         case .none:
             fieldsValues = [:]
