@@ -31,6 +31,8 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     override public var subitems: [FormItem] { items }
     
     internal let supportedCountryCodes: [String]?
+
+    public private(set) var addressViewModel: AddressViewModel
     
     /// :nodoc:
     private var context: AddressViewModelBuilderContext {
@@ -61,6 +63,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         self.localizationParameters = localizationParameters
         self.supportedCountryCodes = supportedCountryCodes
         self.context = .init(countryCode: initialCountry, isOptional: false)
+        addressViewModel = AddressViewModel[context]
         super.init(value: PostalAddress(), style: style)
 
         self.identifier = identifier
@@ -101,19 +104,19 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     private func reloadFields() {
         let subRegions = RegionRepository.subRegions(for: context.countryCode)
-        let viewModel = AddressViewModel[context]
+        addressViewModel = AddressViewModel[context]
         
         items = [FormSpacerItem(),
                  headerItem.addingDefaultMargins(),
                  countrySelectItem]
-        for field in viewModel.schema {
+        for field in addressViewModel.schema {
             switch field {
             case let .item(fieldType):
-                let item = create(for: fieldType, from: viewModel, subRegions: subRegions)
+                let item = create(for: fieldType, from: addressViewModel, subRegions: subRegions)
                 items.append(item)
             case let .split(lhs, rhs):
-                let item = FormSplitItem(items: create(for: lhs, from: viewModel, subRegions: subRegions),
-                                         create(for: rhs, from: viewModel, subRegions: subRegions),
+                let item = FormSplitItem(items: create(for: lhs, from: addressViewModel, subRegions: subRegions),
+                                         create(for: rhs, from: addressViewModel, subRegions: subRegions),
                                          style: style)
                 items.append(item)
             }
