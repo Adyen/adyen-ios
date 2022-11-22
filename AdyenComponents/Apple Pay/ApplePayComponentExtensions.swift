@@ -41,11 +41,9 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         submit(data: PaymentComponentData(paymentMethodDetails: details, amount: applePayPayment.amount, order: order))
     }
 
-    public func paymentAuthorizationViewController(
-        _ controller: PKPaymentAuthorizationViewController,
-        didSelectShippingContact contact: PKContact,
-        handler completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void
-    ) {
+    public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
+                                                   didSelectShippingContact contact: PKContact,
+                                                   handler completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void) {
         guard let applePayDelegate = applePayDelegate else {
             return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
         }

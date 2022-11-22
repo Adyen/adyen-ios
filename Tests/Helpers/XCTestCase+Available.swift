@@ -32,5 +32,13 @@ extension XCTestCase {
                 return false
             }
         }
+        
+        static var iOS16: Bool {
+            if #available(iOS 16.0, *) {
+                return true
+            } else {
+                return false
+            }
+        }
     }
 }
