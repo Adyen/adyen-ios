@@ -1529,6 +1529,27 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(logoItemView!.isHidden)
     }
     
+    func testDualBrandNoSelection() {
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
+        var config = CardComponent.Configuration(socialSecurityNumberMode: .show)
+        config.allowedCardTypes = [.visa, .carteBancaire]
+        
+        let sut = CardComponent(paymentMethod: method,
+                                apiContext: Dummy.context,
+                                configuration: config,
+                                style: .init())
+        
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
+        
+        let binResponse = BinLookupResponse(brands: [CardBrand(type: .visa), CardBrand(type: .carteBancaire)], isCreatedLocally: false)
+        sut.cardViewController.update(binInfo: binResponse)
+        wait(for: .milliseconds(300))
+        
+        XCTAssertFalse(cardNumberItemView!.detectedBrandsView.secondaryLogoView.isHidden)
+        XCTAssertFalse(cardNumberItemView?.detectedBrandsView.primaryLogoView.alpha == 1)
+        XCTAssertFalse(cardNumberItemView?.detectedBrandsView.secondaryLogoView.alpha == 1)
+    }
+    
     func testSupportedCardLogoAlpha() {
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
         let config = CardComponent.Configuration(socialSecurityNumberMode: .show)
