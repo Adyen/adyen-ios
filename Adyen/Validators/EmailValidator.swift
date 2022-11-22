@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,7 +14,7 @@ public class EmailValidator: RegularExpressionValidator {
         // Regex constructed according to the definition of an email address
         // https://en.wikipedia.org/wiki/Email_address
         // swiftlint:disable:next line_length
-        let regex = #"^(([^<>\(\)\[\]\\.,;:\s@"]+(\.[^<>\(\)\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$"#
+        let regex = #"^(([a-zA-Z0-9!#\$%&'\*\+\-\/=\?\^_`\{\|\}~]+(\.[a-zA-Z0-9!#\$%&'\*\+\-\/=\?\^_`\{\|\}~]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|((([a-zA-Z0-9]+[\-]*)*[a-zA-Z0-9]+\.)+[a-zA-Z]{2,}))$"#
         super.init(regularExpression: regex, minimumLength: 6, maximumLength: 320)
     }
     
