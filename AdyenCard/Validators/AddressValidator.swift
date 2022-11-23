@@ -12,7 +12,7 @@ internal class AddressValidator {
     internal func isValid(address: PostalAddress?, addressMode: CardComponent.AddressFormType, addressViewModel: AddressViewModel) -> Bool {
 
         let fieldsValues: [String: String?]
-        let allAddressFieldsInScheme: [AddressField] = addressViewModel.schema.flatMap({$0.children})
+        let allAddressFieldsInScheme: [AddressField] = addressViewModel.schema.flatMap(\.children)
         let optionalAddressField: [AddressField] = addressViewModel.optionalFields
 
         switch addressMode {
@@ -40,6 +40,6 @@ internal class AddressValidator {
     }
 
     private func checkIfAllFieldsPresent(fieldsValues: [String: String?], requiredAddressFields: Set<AddressField>) -> Bool {
-        requiredAddressFields.allSatisfy({fieldsValues[$0.rawValue] != nil })
+        requiredAddressFields.allSatisfy { fieldsValues[$0.rawValue] != nil }
     }
 }
