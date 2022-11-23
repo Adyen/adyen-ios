@@ -7,7 +7,8 @@
 import Foundation
 import UIKit
 
-internal enum AddressField: String, CaseIterable {
+/// :nodoc:
+public enum AddressField: String, CaseIterable {
     case street
     case houseNumberOrName
     case apartment
@@ -17,8 +18,18 @@ internal enum AddressField: String, CaseIterable {
     case country
 }
 
-internal enum FormScheme {
+/// :nodoc:
+public enum FormScheme {
+    /// :nodoc:
+    public var  children: [AddressField] {
+        switch self {
+        case .item(let item): return [item]
+        case .split(let item1, let item2): return [item1, item2]
+        }
+    }
+    /// :nodoc:
     case item(AddressField)
+    /// :nodoc:
     case split(AddressField, AddressField)
 }
 
@@ -27,12 +38,15 @@ internal struct AddressViewModelBuilderContext {
     internal var isOptional: Bool
 }
 
-internal struct AddressViewModel {
+/// :nodoc:
+public struct AddressViewModel {
 
     internal var labels: [AddressField: LocalizationKey]
     internal var placeholder: [AddressField: LocalizationKey]
-    internal var optionalFields: [AddressField]
-    internal var schema: [FormScheme]
+    /// :nodoc:
+    public private(set) var optionalFields: [AddressField]
+    /// :nodoc:
+    public private(set) var schema: [FormScheme]
 
     // swiftlint:disable function_body_length explicit_acl
     internal static subscript(context: AddressViewModelBuilderContext) -> AddressViewModel {
