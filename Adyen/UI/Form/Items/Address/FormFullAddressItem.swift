@@ -32,6 +32,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     internal let supportedCountryCodes: [String]?
 
+    /// :nodoc:
     public private(set) var addressViewModel: AddressViewModel
     
     /// :nodoc:
