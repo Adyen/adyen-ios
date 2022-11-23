@@ -159,5 +159,6 @@
 "adyen.onlineBanking.termsAndConditions" = "繼續操作即表示您同意#條款及細則#";
 "adyen.qrCode.instructionMessage" = "擷取螢幕畫面或儲存 QR 代碼，開啟您的銀行應用程式並上傳 QR 代碼以驗證詳細資料並完成付款。";
 "adyen.qrCode.timerExpirationMessage" = "此 QR 代碼對 %@ 有效";
-"adyen.paybybank.instructionMessage" = "您的搜尋查詢找不到任何銀行……";
-"adyen.paybybank.timerExpirationMessage" = "沒有以下結果：";
+"adyen.paybybank.subtitle" = "您的搜尋查詢找不到任何銀行……";
+"adyen.paybybank.title" = "沒有以下結果：";
+"adyen.search.placeholder" = "搜尋……";

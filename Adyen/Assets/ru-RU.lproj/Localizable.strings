@@ -163,5 +163,6 @@
 "adyen.onlineBanking.termsAndConditions" = "Продолжая, вы тем самым соглашаетесь с #условиями#";
 "adyen.qrCode.instructionMessage" = "Сделайте снимок экрана или сохраните QR-код, откройте банковское приложение и загрузите QR-код, чтобы подтвердить данные и завершить платеж.";
 "adyen.qrCode.timerExpirationMessage" = "Данный QR-код действителен в течение %@";
-"adyen.paybybank.instructionMessage" = "По вашему поисковому запросу банк не найден…";
-"adyen.paybybank.timerExpirationMessage" = "Ничего не найдено по запросу";
+"adyen.paybybank.subtitle" = "По вашему поисковому запросу банк не найден…";
+"adyen.paybybank.title" = "Ничего не найдено по запросу";
+"adyen.search.placeholder" = "Поиск…";

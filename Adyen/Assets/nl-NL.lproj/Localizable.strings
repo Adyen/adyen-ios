@@ -163,5 +163,6 @@
 "adyen.onlineBanking.termsAndConditions" = "Door verder te gaan gaat u akkoord met de #algemene voorwaarden#";
 "adyen.qrCode.instructionMessage" = "Maak een schermafbeelding of sla de QR-code op, open uw bankapp en upload de QR-code om de gegevens te verifiëren en de betaling te voltooien.";
 "adyen.qrCode.timerExpirationMessage" = "Deze QR-code is %@ geldig";
-"adyen.paybybank.instructionMessage" = "Geen banken voor uw zoekopdracht...";
-"adyen.paybybank.timerExpirationMessage" = "Geen resultaten voor";
+"adyen.paybybank.subtitle" = "Geen banken voor uw zoekopdracht...";
+"adyen.paybybank.title" = "Geen resultaten voor";
+"adyen.search.placeholder" = "Zoeken...";

@@ -16,10 +16,14 @@ public protocol SearchViewControllerDelegate: AnyObject {
 public class SearchViewController: UIViewController {
 
     internal let childViewController: UIViewController
+    private let localizationParameters: LocalizationParameters?
 
-    public init(childViewController: UIViewController, delegate: SearchViewControllerDelegate) {
+    public init(childViewController: UIViewController,
+                delegate: SearchViewControllerDelegate,
+                localizationParameters: LocalizationParameters? = nil) {
         self.childViewController = childViewController
         self.delegate = delegate
+        self.localizationParameters = localizationParameters
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -30,7 +34,7 @@ public class SearchViewController: UIViewController {
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .prominent
-        searchBar.placeholder = "Search..."
+        searchBar.placeholder = localizedString(.searchPlaceholder, localizationParameters)
         searchBar.isTranslucent = false
         searchBar.backgroundImage = UIImage()
         searchBar.delegate = self
@@ -63,7 +67,7 @@ public class SearchViewController: UIViewController {
 
     private lazy var subtitleLabel: UILabel = {
         let subtitleLabel = UILabel()
-        subtitleLabel.text = "No banks found with your search query"
+        subtitleLabel.text = localizedString(.paybybankSubtitle, localizationParameters)
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.numberOfLines = 0
 
@@ -129,7 +133,7 @@ public class SearchViewController: UIViewController {
     }
 
     public func showNoSearchResultsView(searchText: String) {
-        titleLabel.text = "No results for '\(searchText)'"
+        titleLabel.text = localizedString(.paybybankTitle, localizationParameters) + " '\(searchText)'"
         noResultsStackView.isHidden = false
         childViewController.view.isHidden = true
     }

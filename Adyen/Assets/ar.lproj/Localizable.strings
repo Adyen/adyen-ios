@@ -163,5 +163,6 @@
 "adyen.onlineBanking.termsAndConditions" = "بالمتابعة، فإنك توافق على #الشروط و الأحكام#";
 "adyen.qrCode.instructionMessage" = "التقط لقطة شاشة أو احفظ رمز الاستجابة السريعة، وافتح تطبيقك المصرفي وحمِّل رمز الاستجابة السريعة للتحقق من التفاصيل وإتمام الدفع.";
 "adyen.qrCode.timerExpirationMessage" = "رمز الاستجابة السريعة هذا صالح لـ %@";
-"adyen.paybybank.instructionMessage" = "لم يتم العثور على أي بنوك لاستعلام البحث الخاص بك...";
-"adyen.paybybank.timerExpirationMessage" = "لا توجد نتائج لـ";
+"adyen.paybybank.subtitle" = "لم يتم العثور على أي بنوك لاستعلام البحث الخاص بك...";
+"adyen.paybybank.title" = "لا توجد نتائج لـ";
+"adyen.search.placeholder" = "بحث...";

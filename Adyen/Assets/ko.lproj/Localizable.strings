@@ -163,5 +163,6 @@
 "adyen.onlineBanking.termsAndConditions" = "계속 진행하는 경우 #이용약관#에 동의하게 됩니다.";
 "adyen.qrCode.instructionMessage" = "화면을 캡처하거나 QR 코드를 저장한 다음, 은행 앱을 열고 QR 코드를 업로드하여 상세 정보를 확인하고 결제를 완료하세요.";
 "adyen.qrCode.timerExpirationMessage" = "이 QR 코드는 %@ 동안 유효합니다";
-"adyen.paybybank.instructionMessage" = "검색한 내용에 일치하는 은행을 찾을 수 없습니다...";
-"adyen.paybybank.timerExpirationMessage" = "다음에 대한 검색 결과 없음:";
+"adyen.paybybank.subtitle" = "검색한 내용에 일치하는 은행을 찾을 수 없습니다...";
+"adyen.paybybank.title" = "다음에 대한 검색 결과 없음:";
+"adyen.search.placeholder" = "검색...";

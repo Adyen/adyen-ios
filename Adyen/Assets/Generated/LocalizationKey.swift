@@ -338,9 +338,11 @@ public struct LocalizationKey {
     /// This QR code is valid for %@
     public static let qrCodeTimerExpirationMessage = LocalizationKey(key: "adyen.qrCode.timerExpirationMessage")
     /// No banks found with your search query...
-    public static let paybybankInstructionMessage = LocalizationKey(key: "adyen.paybybank.instructionMessage")
+    public static let paybybankSubtitle = LocalizationKey(key: "adyen.paybybank.subtitle")
     /// No results for
-    public static let paybybankTimerExpirationMessage = LocalizationKey(key: "adyen.paybybank.timerExpirationMessage")
+    public static let paybybankTitle = LocalizationKey(key: "adyen.paybybank.title")
+    /// Search...
+    public static let searchPlaceholder = LocalizationKey(key: "adyen.search.placeholder")
     
     internal let key: String
     

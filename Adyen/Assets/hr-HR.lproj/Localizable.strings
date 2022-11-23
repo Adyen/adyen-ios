@@ -163,5 +163,6 @@
 "adyen.onlineBanking.termsAndConditions" = "Nastavkom prihvaćate #uvjete i odredbe#";
 "adyen.qrCode.instructionMessage" = "Napravite snimku zaslona ili spremite QR kôd, otvorite svoju bankarsku aplikaciju i prenesite QR kôd kako biste provjerili pojedinosti i završili plaćanje.";
 "adyen.qrCode.timerExpirationMessage" = "Ovaj QR kôd vrijedi za %@";
-"adyen.paybybank.instructionMessage" = "Vašim upitom za pretraživanje nije pronađena nijedna banka...";
-"adyen.paybybank.timerExpirationMessage" = "Nema rezultata za";
+"adyen.paybybank.subtitle" = "Vašim upitom za pretraživanje nije pronađena nijedna banka...";
+"adyen.paybybank.title" = "Nema rezultata za";
+"adyen.search.placeholder" = "Traži...";
