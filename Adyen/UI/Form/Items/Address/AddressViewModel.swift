@@ -21,12 +21,13 @@ public enum AddressField: String, CaseIterable {
 /// :nodoc:
 public enum FormScheme {
     /// :nodoc:
-    public var  children: [AddressField] {
+    public var children: [AddressField] {
         switch self {
-        case .item(let item): return [item]
-        case .split(let item1, let item2): return [item1, item2]
+        case let .item(item): return [item]
+        case let .split(item1, item2): return [item1, item2]
         }
     }
+
     /// :nodoc:
     case item(AddressField)
     /// :nodoc:

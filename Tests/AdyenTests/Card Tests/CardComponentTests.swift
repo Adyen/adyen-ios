@@ -2426,7 +2426,6 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    
     // MARK: - Private
     
     private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {
