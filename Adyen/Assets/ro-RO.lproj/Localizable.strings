@@ -163,3 +163,5 @@
 "adyen.onlineBanking.termsAndConditions" = "Continuând, sunteți de acord cu #terms and conditions#";
 "adyen.qrCode.instructionMessage" = "Faceți o captură de ecran sau salvați codul QR, deschideți aplicația bancară și încărcați codul QR pentru a verifica detaliile și a finaliza plata.";
 "adyen.qrCode.timerExpirationMessage" = "Acest cod QR este valabil pentru %@";
+"adyen.paybybank.instructionMessage" = "Nu s-au găsit bănci cu interogarea de căutare...";
+"adyen.paybybank.timerExpirationMessage" = "Nu există rezultate pentru";

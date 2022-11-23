@@ -163,3 +163,5 @@
 "adyen.onlineBanking.termsAndConditions" = "Αν συνεχίσετε, συνεπάγεται ότι αποδέχεστε τους #Όρους και προϋποθέσεις#";
 "adyen.qrCode.instructionMessage" = "Τραβήξτε ένα στιγμιότυπο οθόνης ή αποθηκεύστε τον κωδικό QR, ανοίξτε την εφαρμογή τραπεζικής σας και ανεβάστε τον κωδικό QR για επαλήθευση των στοιχείων και ολοκλήρωση της πληρωμής.";
 "adyen.qrCode.timerExpirationMessage" = "Αυτός ο κωδικός QR ισχύει για %@";
+"adyen.paybybank.instructionMessage" = "Δεν βρέθηκαν τράπεζες που αντιστοιχούν στον όρο αναζήτησης...";
+"adyen.paybybank.timerExpirationMessage" = "Δεν υπάρχουν αποτελέσματα για:";

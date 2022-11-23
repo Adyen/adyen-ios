@@ -163,3 +163,5 @@
 "adyen.onlineBanking.termsAndConditions" = "Kontynuując, zgadzasz się z #Warunkami świadczenia usług#.";
 "adyen.qrCode.instructionMessage" = "Zrób zrzut ekranu lub zapisz kod QR, otwórz aplikację bankową i prześlij kod QR, aby zweryfikować szczegóły i dokończyć płatność.";
 "adyen.qrCode.timerExpirationMessage" = "Okres ważności kodu QR: %@";
+"adyen.paybybank.instructionMessage" = "Nie znaleziono banków odpowiadających zapytaniu...";
+"adyen.paybybank.timerExpirationMessage" = "Brak wyników dla";

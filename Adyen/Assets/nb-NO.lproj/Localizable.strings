@@ -163,3 +163,5 @@
 "adyen.onlineBanking.termsAndConditions" = "Ved å fortsette godtar du #terms and conditions#";
 "adyen.qrCode.instructionMessage" = "Ta et skjermbilde eller lagre QR-koden, åpne bankappen din og last opp QR-koden for å verifisere opplysningene og fullføre betalingen.";
 "adyen.qrCode.timerExpirationMessage" = "Denne QR-koden er gyldig i %@";
+"adyen.paybybank.instructionMessage" = "Fant ingen banker med søket ditt …";
+"adyen.paybybank.timerExpirationMessage" = "Ingen resultater for";

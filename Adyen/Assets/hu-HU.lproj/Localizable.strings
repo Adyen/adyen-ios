@@ -163,3 +163,5 @@
 "adyen.onlineBanking.termsAndConditions" = "A folytatással elfogadja az #általános szerződési feltételeket#";
 "adyen.qrCode.instructionMessage" = "Készítsen képernyőképet vagy mentse el a QR-kódot, nyissa meg a banki alkalmazást, és töltse fel a QR-kódot az adatok ellenőrzéséhez, illetve a fizetés befejezéséhez.";
 "adyen.qrCode.timerExpirationMessage" = "A QR-kód ennyi ideig érvényes: %@";
+"adyen.paybybank.instructionMessage" = "A keresési lekérdezéssel nem található bank…";
+"adyen.paybybank.timerExpirationMessage" = "Nincs találat a következőre:";
