@@ -14,6 +14,7 @@ xcodebuild -project Adyen.xcodeproj \
 -scheme AdyenUIHost \
 -destination="generic/platform=iOS" \
 -sdk iphoneos \
+-allowProvisioningUpdates \
 -configuration Release \
 archive \
 -archivePath $BUILD_PATH/AdyenUIHost.xcarchive
