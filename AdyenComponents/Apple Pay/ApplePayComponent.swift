@@ -11,7 +11,7 @@ import PassKit
 /// A component that handles Apple Pay payments.
 public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, FinalizableComponent {
 
-    private let paymentRequest: PKPaymentRequest
+    internal let paymentRequest: PKPaymentRequest
 
     internal var applePayPayment: ApplePayPayment
 
@@ -39,7 +39,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     public weak var applePayDelegate: ApplePayComponentDelegate?
     
     /// Initializes the component.
-    /// - Warning: Do not dismiss this component.
+    /// - Warning: Do not dismiss this component directly.
     ///  First, call `didFinalize(with:completion:)` on error or success, then dismiss it.
     ///  Dismissal should occur within `completion` block.
     ///
@@ -67,7 +67,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
                 errorDescription: "Failed to instantiate PKPaymentAuthorizationViewController because of unknown error"
             )
         }
-
         self.configuration = configuration
         self.context = context
         self.paymentAuthorizationViewController = viewController
@@ -75,7 +74,29 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         self.applePayPayment = configuration.applePayPayment
         super.init()
 
-        viewController.delegate = self
+        paymentAuthorizationViewController?.delegate = self
+    }
+    
+    /// Initializes the component with a recurring payment.
+    /// - Warning: Do not dismiss this component directly.
+    ///  First, call `didFinalize(with:completion:)` on error or success, then dismiss it.
+    ///  Dismissal should occur within `completion` block.
+    ///
+    /// - Parameter paymentMethod: The Apple Pay payment method. Must include country code.
+    /// - Parameter context: The context object for this component.
+    /// - Parameter configuration: Apple Pay component configuration
+    /// - Parameter recurringPaymentRequest: Payment request to set up a recurring payment, typically a subscription.
+    /// - Throws: `ApplePayComponent.Error.userCannotMakePayment`.
+    /// if user can't make payments on any of the payment request’s supported networks.
+    /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplyPay` if the current device's hardware doesn't support ApplePay.
+    /// - Throws: `ApplePayComponent.Error.userCannotMakePayment` if user can't make payments on any of the supported networks.
+    @available(iOS 16.0, *)
+    public convenience init(paymentMethod: ApplePayPaymentMethod,
+                            context: AdyenContext,
+                            recurringPaymentRequest: PKRecurringPaymentRequest,
+                            configuration: Configuration) throws {
+        try self.init(paymentMethod: paymentMethod, context: context, configuration: configuration)
+        self.paymentRequest.recurringPaymentRequest = recurringPaymentRequest
     }
 
     public var viewController: UIViewController {

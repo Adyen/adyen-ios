@@ -19,7 +19,7 @@ public protocol AddressViewModelBuilder {
 
 @_spi(AdyenInternal)
 public struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
-    
+
     public init() {}
 
     // swiftlint:disable function_body_length

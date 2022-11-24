@@ -58,6 +58,7 @@ internal class CardViewController: FormViewController {
         let cardLogos = supportedCardTypes.map {
             FormCardLogosItem.CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
         }
+
         self.items = ItemsProvider(formStyle: formStyle,
                                    payment: payment,
                                    configuration: configuration,
@@ -110,41 +111,23 @@ internal class CardViewController: FormViewController {
     internal var cardBIN: String {
         items.numberContainerItem.numberItem.binValue
     }
-    
-    internal var validAddress: PostalAddress? {
-        guard let address = address, isAddressValid(address: address) else { return nil }
-        return address
-    }
-    
-    private func isAddressValid(address: PostalAddress) -> Bool {
-        let fieldsValues: [String?]
-        
-        switch configuration.billingAddress.mode {
-        case .full:
-            fieldsValues = [address.city,
-                            address.country,
-                            address.postalCode,
-                            address.stateOrProvince,
-                            address.street,
-                            address.houseNumberOrName]
-        case .postalCode:
-            fieldsValues = [address.postalCode]
-        case .none:
-            fieldsValues = []
-        }
-        
-        let trimmedFieldsValues = fieldsValues.map {
-            $0?.trimmingCharacters(in: .whitespaces).adyen.nilIfEmpty
-        }
-        return trimmedFieldsValues.compactMap { $0 }.count == fieldsValues.count
-    }
 
-    private var address: PostalAddress? {
+    internal var validAddress: PostalAddress? {
         switch configuration.billingAddress.mode {
         case .full:
-            return items.billingAddressItem.value
+            let address = items.billingAddressItem.value
+            guard AddressValidator().isValid(address: address,
+                                             addressMode: configuration.billingAddress.mode,
+                                             addressViewModel: items.billingAddressItem.addressViewModel) else {
+                return nil
+            }
+            return address
         case .postalCode:
-            return PostalAddress(postalCode: items.postalCodeItem.value)
+            if items.postalCodeItem.value.isEmpty {
+                return nil
+            } else {
+                return PostalAddress(postalCode: items.postalCodeItem.value)
+            }
         case .none:
             return nil
         }

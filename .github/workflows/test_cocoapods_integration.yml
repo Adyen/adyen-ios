@@ -22,7 +22,7 @@ jobs:
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '13.4.1'
+        xcode-version: latest-stable
 
     - name: Lint Cocoapods
       run: |
