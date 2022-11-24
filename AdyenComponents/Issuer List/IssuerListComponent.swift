@@ -112,7 +112,7 @@ extension IssuerListComponent: SearchViewControllerDelegate {
             convertIssuersToListItem(listViewController: listViewController, issuers: issuerListPaymentMethod.issuers)
         } else {
             let filteredIssuers = issuerListPaymentMethod.issuers.filter({$0.name.range(of: searchText, options: .caseInsensitive) != nil })
-            if filteredIssuers.count == 0 {
+            if filteredIssuers.isEmpty {
                 searchViewController.showNoSearchResultsView(searchText: searchText)
                 listViewController.reload(newSections: [], animated: false)
             } else {
