@@ -17,7 +17,7 @@ xcodebuild archive -project Adyen.xcodeproj \
 -allowProvisioningUpdates \
 -configuration Release \
 -archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
-CODE_SIGN_STYLE=Automatic
+CODE_SIGN_STYLE="Automatic"
 
 xcodebuild -exportArchive \
 -archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
