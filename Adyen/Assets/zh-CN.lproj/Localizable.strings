@@ -160,3 +160,6 @@
 "adyen.onlineBanking.termsAndConditions" = "继续，即表示您同意#条款和细则#";
 "adyen.qrCode.instructionMessage" = "截屏或保存二维码，打开您的银行应用程序并上传二维码以验证详细信息并完成付款。";
 "adyen.qrCode.timerExpirationMessage" = "此二维码有效期为 %@";
+"adyen.paybybank.subtitle" = "未找到搜索查询的银行……";
+"adyen.paybybank.title" = "无以下内容的结果：";
+"adyen.search.placeholder" = "搜索……";

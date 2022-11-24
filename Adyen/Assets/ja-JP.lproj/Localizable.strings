@@ -163,3 +163,6 @@
 "adyen.onlineBanking.termsAndConditions" = "続行すると、#利用規約#に同意したことになります";
 "adyen.qrCode.instructionMessage" = "スクリーンショットを撮影するかQRコードを保存して、バンキングアプリケーションを開き、QRコードをアップロードして、詳細を確認し、支払いを完了します。";
 "adyen.qrCode.timerExpirationMessage" = "このQRコードは%@有効です";
+"adyen.paybybank.subtitle" = "この検索クエリでは銀行は見つかりませんでした...";
+"adyen.paybybank.title" = "以下の結果はありません：";
+"adyen.search.placeholder" = "検索...";

@@ -163,3 +163,6 @@
 "adyen.onlineBanking.termsAndConditions" = "Jatkamalla hyväksyt #käyttöehdot#";
 "adyen.qrCode.instructionMessage" = "Ota kuvakaappaus tai tallenna QR-koodi, avaa pankkisovelluksesi ja lataa QR-koodi, jolla varmistat tiedot, jonka jälkeen voit suorittaa maksun loppuun.";
 "adyen.qrCode.timerExpirationMessage" = "Tämä QR-koodi on voimassa %@";
+"adyen.paybybank.subtitle" = "Hakukyselylläsi ei löytynyt yhtään pankkia.";
+"adyen.paybybank.title" = "Ei tuloksia haulle";
+"adyen.search.placeholder" = "Hae...";
