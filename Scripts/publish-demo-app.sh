@@ -2,22 +2,22 @@
 
 BUILD_PATH=Build-Temp
 
-xcodebuild -project Adyen.xcodeproj \
+xcodebuild clean -project Adyen.xcodeproj \
  -scheme AdyenUIHost \
  -destination="generic/platform=iOS" \
  -sdk iphoneos \
- -configuration Release clean
+ -configuration Release
 
 mkdir -p $BUILD_PATH
 
-xcodebuild -project Adyen.xcodeproj \
+xcodebuild archive -project Adyen.xcodeproj \
 -scheme AdyenUIHost \
 -destination="generic/platform=iOS" \
 -sdk iphoneos \
 -allowProvisioningUpdates \
 -configuration Release \
-archive \
--archivePath $BUILD_PATH/AdyenUIHost.xcarchive
+-archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
+CODE_SIGN_STYLE=Automatic
 
 xcodebuild -exportArchive \
 -archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
