@@ -32,6 +32,7 @@ extension CardComponent {
             let card = cardViewController.card
             let encryptedCard = try CardEncryptor.encrypt(card: card, with: cardPublicKey)
             let kcpDetails = try cardViewController.kcpDetails?.encrypt(with: cardPublicKey)
+
             let details = CardDetails(paymentMethod: cardPaymentMethod,
                                       encryptedCard: encryptedCard,
                                       holderName: card.holder,

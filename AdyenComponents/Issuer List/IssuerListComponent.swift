@@ -38,6 +38,7 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
         self.issuerListPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
+        viewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
     }
     
     private let issuerListPaymentMethod: IssuerListPaymentMethod
@@ -45,9 +46,13 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     // MARK: - Presentable Component Protocol
     
     public var viewController: UIViewController {
-        listViewController
+        searchViewController
     }
-    
+
+    private lazy var searchViewController: SearchViewController = {
+        SearchViewController(childViewController: listViewController, delegate: self)
+    }()
+
     public func stopLoading() {
         listViewController.stopLoading()
     }
@@ -60,9 +65,16 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
         let listViewController = ListViewController(style: configuration.style)
         listViewController.delegate = self
         let issuers = issuerListPaymentMethod.issuers
+
+        convertIssuersToListItem(listViewController: listViewController, issuers: issuers)
+
+        return listViewController
+    }()
+
+    private func convertIssuersToListItem(listViewController: ListViewController, issuers: [Issuer]) {
         let items = issuers.map { issuer -> ListItem in
 
-            var listItem = ListItem(title: issuer.name, style: configuration.style.listItem)
+            let listItem = ListItem(title: issuer.name, style: configuration.style.listItem)
             listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
             listItem.imageURL = LogoURLProvider.logoURL(for: issuer,
                                                         localizedParameters: configuration.localizationParameters,
@@ -71,7 +83,6 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
 
             listItem.selectionHandler = { [weak self] in
                 guard let self = self else { return }
-
                 let details = IssuerListDetails(paymentMethod: self.issuerListPaymentMethod,
                                                 issuer: issuer.identifier)
                 self.submit(data: PaymentComponentData(paymentMethodDetails: details,
@@ -79,15 +90,11 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
                                                        order: self.order))
                 listViewController.startLoading(for: listItem)
             }
-            
+
             return listItem
         }
-        
-        listViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
-        listViewController.reload(newSections: [ListSection(items: items)])
-        
-        return listViewController
-    }()
+        listViewController.reload(newSections: [ListSection(items: items)], animated: false)
+    }
 }
 
 @_spi(AdyenInternal)
@@ -95,6 +102,23 @@ extension IssuerListComponent: ViewControllerDelegate {
 
     public func viewWillAppear(viewController: UIViewController) {
         sendTelemetryEvent()
+    }
+}
+
+@_spi(AdyenInternal)
+extension IssuerListComponent: SearchViewControllerDelegate {
+    public func textDidChange(_ searchBar: UISearchBar, searchText: String) {
+        if searchText.isEmpty {
+            convertIssuersToListItem(listViewController: listViewController, issuers: issuerListPaymentMethod.issuers)
+        } else {
+            let filteredIssuers = issuerListPaymentMethod.issuers.filter({$0.name.range(of: searchText, options: .caseInsensitive) != nil })
+            if filteredIssuers.isEmpty {
+                searchViewController.showNoSearchResultsView(searchText: searchText)
+                listViewController.reload(newSections: [], animated: false)
+            } else {
+                convertIssuersToListItem(listViewController: listViewController, issuers: filteredIssuers)
+            }
+        }
     }
 }
 

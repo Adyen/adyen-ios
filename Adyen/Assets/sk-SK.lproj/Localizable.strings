@@ -163,3 +163,6 @@
 "adyen.onlineBanking.termsAndConditions" = "Pokračovaním súhlasíte so #zmluvnými podmienkami#";
 "adyen.qrCode.instructionMessage" = "Urobte snímku obrazovky alebo si uložte QR kód, otvorte bankovú aplikáciu, nahrajte QR kód, overte údaje a dokončite platbu.";
 "adyen.qrCode.timerExpirationMessage" = "Tento kód QR platí %@";
+"adyen.paybybank.subtitle" = "Pre váš vyhľadávací dotaz sa nenašli žiadne banky...";
+"adyen.paybybank.title" = "Žiadne výsledky pre";
+"adyen.search.placeholder" = "Vyhľadávanie...";
