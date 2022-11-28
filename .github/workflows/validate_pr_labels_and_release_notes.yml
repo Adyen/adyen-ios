@@ -19,5 +19,6 @@ jobs:
 
       - run: |
           echo "${GITHUB_PR_LABEL}"
+          echo "testing change"
         env:
           GITHUB_PR_LABEL: ${{ steps.pr-labels.outputs.labels}}
