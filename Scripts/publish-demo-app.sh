@@ -17,7 +17,8 @@ xcodebuild archive -project Adyen.xcodeproj \
 -allowProvisioningUpdates \
 -configuration Release \
 -archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
-CODE_SIGN_STYLE="Automatic"
+-authenticationKeyID $XCODE_AUTHENTICATION_KEY_ID \
+-authenticationKeyIssuerID $XCODE_AUTHENTICATION_KEY_ISSUER_ID
 
 xcodebuild -exportArchive \
 -archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
