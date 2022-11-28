@@ -15,7 +15,7 @@ jobs:
       - run: |
           echo 'Every PR has to has at least one label (bug_fix_pull_request, feature_pull_request, and/or chore_pull_request)'
           exit 1
-        if: ! (contains(steps.pr-labels.outputs.labels, ' bug_fix_pull_request ') || contažins(steps.pr-labels.outputs.labels, ' feature_pull_request ') || contains(steps.pr-labels.outputs.labels, ' chore_pull_request '))
+        if: ${{ (!contains(steps.pr-labels.outputs.labels, ' bug_fix_pull_request ')) && (! contains(steps.pr-labels.outputs.labels, ' feature_pull_request ')) && (! contains(steps.pr-labels.outputs.labels, ' chore_pull_request '))}}
 
       - run: |
           echo "${GITHUB_PR_LABEL}"
