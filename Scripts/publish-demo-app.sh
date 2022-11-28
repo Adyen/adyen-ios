@@ -14,12 +14,11 @@ xcodebuild archive -project Adyen.xcodeproj \
 -scheme AdyenUIHost \
 -destination="generic/platform=iOS" \
 -sdk iphoneos \
--allowProvisioningUpdates \
 -configuration Release \
 -archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
--authenticationKeyID $XCODE_AUTHENTICATION_KEY_ID \
--authenticationKeyIssuerID $XCODE_AUTHENTICATION_KEY_ISSUER_ID \
-CODE_SIGN_STYLE="Automatic"
+-allowProvisioningUpdates \
+-authenticationKeyID $(XCODE_AUTHENTICATION_KEY_ID) \
+-authenticationKeyIssuerID $(XCODE_AUTHENTICATION_KEY_ISSUER_ID) \
 
 xcodebuild -exportArchive \
 -archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
