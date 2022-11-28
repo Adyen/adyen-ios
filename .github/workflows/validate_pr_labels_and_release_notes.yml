@@ -13,17 +13,12 @@ jobs:
         uses: joerick/pr-labels-action@v1.0.6
 
       - run: |
-          echo "${GITHUB_PR_LABEL}"
-          echo "testing change"
-        env:
-          GITHUB_PR_LABEL: ${{ steps.pr-labels.outputs.labels}}
+          echo '${{ steps.pr-labels.outputs.labels}}'
 
       - run: |
-          echo 'Every PR has to has at least one label (bug_fix_pull_request, feature_pull_request, and/or chore_pull_request)'
-          exit 1
-        if: ${{ (!contains(steps.pr-labels.outputs.labels, ' bug_fix_pull_request ')) && (! contains(steps.pr-labels.outputs.labels, ' feature_pull_request ')) && (! contains(steps.pr-labels.outputs.labels, ' chore_pull_request '))}}
-
+          if [[ '${{steps.pr-labels.outputs.labels}}' != *' bug-fix-pull-request '* && '${{steps.pr-labels.outputs.labels}}' != *' feature-pull-request '* &&  '${{steps.pr-labels.outputs.labels}}' != *' chore-pull-request '* ]]; then
+             echo 'Every PR has to has at least one label (bug_fix_pull_request, feature_pull_request, and/or chore_pull_request)'
+             exit 1
+          fi
       - run: |
-          echo "${GITHUB_PR_LABEL}"
-        env:
-          GITHUB_PR_LABEL: ${{ steps.pr-labels.outputs.labels}}
+          echo '${{ steps.pr-labels.outputs.labels}}'
