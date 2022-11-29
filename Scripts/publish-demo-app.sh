@@ -19,7 +19,7 @@ xcodebuild archive -project Adyen.xcodeproj \
 -allowProvisioningUpdates \
 -authenticationKeyID $XCODE_AUTHENTICATION_KEY_ID \
 -authenticationKeyIssuerID $XCODE_AUTHENTICATION_KEY_ISSUER_ID \
--authenticationKeyPath $XCODE_AUTHENTICATION_KEY_FILE_PATH
+-authenticationKeyPath $XCODE_AUTHENTICATION_KEY_PATH
 
 xcodebuild -exportArchive \
 -archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
