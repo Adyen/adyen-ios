@@ -24,6 +24,7 @@ xcodebuild -exportArchive \
 -exportPath $BUILD_PATH \
 -allowProvisioningUpdates \
 -authenticationKeyID $XCODE_AUTHENTICATION_KEY_ID \
--authenticationKeyIssuerID $XCODE_AUTHENTICATION_KEY_ISSUER_ID
+-authenticationKeyIssuerID $XCODE_AUTHENTICATION_KEY_ISSUER_ID \
+-authenticationKeyPath $3
 
 xcrun altool --upload-app -f $BUILD_PATH/AdyenUIHost.ipa -u $1 -p $2 --type iphoneos
