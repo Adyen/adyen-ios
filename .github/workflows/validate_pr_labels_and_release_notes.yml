@@ -51,15 +51,15 @@ jobs:
           NC='\033[0m'
 
           for LABEL in "${ALLOWED_LABELS_ARRAY[@]}"; do
-            LABEL=$(echo "$LABEL" | sed 's/^ *//g' | sed 's/^ *//g')
+            LABEL=$(echo "$LABEL" | sed 's/^ *//g' | sed 's/ *$//g')
             if [[ "$LABEL" == "chore" ]]; then
               continue
             fi
             if [[ "$PR_LABELS" == *"$LABEL"* ]]; then
-              cmd="awk '/$LABEL:\s*<.*>/'"
+              cmd="awk '/$LABEL:\s*<p>.*<\/p>/'"
               FEATURE_RELEASE_NOTE="$(echo $PR_BODY | eval $cmd)"
               if [[ -z "$FEATURE_RELEASE_NOTE" ]]; then
-                 echo -e "${RED}Pull requests labeled with '$LABEL' must have the release note in the pull request body in the following format '$LABEL: < {THE RELEASE NOTE} >'${NC}"
+                 echo -e "${RED}Pull requests labeled with '$LABEL' must have the release note in the pull request body in the following format '$LABEL: <p> {THE RELEASE NOTE}  </p>'${NC}"
                  SHOULD_FAIL_JOB="true"
               fi
             fi
