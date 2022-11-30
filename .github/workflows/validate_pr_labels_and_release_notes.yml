@@ -23,7 +23,7 @@ jobs:
              echo -e "${RED}$FILE_NAME file doesn't exits in the root of the respository${NC}"
              exit 1
           fi 
-          echo "::set-output name=LABELS::$(cat $FILE_PATH)"
+          echo "::set-output name=LABELS::$(cat $FILE_PATH),chore"
         id: get-allowed_labels
         env:
           PROJECT_ROOT: ${{ github.workspace }}
@@ -42,6 +42,7 @@ jobs:
         uses: technote-space/pr-commit-body-action@v1
 
       - run: |
+          ALLOWED_LABELS="$ALLOWED_LABELS,chore"
           IFS=',' read -r -a ALLOWED_LABELS_ARRAY <<< "$ALLOWED_LABELS"
 
           SHOULD_FAIL_JOB="false"
