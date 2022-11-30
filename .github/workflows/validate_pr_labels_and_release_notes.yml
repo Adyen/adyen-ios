@@ -15,7 +15,7 @@ jobs:
 
       - name: Get the list of allowed pull request labels
         run: |
-          FILE_NAME=pull-requests-allowed-labels-list
+          FILE_NAME=.pull-requests-allowed-labels-list
           FILE_PATH=$PROJECT_ROOT/$FILE_NAME
           if [[ ! -f "$FILE_PATH" ]]; then
              echo "$FILE_NAME file doesn't exits in the root of the respository"
