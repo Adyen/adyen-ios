@@ -42,9 +42,10 @@ jobs:
       - run: |
           IFS=',' read -r -a ALLOWED_LABELS_ARRAY <<< "$ALLOWED_LABELS"
 
+          SHOULD_FAIL_JOB="false"
+
           for LABEL in "${ALLOWED_LABELS_ARRAY[@]}"; do
             LABEL=$(echo "$LABEL" | sed 's/^ *//g' | sed 's/^ *//g')
-            echo "$LABEL"
             if [[ "$LABEL" == "chore" ]]; then
               continue
             fi
@@ -53,10 +54,13 @@ jobs:
               FEATURE_RELEASE_NOTE="$(echo $PR_BODY | eval $cmd)"
               if [[ -z "$FEATURE_RELEASE_NOTE" ]]; then
                  echo "Pull requests labeled with '$LABEL' must have the release note in the pull request body in the following format '$LABEL: < {THE RELEASE NOTE} >'"
-                 exit 1
+                 SHOULD_FAIL_JOB="true"
               fi
             fi
           done
+          if [[ "$SHOULD_FAIL_JOB" == "true" ]]; then
+            exit 1
+          fi
         env:
           PR_BODY: ${{github.event.pull_request.body}}
           PR_LABELS: ${{steps.pr-labels.outputs.labels}}
