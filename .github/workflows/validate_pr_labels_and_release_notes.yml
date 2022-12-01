@@ -38,9 +38,6 @@ jobs:
         uses: joerick/pr-labels-action@v1.0.6
         id: pr-labels
 
-      - name: Get PR body
-        uses: technote-space/pr-commit-body-action@v1
-
       - run: |
           ALLOWED_LABELS="$ALLOWED_LABELS,chore"
           IFS=',' read -r -a ALLOWED_LABELS_ARRAY <<< "$ALLOWED_LABELS"
