@@ -52,6 +52,7 @@
 		00EACBCA288013AF0082B360 /* XCTestCase+Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBC5288013990082B360 /* XCTestCase+Coder.swift */; };
 		00EACBD1288558A00082B360 /* APIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E757F02525D2ED4C007C813D /* APIClientMock.swift */; };
 		00EACBD428855D190082B360 /* OnlineBankingComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBD328855D190082B360 /* OnlineBankingComponentUITests.swift */; };
+		00EB3F54291543C700E2B67C /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB3F53291543C700E2B67C /* SearchViewController.swift */; };
 		00F621BE27EB132500C04097 /* AtomeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621BD27EB132500C04097 /* AtomeComponent.swift */; };
 		00F621C027EB153400C04097 /* AtomeDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621BF27EB153400C04097 /* AtomeDetails.swift */; };
 		00F621C227EB1E3100C04097 /* AtomePaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621C127EB1E3100C04097 /* AtomePaymentMethod.swift */; };
@@ -1126,6 +1127,7 @@
 		00EACBBF287EF1D50082B360 /* OnlineBankingComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineBankingComponentTests.swift; sourceTree = "<group>"; };
 		00EACBC5288013990082B360 /* XCTestCase+Coder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Coder.swift"; sourceTree = "<group>"; };
 		00EACBD328855D190082B360 /* OnlineBankingComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineBankingComponentUITests.swift; sourceTree = "<group>"; };
+		00EB3F53291543C700E2B67C /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		00F621BD27EB132500C04097 /* AtomeComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeComponent.swift; sourceTree = "<group>"; };
 		00F621BF27EB153400C04097 /* AtomeDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeDetails.swift; sourceTree = "<group>"; };
 		00F621C127EB1E3100C04097 /* AtomePaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomePaymentMethod.swift; sourceTree = "<group>"; };
@@ -1278,7 +1280,6 @@
 		E226F54122969B6C0013A463 /* ThreeDS2ChallengeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ChallengeAction.swift; sourceTree = "<group>"; };
 		E226F5462296BE250013A463 /* Adyen3DS2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Adyen3DS2.framework; path = Carthage/Build/iOS/Adyen3DS2.framework; sourceTree = "<group>"; };
 		E226F54A229803130013A463 /* DropInComponentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInComponentDelegate.swift; sourceTree = "<group>"; };
-		E2289B3A23D04B57002844BF /* .jazzy.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .jazzy.yaml; sourceTree = "<group>"; };
 		E2289B3B23D0BBB1002844BF /* ListSectionHeaderStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSectionHeaderStyle.swift; sourceTree = "<group>"; };
 		E2345C01229BCC7D000F2C94 /* ThreeDS2Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2Component.swift; sourceTree = "<group>"; };
 		E2345C05229BDA3C000F2C94 /* ThreeDS2ComponentFingerprintToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ComponentFingerprintToken.swift; sourceTree = "<group>"; };
@@ -2759,7 +2760,6 @@
 				F9A1B477283B689F005F3145 /* Adyen.docc */,
 				F94B870925EFB71100D270A6 /* MIGRATION.md */,
 				E27B8EAD22B79CD20075BB6A /* README.md */,
-				E2289B3A23D04B57002844BF /* .jazzy.yaml */,
 				E2C0E03522097917008616F6 /* Adyen */,
 				F95899C725FA524100E4113F /* AdyenSwiftUI */,
 				F92326AD25A3669E002C5BC4 /* AdyenEncryption */,
@@ -3667,6 +3667,7 @@
 				F924C078246C38E0006DDAB8 /* SecuredViewController.swift */,
 				E7806EBC26147AB700101DBB /* ViewControllerDelegate.swift */,
 				5A6745E026417A5C00E9184D /* ADYViewController.swift */,
+				00EB3F53291543C700E2B67C /* SearchViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -5558,6 +5559,7 @@
 				F9B798CB23AB706D00A2103C /* ListComponentStyle.swift in Sources */,
 				E2B3C216233507030067891D /* UIColorHelpers.swift in Sources */,
 				F9AC61C624376C9B0062A00D /* AdyenScope.swift in Sources */,
+				00EB3F54291543C700E2B67C /* SearchViewController.swift in Sources */,
 				E7085912261F1C8E00D0153B /* FormFullAddressItem.swift in Sources */,
 				F96F44D923BDEDA200871C1F /* ListItemStyle.swift in Sources */,
 				E787C9AE24698C2E00B401E0 /* UIViewRoundingHelpers.swift in Sources */,

@@ -31,8 +31,8 @@ class IssuerListComponentTests: XCTestCase {
 
     func testStartStopLoading() {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        let listViewController = sut.viewController as? ListViewController
+        let searchViewController = sut.viewController as! SearchViewController
+        let listViewController = searchViewController.childViewController as? ListViewController
         XCTAssertNotNil(listViewController)
         
         wait(for: .milliseconds(300))
@@ -48,7 +48,8 @@ class IssuerListComponentTests: XCTestCase {
 
     func testSelection() {
         // Given
-        let listViewController = sut.viewController as! ListViewController
+        let searchViewController = sut.viewController as! SearchViewController
+        let listViewController = searchViewController.childViewController as! ListViewController
         let expectedIssuer = paymentMethod.issuers[0]
 
         let expectation = expectation(description: "Call didSubmit")
