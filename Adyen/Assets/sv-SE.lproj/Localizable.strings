@@ -163,3 +163,6 @@
 "adyen.onlineBanking.termsAndConditions" = "Genom att fortsätta godkänner du #villkoren#";
 "adyen.qrCode.instructionMessage" = "Ta en skärmdump eller spara QR-koden, öppna din bankapp och ladda upp QR-koden för att verifiera uppgifterna och slutföra betalningen.";
 "adyen.qrCode.timerExpirationMessage" = "Denna QR-kod är giltig i %@";
+"adyen.paybybank.subtitle" = "Inga banker hittades med din sökfråga...";
+"adyen.paybybank.title" = "Inga resultat för";
+"adyen.search.placeholder" = "Sök efter…";
