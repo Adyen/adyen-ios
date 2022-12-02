@@ -72,4 +72,4 @@ jobs:
         rm -f $XCODE_AUTHENTICATION_KEY_PATH
         echo -n "$XCODE_AUTHENTICATION_KEY_BASE64" | base64 --decode --output $XCODE_AUTHENTICATION_KEY_PATH
 
-        ./Scripts/publish-demo-app.sh "$APPLE_ID_USERNAME" "$APPLE_APP_SPECIFIC_PASSWORD"
+        ./Scripts/publish-demo-app.sh "$APPLE_ID_USERNAME" "$APPLE_APP_SPECIFIC_PASSWORD" "$XCODE_AUTHENTICATION_KEY_PATH"
