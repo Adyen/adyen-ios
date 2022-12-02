@@ -78,11 +78,14 @@ internal final class ComponentManager {
             storedSection = ComponentsSection(header: .init(title: localizedString(.paymentMethodsStoredMethods,
                                                                                    configuration.localizationParameters),
                                                             editingStyle: editingStyle,
-                                                            style: ListSectionHeaderStyle()),
+                                                            style: configuration.style.listComponent.sectionHeader),
                                               components: storedComponents,
                                               footer: nil)
         } else {
-            storedSection = ComponentsSection(components: storedComponents)
+            storedSection = ComponentsSection(header: .init(title: localizedString(.paymentMethodsStoredMethods,
+                                                                                   configuration.localizationParameters),
+                                                            style: configuration.style.listComponent.sectionHeader),
+                                              components: storedComponents)
         }
         
         // Regular section
