@@ -17,17 +17,17 @@ xcodebuild archive -project Adyen.xcodeproj \
 -configuration Release \
 -archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
 -allowProvisioningUpdates \
--authenticationKeyID $3 \
--authenticationKeyIssuerID $4 \
--authenticationKeyPath $5
+-authenticationKeyID $XCODE_AUTHENTICATION_KEY_ID \
+-authenticationKeyIssuerID $XCODE_AUTHENTICATION_KEY_ISSUER_ID \
+-authenticationKeyPath $XCODE_AUTHENTICATION_KEY_PATH
 
 xcodebuild -exportArchive \
 -archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
 -exportOptionsPlist exportOptions.plist \
 -exportPath $BUILD_PATH \
 -allowProvisioningUpdates \
--authenticationKeyID $3 \
--authenticationKeyIssuerID $4 \
--authenticationKeyPath $5
+-authenticationKeyID $XCODE_AUTHENTICATION_KEY_ID \
+-authenticationKeyIssuerID $XCODE_AUTHENTICATION_KEY_ISSUER_ID \
+-authenticationKeyPath $XCODE_AUTHENTICATION_KEY_PATH
 
 xcrun altool --upload-app -f $BUILD_PATH/AdyenUIHost.ipa -u $1 -p $2 --type iphoneos
