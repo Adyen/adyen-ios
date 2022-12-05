@@ -17,11 +17,14 @@ public class SearchViewController: UIViewController {
 
     internal let childViewController: UIViewController
     private let localizationParameters: LocalizationParameters?
+    private let style: ViewStyle
 
     public init(childViewController: UIViewController,
+                style: ViewStyle,
                 delegate: SearchViewControllerDelegate,
                 localizationParameters: LocalizationParameters? = nil) {
         self.childViewController = childViewController
+        self.style = style
         self.delegate = delegate
         self.localizationParameters = localizationParameters
         super.init(nibName: nil, bundle: nil)
@@ -92,6 +95,7 @@ public class SearchViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = style.backgroundColor
         view.addSubview(searchBar)
         view.addSubview(noResultsStackView)
         noResultsStackView.isHidden = true

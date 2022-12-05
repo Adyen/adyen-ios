@@ -78,7 +78,7 @@ internal final class ComponentManager {
             storedSection = ComponentsSection(header: .init(title: localizedString(.paymentMethodsStoredMethods,
                                                                                    configuration.localizationParameters),
                                                             editingStyle: editingStyle,
-                                                            style: ListSectionHeaderStyle()),
+                                                            style: configuration.style.listComponent.sectionHeader),
                                               components: storedComponents,
                                               footer: nil)
         } else {

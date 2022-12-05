@@ -50,7 +50,9 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     }
 
     private lazy var searchViewController: SearchViewController = {
-        SearchViewController(childViewController: listViewController, delegate: self)
+        SearchViewController(childViewController: listViewController,
+                             style: configuration.style,
+                             delegate: self)
     }()
 
     public func stopLoading() {
