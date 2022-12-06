@@ -25,6 +25,7 @@ jobs:
         BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
         KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
       run: |
+
         # create variables
         CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
         DEV_CERTIFICATE_PATH=$RUNNER_TEMP/dev_certificate.p12
@@ -63,5 +64,12 @@ jobs:
       env:
         APPLE_ID_USERNAME: ${{ secrets.APPLE_ID_USERNAME }}
         APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+        XCODE_AUTHENTICATION_KEY_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ID }}
+        XCODE_AUTHENTICATION_KEY_ISSUER_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ISSUER_ID }}
+        XCODE_AUTHENTICATION_KEY_BASE64: ${{ secrets.XCODE_AUTHENTICATION_KEY_BASE64 }}
       run: |
-        ./Scripts/publish-demo-app.sh "$APPLE_ID_USERNAME" "$APPLE_APP_SPECIFIC_PASSWORD"
+        XCODE_AUTHENTICATION_KEY_PATH=$RUNNER_TEMP/authentication_key_path.p8
+        rm -f $XCODE_AUTHENTICATION_KEY_PATH
+        echo -n "$XCODE_AUTHENTICATION_KEY_BASE64" | base64 --decode --output $XCODE_AUTHENTICATION_KEY_PATH
+
+        ./Scripts/publish-demo-app.sh "$APPLE_ID_USERNAME" "$APPLE_APP_SPECIFIC_PASSWORD" "$XCODE_AUTHENTICATION_KEY_PATH"
