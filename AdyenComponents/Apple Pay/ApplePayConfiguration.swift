@@ -48,7 +48,7 @@ extension ApplePayComponent {
 
         /// Determine whether to disable editing of the shipping contact field before displaying the payment sheet.
         /// The default is true.
-        public let allowShippingContactEditing: Bool = true
+        public var allowShippingContactEditing: Bool = true
 
         /// An array of shipping method objects that describe the supported shipping methods.
         public var shippingMethods: [PKShippingMethod]?
