@@ -36,18 +36,19 @@ jobs:
           for LABEL in "${ALLOWED_LABELS_ARRAY[@]}"; do
              LABEL=$(echo "$LABEL" | sed 's/^ *//g' | sed 's/ *$//g')
              GIT_LOG_CMD="git log -$NUMBER_OF_COMMITS_SINCE_LAST_RELEASE"
-             COMMIT_MESSAGES=$(eval $GIT_LOG_CMD)
-             echo $COMMIT_MESSAGES
-             FIND_CMD="awk '/#\s*$LABEL\s*:?\s*<p>/,/<\/p>/'"
-             LABEL_OUTPUT="$(echo $COMMIT_MESSAGES | eval $FIND_CMD)"
-             echo $LABEL_OUTPUT
+             FIND_CMD="awk '/<$LABEL>/,/<\/$LABEL>/'"
+             LABEL_OUTPUT="$(eval "$GIT_LOG_CMD | $FIND_CMD")"
              if [ ! -z "$LABEL_OUTPUT" ]; then
-                OUTPUT="$OUTPUT\n\# $LABEL\n$LABEL_OUTPUT"
+                REMOVE_TAG_CMD="sed 's/<$LABEL>//g' | sed 's/<\/$LABEL>//g'"
+                OUTPUT=$(echo "$OUTPUT
+
+                # $LABEL:
+                $LABEL_OUTPUT" | eval $REMOVE_TAG_CMD)
              fi
           done
           if [ ! -z "$OUTPUT" ]; then
-             echo $OUTPUT
-             echo $OUTPUT >> $GITHUB_STEP_SUMMARY
+             IFS="" echo "$OUTPUT" 
+             IFS="" echo "$OUTPUT" >> $GITHUB_STEP_SUMMARY
           fi
         env:
           ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}
