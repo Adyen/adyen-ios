@@ -1,7 +1,5 @@
 name: Get Release notes
-on: 
-  pull_request:
-    types: [opened, synchronize, reopened, labeled, unlabeled, edited]
+on: [workflow_dispatch]
 jobs:
   release_notes:
     runs-on: ubuntu-latest
