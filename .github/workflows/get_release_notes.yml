@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, labeled, unlabeled, edited]
 jobs:
-  publish:
+  release_notes:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch repo
@@ -20,11 +20,12 @@ jobs:
              echo -e "${RED}$FILE_NAME file doesn't exits in the root of the respository${NC}"
              exit 1
           fi 
-          echo "::set-output name=LABELS::$(cat $FILE_PATH)"
+          echo "LABELS=$(cat $FILE_PATH)" >> $GITHUB_OUTPUT
         id: get-allowed_labels
         env:
           PROJECT_ROOT: ${{ github.workspace }}
-      - run: |
+      - name: Generate release notes
+        run: |
           LATEST_TAG=$(git describe --tags --abbrev=0)
           NUMBER_OF_COMMITS_SINCE_LAST_RELEASE=$(git log --oneline $LATEST_TAG..HEAD | wc -l | sed 's/^ *//g' | sed 's/ *$//g')
 
@@ -34,12 +35,19 @@ jobs:
 
           for LABEL in "${ALLOWED_LABELS_ARRAY[@]}"; do
              LABEL=$(echo "$LABEL" | sed 's/^ *//g' | sed 's/ *$//g')
-             echo $LABEL
-             CMD="git log -$NUMBER_OF_COMMITS_SINCE_LAST_RELEASE"
-             CMD="$CMD | awk '/$LABEL\s*:?\s*<p>/,/<\/p>/'"
-             $OUTPUT="$OUTPUT\n# $(echo $LABEL)\n$(eval $CMD)"
+             GIT_LOG_CMD="git log -$NUMBER_OF_COMMITS_SINCE_LAST_RELEASE"
+             COMMIT_MESSAGES=$(eval $GIT_LOG_CMD)
+             echo $COMMIT_MESSAGES
+             FIND_CMD="awk '/#\s*$LABEL\s*:?\s*<p>/,/<\/p>/'"
+             LABEL_OUTPUT="$(echo $COMMIT_MESSAGES | eval $FIND_CMD)"
+             echo $LABEL_OUTPUT
+             if [ ! -z "$LABEL_OUTPUT" ]; then
+                OUTPUT="$OUTPUT\n\# $LABEL\n$LABEL_OUTPUT"
+             fi
           done
-          echo $OUTPUT
-          echo $OUTPUT >> $GITHUB_STEP_SUMMARY
+          if [ ! -z "$OUTPUT" ]; then
+             echo $OUTPUT
+             echo $OUTPUT >> $GITHUB_STEP_SUMMARY
+          fi
         env:
           ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}
