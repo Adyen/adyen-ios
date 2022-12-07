@@ -28,12 +28,18 @@ jobs:
           LATEST_TAG=$(git describe --tags --abbrev=0)
           NUMBER_OF_COMMITS_SINCE_LAST_RELEASE=$(git log --oneline $LATEST_TAG..HEAD | wc -l | sed 's/^ *//g' | sed 's/ *$//g')
 
-          ALLOWED_LABELS_ARRAY=($(echo "$ALLOWED_LABELS" | sed 's/,/ /g'))
+          IFS=',' read -r -a ALLOWED_LABELS_ARRAY <<< "$ALLOWED_LABELS"
+
+          OUTPUT=""
 
           for LABEL in "${ALLOWED_LABELS_ARRAY[@]}"; do
+             LABEL=$(echo "$LABEL" | sed 's/^ *//g' | sed 's/ *$//g')
+             echo $LABEL
              CMD="git log -$NUMBER_OF_COMMITS_SINCE_LAST_RELEASE"
              CMD="$CMD | awk '/$LABEL\s*:?\s*<p>/,/<\/p>/'"
-             eval $CMD >> $GITHUB_STEP_SUMMARY
+             $OUTPUT="$OUTPUT\n# $(echo $LABEL)\n$(eval $CMD)"
           done
+          echo $OUTPUT
+          echo $OUTPUT >> $GITHUB_STEP_SUMMARY
         env:
           ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}
