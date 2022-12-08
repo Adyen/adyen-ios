@@ -23,11 +23,11 @@ extension ApplePayComponent {
         public let merchantIdentifier: String
 
         /// A list of fields that you need for a billing contact in order to process the transaction.
-        /// Ignored on iOS 10.*.
+        /// The list is empty by default.
         public var requiredBillingContactFields: Set<PKContactField> = []
 
         /// A list of fields that you need for a shipping contact in order to process the transaction.
-        /// Ignored on iOS 10.*.
+        /// The list is empty by default.
         public var requiredShippingContactFields: Set<PKContactField> = []
 
         /// A pre-filled billing address.
