@@ -53,10 +53,10 @@ jobs:
               continue
             fi
             if [[ "$PR_LABELS" == *"$LABEL"* ]]; then
-              cmd="awk '/$LABEL\s*:?\s*<p>.*<\/p>/'"
+              cmd="awk '/<$LABEL>.*<\/$LABEL>/'"
               FEATURE_RELEASE_NOTE="$(echo $PR_BODY | eval $cmd)"
               if [[ -z "$FEATURE_RELEASE_NOTE" ]]; then
-                 echo -e "${RED}Pull requests labeled with '$LABEL' must have the release note in the pull request body in the following format '$LABEL: <p> {THE RELEASE NOTE}  </p>'${NC}"
+                 echo -e "${RED}Pull requests labeled with '$LABEL' must have the release note in the pull request body in the following format '<$LABEL> {THE RELEASE NOTE}  </$LABEL>'${NC}"
                  SHOULD_FAIL_JOB="true"
               fi
             fi
