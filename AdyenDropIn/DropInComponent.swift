@@ -25,7 +25,8 @@ import UIKit
  */
 public final class DropInComponent: NSObject,
     AnyDropInComponent,
-    ActionHandlingComponent {
+    ActionHandlingComponent,
+    LoadingComponent {
 
     internal var configuration: Configuration
 
@@ -247,7 +248,8 @@ public final class DropInComponent: NSObject,
         paymentInProgress = false
     }
 
-    internal func stopLoading() {
+    public func stopLoading() {
+        paymentInProgress = false
         (rootComponent as? ComponentLoader)?.stopLoading()
         selectedPaymentComponent?.stopLoadingIfNeeded()
     }
