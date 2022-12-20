@@ -87,18 +87,22 @@ internal struct PaymentsResponse: Response {
     internal let action: Action?
 
     internal let order: PartialPaymentOrder?
+
+    internal let refusalReason: String?
     
     internal init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.resultCode = try container.decode(ResultCode.self, forKey: .resultCode)
         self.action = try container.decodeIfPresent(Action.self, forKey: .action)
         self.order = try container.decodeIfPresent(PartialPaymentOrder.self, forKey: .order)
+        self.refusalReason = try container.decodeIfPresent(String.self, forKey: .refusalReason)
     }
     
     private enum CodingKeys: String, CodingKey {
         case resultCode
         case action
         case order
+        case refusalReason
     }
     
 }
