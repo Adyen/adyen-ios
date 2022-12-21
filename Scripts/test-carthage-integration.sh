@@ -48,6 +48,7 @@ then
   CURRENT_COMMIT=$(git rev-parse HEAD)
 
   echo "git \"file://$CWD/../\" \"$CURRENT_COMMIT\"" > Cartfile
+  echo "github \"adyen/adyen-authentication-ios\"" >> Cartfile
   ../Scripts/carthage.sh update --use-xcframeworks
 else
   cd $PROJECT_NAME
@@ -89,6 +90,9 @@ targets:
         embed: true
         codeSign: true
       - framework: Carthage/Build/AdyenWeChatPay.xcframework
+        embed: true
+        codeSign: true
+      - framework: Carthage/Build/AdyenAuthentication.xcframework
         embed: true
         codeSign: true
       - framework: Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/Adyen3DS2.xcframework
