@@ -49,7 +49,7 @@ then
 
   echo "git \"file://$CWD/../\" \"$CURRENT_COMMIT\"" > Cartfile
   echo "github \"adyen/adyen-authentication-ios\"" >> Cartfile
-  ../Scripts/carthage.sh update --use-xcframeworks
+  ../Scripts/carthage.sh update --use-xcframeworks --configuration Debug
 else
   cd $PROJECT_NAME
 fi

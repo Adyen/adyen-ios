@@ -13,7 +13,6 @@ import XCTest
     import Adyen3DS2
     @_spi(AdyenInternal) @testable import AdyenActions
     import AdyenAuthentication
-    @testable import AdyenUIHost
     import Foundation
     import UIKit
 
@@ -27,6 +26,15 @@ import XCTest
         var challengeAction: ThreeDS2ChallengeAction!
     
         var expectedSDKRegistrationOutput: String!
+        
+        static let appleTeamIdentifier = "B2NYSS5932"
+        
+        static var delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication {
+            .init(localizedRegistrationReason: "Authenticate your card!",
+                  localizedAuthenticationReason: "Register this device!",
+                  appleTeamIdentifier: appleTeamIdentifier)
+            
+        }
     
         lazy var analyticsEvent: Analytics.Event = .init(component: "Dropin",
                                                          flavor: .dropin,
@@ -58,7 +66,7 @@ import XCTest
         func testSettingThreeDSRequestorAppURL() {
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
                                                       appearanceConfiguration: ADYAppearanceConfiguration(),
-                                                      delegatedAuthenticationConfiguration: ConfigurationConstants.delegatedAuthenticationConfigurations)
+                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations)
             sut.threeDSRequestorAppURL = URL(string: "http://google.com")
             XCTAssertEqual(sut.threeDSRequestorAppURL, URL(string: "http://google.com"))
         }
@@ -66,7 +74,7 @@ import XCTest
         func testWrappedComponent() {
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
                                                       appearanceConfiguration: ADYAppearanceConfiguration(),
-                                                      delegatedAuthenticationConfiguration: ConfigurationConstants.delegatedAuthenticationConfigurations)
+                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations)
             XCTAssertEqual(sut.context.apiContext.clientKey, Dummy.apiContext.clientKey)
         
             XCTAssertEqual(sut.context.apiContext.environment.baseURL, Dummy.apiContext.environment.baseURL)
