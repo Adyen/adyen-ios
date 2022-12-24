@@ -10,12 +10,6 @@
 @testable @_spi(AdyenInternal) import AdyenCard
 import XCTest
 
-extension ThreeDSResult: Equatable {
-    public static func == (lhs: ThreeDSResult, rhs: ThreeDSResult) -> Bool {
-        lhs.payload == rhs.payload
-    }
-}
-
 class ThreeDS2ComponentTests: XCTestCase {
 
     func testFullFlowRedirectSuccess() throws {

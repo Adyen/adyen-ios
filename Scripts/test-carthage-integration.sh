@@ -48,7 +48,8 @@ then
   CURRENT_COMMIT=$(git rev-parse HEAD)
 
   echo "git \"file://$CWD/../\" \"$CURRENT_COMMIT\"" > Cartfile
-  ../Scripts/carthage.sh update --use-xcframeworks
+  echo "github \"adyen/adyen-authentication-ios\"" >> Cartfile
+  ../Scripts/carthage.sh update --use-xcframeworks --configuration Debug
 else
   cd $PROJECT_NAME
 fi
@@ -91,6 +92,9 @@ targets:
       - framework: Carthage/Build/AdyenWeChatPay.xcframework
         embed: true
         codeSign: true
+      - framework: Carthage/Build/AdyenAuthentication.xcframework
+        embed: true
+        codeSign: true
       - framework: Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/Adyen3DS2.xcframework
         embed: true
         codeSign: true
@@ -119,6 +123,10 @@ schemes:
 mkdir -p Tests
 mkdir -p Source
 cp "../Tests/DropIn Tests/DropInTests.swift" Tests/DropInTests.swift
+cp "../Tests/Card Tests/3DS2 Component/ThreeDS2PlusDACoreActionHandlerTests.swift" Tests/ThreeDS2PlusDACoreActionHandlerTests.swift
+cp "../Tests/Card Tests/3DS2 Component/AnyADYServiceMock.swift" Tests/AnyADYServiceMock.swift
+cp "../Tests/Card Tests/3DS2 Component/AuthenticationServiceMock.swift" Tests/AuthenticationServiceMock.swift
+cp "../Tests/Card Tests/3DS2 Component/ThreeDSResultExtension.swift" Tests/ThreeDSResultExtension.swift
 cp "../Tests/Helpers/XCTestCaseExtensions.swift" Tests/XCTestCaseExtensions.swift
 cp "../Tests/DummyData/Dummy.swift" Tests/Dummy.swift
 cp -a "../Demo/Common" Source/
