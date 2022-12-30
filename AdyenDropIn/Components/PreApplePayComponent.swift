@@ -79,9 +79,9 @@ internal final class PreApplePayComponent: PresentableComponent,
     }
 
     internal func didCancel() {
-        if let navigation = presentationDelegate, isPresenting {
+        if let presenter = presentationDelegate, isPresenting {
             isPresenting = false
-            navigation.dismiss(completion: nil)
+            presenter.dismiss(completion: nil)
         }
     }
     
