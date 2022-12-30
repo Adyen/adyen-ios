@@ -6,8 +6,8 @@
 
 import Foundation
 
-/// Any Gift Card payment method.
-public struct GiftCardPaymentMethod: PartialPaymentMethod {
+/// Any Mealvoucher payment method.
+public struct MealVoucherPaymentMethod: PartialPaymentMethod {
 
     public let type: PaymentMethodType
 
@@ -15,16 +15,13 @@ public struct GiftCardPaymentMethod: PartialPaymentMethod {
     
     public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
-    /// The brand of the gift card.
-    public let brand: String
-
     @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
 
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: brand)
+        DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
     }
 
     // MARK: - Decoding
@@ -32,7 +29,6 @@ public struct GiftCardPaymentMethod: PartialPaymentMethod {
     private enum CodingKeys: String, CodingKey {
         case type
         case name
-        case brand
     }
 
 }

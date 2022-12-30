@@ -116,6 +116,11 @@ extension ComponentManager: PaymentComponentBuilder {
                                  amount: amount,
                                  style: configuration.style.formComponent)
     }
+    
+    func build(paymentMethod: MealVoucherPaymentMethod) -> PaymentComponent? {
+        guard let amount = context.payment?.amount, partialPaymentEnabled else { return nil }
+        return nil
+    }
 
     internal func build(paymentMethod: BoletoPaymentMethod) -> PaymentComponent? {
         createBoletoComponent(paymentMethod)

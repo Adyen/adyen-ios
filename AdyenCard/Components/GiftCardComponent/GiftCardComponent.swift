@@ -22,13 +22,13 @@ public final class GiftCardComponent: PresentableComponent,
     @_spi(AdyenInternal)
     public let context: AdyenContext
     
-    private let giftCardPaymentMethod: GiftCardPaymentMethod
+    private let partialPaymentMethod: PartialPaymentMethod
 
     @_spi(AdyenInternal)
     public let publicKeyProvider: AnyPublicKeyProvider
 
     /// The gift card payment method.
-    public var paymentMethod: PaymentMethod { giftCardPaymentMethod }
+    public var paymentMethod: PaymentMethod { partialPaymentMethod }
 
     /// Describes the component's UI style.
     public let style: FormComponentStyle
@@ -42,7 +42,7 @@ public final class GiftCardComponent: PresentableComponent,
     /// The delegate that handles shopper confirmation UI when the balance of the gift card is sufficient to pay.
     public weak var readyToSubmitComponentDelegate: ReadyToSubmitPaymentComponentDelegate?
 
-    /// Initializes the card component.
+    /// Initializes the partial payment component with a gift card payment method.
     ///
     /// - Parameters:
     ///   - paymentMethod: The gift card payment method.
@@ -63,12 +63,33 @@ public final class GiftCardComponent: PresentableComponent,
                   publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
     
-    internal init(paymentMethod: GiftCardPaymentMethod,
+    /// Initializes the partial payment component with any partial payment method.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The gift card payment method.
+    ///   - context:The context object for this component.
+    ///   - amount: The amount to pay.
+    ///   - style: The form style.
+    /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
+    ///   - context: The context object for this component.
+    ///   - style:  The Component's UI style.
+    public convenience init(partialPaymentMethod: some PartialPaymentMethod,
+                            context: AdyenContext,
+                            amount: Amount,
+                            style: FormComponentStyle = FormComponentStyle()) {
+        self.init(paymentMethod: partialPaymentMethod,
+                  context: context,
+                  amount: amount,
+                  style: style,
+                  publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
+    }
+    
+    internal init(paymentMethod: some PartialPaymentMethod,
                   context: AdyenContext,
                   amount: Amount,
                   style: FormComponentStyle = FormComponentStyle(),
                   publicKeyProvider: AnyPublicKeyProvider) {
-        self.giftCardPaymentMethod = paymentMethod
+        self.partialPaymentMethod = paymentMethod
         self.context = context
         self.style = style
         self.publicKeyProvider = publicKeyProvider
@@ -264,7 +285,7 @@ public final class GiftCardComponent: PresentableComponent,
                                   paymentData: PaymentComponentData) {
         let lastFourDigits = String(numberItem.value.suffix(4))
 
-        let paymentMethod = GiftCardConfirmationPaymentMethod(paymentMethod: giftCardPaymentMethod,
+        let paymentMethod = GiftCardConfirmationPaymentMethod(paymentMethod: partialPaymentMethod,
                                                               lastFour: lastFourDigits,
                                                               remainingAmount: remainingAmount)
         
@@ -316,7 +337,7 @@ public final class GiftCardComponent: PresentableComponent,
             guard let number = encryptedCard.number,
                   let securityCode = encryptedCard.securityCode else { throw Error.cardEncryptionFailed }
 
-            let details = GiftCardDetails(paymentMethod: giftCardPaymentMethod,
+            let details = GiftCardDetails(paymentMethod: partialPaymentMethod,
                                           encryptedCardNumber: number,
                                           encryptedSecurityCode: securityCode)
 
