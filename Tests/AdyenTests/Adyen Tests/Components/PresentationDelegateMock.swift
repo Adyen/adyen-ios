@@ -2,10 +2,26 @@
 
 import Adyen
 import Foundation
+@testable import AdyenDropIn
 
-final class PresentationDelegateMock: PresentationDelegate {
+final class PresentationDelegateMock: NavigationDelegate {
 
-    // MARK: - presentComponent
+    // MARK: - dismiss Component
+
+    var dismissComponentCallsCount = 0
+    var dismissComponentCalled: Bool {
+        dismissComponentCallsCount > 0
+    }
+
+    var doDismiss: (((() -> Void)?) -> Void)?
+
+    func dismiss(completion: (() -> Void)?) {
+        dismissComponentCallsCount += 1
+        doDismiss?(completion)
+    }
+
+    // MARK: - present Component
+
 
     var presentComponentCallsCount = 0
     var presentComponentCalled: Bool {

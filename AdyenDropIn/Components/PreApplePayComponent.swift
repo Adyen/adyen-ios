@@ -11,33 +11,30 @@ import UIKit
 #endif
 
 // :nodoc:
-internal final class PreApplePayComponent: Localizable, PresentableComponent, FinalizableComponent, PaymentComponent {
+internal final class PreApplePayComponent: PresentableComponent,
+    FinalizableComponent,
+    PaymentComponent,
+    Localizable,
+    Cancellable {
+
+    private var isPresenting: Bool = false
     
-    /// :nodoc:
     internal let apiContext: APIContext
     
-    /// :nodoc:
     internal let paymentMethod: PaymentMethod
     
-    /// :nodoc:
     internal let amount: Amount
     
-    /// :nodoc:
     internal weak var delegate: PaymentComponentDelegate?
     
-    /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
     
-    /// :nodoc:
-    internal weak var presentationDelegate: PresentationDelegate?
+    internal weak var presentationDelegate: NavigationDelegate?
     
-    /// :nodoc:
     fileprivate let applePayComponent: ApplePayComponent
     
-    /// :nodoc:
     internal let style: ApplePayStyle
     
-    /// :nodoc:
     internal lazy var viewController: UIViewController = {
         let view = PreApplePayView(model: createModel(with: amount))
         let viewController = ADYViewController(view: view, title: "Apple Pay")
@@ -80,6 +77,13 @@ internal final class PreApplePayComponent: Localizable, PresentableComponent, Fi
     private func createModel(with amount: Amount) -> PreApplePayView.Model {
         PreApplePayView.Model(hint: amount.formatted, style: style)
     }
+
+    internal func didCancel() {
+        if let presenter = presentationDelegate, isPresenting {
+            isPresenting = false
+            presenter.dismiss(completion: nil)
+        }
+    }
     
 }
 
@@ -99,6 +103,7 @@ extension PreApplePayComponent: PreApplePayViewDelegate {
     
     /// :nodoc:
     internal func pay() {
+        isPresenting = true
         presentationDelegate?.present(component: applePayComponent)
     }
     

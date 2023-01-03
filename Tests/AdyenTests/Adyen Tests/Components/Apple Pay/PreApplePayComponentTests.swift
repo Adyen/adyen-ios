@@ -80,8 +80,39 @@ class PreApplePayComponentTests: XCTestCase {
 
         wait(for: .seconds(1))
         
+        XCTAssertEqual(presentationMock.presentComponentCallsCount, 1)
         XCTAssertTrue(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController is PKPaymentAuthorizationViewController)
         UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: false, completion: nil)
+    }
+
+    func testApplePayDismissed() {
+        guard Available.iOS12 else { return }
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        let presentationMock = PresentationDelegateMock()
+        presentationMock.doPresent = { component in
+            UIApplication.shared.keyWindow?.rootViewController?.present(component: component)
+        }
+
+        presentationMock.doDismiss = { _ in
+            UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: false, completion: nil)
+        }
+
+        sut.presentationDelegate = presentationMock
+
+        let applePayButton = self.sut.viewController.view.findView(by: "applePayButton") as? PKPaymentButton
+        applePayButton?.sendActions(for: .touchUpInside)
+
+        wait(for: .seconds(1))
+        XCTAssertTrue(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController is PKPaymentAuthorizationViewController)
+
+        sut.cancelIfNeeded()
+        wait(for: .seconds(1))
+
+        XCTAssertEqual(presentationMock.dismissComponentCallsCount, 1)
+        XCTAssertFalse(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController is PKPaymentAuthorizationViewController)
+
     }
     
     func testHintLabelAmount() {

@@ -110,11 +110,16 @@ extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
     }
 }
 
-extension DropInComponent: PresentationDelegate {
+extension DropInComponent: NavigationDelegate {
 
     /// :nodoc:
     public func present(component: PresentableComponent) {
         navigationController.present(asModal: component)
+    }
+
+    /// :nodoc:
+    public func dismiss(completion: (() -> Void)?) {
+        navigationController.dismiss(animated: true, completion: completion)
     }
 }
 
