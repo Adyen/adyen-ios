@@ -1,8 +1,8 @@
 //
 
 import Adyen
-import Foundation
 @testable import AdyenDropIn
+import Foundation
 
 final class PresentationDelegateMock: NavigationDelegate {
 
@@ -21,7 +21,6 @@ final class PresentationDelegateMock: NavigationDelegate {
     }
 
     // MARK: - present Component
-
 
     var presentComponentCallsCount = 0
     var presentComponentCalled: Bool {

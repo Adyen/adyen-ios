@@ -270,10 +270,10 @@ class ApplePayComponentTest: XCTestCase {
 extension XCTestCase {
 
     public func XCTAssertEqualCollection<T>(_ expression1: @autoclosure () throws -> [T],
-                                                   _ expression2: @autoclosure () throws -> [T],
-                                                   _ message: @autoclosure () -> String = "",
-                                                   file: StaticString = #filePath,
-                                                   line: UInt = #line) where T : Hashable {
+                                            _ expression2: @autoclosure () throws -> [T],
+                                            _ message: @autoclosure () -> String = "",
+                                            file: StaticString = #filePath,
+                                            line: UInt = #line) where T: Hashable {
 
         let lhs = try! expression1()
         let rhs = try! expression2()
