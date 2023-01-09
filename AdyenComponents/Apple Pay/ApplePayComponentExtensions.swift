@@ -20,6 +20,8 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         }
     }
     
+    
+    
     public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
                                                    didAuthorizePayment payment: PKPayment,
                                                    completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
