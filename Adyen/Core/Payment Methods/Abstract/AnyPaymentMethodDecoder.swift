@@ -77,7 +77,8 @@ internal enum AnyPaymentMethodDecoder {
         .affirm: AffirmPaymentMethodDecoder(),
         .atome: AtomePaymentMethodDecoder(),
         .onlineBankingCZ: OnlineBankingPaymentMethodDecoder(),
-        .onlineBankingSK: OnlineBankingPaymentMethodDecoder()
+        .onlineBankingSK: OnlineBankingPaymentMethodDecoder(),
+        .upi: UPIPaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = InstantPaymentMethodDecoder()
@@ -286,5 +287,11 @@ private struct AtomePaymentMethodDecoder: PaymentMethodDecoder {
 private struct OnlineBankingPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         .onlineBanking(try OnlineBankingPaymentMethod(from: decoder))
+    }
+}
+
+private struct UPIPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
+        .upi(try UPIPaymentMethod(from: decoder))
     }
 }

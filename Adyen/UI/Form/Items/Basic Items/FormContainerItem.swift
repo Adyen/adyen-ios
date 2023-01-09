@@ -9,7 +9,9 @@ import UIKit
 
 /// Simple form item to wrap another item and provide a margin around it.
 @_spi(AdyenInternal)
-public class FormContainerItem: FormItem {
+public class FormContainerItem: FormItem, Hidable {
+
+    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
 
     public var subitems: [FormItem]
 

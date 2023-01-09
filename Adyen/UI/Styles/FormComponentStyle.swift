@@ -47,6 +47,11 @@ public struct FormComponentStyle: TintableStyle {
     public var secondaryButtonItem: FormButtonItemStyle = .secondary(font: .preferredFont(forTextStyle: .body),
                                                                      textColor: UIColor.Adyen.defaultBlue)
 
+    /// The  segmented control  style.
+    public var segmentedControlStyle: SegmentedControlStyle = SegmentedControlStyle(textStyle:
+                                                                                        TextStyle(font:.preferredFont(forTextStyle: .subheadline),
+                                                                                                  color: UIColor.Adyen.componentBackground))
+
     /// The address style generated based on other field's value.
     public var addressStyle: AddressStyle {
         .init(title: sectionHeader,

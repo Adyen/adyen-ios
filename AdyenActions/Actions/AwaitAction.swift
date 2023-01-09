@@ -14,6 +14,9 @@ public enum AwaitPaymentMethod: String, Decodable {
 
     /// BLIK payment method.
     case blik
+
+    /// upi
+    case upicollect = "upi_collect"
 }
 
 /// Describes an action in which the SDK is waiting for user action.

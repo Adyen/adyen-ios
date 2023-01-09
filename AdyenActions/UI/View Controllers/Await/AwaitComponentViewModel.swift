@@ -42,6 +42,11 @@ internal struct AwaitComponentViewModel {
             return AwaitComponentViewModel(icon: paymentMethodType.rawValue,
                                            message: localizedString(localizationKey, localizationParameters),
                                            spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters))
+        case .upicollect:
+            let localizationKey = LocalizationKey(key: "adyen.\(paymentMethodType.rawValue).confirmPayment")
+            return AwaitComponentViewModel(icon: paymentMethodType.rawValue,
+                                           message: localizedString(localizationKey, localizationParameters),
+                                           spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters))
         }
     }
     
