@@ -55,6 +55,8 @@ internal class FormImageView: FormItemView<FormImageItem> {
             self.heightAnchor.constraint(greaterThanOrEqualToConstant: item.size?.height ?? 46.0),
             self.widthAnchor.constraint(greaterThanOrEqualToConstant: item.size?.width ?? 46.0),
             imageView.heightAnchor.constraint(equalToConstant: item.size?.height ?? 46.0),
+            imageView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: 40.0),
+            imageView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor, constant: 5.0),
             imageView.widthAnchor.constraint(equalToConstant: item.size?.width ?? 46.0),
             imageView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: layoutMarginsGuide.centerYAnchor)

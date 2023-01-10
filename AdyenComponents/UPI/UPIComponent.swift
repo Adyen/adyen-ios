@@ -100,7 +100,7 @@ public final class UPIComponent: PaymentComponent,
     internal lazy var qrCodeGenerationLabelContainerItem: FormContainerItem = {
         let item = FormLabelItem(text: localizedString(.UPIQrcodeGenerationMessage, configuration.localizationParameters),
                                  style: configuration.style.footnoteLabel)
-        item.style.textAlignment = .left
+        item.style.textAlignment = .center
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                       postfix: ViewIdentifier.generateQRCodeContainerItem)
         return FormContainerItem(content: item.addingDefaultMargins())
@@ -135,12 +135,12 @@ public final class UPIComponent: PaymentComponent,
         formViewController.append(instructionsLabelItem.addingDefaultMargins())
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
         formViewController.append(upiFlowSelectionItem.addingDefaultMargins())
-        formViewController.append(FormSpacerItem(numberOfSpaces: 1))
         formViewController.append(qrCodeGenerationImageItem)
         qrCodeGenerationLabelContainerItem.isHidden.wrappedValue = true
+        formViewController.append(FormSpacerItem(numberOfSpaces: 1))
         formViewController.append(qrCodeGenerationLabelContainerItem)
         formViewController.append(virtualPaymentAddressItem)
-        formViewController.append(FormSpacerItem(numberOfSpaces: 3))
+        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         formViewController.append(continueButton)
 
         return formViewController
