@@ -149,12 +149,16 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
         let timeLeftString = timeLeft.adyen.timeLeftString() ?? ""
 
         switch qrCodeAction?.paymentMethodType {
-        case .promptPay, .duitNow, .payNow, .upiQRCode:
+        case .promptPay, .duitNow, .payNow:
             expirationText = localizedString(.qrCodeTimerExpirationMessage,
                                              configuration.localizationParameters,
                                              timeLeftString)
         case .pix:
             expirationText = localizedString(.pixExpirationLabel,
+                                             configuration.localizationParameters,
+                                             timeLeftString)
+        case .upiQRCode:
+            expirationText = localizedString(.UPIQrcodeTimerMessage,
                                              configuration.localizationParameters,
                                              timeLeftString)
         case .none:
@@ -176,11 +180,14 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
 
     private func QRCodeInstruction(with action: QRCodeAction) -> String {
         switch action.paymentMethodType {
-        case .promptPay, .duitNow, .payNow, .upiQRCode:
+        case .promptPay, .duitNow, .payNow:
             return localizedString(.qrCodeInstructionMessage,
                                    configuration.localizationParameters)
         case .pix:
             return localizedString(.pixInstructions,
+                                   configuration.localizationParameters)
+        case .upiQRCode:
+            return localizedString(.UPIQRCodeInstructions,
                                    configuration.localizationParameters)
         }
     }

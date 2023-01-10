@@ -26,6 +26,7 @@
 		002B92F3294B2857000B93F4 /* UPIComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B92F2294B2857000B93F4 /* UPIComponent.swift */; };
 		002B92F5294B6987000B93F4 /* UPIComponentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B92F4294B6987000B93F4 /* UPIComponentDetails.swift */; };
 		002B93082951F120000B93F4 /* FormSegmentedControlItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B93072951F120000B93F4 /* FormSegmentedControlItem.swift */; };
+		0035016A296C27D000632D8C /* UPIComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0067E742296C22C5005B8D76 /* UPIComponentUITests.swift */; };
 		0055B8CF292242A000214ED5 /* AddressValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0055B8CE292242A000214ED5 /* AddressValidator.swift */; };
 		0058691528B644FB00B65A19 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691428B644FB00B65A19 /* QRCodeView.swift */; };
 		0058691728B6450900B65A19 /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691628B6450900B65A19 /* QRCodeViewController.swift */; };
@@ -34,6 +35,7 @@
 		0058692328B8C1FE00B65A19 /* QRCodeActionComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058692228B8C1FE00B65A19 /* QRCodeActionComponentUITests.swift */; };
 		0058692528BE0FB700B65A19 /* QRCodeViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058692428BE0FB700B65A19 /* QRCodeViewDelegateMock.swift */; };
 		0067E73D29658CB6005B8D76 /* FormImageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0067E73C29658CB6005B8D76 /* FormImageItem.swift */; };
+		0067E740296C161E005B8D76 /* UPIComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0067E73F296C161E005B8D76 /* UPIComponentTests.swift */; };
 		006DCC03295C3E930015EA79 /* SegmentedControlStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006DCC02295C3E930015EA79 /* SegmentedControlStyle.swift */; };
 		007D790C2812C81400382D31 /* AtomeComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007D790B2812C81400382D31 /* AtomeComponentUITests.swift */; };
 		007D7918281FC51500382D31 /* PostalAddressMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */; };
@@ -1123,6 +1125,8 @@
 		0058692228B8C1FE00B65A19 /* QRCodeActionComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeActionComponentUITests.swift; sourceTree = "<group>"; };
 		0058692428BE0FB700B65A19 /* QRCodeViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewDelegateMock.swift; sourceTree = "<group>"; };
 		0067E73C29658CB6005B8D76 /* FormImageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormImageItem.swift; sourceTree = "<group>"; };
+		0067E73F296C161E005B8D76 /* UPIComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentTests.swift; sourceTree = "<group>"; };
+		0067E742296C22C5005B8D76 /* UPIComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentUITests.swift; sourceTree = "<group>"; };
 		006DCC02295C3E930015EA79 /* SegmentedControlStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlStyle.swift; sourceTree = "<group>"; };
 		007D79092812C81400382D31 /* AdyenUIHostUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdyenUIHostUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		007D790B2812C81400382D31 /* AtomeComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeComponentUITests.swift; sourceTree = "<group>"; };
@@ -2061,6 +2065,22 @@
 			path = FormImageItem;
 			sourceTree = "<group>";
 		};
+		0067E73E296C15F6005B8D76 /* UPIComponent */ = {
+			isa = PBXGroup;
+			children = (
+				0067E73F296C161E005B8D76 /* UPIComponentTests.swift */,
+			);
+			path = UPIComponent;
+			sourceTree = "<group>";
+		};
+		0067E741296C22A3005B8D76 /* UPIComponent */ = {
+			isa = PBXGroup;
+			children = (
+				0067E742296C22C5005B8D76 /* UPIComponentUITests.swift */,
+			);
+			path = UPIComponent;
+			sourceTree = "<group>";
+		};
 		007D790A2812C81400382D31 /* UITests */ = {
 			isa = PBXGroup;
 			children = (
@@ -2073,6 +2093,7 @@
 		007D79142812EFD300382D31 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				0067E741296C22A3005B8D76 /* UPIComponent */,
 				0058692128B8C1B700B65A19 /* QRCode */,
 				00EACBD228855CF70082B360 /* Online Banking */,
 				E7975F97288040BF00A12C40 /* Atome */,
@@ -3453,6 +3474,7 @@
 		E97B9717229D533B00505476 /* Components Tests */ = {
 			isa = PBXGroup;
 			children = (
+				0067E73E296C15F6005B8D76 /* UPIComponent */,
 				A009837B279859BE007E68C4 /* ACH Direct Debit */,
 				C96688BD26A6F72900DC7297 /* Affirm */,
 				00F621C327F1AF0900C04097 /* Atome */,
@@ -5560,6 +5582,7 @@
 				00EACBCA288013AF0082B360 /* XCTestCase+Coder.swift in Sources */,
 				007D791B281FC63500382D31 /* XCTestCase+FormAddressItem.swift in Sources */,
 				007D791C281FC6B000382D31 /* XCTestCaseExtensions.swift in Sources */,
+				0035016A296C27D000632D8C /* UPIComponentUITests.swift in Sources */,
 				E7CC63D4287F0D630034108B /* DummyHelper.swift in Sources */,
 				007D791A281FC62E00382D31 /* XCTestCaseExtension.swift in Sources */,
 				E7975F9628803F4B00A12C40 /* PaymentComponentDelegateMock.swift in Sources */,
@@ -5879,6 +5902,7 @@
 				E9021DEC225CC44C009CF7F4 /* URLExtensionsTest.swift in Sources */,
 				F9B0195A2611ED94001F23FC /* EContextStoresVoucherViewControllerProviderTests.swift in Sources */,
 				C927083E27590BDB00D15EA0 /* BACSInputFormViewControllerTests.swift in Sources */,
+				0067E740296C161E005B8D76 /* UPIComponentTests.swift in Sources */,
 				F9C5F0F125CAB917005A6E54 /* VoucherShareableViewProviderMock.swift in Sources */,
 				F96AE51B26038602009F82BD /* XCTestCaseExtension.swift in Sources */,
 				F9EDB78D2395643A00CFB3C9 /* CardComponentTests.swift in Sources */,

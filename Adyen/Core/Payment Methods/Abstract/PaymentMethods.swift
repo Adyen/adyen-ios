@@ -192,7 +192,7 @@ internal enum AnyPaymentMethod: Decodable {
     case affirm(AffirmPaymentMethod)
     case atome(AtomePaymentMethod)
     case onlineBanking(OnlineBankingPaymentMethod)
-    case upi(UPIPaymentMethod)
+    case upi(UPIComponentPaymentMethod)
     
     case none
     

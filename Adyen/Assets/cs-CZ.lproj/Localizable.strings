@@ -166,3 +166,11 @@
 "adyen.paybybank.subtitle" = "Na váš vyhledávací dotaz nebyly nalezeny žádné banky...";
 "adyen.paybybank.title" = "Žádné výsledky pro";
 "adyen.search.placeholder" = "Hledat...";
+"adyen.upi.modeSelection" = "Vyberte si, jak chcete platební aplikaci UPI používat.";
+"adyen.UPIVpa.validationMessage" = "Zadejte správnou adresu pro virtuální platby";
+"adyen.UPIQrcode.generationMessage" = "Vygenerujte QR kód, který si můžete stáhnout nebo vyfotit na obrazovku a nahrajte jej do aplikace UPI, abyste mohli dokončit platbu.";
+"adyen.UPIQrcode.timerMessage" = "Máte %@ na schválení";
+"adyen.upi_collect.confirmPayment" = "Čekáme na vaše potvrzení...";
+"adyen.upi.vpaWaitingMessage" = "Otevřete platební aplikaci UPI a potvrďte platbu";
+"adyen.QRCode.generateQRCode" = "Vygenerovat QR kód";
+"adyen.UPI.QRCodeInstructions" = "Pořiďte snímek obrazovky a nahrajte ho v aplikaci UPI nebo naskenujte QR kód ve své oblíbené aplikaci UPI a dokončete platbu.";

@@ -163,3 +163,11 @@
 "adyen.paybybank.subtitle" = "未找到搜索查询的银行……";
 "adyen.paybybank.title" = "无以下内容的结果：";
 "adyen.search.placeholder" = "搜索……";
+"adyen.upi.modeSelection" = "请选择您希望如何使用 UPI。";
+"adyen.UPIVpa.validationMessage" = "输入正确的虚拟支付地址";
+"adyen.UPIQrcode.generationMessage" = "生成可以下载或截屏的二维码，然后将其上传到 UPI 应用以完成付款。";
+"adyen.UPIQrcode.timerMessage" = "您还有 %@ 可批准";
+"adyen.upi_collect.confirmPayment" = "等待您的确认…";
+"adyen.upi.vpaWaitingMessage" = "打开您的 UPI 应用以确认付款";
+"adyen.QRCode.generateQRCode" = "生成二维码";
+"adyen.UPI.QRCodeInstructions" = "截取屏幕截图以上传到 UPI 应用，或者使用您首选的 UPI 应用扫描二维码以完成付款。";

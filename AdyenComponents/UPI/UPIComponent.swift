@@ -8,7 +8,6 @@
 import UIKit
 
 /// A component that provides a upi flows for UPI component.
-@_spi(AdyenInternal)
 public final class UPIComponent: PaymentComponent,
     PresentableComponent,
     PaymentAware {
@@ -40,16 +39,16 @@ public final class UPIComponent: PaymentComponent,
     /// Component's configuration
     public var configuration: Configuration
 
-    private let upiPaymentMethod: UPIPaymentMethod
+    private let upiPaymentMethod: UPIComponentPaymentMethod
 
-    private var currentSelectedIndex: Int = 0
+    internal var currentSelectedIndex: Int = 0
 
     /// Initializes the UPI  component.
     ///
     /// - Parameter paymentMethod: The UPI payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(paymentMethod: UPIPaymentMethod,
+    public init(paymentMethod: UPIComponentPaymentMethod,
                 context: AdyenContext,
                 configuration: Configuration = .init()) {
         self.upiPaymentMethod = paymentMethod
@@ -86,15 +85,14 @@ public final class UPIComponent: PaymentComponent,
         let item = FormTextInputItem(style: configuration.style.textField)
         item.title = "Virtual Payment Address"
         item.validator = LengthValidator(minimumLength: 1)
-        item.validationFailureMessage = "Enter a correct virtual payment address"
+        item.validationFailureMessage = localizedString(.UPIVpaValidationMessage, configuration.localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "virtualPaymentAddressItem")
         return item
     }()
 
     /// The QRCode generation message item.
     internal lazy var qrCodeGenerationLabelContainerItem: FormContainerItem = {
-        // swiftlint:disable:next line_length
-        let item = FormLabelItem(text: "Generate the QR code that you can download or screenshot and upload it into the UPI app to complete the payment.",
+        let item = FormLabelItem(text: localizedString(.UPIQrcodeGenerationMessage, configuration.localizationParameters),
                                  style: configuration.style.footnoteLabel)
         item.style.textAlignment = .left
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
@@ -181,7 +179,7 @@ public final class UPIComponent: PaymentComponent,
             qrCodeGenerationImageItem.isHidden.wrappedValue = false
             continueButton.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                           postfix: ViewIdentifier.generateQRCodeButtonItem)
-            continueButton.title = "Generate QR code"
+            continueButton.title = localizedString(.QRCodeGenerateQRCode, configuration.localizationParameters)
         default:
             break
         }
