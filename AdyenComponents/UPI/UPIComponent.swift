@@ -10,7 +10,8 @@ import UIKit
 /// A component that provides a upi flows for UPI component.
 public final class UPIComponent: PaymentComponent,
     PresentableComponent,
-    PaymentAware {
+    PaymentAware,
+    LoadingComponent {
 
     private enum ViewIdentifier {
         static let instructionsItem = "instructionsLabelItem"
@@ -54,6 +55,11 @@ public final class UPIComponent: PaymentComponent,
         self.upiPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
+    }
+
+    public func stopLoading() {
+        continueButton.showsActivityIndicator = false
+        formViewController.view.isUserInteractionEnabled = true
     }
 
     // MARK: - Items
@@ -143,19 +149,18 @@ public final class UPIComponent: PaymentComponent,
     private func didSelectContinueButton() {
         guard formViewController.validate() else { return }
 
+        continueButton.showsActivityIndicator = true
+        formViewController.view.isUserInteractionEnabled = false
+
         switch currentSelectedIndex {
         case 0:
             if !virtualPaymentAddressItem.value.isEmpty {
                 let details = UPIComponentDetails(type: "upi_collect",
                                                   virtualPaymentAddress: virtualPaymentAddressItem.value)
-                continueButton.showsActivityIndicator = true
-                formViewController.view.isUserInteractionEnabled = false
                 submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
             }
         case 1:
             let details = UPIComponentDetails(type: "upi_qr")
-            continueButton.showsActivityIndicator = true
-            formViewController.view.isUserInteractionEnabled = false
             submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
         default:
             break
