@@ -18,7 +18,7 @@ extension XCTestCase {
                              testName: String = #function,
                              line: UInt = #line) {
         SnapshotTesting.assertSnapshot(matching: try viewController(),
-                                       as: .recursiveDescription(on: .iPhone12, size: UIScreen.main.bounds.size),
+                                       as: .recursiveDescription(on: .iPhone12),
                                        named: name,
                                        file: file,
                                        testName: testName,
