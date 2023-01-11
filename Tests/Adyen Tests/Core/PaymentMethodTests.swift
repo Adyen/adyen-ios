@@ -661,11 +661,11 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.name, "iDEAL")
         
         XCTAssertEqual(paymentMethod.issuers.count, 3)
-        XCTAssertEqual(paymentMethod.issuers[0].identifier, "1121")
+        XCTAssertEqual(paymentMethod.issuers[0].identifier, "xxxx")
         XCTAssertEqual(paymentMethod.issuers[0].name, "Test Issuer 1")
-        XCTAssertEqual(paymentMethod.issuers[1].identifier, "1154")
+        XCTAssertEqual(paymentMethod.issuers[1].identifier, "xxxx")
         XCTAssertEqual(paymentMethod.issuers[1].name, "Test Issuer 2")
-        XCTAssertEqual(paymentMethod.issuers[2].identifier, "1153")
+        XCTAssertEqual(paymentMethod.issuers[2].identifier, "xxxx")
         XCTAssertEqual(paymentMethod.issuers[2].name, "Test Issuer 3")
     }
 
