@@ -42,25 +42,24 @@ final class IssuerListComponentUITests: XCTestCase {
 
     func testStartStopLoading() {
         XCTAssertNotNil(listViewController)
-        
         let items = listViewController!.sections[0].items
         let index = 0
         let item = items[index]
         var cell = listViewController!.tableView.visibleCells[index] as! ListCell
         XCTAssertFalse(cell.showsActivityIndicator)
-        assertSnapshot(matching: sut.viewController, as: .image(on: .iPhone12), named: "initial_state")
+        assertViewHeirarchy(matching: sut.viewController, named: "initial_state")
     
         // start loading
         listViewController?.startLoading(for: item)
         cell = getCell(for: item, tableView: listViewController!.tableView)!
         XCTAssertTrue(cell.showsActivityIndicator)
-        assertSnapshot(matching: sut.viewController, as: .image(on: .iPhone12), named: "loading_first_cell")
+        assertViewHeirarchy(matching: sut.viewController, named: "loading_first_cell")
         
         // stop loading
         sut.stopLoadingIfNeeded()
         cell = getCell(for: item, tableView: listViewController!.tableView)!
         XCTAssertFalse(cell.showsActivityIndicator)
-        assertSnapshot(matching: sut.viewController, as: .image(on: .iPhone12), named: "stopped_loading")
+        assertViewHeirarchy(matching: sut.viewController, named: "stopped_loading")
         
     }
     

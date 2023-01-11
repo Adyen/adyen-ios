@@ -60,7 +60,8 @@ final class ListViewControllerUITests: XCTestCase {
                                    items: [item21, item22])
         
         sut.reload(newSections: [section1, section2])
-        assertSnapshot(matching: sut, as: .image(on: .iPhone13), named: "listViewController_UI_Configuration")
+        assertViewSnapshot(matching: sut, named: "listViewController_UI_Configuration")
+        
     }
 
 }
