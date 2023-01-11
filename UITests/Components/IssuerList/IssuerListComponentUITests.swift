@@ -46,20 +46,30 @@ final class IssuerListComponentUITests: XCTestCase {
         let items = listViewController!.sections[0].items
         let index = 0
         let item = items[index]
-        let cell = listViewController!.tableView.visibleCells[index] as! ListCell
+        var cell = listViewController!.tableView.visibleCells[index] as! ListCell
         XCTAssertFalse(cell.showsActivityIndicator)
-        assertSnapshot(matching: sut.viewController, as: .image, named: "initial_state")
+        assertSnapshot(matching: sut.viewController, as: .image(on: .iPhone12), named: "initial_state")
     
         // start loading
         listViewController?.startLoading(for: item)
+        cell = getCell(for: item, tableView: listViewController!.tableView)!
         XCTAssertTrue(cell.showsActivityIndicator)
-        assertSnapshot(matching: sut.viewController, as: .image, named: "loading_first_cell")
+        assertSnapshot(matching: sut.viewController, as: .image(on: .iPhone12), named: "loading_first_cell")
         
         // stop loading
         sut.stopLoadingIfNeeded()
+        cell = getCell(for: item, tableView: listViewController!.tableView)!
         XCTAssertFalse(cell.showsActivityIndicator)
-        assertSnapshot(matching: sut.viewController, as: .image, named: "stopped_loading")
+        assertSnapshot(matching: sut.viewController, as: .image(on: .iPhone12), named: "stopped_loading")
         
+    }
+    
+    private func getCell(for item: ListItem, tableView: UITableView) -> ListCell? {
+        for case let cell as ListCell in tableView.visibleCells where cell.item == item {
+            return cell
+        }
+        
+        return nil
     }
 
 }
