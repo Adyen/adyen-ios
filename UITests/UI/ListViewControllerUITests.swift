@@ -60,7 +60,7 @@ final class ListViewControllerUITests: XCTestCase {
                                    items: [item21, item22])
         
         sut.reload(newSections: [section1, section2])
-        assertViewSnapshot(matching: sut, named: "listViewController_UI_Configuration")
+        assertViewControllerImage(matching: sut, named: "listViewController_UI_Configuration")
         
     }
 
