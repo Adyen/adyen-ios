@@ -161,12 +161,9 @@ internal final class ModalToolbar: UIView, AnyNavigationBar {
             button = UIButton(type: UIButton.ButtonType.custom)
             button.setImage(image, for: .normal)
         default:
-            if #available(iOS 13.0, *) {
-                button = UIButton(type: UIButton.ButtonType.close)
-                button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
-            } else {
-                return legacy()
-            }
+            let legacyButton = legacy()
+            legacyButton.titleLabel?.font = UIFont(name: "SF Pro Text", size: 17.0)
+            return legacyButton
         }
 
         return button
