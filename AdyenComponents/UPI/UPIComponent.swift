@@ -19,6 +19,7 @@ public final class UPIComponent: PaymentComponent,
         static let continueButtonItem = "continueButton"
         static let generateQRCodeButtonItem = "generateQRCodeButton"
         static let generateQRCodeContainerItem = "generateQRCodeLabelContainerItem"
+        static let virtualPaymentAddressInputItem = "virtualPaymentAddressInputItem"
     }
 
     /// Configuration for UPI Component.
@@ -80,6 +81,8 @@ public final class UPIComponent: PaymentComponent,
                         identifier: ViewIdentifierBuilder.build(
                            scopeInstance: self,
                            postfix: ViewIdentifier.upiFlowSelectionItem))
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
+                                                      postfix: ViewIdentifier.upiFlowSelectionItem)
         item.segmentedControlSelectionHandler = { [weak self] changedIndex in
             self?.didChangeSegmentedControlIndex(changedIndex)
         }
@@ -92,7 +95,8 @@ public final class UPIComponent: PaymentComponent,
         item.title = "Virtual Payment Address"
         item.validator = LengthValidator(minimumLength: 1)
         item.validationFailureMessage = localizedString(.UPIVpaValidationMessage, configuration.localizationParameters)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "virtualPaymentAddressItem")
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
+                                                      postfix: ViewIdentifier.virtualPaymentAddressInputItem)
         return item
     }()
 
