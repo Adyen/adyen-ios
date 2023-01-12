@@ -89,7 +89,7 @@ public final class UPIComponent: PaymentComponent,
         return item
     }()
 
-    /// The  virtual payment adddress text input  item.
+    /// The  virtual payment address text input item.
     internal lazy var virtualPaymentAddressItem: FormTextInputItem = {
         let item = FormTextInputItem(style: configuration.style.textField)
         item.title = "Virtual Payment Address"
