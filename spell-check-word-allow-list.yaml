@@ -173,3 +173,7 @@ whiteList:
   - duitnow
   - paynow
   - paybybank
+  - sodexo
+  - natixis
+  - mealvoucher
+  - groupeup
