@@ -14,15 +14,18 @@ extension XCTestCase {
     
     func assertViewHeirarchy(matching viewController: @autoclosure () throws -> UIViewController,
                              named name: String,
+                             devices: [ViewImageConfig] = [.iPhone12],
                              file: StaticString = #file,
                              testName: String = #function,
                              line: UInt = #line) {
-        SnapshotTesting.assertSnapshot(matching: try viewController(),
-                                       as: .recursiveDescription(on: .iPhone12),
-                                       named: name,
-                                       file: file,
-                                       testName: testName,
-                                       line: line)
+        for device in devices {
+            SnapshotTesting.assertSnapshot(matching: try viewController(),
+                                           as: .recursiveDescription(on: device),
+                                           named: name,
+                                           file: file,
+                                           testName: "\(testName)-\(device.description)",
+                                           line: line)
+        }
     }
     
     func assertViewControllerImage(matching viewController: @autoclosure () throws -> UIViewController,
