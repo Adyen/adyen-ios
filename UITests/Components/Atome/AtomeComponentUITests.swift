@@ -14,7 +14,6 @@ class AtomeComponentUITests: XCTestCase {
     private var context: AdyenContext!
     private var style: FormComponentStyle!
     private var sut: AtomeComponent!
-    private let app = XCUIApplication()
 
     override func setUpWithError() throws {
         try super.setUpWithError()

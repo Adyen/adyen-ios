@@ -15,7 +15,6 @@ class OnlineBankingComponentUITests: XCTestCase {
     private var context: AdyenContext!
     private var style: FormComponentStyle!
     private var sut: OnlineBankingComponent!
-    private let app = XCUIApplication()
 
     override func setUpWithError() throws {
         paymentMethod = try! Coder.decode(onlineBankingDictionary) as OnlineBankingPaymentMethod

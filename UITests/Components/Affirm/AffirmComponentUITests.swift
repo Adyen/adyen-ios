@@ -14,11 +14,9 @@ class AffirmComponentUITests: XCTestCase {
     private var context = Dummy.context
     private var style: FormComponentStyle!
     private var sut: AffirmComponent!
-    private let app = XCUIApplication()
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        print(app.debugDescription)
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Affirm")
         style = FormComponentStyle()
         sut = AffirmComponent(paymentMethod: paymentMethod,
