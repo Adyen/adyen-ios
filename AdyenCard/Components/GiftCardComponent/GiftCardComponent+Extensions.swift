@@ -27,6 +27,19 @@ extension GiftCardComponent: ViewControllerDelegate {
     }
 }
 
+@_spi(AdyenInternal)
+public extension Result {
+    
+    func handle(success: (Success) -> Void, failure: (Failure) -> Void) {
+        switch self {
+        case let .success(successObject):
+            success(successObject)
+        case let .failure(error):
+            failure(error)
+        }
+    }
+}
+
 extension GiftCardComponent {
 
     /// Indicates Gift card related errors.

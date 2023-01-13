@@ -1,14 +1,17 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenEncryption)
+    import AdyenEncryption
+#endif
 import Foundation
 
 /// Contains the details provided by the card component.
-public struct GiftCardDetails: PaymentMethodDetails {
+public struct GiftCardDetails: PartialPaymentMethodDetails {
     
     @_spi(AdyenInternal)
     public var checkoutAttemptId: String?
@@ -25,7 +28,7 @@ public struct GiftCardDetails: PaymentMethodDetails {
     /// The gift card brand.
     public let brand: String
 
-    /// Initializes the card payment details.
+    /// Initializes the gift card payment details.
     ///
     /// - Parameters:
     ///   - paymentMethod: The used gift card payment method.
@@ -36,6 +39,21 @@ public struct GiftCardDetails: PaymentMethodDetails {
         self.brand = paymentMethod.brand
         self.encryptedCardNumber = encryptedCardNumber
         self.encryptedSecurityCode = encryptedSecurityCode
+    }
+    
+    /// Initializes the gift card payment details.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The used gift card payment method.
+    ///   - encryptedCard: The encrypted card .
+    public init(paymentMethod: GiftCardPaymentMethod, encryptedCard: EncryptedCard) throws {
+        guard let number = encryptedCard.number,
+              let securityCode = encryptedCard.securityCode else { throw GiftCardComponent.Error.cardEncryptionFailed }
+        
+        self.type = paymentMethod.type
+        self.brand = paymentMethod.brand
+        self.encryptedCardNumber = number
+        self.encryptedSecurityCode = securityCode
     }
 
     // MARK: - Encoding

@@ -141,6 +141,7 @@
 		A0DE8F6D26CEA04500F2F1E8 /* Installments.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE8F6C26CEA04500F2F1E8 /* Installments.swift */; };
 		A0F41EAC26CD4AA50089AD6C /* FormCardInstallmentsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41EAB26CD4AA50089AD6C /* FormCardInstallmentsItem.swift */; };
 		A0F4559B295F0F58001742C7 /* MealVoucherPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F4559A295F0F58001742C7 /* MealVoucherPaymentMethod.swift */; };
+		A0F455A12968472B001742C7 /* PartialPaymentMethodDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F455A02968472B001742C7 /* PartialPaymentMethodDetails.swift */; };
 		A0FA143F26D65A5300627127 /* InstallmentPickerElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */; };
 		A0FA145726D65B6200627127 /* FormCardInstallmentsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA145626D65B6200627127 /* FormCardInstallmentsItemView.swift */; };
 		C90D26A727565750001A488F /* FormViewController+ViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */; };
@@ -1213,6 +1214,7 @@
 		A0F41E5526CBCA6E0089AD6C /* InstallmentOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallmentOptions.swift; sourceTree = "<group>"; };
 		A0F41EAB26CD4AA50089AD6C /* FormCardInstallmentsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardInstallmentsItem.swift; sourceTree = "<group>"; };
 		A0F4559A295F0F58001742C7 /* MealVoucherPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealVoucherPaymentMethod.swift; sourceTree = "<group>"; };
+		A0F455A02968472B001742C7 /* PartialPaymentMethodDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialPaymentMethodDetails.swift; sourceTree = "<group>"; };
 		A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallmentPickerElement.swift; sourceTree = "<group>"; };
 		A0FA145626D65B6200627127 /* FormCardInstallmentsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardInstallmentsItemView.swift; sourceTree = "<group>"; };
 		C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormViewController+ViewProtocol.swift"; sourceTree = "<group>"; };
@@ -4567,6 +4569,7 @@
 				F9FE24552624BCEC001874BB /* GiftCardComponent.swift */,
 				F96A2881265F9C2B00E718BD /* GiftCardComponent+Extensions.swift */,
 				F9FE24562624BCEC001874BB /* GiftCardDetails.swift */,
+				A0F455A02968472B001742C7 /* PartialPaymentMethodDetails.swift */,
 			);
 			path = GiftCardComponent;
 			sourceTree = "<group>";
@@ -5993,6 +5996,7 @@
 				E7166A5224EAC5BA007CCDEF /* BinLookupRequest.swift in Sources */,
 				E745175525FB6A59000BDCCF /* CardViewController.swift in Sources */,
 				E9240D6C2265EFE900FB57D0 /* StoredCardAlertManager.swift in Sources */,
+				A0F455A12968472B001742C7 /* PartialPaymentMethodDetails.swift in Sources */,
 				A030E7952823B2A200C463F1 /* FormCardNumberContainerItemView.swift in Sources */,
 				E7B627FD24ED32CC000CEC6E /* BinLookupService.swift in Sources */,
 				F9B8C49123FC286D00C4D0FB /* FormCardNumberItem.swift in Sources */,

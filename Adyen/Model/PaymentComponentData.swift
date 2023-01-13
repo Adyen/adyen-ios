@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -97,7 +97,7 @@ public struct PaymentComponentData {
     ///   - checkoutAttemptId: The checkoutAttempt identifier.
     ///   - installments: Installments selection if specified.
     @_spi(AdyenInternal)
-    public init(paymentMethodDetails: PaymentMethodDetails,
+    public init(paymentMethodDetails: some PaymentMethodDetails,
                 amount: Amount?,
                 order: PartialPaymentOrder?,
                 storePaymentMethod: Bool? = nil,

@@ -24,7 +24,7 @@ class GiftCardComponentTests: XCTestCase {
 
     var sut: GiftCardComponent!
 
-    var paymentMethod: GiftCardPaymentMethod!
+    var giftCardPaymentMethod: GiftCardPaymentMethod!
 
     var amountToPay: Amount { Dummy.payment.amount }
 
@@ -46,12 +46,12 @@ class GiftCardComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
+        giftCardPaymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
         publicKeyProvider = PublicKeyProviderMock()
 
         context = Dummy.context
 
-        sut = GiftCardComponent(paymentMethod: paymentMethod,
+        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
                                 context: context,
                                 amount: amountToPay,
                                 publicKeyProvider: publicKeyProvider)
@@ -64,7 +64,7 @@ class GiftCardComponentTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        paymentMethod = nil
+        giftCardPaymentMethod = nil
         publicKeyProvider = nil
         context = nil
         delegateMock = nil
@@ -501,7 +501,7 @@ class GiftCardComponentTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
 
-        sut = GiftCardComponent(paymentMethod: paymentMethod,
+        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
                                 context: context,
                                 amount: amountToPay,
                                 publicKeyProvider: publicKeyProvider)

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,6 +21,18 @@ internal final class FormCardExpiryDateItem: FormTextItem, Hidable {
     }
     
     private let expiryDateValidator = CardExpiryDateValidator()
+    
+    /// Returns the month part of the expiry date item
+    internal var expiryMonth: String? {
+        guard let nonEmptyValue else { return nil }
+        return nonEmptyValue.adyen[0...1]
+    }
+    
+    /// Returns the year part of the expiry date item by prefixing it with `"20"`
+    internal var expiryYear: String? {
+        guard let nonEmptyValue else { return nil }
+        return "20" + nonEmptyValue.adyen[2...3]
+    }
     
     /// Initiate new instance of `FormTextInputItem`
     /// - Parameter style: The `FormTextItemStyle` UI style.
