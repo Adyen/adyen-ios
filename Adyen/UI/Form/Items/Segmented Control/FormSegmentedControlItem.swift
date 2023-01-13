@@ -34,7 +34,7 @@ public final class FormSegmentedControlItem: FormItem {
         segmentedControl.accessibilityIdentifier = identifier
         segmentedControl.backgroundColor = style.backgroundColor
         if #available(iOS 13.0, *) {
-            segmentedControl.selectedSegmentTintColor = style.selectedSegmentTintColor
+            segmentedControl.selectedSegmentTintColor = style.tintColor
         }
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.addTarget(self, action: #selector(segmentAction), for: .valueChanged)

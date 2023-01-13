@@ -7,7 +7,7 @@
 import Foundation
 
 /// UPI  payment method.
-public struct UPIComponentPaymentMethod: PaymentMethod {
+public struct UPIPaymentMethod: PaymentMethod {
 
     public let type: PaymentMethodType
 

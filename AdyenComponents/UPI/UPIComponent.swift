@@ -22,6 +22,12 @@ public final class UPIComponent: PaymentComponent,
         static let virtualPaymentAddressInputItem = "virtualPaymentAddressInputItem"
     }
 
+    private enum Constants {
+        static let upiCollect = "upi_collect"
+        static let upiQRCode = "upi_qr"
+        static let virtualPaymentAddress = "Virtual Payment Address"
+    }
+
     /// Configuration for UPI Component.
     public typealias Configuration = BasicComponentConfiguration
 
@@ -41,7 +47,7 @@ public final class UPIComponent: PaymentComponent,
     /// Component's configuration
     public var configuration: Configuration
 
-    private let upiPaymentMethod: UPIComponentPaymentMethod
+    private let upiPaymentMethod: UPIPaymentMethod
 
     internal var currentSelectedIndex: Int = 0
 
@@ -50,7 +56,7 @@ public final class UPIComponent: PaymentComponent,
     /// - Parameter paymentMethod: The UPI payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(paymentMethod: UPIComponentPaymentMethod,
+    public init(paymentMethod: UPIPaymentMethod,
                 context: AdyenContext,
                 configuration: Configuration = .init()) {
         self.upiPaymentMethod = paymentMethod
@@ -92,7 +98,7 @@ public final class UPIComponent: PaymentComponent,
     /// The  virtual payment address text input item.
     internal lazy var virtualPaymentAddressItem: FormTextInputItem = {
         let item = FormTextInputItem(style: configuration.style.textField)
-        item.title = "Virtual Payment Address"
+        item.title = Constants.virtualPaymentAddress
         item.validator = LengthValidator(minimumLength: 1)
         item.validationFailureMessage = localizedString(.UPIVpaValidationMessage, configuration.localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
@@ -159,12 +165,12 @@ public final class UPIComponent: PaymentComponent,
         switch currentSelectedIndex {
         case 0:
             if !virtualPaymentAddressItem.value.isEmpty {
-                let details = UPIComponentDetails(type: "upi_collect",
+                let details = UPIComponentDetails(type: Constants.upiCollect,
                                                   virtualPaymentAddress: virtualPaymentAddressItem.value)
                 submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
             }
         case 1:
-            let details = UPIComponentDetails(type: "upi_qr")
+            let details = UPIComponentDetails(type: Constants.upiQRCode)
             submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
         default:
             break

@@ -292,6 +292,6 @@ private struct OnlineBankingPaymentMethodDecoder: PaymentMethodDecoder {
 
 private struct UPIPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
-        .upi(try UPIComponentPaymentMethod(from: decoder))
+        .upi(try UPIPaymentMethod(from: decoder))
     }
 }

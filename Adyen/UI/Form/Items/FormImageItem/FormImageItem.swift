@@ -20,14 +20,17 @@ public class FormImageItem: FormItem, Hidable {
     public var identifier: String?
 
     /// The size of the Image.
-    public var size: CGSize?
+    public var size: CGSize = .init(width: 46, height: 46)
 
     /// The style of the Image.
     public var style: ImageStyle?
-
-    public init(name: String, size: CGSize? = nil, style: ImageStyle? = nil, identifier: String? = nil) {
+    
+    public init(name: String,
+                size: CGSize? = nil,
+                style: ImageStyle? = nil,
+                identifier: String? = nil) {
         self.name = name
-        self.size = size
+        self.size = size ?? .init(width: 46, height: 46)
         self.style = style
         self.identifier = identifier
     }
@@ -52,12 +55,10 @@ internal class FormImageView: FormItemView<FormImageItem> {
                                   compatibleWith: nil)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.heightAnchor.constraint(greaterThanOrEqualToConstant: item.size?.height ?? 46.0),
-            self.widthAnchor.constraint(greaterThanOrEqualToConstant: item.size?.width ?? 46.0),
-            imageView.heightAnchor.constraint(equalToConstant: item.size?.height ?? 46.0),
+            imageView.heightAnchor.constraint(equalToConstant: item.size.height),
             imageView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: 40.0),
             imageView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor, constant: 5.0),
-            imageView.widthAnchor.constraint(equalToConstant: item.size?.width ?? 46.0),
+            imageView.widthAnchor.constraint(equalToConstant: item.size.width),
             imageView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: layoutMarginsGuide.centerYAnchor)
         ])

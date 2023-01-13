@@ -15,7 +15,7 @@ public struct UPIComponentDetails: PaymentMethodDetails {
     ///  Selected flow type
     public let type: String
 
-    ///  entered vpa
+    ///  The entered virtual payment address
     public let virtualPaymentAddress: String?
 
     /// Initializes the UPI Component Details.

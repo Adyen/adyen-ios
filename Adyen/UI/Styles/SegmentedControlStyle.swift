@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// Contains the styling customization options for any segmented control.
-public struct SegmentedControlStyle: ViewStyle {
+public struct SegmentedControlStyle: TintableStyle {
 
     /// The textStyle used to customize the text
     public var textStyle: TextStyle
@@ -16,8 +16,8 @@ public struct SegmentedControlStyle: ViewStyle {
     /// The backgroundColor used to change the background color of segmented control.
     public var backgroundColor: UIColor
 
-    /// The selectedSegmentTintColor used to changes the selected segment tint color.
-    public var selectedSegmentTintColor: UIColor
+    /// The tintColor used to changes the selected segment tint color.
+    public var tintColor: UIColor?
 
     /// Initializes the segmented control style.
     ///
@@ -29,7 +29,7 @@ public struct SegmentedControlStyle: ViewStyle {
                 selectedSegmentTintColor: UIColor = .white) {
         self.textStyle = textStyle
         self.backgroundColor = backgroundColor
-        self.selectedSegmentTintColor = selectedSegmentTintColor
+        self.tintColor = selectedSegmentTintColor
     }
 
 }

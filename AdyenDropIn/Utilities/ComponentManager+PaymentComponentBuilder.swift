@@ -151,7 +151,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                configuration: .init(style: configuration.style.formComponent))
     }
 
-    internal func build(paymentMethod: UPIComponentPaymentMethod) -> PaymentComponent? {
+    internal func build(paymentMethod: UPIPaymentMethod) -> PaymentComponent? {
         UPIComponent(paymentMethod: paymentMethod,
                      context: context,
                      configuration: .init(style: configuration.style.formComponent))
