@@ -751,6 +751,7 @@
 		F9B8C50E23FE973500C4D0FB /* FormPhoneNumberItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B8C50D23FE973500C4D0FB /* FormPhoneNumberItemView.swift */; };
 		F9B997A425C8554F00891084 /* DokuVoucherUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B997A325C8554F00891084 /* DokuVoucherUITests.swift */; };
 		F9B997CA25C949AC00891084 /* VoucherCardLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B997C925C949AC00891084 /* VoucherCardLayer.swift */; };
+		F9B9F625295485A2008C2E49 /* ThreeDSResultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B9F624295485A2008C2E49 /* ThreeDSResultExtension.swift */; };
 		F9BA21BF246D36AC00D36A63 /* LazyOptionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BA21BE246D36AC00D36A63 /* LazyOptionalTests.swift */; };
 		F9BA21C2246E82EE00D36A63 /* SizeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BA21C1246E82EE00D36A63 /* SizeUtilities.swift */; };
 		F9BA21C62474113500D36A63 /* AmountFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BA21C52474113500D36A63 /* AmountFormatterTests.swift */; };
@@ -1814,6 +1815,7 @@
 		F9B8C50D23FE973500C4D0FB /* FormPhoneNumberItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPhoneNumberItemView.swift; sourceTree = "<group>"; };
 		F9B997A325C8554F00891084 /* DokuVoucherUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuVoucherUITests.swift; sourceTree = "<group>"; };
 		F9B997C925C949AC00891084 /* VoucherCardLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherCardLayer.swift; sourceTree = "<group>"; };
+		F9B9F624295485A2008C2E49 /* ThreeDSResultExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSResultExtension.swift; sourceTree = "<group>"; };
 		F9BA21BE246D36AC00D36A63 /* LazyOptionalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyOptionalTests.swift; sourceTree = "<group>"; };
 		F9BA21C1246E82EE00D36A63 /* SizeUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeUtilities.swift; sourceTree = "<group>"; };
 		F9BA21C52474113500D36A63 /* AmountFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountFormatterTests.swift; sourceTree = "<group>"; };
@@ -3986,6 +3988,7 @@
 				F957AA612552D8D20099AD73 /* AnyThreeDS2ActionHandlerMock.swift */,
 				F94F0DFE28AD2BCE00C0923D /* AuthenticationServiceMock.swift */,
 				F957AA692552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift */,
+				F9B9F624295485A2008C2E49 /* ThreeDSResultExtension.swift */,
 			);
 			path = "3DS2 Component";
 			sourceTree = "<group>";
@@ -5803,6 +5806,7 @@
 				F9B019442611E965001F23FC /* EContextATMShareableVoucherViewProviderTests.swift in Sources */,
 				E9E3DAB2221D79C800697074 /* CardNumberFormatterTests.swift in Sources */,
 				F9EDB796239663F800CFB3C9 /* PaymentComponentMock.swift in Sources */,
+				F9B9F625295485A2008C2E49 /* ThreeDSResultExtension.swift in Sources */,
 				C97C16AA28059A5A00534419 /* TelemetryTrackerTests.swift in Sources */,
 				E7D189B025D31936006AD3B7 /* DropInActionTests.swift in Sources */,
 				C95903DE275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift in Sources */,

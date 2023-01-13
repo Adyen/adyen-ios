@@ -13,7 +13,7 @@ We recommend creating a new context for each payment attempt.
 
 ```swift
 var context: AdyenContext {
-    let apiContext = APIContext(clientKey: clientKey, environment: Environment.test)
+    let apiContext = try! APIContext(environment: componentsEnvironment, clientKey: clientKey)
     return AdyenContext(apiContext: apiContext,
                         payment: payment,
                         analyticsConfiguration: analyticsConfiguration)
