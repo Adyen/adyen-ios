@@ -11,13 +11,13 @@ import XCTest
 class UPIComponentTests: XCTestCase {
 
     private var context: AdyenContext!
-    private var paymentMethod: UPIComponentPaymentMethod!
+    private var paymentMethod: UPIPaymentMethod!
     private var style: FormComponentStyle!
     private var sut: UPIComponent!
     private var analyticsProviderMock: AnalyticsProviderMock!
 
     override func setUpWithError() throws {
-        paymentMethod = try! Coder.decode(upi) as UPIComponentPaymentMethod
+        paymentMethod = try! Coder.decode(upi) as UPIPaymentMethod
         analyticsProviderMock = AnalyticsProviderMock()
         context = AdyenContext(apiContext: Dummy.apiContext, payment: nil, analyticsProvider: analyticsProviderMock)
         style = FormComponentStyle()

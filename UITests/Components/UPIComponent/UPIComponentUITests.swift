@@ -11,7 +11,7 @@ import XCTest
 
 class UPIComponentUITests: XCTestCase {
 
-    private var paymentMethod: UPIComponentPaymentMethod!
+    private var paymentMethod: UPIPaymentMethod!
     private var context: AdyenContext!
     private var style: FormComponentStyle!
     private var sut: UPIComponent!
@@ -19,7 +19,7 @@ class UPIComponentUITests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        paymentMethod = try! Coder.decode(upi) as UPIComponentPaymentMethod
+        paymentMethod = try! Coder.decode(upi) as UPIPaymentMethod
         context = AdyenContext(apiContext: Dummy.apiContext, payment: nil)
         style = FormComponentStyle()
         sut = UPIComponent(paymentMethod: paymentMethod,
@@ -81,6 +81,20 @@ class UPIComponentUITests: XCTestCase {
 
         // Assert
         XCTAssertFalse(button.showsActivityIndicator)
+    }
+
+    func testChangeSelectedSegmentControlIndex() {
+        // Given
+        sut.upiFlowSelectionItem.segmentedControlSelectionHandler?(1)
+
+        // Assert
+        XCTAssertTrue(sut.currentSelectedIndex == 1)
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.instructionsLabelItem"))
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.upiFlowSelectionSegmentedControlItem"))
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.qrCodeGenerationImageItem"))
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.generateQRCodeLabelContainerItem"))
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.generateQRCodeButton"))
+
     }
 
 }

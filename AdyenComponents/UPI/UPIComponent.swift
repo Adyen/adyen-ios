@@ -20,6 +20,7 @@ public final class UPIComponent: PaymentComponent,
         static let generateQRCodeButtonItem = "generateQRCodeButton"
         static let generateQRCodeContainerItem = "generateQRCodeLabelContainerItem"
         static let virtualPaymentAddressInputItem = "virtualPaymentAddressInputItem"
+        static let qrCodeGenerationImageItem = "qrCodeGenerationImageItem"
     }
 
     private enum Constants {
@@ -119,6 +120,8 @@ public final class UPIComponent: PaymentComponent,
     /// The QRCode generation message view.
     private lazy var qrCodeGenerationImageItem: FormImageItem = {
         let imageView = FormImageItem(name: "qrcode")
+        imageView.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
+                                                      postfix: ViewIdentifier.qrCodeGenerationImageItem)
         imageView.isHidden.wrappedValue = true
         return imageView
     }()
