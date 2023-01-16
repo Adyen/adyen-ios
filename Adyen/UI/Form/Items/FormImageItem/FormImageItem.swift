@@ -20,7 +20,7 @@ public class FormImageItem: FormItem, Hidable {
     public var identifier: String?
 
     /// The size of the Image.
-    public var size: CGSize = .init(width: 46, height: 46)
+    public var size: CGSize
 
     /// The style of the Image.
     public var style: ImageStyle?
@@ -55,6 +55,7 @@ internal class FormImageView: FormItemView<FormImageItem> {
                                   compatibleWith: nil)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
+            self.widthAnchor.constraint(greaterThanOrEqualToConstant: item.size.width),
             imageView.heightAnchor.constraint(equalToConstant: item.size.height),
             imageView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: 40.0),
             imageView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor, constant: 5.0),
