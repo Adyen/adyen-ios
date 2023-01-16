@@ -44,19 +44,6 @@ extension XCTestCase {
             
         }
     }
-    
-    func assertViewImage(matching view: @autoclosure () throws -> UIView,
-                         named name: String,
-                         file: StaticString = #file,
-                         testName: String = #function,
-                         line: UInt = #line) {
-        SnapshotTesting.assertSnapshot(matching: try view(),
-                                       as: .image(drawHierarchyInKeyWindow: true, size: UIScreen.main.bounds.size),
-                                       named: name,
-                                       file: file,
-                                       testName: testName,
-                                       line: line)
-    }
 }
 
 extension ViewImageConfig: CustomStringConvertible {
