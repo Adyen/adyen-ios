@@ -72,6 +72,47 @@ class GiftCardComponentTests: XCTestCase {
         sut = nil
         try super.tearDownWithError()
     }
+    
+    func testGiftCardUI() {
+        let paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
+        let sut = GiftCardComponent(partialPaymentMethodType: .giftCard(paymentMethod),
+                                    context: context,
+                                    amount: amountToPay,
+                                    publicKeyProvider: publicKeyProvider)
+        
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .milliseconds(300))
+        
+        let expiryDateItemView = sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.expiryDateItem")
+        
+        // should not have expiry date field for gift card
+        XCTAssertNil(expiryDateItemView)
+        
+        // cvc title changes based on payment method
+        let securityCodeItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.securityCodeItem.titleLabel")
+        XCTAssertEqual(securityCodeItemTitleLabel?.text, "Pin")
+    }
+    
+    func testMealVoucherUI() {
+        let paymentMethod = MealVoucherPaymentMethod(type: .mealVoucherSodexo, name: "Sodexo")
+        let sut = GiftCardComponent(partialPaymentMethodType: .mealVoucher(paymentMethod),
+                                    context: context,
+                                    amount: amountToPay,
+                                    publicKeyProvider: publicKeyProvider)
+        
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .milliseconds(300))
+        
+        let expiryDateItemView = sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.expiryDateItem")
+        
+        /// should have expiry date field for meal voucher
+        XCTAssertNotNil(expiryDateItemView)
+        // cvc title changes based on payment method
+        let securityCodeItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.securityCodeItem.titleLabel")
+        XCTAssertEqual(securityCodeItemTitleLabel?.text, "CVC / CVV")
+    }
 
     func testCheckBalanceFailure() throws {
 
