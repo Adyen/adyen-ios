@@ -44,10 +44,11 @@ internal class FormImageView: FormItemView<FormImageItem> {
 
     internal func renderImage() {
         let imageView = UIImageView()
-        imageView.layer.borderColor = item.style?.borderColor?.cgColor
-        imageView.layer.borderWidth = item.style?.borderWidth ?? 0.0
-        imageView.backgroundColor = item.style?.backgroundColor
-        imageView.tintColor = item.style?.tintColor
+        imageView.adyen.apply(item.style ?? ImageStyle(borderColor: nil,
+                                                       borderWidth: 0,
+                                                       cornerRadius: 0,
+                                                       clipsToBounds: false,
+                                                       contentMode: .center))
         self.addSubview(imageView)
 
         imageView.image = UIImage(named: item.name,
