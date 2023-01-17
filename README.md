@@ -263,8 +263,8 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - [Affirm Component][reference.AffirmComponent]
 - [Atome Component][reference.AtomeComponent]
 - [BACS Direct Debit Component][reference.BACSDirectDebitComponent]
-- [Online Banking Czech republic Component][reference.OnlineBankingComponent]
-- [Online Banking Slovakia Component][reference.OnlineBankingComponent]
+- [Online Banking Czech republic Component][reference.OnlineBankingComponentCzech]
+- [Online Banking Slovakia Component][reference.OnlineBankingComponentSlovakia]
 - [Online Banking Poland Component][reference.issuerListComponent]
 
 
@@ -349,6 +349,8 @@ This repository is open source and available under the MIT license. For more inf
 [reference.ACHDirectDebitComponent]:  https://adyen.github.io/adyen-ios/Docs/Classes/ACHDirectDebitComponent.html
 [reference.AffirmComponent]:  https://adyen.github.io/adyen-ios/Docs/Classes/AffirmComponent.html
 [reference.BACSDirectDebitComponent]:  https://adyen.github.io/adyen-ios/Docs/Classes/BACSDirectDebitComponent.html
+[reference.OnlineBankingComponentSlovakia]:  https://docs.adyen.com/payment-methods/online-banking-slovakia
+[reference.OnlineBankingComponentCzech]:  https://docs.adyen.com/payment-methods/online-banking-czech-republic
 [reference.AtomeComponent]:  https://adyen.github.io/adyen-ios/Docs/Classes/AtomeComponent.html
 [reference.styles]: https://adyen.github.io/adyen-ios/Docs/Styling.html
 [apiExplorer.sessions]: https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/sessions
