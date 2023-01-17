@@ -167,11 +167,9 @@ public final class UPIComponent: PaymentComponent,
 
         switch currentSelectedIndex {
         case 0:
-            if !virtualPaymentAddressItem.value.isEmpty {
-                let details = UPIComponentDetails(type: Constants.upiCollect,
-                                                  virtualPaymentAddress: virtualPaymentAddressItem.value)
-                submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
-            }
+            let details = UPIComponentDetails(type: Constants.upiCollect,
+                                              virtualPaymentAddress: virtualPaymentAddressItem.value)
+            submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
         case 1:
             let details = UPIComponentDetails(type: Constants.upiQRCode)
             submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))

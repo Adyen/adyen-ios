@@ -6,7 +6,7 @@
 
 @_spi(AdyenInternal) import Adyen
 
-/// Contains the details supplied by the UPI based component.
+/// Contains the details supplied by the UPI component.
 public struct UPIComponentDetails: PaymentMethodDetails {
 
     @_spi(AdyenInternal)
