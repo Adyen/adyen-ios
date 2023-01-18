@@ -85,7 +85,7 @@ class UPIComponentUITests: XCTestCase {
 
     func testChangeSelectedSegmentControlIndex() {
         // Given
-        sut.upiFlowSelectionItem.segmentedControlSelectionHandler?(1)
+        sut.upiFlowSelectionItem.selectionHandler?(1)
 
         // Assert
         XCTAssertTrue(sut.currentSelectedIndex == 1)
