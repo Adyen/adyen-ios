@@ -69,7 +69,7 @@ class QRCodeActionComponentUITests: XCTestCase {
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
             let viewController = component.viewController as! QRCodeViewController
 
-            UIApplication.shared.keyWindow?.rootViewController = viewController
+            UIApplication.shared.mainKeyWindow?.rootViewController = viewController
 
             self?.wait(for: .milliseconds(300))
 
@@ -161,7 +161,7 @@ class QRCodeActionComponentUITests: XCTestCase {
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
             let viewController = component.viewController as! QRCodeViewController
 
-            UIApplication.shared.keyWindow?.rootViewController = viewController
+            UIApplication.shared.mainKeyWindow?.rootViewController = viewController
 
             self?.wait(for: .milliseconds(300))
 
