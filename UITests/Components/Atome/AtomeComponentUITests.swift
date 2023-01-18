@@ -14,12 +14,10 @@ class AtomeComponentUITests: XCTestCase {
     private var context: AdyenContext!
     private var style: FormComponentStyle!
     private var sut: AtomeComponent!
-    private let app = XCUIApplication()
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Atome")
-        app.launchArguments = ["SG", "SGD"]
         context = Dummy.context
         style = FormComponentStyle()
         sut = AtomeComponent(paymentMethod: paymentMethod,

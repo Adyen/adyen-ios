@@ -13,37 +13,42 @@ class AffirmComponentUITests: XCTestCase {
     private var paymentMethod: PaymentMethod!
     private var context = Dummy.context
     private var style: FormComponentStyle!
-    private var sut: AffirmComponent!
-    private let app = XCUIApplication()
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        print(app.debugDescription)
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Affirm")
         style = FormComponentStyle()
-        sut = AffirmComponent(paymentMethod: paymentMethod,
-                              context: context,
-                              configuration: AffirmComponent.Configuration(style: style))
         BrowserInfo.cachedUserAgent = "some_value"
     }
 
     override func tearDownWithError() throws {
         paymentMethod = nil
         style = nil
-        sut = nil
         BrowserInfo.cachedUserAgent = nil
         try super.tearDownWithError()
     }
 
     func testSubmitForm_shouldCallDelegateWithProperParameters() throws {
         // Given
-        let sut = AffirmComponent(paymentMethod: paymentMethod,
-                                  context: Dummy.context(with: nil),
-                                  configuration: AffirmComponent.Configuration(style: style))
-        let delegate = PaymentComponentDelegateMock()
-        sut.delegate = delegate
         let expectedBillingAddress = PostalAddressMocks.newYorkPostalAddress
         let expectedDeliveryAddress = PostalAddressMocks.losAngelesPostalAddress
+        let sut = AffirmComponent(paymentMethod: paymentMethod,
+                                  context: Dummy.context(with: nil),
+                                  configuration: AffirmComponent.Configuration(style: style,
+                                                                               shopperInformation: PrefilledShopperInformation(
+                                                                                shopperName: ShopperName(
+                                                                                    firstName: "Katrina",
+                                                                                    lastName: "Del Mar"
+                                                                                ),
+                                                                                emailAddress: "katrina@mail.com",
+                                                                                telephoneNumber: "2025550146",
+                                                                                billingAddress: expectedBillingAddress,
+                                                                                deliveryAddress: expectedDeliveryAddress
+                                                                               )
+                                                                              )
+        )
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
         UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
 
         // Then
@@ -64,30 +69,9 @@ class AffirmComponentUITests: XCTestCase {
 
         wait(for: .milliseconds(300))
 
+        assertViewControllerImage(matching: sut.viewController, named: "shopper-info-prefilled")
+
         let view: UIView = sut.viewController.view
-
-        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.firstName))
-        populate(textItemView: firstNameView, with: "Katrina")
-
-        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.lastName))
-        populate(textItemView: lastNameView, with: "Del Mar")
-
-        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
-        populate(textItemView: phoneNumberView, with: "2025550146")
-
-        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.email))
-        populate(textItemView: emailView, with: "katrina@mail.com")
-
-        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.billingAddress))
-        fill(addressView: billingAddressView, with: expectedBillingAddress)
-
-        let deliveryAddressToggleView: FormToggleItemView! = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddressToggle))
-        deliveryAddressToggleView.switchControl.isOn = true
-        deliveryAddressToggleView.switchControl.sendActions(for: .valueChanged)
-
-        let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddress))
-        fill(addressView: deliveryAddressView, with: expectedDeliveryAddress)
-
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.payButton))
         submitButton.sendActions(for: .touchUpInside)
 
@@ -101,45 +85,39 @@ class AffirmComponentUITests: XCTestCase {
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          context: context,
                                          configuration: config)
-        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
+        UIApplication.shared.mainKeyWindow?.rootViewController = prefillSut.viewController
 
         wait(for: .milliseconds(300))
 
         // Then
-        let view: UIView = prefillSut.viewController.view
 
-        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.firstName))
         let expectedFirstName = try XCTUnwrap(shopperInformation.shopperName?.firstName)
-        let firstName = firstNameView.item.value
+        let firstName = try XCTUnwrap(prefillSut.firstNameItem?.value)
         XCTAssertEqual(expectedFirstName, firstName)
 
-        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.lastName))
         let expectedLastName = try XCTUnwrap(shopperInformation.shopperName?.lastName)
-        let lastName = lastNameView.item.value
+        let lastName = try XCTUnwrap(prefillSut.lastNameItem?.value)
         XCTAssertEqual(expectedLastName, lastName)
 
-        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
         let expectedPhoneNumber = try XCTUnwrap(shopperInformation.telephoneNumber)
-        let phoneNumber = phoneNumberView.item.value
+        let phoneNumber = try XCTUnwrap(prefillSut.phoneItem?.value)
         XCTAssertEqual(expectedPhoneNumber, phoneNumber)
 
-        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.email))
         let expectedEmail = try XCTUnwrap(shopperInformation.emailAddress)
-        let email = emailView.item.value
+        let email = try XCTUnwrap(prefillSut.emailItem?.value)
         XCTAssertEqual(expectedEmail, email)
 
-        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.billingAddress))
         let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
-        let billingAddress = billingAddressView.item.value
+        let billingAddress = try XCTUnwrap(prefillSut.addressItem?.value)
         XCTAssertEqual(expectedBillingAddress, billingAddress)
 
-        let deliveryAddressToggleView: FormToggleItemView! = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddressToggle))
-        XCTAssertTrue(deliveryAddressToggleView.item.value)
+        XCTAssertTrue(prefillSut.deliveryAddressToggleItem.value)
 
-        let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddress))
         let expectedDeliveryAddress = try XCTUnwrap(shopperInformation.deliveryAddress)
-        let deliveryAddress = deliveryAddressView.item.value
+        let deliveryAddress = try XCTUnwrap(prefillSut.deliveryAddressItem?.value)
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
+        
+        assertViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled")
     }
 
     func testAffirmPrefilling_givenDeliveryAddressIsNotSet() throws {
@@ -149,45 +127,38 @@ class AffirmComponentUITests: XCTestCase {
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          context: Dummy.context(with: nil),
                                          configuration: config)
-        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
+        UIApplication.shared.mainKeyWindow?.rootViewController = prefillSut.viewController
 
         wait(for: .milliseconds(300))
 
         // Then
-        let view: UIView = prefillSut.viewController.view
-
-        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.firstName))
         let expectedFirstName = try XCTUnwrap(shopperInformation.shopperName?.firstName)
-        let firstName = firstNameView.item.value
+        let firstName = try XCTUnwrap(prefillSut.firstNameItem?.value)
         XCTAssertEqual(expectedFirstName, firstName)
 
-        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.lastName))
         let expectedLastName = try XCTUnwrap(shopperInformation.shopperName?.lastName)
-        let lastName = lastNameView.item.value
+        let lastName = try XCTUnwrap(prefillSut.lastNameItem?.value)
         XCTAssertEqual(expectedLastName, lastName)
 
-        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
         let expectedPhoneNumber = try XCTUnwrap(shopperInformation.telephoneNumber)
-        let phoneNumber = phoneNumberView.item.value
+        let phoneNumber = try XCTUnwrap(prefillSut.phoneItem?.value)
         XCTAssertEqual(expectedPhoneNumber, phoneNumber)
 
-        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.email))
         let expectedEmail = try XCTUnwrap(shopperInformation.emailAddress)
-        let email = emailView.item.value
+        let email = try XCTUnwrap(prefillSut.emailItem?.value)
         XCTAssertEqual(expectedEmail, email)
 
-        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.billingAddress))
         let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
-        let billingAddress = billingAddressView.item.value
+        let billingAddress = try XCTUnwrap(prefillSut.addressItem?.value)
         XCTAssertEqual(expectedBillingAddress, billingAddress)
 
-        let deliveryAddressToggleView: FormToggleItemView! = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddressToggle))
-        XCTAssertFalse(deliveryAddressToggleView.item.value)
+        XCTAssertFalse(prefillSut.deliveryAddressToggleItem.value)
 
-        let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddress))
         let expectedDeliveryAddress = PostalAddressMocks.emptyUSPostalAddress
-        let deliveryAddress = deliveryAddressView.item.value
+        let deliveryAddress = try XCTUnwrap(prefillSut.deliveryAddressItem?.value)
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
+        
+        assertViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled")
     }
 
     func testAffirm_givenNoShopperInformation_shouldNotPrefill() throws {
@@ -201,36 +172,29 @@ class AffirmComponentUITests: XCTestCase {
         wait(for: .milliseconds(300))
 
         // Then
-        let view: UIView = sut.viewController.view
-
-        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.firstName))
-        let firstName = firstNameView.item.value
+        let firstName = try XCTUnwrap(sut.firstNameItem?.value)
         XCTAssertTrue(firstName.isEmpty)
 
-        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.lastName))
-        let lastName = lastNameView.item.value
+        let lastName = try XCTUnwrap(sut.lastNameItem?.value)
         XCTAssertTrue(lastName.isEmpty)
 
-        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
-        let phoneNumber = phoneNumberView.item.value
+        let phoneNumber = try XCTUnwrap(sut.phoneItem?.value)
         XCTAssertTrue(phoneNumber.isEmpty)
 
-        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.email))
-        let email = emailView.item.value
+        let email = try XCTUnwrap(sut.emailItem?.value)
         XCTAssertTrue(email.isEmpty)
 
-        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.billingAddress))
         let expectedBillingAddress = PostalAddressMocks.emptyUSPostalAddress
-        let billingAddress = billingAddressView.item.value
+        let billingAddress = try XCTUnwrap(sut.addressItem?.value)
         XCTAssertEqual(expectedBillingAddress, billingAddress)
 
-        let deliveryAddressToggleView: FormToggleItemView! = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddressToggle))
-        XCTAssertFalse(deliveryAddressToggleView.item.value)
+        XCTAssertFalse(sut.deliveryAddressToggleItem.value)
 
-        let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddress))
         let expectedDeliveryAddress = PostalAddressMocks.emptyUSPostalAddress
-        let deliveryAddress = deliveryAddressView.item.value
+        let deliveryAddress = try XCTUnwrap(sut.deliveryAddressItem?.value)
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
+        
+        assertViewControllerImage(matching: sut.viewController, named: "shopper-info-not-filled")
     }
 
     // MARK: - Private

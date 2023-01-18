@@ -102,15 +102,15 @@ let issuerListDictionary = [
         [
             "items": [
                 [
-                    "id": "1121",
+                    "id": "xxxx",
                     "name": "Test Issuer 1"
                 ],
                 [
-                    "id": "1154",
+                    "id": "xxxx",
                     "name": "Test Issuer 2"
                 ],
                 [
-                    "id": "1153",
+                    "id": "xxxx",
                     "name": "Test Issuer 3"
                 ]
             ],
