@@ -36,13 +36,17 @@ public final class UPIComponent: PaymentComponent,
     @_spi(AdyenInternal)
     public var context: AdyenContext
 
+    /// The payment method object for this component.
     public var paymentMethod: PaymentMethod { upiPaymentMethod }
 
+    /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
 
+    /// The viewController for the component.
     public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
                                                                              style: configuration.style)
 
+    /// This indicates that `viewController` expected to be presented modally,
     public var requiresModalPresentation: Bool = true
 
     /// Component's configuration
@@ -90,7 +94,7 @@ public final class UPIComponent: PaymentComponent,
                            postfix: ViewIdentifier.upiFlowSelectionItem))
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                       postfix: ViewIdentifier.upiFlowSelectionItem)
-        item.segmentedControlSelectionHandler = { [weak self] changedIndex in
+        item.selectionHandler = { [weak self] changedIndex in
             self?.didChangeSegmentedControlIndex(changedIndex)
         }
         return item
@@ -118,7 +122,7 @@ public final class UPIComponent: PaymentComponent,
     }()
 
     /// The QRCode generation message view.
-    private lazy var qrCodeGenerationImageItem: FormImageItem = {
+    internal lazy var qrCodeGenerationImageItem: FormImageItem = {
         let imageView = FormImageItem(name: "qrcode")
         imageView.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                       postfix: ViewIdentifier.qrCodeGenerationImageItem)

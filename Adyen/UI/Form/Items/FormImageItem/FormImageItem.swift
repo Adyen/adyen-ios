@@ -42,13 +42,17 @@ public class FormImageItem: FormItem, Hidable {
 
 internal class FormImageView: FormItemView<FormImageItem> {
 
+    internal required init(item: FormImageItem) {
+        super.init(item: item)
+        renderImage()
+    }
+
     internal func renderImage() {
-        let imageView = UIImageView()
-        imageView.adyen.apply(item.style ?? ImageStyle(borderColor: nil,
-                                                       borderWidth: 0,
-                                                       cornerRadius: 0,
-                                                       clipsToBounds: false,
-                                                       contentMode: .center))
+        let imageView = UIImageView.init(style: item.style ?? ImageStyle(borderColor: nil,
+                                                                         borderWidth: 0,
+                                                                         cornerRadius: 0,
+                                                                         clipsToBounds: false,
+                                                                         contentMode: .center))
         self.addSubview(imageView)
 
         imageView.image = UIImage(named: item.name,
@@ -64,11 +68,6 @@ internal class FormImageView: FormItemView<FormImageItem> {
             imageView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: layoutMarginsGuide.centerYAnchor)
         ])
-    }
-
-    internal required init(item: FormImageItem) {
-        super.init(item: item)
-        renderImage()
     }
 
 }

@@ -19,7 +19,7 @@ public final class FormSegmentedControlItem: FormItem {
     public var style: SegmentedControlStyle
 
     /// A closure that will be invoked when a segmented control index is changed.
-    public var segmentedControlSelectionHandler: ((_ selectedIndex: Int) -> Void)?
+    public var selectionHandler: ((_ selectedIndex: Int) -> Void)?
 
     public init(items: [String], style: SegmentedControlStyle, identifier: String? = nil) {
         self.items = items
@@ -43,7 +43,7 @@ public final class FormSegmentedControlItem: FormItem {
     }
 
     @objc private func segmentAction(_ segmentedControl: UISegmentedControl) {
-        segmentedControlSelectionHandler?(segmentedControl.selectedSegmentIndex)
+        selectionHandler?(segmentedControl.selectedSegmentIndex)
     }
 }
 
