@@ -114,8 +114,7 @@ Use **Environment.test** for environment. When you're ready to accept live payme
 ```swift
 let apiContext = try! APIContext(environment: componentsEnvironment, clientKey: clientKey)
 let context = AdyenContext(apiContext: apiContext,
-                           payment: payment,
-                           analyticsConfiguration: analyticsConfiguration)
+                           payment: payment)
 let configuration = DropInComponent.Configuration()
 ```
 
@@ -161,9 +160,8 @@ let applePayment = try ApplePayPayment(countryCode: "US",
                                        currencyCode: "USD",
                                        summaryItems: summaryItems)
 
-let dropInConfiguration = DropInComponent.Configuration()
 dropInConfiguration.applePay = .init(payment: applePayment,
-                               merchantIdentifier: "merchant.com.adyen.MY_MERCHANT_ID")
+                                     merchantIdentifier: "merchant.com.adyen.MY_MERCHANT_ID")
 ```
 
 Also for voucher payment methods like Doku variants, in order for the `DokuComponent` to enable the shopper to save the voucher, access to the shopper photos is requested, so a suitable text needs to be added to the `NSPhotoLibraryAddUsageDescription` key in the application `Info.plist`.
@@ -174,7 +172,8 @@ Initialize the `DropInComponent` class and set the `AdyenSession` instance as th
 
 ```swift
 let dropInComponent = DropInComponent(paymentMethods: session.sessionContext.paymentMethods,
-                                     configuration: dropInConfiguration)
+                                      context: context,
+                                      configuration: dropInConfiguration)
  
 // Keep the Drop-in instance to avoid it being destroyed after the function is executed.
 self.dropInComponent = dropInComponent
