@@ -69,18 +69,6 @@ class UPIComponentUITests: XCTestCase {
         wait(for: .milliseconds(300))
     }
 
-    func testVpaFlowType() {
-        // Assert
-        let flowType = UPIFlowType(rawValue: 0)
-        XCTAssertTrue(flowType == .vpa)
-    }
-
-    func testQRCodeFlowType() {
-        // Assert
-        let flowType = UPIFlowType(rawValue: 1)
-        XCTAssertTrue(flowType == .qrCode)
-    }
-
     func testContinueButtonLoading() {
         // Given
         UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
