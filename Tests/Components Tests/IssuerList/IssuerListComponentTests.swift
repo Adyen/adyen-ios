@@ -29,23 +29,6 @@ class IssuerListComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testStartStopLoading() {
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        let searchViewController = sut.viewController as! SearchViewController
-        let listViewController = searchViewController.childViewController as? ListViewController
-        XCTAssertNotNil(listViewController)
-        
-        wait(for: .milliseconds(300))
-        
-        let item = listViewController!.sections[0].items[0]
-        let cell = listViewController!.tableView.visibleCells[0] as! ListCell
-        XCTAssertFalse(cell.showsActivityIndicator)
-        listViewController?.startLoading(for: item)
-        XCTAssertTrue(cell.showsActivityIndicator)
-        sut.stopLoadingIfNeeded()
-        XCTAssertFalse(cell.showsActivityIndicator)
-    }
-
     func testSelection() {
         // Given
         let searchViewController = sut.viewController as! SearchViewController

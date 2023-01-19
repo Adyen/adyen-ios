@@ -112,9 +112,11 @@ Please read more [here](https://docs.adyen.com/development-resources/client-side
 Use **Environment.test** for environment. When you're ready to accept live payments, change the value to one of our [live environments](https://adyen.github.io/adyen-ios/Docs/Structs/Environment.html)
 
 ```swift
-let apiContext = APIContext(clientKey: clientKey, environment: Environment.test)
-let context = AdyenContext(apiContext: apiContext, analyticsConfiguration: analyticsConfiguration)
-let configuration = DropInComponent.Configuration(context: context)
+let apiContext = try! APIContext(environment: componentsEnvironment, clientKey: clientKey)
+let context = AdyenContext(apiContext: apiContext,
+                           payment: payment,
+                           analyticsConfiguration: analyticsConfiguration)
+let configuration = DropInComponent.Configuration()
 ```
 
 Create an instance of `AdyenSession.Configuration` with the response you received from the `/sessions` call and the `AdyenContext` instance.
@@ -143,7 +145,7 @@ Create a configuration object for `DropInComponent`. Check specific payment meth
 
 ```swift
 // Check specific payment method pages to confirm if you need to configure additional required parameters.
-let dropInConfiguration = DropInComponent.Configuration(context: context)
+let dropInConfiguration = DropInComponent.Configuration()
 
 ```
 
@@ -159,7 +161,7 @@ let applePayment = try ApplePayPayment(countryCode: "US",
                                        currencyCode: "USD",
                                        summaryItems: summaryItems)
 
-let dropInConfiguration = DropInComponent.Configuration(context: context)
+let dropInConfiguration = DropInComponent.Configuration()
 dropInConfiguration.applePay = .init(payment: applePayment,
                                merchantIdentifier: "merchant.com.adyen.MY_MERCHANT_ID")
 ```
@@ -261,8 +263,8 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - [Affirm Component][reference.AffirmComponent]
 - [Atome Component][reference.AtomeComponent]
 - [BACS Direct Debit Component][reference.BACSDirectDebitComponent]
-- [Online Banking Czech republic Component][reference.OnlineBankingComponent]
-- [Online Banking Slovakia Component][reference.OnlineBankingComponent]
+- [Online Banking Czech republic Component][reference.OnlineBankingComponentCzech]
+- [Online Banking Slovakia Component][reference.OnlineBankingComponentSlovakia]
 - [Online Banking Poland Component][reference.issuerListComponent]
 
 
@@ -347,6 +349,8 @@ This repository is open source and available under the MIT license. For more inf
 [reference.ACHDirectDebitComponent]:  https://adyen.github.io/adyen-ios/Docs/Classes/ACHDirectDebitComponent.html
 [reference.AffirmComponent]:  https://adyen.github.io/adyen-ios/Docs/Classes/AffirmComponent.html
 [reference.BACSDirectDebitComponent]:  https://adyen.github.io/adyen-ios/Docs/Classes/BACSDirectDebitComponent.html
+[reference.OnlineBankingComponentSlovakia]:  https://docs.adyen.com/payment-methods/online-banking-slovakia
+[reference.OnlineBankingComponentCzech]:  https://docs.adyen.com/payment-methods/online-banking-czech-republic
 [reference.AtomeComponent]:  https://adyen.github.io/adyen-ios/Docs/Classes/AtomeComponent.html
 [reference.styles]: https://adyen.github.io/adyen-ios/Docs/Styling.html
 [apiExplorer.sessions]: https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/sessions

@@ -125,7 +125,7 @@ internal struct ConfigurationView: View {
         Picker(title, selection: selectionBinding) {
             SearchBar(searchString: searchString, placeholder: "Search...")
             ForEach(rows, id: \.self, content: transform)
-        }
+        }.navigationLinkStyle()
     }
     
     private func setToCountryCurrency() {
@@ -191,5 +191,17 @@ extension CurrencyDisplayInfo {
     internal func matches(_ predicate: String) -> Bool {
         code.range(of: predicate, options: [.anchored, .caseInsensitive]) != nil ||
             symbol.range(of: predicate, options: [.anchored, .caseInsensitive]) != nil
+    }
+}
+
+@available(iOS 13.0.0, *)
+extension Picker {
+    @ViewBuilder
+    fileprivate func navigationLinkStyle() -> some View {
+        if #available(iOS 16.0.0, *) {
+            self.pickerStyle(NavigationLinkPickerStyle())
+        } else {
+            self
+        }
     }
 }
