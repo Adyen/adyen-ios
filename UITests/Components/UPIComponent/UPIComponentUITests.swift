@@ -44,43 +44,20 @@ class UPIComponentUITests: XCTestCase {
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton"))
     }
 
-    func testPressContinueButton() {
-        // Given
-
-        let delegate = PaymentComponentDelegateMock()
-        sut.delegate = delegate
-
-        // Then
-        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button")
-        button.sendActions(for: .touchUpInside)
-
-        let didContinueExpectation = XCTestExpectation(description: "Dummy Expectation")
-        delegate.onDidSubmit = { data, component in
-            // Assert
-            XCTAssertTrue(component === self.sut)
-            let details = data.paymentMethod as! UPIComponentDetails
-            XCTAssertEqual(details.type, "upi_collect")
-            self.sut.stopLoadingIfNeeded()
-            didContinueExpectation.fulfill()
-        }
-        delegate.onDidFail = { _, _ in
-            XCTFail("delegate.didFail() should never be called.")
-        }
-        wait(for: .milliseconds(300))
-    }
-
-    func testContinueButtonLoading() {
+    func testStopLoading() {
         // Given
         UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
+        wait(for: .milliseconds(300))
 
-        // Then
-        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button")
+        //Assert
+        XCTAssertFalse(sut.continueButton.showsActivityIndicator)
 
-        // Then
-        self.sut.stopLoading()
+        // Given
+        sut.continueButton.showsActivityIndicator = true
+        sut.stopLoadingIfNeeded()
 
-        // Assert
-        XCTAssertFalse(button.showsActivityIndicator)
+        //Assert
+        XCTAssertFalse(sut.continueButton.showsActivityIndicator)
     }
 
     func testChangeSelectedSegmentControlIndex() {
@@ -95,6 +72,76 @@ class UPIComponentUITests: XCTestCase {
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.generateQRCodeLabelContainerItem"))
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.generateQRCodeButton"))
 
+    }
+
+    func testDidChangeSegmentedControlIndexToOne() {
+        // Given
+        sut.currentSelectedIndex = 0
+        sut.didChangeSegmentedControlIndex(1)
+
+        // Assert
+        XCTAssertTrue(sut.currentSelectedIndex == 1)
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.instructionsLabelItem"))
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.upiFlowSelectionSegmentedControlItem"))
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.qrCodeGenerationImageItem"))
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.generateQRCodeLabelContainerItem"))
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.generateQRCodeButton"))
+        XCTAssertTrue(UPIFlowType(rawValue: sut.currentSelectedIndex) == .some(.qrCode))
+    }
+
+    func testDidChangeSegmentedControlIndexToZero() {
+        // Given
+        sut.currentSelectedIndex = 1
+        sut.didChangeSegmentedControlIndex(0)
+
+        // Assert
+        XCTAssertTrue(sut.currentSelectedIndex == 0)
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.instructionsLabelItem"))
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.upiFlowSelectionSegmentedControlItem"))
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem"))
+        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton"))
+        XCTAssertTrue(UPIFlowType(rawValue: sut.currentSelectedIndex) == .some(.vpa))
+    }
+
+    func testUPIComponentDetailsExists() {
+        // Given
+        let upiComponentDetails = UPIComponentDetails(type: "vpa", virtualPaymentAddress: "testvpa@icici")
+
+        // Assert
+        XCTAssertNotNil(upiComponentDetails)
+    }
+
+    func testUPIComponentDetails() {
+        // Given
+        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
+
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+
+        let delegateMock = PaymentComponentDelegateMock()
+        sut.delegate = delegateMock
+        delegateMock.onDidSubmit = { data, component in
+            // Assert
+            XCTAssertTrue(component === self.sut)
+            XCTAssertTrue(data.paymentMethod is UPIComponentDetails)
+            let data = data.paymentMethod as! UPIComponentDetails
+            XCTAssertEqual(data.virtualPaymentAddress, "testvpa@icici")
+            XCTAssertNotNil(data.type)
+            expectation.fulfill()
+        }
+        delegateMock.onDidFail = { _, _ in
+            XCTFail("delegate.didFail() should never be called.")
+        }
+
+        wait(for: .milliseconds(300))
+
+        let virtualPaymentAddressItem: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem")
+        let continueButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button")
+
+        self.populate(textItemView: virtualPaymentAddressItem, with: "testvpa@icici")
+
+        continueButton?.sendActions(for: .touchUpInside)
+
+        wait(for: [expectation], timeout: 5)
     }
 
 }

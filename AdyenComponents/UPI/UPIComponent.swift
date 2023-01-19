@@ -7,6 +7,12 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
+/// The flow types for UPI component.
+internal enum UPIFlowType: Int {
+    case vpa = 0
+    case qrCode = 1
+}
+
 /// A component that provides a upi flows for UPI component.
 public final class UPIComponent: PaymentComponent,
     PresentableComponent,
@@ -163,37 +169,37 @@ public final class UPIComponent: PaymentComponent,
         return formViewController
     }()
 
-    private func didSelectContinueButton() {
+    internal func didSelectContinueButton() {
         guard formViewController.validate() else { return }
 
         continueButton.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
-        switch currentSelectedIndex {
-        case 0:
+        switch UPIFlowType(rawValue: currentSelectedIndex) {
+        case .vpa:
             let details = UPIComponentDetails(type: Constants.upiCollect,
                                               virtualPaymentAddress: virtualPaymentAddressItem.value)
             submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
-        case 1:
+        case .qrCode:
             let details = UPIComponentDetails(type: Constants.upiQRCode)
             submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
         default:
-            break
+            AdyenAssertion.assert(message: "UPI flow type is out of range", condition: currentSelectedIndex > 1)
         }
     }
 
-    private func didChangeSegmentedControlIndex(_ changedIndex: Int) {
+    internal func didChangeSegmentedControlIndex(_ changedIndex: Int) {
         currentSelectedIndex = changedIndex
 
-        switch currentSelectedIndex {
-        case 0:
+        switch UPIFlowType(rawValue: currentSelectedIndex) {
+        case .vpa:
             virtualPaymentAddressItem.isVisible = true
             qrCodeGenerationLabelContainerItem.isHidden.wrappedValue = true
             qrCodeGenerationImageItem.isHidden.wrappedValue = true
             continueButton.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                           postfix: ViewIdentifier.continueButtonItem)
             continueButton.title = localizedString(.continueTitle, configuration.localizationParameters)
-        case 1:
+        case .qrCode:
             virtualPaymentAddressItem.isVisible = false
             qrCodeGenerationLabelContainerItem.isHidden.wrappedValue = false
             qrCodeGenerationImageItem.isHidden.wrappedValue = false
@@ -201,7 +207,7 @@ public final class UPIComponent: PaymentComponent,
                                                           postfix: ViewIdentifier.generateQRCodeButtonItem)
             continueButton.title = localizedString(.QRCodeGenerateQRCode, configuration.localizationParameters)
         default:
-           break
+            AdyenAssertion.assert(message: "UPI flow type is out of range", condition: currentSelectedIndex > 1)
         }
     }
 
