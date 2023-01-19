@@ -37,18 +37,18 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         style.instructionLabel = TextStyle(
             font: .systemFont(ofSize: 20, weight: .semibold),
-            color: .darkGray,
+            color: .red,
             textAlignment: .left
         )
 
         style.amountToPayLabel = TextStyle(
             font: .systemFont(ofSize: 20, weight: .semibold),
-            color: .darkGray,
+            color: .yellow,
             textAlignment: .left
         )
 
         style.progressView = ProgressViewStyle(
-            progressTintColor: .cyan, trackTintColor: .brown
+            progressTintColor: .brown, trackTintColor: .cyan
         )
 
         style.expirationLabel = TextStyle(
@@ -65,46 +65,15 @@ class QRCodeActionComponentUITests: XCTestCase {
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
 
-        presentationDelegate.doPresent = { [weak self] component in
+        presentationDelegate.doPresent = { component in
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
-            let viewController = component.viewController as! QRCodeViewController
-
-            UIApplication.shared.keyWindow?.rootViewController = viewController
-
-            self?.wait(for: .milliseconds(300))
-
-            let saveAsImageButton: SubmitButton? = viewController.view.findView(by: "saveAsImageButton")
-            let instructionLabel: UILabel? = viewController.view.findView(by: "instructionLabel")
-            let progressView: UIProgressView? = viewController.view.findView(by: "progressView")
-            let amountToPayLabel: UILabel? = viewController.view.findView(by: "amountToPayLabel")
-            let expirationLabel: UILabel? = viewController.view.findView(by: "expirationLabel")
-            let logo: UIImageView? = viewController.view.findView(by: "logo")
-
-            // Test save as image button
-            XCTAssertEqual(saveAsImageButton?.backgroundColor, style.saveAsImageButton.backgroundColor)
-            XCTAssertEqual(saveAsImageButton?.layer.cornerRadius, 4)
-
-            // Test instruction label
-            XCTAssertEqual(instructionLabel?.font, style.instructionLabel.font)
-            XCTAssertEqual(instructionLabel?.textColor, style.instructionLabel.color)
-            XCTAssertEqual(instructionLabel?.textAlignment, style.instructionLabel.textAlignment)
-
-            // Test amountToPay label
-            XCTAssertEqual(amountToPayLabel?.font, UIFont.preferredFont(forTextStyle: .callout).adyen.font(with: .bold))
-            XCTAssertEqual(amountToPayLabel?.textColor, style.amountToPayLabel.color)
-            XCTAssertEqual(amountToPayLabel?.textAlignment, style.amountToPayLabel.textAlignment)
-
-            // Test progress view
-            XCTAssertEqual(progressView?.progressTintColor, style.progressView.progressTintColor)
-            XCTAssertEqual(progressView?.trackTintColor, style.progressView.trackTintColor)
-
-            // Test expiration label
-            XCTAssertEqual(expirationLabel?.font, style.expirationLabel.font)
-            XCTAssertEqual(expirationLabel?.textColor, style.expirationLabel.color)
-            XCTAssertEqual(expirationLabel?.textAlignment, style.expirationLabel.textAlignment)
-
-            // Test logo
-            XCTAssertEqual(logo?.layer.cornerRadius, 10)
+            
+            UIApplication.shared.mainKeyWindow?.rootViewController = component.viewController
+            
+            // wait until the expiration label is rendered
+            self.wait(for: .seconds(1))
+            
+            self.assertViewControllerImage(matching: component.viewController, named: "promptPay")
 
             dummyExpectation.fulfill()
         }
@@ -129,13 +98,13 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         style.instructionLabel = TextStyle(
             font: .systemFont(ofSize: 20, weight: .semibold),
-            color: .darkGray,
+            color: .red,
             textAlignment: .left
         )
 
         style.amountToPayLabel = TextStyle(
             font: .systemFont(ofSize: 20, weight: .semibold),
-            color: .darkGray,
+            color: .yellow,
             textAlignment: .left
         )
 
@@ -145,7 +114,7 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         style.expirationLabel = TextStyle(
             font: .boldSystemFont(ofSize: 25),
-            color: .blue, textAlignment: .right
+            color: .magenta, textAlignment: .right
         )
 
         style.logoCornerRounding = .fixed(10)
@@ -157,46 +126,15 @@ class QRCodeActionComponentUITests: XCTestCase {
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
 
-        presentationDelegate.doPresent = { [weak self] component in
+        presentationDelegate.doPresent = { component in
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
-            let viewController = component.viewController as! QRCodeViewController
-
-            UIApplication.shared.keyWindow?.rootViewController = viewController
-
-            self?.wait(for: .milliseconds(300))
-
-            let copyCodeButton: SubmitButton? = viewController.view.findView(by: "copyCodeButton")
-            let instructionLabel: UILabel? = viewController.view.findView(by: "instructionLabel")
-            let progressView: UIProgressView? = viewController.view.findView(by: "progressView")
-            let amountToPayLabel: UILabel? = viewController.view.findView(by: "amountToPayLabel")
-            let expirationLabel: UILabel? = viewController.view.findView(by: "expirationLabel")
-            let logo: UIImageView? = viewController.view.findView(by: "logo")
-
-            // Test copy code button
-            XCTAssertEqual(copyCodeButton?.backgroundColor, style.copyCodeButton.backgroundColor)
-            XCTAssertEqual(copyCodeButton?.layer.cornerRadius, 4)
-
-            // Test instruction label
-            XCTAssertEqual(instructionLabel?.font, style.instructionLabel.font)
-            XCTAssertEqual(instructionLabel?.textColor, style.instructionLabel.color)
-            XCTAssertEqual(instructionLabel?.textAlignment, style.instructionLabel.textAlignment)
-
-            // Test amountToPay label
-            XCTAssertEqual(amountToPayLabel?.font, UIFont.preferredFont(forTextStyle: .callout).adyen.font(with: .bold))
-            XCTAssertEqual(amountToPayLabel?.textColor, style.amountToPayLabel.color)
-            XCTAssertEqual(amountToPayLabel?.textAlignment, style.amountToPayLabel.textAlignment)
-
-            // Test progress view
-            XCTAssertEqual(progressView?.progressTintColor, style.progressView.progressTintColor)
-            XCTAssertEqual(progressView?.trackTintColor, style.progressView.trackTintColor)
-
-            // Test expiration label
-            XCTAssertEqual(expirationLabel?.font, style.expirationLabel.font)
-            XCTAssertEqual(expirationLabel?.textColor, style.expirationLabel.color)
-            XCTAssertEqual(expirationLabel?.textAlignment, style.expirationLabel.textAlignment)
-
-            // Test logo
-            XCTAssertEqual(logo?.layer.cornerRadius, 10)
+            
+            UIApplication.shared.mainKeyWindow?.rootViewController = component.viewController
+            
+            // wait until the expiration label is rendered
+            self.wait(for: .seconds(1))
+            
+            self.assertViewControllerImage(matching: component.viewController, named: "pix")
 
             dummyExpectation.fulfill()
         }
