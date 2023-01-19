@@ -92,30 +92,42 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     ///
     /// - Parameter action: The QR code action.
     public func handle(_ action: QRCodeAction) {
-        pollingComponent = pollingComponentBuilder?.handler(for: action.paymentMethodType)
-        pollingComponent?.delegate = self
-        
         AdyenAssertion.assert(message: "presentationDelegate is nil", condition: presentationDelegate == nil)
         
         let viewController = createViewController(with: action)
         setUpPresenterViewController(parentViewController: viewController)
 
         if let presentationDelegate = presentationDelegate {
-            let presentableComponent = PresentableComponentWrapper(
-                component: self,
-                viewController: viewController
-            )
-            presentationDelegate.present(component: presentableComponent)
+            renderExpirationLabelAndStartTimer(action)
+            
+            startPolling(action)
+            
+            present(viewController, presentationDelegate: presentationDelegate)
         } else {
             AdyenAssertion.assertionFailure(
                 message: "PresentationDelegate is nil. Provide a presentation delegate to QRCodeActionComponent."
             )
         }
-        
+    }
+    
+    private func renderExpirationLabelAndStartTimer(_ action: QRCodeAction) {
         let timeout = timeoutDuration(for: action)
         updateExpiration(timeout)
         startTimer(from: timeout, qrCodeAction: action)
+    }
+    
+    private func startPolling(_ action: QRCodeAction) {
+        pollingComponent = pollingComponentBuilder?.handler(for: action.paymentMethodType)
+        pollingComponent?.delegate = self
         pollingComponent?.handle(action)
+    }
+    
+    private func present(_ viewController: UIViewController, presentationDelegate: PresentationDelegate) {
+        let presentableComponent = PresentableComponentWrapper(
+            component: self,
+            viewController: viewController
+        )
+        presentationDelegate.present(component: presentableComponent)
     }
     
     internal func timeoutDuration(for action: QRCodeAction) -> TimeInterval {
