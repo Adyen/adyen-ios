@@ -313,7 +313,7 @@ A full list of customization options can be found in the [API Reference][referen
 
 * [Components API Reference][reference]
 
-* [DropInComponent documentation][reference.dropInComponent]
+* [Drop-in Integration][reference.dropInComponent]
 
 * [Advanced flow][reference.advancedFlow]
 
