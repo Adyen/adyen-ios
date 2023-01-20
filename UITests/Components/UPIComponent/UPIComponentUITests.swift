@@ -15,7 +15,6 @@ class UPIComponentUITests: XCTestCase {
     private var context: AdyenContext!
     private var style: FormComponentStyle!
     private var sut: UPIComponent!
-    private let app = XCUIApplication()
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -46,7 +45,7 @@ class UPIComponentUITests: XCTestCase {
 
     func testStopLoading() {
         // Given
-        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         wait(for: .milliseconds(300))
 
         //Assert
@@ -113,7 +112,7 @@ class UPIComponentUITests: XCTestCase {
 
     func testUPIComponentDetails() {
         // Given
-        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
