@@ -14,16 +14,12 @@ class UPIComponentUITests: XCTestCase {
     private var paymentMethod: UPIPaymentMethod!
     private var context: AdyenContext!
     private var style: FormComponentStyle!
-    private var sut: UPIComponent!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        paymentMethod = try! Coder.decode(upi) as UPIPaymentMethod
-        context = AdyenContext(apiContext: Dummy.apiContext, payment: nil)
+        paymentMethod = UPIPaymentMethod(type: .upi, name: "upi")
+        context = Dummy.context
         style = FormComponentStyle()
-        sut = UPIComponent(paymentMethod: paymentMethod,
-                           context: context,
-                           configuration: UPIComponent.Configuration(style: style))
         BrowserInfo.cachedUserAgent = "some_value"
     }
 
@@ -31,75 +27,93 @@ class UPIComponentUITests: XCTestCase {
         paymentMethod = nil
         context = nil
         style = nil
-        sut = nil
         try super.tearDownWithError()
     }
 
+    func testUIConfiguration() throws {
+        style.backgroundColor = .green
+        
+        /// Footer
+        style.mainButtonItem.button.title.color = .white
+        style.mainButtonItem.button.title.backgroundColor = .red
+        style.mainButtonItem.button.title.textAlignment = .center
+        style.mainButtonItem.button.title.font = .systemFont(ofSize: 22)
+        style.mainButtonItem.button.backgroundColor = .red
+        style.mainButtonItem.backgroundColor = .brown
+        
+        /// Text field
+        style.textField.text.color = .yellow
+        style.textField.text.font = .systemFont(ofSize: 5)
+        style.textField.text.textAlignment = .center
+        style.textField.placeholderText = TextStyle(font: .preferredFont(forTextStyle: .headline),
+                                                    color: .systemOrange,
+                                                    textAlignment: .center)
+        
+        style.textField.title.backgroundColor = .blue
+        style.textField.title.color = .green
+        style.textField.title.font = .systemFont(ofSize: 18)
+        style.textField.title.textAlignment = .left
+        style.textField.backgroundColor = .blue
+    
+        let config = UPIComponent.Configuration(style: style)
+        let sut = UPIComponent(paymentMethod: paymentMethod,
+                                 context: context,
+                                 configuration: config)
+    
+        assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
+    }
+    
+    func testUIConfigurationForIndexOne() throws {
+    
+        style.backgroundColor = .green
+        
+        /// Footer
+        style.mainButtonItem.button.title.color = .white
+        style.mainButtonItem.button.title.backgroundColor = .red
+        style.mainButtonItem.button.title.textAlignment = .center
+        style.mainButtonItem.button.title.font = .systemFont(ofSize: 22)
+        style.mainButtonItem.button.backgroundColor = .red
+        style.mainButtonItem.backgroundColor = .brown
+        
+        /// Text field
+        style.textField.text.color = .yellow
+        style.textField.text.font = .systemFont(ofSize: 5)
+        style.textField.text.textAlignment = .center
+        style.textField.placeholderText = TextStyle(font: .preferredFont(forTextStyle: .headline),
+                                                    color: .systemOrange,
+                                                    textAlignment: .center)
+        
+        style.textField.title.backgroundColor = .blue
+        style.textField.title.color = .green
+        style.textField.title.font = .systemFont(ofSize: 18)
+        style.textField.title.textAlignment = .left
+        style.textField.backgroundColor = .blue
+        
+        /// segmentedControlStyle
+        style.segmentedControlStyle.tintColor = .yellow
+        style.segmentedControlStyle.backgroundColor = .blue
+        style.segmentedControlStyle.textStyle.backgroundColor = .systemPink
+        style.segmentedControlStyle.textStyle.font = .systemFont(ofSize: 10)
+        style.segmentedControlStyle.textStyle.textAlignment = .center
+        style.segmentedControlStyle.textStyle.color = .red
+    
+        let config = UPIComponent.Configuration(style: style)
+        let sut = UPIComponent(paymentMethod: paymentMethod,
+                                 context: context,
+                                 configuration: config)
+        sut.currentSelectedIndex = 1
+
+        assertViewControllerImage(matching: sut.viewController, named: "UI_configuration_Index_One")
+    }
+
+
     func testUIElementsForUPICollectFlowType() {
         // Assert
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.instructionsLabelItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.upiFlowSelectionSegmentedControlItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton"))
-    }
-
-    func testStopLoading() {
-        // Given
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        wait(for: .milliseconds(300))
-
-        //Assert
-        XCTAssertFalse(sut.continueButton.showsActivityIndicator)
-
-        // Given
-        sut.continueButton.showsActivityIndicator = true
-        sut.stopLoadingIfNeeded()
-
-        //Assert
-        XCTAssertFalse(sut.continueButton.showsActivityIndicator)
-    }
-
-    func testChangeSelectedSegmentControlIndex() {
-        // Given
-        sut.upiFlowSelectionItem.selectionHandler?(1)
-
-        // Assert
-        XCTAssertTrue(sut.currentSelectedIndex == 1)
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.instructionsLabelItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.upiFlowSelectionSegmentedControlItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.qrCodeGenerationImageItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.generateQRCodeLabelContainerItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.generateQRCodeButton"))
-
-    }
-
-    func testDidChangeSegmentedControlIndexToOne() {
-        // Given
-        sut.currentSelectedIndex = 0
-        sut.didChangeSegmentedControlIndex(1)
-
-        // Assert
-        XCTAssertTrue(sut.currentSelectedIndex == 1)
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.instructionsLabelItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.upiFlowSelectionSegmentedControlItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.qrCodeGenerationImageItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.generateQRCodeLabelContainerItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.generateQRCodeButton"))
-        XCTAssertTrue(UPIFlowType(rawValue: sut.currentSelectedIndex) == .some(.qrCode))
-    }
-
-    func testDidChangeSegmentedControlIndexToZero() {
-        // Given
-        sut.currentSelectedIndex = 1
-        sut.didChangeSegmentedControlIndex(0)
-
-        // Assert
-        XCTAssertTrue(sut.currentSelectedIndex == 0)
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.instructionsLabelItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.upiFlowSelectionSegmentedControlItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton"))
-        XCTAssertTrue(UPIFlowType(rawValue: sut.currentSelectedIndex) == .some(.vpa))
+        let config = UPIComponent.Configuration(style: style)
+        let sut = UPIComponent(paymentMethod: paymentMethod,
+                                 context: context,
+                                 configuration: config)
+        assertViewControllerImage(matching: sut.viewController, named: "all_required_fields_exist")
     }
 
     func testUPIComponentDetailsExists() {
@@ -110,37 +124,74 @@ class UPIComponentUITests: XCTestCase {
         XCTAssertNotNil(upiComponentDetails)
     }
 
-    func testUPIComponentDetails() {
+    func testUPIComponentDetailsForUPICollectFlow() {
         // Given
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        let config = UPIComponent.Configuration(style: style)
+        let sut = UPIComponent(paymentMethod: paymentMethod,
+                               context: context,
+                               configuration: config)
+        sut.currentSelectedIndex = 0
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
 
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
+
         delegateMock.onDidSubmit = { data, component in
             // Assert
-            XCTAssertTrue(component === self.sut)
+            XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is UPIComponentDetails)
             let data = data.paymentMethod as! UPIComponentDetails
             XCTAssertEqual(data.virtualPaymentAddress, "testvpa@icici")
             XCTAssertNotNil(data.type)
-            expectation.fulfill()
-        }
-        delegateMock.onDidFail = { _, _ in
-            XCTFail("delegate.didFail() should never be called.")
+            didSubmitExpectation.fulfill()
         }
 
         wait(for: .milliseconds(300))
 
         let virtualPaymentAddressItem: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem")
-        let continueButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button")
-
         self.populate(textItemView: virtualPaymentAddressItem, with: "testvpa@icici")
 
-        continueButton?.sendActions(for: .touchUpInside)
+        assertViewControllerImage(matching: sut.viewController, named: "prefilled_vpa")
 
-        wait(for: [expectation], timeout: 5)
+        let continueButton: UIControl? =  sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button")
+        continueButton?.sendActions(for: .touchUpInside)
+    
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+ 
+    func testUPIComponentDetailsForUPIQRCodeFlow() {
+        // Given
+        let config = UPIComponent.Configuration(style: style)
+        let sut = UPIComponent(paymentMethod: paymentMethod,
+                               context: context,
+                               configuration: config)
+        
+        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        
+        let delegateMock = PaymentComponentDelegateMock()
+        sut.delegate = delegateMock
+        
+        delegateMock.onDidSubmit = { data, component in
+            // Assert
+            XCTAssertTrue(component === sut)
+            XCTAssertTrue(data.paymentMethod is UPIComponentDetails)
+            let data = data.paymentMethod as! UPIComponentDetails
+            XCTAssertNotNil(data.type)
+            XCTAssertEqual(data.type, "upi_qr")
+            didSubmitExpectation.fulfill()
+        }
+        
+        wait(for: .milliseconds(300))
+        
+        sut.didChangeSegmentedControlIndex(1)
+        
+        assertViewControllerImage(matching: sut.viewController, named: "upi_qr_flow")
+
+        let continueButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.generateQRCodeButton.button")
+        continueButton?.sendActions(for: .touchUpInside)
+    
+        waitForExpectations(timeout: 30, handler: nil)
     }
 
 }

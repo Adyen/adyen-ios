@@ -27,7 +27,7 @@
 		002B92F5294B6987000B93F4 /* UPIComponentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B92F4294B6987000B93F4 /* UPIComponentDetails.swift */; };
 		002B93082951F120000B93F4 /* FormSegmentedControlItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B93072951F120000B93F4 /* FormSegmentedControlItem.swift */; };
 		0035016C2976B14A00632D8C /* UIImageViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0035016B2976B14A00632D8C /* UIImageViewHelpers.swift */; };
-		003C03AD297AEA000022269A /* UPIComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0067E742296C22C5005B8D76 /* UPIComponentUITests.swift */; };
+		003C03B0297AFFA30022269A /* UPIComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003C03AE297AFF9F0022269A /* UPIComponentUITests.swift */; };
 		0055B8CF292242A000214ED5 /* AddressValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0055B8CE292242A000214ED5 /* AddressValidator.swift */; };
 		0058691528B644FB00B65A19 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691428B644FB00B65A19 /* QRCodeView.swift */; };
 		0058691728B6450900B65A19 /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691628B6450900B65A19 /* QRCodeViewController.swift */; };
@@ -1122,6 +1122,7 @@
 		002B92F4294B6987000B93F4 /* UPIComponentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentDetails.swift; sourceTree = "<group>"; };
 		002B93072951F120000B93F4 /* FormSegmentedControlItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSegmentedControlItem.swift; sourceTree = "<group>"; };
 		0035016B2976B14A00632D8C /* UIImageViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewHelpers.swift; sourceTree = "<group>"; };
+		003C03AE297AFF9F0022269A /* UPIComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentUITests.swift; sourceTree = "<group>"; };
 		0055B8CE292242A000214ED5 /* AddressValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressValidator.swift; sourceTree = "<group>"; };
 		0058691428B644FB00B65A19 /* QRCodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
 		0058691628B6450900B65A19 /* QRCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
@@ -1131,7 +1132,6 @@
 		0058692428BE0FB700B65A19 /* QRCodeViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewDelegateMock.swift; sourceTree = "<group>"; };
 		0067E73C29658CB6005B8D76 /* FormImageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormImageItem.swift; sourceTree = "<group>"; };
 		0067E73F296C161E005B8D76 /* UPIComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentTests.swift; sourceTree = "<group>"; };
-		0067E742296C22C5005B8D76 /* UPIComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentUITests.swift; sourceTree = "<group>"; };
 		006DCC02295C3E930015EA79 /* SegmentedControlStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlStyle.swift; sourceTree = "<group>"; };
 		007D790B2812C81400382D31 /* AtomeComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeComponentUITests.swift; sourceTree = "<group>"; };
 		007D791E2823A84C00382D31 /* AffirmComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentUITests.swift; sourceTree = "<group>"; };
@@ -2085,7 +2085,7 @@
 		0067E741296C22A3005B8D76 /* UPIComponent */ = {
 			isa = PBXGroup;
 			children = (
-				0067E742296C22C5005B8D76 /* UPIComponentUITests.swift */,
+				003C03AE297AFF9F0022269A /* UPIComponentUITests.swift */,
 			);
 			path = UPIComponent;
 			sourceTree = "<group>";
@@ -6409,10 +6409,10 @@
 				F9CCA3DF296ED20D00AD643D /* XCTestCaseExtensions.swift in Sources */,
 				F9CCA3CD296ECC8800AD643D /* Dummy.swift in Sources */,
 				F9CCA3CF296ECCA900AD643D /* PaymentComponentDelegateMock.swift in Sources */,
+				003C03B0297AFFA30022269A /* UPIComponentUITests.swift in Sources */,
 				F9CCA3CE296ECC9C00AD643D /* DummyPaymentMethods.swift in Sources */,
 				F9CCA3C8296ECB9900AD643D /* IssuerListComponentUITests.swift in Sources */,
 				F9CCA3C3296ECB9900AD643D /* UIApplicationExtension.swift in Sources */,
-				003C03AD297AEA000022269A /* UPIComponentUITests.swift in Sources */,
 				F9CCA3C7296ECB9900AD643D /* AffirmComponentUITests.swift in Sources */,
 				F9CCA3D1296ECCEE00AD643D /* XCTestCase+FormAddressItem.swift in Sources */,
 				F9CCA3D2296ECCFA00AD643D /* XCTestCaseExtension.swift in Sources */,
