@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1340"
+   LastUpgradeVersion = "1420"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -68,7 +68,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "007D79082812C81400382D31"
+               BlueprintIdentifier = "F9CCA3B4296ECB3E00AD643D"
                BuildableName = "AdyenUIHostUITests.xctest"
                BlueprintName = "AdyenUIHostUITests"
                ReferencedContainer = "container:Adyen.xcodeproj">
