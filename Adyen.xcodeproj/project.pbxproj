@@ -87,7 +87,6 @@
 		5A56E15526B6DEF800744CA0 /* XCTestCase+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A56E15426B6DEF800744CA0 /* XCTestCase+Style.swift */; };
 		5A6456D6262592B2001824F0 /* QRCodeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6456D5262592B2001824F0 /* QRCodeAction.swift */; };
 		5A64573F2626D2E2001824F0 /* QRCodeComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A64573E2626D2E2001824F0 /* QRCodeComponentStyle.swift */; };
-		5A6457DD26271434001824F0 /* QRCodeActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6456E22625A1E2001824F0 /* QRCodeActionComponent.swift */; };
 		5A6745E126417A5C00E9184D /* ADYViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6745E026417A5C00E9184D /* ADYViewController.swift */; };
 		5A674620264262F000E9184D /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67461F264262F000E9184D /* ConfigurationView.swift */; };
 		5A9889C8264E71210007F4C0 /* BoletoDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9889C7264E71210007F4C0 /* BoletoDetails.swift */; };
@@ -5072,7 +5071,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1410;
-				LastUpgradeCheck = 1340;
+				LastUpgradeCheck = 1420;
 				ORGANIZATIONNAME = Adyen;
 				TargetAttributes = {
 					C96A8E2826CA800A000BB8C6 = {
@@ -5378,6 +5377,7 @@
 		};
 		F91664F123E42D2D00C10738 /* AdyenUIHost configuration */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -5471,6 +5471,7 @@
 		};
 		F9615FBC252DE30B00FA8EDD /* AdyenSwiftUI configuration */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -5585,6 +5586,7 @@
 		};
 		F9A4A304237323EE00D774E8 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -6302,7 +6304,6 @@
 				F917613425A30B5700D653BE /* ThreeDS2Component.swift in Sources */,
 				F917617025A30B6A00D653BE /* ThreeDS2CoreActionHandler.swift in Sources */,
 				F917615B25A30B6400D653BE /* AnyAuthenticationRequestParameters.swift in Sources */,
-				5A6457DD26271434001824F0 /* QRCodeActionComponent.swift in Sources */,
 				A02AF3EA275A3A5100E1636C /* DocumentAction.swift in Sources */,
 				F9237D3B28CB467D004F9929 /* ThreeDS2CompactActionHandler+Initializers.swift in Sources */,
 				A0113D9B2763887800AD395C /* ActionNavigationBar.swift in Sources */,
