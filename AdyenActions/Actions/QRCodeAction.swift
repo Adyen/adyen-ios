@@ -21,6 +21,9 @@ public enum QRCodePaymentMethod: String, Codable, CaseIterable {
     
     /// PayNow
     case payNow = "paynow"
+
+    /// UPI QRCode flow
+    case upiQRCode = "upi_qr"
 }
 
 /// Describes any QR code action.

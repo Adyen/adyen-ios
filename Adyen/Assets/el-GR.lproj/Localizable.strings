@@ -166,3 +166,11 @@
 "adyen.paybybank.subtitle" = "Δεν βρέθηκαν τράπεζες που αντιστοιχούν στον όρο αναζήτησης...";
 "adyen.paybybank.title" = "Δεν υπάρχουν αποτελέσματα για:";
 "adyen.search.placeholder" = "Αναζήτηση...";
+"adyen.upi.modeSelection" = "Επιλέξτε μια ρύθμιση για τον τρόπο χρήσης του UPI.";
+"adyen.UPIVpa.validationMessage" = "Εισαγάγετε μια σωστή εικονική διεύθυνση πληρωμής";
+"adyen.UPIQrcode.generationMessage" = "Δημιουργήστε τον κωδικό QR που μπορείτε να λάβετε ή τραβήξτε ένα στιγμιότυπο και ανεβάστε το στην εφαρμογή UPI για να ολοκληρώσετε την πληρωμή.";
+"adyen.UPIQrcode.timerMessage" = "%@ προς έγκριση";
+"adyen.upi_collect.confirmPayment" = "Αναμονή για την επιβεβαίωσή σας...";
+"adyen.upi.vpaWaitingMessage" = "Ανοίξτε την εφαρμογή UPI για επιβεβαίωση της πληρωμής";
+"adyen.QRCode.generateQRCode" = "Δημιουργία κωδικού QR";
+"adyen.UPI.QRCodeInstructions" = "Τραβήξτε ένα στιγμιότυπο οθόνης για να το ανεβάσετε στην εφαρμογή UPI ή σαρώστε τον κωδικό QR χρησιμοποιώντας την εφαρμογή UPI που προτιμάτε για να ολοκληρώσετε την πληρωμή.";

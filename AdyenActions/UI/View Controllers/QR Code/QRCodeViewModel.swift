@@ -20,7 +20,7 @@ extension QRCodeView {
         
         internal var actionButtonType: ActionButton {
             switch action.paymentMethodType {
-            case .promptPay, .duitNow, .payNow:
+            case .promptPay, .duitNow, .payNow, .upiQRCode:
                 return .saveAsImage
             case .pix:
                 return .copyCode

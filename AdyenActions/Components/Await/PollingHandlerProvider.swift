@@ -41,14 +41,14 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
 
     internal func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler {
         switch paymentMethodType {
-        case .mbway, .blik:
+        case .mbway, .blik, .upicollect:
             return createPollingComponent()
         }
     }
     
     internal func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler {
         switch qrPaymentMethodType {
-        case .pix, .promptPay, .duitNow, .payNow:
+        case .pix, .promptPay, .duitNow, .payNow, .upiQRCode:
             return createPollingComponent()
         }
     }

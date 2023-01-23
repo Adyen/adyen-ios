@@ -166,3 +166,11 @@
 "adyen.paybybank.subtitle" = "Nu s-au găsit bănci cu interogarea de căutare...";
 "adyen.paybybank.title" = "Nu există rezultate pentru";
 "adyen.search.placeholder" = "Căutare...";
+"adyen.upi.modeSelection" = "Selectați modul în care doriți să utilizați UPI.";
+"adyen.UPIVpa.validationMessage" = "Introduceți o adresă de plată virtuală corectă";
+"adyen.UPIQrcode.generationMessage" = "Generați codul QR pe care îl puteți descărca sau pe care îl puteți reda într-o captură de ecran și încărcați-l în aplicația UPI pentru a finaliza plata.";
+"adyen.UPIQrcode.timerMessage" = "Aveți %@ ca să aprobați";
+"adyen.upi_collect.confirmPayment" = "Se așteaptă confirmarea dvs...";
+"adyen.upi.vpaWaitingMessage" = "Deschideți aplicația UPI pentru a confirma plata";
+"adyen.QRCode.generateQRCode" = "Generați codul QR";
+"adyen.UPI.QRCodeInstructions" = "Faceți o captură de ecran pentru a o încărca în aplicația UPI sau scanați codul QR folosind aplicația UPI preferată pentru a finaliza plata.";

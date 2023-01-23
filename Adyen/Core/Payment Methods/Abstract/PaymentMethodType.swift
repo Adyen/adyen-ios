@@ -54,6 +54,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     case atome
     case onlineBankingCZ
     case onlineBankingSK
+    case upi
     case other(String)
     
     // swiftlint:disable cyclomatic_complexity function_body_length
@@ -107,6 +108,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case "atome": self = .atome
         case "onlineBanking_CZ": self = .onlineBankingCZ
         case "onlineBanking_SK": self = .onlineBankingSK
+        case "upi": self = .upi
         default: self = .other(rawValue)
         }
     }
@@ -159,6 +161,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .atome: return "atome"
         case .onlineBankingCZ: return "onlineBanking_CZ"
         case .onlineBankingSK: return "onlineBanking_SK"
+        case .upi: return "upi"
         case let .other(value): return value
         }
     }

@@ -166,3 +166,11 @@
 "adyen.paybybank.subtitle" = "По вашему поисковому запросу банк не найден…";
 "adyen.paybybank.title" = "Ничего не найдено по запросу";
 "adyen.search.placeholder" = "Поиск…";
+"adyen.upi.modeSelection" = "Укажите, как вы собираетесь использовать UPI.";
+"adyen.UPIVpa.validationMessage" = "Введите правильный адрес виртуальных платежей";
+"adyen.UPIQrcode.generationMessage" = "Сгенерируйте загружаемый QR-код или снимок экрана и отправьте его в приложение UPI, чтобы завершить оплату.";
+"adyen.UPIQrcode.timerMessage" = "На одобрение отведено %@";
+"adyen.upi_collect.confirmPayment" = "В ожидании подтверждения…";
+"adyen.upi.vpaWaitingMessage" = "Откройте приложение UPI для подтверждения платежа";
+"adyen.QRCode.generateQRCode" = "Создать QR-код";
+"adyen.UPI.QRCodeInstructions" = "Сделайте снимок экрана, чтобы загрузить его в приложение UPI, или отсканируйте QR-код своим любимым приложением UPI, чтобы оформить платеж.";
