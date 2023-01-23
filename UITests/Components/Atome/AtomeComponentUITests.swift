@@ -13,16 +13,12 @@ class AtomeComponentUITests: XCTestCase {
     private var paymentMethod: PaymentMethod!
     private var context: AdyenContext!
     private var style: FormComponentStyle!
-    private var sut: AtomeComponent!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Atome")
         context = Dummy.context
         style = FormComponentStyle()
-        sut = AtomeComponent(paymentMethod: paymentMethod,
-                             context: context,
-                             configuration: AtomeComponent.Configuration(style: style))
         BrowserInfo.cachedUserAgent = "some_value"
     }
 
@@ -30,32 +26,47 @@ class AtomeComponentUITests: XCTestCase {
         paymentMethod = nil
         context = nil
         style = nil
-        sut = nil
         BrowserInfo.cachedUserAgent = nil
         try super.tearDownWithError()
+    }
+    
+    func testUIConfiguration() throws {
+        style.backgroundColor = .green
+
+        /// Footer
+        style.mainButtonItem.button.title.color = .white
+        style.mainButtonItem.button.title.backgroundColor = .red
+        style.mainButtonItem.button.title.textAlignment = .center
+        style.mainButtonItem.button.title.font = .systemFont(ofSize: 22)
+        style.mainButtonItem.button.backgroundColor = .red
+        style.mainButtonItem.backgroundColor = .brown
+
+        /// Text field
+        style.textField.text.color = .yellow
+        style.textField.text.font = .systemFont(ofSize: 5)
+        style.textField.text.textAlignment = .center
+        style.textField.placeholderText = TextStyle(font: .preferredFont(forTextStyle: .headline),
+                                                                 color: .systemOrange,
+                                                                 textAlignment: .center)
+        style.textField.title.backgroundColor = .blue
+        style.textField.title.color = .green
+        style.textField.title.font = .systemFont(ofSize: 18)
+        style.textField.title.textAlignment = .left
+        style.textField.backgroundColor = .blue
+        let config = AtomeComponent.Configuration(style: style, shopperInformation: shopperInformation)
+        let sut = AtomeComponent(paymentMethod: paymentMethod,
+                                 context: context,
+                                 configuration: config)
+        assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
     func testAllRequiredTextField_shouldExist() throws {
         let config = AtomeComponent.Configuration(shopperInformation: shopperInformation)
-        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
         let sut = AtomeComponent(paymentMethod: paymentMethod,
                                  context: context,
                                  configuration: config)
 
-        let view: UIView = sut.viewController.view
-
-        let atomeComponentFirstNameItem = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.firstName))
-        let atomeComponentlastNameItem = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.lastName))
-        let atomeComponentPhoneNumberItem = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.phone))
-        let atomeComponentBillingAddressItem = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.billingAddress))
-        let atomeComponentPayButton = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.payButton))
-
-        // Assert
-        XCTAssertTrue(atomeComponentFirstNameItem.isDescendant(of: view))
-        XCTAssertTrue(atomeComponentlastNameItem.isDescendant(of: view))
-        XCTAssertTrue(atomeComponentPhoneNumberItem.isDescendant(of: view))
-        XCTAssertTrue(atomeComponentBillingAddressItem.isDescendant(of: view))
-        XCTAssertTrue(atomeComponentPayButton.isDescendant(of: view))
+        assertViewControllerImage(matching: sut.viewController, named: "all_required_fields_exist")
     }
 
     func testSubmitForm_shouldCallDelegateWithProperParameters() {
@@ -67,8 +78,9 @@ class AtomeComponentUITests: XCTestCase {
         sut.delegate = delegate
 
         let expectedBillingAddress = PostalAddressMocks.singaporePostalAddress
-
-        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
+        
+        // Then
+        assertViewControllerImage(matching: sut.viewController, named: "prefilled_shopper_info")
 
         // Then
         let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
@@ -79,11 +91,9 @@ class AtomeComponentUITests: XCTestCase {
             XCTAssertEqual(details.shopperName?.lastName, "Del Mar")
             XCTAssertEqual(details.telephoneNumber, "80002018")
             XCTAssertEqual(details.billingAddress, expectedBillingAddress)
-            self.sut.stopLoadingIfNeeded()
+            sut.stopLoadingIfNeeded()
             didSubmitExpectation.fulfill()
         }
-
-        wait(for: .milliseconds(300))
 
         let view: UIView = sut.viewController.view
         do {
@@ -97,40 +107,13 @@ class AtomeComponentUITests: XCTestCase {
 
     func testAtome_givenNoShopperInformation_shouldNotPrefill() throws {
         // Given
-        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(300))
-
-        let view: UIView = sut.viewController.view
-
+        let sut = AtomeComponent(paymentMethod: paymentMethod,
+                                 context: context,
+                                 configuration: AtomeComponent.Configuration(style: style))
+        
         // Then
-        let atomeComponentFirstNameItem: FormTextInputItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.firstName))
-        let firstName = atomeComponentFirstNameItem.item.value
-        XCTAssertTrue(firstName.isEmpty)
+        assertViewControllerImage(matching: sut.viewController, named: "empty_form")
 
-        let atomeComponentLastNameItem: FormTextInputItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.lastName))
-        let lastName = atomeComponentLastNameItem.item.value
-        XCTAssertTrue(lastName.isEmpty)
-
-        let atomeComponentPhoneNumber: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.phone))
-        let phoneNumber = atomeComponentPhoneNumber.item.value
-        XCTAssertTrue(phoneNumber.isEmpty)
-
-        let atomeComponentStreetAddressItem: FormTextInputItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.streetName))
-        let streetName = atomeComponentStreetAddressItem.item.value
-        XCTAssertTrue(streetName.isEmpty)
-
-        let atomeComponentApartmentAddressItem: FormTextInputItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.apartmentName))
-        let apartmentName = atomeComponentApartmentAddressItem.item.value
-        XCTAssertTrue(apartmentName.isEmpty)
-
-        let atomeComponentHouseNumberOrNameAddressItem: FormTextInputItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.houseNumberOrName))
-        let houseNumberOrName = atomeComponentHouseNumberOrNameAddressItem.item.value
-        XCTAssertTrue(houseNumberOrName.isEmpty)
-
-        let atomeComponentPostalCodeAddressItem: FormTextInputItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.postalCode))
-        let postalCode = atomeComponentPostalCodeAddressItem.item.value
-        XCTAssertTrue(postalCode.isEmpty)
     }
 
     // MARK: - Private
