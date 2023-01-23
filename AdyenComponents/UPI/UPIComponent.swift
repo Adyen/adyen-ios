@@ -7,17 +7,17 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-/// The flow types for UPI component.
-internal enum UPIFlowType: Int {
-    case vpa = 0
-    case qrCode = 1
-}
-
 /// A component that provides a upi flows for UPI component.
 public final class UPIComponent: PaymentComponent,
     PresentableComponent,
     PaymentAware,
     LoadingComponent {
+
+    /// The flow types for UPI component.
+    internal enum UPIFlowType: Int {
+        case vpa = 0
+        case qrCode = 1
+    }
 
     private enum ViewIdentifier {
         static let instructionsItem = "instructionsLabelItem"

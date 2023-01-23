@@ -48,5 +48,5 @@ internal struct AwaitComponentViewModel {
                                            spinnerTitle: localizedString(localizationKey, localizationParameters))
         }
     }
-    
+
 }

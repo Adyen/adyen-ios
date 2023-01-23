@@ -48,11 +48,13 @@ internal class FormImageView: FormItemView<FormImageItem> {
     }
 
     internal func renderImage() {
-        let imageView = UIImageView.init(style: item.style ?? ImageStyle(borderColor: nil,
-                                                                         borderWidth: 0,
-                                                                         cornerRadius: 0,
-                                                                         clipsToBounds: false,
-                                                                         contentMode: .center))
+        let style = item.style ?? ImageStyle(borderColor: nil,
+                                             borderWidth: 0,
+                                             cornerRadius: 0,
+                                             clipsToBounds: false,
+                                             contentMode: .center)
+
+        let imageView = UIImageView.init(style: style)
         self.addSubview(imageView)
 
         imageView.image = UIImage(named: item.name,
