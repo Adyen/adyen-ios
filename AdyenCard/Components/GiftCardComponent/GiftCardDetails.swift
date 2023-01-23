@@ -10,7 +10,7 @@
 #endif
 import Foundation
 
-/// Contains the details provided by the card component.
+/// Contains the details provided by the gift card component.
 public struct GiftCardDetails: PartialPaymentMethodDetails {
     
     @_spi(AdyenInternal)

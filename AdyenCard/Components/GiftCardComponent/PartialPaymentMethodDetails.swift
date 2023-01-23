@@ -10,7 +10,7 @@
 #endif
 import Foundation
 
-/// Describes the details a partial payment method (e.g. a gift card) needs to provide.s
+/// Describes the details a partial payment method (e.g. a gift card) needs to provide.
 public protocol PartialPaymentMethodDetails: PaymentMethodDetails {
     
     var type: PaymentMethodType { get }
@@ -20,6 +20,7 @@ public protocol PartialPaymentMethodDetails: PaymentMethodDetails {
     var encryptedSecurityCode: String { get }
 }
 
+/// Contains the details provided by the gift card component with meal voucher payment method.
 public struct MealVoucherDetails: PartialPaymentMethodDetails {
     
     @_spi(AdyenInternal)
