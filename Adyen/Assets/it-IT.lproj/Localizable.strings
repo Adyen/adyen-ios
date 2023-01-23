@@ -166,3 +166,11 @@
 "adyen.paybybank.subtitle" = "Non sono state trovate banche corrispondenti alla tua query di ricerca...";
 "adyen.paybybank.title" = "Nessun risultato per";
 "adyen.search.placeholder" = "Cerca...";
+"adyen.upi.modeSelection" = "Scegli la modalità di utilizzo di UPI.";
+"adyen.UPIVpa.validationMessage" = "Inserisci un indirizzo di pagamento virtuale corretto";
+"adyen.UPIQrcode.generationMessage" = "Per completare il pagamento, genera il codice QR scaricabile, oppure fai uno screenshot del codice e provvedi a caricarlo nell'app UPI.";
+"adyen.UPIQrcode.timerMessage" = "Hai a disposizione %@ per completare l'approvazione";
+"adyen.upi_collect.confirmPayment" = "In attesa di conferma...";
+"adyen.upi.vpaWaitingMessage" = "Apri l'app UPI per confermare il pagamento";
+"adyen.QRCode.generateQRCode" = "Genera codice QR";
+"adyen.UPI.QRCodeInstructions" = "Per completare il pagamento, acquisisci uno screenshot da caricare nell'app UPI o scansiona il codice QR utilizzando l'app UPI che preferisci.";

@@ -173,3 +173,7 @@ whiteList:
   - duitnow
   - paynow
   - paybybank
+  - upi
+  - vpa
+  - qrcode
+  - upicollect

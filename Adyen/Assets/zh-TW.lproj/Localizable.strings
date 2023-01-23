@@ -162,3 +162,11 @@
 "adyen.paybybank.subtitle" = "您的搜尋查詢找不到任何銀行……";
 "adyen.paybybank.title" = "沒有以下結果：";
 "adyen.search.placeholder" = "搜尋……";
+"adyen.upi.modeSelection" = "選擇所需的 UPI 使用方式。";
+"adyen.UPIVpa.validationMessage" = "輸入正確的虛擬付款地址";
+"adyen.UPIQrcode.generationMessage" = "產生可以下載或擷取螢幕畫面的 QR 代碼，然後將其上傳到 UPI 應用程式以完成付款。";
+"adyen.UPIQrcode.timerMessage" = "您有 %@ 的核准時間";
+"adyen.upi_collect.confirmPayment" = "正在等待您的確認……";
+"adyen.upi.vpaWaitingMessage" = "開啟您的 UPI 應用程式以確認付款";
+"adyen.QRCode.generateQRCode" = "產生 QR 代碼";
+"adyen.UPI.QRCodeInstructions" = "擷取螢幕畫面並上傳到 UPI 應用程式，或使用偏好的 UPI 應用程式掃描 QR 代碼以完成付款。";

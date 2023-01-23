@@ -343,6 +343,22 @@ public struct LocalizationKey {
     public static let paybybankTitle = LocalizationKey(key: "adyen.paybybank.title")
     /// Search...
     public static let searchPlaceholder = LocalizationKey(key: "adyen.search.placeholder")
+    /// Make a selection on how you would like to use UPI.
+    public static let upiModeSelection = LocalizationKey(key: "adyen.upi.modeSelection")
+    /// Enter a correct virtual payment address
+    public static let UPIVpaValidationMessage = LocalizationKey(key: "adyen.UPIVpa.validationMessage")
+    /// Generate the QR code that you can download or screenshot and upload it into the UPI app to complete the payment.
+    public static let UPIQrcodeGenerationMessage = LocalizationKey(key: "adyen.UPIQrcode.generationMessage")
+    /// You have %@ to approve
+    public static let UPIQrcodeTimerMessage = LocalizationKey(key: "adyen.UPIQrcode.timerMessage")
+    /// Awaiting your confirmation...
+    public static let upiCollectConfirmPayment = LocalizationKey(key: "adyen.upi_collect.confirmPayment")
+    /// Open your UPI app to confirm the payment
+    public static let upiVpaWaitingMessage = LocalizationKey(key: "adyen.upi.vpaWaitingMessage")
+    /// Generate QR code
+    public static let QRCodeGenerateQRCode = LocalizationKey(key: "adyen.QRCode.generateQRCode")
+    /// Take a screenshot to upload in the UPI app or scan the QR code using your preferred UPI app to complete the payment.
+    public static let UPIQRCodeInstructions = LocalizationKey(key: "adyen.UPI.QRCodeInstructions")
     
     internal let key: String
     

@@ -138,6 +138,8 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
             return 180
         case .pix:
             return 60 * 15
+        case .upiQRCode:
+            return 60 * 5
         }
     }
     
@@ -167,6 +169,10 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
             expirationText = localizedString(.pixExpirationLabel,
                                              configuration.localizationParameters,
                                              timeLeftString)
+        case .upiQRCode:
+            expirationText = localizedString(.UPIQrcodeTimerMessage,
+                                             configuration.localizationParameters,
+                                             timeLeftString)
         case .none:
             expirationText = ""
         }
@@ -191,6 +197,9 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
                                    configuration.localizationParameters)
         case .pix:
             return localizedString(.pixInstructions,
+                                   configuration.localizationParameters)
+        case .upiQRCode:
+            return localizedString(.UPIQRCodeInstructions,
                                    configuration.localizationParameters)
         }
     }
