@@ -57,6 +57,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     case mealVoucherNatixis
     case mealVoucherGroupeUp
     case mealVoucherSodexo
+    case upi
     case other(String)
     
     // swiftlint:disable cyclomatic_complexity function_body_length
@@ -113,6 +114,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case "mealVoucher_FR_groupeup": self = .mealVoucherGroupeUp
         case "mealVoucher_FR_natixis": self = .mealVoucherNatixis
         case "mealVoucher_FR_sodexo": self = .mealVoucherSodexo
+        case "upi": self = .upi
         default: self = .other(rawValue)
         }
     }
@@ -168,6 +170,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .mealVoucherGroupeUp: return "mealVoucher_FR_groupeup"
         case .mealVoucherNatixis: return "mealVoucher_FR_natixis"
         case .mealVoucherSodexo: return "mealVoucher_FR_sodexo"
+        case .upi: return "upi"
         case let .other(value): return value
         }
     }

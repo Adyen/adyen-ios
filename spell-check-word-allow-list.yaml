@@ -177,3 +177,7 @@ whiteList:
   - natixis
   - mealvoucher
   - groupeup
+  - upi
+  - vpa
+  - qrcode
+  - upicollect

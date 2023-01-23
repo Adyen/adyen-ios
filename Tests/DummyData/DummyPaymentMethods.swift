@@ -535,3 +535,8 @@ let onlineBankingDictionary = [
         ]
     ]
 ] as [String: Any]
+
+let upi = [
+    "name": "UPI",
+    "type": "upi"
+]

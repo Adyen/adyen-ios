@@ -166,3 +166,11 @@
 "adyen.paybybank.subtitle" = "Fant ingen banker med søket ditt …";
 "adyen.paybybank.title" = "Ingen resultater for";
 "adyen.search.placeholder" = "Søk …";
+"adyen.upi.modeSelection" = "Velg hvordan du vil bruke UPI.";
+"adyen.UPIVpa.validationMessage" = "Skriv inn en korrekt virtuell betalingsadresse";
+"adyen.UPIQrcode.generationMessage" = "Generer QR-koden, som du kan laste ned eller ta et skjermbilde av, og last den opp til UPI-appen for å fullføre betalingen.";
+"adyen.UPIQrcode.timerMessage" = "Du har %@ å godkjenne";
+"adyen.upi_collect.confirmPayment" = "Venter på bekreftelsen din …";
+"adyen.upi.vpaWaitingMessage" = "Åpne UPI-appen for å bekrefte betalingen";
+"adyen.QRCode.generateQRCode" = "Generer QR-kode";
+"adyen.UPI.QRCodeInstructions" = "Ta et skjermbilde for opplasting i UPI-appen, eller skann QR-koden for å bruke din foretrukne UPI-app til å fullføre betalingen.";

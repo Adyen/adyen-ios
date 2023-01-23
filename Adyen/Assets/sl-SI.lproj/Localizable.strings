@@ -166,3 +166,11 @@
 "adyen.paybybank.subtitle" = "Z vašo iskalno poizvedbo ni bilo mogoče najti nobene banke ...";
 "adyen.paybybank.title" = "Ni rezultatov za";
 "adyen.search.placeholder" = "Iskanje ...";
+"adyen.upi.modeSelection" = "Izberite, kako želite uporabljati aplikacijo UPI.";
+"adyen.UPIVpa.validationMessage" = "Vnesite pravilen virtualni naslov za plačilo";
+"adyen.UPIQrcode.generationMessage" = "Ustvarite kodo QR, ki jo lahko prenesete ali naredite posnetek zaslona, in jo za dokončanje plačila naložite v aplikacijo UPI.";
+"adyen.UPIQrcode.timerMessage" = "Za odobritev imate %@";
+"adyen.upi_collect.confirmPayment" = "Čakanje na vašo potrditev …";
+"adyen.upi.vpaWaitingMessage" = "Za potrditev plačila odprite svojo aplikacijo UPI";
+"adyen.QRCode.generateQRCode" = "Ustvari kodo QR";
+"adyen.UPI.QRCodeInstructions" = "Za dokončanje plačila naredite posnetek zaslona, ki ga naložite v aplikacijo UPI, ali poskenirajte kodo QR z želeno aplikacijo UPI.";

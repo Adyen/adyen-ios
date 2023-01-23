@@ -36,13 +36,17 @@ internal struct AwaitComponentViewModel {
     /// - Parameter localizationParameters: The localization parameters to control some aspects of how strings are localized
     internal static func viewModel(with paymentMethodType: AwaitPaymentMethod,
                                    localizationParameters: LocalizationParameters? = nil) -> AwaitComponentViewModel {
+        let localizationKey = LocalizationKey(key: "adyen.\(paymentMethodType.rawValue).confirmPayment")
         switch paymentMethodType {
         case .mbway, .blik:
-            let localizationKey = LocalizationKey(key: "adyen.\(paymentMethodType.rawValue).confirmPayment")
             return AwaitComponentViewModel(icon: paymentMethodType.rawValue,
                                            message: localizedString(localizationKey, localizationParameters),
                                            spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters))
+        case .upicollect:
+            return AwaitComponentViewModel(icon: paymentMethodType.rawValue,
+                                           message: localizedString( .upiVpaWaitingMessage, localizationParameters),
+                                           spinnerTitle: localizedString(localizationKey, localizationParameters))
         }
     }
-    
+
 }

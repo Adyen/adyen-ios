@@ -166,3 +166,11 @@
 "adyen.paybybank.subtitle" = "A keresési lekérdezéssel nem található bank…";
 "adyen.paybybank.title" = "Nincs találat a következőre:";
 "adyen.search.placeholder" = "Keresés...";
+"adyen.upi.modeSelection" = "Jelölje meg, hogyan szeretné használni az UPI-t.";
+"adyen.UPIVpa.validationMessage" = "Adjon meg egy helyes virtuális fizetési címet";
+"adyen.UPIQrcode.generationMessage" = "Hozzon létre QR-kódot, amelyet letölthet vagy amelyről képernyőképet készíthet, és töltse fel az UPI alkalmazásba a fizetés végrehajtásához.";
+"adyen.UPIQrcode.timerMessage" = "Jóváhagyásra rendelkezésre álló idő: %@";
+"adyen.upi_collect.confirmPayment" = "Várakozás a megerősítésre…";
+"adyen.upi.vpaWaitingMessage" = "A fizetés megerősítéséhez nyissa meg UPI-alkalmazást";
+"adyen.QRCode.generateQRCode" = "QR-kód létrehozása";
+"adyen.UPI.QRCodeInstructions" = "A fizetés befejezéséhez készítsen képernyőképet és töltse fel az UPI-alkalmazásban, vagy a kívánt UPI-alkalmazással olvassa be a QR-kódot.";
