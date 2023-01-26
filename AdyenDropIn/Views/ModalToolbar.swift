@@ -7,7 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-internal final class ModalToolbar: UIView, AnyNavigationBar {
+internal class ModalToolbar: UIView, AnyNavigationBar {
     private let style: NavigationStyle
     internal var onCancelHandler: (() -> Void)?
     private let title: String?
@@ -69,7 +69,7 @@ internal final class ModalToolbar: UIView, AnyNavigationBar {
         }
     }
 
-    @objc private func didCancel() {
+    @objc internal func didCancel() {
         onCancelHandler?()
     }
 

@@ -31,6 +31,7 @@ public protocol AnyNavigationBar: UIView {
 @_spi(AdyenInternal)
 public enum NavigationBarType {
     case regular
+    case polling
     case custom(AnyNavigationBar)
 }
 
