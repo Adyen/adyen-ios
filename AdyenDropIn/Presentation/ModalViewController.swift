@@ -119,7 +119,7 @@ internal final class ModalViewController: UIViewController {
         navBar.translatesAutoresizingMaskIntoConstraints = false
         return navBar
     }()
-    
+
     private func getRegularNavBar() -> AnyNavigationBar {
         ModalToolbar(title: self.innerController.title, style: style)
     }
