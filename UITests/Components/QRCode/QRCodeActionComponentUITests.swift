@@ -253,10 +253,10 @@ class QRCodeActionComponentUITests: XCTestCase {
         presentationDelegate.doPresent = { component in
             let qrCodeViewController = component.viewController as! QRCodeViewController
             XCTAssertNotNil(qrCodeViewController)
-
-            let wrapperViewController = WrapperViewController(
-                child: ModalViewController(rootViewController: qrCodeViewController, navBarType: .polling)
-            )
+            let pollingComponentToolBar = PollingComponentToolBar(title: qrCodeViewController.title, style: NavigationStyle())
+            _ = WrapperViewController(
+                child: ModalViewController(rootViewController: qrCodeViewController, navBarType: .custom(pollingComponentToolBar.getPollingComponentNavBar())
+            ))
 
             // wait until the expiration label is rendered
             self.wait(for: .seconds(1))
