@@ -38,10 +38,10 @@
 		0067E740296C161E005B8D76 /* UPIComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0067E73F296C161E005B8D76 /* UPIComponentTests.swift */; };
 		006DCC03295C3E930015EA79 /* SegmentedControlStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006DCC02295C3E930015EA79 /* SegmentedControlStyle.swift */; };
 		008AD9DE2983DBD500C33983 /* PollingComponentToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008AD9DB2982C24000C33983 /* PollingComponentToolBar.swift */; };
-		008AD9E12983E11D00C33983 /* ModalToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F49A25A5E9740077029E /* ModalToolbar.swift */; };
-		008AD9E22983E12100C33983 /* PollingComponentToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008AD9DB2982C24000C33983 /* PollingComponentToolBar.swift */; };
 		008AD9E42983E38800C33983 /* ModalToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F49A25A5E9740077029E /* ModalToolbar.swift */; };
 		008AD9E52983E38A00C33983 /* PollingComponentToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008AD9DB2982C24000C33983 /* PollingComponentToolBar.swift */; };
+		008AD9E92983FC7200C33983 /* ModalToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F49A25A5E9740077029E /* ModalToolbar.swift */; };
+		008AD9EA2983FC7600C33983 /* PollingComponentToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008AD9DB2982C24000C33983 /* PollingComponentToolBar.swift */; };
 		00EA4ED4280412140053D938 /* DefaultAddressViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */; };
 		00EA4ED7280590050053D938 /* AtomeAddressViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */; };
 		00EACBAC2872E8EB0082B360 /* OnlineBankingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBAB2872E8EB0082B360 /* OnlineBankingComponent.swift */; };
@@ -6248,7 +6248,6 @@
 				F917615C25A30B6400D653BE /* AnyChallengeResult.swift in Sources */,
 				F9976BB326D903F400D2D7CE /* MultibancoVoucherAction.swift in Sources */,
 				F9175FFA259499D500D653BE /* AwaitViewController.swift in Sources */,
-				008AD9E12983E11D00C33983 /* ModalToolbar.swift in Sources */,
 				F96757C327CF909900A16FB6 /* AnyWeChatPaySDKActionComponent.swift in Sources */,
 				F9175FD22594999600D653BE /* RedirectComponent.swift in Sources */,
 				F9237D3D28CB470E004F9929 /* ThreeDS2ClassicActionHandler+Initializers.swift in Sources */,
@@ -6263,6 +6262,7 @@
 				F9175FB42594996000D653BE /* ThreeDS2FingerprintAction.swift in Sources */,
 				5A22C2AD262EF99C00F12D97 /* ExpirationTimer.swift in Sources */,
 				F91760822594B1F400D653BE /* AwaitComponentStyle.swift in Sources */,
+				008AD9E92983FC7200C33983 /* ModalToolbar.swift in Sources */,
 				F9175FCF2594999600D653BE /* RedirectListener.swift in Sources */,
 				F917618425A30B8500D653BE /* Submit3DS2FingerprintResponse.swift in Sources */,
 				F9175FE42594999C00D653BE /* AwaitActionDetails.swift in Sources */,
@@ -6280,7 +6280,7 @@
 				F9175FE52594999C00D653BE /* PollingHandlerProvider.swift in Sources */,
 				F917613425A30B5700D653BE /* ThreeDS2Component.swift in Sources */,
 				F917617025A30B6A00D653BE /* ThreeDS2CoreActionHandler.swift in Sources */,
-				008AD9E22983E12100C33983 /* PollingComponentToolBar.swift in Sources */,
+				008AD9EA2983FC7600C33983 /* PollingComponentToolBar.swift in Sources */,
 				F917615B25A30B6400D653BE /* AnyAuthenticationRequestParameters.swift in Sources */,
 				A02AF3EA275A3A5100E1636C /* DocumentAction.swift in Sources */,
 				F9237D3B28CB467D004F9929 /* ThreeDS2CompactActionHandler+Initializers.swift in Sources */,
