@@ -123,10 +123,11 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     }
     
     private func present(_ viewController: UIViewController, presentationDelegate: PresentationDelegate) {
+        let pollingComponentToolBar = PollingComponentToolBar(title: viewController.title, style: NavigationStyle())
         let presentableComponent = PresentableComponentWrapper(
             component: self,
             viewController: viewController,
-            navBarType: .polling
+            navBarType: .custom(pollingComponentToolBar.getPollingComponentNavBar())
         )
         presentationDelegate.present(component: presentableComponent)
     }

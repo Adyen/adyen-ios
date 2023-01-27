@@ -10,9 +10,11 @@ import UIKit
 internal class PollingComponentToolBar: ModalToolbar {
 
     private let style: NavigationStyle
+    private let title: String?
 
     internal override init(title: String?, style: NavigationStyle) {
         self.style = style
+        self.title = title
         super.init(title: title, style: style)
     }
 
@@ -36,6 +38,10 @@ internal class PollingComponentToolBar: ModalToolbar {
         set {
             _ = customizeCancelButton()
         }
+    }
+
+    internal func getPollingComponentNavBar() -> AnyNavigationBar {
+       PollingComponentToolBar(title: title, style: style)
     }
 
 }

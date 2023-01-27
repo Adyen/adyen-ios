@@ -102,8 +102,6 @@ internal final class ModalViewController: UIViewController {
             return style.separatorColor ?? UIColor.Adyen.componentSeparator
         case .custom:
             return style.backgroundColor
-        case .polling:
-            return style.separatorColor ?? UIColor.Adyen.componentSeparator
         }
     }
     
@@ -115,8 +113,6 @@ internal final class ModalViewController: UIViewController {
             navBar = getRegularNavBar()
         case let .custom(customNavbar):
             navBar = customNavbar
-        case .polling:
-            navBar = getPollingComponentNavBar()
         }
         
         navBar.onCancelHandler = { [weak self] in self?.didCancel() }
@@ -126,10 +122,6 @@ internal final class ModalViewController: UIViewController {
     
     private func getRegularNavBar() -> AnyNavigationBar {
         ModalToolbar(title: self.innerController.title, style: style)
-    }
-    
-    private func getPollingComponentNavBar() -> AnyNavigationBar {
-       PollingComponentToolBar(title: self.innerController.title, style: style)
     }
 
     internal lazy var stackView: UIStackView = {
