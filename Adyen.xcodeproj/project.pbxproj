@@ -37,9 +37,8 @@
 		0067E73D29658CB6005B8D76 /* FormImageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0067E73C29658CB6005B8D76 /* FormImageItem.swift */; };
 		0067E740296C161E005B8D76 /* UPIComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0067E73F296C161E005B8D76 /* UPIComponentTests.swift */; };
 		006DCC03295C3E930015EA79 /* SegmentedControlStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006DCC02295C3E930015EA79 /* SegmentedControlStyle.swift */; };
-		008AD9E42983E38800C33983 /* ModalToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F49A25A5E9740077029E /* ModalToolbar.swift */; };
-		008AD9E92983FC7200C33983 /* ModalToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F49A25A5E9740077029E /* ModalToolbar.swift */; };
 		008AD9EA2983FC7600C33983 /* CancellableToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008AD9DB2982C24000C33983 /* CancellableToolBar.swift */; };
+		008AD9EF2988043700C33983 /* ModalToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F49A25A5E9740077029E /* ModalToolbar.swift */; };
 		00EA4ED4280412140053D938 /* DefaultAddressViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */; };
 		00EA4ED7280590050053D938 /* AtomeAddressViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */; };
 		00EACBAC2872E8EB0082B360 /* OnlineBankingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBAB2872E8EB0082B360 /* OnlineBankingComponent.swift */; };
@@ -2217,6 +2216,7 @@
 			children = (
 				5A22C2AC262EF99C00F12D97 /* ExpirationTimer.swift */,
 				0058691B28B6457700B65A19 /* QRCodeActionComponent.swift */,
+				008AD9DB2982C24000C33983 /* CancellableToolBar.swift */,
 			);
 			path = QRCode;
 			sourceTree = "<group>";
@@ -3233,7 +3233,6 @@
 			isa = PBXGroup;
 			children = (
 				E767F49A25A5E9740077029E /* ModalToolbar.swift */,
-				008AD9DB2982C24000C33983 /* CancellableToolBar.swift */,
 				5A238C92263AEA0800758FEF /* PreApplePayView.swift */,
 			);
 			path = Views;
@@ -6257,7 +6256,7 @@
 				F9175FB42594996000D653BE /* ThreeDS2FingerprintAction.swift in Sources */,
 				5A22C2AD262EF99C00F12D97 /* ExpirationTimer.swift in Sources */,
 				F91760822594B1F400D653BE /* AwaitComponentStyle.swift in Sources */,
-				008AD9E92983FC7200C33983 /* ModalToolbar.swift in Sources */,
+				008AD9EF2988043700C33983 /* ModalToolbar.swift in Sources */,
 				F9175FCF2594999600D653BE /* RedirectListener.swift in Sources */,
 				F917618425A30B8500D653BE /* Submit3DS2FingerprintResponse.swift in Sources */,
 				F9175FE42594999C00D653BE /* AwaitActionDetails.swift in Sources */,
@@ -6423,7 +6422,6 @@
 				F9CCA3D2296ECCFA00AD643D /* XCTestCaseExtension.swift in Sources */,
 				F9CCA3DE296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift in Sources */,
 				F9CCA3C6296ECB9900AD643D /* QRCodeActionComponentUITests.swift in Sources */,
-				008AD9E42983E38800C33983 /* ModalToolbar.swift in Sources */,
 				F9CCA3D7296ECDB200AD643D /* XCTestCase+Coder.swift in Sources */,
 				F9CCA3C5296ECB9900AD643D /* ListViewControllerUITests.swift in Sources */,
 				F9CCA3D0296ECCC700AD643D /* UIView+Search.swift in Sources */,
