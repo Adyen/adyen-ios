@@ -1179,7 +1179,6 @@
 		5A56E15226B6DB9C00744CA0 /* VoucherViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherViewTests.swift; sourceTree = "<group>"; };
 		5A56E15426B6DEF800744CA0 /* XCTestCase+Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Style.swift"; sourceTree = "<group>"; };
 		5A6456D5262592B2001824F0 /* QRCodeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeAction.swift; sourceTree = "<group>"; wrapsLines = 1; };
-		5A6456E22625A1E2001824F0 /* QRCodeActionComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeActionComponent.swift; sourceTree = "<group>"; };
 		5A64573E2626D2E2001824F0 /* QRCodeComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeComponentStyle.swift; sourceTree = "<group>"; };
 		5A6745E026417A5C00E9184D /* ADYViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADYViewController.swift; sourceTree = "<group>"; };
 		5A67461F264262F000E9184D /* ConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationView.swift; sourceTree = "<group>"; };
@@ -2218,7 +2217,6 @@
 		5A6456E12625A1C3001824F0 /* QRCode */ = {
 			isa = PBXGroup;
 			children = (
-				5A6456E22625A1E2001824F0 /* QRCodeActionComponent.swift */,
 				5A22C2AC262EF99C00F12D97 /* ExpirationTimer.swift */,
 				0058691B28B6457700B65A19 /* QRCodeActionComponent.swift */,
 			);
