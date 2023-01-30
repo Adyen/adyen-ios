@@ -7,7 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-internal class PollingComponentToolBar: ModalToolbar {
+internal class CancellableToolBar: ModalToolbar {
 
     private let style: NavigationStyle
     private let title: String?
@@ -39,9 +39,4 @@ internal class PollingComponentToolBar: ModalToolbar {
             _ = customizeCancelButton()
         }
     }
-
-    internal func getPollingComponentNavBar() -> AnyNavigationBar {
-       PollingComponentToolBar(title: title, style: style)
-    }
-
 }
