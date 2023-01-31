@@ -7,7 +7,7 @@
 import UIKit
 
 @_spi(AdyenInternal)
-public class CancellableToolBar: ModalToolbar {
+public final class CancellingToolBar: ModalToolbar {
 
     private let style: NavigationStyle
     private let title: String?
@@ -22,7 +22,7 @@ public class CancellableToolBar: ModalToolbar {
         let button = UIButton(type: UIButton.ButtonType.system)
         let cancelText = Bundle(for: UIApplication.self).localizedString(forKey: "Cancel", value: nil, table: nil)
         button.setTitle(cancelText, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 17.0)
+        button.titleLabel?.font = .preferredFont(forTextStyle: .body)
         button.setTitleColor(style.tintColor, for: .normal)
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         button.translatesAutoresizingMaskIntoConstraints = false
