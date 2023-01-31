@@ -5,6 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenActions)
+@_spi(AdyenInternal) import AdyenActions
+#endif
 import UIKit
 
 /// View controller with a custom navigation bar for DropIn.

@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @testable @_spi(AdyenInternal) import AdyenCard
 @testable import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenActions
 import XCTest
 
 class ModalToolbarTests: XCTestCase {
