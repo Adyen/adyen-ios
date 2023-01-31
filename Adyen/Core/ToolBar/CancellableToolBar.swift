@@ -4,15 +4,15 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
 import UIKit
 
-internal class CancellableToolBar: ModalToolbar {
+@_spi(AdyenInternal)
+public class CancellableToolBar: ModalToolbar {
 
     private let style: NavigationStyle
     private let title: String?
 
-    internal override init(title: String?, style: NavigationStyle) {
+    public override init(title: String?, style: NavigationStyle) {
         self.style = style
         self.title = title
         super.init(title: title, style: style)
