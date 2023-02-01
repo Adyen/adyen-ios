@@ -5,6 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenActions)
+@_spi(AdyenInternal) import AdyenActions
+#endif
 import UIKit
 
 /// View controller with a custom navigation bar for DropIn.
@@ -119,11 +122,11 @@ internal final class ModalViewController: UIViewController {
         navBar.translatesAutoresizingMaskIntoConstraints = false
         return navBar
     }()
-    
+
     private func getRegularNavBar() -> AnyNavigationBar {
         ModalToolbar(title: self.innerController.title, style: style)
     }
-    
+
     internal lazy var stackView: UIStackView = {
         let views = [navBar, separator, innerController.view]
         let stackView = UIStackView(arrangedSubviews: views.compactMap { $0 })
