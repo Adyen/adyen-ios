@@ -120,13 +120,8 @@ PROJECT_NAME='Adyen'
 DESTINATION='platform=iOS Simulator,name=iPhone 13 Pro Max'
 
 # PIF SMP fix
-
-MAX_ATTEMP=3
-ATTEMPT=0
-while [ -z $SUCCESS ] && [ "$ATTEMPT" -le "$MAX_ATTEMP" ]; do
-  xcodebuild clean -scheme $PROJECT_NAME -destination $DESTINATION | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
-  ATTEMPT=$(($ATTEMPT+1))
-done
+swift package dump-pif > /dev/null || true
+xcodebuild clean -scheme $PROJECT_NAME -destination $DESTINATION > /dev/null || true
 
 # Generate the docc archive.
 xcodebuild docbuild \
