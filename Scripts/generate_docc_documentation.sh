@@ -116,10 +116,17 @@ swift package update
 
 DERIVED_DATA_PATH=.build
 
+PROJECT_NAME='Adyen'
+DESTINATION='platform=iOS Simulator,name=iPhone 13 Pro Max'
+
+# PIF SMP fix
+swift package dump-pif > /dev/null || true
+xcodebuild clean -scheme $PROJECT_NAME -destination $DESTINATION > /dev/null || true
+
 # Generate the docc archive.
 xcodebuild docbuild \
- -scheme Adyen \
- -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max' \
+ -scheme $PROJECT_NAME \
+ -destination $DESTINATION \
  -configuration Release \
  -derivedDataPath $DERIVED_DATA_PATH
 
