@@ -116,6 +116,13 @@ swift package update
 
 DERIVED_DATA_PATH=.build
 
+MAX_ATTEMP=3
+ATTEMPT=0
+while [ -z $SUCCESS ] && [ "$ATTEMPT" -le "$MAX_ATTEMP" ]; do
+  xcodebuild clean -scheme $PROJECT_NAME -destination 'generic/platform=iOS' | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
+  ATTEMPT=$(($ATTEMPT+1))
+done
+
 # Generate the docc archive.
 xcodebuild docbuild \
  -scheme Adyen \
