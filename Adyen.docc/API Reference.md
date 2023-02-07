@@ -88,7 +88,7 @@ The Adyen DropIn/Components SDK API Reference.
 
 - ``AdyenActionComponent``
 - ``VoucherComponent``
-- ``QRCodeComponent``
+- ``QRCodeActionComponent``
 - ``AwaitComponent``
 - ``AwaitActionDetails``
 - ``RedirectComponent``
@@ -272,6 +272,12 @@ The Adyen DropIn/Components SDK API Reference.
 - ``OnlineBankingPaymentMethod``
 - ``OnlineBankingComponent``
 - ``OnlineBankingDetails``
+
+### UPI Component
+
+- ``UPIPaymentMethod``
+- ``UPIComponent``
+- ``UPIComponentDetails``
     
 ## Public Protocols
 
