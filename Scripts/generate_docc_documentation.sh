@@ -116,17 +116,22 @@ swift package update
 
 DERIVED_DATA_PATH=.build
 
+PROJECT_NAME='Adyen'
+DESTINATION='platform=iOS Simulator,name=iPhone 13 Pro Max'
+
+# PIF SMP fix
+
 MAX_ATTEMP=3
 ATTEMPT=0
 while [ -z $SUCCESS ] && [ "$ATTEMPT" -le "$MAX_ATTEMP" ]; do
-  xcodebuild clean -scheme $PROJECT_NAME -destination 'generic/platform=iOS' | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
+  xcodebuild clean -scheme $PROJECT_NAME -destination $DESTINATION | grep -q "CLEAN SUCCEEDED" && SUCCESS=true
   ATTEMPT=$(($ATTEMPT+1))
 done
 
 # Generate the docc archive.
 xcodebuild docbuild \
- -scheme Adyen \
- -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max' \
+ -scheme $PROJECT_NAME \
+ -destination $DESTINATION \
  -configuration Release \
  -derivedDataPath $DERIVED_DATA_PATH
 
