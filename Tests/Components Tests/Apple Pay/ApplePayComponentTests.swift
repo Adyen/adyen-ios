@@ -196,30 +196,6 @@ class ApplePayComponentTest: XCTestCase {
 
         waitForExpectations(timeout: 4)
     }
-    
-    @available(iOS 16.0, *)
-    func testRecurringRequest() {
-        guard Available.iOS16 else { return }
-        
-        let configuration = ApplePayComponent.Configuration(payment: Dummy.createTestApplePayPayment(),
-                                                            merchantIdentifier: "test_id")
-        
-        let billing = PKRecurringPaymentSummaryItem(label: "recurring", amount: 15)
-        billing.intervalCount = 3
-        billing.intervalUnit = .month
-        let recurring = PKRecurringPaymentRequest(paymentDescription: "test", regularBilling: billing, managementURL: Dummy.returnUrl)
-        let sut = try! ApplePayComponent(paymentMethod: paymentMethod,
-                                         context: Dummy.context,
-                                         recurringPaymentRequest: recurring,
-                                         configuration: configuration)
-        
-        XCTAssertEqual(sut.paymentRequest.recurringPaymentRequest?.regularBilling.intervalUnit, .month)
-        XCTAssertEqual(sut.paymentRequest.recurringPaymentRequest?.regularBilling.intervalCount, 3)
-        XCTAssertEqual(sut.paymentRequest.recurringPaymentRequest?.regularBilling.amount, 15)
-        XCTAssertEqual(sut.paymentRequest.recurringPaymentRequest?.regularBilling.label, "recurring")
-        XCTAssertEqual(sut.paymentRequest.recurringPaymentRequest?.managementURL, Dummy.returnUrl)
-        XCTAssertEqual(sut.paymentRequest.recurringPaymentRequest?.paymentDescription, "test")
-    }
 
     func testInvalidCurrencyCode() {
         let amount = Amount(value: 2, unsafeCurrencyCode: "ZZZ")

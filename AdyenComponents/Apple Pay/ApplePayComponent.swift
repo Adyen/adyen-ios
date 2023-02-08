@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -75,28 +75,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         super.init()
 
         paymentAuthorizationViewController?.delegate = self
-    }
-    
-    /// Initializes the component with a recurring payment.
-    /// - Warning: Do not dismiss this component directly.
-    ///  First, call `didFinalize(with:completion:)` on error or success, then dismiss it.
-    ///  Dismissal should occur within `completion` block.
-    ///
-    /// - Parameter paymentMethod: The Apple Pay payment method. Must include country code.
-    /// - Parameter context: The context object for this component.
-    /// - Parameter configuration: Apple Pay component configuration
-    /// - Parameter recurringPaymentRequest: Payment request to set up a recurring payment, typically a subscription.
-    /// - Throws: `ApplePayComponent.Error.userCannotMakePayment`.
-    /// if user can't make payments on any of the payment request’s supported networks.
-    /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplyPay` if the current device's hardware doesn't support ApplePay.
-    /// - Throws: `ApplePayComponent.Error.userCannotMakePayment` if user can't make payments on any of the supported networks.
-    @available(iOS 16.0, *)
-    public convenience init(paymentMethod: ApplePayPaymentMethod,
-                            context: AdyenContext,
-                            recurringPaymentRequest: PKRecurringPaymentRequest,
-                            configuration: Configuration) throws {
-        try self.init(paymentMethod: paymentMethod, context: context, configuration: configuration)
-        self.paymentRequest.recurringPaymentRequest = recurringPaymentRequest
     }
 
     public var viewController: UIViewController {
