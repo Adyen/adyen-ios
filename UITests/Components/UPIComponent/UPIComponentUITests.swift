@@ -57,8 +57,8 @@ class UPIComponentUITests: XCTestCase {
     
         let config = UPIComponent.Configuration(style: style)
         let sut = UPIComponent(paymentMethod: paymentMethod,
-                                 context: context,
-                                 configuration: config)
+                               context: context,
+                               configuration: config)
     
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
@@ -99,20 +99,19 @@ class UPIComponentUITests: XCTestCase {
     
         let config = UPIComponent.Configuration(style: style)
         let sut = UPIComponent(paymentMethod: paymentMethod,
-                                 context: context,
-                                 configuration: config)
+                               context: context,
+                               configuration: config)
         sut.currentSelectedIndex = 1
 
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration_Index_One")
     }
 
-
     func testUIElementsForUPICollectFlowType() {
         // Assert
         let config = UPIComponent.Configuration(style: style)
         let sut = UPIComponent(paymentMethod: paymentMethod,
-                                 context: context,
-                                 configuration: config)
+                               context: context,
+                               configuration: config)
         assertViewControllerImage(matching: sut.viewController, named: "all_required_fields_exist")
     }
 
@@ -154,7 +153,7 @@ class UPIComponentUITests: XCTestCase {
 
         assertViewControllerImage(matching: sut.viewController, named: "prefilled_vpa")
 
-        let continueButton: UIControl? =  sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button")
+        let continueButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button")
         continueButton?.sendActions(for: .touchUpInside)
     
         waitForExpectations(timeout: 10, handler: nil)

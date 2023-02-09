@@ -30,6 +30,7 @@ public class SearchViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
+    @available(*, unavailable)
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -60,7 +61,7 @@ public class SearchViewController: UIViewController {
 
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.font =  UIFont.preferredFont(forTextStyle: .title2).adyen.font(with: .bold)
+        titleLabel.font = UIFont.preferredFont(forTextStyle: .title2).adyen.font(with: .bold)
         titleLabel.numberOfLines = 0
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
@@ -126,14 +127,15 @@ public class SearchViewController: UIViewController {
             guard childViewController.isViewLoaded else { return .zero }
             let innerSize = childViewController.preferredContentSize
             return CGSize(width: innerSize.width,
-                          height: UIScreen.main.bounds.height * 0.7) }
+                          height: UIScreen.main.bounds.height * 0.7)
+        }
 
         // swiftlint:disable:next unused_setter_value
         set { AdyenAssertion.assertionFailure(message: """
-            PreferredContentSize is overridden for this view controller.
-            getter - returns content size of scroll view.
-            setter - no implemented.
-            """) }
+        PreferredContentSize is overridden for this view controller.
+        getter - returns content size of scroll view.
+        setter - no implemented.
+        """) }
     }
 
     public func showNoSearchResultsView(searchText: String) {
