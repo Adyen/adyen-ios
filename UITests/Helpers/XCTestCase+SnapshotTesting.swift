@@ -6,9 +6,9 @@
 //  Copyright © 2023 Adyen. All rights reserved.
 //
 
+import SnapshotTesting
 import UIKit
 import XCTest
-import SnapshotTesting
 
 extension XCTestCase {
     

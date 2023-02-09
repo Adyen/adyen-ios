@@ -95,9 +95,10 @@ public final class UPIComponent: PaymentComponent,
     /// The upi selection segment control item to choose the upi flow.
     internal lazy var upiFlowSelectionItem: FormSegmentedControlItem = {
         let item = FormSegmentedControlItem(items: ["VPA", "QR code"], style: configuration.style.segmentedControlStyle,
-                        identifier: ViewIdentifierBuilder.build(
-                           scopeInstance: self,
-                           postfix: ViewIdentifier.upiFlowSelectionItem))
+                                            identifier: ViewIdentifierBuilder.build(
+                                                scopeInstance: self,
+                                                postfix: ViewIdentifier.upiFlowSelectionItem
+                                            ))
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                       postfix: ViewIdentifier.upiFlowSelectionItem)
         item.selectionHandler = { [weak self] changedIndex in
@@ -131,7 +132,7 @@ public final class UPIComponent: PaymentComponent,
     internal lazy var qrCodeGenerationImageItem: FormImageItem = {
         let imageView = FormImageItem(name: "qrcode")
         imageView.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                      postfix: ViewIdentifier.qrCodeGenerationImageItem)
+                                                           postfix: ViewIdentifier.qrCodeGenerationImageItem)
         imageView.isHidden.wrappedValue = true
         return imageView
     }()
@@ -197,14 +198,14 @@ public final class UPIComponent: PaymentComponent,
             qrCodeGenerationLabelContainerItem.isHidden.wrappedValue = true
             qrCodeGenerationImageItem.isHidden.wrappedValue = true
             continueButton.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                          postfix: ViewIdentifier.continueButtonItem)
+                                                                    postfix: ViewIdentifier.continueButtonItem)
             continueButton.title = localizedString(.continueTitle, configuration.localizationParameters)
         case .qrCode:
             virtualPaymentAddressItem.isVisible = false
             qrCodeGenerationLabelContainerItem.isHidden.wrappedValue = false
             qrCodeGenerationImageItem.isHidden.wrappedValue = false
             continueButton.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                          postfix: ViewIdentifier.generateQRCodeButtonItem)
+                                                                    postfix: ViewIdentifier.generateQRCodeButtonItem)
             continueButton.title = localizedString(.QRCodeGenerateQRCode, configuration.localizationParameters)
         default:
             AdyenAssertion.assert(message: "UPI flow type is out of range", condition: currentSelectedIndex > 1)

@@ -39,7 +39,7 @@ class QRCodeActionComponentTests: XCTestCase {
         )
         
         let sut = QRCodeActionComponent(context: context,
-                                  pollingComponentBuilder: builder)
+                                        pollingComponentBuilder: builder)
         
         XCTAssertEqual(sut.timeoutDuration(for: action), 900)
         
@@ -87,7 +87,7 @@ class QRCodeActionComponentTests: XCTestCase {
         )
         
         let sut = QRCodeActionComponent(context: context,
-                                  pollingComponentBuilder: builder)
+                                        pollingComponentBuilder: builder)
         
         handler.onHandle = {
             XCTAssertEqual($0.paymentData, self.action.paymentData)

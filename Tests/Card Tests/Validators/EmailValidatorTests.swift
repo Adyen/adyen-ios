@@ -62,7 +62,6 @@ class EmailValidatorTests: XCTestCase {
     func testinvalidationEmails() {
         let sut = EmailValidator()
         
-        
         XCTAssertFalse(sut.isValid("Abc.example.com"))
         XCTAssertFalse(sut.isValid("A@b@c@example.com"))
         XCTAssertFalse(sut.isValid("a\"b(c)d,e:f;g<h>i[j\\k]l@example.com"))
