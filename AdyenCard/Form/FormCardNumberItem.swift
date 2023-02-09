@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -90,7 +90,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     
     private func updateBINIfNeeded() {
         switch (value, isValid()) {
-        case (_, true) where value.count > Constants.minimumPANLength:
+        case (_, true) where value.count >= Constants.minimumPANLength:
             binValue = String(value.prefix(Constants.largeBinLength))
         default:
             binValue = String(value.prefix(Constants.smallBinLength))
