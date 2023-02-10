@@ -117,7 +117,7 @@ swift package update
 DERIVED_DATA_PATH=.build
 
 PROJECT_NAME='Adyen'
-DESTINATION='platform=iOS Simulator,name=iPhone 13'
+DESTINATION='generic/platform=iOS'
 
 # PIF SMP fix
 swift package dump-pif > /dev/null || true
