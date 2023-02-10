@@ -137,7 +137,7 @@ cd ../../
 rm -rf $FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive
 
 # Move the new DocC archive to the its final place
-mv $TEMP_PROJECT_PATH/$DERIVED_DATA_PATH/Build/Products/Release-iphonesimulator/$FRAMEWORK_NAME.doccarchive $FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive
+mv $TEMP_PROJECT_PATH/$DERIVED_DATA_PATH/Build/Products/Release-iphoneos/$FRAMEWORK_NAME.doccarchive $FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive
 
 CURRENT_MARKETING_VERSION=$(agvtool what-marketing-version -terse1)
 
