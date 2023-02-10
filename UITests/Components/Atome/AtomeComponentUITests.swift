@@ -46,8 +46,8 @@ class AtomeComponentUITests: XCTestCase {
         style.textField.text.font = .systemFont(ofSize: 5)
         style.textField.text.textAlignment = .center
         style.textField.placeholderText = TextStyle(font: .preferredFont(forTextStyle: .headline),
-                                                                 color: .systemOrange,
-                                                                 textAlignment: .center)
+                                                    color: .systemOrange,
+                                                    textAlignment: .center)
         style.textField.title.backgroundColor = .blue
         style.textField.title.color = .green
         style.textField.title.font = .systemFont(ofSize: 18)

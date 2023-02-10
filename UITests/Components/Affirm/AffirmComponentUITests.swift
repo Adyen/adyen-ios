@@ -36,17 +36,15 @@ class AffirmComponentUITests: XCTestCase {
                                   context: Dummy.context(with: nil),
                                   configuration: AffirmComponent.Configuration(style: style,
                                                                                shopperInformation: PrefilledShopperInformation(
-                                                                                shopperName: ShopperName(
-                                                                                    firstName: "Katrina",
-                                                                                    lastName: "Del Mar"
-                                                                                ),
-                                                                                emailAddress: "katrina@mail.com",
-                                                                                telephoneNumber: "2025550146",
-                                                                                billingAddress: expectedBillingAddress,
-                                                                                deliveryAddress: expectedDeliveryAddress
-                                                                               )
-                                                                              )
-        )
+                                                                                   shopperName: ShopperName(
+                                                                                       firstName: "Katrina",
+                                                                                       lastName: "Del Mar"
+                                                                                   ),
+                                                                                   emailAddress: "katrina@mail.com",
+                                                                                   telephoneNumber: "2025550146",
+                                                                                   billingAddress: expectedBillingAddress,
+                                                                                   deliveryAddress: expectedDeliveryAddress
+                                                                               )))
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
