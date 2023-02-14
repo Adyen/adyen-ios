@@ -54,12 +54,30 @@ jobs:
       env:
         CLIENT_KEY: ${{ secrets.DEMO_APP_TEST_ENV_CLIENT_KEY }}
         DEMO_SERVER_API_KEY: ${{ secrets.DEMO_SERVER_TEST_ENV_API_KEY }}
+        MERCHANT_ACCOUNT: ${{ secrets.MERCHANT_ACCOUNT }}
+        APPLE_DEVELOPMENT_TEAM_ID: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
+        ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
       run: |
         # client Key
         sed -i '' "s/static let clientKey.*$/static let clientKey = \"$CLIENT_KEY\"/g" ./Demo/Configuration.swift
 
         # demo server API key
         sed -i '' "s/static let demoServerAPIKey.*$/static let demoServerAPIKey = \"$DEMO_SERVER_API_KEY\"/g" ./Demo/Configuration.swift
+
+        # merchant account
+        sed -i '' "s/static let merchantAccount.*=.*\".*\"/static let merchantAccount = \"$MERCHANT_ACCOUNT\"/g" ./Demo/Configuration.swift
+
+        # apple team identifier
+        sed -i '' "s/static let appleTeamIdentifier.*=.*\".*\"/static let appleTeamIdentifier = \"$APPLE_DEVELOPMENT_TEAM_ID\"/g" ./Demo/Configuration.swift
+
+        # demoServerEnvironment
+        sed -i '' "s/static let demoServerEnvironment.*=.*/static let demoServerEnvironment = DemoCheckoutAPIEnvironment.$ENVIRONMENT/g" ./Demo/Configuration.swift
+
+        # classicAPIEnvironment
+        sed -i '' "s/static let classicAPIEnvironment.*=.*/static let classicAPIEnvironment = DemoClassicAPIEnvironment.$ENVIRONMENT/g" ./Demo/Configuration.swift
+
+        # componentsEnvironment
+        sed -i '' "s/static let componentsEnvironment.*=.*/static let componentsEnvironment = Environment.$ENVIRONMENT/g" ./Demo/Configuration.swift
     - name: Publish Demo App
       env:
         APPLE_ID_USERNAME: ${{ secrets.APPLE_ID_USERNAME }}
