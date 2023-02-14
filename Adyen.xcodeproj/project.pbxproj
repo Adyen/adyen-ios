@@ -22,6 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		00220955299B8B1C00B2BACD /* BLIKComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00220953299B885600B2BACD /* BLIKComponentUITests.swift */; };
 		002B92F1294B2627000B93F4 /* UPIPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B92F0294B2627000B93F4 /* UPIPaymentMethod.swift */; };
 		002B92F3294B2857000B93F4 /* UPIComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B92F2294B2857000B93F4 /* UPIComponent.swift */; };
 		002B92F5294B6987000B93F4 /* UPIComponentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B92F4294B6987000B93F4 /* UPIComponentDetails.swift */; };
@@ -1118,6 +1119,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		00220953299B885600B2BACD /* BLIKComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentUITests.swift; sourceTree = "<group>"; };
 		002B92F0294B2627000B93F4 /* UPIPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIPaymentMethod.swift; sourceTree = "<group>"; };
 		002B92F2294B2857000B93F4 /* UPIComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponent.swift; sourceTree = "<group>"; };
 		002B92F4294B6987000B93F4 /* UPIComponentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentDetails.swift; sourceTree = "<group>"; };
@@ -2042,6 +2044,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00220952299B880D00B2BACD /* BLIK */ = {
+			isa = PBXGroup;
+			children = (
+				00220953299B885600B2BACD /* BLIKComponentUITests.swift */,
+			);
+			path = BLIK;
+			sourceTree = "<group>";
+		};
 		002B92EF294B2596000B93F4 /* UPI */ = {
 			isa = PBXGroup;
 			children = (
@@ -2113,6 +2123,7 @@
 		007D79142812EFD300382D31 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				00220952299B880D00B2BACD /* BLIK */,
 				0067E741296C22A3005B8D76 /* UPIComponent */,
 				F9CCA3AB296DB0AC00AD643D /* IssuerList */,
 				0058692128B8C1B700B65A19 /* QRCode */,
@@ -6428,6 +6439,7 @@
 				F9CCA3D2296ECCFA00AD643D /* XCTestCaseExtension.swift in Sources */,
 				F9CCA3DE296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift in Sources */,
 				F9CCA3C6296ECB9900AD643D /* QRCodeActionComponentUITests.swift in Sources */,
+				00220955299B8B1C00B2BACD /* BLIKComponentUITests.swift in Sources */,
 				F9CCA3D7296ECDB200AD643D /* XCTestCase+Coder.swift in Sources */,
 				F9CCA3C5296ECB9900AD643D /* ListViewControllerUITests.swift in Sources */,
 				F9CCA3D0296ECCC700AD643D /* UIView+Search.swift in Sources */,
