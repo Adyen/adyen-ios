@@ -47,7 +47,7 @@ final class MBWayComponentUITests: XCTestCase {
         style.textField.text.color = .red
         style.textField.text.font = .systemFont(ofSize: 13)
         style.textField.text.textAlignment = .right
-        
+
         style.textField.title.backgroundColor = .blue
         style.textField.title.color = .yellow
         style.textField.title.font = .systemFont(ofSize: 20)
