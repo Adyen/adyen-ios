@@ -125,7 +125,10 @@
 		A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */; };
 		A0644AB728A5120C00BBF4A9 /* StorePaymentMethodFieldAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0644AB628A5120C00BBF4A9 /* StorePaymentMethodFieldAware.swift */; };
 		A07355D7276B350F00530562 /* DocumentActionViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */; };
+		A078327F299BE02F0029DA0D /* CashAppPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A078327E299BE02F0029DA0D /* CashAppPaymentMethod.swift */; };
+		A0783282299BE40E0029DA0D /* CashAppComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0783281299BE40E0029DA0D /* CashAppComponent.swift */; };
 		A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */; };
+		A0914DF029A50BC000EE2D05 /* PayKit in Frameworks */ = {isa = PBXBuildFile; productRef = A0914DEF29A50BC000EE2D05 /* PayKit */; settings = {ATTRIBUTES = (Weak, ); }; };
 		A09ADA0E2806E72D00BF6802 /* IntegrationExampleSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09ADA0D2806E72D00BF6802 /* IntegrationExampleSession.swift */; };
 		A09ADA0F2806E72D00BF6802 /* IntegrationExampleSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09ADA0D2806E72D00BF6802 /* IntegrationExampleSession.swift */; };
 		A09ADA112807142600BF6802 /* SessionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09ADA102807142600BF6802 /* SessionRequest.swift */; };
@@ -1221,6 +1224,8 @@
 		A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponentTests.swift; sourceTree = "<group>"; };
 		A0644AB628A5120C00BBF4A9 /* StorePaymentMethodFieldAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePaymentMethodFieldAware.swift; sourceTree = "<group>"; };
 		A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionViewDelegateMock.swift; sourceTree = "<group>"; };
+		A078327E299BE02F0029DA0D /* CashAppPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPaymentMethod.swift; sourceTree = "<group>"; };
+		A0783281299BE40E0029DA0D /* CashAppComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppComponent.swift; sourceTree = "<group>"; };
 		A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatter.swift; sourceTree = "<group>"; };
 		A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatterTests.swift; sourceTree = "<group>"; };
 		A09ADA0D2806E72D00BF6802 /* IntegrationExampleSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationExampleSession.swift; sourceTree = "<group>"; };
@@ -1937,6 +1942,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0914DF029A50BC000EE2D05 /* PayKit in Frameworks */,
 				F9237D3828CA1EB7004F9929 /* AdyenAuthentication in Frameworks */,
 				E72375DD27AABF450020DCF9 /* AdyenWeChatPayInternal in Frameworks */,
 				E72375D827AABF400020DCF9 /* AdyenWeChatPay.framework in Frameworks */,
@@ -2308,6 +2314,14 @@
 				A0FA145626D65B6200627127 /* FormCardInstallmentsItemView.swift */,
 			);
 			path = Installments;
+			sourceTree = "<group>";
+		};
+		A0783280299BE3ED0029DA0D /* Cash App */ = {
+			isa = PBXGroup;
+			children = (
+				A0783281299BE40E0029DA0D /* CashAppComponent.swift */,
+			);
+			path = "Cash App";
 			sourceTree = "<group>";
 		};
 		A0F41E3E26CA60A80089AD6C /* Installment */ = {
@@ -2720,6 +2734,7 @@
 				E224088C22B0FD220058923E /* StoredPayPalPaymentMethod.swift */,
 				F9620D9E23C7457F005209FC /* WeChatPayPaymentMethod.swift */,
 				F926D52B23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift */,
+				A078327E299BE02F0029DA0D /* CashAppPaymentMethod.swift */,
 			);
 			path = "Payment Methods";
 			sourceTree = "<group>";
@@ -3741,6 +3756,7 @@
 				E746E66F27B3FA540076BB71 /* Instant */,
 				F9D644DA24D2D9340059CBE3 /* MB Way */,
 				F926D52D23F5A2EC00D058D3 /* Qiwi Wallet */,
+				A0783280299BE3ED0029DA0D /* Cash App */,
 				E28098B4220DA79C0087928F /* SEPA Direct Debit */,
 			);
 			path = AdyenComponents;
@@ -4845,6 +4861,7 @@
 				E72375DC27AABF450020DCF9 /* AdyenWeChatPayInternal */,
 				F9237D3328CA1E7C004F9929 /* Adyen3DS2 */,
 				F9237D3728CA1EB7004F9929 /* AdyenAuthentication */,
+				A0914DEF29A50BC000EE2D05 /* PayKit */,
 			);
 			productName = AdyenUIHost;
 			productReference = E2C0E07D220B0399008616F6 /* AdyenUIHost.app */;
@@ -5170,6 +5187,7 @@
 				F9B66F4228B8E0370090FABC /* XCRemoteSwiftPackageReference "adyen-authentication-ios" */,
 				F9237D3228CA1E7C004F9929 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios" */,
 				F9CCA3D8296ECDF900AD643D /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+				A0914DEC29A3885700EE2D05 /* XCRemoteSwiftPackageReference "cash-app-pay-ios-sdk" */,
 			);
 			productRefGroup = E2C0E03422097917008616F6 /* Products */;
 			projectDirPath = "";
@@ -5693,6 +5711,7 @@
 				E9021DAA225789B1009CF7F4 /* Localization.swift in Sources */,
 				F986B55728620289002A471C /* FormPostalCodeItem.swift in Sources */,
 				E787C9D3246EC71B00B401E0 /* UIFontHelpers.swift in Sources */,
+				A078327F299BE02F0029DA0D /* CashAppPaymentMethod.swift in Sources */,
 				F96F44DD23BE487500871C1F /* LocalizationParameters.swift in Sources */,
 				E7085A8D2627132B00D0153B /* PostalAddress.swift in Sources */,
 				F9589D272601F19E00E4113F /* EmailFormItemInjector.swift in Sources */,
@@ -6177,6 +6196,7 @@
 				5A15D589264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift in Sources */,
 				F9175E8A259394E100D653BE /* SEPADirectDebitDetails.swift in Sources */,
 				F9175EAA259394FF00D653BE /* ApplePayComponentExtensions.swift in Sources */,
+				A0783282299BE40E0029DA0D /* CashAppComponent.swift in Sources */,
 				E746E67127B3FA700076BB71 /* InstantComponents.swift in Sources */,
 				C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */,
 				002B92F5294B6987000B93F4 /* UPIComponentDetails.swift in Sources */,
@@ -7792,6 +7812,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A0914DEC29A3885700EE2D05 /* XCRemoteSwiftPackageReference "cash-app-pay-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/cashapp/cash-app-pay-ios-sdk";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		E72375CC27AAB7760020DCF9 /* XCRemoteSwiftPackageReference "adyen-wechatpay-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Adyen/adyen-wechatpay-ios";
@@ -7835,6 +7863,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A0914DEF29A50BC000EE2D05 /* PayKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A0914DEC29A3885700EE2D05 /* XCRemoteSwiftPackageReference "cash-app-pay-ios-sdk" */;
+			productName = PayKit;
+		};
 		E72375DC27AABF450020DCF9 /* AdyenWeChatPayInternal */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E72375CC27AAB7760020DCF9 /* XCRemoteSwiftPackageReference "adyen-wechatpay-ios" */;

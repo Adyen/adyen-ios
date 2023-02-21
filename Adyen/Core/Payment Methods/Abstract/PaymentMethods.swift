@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -193,6 +193,7 @@ internal enum AnyPaymentMethod: Decodable {
     case atome(AtomePaymentMethod)
     case onlineBanking(OnlineBankingPaymentMethod)
     case upi(UPIPaymentMethod)
+    case cashAppPay(CashAppPayPaymentMethod)
     
     case none
     
@@ -253,6 +254,8 @@ internal enum AnyPaymentMethod: Decodable {
         case let .onlineBanking(paymentMethod):
             return paymentMethod
         case let .upi(paymentMethod):
+            return paymentMethod
+        case let .cashAppPay(paymentMethod):
             return paymentMethod
         case .none:
             return nil
