@@ -10,6 +10,8 @@ import Foundation
 
     @available(iOS 14.0, *)
     internal final class AuthenticationServiceMock: AuthenticationServiceProtocol {
+        internal var isDeviceSupported: Bool = true
+        
         internal var isRegistration: Bool = true
         
         internal var onRegister: ((_: RegistrationInput) async throws -> RegistrationOutput)?
