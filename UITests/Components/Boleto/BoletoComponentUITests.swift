@@ -146,5 +146,4 @@ final class BoletoComponentUITests: XCTestCase {
         wait(for: .milliseconds(300))
         assertViewControllerImage(matching: sut.viewController, named: "boleto_flow")
     }
-
 }
