@@ -10,6 +10,11 @@ import UIKit
 @_spi(AdyenInternal)
 open class NetworkImageView: UIImageView {
     
+    private static var session = {
+        var configuration = URLSessionConfiguration.default
+        return URLSession(configuration: configuration)
+    }()
+    
     /// The URL of the image to display.
     public var imageURL: URL? {
         didSet {
@@ -40,7 +45,6 @@ open class NetworkImageView: UIImageView {
     private var dataTask: URLSessionDataTask?
     
     private func loadImage(from url: URL) {
-        let session = URLSession.shared
         let task = session.dataTask(with: url) { data, response, error in
             guard
                 let response = response as? HTTPURLResponse, response.statusCode == 200,
