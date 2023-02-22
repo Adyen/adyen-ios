@@ -45,7 +45,7 @@ open class NetworkImageView: UIImageView {
     private var dataTask: URLSessionDataTask?
     
     private func loadImage(from url: URL) {
-        let task = session.dataTask(with: url) { data, response, error in
+        let task = NetworkImageView.session.dataTask(with: url) { data, response, error in
             guard
                 let response = response as? HTTPURLResponse, response.statusCode == 200,
                 let data = data, error == nil,
