@@ -41,6 +41,7 @@ public class SearchViewController: UIViewController {
         searchBar.placeholder = localizedString(.searchPlaceholder, localizationParameters)
         searchBar.isTranslucent = false
         searchBar.backgroundImage = UIImage()
+        searchBar.barTintColor = style.backgroundColor
         searchBar.delegate = self
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         return searchBar
