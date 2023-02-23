@@ -64,11 +64,6 @@ open class NetworkImageView: UIImageView {
         let urlRequest = URLRequest(url: url,
                                     cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: Constants.minutes10)
-        if let cachedResponse = NetworkImageView.cache.cachedResponse(for: urlRequest),
-           let image = UIImage(data: cachedResponse.data, scale: 1.0) {
-            return setImage(image)
-        }
-
         let task = session.dataTask(with: urlRequest) { [weak self] data, response, error in
             guard
                 let response = response as? HTTPURLResponse,
@@ -80,7 +75,6 @@ open class NetworkImageView: UIImageView {
                 return
             }
 
-            NetworkImageView.cache.storeCachedResponse(CachedURLResponse(response: response, data: data), for: urlRequest)
             self?.setImage(image)
         }
         task.resume()
