@@ -13,16 +13,12 @@ open class NetworkImageView: UIImageView {
     private var dataTask: URLSessionDataTask?
 
     private enum Constants {
-        internal static let bytes10Mb: Int = 10000000
-        internal static let bytes1Gb: Int = 1000000000
-        internal static let folderName = "AdyenIcons"
         internal static let minutes10: TimeInterval = 600
     }
 
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.default
         configuration.requestCachePolicy = .reloadRevalidatingCacheData
-        configuration.urlCache = NetworkImageView.cache
         return URLSession(configuration: configuration)
     }()
     
@@ -53,7 +49,7 @@ open class NetworkImageView: UIImageView {
     
     // MARK: - Private
     
-    fileprivate func setImage(_ image: UIImage) {
+    private func setImage(_ image: UIImage) {
         DispatchQueue.main.async {
             self.image = image
             self.dataTask = nil
@@ -87,22 +83,4 @@ open class NetworkImageView: UIImageView {
         dataTask = nil
     }
     
-}
-
-extension NetworkImageView {
-
-    private static var cache: URLCache = {
-        let cachesURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-        let diskCacheURL = cachesURL.appendingPathComponent(Constants.folderName)
-        if #available(iOS 13.0, *) {
-            let cache = URLCache(memoryCapacity: Constants.bytes10Mb,
-                                 diskCapacity: Constants.bytes1Gb,
-                                 directory: diskCacheURL)
-            cache.removeAllCachedResponses()
-            return cache
-        } else {
-            return URLCache.shared
-        }
-    }()
-
 }
