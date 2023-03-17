@@ -7855,7 +7855,7 @@
 			repositoryURL = "https://github.com/Adyen/adyen-networking-ios";
 			requirement = {
 				kind = exactVersion;
-				version = 1.0.0;
+				version = 2.0.0;
 			};
 		};
 		F9237D3228CA1E7C004F9929 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios" */ = {
