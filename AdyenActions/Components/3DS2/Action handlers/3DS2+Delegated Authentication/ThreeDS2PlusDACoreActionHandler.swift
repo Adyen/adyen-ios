@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,6 +39,9 @@
         
         internal var delegatedAuthenticationState: DelegatedAuthenticationState = .init()
         
+        /// Delegates `PresentableComponent`'s presentation.
+        internal weak var presentationDelegate: PresentationDelegate?
+
         internal struct DelegatedAuthenticationState {
             internal var isDeviceRegistrationFlow: Bool = false
         }
@@ -53,14 +56,16 @@
         internal convenience init(
             context: AdyenContext,
             appearanceConfiguration: ADYAppearanceConfiguration,
-            delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication
+            delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication,
+            presentationDelegate: PresentationDelegate?
         ) {
             self.init(
                 context: context,
                 appearanceConfiguration: appearanceConfiguration,
                 delegatedAuthenticationService: AuthenticationService(
                     configuration: delegatedAuthenticationConfiguration.authenticationServiceConfiguration()
-                )
+                ),
+                presentationDelegate: presentationDelegate
             )
         }
         
@@ -73,9 +78,11 @@
         internal init(context: AdyenContext,
                       service: AnyADYService = ADYServiceAdapter(),
                       appearanceConfiguration: ADYAppearanceConfiguration = .init(),
-                      delegatedAuthenticationService: AuthenticationServiceProtocol) {
+                      delegatedAuthenticationService: AuthenticationServiceProtocol,
+                      presentationDelegate: PresentationDelegate?) {
             self.delegatedAuthenticationService = delegatedAuthenticationService
             super.init(context: context, service: service, appearanceConfiguration: appearanceConfiguration)
+            self.presentationDelegate = presentationDelegate
         }
 
         // MARK: - Fingerprint
@@ -124,14 +131,33 @@
                 completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
                 return
             }
-            delegatedAuthenticationService.authenticate(withBase64URLString: delegatedAuthenticationInput) { result in
-                switch result {
-                case let .success(sdkOutput):
-                    completion(.success(sdkOutput))
-                case let .failure(error):
-                    completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: error)))
-                }
-            }
+            
+            let presentableComponent = PresentableComponentWrapper(component: self,
+                                                                   viewController: DAApprovalViewController(useBiometricsHandler: { [weak self] in
+                                                                       guard let self = self else { return }
+                                                                       print("Use biometrics")
+                
+                                                                       self.delegatedAuthenticationService.authenticate(withBase64URLString: delegatedAuthenticationInput) { result in
+                                                                           switch result {
+                                                                           case let .success(sdkOutput):
+                                                                               completion(.success(sdkOutput))
+                                                                           case let .failure(error):
+                                                                               completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: error)))
+                                                                           }
+                                                                       }
+
+                                                                   }, approveDifferentlyHandler: {
+                                                                       print("Approve Differently")
+                                                                       // TODO: Robert: add pass on failure and continue authorization through the challenge.
+                                                                       completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
+
+                                                                   }, removeCredentialsHandler: {
+                                                                       print("Remove credentials")
+                                                                       // TODO: Robert: add code to delete credentials
+                                                                   }))
+            
+            presentationDelegate?.present(component: presentableComponent)
+
         }
         
         private func createFingerPrintResult<R>(authenticationSDKOutput: String?,
@@ -180,11 +206,23 @@
             }
             
             if delegatedAuthenticationState.isDeviceRegistrationFlow {
-                performDelegatedRegistration(token.delegatedAuthenticationSDKInput) { [weak self] result in
-                    self?.deliver(challengeResult: challengeResult,
-                                  delegatedAuthenticationSDKOutput: result.successResult,
-                                  completionHandler: completionHandler)
-                }
+                // TODO: Robert: Show the Registration screen here
+                // 1. Register if the user taps on continue or else, call the completion handler directly.
+                let presentableComponent = PresentableComponentWrapper(
+                    component: self,
+                    viewController: DARegistrationViewController(enableCheckoutHandler: {
+                        self.performDelegatedRegistration(token.delegatedAuthenticationSDKInput) { [weak self] result in
+                            self?.deliver(challengeResult: challengeResult,
+                                          delegatedAuthenticationSDKOutput: result.successResult,
+                                          completionHandler: completionHandler)
+                        }
+                    }, notNowHandler: {
+                        completionHandler(.success(challengeResult))
+                    })
+                )
+                
+                presentationDelegate?.present(component: presentableComponent)
+
             } else {
                 completionHandler(.success(challengeResult))
             }

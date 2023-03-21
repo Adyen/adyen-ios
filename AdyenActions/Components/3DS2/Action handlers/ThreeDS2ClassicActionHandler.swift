@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,7 +16,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     internal var wrappedComponent: Component { coreActionHandler }
 
     internal let coreActionHandler: AnyThreeDS2CoreActionHandler
-
+    internal weak var presentationDelegate: PresentationDelegate?
     internal var transaction: AnyADYTransaction? {
         get {
             coreActionHandler.transaction
@@ -46,7 +46,8 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,
             appearanceConfiguration: appearanceConfiguration,
-            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
+            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration,
+            presentationDelegate: presentationDelegate
         )
         self.context = context
         self.coreActionHandler.service = service

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,7 +16,8 @@ extension ThreeDS2CompactActionHandler {
     /// Initializes the 3D Secure 2 action handler.
     internal convenience init(context: AdyenContext,
                               appearanceConfiguration: ADYAppearanceConfiguration,
-                              delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?) {
+                              delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?,
+                              presentationDelegate: PresentationDelegate?) {
         
         let fingerprintSubmitter = ThreeDS2FingerprintSubmitter(apiContext: context.apiContext)
         self.init(
@@ -26,9 +27,11 @@ extension ThreeDS2CompactActionHandler {
             coreActionHandler: createDefaultThreeDS2CoreActionHandler(
                 context: context,
                 appearanceConfiguration: appearanceConfiguration,
-                delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
+                delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration,
+                presentationDelegate: presentationDelegate
             ),
-            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
+            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration,
+            presentationDelegate: presentationDelegate
         )
     }
 }
