@@ -219,7 +219,6 @@ public final class DropInComponent: NSObject,
             navigationController.present(asModal: component)
         case let component as InstantPaymentComponent:
             component.initiatePayment()
-//        case let component as cashapcom:
         default:
             break
         }

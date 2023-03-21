@@ -13,11 +13,21 @@ public struct CashAppPayPaymentMethod: PaymentMethod {
     
     public let name: String
     
-    public let merchantId: String
+    public let clientId: String
     
     public let scopeId: String
     
     public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.type = try container.decode(PaymentMethodType.self, forKey: .type)
+        self.name = try container.decode(String.self, forKey: .name)
+        
+        let configuration = try container.nestedContainer(keyedBy: ConfigurationCodingKeys.self, forKey: .configuration)
+        self.clientId = try configuration.decode(String.self, forKey: .clientId)
+        self.scopeId = try configuration.decodeIfPresent(String.self, forKey: .scopeId) ?? "BRAND_0yzb9bio4n9cvqavihftllbrv"
+    }
     
     @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
@@ -29,7 +39,11 @@ public struct CashAppPayPaymentMethod: PaymentMethod {
     private enum CodingKeys: String, CodingKey {
         case type
         case name
-        case merchantId
+        case configuration
+    }
+    
+    private enum ConfigurationCodingKeys: String, CodingKey {
+        case clientId
         case scopeId
     }
 }

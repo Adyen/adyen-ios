@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -55,6 +55,9 @@ public extension DropInComponent {
         /// Boleto component configuration.
         public var boleto: Boleto = .init()
         
+        /// Configuration for the Cash App Pay component
+        public var cashAppPay: CashAppPayConfiguration?
+        
         /// Initializes the drop in configuration.
         /// - Parameters:
         ///   - style: The UI styles of the components.
@@ -82,6 +85,29 @@ public extension DropInComponent {
     struct Boleto {
         /// Indicates whether to show sendCopyByEmail checkbox and email text field
         public var showEmailAddress: Bool = true
+    }
+    
+    struct CashAppPayConfiguration {
+        /// The URL for Cash App to call in order to redirect back to your application.
+        public let redirectURL: URL
+        
+        /// Determines whether to store this payment method.
+        public var storePaymentMethod: Bool
+
+        /// A reference to your system (for example, a cart or checkout identifier).
+        public let referenceId: String?
+        
+        /// Initializes an instance of `CashAppPayConfiguration`
+        ///
+        /// - Parameters:
+        ///   - redirectURL: The URL for Cash App to call in order to redirect back to your application.
+        ///
+        ///   - referenceId: A reference to your system (for example, a cart or checkout identifier).
+        public init(redirectURL: URL, storePaymentMethod: Bool, referenceId: String? = nil) {
+            self.redirectURL = redirectURL
+            self.storePaymentMethod = storePaymentMethod
+            self.referenceId = referenceId
+        }
     }
     
     /// Card Component configuration specific to Drop In Component.

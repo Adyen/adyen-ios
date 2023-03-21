@@ -143,6 +143,7 @@
 		A0BFC8082720259500E36516 /* CardBrandSorterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BFC8072720259500E36516 /* CardBrandSorterTests.swift */; };
 		A0C9B59B288AE34600D6BDAB /* InstallmentOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41E5526CBCA6E0089AD6C /* InstallmentOptions.swift */; };
 		A0D48FB827109B0200C0B82C /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */; };
+		A0D6AA8329CA0BDA00FC36A8 /* PayKit in Frameworks */ = {isa = PBXBuildFile; productRef = A0D6AA8229CA0BDA00FC36A8 /* PayKit */; };
 		A0DE8F6D26CEA04500F2F1E8 /* Installments.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE8F6C26CEA04500F2F1E8 /* Installments.swift */; };
 		A0F41EAC26CD4AA50089AD6C /* FormCardInstallmentsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41EAB26CD4AA50089AD6C /* FormCardInstallmentsItem.swift */; };
 		A0FA143F26D65A5300627127 /* InstallmentPickerElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */; };
@@ -1982,6 +1983,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0D6AA8329CA0BDA00FC36A8 /* PayKit in Frameworks */,
 				F9175E672593944C00D653BE /* Adyen.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4940,6 +4942,9 @@
 				F9175E652593941500D653BE /* PBXTargetDependency */,
 			);
 			name = AdyenComponents;
+			packageProductDependencies = (
+				A0D6AA8229CA0BDA00FC36A8 /* PayKit */,
+			);
 			productName = AdyenComponents;
 			productReference = F9175E55259393E800D653BE /* AdyenComponents.framework */;
 			productType = "com.apple.product-type.framework";
@@ -7860,7 +7865,7 @@
 			repositoryURL = "https://github.com/cashapp/cash-app-pay-ios-sdk";
 			requirement = {
 				kind = exactVersion;
-				version = 0.2.0;
+				version = 0.3.0;
 			};
 		};
 		E72375CC27AAB7760020DCF9 /* XCRemoteSwiftPackageReference "adyen-wechatpay-ios" */ = {
@@ -7907,6 +7912,11 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		A03B7C9429B21C3D00FDDDFC /* PayKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A03B7C9329B21C3D00FDDDFC /* XCRemoteSwiftPackageReference "cash-app-pay-ios-sdk" */;
+			productName = PayKit;
+		};
+		A0D6AA8229CA0BDA00FC36A8 /* PayKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A03B7C9329B21C3D00FDDDFC /* XCRemoteSwiftPackageReference "cash-app-pay-ios-sdk" */;
 			productName = PayKit;

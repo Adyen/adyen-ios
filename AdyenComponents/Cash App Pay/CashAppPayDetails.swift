@@ -1,9 +1,7 @@
 //
-//  CashAppPayDetails.swift
-//  AdyenComponents
+// Copyright (c) 2023 Adyen N.V.
 //
-//  Created by Eren Besel on 3/3/23.
-//  Copyright © 2023 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 @_spi(AdyenInternal) import Adyen
@@ -29,7 +27,6 @@ public struct CashAppPayDetails: PaymentMethodDetails {
         self.type = paymentMethod.type
         self.grantId = grantId
     }
-    
     
     // MARK: - Private
 
