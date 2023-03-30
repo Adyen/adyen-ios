@@ -87,7 +87,7 @@ public extension DropInComponent {
         public var showEmailAddress: Bool = true
     }
     
-    struct CashAppPayConfiguration {
+    struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
         /// The URL for Cash App to call in order to redirect back to your application.
         public let redirectURL: URL
         

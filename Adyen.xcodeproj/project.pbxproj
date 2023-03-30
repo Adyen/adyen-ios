@@ -144,6 +144,9 @@
 		A0C9B59B288AE34600D6BDAB /* InstallmentOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41E5526CBCA6E0089AD6C /* InstallmentOptions.swift */; };
 		A0D48FB827109B0200C0B82C /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */; };
 		A0D6AA8329CA0BDA00FC36A8 /* PayKit in Frameworks */ = {isa = PBXBuildFile; productRef = A0D6AA8229CA0BDA00FC36A8 /* PayKit */; };
+		A0D6AA8529D30C2600FC36A8 /* CashAppPayConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D6AA8429D30C2600FC36A8 /* CashAppPayConfiguration.swift */; };
+		A0D6AA8829D5BFB200FC36A8 /* FormSpinnerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D6AA8729D5BFB200FC36A8 /* FormSpinnerItem.swift */; };
+		A0D6AA8A29D5C03000FC36A8 /* FormSpinnerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D6AA8929D5C03000FC36A8 /* FormSpinnerItemView.swift */; };
 		A0DE8F6D26CEA04500F2F1E8 /* Installments.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE8F6C26CEA04500F2F1E8 /* Installments.swift */; };
 		A0F41EAC26CD4AA50089AD6C /* FormCardInstallmentsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41EAB26CD4AA50089AD6C /* FormCardInstallmentsItem.swift */; };
 		A0FA143F26D65A5300627127 /* InstallmentPickerElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */; };
@@ -1244,6 +1247,9 @@
 		A0BC64E528F062E400CED2A1 /* AdyenSessionAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSessionAware.swift; sourceTree = "<group>"; };
 		A0BFC8072720259500E36516 /* CardBrandSorterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardBrandSorterTests.swift; sourceTree = "<group>"; };
 		A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayHelpers.swift; sourceTree = "<group>"; };
+		A0D6AA8429D30C2600FC36A8 /* CashAppPayConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPayConfiguration.swift; sourceTree = "<group>"; };
+		A0D6AA8729D5BFB200FC36A8 /* FormSpinnerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSpinnerItem.swift; sourceTree = "<group>"; };
+		A0D6AA8929D5C03000FC36A8 /* FormSpinnerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSpinnerItemView.swift; sourceTree = "<group>"; };
 		A0DE8F6C26CEA04500F2F1E8 /* Installments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Installments.swift; sourceTree = "<group>"; };
 		A0F41E5526CBCA6E0089AD6C /* InstallmentOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallmentOptions.swift; sourceTree = "<group>"; };
 		A0F41EAB26CD4AA50089AD6C /* FormCardInstallmentsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardInstallmentsItem.swift; sourceTree = "<group>"; };
@@ -2331,6 +2337,7 @@
 			children = (
 				A03B7C9129B0C61500FDDDFC /* CashAppPayComponent.swift */,
 				A01D775529B250C10075BD70 /* CashAppPayDetails.swift */,
+				A0D6AA8429D30C2600FC36A8 /* CashAppPayConfiguration.swift */,
 			);
 			path = "Cash App Pay";
 			sourceTree = "<group>";
@@ -2361,6 +2368,15 @@
 				A0FA145626D65B6200627127 /* FormCardInstallmentsItemView.swift */,
 			);
 			path = Installments;
+			sourceTree = "<group>";
+		};
+		A0D6AA8629D5BF9D00FC36A8 /* Spinner */ = {
+			isa = PBXGroup;
+			children = (
+				A0D6AA8729D5BFB200FC36A8 /* FormSpinnerItem.swift */,
+				A0D6AA8929D5C03000FC36A8 /* FormSpinnerItemView.swift */,
+			);
+			path = Spinner;
 			sourceTree = "<group>";
 		};
 		A0F41E3E26CA60A80089AD6C /* Installment */ = {
@@ -2641,6 +2657,7 @@
 		E216D3B42217096E0013CBCF /* Items */ = {
 			isa = PBXGroup;
 			children = (
+				A0D6AA8629D5BF9D00FC36A8 /* Spinner */,
 				0067E73B29658C97005B8D76 /* FormImageItem */,
 				002B93062951F0DA000B93F4 /* Segmented Control */,
 				E708591D261F1C9F00D0153B /* Address */,
@@ -5691,6 +5708,7 @@
 				C90D26A727565750001A488F /* FormViewController+ViewProtocol.swift in Sources */,
 				A0D48FB827109B0200C0B82C /* ArrayHelpers.swift in Sources */,
 				F99D2EFE2661363D00BB5B2F /* AppleWalletPassRequest.swift in Sources */,
+				A0D6AA8829D5BFB200FC36A8 /* FormSpinnerItem.swift in Sources */,
 				E216D3BE221AAB710013CBCF /* FormTextItem.swift in Sources */,
 				E7085A012625B4D000D0153B /* LocalizableRegionRepository.swift in Sources */,
 				F92980D127CF6580000CA5CA /* ActionComponentData.swift in Sources */,
@@ -5813,6 +5831,7 @@
 				A0414C1F278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift in Sources */,
 				E787C9D1246E948F00B401E0 /* CoreFonts.swift in Sources */,
 				F9589D032601EE7800E4113F /* FormItemInjector.swift in Sources */,
+				A0D6AA8A29D5C03000FC36A8 /* FormSpinnerItemView.swift in Sources */,
 				5A15D5A1264BE1E500A8E3C7 /* PrefilledShopperInformation.swift in Sources */,
 				F96F44D523BDED4400871C1F /* FormTextItemStyle.swift in Sources */,
 				F9172F682643E0BC00985310 /* OrderStatusRequest.swift in Sources */,
@@ -6248,6 +6267,7 @@
 				F9175ED22593951800D653BE /* MBWayComponent.swift in Sources */,
 				F9175E9B259394F200D653BE /* IssuerListComponent.swift in Sources */,
 				A0414C21278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift in Sources */,
+				A0D6AA8529D30C2600FC36A8 /* CashAppPayConfiguration.swift in Sources */,
 				00EACBAE2872EDEC0082B360 /* OnlineBankingDetails.swift in Sources */,
 				C933801E276A06E1005B66CD /* BACSDirectDebitComponentTracker.swift in Sources */,
 				5A9889C8264E71210007F4C0 /* BoletoDetails.swift in Sources */,

@@ -17,7 +17,7 @@
         LoadingComponent {
         
         private enum ViewIdentifier {
-            static let payButtonItem = "payButtonItem"
+            static let spinnerItem = "spinnerItem"
         }
 
         /// The context object for this component.
@@ -53,14 +53,9 @@
             return environment.isLive ? .production : .sandbox
         }
         
-        internal lazy var cashAppPayButton: FormButtonItem = {
-            let item = FormButtonItem(style: configuration.style.mainButtonItem)
-            item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.payButtonItem)
-            // TODO: localized title
-            item.title = "Continue to Cash App Pay"
-            item.buttonSelectionHandler = { [weak self] in
-                self?.didSelectSubmitButton()
-            }
+        internal lazy var spinnerItem: FormSpinnerItem = {
+            let item = FormSpinnerItem()
+            item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.spinnerItem)
             return item
         }()
 
@@ -68,10 +63,11 @@
         
         private lazy var formViewController: FormViewController = {
             let formViewController = FormViewController(style: configuration.style)
+            formViewController.delegate = self
             formViewController.localizationParameters = configuration.localizationParameters
             formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
             formViewController.append(FormSpacerItem(numberOfSpaces: 2))
-            formViewController.append(cashAppPayButton)
+            formViewController.append(spinnerItem)
 
             return formViewController
         }()
@@ -89,20 +85,13 @@
             self.configuration = configuration
         }
         
-        private func didSelectSubmitButton() {
-            guard formViewController.validate() else { return }
-            
-            startLoading()
-            initiateCashAppPayFlow()
-        }
-        
         private func startLoading() {
-            cashAppPayButton.showsActivityIndicator = true
+            spinnerItem.isAnimating = true
             formViewController.view.isUserInteractionEnabled = false
         }
         
         public func stopLoading() {
-            cashAppPayButton.showsActivityIndicator = false
+            spinnerItem.isAnimating = false
             formViewController.view.isUserInteractionEnabled = true
         }
         
@@ -130,7 +119,7 @@
                 cashAppPay.authorizeCustomerRequest(request)
             case let .approved(_, grants):
                 guard let grant = grants.first else {
-                    delegate?.didFail(with: Error.noGrant, from: self)
+                    fail(with: Error.noGrant)
                     return
                 }
                 let details = CashAppPayDetails(paymentMethod: cashAppPayPaymentMethod, grantId: grant.id)
@@ -139,26 +128,30 @@
                                                   order: order,
                                                   storePaymentMethod: configuration.storePaymentMethod))
             case let .apiError(error):
-                delegate?.didFail(with: error, from: self)
+                fail(with: error)
             case let .networkError(error):
-                delegate?.didFail(with: error, from: self)
+                fail(with: error)
             case let .unexpectedError(error):
-                delegate?.didFail(with: error, from: self)
+                fail(with: error)
             case let .integrationError(error):
-                delegate?.didFail(with: error, from: self)
+                fail(with: error)
             case .declined:
-                delegate?.didFail(with: Error.declined, from: self)
-                stopLoading()
+                fail(with: Error.declined)
             default:
                 break
             }
+        }
+        
+        private func fail(with error: Swift.Error) {
+            stopLoading()
+            delegate?.didFail(with: error, from: self)
         }
     }
 
     @available(iOS 13.0, *)
     extension CashAppPayComponent {
         /// Configuration object for Cash App Component
-        public struct Configuration {
+        public struct Configuration: AnyCashAppPayConfiguration {
 
             /// The URL for Cash App to call in order to redirect back to your application.
             public let redirectURL: URL
@@ -215,6 +208,28 @@
                     return "The payment was declined by the Cash App Pay app."
                 }
             }
+        }
+    }
+
+    @available(iOS 13.0, *)
+    @_spi(AdyenInternal)
+    extension CashAppPayComponent: TrackableComponent {}
+
+    @available(iOS 13.0, *)
+    @_spi(AdyenInternal)
+    extension CashAppPayComponent: ViewControllerDelegate {
+
+        public func viewDidLoad(viewController: UIViewController) {
+            Analytics.sendEvent(component: paymentMethod.type.rawValue,
+                                flavor: _isDropIn ? .dropin : .components,
+                                context: context.apiContext)
+        }
+
+        /// :nodoc:
+        public func viewWillAppear(viewController: UIViewController) {
+            sendTelemetryEvent()
+            startLoading()
+            initiateCashAppPayFlow()
         }
     }
 

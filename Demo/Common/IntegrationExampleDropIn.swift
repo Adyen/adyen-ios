@@ -52,7 +52,7 @@ extension IntegrationExample {
         configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         configuration.card.billingAddress.mode = .postalCode
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
-        configuration.cashAppPay = DropInComponent.CashAppPayConfiguration(redirectURL: URL(string: "ui-host://callback")!, storePaymentMethod: true)
+        configuration.cashAppPay = DropInComponent.CashAppPayConfiguration(redirectURL: URL(string: "ui-host://callback")!, storePaymentMethod: false)
         
         let component = DropInComponent(paymentMethods: paymentMethods,
                                         context: context,
