@@ -67,7 +67,7 @@ extension ApplePayComponent {
         public var couponCode: String?
 
         /// Payment source that the merchant supports. If `nil`, the transaction allows both credit and debit cards.
-        public var merchantCapabilitie: CardFundingSource?
+        public var merchantCapability: CardFundingSource?
 
         /// Initializes the configuration.
         ///
@@ -105,7 +105,7 @@ extension ApplePayComponent {
         }
 
         private var merchantCapabilities: PKMerchantCapability {
-            guard let funding = merchantCapabilitie else {
+            guard let funding = merchantCapability else {
                 return .capability3DS
             }
 
