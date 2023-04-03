@@ -151,6 +151,7 @@ extension IntegrationExample {
         config.requiredShippingContactFields = [.postalAddress]
         config.requiredBillingContactFields = [.postalAddress]
         config.shippingMethods = ConfigurationConstants.shippingMethods
+        config.merchantCapabilitie = .debit
         
         let component = try? ApplePayComponent(paymentMethod: paymentMethod,
                                                context: context,

@@ -66,6 +66,9 @@ extension ApplePayComponent {
         /// An optional coupon code that is valid and has been applied to the payment request already.
         public var couponCode: String?
 
+        /// Payment source that the merchant supports. If `nil`, the transaction allows both credit and debit cards.
+        public var merchantCapabilitie: CardFundingSource?
+
         /// Initializes the configuration.
         ///
         /// - Parameter payment: Instance of ApplePay Payment object.
@@ -82,7 +85,7 @@ extension ApplePayComponent {
             paymentRequest.merchantIdentifier = merchantIdentifier
             paymentRequest.currencyCode = applePayPayment.currencyCode
             paymentRequest.supportedNetworks = supportedNetworks
-            paymentRequest.merchantCapabilities = .capability3DS
+            paymentRequest.merchantCapabilities = merchantCapabilities
             paymentRequest.paymentSummaryItems = applePayPayment.summaryItems
             paymentRequest.requiredBillingContactFields = requiredBillingContactFields
             paymentRequest.requiredShippingContactFields = requiredShippingContactFields
@@ -99,6 +102,14 @@ extension ApplePayComponent {
             }
 
             return paymentRequest
+        }
+
+        private var merchantCapabilities: PKMerchantCapability {
+            guard let funding = merchantCapabilitie else {
+                return .capability3DS
+            }
+
+            return [.capability3DS, funding == .credit ? .capabilityCredit : .capabilityDebit]
         }
 
         @_spi(AdyenInternal)
