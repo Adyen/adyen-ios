@@ -66,7 +66,7 @@ extension ApplePayComponent {
         /// An optional coupon code that is valid and has been applied to the payment request already.
         public var couponCode: String?
 
-        /// Payment source that the merchant supports. If `nil`, the transaction allows both credit and debit cards.
+        /// A funding source supported by the merchant. If `nil`, the transaction allows both credit and debit cards.
         public var merchantCapability: CardFundingSource?
 
         /// Initializes the configuration.
