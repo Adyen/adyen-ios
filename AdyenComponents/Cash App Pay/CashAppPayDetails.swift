@@ -18,14 +18,32 @@ public struct CashAppPayDetails: PaymentMethodDetails {
     /// The grant Id for the payment.
     public let grantId: String
     
+    /// Grant id for recurring payments.
+    public let onFileGrantId: String?
+    
+    /// Unique identifier for this customer issued by Cash App.
+    public let customerId: String?
+    
+    /// Public identifier for the customer on Cash App.
+    public let cashtag: String?
+    
     /// Creates and returns a Cash App Pay details instance.
     /// - Parameters:
     ///   - paymentMethod: Cash App Pay payment method.
     ///   - grantId: The grant Id for the payment.
+    ///   - onFileGrantId: Grant id for recurring payments.
+    ///   - customerId: Unique identifier for this customer issued by Cash App.
+    ///   - cashtag: Public identifier for the customer on Cash App.
     public init(paymentMethod: CashAppPayPaymentMethod,
-                grantId: String) {
+                grantId: String,
+                onFileGrantId: String?,
+                customerId: String?,
+                cashtag: String?) {
         self.type = paymentMethod.type
         self.grantId = grantId
+        self.onFileGrantId = onFileGrantId
+        self.customerId = customerId
+        self.cashtag = cashtag
     }
     
     // MARK: - Private
@@ -33,5 +51,8 @@ public struct CashAppPayDetails: PaymentMethodDetails {
     private enum CodingKeys: String, CodingKey {
         case type
         case grantId
+        case onFileGrantId
+        case customerId
+        case cashtag
     }
 }

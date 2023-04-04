@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import Foundation
 
 /// Defines the configuration for Cash App Component
 public protocol AnyCashAppPayConfiguration {

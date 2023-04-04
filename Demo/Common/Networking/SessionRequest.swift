@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,10 +39,11 @@ internal struct SessionRequest: APIRequest {
         try container.encode(ConfigurationConstants.additionalData, forKey: .additionalData)
         try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
         
-        let installmentOptions = ["card": InstallmentOptions(monthValues: [2, 3, 5], includesRevolving: false),
-                                  "visa": InstallmentOptions(monthValues: [3, 6, 9], includesRevolving: true)]
-        
-        try container.encode(installmentOptions, forKey: .installmentOptions)
+        // Comment in/out for installments
+        //        let installmentOptions = ["card": InstallmentOptions(monthValues: [2, 3, 5], includesRevolving: false),
+        //                                  "visa": InstallmentOptions(monthValues: [3, 6, 9], includesRevolving: true)]
+        //
+        //        try container.encode(installmentOptions, forKey: .installmentOptions)
     }
     
     internal enum CodingKeys: CodingKey {

@@ -100,9 +100,11 @@
             if let amount = context.payment?.amount {
                 moneyAmount = Money(amount: UInt(amount.value), currency: .USD)
             }
-            let action = PaymentAction.oneTimePayment(scopeID: cashAppPayPaymentMethod.scopeId,
-                                                      money: moneyAmount)
-            cashAppPay.createCustomerRequest(params: CreateCustomerRequestParams(actions: [action],
+            let oneTimeAction = PaymentAction.oneTimePayment(scopeID: cashAppPayPaymentMethod.scopeId,
+                                                             money: moneyAmount)
+            let onFileAction = PaymentAction.onFilePayment(scopeID: cashAppPayPaymentMethod.scopeId,
+                                                           accountReferenceID: nil)
+            cashAppPay.createCustomerRequest(params: CreateCustomerRequestParams(actions: [oneTimeAction, onFileAction],
                                                                                  redirectURL: configuration.redirectURL,
                                                                                  referenceID: configuration.referenceId,
                                                                                  metadata: nil))
@@ -122,7 +124,11 @@
                     fail(with: Error.noGrant)
                     return
                 }
-                let details = CashAppPayDetails(paymentMethod: cashAppPayPaymentMethod, grantId: grant.id)
+                let details = CashAppPayDetails(paymentMethod: cashAppPayPaymentMethod,
+                                                grantId: grant.id,
+                                                onFileGrantId: nil,
+                                                customerId: nil,
+                                                cashtag: nil)
                 submit(data: PaymentComponentData(paymentMethodDetails: details,
                                                   amount: payment?.amount,
                                                   order: order,

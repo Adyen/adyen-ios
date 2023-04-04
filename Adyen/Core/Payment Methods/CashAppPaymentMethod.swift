@@ -26,7 +26,7 @@ public struct CashAppPayPaymentMethod: PaymentMethod {
         
         let configuration = try container.nestedContainer(keyedBy: ConfigurationCodingKeys.self, forKey: .configuration)
         self.clientId = try configuration.decode(String.self, forKey: .clientId)
-        self.scopeId = try configuration.decodeIfPresent(String.self, forKey: .scopeId) ?? "BRAND_0yzb9bio4n9cvqavihftllbrv"
+        self.scopeId = try configuration.decode(String.self, forKey: .scopeId)
     }
     
     @_spi(AdyenInternal)
