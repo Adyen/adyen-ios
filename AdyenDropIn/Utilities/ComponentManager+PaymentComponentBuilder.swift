@@ -158,22 +158,29 @@ extension ComponentManager: PaymentComponentBuilder {
     }
     
     internal func build(paymentMethod: CashAppPayPaymentMethod) -> PaymentComponent? {
-        guard let dropInCashAppConfig = configuration.cashAppPay else {
-            AdyenAssertion.assertionFailure(
-                message: "Cash App Pay configuration instance must not be nil in order to use this CashAppPayComponent")
-            return nil
-        }
-        if #available(iOS 13.0, *) {
-            let cashAppPayConfiguration = CashAppPayComponent.Configuration(redirectURL: dropInCashAppConfig.redirectURL,
-                                                                            referenceId: dropInCashAppConfig.referenceId,
-                                                                            storePaymentMethod: dropInCashAppConfig.storePaymentMethod,
-                                                                            style: configuration.style.formComponent,
-                                                                            localizationParameters: configuration.localizationParameters)
+        #if canImport(PayKit)
+            guard let dropInCashAppConfig = configuration.cashAppPay else {
+                AdyenAssertion.assertionFailure(
+                    message: "Cash App Pay configuration instance must not be nil in order to use CashAppPayComponent")
+                return nil
+            }
+            if #available(iOS 13.0, *) {
+                let cashAppPayConfiguration: CashAppPayComponent.Configuration
+                cashAppPayConfiguration = .init(redirectURL: dropInCashAppConfig.redirectURL,
+                                                referenceId: dropInCashAppConfig.referenceId,
+                                                storePaymentMethod: dropInCashAppConfig.storePaymentMethod,
+                                                style: configuration.style.formComponent,
+                                                localizationParameters: configuration.localizationParameters)
             
-            return CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: cashAppPayConfiguration)
-        } else {
+                return CashAppPayComponent(paymentMethod: paymentMethod,
+                                           context: context,
+                                           configuration: cashAppPayConfiguration)
+            } else {
+                return nil
+            }
+        #else
             return nil
-        }
+        #endif
     }
 
     private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
