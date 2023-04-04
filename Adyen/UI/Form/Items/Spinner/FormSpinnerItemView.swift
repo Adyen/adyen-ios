@@ -15,8 +15,9 @@ internal final class FormSpinnerItemView: FormItemView<FormSpinnerItem> {
         activityIndicatorView.backgroundColor = .clear
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicatorView.hidesWhenStopped = true
-        activityIndicatorView.accessibilityIdentifier = item.identifier.map
-            { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "spinner") }
+        activityIndicatorView.accessibilityIdentifier = item.identifier.map {
+            ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "spinner")
+        }
         return activityIndicatorView
     }()
     
