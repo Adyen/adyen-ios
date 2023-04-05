@@ -132,34 +132,47 @@
                 return
             }
             
-            let approvalViewController = DAApprovalViewController(useBiometricsHandler: { [weak self] in
+            self.delegatedAuthenticationService.isDeviceRegistered(withAuthenticationInput: delegatedAuthenticationInput) { [weak self] result in
                 guard let self = self else { return }
-                print("Use biometrics")
+                switch result {
+                case .failure(let error):
+                    completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: error)))
+                case let .success(success):
+                    if success {
+                        let approvalViewController = DAApprovalViewController(useBiometricsHandler: { [weak self] in
+                            guard let self = self else { return }
+                            print("Use biometrics")
 
-                self.delegatedAuthenticationService.authenticate(withBase64URLString: delegatedAuthenticationInput) { result in
-                    switch result {
-                    case let .success(sdkOutput):
-                        completion(.success(sdkOutput))
-                    case let .failure(error):
-                        completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: error)))
+                            self.delegatedAuthenticationService.authenticate(withAuthenticationInput: delegatedAuthenticationInput) { result in
+                                switch result {
+                                case let .success(sdkOutput):
+                                    completion(.success(sdkOutput))
+                                case let .failure(error):
+                                    completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: error)))
+                                }
+                            }
+
+                        }, approveDifferentlyHandler: {
+                            print("Approve Differently")
+                            // TODO: Robert: add pass on failure and continue authorization through the challenge.
+                            completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
+
+                        }, removeCredentialsHandler: {
+                            print("Remove credentials")
+                            // TODO: Robert: Do we need to handle an error case?
+                            try? self.delegatedAuthenticationService.reset()
+                        })
+                        
+                        let presentableComponent = PresentableComponentWrapper(component: self,
+                                                                               viewController: approvalViewController)
+                        
+                        self.presentationDelegate?.present(component: presentableComponent)
+                    } else {
+                        completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
                     }
                 }
-
-            }, approveDifferentlyHandler: {
-                print("Approve Differently")
-                // TODO: Robert: add pass on failure and continue authorization through the challenge.
-                completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
-
-            }, removeCredentialsHandler: {
-                print("Remove credentials")
-                // TODO: Robert: add code to delete credentials
-            })
+            }
             
-            let presentableComponent = PresentableComponentWrapper(component: self,
-                                                                   viewController: approvalViewController)
-            
-            presentationDelegate?.present(component: presentableComponent)
-
         }
         
         private func createFingerPrintResult<R>(authenticationSDKOutput: String?,
@@ -236,7 +249,7 @@
                 completion(.failure(DelegateAuthenticationError.registrationFailed(cause: nil)))
                 return
             }
-            delegatedAuthenticationService.register(withBase64URLString: sdkInput) { result in
+            delegatedAuthenticationService.register(withRegistrationInput: sdkInput) { result in
                 switch result {
                 case let .success(sdkOutput):
                     completion(.success(sdkOutput))
