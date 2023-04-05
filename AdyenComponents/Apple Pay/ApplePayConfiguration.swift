@@ -105,11 +105,14 @@ extension ApplePayComponent {
         }
 
         private var merchantCapabilities: PKMerchantCapability {
-            guard let funding = merchantCapability else {
+            switch merchantCapability {
+            case .debit:
+                return [.capability3DS, .capabilityDebit]
+            case .credit:
+                return [.capability3DS, .capabilityCredit]
+            default:
                 return .capability3DS
             }
-
-            return [.capability3DS, funding == .credit ? .capabilityCredit : .capabilityDebit]
         }
 
         @_spi(AdyenInternal)
