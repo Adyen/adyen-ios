@@ -59,6 +59,9 @@
 		00EACBC9288013AE0082B360 /* XCTestCase+Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBC5288013990082B360 /* XCTestCase+Coder.swift */; };
 		00EACBD1288558A00082B360 /* APIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E757F02525D2ED4C007C813D /* APIClientMock.swift */; };
 		00EB3F54291543C700E2B67C /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB3F53291543C700E2B67C /* SearchViewController.swift */; };
+		00ED81B029DD749D00A6B52C /* DropIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004BA67A29D427F300A8C69B /* DropIn.swift */; };
+		00ED81B129DD74A800A6B52C /* DropInExampleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004BA67E29D45A2E00A8C69B /* DropInExampleProtocol.swift */; };
+		00ED81B229DD74AB00A6B52C /* PresenterExampleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004BA68029D4639900A8C69B /* PresenterExampleProtocol.swift */; };
 		00F621BE27EB132500C04097 /* AtomeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621BD27EB132500C04097 /* AtomeComponent.swift */; };
 		00F621C027EB153400C04097 /* AtomeDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621BF27EB153400C04097 /* AtomeDetails.swift */; };
 		00F621C227EB1E3100C04097 /* AtomePaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621C127EB1E3100C04097 /* AtomePaymentMethod.swift */; };
@@ -6414,7 +6417,9 @@
 				F95B6D982527454E002C9062 /* AppDelegate.swift in Sources */,
 				F9A53C4B2549887F009000A7 /* Environment.swift in Sources */,
 				F9A53C512549887F009000A7 /* PaymentsRequest.swift in Sources */,
+				00ED81B029DD749D00A6B52C /* DropIn.swift in Sources */,
 				F9CFB05E283541DC002F3B72 /* UIView+Helpers.swift in Sources */,
+				00ED81B229DD74AB00A6B52C /* PresenterExampleProtocol.swift in Sources */,
 				F9A53C4E2549887F009000A7 /* PaymentDetailsRequest.swift in Sources */,
 				F9A53D6325499B13009000A7 /* Configuration.swift in Sources */,
 				F95B6D9A2527454E002C9062 /* SceneDelegate.swift in Sources */,
@@ -6430,6 +6435,7 @@
 				F95B6D9C2527454E002C9062 /* ComponentsView.swift in Sources */,
 				A09ADA122807142600BF6802 /* SessionRequest.swift in Sources */,
 				F95B6DAE25274D9C002C9062 /* PaymentsViewModel.swift in Sources */,
+				00ED81B129DD74A800A6B52C /* DropInExampleProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -19,10 +19,8 @@ internal final class DropIn: DropInExampleProtocol {
 
     internal var dropInComponent: PresentableComponent?
     internal weak var presenter: PresenterExampleProtocol?
-    internal var paymentMethods: PaymentMethods?
+    //internal var paymentMethods: PaymentMethods?
     internal var session: AdyenSession?
-    private lazy var containerView = UIView()
-    private lazy var loadingView = LoadingView(contentView: containerView)
 
     // MARK: - Initializers
 
@@ -41,18 +39,15 @@ internal final class DropIn: DropInExampleProtocol {
                 switch result {
                 case let .success(session):
                     self?.session = session
-                    self?.paymentMethods = session.sessionContext.paymentMethods
-                    self?.loadingView.showsActivityIndicator = false
                 case let .failure(errorResponse):
                     self?.presentAlert(with: errorResponse)
-                    self?.loadingView.showsActivityIndicator = false
                 }
             }
         }
     }
 
     internal func presentDropInComponentSession() {
-        guard let dropIn = dropInComponent(from: paymentMethods) else { return }
+        guard let dropIn = dropInComponent(from: session?.sessionContext.paymentMethods) else { return }
 
         dropIn.delegate = session
         dropIn.partialPaymentDelegate = session
@@ -73,7 +68,6 @@ internal final class DropIn: DropInExampleProtocol {
         }
 
         configuration.actionComponent.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
-        configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         configuration.card.billingAddress.mode = .postalCode
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
         let component = DropInComponent(paymentMethods: paymentMethods,

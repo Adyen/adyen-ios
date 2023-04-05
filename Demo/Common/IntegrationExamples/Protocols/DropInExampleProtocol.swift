@@ -9,17 +9,11 @@ import AdyenNetworking
 import AdyenSession
 
 internal protocol DropInExampleProtocol: APIClientAware {
-    var palApiClient: APIClientProtocol { get }
     var context: AdyenContext { get }
     func requestAdyenSessionConfiguration(completion: ((AdyenSession.Configuration?, Error?) -> Void)?)
 }
 
 extension DropInExampleProtocol {
-
-    var palApiClient: APIClientProtocol {
-        let context = DemoAPIContext(environment: ConfigurationConstants.classicAPIEnvironment)
-        return DefaultAPIClient(apiContext: context)
-    }
 
     internal var context: AdyenContext {
         var analyticsConfiguration = AnalyticsConfiguration()
