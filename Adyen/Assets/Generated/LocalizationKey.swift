@@ -384,18 +384,17 @@ public struct LocalizationKey {
     /// "Opt out any time by #removing your credentials.#"
     public static let threeds2DAApprRemoveCredentialsText = LocalizationKey(key: "adyen.threeds2.DA.appr.removeCredentialsText")
     /// "Remove credentials?"
-    public static let threeds2DAAppAlertRemoveAlertTitle = LocalizationKey(key: "adyen.threeds2.DA.appr.remove.alert.title")
+    public static let threeds2DAApprRemoveAlertTitle = LocalizationKey(key: "adyen.threeds2.DA.appr.remove.alert.title")
     /// "Are you sure you want to remove your credentials?"
-    public static let threeds2DAAppAlertRemoveAlertDescription = LocalizationKey(key: "adyen.threeds2.DA.appr.remove.alert.description")
+    public static let threeds2DAApprRemoveAlertDescription = LocalizationKey(key: "adyen.threeds2.DA.appr.remove.alert.description")
     /// "Remove"
-    public static let threeds2DAAppAlertRemoveAlertPositiveButton = LocalizationKey(key: "adyen.threeds2.DA.appr.remove.alert.positiveButton")
+    public static let threeds2DAApprRemoveAlertPositiveButton = LocalizationKey(key: "adyen.threeds2.DA.appr.remove.alert.positiveButton")
     /// "Cancel"
-    public static let threeds2DAAppAlertRemoveAlertNegativeButton = LocalizationKey(key: "adyen.threeds2.DA.appr.remove.alert.negativeButton")
+    public static let threeds2DAApprRemoveAlertNegativeButton = LocalizationKey(key: "adyen.threeds2.DA.appr.remove.alert.negativeButton")
 
     internal let key: String
     
     public init(key: String) {
         self.key = key
     }
-
 }

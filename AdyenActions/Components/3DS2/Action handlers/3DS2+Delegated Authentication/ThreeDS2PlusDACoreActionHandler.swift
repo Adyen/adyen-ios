@@ -132,29 +132,31 @@
                 return
             }
             
+            let approvalViewController = DAApprovalViewController(useBiometricsHandler: { [weak self] in
+                guard let self = self else { return }
+                print("Use biometrics")
+
+                self.delegatedAuthenticationService.authenticate(withBase64URLString: delegatedAuthenticationInput) { result in
+                    switch result {
+                    case let .success(sdkOutput):
+                        completion(.success(sdkOutput))
+                    case let .failure(error):
+                        completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: error)))
+                    }
+                }
+
+            }, approveDifferentlyHandler: {
+                print("Approve Differently")
+                // TODO: Robert: add pass on failure and continue authorization through the challenge.
+                completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
+
+            }, removeCredentialsHandler: {
+                print("Remove credentials")
+                // TODO: Robert: add code to delete credentials
+            })
+            
             let presentableComponent = PresentableComponentWrapper(component: self,
-                                                                   viewController: DAApprovalViewController(useBiometricsHandler: { [weak self] in
-                                                                       guard let self = self else { return }
-                                                                       print("Use biometrics")
-                
-                                                                       self.delegatedAuthenticationService.authenticate(withBase64URLString: delegatedAuthenticationInput) { result in
-                                                                           switch result {
-                                                                           case let .success(sdkOutput):
-                                                                               completion(.success(sdkOutput))
-                                                                           case let .failure(error):
-                                                                               completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: error)))
-                                                                           }
-                                                                       }
-
-                                                                   }, approveDifferentlyHandler: {
-                                                                       print("Approve Differently")
-                                                                       // TODO: Robert: add pass on failure and continue authorization through the challenge.
-                                                                       completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
-
-                                                                   }, removeCredentialsHandler: {
-                                                                       print("Remove credentials")
-                                                                       // TODO: Robert: add code to delete credentials
-                                                                   }))
+                                                                   viewController: approvalViewController)
             
             presentationDelegate?.present(component: presentableComponent)
 
@@ -208,19 +210,19 @@
             if delegatedAuthenticationState.isDeviceRegistrationFlow {
                 // TODO: Robert: Show the Registration screen here
                 // 1. Register if the user taps on continue or else, call the completion handler directly.
-                let presentableComponent = PresentableComponentWrapper(
-                    component: self,
-                    viewController: DARegistrationViewController(enableCheckoutHandler: {
-                        self.performDelegatedRegistration(token.delegatedAuthenticationSDKInput) { [weak self] result in
-                            self?.deliver(challengeResult: challengeResult,
-                                          delegatedAuthenticationSDKOutput: result.successResult,
-                                          completionHandler: completionHandler)
-                        }
-                    }, notNowHandler: {
-                        completionHandler(.success(challengeResult))
-                    })
-                )
                 
+                let registrationViewController = DARegistrationViewController(enableCheckoutHandler: {
+                    self.performDelegatedRegistration(token.delegatedAuthenticationSDKInput) { [weak self] result in
+                        self?.deliver(challengeResult: challengeResult,
+                                      delegatedAuthenticationSDKOutput: result.successResult,
+                                      completionHandler: completionHandler)
+                    }
+                }, notNowHandler: {
+                    completionHandler(.success(challengeResult))
+                })
+                
+                let presentableComponent = PresentableComponentWrapper(component: self,
+                                                                       viewController: registrationViewController)
                 presentationDelegate?.present(component: presentableComponent)
 
             } else {

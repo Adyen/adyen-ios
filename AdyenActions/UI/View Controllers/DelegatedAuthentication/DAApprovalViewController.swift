@@ -94,7 +94,6 @@ internal final class DAApprovalViewController: UIViewController {
     private func buildUI() {
         containerView.addSubview(approvalView)
         view.addSubview(containerView)
-
         containerView.translatesAutoresizingMaskIntoConstraints = false
         approvalView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -132,18 +131,19 @@ internal final class DAApprovalViewController: UIViewController {
 extension DAApprovalViewController: DelegatedAuthenticationViewDelegate {
     func removeCredential() {
         timeoutTimer?.pauseTimer()
-        let alertController = UIAlertController(title: localizedString(.threeds2DAAppAlertRemoveAlertTitle, localizationParameters),
-                                                message: localizedString(.threeds2DAAppAlertRemoveAlertDescription, localizationParameters),
+        let alertController = UIAlertController(title: localizedString(.threeds2DAApprRemoveAlertTitle, localizationParameters),
+                                                message: localizedString(.threeds2DAApprRemoveAlertDescription, localizationParameters),
                                                 preferredStyle: .alert)
-        
-        alertController.addAction(UIAlertAction(title: localizedString(.threeds2DAAppAlertRemoveAlertPositiveButton, localizationParameters), style: .cancel, handler: { [weak self] _ in
-            self?.timeoutTimer?.resumeTimer()
-        }))
-
-        alertController.addAction(UIAlertAction(title: localizedString(.threeds2DAAppAlertRemoveAlertNegativeButton, localizationParameters), style: .default, handler: { [weak self] _ in
-            self?.removeCredentialsHandler()
-        }))
-        
+        let cancelAction = UIAlertAction(title: localizedString(.threeds2DAApprRemoveAlertPositiveButton, localizationParameters),
+                                         style: .cancel, handler: { [weak self] _ in
+                                             self?.timeoutTimer?.resumeTimer()
+                                         })
+        let removeAction = UIAlertAction(title: localizedString(.threeds2DAApprRemoveAlertNegativeButton, localizationParameters),
+                                         style: .default, handler: { [weak self] _ in
+                                             self?.removeCredentialsHandler()
+                                         })
+        alertController.addAction(cancelAction)
+        alertController.addAction(removeAction)
         self.present(alertController, animated: true)
     }
     

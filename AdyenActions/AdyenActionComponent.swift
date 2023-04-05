@@ -153,7 +153,9 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
                                                                     appearanceConfiguration: configuration.threeDS.appearanceConfiguration,
                                                                     requestorAppURL: configuration.threeDS.requestorAppURL,
                                                                     delegateAuthentication: configuration.threeDS.delegateAuthentication)
-        let component = ThreeDS2Component(context: context, configuration: threeDS2Configuration, presentationDelegate: presentationDelegate)
+        let component = ThreeDS2Component(context: context,
+                                          configuration: threeDS2Configuration,
+                                          presentationDelegate: presentationDelegate)
         component._isDropIn = _isDropIn
         component.delegate = delegate
 

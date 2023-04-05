@@ -196,7 +196,6 @@ internal final class DelegatedAuthenticationView: UIView {
             textView.topAnchor.constraint(equalTo: buttonsStackView.bottomAnchor, constant: 24),
             textView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
         ])
-        
     }
     
     @objc private func firstButtonTapped() {

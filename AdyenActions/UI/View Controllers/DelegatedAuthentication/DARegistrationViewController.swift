@@ -95,7 +95,6 @@ internal final class DARegistrationViewController: UIViewController {
             registrationView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             registrationView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
         ]
-        
         NSLayoutConstraint.activate(constraints)
     }
 
