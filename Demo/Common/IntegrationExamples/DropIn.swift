@@ -19,7 +19,6 @@ internal final class DropIn: DropInExampleProtocol {
 
     internal var dropInComponent: PresentableComponent?
     internal weak var presenter: PresenterExampleProtocol?
-    //internal var paymentMethods: PaymentMethods?
     internal var session: AdyenSession?
 
     // MARK: - Initializers
