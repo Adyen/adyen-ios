@@ -110,7 +110,7 @@ extension ApplePayComponent {
                 return [.capability3DS, .capabilityDebit]
             case .credit:
                 return [.capability3DS, .capabilityCredit]
-            default:
+            case .none:
                 return .capability3DS
             }
         }
