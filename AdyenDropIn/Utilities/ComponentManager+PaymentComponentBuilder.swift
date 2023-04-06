@@ -168,7 +168,7 @@ extension ComponentManager: PaymentComponentBuilder {
                 let cashAppPayConfiguration: CashAppPayComponent.Configuration
                 cashAppPayConfiguration = .init(redirectURL: dropInCashAppConfig.redirectURL,
                                                 referenceId: dropInCashAppConfig.referenceId,
-                                                storePaymentMethod: dropInCashAppConfig.storePaymentMethod,
+                                                showsStorePaymentMethodField: dropInCashAppConfig.showsStorePaymentMethodField,
                                                 style: configuration.style.formComponent,
                                                 localizationParameters: configuration.localizationParameters)
             

@@ -16,7 +16,7 @@ public struct CashAppPayDetails: PaymentMethodDetails {
     public let type: PaymentMethodType
     
     /// The grant Id for the payment.
-    public let grantId: String
+    public let grantId: String?
     
     /// Grant id for recurring payments.
     public let onFileGrantId: String?
@@ -35,7 +35,7 @@ public struct CashAppPayDetails: PaymentMethodDetails {
     ///   - customerId: Unique identifier for this customer issued by Cash App.
     ///   - cashtag: Public identifier for the customer on Cash App.
     public init(paymentMethod: CashAppPayPaymentMethod,
-                grantId: String,
+                grantId: String?,
                 onFileGrantId: String?,
                 customerId: String?,
                 cashtag: String?) {

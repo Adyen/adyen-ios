@@ -16,7 +16,11 @@ public protocol AnyCashAppPayConfiguration {
     /// A reference to your system (for example, a cart or checkout identifier).
     var referenceId: String? { get }
 
-    /// Determines whether to store this payment method.
+    /// Indicates if the field for storing the payment method should be displayed in the form. Defaults to `true`.
+    var showsStorePaymentMethodField: Bool { get }
+    
+    /// Determines whether to store this payment method. Defaults to `false`.
+    /// Ignored if `showsStorePaymentMethodField` is `true`.
     var storePaymentMethod: Bool { get }
     
 }

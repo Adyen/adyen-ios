@@ -91,7 +91,11 @@ public extension DropInComponent {
         /// The URL for Cash App to call in order to redirect back to your application.
         public let redirectURL: URL
         
-        /// Determines whether to store this payment method.
+        /// Indicates if the field for storing the payment method should be displayed in the form. Defaults to `true`.
+        public var showsStorePaymentMethodField: Bool
+        
+        /// Determines whether to store this payment method. Defaults to `false`.
+        /// Ignored if `showsStorePaymentMethodField` is `true`.
         public var storePaymentMethod: Bool
 
         /// A reference to your system (for example, a cart or checkout identifier).
@@ -101,10 +105,16 @@ public extension DropInComponent {
         ///
         /// - Parameters:
         ///   - redirectURL: The URL for Cash App to call in order to redirect back to your application.
-        ///
+        ///   - showsStorePaymentMethodField: Determines the visibility of the field for storing the payment method.
+        ///   - storePaymentMethod: Determines whether to store this payment method.
+        ///   Ignored if `showsStorePaymentMethodField` is `true`.
         ///   - referenceId: A reference to your system (for example, a cart or checkout identifier).
-        public init(redirectURL: URL, storePaymentMethod: Bool, referenceId: String? = nil) {
+        public init(redirectURL: URL,
+                    showsStorePaymentMethodField: Bool = true,
+                    storePaymentMethod: Bool = false,
+                    referenceId: String? = nil) {
             self.redirectURL = redirectURL
+            self.showsStorePaymentMethodField = showsStorePaymentMethodField
             self.storePaymentMethod = storePaymentMethod
             self.referenceId = referenceId
         }

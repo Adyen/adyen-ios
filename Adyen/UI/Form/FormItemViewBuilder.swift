@@ -100,12 +100,6 @@ public struct FormItemViewBuilder {
     public func build(with item: FormPostalCodeItem) -> FormItemView<FormPostalCodeItem> {
         FormTextItemView(item: item)
     }
-    
-    /// Builds a`FormSpinnerItemView` from `FormSpinnerItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormSpinnerItem) -> FormItemView<FormSpinnerItem> {
-        FormSpinnerItemView(item: item)
-    }
 
     @_spi(AdyenInternal)
     public static func build(_ item: FormItem) -> AnyFormItemView {

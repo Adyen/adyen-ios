@@ -17,7 +17,8 @@
         LoadingComponent {
         
         private enum ViewIdentifier {
-            static let spinnerItem = "spinnerItem"
+            static let storeDetailsItem = "storeDetailsItem"
+            static let payButtonItem = "payButtonItem"
         }
 
         /// The context object for this component.
@@ -28,7 +29,14 @@
         public var paymentMethod: PaymentMethod { cashAppPayPaymentMethod }
 
         /// The delegate of the component.
-        public weak var delegate: PaymentComponentDelegate?
+        public weak var delegate: PaymentComponentDelegate? {
+            didSet {
+                if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
+                   storePaymentMethodAware.isSession {
+                    configuration.showsStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
+                }
+            }
+        }
 
         /// Component's configuration
         public var configuration: Configuration
@@ -39,6 +47,10 @@
         public var requiresModalPresentation: Bool = true
         
         private let cashAppPayPaymentMethod: CashAppPayPaymentMethod
+        
+        private var storePayment: Bool {
+            configuration.showsStorePaymentMethodField ? storeDetailsItem.value : configuration.storePaymentMethod
+        }
 
         private lazy var cashAppPay: CashAppPay = {
             let cashAppPayKit = CashAppPay(clientID: cashAppPayPaymentMethod.clientId, endpoint: cashAppPayEnvironment)
@@ -53,9 +65,22 @@
             return environment.isLive ? .production : .sandbox
         }
         
-        internal lazy var spinnerItem: FormSpinnerItem = {
-            let item = FormSpinnerItem()
-            item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.spinnerItem)
+        internal lazy var storeDetailsItem: FormToggleItem = {
+            let storeDetailsItem = FormToggleItem(style: configuration.style.toggle)
+            storeDetailsItem.title = localizedString(.cardStoreDetailsButton, configuration.localizationParameters)
+            storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.storeDetailsItem)
+            
+            return storeDetailsItem
+        }()
+        
+        internal lazy var cashAppPayButton: FormButtonItem = {
+            let item = FormButtonItem(style: configuration.style.mainButtonItem)
+            item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.payButtonItem)
+            // TODO: localized title
+            item.title = "Continue to Cash App Pay"
+            item.buttonSelectionHandler = { [weak self] in
+                self?.didSelectSubmitButton()
+            }
             return item
         }()
 
@@ -66,8 +91,13 @@
             formViewController.delegate = self
             formViewController.localizationParameters = configuration.localizationParameters
             formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
+            
+            if configuration.showsStorePaymentMethodField {
+                formViewController.append(storeDetailsItem)
+            }
+            
             formViewController.append(FormSpacerItem(numberOfSpaces: 2))
-            formViewController.append(spinnerItem)
+            formViewController.append(cashAppPayButton)
 
             return formViewController
         }()
@@ -85,29 +115,67 @@
             self.configuration = configuration
         }
         
+        private func didSelectSubmitButton() {
+            guard formViewController.validate() else { return }
+            
+            startLoading()
+            startCashAppPayFlow()
+        }
+        
         private func startLoading() {
-            spinnerItem.isAnimating = true
+            cashAppPayButton.showsActivityIndicator = true
             formViewController.view.isUserInteractionEnabled = false
         }
         
         public func stopLoading() {
-            spinnerItem.isAnimating = false
+            cashAppPayButton.showsActivityIndicator = false
             formViewController.view.isUserInteractionEnabled = true
         }
         
-        private func initiateCashAppPayFlow() {
-            var moneyAmount: Money?
-            if let amount = context.payment?.amount {
-                moneyAmount = Money(amount: UInt(amount.value), currency: .USD)
+        private func startCashAppPayFlow() {
+            let actions = createPaymentActions()
+            guard actions.isEmpty == false else {
+                AdyenAssertion.assertionFailure(message: "At least one paymentAction is required to create a CashAppPay rquest")
+                return
             }
-            let oneTimeAction = PaymentAction.oneTimePayment(scopeID: cashAppPayPaymentMethod.scopeId,
-                                                             money: moneyAmount)
-            let onFileAction = PaymentAction.onFilePayment(scopeID: cashAppPayPaymentMethod.scopeId,
-                                                           accountReferenceID: nil)
-            cashAppPay.createCustomerRequest(params: CreateCustomerRequestParams(actions: [oneTimeAction, onFileAction],
+            
+            cashAppPay.createCustomerRequest(params: CreateCustomerRequestParams(actions: actions,
                                                                                  redirectURL: configuration.redirectURL,
                                                                                  referenceID: configuration.referenceId,
                                                                                  metadata: nil))
+        }
+        
+        private func createPaymentActions() -> [PaymentAction] {
+            var actions = [PaymentAction]()
+            if let amount = payment?.amount, amount.value > 0 {
+                let moneyAmount = Money(amount: UInt(amount.value), currency: .USD)
+                let oneTimeAction = PaymentAction.oneTimePayment(scopeID: cashAppPayPaymentMethod.scopeId,
+                                                                 money: moneyAmount)
+                actions.append(oneTimeAction)
+            }
+            
+            if storePayment {
+                let onFileAction = PaymentAction.onFilePayment(scopeID: cashAppPayPaymentMethod.scopeId,
+                                                               accountReferenceID: nil)
+                actions.append(onFileAction)
+            }
+            
+            return actions
+        }
+        
+        private func cashAppPayDetails(from customerProfile: CustomerRequest.CustomerProfile?,
+                                       grants: [CustomerRequest.Grant]) throws -> CashAppPayDetails {
+            guard grants.isEmpty == false else {
+                throw Error.noGrant
+            }
+            let onFileGrant = grants.first { $0.type == .EXTENDED }
+            let oneTimeGrant = grants.first { $0.type == .ONE_TIME }
+            
+            return CashAppPayDetails(paymentMethod: cashAppPayPaymentMethod,
+                                     grantId: oneTimeGrant?.id,
+                                     onFileGrantId: onFileGrant?.id,
+                                     customerId: customerProfile?.id,
+                                     cashtag: customerProfile?.cashtag)
         }
         
     }
@@ -119,20 +187,16 @@
             switch state {
             case let .readyToAuthorize(request):
                 cashAppPay.authorizeCustomerRequest(request)
-            case let .approved(_, grants):
-                guard let grant = grants.first else {
-                    fail(with: Error.noGrant)
-                    return
+            case let .approved(request, grants):
+                do {
+                    let details = try cashAppPayDetails(from: request.customerProfile, grants: grants)
+                    submit(data: PaymentComponentData(paymentMethodDetails: details,
+                                                      amount: payment?.amount,
+                                                      order: order,
+                                                      storePaymentMethod: storePayment))
+                } catch {
+                    fail(with: error)
                 }
-                let details = CashAppPayDetails(paymentMethod: cashAppPayPaymentMethod,
-                                                grantId: grant.id,
-                                                onFileGrantId: nil,
-                                                customerId: nil,
-                                                cashtag: nil)
-                submit(data: PaymentComponentData(paymentMethodDetails: details,
-                                                  amount: payment?.amount,
-                                                  order: order,
-                                                  storePaymentMethod: configuration.storePaymentMethod))
             case let .apiError(error):
                 fail(with: error)
             case let .networkError(error):
@@ -165,7 +229,11 @@
             /// A reference to your system (for example, a cart or checkout identifier).
             public let referenceId: String?
         
-            /// Determines whether to store this payment method.
+            /// Indicates if the field for storing the payment method should be displayed in the form. Defaults to `true`.
+            public var showsStorePaymentMethodField: Bool
+            
+            /// Determines whether to store this payment method. Defaults to `false`.
+            /// Ignored if `showsStorePaymentMethodField` is `true`.
             public var storePaymentMethod: Bool
         
             /// Describes the component's UI style.
@@ -179,16 +247,20 @@
             /// - Parameters:
             ///   - redirectURL: The URL for Cash App to call in order to redirect back to your application.
             ///   - referenceId: A reference to your system (for example, a cart or checkout identifier).
+            ///   - showsStorePaymentMethodField: Determines the visibility of the field for storing the payment method.
             ///   - storePaymentMethod: Determines whether to store this payment method.
+            ///   Ignored if `showsStorePaymentMethodField` is `true`.
             ///   - style: The UI style of the component.
             ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
             public init(redirectURL: URL,
                         referenceId: String? = nil,
-                        storePaymentMethod: Bool,
+                        showsStorePaymentMethodField: Bool = true,
+                        storePaymentMethod: Bool = false,
                         style: FormComponentStyle = FormComponentStyle(),
                         localizationParameters: LocalizationParameters? = nil) {
                 self.redirectURL = redirectURL
                 self.referenceId = referenceId
+                self.showsStorePaymentMethodField = showsStorePaymentMethodField
                 self.storePaymentMethod = storePaymentMethod
                 self.style = style
                 self.localizationParameters = localizationParameters
@@ -225,17 +297,8 @@
     @_spi(AdyenInternal)
     extension CashAppPayComponent: ViewControllerDelegate {
 
-        public func viewDidLoad(viewController: UIViewController) {
-            Analytics.sendEvent(component: paymentMethod.type.rawValue,
-                                flavor: _isDropIn ? .dropin : .components,
-                                context: context.apiContext)
-        }
-
-        /// :nodoc:
         public func viewWillAppear(viewController: UIViewController) {
             sendTelemetryEvent()
-            startLoading()
-            initiateCashAppPayFlow()
         }
     }
 
