@@ -11,8 +11,8 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
     
     private lazy var componentsView = ComponentsView()
 
-    private lazy var dropIn: DropIn = {
-        let dropIn = DropIn()
+    private lazy var dropIn: DropInExample = {
+        let dropIn = DropInExample()
         dropIn.presenter = self
         return dropIn
     }()

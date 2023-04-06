@@ -13,7 +13,7 @@ import AdyenNetworking
 import AdyenSession
 import UIKit
 
-internal final class DropIn: DropInExampleProtocol {
+internal final class DropInExample: DropInExampleProtocol {
 
     // MARK: - Properties
 
@@ -28,13 +28,16 @@ internal final class DropIn: DropInExampleProtocol {
     // MARK: - Networking
 
     internal func requestInitialData() {
-        requestAdyenSessionConfiguration { adyenSessionConfig, errorResponse in
+        requestAdyenSessionConfiguration { [weak self] adyenSessionConfig, errorResponse in
+            guard let strongSelf = self else {
+                return
+            }
             guard let config = adyenSessionConfig else {
                 return
             }
             AdyenSession.initialize(with: config,
-                                    delegate: self,
-                                    presentationDelegate: self) { [weak self] result in
+                                    delegate: strongSelf,
+                                    presentationDelegate: strongSelf) { [weak self] result in
                 switch result {
                 case let .success(session):
                     self?.session = session
@@ -93,7 +96,7 @@ internal final class DropIn: DropInExampleProtocol {
 
 }
 
-extension DropIn: AdyenSessionDelegate {
+extension DropInExample: AdyenSessionDelegate {
 
     func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession) {
         requestInitialData()
@@ -109,6 +112,6 @@ extension DropIn: AdyenSessionDelegate {
 
 }
 
-extension DropIn: PresentationDelegate {
+extension DropInExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {}
 }
