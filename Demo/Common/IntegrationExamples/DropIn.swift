@@ -29,15 +29,15 @@ internal final class DropInExample: DropInExampleProtocol {
 
     internal func requestInitialData() {
         requestAdyenSessionConfiguration { [weak self] adyenSessionConfig, errorResponse in
-            guard let strongSelf = self else {
+            guard let self = self else {
                 return
             }
             guard let config = adyenSessionConfig else {
                 return
             }
             AdyenSession.initialize(with: config,
-                                    delegate: strongSelf,
-                                    presentationDelegate: strongSelf) { [weak self] result in
+                                    delegate: self,
+                                    presentationDelegate: self) { [weak self] result in
                 switch result {
                 case let .success(session):
                     self?.session = session
