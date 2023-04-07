@@ -7,14 +7,14 @@
 import SwiftUI
 import UIKit
 
-internal final class ComponentsViewController: UIViewController, Presenter {
+internal final class ComponentsViewController: UIViewController, PresenterExampleProtocol {
     
     private lazy var componentsView = ComponentsView()
 
-    private lazy var integrationExample: IntegrationExample = {
-        let integrationExample = IntegrationExample()
-        integrationExample.presenter = self
-        return integrationExample
+    private lazy var dropIn: DropInExample = {
+        let dropIn = DropInExample()
+        dropIn.presenter = self
+        return dropIn
     }()
     
     // MARK: - View
@@ -30,18 +30,6 @@ internal final class ComponentsViewController: UIViewController, Presenter {
         componentsView.items = [
             [
                 ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
-            ],
-            [
-                ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
-                ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
-                ComponentsItem(title: "Online Banking PL", selectionHandler: presentOnlineBankingPolandComponent),
-                ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
-                ComponentsItem(title: "BACS Direct Debit", selectionHandler: presentBACSDirectDebitComponent),
-                ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent),
-                ComponentsItem(title: "Convenience Stores", selectionHandler: presentConvenienceStore)
-            ],
-            [
-                ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)
             ]
         ]
         
@@ -56,78 +44,14 @@ internal final class ComponentsViewController: UIViewController, Presenter {
 
     internal func presentDropInComponent() {
         if componentsView.isUsingSession {
-            integrationExample.presentDropInComponentSession()
+            dropIn.presentDropInComponentSession()
         } else {
-            integrationExample.presentDropInComponent()
+            // Todo: Advanced Flow
         }
     }
 
-    internal func presentCardComponent() {
-        if componentsView.isUsingSession {
-            integrationExample.presentCardComponentSession()
-        } else {
-            integrationExample.presentCardComponent()
-        }
-    }
-
-    internal func presentIdealComponent() {
-        if componentsView.isUsingSession {
-            integrationExample.presentIdealComponentSession()
-        } else {
-            integrationExample.presentIdealComponent()
-        }
-    }
-
-    internal func presentOnlineBankingPolandComponent() {
-        if componentsView.isUsingSession {
-            integrationExample.presentOnlineBankingPolandComponent()
-        } else {
-            integrationExample.presentOnlineBankingPolandComponentSession()
-        }
-    }
-
-    internal func presentSEPADirectDebitComponent() {
-        if componentsView.isUsingSession {
-            integrationExample.presentSEPADirectDebitComponentSession()
-        } else {
-            integrationExample.presentSEPADirectDebitComponent()
-        }
-    }
-
-    internal func presentBACSDirectDebitComponent() {
-        if componentsView.isUsingSession {
-            integrationExample.presentBACSDirectDebitComponentSession()
-        } else {
-            integrationExample.presentBACSDirectDebitComponent()
-        }
-    }
-
-    internal func presentMBWayComponent() {
-        if componentsView.isUsingSession {
-            integrationExample.presentMBWayComponentSession()
-        } else {
-            integrationExample.presentMBWayComponent()
-        }
-    }
-
-    internal func presentApplePayComponent() {
-        if componentsView.isUsingSession {
-            integrationExample.presentApplePayComponentSession()
-        } else {
-            integrationExample.presentApplePayComponent()
-        }
-    }
-
-    internal func presentConvenienceStore() {
-        if componentsView.isUsingSession {
-            integrationExample.presentConvenienceStoreSession()
-        } else {
-            integrationExample.presentConvenienceStore()
-        }
-    }
-    
     internal func requestInitialData() {
-        integrationExample.requestInitialData()
+        dropIn.requestInitialData()
     }
 
     // MARK: - Presenter

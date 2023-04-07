@@ -6,12 +6,12 @@
 
 import SwiftUI
 
-internal final class PaymentsViewModel: ObservableObject, Identifiable, Presenter {
+internal final class PaymentsViewModel: ObservableObject, Identifiable, PresenterExampleProtocol {
 
-    private lazy var integrationExample: IntegrationExample = {
-        let integrationExample = IntegrationExample()
-        integrationExample.presenter = self
-        return integrationExample
+    private lazy var dropIn: DropInExample = {
+        let dropIn = DropInExample()
+        dropIn.presenter = self
+        return dropIn
     }()
 
     @Published internal var viewControllerToPresent: UIViewController?
@@ -21,43 +21,18 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
     // MARK: - DropIn Component
 
     internal func presentDropInComponent() {
-        integrationExample.presentDropInComponent()
+       // todo: add advanced flow
     }
 
-    internal func presentCardComponent() {
-        integrationExample.presentCardComponent()
-    }
-
-    internal func presentIdealComponent() {
-        integrationExample.presentIdealComponent()
-    }
-
-    internal func presentOnlineBankingPolandComponent() {
-        integrationExample.presentOnlineBankingPolandComponent()
-    }
-
-    internal func presentSEPADirectDebitComponent() {
-        integrationExample.presentSEPADirectDebitComponent()
-    }
-
-    internal func presentMBWayComponent() {
-        integrationExample.presentMBWayComponent()
-    }
+   // TODO: add for other PM
 
     internal func viewDidAppear() {
         items = [
             [
                 ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
-            ],
-            [
-                ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
-                ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
-                ComponentsItem(title: "Online Banking PL", selectionHandler: presentOnlineBankingPolandComponent),
-                ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
-                ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent)
             ]
         ]
-        integrationExample.requestPaymentMethods()
+        // todo: add request payment method api
     }
     
     // MARK: - Configuration
@@ -78,7 +53,7 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
     private func onConfigurationClosed(_ configuration: Configuration) {
         ConfigurationConstants.current = configuration
         dismiss(completion: nil)
-        integrationExample.requestPaymentMethods()
+        // todo: add request payment method api
     }
 
     // MARK: - Presenter
