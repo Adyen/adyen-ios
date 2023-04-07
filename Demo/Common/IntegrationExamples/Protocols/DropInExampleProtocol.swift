@@ -8,7 +8,7 @@
 import AdyenNetworking
 import AdyenSession
 
-internal protocol DropInExampleProtocol: APIClientAware {
+internal protocol DropInExampleProtocol: AnyObject, APIClientAware {
     var context: AdyenContext { get }
     func requestAdyenSessionConfiguration(completion: ((AdyenSession.Configuration?, Error?) -> Void)?)
 }
@@ -25,10 +25,10 @@ extension DropInExampleProtocol {
 
     internal func requestAdyenSessionConfiguration(completion: ((AdyenSession.Configuration?, Error?) -> Void)?) {
         let request = SessionRequest()
-        apiClient.perform(request) { result in
+        apiClient.perform(request) { [weak self] result in
             switch result {
             case let .success(response):
-                let config = self.initializeSession(with: response.sessionId, data: response.sessionData)
+                let config = self?.initializeSession(with: response.sessionId, data: response.sessionData)
                 completion?(config, nil)
             case let .failure(error):
                 completion?(nil, error)
