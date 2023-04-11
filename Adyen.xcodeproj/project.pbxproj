@@ -105,6 +105,8 @@
 		A013F98126AFF72D00602633 /* BrazilSocialSecurityNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */; };
 		A018094826FDD345003A8DE3 /* FormCardNumberContainerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A018094726FDD345003A8DE3 /* FormCardNumberContainerItem.swift */; };
 		A01DCF0B26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01DCF0A26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift */; };
+		A020EC3729E5B28B0050B2FE /* AdyenCashAppPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A04F8C1E29E5950100F3F62B /* AdyenCashAppPay.framework */; };
+		A020EC3829E5B28B0050B2FE /* AdyenCashAppPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A04F8C1E29E5950100F3F62B /* AdyenCashAppPay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A023A9B428103C2D004FDCA4 /* session_response.json in Resources */ = {isa = PBXBuildFile; fileRef = A023A9B328103C2D004FDCA4 /* session_response.json */; };
 		A026C85127C4FE4700E6C34A /* BasicComponentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A026C85027C4FE4700E6C34A /* BasicComponentConfiguration.swift */; };
 		A02AF3DF274FB30200E1636C /* ApplePayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3DE274FB30200E1636C /* ApplePayStyle.swift */; };
@@ -133,8 +135,6 @@
 		A04F8C3229E596C300F3F62B /* CashAppPayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03B7C9129B0C61500FDDDFC /* CashAppPayComponent.swift */; };
 		A04F8C3429E596EE00F3F62B /* PayKit in Frameworks */ = {isa = PBXBuildFile; productRef = A04F8C3329E596EE00F3F62B /* PayKit */; };
 		A04F8C3629E5978800F3F62B /* AnyCashAppPayConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04F8C3529E5978800F3F62B /* AnyCashAppPayConfiguration.swift */; };
-		A04F8C3729E5A47200F3F62B /* AdyenCashAppPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A04F8C1E29E5950100F3F62B /* AdyenCashAppPay.framework */; };
-		A04F8C3829E5A47200F3F62B /* AdyenCashAppPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A04F8C1E29E5950100F3F62B /* AdyenCashAppPay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */; };
 		A0644AB728A5120C00BBF4A9 /* StorePaymentMethodFieldAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0644AB628A5120C00BBF4A9 /* StorePaymentMethodFieldAware.swift */; };
 		A07355D7276B350F00530562 /* DocumentActionViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */; };
@@ -852,6 +852,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A020EC3929E5B28B0050B2FE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A04F8C1D29E5950100F3F62B;
+			remoteInfo = AdyenCashAppPay;
+		};
 		A0414C22278D9B6F00DF3FE9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
@@ -865,13 +872,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = E2C0E03222097917008616F6;
 			remoteInfo = Adyen;
-		};
-		A04F8C3929E5A47300F3F62B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A04F8C1D29E5950100F3F62B;
-			remoteInfo = AdyenCashAppPay;
 		};
 		E2C0E03E22097917008616F6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1121,7 +1121,7 @@
 				E9B36CB32243B2FF00EAA368 /* AdyenDropIn.framework in Embed Frameworks */,
 				E2C0E0AE220B0840008616F6 /* AdyenCard.framework in Embed Frameworks */,
 				F92980AD27CE2B33000CA5CA /* AdyenSession.framework in Embed Frameworks */,
-				A04F8C3829E5A47200F3F62B /* AdyenCashAppPay.framework in Embed Frameworks */,
+				A020EC3829E5B28B0050B2FE /* AdyenCashAppPay.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1995,7 +1995,7 @@
 				F973A9192791C3B0005AA753 /* AdyenActions.framework in Frameworks */,
 				E2C0E098220B0827008616F6 /* Adyen.framework in Frameworks */,
 				F92980AC27CE2B33000CA5CA /* AdyenSession.framework in Frameworks */,
-				A04F8C3729E5A47200F3F62B /* AdyenCashAppPay.framework in Frameworks */,
+				A020EC3729E5B28B0050B2FE /* AdyenCashAppPay.framework in Frameworks */,
 				E9B36CB22243B2FF00EAA368 /* AdyenDropIn.framework in Frameworks */,
 				E2C0E0AD220B0840008616F6 /* AdyenCard.framework in Frameworks */,
 			);
@@ -4968,7 +4968,7 @@
 				E7095B1427AAA32B001C6B2C /* PBXTargetDependency */,
 				E72375DB27AABF400020DCF9 /* PBXTargetDependency */,
 				F92980AB27CE2B33000CA5CA /* PBXTargetDependency */,
-				A04F8C3A29E5A47300F3F62B /* PBXTargetDependency */,
+				A020EC3A29E5B28B0050B2FE /* PBXTargetDependency */,
 			);
 			name = AdyenUIHost;
 			packageProductDependencies = (
@@ -6598,6 +6598,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A020EC3A29E5B28B0050B2FE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A04F8C1D29E5950100F3F62B /* AdyenCashAppPay */;
+			targetProxy = A020EC3929E5B28B0050B2FE /* PBXContainerItemProxy */;
+		};
 		A0414C23278D9B6F00DF3FE9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F92326AB25A3669E002C5BC4 /* AdyenEncryption */;
@@ -6607,11 +6612,6 @@
 			isa = PBXTargetDependency;
 			target = E2C0E03222097917008616F6 /* Adyen */;
 			targetProxy = A04F8C2D29E5957B00F3F62B /* PBXContainerItemProxy */;
-		};
-		A04F8C3A29E5A47300F3F62B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A04F8C1D29E5950100F3F62B /* AdyenCashAppPay */;
-			targetProxy = A04F8C3929E5A47300F3F62B /* PBXContainerItemProxy */;
 		};
 		E2C0E03F22097917008616F6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
