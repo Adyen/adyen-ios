@@ -14,6 +14,9 @@
 #if canImport(AdyenActions)
     @_spi(AdyenInternal) import AdyenActions
 #endif
+#if canImport(AdyenCashAppPay)
+    @_spi(AdyenInternal) import AdyenCashAppPay
+#endif
 import Foundation
 
 extension ComponentManager: PaymentComponentBuilder {
@@ -158,7 +161,7 @@ extension ComponentManager: PaymentComponentBuilder {
     }
     
     internal func build(paymentMethod: CashAppPayPaymentMethod) -> PaymentComponent? {
-        #if canImport(PayKit)
+        #if canImport(AdyenCashAppPay)
             guard let dropInCashAppConfig = configuration.cashAppPay else {
                 AdyenAssertion.assertionFailure(
                     message: "Cash App Pay configuration instance must not be nil in order to use CashAppPayComponent")

@@ -34,6 +34,12 @@ Pod::Spec.new do |s|
     plugin.dependency 'AdyenWeChatPayInternal', '2.1.0'
   end
 
+  s.subspec 'CashAppPay' do |plugin|
+    plugin.source_files = 'AdyenCashAppPay/**/*.swift'
+    plugin.dependency 'Adyen/Core'
+    plugin.dependency 'CashAppPayKit', '0.3.0'
+  end
+
   s.subspec 'Card' do |plugin|
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/Encryption'

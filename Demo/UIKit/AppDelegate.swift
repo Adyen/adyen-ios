@@ -7,8 +7,8 @@
 import Adyen
 import AdyenActions
 import UIKit
-#if canImport(PayKit)
-    import PayKit
+#if canImport(AdyenCashAppPay)
+    import AdyenCashAppPay
 #endif
 
 @UIApplicationMain
@@ -37,11 +37,15 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     internal func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         RedirectComponent.applicationDidOpen(from: url)
         
-        NotificationCenter.default.post(
-            name: CashAppPay.RedirectNotification,
-            object: nil,
-            userInfo: [UIApplication.LaunchOptionsKey.url: url]
-        )
+        if #available(iOS 13.0, *) {
+            NotificationCenter.default.post(
+                name: CashAppPayComponent.RedirectNotification,
+                object: nil,
+                userInfo: [UIApplication.LaunchOptionsKey.url: url]
+            )
+        } else {
+            // Fallback on earlier versions
+        }
         
         return true
     }
