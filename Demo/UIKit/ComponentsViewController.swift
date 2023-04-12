@@ -16,6 +16,12 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
         dropIn.presenter = self
         return dropIn
     }()
+
+    private lazy var advancedFlow: AdvancedFlowExample = {
+        let advancedFlow = AdvancedFlowExample()
+        advancedFlow.presenter = self
+        return advancedFlow
+    }()
     
     // MARK: - View
     
@@ -46,12 +52,13 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
         if componentsView.isUsingSession {
             dropIn.presentDropInComponentSession()
         } else {
-            // Todo: Advanced Flow
+            advancedFlow.presentDropInComponent()
         }
     }
 
     internal func requestInitialData() {
         dropIn.requestInitialData()
+        advancedFlow.requestInitialData()
     }
 
     // MARK: - Presenter
