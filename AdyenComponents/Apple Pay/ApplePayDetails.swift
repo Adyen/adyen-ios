@@ -29,6 +29,9 @@ public struct ApplePayDetails: PaymentMethodDetails {
     /// The user-selected shipping address for this transaction.
     public let shippingContact: PKContact?
 
+    /// The user-selected shipping address details for this transaction.
+    public var shippingAddressDetails: [String:String]?
+    
     /// The shipping method that the user chose.
     public let shippingMethod: PKShippingMethod?
     
@@ -53,6 +56,30 @@ public struct ApplePayDetails: PaymentMethodDetails {
         self.billingContact = billingContact
         self.shippingContact = shippingContact
         self.shippingMethod = shippingMethod
+        if let contact = self.shippingContact{
+            self.shippingAddressDetails = [String:String]()
+            if let address = contact.postalAddress{
+                shippingAddressDetails?["street"] = address.street
+                shippingAddressDetails?["city"] = address.city
+                shippingAddressDetails?["state"] = address.state
+                shippingAddressDetails?["postcode"] = address.postalCode
+                shippingAddressDetails?["country"] = address.country
+            }
+            if let name = contact.name{
+                if #available(iOS 15.0, *) {
+                    shippingAddressDetails?["name"] = name.formatted()
+                } else {
+                    shippingAddressDetails?["name"] = "\(name.givenName) \(name.familyName)"
+                }
+
+            }
+            if let email = contact.emailAddress{
+                shippingAddressDetails?["email"] = email
+            }
+            if let phoneNumber = contact.phoneNumber{
+                shippingAddressDetails?["phoneNumber"] = phoneNumber.stringValue
+            }
+        }
     }
     
     // MARK: - Coding
@@ -61,6 +88,7 @@ public struct ApplePayDetails: PaymentMethodDetails {
         case network = "applePayCardNetwork"
         case token = "applePayToken"
         case type
+        case shippingAddressDetails
     }
     
 }
