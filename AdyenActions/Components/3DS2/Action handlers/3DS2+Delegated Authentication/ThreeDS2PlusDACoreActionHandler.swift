@@ -43,6 +43,13 @@
         internal weak var presentationDelegate: PresentationDelegate?
 
         internal struct DelegatedAuthenticationState {
+            enum UserInputState {
+                case approveDifferently
+                case deleteDA
+                case noInput
+            }
+
+            internal var state: UserInputState = .noInput
             internal var isDeviceRegistrationFlow: Bool = false
         }
         
@@ -135,7 +142,7 @@
             self.delegatedAuthenticationService.isDeviceRegistered(withAuthenticationInput: delegatedAuthenticationInput) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
-                case .failure(let error):
+                case let .failure(error):
                     completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: error)))
                 case let .success(success):
                     if success {
@@ -154,13 +161,17 @@
 
                         }, approveDifferentlyHandler: {
                             print("Approve Differently")
+                            self.delegatedAuthenticationState.state = .approveDifferently
+
                             // TODO: Robert: add pass on failure and continue authorization through the challenge.
                             completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
 
                         }, removeCredentialsHandler: {
                             print("Remove credentials")
-                            // TODO: Robert: Do we need to handle an error case?
+                            self.delegatedAuthenticationState.state = .deleteDA
+                            // TODO: Robert: How to dismiss this screen?
                             try? self.delegatedAuthenticationService.reset()
+                            completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
                         })
                         
                         let presentableComponent = PresentableComponentWrapper(component: self,
@@ -172,7 +183,6 @@
                     }
                 }
             }
-            
         }
         
         private func createFingerPrintResult<R>(authenticationSDKOutput: String?,
@@ -220,7 +230,9 @@
                 return didFail(with: error, completionHandler: completionHandler)
             }
             
-            if delegatedAuthenticationState.isDeviceRegistrationFlow {
+            if delegatedAuthenticationState.isDeviceRegistrationFlow
+                && delegatedAuthenticationState.state != .approveDifferently
+                && delegatedAuthenticationState.state != .deleteDA {
                 // TODO: Robert: Show the Registration screen here
                 // 1. Register if the user taps on continue or else, call the completion handler directly.
                 
@@ -236,6 +248,7 @@
                 
                 let presentableComponent = PresentableComponentWrapper(component: self,
                                                                        viewController: registrationViewController)
+                
                 presentationDelegate?.present(component: presentableComponent)
 
             } else {

@@ -11,6 +11,24 @@ internal final class DAApprovalViewController: UIViewController {
     private let useBiometricsHandler: Handler
     private let approveDifferentlyHandler: Handler
     private let removeCredentialsHandler: Handler
+    private lazy var alert: UIAlertController = {
+        let alertController = UIAlertController(title: localizedString(.threeds2DAApprRemoveAlertTitle, localizationParameters),
+                                                message: localizedString(.threeds2DAApprRemoveAlertDescription, localizationParameters),
+                                                preferredStyle: .alert)
+        let removeAction = UIAlertAction(title: localizedString(.threeds2DAApprRemoveAlertPositiveButton, localizationParameters),
+                                         style: .cancel,
+                                         handler: { [weak self] _ in
+                                             self?.removeCredentialsHandler()
+                                         })
+        let cancelAction = UIAlertAction(title: localizedString(.threeds2DAApprRemoveAlertNegativeButton, localizationParameters),
+                                         style: .default,
+                                         handler: { [weak self] _ in
+                                             self?.timeoutTimer?.resumeTimer()
+                                         })
+        alertController.addAction(cancelAction)
+        alertController.addAction(removeAction)
+        return alertController
+    }()
     
     private lazy var containerView = UIView(frame: .zero)
     private lazy var approvalView: DelegatedAuthenticationView = .init(logoStyle: style.imageStyle,
@@ -131,20 +149,7 @@ internal final class DAApprovalViewController: UIViewController {
 extension DAApprovalViewController: DelegatedAuthenticationViewDelegate {
     func removeCredential() {
         timeoutTimer?.pauseTimer()
-        let alertController = UIAlertController(title: localizedString(.threeds2DAApprRemoveAlertTitle, localizationParameters),
-                                                message: localizedString(.threeds2DAApprRemoveAlertDescription, localizationParameters),
-                                                preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: localizedString(.threeds2DAApprRemoveAlertPositiveButton, localizationParameters),
-                                         style: .cancel, handler: { [weak self] _ in
-                                             self?.timeoutTimer?.resumeTimer()
-                                         })
-        let removeAction = UIAlertAction(title: localizedString(.threeds2DAApprRemoveAlertNegativeButton, localizationParameters),
-                                         style: .default, handler: { [weak self] _ in
-                                             self?.removeCredentialsHandler()
-                                         })
-        alertController.addAction(cancelAction)
-        alertController.addAction(removeAction)
-        self.present(alertController, animated: true)
+        self.present(alert, animated: true)
     }
     
     func firstButtonTapped() {
