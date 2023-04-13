@@ -41,7 +41,7 @@ public final class CashAppPayComponent: PaymentComponent,
     }
 
     /// Component's configuration
-    public var configuration: Configuration
+    public var configuration: CashAppPayConfiguration
     
     public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
                                                                              style: configuration.style)
@@ -111,7 +111,7 @@ public final class CashAppPayComponent: PaymentComponent,
     /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: CashAppPayPaymentMethod,
                 context: AdyenContext,
-                configuration: Configuration) {
+                configuration: CashAppPayConfiguration) {
         self.cashAppPayPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
@@ -219,56 +219,6 @@ extension CashAppPayComponent: CashAppPayObserver {
     private func fail(with error: Swift.Error) {
         stopLoading()
         delegate?.didFail(with: error, from: self)
-    }
-}
-
-@available(iOS 13.0, *)
-extension CashAppPayComponent {
-    /// Configuration object for Cash App Component
-    public struct Configuration: AnyCashAppPayConfiguration {
-
-        /// The URL for Cash App to call in order to redirect back to your application.
-        public let redirectURL: URL
-
-        /// A reference to your system (for example, a cart or checkout identifier).
-        public let referenceId: String?
-    
-        /// Indicates if the field for storing the payment method should be displayed in the form. Defaults to `true`.
-        public var showsStorePaymentMethodField: Bool
-        
-        /// Determines whether to store this payment method. Defaults to `false`.
-        /// Ignored if `showsStorePaymentMethodField` is `true`.
-        public var storePaymentMethod: Bool
-    
-        /// Describes the component's UI style.
-        public var style: FormComponentStyle
-
-        /// The localization parameters, leave it nil to use the default parameters.
-        public var localizationParameters: LocalizationParameters?
-
-        /// Initializes an instance of `CashAppPayComponent.Configuration`
-        ///
-        /// - Parameters:
-        ///   - redirectURL: The URL for Cash App to call in order to redirect back to your application.
-        ///   - referenceId: A reference to your system (for example, a cart or checkout identifier).
-        ///   - showsStorePaymentMethodField: Determines the visibility of the field for storing the payment method.
-        ///   - storePaymentMethod: Determines whether to store this payment method.
-        ///   Ignored if `showsStorePaymentMethodField` is `true`.
-        ///   - style: The UI style of the component.
-        ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
-        public init(redirectURL: URL,
-                    referenceId: String? = nil,
-                    showsStorePaymentMethodField: Bool = true,
-                    storePaymentMethod: Bool = false,
-                    style: FormComponentStyle = FormComponentStyle(),
-                    localizationParameters: LocalizationParameters? = nil) {
-            self.redirectURL = redirectURL
-            self.referenceId = referenceId
-            self.showsStorePaymentMethodField = showsStorePaymentMethodField
-            self.storePaymentMethod = storePaymentMethod
-            self.style = style
-            self.localizationParameters = localizationParameters
-        }
     }
 }
 

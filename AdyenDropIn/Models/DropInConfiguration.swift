@@ -87,39 +87,6 @@ public extension DropInComponent {
         public var showEmailAddress: Bool = true
     }
     
-    struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
-        /// The URL for Cash App to call in order to redirect back to your application.
-        public let redirectURL: URL
-        
-        /// Indicates if the field for storing the payment method should be displayed in the form. Defaults to `true`.
-        public var showsStorePaymentMethodField: Bool
-        
-        /// Determines whether to store this payment method. Defaults to `false`.
-        /// Ignored if `showsStorePaymentMethodField` is `true`.
-        public var storePaymentMethod: Bool
-
-        /// A reference to your system (for example, a cart or checkout identifier).
-        public let referenceId: String?
-        
-        /// Initializes an instance of `CashAppPayConfiguration`
-        ///
-        /// - Parameters:
-        ///   - redirectURL: The URL for Cash App to call in order to redirect back to your application.
-        ///   - showsStorePaymentMethodField: Determines the visibility of the field for storing the payment method.
-        ///   - storePaymentMethod: Determines whether to store this payment method.
-        ///   Ignored if `showsStorePaymentMethodField` is `true`.
-        ///   - referenceId: A reference to your system (for example, a cart or checkout identifier).
-        public init(redirectURL: URL,
-                    showsStorePaymentMethodField: Bool = true,
-                    storePaymentMethod: Bool = false,
-                    referenceId: String? = nil) {
-            self.redirectURL = redirectURL
-            self.showsStorePaymentMethodField = showsStorePaymentMethodField
-            self.storePaymentMethod = storePaymentMethod
-            self.referenceId = referenceId
-        }
-    }
-    
     /// Card Component configuration specific to Drop In Component.
     struct Card: AnyCardComponentConfiguration {
         

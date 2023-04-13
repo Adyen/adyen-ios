@@ -161,23 +161,19 @@ extension ComponentManager: PaymentComponentBuilder {
     }
     
     internal func build(paymentMethod: CashAppPayPaymentMethod) -> PaymentComponent? {
-        #if canImport(PayKit)
-            guard let dropInCashAppConfig = configuration.cashAppPay else {
+        #if canImport(AdyenCashAppPay)
+            guard var cashAppPayConfig = configuration.cashAppPay else {
                 AdyenAssertion.assertionFailure(
                     message: "Cash App Pay configuration instance must not be nil in order to use CashAppPayComponent")
                 return nil
             }
             if #available(iOS 13.0, *) {
-                let cashAppPayConfiguration: CashAppPayComponent.Configuration
-                cashAppPayConfiguration = .init(redirectURL: dropInCashAppConfig.redirectURL,
-                                                referenceId: dropInCashAppConfig.referenceId,
-                                                showsStorePaymentMethodField: dropInCashAppConfig.showsStorePaymentMethodField,
-                                                style: configuration.style.formComponent,
-                                                localizationParameters: configuration.localizationParameters)
-            
+                cashAppPayConfig.localizationParameters = configuration.localizationParameters
+                cashAppPayConfig.style = configuration.style.formComponent
+        
                 return CashAppPayComponent(paymentMethod: paymentMethod,
                                            context: context,
-                                           configuration: cashAppPayConfiguration)
+                                           configuration: cashAppPayConfig)
             } else {
                 return nil
             }
