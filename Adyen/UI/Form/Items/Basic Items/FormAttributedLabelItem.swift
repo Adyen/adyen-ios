@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -48,7 +48,7 @@ public class FormAttributedLabelItem: FormItem {
         label.backgroundColor = style.backgroundColor
         let attributedString = NSMutableAttributedString(string: originalText.replacingOccurrences(of: "#", with: " "))
 
-        let linkRanges = linkRangesInString()
+        let linkRanges = originalText.adyen.linkRanges()
 
         let attributes = createAttributes(from: linkTextStyle)
         for linkRange in linkRanges {
@@ -69,23 +69,6 @@ public class FormAttributedLabelItem: FormItem {
         if let url = URL(string: link) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
-    }
-
-    private func linkRangesInString() -> [NSRange] {
-        let pattern = "#(.+?)#"
-        var ranges: [NSRange] = []
-        do {
-            let regex = try NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options.caseInsensitive)
-            let matches = regex.matches(in: originalText, options: [], range: NSRange(location: 0, length: originalText.utf16.count))
-
-            matches.forEach { match in
-                let range = match.range(at: 0)
-                ranges.append(range)
-            }
-        } catch {
-            adyenPrint(error)
-        }
-        return ranges
     }
 
     private func createAttributes(from style: TextStyle) -> [NSAttributedString.Key: Any] {

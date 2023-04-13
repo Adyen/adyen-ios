@@ -81,9 +81,11 @@ internal final class DAApprovalViewController: UIViewController {
     
     private func configureTextView() {
         let string = localizedString(.threeds2DAApprRemoveCredentialsText, localizationParameters)
-        let range = NSString(string: string).range(of: localizedString(.threeds2DAApprRemoveCredentialsText, localizationParameters))
         let attributedString = NSMutableAttributedString(string: string)
-        attributedString.addAttribute(.link, value: "removeCredential://", range: range)
+        if let range = string.adyen.linkRanges().first {
+            attributedString.addAttribute(.link, value: "removeCredential://", range: range)
+        }
+        attributedString.mutableString.replaceOccurrences(of: "#", with: "", range: NSRange(location: 0, length: attributedString.length))
         approvalView.textView.attributedText = attributedString
         approvalView.textView.delegate = self
     }
