@@ -1,5 +1,5 @@
 
-# Three API Approach
+# Advanced flow integration guide
 
 If the simplified checkout flow starting with the `/sesssions` call does not work for your needs,
 you can opt-in to use the previously default approach, that starts with the `/paymentMethods` API call.

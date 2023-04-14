@@ -1,7 +1,7 @@
 <UIView; frame = (0 0; 390 844); autoresize = W+H; backgroundColor = <UIDynamicSystemColor; name = systemBackgroundColor>; layer = <CALayer>>
    | <UISearchBar; frame = (16 47; 358 54.3333); text = ''; gestureRecognizers = <NSArray>; layer = <CALayer>>
    |    | <UIView; frame = (0 0; 358 54.3333); clipsToBounds = YES; autoresize = W+H; layer = <CALayer>>
-   |    |    | <UISearchBarBackground; frame = (0 0; 358 54.3333); opaque = NO; userInteractionEnabled = NO; backgroundColor = UIExtendedGrayColorSpace 1 1; layer = <CALayer>>
+   |    |    | <UISearchBarBackground; frame = (0 0; 358 54.3333); opaque = NO; userInteractionEnabled = NO; backgroundColor = <UIDynamicModifiedColor; alpha = 1, baseColor = <UIDynamicSystemColor; name = systemBackgroundColor>>; layer = <CALayer>>
    |    |    | <_UISearchBarSearchContainerView; frame = (0 0; 358 54.3333); autoresize = W; gestureRecognizers = <NSArray>; layer = <CALayer>>
    |    |    |    | <UISearchBarTextField; frame = (8 10; 342 34.3333); opaque = NO; gestureRecognizers = <NSArray>; placeholder = Search...; borderStyle = RoundedRect; background = <_UITextFieldSystemBackgroundProvider: backgroundView=<_UISearchBarSearchFieldBackgroundView; frame = (0 0; 342 34.3333); opaque = NO; autoresize = W+H; userInteractionEnabled = NO; backgroundColor = <UIDynamicSystemColor; name = tertiarySystemFillColor>; layer = <CALayer>>, fillColor=(null), textfield=<UISearchBarTextField>>; layer = <CALayer>>
    |    |    |    |    | <_UISearchBarSearchFieldBackgroundView; frame = (0 0; 342 34.3333); opaque = NO; autoresize = W+H; userInteractionEnabled = NO; backgroundColor = <UIDynamicSystemColor; name = tertiarySystemFillColor>; layer = <CALayer>>

@@ -26,6 +26,7 @@
 		00220958299E5B1D00B2BACD /* MBWayComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00220957299E5B1D00B2BACD /* MBWayComponentUITests.swift */; };
 		0022095C29A4C65E00B2BACD /* BoletoComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0022095A29A4C3C600B2BACD /* BoletoComponentUITests.swift */; };
 		0022095D29A4C67700B2BACD /* AnalyticsProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0005B280468E100CE2EEC /* AnalyticsProviderMock.swift */; };
+		0022096429A8C39100B2BACD /* DokuComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0022096329A8C39100B2BACD /* DokuComponentUITests.swift */; };
 		002B92F1294B2627000B93F4 /* UPIPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B92F0294B2627000B93F4 /* UPIPaymentMethod.swift */; };
 		002B92F3294B2857000B93F4 /* UPIComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B92F2294B2857000B93F4 /* UPIComponent.swift */; };
 		002B92F5294B6987000B93F4 /* UPIComponentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B92F4294B6987000B93F4 /* UPIComponentDetails.swift */; };
@@ -1150,6 +1151,7 @@
 		00220953299B885600B2BACD /* BLIKComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentUITests.swift; sourceTree = "<group>"; };
 		00220957299E5B1D00B2BACD /* MBWayComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBWayComponentUITests.swift; sourceTree = "<group>"; };
 		0022095A29A4C3C600B2BACD /* BoletoComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoComponentUITests.swift; sourceTree = "<group>"; };
+		0022096329A8C39100B2BACD /* DokuComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuComponentUITests.swift; sourceTree = "<group>"; };
 		002B92F0294B2627000B93F4 /* UPIPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIPaymentMethod.swift; sourceTree = "<group>"; };
 		002B92F2294B2857000B93F4 /* UPIComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponent.swift; sourceTree = "<group>"; };
 		002B92F4294B6987000B93F4 /* UPIComponentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentDetails.swift; sourceTree = "<group>"; };
@@ -2115,6 +2117,14 @@
 			path = Boleto;
 			sourceTree = "<group>";
 		};
+		0022096229A8C37500B2BACD /* Doku */ = {
+			isa = PBXGroup;
+			children = (
+				0022096329A8C39100B2BACD /* DokuComponentUITests.swift */,
+			);
+			path = Doku;
+			sourceTree = "<group>";
+		};
 		002B92EF294B2596000B93F4 /* UPI */ = {
 			isa = PBXGroup;
 			children = (
@@ -2186,6 +2196,7 @@
 		007D79142812EFD300382D31 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				0022096229A8C37500B2BACD /* Doku */,
 				0022095929A4C38A00B2BACD /* Boleto */,
 				00220956299E5AEC00B2BACD /* MBWay */,
 				00220952299B880D00B2BACD /* BLIK */,
@@ -6591,6 +6602,7 @@
 				F9CCA3CF296ECCA900AD643D /* PaymentComponentDelegateMock.swift in Sources */,
 				003C03B0297AFFA30022269A /* UPIComponentUITests.swift in Sources */,
 				F9CCA3CE296ECC9C00AD643D /* DummyPaymentMethods.swift in Sources */,
+				0022096429A8C39100B2BACD /* DokuComponentUITests.swift in Sources */,
 				F9CCA3C8296ECB9900AD643D /* IssuerListComponentUITests.swift in Sources */,
 				F9CCA3C3296ECB9900AD643D /* UIApplicationExtension.swift in Sources */,
 				F9CCA3C7296ECB9900AD643D /* AffirmComponentUITests.swift in Sources */,
@@ -8083,7 +8095,7 @@
 			repositoryURL = "https://github.com/Adyen/adyen-networking-ios";
 			requirement = {
 				kind = exactVersion;
-				version = 1.0.0;
+				version = 2.0.0;
 			};
 		};
 		F9237D3228CA1E7C004F9929 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios" */ = {

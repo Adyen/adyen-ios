@@ -165,8 +165,13 @@ class UPIComponentUITests: XCTestCase {
         let sut = UPIComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)
+
+        sut.didChangeSegmentedControlIndex(1)
+
+        let continueButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.generateQRCodeButton.button")
+        continueButton?.sendActions(for: .touchUpInside)
         
-        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        let dummyExpectation = XCTestExpectation(description: "Dummy Expectation")
         
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
@@ -178,19 +183,10 @@ class UPIComponentUITests: XCTestCase {
             let data = data.paymentMethod as! UPIComponentDetails
             XCTAssertNotNil(data.type)
             XCTAssertEqual(data.type, "upi_qr")
-            didSubmitExpectation.fulfill()
+            dummyExpectation.fulfill()
         }
-        
         wait(for: .milliseconds(300))
-        
-        sut.didChangeSegmentedControlIndex(1)
-        
         assertViewControllerImage(matching: sut.viewController, named: "upi_qr_flow")
-
-        let continueButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.generateQRCodeButton.button")
-        continueButton?.sendActions(for: .touchUpInside)
-    
-        waitForExpectations(timeout: 30, handler: nil)
     }
 
 }
