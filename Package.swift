@@ -70,7 +70,7 @@ let package = Package(
         .package(
             name: "PayKit",
             url: "https://github.com/cashapp/cash-app-pay-ios-sdk",
-            .exact(Version(0, 3, 0))
+            .exact(Version(0, 3, 2))
         )
     ],
     targets: [
