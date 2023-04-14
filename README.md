@@ -362,5 +362,6 @@ This repository is open source and available under the MIT license. For more inf
 [reference.AtomeComponent]:  https://adyen.github.io/adyen-ios/5.0.0/documentation/adyen/atomecomponent
 [reference.UPIComponent]:  https://adyen.github.io/adyen-ios/5.0.0/documentation/adyen/upiComponent
 [reference.QRCodeActionComponent]:  https://adyen.github.io/adyen-ios/5.0.0/documentation/adyen/qrCodeActionComponent
+[reference.CashAppPayComponent]:  https://adyen.github.io/adyen-ios/5.0.0/documentation/adyen/cashAppPayComponent
 
 [apiExplorer.sessions]: https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/sessions
