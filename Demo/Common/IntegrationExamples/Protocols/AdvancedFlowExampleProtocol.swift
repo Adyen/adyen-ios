@@ -12,7 +12,7 @@ internal protocol AdvancedFlowExampleProtocol: AnyObject, APIClientAware {
     var context: AdyenContext { get }
     var palApiClient: APIClientProtocol { get }
     func requestPaymentMethods(order: PartialPaymentOrder?,
-                                        completion: ((PaymentMethods?, Error?) -> Void)?)
+                               completion: ((PaymentMethods?, Error?) -> Void)?)
 }
 
 extension AdvancedFlowExampleProtocol {

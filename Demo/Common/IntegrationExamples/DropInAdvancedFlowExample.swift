@@ -1,28 +1,18 @@
-////
-//// Copyright (c) 2023 Adyen N.V.
-////
-//// This file is open source and available under the MIT license. See the LICENSE file for more info.
-////
+//
+// Copyright (c) 2023 Adyen N.V.
+//
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import AdyenActions
 import AdyenComponents
 import AdyenDropIn
 
-internal final class AdvancedFlowExample: AdvancedFlowExampleProtocol {
+internal final class DropInAdvancedFlowExample: AdvancedFlowExampleProtocol {
 
-    internal var advancedFlowComponent: PresentableComponent?
+    internal var dropInComponent: DropInComponent?
     internal var paymentMethods: PaymentMethods?
     internal weak var presenter: PresenterExampleProtocol?
-
-    internal lazy var adyenActionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(context: context)
-        handler.configuration.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
-        handler.configuration.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
-        handler.delegate = self
-        handler.presentationDelegate = self
-        return handler
-    }()
 
     // MARK: - Initializers
 
@@ -30,14 +20,14 @@ internal final class AdvancedFlowExample: AdvancedFlowExampleProtocol {
 
     // MARK: - Networking
 
-    internal func requestInitialData() {
+    internal func requestInitialData(completion: ((PaymentMethods?, Error?) -> Void)?) {
         requestPaymentMethods(order: nil) { [weak self] paymentMethods, errorResponse in
             guard paymentMethods != nil else {
                 guard let errorResponse = errorResponse else {
                     return
                 }
                 self?.presentAlert(with: errorResponse) { [weak self] in
-                    self?.requestPaymentMethods(order: nil, completion: nil)
+                    self?.requestPaymentMethods(order: nil, completion: completion)
                 }
                 return
             }
@@ -55,7 +45,7 @@ internal final class AdvancedFlowExample: AdvancedFlowExampleProtocol {
         dropIn.delegate = self
         dropIn.partialPaymentDelegate = self
         dropIn.storedPaymentMethodsDelegate = self
-        advancedFlowComponent = dropIn
+        dropInComponent = dropIn
 
         presenter?.present(viewController: dropIn.viewController, completion: nil)
     }
@@ -90,7 +80,7 @@ internal final class AdvancedFlowExample: AdvancedFlowExampleProtocol {
         switch result {
         case let .success(response):
             if let action = response.action {
-                handle(action)
+                dropInComponent?.handle(action)
             } else if let order = response.order,
                       let remainingAmount = order.remainingAmount,
                       remainingAmount.value > 0 {
@@ -106,32 +96,17 @@ internal final class AdvancedFlowExample: AdvancedFlowExampleProtocol {
     // MARK: - Payment response handling
 
     internal func handle(_ order: PartialPaymentOrder) {
-        requestPaymentMethods(order: order) { [weak self] paymentMethods, errorResponse in
+        requestPaymentMethods(order: order) { [weak self] paymentMethods, _ in
             guard let paymentMethods = paymentMethods else {
-                if let error = errorResponse {
-                    self?.presentAlert(with: error) { [weak self] in
-                        self?.requestPaymentMethods(order: order, completion: nil)
-                    }
-                }
                 return
             }
             self?.handle(order, paymentMethods)
         }
     }
 
-    internal func handle(_ action: Action) {
-        if let advancedFlowAsActionComponent = advancedFlowComponent as? ActionHandlingComponent {
-            /// In case current component is a `DropInComponent` that implements `ActionHandlingComponent`
-            advancedFlowAsActionComponent.handle(action)
-        } else {
-            /// In case current component is an individual component like `CardComponent`
-            adyenActionComponent.handle(action)
-        }
-    }
-
     private func handle(_ order: PartialPaymentOrder, _ paymentMethods: PaymentMethods) {
         do {
-            try (advancedFlowComponent as? DropInComponent)?.reload(with: order, paymentMethods)
+            try dropInComponent?.reload(with: order, paymentMethods)
         } catch {
             finish(with: error)
         }
@@ -154,7 +129,7 @@ internal final class AdvancedFlowExample: AdvancedFlowExampleProtocol {
     }
 
     private func finalize(_ success: Bool, _ message: String) {
-        advancedFlowComponent?.finalizeIfNeeded(with: success) { [weak self] in
+        dropInComponent?.finalizeIfNeeded(with: success) { [weak self] in
             guard let self = self else { return }
             self.dismissAndShowAlert(success, message)
         }
@@ -169,14 +144,17 @@ internal final class AdvancedFlowExample: AdvancedFlowExampleProtocol {
     }
 
 }
-extension AdvancedFlowExample: DropInComponentDelegate {
+extension DropInAdvancedFlowExample: DropInComponentDelegate {
 
     func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
-        didSubmit(data, from: component)
+        let request = PaymentsRequest(data: data)
+        apiClient.perform(request) { [weak self] result in
+            self?.paymentResponseHandler(result: result)
+        }
     }
 
     func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
-        didFail(with: error, from: component)
+        finish(with: error)
     }
 
     func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
@@ -202,20 +180,7 @@ extension AdvancedFlowExample: DropInComponentDelegate {
 
 }
 
-extension AdvancedFlowExample: PaymentComponentDelegate {
-
-    internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        let request = PaymentsRequest(data: data)
-        apiClient.perform(request, completionHandler: paymentResponseHandler)
-    }
-
-    internal func didFail(with error: Error, from component: PaymentComponent) {
-        finish(with: error)
-    }
-
-}
-
-extension AdvancedFlowExample: PartialPaymentDelegate {
+extension DropInAdvancedFlowExample: PartialPaymentDelegate {
 
     internal enum GiftCardError: Error, LocalizedError {
         case noBalance
@@ -295,39 +260,10 @@ extension AdvancedFlowExample: PartialPaymentDelegate {
         }
     }
 
-    // MARK: - Presentation
-
-    private func present(_ component: PresentableComponent, delegate: (PaymentComponentDelegate & ActionComponentDelegate)?) {
-        if let paymentComponent = component as? PaymentComponent {
-            paymentComponent.delegate = delegate
-        }
-
-        if let actionComponent = component as? ActionComponent {
-            actionComponent.delegate = delegate
-        }
-
-        advancedFlowComponent = component
-        guard component.requiresModalPresentation else {
-            presenter?.present(viewController: component.viewController, completion: nil)
-            return
-        }
-
-        let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel,
-                                                                           target: self,
-                                                                           action: #selector(cancelPressed))
-        presenter?.present(viewController: navigation, completion: nil)
-    }
-
-    @objc private func cancelPressed() {
-        advancedFlowComponent?.cancelIfNeeded()
-        presenter?.dismiss(completion: nil)
-    }
-
 }
 
-extension AdvancedFlowExample: StoredPaymentMethodsDelegate {
-    func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping (Bool) -> Void) {
+extension DropInAdvancedFlowExample: StoredPaymentMethodsDelegate {
+    internal func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping (Bool) -> Void) {
         let request = DisableStoredPaymentMethodRequest(recurringDetailReference: storedPaymentMethod.identifier)
         palApiClient.perform(request) { [weak self] result in
             self?.handleDisableResult(result, completion: completion)
@@ -345,14 +281,7 @@ extension AdvancedFlowExample: StoredPaymentMethodsDelegate {
     }
 }
 
-extension AdvancedFlowExample: PresentationDelegate {
-
-    internal func present(component: PresentableComponent) {
-        present(component, delegate: self)
-    }
-}
-
-extension AdvancedFlowExample: ActionComponentDelegate {
+extension DropInAdvancedFlowExample: ActionComponentDelegate {
 
     internal func didFail(with error: Error, from component: ActionComponent) {
         finish(with: error)
@@ -369,6 +298,8 @@ extension AdvancedFlowExample: ActionComponentDelegate {
             paymentData: data.paymentData,
             merchantAccount: ConfigurationConstants.current.merchantAccount
         )
-        apiClient.perform(request, completionHandler: paymentResponseHandler)
+        apiClient.perform(request) { [weak self] result in
+            self?.paymentResponseHandler(result: result)
+        }
     }
 }
