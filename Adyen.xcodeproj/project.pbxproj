@@ -6693,7 +6693,7 @@
 			repositoryURL = "https://github.com/Adyen/adyen-3ds2-ios";
 			requirement = {
 				kind = exactVersion;
-				version = 2.2.4;
+				version = 2.3.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
