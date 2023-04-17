@@ -56,6 +56,7 @@ navigationController.present(component.viewController)
 ```
 
 ## Recurring Payment
+
 `CashAppPayComponent` supports recurring payments via its `configuration` property in `CashAppPayConfiguration` class. 
 If you are using the default integration with the `/sessions` call, you will need to set `recurringProcessingModel` and `storePaymentMethodMode` properties (v70+) ([API Explorer](https://docs.adyen.com/api-explorer/Checkout/70/post/sessions#request-storePaymentMethodMode))
 Showing the switch for storing the payment will be based on the response of the `/sessions` call. The switch will only be visible if you specified `AskForConsent` for `storePaymentMethodMode`. If you specify `Enabled` or `Disabled`, the switch will then be hidden. In which case, specific to this component, you will need to specifiy another flag in the `configuration` to store the payment method since Cash App SDK needs to know explicitly whether to create a recurring request:
@@ -63,7 +64,7 @@ Showing the switch for storing the payment will be based on the response of the 
 - storePaymentMethod: To store the payment method. This property is ignored if `showsStorePaymentMethodField` is `true`.
 ```
 
-If you are using the Advanced Flow (`/paymentMethods` endpoint instead of `/sessions`), then you can modify the `showsStorePaymentMethodField` yourself and if set to `false`, will need to set `storePaymentMethod` as well for storing the payment method.
+If you are using the Advanced Flow (`/paymentMethods` endpoint instead of `/sessions`), then you can modify the `showsStorePaymentMethodField` yourself and if set to `false`, you will need to set `storePaymentMethod` as well for storing the payment method.
 
 After the above configurations, on the default flow, `AdyenSession` will make the required `/payments` call to autherize/store the payment.
 On the Advanced Flow, the `didSubmit` method of the component's delegate will contain the required data for your server to make the `/payments` call.
