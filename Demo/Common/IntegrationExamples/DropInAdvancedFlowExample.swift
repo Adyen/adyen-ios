@@ -26,17 +26,13 @@ internal final class DropInAdvancedFlowExample: AdvancedFlowExampleProtocol {
                 guard let errorResponse = errorResponse else {
                     return
                 }
-                self?.presentAlert(with: errorResponse) { [weak self] in
+                self?.presenter?.presentAlert(with: errorResponse, retryHandler: {
                     self?.requestPaymentMethods(order: nil, completion: completion)
-                }
+                })
                 return
             }
             self?.paymentMethods = paymentMethods
         }
-    }
-
-    internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
-        presenter?.presentAlert(with: error, retryHandler: retryHandler)
     }
 
     internal func presentDropInComponent() {
@@ -136,10 +132,10 @@ internal final class DropInAdvancedFlowExample: AdvancedFlowExampleProtocol {
     }
 
     internal func dismissAndShowAlert(_ success: Bool, _ message: String) {
-        presenter?.dismiss {
+        presenter?.dismiss { [weak self] in
             // Payment is processed. Add your code here.
             let title = success ? "Success" : "Error"
-            self.presenter?.presentAlert(withTitle: title, message: message)
+            self?.presenter?.presentAlert(withTitle: title, message: message)
         }
     }
 
@@ -273,7 +269,7 @@ extension DropInAdvancedFlowExample: StoredPaymentMethodsDelegate {
     private func handleDisableResult(_ result: Result<DisableStoredPaymentMethodRequest.ResponseType, Error>, completion: (Bool) -> Void) {
         switch result {
         case let .failure(error):
-            presentAlert(with: error, retryHandler: nil)
+            self.presenter?.presentAlert(with: error, retryHandler: nil)
             completion(false)
         case let .success(response):
             completion(response.response == .detailsDisabled)

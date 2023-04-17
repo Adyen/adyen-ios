@@ -8,10 +8,10 @@ import SwiftUI
 
 internal final class PaymentsViewModel: ObservableObject, Identifiable, PresenterExampleProtocol {
 
-    private lazy var dropIn: DropInExample = {
-        let dropIn = DropInExample()
-        dropIn.presenter = self
-        return dropIn
+    private lazy var dropInAdvancedFlow: DropInAdvancedFlowExample = {
+        let dropInAdvancedFlow = DropInAdvancedFlowExample()
+        dropInAdvancedFlow.presenter = self
+        return dropInAdvancedFlow
     }()
 
     @Published internal var viewControllerToPresent: UIViewController?
@@ -21,7 +21,7 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
     // MARK: - DropIn Component
 
     internal func presentDropInComponent() {
-       // todo: add advanced flow
+        dropInAdvancedFlow.presentDropInComponent()
     }
 
    // TODO: add for other PM
