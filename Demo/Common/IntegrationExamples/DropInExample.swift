@@ -17,7 +17,7 @@ internal final class DropInExample: DropInExampleProtocol {
 
     // MARK: - Properties
 
-    internal var dropInComponent: PresentableComponent?
+    internal var dropInComponent: DropInComponent?
     internal weak var presenter: PresenterExampleProtocol?
     internal var session: AdyenSession?
 
