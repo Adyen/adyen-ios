@@ -32,7 +32,7 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
                 ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
             ]
         ]
-        // todo: add request payment method api
+        dropInAdvancedFlow.requestInitialData() { _, _ in }
     }
     
     // MARK: - Configuration
