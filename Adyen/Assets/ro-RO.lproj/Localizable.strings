@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "Reține pentru data viitoare";
 "adyen.card.nameItem.title" = "Numele de pe card";
 "adyen.card.nameItem.placeholder" = "J. Smith";
-"adyen.card.nameItem.invalid" = "Numele posesorului de card este incorect";
+"adyen.card.nameItem.invalid" = "Completați numele după cum figurează pe card";
 "adyen.card.numberItem.title" = "Număr card";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Număr de card incorect";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "LL/AA";
 "adyen.card.expiryItem.invalid" = "Data de expirare este incorectă";
 "adyen.card.cvcItem.invalid" = "Format CVC/CVV incorect";
-"adyen.card.cvcItem.title" = "CVC/CVV";
+"adyen.card.cvcItem.title" = "Cod de securitate";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Verificați-vă cardul";
 "adyen.card.stored.message" = "Vă rugăm să introduceți codul CVC pentru %@";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Preautorizare cu %@";
 "adyen.confirmPreauthorization" = "Confirmați preautorizarea";
-"adyen.card.cvcItem.title.optional" = "CVC/CVV (opțional)";
+"adyen.card.cvcItem.title.optional" = "Cod de securitate (opțional)";
 "adyen.confirmPurchase" = "Confirmați achiziția";
 "adyen.lastName" = "Nume de familie";
 "adyen.firstName" = "Prenume";
@@ -170,7 +170,8 @@
 "adyen.UPIVpa.validationMessage" = "Introduceți o adresă de plată virtuală corectă";
 "adyen.UPIQrcode.generationMessage" = "Generați codul QR pe care îl puteți descărca sau pe care îl puteți reda într-o captură de ecran și încărcați-l în aplicația UPI pentru a finaliza plata.";
 "adyen.UPIQrcode.timerMessage" = "Aveți %@ ca să aprobați";
-"adyen.upi_collect.confirmPayment" = "Se așteaptă confirmarea dvs...";
+"adyen.upiCollect.confirmPayment" = "Se așteaptă confirmarea dvs...";
 "adyen.upi.vpaWaitingMessage" = "Deschideți aplicația UPI pentru a confirma plata";
 "adyen.QRCode.generateQRCode" = "Generați codul QR";
 "adyen.UPI.QRCodeInstructions" = "Faceți o captură de ecran pentru a o încărca în aplicația UPI sau scanați codul QR folosind aplicația UPI preferată pentru a finaliza plata.";
+"adyen.cashAppPay.title" = "";

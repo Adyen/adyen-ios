@@ -10,35 +10,256 @@ import XCTest
 
 #if canImport(AdyenCashAppPay)
     @_spi(AdyenInternal) @testable import Adyen
-    import AdyenCashAppPay
+    @testable import AdyenCashAppPay
+    @testable import PayKit
     import Foundation
     import UIKit
 
     @available(iOS 13.0, *)
     final class CashAppPayComponentTests: XCTestCase {
-
+        
+        var paymentMethodString = """
+            {
+              "configuration" : {
+                "scopeId" : "asd",
+                "clientId" : "asd"
+              },
+              "name" : "Cash App Pay",
+              "type" : "cashapp"
+            }
+        """
+        
+        lazy var paymentMethod: CashAppPayPaymentMethod = {
+            try! JSONDecoder().decode(CashAppPayPaymentMethod.self, from: paymentMethodString.data(using: .utf8)!)
+        }()
+        
+        var context: AdyenContext!
+        
+        var oneTimeAction: PaymentAction {
+            let moneyAmount = Money(amount: UInt(5000), currency: .USD)
+            return PaymentAction.oneTimePayment(scopeID: "test",
+                                                             money: moneyAmount)
+        }
+        
+        var onFileAction: PaymentAction {
+            return PaymentAction.onFilePayment(scopeID: "test",
+                                               accountReferenceID: nil)
+        }
+        
+        var oneTimeGrant: CustomerRequest.Grant {
+            .init(id: "grantId1", customerID: "testId", action: oneTimeAction, status: .ACTIVE, type: .ONE_TIME, channel: .IN_APP, createdAt: Date(), updatedAt: Date(), expiresAt: nil)
+        }
+        
+        var onFileGrant: CustomerRequest.Grant {
+            .init(id: "onFileGrantId1", customerID: "testId", action: onFileAction, status: .ACTIVE, type: .EXTENDED, channel: .IN_APP, createdAt: Date(), updatedAt: Date(), expiresAt: nil)
+        }
+        
         override func setUpWithError() throws {
-            // Put setup code here. This method is called before the invocation of each test method in the class.
+            try super.setUpWithError()
+            context = Dummy.context
         }
 
         override func tearDownWithError() throws {
-            // Put teardown code here. This method is called after the invocation of each test method in the class.
+            context = nil
+            try super.tearDownWithError()
+        }
+        
+        func testUIConfiguration() {
+            var componentStyle = FormComponentStyle()
+            
+            componentStyle.backgroundColor = .green
+
+            // button
+            componentStyle.mainButtonItem.button.title.color = .white
+            componentStyle.mainButtonItem.button.title.backgroundColor = .red
+            componentStyle.mainButtonItem.button.title.textAlignment = .center
+            componentStyle.mainButtonItem.button.title.font = .systemFont(ofSize: 22)
+            componentStyle.mainButtonItem.button.backgroundColor = .red
+            componentStyle.mainButtonItem.backgroundColor = .brown
+            
+            // switch
+            componentStyle.toggle.title.backgroundColor = .green
+            componentStyle.toggle.title.color = .yellow
+            componentStyle.toggle.title.font = .systemFont(ofSize: 5)
+            componentStyle.toggle.title.textAlignment = .left
+            componentStyle.toggle.backgroundColor = .magenta
+            
+            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: true, style: componentStyle)
+            let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+            
+            UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+            wait(for: .milliseconds(300))
+            
+            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.cashAppButtonItem.button")
+            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.cashAppButtonItem.button.titleLabel")
+            
+            let storeDetailsItemView: FormToggleItemView? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem")
+            let storeDetailsItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem.titleLabel")
+            
+            // Test store card details switch
+            XCTAssertEqual(storeDetailsItemView?.backgroundColor, .magenta)
+            XCTAssertEqual(storeDetailsItemTitleLabel?.backgroundColor, .green)
+            XCTAssertEqual(storeDetailsItemTitleLabel?.textAlignment, .left)
+            XCTAssertEqual(storeDetailsItemTitleLabel?.textColor, .yellow)
+            XCTAssertEqual(storeDetailsItemTitleLabel?.font, .systemFont(ofSize: 5))
+
+            // Test button
+            XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
+            XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
+            XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
+            XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
+            XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
+            
+            XCTAssertEqual(payButtonItemViewButtonTitle?.text, "Cash App Pay")
+
+            XCTAssertEqual(sut.viewController.view.backgroundColor, .green)
         }
 
-        func testExample() throws {
-            // This is an example of a functional test case.
-            // Use XCTAssert and related functions to verify your tests produce the correct results.
-            // Any test you write for XCTest can be annotated as throws and async.
-            // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-            // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+        func testSwitchVisible() {
+            
+            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: true)
+            let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+            
+            UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+            wait(for: .milliseconds(300))
+            
+            let storeDetailsToggleView: UIView? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem")
+            
+            XCTAssertNotNil(storeDetailsToggleView)
         }
+        
+        func testSwitchHidden() {
+            
+            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: false)
+            let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+            
+            UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+            wait(for: .milliseconds(300))
+            
+            let storeDetailsToggleView: UIView? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem")
+            
+            XCTAssertNil(storeDetailsToggleView)
+        }
+        
+        func testStopLoading() {
+            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: true)
+            let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+            
+            UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+            wait(for: .milliseconds(300))
 
-        func testPerformanceExample() throws {
-            // This is an example of a performance test case.
-            self.measure {
-                // Put the code you want to measure the time of here.
+            UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+            wait(for: .milliseconds(300))
+            
+            XCTAssertFalse(sut.cashAppPayButton.showsActivityIndicator)
+            sut.cashAppPayButton.showsActivityIndicator = true
+            sut.stopLoadingIfNeeded()
+            XCTAssertFalse(sut.cashAppPayButton.showsActivityIndicator)
+        }
+        
+        func testViewWillAppearShouldSendTelemetryEvent() throws {
+            
+            // Given
+            let analyticsProviderMock = AnalyticsProviderMock()
+            let context = AdyenContext(apiContext: Dummy.apiContext,
+                                       payment: Dummy.payment,
+                                       analyticsProvider: analyticsProviderMock)
+            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+
+            // When
+            sut.viewWillAppear(viewController: sut.viewController)
+
+            // Then
+            XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+        }
+        
+        func testComponent_ShouldPaymentMethodTypeBeCashAppPay() throws {
+            // Given
+            let expectedPaymentMethodType: PaymentMethodType = .cashAppPay
+            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+            
+            // Action
+            let paymentMethodType = sut.paymentMethod.type
+            
+            // Assert
+            XCTAssertEqual(paymentMethodType, expectedPaymentMethodType)
+        }
+        
+        func testComponent_ShouldRequireModalPresentation() throws {
+            // Given
+            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+            
+            // Assert
+            XCTAssertTrue(sut.requiresModalPresentation)
+        }
+        
+        func testOneTimeSubmitDetails() {
+            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+            
+            let delegate = PaymentComponentDelegateMock()
+            sut.delegate = delegate
+            UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+            
+            let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+            let finalizationExpectation = expectation(description: "Component should finalize.")
+            delegate.onDidSubmit = { data, component in
+                XCTAssertTrue(component === sut)
+                XCTAssertTrue(data.paymentMethod is CashAppPayDetails)
+                let details = data.paymentMethod as! CashAppPayDetails
+                
+                XCTAssertEqual(details.grantId, "grantId1")
+                XCTAssertNil(details.cashtag)
+                XCTAssertNil(details.customerId)
+                XCTAssertNil(details.onFileGrantId)
+
+                sut.finalizeIfNeeded(with: true, completion: {
+                    finalizationExpectation.fulfill()
+                })
+                delegateExpectation.fulfill()
             }
+            
+            wait(for: .milliseconds(300))
+            
+            sut.submitApprovedRequest(with: [oneTimeGrant], profile: .init(id: "testId", cashtag: "testtag"))
+            
+            waitForExpectations(timeout: 10, handler: nil)
         }
+        
+        func testOneTimeAndOnFileSubmitDetails() {
+            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+            
+            let delegate = PaymentComponentDelegateMock()
+            sut.delegate = delegate
+            UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+            
+            let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+            let finalizationExpectation = expectation(description: "Component should finalize.")
+            delegate.onDidSubmit = { data, component in
+                XCTAssertTrue(component === sut)
+                XCTAssertTrue(data.paymentMethod is CashAppPayDetails)
+                let details = data.paymentMethod as! CashAppPayDetails
+                
+                XCTAssertEqual(details.grantId, "grantId1")
+                XCTAssertEqual(details.customerId, "testId")
+                XCTAssertEqual(details.cashtag, "testtag")
+                XCTAssertEqual(details.onFileGrantId, "onFileGrantId1")
 
+                sut.finalizeIfNeeded(with: true, completion: {
+                    finalizationExpectation.fulfill()
+                })
+                delegateExpectation.fulfill()
+            }
+            
+            wait(for: .milliseconds(300))
+            
+            sut.submitApprovedRequest(with: [oneTimeGrant, onFileGrant], profile: .init(id: "testId", cashtag: "testtag"))
+            
+            waitForExpectations(timeout: 10, handler: nil)
+        }
     }
 #endif

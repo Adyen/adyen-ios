@@ -20,7 +20,7 @@ public final class CashAppPayComponent: PaymentComponent,
 
     private enum ViewIdentifier {
         static let storeDetailsItem = "storeDetailsItem"
-        static let payButtonItem = "payButtonItem"
+        static let cashAppButtonItem = "cashAppButtonItem"
     }
 
     /// The context object for this component.
@@ -77,9 +77,8 @@ public final class CashAppPayComponent: PaymentComponent,
 
     internal lazy var cashAppPayButton: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.payButtonItem)
-        // TODO: localized title
-        item.title = "Continue to Cash App Pay"
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.cashAppButtonItem)
+        item.title = localizedString(.cashAppPayTitle, configuration.localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }
@@ -165,8 +164,8 @@ public final class CashAppPayComponent: PaymentComponent,
         return actions
     }
 
-    private func cashAppPayDetails(from customerProfile: CustomerRequest.CustomerProfile?,
-                                   grants: [CustomerRequest.Grant]) throws -> CashAppPayDetails {
+    private func cashAppPayDetails(from grants: [CustomerRequest.Grant],
+                                   customerProfile: CustomerRequest.CustomerProfile?) throws -> CashAppPayDetails {
         guard grants.isEmpty == false else {
             throw Error.noGrant
         }
@@ -181,6 +180,18 @@ public final class CashAppPayComponent: PaymentComponent,
                                  customerId: customerId,
                                  cashtag: cashtag)
     }
+    
+    internal func submitApprovedRequest(with grants: [CustomerRequest.Grant], profile: CustomerRequest.CustomerProfile?) {
+        do {
+            let details = try cashAppPayDetails(from: grants, customerProfile: profile)
+            submit(data: PaymentComponentData(paymentMethodDetails: details,
+                                              amount: payment?.amount,
+                                              order: order,
+                                              storePaymentMethod: storePayment))
+        } catch {
+            fail(with: error)
+        }
+    }
 
 }
 
@@ -192,15 +203,7 @@ extension CashAppPayComponent: CashAppPayObserver {
         case let .readyToAuthorize(request):
             cashAppPay.authorizeCustomerRequest(request)
         case let .approved(request, grants):
-            do {
-                let details = try cashAppPayDetails(from: request.customerProfile, grants: grants)
-                submit(data: PaymentComponentData(paymentMethodDetails: details,
-                                                  amount: payment?.amount,
-                                                  order: order,
-                                                  storePaymentMethod: storePayment))
-            } catch {
-                fail(with: error)
-            }
+            submitApprovedRequest(with: grants, profile: request.customerProfile)
         case let .apiError(error):
             fail(with: error)
         case let .networkError(error):

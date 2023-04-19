@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "Запомнить на следующий раз";
 "adyen.card.nameItem.title" = "Имя на карте";
 "adyen.card.nameItem.placeholder" = "И. Петров";
-"adyen.card.nameItem.invalid" = "Неверное имя владельца карты";
+"adyen.card.nameItem.invalid" = "Введите имя, как оно указано на карте";
 "adyen.card.numberItem.title" = "Номер карты";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Недействительный номер карты";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "ММ/ГГ";
 "adyen.card.expiryItem.invalid" = "Неверный срок действия";
 "adyen.card.cvcItem.invalid" = "Неверный формат CVC / CVV";
-"adyen.card.cvcItem.title" = "CVC / CVV";
+"adyen.card.cvcItem.title" = "Защитный код";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Подтвердить карту";
 "adyen.card.stored.message" = "Введите код CVC карты %@";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Предавторизация в %@";
 "adyen.confirmPreauthorization" = "Подтвердить предавторизацию";
-"adyen.card.cvcItem.title.optional" = "CVC / CVV (необязательно)";
+"adyen.card.cvcItem.title.optional" = "Защитный код (необязательно)";
 "adyen.confirmPurchase" = "Подтвердить покупку";
 "adyen.lastName" = "Фамилия";
 "adyen.firstName" = "Имя";
@@ -170,7 +170,8 @@
 "adyen.UPIVpa.validationMessage" = "Введите правильный адрес виртуальных платежей";
 "adyen.UPIQrcode.generationMessage" = "Сгенерируйте загружаемый QR-код или снимок экрана и отправьте его в приложение UPI, чтобы завершить оплату.";
 "adyen.UPIQrcode.timerMessage" = "На одобрение отведено %@";
-"adyen.upi_collect.confirmPayment" = "В ожидании подтверждения…";
+"adyen.upiCollect.confirmPayment" = "В ожидании подтверждения…";
 "adyen.upi.vpaWaitingMessage" = "Откройте приложение UPI для подтверждения платежа";
 "adyen.QRCode.generateQRCode" = "Создать QR-код";
 "adyen.UPI.QRCodeInstructions" = "Сделайте снимок экрана, чтобы загрузить его в приложение UPI, или отсканируйте QR-код своим любимым приложением UPI, чтобы оформить платеж.";
+"adyen.cashAppPay.title" = "";
