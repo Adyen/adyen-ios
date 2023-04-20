@@ -136,7 +136,7 @@ public final class CashAppPayComponent: PaymentComponent,
     private func startCashAppPayFlow() {
         let actions = createPaymentActions()
         guard actions.isEmpty == false else {
-            AdyenAssertion.assertionFailure(message: "At least one paymentAction is required to create a CashAppPay rquest")
+            AdyenAssertion.assertionFailure(message: "At least one paymentAction is required to create a CashAppPay request")
             return
         }
     

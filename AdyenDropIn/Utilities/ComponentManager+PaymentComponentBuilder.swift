@@ -15,7 +15,7 @@
     @_spi(AdyenInternal) import AdyenActions
 #endif
 #if canImport(AdyenCashAppPay)
-    @_spi(AdyenInternal) import AdyenCashAppPay
+    import AdyenCashAppPay
 #endif
 import Foundation
 

@@ -6,7 +6,7 @@
 
 @_spi(AdyenInternal) import Adyen
 
-/// Containts the details supplied by the Cash App Pay component.
+/// Contains the details supplied by the Cash App Pay component.
 public struct CashAppPayDetails: PaymentMethodDetails {
     
     @_spi(AdyenInternal)
@@ -27,7 +27,7 @@ public struct CashAppPayDetails: PaymentMethodDetails {
     /// Public identifier for the customer on Cash App.
     public let cashtag: String?
     
-    /// Creates and returns a Cash App Pay details instance.
+    /// Initializes the Cash App Pay details.
     /// - Parameters:
     ///   - paymentMethod: Cash App Pay payment method.
     ///   - grantId: The grant Id for the payment.

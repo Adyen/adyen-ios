@@ -19,7 +19,7 @@ The `Adyen/CashAppPay` module needs to be explicitly added to support Cash App P
 The `Adyen/SwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
 
 ```
-pod 'Adyen'               // Add DropIn with all modules except Session, WeChat Pay, Cash App Pay, SwiftUI and Session.
+pod 'Adyen'               // Add DropIn with all modules except WeChat Pay, Cash App Pay, SwiftUI and Session.
 // Add individual modules
 pod 'Adyen/Session'       // For the new Sessions integration.
 pod 'Adyen/Card'          // Card components.

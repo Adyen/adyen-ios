@@ -13,8 +13,10 @@ public struct CashAppPayPaymentMethod: PaymentMethod {
     
     public let name: String
     
+    /// Client key that Cash App uses to attribute API calls.
     public let clientId: String
     
+    /// ID of the client or brand account that will charge customers.
     public let scopeId: String
     
     public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
