@@ -140,7 +140,11 @@ class ComponentManagerTests: XCTestCase {
 
         // Then
         let cashAppPayComponent = paymentComponent as? CashAppPayComponent
-        XCTAssertNotNil(cashAppPayComponent)
+        #if canImport(AdyenCashAppPay)
+            XCTAssertNotNil(cashAppPayComponent)
+        #else
+            XCTAssertNil(cashAppPayComponent)
+        #endif
     }
     
     func testLocalizationWithCustomTableName() throws {
