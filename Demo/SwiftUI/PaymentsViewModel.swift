@@ -14,6 +14,12 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
         return dropInAdvancedFlow
     }()
 
+    private lazy var cardComponent: CardComponentExample = {
+        let cardComponent = CardComponentExample()
+        cardComponent.presenter = self
+        return cardComponent
+    }()
+
     @Published internal var viewControllerToPresent: UIViewController?
 
     @Published internal var items = [[ComponentsItem]]()
@@ -24,15 +30,23 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
         dropInAdvancedFlow.presentDropInComponent()
     }
 
+    internal func presentCardComponent() {
+        cardComponent.presentCardComponent()
+    }
+
    // TODO: add for other PM
 
     internal func viewDidAppear() {
         items = [
             [
                 ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
+            ],
+            [
+                ComponentsItem(title: "Card", selectionHandler: presentCardComponent)
             ]
         ]
         dropInAdvancedFlow.requestInitialData() { _, _ in }
+        cardComponent.requestInitialData() { _, _ in }
     }
     
     // MARK: - Configuration
@@ -53,7 +67,8 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
     private func onConfigurationClosed(_ configuration: Configuration) {
         ConfigurationConstants.current = configuration
         dismiss(completion: nil)
-        // todo: add request payment method api
+        dropInAdvancedFlow.requestInitialData() { _,_  in }
+        cardComponent.requestInitialData() { _, _ in }
     }
 
     // MARK: - Presenter
