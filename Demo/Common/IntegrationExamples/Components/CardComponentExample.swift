@@ -18,7 +18,7 @@ internal final class CardComponentExample: AdvancedFlowExampleProtocol {
     internal var cardComponent: PresentableComponent?
     internal weak var presenter: PresenterExampleProtocol?
 
-    // MARK: - Action Handling for Components
+    // MARK: - Action Handling
 
     internal lazy var adyenActionComponent: AdyenActionComponent = {
         let handler = AdyenActionComponent(context: context)
