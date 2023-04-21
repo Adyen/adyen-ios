@@ -14,10 +14,10 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
         return dropInAdvancedFlow
     }()
 
-    private lazy var cardComponent: CardComponentAdvancedFlowExample = {
-        let cardComponentAdvancedFlow = CardComponentAdvancedFlowExample()
-        cardComponentAdvancedFlow.presenter = self
-        return cardComponentAdvancedFlow
+    private lazy var cardAdvancedFlow: CardComponentAdvancedFlowExample = {
+        let cardAdvancedFlow = CardComponentAdvancedFlowExample()
+        cardAdvancedFlow.presenter = self
+        return cardAdvancedFlow
     }()
 
     @Published internal var viewControllerToPresent: UIViewController?
@@ -31,7 +31,7 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
     }
 
     internal func presentCardComponent() {
-        cardComponent.presentCardComponent()
+        cardAdvancedFlow.presentCardComponent()
     }
 
    // TODO: add for other PM
@@ -46,7 +46,7 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
             ]
         ]
         dropInAdvancedFlow.requestInitialData() { _, _ in }
-        cardComponent.requestInitialData() { _, _ in }
+        cardAdvancedFlow.requestInitialData() { _, _ in }
     }
     
     // MARK: - Configuration
@@ -67,8 +67,8 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
     private func onConfigurationClosed(_ configuration: Configuration) {
         ConfigurationConstants.current = configuration
         dismiss(completion: nil)
-        dropInAdvancedFlow.requestInitialData() { _,_ in }
-        cardComponent.requestInitialData() { _, _ in }
+        dropInAdvancedFlow.requestInitialData() { _, _ in }
+        cardAdvancedFlow.requestInitialData() { _, _ in }
     }
 
     // MARK: - Presenter

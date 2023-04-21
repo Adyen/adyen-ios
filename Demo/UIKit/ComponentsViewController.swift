@@ -23,7 +23,7 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
         return dropInAdvancedFlow
     }()
 
-    private lazy var cardComponent: CardComponentAdvancedFlowExample = {
+    private lazy var cardComponentAdvancedFlowExample: CardComponentAdvancedFlowExample = {
         let cardComponentAdvancedFlow = CardComponentAdvancedFlowExample()
         cardComponentAdvancedFlow.presenter = self
         return cardComponentAdvancedFlow
@@ -71,14 +71,14 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
         if componentsView.isUsingSession {
             // todo: add card component with session
         } else {
-            cardComponent.presentCardComponent()
+            cardComponentAdvancedFlowExample.presentCardComponent()
         }
     }
 
     internal func requestInitialData() {
         dropIn.requestInitialData()
         dropInAdvancedFlow.requestInitialData() { _, _ in }
-        cardComponent.requestInitialData() { _, _ in }
+        cardComponentAdvancedFlowExample.requestInitialData() { _, _ in }
     }
 
     // MARK: - Presenter

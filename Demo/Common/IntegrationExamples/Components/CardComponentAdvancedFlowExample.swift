@@ -53,7 +53,9 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     internal func presentCardComponent() {
         guard let component = cardComponent(from: paymentMethods) else { return }
         component.cardComponentDelegate = self
-        present(component, delegate: self)
+        component.delegate = self
+        cardComponent = component
+        present(component)
     }
 
     internal func cardComponent(from paymentMethods: PaymentMethods?) -> CardComponent? {
@@ -68,16 +70,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     // MARK: - Presentation
 
-    private func present(_ component: PresentableComponent, delegate: (PaymentComponentDelegate & ActionComponentDelegate)) {
-        if let paymentComponent = component as? PaymentComponent {
-            paymentComponent.delegate = delegate
-        }
-
-        if let actionComponent = component as? ActionComponent {
-            actionComponent.delegate = delegate
-        }
-
-        cardComponent = component
+    private func present(_ component: PresentableComponent) {
         guard component.requiresModalPresentation else {
             presenter?.present(viewController: component.viewController, completion: nil)
             return
@@ -163,7 +156,9 @@ extension CardComponentAdvancedFlowExample: PaymentComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         let request = PaymentsRequest(data: data)
-        apiClient.perform(request, completionHandler: paymentResponseHandler)
+        apiClient.perform(request) { [weak self] result in
+            self?.paymentResponseHandler(result: result)
+        }
     }
 
     internal func didFail(with error: Error, from component: PaymentComponent) {
@@ -189,12 +184,14 @@ extension CardComponentAdvancedFlowExample: ActionComponentDelegate {
             paymentData: data.paymentData,
             merchantAccount: ConfigurationConstants.current.merchantAccount
         )
-        apiClient.perform(request, completionHandler: paymentResponseHandler)
+        apiClient.perform(request) { [weak self] result in
+            self?.paymentResponseHandler(result: result)
+        }
     }
 }
 
 extension CardComponentAdvancedFlowExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {
-        present(component, delegate: self)
+        present(component)
     }
 }
