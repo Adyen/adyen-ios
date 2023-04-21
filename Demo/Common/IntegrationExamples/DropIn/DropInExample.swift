@@ -13,7 +13,7 @@ import AdyenNetworking
 import AdyenSession
 import UIKit
 
-internal final class DropInExample: DropInExampleProtocol {
+internal final class DropInExample: InitialDataFlowProtocol {
 
     // MARK: - Properties
 

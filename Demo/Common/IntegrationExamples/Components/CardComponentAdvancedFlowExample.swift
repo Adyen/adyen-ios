@@ -12,7 +12,7 @@ import AdyenDropIn
 import PassKit
 import UIKit
 
-internal final class CardComponentExample: AdvancedFlowExampleProtocol {
+internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
 
     internal var paymentMethods: PaymentMethods?
     internal var cardComponent: PresentableComponent?
@@ -143,7 +143,7 @@ internal final class CardComponentExample: AdvancedFlowExampleProtocol {
 
 }
 
-extension CardComponentExample: CardComponentDelegate {
+extension CardComponentAdvancedFlowExample: CardComponentDelegate {
 
     func didSubmit(lastFour: String, finalBIN: String, component: CardComponent) {
         print("Card used: **** **** **** \(lastFour)")
@@ -159,7 +159,7 @@ extension CardComponentExample: CardComponentDelegate {
     }
 }
 
-extension CardComponentExample: PaymentComponentDelegate {
+extension CardComponentAdvancedFlowExample: PaymentComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         let request = PaymentsRequest(data: data)
@@ -172,7 +172,7 @@ extension CardComponentExample: PaymentComponentDelegate {
 
 }
 
-extension CardComponentExample: ActionComponentDelegate {
+extension CardComponentAdvancedFlowExample: ActionComponentDelegate {
 
     internal func didFail(with error: Error, from component: ActionComponent) {
         finish(with: error)
@@ -193,7 +193,7 @@ extension CardComponentExample: ActionComponentDelegate {
     }
 }
 
-extension CardComponentExample: PresentationDelegate {
+extension CardComponentAdvancedFlowExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {
         present(component, delegate: self)
     }

@@ -8,7 +8,7 @@ import AdyenActions
 import AdyenComponents
 import AdyenDropIn
 
-internal final class DropInAdvancedFlowExample: AdvancedFlowExampleProtocol {
+internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
 
     internal var dropInComponent: DropInComponent?
     internal var paymentMethods: PaymentMethods?

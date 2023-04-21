@@ -23,10 +23,10 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
         return dropInAdvancedFlow
     }()
 
-    private lazy var cardComponent: CardComponentExample = {
-        let cardComponent = CardComponentExample()
-        cardComponent.presenter = self
-        return cardComponent
+    private lazy var cardComponent: CardComponentAdvancedFlowExample = {
+        let cardComponentAdvancedFlow = CardComponentAdvancedFlowExample()
+        cardComponentAdvancedFlow.presenter = self
+        return cardComponentAdvancedFlow
     }()
     
     // MARK: - View

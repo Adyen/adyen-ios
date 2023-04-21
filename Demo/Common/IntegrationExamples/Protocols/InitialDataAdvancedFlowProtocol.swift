@@ -8,14 +8,14 @@
 import AdyenNetworking
 import AdyenSession
 
-internal protocol AdvancedFlowExampleProtocol: AnyObject, APIClientAware {
+internal protocol InitialDataAdvancedFlowProtocol: AnyObject, APIClientAware {
     var context: AdyenContext { get }
     var palApiClient: APIClientProtocol { get }
     func requestPaymentMethods(order: PartialPaymentOrder?,
                                completion: ((PaymentMethods?, Error?) -> Void)?)
 }
 
-extension AdvancedFlowExampleProtocol {
+extension InitialDataAdvancedFlowProtocol {
 
     internal var context: AdyenContext {
         var analyticsConfiguration = AnalyticsConfiguration()

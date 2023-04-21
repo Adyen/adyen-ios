@@ -14,10 +14,10 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
         return dropInAdvancedFlow
     }()
 
-    private lazy var cardComponent: CardComponentExample = {
-        let cardComponent = CardComponentExample()
-        cardComponent.presenter = self
-        return cardComponent
+    private lazy var cardComponent: CardComponentAdvancedFlowExample = {
+        let cardComponentAdvancedFlow = CardComponentAdvancedFlowExample()
+        cardComponentAdvancedFlow.presenter = self
+        return cardComponentAdvancedFlow
     }()
 
     @Published internal var viewControllerToPresent: UIViewController?
@@ -67,7 +67,7 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
     private func onConfigurationClosed(_ configuration: Configuration) {
         ConfigurationConstants.current = configuration
         dismiss(completion: nil)
-        dropInAdvancedFlow.requestInitialData() { _,_  in }
+        dropInAdvancedFlow.requestInitialData() { _,_ in }
         cardComponent.requestInitialData() { _, _ in }
     }
 
