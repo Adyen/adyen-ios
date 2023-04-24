@@ -176,7 +176,6 @@
                         
                         let presentableComponent = PresentableComponentWrapper(component: self,
                                                                                viewController: approvalViewController)
-                        
                         self.presentationDelegate?.present(component: presentableComponent)
                     } else {
                         completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))

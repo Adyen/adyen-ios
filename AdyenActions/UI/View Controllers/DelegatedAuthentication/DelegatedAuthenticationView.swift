@@ -159,7 +159,7 @@ internal final class DelegatedAuthenticationView: UIView {
     }
 
     // MARK: - Configuration
-    
+        
     private func configureViews() {
         addSubview(image)
         addSubview(labelsStackView)
@@ -197,7 +197,7 @@ internal final class DelegatedAuthenticationView: UIView {
             textView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
         ])
     }
-    
+
     @objc private func firstButtonTapped() {
         delegate?.firstButtonTapped()
     }
@@ -205,4 +205,5 @@ internal final class DelegatedAuthenticationView: UIView {
     @objc private func secondButtonTapped() {
         delegate?.secondButtonTapped()
     }
+    
 }

@@ -100,6 +100,7 @@ internal final class DAApprovalViewController: UIViewController {
                 self?.approvalView.progressText.text = self?.timeLeft(timeInterval: $0)
             },
             onExpiration: { [weak self] in
+                self?.timeoutTimer?.stopTimer()
                 self?.useBiometricsHandler()
             }
         )
@@ -132,11 +133,7 @@ internal final class DAApprovalViewController: UIViewController {
     
     override internal var preferredContentSize: CGSize {
         get {
-            print("approvalView.adyen.minimalSize: \(approvalView.adyen.minimalSize)")
-            print("containerView.adyen.minimalSize: \(containerView.adyen.minimalSize)")
-
-            // TODO: This isn't computing properly - would need help on this one.
-            return CGSize(width: .max, height: 700)
+            containerView.frame.size
         }
         
         // swiftlint:disable:next unused_setter_value

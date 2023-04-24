@@ -69,6 +69,7 @@ internal final class DARegistrationViewController: UIViewController {
                 self?.registrationView.progressText.text = self?.timeLeft(timeInterval: $0)
             },
             onExpiration: { [weak self] in
+                self?.timeoutTimer?.stopTimer()
                 self?.enableCheckoutHandler()
             }
         )
@@ -101,7 +102,7 @@ internal final class DARegistrationViewController: UIViewController {
     // TODO: Why is this needed?
     override internal var preferredContentSize: CGSize {
         get {
-            registrationView.adyen.minimalSize
+            containerView.frame.size
         }
 
         // swiftlint:disable:next unused_setter_value
