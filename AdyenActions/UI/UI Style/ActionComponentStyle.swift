@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -25,6 +25,9 @@ public struct ActionComponentStyle {
     /// Indicates the UI configuration of the document action component.
     public var documentActionComponentStyle: DocumentComponentStyle
     
+    /// Indicates the UI configuration of the delegated authentication screens.
+    public var delegatedAuthenticationComponent: DelegatedAuthenticationComponentStyle
+
     /// Initializes the
     /// - Parameters:
     ///   - redirectComponentStyle: The UI configuration of the redirect component.
@@ -32,17 +35,20 @@ public struct ActionComponentStyle {
     ///   - voucherComponentStyle: The UI configuration of the voucher component.
     ///   - qrCodeComponentStyle: The UI configuration of the QR code component.
     ///   - documentActionComponentStyle: The UI configuration of the document action component.
+    ///   - delegatedAuthenticationComponent: The UI configuration of the delegated authentication component.
     public init(
         redirectComponentStyle: RedirectComponentStyle = RedirectComponentStyle(),
         awaitComponentStyle: AwaitComponentStyle = AwaitComponentStyle(),
         voucherComponentStyle: VoucherComponentStyle = VoucherComponentStyle(),
         qrCodeComponentStyle: QRCodeComponentStyle = QRCodeComponentStyle(),
-        documentActionComponentStyle: DocumentComponentStyle = DocumentComponentStyle()
+        documentActionComponentStyle: DocumentComponentStyle = DocumentComponentStyle(),
+        delegatedAuthenticationComponent: DelegatedAuthenticationComponentStyle = DelegatedAuthenticationComponentStyle()
     ) {
         self.redirectComponentStyle = redirectComponentStyle
         self.awaitComponentStyle = awaitComponentStyle
         self.voucherComponentStyle = voucherComponentStyle
         self.qrCodeComponentStyle = qrCodeComponentStyle
         self.documentActionComponentStyle = documentActionComponentStyle
+        self.delegatedAuthenticationComponent = delegatedAuthenticationComponent
     }
 }

@@ -43,6 +43,7 @@
         internal weak var presentationDelegate: PresentationDelegate?
     
         internal struct DelegatedAuthenticationState {
+            // TODO: Is there a better way to handle this user selection state?
             enum UserInputState {
                 case approveDifferently
                 case deleteDA
@@ -55,10 +56,13 @@
     
         private let delegatedAuthenticationService: AuthenticationServiceProtocol
     
+        private let style: DelegatedAuthenticationComponentStyle
+        
         /// Initializes the 3D Secure 2 action handler.
         ///
         /// - Parameter context: The context object for this component.
         /// - Parameter appearanceConfiguration: The appearance configuration.
+        /// - Parameter style: The delegate authentication component style.
         /// - Parameter delegatedAuthenticationConfiguration: The delegated authentication configuration.
         internal convenience init(
             context: AdyenContext,
@@ -69,6 +73,7 @@
             self.init(
                 context: context,
                 appearanceConfiguration: appearanceConfiguration,
+                style: delegatedAuthenticationConfiguration.delegatedAuthenticationComponentStyle,
                 delegatedAuthenticationService: AuthenticationService(
                     configuration: delegatedAuthenticationConfiguration.authenticationServiceConfiguration()
                 ),
@@ -81,13 +86,16 @@
         /// - Parameter context: The context object for this component.
         /// - Parameter service: The 3DS2 Service.
         /// - Parameter appearanceConfiguration: The appearance configuration.
+        /// - Parameter style: The delegate authentication component style.
         /// - Parameter delegatedAuthenticationService: The Delegated Authentication service.
         internal init(context: AdyenContext,
                       service: AnyADYService = ADYServiceAdapter(),
                       appearanceConfiguration: ADYAppearanceConfiguration = .init(),
+                      style: DelegatedAuthenticationComponentStyle,
                       delegatedAuthenticationService: AuthenticationServiceProtocol,
                       presentationDelegate: PresentationDelegate?) {
             self.delegatedAuthenticationService = delegatedAuthenticationService
+            self.style = style
             super.init(context: context, service: service, appearanceConfiguration: appearanceConfiguration)
             self.presentationDelegate = presentationDelegate
         }
@@ -196,16 +204,17 @@
         
         private func showApprovalScreen(useDAHandler: @escaping () -> Void,
                                         doNotUseDAHandler: @escaping () -> Void) {
-            let approvalViewController = DAApprovalViewController(useBiometricsHandler: {
-                useDAHandler()
-            }, approveDifferentlyHandler: {
-                self.delegatedAuthenticationState.state = .approveDifferently
-                doNotUseDAHandler()
-            }, removeCredentialsHandler: {
-                self.delegatedAuthenticationState.state = .deleteDA
-                try? self.delegatedAuthenticationService.reset()
-                doNotUseDAHandler()
-            })
+            let approvalViewController = DAApprovalViewController(style: style,
+                                                                  useBiometricsHandler: {
+                                                                      useDAHandler()
+                                                                  }, approveDifferentlyHandler: {
+                                                                      self.delegatedAuthenticationState.state = .approveDifferently
+                                                                      doNotUseDAHandler()
+                                                                  }, removeCredentialsHandler: {
+                                                                      self.delegatedAuthenticationState.state = .deleteDA
+                                                                      try? self.delegatedAuthenticationService.reset()
+                                                                      doNotUseDAHandler()
+                                                                  })
             
             let presentableComponent = PresentableComponentWrapper(component: self,
                                                                    viewController: approvalViewController)
@@ -280,11 +289,12 @@
         }
         
         internal func showRegistrationScreen(registerHandler: @escaping () -> Void, notNowHandler: @escaping () -> Void) {
-            let registrationViewController = DARegistrationViewController(enableCheckoutHandler: {
-                registerHandler()
-            }, notNowHandler: {
-                notNowHandler()
-            })
+            let registrationViewController = DARegistrationViewController(style: style,
+                                                                          enableCheckoutHandler: {
+                                                                              registerHandler()
+                                                                          }, notNowHandler: {
+                                                                              notNowHandler()
+                                                                          })
             
             let presentableComponent = PresentableComponentWrapper(component: self,
                                                                    viewController: registrationViewController)

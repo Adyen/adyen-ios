@@ -58,15 +58,23 @@ public final class ThreeDS2Component: ActionComponent {
             /// The Apple registered development team identifier.
             public let appleTeamIdentifier: String
 
+            /// The configuration for Delegated Authentication Component style
+            public let delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle
+
             /// Initializes a new instance.
             ///
             /// - Parameter localizedRegistrationReason: The localized reason string show to the user while registration flow.
             /// - Parameter localizedAuthenticationReason: The localized reason string show to the user while authentication flow.
             /// - Parameter appleTeamIdentifier: The Apple registered development team identifier.
-            public init(localizedRegistrationReason: String, localizedAuthenticationReason: String, appleTeamIdentifier: String) {
+            /// - Parameter delegatedAuthenticationComponentStyle: The delegated authentication component style.
+            public init(localizedRegistrationReason: String,
+                        localizedAuthenticationReason: String,
+                        appleTeamIdentifier: String,
+                        delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle = .init()) {
                 self.localizedRegistrationReason = localizedRegistrationReason
                 self.localizedAuthenticationReason = localizedAuthenticationReason
                 self.appleTeamIdentifier = appleTeamIdentifier
+                self.delegatedAuthenticationComponentStyle = delegatedAuthenticationComponentStyle
             }
         }
         
@@ -76,6 +84,7 @@ public final class ThreeDS2Component: ActionComponent {
         ///   - redirectComponentStyle: `RedirectComponent` style
         ///   - appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
         ///   - requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
+        ///   - delegateAuthentication: The configuration for delegate authentication
         public init(redirectComponentStyle: RedirectComponentStyle? = nil,
                     appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
                     requestorAppURL: URL? = nil,

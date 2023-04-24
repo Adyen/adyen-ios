@@ -41,16 +41,18 @@ internal final class DAApprovalViewController: UIViewController {
                                                                        textViewStyle: style.textViewStyle)
     
     // TODO: pass this from the public interface.
-    private let style: DelegatedAuthenticationComponentStyle = .init()
+    private let style: DelegatedAuthenticationComponentStyle
     private var timeoutTimer: ExpirationTimer?
     // TODO: pass this from the Configuration
     public var localizationParameters: LocalizationParameters?
 
     internal typealias Handler = () -> Void
     
-    internal init(useBiometricsHandler: @escaping Handler,
+    internal init(style: DelegatedAuthenticationComponentStyle,
+                  useBiometricsHandler: @escaping Handler,
                   approveDifferentlyHandler: @escaping Handler,
                   removeCredentialsHandler: @escaping Handler) {
+        self.style = style
         self.useBiometricsHandler = useBiometricsHandler
         self.approveDifferentlyHandler = approveDifferentlyHandler
         self.removeCredentialsHandler = removeCredentialsHandler

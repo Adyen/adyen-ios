@@ -30,7 +30,9 @@ internal final class DARegistrationViewController: UIViewController {
     // TODO: pass this from the Configuration
     public var localizationParameters: LocalizationParameters?
 
-    internal init(enableCheckoutHandler: @escaping Handler, notNowHandler: @escaping Handler) {
+    internal init(style: DelegatedAuthenticationComponentStyle,
+                  enableCheckoutHandler: @escaping Handler,
+                  notNowHandler: @escaping Handler) {
         self.enableCheckoutHandler = enableCheckoutHandler
         self.notNowHandler = notNowHandler
         super.init(nibName: nil, bundle: Bundle(for: DARegistrationViewController.self))

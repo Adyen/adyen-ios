@@ -27,8 +27,10 @@ public struct DelegatedAuthenticationComponentStyle {
                                                 color: UIColor.Adyen.componentSecondaryLabel,
                                                 textAlignment: .natural)
     
-    public var progressViewStyle = ProgressViewStyle(progressTintColor: UIColor.Adyen.componentSecondaryLabel,
-                                                     trackTintColor: UIColor.Adyen.componentSecondaryLabel)
+    public var progressViewStyle = ProgressViewStyle(
+        progressTintColor: UIColor.Adyen.defaultBlue,
+        trackTintColor: UIColor.Adyen.lightGray
+    )
     
     public var remainingTimeTextStyle = TextStyle(font: .preferredFont(forTextStyle: .caption1),
                                                   color: UIColor.Adyen.componentSecondaryLabel,
