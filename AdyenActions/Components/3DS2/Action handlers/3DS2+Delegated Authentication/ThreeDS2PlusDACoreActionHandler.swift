@@ -132,56 +132,74 @@
             
         }
         
-        internal func performDelegatedAuthentication(_ fingerprintToken: ThreeDS2Component.FingerprintToken,
-                                                     completion: @escaping (Result<String, DelegateAuthenticationError>) -> Void) {
+        /// This method checks;
+        /// 1. if DA has been registered on the device
+        /// 2. shows an approval screen if it has been registered
+        /// else calls the completion with a failure.
+        private func performDelegatedAuthentication(_ fingerprintToken: ThreeDS2Component.FingerprintToken,
+                                                    completion: @escaping (Result<String, DelegateAuthenticationError>) -> Void) {
             guard let delegatedAuthenticationInput = fingerprintToken.delegatedAuthenticationSDKInput else {
                 completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
                 return
             }
             
-            self.delegatedAuthenticationService.isDeviceRegistered(withAuthenticationInput: delegatedAuthenticationInput) { [weak self] result in
-                guard let self = self else { return }
+            isDeviceRegisteredForDelegatedAuthentication(
+                delegatedAuthenticationInput: delegatedAuthenticationInput,
+                registeredHandler: { [weak self] in
+                    guard let self else { return }
+                    showApprovalScreen(useDAHandler: {
+                        self.delegatedAuthenticationService.authenticate(withAuthenticationInput: delegatedAuthenticationInput) { result in
+                            switch result {
+                            case let .success(sdkOutput):
+                                completion(.success(sdkOutput))
+                            case let .failure(error):
+                                completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: error)))
+                            }
+                        }
+                    }, doNotUseDAHandler: {
+                        completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
+                    })
+                },
+                notRegisteredHandler: {
+                    completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
+                }
+            )
+        }
+        
+        private func isDeviceRegisteredForDelegatedAuthentication(delegatedAuthenticationInput: String,
+                                                                  registeredHandler: @escaping () -> Void,
+                                                                  notRegisteredHandler: @escaping () -> Void) {
+            delegatedAuthenticationService.isDeviceRegistered(withAuthenticationInput: delegatedAuthenticationInput) { result in
                 switch result {
-                case let .failure(error):
-                    completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: error)))
+                case .failure:
+                    notRegisteredHandler()
                 case let .success(success):
                     if success {
-                        let approvalViewController = DAApprovalViewController(useBiometricsHandler: { [weak self] in
-                            guard let self = self else { return }
-                            print("Use biometrics")
-
-                            self.delegatedAuthenticationService.authenticate(withAuthenticationInput: delegatedAuthenticationInput) { result in
-                                switch result {
-                                case let .success(sdkOutput):
-                                    completion(.success(sdkOutput))
-                                case let .failure(error):
-                                    completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: error)))
-                                }
-                            }
-
-                        }, approveDifferentlyHandler: {
-                            print("Approve Differently")
-                            self.delegatedAuthenticationState.state = .approveDifferently
-
-                            // TODO: Robert: add pass on failure and continue authorization through the challenge.
-                            completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
-
-                        }, removeCredentialsHandler: {
-                            print("Remove credentials")
-                            self.delegatedAuthenticationState.state = .deleteDA
-                            // TODO: Robert: How to dismiss this screen?
-                            try? self.delegatedAuthenticationService.reset()
-                            completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
-                        })
-                        
-                        let presentableComponent = PresentableComponentWrapper(component: self,
-                                                                               viewController: approvalViewController)
-                        self.presentationDelegate?.present(component: presentableComponent)
+                        registeredHandler()
                     } else {
-                        completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
+                        notRegisteredHandler()
                     }
                 }
             }
+        }
+        
+        private func showApprovalScreen(useDAHandler: @escaping () -> Void,
+                                        doNotUseDAHandler: @escaping () -> Void) {
+            let approvalViewController = DAApprovalViewController(useBiometricsHandler: {
+                useDAHandler()
+            }, approveDifferentlyHandler: {
+                self.delegatedAuthenticationState.state = .approveDifferently
+                doNotUseDAHandler()
+            }, removeCredentialsHandler: {
+                print("Remove credentials")
+                self.delegatedAuthenticationState.state = .deleteDA
+                try? self.delegatedAuthenticationService.reset()
+                doNotUseDAHandler()
+            })
+            
+            let presentableComponent = PresentableComponentWrapper(component: self,
+                                                                   viewController: approvalViewController)
+            self.presentationDelegate?.present(component: presentableComponent)
         }
         
         private func createFingerPrintResult<R>(authenticationSDKOutput: String?,
@@ -229,30 +247,39 @@
                 return didFail(with: error, completionHandler: completionHandler)
             }
             
-            if delegatedAuthenticationState.isDeviceRegistrationFlow
-                && delegatedAuthenticationState.state != .approveDifferently
-                && delegatedAuthenticationState.state != .deleteDA {
-                // TODO: Robert: Show the Registration screen here
-                // 1. Register if the user taps on continue or else, call the completion handler directly.
-                
-                let registrationViewController = DARegistrationViewController(enableCheckoutHandler: {
-                    self.performDelegatedRegistration(token.delegatedAuthenticationSDKInput) { [weak self] result in
-                        self?.deliver(challengeResult: challengeResult,
-                                      delegatedAuthenticationSDKOutput: result.successResult,
-                                      completionHandler: completionHandler)
-                    }
-                }, notNowHandler: {
-                    completionHandler(.success(challengeResult))
-                })
-                
-                let presentableComponent = PresentableComponentWrapper(component: self,
-                                                                       viewController: registrationViewController)
-                
-                presentationDelegate?.present(component: presentableComponent)
-
+            if shouldShowRegistrationScreen {
+                showRegistrationScreen(registerHandler: {
+                                           self.performDelegatedRegistration(token.delegatedAuthenticationSDKInput) { [weak self] result in
+                                               self?.deliver(challengeResult: challengeResult,
+                                                             delegatedAuthenticationSDKOutput: result.successResult,
+                                                             completionHandler: completionHandler)
+                                           }
+                                       },
+                                       notNowHandler: {
+                                           completionHandler(.success(challengeResult))
+                                       })
             } else {
                 completionHandler(.success(challengeResult))
             }
+        }
+        
+        internal var shouldShowRegistrationScreen: Bool {
+            delegatedAuthenticationState.isDeviceRegistrationFlow
+                && delegatedAuthenticationState.state != .approveDifferently
+                && delegatedAuthenticationState.state != .deleteDA
+        }
+        
+        internal func showRegistrationScreen(registerHandler: @escaping () -> Void, notNowHandler: @escaping () -> Void) {
+            let registrationViewController = DARegistrationViewController(enableCheckoutHandler: {
+                registerHandler()
+            }, notNowHandler: {
+                notNowHandler()
+            })
+            
+            let presentableComponent = PresentableComponentWrapper(component: self,
+                                                                   viewController: registrationViewController)
+            
+            presentationDelegate?.present(component: presentableComponent)
         }
         
         internal func performDelegatedRegistration(_ sdkInput: String?,
