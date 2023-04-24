@@ -8,12 +8,12 @@
 import AdyenNetworking
 import AdyenSession
 
-internal protocol DropInExampleProtocol: AnyObject, APIClientAware {
+internal protocol InitialDataFlowProtocol: AnyObject, APIClientAware {
     var context: AdyenContext { get }
     func requestAdyenSessionConfiguration(completion: ((AdyenSession.Configuration?, Error?) -> Void)?)
 }
 
-extension DropInExampleProtocol {
+extension InitialDataFlowProtocol {
 
     internal var context: AdyenContext {
         var analyticsConfiguration = AnalyticsConfiguration()

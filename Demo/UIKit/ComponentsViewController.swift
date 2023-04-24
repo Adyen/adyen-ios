@@ -22,6 +22,12 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
         dropInAdvancedFlow.presenter = self
         return dropInAdvancedFlow
     }()
+
+    private lazy var cardComponentAdvancedFlowExample: CardComponentAdvancedFlowExample = {
+        let cardComponentAdvancedFlow = CardComponentAdvancedFlowExample()
+        cardComponentAdvancedFlow.presenter = self
+        return cardComponentAdvancedFlow
+    }()
     
     // MARK: - View
     
@@ -36,6 +42,9 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
         componentsView.items = [
             [
                 ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
+            ],
+            [
+                ComponentsItem(title: "Card", selectionHandler: presentCardComponent)
             ]
         ]
         
@@ -56,9 +65,20 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
         }
     }
 
+    // MARK: - Components
+
+    internal func presentCardComponent() {
+        if componentsView.isUsingSession {
+            // todo: add card component with session
+        } else {
+            cardComponentAdvancedFlowExample.presentCardComponent()
+        }
+    }
+
     internal func requestInitialData() {
         dropIn.requestInitialData()
         dropInAdvancedFlow.requestInitialData() { _, _ in }
+        cardComponentAdvancedFlowExample.requestInitialData() { _, _ in }
     }
 
     // MARK: - Presenter
