@@ -36,25 +36,25 @@
     /// Handles the 3D Secure 2 fingerprint and challenge actions separately + Delegated Authentication.
     @available(iOS 14.0, *)
     internal class ThreeDS2PlusDACoreActionHandler: ThreeDS2CoreActionHandler {
-        
+    
         internal var delegatedAuthenticationState: DelegatedAuthenticationState = .init()
-        
+    
         /// Delegates `PresentableComponent`'s presentation.
         internal weak var presentationDelegate: PresentationDelegate?
-
+    
         internal struct DelegatedAuthenticationState {
             enum UserInputState {
                 case approveDifferently
                 case deleteDA
                 case noInput
             }
-
+        
             internal var state: UserInputState = .noInput
             internal var isDeviceRegistrationFlow: Bool = false
         }
-        
+    
         private let delegatedAuthenticationService: AuthenticationServiceProtocol
-
+    
         /// Initializes the 3D Secure 2 action handler.
         ///
         /// - Parameter context: The context object for this component.
@@ -75,7 +75,7 @@
                 presentationDelegate: presentationDelegate
             )
         }
-        
+    
         /// Initializes the 3D Secure 2 action handler.
         ///
         /// - Parameter context: The context object for this component.
@@ -91,9 +91,9 @@
             super.init(context: context, service: service, appearanceConfiguration: appearanceConfiguration)
             self.presentationDelegate = presentationDelegate
         }
-
+    
         // MARK: - Fingerprint
-
+    
         /// Handles the 3D Secure 2 fingerprint action.
         ///
         /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
@@ -113,7 +113,7 @@
                 }
             }
         }
-        
+    
         private func addSDKOutputIfNeeded(toFingerprintResult fingerprintResult: String, _ fingerprintAction: ThreeDS2FingerprintAction, completionHandler: @escaping (Result<String, Error>) -> Void) {
             do {
                 let token = try Coder.decodeBase64(fingerprintAction.fingerprintToken) as ThreeDS2Component.FingerprintToken
@@ -129,17 +129,22 @@
             } catch {
                 didFail(with: error, completionHandler: completionHandler)
             }
-            
-        }
         
+        }
+    
         /// This method checks;
         /// 1. if DA has been registered on the device
         /// 2. shows an approval screen if it has been registered
         /// else calls the completion with a failure.
         private func performDelegatedAuthentication(_ fingerprintToken: ThreeDS2Component.FingerprintToken,
                                                     completion: @escaping (Result<String, DelegateAuthenticationError>) -> Void) {
-            guard let delegatedAuthenticationInput = fingerprintToken.delegatedAuthenticationSDKInput else {
+            
+            let failureHandler = {
                 completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
+            }
+            
+            guard let delegatedAuthenticationInput = fingerprintToken.delegatedAuthenticationSDKInput else {
+                failureHandler()
                 return
             }
             
@@ -147,23 +152,29 @@
                 delegatedAuthenticationInput: delegatedAuthenticationInput,
                 registeredHandler: { [weak self] in
                     guard let self else { return }
-                    showApprovalScreen(useDAHandler: {
-                        self.delegatedAuthenticationService.authenticate(withAuthenticationInput: delegatedAuthenticationInput) { result in
-                            switch result {
-                            case let .success(sdkOutput):
-                                completion(.success(sdkOutput))
-                            case let .failure(error):
-                                completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: error)))
-                            }
-                        }
-                    }, doNotUseDAHandler: {
-                        completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
-                    })
+                    showApprovalScreen(useDAHandler: { [weak self] in
+                                           guard let self else { return }
+                                           self.executeDAAuthenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                                                      authenticatedHandler: { completion(.success($0)) },
+                                                                      failedAuthenticationHanlder: failureHandler)
+                                       },
+                                       doNotUseDAHandler: failureHandler)
                 },
-                notRegisteredHandler: {
-                    completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
-                }
+                notRegisteredHandler: failureHandler
             )
+        }
+
+        private func executeDAAuthenticate(delegatedAuthenticationInput: String,
+                                           authenticatedHandler: @escaping (String) -> Void,
+                                           failedAuthenticationHanlder: @escaping () -> Void) {
+            delegatedAuthenticationService.authenticate(withAuthenticationInput: delegatedAuthenticationInput) { result in
+                switch result {
+                case let .success(sdkOutput):
+                    authenticatedHandler(sdkOutput)
+                case .failure:
+                    failedAuthenticationHanlder()
+                }
+            }
         }
         
         private func isDeviceRegisteredForDelegatedAuthentication(delegatedAuthenticationInput: String,
@@ -191,7 +202,6 @@
                 self.delegatedAuthenticationState.state = .approveDifferently
                 doNotUseDAHandler()
             }, removeCredentialsHandler: {
-                print("Remove credentials")
                 self.delegatedAuthenticationState.state = .deleteDA
                 try? self.delegatedAuthenticationService.reset()
                 doNotUseDAHandler()
