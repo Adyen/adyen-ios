@@ -116,10 +116,17 @@ swift package update
 
 DERIVED_DATA_PATH=.build
 
+PROJECT_NAME='Adyen'
+DESTINATION='generic/platform=iOS'
+
+# PIF SMP fix
+swift package dump-pif > /dev/null || true
+xcodebuild clean -scheme "$PROJECT_NAME" -destination "$DESTINATION" > /dev/null || true
+
 # Generate the docc archive.
 xcodebuild docbuild \
- -scheme Adyen \
- -destination 'platform=iOS Simulator,name=iPhone 13 Pro Max' \
+ -scheme $PROJECT_NAME \
+ -destination $DESTINATION \
  -configuration Release \
  -derivedDataPath $DERIVED_DATA_PATH
 
@@ -130,7 +137,7 @@ cd ../../
 rm -rf $FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive
 
 # Move the new DocC archive to the its final place
-mv $TEMP_PROJECT_PATH/$DERIVED_DATA_PATH/Build/Products/Release-iphonesimulator/$FRAMEWORK_NAME.doccarchive $FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive
+mv $TEMP_PROJECT_PATH/$DERIVED_DATA_PATH/Build/Products/Release-iphoneos/$FRAMEWORK_NAME.doccarchive $FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive
 
 CURRENT_MARKETING_VERSION=$(agvtool what-marketing-version -terse1)
 

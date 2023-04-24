@@ -27,6 +27,9 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - ``AtomeComponent``
 - ``BACSDirectDebitComponent``
 - ``OnlineBankingComponent``
+- ``UPIComponent``
+- ``QRCodeActionComponent``
+
 
 ## Setting up the Component
 

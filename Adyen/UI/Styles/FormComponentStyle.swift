@@ -48,7 +48,7 @@ public struct FormComponentStyle: TintableStyle {
                                                                      textColor: UIColor.Adyen.defaultBlue)
 
     /// The  segmented control  style.
-    public var segmentedControlStyle: SegmentedControlStyle = SegmentedControlStyle(
+    public var segmentedControlStyle: SegmentedControlStyle = .init(
         textStyle: TextStyle(font: .preferredFont(forTextStyle: .subheadline),
                              color: UIColor.Adyen.componentBackground)
     )

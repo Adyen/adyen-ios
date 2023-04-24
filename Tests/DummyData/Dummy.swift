@@ -64,6 +64,41 @@ enum Dummy: Error {
     
     internal static let returnUrl = URL(string: "https://google.com?redirectResult=some")!
 
+    internal static let dummyAddress = PostalAddress(
+        city: "São Paulo",
+        country: "BR",
+        houseNumberOrName: "952",
+        postalCode: "04386040",
+        stateOrProvince: "SP",
+        street: "Rua Funcionarios",
+        apartment: nil
+    )
+
+    internal static  let dummyName = ShopperName(firstName: "Eerst", lastName: "Laatst")
+
+    internal static  let dummySocialSecurityNumber = "66818021000127"
+
+    internal static  let dummyEmail = "foo@bar.baz"
+
+    internal static  var dummyFullPrefilledInformation: PrefilledShopperInformation {
+        PrefilledShopperInformation(
+            shopperName: dummyName,
+            emailAddress: dummyEmail,
+            telephoneNumber: nil,
+            billingAddress: dummyAddress,
+            socialSecurityNumber: dummySocialSecurityNumber
+        )
+    }
+
+    internal static  func getConfiguration(
+        with shopperInfo: PrefilledShopperInformation? = nil, style: FormComponentStyle = FormComponentStyle(),
+        showEmailAddress: Bool
+    ) -> BoletoComponent.Configuration {
+        BoletoComponent.Configuration(style: style,
+                                      shopperInformation: shopperInfo,
+                                      showEmailAddress: showEmailAddress)
+    }
+
     internal static func createTestSummaryItems() -> [PKPaymentSummaryItem] {
         var amounts = (0...3).map { _ in
             NSDecimalNumber(mantissa: UInt64.random(in: 1...20), exponent: 1, isNegative: Bool.random())

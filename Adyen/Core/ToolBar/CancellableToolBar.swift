@@ -12,7 +12,7 @@ public final class CancellingToolBar: ModalToolbar {
     private let style: NavigationStyle
     private let title: String?
 
-    public override init(title: String?, style: NavigationStyle) {
+    override public init(title: String?, style: NavigationStyle) {
         self.style = style
         self.title = title
         super.init(title: title, style: style)
@@ -32,7 +32,7 @@ public final class CancellingToolBar: ModalToolbar {
 
     override internal var cancelButton: UIButton {
         get {
-            return customizeCancelButton()
+            customizeCancelButton()
         }
         // swiftlint:disable:next unused_setter_value
         set {

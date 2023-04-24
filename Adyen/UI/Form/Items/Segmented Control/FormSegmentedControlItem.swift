@@ -33,9 +33,7 @@ public final class FormSegmentedControlItem: FormItem {
         let segmentedControl = ADYSegmentedControl(items: items)
         segmentedControl.accessibilityIdentifier = identifier
         segmentedControl.backgroundColor = style.backgroundColor
-        if #available(iOS 13.0, *) {
-            segmentedControl.selectedSegmentTintColor = style.tintColor
-        }
+        segmentedControl.tintColor = style.tintColor
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.addTarget(self, action: #selector(segmentAction), for: .valueChanged)
         segmentedControl.adyen.round(using: style.textStyle.cornerRounding)

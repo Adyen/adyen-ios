@@ -36,7 +36,7 @@ public class FormImageItem: FormItem, Hidable {
     }
 
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
-         return FormImageView(item: self)
+        FormImageView(item: self)
     }
 }
 
@@ -54,7 +54,7 @@ internal class FormImageView: FormItemView<FormImageItem> {
                                              clipsToBounds: false,
                                              contentMode: .center)
 
-        let imageView = UIImageView.init(style: style)
+        let imageView = UIImageView(style: style)
         self.addSubview(imageView)
 
         imageView.image = UIImage(named: item.name,

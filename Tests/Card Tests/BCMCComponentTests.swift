@@ -239,8 +239,8 @@ class BCMCComponentTests: XCTestCase {
         expectationBin.expectedFulfillmentCount = 1
         expectationBin.assertForOverFulfill = true
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
-                                                         XCTAssertTrue("670344".hasPrefix(value))
-                                                         XCTAssertTrue(value.count <= 6)
+                                                         XCTAssertTrue("67034444".hasPrefix(value))
+                                                         XCTAssertTrue(value.count <= 8)
                                                          expectationBin.fulfill()
                                                      },
                                                      onCardBrandChange: { _ in },
@@ -306,15 +306,15 @@ class BCMCComponentTests: XCTestCase {
         expectationBin.expectedFulfillmentCount = 2
         expectationBin.assertForOverFulfill = true
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
-                                                         XCTAssertTrue("670344".hasPrefix(value))
-                                                         XCTAssertTrue(value.count <= 6)
-                                                         if value == "670344" {
+                                                         XCTAssertTrue("67034444".hasPrefix(value))
+                                                         XCTAssertTrue(value.count <= 8)
+                                                         if value == "67034444" {
                                                              expectationBin.fulfill()
                                                          }
                                                      },
                                                      onCardBrandChange: { _ in },
                                                      onSubmitLastFour: { _, finalBin in
-                                                         XCTAssertEqual(finalBin, "670344")
+                                                         XCTAssertEqual(finalBin, "67034444")
                                                          expectationBin.fulfill()
                                                      })
         sut.cardComponentDelegate = delegateMock

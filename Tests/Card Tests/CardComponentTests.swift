@@ -305,7 +305,7 @@ class CardComponentTests: XCTestCase {
         let expectationCardType = XCTestExpectation(description: "CardType Expectation")
         let expectationLastFour = XCTestExpectation(description: "LastFour Expectation")
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
-            XCTAssertEqual(value, "670344")
+            XCTAssertEqual(value, "67034444")
             expectationBin.fulfill()
         }, onCardBrandChange: { value in
             XCTAssertEqual(value, [CardBrand(type: .americanExpress)])
