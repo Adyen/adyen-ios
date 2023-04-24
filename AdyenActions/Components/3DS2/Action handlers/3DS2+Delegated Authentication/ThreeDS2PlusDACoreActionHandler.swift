@@ -50,7 +50,7 @@
                 case noInput
             }
         
-            internal var state: UserInputState = .noInput
+            internal var userInputState: UserInputState = .noInput
             internal var isDeviceRegistrationFlow: Bool = false
         }
     
@@ -208,10 +208,10 @@
                                                                   useBiometricsHandler: {
                                                                       useDAHandler()
                                                                   }, approveDifferentlyHandler: {
-                                                                      self.delegatedAuthenticationState.state = .approveDifferently
+                                                                      self.delegatedAuthenticationState.userInputState = .approveDifferently
                                                                       doNotUseDAHandler()
                                                                   }, removeCredentialsHandler: {
-                                                                      self.delegatedAuthenticationState.state = .deleteDA
+                                                                      self.delegatedAuthenticationState.userInputState = .deleteDA
                                                                       try? self.delegatedAuthenticationService.reset()
                                                                       doNotUseDAHandler()
                                                                   })
@@ -267,8 +267,8 @@
             }
             
             if shouldShowRegistrationScreen {
-                showRegistrationScreen(registerHandler: {
-                                           self.performDelegatedRegistration(token.delegatedAuthenticationSDKInput) { [weak self] result in
+                showRegistrationScreen(registerHandler: { [weak self] in
+                                           self?.performDelegatedRegistration(token.delegatedAuthenticationSDKInput) { [weak self] result in
                                                self?.deliver(challengeResult: challengeResult,
                                                              delegatedAuthenticationSDKOutput: result.successResult,
                                                              completionHandler: completionHandler)
@@ -284,8 +284,8 @@
         
         internal var shouldShowRegistrationScreen: Bool {
             delegatedAuthenticationState.isDeviceRegistrationFlow
-                && delegatedAuthenticationState.state != .approveDifferently
-                && delegatedAuthenticationState.state != .deleteDA
+                && delegatedAuthenticationState.userInputState != .approveDifferently
+                && delegatedAuthenticationState.userInputState != .deleteDA
         }
         
         internal func showRegistrationScreen(registerHandler: @escaping () -> Void, notNowHandler: @escaping () -> Void) {
