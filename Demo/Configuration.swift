@@ -58,9 +58,8 @@ internal enum ConfigurationConstants {
                              "id": "Item #2"]]
     static var delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication {
         .init(localizedRegistrationReason: "Register this device!",
-              localizedAuthenticationReason: "Authenticate your card!", // TODO: Robert: these reasons are a bit off i suppose. The reason for authentication cannot be register this device right?
+              localizedAuthenticationReason: "Authenticate your card!",
               appleTeamIdentifier: appleTeamIdentifier)
-        
     }
 
     static var shippingMethods: [PKShippingMethod] = {

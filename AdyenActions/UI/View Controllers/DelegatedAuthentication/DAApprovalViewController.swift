@@ -60,8 +60,6 @@ internal final class DAApprovalViewController: UIViewController {
         self.approvalView.delegate = self
         if #available(iOS 13.0, *) {
             self.isModalInPresentation = true
-        } else {
-            // Fallback on earlier versions
         }
     }
     

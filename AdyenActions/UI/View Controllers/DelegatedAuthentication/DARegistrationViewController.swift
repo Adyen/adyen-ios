@@ -40,8 +40,6 @@ internal final class DARegistrationViewController: UIViewController {
         self.registrationView.delegate = self
         if #available(iOS 13.0, *) {
             self.isModalInPresentation = true
-        } else {
-            // Fallback on earlier versions
         }
     }
     
@@ -107,7 +105,6 @@ internal final class DARegistrationViewController: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
 
-    // TODO: Why is this needed?
     override internal var preferredContentSize: CGSize {
         get {
             containerView.frame.size
