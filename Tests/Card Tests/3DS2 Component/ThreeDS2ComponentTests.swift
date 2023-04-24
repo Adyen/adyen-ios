@@ -34,7 +34,8 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: threeDSActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
-                                    redirectComponent: redirectComponent)
+                                    redirectComponent: redirectComponent,
+                                    presentationDelegate: nil)
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -73,7 +74,8 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
-                                    redirectComponent: redirectComponent)
+                                    redirectComponent: redirectComponent,
+                                    presentationDelegate: nil)
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -111,7 +113,8 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
-                                    redirectComponent: redirectComponent)
+                                    redirectComponent: redirectComponent,
+                                    presentationDelegate: nil)
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -150,7 +153,8 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
-                                    redirectComponent: redirectComponent)
+                                    redirectComponent: redirectComponent,
+                                    presentationDelegate: nil)
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -190,7 +194,8 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
-                                    redirectComponent: redirectComponent)
+                                    redirectComponent: redirectComponent,
+                                    presentationDelegate: nil)
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -221,7 +226,8 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
-                                    redirectComponent: redirectComponent)
+                                    redirectComponent: redirectComponent,
+                                    presentationDelegate: nil)
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -255,7 +261,8 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     threeDS2ClassicFlowHandler: threeDS2ActionHandler,
-                                    redirectComponent: redirectComponent)
+                                    redirectComponent: redirectComponent,
+                                    presentationDelegate: nil)
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -283,7 +290,7 @@ class ThreeDS2ComponentTests: XCTestCase {
     }
     
     func testSettingRequestorAppURL() throws {
-        let sut = ThreeDS2Component(context: Dummy.context)
+        let sut = ThreeDS2Component(context: Dummy.context, presentationDelegate: nil)
         sut.configuration.requestorAppURL = URL(string: "http://google.com")
         XCTAssertEqual(sut.threeDS2CompactFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
         XCTAssertEqual(sut.threeDS2ClassicFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
@@ -292,7 +299,8 @@ class ThreeDS2ComponentTests: XCTestCase {
     func testSettingRequestorAppURLWithInitializer() throws {
         let configuration = ThreeDS2Component.Configuration(requestorAppURL: URL(string: "http://google.com"))
         let sut = ThreeDS2Component(context: Dummy.context,
-                                    configuration: configuration)
+                                    configuration: configuration,
+                                    presentationDelegate: nil)
         XCTAssertEqual(sut.threeDS2CompactFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
         XCTAssertEqual(sut.threeDS2ClassicFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
     }
@@ -306,7 +314,8 @@ class ThreeDS2ComponentTests: XCTestCase {
                                     threeDS2CompactFlowHandler: threeDS2CompactFlowHandler,
                                     threeDS2ClassicFlowHandler: threeDS2ClassicFlowHandler,
                                     redirectComponent: redirectComponent,
-                                    configuration: configuration)
+                                    configuration: configuration,
+                                    presentationDelegate: nil)
         XCTAssertEqual(sut.threeDS2CompactFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
         XCTAssertEqual(sut.threeDS2ClassicFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
     }
@@ -327,7 +336,8 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     threeDS2ClassicFlowHandler: threeDS2ActionHandler,
-                                    redirectComponent: redirectComponent)
+                                    redirectComponent: redirectComponent,
+                                    presentationDelegate: nil)
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()
@@ -372,7 +382,8 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: threeDS2ActionHandler,
                                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
-                                    redirectComponent: redirectComponent)
+                                    redirectComponent: redirectComponent,
+                                    presentationDelegate: nil)
         redirectComponent.delegate = sut
 
         let delegate = ActionComponentDelegateMock()

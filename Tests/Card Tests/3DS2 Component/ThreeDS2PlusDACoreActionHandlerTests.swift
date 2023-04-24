@@ -66,7 +66,7 @@ import XCTest
         func testSettingThreeDSRequestorAppURL() {
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
                                                       appearanceConfiguration: ADYAppearanceConfiguration(),
-                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations)
+                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations, presentationDelegate: nil)
             sut.threeDSRequestorAppURL = URL(string: "http://google.com")
             XCTAssertEqual(sut.threeDSRequestorAppURL, URL(string: "http://google.com"))
         }
@@ -74,7 +74,7 @@ import XCTest
         func testWrappedComponent() {
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
                                                       appearanceConfiguration: ADYAppearanceConfiguration(),
-                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations)
+                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations, presentationDelegate: nil)
             XCTAssertEqual(sut.context.apiContext.clientKey, Dummy.apiContext.clientKey)
         
             XCTAssertEqual(sut.context.apiContext.environment.baseURL, Dummy.apiContext.environment.baseURL)
@@ -100,8 +100,10 @@ import XCTest
         
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      service: service,
-                                                      delegatedAuthenticationService: authenticationServiceMock)
+                                                      style: .init(),
+                                                      localizedParameters: nil,
+                                                      delegatedAuthenticationService: authenticationServiceMock,
+                                                      presentationDelegate: nil)
             sut.handle(fingerprintAction, event: analyticsEvent) { fingerprintResult in
                 switch fingerprintResult {
                 case let .success(fingerprintString):
@@ -128,8 +130,10 @@ import XCTest
 
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      service: service,
-                                                      delegatedAuthenticationService: authenticationServiceMock)
+                                                      style: .init(),
+                                                      localizedParameters: nil,
+                                                      delegatedAuthenticationService: authenticationServiceMock,
+                                                      presentationDelegate: nil)
             sut.handle(fingerprintAction,
                        event: analyticsEvent) { result in
                 switch result {
@@ -164,7 +168,7 @@ import XCTest
             let authenticationServiceMock = AuthenticationServiceMock()
         
             authenticationServiceMock.onRegister = { _ in
-                try JSONDecoder().decode(RegistrationOutput.self, from: self.expectedSDKRegistrationOutput.dataFromBase64URL())
+                self.expectedSDKRegistrationOutput
             }
         
             let expectedResult = try! ThreeDSResult(
@@ -178,8 +182,10 @@ import XCTest
 
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      service: service,
-                                                      delegatedAuthenticationService: authenticationServiceMock)
+                                                      style: .init(),
+                                                      localizedParameters: nil,
+                                                      delegatedAuthenticationService: authenticationServiceMock,
+                                                      presentationDelegate: nil)
             sut.threeDSRequestorAppURL = URL(string: "http://google.com")
             sut.transaction = transaction
             sut.delegatedAuthenticationState.isDeviceRegistrationFlow = true
@@ -210,8 +216,10 @@ import XCTest
             let authenticationServiceMock = AuthenticationServiceMock()
         
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      service: service,
-                                                      delegatedAuthenticationService: authenticationServiceMock)
+                                                      style: .init(),
+                                                      localizedParameters: nil,
+                                                      delegatedAuthenticationService: authenticationServiceMock,
+                                                      presentationDelegate: nil)
             sut.transaction = mockedTransaction
 
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
@@ -234,10 +242,11 @@ import XCTest
             let service = AnyADYServiceMock()
         
             let authenticationServiceMock = AuthenticationServiceMock()
-
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      service: service,
-                                                      delegatedAuthenticationService: authenticationServiceMock)
+                                                      style: .init(),
+                                                      localizedParameters: nil,
+                                                      delegatedAuthenticationService: authenticationServiceMock,
+                                                      presentationDelegate: nil)
 
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
             sut.handle(challengeAction, event: analyticsEvent) { result in
@@ -272,8 +281,10 @@ import XCTest
             let authenticationServiceMock = AuthenticationServiceMock()
 
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      service: service,
-                                                      delegatedAuthenticationService: authenticationServiceMock)
+                                                      style: .init(),
+                                                      localizedParameters: nil,
+                                                      delegatedAuthenticationService: authenticationServiceMock,
+                                                      presentationDelegate: nil)
             sut.transaction = mockedTransaction
 
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
