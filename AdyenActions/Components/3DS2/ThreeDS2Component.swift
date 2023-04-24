@@ -61,6 +61,9 @@ public final class ThreeDS2Component: ActionComponent {
             /// The configuration for Delegated Authentication Component style
             public let delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle
 
+            /// The localization parameters, leave it nil to use the default parameters.
+            public let localizationParameters: LocalizationParameters?
+
             /// Initializes a new instance.
             ///
             /// - Parameter localizedRegistrationReason: The localized reason string show to the user while registration flow.
@@ -70,11 +73,13 @@ public final class ThreeDS2Component: ActionComponent {
             public init(localizedRegistrationReason: String,
                         localizedAuthenticationReason: String,
                         appleTeamIdentifier: String,
-                        delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle = .init()) {
+                        delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle = .init(),
+                        localizationParameters: LocalizationParameters? = nil) {
                 self.localizedRegistrationReason = localizedRegistrationReason
                 self.localizedAuthenticationReason = localizedAuthenticationReason
                 self.appleTeamIdentifier = appleTeamIdentifier
                 self.delegatedAuthenticationComponentStyle = delegatedAuthenticationComponentStyle
+                self.localizationParameters = localizationParameters
             }
         }
         

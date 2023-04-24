@@ -58,12 +58,14 @@
     
         private let style: DelegatedAuthenticationComponentStyle
         
+        private let localizedParameters: LocalizationParameters?
         /// Initializes the 3D Secure 2 action handler.
         ///
         /// - Parameter context: The context object for this component.
         /// - Parameter appearanceConfiguration: The appearance configuration.
         /// - Parameter style: The delegate authentication component style.
         /// - Parameter delegatedAuthenticationConfiguration: The delegated authentication configuration.
+        /// - Parameter presentationDelegate: The presentation delegate
         internal convenience init(
             context: AdyenContext,
             appearanceConfiguration: ADYAppearanceConfiguration,
@@ -74,6 +76,7 @@
                 context: context,
                 appearanceConfiguration: appearanceConfiguration,
                 style: delegatedAuthenticationConfiguration.delegatedAuthenticationComponentStyle,
+                localizedParameters: delegatedAuthenticationConfiguration.localizationParameters,
                 delegatedAuthenticationService: AuthenticationService(
                     configuration: delegatedAuthenticationConfiguration.authenticationServiceConfiguration()
                 ),
@@ -87,15 +90,19 @@
         /// - Parameter service: The 3DS2 Service.
         /// - Parameter appearanceConfiguration: The appearance configuration.
         /// - Parameter style: The delegate authentication component style.
+        /// - Parameter localizedParameters: set to nil to use default localization parameters..
         /// - Parameter delegatedAuthenticationService: The Delegated Authentication service.
+        /// - Parameter presentationDelegate: Presentation delegate
         internal init(context: AdyenContext,
                       service: AnyADYService = ADYServiceAdapter(),
                       appearanceConfiguration: ADYAppearanceConfiguration = .init(),
                       style: DelegatedAuthenticationComponentStyle,
+                      localizedParameters: LocalizationParameters?,
                       delegatedAuthenticationService: AuthenticationServiceProtocol,
                       presentationDelegate: PresentationDelegate?) {
             self.delegatedAuthenticationService = delegatedAuthenticationService
             self.style = style
+            self.localizedParameters = localizedParameters
             super.init(context: context, service: service, appearanceConfiguration: appearanceConfiguration)
             self.presentationDelegate = presentationDelegate
         }
@@ -205,6 +212,7 @@
         private func showApprovalScreen(useDAHandler: @escaping () -> Void,
                                         doNotUseDAHandler: @escaping () -> Void) {
             let approvalViewController = DAApprovalViewController(style: style,
+                                                                  localizationParameters: localizedParameters,
                                                                   useBiometricsHandler: {
                                                                       useDAHandler()
                                                                   }, approveDifferentlyHandler: {
@@ -219,6 +227,8 @@
             let presentableComponent = PresentableComponentWrapper(component: self,
                                                                    viewController: approvalViewController)
             self.presentationDelegate?.present(component: presentableComponent)
+            approvalViewController.navigationItem.rightBarButtonItems = []
+            approvalViewController.navigationItem.leftBarButtonItems = []
         }
         
         private func createFingerPrintResult<R>(authenticationSDKOutput: String?,
@@ -290,6 +300,7 @@
         
         internal func showRegistrationScreen(registerHandler: @escaping () -> Void, notNowHandler: @escaping () -> Void) {
             let registrationViewController = DARegistrationViewController(style: style,
+                                                                          localizationParameters: localizedParameters,
                                                                           enableCheckoutHandler: {
                                                                               registerHandler()
                                                                           }, notNowHandler: {
@@ -298,8 +309,10 @@
             
             let presentableComponent = PresentableComponentWrapper(component: self,
                                                                    viewController: registrationViewController)
-            
             presentationDelegate?.present(component: presentableComponent)
+            // TODO: Is there a better way to disable the cancel button?
+            registrationViewController.navigationItem.rightBarButtonItems = []
+            registrationViewController.navigationItem.leftBarButtonItems = []
         }
         
         internal func performDelegatedRegistration(_ sdkInput: String?,

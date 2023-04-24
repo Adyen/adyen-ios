@@ -22,21 +22,27 @@ internal final class DARegistrationViewController: UIViewController {
                                                                            firstButtonStyle: style.primaryButton,
                                                                            secondButtonStyle: style.secondaryButton,
                                                                            textViewStyle: style.textViewStyle)
-    // TODO: pass this from the public interface.
-    private let style: DelegatedAuthenticationComponentStyle = .init()
+    private let style: DelegatedAuthenticationComponentStyle
     private var timeoutTimer: ExpirationTimer?
     internal typealias Handler = () -> Void
     
-    // TODO: pass this from the Configuration
-    public var localizationParameters: LocalizationParameters?
+    private let localizationParameters: LocalizationParameters?
 
     internal init(style: DelegatedAuthenticationComponentStyle,
+                  localizationParameters: LocalizationParameters?,
                   enableCheckoutHandler: @escaping Handler,
                   notNowHandler: @escaping Handler) {
+        self.style = style
+        self.localizationParameters = localizationParameters
         self.enableCheckoutHandler = enableCheckoutHandler
         self.notNowHandler = notNowHandler
         super.init(nibName: nil, bundle: Bundle(for: DARegistrationViewController.self))
         self.registrationView.delegate = self
+        if #available(iOS 13.0, *) {
+            self.isModalInPresentation = true
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     @available(*, unavailable)

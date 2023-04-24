@@ -40,15 +40,14 @@ internal final class DAApprovalViewController: UIViewController {
                                                                        secondButtonStyle: style.secondaryButton,
                                                                        textViewStyle: style.textViewStyle)
     
-    // TODO: pass this from the public interface.
     private let style: DelegatedAuthenticationComponentStyle
     private var timeoutTimer: ExpirationTimer?
-    // TODO: pass this from the Configuration
-    public var localizationParameters: LocalizationParameters?
+    private let localizationParameters: LocalizationParameters?
 
     internal typealias Handler = () -> Void
     
     internal init(style: DelegatedAuthenticationComponentStyle,
+                  localizationParameters: LocalizationParameters?,
                   useBiometricsHandler: @escaping Handler,
                   approveDifferentlyHandler: @escaping Handler,
                   removeCredentialsHandler: @escaping Handler) {
@@ -56,8 +55,14 @@ internal final class DAApprovalViewController: UIViewController {
         self.useBiometricsHandler = useBiometricsHandler
         self.approveDifferentlyHandler = approveDifferentlyHandler
         self.removeCredentialsHandler = removeCredentialsHandler
+        self.localizationParameters = localizationParameters
         super.init(nibName: nil, bundle: Bundle(for: DARegistrationViewController.self))
         self.approvalView.delegate = self
+        if #available(iOS 13.0, *) {
+            self.isModalInPresentation = true
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     @available(*, unavailable)
