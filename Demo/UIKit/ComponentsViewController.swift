@@ -28,7 +28,13 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
         cardComponentAdvancedFlow.presenter = self
         return cardComponentAdvancedFlow
     }()
-    
+
+    private lazy var cardComponentExample: CardComponentExample = {
+          let cardComponentExample = CardComponentExample()
+        cardComponentExample.presenter = self
+          return cardComponentExample
+      }()
+
     // MARK: - View
     
     override internal func loadView() {
@@ -69,7 +75,7 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
 
     internal func presentCardComponent() {
         if componentsView.isUsingSession {
-            // todo: add card component with session
+            cardComponentExample.presentCardComponentSession()
         } else {
             cardComponentAdvancedFlowExample.presentCardComponent()
         }
@@ -79,6 +85,7 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
         dropIn.requestInitialData()
         dropInAdvancedFlow.requestInitialData() { _, _ in }
         cardComponentAdvancedFlowExample.requestInitialData() { _, _ in }
+        cardComponentExample.requestInitialData() { _, _ in }
     }
 
     // MARK: - Presenter
