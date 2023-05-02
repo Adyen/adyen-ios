@@ -50,7 +50,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         }
     }
 
-    internal func presentCardComponent() {
+    internal func present() {
         guard let component = cardComponent(from: paymentMethods) else { return }
         component.cardComponentDelegate = self
         component.delegate = self

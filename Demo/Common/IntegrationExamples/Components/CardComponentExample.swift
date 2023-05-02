@@ -46,9 +46,10 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
 
     // MARK: Card
 
-    internal func presentCardComponentSession() {
+    internal func present() {
         guard let component = cardComponent(from: session?.sessionContext.paymentMethods) else { return }
         cardComponent = component
+        component.delegate = session
         present(component, delegate: session)
     }
 
@@ -83,10 +84,6 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
 
     private func present(_ component: PresentableComponent,
                          delegate: PaymentComponentDelegate?) {
-        if let paymentComponent = component as? PaymentComponent {
-            paymentComponent.delegate = delegate
-        }
-
         cardComponent = component
         guard component.requiresModalPresentation else {
             presenter?.present(viewController: component.viewController, completion: nil)
