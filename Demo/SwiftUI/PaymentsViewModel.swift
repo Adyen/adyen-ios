@@ -67,8 +67,8 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
     private func onConfigurationClosed(_ configuration: Configuration) {
         ConfigurationConstants.current = configuration
         dismiss(completion: nil)
-        dropInAdvancedFlow.requestInitialData() { _, _ in }
-        cardAdvancedFlow.requestInitialData() { _, _ in }
+        dropInAdvancedFlowExample.requestInitialData() { _, _ in }
+        cardAdvancedFlowExample.requestInitialData() { _, _ in }
     }
 
     // MARK: - Presenter
