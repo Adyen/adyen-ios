@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -50,7 +50,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         }
     }
 
-    internal func presentCardComponent() {
+    internal func present() {
         guard let component = cardComponent(from: paymentMethods) else { return }
         component.cardComponentDelegate = self
         component.delegate = self

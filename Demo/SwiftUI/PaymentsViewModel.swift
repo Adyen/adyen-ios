@@ -8,13 +8,13 @@ import SwiftUI
 
 internal final class PaymentsViewModel: ObservableObject, Identifiable, PresenterExampleProtocol {
 
-    private lazy var dropInAdvancedFlow: DropInAdvancedFlowExample = {
+    private lazy var dropInAdvancedFlowExample: DropInAdvancedFlowExample = {
         let dropInAdvancedFlow = DropInAdvancedFlowExample()
         dropInAdvancedFlow.presenter = self
         return dropInAdvancedFlow
     }()
 
-    private lazy var cardAdvancedFlow: CardComponentAdvancedFlowExample = {
+    private lazy var cardAdvancedFlowExample: CardComponentAdvancedFlowExample = {
         let cardAdvancedFlow = CardComponentAdvancedFlowExample()
         cardAdvancedFlow.presenter = self
         return cardAdvancedFlow
@@ -27,11 +27,11 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
     // MARK: - DropIn Component
 
     internal func presentDropInComponent() {
-        dropInAdvancedFlow.presentDropInComponent()
+        dropInAdvancedFlowExample.present()
     }
 
     internal func presentCardComponent() {
-        cardAdvancedFlow.presentCardComponent()
+        cardAdvancedFlowExample.present()
     }
 
    // TODO: add for other PM
@@ -45,8 +45,8 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent)
             ]
         ]
-        dropInAdvancedFlow.requestInitialData() { _, _ in }
-        cardAdvancedFlow.requestInitialData() { _, _ in }
+        dropInAdvancedFlowExample.requestInitialData() { _, _ in }
+        cardAdvancedFlowExample.requestInitialData() { _, _ in }
     }
     
     // MARK: - Configuration
@@ -67,8 +67,8 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
     private func onConfigurationClosed(_ configuration: Configuration) {
         ConfigurationConstants.current = configuration
         dismiss(completion: nil)
-        dropInAdvancedFlow.requestInitialData() { _, _ in }
-        cardAdvancedFlow.requestInitialData() { _, _ in }
+        dropInAdvancedFlowExample.requestInitialData() { _, _ in }
+        cardAdvancedFlowExample.requestInitialData() { _, _ in }
     }
 
     // MARK: - Presenter

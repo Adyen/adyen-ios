@@ -11,13 +11,13 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
     
     private lazy var componentsView = ComponentsView()
 
-    private lazy var dropIn: DropInExample = {
+    private lazy var dropInExample: DropInExample = {
         let dropIn = DropInExample()
         dropIn.presenter = self
         return dropIn
     }()
 
-    private lazy var dropInAdvancedFlow: DropInAdvancedFlowExample = {
+    private lazy var dropInAdvancedFlowExample: DropInAdvancedFlowExample = {
         let dropInAdvancedFlow = DropInAdvancedFlowExample()
         dropInAdvancedFlow.presenter = self
         return dropInAdvancedFlow
@@ -28,7 +28,13 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
         cardComponentAdvancedFlow.presenter = self
         return cardComponentAdvancedFlow
     }()
-    
+
+    private lazy var cardComponentExample: CardComponentExample = {
+        let cardComponentExample = CardComponentExample()
+        cardComponentExample.presenter = self
+        return cardComponentExample
+    }()
+
     // MARK: - View
     
     override internal func loadView() {
@@ -59,9 +65,9 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
 
     internal func presentDropInComponent() {
         if componentsView.isUsingSession {
-            dropIn.presentDropInComponentSession()
+            dropInExample.present()
         } else {
-            dropInAdvancedFlow.presentDropInComponent()
+            dropInAdvancedFlowExample.present()
         }
     }
 
@@ -69,16 +75,17 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
 
     internal func presentCardComponent() {
         if componentsView.isUsingSession {
-            // todo: add card component with session
+            cardComponentExample.present()
         } else {
-            cardComponentAdvancedFlowExample.presentCardComponent()
+            cardComponentAdvancedFlowExample.present()
         }
     }
 
     internal func requestInitialData() {
-        dropIn.requestInitialData()
-        dropInAdvancedFlow.requestInitialData() { _, _ in }
+        dropInExample.requestInitialData()
+        dropInAdvancedFlowExample.requestInitialData() { _, _ in }
         cardComponentAdvancedFlowExample.requestInitialData() { _, _ in }
+        cardComponentExample.requestInitialData() { _, _ in }
     }
 
     // MARK: - Presenter

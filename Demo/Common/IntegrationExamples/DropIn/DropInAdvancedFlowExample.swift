@@ -35,7 +35,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
         }
     }
 
-    internal func presentDropInComponent() {
+    internal func present() {
         guard let dropIn = dropInComponent(from: paymentMethods) else { return }
 
         dropIn.delegate = self

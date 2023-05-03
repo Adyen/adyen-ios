@@ -48,7 +48,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
         }
     }
 
-    internal func presentDropInComponentSession() {
+    internal func present() {
         guard let dropIn = dropInComponent(from: session?.sessionContext.paymentMethods) else { return }
 
         dropIn.delegate = session
