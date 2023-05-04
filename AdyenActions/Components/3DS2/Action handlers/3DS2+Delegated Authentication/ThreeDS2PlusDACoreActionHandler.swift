@@ -372,7 +372,7 @@
         fileprivate func authenticationServiceConfiguration() -> AuthenticationService.Configuration {
             .init(localizedRegistrationReason: localizedRegistrationReason,
                   localizedAuthenticationReason: localizedAuthenticationReason,
-                  appleTeamIdendtifier: appleTeamIdentifier)
+                  appleTeamIdentifier: appleTeamIdentifier)
         }
     }
 
