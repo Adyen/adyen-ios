@@ -115,6 +115,21 @@ class GiftCardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
+    func testCheckBalanceCardNumberFormatting() throws {
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .milliseconds(300))
+
+        XCTAssertTrue(errorView!.isHidden)
+
+        populate(cardNumber: "1234 5678 1234 5678 1234 5678", pin: "73737")
+
+        XCTAssertEqual(numberItemView?.textField.text, "1234 5678 1234 5678 1234 5678")
+
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+
     func testBalanceAndTransactionLimitCurrencyMismatch() throws {
 
         let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
