@@ -43,14 +43,13 @@
         internal weak var presentationDelegate: PresentationDelegate?
     
         internal struct DelegatedAuthenticationState {
-            // TODO: Is there a better way to handle this user selection state?
-            enum UserInputState {
+            internal enum UserInput {
                 case approveDifferently
                 case deleteDA
                 case noInput
             }
         
-            internal var userInputState: UserInputState = .noInput
+            internal var userInputState: UserInput = .noInput
             internal var isDeviceRegistrationFlow: Bool = false
         }
     
@@ -296,8 +295,9 @@
             delegatedAuthenticationState.isDeviceRegistrationFlow
                 && delegatedAuthenticationState.userInputState != .approveDifferently
                 && delegatedAuthenticationState.userInputState != .deleteDA
+                && DeviceSupportChecker().isDeviceSupported
         }
-        
+                
         internal func showRegistrationScreen(registerHandler: @escaping () -> Void, notNowHandler: @escaping () -> Void) {
             let registrationViewController = DARegistrationViewController(style: style,
                                                                           localizationParameters: localizedParameters,
@@ -310,7 +310,7 @@
             let presentableComponent = PresentableComponentWrapper(component: self,
                                                                    viewController: registrationViewController)
             presentationDelegate?.present(component: presentableComponent)
-            // TODO: Is there a better way to disable the cancel button?
+            // TODO: Robert: Is there a better way to disable the cancel button?
             registrationViewController.navigationItem.rightBarButtonItems = []
             registrationViewController.navigationItem.leftBarButtonItems = []
         }
