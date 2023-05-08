@@ -184,7 +184,7 @@
 "adyen.threeds2.DA.appr.positiveButton" = "Use biometrics";
 "adyen.threeds2.DA.appr.negativeButton" = "Approve differently";
 "adyen.threeds2.DA.appr.timeLeft" = "You have %@ to approve";
-"adyen.threeds2.DA.appr.removeCredentialsText" = "Opt out any time by #removing your credentials.#";
+"adyen.threeds2.DA.appr.removeCredentialsText" = "Opt out any time by %#removing your credentials.%#";
 "adyen.threeds2.DA.appr.remove.alert.title" = "Remove credentials?";
 "adyen.threeds2.DA.appr.remove.alert.description" = "Are you sure you want to remove your credentials?";
 "adyen.threeds2.DA.appr.remove.alert.positiveButton" = "Remove";

@@ -29,7 +29,6 @@ internal final class DelegatedAuthenticationView: UIView {
         let image = UIImage(named: "biometric", in: Bundle.actionsInternalResources, compatibleWith: nil)
         let imageView = UIImageView(style: logoStyle)
         imageView.image = image?.withRenderingMode(.alwaysTemplate)
-        imageView.contentMode = .scaleToFill
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "image")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -41,7 +40,6 @@ internal final class DelegatedAuthenticationView: UIView {
         label.isAccessibilityElement = false
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "titleLabel")
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
         return label
     }()
 
@@ -50,7 +48,6 @@ internal final class DelegatedAuthenticationView: UIView {
         label.isAccessibilityElement = false
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "descriptionLabel")
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
         label.numberOfLines = 0
         
         return label
@@ -194,9 +191,8 @@ internal final class DelegatedAuthenticationView: UIView {
             
             textView.heightAnchor.constraint(equalToConstant: 50),
             textView.topAnchor.constraint(equalTo: buttonsStackView.bottomAnchor, constant: 24),
-            textView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor),
-            textView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: 10),
-            textView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 10)
+            textView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -15),
+            textView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 15.0)
         ])
     }
 

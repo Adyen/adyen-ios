@@ -86,11 +86,13 @@ internal final class DAApprovalViewController: UIViewController {
     
     private func configureTextView() {
         let string = localizedString(.threeds2DAApprRemoveCredentialsText, localizationParameters)
-        let attributedString = NSMutableAttributedString(string: string)
+        let style = NSMutableParagraphStyle()
+        style.alignment = .center
+        let attributedString = NSMutableAttributedString(string: string, attributes: [NSAttributedString.Key.paragraphStyle: style])
         if let range = string.adyen.linkRanges().first {
             attributedString.addAttribute(.link, value: "removeCredential://", range: range)
         }
-        attributedString.mutableString.replaceOccurrences(of: "#", with: "", range: NSRange(location: 0, length: attributedString.length))
+        attributedString.mutableString.replaceOccurrences(of: "%#", with: "", range: NSRange(location: 0, length: attributedString.length))
         approvalView.textView.attributedText = attributedString
         approvalView.textView.delegate = self
     }
@@ -114,7 +116,6 @@ internal final class DAApprovalViewController: UIViewController {
     
     private func timeLeft(timeInterval: TimeInterval) -> String {
         String(format: localizedString(.threeds2DAApprTimeLeft, localizationParameters), timeInterval.adyen.timeLeftString() ?? "0")
-        // "You have \(timeInterval.adyen.timeLeftString() ?? "0") to approve"
     }
 
     private func buildUI() {

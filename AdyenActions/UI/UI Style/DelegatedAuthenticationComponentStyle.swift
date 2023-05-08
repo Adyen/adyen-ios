@@ -21,11 +21,11 @@ public struct DelegatedAuthenticationComponentStyle {
     
     public var headerTextStyle = TextStyle(font: .preferredFont(forTextStyle: .title1),
                                            color: UIColor.Adyen.componentLabel,
-                                           textAlignment: .natural)
+                                           textAlignment: .center)
     
     public var descriptionTextStyle = TextStyle(font: .preferredFont(forTextStyle: .body),
                                                 color: UIColor.Adyen.componentSecondaryLabel,
-                                                textAlignment: .natural)
+                                                textAlignment: .center)
     
     public var progressViewStyle = ProgressViewStyle(
         progressTintColor: UIColor.Adyen.defaultBlue,
@@ -34,15 +34,15 @@ public struct DelegatedAuthenticationComponentStyle {
     
     public var remainingTimeTextStyle = TextStyle(font: .preferredFont(forTextStyle: .caption1),
                                                   color: UIColor.Adyen.componentSecondaryLabel,
-                                                  textAlignment: .natural)
+                                                  textAlignment: .center)
     
     public var footNoteTextStyle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
                                              color: UIColor.Adyen.componentLabel,
-                                             textAlignment: .natural)
+                                             textAlignment: .center)
     
     public var textViewStyle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
                                          color: UIColor.Adyen.componentLabel,
-                                         textAlignment: .natural)
+                                         textAlignment: .center)
     
     /// The primary button style.
     public var primaryButton = ButtonStyle(
