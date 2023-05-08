@@ -9,46 +9,42 @@ import AdyenComponents
 import AdyenDropIn
 
 internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
-
-    internal var dropInComponent: DropInComponent?
-    internal var paymentMethods: PaymentMethods?
+    
     internal weak var presenter: PresenterExampleProtocol?
+
+    private var dropInComponent: DropInComponent?
 
     // MARK: - Initializers
 
     internal init() {}
-
-    // MARK: - Networking
-
-    internal func requestInitialData(completion: ((PaymentMethods?, Error?) -> Void)?) {
-        requestPaymentMethods(order: nil) { [weak self] paymentMethods, errorResponse in
-            guard paymentMethods != nil else {
-                guard let errorResponse = errorResponse else {
-                    return
+    
+    internal func present() {
+        presenter?.showLoadingIndicator()
+        requestPaymentMethods(order: nil) { [weak self] result in
+            self?.presenter?.hideLoadingIndicator { [weak self] in
+                
+                guard let self else { return }
+                
+                switch result {
+                case let .success(paymentMethods):
+                    let dropIn = self.dropInComponent(from: paymentMethods)
+                    
+                    dropIn.delegate = self
+                    dropIn.partialPaymentDelegate = self
+                    dropIn.storedPaymentMethodsDelegate = self
+                    self.dropInComponent = dropIn
+                    
+                    self.presenter?.present(viewController: dropIn.viewController, completion: nil)
+                    
+                case let .failure(error):
+                    self.presenter?.presentAlert(with: error, retryHandler: nil)
                 }
-                self?.presenter?.presentAlert(with: errorResponse, retryHandler: {
-                    self?.requestPaymentMethods(order: nil, completion: completion)
-                })
-                return
             }
-            self?.paymentMethods = paymentMethods
         }
     }
 
-    internal func present() {
-        guard let dropIn = dropInComponent(from: paymentMethods) else { return }
-
-        dropIn.delegate = self
-        dropIn.partialPaymentDelegate = self
-        dropIn.storedPaymentMethodsDelegate = self
-        dropInComponent = dropIn
-
-        presenter?.present(viewController: dropIn.viewController, completion: nil)
-    }
-
-    internal func dropInComponent(from paymentMethods: PaymentMethods?) -> DropInComponent? {
-        guard let paymentMethods = paymentMethods else { return nil }
-
+    private func dropInComponent(from paymentMethods: PaymentMethods) -> DropInComponent {
+        
         let configuration = DropInComponent.Configuration()
 
         if let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
@@ -91,12 +87,16 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
 
     // MARK: - Payment response handling
 
-    internal func handle(_ order: PartialPaymentOrder) {
-        requestPaymentMethods(order: order) { [weak self] paymentMethods, _ in
-            guard let paymentMethods = paymentMethods else {
-                return
+    private func handle(_ order: PartialPaymentOrder) {
+        requestPaymentMethods(order: order) { [weak self] response in
+            switch response {
+            case let .success(paymentMethods):
+                self?.handle(order, paymentMethods)
+            case let .failure(error):
+                self?.presenter?.presentAlert(with: error, retryHandler: {
+                    self?.handle(order)
+                })
             }
-            self?.handle(order, paymentMethods)
         }
     }
 
@@ -108,13 +108,13 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
         }
     }
 
-    internal func finish(with result: PaymentsResponse) {
+    private func finish(with result: PaymentsResponse) {
         let success = result.resultCode == .authorised || result.resultCode == .received || result.resultCode == .pending
         let message = "\(result.resultCode.rawValue) \(result.amount?.formatted ?? "")"
         finalize(success, message)
     }
 
-    internal func finish(with error: Error) {
+    private func finish(with error: Error) {
         let message: String
         if let componentError = (error as? ComponentError), componentError == ComponentError.cancelled {
             message = "Cancelled"
@@ -131,7 +131,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
         }
     }
 
-    internal func dismissAndShowAlert(_ success: Bool, _ message: String) {
+    private func dismissAndShowAlert(_ success: Bool, _ message: String) {
         presenter?.dismiss { [weak self] in
             // Payment is processed. Add your code here.
             let title = success ? "Success" : "Error"
@@ -140,6 +140,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
     }
 
 }
+
 extension DropInAdvancedFlowExample: DropInComponentDelegate {
 
     func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {

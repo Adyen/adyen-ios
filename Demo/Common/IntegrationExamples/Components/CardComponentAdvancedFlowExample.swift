@@ -13,14 +13,14 @@ import PassKit
 import UIKit
 
 internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
-
-    internal var paymentMethods: PaymentMethods?
-    internal var cardComponent: PresentableComponent?
+    
     internal weak var presenter: PresenterExampleProtocol?
 
+    private var cardComponent: PresentableComponent?
+    
     // MARK: - Action Handling
 
-    internal lazy var adyenActionComponent: AdyenActionComponent = {
+    private lazy var adyenActionComponent: AdyenActionComponent = {
         let handler = AdyenActionComponent(context: context)
         handler.configuration.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
         handler.configuration.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
@@ -33,34 +33,35 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     internal init() {}
 
-    // MARK: - Networking
-
-    internal func requestInitialData(completion: ((PaymentMethods?, Error?) -> Void)?) {
-        requestPaymentMethods(order: nil) { [weak self] paymentMethods, errorResponse in
-            guard paymentMethods != nil else {
-                guard let errorResponse = errorResponse else {
-                    return
+    internal func present() {
+        presenter?.showLoadingIndicator()
+        requestPaymentMethods(order: nil) { [weak self] result in
+            self?.presenter?.hideLoadingIndicator { [weak self] in
+                
+                guard let self else { return }
+                
+                switch result {
+                case let .success(paymentMethods):
+                    guard let component = self.cardComponent(from: paymentMethods) else {
+                        self.presentAlert(with: IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self))
+                        return
+                    }
+                    
+                    component.cardComponentDelegate = self
+                    component.delegate = self
+                    self.cardComponent = component
+                    
+                    present(component)
+                    
+                case let .failure(error):
+                    self.presentAlert(with: error)
                 }
-                self?.presenter?.presentAlert(with: errorResponse, retryHandler: {
-                    self?.requestPaymentMethods(order: nil, completion: completion)
-                })
-                return
             }
-            self?.paymentMethods = paymentMethods
         }
     }
 
-    internal func present() {
-        guard let component = cardComponent(from: paymentMethods) else { return }
-        component.cardComponentDelegate = self
-        component.delegate = self
-        cardComponent = component
-        present(component)
-    }
-
-    internal func cardComponent(from paymentMethods: PaymentMethods?) -> CardComponent? {
-        guard let paymentMethods = paymentMethods,
-              let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
+    private func cardComponent(from paymentMethods: PaymentMethods) -> CardComponent? {
+        guard let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
         let style = FormComponentStyle()
         let config = CardComponent.Configuration(style: style)
         return CardComponent(paymentMethod: paymentMethod,
@@ -103,13 +104,13 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         }
     }
 
-    internal func finish(with result: PaymentsResponse) {
+    private func finish(with result: PaymentsResponse) {
         let success = result.resultCode == .authorised || result.resultCode == .received || result.resultCode == .pending
         let message = "\(result.resultCode.rawValue) \(result.amount?.formatted ?? "")"
         finalize(success, message)
     }
 
-    internal func finish(with error: Error) {
+    private func finish(with error: Error) {
         let message: String
         if let componentError = (error as? ComponentError), componentError == ComponentError.cancelled {
             message = "Cancelled"
@@ -125,8 +126,12 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             self.dismissAndShowAlert(success, message)
         }
     }
+    
+    private func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
+        presenter?.presentAlert(with: error, retryHandler: retryHandler)
+    }
 
-    internal func dismissAndShowAlert(_ success: Bool, _ message: String) {
+    private func dismissAndShowAlert(_ success: Bool, _ message: String) {
         presenter?.dismiss {
             // Payment is processed. Add your code here.
             let title = success ? "Success" : "Error"

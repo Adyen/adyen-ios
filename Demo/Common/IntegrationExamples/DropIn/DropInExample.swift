@@ -17,50 +17,62 @@ internal final class DropInExample: InitialDataFlowProtocol {
 
     // MARK: - Properties
 
-    internal var dropInComponent: DropInComponent?
     internal weak var presenter: PresenterExampleProtocol?
-    internal var session: AdyenSession?
 
+    private var session: AdyenSession?
+    private var dropInComponent: DropInComponent?
+    
     // MARK: - Initializers
 
     internal init() {}
 
     // MARK: - Networking
 
-    internal func requestInitialData() {
-        requestAdyenSessionConfiguration { [weak self] adyenSessionConfig, errorResponse in
-            guard let self = self else {
-                return
-            }
-            guard let config = adyenSessionConfig else {
-                return
-            }
-            AdyenSession.initialize(with: config,
-                                    delegate: self,
-                                    presentationDelegate: self) { [weak self] result in
-                switch result {
+    internal func present() {
+        presenter?.showLoadingIndicator()
+        requestInitialData { [weak self] response in
+            self?.presenter?.hideLoadingIndicator { [weak self] in
+                
+                guard let self else { return }
+                
+                switch response {
                 case let .success(session):
-                    self?.session = session
-                case let .failure(errorResponse):
-                    self?.presentAlert(with: errorResponse)
+                    self.session = session
+                    
+                    let dropIn = self.dropInComponent(from: session.sessionContext.paymentMethods)
+                    dropIn.delegate = self.session
+                    dropIn.partialPaymentDelegate = self.session
+                    self.dropInComponent = dropIn
+                    
+                    self.presenter?.present(viewController: dropIn.viewController, completion: nil)
+                    
+                case let .failure(error):
+                    self.presentAlert(with: error)
                 }
             }
         }
     }
 
-    internal func present() {
-        guard let dropIn = dropInComponent(from: session?.sessionContext.paymentMethods) else { return }
+    // MARK: - Networking
 
-        dropIn.delegate = session
-        dropIn.partialPaymentDelegate = session
-        dropInComponent = dropIn
-
-        presenter?.present(viewController: dropIn.viewController, completion: nil)
+    private func requestInitialData(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
+        requestAdyenSessionConfiguration { [weak self] response in
+            guard let self = self else { return }
+            
+            switch response {
+            case let .success(config):
+                AdyenSession.initialize(with: config,
+                                        delegate: self,
+                                        presentationDelegate: self,
+                                        completion: completion)
+                
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
     }
 
-    internal func dropInComponent(from paymentMethods: PaymentMethods?) -> DropInComponent? {
-        guard let paymentMethods = paymentMethods else { return nil }
-
+    private func dropInComponent(from paymentMethods: PaymentMethods) -> DropInComponent {
         let configuration = DropInComponent.Configuration()
 
         if let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
@@ -82,11 +94,11 @@ internal final class DropInExample: InitialDataFlowProtocol {
 
     // MARK: - Alert handling
 
-    internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
+    private func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         presenter?.presentAlert(with: error, retryHandler: retryHandler)
     }
 
-    internal func dismissAndShowAlert(_ success: Bool, _ message: String) {
+    private func dismissAndShowAlert(_ success: Bool, _ message: String) {
         presenter?.dismiss {
             // Payment is processed. Add your code here.
             let title = success ? "Success" : "Error"
@@ -99,12 +111,10 @@ internal final class DropInExample: InitialDataFlowProtocol {
 extension DropInExample: AdyenSessionDelegate {
 
     func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession) {
-        requestInitialData()
         dismissAndShowAlert(resultCode.isSuccess, resultCode.rawValue)
     }
 
     func didFail(with error: Error, from component: Component, session: AdyenSession) {
-        requestInitialData()
         dismissAndShowAlert(false, error.localizedDescription)
     }
 

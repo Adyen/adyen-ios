@@ -12,50 +12,67 @@ import AdyenSession
 internal final class CardComponentExample: InitialDataFlowProtocol {
 
     // MARK: - Properties
-
-    internal var session: AdyenSession?
-    internal var cardComponent: PresentableComponent?
+    
     internal weak var presenter: PresenterExampleProtocol?
+
+    private var session: AdyenSession?
+    private var cardComponent: PresentableComponent?
 
     // MARK: - Initializers
 
     internal init() {}
 
+    internal func present() {
+        presenter?.showLoadingIndicator()
+        requestInitialData { [weak self] response in
+            self?.presenter?.hideLoadingIndicator { [weak self] in
+                
+                guard let self else { return }
+                
+                switch response {
+                case let .success(session):
+                    guard let component = self.cardComponent(from: session.sessionContext.paymentMethods) else {
+                        self.presentAlert(with: IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self))
+                        return
+                    }
+                    
+                    self.session = session
+                    component.delegate = self.session
+                    self.cardComponent = component
+                    
+                    self.present(component, delegate: session)
+                    
+                case let .failure(error):
+                    self.presentAlert(with: error)
+                }
+            }
+        }
+    }
+
     // MARK: - Networking
 
-    internal func requestInitialData(completion: ((PaymentMethods?, Error?) -> Void)?) {
-        requestAdyenSessionConfiguration { [weak self] adyenSessionConfig, errorResponse in
-            guard let self = self else {
-                return
-            }
-            guard let config = adyenSessionConfig else {
-                return
-            }
-            AdyenSession.initialize(with: config,
-                                    delegate: self,
-                                    presentationDelegate: self) { [weak self] result in
-                switch result {
-                case let .success(session):
-                    self?.session = session
-                case let .failure(errorResponse):
-                    self?.presentAlert(with: errorResponse)
-                }
+    private func requestInitialData(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
+        requestAdyenSessionConfiguration { [weak self] response in
+            guard let self = self else { return }
+            
+            switch response {
+            case let .success(configuration):
+                AdyenSession.initialize(with: configuration,
+                                        delegate: self,
+                                        presentationDelegate: self,
+                                        completion: completion)
+                
+            case let .failure(error):
+                completion(.failure(error))
             }
         }
     }
 
     // MARK: Card
 
-    internal func present() {
-        guard let component = cardComponent(from: session?.sessionContext.paymentMethods) else { return }
-        cardComponent = component
-        component.delegate = session
-        present(component, delegate: session)
-    }
-
-    internal func cardComponent(from paymentMethods: PaymentMethods?) -> CardComponent? {
-        guard let paymentMethods = paymentMethods,
-              let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
+    private func cardComponent(from paymentMethods: PaymentMethods) -> CardComponent? {
+        guard let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
+        
         let style = FormComponentStyle()
         let config = CardComponent.Configuration(style: style)
         return CardComponent(paymentMethod: paymentMethod,
@@ -65,11 +82,11 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
 
     // MARK: - Alert handling
 
-    internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
+    private func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         presenter?.presentAlert(with: error, retryHandler: retryHandler)
     }
 
-    internal func dismissAndShowAlert(_ success: Bool, _ message: String) {
+    private func dismissAndShowAlert(_ success: Bool, _ message: String) {
         presenter?.dismiss {
             // Payment is processed. Add your code here.
             let title = success ? "Success" : "Error"
@@ -117,12 +134,10 @@ extension CardComponentExample: CardComponentDelegate {
 extension CardComponentExample: AdyenSessionDelegate {
 
     func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession) {
-        requestInitialData() { _, _ in }
         dismissAndShowAlert(resultCode.isSuccess, resultCode.rawValue)
     }
 
     func didFail(with error: Error, from component: Component, session: AdyenSession) {
-        requestInitialData() { _, _ in }
         dismissAndShowAlert(false, error.localizedDescription)
     }
 

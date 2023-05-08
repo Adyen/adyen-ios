@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import SwiftUI
 import UIKit
 
-internal final class ComponentsViewController: UIViewController, PresenterExampleProtocol {
+internal final class ComponentsViewController: UIViewController {
     
     private lazy var componentsView = ComponentsView()
 
@@ -54,8 +54,6 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
             ]
         ]
         
-        requestInitialData()
-        
         if #available(iOS 13.0.0, *) {
             addConfigurationButton()
         }
@@ -80,16 +78,12 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
             cardComponentAdvancedFlowExample.present()
         }
     }
+}
 
-    internal func requestInitialData() {
-        dropInExample.requestInitialData()
-        dropInAdvancedFlowExample.requestInitialData() { _, _ in }
-        cardComponentAdvancedFlowExample.requestInitialData() { _, _ in }
-        cardComponentExample.requestInitialData() { _, _ in }
-    }
+// MARK: - Presenter
 
-    // MARK: - Presenter
-
+extension ComponentsViewController: PresenterExampleProtocol {
+    
     internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
@@ -109,9 +103,23 @@ internal final class ComponentsViewController: UIViewController, PresenterExampl
 
         present(viewController: alertController, completion: nil)
     }
+    
+    internal func showLoadingIndicator() {
+        let loadingViewController = LoadingViewController()
+        loadingViewController.modalPresentationStyle = .overCurrentContext
+        loadingViewController.modalTransitionStyle = .crossDissolve
+        
+        present(viewController: loadingViewController, completion: nil)
+    }
+    
+    internal func hideLoadingIndicator(completion: (() -> Void)?) {
+        guard self.topPresenter is LoadingViewController else { return }
+        
+        dismiss(completion: completion)
+    }
 
     internal func present(viewController: UIViewController, completion: (() -> Void)?) {
-        topPresenter.present(viewController, animated: true, completion: completion)
+        self.topPresenter.present(viewController, animated: true, completion: completion)
     }
 
     internal func dismiss(completion: (() -> Void)?) {
@@ -161,7 +169,6 @@ extension ComponentsViewController {
     private func onConfigurationClosed(_ configuration: Configuration) {
         ConfigurationConstants.current = configuration
         dismiss(completion: nil)
-        requestInitialData()
     }
     
 }
