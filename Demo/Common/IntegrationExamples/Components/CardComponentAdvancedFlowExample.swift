@@ -51,7 +51,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                     component.delegate = self
                     self.cardComponent = component
                     
-                    present(component)
+                    self.present(component)
                     
                 case let .failure(error):
                     self.presentAlert(with: error)

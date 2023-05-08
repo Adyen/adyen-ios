@@ -119,7 +119,7 @@ extension ComponentsViewController: PresenterExampleProtocol {
     }
 
     internal func present(viewController: UIViewController, completion: (() -> Void)?) {
-        self.topPresenter.present(viewController, animated: true, completion: completion)
+        topPresenter.present(viewController, animated: true, completion: completion)
     }
 
     internal func dismiss(completion: (() -> Void)?) {
