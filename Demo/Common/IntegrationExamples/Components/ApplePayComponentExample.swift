@@ -5,17 +5,16 @@
 //
 
 import Adyen
-import AdyenCard
 import AdyenComponents
 import AdyenSession
 
-internal final class CardComponentExample: InitialDataFlowProtocol {
+internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
     // MARK: - Properties
 
     internal var session: AdyenSession?
-    internal var cardComponent: PresentableComponent?
     internal weak var presenter: PresenterExampleProtocol?
+    internal var applePayComponent: ApplePayComponent?
 
     // MARK: - Initializers
 
@@ -44,23 +43,53 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         }
     }
 
-    // MARK: Card
+    // MARK: Apple Pay
 
     internal func present() {
-        guard let component = cardComponent(from: session?.sessionContext.paymentMethods) else { return }
-        cardComponent = component
+        guard let component = applePayComponent(from: session?.sessionContext.paymentMethods) else { return }
         component.delegate = session
+        applePayComponent = component
         present(component)
     }
 
-    internal func cardComponent(from paymentMethods: PaymentMethods?) -> CardComponent? {
-        guard let paymentMethods = paymentMethods,
-              let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
-        let style = FormComponentStyle()
-        let config = CardComponent.Configuration(style: style)
-        return CardComponent(paymentMethod: paymentMethod,
-                             context: context,
-                             configuration: config)
+    private func applePayComponent(from paymentMethods: PaymentMethods?) -> ApplePayComponent? {
+        guard
+            let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self),
+            let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
+                                                       brand: ConfigurationConstants.appName)
+        else { return nil }
+        var config = ApplePayComponent.Configuration(payment: applePayPayment,
+                                                     merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
+        config.allowOnboarding = true
+        config.supportsCouponCode = true
+        config.shippingType = .delivery
+        config.requiredShippingContactFields = [.postalAddress]
+        config.requiredBillingContactFields = [.postalAddress]
+        config.shippingMethods = ConfigurationConstants.shippingMethods
+
+        let component = try? ApplePayComponent(paymentMethod: paymentMethod,
+                                               context: context,
+                                               configuration: config)
+        return component
+    }
+
+    private func present(_ component: PresentableComponent) {
+
+        guard component.requiresModalPresentation else {
+            presenter?.present(viewController: component.viewController, completion: nil)
+            return
+        }
+
+        let navigation = UINavigationController(rootViewController: component.viewController)
+        component.viewController.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel,
+                                                                           target: self,
+                                                                           action: #selector(cancelPressed))
+        presenter?.present(viewController: navigation, completion: nil)
+    }
+
+    @objc private func cancelPressed() {
+        applePayComponent?.cancelIfNeeded()
+        presenter?.dismiss(completion: nil)
     }
 
     // MARK: - Alert handling
@@ -77,42 +106,9 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         }
     }
 
-    @objc private func cancelPressed() {
-        cardComponent?.cancelIfNeeded()
-        presenter?.dismiss(completion: nil)
-    }
-
-    private func present(_ component: PresentableComponent) {
-        guard component.requiresModalPresentation else {
-            presenter?.present(viewController: component.viewController, completion: nil)
-            return
-        }
-
-        let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel,
-                                                                           target: self,
-                                                                           action: #selector(cancelPressed))
-        presenter?.present(viewController: navigation, completion: nil)
-    }
 }
 
-extension CardComponentExample: CardComponentDelegate {
-
-    func didSubmit(lastFour: String, finalBIN: String, component: CardComponent) {
-        print("Card used: **** **** **** \(lastFour)")
-        print("Final BIN: \(finalBIN)")
-    }
-
-    internal func didChangeBIN(_ value: String, component: CardComponent) {
-        print("Current BIN: \(value)")
-    }
-
-    internal func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent) {
-        print("Current card type: \((value ?? []).reduce("") { "\($0), \($1)" })")
-    }
-}
-
-extension CardComponentExample: AdyenSessionDelegate {
+extension ApplePayComponentExample: AdyenSessionDelegate {
 
     func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession) {
         requestInitialData() { _, _ in }
@@ -128,6 +124,6 @@ extension CardComponentExample: AdyenSessionDelegate {
 
 }
 
-extension CardComponentExample: PresentationDelegate {
+extension ApplePayComponentExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {}
 }

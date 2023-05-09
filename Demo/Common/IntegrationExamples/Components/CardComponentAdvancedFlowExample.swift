@@ -14,6 +14,8 @@ import UIKit
 
 internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
 
+    // MARK: - Properties
+
     internal var paymentMethods: PaymentMethods?
     internal var cardComponent: PresentableComponent?
     internal weak var presenter: PresenterExampleProtocol?
