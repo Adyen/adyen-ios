@@ -16,6 +16,12 @@ internal struct ComponentsView: View {
         NavigationView {
             ZStack {
                 List {
+                    Toggle(isOn: $viewModel.isUsingSession) {
+                        Text("Using Session")
+                    }
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 5))
+                    
                     ForEach(viewModel.items, id: \.self) { section in
                         Section {
                             ForEach(section, id: \.self) { item in
