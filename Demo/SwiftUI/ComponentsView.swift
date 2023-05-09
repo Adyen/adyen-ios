@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,35 +14,49 @@ internal struct ComponentsView: View {
 
     internal var body: some View {
         NavigationView {
-            List {
-                ForEach(viewModel.items, id: \.self) { section in
-                    Section(content: {
-                        ForEach(section, id: \.self) { item in
-                            Button(action: {
-                                item.selectionHandler()
-                            }, label: {
-                                Text(item.title)
-                                    .frame(maxWidth: .infinity)
-                            })
+            ZStack {
+                List {
+                    ForEach(viewModel.items, id: \.self) { section in
+                        Section {
+                            ForEach(section, id: \.self) { item in
+                                Button(action: {
+                                    item.selectionHandler()
+                                }, label: {
+                                    Text(item.title)
+                                        .frame(maxWidth: .infinity)
+                                })
+                            }
                         }
-
-                    })
+                    }
+                }
+                .disabled(viewModel.isLoading)
+                .listStyle(.insetGrouped)
+                .navigationBarTitle("Components")
+                .navigationBarItems(trailing: configurationButton)
+                
+                if viewModel.isLoading {
+                    loadingIndicator
                 }
             }
-            .listStyle(GroupedListStyle())
-            .navigationBarTitle("Components")
-            .navigationBarItems(trailing: configurationButton)
-            .present(viewController: $viewModel.viewControllerToPresent)
-            .onAppear {
-                self.viewModel.viewDidAppear()
-            }
         }
+        .present(viewController: $viewModel.viewControllerToPresent)
+        .onAppear {
+            self.viewModel.viewDidAppear()
+        }
+    }
+    
+    private var loadingIndicator: some View {
+        ProgressView()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .foregroundColor(.primary)
+            .background(Color(UIColor.systemBackground).opacity(0.3))
     }
 
     private var configurationButton: some View {
         Button(action: viewModel.presentConfiguration, label: {
             Image(systemName: "gear")
         })
+        .disabled(viewModel.isLoading)
     }
 }
 

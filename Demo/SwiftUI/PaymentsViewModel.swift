@@ -1,12 +1,12 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import SwiftUI
 
-internal final class PaymentsViewModel: ObservableObject, Identifiable, PresenterExampleProtocol {
+internal final class PaymentsViewModel: ObservableObject, Identifiable {
 
     private lazy var dropInAdvancedFlowExample: DropInAdvancedFlowExample = {
         let dropInAdvancedFlow = DropInAdvancedFlowExample()
@@ -23,18 +23,20 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
     @Published internal var viewControllerToPresent: UIViewController?
 
     @Published internal var items = [[ComponentsItem]]()
+    
+    @Published internal var isLoading: Bool = false
 
     // MARK: - DropIn Component
 
     internal func presentDropInComponent() {
-        dropInAdvancedFlowExample.present()
+        dropInAdvancedFlowExample.start()
     }
 
     internal func presentCardComponent() {
-        cardAdvancedFlowExample.present()
+        cardAdvancedFlowExample.start()
     }
 
-   // TODO: add for other PM
+    // TODO: add for other PM
 
     internal func viewDidAppear() {
         items = [
@@ -45,8 +47,6 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent)
             ]
         ]
-        dropInAdvancedFlowExample.requestInitialData() { _, _ in }
-        cardAdvancedFlowExample.requestInitialData() { _, _ in }
     }
     
     // MARK: - Configuration
@@ -67,12 +67,11 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
     private func onConfigurationClosed(_ configuration: Configuration) {
         ConfigurationConstants.current = configuration
         dismiss(completion: nil)
-        dropInAdvancedFlowExample.requestInitialData() { _, _ in }
-        cardAdvancedFlowExample.requestInitialData() { _, _ in }
     }
+}
 
-    // MARK: - Presenter
-
+extension PaymentsViewModel: PresenterExampleProtocol {
+    
     internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -90,6 +89,14 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         viewControllerToPresent = alertController
+    }
+    
+    internal func showLoadingIndicator() {
+        isLoading = true
+    }
+    
+    internal func hideLoadingIndicator() {
+        isLoading = false
     }
 
     internal func present(viewController: UIViewController, completion: (() -> Void)?) {
