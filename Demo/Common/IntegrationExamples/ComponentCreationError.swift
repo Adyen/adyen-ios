@@ -8,7 +8,7 @@ import Adyen
 import AdyenComponents
 import Foundation
 
-public enum IntegrationError: Error, LocalizedError {
+public enum IntegrationError: LocalizedError {
     
     case paymentMethodNotAvailable(paymentMethod: PaymentMethod.Type)
     
