@@ -19,7 +19,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
     // MARK: - Action Handling
 
-    private lazy var adyenActionComponent: AdyenActionComponent = {
+    internal lazy var adyenActionComponent: AdyenActionComponent = {
         let handler = AdyenActionComponent(context: context)
         handler.configuration.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
         handler.configuration.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
@@ -58,7 +58,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         present(component)
     }
 
-    private func applePayComponent(from paymentMethods: PaymentMethods?) -> ApplePayComponent? {
+    internal func applePayComponent(from paymentMethods: PaymentMethods?) -> ApplePayComponent? {
         guard
             let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self),
             let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
@@ -94,13 +94,13 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         }
     }
 
-    private func finish(with result: PaymentsResponse) {
+    internal func finish(with result: PaymentsResponse) {
         let success = result.resultCode == .authorised || result.resultCode == .received || result.resultCode == .pending
         let message = "\(result.resultCode.rawValue) \(result.amount?.formatted ?? "")"
         finalize(success, message)
     }
 
-    private func finish(with error: Error) {
+    internal func finish(with error: Error) {
         let message: String
         if let componentError = (error as? ComponentError), componentError == ComponentError.cancelled {
             message = "Cancelled"
@@ -117,7 +117,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         }
     }
 
-    private func dismissAndShowAlert(_ success: Bool, _ message: String) {
+    internal func dismissAndShowAlert(_ success: Bool, _ message: String) {
         presenter?.dismiss {
             // Payment is processed. Add your code here.
             let title = success ? "Success" : "Error"

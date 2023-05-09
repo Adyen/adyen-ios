@@ -52,7 +52,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         present(component)
     }
 
-    private func applePayComponent(from paymentMethods: PaymentMethods?) -> ApplePayComponent? {
+    internal func applePayComponent(from paymentMethods: PaymentMethods?) -> ApplePayComponent? {
         guard
             let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self),
             let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
