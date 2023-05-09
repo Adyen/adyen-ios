@@ -17,6 +17,9 @@ internal final class ComponentsView: UIView {
         tableView.anchor(inside: self)
         tableView.tableHeaderView = switchContainerView
         switchContainerView.bounds.size.height = 55
+        
+        addSubview(activityIndicator)
+        activityIndicator.anchor(inside: self)
     }
     
     @available(*, unavailable)
@@ -28,9 +31,38 @@ internal final class ComponentsView: UIView {
         sessionSwitch.isOn
     }
     
+    internal var showsLoadingIndicator: Bool {
+        get {
+            self.activityIndicator.isAnimating
+        }
+        set {
+            if newValue {
+                self.activityIndicator.startAnimating()
+            } else {
+                self.activityIndicator.stopAnimating()
+            }
+        }
+    }
+    
     // MARK: - Items
     
     internal var items = [[ComponentsItem]]()
+    
+    // MARK: - Loading
+    
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        activityIndicator.hidesWhenStopped = true
+        
+        if #available(iOS 13.0, *) {
+            activityIndicator.color = .label
+            activityIndicator.backgroundColor = .systemGroupedBackground.withAlphaComponent(0.7)
+        } else {
+            activityIndicator.backgroundColor = .black.withAlphaComponent(0.3)
+        }
+        
+        return activityIndicator
+    }()
     
     // MARK: - Table View
     

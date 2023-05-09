@@ -105,17 +105,13 @@ extension ComponentsViewController: PresenterExampleProtocol {
     }
     
     internal func showLoadingIndicator() {
-        let loadingViewController = LoadingViewController()
-        loadingViewController.modalPresentationStyle = .overCurrentContext
-        loadingViewController.modalTransitionStyle = .crossDissolve
-        
-        present(viewController: loadingViewController, completion: nil)
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        componentsView.showsLoadingIndicator = true
     }
     
-    internal func hideLoadingIndicator(completion: (() -> Void)?) {
-        guard self.topPresenter is LoadingViewController else { return }
-        
-        dismiss(completion: completion)
+    internal func hideLoadingIndicator() {
+        navigationItem.rightBarButtonItem?.isEnabled = true
+        componentsView.showsLoadingIndicator = false
     }
 
     internal func present(viewController: UIViewController, completion: (() -> Void)?) {
