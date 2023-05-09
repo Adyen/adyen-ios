@@ -27,7 +27,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
                 
             switch result {
             case let .success(paymentMethods):
-                presentComponent(with: paymentMethods)
+                self.presentComponent(with: paymentMethods)
                 
             case let .failure(error):
                 self.presenter?.presentAlert(with: error, retryHandler: nil)
