@@ -33,55 +33,61 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     internal init() {}
 
-    internal func present() {
+    internal func start() {
         presenter?.showLoadingIndicator()
         requestPaymentMethods(order: nil) { [weak self] result in
-            self?.presenter?.hideLoadingIndicator { [weak self] in
+            guard let self else { return }
+            
+            self.presenter?.hideLoadingIndicator()
+            
+            switch result {
+            case let .success(paymentMethods):
+                self.presentComponent(with: paymentMethods)
                 
-                guard let self else { return }
-                
-                switch result {
-                case let .success(paymentMethods):
-                    guard let component = self.cardComponent(from: paymentMethods) else {
-                        self.presentAlert(with: IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self))
-                        return
-                    }
-                    
-                    component.cardComponentDelegate = self
-                    component.delegate = self
-                    self.cardComponent = component
-                    
-                    self.present(component)
-                    
-                case let .failure(error):
-                    self.presentAlert(with: error)
-                }
+            case let .failure(error):
+                self.presentAlert(with: error)
             }
         }
     }
-
-    private func cardComponent(from paymentMethods: PaymentMethods) -> CardComponent? {
-        guard let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
-        let style = FormComponentStyle()
-        let config = CardComponent.Configuration(style: style)
-        return CardComponent(paymentMethod: paymentMethod,
-                             context: context,
-                             configuration: config)
+    
+    // MARK: - Presentation
+    
+    private func presentComponent(with paymentMethods: PaymentMethods) {
+        do {
+            let component = try cardComponent(from: paymentMethods)
+            let componentViewController = viewController(for: component)
+            presenter?.present(viewController: componentViewController, completion: nil)
+            cardComponent = component
+        } catch {
+            self.presentAlert(with: error)
+        }
     }
 
-    // MARK: - Presentation
+    private func cardComponent(from paymentMethods: PaymentMethods) throws -> CardComponent {
+        guard let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else {
+            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
+        }
+        
+        let style = FormComponentStyle()
+        let config = CardComponent.Configuration(style: style)
+        let component = CardComponent(paymentMethod: paymentMethod,
+                                      context: context,
+                                      configuration: config)
+        component.cardComponentDelegate = self
+        component.delegate = self
+        return component
+    }
 
-    private func present(_ component: PresentableComponent) {
+    private func viewController(for component: PresentableComponent) -> UIViewController {
         guard component.requiresModalPresentation else {
-            presenter?.present(viewController: component.viewController, completion: nil)
-            return
+            return component.viewController
         }
 
         let navigation = UINavigationController(rootViewController: component.viewController)
         component.viewController.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel,
                                                                            target: self,
                                                                            action: #selector(cancelPressed))
-        presenter?.present(viewController: navigation, completion: nil)
+        return navigation
     }
 
     @objc private func cancelPressed() {
@@ -197,6 +203,7 @@ extension CardComponentAdvancedFlowExample: ActionComponentDelegate {
 
 extension CardComponentAdvancedFlowExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {
-        present(component)
+        let componentViewController = viewController(for: component)
+        presenter?.present(viewController: componentViewController, completion: nil)
     }
 }

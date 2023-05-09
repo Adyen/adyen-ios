@@ -12,7 +12,7 @@ internal protocol PresenterExampleProtocol: AnyObject {
 
     func showLoadingIndicator()
     
-    func hideLoadingIndicator(completion: (() -> Void)?)
+    func hideLoadingIndicator()
     
     func dismiss(completion: (() -> Void)?)
 

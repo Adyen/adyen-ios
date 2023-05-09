@@ -22,36 +22,27 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
 
     internal init() {}
 
-    internal func present() {
+    internal func start() {
         presenter?.showLoadingIndicator()
-        requestInitialData { [weak self] response in
-            self?.presenter?.hideLoadingIndicator { [weak self] in
+        loadSession { [weak self] response in
+            guard let self else { return }
+            
+            self.presenter?.hideLoadingIndicator()
                 
-                guard let self else { return }
+            switch response {
+            case let .success(session):
+                self.session = session
+                self.presentComponent(with: session)
                 
-                switch response {
-                case let .success(session):
-                    guard let component = self.cardComponent(from: session.sessionContext.paymentMethods) else {
-                        self.presentAlert(with: IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self))
-                        return
-                    }
-                    
-                    self.session = session
-                    component.delegate = self.session
-                    self.cardComponent = component
-                    
-                    self.present(component, delegate: session)
-                    
-                case let .failure(error):
-                    self.presentAlert(with: error)
-                }
+            case let .failure(error):
+                self.presentAlert(with: error)
             }
         }
     }
-
+    
     // MARK: - Networking
 
-    private func requestInitialData(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
+    private func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
         requestAdyenSessionConfiguration { [weak self] response in
             guard let self = self else { return }
             
@@ -67,17 +58,46 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
             }
         }
     }
-
-    // MARK: Card
-
-    private func cardComponent(from paymentMethods: PaymentMethods) -> CardComponent? {
-        guard let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
+    
+    // MARK: - Presentation
+    
+    private func presentComponent(with session: AdyenSession) {
+        do {
+            let component = try cardComponent(from: session)
+            let componentViewController = viewController(for: component)
+            presenter?.present(viewController: componentViewController, completion: nil)
+            cardComponent = component
+        } catch {
+            self.presentAlert(with: error)
+        }
+    }
+    
+    private func cardComponent(from session: AdyenSession) throws -> CardComponent {
+        let paymentMethods = session.sessionContext.paymentMethods
+        
+        guard let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else {
+            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
+        }
         
         let style = FormComponentStyle()
         let config = CardComponent.Configuration(style: style)
-        return CardComponent(paymentMethod: paymentMethod,
-                             context: context,
-                             configuration: config)
+        let component = CardComponent(paymentMethod: paymentMethod,
+                                      context: context,
+                                      configuration: config)
+        component.delegate = session
+        return component
+    }
+    
+    private func viewController(for component: PresentableComponent) -> UIViewController {
+        guard component.requiresModalPresentation else {
+            return component.viewController
+        }
+        
+        let navigation = UINavigationController(rootViewController: component.viewController)
+        component.viewController.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel,
+                                                                           target: self,
+                                                                           action: #selector(cancelPressed))
+        return navigation
     }
 
     // MARK: - Alert handling
@@ -97,21 +117,6 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
     @objc private func cancelPressed() {
         cardComponent?.cancelIfNeeded()
         presenter?.dismiss(completion: nil)
-    }
-
-    private func present(_ component: PresentableComponent,
-                         delegate: PaymentComponentDelegate?) {
-        cardComponent = component
-        guard component.requiresModalPresentation else {
-            presenter?.present(viewController: component.viewController, completion: nil)
-            return
-        }
-
-        let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel,
-                                                                           target: self,
-                                                                           action: #selector(cancelPressed))
-        presenter?.present(viewController: navigation, completion: nil)
     }
 }
 
@@ -146,5 +151,7 @@ extension CardComponentExample: AdyenSessionDelegate {
 }
 
 extension CardComponentExample: PresentationDelegate {
-    internal func present(component: PresentableComponent) {}
+    internal func present(component: PresentableComponent) {
+        // The implementation of this delegate method is not needed when using AdyenSession
+    }
 }

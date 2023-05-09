@@ -18,33 +18,46 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
 
     internal init() {}
     
-    internal func present() {
+    internal func start() {
         presenter?.showLoadingIndicator()
         requestPaymentMethods(order: nil) { [weak self] result in
-            self?.presenter?.hideLoadingIndicator { [weak self] in
+            guard let self else { return }
+            
+            self.presenter?.hideLoadingIndicator()
                 
-                guard let self else { return }
+            switch result {
+            case let .success(paymentMethods):
+                presentComponent(with: paymentMethods)
                 
-                switch result {
-                case let .success(paymentMethods):
-                    let dropIn = self.dropInComponent(from: paymentMethods)
-                    
-                    dropIn.delegate = self
-                    dropIn.partialPaymentDelegate = self
-                    dropIn.storedPaymentMethodsDelegate = self
-                    self.dropInComponent = dropIn
-                    
-                    self.presenter?.present(viewController: dropIn.viewController, completion: nil)
-                    
-                case let .failure(error):
-                    self.presenter?.presentAlert(with: error, retryHandler: nil)
-                }
+            case let .failure(error):
+                self.presenter?.presentAlert(with: error, retryHandler: nil)
             }
         }
     }
+    
+    // MARK: - Presentation
+    
+    private func presentComponent(with paymentMethods: PaymentMethods) {
+        let dropIn = dropInComponent(from: paymentMethods)
+        presenter?.present(viewController: dropIn.viewController, completion: nil)
+        dropInComponent = dropIn
+    }
 
     private func dropInComponent(from paymentMethods: PaymentMethods) -> DropInComponent {
+        let configuration = dropInConfiguration(from: paymentMethods)
+        let component = DropInComponent(paymentMethods: paymentMethods,
+                                        context: context,
+                                        configuration: configuration,
+                                        title: ConfigurationConstants.appName)
         
+        component.delegate = self
+        component.partialPaymentDelegate = self
+        component.storedPaymentMethodsDelegate = self
+
+        return component
+    }
+    
+    private func dropInConfiguration(from paymentMethods: PaymentMethods) -> DropInComponent.Configuration {
         let configuration = DropInComponent.Configuration()
 
         if let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
@@ -57,13 +70,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
         configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         configuration.card.billingAddress.mode = .postalCode
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
-
-        let component = DropInComponent(paymentMethods: paymentMethods,
-                                        context: context,
-                                        configuration: configuration,
-                                        title: ConfigurationConstants.appName)
-
-        return component
+        return configuration
     }
 
     // MARK: - Payment response handling

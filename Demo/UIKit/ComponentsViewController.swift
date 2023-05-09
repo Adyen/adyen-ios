@@ -63,9 +63,9 @@ internal final class ComponentsViewController: UIViewController {
 
     internal func presentDropInComponent() {
         if componentsView.isUsingSession {
-            dropInExample.present()
+            dropInExample.start()
         } else {
-            dropInAdvancedFlowExample.present()
+            dropInAdvancedFlowExample.start()
         }
     }
 
@@ -73,9 +73,9 @@ internal final class ComponentsViewController: UIViewController {
 
     internal func presentCardComponent() {
         if componentsView.isUsingSession {
-            cardComponentExample.present()
+            cardComponentExample.start()
         } else {
-            cardComponentAdvancedFlowExample.present()
+            cardComponentAdvancedFlowExample.start()
         }
     }
 }

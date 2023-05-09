@@ -26,36 +26,27 @@ internal final class DropInExample: InitialDataFlowProtocol {
 
     internal init() {}
 
-    // MARK: - Networking
-
-    internal func present() {
+    internal func start() {
         presenter?.showLoadingIndicator()
-        requestInitialData { [weak self] response in
-            self?.presenter?.hideLoadingIndicator { [weak self] in
+        loadSession { [weak self] response in
+            guard let self else { return }
+            
+            self.presenter?.hideLoadingIndicator()
+            
+            switch response {
+            case let .success(session):
+                self.session = session
+                self.presentComponent(with: session)
                 
-                guard let self else { return }
-                
-                switch response {
-                case let .success(session):
-                    self.session = session
-                    
-                    let dropIn = self.dropInComponent(from: session.sessionContext.paymentMethods)
-                    dropIn.delegate = self.session
-                    dropIn.partialPaymentDelegate = self.session
-                    self.dropInComponent = dropIn
-                    
-                    self.presenter?.present(viewController: dropIn.viewController, completion: nil)
-                    
-                case let .failure(error):
-                    self.presentAlert(with: error)
-                }
+            case let .failure(error):
+                self.presentAlert(with: error)
             }
         }
     }
-
+    
     // MARK: - Networking
 
-    private func requestInitialData(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
+    private func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
         requestAdyenSessionConfiguration { [weak self] response in
             guard let self = self else { return }
             
@@ -71,8 +62,30 @@ internal final class DropInExample: InitialDataFlowProtocol {
             }
         }
     }
+    
+    // MARK: - Presentation
+    
+    private func presentComponent(with session: AdyenSession) {
+        let dropIn = dropInComponent(from: session)
+        presenter?.present(viewController: dropIn.viewController, completion: nil)
+        dropInComponent = dropIn
+    }
 
-    private func dropInComponent(from paymentMethods: PaymentMethods) -> DropInComponent {
+    private func dropInComponent(from session: AdyenSession) -> DropInComponent {
+        let paymentMethods = session.sessionContext.paymentMethods
+        let configuration = dropInConfiguration(from: paymentMethods)
+        let component = DropInComponent(paymentMethods: paymentMethods,
+                                        context: context,
+                                        configuration: configuration,
+                                        title: ConfigurationConstants.appName)
+        
+        component.delegate = session
+        component.partialPaymentDelegate = session
+
+        return component
+    }
+    
+    private func dropInConfiguration(from paymentMethods: PaymentMethods) -> DropInComponent.Configuration {
         let configuration = DropInComponent.Configuration()
 
         if let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
@@ -84,12 +97,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
         configuration.actionComponent.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
         configuration.card.billingAddress.mode = .postalCode
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
-        let component = DropInComponent(paymentMethods: paymentMethods,
-                                        context: context,
-                                        configuration: configuration,
-                                        title: ConfigurationConstants.appName)
-
-        return component
+        return configuration
     }
 
     // MARK: - Alert handling
@@ -123,5 +131,7 @@ extension DropInExample: AdyenSessionDelegate {
 }
 
 extension DropInExample: PresentationDelegate {
-    internal func present(component: PresentableComponent) {}
+    internal func present(component: PresentableComponent) {
+        // The implementation of this delegate method is not needed when using AdyenSession as the session handles the presentation
+    }
 }
