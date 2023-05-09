@@ -8,32 +8,54 @@ import SwiftUI
 
 internal final class PaymentsViewModel: ObservableObject, Identifiable {
 
+    private lazy var dropInExample: DropInExample = {
+        let dropIn = DropInExample()
+        dropIn.presenter = self
+        return dropIn
+    }()
+
     private lazy var dropInAdvancedFlowExample: DropInAdvancedFlowExample = {
         let dropInAdvancedFlow = DropInAdvancedFlowExample()
         dropInAdvancedFlow.presenter = self
         return dropInAdvancedFlow
     }()
 
-    private lazy var cardAdvancedFlowExample: CardComponentAdvancedFlowExample = {
-        let cardAdvancedFlow = CardComponentAdvancedFlowExample()
-        cardAdvancedFlow.presenter = self
-        return cardAdvancedFlow
+    private lazy var cardComponentAdvancedFlowExample: CardComponentAdvancedFlowExample = {
+        let cardComponentAdvancedFlow = CardComponentAdvancedFlowExample()
+        cardComponentAdvancedFlow.presenter = self
+        return cardComponentAdvancedFlow
+    }()
+
+    private lazy var cardComponentExample: CardComponentExample = {
+        let cardComponentExample = CardComponentExample()
+        cardComponentExample.presenter = self
+        return cardComponentExample
     }()
 
     @Published internal var viewControllerToPresent: UIViewController?
 
     @Published internal var items = [[ComponentsItem]]()
     
-    @Published internal var isLoading: Bool = false
+    @Published internal private(set) var isLoading: Bool = false
+    
+    @Published internal var isUsingSession: Bool = true
 
     // MARK: - DropIn Component
 
     internal func presentDropInComponent() {
-        dropInAdvancedFlowExample.start()
+        if isUsingSession {
+            dropInExample.start()
+        } else {
+            dropInAdvancedFlowExample.start()
+        }
     }
 
     internal func presentCardComponent() {
-        cardAdvancedFlowExample.start()
+        if isUsingSession {
+            cardComponentExample.start()
+        } else {
+            cardComponentAdvancedFlowExample.start()
+        }
     }
 
     // TODO: add for other PM
