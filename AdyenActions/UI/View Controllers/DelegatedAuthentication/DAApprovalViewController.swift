@@ -57,9 +57,9 @@ internal final class DAApprovalViewController: UIViewController {
         self.removeCredentialsHandler = removeCredentialsHandler
         self.localizationParameters = localizationParameters
         super.init(nibName: nil, bundle: Bundle(for: DARegistrationViewController.self))
-        self.approvalView.delegate = self
+        approvalView.delegate = self
         if #available(iOS 13.0, *) {
-            self.isModalInPresentation = true
+            isModalInPresentation = true
         }
     }
     
@@ -154,7 +154,7 @@ internal final class DAApprovalViewController: UIViewController {
 extension DAApprovalViewController: DelegatedAuthenticationViewDelegate {
     func removeCredential() {
         timeoutTimer?.pauseTimer()
-        self.present(alert, animated: true)
+        present(alert, animated: true)
     }
     
     func firstButtonTapped() {

@@ -49,7 +49,7 @@
                 case noInput
             }
         
-            internal var userInputState: UserInput = .noInput
+            internal var userInput: UserInput = .noInput
             internal var isDeviceRegistrationFlow: Bool = false
         }
     
@@ -134,10 +134,10 @@
                 let fingerprintResult: ThreeDS2Component.Fingerprint = try Coder.decodeBase64(fingerprintResult)
                 performDelegatedAuthentication(token) { [weak self] result in
                     guard let self = self else { return }
-                    self.delegatedAuthenticationState.isDeviceRegistrationFlow = result.successResult == nil
-                    guard let fingerprintResult = self.createFingerPrintResult(authenticationSDKOutput: result.successResult,
-                                                                               fingerprintResult: fingerprintResult,
-                                                                               completionHandler: completionHandler) else { return }
+                    delegatedAuthenticationState.isDeviceRegistrationFlow = result.successResult == nil
+                    guard let fingerprintResult = createFingerPrintResult(authenticationSDKOutput: result.successResult,
+                                                                          fingerprintResult: fingerprintResult,
+                                                                          completionHandler: completionHandler) else { return }
                     completionHandler(.success(fingerprintResult))
                 }
             } catch {
@@ -185,9 +185,9 @@
                     guard let self else { return }
                     showApprovalScreen(delegatedAuthenticationHandler: { [weak self] in
                                            guard let self else { return }
-                                           self.executeDAAuthenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
-                                                                      authenticatedHandler: { completion(.success($0)) },
-                                                                      failedAuthenticationHanlder: failureHandler)
+                                           executeDAAuthenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                                                 authenticatedHandler: { completion(.success($0)) },
+                                                                 failedAuthenticationHanlder: failureHandler)
                                        },
                                        fallbackHandler: failureHandler)
                 },
@@ -203,18 +203,20 @@
                                                                   localizationParameters: localizedParameters,
                                                                   useBiometricsHandler: {
                                                                       delegatedAuthenticationHandler()
-                                                                  }, approveDifferentlyHandler: {
-                                                                      self.delegatedAuthenticationState.userInputState = .approveDifferently
+                                                                  }, approveDifferentlyHandler: { [weak self] in
+                                                                      guard let self else { return }
+                                                                      delegatedAuthenticationState.userInput = .approveDifferently
                                                                       fallbackHandler()
-                                                                  }, removeCredentialsHandler: {
-                                                                      self.delegatedAuthenticationState.userInputState = .deleteDA
-                                                                      try? self.delegatedAuthenticationService.reset()
+                                                                  }, removeCredentialsHandler: { [weak self] in
+                                                                      guard let self else { return }
+                                                                      delegatedAuthenticationState.userInput = .deleteDA
+                                                                      try? delegatedAuthenticationService.reset()
                                                                       fallbackHandler()
                                                                   })
             
             let presentableComponent = PresentableComponentWrapper(component: self,
                                                                    viewController: approvalViewController)
-            self.presentationDelegate?.present(component: presentableComponent)
+            presentationDelegate?.present(component: presentableComponent)
             approvalViewController.navigationItem.rightBarButtonItems = []
             approvalViewController.navigationItem.leftBarButtonItems = []
         }
@@ -253,8 +255,8 @@
 
         internal var shouldShowRegistrationScreen: Bool {
             delegatedAuthenticationState.isDeviceRegistrationFlow
-                && delegatedAuthenticationState.userInputState != .approveDifferently
-                && delegatedAuthenticationState.userInputState != .deleteDA
+                && delegatedAuthenticationState.userInput != .approveDifferently
+                && delegatedAuthenticationState.userInput != .deleteDA
                 && DeviceSupportChecker().isDeviceSupported
         }
                 
@@ -270,7 +272,6 @@
             let presentableComponent = PresentableComponentWrapper(component: self,
                                                                    viewController: registrationViewController)
             presentationDelegate?.present(component: presentableComponent)
-            
             // TODO: Robert: Is there a better way to disable the cancel button?
             registrationViewController.navigationItem.rightBarButtonItems = []
             registrationViewController.navigationItem.leftBarButtonItems = []

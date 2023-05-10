@@ -37,9 +37,9 @@ internal final class DARegistrationViewController: UIViewController {
         self.enableCheckoutHandler = enableCheckoutHandler
         self.notNowHandler = notNowHandler
         super.init(nibName: nil, bundle: Bundle(for: DARegistrationViewController.self))
-        self.registrationView.delegate = self
+        registrationView.delegate = self
         if #available(iOS 13.0, *) {
-            self.isModalInPresentation = true
+            isModalInPresentation = true
         }
     }
     
