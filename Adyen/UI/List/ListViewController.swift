@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -81,6 +81,8 @@ public final class ListViewController: UITableViewController {
         tableView.register(ListCell.self, forCellReuseIdentifier: dataSource.cellReuseIdentifier)
         tableView.register(ListHeaderView.self, forHeaderFooterViewReuseIdentifier: ListHeaderView.reuseIdentifier)
         tableView.dataSource = dataSource
+        
+        tableView.keyboardDismissMode = .onDrag
 
         delegate?.viewDidLoad(viewController: self)
     }

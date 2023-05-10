@@ -159,4 +159,8 @@ extension SearchViewController: UISearchBarDelegate {
         hideNoSearchResultsView()
         delegate?.textDidChange(searchBar, searchText: searchText)
     }
+    
+    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
 }
