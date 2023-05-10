@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -108,18 +108,18 @@ public class SearchViewController: UIViewController {
         childViewController.view.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            searchBar.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 0),
-            searchBar.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0),
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
             searchBar.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 0),
 
             noResultsStackView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 0),
             noResultsStackView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0),
             noResultsStackView.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor),
 
-            childViewController.view.topAnchor.constraint(equalTo: searchBar.layoutMarginsGuide.bottomAnchor, constant: 10),
-            childViewController.view.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0),
-            childViewController.view.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 0),
-            childViewController.view.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: 0)
+            childViewController.view.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
+            childViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            childViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            childViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         ])
     }
 
