@@ -12,64 +12,101 @@ import AdyenSession
 internal final class CardComponentExample: InitialDataFlowProtocol {
 
     // MARK: - Properties
-
-    internal var session: AdyenSession?
-    internal var cardComponent: PresentableComponent?
+    
     internal weak var presenter: PresenterExampleProtocol?
+
+    private var session: AdyenSession?
+    private var cardComponent: PresentableComponent?
 
     // MARK: - Initializers
 
     internal init() {}
 
-    // MARK: - Networking
-
-    internal func requestInitialData(completion: ((PaymentMethods?, Error?) -> Void)?) {
-        requestAdyenSessionConfiguration { [weak self] adyenSessionConfig, errorResponse in
-            guard let self = self else {
-                return
-            }
-            guard let config = adyenSessionConfig else {
-                return
-            }
-            AdyenSession.initialize(with: config,
-                                    delegate: self,
-                                    presentationDelegate: self) { [weak self] result in
-                switch result {
-                case let .success(session):
-                    self?.session = session
-                case let .failure(errorResponse):
-                    self?.presentAlert(with: errorResponse)
-                }
+    internal func start() {
+        presenter?.showLoadingIndicator()
+        loadSession { [weak self] response in
+            guard let self else { return }
+            
+            self.presenter?.hideLoadingIndicator()
+                
+            switch response {
+            case let .success(session):
+                self.session = session
+                self.presentComponent(with: session)
+                
+            case let .failure(error):
+                self.presentAlert(with: error)
             }
         }
     }
+    
+    // MARK: - Networking
 
-    // MARK: Card
-
-    internal func present() {
-        guard let component = cardComponent(from: session?.sessionContext.paymentMethods) else { return }
-        cardComponent = component
-        component.delegate = session
-        present(component, delegate: session)
+    private func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
+        requestAdyenSessionConfiguration { [weak self] response in
+            guard let self = self else { return }
+            
+            switch response {
+            case let .success(configuration):
+                AdyenSession.initialize(with: configuration,
+                                        delegate: self,
+                                        presentationDelegate: self,
+                                        completion: completion)
+                
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
     }
-
-    internal func cardComponent(from paymentMethods: PaymentMethods?) -> CardComponent? {
-        guard let paymentMethods = paymentMethods,
-              let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
+    
+    // MARK: - Presentation
+    
+    private func presentComponent(with session: AdyenSession) {
+        do {
+            let component = try cardComponent(from: session)
+            let componentViewController = viewController(for: component)
+            presenter?.present(viewController: componentViewController, completion: nil)
+            cardComponent = component
+        } catch {
+            self.presentAlert(with: error)
+        }
+    }
+    
+    private func cardComponent(from session: AdyenSession) throws -> CardComponent {
+        let paymentMethods = session.sessionContext.paymentMethods
+        
+        guard let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else {
+            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
+        }
+        
         let style = FormComponentStyle()
         let config = CardComponent.Configuration(style: style)
-        return CardComponent(paymentMethod: paymentMethod,
-                             context: context,
-                             configuration: config)
+        let component = CardComponent(paymentMethod: paymentMethod,
+                                      context: context,
+                                      configuration: config)
+        component.delegate = session
+        return component
+    }
+    
+    private func viewController(for component: PresentableComponent) -> UIViewController {
+        guard component.requiresModalPresentation else {
+            return component.viewController
+        }
+        
+        let navigation = UINavigationController(rootViewController: component.viewController)
+        component.viewController.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel,
+                                                                           target: self,
+                                                                           action: #selector(cancelPressed))
+        return navigation
     }
 
     // MARK: - Alert handling
 
-    internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
+    private func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         presenter?.presentAlert(with: error, retryHandler: retryHandler)
     }
 
-    internal func dismissAndShowAlert(_ success: Bool, _ message: String) {
+    private func dismissAndShowAlert(_ success: Bool, _ message: String) {
         presenter?.dismiss {
             // Payment is processed. Add your code here.
             let title = success ? "Success" : "Error"
@@ -80,21 +117,6 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
     @objc private func cancelPressed() {
         cardComponent?.cancelIfNeeded()
         presenter?.dismiss(completion: nil)
-    }
-
-    private func present(_ component: PresentableComponent,
-                         delegate: PaymentComponentDelegate?) {
-        cardComponent = component
-        guard component.requiresModalPresentation else {
-            presenter?.present(viewController: component.viewController, completion: nil)
-            return
-        }
-
-        let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel,
-                                                                           target: self,
-                                                                           action: #selector(cancelPressed))
-        presenter?.present(viewController: navigation, completion: nil)
     }
 }
 
@@ -117,12 +139,10 @@ extension CardComponentExample: CardComponentDelegate {
 extension CardComponentExample: AdyenSessionDelegate {
 
     func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession) {
-        requestInitialData() { _, _ in }
         dismissAndShowAlert(resultCode.isSuccess, resultCode.rawValue)
     }
 
     func didFail(with error: Error, from component: Component, session: AdyenSession) {
-        requestInitialData() { _, _ in }
         dismissAndShowAlert(false, error.localizedDescription)
     }
 
@@ -131,5 +151,7 @@ extension CardComponentExample: AdyenSessionDelegate {
 }
 
 extension CardComponentExample: PresentationDelegate {
-    internal func present(component: PresentableComponent) {}
+    internal func present(component: PresentableComponent) {
+        // The implementation of this delegate method is not needed when using AdyenSession
+    }
 }
