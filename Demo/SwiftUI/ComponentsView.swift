@@ -13,8 +13,8 @@ internal struct ComponentsView: View {
     @ObservedObject internal var viewModel = PaymentsViewModel()
 
     internal var body: some View {
-        NavigationView {
-            ZStack {
+        ZStack {
+            NavigationView {
                 List {
                     Toggle(isOn: $viewModel.isUsingSession) {
                         Text("Using Session")
@@ -39,12 +39,13 @@ internal struct ComponentsView: View {
                 .listStyle(.insetGrouped)
                 .navigationBarTitle("Components")
                 .navigationBarItems(trailing: configurationButton)
-                
-                if viewModel.isLoading {
-                    loadingIndicator
-                }
+            }
+            
+            if viewModel.isLoading {
+                loadingIndicator
             }
         }
+        .ignoresSafeArea()
         .present(viewController: $viewModel.viewControllerToPresent)
         .onAppear {
             self.viewModel.viewDidAppear()
