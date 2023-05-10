@@ -20,8 +20,12 @@ class AdyenSwiftUITests: XCTestCase {
 
     func testDropInAdvanced() throws {
         app.launch()
-        sessionSwitch.tap() // Enabling Advanced Flow
-        XCTAssertFalse(sessionSwitch.isEnabled)
+        XCTAssertEqual(sessionSwitch.value as! String, "1", "Session switch should be on by default")
+        
+        // Enabling Advanced Flow
+        sessionSwitch.tap()
+        XCTAssertEqual(sessionSwitch.value as! String, "0")
+        
         app.buttons["Drop In"].tap()
 
         wait(for: [app.buttons["Pay €174.08"],
@@ -32,8 +36,12 @@ class AdyenSwiftUITests: XCTestCase {
 
     func testCardComponentAdvanced() throws {
         app.launch()
-        sessionSwitch.tap() // Enabling Advanced Flow
-        XCTAssertFalse(sessionSwitch.isEnabled)
+        XCTAssertEqual(sessionSwitch.value as! String, "1", "Session switch should be on by default")
+        
+        // Enabling Advanced Flow
+        sessionSwitch.tap()
+        XCTAssertEqual(sessionSwitch.value as! String, "0")
+        
         app.buttons["Card"].tap()
 
         wait(for: [app.buttons["Pay €174.08"],
