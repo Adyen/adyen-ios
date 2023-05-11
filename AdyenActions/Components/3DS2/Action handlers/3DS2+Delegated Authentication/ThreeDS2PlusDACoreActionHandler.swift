@@ -124,14 +124,14 @@
                 completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
                 return
             }
-//            delegatedAuthenticationService.authenticate(withBase64URLString: delegatedAuthenticationInput) { result in
-//                switch result {
-//                case let .success(sdkOutput):
-//                    completion(.success(sdkOutput))
-//                case let .failure(error):
-//                    completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: error)))
-//                }
-//            }
+            delegatedAuthenticationService.authenticate(withBase64URLString: delegatedAuthenticationInput) { result in
+                switch result {
+                case let .success(sdkOutput):
+                    completion(.success(sdkOutput))
+                case let .failure(error):
+                    completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: error)))
+                }
+            }
         }
         
         private func createFingerPrintResult<R>(authenticationSDKOutput: String?,
@@ -196,14 +196,14 @@
                 completion(.failure(DelegateAuthenticationError.registrationFailed(cause: nil)))
                 return
             }
-//            delegatedAuthenticationService.register(withBase64URLString: sdkInput) { result in
-//                switch result {
-//                case let .success(sdkOutput):
-//                    completion(.success(sdkOutput))
-//                case let .failure(error):
-//                    completion(.failure(error))
-//                }
-//            }
+            delegatedAuthenticationService.register(withBase64URLString: sdkInput) { result in
+                switch result {
+                case let .success(sdkOutput):
+                    completion(.success(sdkOutput))
+                case let .failure(error):
+                    completion(.failure(error))
+                }
+            }
         }
 
         private func deliver(challengeResult: ThreeDSResult,
