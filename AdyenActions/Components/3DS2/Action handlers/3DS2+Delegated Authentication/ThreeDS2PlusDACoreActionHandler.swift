@@ -38,26 +38,15 @@
     internal class ThreeDS2PlusDACoreActionHandler: ThreeDS2CoreActionHandler {
     
         internal var delegatedAuthenticationState: DelegatedAuthenticationState = .init()
-    
-        /// Delegates `PresentableComponent`'s presentation.
-        internal weak var presentationDelegate: PresentationDelegate?
-    
-        internal struct DelegatedAuthenticationState {
-            internal enum UserInput {
-                case approveDifferently
-                case deleteDA
-                case noInput
-            }
         
-            internal var userInput: UserInput = .noInput
+        internal struct DelegatedAuthenticationState {
             internal var isDeviceRegistrationFlow: Bool = false
         }
     
         private let delegatedAuthenticationService: AuthenticationServiceProtocol
-    
-        private let style: DelegatedAuthenticationComponentStyle
+        private let deviceSupportCheckerService: AdyenAuthentication.DeviceSupportCheckerProtocol
+        private let presenter: ThreeDS2PlusDAScreenPresenterProtocol
         
-        private let localizedParameters: LocalizationParameters?
         /// Initializes the 3D Secure 2 action handler.
         ///
         /// - Parameter context: The context object for this component.
@@ -73,13 +62,14 @@
         ) {
             self.init(
                 context: context,
+                presenter: ThreeDS2PlusDAScreenPresenter(presentationDelegate: presentationDelegate,
+                                                         style: .init(),
+                                                         localizedParameters: delegatedAuthenticationConfiguration.localizationParameters),
                 appearanceConfiguration: appearanceConfiguration,
                 style: delegatedAuthenticationConfiguration.delegatedAuthenticationComponentStyle,
-                localizedParameters: delegatedAuthenticationConfiguration.localizationParameters,
                 delegatedAuthenticationService: AuthenticationService(
                     configuration: delegatedAuthenticationConfiguration.authenticationServiceConfiguration()
-                ),
-                presentationDelegate: presentationDelegate
+                )
             )
         }
     
@@ -89,21 +79,19 @@
         /// - Parameter service: The 3DS2 Service.
         /// - Parameter appearanceConfiguration: The appearance configuration.
         /// - Parameter style: The delegate authentication component style.
-        /// - Parameter localizedParameters: set to nil to use default localization parameters..
         /// - Parameter delegatedAuthenticationService: The Delegated Authentication service.
         /// - Parameter presentationDelegate: Presentation delegate
         internal init(context: AdyenContext,
                       service: AnyADYService = ADYServiceAdapter(),
+                      presenter: ThreeDS2PlusDAScreenPresenterProtocol,
                       appearanceConfiguration: ADYAppearanceConfiguration = .init(),
-                      style: DelegatedAuthenticationComponentStyle,
-                      localizedParameters: LocalizationParameters?,
+                      style: DelegatedAuthenticationComponentStyle = .init(),
                       delegatedAuthenticationService: AuthenticationServiceProtocol,
-                      presentationDelegate: PresentationDelegate?) {
+                      deviceSupportCheckerService: AdyenAuthentication.DeviceSupportCheckerProtocol = DeviceSupportChecker()) {
             self.delegatedAuthenticationService = delegatedAuthenticationService
-            self.style = style
-            self.localizedParameters = localizedParameters
+            self.deviceSupportCheckerService = deviceSupportCheckerService
+            self.presenter = presenter
             super.init(context: context, service: service, appearanceConfiguration: appearanceConfiguration)
-            self.presentationDelegate = presentationDelegate
         }
     
         // MARK: - Fingerprint
@@ -162,18 +150,14 @@
         }
     
         // MARK: - Delegated Authentication
-        
+
         /// This method checks;
         /// 1. if DA has been registered on the device
         /// 2. shows an approval screen if it has been registered
         /// else calls the completion with a failure.
         private func performDelegatedAuthentication(_ fingerprintToken: ThreeDS2Component.FingerprintToken,
                                                     completion: @escaping (Result<String, DelegateAuthenticationError>) -> Void) {
-            
-            let failureHandler = {
-                completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
-            }
-            
+            let failureHandler = { completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil))) }
             guard let delegatedAuthenticationInput = fingerprintToken.delegatedAuthenticationSDKInput else {
                 failureHandler()
                 return
@@ -183,13 +167,9 @@
                 delegatedAuthenticationInput: delegatedAuthenticationInput,
                 registeredHandler: { [weak self] in
                     guard let self else { return }
-                    showApprovalScreen(delegatedAuthenticationHandler: { [weak self] in
-                                           guard let self else { return }
-                                           executeDAAuthenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
-                                                                 authenticatedHandler: { completion(.success($0)) },
-                                                                 failedAuthenticationHanlder: failureHandler)
-                                       },
-                                       fallbackHandler: failureHandler)
+                    showApprovalScreenWhenDeviceIsRegistered(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                                             completion: completion,
+                                                             failureHandler: failureHandler)
                 },
                 notRegisteredHandler: failureHandler
             )
@@ -197,28 +177,23 @@
         
         // MARK: Delegated Authentication Approval
         
-        private func showApprovalScreen(delegatedAuthenticationHandler: @escaping () -> Void,
-                                        fallbackHandler: @escaping () -> Void) {
-            let approvalViewController = DAApprovalViewController(style: style,
-                                                                  localizationParameters: localizedParameters,
-                                                                  useBiometricsHandler: {
-                                                                      delegatedAuthenticationHandler()
-                                                                  }, approveDifferentlyHandler: { [weak self] in
-                                                                      guard let self else { return }
-                                                                      delegatedAuthenticationState.userInput = .approveDifferently
-                                                                      fallbackHandler()
-                                                                  }, removeCredentialsHandler: { [weak self] in
-                                                                      guard let self else { return }
-                                                                      delegatedAuthenticationState.userInput = .deleteDA
-                                                                      try? delegatedAuthenticationService.reset()
-                                                                      fallbackHandler()
-                                                                  })
-            
-            let presentableComponent = PresentableComponentWrapper(component: self,
-                                                                   viewController: approvalViewController)
-            presentationDelegate?.present(component: presentableComponent)
-            approvalViewController.navigationItem.rightBarButtonItems = []
-            approvalViewController.navigationItem.leftBarButtonItems = []
+        private func showApprovalScreenWhenDeviceIsRegistered(delegatedAuthenticationInput: String,
+                                                              completion: @escaping (Result<String, DelegateAuthenticationError>) -> Void,
+                                                              failureHandler: @escaping () -> Void) {
+            presenter.showApprovalScreen(component: self,
+                                         approveAuthenticationHandler: { [weak self] in
+                                             guard let self else { return }
+                                             executeDAAuthenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                                                   authenticatedHandler: { completion(.success($0)) },
+                                                                   failedAuthenticationHanlder: failureHandler)
+                                         },
+                                         fallbackHandler: {
+                                             failureHandler()
+                                         },
+                                         removeCredentialsHandler: { [weak delegatedAuthenticationService] in
+                                             try? delegatedAuthenticationService?.reset()
+                                             failureHandler()
+                                         })
         }
 
         private func executeDAAuthenticate(delegatedAuthenticationInput: String,
@@ -255,28 +230,11 @@
 
         internal var shouldShowRegistrationScreen: Bool {
             delegatedAuthenticationState.isDeviceRegistrationFlow
-                && delegatedAuthenticationState.userInput != .approveDifferently
-                && delegatedAuthenticationState.userInput != .deleteDA
-                && DeviceSupportChecker().isDeviceSupported
+                && presenter.userInput != .approveDifferently
+                && presenter.userInput != .deleteDA
+                && deviceSupportCheckerService.isDeviceSupported
         }
-                
-        internal func showRegistrationScreen(registerDelegatedAuthenticationHandler: @escaping () -> Void, fallbackHandler: @escaping () -> Void) {
-            let registrationViewController = DARegistrationViewController(style: style,
-                                                                          localizationParameters: localizedParameters,
-                                                                          enableCheckoutHandler: {
-                                                                              registerDelegatedAuthenticationHandler()
-                                                                          }, notNowHandler: {
-                                                                              fallbackHandler()
-                                                                          })
-            
-            let presentableComponent = PresentableComponentWrapper(component: self,
-                                                                   viewController: registrationViewController)
-            presentationDelegate?.present(component: presentableComponent)
-            // TODO: Robert: Is there a better way to disable the cancel button?
-            registrationViewController.navigationItem.rightBarButtonItems = []
-            registrationViewController.navigationItem.leftBarButtonItems = []
-        }
-        
+                        
         internal func performDelegatedRegistration(_ sdkInput: String?,
                                                    completion: @escaping (Result<String, Error>) -> Void) {
             guard let sdkInput = sdkInput else {
@@ -324,16 +282,19 @@
             }
             
             if shouldShowRegistrationScreen {
-                showRegistrationScreen(registerDelegatedAuthenticationHandler: { [weak self] in
-                                           self?.performDelegatedRegistration(token.delegatedAuthenticationSDKInput) { [weak self] result in
-                                               self?.deliver(challengeResult: challengeResult,
-                                                             delegatedAuthenticationSDKOutput: result.successResult,
-                                                             completionHandler: completionHandler)
-                                           }
-                                       },
-                                       fallbackHandler: {
-                                           completionHandler(.success(challengeResult))
-                                       })
+                presenter.showRegistrationScreen(
+                    component: self,
+                    registerDelegatedAuthenticationHandler: { [weak self] in guard let self else { return }
+                        performDelegatedRegistration(token.delegatedAuthenticationSDKInput) { [weak self] result in
+                            self?.deliver(challengeResult: challengeResult,
+                                          delegatedAuthenticationSDKOutput: result.successResult,
+                                          completionHandler: completionHandler)
+                        }
+                    },
+                    fallbackHandler: {
+                        completionHandler(.success(challengeResult))
+                    }
+                )
             } else {
                 completionHandler(.success(challengeResult))
             }
