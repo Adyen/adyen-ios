@@ -51,7 +51,7 @@ then
   echo "github \"adyen/adyen-authentication-ios\" == 1.1.2" >> Cartfile
   
   echo_header "Carthage update"
-  carthage update --use-xcframeworks --configuration Debug --verbose
+  carthage update --use-xcframeworks --configuration Debug
 else
   cd $PROJECT_NAME
 fi
