@@ -48,7 +48,7 @@ then
   CURRENT_COMMIT=$(git rev-parse HEAD)
 
   echo "git \"file://$CWD/../\" \"$CURRENT_COMMIT\"" > Cartfile
-  echo "github \"adyen/adyen-authentication-ios\"" >> Cartfile
+  echo "github \"adyen/adyen-authentication-ios\" == 1.1.2" >> Cartfile
   
   echo_header "Carthage update"
   carthage update --use-xcframeworks --configuration Debug --verbose
