@@ -127,7 +127,7 @@ internal final class DelegatedAuthenticationView: UIView {
         return textView
     }()
 
-    // MARK: - Initializaers
+    // MARK: - initializers
     
     internal init(logoStyle: ImageStyle,
                   headerTextStyle: TextStyle,
