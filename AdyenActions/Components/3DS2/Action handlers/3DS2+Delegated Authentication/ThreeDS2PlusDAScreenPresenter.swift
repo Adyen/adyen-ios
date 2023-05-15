@@ -73,12 +73,12 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                                                               useBiometricsHandler: {
                                                                   approveAuthenticationHandler()
                                                               }, approveDifferentlyHandler: { [weak self] in
-                                                                  guard let self else { return }
-                                                                  userInput = .approveDifferently
+                                                                  guard let self = self else { return }
+                                                                  self.userInput = .approveDifferently
                                                                   fallbackHandler()
                                                               }, removeCredentialsHandler: { [weak self] in
-                                                                  guard let self else { return }
-                                                                  userInput = .deleteDA
+                                                                  guard let self = self else { return }
+                                                                  self.userInput = .deleteDA
                                                                   removeCredentialsHandler()
                                                               })
         

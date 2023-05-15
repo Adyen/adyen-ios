@@ -122,7 +122,7 @@
                 let fingerprintResult: ThreeDS2Component.Fingerprint = try Coder.decodeBase64(fingerprintResult)
                 performDelegatedAuthentication(token) { [weak self] result in
                     guard let self = self else { return }
-                    delegatedAuthenticationState.isDeviceRegistrationFlow = result.successResult == nil
+                    self.delegatedAuthenticationState.isDeviceRegistrationFlow = result.successResult == nil
                     guard let fingerprintResult = createFingerPrintResult(authenticationSDKOutput: result.successResult,
                                                                           fingerprintResult: fingerprintResult,
                                                                           completionHandler: completionHandler) else { return }
@@ -166,10 +166,10 @@
             isDeviceRegisteredForDelegatedAuthentication(
                 delegatedAuthenticationInput: delegatedAuthenticationInput,
                 registeredHandler: { [weak self] in
-                    guard let self else { return }
-                    showApprovalScreenWhenDeviceIsRegistered(delegatedAuthenticationInput: delegatedAuthenticationInput,
-                                                             completion: completion,
-                                                             failureHandler: failureHandler)
+                    guard let self = self else { return }
+                    self.showApprovalScreenWhenDeviceIsRegistered(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                                                  completion: completion,
+                                                                  failureHandler: failureHandler)
                 },
                 notRegisteredHandler: failureHandler
             )
@@ -182,10 +182,10 @@
                                                               failureHandler: @escaping () -> Void) {
             presenter.showApprovalScreen(component: self,
                                          approveAuthenticationHandler: { [weak self] in
-                                             guard let self else { return }
-                                             executeDAAuthenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
-                                                                   authenticatedHandler: { completion(.success($0)) },
-                                                                   failedAuthenticationHanlder: failureHandler)
+                                             guard let self = self else { return }
+                                             self.executeDAAuthenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                                                        authenticatedHandler: { completion(.success($0)) },
+                                                                        failedAuthenticationHanlder: failureHandler)
                                          },
                                          fallbackHandler: {
                                              failureHandler()
@@ -284,8 +284,8 @@
             if shouldShowRegistrationScreen {
                 presenter.showRegistrationScreen(
                     component: self,
-                    registerDelegatedAuthenticationHandler: { [weak self] in guard let self else { return }
-                        performDelegatedRegistration(token.delegatedAuthenticationSDKInput) { [weak self] result in
+                    registerDelegatedAuthenticationHandler: { [weak self] in guard let self = self else { return }
+                        self.performDelegatedRegistration(token.delegatedAuthenticationSDKInput) { [weak self] result in
                             self?.deliver(challengeResult: challengeResult,
                                           delegatedAuthenticationSDKOutput: result.successResult,
                                           completionHandler: completionHandler)
