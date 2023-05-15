@@ -185,7 +185,7 @@
                                              guard let self = self else { return }
                                              self.executeDAAuthenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
                                                                         authenticatedHandler: { completion(.success($0)) },
-                                                                        failedAuthenticationHanlder: failureHandler)
+                                                                        failedAuthenticationHandler: failureHandler)
                                          },
                                          fallbackHandler: {
                                              failureHandler()
@@ -198,13 +198,13 @@
 
         private func executeDAAuthenticate(delegatedAuthenticationInput: String,
                                            authenticatedHandler: @escaping (String) -> Void,
-                                           failedAuthenticationHanlder: @escaping () -> Void) {
+                                           failedAuthenticationHandler: @escaping () -> Void) {
             delegatedAuthenticationService.authenticate(withAuthenticationInput: delegatedAuthenticationInput) { result in
                 switch result {
                 case let .success(sdkOutput):
                     authenticatedHandler(sdkOutput)
                 case .failure:
-                    failedAuthenticationHanlder()
+                    failedAuthenticationHandler()
                 }
             }
         }
