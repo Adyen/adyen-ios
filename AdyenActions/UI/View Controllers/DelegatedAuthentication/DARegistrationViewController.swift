@@ -58,10 +58,10 @@ internal final class DARegistrationViewController: UIViewController {
     }
     
     private func configureDelegateAuthenticationView() {
-        registrationView.titleLabel.text = localizedString(.threeds2DARegTitle, localizationParameters)
-        registrationView.descriptionLabel.text = localizedString(.threeds2DARegDescription, localizationParameters)
-        registrationView.firstButton.setTitle(localizedString(.threeds2DARegPositiveButton, localizationParameters), for: .normal)
-        registrationView.secondButton.setTitle(localizedString(.threeds2DARegNegativeButton, localizationParameters), for: .normal)
+        registrationView.titleLabel.text = localizedString(.threeds2DARegistrationTitle, localizationParameters)
+        registrationView.descriptionLabel.text = localizedString(.threeds2DARegistrationDescription, localizationParameters)
+        registrationView.firstButton.setTitle(localizedString(.threeds2DARegistrationPositiveButton, localizationParameters), for: .normal)
+        registrationView.secondButton.setTitle(localizedString(.threeds2DARegistrationNegativeButton, localizationParameters), for: .normal)
         configureProgress()
     }
 
@@ -83,7 +83,7 @@ internal final class DARegistrationViewController: UIViewController {
     }
 
     private func timeLeft(timeInterval: TimeInterval) -> String {
-        String(format: localizedString(.threeds2DARegTimeLeft, localizationParameters), timeInterval.adyen.timeLeftString() ?? "0")
+        String(format: localizedString(.threeds2DARegistrationTimeLeft, localizationParameters), timeInterval.adyen.timeLeftString() ?? "0")
     }
     
     private func buildUI() {

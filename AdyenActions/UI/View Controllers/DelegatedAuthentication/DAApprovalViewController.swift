@@ -12,15 +12,15 @@ internal final class DAApprovalViewController: UIViewController {
     private let approveDifferentlyHandler: Handler
     private let removeCredentialsHandler: Handler
     private lazy var alert: UIAlertController = {
-        let alertController = UIAlertController(title: localizedString(.threeds2DAApprRemoveAlertTitle, localizationParameters),
-                                                message: localizedString(.threeds2DAApprRemoveAlertDescription, localizationParameters),
+        let alertController = UIAlertController(title: localizedString(.threeds2DAApprovalRemoveAlertTitle, localizationParameters),
+                                                message: localizedString(.threeds2DAApprovalRemoveAlertDescription, localizationParameters),
                                                 preferredStyle: .alert)
-        let removeAction = UIAlertAction(title: localizedString(.threeds2DAApprRemoveAlertPositiveButton, localizationParameters),
+        let removeAction = UIAlertAction(title: localizedString(.threeds2DAApprovalRemoveAlertPositiveButton, localizationParameters),
                                          style: .cancel,
                                          handler: { [weak self] _ in
                                              self?.removeCredentialsHandler()
                                          })
-        let cancelAction = UIAlertAction(title: localizedString(.threeds2DAApprRemoveAlertNegativeButton, localizationParameters),
+        let cancelAction = UIAlertAction(title: localizedString(.threeds2DAApprovalRemoveAlertNegativeButton, localizationParameters),
                                          style: .default,
                                          handler: { [weak self] _ in
                                              self?.timeoutTimer?.resumeTimer()
@@ -56,7 +56,7 @@ internal final class DAApprovalViewController: UIViewController {
         self.approveDifferentlyHandler = approveDifferentlyHandler
         self.removeCredentialsHandler = removeCredentialsHandler
         self.localizationParameters = localizationParameters
-        super.init(nibName: nil, bundle: Bundle(for: DARegistrationViewController.self))
+        super.init(nibName: nil, bundle: Bundle(for: DAApprovalViewController.self))
         approvalView.delegate = self
         if #available(iOS 13.0, *) {
             isModalInPresentation = true
@@ -76,16 +76,16 @@ internal final class DAApprovalViewController: UIViewController {
     }
     
     private func configureDelegateAuthenticationView() {
-        approvalView.titleLabel.text = localizedString(.threeds2DAApprTitle, localizationParameters)
-        approvalView.descriptionLabel.text = localizedString(.threeds2DAApprDescription, localizationParameters)
-        approvalView.firstButton.setTitle(localizedString(.threeds2DAApprPositiveButton, localizationParameters), for: .normal)
-        approvalView.secondButton.setTitle(localizedString(.threeds2DAApprNegativeButton, localizationParameters), for: .normal)
+        approvalView.titleLabel.text = localizedString(.threeds2DAApprovalTitle, localizationParameters)
+        approvalView.descriptionLabel.text = localizedString(.threeds2DAApprovalDescription, localizationParameters)
+        approvalView.firstButton.setTitle(localizedString(.threeds2DAApprovalPositiveButton, localizationParameters), for: .normal)
+        approvalView.secondButton.setTitle(localizedString(.threeds2DAApprovalNegativeButton, localizationParameters), for: .normal)
         configureProgress()
         configureTextView()
     }
     
     private func configureTextView() {
-        let string = localizedString(.threeds2DAApprRemoveCredentialsText, localizationParameters)
+        let string = localizedString(.threeds2DAApprovalRemoveCredentialsText, localizationParameters)
         let style = NSMutableParagraphStyle()
         style.alignment = .center
         let attributedString = NSMutableAttributedString(string: string, attributes: [NSAttributedString.Key.paragraphStyle: style])
@@ -115,7 +115,7 @@ internal final class DAApprovalViewController: UIViewController {
     }
     
     private func timeLeft(timeInterval: TimeInterval) -> String {
-        String(format: localizedString(.threeds2DAApprTimeLeft, localizationParameters), timeInterval.adyen.timeLeftString() ?? "0")
+        String(format: localizedString(.threeds2DAApprovalTimeLeft, localizationParameters), timeInterval.adyen.timeLeftString() ?? "0")
     }
 
     private func buildUI() {
