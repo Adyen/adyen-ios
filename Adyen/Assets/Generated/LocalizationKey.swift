@@ -362,38 +362,37 @@ public struct LocalizationKey {
     
     /// Safe and swift checkout!
     public static let threeds2DARegTitle = LocalizationKey(key: "adyen.threeds2.DA.reg.title")
-    /// You can check out faster next time on this device using your biometrics."
+    /// You can check out faster next time on this device using your biometrics.
     public static let threeds2DARegDescription = LocalizationKey(key: "adyen.threeds2.DA.reg.description")
-    ///  Enable swift checkout
+    /// Enable swift checkout
     public static let threeds2DARegPositiveButton = LocalizationKey(key: "adyen.threeds2.DA.reg.positiveButton")
     /// Not now
     public static let threeds2DARegNegativeButton = LocalizationKey(key: "adyen.threeds2.DA.reg.negativeButton")
-    /// "You have %@ to enable"
+    /// You have %@ to enable
     public static let threeds2DARegTimeLeft = LocalizationKey(key: "adyen.threeds2.DA.reg.timeLeft")
-
     /// Approve transaction
     public static let threeds2DAApprTitle = LocalizationKey(key: "adyen.threeds2.DA.appr.title")
     /// To make sure it’s you, approve this transaction with your biometrics to complete your purchase.
     public static let threeds2DAApprDescription = LocalizationKey(key: "adyen.threeds2.DA.appr.description")
-    ///  Use biometrics
+    /// Use biometrics
     public static let threeds2DAApprPositiveButton = LocalizationKey(key: "adyen.threeds2.DA.appr.positiveButton")
     /// Approve differently
     public static let threeds2DAApprNegativeButton = LocalizationKey(key: "adyen.threeds2.DA.appr.negativeButton")
-    /// "You have %@ to approve"
+    /// You have %@ to approve
     public static let threeds2DAApprTimeLeft = LocalizationKey(key: "adyen.threeds2.DA.appr.timeLeft")
-    /// "Opt out any time by #removing your credentials.#"
+    /// Opt out any time by %#removing your credentials.%#
     public static let threeds2DAApprRemoveCredentialsText = LocalizationKey(key: "adyen.threeds2.DA.appr.removeCredentialsText")
-    /// "Remove credentials?"
+    /// Remove credentials?
     public static let threeds2DAApprRemoveAlertTitle = LocalizationKey(key: "adyen.threeds2.DA.appr.remove.alert.title")
-    /// "Are you sure you want to remove your credentials?"
+    /// Are you sure you want to remove your credentials?
     public static let threeds2DAApprRemoveAlertDescription = LocalizationKey(key: "adyen.threeds2.DA.appr.remove.alert.description")
-    /// "Remove"
+    /// Remove
     public static let threeds2DAApprRemoveAlertPositiveButton = LocalizationKey(key: "adyen.threeds2.DA.appr.remove.alert.positiveButton")
-    /// "Cancel"
+    /// Cancel
     public static let threeds2DAApprRemoveAlertNegativeButton = LocalizationKey(key: "adyen.threeds2.DA.appr.remove.alert.negativeButton")
-
-    internal let key: String
     
+    internal let key: String
+    /// :nodoc:
     public init(key: String) {
         self.key = key
     }
