@@ -123,9 +123,9 @@
                 performDelegatedAuthentication(token) { [weak self] result in
                     guard let self = self else { return }
                     self.delegatedAuthenticationState.isDeviceRegistrationFlow = result.successResult == nil
-                    guard let fingerprintResult = createFingerPrintResult(authenticationSDKOutput: result.successResult,
-                                                                          fingerprintResult: fingerprintResult,
-                                                                          completionHandler: completionHandler) else { return }
+                    guard let fingerprintResult = self.createFingerPrintResult(authenticationSDKOutput: result.successResult,
+                                                                               fingerprintResult: fingerprintResult,
+                                                                               completionHandler: completionHandler) else { return }
                     completionHandler(.success(fingerprintResult))
                 }
             } catch {
