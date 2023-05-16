@@ -170,6 +170,7 @@ internal enum AnyPaymentMethod: Decodable {
     case storedBCMC(StoredBCMCPaymentMethod)
     case storedBlik(StoredBLIKPaymentMethod)
     case storedAchDirectDebit(StoredACHDirectDebitPaymentMethod)
+    case storedCashAppPay(StoredCashAppPayPaymentMethod)
 
     case instant(PaymentMethod)
     case card(AnyCardPaymentMethod)
@@ -210,6 +211,8 @@ internal enum AnyPaymentMethod: Decodable {
         case let .storedInstant(paymentMethod):
             return paymentMethod
         case let .storedAchDirectDebit(paymentMethod):
+            return paymentMethod
+        case let .storedCashAppPay(paymentMethod):
             return paymentMethod
         case let .card(paymentMethod):
             return paymentMethod

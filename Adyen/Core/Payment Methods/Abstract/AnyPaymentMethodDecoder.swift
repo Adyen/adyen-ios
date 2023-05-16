@@ -300,7 +300,11 @@ private struct UPIPaymentMethodDecoder: PaymentMethodDecoder {
 private struct CashAppPayPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         #if canImport(PayKit)
-            return .cashAppPay(try CashAppPayPaymentMethod(from: decoder))
+            if isStored {
+                return .storedCashAppPay(try StoredCashAppPayPaymentMethod(from: decoder))
+            } else {
+                return .cashAppPay(try CashAppPayPaymentMethod(from: decoder))
+            }
         #else
             return .none
         #endif
