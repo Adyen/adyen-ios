@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -33,7 +33,7 @@ public final class CardNumberFormatter: NumericFormatter {
         case .diners where length < 15:
             return [4, 6, 4]
         default:
-            return [4, 4, 4, 4, 4]
+            return Array(repeating: 4, count: (length / 4) + 1)
         }
     }
 }
