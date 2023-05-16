@@ -123,11 +123,13 @@ class GiftCardComponentTests: XCTestCase {
 
         XCTAssertTrue(errorView!.isHidden)
 
-        populate(cardNumber: "1234 5678 1234 5678 1234 5678", pin: "73737")
+        populate(cardNumber: "123456781234567812345678", pin: "73737")
 
         XCTAssertEqual(numberItemView?.textField.text, "1234 5678 1234 5678 1234 5678")
 
-        waitForExpectations(timeout: 10, handler: nil)
+        populate(cardNumber: "123456781234567812345", pin: "73737")
+
+        XCTAssertEqual(numberItemView?.textField.text, "1234 5678 1234 5678 1234 5")
     }
 
     func testBalanceAndTransactionLimitCurrencyMismatch() throws {
