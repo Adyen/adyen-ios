@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -233,7 +233,9 @@ public final class ACHDirectDebitComponent: PaymentComponent,
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                       postfix: ViewIdentifier.payButtonItem)
-        item.title = localizedString(.confirmPurchase, configuration.localizationParameters)
+        item.title = localizedSubmitButtonTitle(with: payment?.amount,
+                                                style: .immediate,
+                                                configuration.localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }
