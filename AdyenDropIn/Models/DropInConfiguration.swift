@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -55,6 +55,9 @@ public extension DropInComponent {
         /// Boleto component configuration.
         public var boleto: Boleto = .init()
         
+        /// The ACH Direct Debit configuration.
+        public var ach: ACH = .init()
+        
         /// Initializes the drop in configuration.
         /// - Parameters:
         ///   - style: The UI styles of the components.
@@ -82,6 +85,12 @@ public extension DropInComponent {
     struct Boleto {
         /// Indicates whether to show sendCopyByEmail checkbox and email text field
         public var showEmailAddress: Bool = true
+    }
+    
+    /// The ACH configuration
+    struct ACH {
+        /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
+        public var showsStorePaymentMethodField: Bool = true
     }
     
     /// Card Component configuration specific to Drop In Component.
