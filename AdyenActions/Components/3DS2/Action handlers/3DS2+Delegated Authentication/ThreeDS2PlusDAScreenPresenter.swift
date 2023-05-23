@@ -66,7 +66,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                                      approveAuthenticationHandler: @escaping () -> Void,
                                      fallbackHandler: @escaping () -> Void,
                                      removeCredentialsHandler: @escaping () -> Void) {
-
+        AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
         let approvalViewController = DAApprovalViewController(style: style,
                                                               localizationParameters: localizedParameters,
                                                               useBiometricsHandler: {
