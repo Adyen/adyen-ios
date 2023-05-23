@@ -20,11 +20,11 @@ final class ThreeDS2DAScreenPresenterMock: ThreeDS2PlusDAScreenPresenterProtocol
         case fallback
     }
     
-    let showRegisterationReturnState: ShowRegistrationScreenMockState
+    let showRegistrationReturnState: ShowRegistrationScreenMockState
     func showRegistrationScreen(component: Adyen.Component,
                                 registerDelegatedAuthenticationHandler: @escaping () -> Void,
                                 fallbackHandler: @escaping () -> Void) {
-        switch showRegisterationReturnState {
+        switch showRegistrationReturnState {
         case .register:
             registerDelegatedAuthenticationHandler()
         case .fallback:
@@ -56,9 +56,9 @@ final class ThreeDS2DAScreenPresenterMock: ThreeDS2PlusDAScreenPresenterProtocol
     
     var userInput: ThreeDS2PlusDAScreenUserInput = .noInput
     
-    init(showRegisterationReturnState: ShowRegistrationScreenMockState,
+    init(showRegistrationReturnState: ShowRegistrationScreenMockState,
          showApprovalScreenReturnState: ShowApprovalScreenMockState) {
-        self.showRegisterationReturnState = showRegisterationReturnState
+        self.showRegistrationReturnState = showRegistrationReturnState
         self.showApprovalScreenReturnState = showApprovalScreenReturnState
     }
 }
