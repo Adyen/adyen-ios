@@ -10,9 +10,9 @@ import UIKit
 @_spi(AdyenInternal)
 extension UITextView {
     
-    /// Initializes UIImageView with given `ImageStyle`
+    /// Initializes UITextView with given `TextStyle`
     /// Sets `translatesAutoresizingMaskIntoConstraints` to `false`
-    /// - Parameter style: `ImageStyle` to be applied
+    /// - Parameter style: `TextStyle` to be applied
     public convenience init(style: TextStyle) {
         self.init()
         translatesAutoresizingMaskIntoConstraints = false
@@ -22,9 +22,9 @@ extension UITextView {
 
 public extension AdyenScope where Base: UITextView {
     
-    /// Applies given `ImageStyle` to the UIImageView
+    /// Applies given `TextStyle` to the UITextView
     /// Sets `translatesAutoresizingMaskIntoConstraints` to `false`
-    /// - Parameter style: `ImageStyle` to be applied
+    /// - Parameter style: `TextStyle` to be applied
     internal func apply(_ style: TextStyle) {
         base.font = style.font
         base.textColor = style.color
