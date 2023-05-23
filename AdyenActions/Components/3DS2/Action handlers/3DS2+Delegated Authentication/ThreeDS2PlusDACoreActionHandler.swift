@@ -47,6 +47,20 @@
         private let deviceSupportCheckerService: AdyenAuthentication.DeviceSupportCheckerProtocol
         private let presenter: ThreeDS2PlusDAScreenPresenterProtocol
         
+        /// Errors during the Delegated authentication flow
+        private enum ThreeDS2PlusDACoreActionError: Error {
+            /// When the backend doesn't support delegated authentication, so the threeDSToken doesn't contain the `sdkInput` parameter
+            case sdkInputNotAvailableForApproval
+            /// When the user asks for the credentials to be removed during an approval flow
+            case removeCredentialsDuringApproval
+            /// When the device is not registered for delegated authentication.
+            case deviceIsNotRegistered
+            /// When the `sdkInput` parameter is not available in the threeDStoken, this occurs during the registration flow.
+            case sdkInputNotAvailableForRegistration
+            /// When the user doesn't provide consent to use delegated authentication for the transaction during an approval flow.
+            case noConsentForApproval
+        }
+
         /// Initializes the 3D Secure 2 action handler.
         ///
         /// - Parameter context: The context object for this component.
@@ -157,9 +171,12 @@
         /// else calls the completion with a failure.
         private func performDelegatedAuthentication(_ fingerprintToken: ThreeDS2Component.FingerprintToken,
                                                     completion: @escaping (Result<String, DelegateAuthenticationError>) -> Void) {
-            let failureHandler = { completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil))) }
+            let failureHandler: (Error?) -> Void = { cause in
+                completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: cause)))
+            }
+            
             guard let delegatedAuthenticationInput = fingerprintToken.delegatedAuthenticationSDKInput else {
-                failureHandler()
+                failureHandler(ThreeDS2PlusDACoreActionError.sdkInputNotAvailableForApproval)
                 return
             }
             
@@ -179,7 +196,7 @@
         
         private func showApprovalScreenWhenDeviceIsRegistered(delegatedAuthenticationInput: String,
                                                               completion: @escaping (Result<String, DelegateAuthenticationError>) -> Void,
-                                                              failureHandler: @escaping () -> Void) {
+                                                              failureHandler: @escaping (Error) -> Void) {
             presenter.showApprovalScreen(component: self,
                                          approveAuthenticationHandler: { [weak self] in
                                              guard let self = self else { return }
@@ -188,39 +205,39 @@
                                                                         failedAuthenticationHandler: failureHandler)
                                          },
                                          fallbackHandler: {
-                                             failureHandler()
+                                             failureHandler(ThreeDS2PlusDACoreActionError.noConsentForApproval)
                                          },
                                          removeCredentialsHandler: { [weak delegatedAuthenticationService] in
                                              try? delegatedAuthenticationService?.reset()
-                                             failureHandler()
+                                             failureHandler(ThreeDS2PlusDACoreActionError.removeCredentialsDuringApproval)
                                          })
         }
 
         private func executeDAAuthenticate(delegatedAuthenticationInput: String,
                                            authenticatedHandler: @escaping (String) -> Void,
-                                           failedAuthenticationHandler: @escaping () -> Void) {
+                                           failedAuthenticationHandler: @escaping (Error) -> Void) {
             delegatedAuthenticationService.authenticate(withAuthenticationInput: delegatedAuthenticationInput) { result in
                 switch result {
                 case let .success(sdkOutput):
                     authenticatedHandler(sdkOutput)
-                case .failure:
-                    failedAuthenticationHandler()
+                case let .failure(error):
+                    failedAuthenticationHandler(error)
                 }
             }
         }
         
         private func isDeviceRegisteredForDelegatedAuthentication(delegatedAuthenticationInput: String,
                                                                   registeredHandler: @escaping () -> Void,
-                                                                  notRegisteredHandler: @escaping () -> Void) {
+                                                                  notRegisteredHandler: @escaping (Error) -> Void) {
             delegatedAuthenticationService.isDeviceRegistered(withAuthenticationInput: delegatedAuthenticationInput) { result in
                 switch result {
-                case .failure:
-                    notRegisteredHandler()
+                case let .failure(error):
+                    notRegisteredHandler(error)
                 case let .success(success):
                     if success {
                         registeredHandler()
                     } else {
-                        notRegisteredHandler()
+                        notRegisteredHandler(ThreeDS2PlusDACoreActionError.deviceIsNotRegistered)
                     }
                 }
             }
@@ -238,7 +255,7 @@
         internal func performDelegatedRegistration(_ sdkInput: String?,
                                                    completion: @escaping (Result<String, Error>) -> Void) {
             guard let sdkInput = sdkInput else {
-                completion(.failure(DelegateAuthenticationError.registrationFailed(cause: nil)))
+                completion(.failure(DelegateAuthenticationError.registrationFailed(cause: ThreeDS2PlusDACoreActionError.sdkInputNotAvailableForRegistration)))
                 return
             }
             delegatedAuthenticationService.register(withRegistrationInput: sdkInput) { result in
@@ -284,7 +301,8 @@
             if shouldShowRegistrationScreen {
                 presenter.showRegistrationScreen(
                     component: self,
-                    registerDelegatedAuthenticationHandler: { [weak self] in guard let self = self else { return }
+                    registerDelegatedAuthenticationHandler: { [weak self] in
+                        guard let self = self else { return }
                         self.performDelegatedRegistration(token.delegatedAuthenticationSDKInput) { [weak self] result in
                             self?.deliver(challengeResult: challengeResult,
                                           delegatedAuthenticationSDKOutput: result.successResult,

@@ -46,7 +46,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
     internal func showRegistrationScreen(component: Component,
                                          registerDelegatedAuthenticationHandler: @escaping () -> Void,
                                          fallbackHandler: @escaping () -> Void) {
-        
+        AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
         let registrationViewController = DARegistrationViewController(style: style,
                                                                       localizationParameters: localizedParameters,
                                                                       enableCheckoutHandler: {
