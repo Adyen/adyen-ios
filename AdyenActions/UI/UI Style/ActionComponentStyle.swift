@@ -26,7 +26,7 @@ public struct ActionComponentStyle {
     public var documentActionComponentStyle: DocumentComponentStyle
     
     /// Indicates the UI configuration of the delegated authentication screens.
-    public var delegatedAuthenticationComponent: DelegatedAuthenticationComponentStyle
+    public var delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle
 
     /// Initializes the
     /// - Parameters:
@@ -35,20 +35,20 @@ public struct ActionComponentStyle {
     ///   - voucherComponentStyle: The UI configuration of the voucher component.
     ///   - qrCodeComponentStyle: The UI configuration of the QR code component.
     ///   - documentActionComponentStyle: The UI configuration of the document action component.
-    ///   - delegatedAuthenticationComponent: The UI configuration of the delegated authentication component.
+    ///   - delegatedAuthenticationComponentStyle: The UI configuration of the delegated authentication component.
     public init(
         redirectComponentStyle: RedirectComponentStyle = RedirectComponentStyle(),
         awaitComponentStyle: AwaitComponentStyle = AwaitComponentStyle(),
         voucherComponentStyle: VoucherComponentStyle = VoucherComponentStyle(),
         qrCodeComponentStyle: QRCodeComponentStyle = QRCodeComponentStyle(),
         documentActionComponentStyle: DocumentComponentStyle = DocumentComponentStyle(),
-        delegatedAuthenticationComponent: DelegatedAuthenticationComponentStyle = DelegatedAuthenticationComponentStyle()
+        delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle = DelegatedAuthenticationComponentStyle()
     ) {
         self.redirectComponentStyle = redirectComponentStyle
         self.awaitComponentStyle = awaitComponentStyle
         self.voucherComponentStyle = voucherComponentStyle
         self.qrCodeComponentStyle = qrCodeComponentStyle
         self.documentActionComponentStyle = documentActionComponentStyle
-        self.delegatedAuthenticationComponent = delegatedAuthenticationComponent
+        self.delegatedAuthenticationComponentStyle = delegatedAuthenticationComponentStyle
     }
 }
