@@ -86,9 +86,9 @@ internal final class DAApprovalViewController: UIViewController {
     
     private func configureTextView() {
         let string = localizedString(.threeds2DAApprovalRemoveCredentialsText, localizationParameters)
-        let style = NSMutableParagraphStyle()
-        style.alignment = .center
-        let attributedString = NSMutableAttributedString(string: string, attributes: [NSAttributedString.Key.paragraphStyle: style])
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+        let attributedString = NSMutableAttributedString(string: string, attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
         if let range = string.adyen.linkRanges().first {
             attributedString.addAttribute(.link, value: "removeCredential://", range: range)
         }
@@ -152,22 +152,22 @@ internal final class DAApprovalViewController: UIViewController {
 }
 
 extension DAApprovalViewController: DelegatedAuthenticationViewDelegate {
-    func removeCredential() {
+    internal func removeCredential() {
         timeoutTimer?.pauseTimer()
         present(alert, animated: true)
     }
     
-    func firstButtonTapped() {
+    internal func firstButtonTapped() {
         useBiometricsHandler()
     }
     
-    func secondButtonTapped() {
+    internal func secondButtonTapped() {
         approveDifferentlyHandler()
     }
 }
 
 extension DAApprovalViewController: UITextViewDelegate {
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+    internal func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         if URL.absoluteString == "removeCredential://" {
             removeCredential()
         }

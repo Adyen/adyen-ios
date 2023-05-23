@@ -120,11 +120,11 @@ internal final class DARegistrationViewController: UIViewController {
 }
 
 extension DARegistrationViewController: DelegatedAuthenticationViewDelegate {
-    func firstButtonTapped() {
+    internal func firstButtonTapped() {
         enableCheckoutHandler()
     }
     
-    func secondButtonTapped() {
+    internal func secondButtonTapped() {
         notNowHandler()
     }
 }

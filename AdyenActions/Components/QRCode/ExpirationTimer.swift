@@ -52,8 +52,7 @@ internal final class ExpirationTimer {
     }
     
     internal func pauseTimer() {
-        timer?.invalidate()
-        timer = nil
+        stopTimer()
     }
     
     internal func resumeTimer() {

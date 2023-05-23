@@ -58,7 +58,6 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         let presentableComponent = PresentableComponentWrapper(component: component,
                                                                viewController: registrationViewController)
         presentationDelegate?.present(component: presentableComponent)
-        // TODO: Robert: Is there a better way to disable the cancel button?
         registrationViewController.navigationItem.rightBarButtonItems = []
         registrationViewController.navigationItem.leftBarButtonItems = []
     }
