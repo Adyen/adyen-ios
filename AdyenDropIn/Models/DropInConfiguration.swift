@@ -88,7 +88,7 @@ public extension DropInComponent {
     }
     
     /// ACH Component configuration specific to Drop In Component.
-    struct ACH: AnyACHDirectDebitComponentConfiguration {
+    struct ACH: AnyACHDirectDebitConfiguration {
         
         /// Indicates if the field for storing the card payment method should be displayed in the form.
         /// Defaults to `true`.

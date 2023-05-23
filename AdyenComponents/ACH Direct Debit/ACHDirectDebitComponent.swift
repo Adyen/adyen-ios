@@ -294,7 +294,7 @@ extension ACHDirectDebitComponent: ViewControllerDelegate {
 }
 
 /// Describes any configuration for the ACH Direct Debit component.
-public protocol AnyACHDirectDebitComponentConfiguration {
+public protocol AnyACHDirectDebitConfiguration {
     
     /// Indicates if the field for storing the card payment method should be displayed in the form.
     var showsStorePaymentMethodField: Bool { get }
@@ -309,7 +309,7 @@ public protocol AnyACHDirectDebitComponentConfiguration {
 extension ACHDirectDebitComponent {
     
     /// Configuration for the ACH Direct Debit Component
-    public struct Configuration: AnyACHDirectDebitComponentConfiguration, AnyPersonalInformationConfiguration {
+    public struct Configuration: AnyACHDirectDebitConfiguration, AnyPersonalInformationConfiguration {
 
         /// Describes the component's UI style.
         public var style: FormComponentStyle
