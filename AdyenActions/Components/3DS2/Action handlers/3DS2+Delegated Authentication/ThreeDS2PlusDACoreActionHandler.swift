@@ -65,7 +65,6 @@
         ///
         /// - Parameter context: The context object for this component.
         /// - Parameter appearanceConfiguration: The appearance configuration.
-        /// - Parameter style: The delegate authentication component style.
         /// - Parameter delegatedAuthenticationConfiguration: The delegated authentication configuration.
         /// - Parameter presentationDelegate: The presentation delegate
         internal convenience init(
