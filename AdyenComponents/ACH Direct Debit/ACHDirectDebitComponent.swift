@@ -293,10 +293,23 @@ extension ACHDirectDebitComponent: ViewControllerDelegate {
     }
 }
 
+/// Describes any configuration for the ACH Direct Debit component.
+public protocol AnyACHDirectDebitComponentConfiguration {
+    
+    /// Indicates if the field for storing the card payment method should be displayed in the form.
+    var showsStorePaymentMethodField: Bool { get }
+    
+    /// Determines whether the billing address should be displayed or not.
+    var showsBillingAddress: Bool { get }
+    
+    /// List of ISO country codes that is supported for the billing address.
+    var billingAddressCountryCodes: [String] { get }
+}
+
 extension ACHDirectDebitComponent {
     
     /// Configuration for the ACH Direct Debit Component
-    public struct Configuration: AnyPersonalInformationConfiguration {
+    public struct Configuration: AnyACHDirectDebitComponentConfiguration, AnyPersonalInformationConfiguration {
 
         /// Describes the component's UI style.
         public var style: FormComponentStyle

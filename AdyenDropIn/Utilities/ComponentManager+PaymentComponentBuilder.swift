@@ -234,7 +234,9 @@ extension ComponentManager: PaymentComponentBuilder {
         let config = ACHDirectDebitComponent.Configuration(style: configuration.style.formComponent,
                                                            shopperInformation: configuration.shopperInformation,
                                                            localizationParameters: configuration.localizationParameters,
-                                                           showsStorePaymentMethodField: configuration.ach.showsStorePaymentMethodField)
+                                                           showsStorePaymentMethodField: configuration.ach.showsStorePaymentMethodField,
+                                                           showsBillingAddress: configuration.ach.showsBillingAddress,
+                                                           billingAddressCountryCodes: configuration.ach.billingAddressCountryCodes)
         return ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                        context: context,
                                        configuration: config)

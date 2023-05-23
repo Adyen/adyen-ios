@@ -337,6 +337,9 @@ class ComponentManagerTests: XCTestCase {
     func testACHConfiguration() throws {
         // Given
         configuration.ach.showsStorePaymentMethodField = false
+        configuration.ach.showsBillingAddress = false
+        configuration.ach.billingAddressCountryCodes = ["US", "UK"]
+        
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    context: context,
                                    configuration: configuration,
@@ -349,6 +352,8 @@ class ComponentManagerTests: XCTestCase {
         // Then
         let achComponent = try XCTUnwrap(paymentComponent as? ACHDirectDebitComponent)
         XCTAssertFalse(achComponent.configuration.showsStorePaymentMethodField)
+        XCTAssertFalse(achComponent.configuration.showsBillingAddress)
+        XCTAssertEqual(achComponent.configuration.billingAddressCountryCodes, ["US", "UK"])
     }
 
     // MARK: - Private
