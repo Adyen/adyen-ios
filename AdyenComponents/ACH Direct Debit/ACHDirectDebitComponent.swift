@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -233,7 +233,9 @@ public final class ACHDirectDebitComponent: PaymentComponent,
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                       postfix: ViewIdentifier.payButtonItem)
-        item.title = localizedString(.confirmPurchase, configuration.localizationParameters)
+        item.title = localizedSubmitButtonTitle(with: payment?.amount,
+                                                style: .immediate,
+                                                configuration.localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }
@@ -291,10 +293,23 @@ extension ACHDirectDebitComponent: ViewControllerDelegate {
     }
 }
 
+/// Describes any configuration for the ACH Direct Debit component.
+public protocol AnyACHDirectDebitConfiguration {
+    
+    /// Indicates if the field for storing the card payment method should be displayed in the form.
+    var showsStorePaymentMethodField: Bool { get }
+    
+    /// Determines whether the billing address should be displayed or not.
+    var showsBillingAddress: Bool { get }
+    
+    /// List of ISO country codes that is supported for the billing address.
+    var billingAddressCountryCodes: [String] { get }
+}
+
 extension ACHDirectDebitComponent {
     
     /// Configuration for the ACH Direct Debit Component
-    public struct Configuration: AnyPersonalInformationConfiguration {
+    public struct Configuration: AnyACHDirectDebitConfiguration, AnyPersonalInformationConfiguration {
 
         /// Describes the component's UI style.
         public var style: FormComponentStyle

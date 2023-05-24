@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -55,6 +55,9 @@ public extension DropInComponent {
         /// Boleto component configuration.
         public var boleto: Boleto = .init()
         
+        /// The ACH Direct Debit configuration.
+        public var ach: ACH = .init()
+        
         /// Initializes the drop in configuration.
         /// - Parameters:
         ///   - style: The UI styles of the components.
@@ -82,6 +85,39 @@ public extension DropInComponent {
     struct Boleto {
         /// Indicates whether to show sendCopyByEmail checkbox and email text field
         public var showEmailAddress: Bool = true
+    }
+    
+    /// ACH Component configuration specific to Drop In Component.
+    struct ACH: AnyACHDirectDebitConfiguration {
+        
+        /// Indicates if the field for storing the card payment method should be displayed in the form.
+        /// Defaults to `true`.
+        public var showsStorePaymentMethodField: Bool
+        
+        /// Determines whether the billing address should be displayed or not.
+        /// Defaults to `true`.
+        public var showsBillingAddress: Bool
+        
+        /// List of ISO country codes that is supported for the billing address.
+        /// Defaults to `["US", "PR"].
+        public var billingAddressCountryCodes: [String]
+        
+        /// Configuration of the ACH component.
+        ///
+        /// - Parameters:
+        ///   - showsStorePaymentMethodField: Indicates if the field for storing the card payment method should be displayed in the form.
+        ///   Defaults to `true`.
+        ///   - showsBillingAddress: Determines whether the billing address should be displayed or not.
+        ///   Defaults to `true`.
+        ///   - billingAddressCountryCodes: List of ISO country codes that is supported for the billing address.
+        ///   Defaults to `["US", "PR"].
+        public init(showsStorePaymentMethodField: Bool = true,
+                    showsBillingAddress: Bool = true,
+                    billingAddressCountryCodes: [String] = ["US", "PR"]) {
+            self.showsStorePaymentMethodField = showsStorePaymentMethodField
+            self.showsBillingAddress = showsBillingAddress
+            self.billingAddressCountryCodes = billingAddressCountryCodes
+        }
     }
     
     /// Card Component configuration specific to Drop In Component.
