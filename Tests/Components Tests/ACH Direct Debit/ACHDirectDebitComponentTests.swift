@@ -64,7 +64,9 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.billingAddressItem.headerItem.text, localizedString(.billingAddressSectionTitle, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.billingAddressItem.supportedCountryCodes, ["US", "UK"])
 
-        XCTAssertEqual(sut.payButton.title, localizedString(.confirmPurchase, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.payButton.title, localizedSubmitButtonTitle(with: sut.payment?.amount,
+                                                                       style: .immediate,
+                                                                       sut.configuration.localizationParameters))
     }
     
     func testUIConfiguration() {
