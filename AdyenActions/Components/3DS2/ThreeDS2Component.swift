@@ -70,6 +70,7 @@ public final class ThreeDS2Component: ActionComponent {
             /// - Parameter localizedAuthenticationReason: The localized reason string show to the user while authentication flow.
             /// - Parameter appleTeamIdentifier: The Apple registered development team identifier.
             /// - Parameter delegatedAuthenticationComponentStyle: The delegated authentication component style.
+            /// - Parameter localizationParameters: The localization parameters, leave it nil to use the default parameters.
             public init(localizedRegistrationReason: String,
                         localizedAuthenticationReason: String,
                         appleTeamIdentifier: String,
@@ -105,6 +106,7 @@ public final class ThreeDS2Component: ActionComponent {
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component's configuration.
+    /// - Parameter presentationDelegate: Delegates `PresentableComponent`'s presentation.
     public init(context: AdyenContext,
                 configuration: Configuration = Configuration(),
                 presentationDelegate: PresentationDelegate?) {
