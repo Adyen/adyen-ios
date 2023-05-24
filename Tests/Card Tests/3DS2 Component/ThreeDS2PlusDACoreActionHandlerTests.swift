@@ -348,6 +348,45 @@ import XCTest
             waitForExpectations(timeout: 20, handler: nil)
         }
 
+        func testDelegatedAuthenticationApprovalFlowWhenUserApprovesButVerificationFails() throws {
+            // The token and result are base 64 encoded.
+            enum TestData {
+                static let fingerprintToken = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES0lucHV0IjoiIyNTb21lZGVsZWdhdGVkQXV0aGVudGljYXRpb25TREtJbnB1dCMjIiwiZGlyZWN0b3J5U2VydmVySWQiOiJGMDEzMzcxMzM3IiwiZGlyZWN0b3J5U2VydmVyUHVibGljS2V5IjoiI0RpcmVjdG9yeVNlcnZlclB1YmxpY0tleSMiLCJkaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIjoiIyNEaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIyMiLCJ0aHJlZURTTWVzc2FnZVZlcnNpb24iOiIyLjIuMCIsInRocmVlRFNTZXJ2ZXJUcmFuc0lEIjoiMTUwZmEzYjgtZTZjOC00N2ExLTk2ZTAtOTEwNzYzYmVlYzU3In0="
+                // Result without delegatedAuthenticationSDKOutput
+                static let expectedFingerprintResult = "eyJzZGtFbmNEYXRhIjoiZGV2aWNlX2luZm8iLCJzZGtSZWZlcmVuY2VOdW1iZXIiOiJzZGtSZWZlcmVuY2VOdW1iZXIiLCJzZGtBcHBJRCI6InNka0FwcGxpY2F0aW9uSWRlbnRpZmllciIsInNka0VwaGVtUHViS2V5Ijp7InkiOiJ6djBrejFTS2ZOdlQzcWw3NUwyMTdkZTZac3p4ZkxBOExVS09JS2U1WmY0IiwieCI6IjNiM21QZldodU94d09XeWRMZWpTM0RKRVVQaU1WRnh0ekdDVjY5MDZyZmMiLCJrdHkiOiJFQyIsImNydiI6IlAtMjU2In0sInNka1RyYW5zSUQiOiJzZGtUcmFuc2FjdGlvbklkZW50aWZpZXIifQ=="
+            }
+
+            let service = AnyADYServiceMock()
+            service.authenticationRequestParameters = authenticationRequestParameters
+                
+            let authenticationServiceMock = AuthenticationServiceMock()
+            authenticationServiceMock.onAuthenticate = { input in
+                throw NSError(domain: "Error during Authentication", code: 123)
+            }
+            let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
+            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
+                                                      service: service,
+                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback,
+                                                                                               showApprovalScreenReturnState: .approve),
+                                                      delegatedAuthenticationService: authenticationServiceMock)
+            
+            let fingerprintAction = ThreeDS2FingerprintAction(fingerprintToken: TestData.fingerprintToken,
+                                                          authorisationToken: "AuthToken",
+                                                          paymentData: "paymentData")
+            sut.handle(fingerprintAction, event: analyticsEvent) { fingerprintResult in
+                switch fingerprintResult {
+                case let .success(fingerprintString):
+                    XCTAssertEqual(fingerprintString, TestData.expectedFingerprintResult)
+                case .failure:
+                    XCTFail()
+                }
+                resultExpectation.fulfill()
+            }
+        
+            waitForExpectations(timeout: 20, handler: nil)
+        }
+
+        
         func testDelegatedAuthenticationApprovalFlowWhenUserDoesntConsentToApprove() throws {
             // The token and result are base 64 encoded.
             enum TestData {
@@ -436,13 +475,57 @@ import XCTest
             waitForExpectations(timeout: 20, handler: nil)
         }
 
-        func testDelegatedAuthenticationRegistrationFlowWhenUserAgreesToRegister() {
-            
-        }
+        func testDelegatedAuthenticationRegistrationFlowWhenUserDoesntConsentToRegister() throws {
+
+            let service = AnyADYServiceMock()
+            service.authenticationRequestParameters = authenticationRequestParameters
+
+            let transaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
+            transaction.onPerformChallenge = { params, completion in
+                XCTAssertEqual(params.threeDSRequestorAppURL, URL(string: "http://google.com"))
+                completion(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y"), nil)
+            }
+            service.mockedTransaction = transaction
         
-        func testDelegatedAuthenticationRegistrationFlowWhenUserDoesntConsentToRegister() {
-            
-        }
+            let authenticationServiceMock = AuthenticationServiceMock()
         
+            authenticationServiceMock.onRegister = { _ in
+                XCTFail("On Register should not be called when the user doesn't consent to register")
+                return self.expectedSDKRegistrationOutput
+            }
+        
+            let expectedResult = try XCTUnwrap(try? ThreeDSResult(from: AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTransactionIdentifier", transactionStatus: "Y"),
+                                                                  delegatedAuthenticationSDKOutput: nil, // We shouldn't receive
+                                                                  authorizationToken: "authToken"
+            ))
+            
+            struct DeviceSupportCheckerMock: AdyenAuthentication.DeviceSupportCheckerProtocol {
+                var isDeviceSupported: Bool
+                
+                func checkSupport() throws -> String {
+                    return ""
+                }
+            }
+            let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
+            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
+                                                      service: service,
+                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
+                                                      delegatedAuthenticationService: authenticationServiceMock,
+                                                      deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true))
+            sut.threeDSRequestorAppURL = URL(string: "http://google.com")
+            sut.transaction = transaction
+            sut.delegatedAuthenticationState.isDeviceRegistrationFlow = true
+            sut.handle(challengeAction, event: analyticsEvent) { challengeResult in
+                switch challengeResult {
+                case let .success(result):
+                    XCTAssertEqual(result, expectedResult)
+                case .failure:
+                    XCTFail()
+                }
+                resultExpectation.fulfill()
+            }
+
+            waitForExpectations(timeout: 2, handler: nil)
+        }
     }
 #endif
