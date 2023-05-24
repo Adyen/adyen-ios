@@ -334,6 +334,28 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertFalse(boletoComponent.configuration.showEmailAddress)
     }
     
+    func testACHConfiguration() throws {
+        // Given
+        configuration.ach.showsStorePaymentMethodField = false
+        configuration.ach.showsBillingAddress = false
+        configuration.ach.billingAddressCountryCodes = ["US", "UK"]
+        
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
+                                   configuration: configuration,
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
+
+        // When
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .achDirectDebit })
+
+        // Then
+        let achComponent = try XCTUnwrap(paymentComponent as? ACHDirectDebitComponent)
+        XCTAssertFalse(achComponent.configuration.showsStorePaymentMethodField)
+        XCTAssertFalse(achComponent.configuration.showsBillingAddress)
+        XCTAssertEqual(achComponent.configuration.billingAddressCountryCodes, ["US", "UK"])
+    }
+    
     func testGiftCardConfiguration() throws {
         // Given
         configuration.giftCard.showsSecurityCodeField = false
@@ -342,10 +364,10 @@ class ComponentManagerTests: XCTestCase {
                                    configuration: configuration,
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
-
+        
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .giftcard })
-
+        
         // Then
         let giftCardComponent = try XCTUnwrap(paymentComponent as? GiftCardComponent)
         XCTAssertFalse(giftCardComponent.configuration.showsSecurityCodeField)
