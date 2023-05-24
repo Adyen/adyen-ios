@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -114,7 +114,8 @@ extension ComponentManager: PaymentComponentBuilder {
         return GiftCardComponent(paymentMethod: paymentMethod,
                                  context: context,
                                  amount: amount,
-                                 style: configuration.style.formComponent)
+                                 style: configuration.style.formComponent,
+                                 showsSecurityCodeField: configuration.giftCard.showsSecurityCodeField)
     }
 
     internal func build(paymentMethod: BoletoPaymentMethod) -> PaymentComponent? {
