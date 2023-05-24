@@ -17,7 +17,7 @@ import XCTest
     import UIKit
 
     @available(iOS 14.0, *)
-    class ThreeDS2PlusDACoreActionHandlerTests: XCTestCase {
+    final class ThreeDS2PlusDACoreActionHandlerTests: XCTestCase {
 
         var authenticationRequestParameters: AnyAuthenticationRequestParameters!
 
@@ -188,7 +188,7 @@ import XCTest
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
                                                       service: service,
-                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .register, showApprovalScreenReturnState: .approve),
+                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .register, showApprovalScreenReturnState: .fallback),
                                                       delegatedAuthenticationService: authenticationServiceMock,
                                                       deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true))
             sut.threeDSRequestorAppURL = URL(string: "http://google.com")
@@ -305,6 +305,58 @@ import XCTest
             }
 
             waitForExpectations(timeout: 2, handler: nil)
+        }
+        
+        // MARK: - Delegated Authentication tests
+        // The approval flow of delegated authentication
+        func testDelegatedAuthenticationApprovalFlowWhenUserApproves() throws {
+            
+            enum TestDataForSuccessfulDelegatedAuthentication {
+                static let fingerprintToken = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES0lucHV0IjoiIyNTb21lZGVsZWdhdGVkQXV0aGVudGljYXRpb25TREtJbnB1dCMjIiwiZGlyZWN0b3J5U2VydmVySWQiOiJGMDEzMzcxMzM3IiwiZGlyZWN0b3J5U2VydmVyUHVibGljS2V5IjoiI0RpcmVjdG9yeVNlcnZlclB1YmxpY0tleSMiLCJkaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIjoiIyNEaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIyMiLCJ0aHJlZURTTWVzc2FnZVZlcnNpb24iOiIyLjIuMCIsInRocmVlRFNTZXJ2ZXJUcmFuc0lEIjoiMTUwZmEzYjgtZTZjOC00N2ExLTk2ZTAtOTEwNzYzYmVlYzU3In0="
+                            
+                static let expectedFingerprintResult = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES091dHB1dCI6Ik9uQXV0aGVudGljYXRlIiwic2RrRW5jRGF0YSI6ImRldmljZV9pbmZvIiwic2RrUmVmZXJlbmNlTnVtYmVyIjoic2RrUmVmZXJlbmNlTnVtYmVyIiwic2RrQXBwSUQiOiJzZGtBcHBsaWNhdGlvbklkZW50aWZpZXIiLCJzZGtFcGhlbVB1YktleSI6eyJ5IjoienYwa3oxU0tmTnZUM3FsNzVMMjE3ZGU2WnN6eGZMQThMVUtPSUtlNVpmNCIsIngiOiIzYjNtUGZXaHVPeHdPV3lkTGVqUzNESkVVUGlNVkZ4dHpHQ1Y2OTA2cmZjIiwia3R5IjoiRUMiLCJjcnYiOiJQLTI1NiJ9LCJzZGtUcmFuc0lEIjoic2RrVHJhbnNhY3Rpb25JZGVudGlmaWVyIn0="
+            }
+
+            let service = AnyADYServiceMock()
+            service.authenticationRequestParameters = authenticationRequestParameters
+                
+            let authenticationServiceMock = AuthenticationServiceMock()
+            authenticationServiceMock.onAuthenticate = { input in
+                return "OnAuthenticate"
+            }
+            let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
+            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
+                                                      service: service,
+                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback,
+                                                                                               showApprovalScreenReturnState: .approve),
+                                                      delegatedAuthenticationService: authenticationServiceMock)
+            
+            let fingerprintAction = ThreeDS2FingerprintAction(fingerprintToken: TestDataForSuccessfulDelegatedAuthentication.fingerprintToken,
+                                                          authorisationToken: "AuthToken",
+                                                          paymentData: "paymentData")
+            sut.handle(fingerprintAction, event: analyticsEvent) { fingerprintResult in
+                switch fingerprintResult {
+                case let .success(fingerprintString):
+                    XCTAssertEqual(fingerprintString, TestDataForSuccessfulDelegatedAuthentication.expectedFingerprintResult)
+                case .failure:
+                    XCTFail()
+                }
+                resultExpectation.fulfill()
+            }
+        
+            waitForExpectations(timeout: 20, handler: nil)
+        }
+
+        func testDelegatedAuthenticationApprovalFlowWhenUserDoesntConsentToApprove() throws {
+            
+        }
+
+        func testDelegatedAuthenticationRegistrationFlowWhenUserAgreesToRegister() {
+            
+        }
+        
+        func testDelegatedAuthenticationRegistrationFlowWhenUserDoesntConsentToRegister() {
+            
         }
 
     }
