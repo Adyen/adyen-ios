@@ -43,7 +43,9 @@ internal final class DAApprovalViewController: UIViewController {
     private let style: DelegatedAuthenticationComponentStyle
     private var timeoutTimer: ExpirationTimer?
     private let localizationParameters: LocalizationParameters?
-
+    
+    /// The action to delete the credentials is via a link in a UITextView.
+    private let textViewRemoveCredentialsLink = "removeCredential://"
     internal typealias Handler = () -> Void
     
     internal init(style: DelegatedAuthenticationComponentStyle,
@@ -90,7 +92,7 @@ internal final class DAApprovalViewController: UIViewController {
         paragraphStyle.alignment = .center
         let attributedString = NSMutableAttributedString(string: string, attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
         if let range = string.adyen.linkRanges().first {
-            attributedString.addAttribute(.link, value: "removeCredential://", range: range)
+            attributedString.addAttribute(.link, value: textViewRemoveCredentialsLink, range: range)
         }
         attributedString.mutableString.replaceOccurrences(of: "%#", with: "", range: NSRange(location: 0, length: attributedString.length))
         approvalView.textView.attributedText = attributedString
@@ -168,7 +170,7 @@ extension DAApprovalViewController: DelegatedAuthenticationViewDelegate {
 
 extension DAApprovalViewController: UITextViewDelegate {
     internal func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        if URL.absoluteString == "removeCredential://" {
+        if URL.absoluteString == textViewRemoveCredentialsLink {
             removeCredential()
         }
         return false
