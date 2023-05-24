@@ -30,11 +30,8 @@ public final class GiftCardComponent: PresentableComponent,
     /// The gift card payment method.
     public var paymentMethod: PaymentMethod { giftCardPaymentMethod }
 
-    /// Describes the component's UI style.
-    public let style: FormComponentStyle
-    
-    /// Indicates whether to show the security code field at all.
-    public let showsSecurityCodeField: Bool
+    /// The configuration of the component.
+    public var configuration: Configuration
 
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -51,51 +48,45 @@ public final class GiftCardComponent: PresentableComponent,
     ///   - paymentMethod: The gift card payment method.
     ///   - context:The context object for this component.
     ///   - amount: The amount to pay.
-    ///   - style: The form style.
+    ///   - configuration: The configuration of the component.
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
-    ///   - context: The context object for this component.
-    ///   - style:  The Component's UI style.
     public convenience init(paymentMethod: GiftCardPaymentMethod,
                             context: AdyenContext,
                             amount: Amount,
-                            style: FormComponentStyle = FormComponentStyle(),
-                            showsSecurityCodeField: Bool = true) {
+                            configuration: Configuration = .init()) {
         self.init(paymentMethod: paymentMethod,
                   context: context,
                   amount: amount,
-                  style: style,
-                  publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext),
-                  showsSecurityCodeField: showsSecurityCodeField)
+                  configuration: configuration,
+                  publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
     
     internal init(paymentMethod: GiftCardPaymentMethod,
                   context: AdyenContext,
                   amount: Amount,
-                  style: FormComponentStyle = FormComponentStyle(),
-                  publicKeyProvider: AnyPublicKeyProvider,
-                  showsSecurityCodeField: Bool = true) {
+                  configuration: Configuration = .init(),
+                  publicKeyProvider: AnyPublicKeyProvider) {
         self.giftCardPaymentMethod = paymentMethod
         self.context = context
-        self.style = style
+        self.configuration = configuration
         self.publicKeyProvider = publicKeyProvider
         self.amount = amount
-        self.showsSecurityCodeField = showsSecurityCodeField
     }
 
     // MARK: - Presentable Component Protocol
 
-    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
+    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: configuration.style)
 
     public var requiresModalPresentation: Bool { true }
 
     private lazy var formViewController: FormViewController = {
-        let formViewController = FormViewController(style: style)
+        let formViewController = FormViewController(style: configuration.style)
         formViewController.localizationParameters = localizationParameters
         formViewController.delegate = self
         formViewController.title = paymentMethod.displayInformation(using: localizationParameters).title
         formViewController.append(errorItem)
         formViewController.append(numberItem)
-        if showsSecurityCodeField {
+        if configuration.showsSecurityCodeField {
             formViewController.append(securityCodeItem)
         }
         formViewController.append(FormSpacerItem())
@@ -108,13 +99,13 @@ public final class GiftCardComponent: PresentableComponent,
 
     internal lazy var errorItem: FormErrorItem = {
         let item = FormErrorItem(iconName: "error",
-                                 style: style.errorStyle)
+                                 style: configuration.style.errorStyle)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "errorItem")
         return item
     }()
 
     internal lazy var numberItem: FormTextInputItem = {
-        let item = FormTextInputItem(style: style.textField)
+        let item = FormTextInputItem(style: configuration.style.textField)
 
         item.title = localizedString(.cardNumberItemTitle, localizationParameters)
         item.validator = NumericStringValidator(minimumLength: 15, maximumLength: 32)
@@ -127,7 +118,7 @@ public final class GiftCardComponent: PresentableComponent,
     }()
 
     internal lazy var securityCodeItem: FormTextInputItem = {
-        let item = FormTextInputItem(style: style.textField)
+        let item = FormTextInputItem(style: configuration.style.textField)
         item.title = localizedString(.cardPinTitle, localizationParameters)
         item.validator = NumericStringValidator(minimumLength: 3, maximumLength: 10)
         item.formatter = NumericFormatter()
@@ -140,7 +131,7 @@ public final class GiftCardComponent: PresentableComponent,
     }()
 
     internal lazy var button: FormButtonItem = {
-        let item = FormButtonItem(style: style.mainButtonItem)
+        let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedString(.cardApplyGiftcard, localizationParameters)
         item.buttonSelectionHandler = { [weak self] in

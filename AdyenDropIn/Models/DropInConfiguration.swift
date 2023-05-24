@@ -87,8 +87,9 @@ public extension DropInComponent {
         public var showEmailAddress: Bool = true
     }
     
-    struct GiftCard {
-        
+    /// Gift card component configuration.
+    struct GiftCard: AnyGiftCardConfiguration {
+        /// Indicates whether to show the security code field. Defaults to true.
         public var showsSecurityCodeField: Bool = true
     }
     

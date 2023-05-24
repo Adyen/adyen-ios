@@ -111,11 +111,12 @@ extension ComponentManager: PaymentComponentBuilder {
 
     internal func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {
         guard let amount = context.payment?.amount, partialPaymentEnabled else { return nil }
+        let config = GiftCardComponent.Configuration(style: configuration.style.formComponent,
+                                                     showsSecurityCodeField: configuration.giftCard.showsSecurityCodeField)
         return GiftCardComponent(paymentMethod: paymentMethod,
                                  context: context,
                                  amount: amount,
-                                 style: configuration.style.formComponent,
-                                 showsSecurityCodeField: configuration.giftCard.showsSecurityCodeField)
+                                 configuration: config)
     }
 
     internal func build(paymentMethod: BoletoPaymentMethod) -> PaymentComponent? {
