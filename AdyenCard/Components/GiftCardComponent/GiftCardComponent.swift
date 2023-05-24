@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -32,6 +32,9 @@ public final class GiftCardComponent: PresentableComponent,
 
     /// Describes the component's UI style.
     public let style: FormComponentStyle
+    
+    /// Indicates whether to show the security code field at all.
+    public let showsSecurityCodeField: Bool
 
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -55,24 +58,28 @@ public final class GiftCardComponent: PresentableComponent,
     public convenience init(paymentMethod: GiftCardPaymentMethod,
                             context: AdyenContext,
                             amount: Amount,
-                            style: FormComponentStyle = FormComponentStyle()) {
+                            style: FormComponentStyle = FormComponentStyle(),
+                            showsSecurityCodeField: Bool = true) {
         self.init(paymentMethod: paymentMethod,
                   context: context,
                   amount: amount,
                   style: style,
-                  publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
+                  publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext),
+                  showsSecurityCodeField: showsSecurityCodeField)
     }
     
     internal init(paymentMethod: GiftCardPaymentMethod,
                   context: AdyenContext,
                   amount: Amount,
                   style: FormComponentStyle = FormComponentStyle(),
-                  publicKeyProvider: AnyPublicKeyProvider) {
+                  publicKeyProvider: AnyPublicKeyProvider,
+                  showsSecurityCodeField: Bool = true) {
         self.giftCardPaymentMethod = paymentMethod
         self.context = context
         self.style = style
         self.publicKeyProvider = publicKeyProvider
         self.amount = amount
+        self.showsSecurityCodeField = showsSecurityCodeField
     }
 
     // MARK: - Presentable Component Protocol
@@ -88,7 +95,9 @@ public final class GiftCardComponent: PresentableComponent,
         formViewController.title = paymentMethod.displayInformation(using: localizationParameters).title
         formViewController.append(errorItem)
         formViewController.append(numberItem)
-        formViewController.append(securityCodeItem)
+        if showsSecurityCodeField {
+            formViewController.append(securityCodeItem)
+        }
         formViewController.append(FormSpacerItem())
         formViewController.append(button)
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
@@ -237,7 +246,7 @@ public final class GiftCardComponent: PresentableComponent,
 
     private func check(balance: Balance, toPay amount: Amount) -> Result<BalanceChecker.Result, Swift.Error> {
         do {
-            return .success(try BalanceChecker().check(balance: balance, isEnoughToPay: amount))
+            return try .success(BalanceChecker().check(balance: balance, isEnoughToPay: amount))
         } catch {
             return .failure(error)
         }
