@@ -45,7 +45,11 @@ internal final class AuthenticationServiceMock: AuthenticationServiceProtocol {
             }
         }
     
-        internal func reset() throws {}
+        internal var onReset: (() -> Void)?
+
+        internal func reset() throws {
+            onReset?()
+        }
     
         internal func checkSupport() throws -> String {
             "eyJkZXZpY2UiOiJpT1MifQ"
