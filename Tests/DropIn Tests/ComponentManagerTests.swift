@@ -333,6 +333,23 @@ class ComponentManagerTests: XCTestCase {
         let boletoComponent = try XCTUnwrap(paymentComponent as? BoletoComponent)
         XCTAssertFalse(boletoComponent.configuration.showEmailAddress)
     }
+    
+    func testGiftCardConfiguration() throws {
+        // Given
+        configuration.giftCard.showsSecurityCodeField = false
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
+                                   configuration: configuration,
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
+
+        // When
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .giftcard })
+
+        // Then
+        let giftCardComponent = try XCTUnwrap(paymentComponent as? GiftCardComponent)
+        XCTAssertFalse(giftCardComponent.configuration.showsSecurityCodeField)
+    }
 
     // MARK: - Private
 

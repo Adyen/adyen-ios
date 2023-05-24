@@ -514,6 +514,24 @@ class GiftCardComponentTests: XCTestCase {
         // Then
         XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
     }
+    
+    func testHidingSecurityCodeItemView() throws {
+        
+        // Given
+        sut = GiftCardComponent(paymentMethod: paymentMethod,
+                                context: context,
+                                amount: amountToPay,
+                                configuration: .init(showsSecurityCodeField: false),
+                                publicKeyProvider: publicKeyProvider)
+
+        let mockViewController = UIViewController()
+
+        // When
+        sut.viewWillAppear(viewController: mockViewController)
+
+        // Then
+        XCTAssertNil(securityCodeItemView)
+    }
 
     private func populate(cardNumber: String, pin: String) {
         populate(textItemView: numberItemView!, with: cardNumber)
