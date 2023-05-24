@@ -52,11 +52,12 @@ class ComponentManagerTests: XCTestCase {
             affirm,
             atome,
             achDirectDebit,
-            bacsDirectDebit
+            bacsDirectDebit,
+            giftCard
         ]
     ]
     
-    let numberOfExpectedRegularComponents = 21
+    let numberOfExpectedRegularComponents = 22
 
     var presentationDelegate: PresentationDelegateMock!
     var context: AdyenContext!
@@ -89,8 +90,8 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.storedComponents.filter { $0.context.apiContext.clientKey == Dummy.apiContext.clientKey }.count, 5)
         XCTAssertEqual(sut.regularComponents.filter { $0.context.apiContext.clientKey == Dummy.apiContext.clientKey }.count, numberOfExpectedRegularComponents)
 
-        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 17)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 17)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 18)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 18)
         XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 0)
     }
 
@@ -105,8 +106,8 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.storedComponents.count, 5)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents + 1)
 
-        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 17)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 18)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 18)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 19)
         XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 1)
     }
     
