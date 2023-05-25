@@ -164,7 +164,8 @@ let package = Package(
             name: "AdyenCashAppPay",
             dependencies: [
                 .target(name: "Adyen"),
-                .product(name: "PayKit", package: "PayKit")
+                .product(name: "PayKit", package: "PayKit"),
+                .product(name: "PayKitUI", package: "PayKit")
             ],
             path: "AdyenCashAppPay"
         )

@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) import Adyen
 import PayKit
+import PayKitUI
 import UIKit
 
 /// A component that handles a Cash App Pay payment.
@@ -75,13 +76,11 @@ public final class CashAppPayComponent: PaymentComponent,
         return storeDetailsItem
     }()
 
-    internal lazy var cashAppPayButton: FormButtonItem = {
-        let item = FormButtonItem(style: configuration.style.mainButtonItem)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.cashAppButtonItem)
-        item.title = localizedString(.cashAppPayTitle, configuration.localizationParameters)
-        item.buttonSelectionHandler = { [weak self] in
+    internal lazy var cashAppPayButton: CashAppPayButtonItem = {
+        let item = CashAppPayButtonItem { [weak self] in
             self?.didSelectSubmitButton()
         }
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.cashAppButtonItem)
         return item
     }()
 

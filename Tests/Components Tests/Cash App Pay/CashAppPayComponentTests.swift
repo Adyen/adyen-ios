@@ -66,14 +66,6 @@ import XCTest
             var componentStyle = FormComponentStyle()
             
             componentStyle.backgroundColor = .green
-
-            // button
-            componentStyle.mainButtonItem.button.title.color = .white
-            componentStyle.mainButtonItem.button.title.backgroundColor = .red
-            componentStyle.mainButtonItem.button.title.textAlignment = .center
-            componentStyle.mainButtonItem.button.title.font = .systemFont(ofSize: 22)
-            componentStyle.mainButtonItem.button.backgroundColor = .red
-            componentStyle.mainButtonItem.backgroundColor = .brown
             
             // switch
             componentStyle.toggle.title.backgroundColor = .green
@@ -88,9 +80,6 @@ import XCTest
             UIApplication.shared.keyWindow?.rootViewController = sut.viewController
             wait(for: .milliseconds(300))
             
-            let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.cashAppButtonItem.button")
-            let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.cashAppButtonItem.button.titleLabel")
-            
             let storeDetailsItemView: FormToggleItemView? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem")
             let storeDetailsItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem.titleLabel")
             
@@ -100,15 +89,6 @@ import XCTest
             XCTAssertEqual(storeDetailsItemTitleLabel?.textAlignment, .left)
             XCTAssertEqual(storeDetailsItemTitleLabel?.textColor, .yellow)
             XCTAssertEqual(storeDetailsItemTitleLabel?.font, .systemFont(ofSize: 5))
-
-            // Test button
-            XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
-            XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
-            
-            XCTAssertEqual(payButtonItemViewButtonTitle?.text, "Cash App Pay")
 
             XCTAssertEqual(sut.viewController.view.backgroundColor, .green)
         }

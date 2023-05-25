@@ -141,6 +141,9 @@
 		A06B7A9A2A1CEC59008FC09D /* StoredCashAppPayPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06B7A992A1CEC59008FC09D /* StoredCashAppPayPaymentMethod.swift */; };
 		A06B7A9C2A1CEEAE008FC09D /* AnyCashAppPayConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06B7A9B2A1CEEAE008FC09D /* AnyCashAppPayConfiguration.swift */; };
 		A06B7A9E2A1E458C008FC09D /* CashAppPayConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06B7A9D2A1E458C008FC09D /* CashAppPayConfiguration.swift */; };
+		A06B7AA02A1F8EFF008FC09D /* PayKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = A06B7A9F2A1F8EFF008FC09D /* PayKitUI */; };
+		A06B7AA32A1F9392008FC09D /* CashAppPayButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06B7AA22A1F9392008FC09D /* CashAppPayButtonItem.swift */; };
+		A06B7AA52A1F9484008FC09D /* CashAppPayButtonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06B7AA42A1F9484008FC09D /* CashAppPayButtonItemView.swift */; };
 		A07355D7276B350F00530562 /* DocumentActionViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */; };
 		A078327F299BE02F0029DA0D /* CashAppPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A078327E299BE02F0029DA0D /* CashAppPaymentMethod.swift */; };
 		A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */; };
@@ -1266,6 +1269,8 @@
 		A06B7A992A1CEC59008FC09D /* StoredCashAppPayPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCashAppPayPaymentMethod.swift; sourceTree = "<group>"; };
 		A06B7A9B2A1CEEAE008FC09D /* AnyCashAppPayConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCashAppPayConfiguration.swift; sourceTree = "<group>"; };
 		A06B7A9D2A1E458C008FC09D /* CashAppPayConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPayConfiguration.swift; sourceTree = "<group>"; };
+		A06B7AA22A1F9392008FC09D /* CashAppPayButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPayButtonItem.swift; sourceTree = "<group>"; };
+		A06B7AA42A1F9484008FC09D /* CashAppPayButtonItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPayButtonItemView.swift; sourceTree = "<group>"; };
 		A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionViewDelegateMock.swift; sourceTree = "<group>"; };
 		A078327E299BE02F0029DA0D /* CashAppPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPaymentMethod.swift; sourceTree = "<group>"; };
 		A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatter.swift; sourceTree = "<group>"; };
@@ -1956,6 +1961,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A06B7AA02A1F8EFF008FC09D /* PayKitUI in Frameworks */,
 				A020EC4F29E6ECBD0050B2FE /* PayKit in Frameworks */,
 				A04F8C2B29E5957B00F3F62B /* Adyen.framework in Frameworks */,
 			);
@@ -2418,9 +2424,19 @@
 				A03B7C9129B0C61500FDDDFC /* CashAppPayComponent.swift */,
 				A06B7A9D2A1E458C008FC09D /* CashAppPayConfiguration.swift */,
 				A01D775529B250C10075BD70 /* CashAppPayDetails.swift */,
+				A06B7AA12A1F910D008FC09D /* CashAppPayButton */,
 				A04F8C2129E5950100F3F62B /* AdyenCashAppPay.docc */,
 			);
 			path = AdyenCashAppPay;
+			sourceTree = "<group>";
+		};
+		A06B7AA12A1F910D008FC09D /* CashAppPayButton */ = {
+			isa = PBXGroup;
+			children = (
+				A06B7AA22A1F9392008FC09D /* CashAppPayButtonItem.swift */,
+				A06B7AA42A1F9484008FC09D /* CashAppPayButtonItemView.swift */,
+			);
+			path = CashAppPayButton;
 			sourceTree = "<group>";
 		};
 		A0F41E3E26CA60A80089AD6C /* Installment */ = {
@@ -4895,6 +4911,7 @@
 			name = AdyenCashAppPay;
 			packageProductDependencies = (
 				A020EC4E29E6ECBD0050B2FE /* PayKit */,
+				A06B7A9F2A1F8EFF008FC09D /* PayKitUI */,
 			);
 			productName = AdyenCashAppPay;
 			productReference = A04F8C1E29E5950100F3F62B /* AdyenCashAppPay.framework */;
@@ -5793,6 +5810,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A06B7AA32A1F9392008FC09D /* CashAppPayButtonItem.swift in Sources */,
+				A06B7AA52A1F9484008FC09D /* CashAppPayButtonItemView.swift in Sources */,
 				A04F8C3229E596C300F3F62B /* CashAppPayComponent.swift in Sources */,
 				A04F8C2229E5950100F3F62B /* AdyenCashAppPay.docc in Sources */,
 				A06B7A9E2A1E458C008FC09D /* CashAppPayConfiguration.swift in Sources */,
@@ -8149,6 +8168,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A03B7C9329B21C3D00FDDDFC /* XCRemoteSwiftPackageReference "cash-app-pay-ios-sdk" */;
 			productName = PayKit;
+		};
+		A06B7A9F2A1F8EFF008FC09D /* PayKitUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A03B7C9329B21C3D00FDDDFC /* XCRemoteSwiftPackageReference "cash-app-pay-ios-sdk" */;
+			productName = PayKitUI;
 		};
 		E72375DC27AABF450020DCF9 /* AdyenWeChatPayInternal */ = {
 			isa = XCSwiftPackageProductDependency;
