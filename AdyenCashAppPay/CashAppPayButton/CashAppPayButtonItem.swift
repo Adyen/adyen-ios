@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import Foundation
 import UIKit
 
 /// A form item that contains Cash App Pay's own button.
