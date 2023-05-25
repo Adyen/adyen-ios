@@ -130,6 +130,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         let alertLabel = UILabel(style: item.style.title)
         alertLabel.textColor = item.style.errorColor
         alertLabel.isAccessibilityElement = false
+        alertLabel.numberOfLines = 0
         alertLabel.text = item.validationFailureMessage
         alertLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "alertLabel") }
         alertLabel.isHidden = true
