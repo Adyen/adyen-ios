@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import Foundation
 
 /// Configuration for Cash App Pay Component.
 public struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
