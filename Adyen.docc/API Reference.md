@@ -62,6 +62,7 @@ The Adyen DropIn/Components SDK API Reference.
 - ``StoredBCMCPaymentMethod``
 - ``StoredBLIKPaymentMethod``
 - ``StoredACHDirectDebitPaymentMethod``
+- ``StoredCashAppPayPaymentMethod``
 
 ## Actions
 

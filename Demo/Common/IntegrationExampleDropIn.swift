@@ -52,8 +52,8 @@ extension IntegrationExample {
         configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         configuration.card.billingAddress.mode = .postalCode
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
-        configuration.cashAppPay = CashAppPayConfiguration(redirectURL: URL(string: "ui-host://callback")!,
-                                                           showsStorePaymentMethodField: true)
+        configuration.cashAppPay = DropInComponent.CashAppPay(redirectURL: URL(string: ConfigurationConstants.returnUrl)!,
+                                                              showsStorePaymentMethodField: true)
         
         let component = DropInComponent(paymentMethods: paymentMethods,
                                         context: context,

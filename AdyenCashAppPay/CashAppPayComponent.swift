@@ -50,8 +50,8 @@ public final class CashAppPayComponent: PaymentComponent,
 
     private let cashAppPayPaymentMethod: CashAppPayPaymentMethod
 
-    private var storePayment: Bool {
-        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : configuration.storePaymentMethod
+    private var storePayment: Bool? {
+        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : nil
     }
 
     private lazy var cashAppPay: CashAppPay = {
@@ -155,7 +155,7 @@ public final class CashAppPayComponent: PaymentComponent,
             actions.append(oneTimeAction)
         }
     
-        if storePayment {
+        if storePayment == true {
             let onFileAction = PaymentAction.onFilePayment(scopeID: cashAppPayPaymentMethod.scopeId,
                                                            accountReferenceID: nil)
             actions.append(onFileAction)

@@ -4,10 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
+import Adyen
 
 /// Configuration for Cash App Pay Component.
-public struct CashAppPayConfiguration {
+public struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
 
     /// The URL for Cash App to call in order to redirect back to your application.
     public let redirectURL: URL

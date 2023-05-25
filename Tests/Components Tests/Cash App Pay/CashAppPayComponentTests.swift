@@ -1,9 +1,7 @@
 //
-//  CashAppPayComponentTests.swift
-//  AdyenUIKitTests
+// Copyright (c) 2023 Adyen N.V.
 //
-//  Created by Eren Besel on 4/17/23.
-//  Copyright © 2023 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import XCTest

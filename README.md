@@ -267,6 +267,7 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - [Online Banking Poland Component][reference.issuerListComponent]
 - [UPI Component][reference.UPIComponent]
 - [QRCode Component][reference.QRCodeActionComponent]
+- [Cash App Pay Component][reference.CashAppPayComponent]
 
 
 ## Customization

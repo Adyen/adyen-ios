@@ -43,7 +43,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                      configuration: .init(localizationParameters: configuration.localizationParameters))
     }
     
-    func build(paymentMethod: StoredCashAppPayPaymentMethod) -> PaymentComponent? {
+    internal func build(paymentMethod: StoredCashAppPayPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod,
                                      context: context,
                                      configuration: .init(localizationParameters: configuration.localizationParameters))
@@ -168,18 +168,21 @@ extension ComponentManager: PaymentComponentBuilder {
     
     internal func build(paymentMethod: CashAppPayPaymentMethod) -> PaymentComponent? {
         #if canImport(PayKit)
-            guard var cashAppPayConfig = configuration.cashAppPay else {
+            guard var cashAppPayDropInConfig = configuration.cashAppPay else {
                 AdyenAssertion.assertionFailure(
                     message: "Cash App Pay configuration instance must not be nil in order to use CashAppPayComponent")
                 return nil
             }
             if #available(iOS 13.0, *) {
-                cashAppPayConfig.localizationParameters = configuration.localizationParameters
-                cashAppPayConfig.style = configuration.style.formComponent
+                var cashAppPayConfiguration = CashAppPayConfiguration(redirectURL: cashAppPayDropInConfig.redirectURL,
+                                                                      referenceId: cashAppPayDropInConfig.referenceId)
+                cashAppPayConfiguration.showsStorePaymentMethodField = cashAppPayDropInConfig.showsStorePaymentMethodField
+                cashAppPayConfiguration.localizationParameters = configuration.localizationParameters
+                cashAppPayConfiguration.style = configuration.style.formComponent
         
                 return CashAppPayComponent(paymentMethod: paymentMethod,
                                            context: context,
-                                           configuration: cashAppPayConfig)
+                                           configuration: cashAppPayConfiguration)
             } else {
                 return nil
             }
