@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -233,7 +233,10 @@ extension ComponentManager: PaymentComponentBuilder {
     private func createACHDirectDebitComponent(_ paymentMethod: ACHDirectDebitPaymentMethod) -> ACHDirectDebitComponent {
         let config = ACHDirectDebitComponent.Configuration(style: configuration.style.formComponent,
                                                            shopperInformation: configuration.shopperInformation,
-                                                           localizationParameters: configuration.localizationParameters)
+                                                           localizationParameters: configuration.localizationParameters,
+                                                           showsStorePaymentMethodField: configuration.ach.showsStorePaymentMethodField,
+                                                           showsBillingAddress: configuration.ach.showsBillingAddress,
+                                                           billingAddressCountryCodes: configuration.ach.billingAddressCountryCodes)
         return ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                        context: context,
                                        configuration: config)
