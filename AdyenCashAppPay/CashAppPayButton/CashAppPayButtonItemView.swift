@@ -29,7 +29,7 @@ internal final class CashAppPayButtonItemView: FormItemView<CashAppPayButtonItem
     
     internal lazy var button: CashAppPayButton = {
         let button = CashAppPayButton { [weak self] in
-            self?.item.selectionHandler?()
+            self?.item.selectionHandler()
         }
         
         button.accessibilityIdentifier = item.identifier.map {
