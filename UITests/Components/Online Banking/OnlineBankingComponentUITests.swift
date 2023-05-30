@@ -97,7 +97,7 @@ class OnlineBankingComponentUITests: XCTestCase {
                                           context: context,
                                           configuration: config)
 
-        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
+        UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
        
         let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
 
