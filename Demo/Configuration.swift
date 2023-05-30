@@ -99,7 +99,7 @@ internal struct Configuration: Codable {
         countryCode: "NL",
         value: 17408,
         currencyCode: "EUR",
-        apiVersion: 68,
+        apiVersion: 70,
         merchantAccount: ConfigurationConstants.merchantAccount
     )
     

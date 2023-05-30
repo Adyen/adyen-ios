@@ -14,7 +14,8 @@ import Foundation
  */
 public struct PaymentComponentData {
 
-    internal let amount: Amount?
+    /// The payment amount.
+    public let amount: Amount?
     
     /// The payment method details submitted by the payment component.
     public let paymentMethod: PaymentMethodDetails
@@ -25,7 +26,8 @@ public struct PaymentComponentData {
     /// The partial payment order if any.
     public let order: PartialPaymentOrder?
 
-    /// The payment amount.
+    /// The remaining amount if there is an order, the full amount otherwise.
+    @available(*, deprecated, message: "This property is deprecated. Use the amount property if needed.")
     public var amountToPay: Amount? {
         order?.remainingAmount ?? amount
     }
