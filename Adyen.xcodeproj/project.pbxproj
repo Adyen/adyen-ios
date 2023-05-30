@@ -280,6 +280,7 @@
 		E7085C8D262DD4F800D0153B /* FormRegionPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085C8C262DD4F800D0153B /* FormRegionPickerItem.swift */; };
 		E7085CB7262DE14A00D0153B /* AddressStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085CB6262DE14A00D0153B /* AddressStyle.swift */; };
 		E7085D7D262EEF6200D0153B /* AllRegions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7085D7C262EEF6100D0153B /* AllRegions.swift */; };
+		E715A7342A1B96890047B87A /* UIApplicationHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E715A7332A1B96890047B87A /* UIApplicationHelpers.swift */; };
 		E7166A5224EAC5BA007CCDEF /* BinLookupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5124EAC5BA007CCDEF /* BinLookupRequest.swift */; };
 		E7166A5424EACC44007CCDEF /* BinLookupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5324EACC44007CCDEF /* BinLookupResponse.swift */; };
 		E7166A5624EAD99F007CCDEF /* BinInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5524EAD99F007CCDEF /* BinInfoProvider.swift */; };
@@ -760,7 +761,6 @@
 		F9CA6BC127D5E76A00D7BE6E /* CreateOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CA6BC027D5E76A00D7BE6E /* CreateOrderRequest.swift */; };
 		F9CA6BC427D5E99000D7BE6E /* CancelOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CA6BC327D5E99000D7BE6E /* CancelOrderRequest.swift */; };
 		F9CA6BC627D7503200D7BE6E /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CA6BC527D7503200D7BE6E /* SessionTests.swift */; };
-		F9CCA3C3296ECB9900AD643D /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007D79212823BE6A00382D31 /* UIApplicationExtension.swift */; };
 		F9CCA3C4296ECB9900AD643D /* AtomeComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007D790B2812C81400382D31 /* AtomeComponentUITests.swift */; };
 		F9CCA3C5296ECB9900AD643D /* ListViewControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CCA3AF296EAD6100AD643D /* ListViewControllerUITests.swift */; };
 		F9CCA3C6296ECB9900AD643D /* QRCodeActionComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058692228B8C1FE00B65A19 /* QRCodeActionComponentUITests.swift */; };
@@ -1147,7 +1147,6 @@
 		006DCC02295C3E930015EA79 /* SegmentedControlStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlStyle.swift; sourceTree = "<group>"; };
 		007D790B2812C81400382D31 /* AtomeComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeComponentUITests.swift; sourceTree = "<group>"; };
 		007D791E2823A84C00382D31 /* AffirmComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentUITests.swift; sourceTree = "<group>"; };
-		007D79212823BE6A00382D31 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		008AD9DB2982C24000C33983 /* CancellableToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellableToolBar.swift; sourceTree = "<group>"; };
 		00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAddressViewModelBuilder.swift; sourceTree = "<group>"; };
 		00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeAddressViewModelBuilder.swift; sourceTree = "<group>"; };
@@ -1409,6 +1408,7 @@
 		E7098D81255D3E6E00829E73 /* hu-HU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "hu-HU"; path = "hu-HU.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E7098D82255D3E6E00829E73 /* cs-CZ */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "cs-CZ"; path = "cs-CZ.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E7098D83255D3E6E00829E73 /* sl-SI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "sl-SI"; path = "sl-SI.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E715A7332A1B96890047B87A /* UIApplicationHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationHelpers.swift; sourceTree = "<group>"; };
 		E7166A5124EAC5BA007CCDEF /* BinLookupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinLookupRequest.swift; sourceTree = "<group>"; };
 		E7166A5324EACC44007CCDEF /* BinLookupResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinLookupResponse.swift; sourceTree = "<group>"; };
 		E7166A5524EAD99F007CCDEF /* BinInfoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinInfoProvider.swift; sourceTree = "<group>"; };
@@ -2183,7 +2183,6 @@
 		007D79202823BE4C00382D31 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				007D79212823BE6A00382D31 /* UIApplicationExtension.swift */,
 				F9CCA3DD296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift */,
 			);
 			path = Helpers;
@@ -3057,6 +3056,7 @@
 				A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */,
 				E7E0E2372762005B001DF0C9 /* NSConstraintHelper.swift */,
 				0035016B2976B14A00632D8C /* UIImageViewHelpers.swift */,
+				E715A7332A1B96890047B87A /* UIApplicationHelpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -5886,6 +5886,7 @@
 				E787C9AC24696A8900B401E0 /* CornerRadiusStyle.swift in Sources */,
 				F9D5752A237C6084009C18B5 /* StoredBCMCPaymentMethod.swift in Sources */,
 				E2289B3C23D0BBB1002844BF /* ListSectionHeaderStyle.swift in Sources */,
+				E715A7342A1B96890047B87A /* UIApplicationHelpers.swift in Sources */,
 				F926D53723F6A35700D058D3 /* NumericFormatter.swift in Sources */,
 				A026C85127C4FE4700E6C34A /* BasicComponentConfiguration.swift in Sources */,
 				E7085B162628B29600D0153B /* FormPhoneExtensionPickerItemView.swift in Sources */,
@@ -6478,7 +6479,6 @@
 				F9CCA3CE296ECC9C00AD643D /* DummyPaymentMethods.swift in Sources */,
 				0022096429A8C39100B2BACD /* DokuComponentUITests.swift in Sources */,
 				F9CCA3C8296ECB9900AD643D /* IssuerListComponentUITests.swift in Sources */,
-				F9CCA3C3296ECB9900AD643D /* UIApplicationExtension.swift in Sources */,
 				F9CCA3C7296ECB9900AD643D /* AffirmComponentUITests.swift in Sources */,
 				F9CCA3D1296ECCEE00AD643D /* XCTestCase+FormAddressItem.swift in Sources */,
 				0022095C29A4C65E00B2BACD /* BoletoComponentUITests.swift in Sources */,
