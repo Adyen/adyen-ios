@@ -129,6 +129,7 @@
 		A04E60DB27F30D900051C72C /* SessionDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60DA27F30D900051C72C /* SessionDelegateMock.swift */; };
 		A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */; };
 		A0644AB728A5120C00BBF4A9 /* StorePaymentMethodFieldAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0644AB628A5120C00BBF4A9 /* StorePaymentMethodFieldAware.swift */; };
+		A06B7AA72A274A83008FC09D /* ResultHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06B7AA62A274A83008FC09D /* ResultHelpers.swift */; };
 		A07355D7276B350F00530562 /* DocumentActionViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */; };
 		A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */; };
 		A09ADA0E2806E72D00BF6802 /* IntegrationExampleSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09ADA0D2806E72D00BF6802 /* IntegrationExampleSession.swift */; };
@@ -1230,6 +1231,7 @@
 		A04E60DA27F30D900051C72C /* SessionDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDelegateMock.swift; sourceTree = "<group>"; };
 		A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponentTests.swift; sourceTree = "<group>"; };
 		A0644AB628A5120C00BBF4A9 /* StorePaymentMethodFieldAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePaymentMethodFieldAware.swift; sourceTree = "<group>"; };
+		A06B7AA62A274A83008FC09D /* ResultHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultHelpers.swift; sourceTree = "<group>"; };
 		A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionViewDelegateMock.swift; sourceTree = "<group>"; };
 		A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatter.swift; sourceTree = "<group>"; };
 		A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatterTests.swift; sourceTree = "<group>"; };
@@ -3057,6 +3059,7 @@
 				E7E0E2372762005B001DF0C9 /* NSConstraintHelper.swift */,
 				0035016B2976B14A00632D8C /* UIImageViewHelpers.swift */,
 				E715A7332A1B96890047B87A /* UIApplicationHelpers.swift */,
+				A06B7AA62A274A83008FC09D /* ResultHelpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -5840,6 +5843,7 @@
 				E788A4FB2658034400089448 /* ShopperInformation.swift in Sources */,
 				E7085B172628B29600D0153B /* PhoneExtensionInputControl.swift in Sources */,
 				F926D52C23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift in Sources */,
+				A06B7AA72A274A83008FC09D /* ResultHelpers.swift in Sources */,
 				F97C857725C1D5BA00D7F85C /* UIViewHelpers.swift in Sources */,
 				E95E24C022C2593900973184 /* ApplePayPaymentMethod.swift in Sources */,
 				F9A6C4D12657B0D700D8CD3E /* FormSpacerItemView.swift in Sources */,
