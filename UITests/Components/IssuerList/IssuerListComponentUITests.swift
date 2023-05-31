@@ -47,19 +47,19 @@ final class IssuerListComponentUITests: XCTestCase {
         let item = items[index]
         var cell = listViewController!.tableView.visibleCells[index] as! ListCell
         XCTAssertFalse(cell.showsActivityIndicator)
-        assertViewControllerImage(matching: sut.viewController, named: "initial_state")
+        assertViewHeirarchy(matching: sut.viewController, named: "initial_state")
     
         // start loading
         listViewController?.startLoading(for: item)
         cell = getCell(for: item, tableView: listViewController!.tableView)!
         XCTAssertTrue(cell.showsActivityIndicator)
-        assertViewControllerImage(matching: sut.viewController, named: "loading_first_cell")
+        assertViewHeirarchy(matching: sut.viewController, named: "loading_first_cell")
         
         // stop loading
         sut.stopLoadingIfNeeded()
         cell = getCell(for: item, tableView: listViewController!.tableView)!
         XCTAssertFalse(cell.showsActivityIndicator)
-        assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
+        assertViewHeirarchy(matching: sut.viewController, named: "stopped_loading")
         
     }
     
