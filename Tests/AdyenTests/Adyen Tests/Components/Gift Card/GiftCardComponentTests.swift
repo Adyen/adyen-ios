@@ -95,6 +95,23 @@ class GiftCardComponentTests: XCTestCase {
 
         waitForExpectations(timeout: 10, handler: nil)
     }
+    
+    func testCheckBalanceCardNumberFormatting() throws {
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .milliseconds(300))
+
+        XCTAssertTrue(errorView!.isHidden)
+
+        populate(cardNumber: "123456781234567812345678", pin: "73737")
+
+        XCTAssertEqual(numberItemView?.textField.text, "1234 5678 1234 5678 1234 5678")
+        
+        populate(cardNumber: "123456781234567812345", pin: "73737")
+        
+        XCTAssertEqual(numberItemView?.textField.text, "1234 5678 1234 5678 1234 5")
+    }
 
     func testBalanceAndTransactionLimitCurrencyMismatch() throws {
 
