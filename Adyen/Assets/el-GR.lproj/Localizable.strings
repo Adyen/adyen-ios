@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "Απομνημόνευση για την επόμενη φορά";
 "adyen.card.nameItem.title" = "Όνομα στην κάρτα";
 "adyen.card.nameItem.placeholder" = "Γ. Παπαδάκης";
-"adyen.card.nameItem.invalid" = "Μη έγκυρο όνομα κατόχου κάρτας";
+"adyen.card.nameItem.invalid" = "Εισαγάγετε το όνομα όπως αναγράφεται στην κάρτα";
 "adyen.card.numberItem.title" = "Αριθμός κάρτας";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Μη έγκυρος αριθμός κάρτας";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "ΜΜ/ΕΕ";
 "adyen.card.expiryItem.invalid" = "Μη έγκυρη ημερομηνία λήξης";
 "adyen.card.cvcItem.invalid" = "Μη έγκυρη μορφή κωδικού CVC/CVV";
-"adyen.card.cvcItem.title" = "CVC/CVV";
+"adyen.card.cvcItem.title" = "Κωδικός ασφαλείας";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Επαληθεύστε την κάρτα σας";
 "adyen.card.stored.message" = "Εισαγάγετε τον κωδικό CVC της κάρτας %@";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Προεξουσιοδότηση με %@";
 "adyen.confirmPreauthorization" = "Επιβεβαίωση προεξουσιοδότησης";
-"adyen.card.cvcItem.title.optional" = "CVC/CVV (προαιρετικά)";
+"adyen.card.cvcItem.title.optional" = "Κωδικός ασφαλείας (προαιρετικό)";
 "adyen.confirmPurchase" = "Επιβεβαίωση αγοράς";
 "adyen.lastName" = "Επώνυμο";
 "adyen.firstName" = "Όνομα";
@@ -170,7 +170,8 @@
 "adyen.UPIVpa.validationMessage" = "Εισαγάγετε μια σωστή εικονική διεύθυνση πληρωμής";
 "adyen.UPIQrcode.generationMessage" = "Δημιουργήστε τον κωδικό QR που μπορείτε να λάβετε ή τραβήξτε ένα στιγμιότυπο και ανεβάστε το στην εφαρμογή UPI για να ολοκληρώσετε την πληρωμή.";
 "adyen.UPIQrcode.timerMessage" = "%@ προς έγκριση";
-"adyen.upi_collect.confirmPayment" = "Αναμονή για την επιβεβαίωσή σας...";
+"adyen.upiCollect.confirmPayment" = "Αναμονή για την επιβεβαίωσή σας...";
 "adyen.upi.vpaWaitingMessage" = "Ανοίξτε την εφαρμογή UPI για επιβεβαίωση της πληρωμής";
 "adyen.QRCode.generateQRCode" = "Δημιουργία κωδικού QR";
 "adyen.UPI.QRCodeInstructions" = "Τραβήξτε ένα στιγμιότυπο οθόνης για να το ανεβάσετε στην εφαρμογή UPI ή σαρώστε τον κωδικό QR χρησιμοποιώντας την εφαρμογή UPI που προτιμάτε για να ολοκληρώσετε την πληρωμή.";
+"adyen.cashAppPay.title" = "";
