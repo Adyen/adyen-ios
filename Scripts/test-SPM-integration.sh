@@ -67,7 +67,7 @@ xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS'
 
 # Build for generic iOS device
 echo '############# Build for generic iOS device ###############'
-xcodebuild build -scheme TempProject -destination 'generic/platform=iOS'
+xcodebuild build -scheme TempProject -destination 'generic/platform=iOS' -skipPackagePluginValidation
 
 # Archive for x86_64 simulator
 echo '############# Archive for x86_64 simulator ###############'
@@ -75,7 +75,7 @@ xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS Simula
 
 # Build for x86_64 simulator
 echo '############# Build for x86_64 simulator ###############'
-xcodebuild build -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64
+xcodebuild build -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation
 
 # Clean up.
 cd ../
