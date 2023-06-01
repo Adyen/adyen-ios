@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -55,6 +55,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     case onlineBankingCZ
     case onlineBankingSK
     case upi
+    case cashAppPay
     case other(String)
     
     // swiftlint:disable cyclomatic_complexity function_body_length
@@ -109,6 +110,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case "onlineBanking_CZ": self = .onlineBankingCZ
         case "onlineBanking_SK": self = .onlineBankingSK
         case "upi": self = .upi
+        case "cashapp": self = .cashAppPay
         default: self = .other(rawValue)
         }
     }
@@ -162,6 +164,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .onlineBankingCZ: return "onlineBanking_CZ"
         case .onlineBankingSK: return "onlineBanking_SK"
         case .upi: return "upi"
+        case .cashAppPay: return "cashapp"
         case let .other(value): return value
         }
     }

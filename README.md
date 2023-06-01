@@ -267,6 +267,7 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - [Online Banking Poland Component][reference.issuerListComponent]
 - [UPI Component][reference.UPIComponent]
 - [QRCode Component][reference.QRCodeActionComponent]
+- [Cash App Pay Component][reference.CashAppPayComponent]
 
 
 ## Customization
@@ -362,5 +363,6 @@ This repository is open source and available under the MIT license. For more inf
 [reference.AtomeComponent]:  https://adyen.github.io/adyen-ios/5.0.0/documentation/adyen/atomecomponent
 [reference.UPIComponent]:  https://adyen.github.io/adyen-ios/5.0.0/documentation/adyen/upiComponent
 [reference.QRCodeActionComponent]:  https://adyen.github.io/adyen-ios/5.0.0/documentation/adyen/qrCodeActionComponent
+[reference.CashAppPayComponent]:  https://adyen.github.io/adyen-ios/5.0.0/documentation/adyen/cashAppPayComponent
 
 [apiExplorer.sessions]: https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/sessions

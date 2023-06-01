@@ -535,3 +535,12 @@ let upi = [
     "name": "UPI",
     "type": "upi"
 ]
+
+let cashAppPay: [String: Any] = [
+    "name": "Cash App Pay",
+    "type": "cashapp",
+    "configuration": [
+        "scopeId" : "testScope",
+        "clientId" : "testClient"
+    ]
+]

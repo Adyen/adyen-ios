@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -78,6 +78,12 @@ public protocol PaymentComponentBuilder: AdyenContextAware {
 
     /// Builds a certain `PaymentComponent` based on a `UPIPaymentMethod`.
     func build(paymentMethod: UPIPaymentMethod) -> PaymentComponent?
+    
+    /// Builds a certain `PaymentComponent` based on a `CashAppPayPaymentMethod`.
+    func build(paymentMethod: CashAppPayPaymentMethod) -> PaymentComponent?
+    
+    /// Builds a certain `PaymentComponent` based on a `StoredCashAppPayPaymentMethod`.
+    func build(paymentMethod: StoredCashAppPayPaymentMethod) -> PaymentComponent?
 
     /// Builds a certain `PaymentComponent` based on any `PaymentMethod`, as a default case.
     func build(paymentMethod: PaymentMethod) -> PaymentComponent?

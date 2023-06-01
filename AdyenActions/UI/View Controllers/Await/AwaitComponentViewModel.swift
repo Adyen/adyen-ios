@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -36,16 +36,21 @@ internal struct AwaitComponentViewModel {
     /// - Parameter localizationParameters: The localization parameters to control some aspects of how strings are localized
     internal static func viewModel(with paymentMethodType: AwaitPaymentMethod,
                                    localizationParameters: LocalizationParameters? = nil) -> AwaitComponentViewModel {
-        let localizationKey = LocalizationKey(key: "adyen.\(paymentMethodType.rawValue).confirmPayment")
+        
         switch paymentMethodType {
-        case .mbway, .blik:
+        case .blik:
             return AwaitComponentViewModel(icon: paymentMethodType.rawValue,
-                                           message: localizedString(localizationKey, localizationParameters),
+                                           message: localizedString(.blikConfirmPayment, localizationParameters),
                                            spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters))
+        case .mbway:
+            return AwaitComponentViewModel(icon: paymentMethodType.rawValue,
+                                           message: localizedString(.mbwayConfirmPayment, localizationParameters),
+                                           spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters))
+            
         case .upicollect:
             return AwaitComponentViewModel(icon: paymentMethodType.rawValue,
                                            message: localizedString(.upiVpaWaitingMessage, localizationParameters),
-                                           spinnerTitle: localizedString(localizationKey, localizationParameters))
+                                           spinnerTitle: localizedString(.upiCollectConfirmPayment, localizationParameters))
         }
     }
 
