@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -106,9 +106,13 @@ internal enum CardBrandSorter {
         switch (hasVisa, hasCarteBancaire, hasPLCC) {
         // if regular card and dual branding contains Visa & Cartebancaire - ensure Visa is first
         case (true, true, _) where secondBrand.type == .visa:
+            fatalError()
+            // ✅ Cartes Bancaires / Visa Debit - 4035 5014 2814 6300
+            // ✅ Visa Dankort - 4571 0000 0000 0001
             return [secondBrand, firstBrand]
         // if regular card and dual branding contains a PLCC this should be shown first
         case (_, _, true) where secondBrand.isPrivateLabeled:
+            fatalError()
             return [secondBrand, firstBrand]
         default:
             return brands
