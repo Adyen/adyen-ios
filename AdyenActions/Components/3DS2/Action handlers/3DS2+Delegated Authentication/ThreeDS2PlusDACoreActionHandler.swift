@@ -248,6 +248,7 @@
             delegatedAuthenticationState.isDeviceRegistrationFlow
                 && presenter.userInput != .approveDifferently
                 && presenter.userInput != .deleteDA
+                && presenter.userInput != .biometric
                 && deviceSupportCheckerService.isDeviceSupported
         }
                         

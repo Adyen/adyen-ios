@@ -11,6 +11,7 @@ internal enum ThreeDS2PlusDAScreenUserInput {
     case approveDifferently
     case deleteDA
     case noInput
+    case biometric
 }
 
 internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
@@ -69,7 +70,9 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
         let approvalViewController = DAApprovalViewController(style: style,
                                                               localizationParameters: localizedParameters,
-                                                              useBiometricsHandler: {
+                                                              useBiometricsHandler: { [weak self] in
+                                                                  guard let self = self else { return }
+                                                                  self.userInput = .biometric
                                                                   approveAuthenticationHandler()
                                                               }, approveDifferentlyHandler: { [weak self] in
                                                                   guard let self = self else { return }

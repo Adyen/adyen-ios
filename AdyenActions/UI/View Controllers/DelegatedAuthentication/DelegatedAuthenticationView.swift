@@ -90,24 +90,24 @@ internal final class DelegatedAuthenticationView: UIView {
         return stackView
     }()
 
-    internal lazy var firstButton: UIButton = {
-        let button = UIButton(style: firstButtonStyle)
-        button.translatesAutoresizingMaskIntoConstraints = false
+    internal lazy var firstButton: SubmitButton = {
+        let button = SubmitButton(style: firstButtonStyle)
+
         button.addTarget(self, action: #selector(firstButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")
         button.preservesSuperviewLayoutMargins = true
-        button.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 
-    internal lazy var secondButton: UIButton = {
-        let button = UIButton(style: secondButtonStyle)
-        button.translatesAutoresizingMaskIntoConstraints = false
+    internal lazy var secondButton: SubmitButton = {
+        
+        let button = SubmitButton(style: secondButtonStyle)
+
         button.addTarget(self, action: #selector(secondButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "secondaryButton")
         button.preservesSuperviewLayoutMargins = true
-        button.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
-        
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 

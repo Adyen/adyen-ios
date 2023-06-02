@@ -60,8 +60,8 @@ internal final class DARegistrationViewController: UIViewController {
     private func configureDelegateAuthenticationView() {
         registrationView.titleLabel.text = localizedString(.threeds2DARegistrationTitle, localizationParameters)
         registrationView.descriptionLabel.text = localizedString(.threeds2DARegistrationDescription, localizationParameters)
-        registrationView.firstButton.setTitle(localizedString(.threeds2DARegistrationPositiveButton, localizationParameters), for: .normal)
-        registrationView.secondButton.setTitle(localizedString(.threeds2DARegistrationNegativeButton, localizationParameters), for: .normal)
+        registrationView.firstButton.title = localizedString(.threeds2DARegistrationPositiveButton, localizationParameters)
+        registrationView.secondButton.title = localizedString(.threeds2DARegistrationNegativeButton, localizationParameters)
         configureProgress()
     }
 
@@ -121,10 +121,14 @@ internal final class DARegistrationViewController: UIViewController {
 
 extension DARegistrationViewController: DelegatedAuthenticationViewDelegate {
     internal func firstButtonTapped() {
+        registrationView.firstButton.showsActivityIndicator = true
+        timeoutTimer?.stopTimer()
         enableCheckoutHandler()
     }
     
     internal func secondButtonTapped() {
+        timeoutTimer?.stopTimer()
+        registrationView.secondButton.showsActivityIndicator = true
         notNowHandler()
     }
 }

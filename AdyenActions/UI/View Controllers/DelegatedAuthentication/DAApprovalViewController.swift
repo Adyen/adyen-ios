@@ -80,8 +80,8 @@ internal final class DAApprovalViewController: UIViewController {
     private func configureDelegateAuthenticationView() {
         approvalView.titleLabel.text = localizedString(.threeds2DAApprovalTitle, localizationParameters)
         approvalView.descriptionLabel.text = localizedString(.threeds2DAApprovalDescription, localizationParameters)
-        approvalView.firstButton.setTitle(localizedString(.threeds2DAApprovalPositiveButton, localizationParameters), for: .normal)
-        approvalView.secondButton.setTitle(localizedString(.threeds2DAApprovalNegativeButton, localizationParameters), for: .normal)
+        approvalView.firstButton.title = localizedString(.threeds2DAApprovalPositiveButton, localizationParameters)
+        approvalView.secondButton.title = localizedString(.threeds2DAApprovalNegativeButton, localizationParameters)
         configureProgress()
         configureTextView()
     }
@@ -160,10 +160,14 @@ extension DAApprovalViewController: DelegatedAuthenticationViewDelegate {
     }
     
     internal func firstButtonTapped() {
+        approvalView.firstButton.showsActivityIndicator = true
+        timeoutTimer?.stopTimer()
         useBiometricsHandler()
     }
     
     internal func secondButtonTapped() {
+        approvalView.secondButton.showsActivityIndicator = true
+        timeoutTimer?.stopTimer()
         approveDifferentlyHandler()
     }
 }
