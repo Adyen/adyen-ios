@@ -35,7 +35,7 @@ jobs:
           valid-labels: ${{ steps.get-allowed_labels.outputs.LABELS }}
 
       - name: Get PR labels
-        uses: joerick/pr-labels-action@v1.0.6
+        uses: joerick/pr-labels-action@v1.0.9
         id: pr-labels
 
       - run: |
