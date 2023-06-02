@@ -3,12 +3,12 @@ on: [workflow_dispatch]
 jobs:
 
   Update:
-    runs-on: macos-11
+    runs-on: macos-12
     steps:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
-    - uses: n1hility/cancel-previous-runs@v2
+    - uses: n1hility/cancel-previous-runs@v3
       with:
         token: ${{ secrets.MANUAL_ACTION_TOKEN }}
 
