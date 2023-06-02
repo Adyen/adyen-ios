@@ -17,7 +17,7 @@ internal class AddressValidator {
         let optionalAddressField: [AddressField] = addressViewModel.optionalFields
 
         switch addressMode {
-        case .full:
+        case .full, .fullLookup:
             fieldsValues = [AddressField.city.rawValue: address?.city,
                             AddressField.country.rawValue: address?.country,
                             AddressField.postalCode.rawValue: address?.postalCode,

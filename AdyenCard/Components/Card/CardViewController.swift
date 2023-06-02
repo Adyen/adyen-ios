@@ -114,7 +114,7 @@ internal class CardViewController: FormViewController {
 
     internal var validAddress: PostalAddress? {
         switch configuration.billingAddress.mode {
-        case .full:
+        case .full, .fullLookup:
             let address = items.billingAddressItem.value
             guard AddressValidator().isValid(address: address,
                                              addressMode: configuration.billingAddress.mode,
@@ -185,7 +185,7 @@ internal class CardViewController: FormViewController {
     private func updateBillingAddressOptionalStatus(brands: [CardBrand]) {
         let isOptional = configuration.billingAddress.isOptional(for: brands.map(\.type))
         switch configuration.billingAddress.mode {
-        case .full:
+        case .full, .fullLookup:
             items.billingAddressItem.updateOptionalStatus(isOptional: isOptional)
         case .postalCode:
             items.postalCodeItem.updateOptionalStatus(isOptional: isOptional)

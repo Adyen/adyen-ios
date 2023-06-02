@@ -76,6 +76,33 @@ extension CardViewController {
             item.style.backgroundColor = UIColor.Adyen.lightGray
             return item
         }()
+        
+        internal lazy var lookupBillingAddressItem: FormAddressItem {
+            let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "lookupBillingAddress")
+            
+            // with the supported countries
+            let initialCountry: String?
+            if let countryCodes = configuration.billingAddress.countryCodes, !countryCodes.isEmpty {
+                if let prefillCountryCode = shopperInformation?.billingAddress?.country,
+                   countryCodes.contains(prefillCountryCode) {
+                    initialCountry = prefillCountryCode
+                } else {
+                    initialCountry = countryCodes.first
+                }
+            } else {
+                initialCountry = shopperInformation?.billingAddress?.country
+            }
+            
+            let item = FormAddressItem(initialCountry: initialCountry ?? defaultCountryCode,
+                                       style: formStyle.addressStyle,
+                                       localizationParameters: localizationParameters,
+                                       identifier: identifier,
+                                       supportedCountryCodes: configuration.billingAddress.countryCodes,
+                                       addressViewModelBuilder: addressViewModelBuilder)
+            shopperInformation?.billingAddress.map { item.value = $0 }
+            item.style.backgroundColor = UIColor.Adyen.lightGray
+            return item
+        }
 
         internal lazy var postalCodeItem: FormPostalCodeItem = {
             let zipCodeItem = FormPostalCodeItem(style: formStyle.textField, localizationParameters: localizationParameters)
