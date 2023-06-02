@@ -59,6 +59,7 @@ jobs:
         --binary-basename AdyenSession
         --binary-basename AdyenEncryption
         --binary-basename AdyenActions
+        --binary-basename AdyenCashAppPay
         --binary-basename AdyenSwiftUI'
 
     - name: SwiftLint
