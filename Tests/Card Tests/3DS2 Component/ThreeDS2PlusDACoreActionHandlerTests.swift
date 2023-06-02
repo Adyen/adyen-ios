@@ -178,13 +178,6 @@ import XCTest
                 authorizationToken: "authToken"
             )
             
-            struct DeviceSupportCheckerMock: AdyenAuthentication.DeviceSupportCheckerProtocol {
-                var isDeviceSupported: Bool
-                
-                func checkSupport() throws -> String {
-                    return ""
-                }
-            }
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
                                                       service: service,
@@ -528,4 +521,13 @@ import XCTest
             waitForExpectations(timeout: 2, handler: nil)
         }
     }
+
+struct DeviceSupportCheckerMock: AdyenAuthentication.DeviceSupportCheckerProtocol {
+    var isDeviceSupported: Bool
+    
+    func checkSupport() throws -> String {
+        return ""
+    }
+}
+
 #endif

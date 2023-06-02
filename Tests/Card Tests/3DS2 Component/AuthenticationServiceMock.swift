@@ -15,9 +15,10 @@ internal final class AuthenticationServiceMock: AuthenticationServiceProtocol {
     }
     
     func isDeviceRegistered(withAuthenticationInput input: String) async throws -> Bool {
-        return true
+        isDeviceRegistered
     }
-    
+    internal var isDeviceRegistered: Bool = true
+
         internal var isDeviceSupported: Bool = true
         internal var isRegistration: Bool = true
         
