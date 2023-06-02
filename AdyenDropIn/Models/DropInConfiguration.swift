@@ -55,6 +55,9 @@ public extension DropInComponent {
         /// Boleto component configuration.
         public var boleto: Boleto = .init()
         
+        /// Configuration for the Cash App Pay component
+        public var cashAppPay: CashAppPay?
+        
         /// The ACH Direct Debit configuration.
         public var ach: ACH = .init()
         
@@ -202,6 +205,41 @@ public extension DropInComponent {
                                         billingAddress: billingAddress)
         }
         
+    }
+    
+    /// Cash App Pay component configuration.
+    struct CashAppPay: AnyCashAppPayConfiguration {
+        
+        /// The URL for Cash App to call in order to redirect back to your application.
+        public let redirectURL: URL
+
+        /// A reference to your system (for example, a cart or checkout identifier).
+        public let referenceId: String?
+
+        /// Indicates if the field for storing the payment method should be displayed in the form. Defaults to `true`.
+        public var showsStorePaymentMethodField: Bool
+        
+        /// Determines whether to store this payment method. Defaults to `false`.
+        /// Ignored if `showsStorePaymentMethodField` is `true`.
+        public var storePaymentMethod: Bool
+        
+        /// Initializes an instance of `CashAppPayComponent.Configuration`
+        ///
+        /// - Parameters:
+        ///   - redirectURL: The URL for Cash App to call in order to redirect back to your application.
+        ///   - referenceId: A reference to your system (for example, a cart or checkout identifier).
+        ///   - showsStorePaymentMethodField: Determines the visibility of the field for storing the payment method.
+        ///   - storePaymentMethod: Determines whether to store this payment method.
+        ///   Ignored if `showsStorePaymentMethodField` is `true`.
+        public init(redirectURL: URL,
+                    referenceId: String? = nil,
+                    showsStorePaymentMethodField: Bool = true,
+                    storePaymentMethod: Bool = false) {
+            self.redirectURL = redirectURL
+            self.referenceId = referenceId
+            self.showsStorePaymentMethodField = showsStorePaymentMethodField
+            self.storePaymentMethod = storePaymentMethod
+        }
     }
     
 }

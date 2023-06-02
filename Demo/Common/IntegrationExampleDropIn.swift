@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -52,6 +52,8 @@ extension IntegrationExample {
         configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         configuration.card.billingAddress.mode = .postalCode
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
+        configuration.cashAppPay = DropInComponent.CashAppPay(redirectURL: URL(string: ConfigurationConstants.returnUrl)!,
+                                                              showsStorePaymentMethodField: true)
         
         let component = DropInComponent(paymentMethods: paymentMethods,
                                         context: context,

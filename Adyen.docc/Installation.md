@@ -15,10 +15,11 @@ Adyen Components for iOS are available through either CocoaPods, Carthage or Swi
 
 You can install all modules or add individual modules, depending on your needs and integration type.
 The `Adyen/WeChatPay` module needs to be explicitly added to support WeChat Pay.
+The `Adyen/CashAppPay` module needs to be explicitly added to support Cash App Pay.
 The `Adyen/SwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
 
 ```
-pod 'Adyen'               // Add DropIn with all modules except Session, WeChat Pay and SwiftUI.
+pod 'Adyen'               // Add DropIn with all modules except WeChat Pay, Cash App Pay, SwiftUI and Session.
 // Add individual modules
 pod 'Adyen/Session'       // For the new Sessions integration.
 pod 'Adyen/Card'          // Card components.
@@ -26,6 +27,7 @@ pod 'Adyen/Encryption'    // Encryption module.
 pod 'Adyen/Components'    // All other payment components except WeChat Pay.
 pod 'Adyen/Actions'       // Action Components.
 pod 'Adyen/WeChatPay'     // WeChat Pay Component.
+pod 'Adyen/CashAppPay'    // Cash App Pay Component.
 pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
 ```
 
@@ -63,13 +65,14 @@ You can add all modules or select individual modules to add to your integration.
 The `AdyenWeChatPay` module needs to be explicitly added to support WeChat Pay.
 The `AdyenSwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
 
-* `AdyenDropIn`: all modules except `AdyenWeChatPay`, `AdyenSwiftUI` and `AdyenSession`.
+* `AdyenDropIn`: all modules except `AdyenWeChatPay` `AdyenCashAppPay`, `AdyenSwiftUI` and `AdyenSession`.
 * `AdyenSession`: handler for the simplified checkout flow.
 * `AdyenCard`: the card components.
 * `AdyenComponents`: all other payment components except WeChat Pay.
 * `AdyenActions`:  action components.
 * `AdyenEncryption`: encryption.
 * `AdyenWeChatPay`: WeChat Pay component.
+* `AdyenCashAppPay`: Cash App Pay component.
 * `AdyenSwiftUI`: SwiftUI apps specific module.
 
 :warning: _Please make sure to use Xcode 12.0+ when adding `Adyen` using Swift Package Manager._

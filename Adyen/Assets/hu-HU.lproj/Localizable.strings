@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "Megjegyzés a következő alkalomra";
 "adyen.card.nameItem.title" = "A kártyán szereplő név";
 "adyen.card.nameItem.placeholder" = "Gipsz Jakab";
-"adyen.card.nameItem.invalid" = "A kártyatulajdonos neve érvénytelen";
+"adyen.card.nameItem.invalid" = "Adja meg a kártyán szereplő nevet";
 "adyen.card.numberItem.title" = "Kártyaszám";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Érvénytelen kártyaszám";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "HH/ÉÉ";
 "adyen.card.expiryItem.invalid" = "Érvénytelen lejárati dátum";
 "adyen.card.cvcItem.invalid" = "A CVC/CVV formátuma érvénytelen";
-"adyen.card.cvcItem.title" = "CVC/CVV";
+"adyen.card.cvcItem.title" = "Biztonsági kód";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Kártya ellenőrzése";
 "adyen.card.stored.message" = "Adja meg a %@ CVC-kódját";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Előzetes meghatalmazás a következővel: %@";
 "adyen.confirmPreauthorization" = "Előzetes meghatalmazás jóváhagyása";
-"adyen.card.cvcItem.title.optional" = "CVC/CVV (opcionális)";
+"adyen.card.cvcItem.title.optional" = "Biztonsági kód (nem kötelező)";
 "adyen.confirmPurchase" = "Fizetés jóváhagyása";
 "adyen.lastName" = "Vezetéknév";
 "adyen.firstName" = "Keresztnév";
@@ -170,7 +170,8 @@
 "adyen.UPIVpa.validationMessage" = "Adjon meg egy helyes virtuális fizetési címet";
 "adyen.UPIQrcode.generationMessage" = "Hozzon létre QR-kódot, amelyet letölthet vagy amelyről képernyőképet készíthet, és töltse fel az UPI alkalmazásba a fizetés végrehajtásához.";
 "adyen.UPIQrcode.timerMessage" = "Jóváhagyásra rendelkezésre álló idő: %@";
-"adyen.upi_collect.confirmPayment" = "Várakozás a megerősítésre…";
+"adyen.upiCollect.confirmPayment" = "Várakozás a megerősítésre…";
 "adyen.upi.vpaWaitingMessage" = "A fizetés megerősítéséhez nyissa meg UPI-alkalmazást";
 "adyen.QRCode.generateQRCode" = "QR-kód létrehozása";
 "adyen.UPI.QRCodeInstructions" = "A fizetés befejezéséhez készítsen képernyőképet és töltse fel az UPI-alkalmazásban, vagy a kívánt UPI-alkalmazással olvassa be a QR-kódot.";
+"adyen.cashAppPay.title" = "";
