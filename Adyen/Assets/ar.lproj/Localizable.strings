@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "احتفظ بالبيانات للمرة القادمة";
 "adyen.card.nameItem.title" = "الاسم على البطاقة";
 "adyen.card.nameItem.placeholder" = "جميل سعيد";
-"adyen.card.nameItem.invalid" = "اسم صاحب بطاقة غير صحيح";
+"adyen.card.nameItem.invalid" = "أدخل الاسم كما هو موضح على البطاقة";
 "adyen.card.numberItem.title" = "رقم البطاقة";
 "adyen.card.numberItem.placeholder" = "3456 9012 5678 1234";
 "adyen.card.numberItem.invalid" = "رقم بطاقة غير صحيح";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "شهر/سنة";
 "adyen.card.expiryItem.invalid" = "تاريخ انتهاء غير صحيح";
 "adyen.card.cvcItem.invalid" = "تنسيق CVC / CVV غير صحيح";
-"adyen.card.cvcItem.title" = "رمز CVC / CVV";
+"adyen.card.cvcItem.title" = "رمز الأمان";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "التحقق من بطاقتك";
 "adyen.card.stored.message" = "يُرجى إدخال رمز CVC للبطاقة %@";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "تفويض مسبق باستخدام %@";
 "adyen.confirmPreauthorization" = "تأكيد التفويض المسبق";
-"adyen.card.cvcItem.title.optional" = "رمز CVC / CVV (اختياري)";
+"adyen.card.cvcItem.title.optional" = "رمز الأمان (اختياري)";
 "adyen.confirmPurchase" = "تأكيد الشراء";
 "adyen.lastName" = "الاسم الأخير";
 "adyen.firstName" = "الاسم الأول";
@@ -170,7 +170,8 @@
 "adyen.UPIVpa.validationMessage" = "أدخل عنوان دفع افتراضي صحيح";
 "adyen.UPIQrcode.generationMessage" = "أنشئ رمز الاستجابة السريعة الذي يمكنك تنزيله أو خذ لقطة شاشة له وقم بتحميله على تطبيق UPI لإكمال الدفع.";
 "adyen.UPIQrcode.timerMessage" = "أمامك ٪@ للموافقة";
-"adyen.upi_collect.confirmPayment" = "في انتظار تأكيدك...";
+"adyen.upiCollect.confirmPayment" = "في انتظار تأكيدك...";
 "adyen.upi.vpaWaitingMessage" = "افتح تطبيق UPI لتأكيد الدفع";
 "adyen.QRCode.generateQRCode" = "إنشاء رمز استجابة سريعة";
 "adyen.UPI.QRCodeInstructions" = "التقط لقطة شاشة لتحميلها في تطبيق UPI أو امسح رمز الاستجابة السريعة باستخدام تطبيق UPI الذي تُفضله لإتمام الدفع.";
+"adyen.cashAppPay.title" = "";

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -58,6 +58,7 @@ internal struct PaymentsRequest: APIRequest {
         try container.encodeIfPresent(data.order?.compactOrder, forKey: .order)
         try container.encodeIfPresent(data.installments, forKey: .installments)
         try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
+        try container.encode(ConfigurationConstants.recurringProcessingModel, forKey: .recurringProcessingModel)
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -85,6 +86,7 @@ internal struct PaymentsRequest: APIRequest {
         case installments
         case lineItems
         case delegatedAuthenticationData
+        case recurringProcessingModel
     }
     
 }

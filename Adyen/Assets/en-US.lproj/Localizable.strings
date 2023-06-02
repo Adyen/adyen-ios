@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "Remember for next time";
 "adyen.card.nameItem.title" = "Name on card";
 "adyen.card.nameItem.placeholder" = "J. Smith";
-"adyen.card.nameItem.invalid" = "Invalid cardholder name";
+"adyen.card.nameItem.invalid" = "Enter name as shown on card";
 "adyen.card.numberItem.title" = "Card number";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Invalid card number";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "MM/YY";
 "adyen.card.expiryItem.invalid" = "Invalid expiry date";
 "adyen.card.cvcItem.invalid" = "Invalid CVC / CVV format";
-"adyen.card.cvcItem.title" = "CVC / CVV";
+"adyen.card.cvcItem.title" = "Security code";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Verify your card";
 "adyen.card.stored.message" = "Please enter the CVC code for %@";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "123–456";
 "adyen.preauthorizeWith" = "Preauthorize with %@";
 "adyen.confirmPreauthorization" = "Confirm preauthorization";
-"adyen.card.cvcItem.title.optional" = "CVC / CVV (optional)";
+"adyen.card.cvcItem.title.optional" = "Security code (optional)";
 "adyen.confirmPurchase" = "Confirm purchase";
 "adyen.lastName" = "Last name";
 "adyen.firstName" = "First name";
@@ -170,7 +170,8 @@
 "adyen.UPIVpa.validationMessage" = "Enter a correct virtual payment address";
 "adyen.UPIQrcode.generationMessage" = "Generate the QR code that you can download or screenshot and upload it into the UPI app to complete the payment.";
 "adyen.UPIQrcode.timerMessage" = "You have %@ to approve";
-"adyen.upi_collect.confirmPayment" = "Awaiting your confirmation...";
+"adyen.upiCollect.confirmPayment" = "Awaiting your confirmation...";
 "adyen.upi.vpaWaitingMessage" = "Open your UPI app to confirm the payment";
 "adyen.QRCode.generateQRCode" = "Generate QR code";
 "adyen.UPI.QRCodeInstructions" = "Take a screenshot to upload in the UPI app or scan the QR code using your preferred UPI app to complete the payment.";
+"adyen.cashAppPay.title" = "Cash App Pay";

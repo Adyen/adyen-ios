@@ -7,6 +7,9 @@
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
 @testable import AdyenDropIn
+#if canImport(AdyenCashAppPay)
+    @testable import AdyenCashAppPay
+#endif
 import PassKit
 import XCTest
 
@@ -52,7 +55,8 @@ class ComponentManagerTests: XCTestCase {
             affirm,
             atome,
             achDirectDebit,
-            bacsDirectDebit
+            bacsDirectDebit,
+            cashAppPay
         ]
     ]
     
@@ -76,7 +80,7 @@ class ComponentManagerTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testClientKeyInjectionAndProtocolConfromance() throws {
+    func testClientKeyInjectionAndProtocolConformance() throws {
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    context: context,
                                    configuration: configuration,
@@ -108,6 +112,39 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 17)
         XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 18)
         XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 1)
+    }
+    
+    func testCashAppShouldFailWithoutConfig() {
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
+                                   configuration: configuration,
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
+        
+        let paymentComponent = sut.regularComponents.first { $0.paymentMethod.type.rawValue == "cashapp" }
+
+        XCTAssertNil(paymentComponent)
+    }
+    
+    @available(iOS 13.0, *)
+    func testCashAppShouldSucceedWithConfig() {
+        configuration.cashAppPay = .init(redirectURL: URL(string: "test")!)
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
+                                   configuration: configuration,
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
+        
+        // When
+        let paymentComponent =  sut.regularComponents.first { $0.paymentMethod.type.rawValue == "cashapp" }
+
+        // Then
+        let cashAppPayComponent = paymentComponent as? CashAppPayComponent
+        #if canImport(AdyenCashAppPay)
+            XCTAssertNotNil(cashAppPayComponent)
+        #else
+            XCTAssertNil(cashAppPayComponent)
+        #endif
     }
     
     func testLocalizationWithCustomTableName() throws {
