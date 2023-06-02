@@ -17,7 +17,7 @@ jobs:
         xcode-version: latest-stable
 
     - name: Set current marketing version
-      run: echo "::set-output name=MARKETING_VERSION::$(agvtool what-marketing-version -terse1)"
+      run: echo "MARKETING_VERSION=$(agvtool what-marketing-version -terse1)" >> $GITHUB_OUTPUT
       id: get-current-marketing-version
 
     - name: Deploy to current version 🚀
@@ -26,6 +26,7 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs/html
         destination_dir: ./${{ steps.get-current-marketing-version.outputs.MARKETING_VERSION }}
+        
     - name: Deploy to root 🚀
       uses: peaceiris/actions-gh-pages@v3
       with:
