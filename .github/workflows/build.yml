@@ -24,7 +24,7 @@ jobs:
         - destination: 'OS=13.7,name=iPhone 8'
           scheme: AdyenUIHost
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: n1hility/cancel-previous-runs@v2
       with:
         token: ${{ secrets.MANUAL_ACTION_TOKEN }}
