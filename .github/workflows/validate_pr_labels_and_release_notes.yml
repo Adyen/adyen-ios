@@ -23,7 +23,7 @@ jobs:
              echo -e "${RED}$FILE_NAME file doesn't exits in the root of the respository${NC}"
              exit 1
           fi 
-          echo "::set-output name=LABELS::$(cat $FILE_PATH),chore"
+          echo "LABELS=$(cat $FILE_PATH),chore" >> $GITHUB_OUTPUT
         id: get-allowed_labels
         env:
           PROJECT_ROOT: ${{ github.workspace }}
