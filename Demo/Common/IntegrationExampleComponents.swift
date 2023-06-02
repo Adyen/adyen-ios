@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -33,7 +33,17 @@ extension IntegrationExample {
         guard let paymentMethods = paymentMethods,
               let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
         let style = FormComponentStyle()
-        let config = CardComponent.Configuration(style: style)
+        var config = CardComponent.Configuration(style: style)
+        config.billingAddress.mode = .fullLookup { lookupString, lookupResultProvider in
+            /*
+             Thoughts:
+             - Delaying + cancelling an existing lookup should be left to the implementing party
+             */
+            print(lookupString)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                lookupResultProvider(.success("\(lookupString) - Result"))
+            }
+        }
         return CardComponent(paymentMethod: paymentMethod,
                              context: context,
                              configuration: config)

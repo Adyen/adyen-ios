@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -250,6 +250,17 @@ internal class CardViewController: FormViewController {
         }
 
         switch configuration.billingAddress.mode {
+        case let .fullLookup(handler):
+            let item = items.lookupBillingAddressItem
+            item.buttonSelectionHandler = {
+                item.title = "Hello World"
+                item.showsActivityIndicator = true
+                handler("Hello World") { result in
+                    item.showsActivityIndicator = false
+                    item.title = (try? result.get()) ?? "💥"
+                }
+            }
+            append(items.lookupBillingAddressItem)
         case .full:
             append(items.billingAddressItem)
         case .postalCode:

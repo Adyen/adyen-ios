@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -89,7 +89,7 @@ extension CardComponent {
     /// The mode of address form of card component
     public enum AddressFormType {
 
-        case fullLookup(handler: (_ lookupResult: (_ result: Result<String, Error>) -> Void) -> Void)
+        case fullLookup(_ handler: (_ lookupString: String, _ lookupResultProvider: @escaping (_ result: Result<String, Error>) -> Void) -> Void)
         
         /// Display full address form
         case full

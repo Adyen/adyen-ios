@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -77,7 +77,7 @@ extension CardViewController {
             return item
         }()
         
-        internal lazy var lookupBillingAddressItem: FormAddressItem {
+        internal lazy var lookupBillingAddressItem: FormButtonItem = {
             let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "lookupBillingAddress")
             
             // with the supported countries
@@ -93,16 +93,18 @@ extension CardViewController {
                 initialCountry = shopperInformation?.billingAddress?.country
             }
             
-            let item = FormAddressItem(initialCountry: initialCountry ?? defaultCountryCode,
-                                       style: formStyle.addressStyle,
-                                       localizationParameters: localizationParameters,
-                                       identifier: identifier,
-                                       supportedCountryCodes: configuration.billingAddress.countryCodes,
-                                       addressViewModelBuilder: addressViewModelBuilder)
-            shopperInformation?.billingAddress.map { item.value = $0 }
-            item.style.backgroundColor = UIColor.Adyen.lightGray
+            let item = FormButtonItem(style: formStyle.mainButtonItem)
+            
+//            let item = FormAddressItem(initialCountry: initialCountry ?? defaultCountryCode,
+//                                       style: formStyle.addressStyle,
+//                                       localizationParameters: localizationParameters,
+//                                       identifier: identifier,
+//                                       supportedCountryCodes: configuration.billingAddress.countryCodes,
+//                                       addressViewModelBuilder: addressViewModelBuilder)
+//            shopperInformation?.billingAddress.map { item.value = $0 }
+//            item.style.backgroundColor = UIColor.Adyen.lightGray
             return item
-        }
+        }()
 
         internal lazy var postalCodeItem: FormPostalCodeItem = {
             let zipCodeItem = FormPostalCodeItem(style: formStyle.textField, localizationParameters: localizationParameters)
