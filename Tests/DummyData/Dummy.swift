@@ -74,13 +74,13 @@ enum Dummy: Error {
         apartment: nil
     )
 
-    internal static  let dummyName = ShopperName(firstName: "Eerst", lastName: "Laatst")
+    internal static let dummyName = ShopperName(firstName: "Eerst", lastName: "Laatst")
 
-    internal static  let dummySocialSecurityNumber = "66818021000127"
+    internal static let dummySocialSecurityNumber = "66818021000127"
 
-    internal static  let dummyEmail = "foo@bar.baz"
+    internal static let dummyEmail = "foo@bar.baz"
 
-    internal static  var dummyFullPrefilledInformation: PrefilledShopperInformation {
+    internal static var dummyFullPrefilledInformation: PrefilledShopperInformation {
         PrefilledShopperInformation(
             shopperName: dummyName,
             emailAddress: dummyEmail,
@@ -90,7 +90,7 @@ enum Dummy: Error {
         )
     }
 
-    internal static  func getConfiguration(
+    internal static func getConfiguration(
         with shopperInfo: PrefilledShopperInformation? = nil, style: FormComponentStyle = FormComponentStyle(),
         showEmailAddress: Bool
     ) -> BoletoComponent.Configuration {
