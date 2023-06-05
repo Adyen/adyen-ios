@@ -111,7 +111,7 @@ class GiftCardComponentTests: XCTestCase {
         XCTAssertNotNil(expiryDateItemView)
         // cvc title changes based on payment method
         let securityCodeItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.securityCodeItem.titleLabel")
-        XCTAssertEqual(securityCodeItemTitleLabel?.text, "CVC / CVV")
+        XCTAssertEqual(securityCodeItemTitleLabel?.text, "Security code")
     }
 
     func testCheckBalanceFailure() throws {
