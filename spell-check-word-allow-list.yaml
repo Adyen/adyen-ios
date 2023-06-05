@@ -173,6 +173,10 @@ whiteList:
   - duitnow
   - paynow
   - paybybank
+  - sodexo
+  - natixis
+  - mealvoucher
+  - groupeup
   - upi
   - vpa
   - qrcode

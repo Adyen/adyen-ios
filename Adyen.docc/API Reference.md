@@ -145,6 +145,9 @@ The Adyen DropIn/Components SDK API Reference.
 - ``GiftCardComponent``
 - ``GiftCardDetails``
 - ``GiftCardPaymentMethod``
+- ``PartialPaymentMethodDetails``
+- ``MealVoucherDetails``
+- ``MealVoucherPaymentMethod``
 
 ### SEPA Direct Debit Component
 

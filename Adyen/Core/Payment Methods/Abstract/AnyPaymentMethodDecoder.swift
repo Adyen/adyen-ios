@@ -69,6 +69,9 @@ internal enum AnyPaymentMethodDecoder {
         .dokuAlfamart: DokuPaymentMethodDecoder(),
         .dokuIndomaret: DokuPaymentMethodDecoder(),
         .giftcard: GiftCardPaymentMethodDecoder(),
+        .mealVoucherSodexo: MealVoucherPaymentMethodDecoder(),
+        .mealVoucherNatixis: MealVoucherPaymentMethodDecoder(),
+        .mealVoucherGroupeUp: MealVoucherPaymentMethodDecoder(),
         .econtextSevenEleven: SevenElevenPaymentMethodDecoder(),
         .econtextStores: EContextStoresPaymentMethodDecoder(),
         .econtextATM: EContextATMPaymentMethodDecoder(),
@@ -240,6 +243,12 @@ private struct DokuPaymentMethodDecoder: PaymentMethodDecoder {
 private struct GiftCardPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         .giftcard(try GiftCardPaymentMethod(from: decoder))
+    }
+}
+
+private struct MealVoucherPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
+        .mealVoucher(try MealVoucherPaymentMethod(from: decoder))
     }
 }
 

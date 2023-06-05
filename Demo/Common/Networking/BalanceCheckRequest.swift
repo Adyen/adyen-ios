@@ -30,12 +30,14 @@ internal struct BalanceCheckRequest: APIRequest {
         let configurations = ConfigurationConstants.current
 
         try container.encode(data.paymentMethod.encodable, forKey: .details)
+        try container.encode(data.amount, forKey: .amount)
         try container.encode(configurations.merchantAccount, forKey: .merchantAccount)
     }
 
     private enum CodingKeys: String, CodingKey {
         case details = "paymentMethod"
         case merchantAccount
+        case amount
     }
 }
 

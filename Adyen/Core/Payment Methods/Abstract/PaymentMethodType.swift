@@ -54,6 +54,9 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     case atome
     case onlineBankingCZ
     case onlineBankingSK
+    case mealVoucherNatixis
+    case mealVoucherGroupeUp
+    case mealVoucherSodexo
     case upi
     case cashAppPay
     case other(String)
@@ -109,6 +112,9 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case "atome": self = .atome
         case "onlineBanking_CZ": self = .onlineBankingCZ
         case "onlineBanking_SK": self = .onlineBankingSK
+        case "mealVoucher_FR_groupeup": self = .mealVoucherGroupeUp
+        case "mealVoucher_FR_natixis": self = .mealVoucherNatixis
+        case "mealVoucher_FR_sodexo": self = .mealVoucherSodexo
         case "upi": self = .upi
         case "cashapp": self = .cashAppPay
         default: self = .other(rawValue)
@@ -163,6 +169,9 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .atome: return "atome"
         case .onlineBankingCZ: return "onlineBanking_CZ"
         case .onlineBankingSK: return "onlineBanking_SK"
+        case .mealVoucherGroupeUp: return "mealVoucher_FR_groupeup"
+        case .mealVoucherNatixis: return "mealVoucher_FR_natixis"
+        case .mealVoucherSodexo: return "mealVoucher_FR_sodexo"
         case .upi: return "upi"
         case .cashAppPay: return "cashapp"
         case let .other(value): return value

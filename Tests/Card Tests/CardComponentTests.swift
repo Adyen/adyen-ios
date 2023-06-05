@@ -2172,6 +2172,22 @@ class CardComponentTests: XCTestCase {
 
         waitForExpectations(timeout: 10, handler: nil)
     }
+    
+    func testExpiryFieldValues() {
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration)
+        
+        let expiryDateItem = sut.cardViewController.items.expiryDateItem
+        XCTAssertNil(expiryDateItem.expiryMonth)
+        XCTAssertNil(expiryDateItem.expiryYear)
+        
+        fillCard(on: sut.viewController.view, with: Dummy.visaCard)
+        wait(for: .milliseconds(200))
+        
+        XCTAssertEqual(expiryDateItem.expiryYear, "2030")
+        XCTAssertEqual(expiryDateItem.expiryMonth, "03")
+    }
 
     // MARK: - Private
 

@@ -479,6 +479,11 @@ let giftCard1 = [
     "type": "giftcard"
 ] as [String: Any]
 
+let mealVoucherSodexo = [
+    "name": "Sodexo",
+    "type": "mealVoucher_FR_sodexo"
+] as [String: Any]
+
 let boleto = [
     "name": "Boleto Bancario",
     "type": "boletobancario_santander"
