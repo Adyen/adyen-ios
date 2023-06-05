@@ -126,7 +126,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                  style: configuration.style.formComponent)
     }
     
-    func build(paymentMethod: MealVoucherPaymentMethod) -> PaymentComponent? {
+    internal func build(paymentMethod: MealVoucherPaymentMethod) -> PaymentComponent? {
         guard let amount = context.payment?.amount, partialPaymentEnabled else { return nil }
         return GiftCardComponent(paymentMethod: paymentMethod,
                                  context: context,
@@ -176,7 +176,7 @@ extension ComponentManager: PaymentComponentBuilder {
     
     internal func build(paymentMethod: CashAppPayPaymentMethod) -> PaymentComponent? {
         #if canImport(PayKit)
-            guard var cashAppPayDropInConfig = configuration.cashAppPay else {
+            guard let cashAppPayDropInConfig = configuration.cashAppPay else {
                 AdyenAssertion.assertionFailure(
                     message: "Cash App Pay configuration instance must not be nil in order to use CashAppPayComponent")
                 return nil
