@@ -90,6 +90,7 @@ then
     pod 'Adyen/Session', :path => '../'
     pod 'Adyen/SwiftUI', :path => '../'
     pod 'AdyenAuthentication'
+    pod 'Adyen/CashAppPay', :path => '../'
   end
 
   post_install do |installer|
@@ -112,6 +113,7 @@ else
     pod 'Adyen/WeChatPay', :path => '../'
     pod 'Adyen/SwiftUI', :path => '../'
     pod 'AdyenAuthentication'
+    pod 'Adyen/CashAppPay', :path => '../'
   end
 
   post_install do |installer|

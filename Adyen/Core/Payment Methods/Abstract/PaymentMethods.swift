@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -170,6 +170,7 @@ internal enum AnyPaymentMethod: Decodable {
     case storedBCMC(StoredBCMCPaymentMethod)
     case storedBlik(StoredBLIKPaymentMethod)
     case storedAchDirectDebit(StoredACHDirectDebitPaymentMethod)
+    case storedCashAppPay(StoredCashAppPayPaymentMethod)
 
     case instant(PaymentMethod)
     case card(AnyCardPaymentMethod)
@@ -183,6 +184,7 @@ internal enum AnyPaymentMethod: Decodable {
     case mbWay(MBWayPaymentMethod)
     case blik(BLIKPaymentMethod)
     case giftcard(GiftCardPaymentMethod)
+    case mealVoucher(MealVoucherPaymentMethod)
     case doku(DokuPaymentMethod)
     case sevenEleven(SevenElevenPaymentMethod)
     case econtextStores(EContextPaymentMethod)
@@ -193,6 +195,7 @@ internal enum AnyPaymentMethod: Decodable {
     case atome(AtomePaymentMethod)
     case onlineBanking(OnlineBankingPaymentMethod)
     case upi(UPIPaymentMethod)
+    case cashAppPay(CashAppPayPaymentMethod)
     
     case none
     
@@ -209,6 +212,8 @@ internal enum AnyPaymentMethod: Decodable {
         case let .storedInstant(paymentMethod):
             return paymentMethod
         case let .storedAchDirectDebit(paymentMethod):
+            return paymentMethod
+        case let .storedCashAppPay(paymentMethod):
             return paymentMethod
         case let .card(paymentMethod):
             return paymentMethod
@@ -236,6 +241,8 @@ internal enum AnyPaymentMethod: Decodable {
             return paymentMethod
         case let .giftcard(paymentMethod):
             return paymentMethod
+        case let .mealVoucher(paymentMethod):
+            return paymentMethod
         case let .sevenEleven(paymentMethod):
             return paymentMethod
         case let .econtextStores(paymentMethod):
@@ -253,6 +260,8 @@ internal enum AnyPaymentMethod: Decodable {
         case let .onlineBanking(paymentMethod):
             return paymentMethod
         case let .upi(paymentMethod):
+            return paymentMethod
+        case let .cashAppPay(paymentMethod):
             return paymentMethod
         case .none:
             return nil

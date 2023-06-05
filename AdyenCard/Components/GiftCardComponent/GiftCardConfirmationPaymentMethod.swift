@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 
 /// A payment method wrapper, with custom `DisplayInformation`.
-internal struct GiftCardConfirmationPaymentMethod: PaymentMethod {
+internal struct PartialConfirmationPaymentMethod: PaymentMethod {
     
     internal var type: PaymentMethodType {
         paymentMethod.type
@@ -22,7 +22,7 @@ internal struct GiftCardConfirmationPaymentMethod: PaymentMethod {
         set { paymentMethod.merchantProvidedDisplayInformation = newValue }
     }
     
-    private var paymentMethod: GiftCardPaymentMethod
+    private var paymentMethod: PartialPaymentMethod
     
     private let lastFour: String
     
@@ -38,11 +38,11 @@ internal struct GiftCardConfirmationPaymentMethod: PaymentMethod {
                                        remainingAmount.formatted)
         return DisplayInformation(title: String.Adyen.securedString + lastFour,
                                   subtitle: nil,
-                                  logoName: paymentMethod.brand,
+                                  logoName: paymentMethod.displayInformation(using: parameters).logoName,
                                   footnoteText: footnote)
     }
     
-    internal init(paymentMethod: GiftCardPaymentMethod,
+    internal init(paymentMethod: some PartialPaymentMethod,
                   lastFour: String,
                   remainingAmount: Amount) {
         self.paymentMethod = paymentMethod

@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "次回のために保存します";
 "adyen.card.nameItem.title" = "カード上の名前";
 "adyen.card.nameItem.placeholder" = "Taro Yamada";
-"adyen.card.nameItem.invalid" = "無効なカード所有者名";
+"adyen.card.nameItem.invalid" = "カードに記載されている名前を入力してください";
 "adyen.card.numberItem.title" = "カード番号";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "カード番号が無効です";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "MM/YY";
 "adyen.card.expiryItem.invalid" = "有効期限が無効です";
 "adyen.card.cvcItem.invalid" = "無効なCVC / CVV形式です";
-"adyen.card.cvcItem.title" = "セキュリティーコード (CVC)";
+"adyen.card.cvcItem.title" = "セキュリティコード";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "カード情報を確認して下さい。";
 "adyen.card.stored.message" = "%@のためセキュリティーコードをご入力下さい";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "次で事前認証する：%@";
 "adyen.confirmPreauthorization" = "事前承認を確認する";
-"adyen.card.cvcItem.title.optional" = "セキュリティーコード(任意)";
+"adyen.card.cvcItem.title.optional" = "セキュリティコード（任意）";
 "adyen.confirmPurchase" = "購入を確認する";
 "adyen.lastName" = "姓";
 "adyen.firstName" = "名";
@@ -170,7 +170,8 @@
 "adyen.UPIVpa.validationMessage" = "正しい仮想支払アドレスを入力してください";
 "adyen.UPIQrcode.generationMessage" = "ダウンロードまたはスクリーンショットで取得できるQRコードを生成し、UPIアプリにアップロードして支払いを完了します。";
 "adyen.UPIQrcode.timerMessage" = "承認まで残り%@";
-"adyen.upi_collect.confirmPayment" = "確認を待っています...";
+"adyen.upiCollect.confirmPayment" = "確認を待っています...";
 "adyen.upi.vpaWaitingMessage" = "UPIアプリを開いて、支払を確認してください";
 "adyen.QRCode.generateQRCode" = "QRコードを生成する";
 "adyen.UPI.QRCodeInstructions" = "スクリーンショットを撮影してUPIアプリにアップロードするか、お好みのUPIアプリを使用してQRコードをスキャンし、支払を完了してください。";
+"adyen.cashAppPay.title" = "";

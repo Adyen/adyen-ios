@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "Muista seuraavalla kerralla";
 "adyen.card.nameItem.title" = "Nimi kortilla";
 "adyen.card.nameItem.placeholder" = "J. Smith";
-"adyen.card.nameItem.invalid" = "Ei-kelvollinen kortinhaltijan nimi";
+"adyen.card.nameItem.invalid" = "Syötä nimi sellaisena kuin se on kortissa";
 "adyen.card.numberItem.title" = "Kortin numero";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Väärä kortin numero";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "KK / VV";
 "adyen.card.expiryItem.invalid" = "Virheellinen vanhenemispäivämäärä";
 "adyen.card.cvcItem.invalid" = "Virheellinen CVC / CVV-muoto";
-"adyen.card.cvcItem.title" = "CVC / CVV";
+"adyen.card.cvcItem.title" = "Turvakoodi";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Määritä korttisi";
 "adyen.card.stored.message" = "Syötä CVC-koodisi %@ varten";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Ennkkolupa käyttäjän kanssa %@";
 "adyen.confirmPreauthorization" = "Vahvista ennakkolupa";
-"adyen.card.cvcItem.title.optional" = "CVC / CVV (valinnainen)";
+"adyen.card.cvcItem.title.optional" = "Turvakoodi (valinnainen)";
 "adyen.confirmPurchase" = "Vahvista hankinta";
 "adyen.lastName" = "Sukunimi";
 "adyen.firstName" = "Etunimi";
@@ -170,7 +170,8 @@
 "adyen.UPIVpa.validationMessage" = "Syötä oikea virtuaalinen maksuosoite";
 "adyen.UPIQrcode.generationMessage" = "Luo QR-koodi, jonka voit ladata tai josta voit ottaa kuvakaappauksen ja lähettää sen UPI-sovellukseen suorittaaksesi maksun loppuun.";
 "adyen.UPIQrcode.timerMessage" = "Sinulla on %@ hyväksyttävänä";
-"adyen.upi_collect.confirmPayment" = "Odottaa vahvistustasi...";
+"adyen.upiCollect.confirmPayment" = "Odottaa vahvistustasi...";
 "adyen.upi.vpaWaitingMessage" = "Avaa UPI-sovellus vahvistaaksesi maksun";
 "adyen.QRCode.generateQRCode" = "Tuota QR-koodi";
 "adyen.UPI.QRCodeInstructions" = "Suorita maksu ottamalla kuvakaappaus, jonka voit ladata UPI-sovellukseen, tai skannaamalla QR-koodi haluamallasi UPI-sovelluksella.";
+"adyen.cashAppPay.title" = "";

@@ -24,7 +24,7 @@ class GiftCardComponentTests: XCTestCase {
 
     var sut: GiftCardComponent!
 
-    var paymentMethod: GiftCardPaymentMethod!
+    var giftCardPaymentMethod: GiftCardPaymentMethod!
 
     var amountToPay: Amount { Dummy.payment.amount }
 
@@ -46,12 +46,12 @@ class GiftCardComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
+        giftCardPaymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
         publicKeyProvider = PublicKeyProviderMock()
 
         context = Dummy.context
 
-        sut = GiftCardComponent(paymentMethod: paymentMethod,
+        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
                                 context: context,
                                 amount: amountToPay,
                                 publicKeyProvider: publicKeyProvider)
@@ -64,13 +64,54 @@ class GiftCardComponentTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        paymentMethod = nil
+        giftCardPaymentMethod = nil
         publicKeyProvider = nil
         context = nil
         delegateMock = nil
         partialPaymentDelegate = nil
         sut = nil
         try super.tearDownWithError()
+    }
+    
+    func testGiftCardUI() {
+        let paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
+        let sut = GiftCardComponent(partialPaymentMethodType: .giftCard(paymentMethod),
+                                    context: context,
+                                    amount: amountToPay,
+                                    publicKeyProvider: publicKeyProvider)
+        
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .milliseconds(300))
+        
+        let expiryDateItemView = sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.expiryDateItem")
+        
+        // should not have expiry date field for gift card
+        XCTAssertNil(expiryDateItemView)
+        
+        // cvc title changes based on payment method
+        let securityCodeItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.securityCodeItem.titleLabel")
+        XCTAssertEqual(securityCodeItemTitleLabel?.text, "Pin")
+    }
+    
+    func testMealVoucherUI() {
+        let paymentMethod = MealVoucherPaymentMethod(type: .mealVoucherSodexo, name: "Sodexo")
+        let sut = GiftCardComponent(partialPaymentMethodType: .mealVoucher(paymentMethod),
+                                    context: context,
+                                    amount: amountToPay,
+                                    publicKeyProvider: publicKeyProvider)
+        
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .milliseconds(300))
+        
+        let expiryDateItemView = sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.expiryDateItem")
+        
+        /// should have expiry date field for meal voucher
+        XCTAssertNotNil(expiryDateItemView)
+        // cvc title changes based on payment method
+        let securityCodeItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.securityCodeItem.titleLabel")
+        XCTAssertEqual(securityCodeItemTitleLabel?.text, "Security code")
     }
 
     func testCheckBalanceFailure() throws {
@@ -113,6 +154,23 @@ class GiftCardComponentTests: XCTestCase {
         XCTAssertEqual(sut.errorItem.message, "An unknown error occurred")
 
         waitForExpectations(timeout: 10, handler: nil)
+    }
+
+    func testCheckBalanceCardNumberFormatting() throws {
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        wait(for: .milliseconds(300))
+
+        XCTAssertTrue(errorView!.isHidden)
+
+        populate(cardNumber: "123456781234567812345678", pin: "73737")
+
+        XCTAssertEqual(numberItemView?.textField.text, "1234 5678 1234 5678 1234 5678")
+
+        populate(cardNumber: "123456781234567812345", pin: "73737")
+
+        XCTAssertEqual(numberItemView?.textField.text, "1234 5678 1234 5678 1234 5")
     }
 
     func testBalanceAndTransactionLimitCurrencyMismatch() throws {
@@ -501,7 +559,7 @@ class GiftCardComponentTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
 
-        sut = GiftCardComponent(paymentMethod: paymentMethod,
+        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
                                 context: context,
                                 amount: amountToPay,
                                 publicKeyProvider: publicKeyProvider)

@@ -47,7 +47,7 @@ class AffirmComponentUITests: XCTestCase {
                                                                                )))
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
-        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
+        UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
 
         // Then
         let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
@@ -83,7 +83,7 @@ class AffirmComponentUITests: XCTestCase {
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          context: context,
                                          configuration: config)
-        UIApplication.shared.mainKeyWindow?.rootViewController = prefillSut.viewController
+        UIApplication.shared.adyen.mainKeyWindow?.rootViewController = prefillSut.viewController
 
         wait(for: .milliseconds(300))
 
@@ -125,7 +125,7 @@ class AffirmComponentUITests: XCTestCase {
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          context: Dummy.context(with: nil),
                                          configuration: config)
-        UIApplication.shared.mainKeyWindow?.rootViewController = prefillSut.viewController
+        UIApplication.shared.adyen.mainKeyWindow?.rootViewController = prefillSut.viewController
 
         wait(for: .milliseconds(300))
 
@@ -165,7 +165,7 @@ class AffirmComponentUITests: XCTestCase {
                                                   countryCode: "US"))
         let sut = AffirmComponent(paymentMethod: paymentMethod,
                                   context: context)
-        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
+        UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
 
         wait(for: .milliseconds(300))
 

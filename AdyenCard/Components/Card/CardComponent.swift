@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -198,17 +198,14 @@ extension CardComponent: CardViewControllerDelegate {
     
     internal func didChange(bin: String) {
         binThrottler.throttle { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.cardComponentDelegate?.didChangeBIN(bin, component: self)
         }
     }
     
     private func updateBrand(with pan: String) {
         binInfoProvider.provide(for: pan, supportedTypes: supportedCardTypes) { [weak self] binInfo in
-            guard let self = self else { return }
-            // update response with sorted brands
-            var binInfo = binInfo
-            binInfo.brands = CardBrandSorter.sortBrands(binInfo.brands ?? [])
+            guard let self else { return }
             self.cardViewController.update(binInfo: binInfo)
             self.cardComponentDelegate?.didChangeCardBrand(binInfo.brands ?? [], component: self)
         }

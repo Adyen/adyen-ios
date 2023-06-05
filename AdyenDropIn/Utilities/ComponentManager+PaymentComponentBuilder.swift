@@ -14,6 +14,9 @@
 #if canImport(AdyenActions)
     @_spi(AdyenInternal) import AdyenActions
 #endif
+#if canImport(AdyenCashAppPay)
+    import AdyenCashAppPay
+#endif
 import Foundation
 
 extension ComponentManager: PaymentComponentBuilder {
@@ -35,6 +38,12 @@ extension ComponentManager: PaymentComponentBuilder {
     }
     
     internal func build(paymentMethod: StoredACHDirectDebitPaymentMethod) -> PaymentComponent? {
+        StoredPaymentMethodComponent(paymentMethod: paymentMethod,
+                                     context: context,
+                                     configuration: .init(localizationParameters: configuration.localizationParameters))
+    }
+    
+    internal func build(paymentMethod: StoredCashAppPayPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod,
                                      context: context,
                                      configuration: .init(localizationParameters: configuration.localizationParameters))
@@ -118,6 +127,14 @@ extension ComponentManager: PaymentComponentBuilder {
                                  amount: amount,
                                  configuration: config)
     }
+    
+    internal func build(paymentMethod: MealVoucherPaymentMethod) -> PaymentComponent? {
+        guard let amount = context.payment?.amount, partialPaymentEnabled else { return nil }
+        return GiftCardComponent(paymentMethod: paymentMethod,
+                                 context: context,
+                                 amount: amount,
+                                 style: configuration.style.formComponent)
+    }
 
     internal func build(paymentMethod: BoletoPaymentMethod) -> PaymentComponent? {
         createBoletoComponent(paymentMethod)
@@ -157,6 +174,31 @@ extension ComponentManager: PaymentComponentBuilder {
         UPIComponent(paymentMethod: paymentMethod,
                      context: context,
                      configuration: .init(style: configuration.style.formComponent))
+    }
+    
+    internal func build(paymentMethod: CashAppPayPaymentMethod) -> PaymentComponent? {
+        #if canImport(PayKit)
+            guard let cashAppPayDropInConfig = configuration.cashAppPay else {
+                AdyenAssertion.assertionFailure(
+                    message: "Cash App Pay configuration instance must not be nil in order to use CashAppPayComponent")
+                return nil
+            }
+            if #available(iOS 13.0, *) {
+                var cashAppPayConfiguration = CashAppPayConfiguration(redirectURL: cashAppPayDropInConfig.redirectURL,
+                                                                      referenceId: cashAppPayDropInConfig.referenceId)
+                cashAppPayConfiguration.showsStorePaymentMethodField = cashAppPayDropInConfig.showsStorePaymentMethodField
+                cashAppPayConfiguration.localizationParameters = configuration.localizationParameters
+                cashAppPayConfiguration.style = configuration.style.formComponent
+        
+                return CashAppPayComponent(paymentMethod: paymentMethod,
+                                           context: context,
+                                           configuration: cashAppPayConfiguration)
+            } else {
+                return nil
+            }
+        #else
+            return nil
+        #endif
     }
 
     private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
