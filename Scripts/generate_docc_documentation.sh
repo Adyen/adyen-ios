@@ -72,12 +72,12 @@ let package = Package(
         .package(
             name: \"Adyen3DS2\",
             url: \"https://github.com/Adyen/adyen-3ds2-ios\",
-            .exact(Version(2, 3, 0))
+            .exact(Version(2, 3, 1))
         ),
         .package(
             name: \"AdyenNetworking\",
             url: \"https://github.com/Adyen/adyen-networking-ios\",
-            .exact(Version(1, 0, 0))
+            .exact(Version(2, 0, 0))
         ),
         .package(
             name: \"AdyenWeChatPayInternal\",
