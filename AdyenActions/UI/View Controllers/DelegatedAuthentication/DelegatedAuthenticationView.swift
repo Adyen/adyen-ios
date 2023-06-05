@@ -122,6 +122,7 @@ internal final class DelegatedAuthenticationView: UIView {
 
     internal lazy var textView: UITextView = {
         let textView = UITextView(style: textViewStyle)
+        textView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "textView")
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.isScrollEnabled = false
         return textView
