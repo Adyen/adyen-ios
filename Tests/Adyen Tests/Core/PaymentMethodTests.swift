@@ -73,7 +73,8 @@ class PaymentMethodTests: XCTestCase {
                 achDirectDebit,
                 bacsDirectDebit,
                 giftCard1,
-                givexGiftCard
+                givexGiftCard,
+                mealVoucherSodexo
             ]
         ]
         return try Coder.decode(dictionary) as PaymentMethods
@@ -147,7 +148,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 25)
+        XCTAssertEqual(paymentMethods.regular.count, 26)
         XCTAssertTrue(paymentMethods.regular[0] is CardPaymentMethod)
         XCTAssertEqual((paymentMethods.regular[0] as! CardPaymentMethod).fundingSource!, .credit)
         
@@ -257,6 +258,10 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[24] is GiftCardPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[24].name, "Givex")
         XCTAssertEqual(paymentMethods.regular[24].type.rawValue, "giftcard")
+        
+        XCTAssertTrue(paymentMethods.regular[25] is MealVoucherPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[25].name, "Sodexo")
+        XCTAssertEqual(paymentMethods.regular[25].type.rawValue, "mealVoucher_FR_sodexo")
 
     }
     
@@ -455,6 +460,16 @@ class PaymentMethodTests: XCTestCase {
         )
         XCTAssertEqual(givexGiftCardPaymentMethod?.displayInformation(using: nil).title, "Givex")
         XCTAssertNil(givexGiftCardPaymentMethod?.displayInformation(using: nil).subtitle)
+    }
+    
+    func testOverridingDisplayInformationMealVoucher() throws {
+        paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .mealVoucherSodexo,
+                                                  with: .init(title: "custom title",
+                                                              subtitle: "custom subtitle"))
+        let mealVoucherSodexoPaymentMethod = paymentMethods.paymentMethod(ofType: .mealVoucherSodexo)
+        XCTAssertEqual(mealVoucherSodexoPaymentMethod?.displayInformation(using: nil).title, "custom title")
+        XCTAssertEqual(mealVoucherSodexoPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
+        
     }
     
     func testOverridingDisplayInformationDukoWallet() throws {
@@ -831,6 +846,14 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.name, "Generic GiftCard")
         XCTAssertEqual(paymentMethod.displayInformation(using: nil).logoName, "genericgiftcard")
         XCTAssertEqual(paymentMethod.displayInformation(using: nil).logoName, "genericgiftcard")
+    }
+    
+    func testDecodingMealVoucherPaymentMethod() throws {
+        let paymentMethod = try Coder.decode(mealVoucherSodexo) as MealVoucherPaymentMethod
+        XCTAssertEqual(paymentMethod.type.rawValue, "mealVoucher_FR_sodexo")
+        XCTAssertEqual(paymentMethod.name, "Sodexo")
+        XCTAssertEqual(paymentMethod.displayInformation(using: nil).title, "Sodexo")
+        XCTAssertEqual(paymentMethod.displayInformation(using: nil).logoName, "mealVoucher_FR_sodexo")
     }
     
     // MARK: - Boleto

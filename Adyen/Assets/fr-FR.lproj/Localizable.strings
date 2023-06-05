@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "Enregistrer pour la prochaine fois";
 "adyen.card.nameItem.title" = "Nom sur la carte";
 "adyen.card.nameItem.placeholder" = "J. Smith";
-"adyen.card.nameItem.invalid" = "Nom du porteur de carte incorrect";
+"adyen.card.nameItem.invalid" = "Entrez le nom tel qu'il apparaît sur la carte";
 "adyen.card.numberItem.title" = "Numéro de la carte";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Numéro de carte non valide";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "MM/AA";
 "adyen.card.expiryItem.invalid" = "Date d'expiration incorrecte";
 "adyen.card.cvcItem.invalid" = "Format CVC/CVV incorrect";
-"adyen.card.cvcItem.title" = "CVC / CVV";
+"adyen.card.cvcItem.title" = "Code de sécurité";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Vérifiez votre carte";
 "adyen.card.stored.message" = "Entrez votre CVC code pour %@ s'il vous plaît.";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Pré-autoriser avec %@";
 "adyen.confirmPreauthorization" = "Confirmer la pré-autorisation";
-"adyen.card.cvcItem.title.optional" = "CVC / CVV (facultatif)";
+"adyen.card.cvcItem.title.optional" = "Code de sécurité (facultatif)";
 "adyen.confirmPurchase" = "Confirmer l'achat";
 "adyen.lastName" = "Nom de famille";
 "adyen.firstName" = "Prénom";
@@ -170,10 +170,11 @@
 "adyen.UPIVpa.validationMessage" = "Entrez une adresse de paiement virtuelle valide";
 "adyen.UPIQrcode.generationMessage" = "Générez le code QR à télécharger ou à prendre en photo et importez-le dans l'application UPI pour effectuer le paiement.";
 "adyen.UPIQrcode.timerMessage" = "Vous avez %@ pour approuver";
-"adyen.upi_collect.confirmPayment" = "En attente de votre confirmation...";
+"adyen.upiCollect.confirmPayment" = "En attente de votre confirmation...";
 "adyen.upi.vpaWaitingMessage" = "Ouvrez votre application UPI pour confirmer le paiement";
 "adyen.QRCode.generateQRCode" = "Générer un code QR";
 "adyen.UPI.QRCodeInstructions" = "Effectuez une capture d'écran afin de l'importer dans l'application UPI ou scannez le code QR à l'aide de votre application UPI préférée pour procéder au paiement.";
+"adyen.cashAppPay.title" = "";
 "adyen.threeds2.DA.registration.title" = "Payez rapidement et en toute sécurité !";
 "adyen.threeds2.DA.registration.description" = "Vous pourrez payer plus rapidement la prochaine fois sur cet appareil à l'aide de vos données biométriques.";
 "adyen.threeds2.DA.registration.positiveButton" = "Activer le paiement rapide";

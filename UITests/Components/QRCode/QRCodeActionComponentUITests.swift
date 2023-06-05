@@ -69,7 +69,7 @@ class QRCodeActionComponentUITests: XCTestCase {
         presentationDelegate.doPresent = { component in
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
             
-            UIApplication.shared.mainKeyWindow?.rootViewController = component.viewController
+            UIApplication.shared.adyen.mainKeyWindow?.rootViewController = component.viewController
             
             // wait until the expiration label is rendered
             self.wait(for: .seconds(1))
@@ -130,7 +130,7 @@ class QRCodeActionComponentUITests: XCTestCase {
         presentationDelegate.doPresent = { component in
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
             
-            UIApplication.shared.mainKeyWindow?.rootViewController = component.viewController
+            UIApplication.shared.adyen.mainKeyWindow?.rootViewController = component.viewController
             
             // wait until the expiration label is rendered
             self.wait(for: .seconds(1))
@@ -191,7 +191,7 @@ class QRCodeActionComponentUITests: XCTestCase {
         presentationDelegate.doPresent = { component in
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
 
-            UIApplication.shared.mainKeyWindow?.rootViewController = component.viewController
+            UIApplication.shared.adyen.mainKeyWindow?.rootViewController = component.viewController
 
             // wait until the expiration label is rendered
             self.wait(for: .seconds(1))

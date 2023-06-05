@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "Zapamatovat si pro příště";
 "adyen.card.nameItem.title" = "Jméno na kartě";
 "adyen.card.nameItem.placeholder" = "Jan Novák";
-"adyen.card.nameItem.invalid" = "Neplatné jméno držitele karty";
+"adyen.card.nameItem.invalid" = "Zadejte jméno, jak je uvedeno na kartě";
 "adyen.card.numberItem.title" = "Číslo karty";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Neplatné číslo karty";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "MM/RR";
 "adyen.card.expiryItem.invalid" = "Neplatné datum konce platnosti";
 "adyen.card.cvcItem.invalid" = "Neplatný formát kódu CVC/CVV";
-"adyen.card.cvcItem.title" = "Kód CVC/CVV";
+"adyen.card.cvcItem.title" = "Bezpečnostní kód";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Ověřte svou kartu";
 "adyen.card.stored.message" = "Zadejte prosím kód CVC karty %@";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Předautorizovat pomocí %@";
 "adyen.confirmPreauthorization" = "Potvrdit předautorizaci";
-"adyen.card.cvcItem.title.optional" = "Kód CVC/CVV (volitelné)";
+"adyen.card.cvcItem.title.optional" = "Bezpečnostní kód (volitelný)";
 "adyen.confirmPurchase" = "Potvrdit nákup";
 "adyen.lastName" = "Příjmení";
 "adyen.firstName" = "Jméno";
@@ -170,10 +170,11 @@
 "adyen.UPIVpa.validationMessage" = "Zadejte správnou adresu pro virtuální platby";
 "adyen.UPIQrcode.generationMessage" = "Vygenerujte QR kód, který si můžete stáhnout nebo vyfotit na obrazovku a nahrajte jej do aplikace UPI, abyste mohli dokončit platbu.";
 "adyen.UPIQrcode.timerMessage" = "Máte %@ na schválení";
-"adyen.upi_collect.confirmPayment" = "Čekáme na vaše potvrzení...";
+"adyen.upiCollect.confirmPayment" = "Čekáme na vaše potvrzení...";
 "adyen.upi.vpaWaitingMessage" = "Otevřete platební aplikaci UPI a potvrďte platbu";
 "adyen.QRCode.generateQRCode" = "Vygenerovat QR kód";
 "adyen.UPI.QRCodeInstructions" = "Pořiďte snímek obrazovky a nahrajte ho v aplikaci UPI nebo naskenujte QR kód ve své oblíbené aplikaci UPI a dokončete platbu.";
+"adyen.cashAppPay.title" = "";
 "adyen.threeds2.DA.registration.title" = "Bezpečné a rychlé odbavení!";
 "adyen.threeds2.DA.registration.description" = "Příště se na tomto zařízení můžete odbavit rychleji pomocí biometrických údajů.";
 "adyen.threeds2.DA.registration.positiveButton" = "Povolení rychlého odbavení";

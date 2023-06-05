@@ -102,7 +102,7 @@ final class BLIKComponentUITests: XCTestCase {
         let config = BLIKComponent.Configuration(style: style)
         sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
-        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
+        UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
 
         let submitButton: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
 

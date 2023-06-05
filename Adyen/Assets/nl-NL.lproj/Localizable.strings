@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "Onthouden voor de volgende keer";
 "adyen.card.nameItem.title" = "Naam op kaart";
 "adyen.card.nameItem.placeholder" = "J. Janssen";
-"adyen.card.nameItem.invalid" = "Ongeldige naam kaarthouder";
+"adyen.card.nameItem.invalid" = "Voer naam in zoals weergegeven op kaart";
 "adyen.card.numberItem.title" = "Kaartnummer";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Ongeldig kaartnummer";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "MM/JJ";
 "adyen.card.expiryItem.invalid" = "Ongeldige vervaldatum";
 "adyen.card.cvcItem.invalid" = "Ongeldige CVC-/CVV-indeling";
-"adyen.card.cvcItem.title" = "CVC / CVV";
+"adyen.card.cvcItem.title" = "Beveiligingscode";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Verifieer uw kaart";
 "adyen.card.stored.message" = "Voer de verificatiecode in voor %@";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Preautorisatie uitvoeren met %@";
 "adyen.confirmPreauthorization" = "Preautorisatie bevestigen";
-"adyen.card.cvcItem.title.optional" = "CVC / CVV (optioneel)";
+"adyen.card.cvcItem.title.optional" = "Beveiligingscode (optioneel)";
 "adyen.confirmPurchase" = "Aankoop bevestigen";
 "adyen.lastName" = "Achternaam";
 "adyen.firstName" = "Voornaam";
@@ -170,10 +170,11 @@
 "adyen.UPIVpa.validationMessage" = "Voer een correct virtueel betalingsadres in";
 "adyen.UPIQrcode.generationMessage" = "Genereer de QR-code. U kunt deze downloaden of er een schermafbeelding van maken en deze uploaden naar de UPI-app om de betaling te voltooien.";
 "adyen.UPIQrcode.timerMessage" = "Je hebt nog %@ voor je goedkeuring";
-"adyen.upi_collect.confirmPayment" = "In afwachting van uw bevestiging...";
+"adyen.upiCollect.confirmPayment" = "In afwachting van uw bevestiging...";
 "adyen.upi.vpaWaitingMessage" = "Open je UPI-app om de betaling te bevestigen";
 "adyen.QRCode.generateQRCode" = "Genereer QR-code";
 "adyen.UPI.QRCodeInstructions" = "Maak een schermafbeelding en upload deze in de UPI-app of scan de QR-code met je favoriete UPI-app om de betaling te voltooien.";
+"adyen.cashAppPay.title" = "";
 "adyen.threeds2.DA.registration.title" = "Veilig en snel afrekenen!";
 "adyen.threeds2.DA.registration.description" = "U kunt de volgende keer sneller afrekenen op dit apparaat met behulp van uw biometrische gegevens.";
 "adyen.threeds2.DA.registration.positiveButton" = "Snel afrekenen inschakelen";

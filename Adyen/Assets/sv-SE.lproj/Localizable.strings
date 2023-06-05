@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "Spara kortuppgifter";
 "adyen.card.nameItem.title" = "Namn på kort";
 "adyen.card.nameItem.placeholder" = "A. Andersson";
-"adyen.card.nameItem.invalid" = "Kortinnehavarens namn är ogiltigt";
+"adyen.card.nameItem.invalid" = "Ange namnet som det står på kortet";
 "adyen.card.numberItem.title" = "Kortnummer";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Ogiltigt kortnummer";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "MM/ÅÅ";
 "adyen.card.expiryItem.invalid" = "Ogiltigt utgångsdatum";
 "adyen.card.cvcItem.invalid" = "Ogiltigt CVC/CVV-format";
-"adyen.card.cvcItem.title" = "CVC / CVV";
+"adyen.card.cvcItem.title" = "Säkerhetskod";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Verifiera ditt kort";
 "adyen.card.stored.message" = "Vänligen fyll i CVC kod för %@";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Förauktorisera med %@";
 "adyen.confirmPreauthorization" = "Bekräfta förauktorisering";
-"adyen.card.cvcItem.title.optional" = "CVC/CVV (tillval)";
+"adyen.card.cvcItem.title.optional" = "Säkerhetskod (valfritt)";
 "adyen.confirmPurchase" = "Bekräfta köp";
 "adyen.lastName" = "Efternamn";
 "adyen.firstName" = "Förnamn";
@@ -170,10 +170,11 @@
 "adyen.UPIVpa.validationMessage" = "Ange en korrekt virtuell betalningsadress";
 "adyen.UPIQrcode.generationMessage" = "Generera QR-koden, som du kan ladda ner eller ta en skärmdump av, och ladda upp den i UPI-appen för att slutföra betalningen.";
 "adyen.UPIQrcode.timerMessage" = "Du har %@ att godkänna";
-"adyen.upi_collect.confirmPayment" = "Väntar på din bekräftelse…";
+"adyen.upiCollect.confirmPayment" = "Väntar på din bekräftelse…";
 "adyen.upi.vpaWaitingMessage" = "Öppna din UPI-app för att bekräfta betalningen";
 "adyen.QRCode.generateQRCode" = "Generera QR-kod";
 "adyen.UPI.QRCodeInstructions" = "Ta en skärmdump att ladda upp i UPI-appen eller skanna QR-koden med din UPI-app för att slutföra betalningen.";
+"adyen.cashAppPay.title" = "";
 "adyen.threeds2.DA.registration.title" = "Säker och snabb betalning!";
 "adyen.threeds2.DA.registration.description" = "Du kan betala snabbare nästa gång på den här enheten med hjälp av biometri.";
 "adyen.threeds2.DA.registration.positiveButton" = "Aktivera snabb betalning";

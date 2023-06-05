@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "Zapomni si za prihodnjič";
 "adyen.card.nameItem.title" = "Ime na kartici";
 "adyen.card.nameItem.placeholder" = "J. Novak";
-"adyen.card.nameItem.invalid" = "Neveljavno ime imetnika kartice";
+"adyen.card.nameItem.invalid" = "Vnesite ime, kot je prikazano na kartici";
 "adyen.card.numberItem.title" = "Številka kartice";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Neveljavna številka kartice";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "MM/LL";
 "adyen.card.expiryItem.invalid" = "Neveljaven datum poteka veljavnosti";
 "adyen.card.cvcItem.invalid" = "Neveljavna oblika CVC/CVV";
-"adyen.card.cvcItem.title" = "CVC/CVV";
+"adyen.card.cvcItem.title" = "Varnostna koda";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Preverite podatke o kartici";
 "adyen.card.stored.message" = "Vnesite kodo CVC za kartico, ki se konča na %@";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Predhodna odobritev s/z: %@";
 "adyen.confirmPreauthorization" = "Potrdi predhodno odobritev";
-"adyen.card.cvcItem.title.optional" = "CVC/CVV (neobvezno)";
+"adyen.card.cvcItem.title.optional" = "Varnostna koda (neobvezno)";
 "adyen.confirmPurchase" = "Potrditev nakupa";
 "adyen.lastName" = "Priimek";
 "adyen.firstName" = "Ime";
@@ -170,10 +170,11 @@
 "adyen.UPIVpa.validationMessage" = "Vnesite pravilen virtualni naslov za plačilo";
 "adyen.UPIQrcode.generationMessage" = "Ustvarite kodo QR, ki jo lahko prenesete ali naredite posnetek zaslona, in jo za dokončanje plačila naložite v aplikacijo UPI.";
 "adyen.UPIQrcode.timerMessage" = "Za odobritev imate %@";
-"adyen.upi_collect.confirmPayment" = "Čakanje na vašo potrditev …";
+"adyen.upiCollect.confirmPayment" = "Čakanje na vašo potrditev …";
 "adyen.upi.vpaWaitingMessage" = "Za potrditev plačila odprite svojo aplikacijo UPI";
 "adyen.QRCode.generateQRCode" = "Ustvari kodo QR";
 "adyen.UPI.QRCodeInstructions" = "Za dokončanje plačila naredite posnetek zaslona, ki ga naložite v aplikacijo UPI, ali poskenirajte kodo QR z želeno aplikacijo UPI.";
+"adyen.cashAppPay.title" = "";
 "adyen.threeds2.DA.registration.title" = "Varno in hitro dokončanje nakupov!";
 "adyen.threeds2.DA.registration.description" = "Naslednjič lahko v tej napravi hitreje dokončate nakup z uporabo biometričnih podatkov.";
 "adyen.threeds2.DA.registration.positiveButton" = "Omogoči hitro dokončanje nakupov";

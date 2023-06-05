@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "Husk til næste gang";
 "adyen.card.nameItem.title" = "Navn på kort";
 "adyen.card.nameItem.placeholder" = "J. Hansen";
-"adyen.card.nameItem.invalid" = "Ugyldigt kortholdernavn";
+"adyen.card.nameItem.invalid" = "Indtast navn som vist på kortet";
 "adyen.card.numberItem.title" = "Kortnummer";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Ugyldigt kortnummer";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "MM/ÅÅ";
 "adyen.card.expiryItem.invalid" = "Ugyldig udløbsdato";
 "adyen.card.cvcItem.invalid" = "Ugyldigt format for CVC/CVV";
-"adyen.card.cvcItem.title" = "CVC / CVV";
+"adyen.card.cvcItem.title" = "Sikkerhedskode";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Kontrollér dit kort";
 "adyen.card.stored.message" = "Du skal indtaste CVC-koden for %@";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Forhåndsgodkend med %@";
 "adyen.confirmPreauthorization" = "Bekræft forhåndsgodkendelse";
-"adyen.card.cvcItem.title.optional" = "CVC / CVV (valgfrit)";
+"adyen.card.cvcItem.title.optional" = "Sikkerhedskode (valgfrit)";
 "adyen.confirmPurchase" = "Bekræft køb";
 "adyen.lastName" = "Efternavn";
 "adyen.firstName" = "Fornavn";
@@ -170,10 +170,11 @@
 "adyen.UPIVpa.validationMessage" = "Indtast en korrekt virtuel betalingsadresse";
 "adyen.UPIQrcode.generationMessage" = "Generer QR-koden, som du kan downloade eller tage et screenshot af, og upload den til UPI-appen for at gennemføre betalingen.";
 "adyen.UPIQrcode.timerMessage" = "Du har %@ til at godkende";
-"adyen.upi_collect.confirmPayment" = "Afventer din bekræftelse ...";
+"adyen.upiCollect.confirmPayment" = "Afventer din bekræftelse ...";
 "adyen.upi.vpaWaitingMessage" = "Åbn din UPI-app for at bekræfte betalingen";
 "adyen.QRCode.generateQRCode" = "Generér QR-kode";
 "adyen.UPI.QRCodeInstructions" = "Tag et skærmbillede, som du kan uploade i UPI-appen, eller scan QR-koden med din foretrukne UPI-app for at gennemføre betalingen.";
+"adyen.cashAppPay.title" = "";
 "adyen.threeds2.DA.registration.title" = "Sikker og hurtig betaling!";
 "adyen.threeds2.DA.registration.description" = "Du kan betale hurtigere næste gang på denne enhed med dine biometriske data.";
 "adyen.threeds2.DA.registration.positiveButton" = "Aktivér hurtig betaling";

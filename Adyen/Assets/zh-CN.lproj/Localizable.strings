@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "记住以便下次使用";
 "adyen.card.nameItem.title" = "卡片上的姓名";
 "adyen.card.nameItem.placeholder" = "J. Smith";
-"adyen.card.nameItem.invalid" = "无效的持卡人姓名";
+"adyen.card.nameItem.invalid" = "输入卡片上显示的姓名";
 "adyen.card.numberItem.title" = "卡号";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "无效的卡号";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "月月/年年";
 "adyen.card.expiryItem.invalid" = "无效的到期日期";
 "adyen.card.cvcItem.invalid" = "无效的 CVC / CVV 格式";
-"adyen.card.cvcItem.title" = "CVC / CVV";
+"adyen.card.cvcItem.title" = "安全码";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "验证您的卡片";
 "adyen.card.stored.message" = "请输入 %@ 的 CVC 码";
@@ -57,7 +57,7 @@
 "adyen.blik.help" = "从您的银行应用中获取代码。";
 "adyen.preauthorizeWith" = "预先授权 %@";
 "adyen.confirmPreauthorization" = "确认预先授权";
-"adyen.card.cvcItem.title.optional" = "CVC / CVV（可选）";
+"adyen.card.cvcItem.title.optional" = "安全码（可选）";
 "adyen.confirmPurchase" = "确认购买";
 "adyen.lastName" = "姓氏";
 "adyen.firstName" = "名字";
@@ -167,7 +167,7 @@
 "adyen.UPIVpa.validationMessage" = "输入正确的虚拟支付地址";
 "adyen.UPIQrcode.generationMessage" = "生成可以下载或截屏的二维码，然后将其上传到 UPI 应用以完成付款。";
 "adyen.UPIQrcode.timerMessage" = "您还有 %@ 可批准";
-"adyen.upi_collect.confirmPayment" = "等待您的确认…";
+"adyen.upiCollect.confirmPayment" = "等待您的确认…";
 "adyen.upi.vpaWaitingMessage" = "打开您的 UPI 应用以确认付款";
 "adyen.QRCode.generateQRCode" = "生成二维码";
 "adyen.UPI.QRCodeInstructions" = "截取屏幕截图以上传到 UPI 应用，或者使用您首选的 UPI 应用扫描二维码以完成付款。";

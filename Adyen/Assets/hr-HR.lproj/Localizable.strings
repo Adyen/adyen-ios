@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "Zapamtiti za sljedeći put";
 "adyen.card.nameItem.title" = "Ime na kartici";
 "adyen.card.nameItem.placeholder" = "J. Smith";
-"adyen.card.nameItem.invalid" = "Nevažeće ime vlasnika kartice";
+"adyen.card.nameItem.invalid" = "Unesite ime kako je prikazano na kartici";
 "adyen.card.numberItem.title" = "Broj kartice";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Nevažeći broj kartice";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "MM/GG";
 "adyen.card.expiryItem.invalid" = "Nevažeći datum isteka";
 "adyen.card.cvcItem.invalid" = "Nevažeći CVC/CVV format";
-"adyen.card.cvcItem.title" = "CVC/CVV";
+"adyen.card.cvcItem.title" = "Sigurnosni kôd";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Potvrdite svoju karticu";
 "adyen.card.stored.message" = "Unesite CVC kôd za %@";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Prethodno odobri s %@";
 "adyen.confirmPreauthorization" = "Potvrdite prethodno odobrenje";
-"adyen.card.cvcItem.title.optional" = "CVC/CVV (nije obavezno)";
+"adyen.card.cvcItem.title.optional" = "Sigurnosni kôd (neobvezno)";
 "adyen.confirmPurchase" = "Potvrdite kupnju";
 "adyen.lastName" = "Prezime";
 "adyen.firstName" = "Ime";
@@ -170,10 +170,11 @@
 "adyen.UPIVpa.validationMessage" = "Upišite točnu adresu za virtualno plaćanje";
 "adyen.UPIQrcode.generationMessage" = "Generirajte kôd QR koji možete preuzeti ili napravite snimku zaslona i prenesite ga u aplikaciju UPI kako biste završili plaćanje.";
 "adyen.UPIQrcode.timerMessage" = "Ostalo vam je %@ za ustupanje odobrenja";
-"adyen.upi_collect.confirmPayment" = "Čekamo vašu potvrdu...";
+"adyen.upiCollect.confirmPayment" = "Čekamo vašu potvrdu...";
 "adyen.upi.vpaWaitingMessage" = "Otvorite svoju UPI aplikaciju kako biste potvrdili plaćanje";
 "adyen.QRCode.generateQRCode" = "Generirajte QR kôd";
 "adyen.UPI.QRCodeInstructions" = "Napravite snimku zaslona za prenošenje u aplikaciju UPI ili skenirajte kôd QR pomoću željene aplikacije UPI kako biste završili plaćanje.";
+"adyen.cashAppPay.title" = "";
 "adyen.threeds2.DA.registration.title" = "Sigurna i brza naplata!";
 "adyen.threeds2.DA.registration.description" = "Sljedeći put na ovom uređaju možete brže završiti kupnju pomoću svojih biometrijskih podataka.";
 "adyen.threeds2.DA.registration.positiveButton" = "Omogući brzu naplatu";

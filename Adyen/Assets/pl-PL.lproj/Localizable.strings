@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "Zapamiętaj na przyszłość";
 "adyen.card.nameItem.title" = "Imię i nazwisko na karcie";
 "adyen.card.nameItem.placeholder" = "J. Kowalski";
-"adyen.card.nameItem.invalid" = "Nieprawidłowe imię i nazwisko posiadacza karty";
+"adyen.card.nameItem.invalid" = "Wpisz imię i nazwisko w takim formacie, jak na karcie";
 "adyen.card.numberItem.title" = "Numer karty ";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Nieprawidłowy numer karty";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "MM/RR";
 "adyen.card.expiryItem.invalid" = "Nieprawidłowa data wygaśnięcia";
 "adyen.card.cvcItem.invalid" = "Nieprawidłowy format CVC/CVV";
-"adyen.card.cvcItem.title" = "CVC / CVV";
+"adyen.card.cvcItem.title" = "Kod zabezpieczający";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Zweryfikuj kartę";
 "adyen.card.stored.message" = "Proszę wprowadzić kod CVC dla %@";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Autoryzuj wstępnie za pomocą: %@";
 "adyen.confirmPreauthorization" = "Potwierdź autoryzację wstępną";
-"adyen.card.cvcItem.title.optional" = "CVC / CVV (opcjonalnie)";
+"adyen.card.cvcItem.title.optional" = "Kod zabezpieczający (opcjonalnie)";
 "adyen.confirmPurchase" = "Potwierdź zakup";
 "adyen.lastName" = "Nazwisko";
 "adyen.firstName" = "Imię";
@@ -170,10 +170,11 @@
 "adyen.UPIVpa.validationMessage" = "Wpisz prawidłowy adres płatności wirtualnej";
 "adyen.UPIQrcode.generationMessage" = "Wygeneruj kod QR, który można pobrać lub zrób zrzut ekranu i załaduj do aplikacji UPI, aby zakończyć płatność.";
 "adyen.UPIQrcode.timerMessage" = "Masz %@ do zatwierdzenia";
-"adyen.upi_collect.confirmPayment" = "Oczekiwanie na potwierdzenie...";
+"adyen.upiCollect.confirmPayment" = "Oczekiwanie na potwierdzenie...";
 "adyen.upi.vpaWaitingMessage" = "Otwórz aplikację UPI, aby potwierdzić płatność";
 "adyen.QRCode.generateQRCode" = "Wygeneruj kod QR";
 "adyen.UPI.QRCodeInstructions" = "Zrób zrzut ekranu, aby przesłać go w aplikacji UPI lub zeskanuj kod QR za pomocą preferowanej aplikacji UPI, aby zakończyć płatność.";
+"adyen.cashAppPay.title" = "";
 "adyen.threeds2.DA.registration.title" = "Bezpieczna i szybka kasa!";
 "adyen.threeds2.DA.registration.description" = "Następnym razem na tym urządzeniu możesz dokończyć transakcję szybciej, korzystając ze swoich danych biometrycznych.";
 "adyen.threeds2.DA.registration.positiveButton" = "Włączenie szybkiej kasy";
