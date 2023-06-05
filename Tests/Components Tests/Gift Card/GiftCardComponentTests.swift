@@ -51,7 +51,7 @@ class GiftCardComponentTests: XCTestCase {
 
         context = Dummy.context
 
-        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
+        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(giftCardPaymentMethod, showsSecurityCodeField: true),
                                 context: context,
                                 amount: amountToPay,
                                 publicKeyProvider: publicKeyProvider)
@@ -75,7 +75,7 @@ class GiftCardComponentTests: XCTestCase {
     
     func testGiftCardUI() {
         let paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
-        let sut = GiftCardComponent(partialPaymentMethodType: .giftCard(paymentMethod),
+        let sut = GiftCardComponent(partialPaymentMethodType: .giftCard(paymentMethod, showsSecurityCodeField: true),
                                     context: context,
                                     amount: amountToPay,
                                     publicKeyProvider: publicKeyProvider)
@@ -559,7 +559,7 @@ class GiftCardComponentTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
 
-        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
+        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(giftCardPaymentMethod, showsSecurityCodeField: true),
                                 context: context,
                                 amount: amountToPay,
                                 publicKeyProvider: publicKeyProvider)
@@ -576,10 +576,9 @@ class GiftCardComponentTests: XCTestCase {
     func testHidingSecurityCodeItemView() throws {
         
         // Given
-        sut = GiftCardComponent(paymentMethod: paymentMethod,
+        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(giftCardPaymentMethod, showsSecurityCodeField: false),
                                 context: context,
                                 amount: amountToPay,
-                                configuration: .init(showsSecurityCodeField: false),
                                 publicKeyProvider: publicKeyProvider)
 
         let mockViewController = UIViewController()
