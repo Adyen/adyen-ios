@@ -61,6 +61,8 @@ The Adyen DropIn/Components SDK API Reference.
 - ``StoredCardPaymentMethod``
 - ``StoredBCMCPaymentMethod``
 - ``StoredBLIKPaymentMethod``
+- ``StoredACHDirectDebitPaymentMethod``
+- ``StoredCashAppPayPaymentMethod``
 
 ## Actions
 
@@ -197,6 +199,12 @@ The Adyen DropIn/Components SDK API Reference.
 - ``MBWayPaymentMethod``
 - ``MBWayComponent``
 - ``MBWayDetails``
+
+### Cash App Pay Component
+
+- ``CashAppPayPaymentMethod``
+- ``CashAppPayComponent``
+- ``CashAppPayDetails``
     
 ### WeChat Pay
   

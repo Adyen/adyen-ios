@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -81,7 +81,8 @@ internal enum AnyPaymentMethodDecoder {
         .atome: AtomePaymentMethodDecoder(),
         .onlineBankingCZ: OnlineBankingPaymentMethodDecoder(),
         .onlineBankingSK: OnlineBankingPaymentMethodDecoder(),
-        .upi: UPIPaymentMethodDecoder()
+        .upi: UPIPaymentMethodDecoder(),
+        .cashAppPay: CashAppPayPaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = InstantPaymentMethodDecoder()
@@ -302,5 +303,19 @@ private struct OnlineBankingPaymentMethodDecoder: PaymentMethodDecoder {
 private struct UPIPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         .upi(try UPIPaymentMethod(from: decoder))
+    }
+}
+
+private struct CashAppPayPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
+        #if canImport(PayKit)
+            if isStored {
+                return .storedCashAppPay(try StoredCashAppPayPaymentMethod(from: decoder))
+            } else {
+                return .cashAppPay(try CashAppPayPaymentMethod(from: decoder))
+            }
+        #else
+            return .none
+        #endif
     }
 }

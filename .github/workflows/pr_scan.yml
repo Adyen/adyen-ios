@@ -12,13 +12,10 @@ jobs:
     runs-on: macos-12
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: n1hility/cancel-previous-runs@v2
+    - uses: actions/checkout@v3
+    - uses: n1hility/cancel-previous-runs@v3
       with:
         token: ${{ secrets.MANUAL_ACTION_TOKEN }}
-    - uses: actions/setup-java@v1
-      with:
-        java-version: '11'
 
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
@@ -38,7 +35,7 @@ jobs:
     - name: Build and test
       run: |
         xcodebuild -version
-        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" -skipPackagePluginValidation | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
@@ -62,6 +59,7 @@ jobs:
         --binary-basename AdyenSession
         --binary-basename AdyenEncryption
         --binary-basename AdyenActions
+        --binary-basename AdyenCashAppPay
         --binary-basename AdyenSwiftUI'
 
     - name: SwiftLint

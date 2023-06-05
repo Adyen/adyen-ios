@@ -181,3 +181,5 @@ whiteList:
   - vpa
   - qrcode
   - upicollect
+  - cashapp
+  - cashtag
