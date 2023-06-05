@@ -38,3 +38,6 @@
 - `AnalyticsConfiguration` is the object that defines the behavior of analytics within the SDK. Merchants can enable/disable analytics.
 - `CardComponentDelegate.didChangeBIN(:component:)` provides the 8 digit bin in case the PAN is greater than 16 digits.
 - `CardComponentDelegate.didSubmit(lastFour:finalBIN:component)` now has a new parameter `finalBIN` that provides the final BIN after shopper submits the card details.
+
+## 5.2.0
+- `amountToPay` property of `PaymentComponentData` has been deprecated. Use to `amount` property if needed. 
