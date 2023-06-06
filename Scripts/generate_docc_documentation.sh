@@ -110,7 +110,6 @@ let package = Package(
                 \"AdyenEncryption/Info.plist\",
                 \"AdyenSwiftUI/Info.plist\",
                 \"AdyenWeChatPay/Info.plist\",
-                \"AdyenCashAppPay/Info.plist\",
                 \"AdyenCashAppPay/AdyenCashAppPay.docc\",
                 \"AdyenCard/Info.plist\",
                 \"AdyenCard/Utilities/Non SPM Bundle Extension\",
