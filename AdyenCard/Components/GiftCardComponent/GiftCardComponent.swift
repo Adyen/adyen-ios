@@ -70,7 +70,6 @@ public final class GiftCardComponent: PresentableComponent,
     ///   - amount: The amount to pay.
     ///   - style: The Component's UI style.
     ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
-    /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
     public convenience init(paymentMethod: GiftCardPaymentMethod,
                             context: AdyenContext,
                             amount: Amount,
