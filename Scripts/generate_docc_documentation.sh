@@ -37,6 +37,7 @@ rsync -r AdyenDropIn $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
 rsync -r AdyenSession $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
 rsync -r AdyenWeChatPay $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
 rsync -r AdyenSwiftUI $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
+rsync -r AdyenCashAppPay $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
 
 # Copy the Adyen.docc folder to the temp package source folder
 cp -a $FRAMEWORK_NAME.docc $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/$FRAMEWORK_NAME.docc
