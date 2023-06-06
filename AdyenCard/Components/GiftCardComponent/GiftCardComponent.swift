@@ -43,7 +43,7 @@ public final class GiftCardComponent: PresentableComponent,
 
     /// The gift card payment method.
     public var paymentMethod: PaymentMethod { partialPaymentMethodType.partialPaymentMethod }
-    
+
     /// Describes the component's UI style.
     public let style: FormComponentStyle
 
@@ -55,10 +55,10 @@ public final class GiftCardComponent: PresentableComponent,
 
     /// The delegate that handles shopper confirmation UI when the balance of the gift card is sufficient to pay.
     public weak var readyToSubmitComponentDelegate: ReadyToSubmitPaymentComponentDelegate?
-    
+
     /// The localization parameters.
     public var localizationParameters: LocalizationParameters?
-    
+
     /// Indicates whether to show the security code field at all.
     private let showsSecurityCodeField: Bool
 
@@ -128,7 +128,6 @@ public final class GiftCardComponent: PresentableComponent,
 
         let formViewController = FormViewController(style: style)
         formViewController.localizationParameters = localizationParameters
-
         formViewController.delegate = self
         formViewController.title = partialPaymentMethodType.partialPaymentMethod.displayInformation(using: localizationParameters).title
         formViewController.append(errorItem)
@@ -164,10 +163,7 @@ public final class GiftCardComponent: PresentableComponent,
     }()
 
     internal lazy var numberItem: FormTextInputItem = {
-
         let item = FormTextInputItem(style: style.textField)
-//        let item = FormTextInputItem(style: style.textField)
-
         item.title = localizedString(.cardNumberItemTitle, localizationParameters)
         item.validator = NumericStringValidator(minimumLength: 15, maximumLength: 32)
         item.formatter = CardNumberFormatter()

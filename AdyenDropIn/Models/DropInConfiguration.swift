@@ -57,10 +57,10 @@ public extension DropInComponent {
 
         /// Configuration for the Cash App Pay component
         public var cashAppPay: CashAppPay?
-        
+
         /// The ACH Direct Debit configuration.
         public var ach: ACH = .init()
-        
+
         /// Gift card component configuration
         public var giftCard: GiftCard = .init()
 
