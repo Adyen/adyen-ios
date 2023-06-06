@@ -19,12 +19,12 @@ public final class GiftCardComponent: PresentableComponent,
     internal let amount: Amount
     
     internal enum PartialPaymentMethodType {
-        case giftCard(GiftCardPaymentMethod, showsSecurityCodeField: Bool)
+        case giftCard(GiftCardPaymentMethod)
         case mealVoucher(MealVoucherPaymentMethod)
         
         internal var partialPaymentMethod: PartialPaymentMethod {
             switch self {
-            case let .giftCard(giftCardPaymentMethod, _):
+            case let .giftCard(giftCardPaymentMethod):
                 return giftCardPaymentMethod
             case let .mealVoucher(mealVoucherPaymentMethod):
                 return mealVoucherPaymentMethod
@@ -58,6 +58,9 @@ public final class GiftCardComponent: PresentableComponent,
     
     /// The localization parameters.
     public var localizationParameters: LocalizationParameters?
+    
+    /// Indicates whether to show the security code field at all.
+    private let showsSecurityCodeField: Bool
 
     /// Initializes the partial payment component with a gift card payment method.
     ///
@@ -73,10 +76,11 @@ public final class GiftCardComponent: PresentableComponent,
                             amount: Amount,
                             style: FormComponentStyle = FormComponentStyle(),
                             showsSecurityCodeField: Bool = true) {
-        self.init(partialPaymentMethodType: .giftCard(paymentMethod, showsSecurityCodeField: showsSecurityCodeField),
+        self.init(partialPaymentMethodType: .giftCard(paymentMethod),
                   context: context,
                   amount: amount,
                   style: style,
+                  showsSecurityCodeField: showsSecurityCodeField,
                   publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
     
@@ -87,14 +91,17 @@ public final class GiftCardComponent: PresentableComponent,
     ///   - context:The context object for this component.
     ///   - amount: The amount to pay.
     ///   - configuration: The configuration of the component.
+    ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
     public convenience init(paymentMethod: MealVoucherPaymentMethod,
                             context: AdyenContext,
                             amount: Amount,
-                            style: FormComponentStyle = FormComponentStyle()) {
+                            style: FormComponentStyle = FormComponentStyle(),
+                            showsSecurityCodeField: Bool = true) {
         self.init(partialPaymentMethodType: .mealVoucher(paymentMethod),
                   context: context,
                   amount: amount,
                   style: style,
+                  showsSecurityCodeField: showsSecurityCodeField,
                   publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
     
@@ -103,10 +110,12 @@ public final class GiftCardComponent: PresentableComponent,
                   amount: Amount,
                   configuration: Configuration = .init(),
                   style: FormComponentStyle = FormComponentStyle(),
+                  showsSecurityCodeField: Bool,
                   publicKeyProvider: AnyPublicKeyProvider) {
         self.partialPaymentMethodType = partialPaymentMethodType
         self.context = context
         self.style = style
+        self.showsSecurityCodeField = showsSecurityCodeField
         self.publicKeyProvider = publicKeyProvider
         self.amount = amount
     }
@@ -127,14 +136,18 @@ public final class GiftCardComponent: PresentableComponent,
         formViewController.append(errorItem)
         formViewController.append(numberItem)
 
-        switch partialPaymentMethodType {
-        case let .giftCard(_, showsSecurityCodeField):
-            if showsSecurityCodeField {
-                formViewController.append(securityCodeItem)
-            }
-        case .mealVoucher:
-            let splitTextItem = FormSplitItem(items: expiryDateItem, securityCodeItem, style: style.textField)
+        switch (partialPaymentMethodType, showsSecurityCodeField) {
+        case (.giftCard, true):
+            formViewController.append(securityCodeItem)
+        case (.giftCard, false):
+            break // Nothing additionally to add
+            
+        case (.mealVoucher, true):
+            let splitTextItem = FormSplitItem(items: expiryDateItem, securityCodeItem,
+                                              style: style.textField)
             formViewController.append(splitTextItem)
+        case (.mealVoucher, false):
+            formViewController.append(expiryDateItem)
         }
         
         formViewController.append(FormSpacerItem())
@@ -384,7 +397,7 @@ extension GiftCardComponent {
             let details: PartialPaymentMethodDetails
             
             switch partialPaymentMethodType {
-            case let .giftCard(giftCardPaymentMethod, _):
+            case let .giftCard(giftCardPaymentMethod):
                 details = try GiftCardDetails(paymentMethod: giftCardPaymentMethod,
                                               encryptedCard: encryptedCard)
             case let .mealVoucher(mealVoucherPaymentMethod):

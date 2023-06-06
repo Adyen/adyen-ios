@@ -132,7 +132,8 @@ extension ComponentManager: PaymentComponentBuilder {
         return GiftCardComponent(paymentMethod: paymentMethod,
                                  context: context,
                                  amount: amount,
-                                 style: configuration.style.formComponent)
+                                 style: configuration.style.formComponent,
+                                 showsSecurityCodeField: configuration.giftCard.showsSecurityCodeField)
     }
 
     internal func build(paymentMethod: BoletoPaymentMethod) -> PaymentComponent? {
