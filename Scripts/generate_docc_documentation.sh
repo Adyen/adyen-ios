@@ -67,7 +67,8 @@ let package = Package(
     products: [
         .library(
             name: \"Adyen\",
-            targets: [\"Adyen\"]),
+            targets: [\"Adyen\"]
+        )
     ],
     dependencies: [
         .package(
@@ -84,6 +85,11 @@ let package = Package(
             name: \"AdyenWeChatPayInternal\",
             url: \"https://github.com/Adyen/adyen-wechatpay-ios\",
             .exact(Version(2, 1, 0))
+        ),
+        .package(
+            name: \"PayKit\",
+            url: \"https://github.com/cashapp/cash-app-pay-ios-sdk\",
+            .exact(Version(0, 3, 3))
         )
     ],
     targets: [
@@ -92,7 +98,9 @@ let package = Package(
             dependencies: [
                 .product(name: \"AdyenNetworking\", package: \"AdyenNetworking\"),
                 .product(name: \"Adyen3DS2\", package: \"Adyen3DS2\"),
-                .product(name: \"AdyenWeChatPayInternal\", package: \"AdyenWeChatPayInternal\")
+                .product(name: \"AdyenWeChatPayInternal\", package: \"AdyenWeChatPayInternal\"),
+                .product(name: \"PayKit\", package: \"PayKit\"),
+                .product(name: \"PayKitUI\", package: \"PayKit\")
             ],
             exclude: [
                 \"Adyen/Info.plist\",
@@ -102,11 +110,14 @@ let package = Package(
                 \"AdyenEncryption/Info.plist\",
                 \"AdyenSwiftUI/Info.plist\",
                 \"AdyenWeChatPay/Info.plist\",
+                \"AdyenCashAppPay/Info.plist\",
+                \"AdyenCashAppPay/AdyenCashAppPay.docc\",
                 \"AdyenCard/Info.plist\",
                 \"AdyenCard/Utilities/Non SPM Bundle Extension\",
                 \"AdyenActions/Utilities/Non SPM Bundle Extension\",
                 \"Adyen/Utilities/Non SPM Bundle Extension\"
-            ])
+            ]
+        ),
     ]
 )
 " > Package.swift
