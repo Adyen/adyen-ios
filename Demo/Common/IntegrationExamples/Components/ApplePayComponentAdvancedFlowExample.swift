@@ -17,17 +17,6 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
     internal var applePayComponent: ApplePayComponent?
     internal weak var presenter: PresenterExampleProtocol?
 
-    // MARK: - Action Handling
-
-    internal lazy var adyenActionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(context: context)
-        handler.configuration.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
-        handler.configuration.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
-        handler.delegate = self
-        handler.presentationDelegate = self
-        return handler
-    }()
-
     // MARK: - Initializers
 
     internal init() {}
@@ -84,11 +73,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
     private func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
         switch result {
         case let .success(response):
-            if let action = response.action {
-                adyenActionComponent.handle(action)
-            } else {
-                finish(with: response)
-            }
+           finish(with: response)
         case let .failure(error):
             finish(with: error)
         }
@@ -128,21 +113,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
     // MARK: - Presentation
 
     private func present(_ component: PresentableComponent) {
-        guard component.requiresModalPresentation else {
-            presenter?.present(viewController: component.viewController, completion: nil)
-            return
-        }
-
-        let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel,
-                                                                           target: self,
-                                                                           action: #selector(cancelPressed))
-        presenter?.present(viewController: navigation, completion: nil)
-    }
-
-    @objc private func cancelPressed() {
-        applePayComponent?.cancelIfNeeded()
-        presenter?.dismiss(completion: nil)
+        presenter?.present(viewController: component.viewController, completion: nil)
     }
 
 }
@@ -160,29 +131,6 @@ extension ApplePayComponentAdvancedFlowExample: PaymentComponentDelegate {
         finish(with: error)
     }
 
-}
-
-extension ApplePayComponentAdvancedFlowExample: ActionComponentDelegate {
-
-    internal func didFail(with error: Error, from component: ActionComponent) {
-        finish(with: error)
-    }
-
-    internal func didComplete(from component: ActionComponent) {
-        finish(with: .received)
-    }
-
-    internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
-        let request = PaymentDetailsRequest(
-            details: data.details,
-            paymentData: data.paymentData,
-            merchantAccount: ConfigurationConstants.current.merchantAccount
-        )
-        apiClient.perform(request) { [weak self] result in
-            self?.paymentResponseHandler(result: result)
-        }
-    }
 }
 
 extension ApplePayComponentAdvancedFlowExample: PresentationDelegate {

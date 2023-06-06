@@ -74,22 +74,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     }
 
     private func present(_ component: PresentableComponent) {
-
-        guard component.requiresModalPresentation else {
-            presenter?.present(viewController: component.viewController, completion: nil)
-            return
-        }
-
-        let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel,
-                                                                           target: self,
-                                                                           action: #selector(cancelPressed))
-        presenter?.present(viewController: navigation, completion: nil)
-    }
-
-    @objc private func cancelPressed() {
-        applePayComponent?.cancelIfNeeded()
-        presenter?.dismiss(completion: nil)
+        presenter?.present(viewController: component.viewController, completion: nil)
     }
 
     // MARK: - Alert handling
