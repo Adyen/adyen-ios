@@ -127,7 +127,7 @@ public extension DropInComponent {
     }
     
     /// Gift card component configuration.
-    struct GiftCard: AnyGiftCardConfiguration {
+    struct GiftCard {
         /// Indicates whether to show the security code field. Defaults to true.
         public var showsSecurityCodeField: Bool = true
     }

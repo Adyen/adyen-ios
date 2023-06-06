@@ -68,7 +68,7 @@ public final class GiftCardComponent: PresentableComponent,
     ///   - paymentMethod: The gift card payment method.
     ///   - context:The context object for this component.
     ///   - amount: The amount to pay.
-    ///   - style: The form style.
+    ///   - style: The Component's UI style.
     ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
     /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
     public convenience init(paymentMethod: GiftCardPaymentMethod,
@@ -90,7 +90,7 @@ public final class GiftCardComponent: PresentableComponent,
     ///   - paymentMethod: The meal voucher payment method.
     ///   - context:The context object for this component.
     ///   - amount: The amount to pay.
-    ///   - configuration: The configuration of the component.
+    ///   - style: The Component's UI style.
     ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
     public convenience init(paymentMethod: MealVoucherPaymentMethod,
                             context: AdyenContext,
@@ -108,7 +108,6 @@ public final class GiftCardComponent: PresentableComponent,
     internal init(partialPaymentMethodType: PartialPaymentMethodType,
                   context: AdyenContext,
                   amount: Amount,
-                  configuration: Configuration = .init(),
                   style: FormComponentStyle = FormComponentStyle(),
                   showsSecurityCodeField: Bool = true,
                   publicKeyProvider: AnyPublicKeyProvider) {
