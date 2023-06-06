@@ -110,7 +110,7 @@ public final class GiftCardComponent: PresentableComponent,
                   amount: Amount,
                   configuration: Configuration = .init(),
                   style: FormComponentStyle = FormComponentStyle(),
-                  showsSecurityCodeField: Bool,
+                  showsSecurityCodeField: Bool = true,
                   publicKeyProvider: AnyPublicKeyProvider) {
         self.partialPaymentMethodType = partialPaymentMethodType
         self.context = context
