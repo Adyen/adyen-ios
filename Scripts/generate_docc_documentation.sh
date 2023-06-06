@@ -132,14 +132,15 @@ DESTINATION='generic/platform=iOS'
 
 # PIF SMP fix
 swift package dump-pif > /dev/null || true
-xcodebuild clean -scheme "$PROJECT_NAME" -destination "$DESTINATION" > /dev/null || true
+xcodebuild clean -scheme "$PROJECT_NAME" -destination "$DESTINATION" -skipPackagePluginValidation > /dev/null || true
 
 # Generate the docc archive.
 xcodebuild docbuild \
  -scheme $PROJECT_NAME \
  -destination $DESTINATION \
  -configuration Release \
- -derivedDataPath $DERIVED_DATA_PATH
+ -derivedDataPath $DERIVED_DATA_PATH \
+ -skipPackagePluginValidation
 
 # Go back to original project root
 cd ../../
