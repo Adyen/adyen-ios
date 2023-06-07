@@ -10,7 +10,7 @@ import AdyenSession
 
 internal protocol InitialDataFlowProtocol: AnyObject, APIClientAware {
     var context: AdyenContext { get }
-    func requestAdyenSessionConfiguration(completion: ((AdyenSession.Configuration?, Error?) -> Void)?)
+    func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void)
 }
 
 extension InitialDataFlowProtocol {
@@ -23,15 +23,16 @@ extension InitialDataFlowProtocol {
                             analyticsConfiguration: analyticsConfiguration)
     }
 
-    internal func requestAdyenSessionConfiguration(completion: ((AdyenSession.Configuration?, Error?) -> Void)?) {
+    internal func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void) {
         let request = SessionRequest()
         apiClient.perform(request) { [weak self] result in
+            guard let self else { return }
             switch result {
             case let .success(response):
-                let config = self?.initializeSession(with: response.sessionId, data: response.sessionData)
-                completion?(config, nil)
+                let config = self.initializeSession(with: response.sessionId, data: response.sessionData)
+                completion(.success(config))
             case let .failure(error):
-                completion?(nil, error)
+                completion(.failure(error))
             }
         }
     }

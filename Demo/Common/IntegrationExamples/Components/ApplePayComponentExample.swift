@@ -20,44 +20,62 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
     internal init() {}
 
-    // MARK: - Networking
+    internal func start() {
+        presenter?.showLoadingIndicator()
+        loadSession { [weak self] response in
+            guard let self else { return }
 
-    internal func requestInitialData(completion: ((PaymentMethods?, Error?) -> Void)?) {
-        requestAdyenSessionConfiguration { [weak self] adyenSessionConfig, errorResponse in
-            guard let self = self else {
-                return
-            }
-            guard let config = adyenSessionConfig else {
-                return
-            }
-            AdyenSession.initialize(with: config,
-                                    delegate: self,
-                                    presentationDelegate: self) { [weak self] result in
-                switch result {
-                case let .success(session):
-                    self?.session = session
-                case let .failure(errorResponse):
-                    self?.presentAlert(with: errorResponse)
-                }
+            self.presenter?.hideLoadingIndicator()
+
+            switch response {
+            case let .success(session):
+                self.session = session
+                self.presentComponent(with: session)
+
+            case let .failure(error):
+                self.presentAlert(with: error)
             }
         }
     }
 
-    // MARK: Apple Pay
+    // MARK: - Networking
 
-    internal func present() {
-        guard let component = applePayComponent(from: session?.sessionContext.paymentMethods) else { return }
-        component.delegate = session
-        applePayComponent = component
-        present(component)
+    internal func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
+        requestAdyenSessionConfiguration { [weak self] response in
+            guard let self = self else { return }
+            switch response {
+            case let .success(configuration):
+                AdyenSession.initialize(with: configuration,
+                                        delegate: self,
+                                        presentationDelegate: self,
+                                        completion: completion)
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
     }
 
-    internal func applePayComponent(from paymentMethods: PaymentMethods?) -> ApplePayComponent? {
-        guard
-            let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self),
-            let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
-                                                       brand: ConfigurationConstants.appName)
-        else { return nil }
+    // MARK: Presentation
+
+    internal func presentComponent(with session: AdyenSession) {
+        do {
+            let component = try applePayComponent(from: session)
+            guard let componentViewController = component?.viewController else { return }
+            presenter?.present(viewController: componentViewController, completion: nil)
+            applePayComponent = component
+        } catch {
+            self.presentAlert(with: error)
+        }
+    }
+
+    internal func applePayComponent(from session: AdyenSession) throws -> ApplePayComponent? {
+        let paymentMethods = session.sessionContext.paymentMethods
+        guard let paymentMethod = paymentMethods.paymentMethod(ofType: ApplePayPaymentMethod.self),
+              let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
+                                                         brand: ConfigurationConstants.appName)
+        else {
+            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
+        }
         var config = ApplePayComponent.Configuration(payment: applePayPayment,
                                                      merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         config.allowOnboarding = true
@@ -68,6 +86,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         let component = try? ApplePayComponent(paymentMethod: paymentMethod,
                                                context: context,
                                                configuration: config)
+        component?.delegate = session
         return component
     }
 
@@ -94,12 +113,10 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 extension ApplePayComponentExample: AdyenSessionDelegate {
 
     func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession) {
-        requestInitialData() { _, _ in }
         dismissAndShowAlert(resultCode.isSuccess, resultCode.rawValue)
     }
 
     func didFail(with error: Error, from component: Component, session: AdyenSession) {
-        requestInitialData() { _, _ in }
         dismissAndShowAlert(false, error.localizedDescription)
     }
 

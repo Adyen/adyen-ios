@@ -21,38 +21,43 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
     internal init() {}
 
-    // MARK: - Networking
+    internal func start() {
+        presenter?.showLoadingIndicator()
+        requestPaymentMethods(order: nil) { [weak self] result in
+            guard let self else { return }
 
-    internal func requestInitialData(completion: ((PaymentMethods?, Error?) -> Void)?) {
-        requestPaymentMethods(order: nil) { [weak self] paymentMethods, errorResponse in
-            guard paymentMethods != nil else {
-                guard let errorResponse = errorResponse else {
-                    return
-                }
-                self?.presenter?.presentAlert(with: errorResponse, retryHandler: {
-                    self?.requestPaymentMethods(order: nil, completion: completion)
-                })
-                return
+            self.presenter?.hideLoadingIndicator()
+
+            switch result {
+            case let .success(paymentMethods):
+                self.presentComponent(with: paymentMethods)
+
+            case let .failure(error):
+                self.presentAlert(with: error)
             }
-            self?.paymentMethods = paymentMethods
         }
     }
 
-    // MARK: Apple Pay
+    // MARK: Presentation
 
-    internal func presentApplePayComponent() {
-        guard let component = applePayComponent(from: paymentMethods) else { return }
-        component.delegate = self
-        applePayComponent = component
-        present(component)
+    internal func presentComponent(with paymentMethods: PaymentMethods) {
+        do {
+            let component = try applePayComponent(from: paymentMethods)
+            guard let componentViewController = component?.viewController else { return }
+            presenter?.present(viewController: componentViewController, completion: nil)
+            applePayComponent = component
+        } catch {
+            self.presentAlert(with: error)
+        }
     }
 
-    internal func applePayComponent(from paymentMethods: PaymentMethods?) -> ApplePayComponent? {
+    internal func applePayComponent(from paymentMethods: PaymentMethods?) throws -> ApplePayComponent? {
         guard
             let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self),
             let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
                                                        brand: ConfigurationConstants.appName)
-        else { return nil }
+        else { throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
+        }
         var config = ApplePayComponent.Configuration(payment: applePayPayment,
                                                      merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         config.allowOnboarding = true
@@ -65,6 +70,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         let component = try? ApplePayComponent(paymentMethod: paymentMethod,
                                                context: context,
                                                configuration: config)
+        component?.delegate = self
         return component
     }
 
@@ -73,7 +79,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
     private func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
         switch result {
         case let .success(response):
-           finish(with: response)
+            finish(with: response)
         case let .failure(error):
             finish(with: error)
         }
@@ -110,10 +116,8 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         }
     }
 
-    // MARK: - Presentation
-
-    private func present(_ component: PresentableComponent) {
-        presenter?.present(viewController: component.viewController, completion: nil)
+    private func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
+        presenter?.presentAlert(with: error, retryHandler: retryHandler)
     }
 
 }
@@ -136,7 +140,8 @@ extension ApplePayComponentAdvancedFlowExample: PaymentComponentDelegate {
 extension ApplePayComponentAdvancedFlowExample: PresentationDelegate {
 
     internal func present(component: PresentableComponent) {
-        present(component)
+        let componentViewController = component.viewController
+        presenter?.present(viewController: componentViewController, completion: nil)
     }
 }
 

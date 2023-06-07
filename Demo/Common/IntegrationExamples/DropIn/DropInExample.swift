@@ -17,50 +17,75 @@ internal final class DropInExample: InitialDataFlowProtocol {
 
     // MARK: - Properties
 
-    internal var dropInComponent: DropInComponent?
     internal weak var presenter: PresenterExampleProtocol?
-    internal var session: AdyenSession?
 
+    private var session: AdyenSession?
+    private var dropInComponent: DropInComponent?
+    
     // MARK: - Initializers
 
     internal init() {}
 
-    // MARK: - Networking
-
-    internal func requestInitialData() {
-        requestAdyenSessionConfiguration { [weak self] adyenSessionConfig, errorResponse in
-            guard let self = self else {
-                return
-            }
-            guard let config = adyenSessionConfig else {
-                return
-            }
-            AdyenSession.initialize(with: config,
-                                    delegate: self,
-                                    presentationDelegate: self) { [weak self] result in
-                switch result {
-                case let .success(session):
-                    self?.session = session
-                case let .failure(errorResponse):
-                    self?.presentAlert(with: errorResponse)
-                }
+    internal func start() {
+        presenter?.showLoadingIndicator()
+        loadSession { [weak self] response in
+            guard let self else { return }
+            
+            self.presenter?.hideLoadingIndicator()
+            
+            switch response {
+            case let .success(session):
+                self.session = session
+                self.presentComponent(with: session)
+                
+            case let .failure(error):
+                self.presentAlert(with: error)
             }
         }
     }
+    
+    // MARK: - Networking
 
-    internal func present() {
-        guard let dropIn = dropInComponent(from: session?.sessionContext.paymentMethods) else { return }
-
-        dropIn.delegate = session
-        dropIn.partialPaymentDelegate = session
-        dropInComponent = dropIn
-
+    private func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
+        requestAdyenSessionConfiguration { [weak self] response in
+            guard let self = self else { return }
+            
+            switch response {
+            case let .success(config):
+                AdyenSession.initialize(with: config,
+                                        delegate: self,
+                                        presentationDelegate: self,
+                                        completion: completion)
+                
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // MARK: - Presentation
+    
+    private func presentComponent(with session: AdyenSession) {
+        let dropIn = dropInComponent(from: session)
         presenter?.present(viewController: dropIn.viewController, completion: nil)
+        dropInComponent = dropIn
     }
 
-    internal func dropInComponent(from paymentMethods: PaymentMethods?) -> DropInComponent? {
-        guard let paymentMethods = paymentMethods else { return nil }
+    private func dropInComponent(from session: AdyenSession) -> DropInComponent {
+        let paymentMethods = session.sessionContext.paymentMethods
+        let configuration = dropInConfiguration(from: paymentMethods)
+        let component = DropInComponent(paymentMethods: paymentMethods,
+                                        context: context,
+                                        configuration: configuration,
+                                        title: ConfigurationConstants.appName)
+        
+        component.delegate = session
+        component.partialPaymentDelegate = session
 
+        return component
+    }
+    
+    private func dropInConfiguration(from paymentMethods: PaymentMethods) -> DropInComponent.Configuration {
         let configuration = DropInComponent.Configuration()
 
         if let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
@@ -72,21 +97,16 @@ internal final class DropInExample: InitialDataFlowProtocol {
         configuration.actionComponent.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
         configuration.card.billingAddress.mode = .postalCode
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
-        let component = DropInComponent(paymentMethods: paymentMethods,
-                                        context: context,
-                                        configuration: configuration,
-                                        title: ConfigurationConstants.appName)
-
-        return component
+        return configuration
     }
 
     // MARK: - Alert handling
 
-    internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
+    private func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         presenter?.presentAlert(with: error, retryHandler: retryHandler)
     }
 
-    internal func dismissAndShowAlert(_ success: Bool, _ message: String) {
+    private func dismissAndShowAlert(_ success: Bool, _ message: String) {
         presenter?.dismiss {
             // Payment is processed. Add your code here.
             let title = success ? "Success" : "Error"
@@ -99,12 +119,10 @@ internal final class DropInExample: InitialDataFlowProtocol {
 extension DropInExample: AdyenSessionDelegate {
 
     func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession) {
-        requestInitialData()
         dismissAndShowAlert(resultCode.isSuccess, resultCode.rawValue)
     }
 
     func didFail(with error: Error, from component: Component, session: AdyenSession) {
-        requestInitialData()
         dismissAndShowAlert(false, error.localizedDescription)
     }
 
@@ -113,5 +131,7 @@ extension DropInExample: AdyenSessionDelegate {
 }
 
 extension DropInExample: PresentationDelegate {
-    internal func present(component: PresentableComponent) {}
+    internal func present(component: PresentableComponent) {
+        // The implementation of this delegate method is not needed when using AdyenSession as the session handles the presentation
+    }
 }
