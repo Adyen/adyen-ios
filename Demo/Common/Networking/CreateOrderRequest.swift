@@ -66,6 +66,6 @@ internal struct CreateOrderResponse: Response {
     internal let orderData: String
 
     internal var order: PartialPaymentOrder {
-        PartialPaymentOrder(pspReference: pspReference, orderData: orderData)
+        PartialPaymentOrder(pspReference: pspReference, orderData: orderData, remainingAmount: remainingAmount)
     }
 }

@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "다음을 위해 저장";
 "adyen.card.nameItem.title" = "카드상의 이름";
 "adyen.card.nameItem.placeholder" = "J. Smith";
-"adyen.card.nameItem.invalid" = "유효하지 않은 카드 소유자 이름";
+"adyen.card.nameItem.invalid" = "카드에 표시된 대로 이름을 입력합니다.";
 "adyen.card.numberItem.title" = "카드 번호";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "유효하지 않은 카드 번호";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "MM/YY";
 "adyen.card.expiryItem.invalid" = "유효하지 않은 만료일";
 "adyen.card.cvcItem.invalid" = "유효하지 않은 CVC/CVV 형식";
-"adyen.card.cvcItem.title" = "CVC / CVV";
+"adyen.card.cvcItem.title" = "보안 코드";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "카드 확인";
 "adyen.card.stored.message" = "%@에 대한 CVC 코드를 입력하세요.";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "사전 승인 방법: %@";
 "adyen.confirmPreauthorization" = "사전 승인 확인";
-"adyen.card.cvcItem.title.optional" = "CVC / CVV (선택)";
+"adyen.card.cvcItem.title.optional" = "보안 코드(선택 사항)";
 "adyen.confirmPurchase" = "구매 확인";
 "adyen.lastName" = "성";
 "adyen.firstName" = "이름";
@@ -170,7 +170,8 @@
 "adyen.UPIVpa.validationMessage" = "정확한 가상 결제 주소를 입력하세요";
 "adyen.UPIQrcode.generationMessage" = "QR 코드를 만들어서 다운로드하거나 스크린샷을 찍은 다음 UPI 앱에 업로드하면 결제가 완료됩니다.";
 "adyen.UPIQrcode.timerMessage" = "남은 승인 시한: %@";
-"adyen.upi_collect.confirmPayment" = "확인 대기 중...";
+"adyen.upiCollect.confirmPayment" = "확인 대기 중...";
 "adyen.upi.vpaWaitingMessage" = "UPI 앱을 열어 결제를 확인하세요";
 "adyen.QRCode.generateQRCode" = "QR 코드 생성";
 "adyen.UPI.QRCodeInstructions" = "스크린샷을 찍어서 UPI 앱에 업로드하거나 즐겨 쓰는 UPI 앱에서 QR 코드를 스캔하여 결제하세요.";
+"adyen.cashAppPay.title" = "";

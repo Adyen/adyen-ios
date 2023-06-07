@@ -29,6 +29,7 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - ``OnlineBankingComponent``
 - ``UPIComponent``
 - ``QRCodeActionComponent``
+- ``CashAppPayComponent``
 
 
 ## Setting up the Component

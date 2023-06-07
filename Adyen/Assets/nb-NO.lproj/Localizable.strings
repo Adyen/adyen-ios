@@ -20,7 +20,7 @@
 "adyen.card.storeDetailsButton" = "Husk til neste gang";
 "adyen.card.nameItem.title" = "Navn på kortet";
 "adyen.card.nameItem.placeholder" = "O. Nordmann";
-"adyen.card.nameItem.invalid" = "Ugyldig navn på kortholder";
+"adyen.card.nameItem.invalid" = "Skriv inn navnet som vist på kortet";
 "adyen.card.numberItem.title" = "Kortnummer";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Ugyldig kortnummer";
@@ -29,7 +29,7 @@
 "adyen.card.expiryItem.placeholder" = "MM/ÅÅ";
 "adyen.card.expiryItem.invalid" = "Ugyldig utløpsdato";
 "adyen.card.cvcItem.invalid" = "Ugyldig CVC-/CVV-format";
-"adyen.card.cvcItem.title" = "CVC / CVV";
+"adyen.card.cvcItem.title" = "Sikkerhetskode";
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.stored.title" = "Bekreft kortet ditt";
 "adyen.card.stored.message" = "Vennligst oppgi CVC-koden for %@";
@@ -58,7 +58,7 @@
 "adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Forhåndsgodkjenn med %@";
 "adyen.confirmPreauthorization" = "Bekreft forhåndsgodkjenning";
-"adyen.card.cvcItem.title.optional" = "CVC / CVV (valgfritt)";
+"adyen.card.cvcItem.title.optional" = "Sikkerhetskode (valgfritt)";
 "adyen.confirmPurchase" = "Bekreft kjøp";
 "adyen.lastName" = "Etternavn";
 "adyen.firstName" = "Fornavn";
@@ -170,7 +170,8 @@
 "adyen.UPIVpa.validationMessage" = "Skriv inn en korrekt virtuell betalingsadresse";
 "adyen.UPIQrcode.generationMessage" = "Generer QR-koden, som du kan laste ned eller ta et skjermbilde av, og last den opp til UPI-appen for å fullføre betalingen.";
 "adyen.UPIQrcode.timerMessage" = "Du har %@ å godkjenne";
-"adyen.upi_collect.confirmPayment" = "Venter på bekreftelsen din …";
+"adyen.upiCollect.confirmPayment" = "Venter på bekreftelsen din …";
 "adyen.upi.vpaWaitingMessage" = "Åpne UPI-appen for å bekrefte betalingen";
 "adyen.QRCode.generateQRCode" = "Generer QR-kode";
 "adyen.UPI.QRCodeInstructions" = "Ta et skjermbilde for opplasting i UPI-appen, eller skann QR-koden for å bruke din foretrukne UPI-app til å fullføre betalingen.";
+"adyen.cashAppPay.title" = "";
