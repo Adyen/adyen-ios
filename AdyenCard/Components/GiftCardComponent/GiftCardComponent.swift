@@ -60,7 +60,7 @@ public final class GiftCardComponent: PresentableComponent,
     public var localizationParameters: LocalizationParameters?
 
     /// Indicates whether to show the security code field at all.
-    private let showsSecurityCodeField: Bool
+    internal let showsSecurityCodeField: Bool
 
     /// Initializes the partial payment component with a gift card payment method.
     ///
