@@ -183,3 +183,4 @@ whiteList:
   - upicollect
   - cashapp
   - cashtag
+  - referer
