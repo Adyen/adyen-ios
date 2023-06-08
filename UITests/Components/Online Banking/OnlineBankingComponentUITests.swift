@@ -55,9 +55,9 @@ class OnlineBankingComponentUITests: XCTestCase {
         style.textField.backgroundColor = .blue
 
         let config = OnlineBankingComponent.Configuration(style: style)
-        let  sut = OnlineBankingComponent(paymentMethod: paymentMethod,
-                                          context: context,
-                                          configuration: config)
+        let sut = OnlineBankingComponent(paymentMethod: paymentMethod,
+                                         context: context,
+                                         configuration: config)
         
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
@@ -65,9 +65,9 @@ class OnlineBankingComponentUITests: XCTestCase {
     func testPressContinueButton() {
         // Given
         let config = OnlineBankingComponent.Configuration(style: style)
-        let  sut = OnlineBankingComponent(paymentMethod: paymentMethod,
-                                          context: context,
-                                          configuration: config)
+        let sut = OnlineBankingComponent(paymentMethod: paymentMethod,
+                                         context: context,
+                                         configuration: config)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
@@ -93,9 +93,9 @@ class OnlineBankingComponentUITests: XCTestCase {
     func testContinueButtonLoading() {
         // Given
         let config = OnlineBankingComponent.Configuration(style: style)
-        let  sut = OnlineBankingComponent(paymentMethod: paymentMethod,
-                                          context: context,
-                                          configuration: config)
+        let sut = OnlineBankingComponent(paymentMethod: paymentMethod,
+                                         context: context,
+                                         configuration: config)
 
         UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
        

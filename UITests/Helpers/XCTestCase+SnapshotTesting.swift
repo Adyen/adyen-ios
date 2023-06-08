@@ -19,12 +19,12 @@ extension XCTestCase {
                              testName: String = #function,
                              line: UInt = #line) {
         for device in devices {
-            SnapshotTesting.assertSnapshot(matching: try viewController(),
-                                           as: .recursiveDescription(on: device),
-                                           named: name,
-                                           file: file,
-                                           testName: "\(testName)-\(device.description)",
-                                           line: line)
+            try SnapshotTesting.assertSnapshot(matching: viewController(),
+                                               as: .recursiveDescription(on: device),
+                                               named: name,
+                                               file: file,
+                                               testName: "\(testName)-\(device.description)",
+                                               line: line)
         }
     }
     
@@ -35,12 +35,12 @@ extension XCTestCase {
                                    testName: String = #function,
                                    line: UInt = #line) {
         for device in devices {
-            SnapshotTesting.assertSnapshot(matching: try viewController(),
-                                           as: .image(on: device, perceptualPrecision: 0.98),
-                                           named: name,
-                                           file: file,
-                                           testName: "\(testName)-\(device.description)",
-                                           line: line)
+            try SnapshotTesting.assertSnapshot(matching: viewController(),
+                                               as: .image(on: device, perceptualPrecision: 0.98),
+                                               named: name,
+                                               file: file,
+                                               testName: "\(testName)-\(device.description)",
+                                               line: line)
             
         }
     }

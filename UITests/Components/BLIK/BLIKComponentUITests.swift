@@ -108,11 +108,11 @@ final class BLIKComponentUITests: XCTestCase {
 
         // start loading
         submitButton.showsActivityIndicator = true
-        assertViewHeirarchy(matching: sut.viewController, named: "initial_state")
+        assertViewControllerImage(matching: sut.viewController, named: "initial_state")
 
         // stop loading
         sut.stopLoading()
         submitButton.showsActivityIndicator = false
-        assertViewHeirarchy(matching: sut.viewController, named: "stopped_loading")
+        assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
     }
 }
