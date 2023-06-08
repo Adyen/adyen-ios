@@ -545,7 +545,7 @@ let cashAppPay: [String: Any] = [
     "name": "Cash App Pay",
     "type": "cashapp",
     "configuration": [
-        "scopeId" : "testScope",
-        "clientId" : "testClient"
+        "scopeId": "testScope",
+        "clientId": "testClient"
     ]
 ]

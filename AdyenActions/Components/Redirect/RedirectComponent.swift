@@ -167,7 +167,7 @@ public final class RedirectComponent: ActionComponent {
         if let redirectStateData = action.nativeRedirectData {
             try handleNativeMobileRedirect(withReturnURL: returnURL, redirectStateData: redirectStateData, action)
         } else {
-            notifyDelegateDidProvide(redirectDetails: try RedirectDetails(returnURL: returnURL), action)
+            try notifyDelegateDidProvide(redirectDetails: RedirectDetails(returnURL: returnURL), action)
         }
     }
     

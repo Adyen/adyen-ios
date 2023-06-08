@@ -139,7 +139,7 @@ class ComponentManagerTests: XCTestCase {
                                    presentationDelegate: presentationDelegate)
         
         // When
-        let paymentComponent =  sut.regularComponents.first { $0.paymentMethod.type.rawValue == "cashapp" }
+        let paymentComponent = sut.regularComponents.first { $0.paymentMethod.type.rawValue == "cashapp" }
 
         // Then
         let cashAppPayComponent = paymentComponent as? CashAppPayComponent
@@ -212,7 +212,7 @@ class ComponentManagerTests: XCTestCase {
 
     func testOrderInjectionOnApplePay() throws {
         let payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
-        configuration.applePay = .init(payment: try .init(payment: payment, brand: "TEST"), merchantIdentifier: "test_test")
+        configuration.applePay = try .init(payment: .init(payment: payment, brand: "TEST"), merchantIdentifier: "test_test")
 
         let order = PartialPaymentOrder(pspReference: "test pspRef",
                                         orderData: "test order data",

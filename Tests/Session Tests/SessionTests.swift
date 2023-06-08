@@ -615,8 +615,8 @@ class SessionTests: XCTestCase {
         
         let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
-        let data = ActionComponentData(
-            details: try RedirectDetails(
+        let data = try ActionComponentData(
+            details: RedirectDetails(
                 returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
@@ -684,8 +684,8 @@ class SessionTests: XCTestCase {
             order: nil
         )
         
-        let actionData = ActionComponentData(
-            details: try RedirectDetails(
+        let actionData = try ActionComponentData(
+            details: RedirectDetails(
                 returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
@@ -722,8 +722,8 @@ class SessionTests: XCTestCase {
             XCTAssertEqual(result, .authorised)
             didCompleteExpectation.fulfill()
         }
-        let actionData = ActionComponentData(
-            details: try RedirectDetails(
+        let actionData = try ActionComponentData(
+            details: RedirectDetails(
                 returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
@@ -753,8 +753,8 @@ class SessionTests: XCTestCase {
             XCTAssertEqual(result, .pending)
             didCompleteExpectation.fulfill()
         }
-        let actionData = ActionComponentData(
-            details: try RedirectDetails(
+        let actionData = try ActionComponentData(
+            details: RedirectDetails(
                 returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
@@ -784,8 +784,8 @@ class SessionTests: XCTestCase {
             XCTAssertEqual(result, .refused)
             didCompleteExpectation.fulfill()
         }
-        let actionData = ActionComponentData(
-            details: try RedirectDetails(
+        let actionData = try ActionComponentData(
+            details: RedirectDetails(
                 returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
@@ -815,8 +815,8 @@ class SessionTests: XCTestCase {
             XCTAssertEqual(result, .cancelled)
             didCompleteExpectation.fulfill()
         }
-        let actionData = ActionComponentData(
-            details: try RedirectDetails(
+        let actionData = try ActionComponentData(
+            details: RedirectDetails(
                 returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
@@ -846,8 +846,8 @@ class SessionTests: XCTestCase {
             XCTAssertEqual(result, .received)
             didCompleteExpectation.fulfill()
         }
-        let actionData = ActionComponentData(
-            details: try RedirectDetails(
+        let actionData = try ActionComponentData(
+            details: RedirectDetails(
                 returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
@@ -912,8 +912,8 @@ class SessionTests: XCTestCase {
             XCTAssertEqual(result, .error)
             didCompleteExpectation.fulfill()
         }
-        let actionData = ActionComponentData(
-            details: try RedirectDetails(
+        let actionData = try ActionComponentData(
+            details: RedirectDetails(
                 returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
@@ -943,8 +943,8 @@ class SessionTests: XCTestCase {
             XCTAssertEqual(result, .error)
             didCompleteExpectation.fulfill()
         }
-        let actionData = ActionComponentData(
-            details: try RedirectDetails(
+        let actionData = try ActionComponentData(
+            details: RedirectDetails(
                 returnURL: Dummy.returnUrl
             ),
             paymentData: "payment_data"
