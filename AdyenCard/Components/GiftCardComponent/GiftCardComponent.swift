@@ -291,7 +291,7 @@ extension GiftCardComponent {
 
     private func check(balance: Balance, toPay amount: Amount) -> Result<BalanceChecker.Result, Swift.Error> {
         do {
-            return .success(try BalanceChecker().check(balance: balance, isEnoughToPay: amount))
+            return try .success(BalanceChecker().check(balance: balance, isEnoughToPay: amount))
         } catch {
             return .failure(error)
         }

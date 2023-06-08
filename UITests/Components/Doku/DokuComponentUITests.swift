@@ -60,7 +60,6 @@ final class DokuComponentUITests: XCTestCase {
                                 context: context,
                                 configuration: config)
 
-
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 

@@ -81,8 +81,8 @@ extension CardComponent: ViewControllerDelegate {
 extension KCPDetails {
 
     fileprivate func encrypt(with publicKey: String) throws -> KCPDetails {
-        KCPDetails(taxNumber: taxNumber,
-                   password: try CardEncryptor.encrypt(password: password, with: publicKey))
+        try KCPDetails(taxNumber: taxNumber,
+                       password: CardEncryptor.encrypt(password: password, with: publicKey))
     }
 
 }
