@@ -376,6 +376,24 @@ class ComponentManagerTests: XCTestCase {
     
     func testGiftCardConfiguration() throws {
         // Given
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
+                                   configuration: configuration,
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
+
+        // When
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .giftcard })
+
+        // Then
+        let giftCardComponent = try XCTUnwrap(paymentComponent as? GiftCardComponent)
+        XCTAssertTrue(giftCardComponent.showsSecurityCodeField)
+        XCTAssertTrue(giftCardComponent.requiresModalPresentation)
+        XCTAssertEqual(giftCardComponent.localizationParameters, configuration.localizationParameters)
+    }
+    
+    func testGiftCardSecurityCodeHiddenConfiguration() throws {
+        // Given
         configuration.giftCard.showsSecurityCodeField = false
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    context: context,
@@ -389,11 +407,27 @@ class ComponentManagerTests: XCTestCase {
         // Then
         let giftCardComponent = try XCTUnwrap(paymentComponent as? GiftCardComponent)
         XCTAssertFalse(giftCardComponent.showsSecurityCodeField)
+    }
+    
+    func testMealVoucherConfiguration() throws {
+        // Given
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
+                                   configuration: configuration,
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
+
+        // When
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .mealVoucherSodexo })
+
+        // Then
+        let giftCardComponent = try XCTUnwrap(paymentComponent as? GiftCardComponent)
+        XCTAssertTrue(giftCardComponent.showsSecurityCodeField)
         XCTAssertTrue(giftCardComponent.requiresModalPresentation)
         XCTAssertEqual(giftCardComponent.localizationParameters, configuration.localizationParameters)
     }
     
-    func testMealVoucherConfiguration() throws {
+    func testMealVoucherSecurityCodeHiddenConfiguration() throws {
         // Given
         configuration.giftCard.showsSecurityCodeField = false
         let sut = ComponentManager(paymentMethods: paymentMethods,
@@ -408,8 +442,6 @@ class ComponentManagerTests: XCTestCase {
         // Then
         let giftCardComponent = try XCTUnwrap(paymentComponent as? GiftCardComponent)
         XCTAssertFalse(giftCardComponent.showsSecurityCodeField)
-        XCTAssertTrue(giftCardComponent.requiresModalPresentation)
-        XCTAssertEqual(giftCardComponent.localizationParameters, configuration.localizationParameters)
     }
     
     func testACHConfiguration() throws {
