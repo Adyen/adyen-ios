@@ -125,5 +125,7 @@ extension ApplePayComponentExample: AdyenSessionDelegate {
 }
 
 extension ApplePayComponentExample: PresentationDelegate {
+    // The implementation of this delegate method is not needed when using AdyenSession
     internal func present(component: PresentableComponent) {}
+
 }
