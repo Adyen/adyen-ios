@@ -43,7 +43,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
     internal func presentComponent(with paymentMethods: PaymentMethods) {
         do {
             let component = try applePayComponent(from: paymentMethods)
-            guard let componentViewController = component?.viewController else { return }
+            let componentViewController = component.viewController
             presenter?.present(viewController: componentViewController, completion: nil)
             applePayComponent = component
         } catch {
@@ -51,13 +51,13 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         }
     }
 
-    internal func applePayComponent(from paymentMethods: PaymentMethods?) throws -> ApplePayComponent? {
+    internal func applePayComponent(from paymentMethods: PaymentMethods?) throws -> ApplePayComponent {
         guard
-            let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self),
-            let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
-                                                       brand: ConfigurationConstants.appName)
-        else { throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
+            let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self)
+        else { throw IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self)
         }
+        let applePayPayment = try ApplePayPayment(payment: ConfigurationConstants.current.payment,
+                                                   brand: ConfigurationConstants.appName)
         var config = ApplePayComponent.Configuration(payment: applePayPayment,
                                                      merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         config.allowOnboarding = true
@@ -67,10 +67,10 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         config.requiredBillingContactFields = [.postalAddress]
         config.shippingMethods = ConfigurationConstants.shippingMethods
 
-        let component = try? ApplePayComponent(paymentMethod: paymentMethod,
+        let component = try ApplePayComponent(paymentMethod: paymentMethod,
                                                context: context,
                                                configuration: config)
-        component?.delegate = self
+        component.delegate = self
         return component
     }
 
@@ -135,14 +135,6 @@ extension ApplePayComponentAdvancedFlowExample: PaymentComponentDelegate {
         finish(with: error)
     }
 
-}
-
-extension ApplePayComponentAdvancedFlowExample: PresentationDelegate {
-
-    internal func present(component: PresentableComponent) {
-        let componentViewController = component.viewController
-        presenter?.present(viewController: componentViewController, completion: nil)
-    }
 }
 
 extension ApplePayComponentAdvancedFlowExample: ApplePayComponentDelegate {

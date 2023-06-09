@@ -60,7 +60,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     internal func presentComponent(with session: AdyenSession) {
         do {
             let component = try applePayComponent(from: session)
-            guard let componentViewController = component?.viewController else { return }
+            let componentViewController = component.viewController
             presenter?.present(viewController: componentViewController, completion: nil)
             applePayComponent = component
         } catch {
@@ -68,14 +68,13 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         }
     }
 
-    internal func applePayComponent(from session: AdyenSession) throws -> ApplePayComponent? {
+    internal func applePayComponent(from session: AdyenSession) throws -> ApplePayComponent {
         let paymentMethods = session.sessionContext.paymentMethods
-        guard let paymentMethod = paymentMethods.paymentMethod(ofType: ApplePayPaymentMethod.self),
-              let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
-                                                         brand: ConfigurationConstants.appName)
-        else {
+        guard let paymentMethod = paymentMethods.paymentMethod(ofType: ApplePayPaymentMethod.self) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
         }
+        let applePayPayment = try ApplePayPayment(payment: ConfigurationConstants.current.payment,
+                                                  brand: ConfigurationConstants.appName)
         var config = ApplePayComponent.Configuration(payment: applePayPayment,
                                                      merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         config.allowOnboarding = true
@@ -83,10 +82,10 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         config.requiredShippingContactFields = [.postalAddress]
         config.requiredBillingContactFields = [.postalAddress]
 
-        let component = try? ApplePayComponent(paymentMethod: paymentMethod,
-                                               context: context,
-                                               configuration: config)
-        component?.delegate = session
+        let component = try ApplePayComponent(paymentMethod: paymentMethod,
+                                              context: context,
+                                              configuration: config)
+        component.delegate = session
         return component
     }
 
