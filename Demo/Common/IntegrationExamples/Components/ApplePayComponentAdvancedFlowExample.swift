@@ -151,9 +151,9 @@ extension ApplePayComponentAdvancedFlowExample: ApplePayComponentDelegate {
                    for payment: ApplePayPayment,
                    completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void) {
         var items = payment.summaryItems
-        print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
         if let last = items.last {
             items = items.dropLast()
+            // Below harded values are for testing purpose. Please add your own string and amount if you want to use these.
             let cityLabel = contact.postalAddress?.city ?? "Somewhere"
             items.append(.init(label: "Shipping \(cityLabel)",
                                amount: NSDecimalNumber(value: 5.0)))
@@ -166,7 +166,6 @@ extension ApplePayComponentAdvancedFlowExample: ApplePayComponentDelegate {
                    for payment: ApplePayPayment,
                    completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void) {
         var items = payment.summaryItems
-        print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
         if let last = items.last {
             items = items.dropLast()
             items.append(shippingMethod)
@@ -181,9 +180,9 @@ extension ApplePayComponentAdvancedFlowExample: ApplePayComponentDelegate {
                    for payment: ApplePayPayment,
                    completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void) {
         var items = payment.summaryItems
-        print(items.reduce("> ") { $0 + "| \($1.label): \($1.amount.floatValue.rounded()) " })
         if let last = items.last {
             items = items.dropLast()
+            // Below harded values are for testing purpose. Please add your own string and amount if you want to use these.
             items.append(.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0)))
             items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue - 5.0)))
         }
