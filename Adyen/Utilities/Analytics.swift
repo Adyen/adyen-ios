@@ -67,7 +67,7 @@ public class Analytics {
     
     // MARK: - Private
     
-    private static let libraryVersion = Bundle(for: Analytics.self).infoDictionary?["CFBundleShortVersionString"] as? String
+    private static let libraryVersion = adyenSdkVersion
     private static let payloadVersion = "1"
     private static let platform = "ios"
     
