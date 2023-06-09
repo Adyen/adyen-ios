@@ -145,7 +145,7 @@ extension ApplePayComponentAdvancedFlowExample: ApplePayComponentDelegate {
         var items = payment.summaryItems
         if let last = items.last {
             items = items.dropLast()
-            // Below harded values are for testing purpose. Please add your own string and amount if you want to use these.
+            // Below hard coded values are for testing purpose. Please add your own string and amount if you want to use these.
             let cityLabel = contact.postalAddress?.city ?? "Somewhere"
             items.append(.init(label: "Shipping \(cityLabel)",
                                amount: NSDecimalNumber(value: 5.0)))
@@ -174,7 +174,7 @@ extension ApplePayComponentAdvancedFlowExample: ApplePayComponentDelegate {
         var items = payment.summaryItems
         if let last = items.last {
             items = items.dropLast()
-            // Below harded values are for testing purpose. Please add your own string and amount if you want to use these.
+            // Below hard coded values are for testing purpose. Please add your own string and amount if you want to use these.
             items.append(.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0)))
             items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue - 5.0)))
         }
