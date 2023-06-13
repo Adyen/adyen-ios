@@ -193,7 +193,8 @@ internal final class DelegatedAuthenticationView: UIView {
             textView.heightAnchor.constraint(equalToConstant: 50),
             textView.topAnchor.constraint(equalTo: buttonsStackView.bottomAnchor, constant: 24),
             textView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -15),
-            textView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 15.0)
+            textView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 15.0),
+            textView.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor)
         ])
     }
 

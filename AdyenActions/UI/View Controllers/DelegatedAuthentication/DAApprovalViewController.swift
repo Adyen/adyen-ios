@@ -134,7 +134,7 @@ internal final class DAApprovalViewController: UIViewController {
     
     override internal var preferredContentSize: CGSize {
         get {
-            containerView.frame.size
+            containerView.adyen.minimalSize
         }
         
         // swiftlint:disable:next unused_setter_value

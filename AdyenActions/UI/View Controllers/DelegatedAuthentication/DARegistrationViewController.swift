@@ -90,7 +90,6 @@ internal final class DARegistrationViewController: UIViewController {
     private func buildUI() {
         containerView.addSubview(registrationView)
         view.addSubview(containerView)
-
         containerView.translatesAutoresizingMaskIntoConstraints = false
         registrationView.translatesAutoresizingMaskIntoConstraints = false
         containerView.adyen.anchor(inside: view.safeAreaLayoutGuide)
@@ -99,7 +98,7 @@ internal final class DARegistrationViewController: UIViewController {
 
     override internal var preferredContentSize: CGSize {
         get {
-            containerView.frame.size
+            containerView.adyen.minimalSize
         }
 
         // swiftlint:disable:next unused_setter_value
