@@ -8,6 +8,10 @@
 import UIKit
 
 internal final class DAApprovalViewController: UIViewController {
+    private enum Constants {
+        static let timeout: TimeInterval = 90.0
+    }
+
     private let useBiometricsHandler: Handler
     private let approveDifferentlyHandler: Handler
     private let removeCredentialsHandler: Handler
@@ -100,7 +104,7 @@ internal final class DAApprovalViewController: UIViewController {
     }
 
     private func configureProgress() {
-        let timeout: TimeInterval = 90.0
+        let timeout = Constants.timeout
         approvalView.progressText.text = timeLeft(timeInterval: timeout)
         timeoutTimer = ExpirationTimer(
             expirationTimeout: timeout,
@@ -124,18 +128,8 @@ internal final class DAApprovalViewController: UIViewController {
         view.addSubview(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
         approvalView.translatesAutoresizingMaskIntoConstraints = false
-        
         containerView.adyen.anchor(inside: view.safeAreaLayoutGuide)
-
-        let constraints = [
-            approvalView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            approvalView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            
-            approvalView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            approvalView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
+        approvalView.adyen.anchor(inside: containerView)
     }
     
     override internal var preferredContentSize: CGSize {

@@ -8,7 +8,10 @@
 import UIKit
 
 internal final class DARegistrationViewController: UIViewController {
-    
+    private enum Constants {
+        static let timeout: TimeInterval = 90.0
+    }
+
     private let enableCheckoutHandler: Handler
     private let notNowHandler: Handler
     private lazy var containerView = UIView(frame: .zero)
@@ -53,7 +56,6 @@ internal final class DARegistrationViewController: UIViewController {
         buildUI()
         configureDelegateAuthenticationView()
         view.backgroundColor = style.backgroundColor
-        configureProgress()
         configureDelegateAuthenticationView()
     }
     
@@ -66,7 +68,7 @@ internal final class DARegistrationViewController: UIViewController {
     }
 
     private func configureProgress() {
-        let timeout: TimeInterval = 90.0
+        let timeout = Constants.timeout
         registrationView.progressText.text = timeLeft(timeInterval: timeout)
         timeoutTimer = ExpirationTimer(
             expirationTimeout: timeout,
@@ -91,17 +93,8 @@ internal final class DARegistrationViewController: UIViewController {
 
         containerView.translatesAutoresizingMaskIntoConstraints = false
         registrationView.translatesAutoresizingMaskIntoConstraints = false
-        
         containerView.adyen.anchor(inside: view.safeAreaLayoutGuide)
-
-        let constraints = [
-            registrationView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            registrationView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            
-            registrationView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            registrationView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        registrationView.adyen.anchor(inside: containerView)
     }
 
     override internal var preferredContentSize: CGSize {
