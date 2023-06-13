@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,17 +18,31 @@ public final class GiftCardComponent: PresentableComponent,
 
     internal let amount: Amount
     
+    internal enum PartialPaymentMethodType {
+        case giftCard(GiftCardPaymentMethod)
+        case mealVoucher(MealVoucherPaymentMethod)
+        
+        internal var partialPaymentMethod: PartialPaymentMethod {
+            switch self {
+            case let .giftCard(giftCardPaymentMethod):
+                return giftCardPaymentMethod
+            case let .mealVoucher(mealVoucherPaymentMethod):
+                return mealVoucherPaymentMethod
+            }
+        }
+    }
+    
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext
     
-    private let giftCardPaymentMethod: GiftCardPaymentMethod
+    private let partialPaymentMethodType: PartialPaymentMethodType
 
     @_spi(AdyenInternal)
     public let publicKeyProvider: AnyPublicKeyProvider
 
     /// The gift card payment method.
-    public var paymentMethod: PaymentMethod { giftCardPaymentMethod }
+    public var paymentMethod: PaymentMethod { partialPaymentMethodType.partialPaymentMethod }
 
     /// Describes the component's UI style.
     public let style: FormComponentStyle
@@ -42,35 +56,64 @@ public final class GiftCardComponent: PresentableComponent,
     /// The delegate that handles shopper confirmation UI when the balance of the gift card is sufficient to pay.
     public weak var readyToSubmitComponentDelegate: ReadyToSubmitPaymentComponentDelegate?
 
-    /// Initializes the card component.
+    /// The localization parameters.
+    public var localizationParameters: LocalizationParameters?
+
+    /// Indicates whether to show the security code field at all.
+    internal let showsSecurityCodeField: Bool
+
+    /// Initializes the partial payment component with a gift card payment method.
     ///
     /// - Parameters:
     ///   - paymentMethod: The gift card payment method.
     ///   - context:The context object for this component.
     ///   - amount: The amount to pay.
-    ///   - style: The form style.
-    /// See https://docs.adyen.com/user-management/client-side-authentication for more information.
-    ///   - context: The context object for this component.
-    ///   - style:  The Component's UI style.
+    ///   - style: The Component's UI style.
+    ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
     public convenience init(paymentMethod: GiftCardPaymentMethod,
                             context: AdyenContext,
                             amount: Amount,
-                            style: FormComponentStyle = FormComponentStyle()) {
-        self.init(paymentMethod: paymentMethod,
+                            style: FormComponentStyle = FormComponentStyle(),
+                            showsSecurityCodeField: Bool = true) {
+        self.init(partialPaymentMethodType: .giftCard(paymentMethod),
                   context: context,
                   amount: amount,
                   style: style,
+                  showsSecurityCodeField: showsSecurityCodeField,
                   publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
     
-    internal init(paymentMethod: GiftCardPaymentMethod,
+    /// Initializes the partial payment component with a Meal Voucher payment method.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The meal voucher payment method.
+    ///   - context:The context object for this component.
+    ///   - amount: The amount to pay.
+    ///   - style: The Component's UI style.
+    ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
+    public convenience init(paymentMethod: MealVoucherPaymentMethod,
+                            context: AdyenContext,
+                            amount: Amount,
+                            style: FormComponentStyle = FormComponentStyle(),
+                            showsSecurityCodeField: Bool = true) {
+        self.init(partialPaymentMethodType: .mealVoucher(paymentMethod),
+                  context: context,
+                  amount: amount,
+                  style: style,
+                  showsSecurityCodeField: showsSecurityCodeField,
+                  publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
+    }
+    
+    internal init(partialPaymentMethodType: PartialPaymentMethodType,
                   context: AdyenContext,
                   amount: Amount,
                   style: FormComponentStyle = FormComponentStyle(),
+                  showsSecurityCodeField: Bool = true,
                   publicKeyProvider: AnyPublicKeyProvider) {
-        self.giftCardPaymentMethod = paymentMethod
+        self.partialPaymentMethodType = partialPaymentMethodType
         self.context = context
         self.style = style
+        self.showsSecurityCodeField = showsSecurityCodeField
         self.publicKeyProvider = publicKeyProvider
         self.amount = amount
     }
@@ -82,13 +125,28 @@ public final class GiftCardComponent: PresentableComponent,
     public var requiresModalPresentation: Bool { true }
 
     private lazy var formViewController: FormViewController = {
+
         let formViewController = FormViewController(style: style)
         formViewController.localizationParameters = localizationParameters
         formViewController.delegate = self
-        formViewController.title = paymentMethod.displayInformation(using: localizationParameters).title
+        formViewController.title = partialPaymentMethodType.partialPaymentMethod.displayInformation(using: localizationParameters).title
         formViewController.append(errorItem)
         formViewController.append(numberItem)
-        formViewController.append(securityCodeItem)
+
+        switch (partialPaymentMethodType, showsSecurityCodeField) {
+        case (.giftCard, true):
+            formViewController.append(securityCodeItem)
+        case (.giftCard, false):
+            break // Nothing additionally to add
+            
+        case (.mealVoucher, true):
+            let splitTextItem = FormSplitItem(items: expiryDateItem, securityCodeItem,
+                                              style: style.textField)
+            formViewController.append(splitTextItem)
+        case (.mealVoucher, false):
+            formViewController.append(expiryDateItem)
+        }
+        
         formViewController.append(FormSpacerItem())
         formViewController.append(button)
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
@@ -106,7 +164,6 @@ public final class GiftCardComponent: PresentableComponent,
 
     internal lazy var numberItem: FormTextInputItem = {
         let item = FormTextInputItem(style: style.textField)
-
         item.title = localizedString(.cardNumberItemTitle, localizationParameters)
         item.validator = NumericStringValidator(minimumLength: 15, maximumLength: 32)
         item.formatter = CardNumberFormatter()
@@ -119,7 +176,14 @@ public final class GiftCardComponent: PresentableComponent,
 
     internal lazy var securityCodeItem: FormTextInputItem = {
         let item = FormTextInputItem(style: style.textField)
-        item.title = localizedString(.cardPinTitle, localizationParameters)
+        let title: String
+        switch partialPaymentMethodType {
+        case .giftCard:
+            title = localizedString(.cardPinTitle, localizationParameters)
+        case .mealVoucher:
+            title = localizedString(.cardCvcItemTitle, localizationParameters)
+        }
+        item.title = title
         item.validator = NumericStringValidator(minimumLength: 3, maximumLength: 10)
         item.formatter = NumericFormatter()
         item.placeholder = localizedString(.cardCvcItemPlaceholder, localizationParameters)
@@ -128,6 +192,15 @@ public final class GiftCardComponent: PresentableComponent,
         item.keyboardType = .numberPad
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "securityCodeItem")
         return item
+    }()
+    
+    internal lazy var expiryDateItem: FormCardExpiryDateItem = {
+        let expiryDateItem = FormCardExpiryDateItem(style: style.textField,
+                                                    localizationParameters: localizationParameters)
+        expiryDateItem.localizationParameters = localizationParameters
+        expiryDateItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "expiryDateItem")
+
+        return expiryDateItem
     }()
 
     internal lazy var button: FormButtonItem = {
@@ -139,10 +212,6 @@ public final class GiftCardComponent: PresentableComponent,
         }
         return item
     }()
-
-    // MARK: - Localizable Protocol
-
-    public var localizationParameters: LocalizationParameters?
 
     // MARK: - Loading Component Protocol
 
@@ -165,9 +234,12 @@ public final class GiftCardComponent: PresentableComponent,
         errorItem.message = nil
         errorItem.isHidden.wrappedValue = true
     }
+}
 
-    // MARK: - Submitting the form
+// MARK: Flow functions
 
+extension GiftCardComponent {
+    
     internal func didSelectSubmitButton() {
         hideError()
         guard formViewController.validate() else {
@@ -237,7 +309,7 @@ public final class GiftCardComponent: PresentableComponent,
 
     private func check(balance: Balance, toPay amount: Amount) -> Result<BalanceChecker.Result, Swift.Error> {
         do {
-            return .success(try BalanceChecker().check(balance: balance, isEnoughToPay: amount))
+            return try .success(BalanceChecker().check(balance: balance, isEnoughToPay: amount))
         } catch {
             return .failure(error)
         }
@@ -264,9 +336,9 @@ public final class GiftCardComponent: PresentableComponent,
                                   paymentData: PaymentComponentData) {
         let lastFourDigits = String(numberItem.value.suffix(4))
 
-        let paymentMethod = GiftCardConfirmationPaymentMethod(paymentMethod: giftCardPaymentMethod,
-                                                              lastFour: lastFourDigits,
-                                                              remainingAmount: remainingAmount)
+        let paymentMethod = PartialConfirmationPaymentMethod(paymentMethod: partialPaymentMethodType.partialPaymentMethod,
+                                                             lastFour: lastFourDigits,
+                                                             remainingAmount: remainingAmount)
         
         let component = InstantPaymentComponent(paymentMethod: paymentMethod,
                                                 context: context,
@@ -310,15 +382,22 @@ public final class GiftCardComponent: PresentableComponent,
 
     private func createPaymentData(order: PartialPaymentOrder?, cardPublicKey: String) -> Result<PaymentComponentData, Swift.Error> {
         do {
-            let card = Card(number: numberItem.value, securityCode: securityCodeItem.value)
+            let card = Card(number: numberItem.value,
+                            securityCode: securityCodeItem.value,
+                            expiryMonth: expiryDateItem.expiryMonth,
+                            expiryYear: expiryDateItem.expiryYear)
             let encryptedCard = try CardEncryptor.encrypt(card: card, with: cardPublicKey)
-
-            guard let number = encryptedCard.number,
-                  let securityCode = encryptedCard.securityCode else { throw Error.cardEncryptionFailed }
-
-            let details = GiftCardDetails(paymentMethod: giftCardPaymentMethod,
-                                          encryptedCardNumber: number,
-                                          encryptedSecurityCode: securityCode)
+            
+            let details: PartialPaymentMethodDetails
+            
+            switch partialPaymentMethodType {
+            case let .giftCard(giftCardPaymentMethod):
+                details = try GiftCardDetails(paymentMethod: giftCardPaymentMethod,
+                                              encryptedCard: encryptedCard)
+            case let .mealVoucher(mealVoucherPaymentMethod):
+                details = try MealVoucherDetails(paymentMethod: mealVoucherPaymentMethod,
+                                                 encryptedCard: encryptedCard)
+            }
 
             return .success(PaymentComponentData(paymentMethodDetails: details,
                                                  amount: amount,
@@ -326,19 +405,6 @@ public final class GiftCardComponent: PresentableComponent,
                                                  storePaymentMethod: false))
         } catch {
             return .failure(error)
-        }
-    }
-}
-
-@_spi(AdyenInternal)
-public extension Result {
-    
-    func handle(success: (Success) -> Void, failure: (Failure) -> Void) {
-        switch self {
-        case let .success(successObject):
-            success(successObject)
-        case let .failure(error):
-            failure(error)
         }
     }
 }

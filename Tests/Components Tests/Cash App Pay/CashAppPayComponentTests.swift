@@ -9,8 +9,8 @@ import XCTest
 #if canImport(AdyenCashAppPay)
     @_spi(AdyenInternal) @testable import Adyen
     @testable import AdyenCashAppPay
-    @testable import PayKit
     import Foundation
+    @testable import PayKit
     import UIKit
 
     @available(iOS 13.0, *)
@@ -36,12 +36,12 @@ import XCTest
         var oneTimeAction: PaymentAction {
             let moneyAmount = Money(amount: UInt(5000), currency: .USD)
             return PaymentAction.oneTimePayment(scopeID: "test",
-                                                             money: moneyAmount)
+                                                money: moneyAmount)
         }
         
         var onFileAction: PaymentAction {
-            return PaymentAction.onFilePayment(scopeID: "test",
-                                               accountReferenceID: nil)
+            PaymentAction.onFilePayment(scopeID: "test",
+                                        accountReferenceID: nil)
         }
         
         var oneTimeGrant: CustomerRequest.Grant {

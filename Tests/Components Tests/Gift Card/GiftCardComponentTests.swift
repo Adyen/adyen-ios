@@ -24,7 +24,7 @@ class GiftCardComponentTests: XCTestCase {
 
     var sut: GiftCardComponent!
 
-    var paymentMethod: GiftCardPaymentMethod!
+    var giftCardPaymentMethod: GiftCardPaymentMethod!
 
     var amountToPay: Amount { Dummy.payment.amount }
 
@@ -36,8 +36,16 @@ class GiftCardComponentTests: XCTestCase {
         sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.numberItem")
     }
 
+    var securityCodeItemTitleLabel: UILabel? {
+        sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.securityCodeItem.titleLabel")
+    }
+    
     var securityCodeItemView: FormTextInputItemView? {
         sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.securityCodeItem")
+    }
+    
+    var expiryDateItemView: FormItemView<FormCardExpiryDateItem>? {
+        sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.expiryDateItem")
     }
 
     var payButtonItemViewButton: UIControl? {
@@ -46,12 +54,12 @@ class GiftCardComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
+        giftCardPaymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
         publicKeyProvider = PublicKeyProviderMock()
 
         context = Dummy.context
 
-        sut = GiftCardComponent(paymentMethod: paymentMethod,
+        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
                                 context: context,
                                 amount: amountToPay,
                                 publicKeyProvider: publicKeyProvider)
@@ -64,13 +72,51 @@ class GiftCardComponentTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        paymentMethod = nil
+        giftCardPaymentMethod = nil
         publicKeyProvider = nil
         context = nil
         delegateMock = nil
         partialPaymentDelegate = nil
         sut = nil
         try super.tearDownWithError()
+    }
+    
+    func testGiftCardUI() {
+        
+        // Given
+        let paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
+        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(paymentMethod),
+                                context: context,
+                                amount: amountToPay,
+                                publicKeyProvider: publicKeyProvider)
+        
+        // When
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        wait(for: .milliseconds(300))
+        
+        // Then
+        XCTAssertNil(expiryDateItemView, "should not have expiry date field for gift card")
+        XCTAssertNotNil(securityCodeItemView, "security code should be shown by default")
+        XCTAssertEqual(securityCodeItemTitleLabel?.text, "Pin", "cvc title changes based on payment method")
+    }
+    
+    func testMealVoucherUI() {
+        
+        // Given
+        let paymentMethod = MealVoucherPaymentMethod(type: .mealVoucherSodexo, name: "Sodexo")
+        sut = GiftCardComponent(partialPaymentMethodType: .mealVoucher(paymentMethod),
+                                context: context,
+                                amount: amountToPay,
+                                publicKeyProvider: publicKeyProvider)
+        
+        // When
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        wait(for: .milliseconds(300))
+        
+        // Then
+        XCTAssertNotNil(expiryDateItemView, "should have expiry date field for meal voucher")
+        XCTAssertNotNil(securityCodeItemView, "security code should be shown by default")
+        XCTAssertEqual(securityCodeItemTitleLabel?.text, "Security code", "cvc title changes based on payment method")
     }
 
     func testCheckBalanceFailure() throws {
@@ -518,7 +564,7 @@ class GiftCardComponentTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
 
-        sut = GiftCardComponent(paymentMethod: paymentMethod,
+        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
                                 context: context,
                                 amount: amountToPay,
                                 publicKeyProvider: publicKeyProvider)
@@ -530,6 +576,45 @@ class GiftCardComponentTests: XCTestCase {
 
         // Then
         XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+    }
+    
+    func testGiftCardHidingSecurityCodeItemView() throws {
+        
+        // Given
+        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
+                                context: context,
+                                amount: amountToPay,
+                                showsSecurityCodeField: false,
+                                publicKeyProvider: publicKeyProvider)
+
+        // When
+        let mockViewController = UIViewController()
+        sut.viewWillAppear(viewController: mockViewController)
+
+        // Then
+        XCTAssertNotNil(numberItemView)
+        XCTAssertNil(securityCodeItemView)
+    }
+    
+    func testMealVoucherHidingSecurityCodeItemView() {
+        
+        // Given
+        let paymentMethod = MealVoucherPaymentMethod(type: .mealVoucherSodexo, name: "Sodexo")
+        sut = GiftCardComponent(partialPaymentMethodType: .mealVoucher(paymentMethod),
+                                context: context,
+                                amount: amountToPay,
+                                showsSecurityCodeField: false,
+                                publicKeyProvider: publicKeyProvider)
+        
+
+        // When
+        let mockViewController = UIViewController()
+        sut.viewWillAppear(viewController: mockViewController)
+        
+        // Then
+        XCTAssertNotNil(numberItemView)
+        XCTAssertNotNil(expiryDateItemView, "expiry date should still be shown when security code item is hidden")
+        XCTAssertNil(securityCodeItemView)
     }
 
     private func populate(cardNumber: String, pin: String) {

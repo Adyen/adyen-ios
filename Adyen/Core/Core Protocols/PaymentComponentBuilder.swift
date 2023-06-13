@@ -64,6 +64,9 @@ public protocol PaymentComponentBuilder: AdyenContextAware {
     /// Builds a certain `PaymentComponent` based on a `GiftCardPaymentMethod`.
     func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent?
     
+    /// Builds a certain `PaymentComponent` based on a `MealVoucherPaymentMethod`.
+    func build(paymentMethod: MealVoucherPaymentMethod) -> PaymentComponent?
+    
     /// Builds a certain `PaymentComponent` based on a `BoletoPaymentMethod`.
     func build(paymentMethod: BoletoPaymentMethod) -> PaymentComponent?
     

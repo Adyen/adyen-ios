@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -23,7 +23,7 @@ jobs:
              echo -e "${RED}$FILE_NAME file doesn't exits in the root of the respository${NC}"
              exit 1
           fi 
-          echo "::set-output name=LABELS::$(cat $FILE_PATH),chore"
+          echo "LABELS=$(cat $FILE_PATH),chore" >> $GITHUB_OUTPUT
         id: get-allowed_labels
         env:
           PROJECT_ROOT: ${{ github.workspace }}
@@ -35,7 +35,7 @@ jobs:
           valid-labels: ${{ steps.get-allowed_labels.outputs.LABELS }}
 
       - name: Get PR labels
-        uses: joerick/pr-labels-action@v1.0.6
+        uses: joerick/pr-labels-action@v1.0.9
         id: pr-labels
 
       - run: |
