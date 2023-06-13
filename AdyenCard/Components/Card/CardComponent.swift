@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenComponents
 import AdyenNetworking
 import Foundation
 import UIKit
@@ -186,6 +187,13 @@ public class CardComponent: PresentableComponent,
     
     private let panThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
     private let binThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
+    
+    private lazy var addressLookupComponent = AddressLookupComponent(
+        context: context,
+        configuration: .init(), // TODO: Provide correct configuration
+        initialCountry: payment?.countryCode ?? Constant.defaultCountryCode, // TODO: Do actual logic as found in `billingAddressItem: FormAddressItem`
+        supportedCountryCodes: configuration.billingAddress.countryCodes
+    )
 }
 
 extension CardComponent: CardViewControllerDelegate {
@@ -211,6 +219,15 @@ extension CardComponent: CardViewControllerDelegate {
         }
     }
     
+    internal func didSelectAddressLookup(_ handler: (String, @escaping (Result<String, Error>) -> Void) -> Void) {
+        // TODO: Present it the right way
+        viewController.present(
+            UINavigationController(
+                rootViewController: addressLookupComponent.viewController
+            ),
+            animated: true
+        )
+    }
 }
 
 @_spi(AdyenInternal)

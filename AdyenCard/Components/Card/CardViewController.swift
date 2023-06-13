@@ -249,13 +249,15 @@ internal class CardViewController: FormViewController {
         switch configuration.billingAddress.mode {
         case let .fullLookup(handler):
             let item = items.lookupBillingAddressItem
-            item.buttonSelectionHandler = {
-                item.title = "Hello World"
-                item.showsActivityIndicator = true
-                handler("Hello World") { result in
-                    item.showsActivityIndicator = false
-                    item.title = (try? result.get()) ?? "💥"
-                }
+            item.buttonSelectionHandler = { [weak self] in
+                guard let self else { return }
+                cardDelegate?.didSelectAddressLookup(handler)
+//                item.title = "Hello World"
+//                item.showsActivityIndicator = true
+//                handler("Hello World") { result in
+//                    item.showsActivityIndicator = false
+//                    item.title = (try? result.get()) ?? "💥"
+//                }
             }
             append(items.lookupBillingAddressItem)
         case .full:
@@ -331,6 +333,8 @@ internal class CardViewController: FormViewController {
 
 internal protocol CardViewControllerDelegate: AnyObject {
 
+    func didSelectAddressLookup(_ handler: (_ lookupString: String, _ lookupResultProvider: @escaping (_ result: Result<String, Error>) -> Void) -> Void)
+    
     func didSelectSubmitButton()
 
     func didChange(bin: String)
