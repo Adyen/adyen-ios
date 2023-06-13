@@ -259,10 +259,10 @@ class ApplePayComponentTest: XCTestCase {
         let expectedSummaryItems = Dummy.createTestSummaryItems()
         let expectedRequiredBillingFields = getRandomContactFieldSet()
         let expectedRequiredShippingFields = getRandomContactFieldSet()
-        var configuration = ApplePayComponent.Configuration(payment: try .init(countryCode: countryCode,
+        var configuration = try ApplePayComponent.Configuration(payment: .init(countryCode: countryCode,
                                                                                currencyCode: currencyCode,
                                                                                summaryItems: expectedSummaryItems),
-                                                            merchantIdentifier: "test_id")
+                                                                merchantIdentifier: "test_id")
         configuration.requiredBillingContactFields = expectedRequiredBillingFields
         configuration.requiredShippingContactFields = expectedRequiredShippingFields
         let paymentRequest = configuration.createPaymentRequest(supportedNetworks: paymentMethod.supportedNetworks)
@@ -290,8 +290,8 @@ class ApplePayComponentTest: XCTestCase {
         let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
         let expectedRequiredBillingFields = getRandomContactFieldSet()
         let expectedRequiredShippingFields = getRandomContactFieldSet()
-        var configuration = ApplePayComponent.Configuration(payment: try .init(payment: payment, brand: "TEST"),
-                                                            merchantIdentifier: "test_id")
+        var configuration = try ApplePayComponent.Configuration(payment: .init(payment: payment, brand: "TEST"),
+                                                                merchantIdentifier: "test_id")
         configuration.requiredBillingContactFields = expectedRequiredBillingFields
         configuration.requiredShippingContactFields = expectedRequiredShippingFields
         let paymentRequest = configuration.createPaymentRequest(supportedNetworks: paymentMethod.supportedNetworks)

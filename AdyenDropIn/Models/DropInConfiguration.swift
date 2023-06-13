@@ -54,13 +54,16 @@ public extension DropInComponent {
 
         /// Boleto component configuration.
         public var boleto: Boleto = .init()
-        
+
         /// Configuration for the Cash App Pay component
         public var cashAppPay: CashAppPay?
-        
+
         /// The ACH Direct Debit configuration.
         public var ach: ACH = .init()
-        
+
+        /// Gift card component configuration
+        public var giftCard: GiftCard = .init()
+
         /// Initializes the drop in configuration.
         /// - Parameters:
         ///   - style: The UI styles of the components.
@@ -89,7 +92,7 @@ public extension DropInComponent {
         /// Indicates whether to show sendCopyByEmail checkbox and email text field
         public var showEmailAddress: Bool = true
     }
-    
+
     /// ACH Component configuration specific to Drop In Component.
     struct ACH: AnyACHDirectDebitConfiguration {
         
@@ -121,6 +124,12 @@ public extension DropInComponent {
             self.showsBillingAddress = showsBillingAddress
             self.billingAddressCountryCodes = billingAddressCountryCodes
         }
+    }
+    
+    /// Gift card component configuration.
+    struct GiftCard {
+        /// Indicates whether to show the security code field. Defaults to true.
+        public var showsSecurityCodeField: Bool = true
     }
     
     /// Card Component configuration specific to Drop In Component.
