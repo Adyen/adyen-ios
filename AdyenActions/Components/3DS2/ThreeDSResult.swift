@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,17 +15,28 @@ public struct ThreeDSResult: Decodable {
     
     private struct Payload: Codable {
         internal let authorisationToken: String?
-        
         internal let delegatedAuthenticationSDKOutput: String?
-        
+        internal let threeDS2SDKError: String?
         internal let transStatus: String?
     }
 
+    internal init(authorizationToken: String?,
+                  threeDS2SDKError: String?) throws {
+        let payload = Payload(authorisationToken: authorizationToken,
+                              delegatedAuthenticationSDKOutput: nil,
+                              threeDS2SDKError: threeDS2SDKError,
+                              transStatus: nil)
+        let payloadData = try JSONEncoder().encode(payload)
+        self.payload = payloadData.base64EncodedString()
+    }
+    
     internal init(from challengeResult: AnyChallengeResult,
                   delegatedAuthenticationSDKOutput: String?,
-                  authorizationToken: String?) throws {
+                  authorizationToken: String?,
+                  threeDS2SDKError: String?) throws {
         let payload = Payload(authorisationToken: authorizationToken,
                               delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
+                              threeDS2SDKError: threeDS2SDKError,
                               transStatus: challengeResult.transactionStatus)
         
         let payloadData = try JSONEncoder().encode(payload)
@@ -42,7 +53,7 @@ public struct ThreeDSResult: Decodable {
         let oldPayload: Payload = try Coder.decodeBase64(payload)
         let newPayload = Payload(authorisationToken: oldPayload.authorisationToken,
                                  delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
-                                 transStatus: oldPayload.transStatus)
+                                 threeDS2SDKError: oldPayload.threeDS2SDKError, transStatus: oldPayload.transStatus)
         let newPayloadData = try JSONEncoder().encode(newPayload)
         return .init(payload: newPayloadData.base64EncodedString())
     }

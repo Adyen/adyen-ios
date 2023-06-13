@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,6 +7,13 @@
 @_spi(AdyenInternal) import Adyen
 import Adyen3DS2
 import Foundation
+
+// TODO: Remove this once 3ds2 sdk is released.
+extension NSError {
+    func base64Representation() -> String {
+        "base64Representation"
+    }
+}
 
 internal protocol AnyThreeDS2CoreActionHandler: Component {
     var threeDSRequestorAppURL: URL? { get set }
@@ -99,20 +106,45 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         do {
             let newTransaction = try service.transaction(withMessageVersion: messageVersion)
             self.transaction = newTransaction
+            do {
+                return try self.encodedFingerprint(fingerprint: .fingerprint(authenticationParameters: newTransaction.authenticationParameters))
+            } catch {
+                didFail(with: error, completionHandler: completionHandler)
+            }
 
-            let fingerprint = try ThreeDS2Component.Fingerprint(
-                authenticationRequestParameters: newTransaction.authenticationParameters,
-                delegatedAuthenticationSDKOutput: nil
-            )
-            let encodedFingerprint = try Coder.encodeBase64(fingerprint)
-
-            return encodedFingerprint
+        } catch let error as NSError {
+            do {
+                return try self.encodedFingerprint(fingerprint: .error(base64String: error.base64Representation()))
+            } catch {
+                didFail(with: error, completionHandler: completionHandler)
+            }
         } catch {
             didFail(with: error, completionHandler: completionHandler)
         }
         return nil
     }
 
+    fileprivate enum Fingerprint {
+        case fingerprint(authenticationParameters: AnyAuthenticationRequestParameters)
+        case error(base64String: String)
+        
+        fileprivate var value: ThreeDS2Component.Fingerprint {
+            get throws {
+                switch self {
+                case let .error(base64String: base64):
+                    return .init(threeDS2SDKError: base64)
+                case let .fingerprint(authenticationParameters: authenticationParameters):
+                    return try .init(authenticationRequestParameters: authenticationParameters, delegatedAuthenticationSDKOutput: nil)
+                }
+            }
+        }
+    }
+
+    private func encodedFingerprint(fingerprint: Fingerprint) throws -> String {
+        let encodedFingerprint = try Coder.encodeBase64(fingerprint.value)
+        return encodedFingerprint
+    }
+    
     // MARK: - Challenge
 
     /// Handles the 3D Secure 2 challenge action.
@@ -140,8 +172,14 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                                                          threeDSRequestorAppURL: threeDSRequestorAppURL ?? token.threeDSRequestorAppURL)
         transaction.performChallenge(with: challengeParameters) { [weak self] challengeResult, error in
             guard let result = challengeResult else {
-                let error = error ?? UnknownError(errorDescription: "Both error and result are nil, this should never happen.")
-                self?.didFail(with: error, completionHandler: completionHandler)
+                if let error = error as? NSError {
+                    self?.didFinish(threeDS2SDKError: error.base64Representation(),
+                                    authorizationToken: challengeAction.authorisationToken,
+                                    completionHandler: completionHandler)
+                } else {
+                    self?.didFail(with: UnknownError(errorDescription: "Both error and result are nil, this should never happen."),
+                                  completionHandler: completionHandler)
+                }
                 return
             }
 
@@ -151,16 +189,12 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         }
 
     }
-
-    private func didFinish(with challengeResult: AnyChallengeResult,
+    
+    private func didFinish(threeDS2SDKError: String,
                            authorizationToken: String?,
                            completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
-
         do {
-            let threeDSResult = try ThreeDSResult(from: challengeResult,
-                                                  delegatedAuthenticationSDKOutput: nil,
-                                                  authorizationToken: authorizationToken)
-
+            let threeDSResult = try ThreeDSResult(authorizationToken: authorizationToken, threeDS2SDKError: threeDS2SDKError)
             transaction = nil
             completionHandler(.success(threeDSResult))
         } catch {
@@ -168,6 +202,22 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         }
     }
 
+    private func didFinish(with challengeResult: AnyChallengeResult,
+                           authorizationToken: String?,
+                           completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
+        do {
+            let threeDSResult = try ThreeDSResult(from: challengeResult,
+                                                  delegatedAuthenticationSDKOutput: nil,
+                                                  authorizationToken: authorizationToken,
+                                                  threeDS2SDKError: nil)
+
+            transaction = nil
+            completionHandler(.success(threeDSResult))
+        } catch {
+            completionHandler(.failure(error))
+        }
+    }
+    
     private func didFail<R>(with error: Error,
                             completionHandler: @escaping (Result<R, Error>) -> Void) {
         transaction = nil
