@@ -118,6 +118,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         cardComponent?.cancelIfNeeded()
         presenter?.dismiss(completion: nil)
     }
+
 }
 
 extension CardComponentExample: CardComponentDelegate {

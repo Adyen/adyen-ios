@@ -13,10 +13,13 @@ import PassKit
 import UIKit
 
 internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
-    
+
+    // MARK: - Properties
+
+    internal var cardComponent: PresentableComponent?
+
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var cardComponent: PresentableComponent?
     
     // MARK: - Action Handling
 
