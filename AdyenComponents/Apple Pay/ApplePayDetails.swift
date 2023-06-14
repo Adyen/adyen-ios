@@ -58,7 +58,6 @@ public struct ApplePayDetails: PaymentMethodDetails {
     // MARK: - Coding
     
     private enum CodingKeys: String, CodingKey {
-        case network = "applePayCardNetwork"
         case token = "applePayToken"
         case type
     }
