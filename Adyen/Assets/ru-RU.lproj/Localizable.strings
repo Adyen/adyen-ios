@@ -182,7 +182,7 @@
 "adyen.threeds2.DA.registration.timeLeft" = "У вас есть %@ для включения";
 "adyen.threeds2.DA.approval.title" = "Одобрить транзакцию";
 "adyen.threeds2.DA.approval.description" = "Чтобы завершить покупку, подтвердите эту транзакцию, используя свои биометрические данные.";
-"adyen.threeds2.DA.approval.positiveButton" = "Использовать биометрику";
+"adyen.threeds2.DA.approval.positiveButton" = "Использовать биометрию";
 "adyen.threeds2.DA.approval.negativeButton" = "Подтвердить другим способом";
 "adyen.threeds2.DA.approval.timeLeft" = "На одобрение отведено %@";
 "adyen.threeds2.DA.approval.removeCredentialsText" = "От этого можно отказаться в любое время, %#удалив свои учетные данные%#.";
