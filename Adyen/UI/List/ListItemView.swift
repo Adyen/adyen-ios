@@ -65,12 +65,12 @@ public final class ListItemView: UIView, AnyFormItemView {
         }
         
         imageView.imageURL = item?.imageURL
-        imageView.isHidden = item?.showsIcon == false
+        imageView.isHidden = item?.iconMode.isHidden == true
     }
     
     private func updateImageView(style: ListItemStyle) {
         imageView.contentMode = style.image.contentMode
-        guard item?.canModifyIcon == true else {
+        guard item?.iconMode.canBeModified == true else {
             return imageView.layer.borderWidth = 0
         }
 
@@ -92,7 +92,7 @@ public final class ListItemView: UIView, AnyFormItemView {
     override public func layoutSubviews() {
         super.layoutSubviews()
 
-        guard item?.canModifyIcon == true else {
+        guard item?.iconMode.canBeModified == true else {
             return imageView.adyen.round(using: .none)
         }
 
@@ -177,7 +177,7 @@ public final class ListItemView: UIView, AnyFormItemView {
     override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         
-        guard item?.canModifyIcon == true else {
+        guard item?.iconMode.canBeModified == true else {
             return imageView.layer.borderColor = nil
         }
 
