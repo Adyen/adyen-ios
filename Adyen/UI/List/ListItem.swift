@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -40,28 +40,38 @@ public class ListItem: FormItem {
     /// The flag to indicate if an icon is a custom image that should not be tempered.
     public let canModifyIcon: Bool
     
+    /// Whether or not to show the icon at all
+    public let showsIcon: Bool
+    
     /// Initializes the list item.
     ///
     /// - Parameters:
     ///   - title: The title of the item.
+    ///   - subtitle: The subtitle of the item.
     ///   - imageURL: A URL to an image to display.
     ///   - trailingText: The trailing text.
     ///   - style: The list item style.
-    ///                               should be shown in the item's cell.
     ///   - selectionHandler: The closure to execute when an item is selected.
     ///   - canModifyIcon: The flag to indicate that image could be tampered.
-    public init(title: String,
-                imageURL: URL? = nil,
-                trailingText: String? = nil,
-                style: ListItemStyle = ListItemStyle(),
-                selectionHandler: (() -> Void)? = nil,
-                canModifyIcon: Bool = true) {
+    ///   - showsIcon: Whether or not to show the icon at all.
+    public init(
+        title: String,
+        subtitle: String? = nil,
+        imageURL: URL? = nil,
+        trailingText: String? = nil,
+        style: ListItemStyle = ListItemStyle(),
+        selectionHandler: (() -> Void)? = nil,
+        canModifyIcon: Bool = true,
+        showsIcon: Bool = true
+    ) {
         self.title = title
+        self.subtitle = subtitle
         self.imageURL = imageURL
         self.trailingText = trailingText
         self.style = style
         self.selectionHandler = selectionHandler
         self.canModifyIcon = canModifyIcon
+        self.showsIcon = showsIcon
     }
     
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
@@ -79,10 +89,11 @@ extension ListItem: Hashable {
         hasher.combine(title)
         hasher.combine(imageURL)
         hasher.combine(trailingText)
+        hasher.combine(showsIcon)
     }
     
     public static func == (lhs: ListItem, rhs: ListItem) -> Bool {
-        lhs.title == rhs.title && lhs.imageURL == rhs.imageURL && lhs.trailingText == rhs.trailingText
+        lhs.title == rhs.title && lhs.imageURL == rhs.imageURL && lhs.trailingText == rhs.trailingText && lhs.showsIcon == rhs.showsIcon
     }
     
 }

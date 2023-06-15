@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -17,9 +17,7 @@ public final class ListItemView: UIView, AnyFormItemView {
     public init() {
         super.init(frame: .zero)
         
-        addSubview(imageView)
-        addSubview(titleSubtitleStackView)
-        addSubview(trailingTextLabel)
+        addSubview(contentStackView)
         
         preservesSuperviewLayoutMargins = true
         configureConstraints()
@@ -67,6 +65,7 @@ public final class ListItemView: UIView, AnyFormItemView {
         }
         
         imageView.imageURL = item?.imageURL
+        imageView.isHidden = item?.showsIcon == false
     }
     
     private func updateImageView(style: ListItemStyle) {
@@ -123,7 +122,6 @@ public final class ListItemView: UIView, AnyFormItemView {
         let trailingTextLabel = UILabel()
         trailingTextLabel.translatesAutoresizingMaskIntoConstraints = false
         trailingTextLabel.isHidden = true
-
         return trailingTextLabel
     }()
     
@@ -139,34 +137,37 @@ public final class ListItemView: UIView, AnyFormItemView {
         return stackView
     }()
     
+    private lazy var contentStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [imageView, titleSubtitleStackView, trailingTextLabel])
+        stackView.setCustomSpacing(16, after: imageView)
+        stackView.spacing = 8
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.setContentHuggingPriority(.required, for: .vertical)
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .fill
+        return stackView
+    }()
+    
     // MARK: - Layout
     
     private let imageSize = CGSize(width: 40, height: 26)
     
     private func configureConstraints() {
+        
         let constraints = [
-            imageView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
-            imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            imageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
-            imageView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            contentStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
             imageView.widthAnchor.constraint(equalToConstant: imageSize.width),
             imageView.heightAnchor.constraint(equalToConstant: imageSize.height),
-            
-            trailingTextLabel.leadingAnchor.constraint(equalTo: titleSubtitleStackView.trailingAnchor),
-            trailingTextLabel.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            trailingTextLabel.topAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.topAnchor),
-            trailingTextLabel.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
-            trailingTextLabel.centerYAnchor.constraint(equalTo: titleSubtitleStackView.centerYAnchor),
-            
-            titleSubtitleStackView.topAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.topAnchor),
-            titleSubtitleStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            titleSubtitleStackView.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16.0),
-            titleSubtitleStackView.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor),
             
             self.heightAnchor.constraint(greaterThanOrEqualToConstant: 48)
         ]
 
         trailingTextLabel.setContentHuggingPriority(.required, for: .horizontal)
+        imageView.setContentHuggingPriority(.required, for: .horizontal)
         
         NSLayoutConstraint.activate(constraints)
     }
