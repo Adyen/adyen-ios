@@ -13,7 +13,7 @@ public class ListItem: FormItem {
     public enum IconMode {
         /// Icon is hidden
         case none
-        /// Custom image that should not be styled
+        /// Custom image that should not be styled/altered e.g. Apple Pay
         case custom
         /// Standard icon that can be styled
         case generic

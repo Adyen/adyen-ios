@@ -85,27 +85,27 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     private func item(for component: PaymentComponent) -> ListItem {
         let displayInformation = component.paymentMethod.displayInformation(using: localizationParameters)
         let isProtected = brandProtectedComponents.contains(component.paymentMethod.type)
+        let imageURL = LogoURLProvider.logoURL(
+            withName: displayInformation.logoName,
+            environment: context.apiContext.environment
+        )
         let listItem = ListItem(
             title: displayInformation.title,
             subtitle: displayInformation.subtitle,
-            imageURL: LogoURLProvider.logoURL(withName: displayInformation.logoName,
-                                              environment: context.apiContext.environment),
+            imageURL: imageURL,
             trailingText: displayInformation.disclosureText,
             style: style.listItem,
             iconMode: isProtected ? .custom : .generic
         )
-        
         listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
         listItem.selectionHandler = { [weak self, weak component] in
             guard let self = self, let component = component else { return }
             guard !(component is AlreadyPaidPaymentComponent) else { return }
             self.delegate?.didSelect(component, in: self)
         }
-        
         listItem.deletionHandler = { [weak self, weak component] indexPath, completion in
             self?.delete(component: component, at: indexPath, completion: completion)
         }
-        
         return listItem
     }
     
