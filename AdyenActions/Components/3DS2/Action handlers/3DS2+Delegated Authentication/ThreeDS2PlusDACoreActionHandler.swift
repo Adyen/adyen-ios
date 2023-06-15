@@ -252,12 +252,8 @@
                 && deviceSupportCheckerService.isDeviceSupported
         }
                         
-        internal func performDelegatedRegistration(_ sdkInput: String?,
+        internal func performDelegatedRegistration(_ sdkInput: String,
                                                    completion: @escaping (Result<String, Error>) -> Void) {
-            guard let sdkInput = sdkInput else {
-                completion(.failure(DelegateAuthenticationError.registrationFailed(cause: ThreeDS2PlusDACoreActionError.sdkInputNotAvailableForRegistration)))
-                return
-            }
             delegatedAuthenticationService.register(withRegistrationInput: sdkInput) { result in
                 switch result {
                 case let .success(sdkOutput):
@@ -294,27 +290,31 @@
             let token: ThreeDS2Component.ChallengeToken
             do {
                 token = try Coder.decodeBase64(challengeAction.challengeToken) as ThreeDS2Component.ChallengeToken
+                
+                guard let sdkInput = token.delegatedAuthenticationSDKInput else {
+                    completionHandler(.success(challengeResult))
+                    return
+                }
+                if shouldShowRegistrationScreen {
+                    presenter.showRegistrationScreen(
+                        component: self,
+                        registerDelegatedAuthenticationHandler: { [weak self] in
+                            guard let self = self else { return }
+                            self.performDelegatedRegistration(sdkInput) { [weak self] result in
+                                self?.deliver(challengeResult: challengeResult,
+                                              delegatedAuthenticationSDKOutput: result.successResult,
+                                              completionHandler: completionHandler)
+                            }
+                        },
+                        fallbackHandler: {
+                            completionHandler(.success(challengeResult))
+                        }
+                    )
+                } else {
+                    completionHandler(.success(challengeResult))
+                }
             } catch {
                 return didFail(with: error, completionHandler: completionHandler)
-            }
-            
-            if shouldShowRegistrationScreen {
-                presenter.showRegistrationScreen(
-                    component: self,
-                    registerDelegatedAuthenticationHandler: { [weak self] in
-                        guard let self = self else { return }
-                        self.performDelegatedRegistration(token.delegatedAuthenticationSDKInput) { [weak self] result in
-                            self?.deliver(challengeResult: challengeResult,
-                                          delegatedAuthenticationSDKOutput: result.successResult,
-                                          completionHandler: completionHandler)
-                        }
-                    },
-                    fallbackHandler: {
-                        completionHandler(.success(challengeResult))
-                    }
-                )
-            } else {
-                completionHandler(.success(challengeResult))
             }
         }
         
