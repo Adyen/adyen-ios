@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -85,14 +85,17 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     private func item(for component: PaymentComponent) -> ListItem {
         let displayInformation = component.paymentMethod.displayInformation(using: localizationParameters)
         let isProtected = brandProtectedComponents.contains(component.paymentMethod.type)
-        let listItem = ListItem(title: displayInformation.title,
-                                style: style.listItem,
-                                canModifyIcon: !isProtected)
+        let listItem = ListItem(
+            title: displayInformation.title,
+            subtitle: displayInformation.subtitle,
+            imageURL: LogoURLProvider.logoURL(withName: displayInformation.logoName,
+                                              environment: context.apiContext.environment),
+            trailingText: displayInformation.disclosureText,
+            style: style.listItem,
+            iconMode: isProtected ? .custom : .generic
+        )
+        
         listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
-        listItem.imageURL = LogoURLProvider.logoURL(withName: displayInformation.logoName,
-                                                    environment: context.apiContext.environment)
-        listItem.trailingText = displayInformation.disclosureText
-        listItem.subtitle = displayInformation.subtitle
         listItem.selectionHandler = { [weak self, weak component] in
             guard let self = self, let component = component else { return }
             guard !(component is AlreadyPaidPaymentComponent) else { return }

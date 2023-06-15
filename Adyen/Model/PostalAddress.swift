@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -105,6 +105,7 @@ public struct PostalAddress: Equatable, Encodable {
 
 extension PostalAddress {
     
+    /// Multi line mailing address
     @_spi(AdyenInternal)
     public var formatted: String {
         let address = CNMutablePostalAddress()
@@ -117,6 +118,26 @@ extension PostalAddress {
             .joined(separator: " ")
         
         return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
+    }
+    
+    @_spi(AdyenInternal)
+    public var formattedStreet: String {
+        let address = CNMutablePostalAddress()
+        address.street = [street, houseNumberOrName, apartment]
+            .compactMap { $0 }
+            .joined(separator: " ")
+        
+        return CNPostalAddressFormatter.string(from: address, style: .mailingAddress).replacingOccurrences(of: "\n", with: ", ")
+    }
+    
+    public var formattedLocation: String {
+        let address = CNMutablePostalAddress()
+        city.map { address.city = $0 }
+        country.map { address.isoCountryCode = $0 }
+        stateOrProvince.map { address.state = $0 }
+        postalCode.map { address.postalCode = $0 }
+        
+        return CNPostalAddressFormatter.string(from: address, style: .mailingAddress).replacingOccurrences(of: "\n", with: ", ")
     }
     
 }

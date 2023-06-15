@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -98,10 +98,16 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     private lazy var listItem: ListItem = {
         let paymentMethod = defaultComponent.paymentMethod
         let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
-        var listItem = ListItem(title: displayInformation.title, style: self.listItemStyle)
-        listItem.imageURL = LogoURLProvider.logoURL(withName: displayInformation.logoName,
-                                                    environment: context.apiContext.environment)
-        listItem.subtitle = displayInformation.subtitle
+        let imageURL = LogoURLProvider.logoURL(
+            withName: displayInformation.logoName,
+            environment: context.apiContext.environment
+        )
+        var listItem = ListItem(
+            title: displayInformation.title,
+            subtitle: displayInformation.subtitle,
+            imageURL: imageURL,
+            style: self.listItemStyle
+        )
         listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "defaultComponent")
         return listItem
     }()

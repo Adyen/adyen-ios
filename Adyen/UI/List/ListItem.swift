@@ -10,6 +10,31 @@ import Foundation
 @_spi(AdyenInternal)
 public class ListItem: FormItem {
 
+    public enum IconMode {
+        /// Icon is hidden
+        case none
+        /// Custom image that should not be styled
+        case custom
+        /// Standard icon that can be styled
+        case generic
+        
+        public var isHidden: Bool {
+            switch self {
+            case .custom: return false
+            case .generic: return false
+            case .none: return true
+            }
+        }
+        
+        public var canBeModified: Bool {
+            switch self {
+            case .custom: return false
+            case .generic: return true
+            case .none: return false
+            }
+        }
+    }
+    
     public var subitems: [FormItem] = []
     
     /// The list item style.
@@ -37,11 +62,8 @@ public class ListItem: FormItem {
     /// that is set to the `ListItemView.accessibilityIdentifier`.
     public var identifier: String?
 
-    /// The flag to indicate if an icon is a custom image that should not be tempered.
-    public let canModifyIcon: Bool
-    
-    /// Whether or not to show the icon at all
-    public let showsIcon: Bool
+    /// Specifies the icon behavior
+    public let iconMode: IconMode
     
     /// Initializes the list item.
     ///
@@ -52,8 +74,7 @@ public class ListItem: FormItem {
     ///   - trailingText: The trailing text.
     ///   - style: The list item style.
     ///   - selectionHandler: The closure to execute when an item is selected.
-    ///   - canModifyIcon: The flag to indicate that image could be tampered.
-    ///   - showsIcon: Whether or not to show the icon at all.
+    ///   - iconMode: Specifies the icon behavior
     public init(
         title: String,
         subtitle: String? = nil,
@@ -61,8 +82,7 @@ public class ListItem: FormItem {
         trailingText: String? = nil,
         style: ListItemStyle = ListItemStyle(),
         selectionHandler: (() -> Void)? = nil,
-        canModifyIcon: Bool = true,
-        showsIcon: Bool = true
+        iconMode: IconMode = .generic
     ) {
         self.title = title
         self.subtitle = subtitle
@@ -70,8 +90,7 @@ public class ListItem: FormItem {
         self.trailingText = trailingText
         self.style = style
         self.selectionHandler = selectionHandler
-        self.canModifyIcon = canModifyIcon
-        self.showsIcon = showsIcon
+        self.iconMode = iconMode
     }
     
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
@@ -89,11 +108,10 @@ extension ListItem: Hashable {
         hasher.combine(title)
         hasher.combine(imageURL)
         hasher.combine(trailingText)
-        hasher.combine(showsIcon)
     }
     
     public static func == (lhs: ListItem, rhs: ListItem) -> Bool {
-        lhs.title == rhs.title && lhs.imageURL == rhs.imageURL && lhs.trailingText == rhs.trailingText && lhs.showsIcon == rhs.showsIcon
+        lhs.title == rhs.title && lhs.imageURL == rhs.imageURL && lhs.trailingText == rhs.trailingText
     }
     
 }

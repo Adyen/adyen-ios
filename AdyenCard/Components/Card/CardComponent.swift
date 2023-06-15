@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import AdyenComponents
+@_spi(AdyenInternal) import AdyenComponents
 import AdyenNetworking
 import Foundation
 import UIKit
@@ -222,9 +222,7 @@ extension CardComponent: CardViewControllerDelegate {
     internal func didSelectAddressLookup(_ handler: (String, @escaping (Result<String, Error>) -> Void) -> Void) {
         // TODO: Present it the right way
         viewController.present(
-            UINavigationController(
-                rootViewController: addressLookupComponent.viewController
-            ),
+            addressLookupComponent.viewController,
             animated: true
         )
     }

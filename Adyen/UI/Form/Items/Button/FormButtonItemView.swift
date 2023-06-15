@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 import UIKit
 
-/// A view representing a footer item.
+/// A view representing a button item.
 internal final class FormButtonItemView: FormItemView<FormButtonItem> {
     
     /// Initializes the footer item view.

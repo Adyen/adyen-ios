@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
+@_spi(AdyenInternal)
 public final class AddressLookupComponent: NSObject, PresentableComponent {
     
     public lazy var viewController: UIViewController = {
@@ -24,8 +25,12 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
             target: self,
             action: #selector(doneTapped)
         )
-        securedViewController.navigationItem.searchController = searchController
-        return securedViewController
+
+        if #available(iOS 13.0, *) {
+            securedViewController.isModalInPresentation = true
+        }
+        
+        return UINavigationController(rootViewController: securedViewController)
     }()
     
     public var context: Adyen.AdyenContext
@@ -33,6 +38,8 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     public var configuration: PersonalInformationConfiguration // TODO: Replace with more custom configuration
     private let initialCountry: String
     private let supportedCountryCodes: [String]?
+    
+    public var requiresModalPresentation: Bool = false
     
     /// Initializes the component.
     /// - Parameters:
@@ -51,15 +58,6 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
         self.supportedCountryCodes = supportedCountryCodes
     }
     
-    internal lazy var searchController: UISearchController = {
-        
-        // TODO: Issue with the UISearchController is that we want to wrap a list inside of a secure viewcontroller and that messes up the scrolling behavior - write a generic AsyncSearchViewController instead with a custom search bar and a 
-        
-        let searchController = UISearchController(searchResultsController: searchResultsViewController) // TODO: Make sure styling works
-        searchController.searchResultsUpdater = self
-        return searchController
-    }()
-    
     internal lazy var searchResultsViewController: ListViewController = {
         let searchResultsViewController = ListViewController(style: configuration.style) // TODO: Make sure styling works
         searchResultsViewController.delegate = self
@@ -69,9 +67,61 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     internal lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(style: configuration.style)
         formViewController.localizationParameters = configuration.localizationParameters
-        formViewController.title = "Address"
+        formViewController.title = "Billing Address"
         formViewController.delegate = self
         
+        // TODO: Create actual fake searchbar
+        let fakeSearchBar = FormSearchButtonItem(
+            placeholder: "Search your address"
+        ) { [weak self] in
+            guard let self else { return }
+            
+            let searchController = AsyncSearchViewController(
+                style: configuration.style,
+                searchBarPlaceholder: "Search your address",
+                resultProvider: { searchTerm, resultHandler in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        if Bool.random() {
+                            resultHandler([])
+                        } else {
+                            let address = PostalAddress(
+                                city: "Amsterdam",
+                                country: "NL",
+                                houseNumberOrName: "109",
+                                postalCode: "1053WR",
+                                stateOrProvince: "Noord Holland",
+                                street: "Da Costakade (\(searchTerm))",
+                                apartment: "2"
+                            )
+                            
+                            resultHandler([.init(
+                                title: address.formattedStreet,
+                                subtitle: address.formattedLocation,
+                                selectionHandler: {
+                                    print(address.formatted)
+                                },
+                                iconMode: .none
+                            )])
+                        }
+                    }
+                }
+            )
+            
+            searchController.title = formViewController.title
+            searchController.navigationItem.hidesBackButton = true
+            searchController.navigationItem.rightBarButtonItem = .init(
+                barButtonSystemItem: .cancel, // TODO: Localization
+                target: self,
+                action: #selector(dismissSearchTapped)
+            )
+            
+            UIView.transition(with: viewController.view, duration: 0.2, options: .transitionCrossDissolve) { [weak self] in
+                guard let self else { return }
+
+                (viewController as? UINavigationController)?.pushViewController(searchController, animated: false)
+            }
+        }
+        formViewController.append(fakeSearchBar)
         formViewController.append(billingAddressItem)
 
         return formViewController
@@ -94,17 +144,26 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     }()
     
     @objc
+    private func dismissSearchTapped() {
+        UIView.transition(with: viewController.view, duration: 0.2, options: .transitionCrossDissolve) { [weak self] in
+            guard let self else { return }
+
+            (viewController as? UINavigationController)?.popToRootViewController(animated: false)
+        }
+    }
+    
+    @objc
     private func doneTapped() {
         if formViewController.validate() {
             // TODO: Implement stuff in a delegate
-            viewController.presentingViewController?.dismiss(animated: true)
+            viewController.dismiss(animated: true)
         }
     }
     
     @objc
     private func cancelTapped() {
         // TODO: Implement stuff in a delegate
-        viewController.presentingViewController?.dismiss(animated: true)
+        viewController.dismiss(animated: true)
     }
     
     internal func populateFields() {
@@ -121,33 +180,6 @@ extension AddressLookupComponent: ViewControllerDelegate {
 
     public func viewWillAppear(viewController: UIViewController) {
 //        sendTelemetryEvent()
-//        populateFields()
+        populateFields()
     }
-}
-
-@_spi(AdyenInternal)
-extension AddressLookupComponent: UISearchResultsUpdating {
-    public func updateSearchResults(for searchController: UISearchController) {
-        guard let searchText = searchController.searchBar.text, searchText.count > 0 else {
-            // TODO: Show empty
-            return
-        }
-        
-        // TODO: Start loading
-        
-        // TODO: Call into delegate/provider
-        
-        print(searchText)
-        
-        let listSection = ListSection(
-            header: .init(title: "Results", style: .init()), // TODO: Styling
-            items: searchText.map { .init(title: "\($0)") }
-        )
-        
-        searchResultsViewController.reload(newSections: [listSection], animated: true)
-        
-        // TODO: Stop loading
-    }
-    
-    public func textDidChange(_ searchBar: UISearchBar, searchText: String) {}
 }

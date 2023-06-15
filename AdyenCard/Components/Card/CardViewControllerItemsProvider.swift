@@ -78,32 +78,8 @@ extension CardViewController {
         }()
         
         internal lazy var lookupBillingAddressItem: FormButtonItem = {
-            let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "lookupBillingAddress")
-            
-            // with the supported countries
-            let initialCountry: String?
-            if let countryCodes = configuration.billingAddress.countryCodes, !countryCodes.isEmpty {
-                if let prefillCountryCode = shopperInformation?.billingAddress?.country,
-                   countryCodes.contains(prefillCountryCode) {
-                    initialCountry = prefillCountryCode
-                } else {
-                    initialCountry = countryCodes.first
-                }
-            } else {
-                initialCountry = shopperInformation?.billingAddress?.country
-            }
-            
-            let item = FormButtonItem(style: formStyle.mainButtonItem)
-            
-//            let item = FormAddressItem(initialCountry: initialCountry ?? defaultCountryCode,
-//                                       style: formStyle.addressStyle,
-//                                       localizationParameters: localizationParameters,
-//                                       identifier: identifier,
-//                                       supportedCountryCodes: configuration.billingAddress.countryCodes,
-//                                       addressViewModelBuilder: addressViewModelBuilder)
-//            shopperInformation?.billingAddress.map { item.value = $0 }
-//            item.style.backgroundColor = UIColor.Adyen.lightGray
-            return item
+            // TODO: Provide a button that shows the address and looks like a form field!
+            FormButtonItem(style: formStyle.mainButtonItem)
         }()
 
         internal lazy var postalCodeItem: FormPostalCodeItem = {
