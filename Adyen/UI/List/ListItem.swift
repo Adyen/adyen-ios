@@ -18,6 +18,7 @@ public class ListItem: FormItem {
         /// Standard icon that can be styled
         case generic
         
+        /// Whether or not the icon should be hidden
         public var isHidden: Bool {
             switch self {
             case .custom: return false
@@ -26,6 +27,7 @@ public class ListItem: FormItem {
             }
         }
         
+        /// Whether or not the icon should be styled/altered
         public var canBeModified: Bool {
             switch self {
             case .custom: return false
@@ -97,6 +99,48 @@ public class ListItem: FormItem {
         builder.build(with: self)
     }
     
+}
+
+// MARK: - Deprecated
+
+extension ListItem {
+    
+    /// The flag to indicate if an icon is a custom image that should not be tempered.
+    @available(*, deprecated, message: "Use `iconMode.canBeModified` property if needed.")
+    public var canModifyIcon: Bool {
+        iconMode.canBeModified
+    }
+    
+    /// Initializes the list item.
+    ///
+    /// - Parameters:
+    ///   - title: The title of the item.
+    ///   - subtitle: The subtitle of the item.
+    ///   - imageURL: A URL to an image to display.
+    ///   - trailingText: The trailing text.
+    ///   - style: The list item style.
+    ///   - selectionHandler: The closure to execute when an item is selected.
+    ///   - canModifyIcon: The flag to indicate that image could be tampered.
+    @available(*, deprecated, message: "Use the initializer that takes an iconMode instead.")
+    public convenience init(
+        title: String,
+        subtitle: String? = nil,
+        imageURL: URL? = nil,
+        trailingText: String? = nil,
+        style: ListItemStyle = ListItemStyle(),
+        selectionHandler: (() -> Void)? = nil,
+        canModifyIcon: Bool
+    ) {
+        self.init(
+            title: title,
+            subtitle: subtitle,
+            imageURL: imageURL,
+            trailingText: trailingText,
+            style: style,
+            selectionHandler: selectionHandler,
+            iconMode: canModifyIcon ? .generic : .custom
+        )
+    }
 }
 
 // MARK: - Hashable & Equatable
