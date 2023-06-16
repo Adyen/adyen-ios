@@ -89,7 +89,7 @@ extension CardComponent {
     /// The mode of address form of card component
     public enum AddressFormType {
 
-        case fullLookup(_ handler: (_ lookupString: String, _ lookupResultProvider: @escaping (_ result: Result<String, Error>) -> Void) -> Void)
+        case fullLookup(_ handler: (_ searchTerm: String, _ resultProvider: @escaping (_ result: [PostalAddress]) -> Void) -> Void)
         
         /// Display full address form
         case full

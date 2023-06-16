@@ -34,14 +34,28 @@ extension IntegrationExample {
               let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
         let style = FormComponentStyle()
         var config = CardComponent.Configuration(style: style)
-        config.billingAddress.mode = .fullLookup { lookupString, lookupResultProvider in
+        config.billingAddress.mode = .fullLookup { searchTerm, lookupResultProvider in
             /*
              Thoughts:
              - Delaying + cancelling an existing lookup should be left to the implementing party
              */
-            print(lookupString)
+            print(searchTerm)
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                lookupResultProvider(.success("\(lookupString) - Result"))
+                let address = PostalAddress(
+                    city: "Amsterdam",
+                    country: "NL",
+                    houseNumberOrName: "109",
+                    postalCode: "1053WR",
+                    stateOrProvince: "Noord Holland",
+                    street: "Da Costakade (\(searchTerm))",
+                    apartment: "2"
+                )
+                
+                lookupResultProvider([
+                    address,
+                    address,
+                    address
+                ])
             }
         }
         return CardComponent(paymentMethod: paymentMethod,

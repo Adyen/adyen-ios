@@ -333,7 +333,7 @@ internal class CardViewController: FormViewController {
 
 internal protocol CardViewControllerDelegate: AnyObject {
 
-    func didSelectAddressLookup(_ handler: (_ lookupString: String, _ lookupResultProvider: @escaping (_ result: Result<String, Error>) -> Void) -> Void)
+    func didSelectAddressLookup(_ handler: @escaping (_ searchTerm: String, _ resultProvider: @escaping ([PostalAddress]) -> Void) -> Void)
     
     func didSelectSubmitButton()
 

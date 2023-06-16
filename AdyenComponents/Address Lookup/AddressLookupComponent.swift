@@ -13,7 +13,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     public lazy var viewController: UIViewController = {
         let securedViewController = SecuredViewController(
             child: formViewController,
-            style: configuration.style
+            style: style
         )
         securedViewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel, // TODO: Localization
@@ -35,9 +35,13 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     
     public var context: Adyen.AdyenContext
     
-    public var configuration: PersonalInformationConfiguration // TODO: Replace with more custom configuration
-    private let initialCountry: String
+    // TODO: Replace with configuration
+    private let style: FormComponentStyle
+    private let localizationParameters: LocalizationParameters?
+    private var address: PostalAddress?
     private let supportedCountryCodes: [String]?
+    private let lookupProvider: (_ searchTerm: String, _ resultProvider: @escaping ([PostalAddress]) -> Void) -> Void
+    private let completionHandler: (PostalAddress) -> Void
     
     public var requiresModalPresentation: Bool = false
     
@@ -48,27 +52,31 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     ///   - configuration: The component's configuration.
     public init(
         context: AdyenContext,
-        configuration: PersonalInformationConfiguration,
-        initialCountry: String,
-        supportedCountryCodes: [String]?
+        style: FormComponentStyle,
+        initialAddress: PostalAddress?,
+        supportedCountryCodes: [String]?,
+        localizationParameters: LocalizationParameters? = nil,
+        lookupProvider: @escaping (_ searchTerm: String, _ resultProvider: @escaping ([PostalAddress]) -> Void) -> Void,
+        completionHandler: @escaping (PostalAddress) -> Void
     ) {
         self.context = context
-        self.configuration = configuration
-        self.initialCountry = initialCountry
+        self.style = style
+        self.address = initialAddress
         self.supportedCountryCodes = supportedCountryCodes
-        
-        // TODO: Provide a way to report the address back to the caller
+        self.lookupProvider = lookupProvider
+        self.completionHandler = completionHandler
+        self.localizationParameters = localizationParameters
     }
     
     internal lazy var searchResultsViewController: ListViewController = {
-        let searchResultsViewController = ListViewController(style: configuration.style) // TODO: Make sure styling works
+        let searchResultsViewController = ListViewController(style: style) // TODO: Make sure styling works
         searchResultsViewController.delegate = self
         return searchResultsViewController
     }()
     
     internal lazy var formViewController: FormViewController = {
-        let formViewController = FormViewController(style: configuration.style)
-        formViewController.localizationParameters = configuration.localizationParameters
+        let formViewController = FormViewController(style: style)
+        formViewController.localizationParameters = localizationParameters
         formViewController.title = "Billing Address"
         formViewController.delegate = self
         
@@ -80,7 +88,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     
     internal lazy var searchButtonItem: FormSearchButtonItem = {
         
-        return FormSearchButtonItem(
+        FormSearchButtonItem(
             placeholder: "Search your address"
         ) { [weak self] in
             guard let self else { return }
@@ -88,35 +96,14 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
         }
     }()
     
-    func showAddressSearch() {
+    private func showAddressSearch() {
         let searchController = AsyncSearchViewController(
-            style: configuration.style,
+            style: style,
             searchBarPlaceholder: "Search your address",
-            resultProvider: { searchTerm, resultHandler in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    if Bool.random() {
-                        resultHandler([])
-                    } else {
-                        let address = PostalAddress(
-                            city: "Amsterdam",
-                            country: "NL",
-                            houseNumberOrName: "109",
-                            postalCode: "1053WR",
-                            stateOrProvince: "Noord Holland",
-                            street: "Da Costakade (\(searchTerm))",
-                            apartment: "2"
-                        )
-                        
-                        resultHandler([.init(
-                            title: address.formattedStreet,
-                            subtitle: address.formattedLocation,
-                            selectionHandler: { [weak self] in
-                                self?.billingAddressItem.value = address
-                                self?.dismissSearchTapped()
-                            },
-                            iconMode: .none
-                        )])
-                    }
+            resultProvider: { [weak self] searchTerm, resultHandler in
+                self?.lookupProvider(searchTerm) { [weak self] results in
+                    guard let self else { return }
+                    resultHandler(results.map(listItem(for:)))
                 }
             }
         )
@@ -136,18 +123,30 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
         }
     }
     
+    private func listItem(for address: PostalAddress) -> ListItem {
+        .init(
+            title: address.formattedStreet,
+            subtitle: address.formattedLocation,
+            selectionHandler: { [weak self] in
+                guard let self else { return }
+                self.address = address
+                billingAddressItem.value = address
+                dismissSearchTapped()
+            },
+            iconMode: .none
+        )
+    }
+    
     internal lazy var billingAddressItem: FormAddressItem = {
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "billingAddress")
-
-        // TODO: Make actually work
         
-        let item = FormAddressItem(initialCountry: initialCountry,
-                                   style: configuration.style.addressStyle,
-                                   localizationParameters: configuration.localizationParameters,
+        let item = FormAddressItem(initialCountry: address?.country ?? "NL", // TODO: Provide better initialCountry
+                                   style: style.addressStyle,
+                                   localizationParameters: localizationParameters,
                                    identifier: identifier,
                                    supportedCountryCodes: supportedCountryCodes,
                                    addressViewModelBuilder: DefaultAddressViewModelBuilder()) // TODO: Make this injectable?
-        configuration.shopperInformation?.billingAddress.map { item.value = $0 }
+        address.map { item.value = $0 }
         item.style.backgroundColor = UIColor.Adyen.lightGray
         item.title = nil
         return item
@@ -165,8 +164,8 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     @objc
     private func doneTapped() {
         if formViewController.validate() {
-            // TODO: Implement stuff in a delegate
-            viewController.dismiss(animated: true)
+            guard let address else { return }
+            completionHandler(address)
         }
     }
     
@@ -176,11 +175,8 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
         viewController.dismiss(animated: true)
     }
     
-    internal func populateFields() {
-        guard let shopperInformation = configuration.shopperInformation else { return }
-
-        shopperInformation.billingAddress.map { billingAddressItem.value = $0 }
-//        shopperInformation.deliveryAddress.map { deliveryAddressItem?.value = $0 }
+    deinit {
+        print("☠️ \(String(describing: self))")
     }
 }
 
@@ -190,6 +186,6 @@ extension AddressLookupComponent: ViewControllerDelegate {
 
     public func viewWillAppear(viewController: UIViewController) {
 //        sendTelemetryEvent() // TODO: Implement
-        populateFields()
+//        populateFields()
     }
 }

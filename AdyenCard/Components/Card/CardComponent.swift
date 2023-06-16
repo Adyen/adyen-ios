@@ -188,12 +188,7 @@ public class CardComponent: PresentableComponent,
     private let panThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
     private let binThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
     
-    private lazy var addressLookupComponent = AddressLookupComponent(
-        context: context,
-        configuration: .init(), // TODO: Provide correct configuration
-        initialCountry: payment?.countryCode ?? Constant.defaultCountryCode, // TODO: Do actual logic as found in `billingAddressItem: FormAddressItem`
-        supportedCountryCodes: configuration.billingAddress.countryCodes
-    )
+    private var addressLookupComponent: AddressLookupComponent?
 }
 
 extension CardComponent: CardViewControllerDelegate {
@@ -219,8 +214,25 @@ extension CardComponent: CardViewControllerDelegate {
         }
     }
     
-    internal func didSelectAddressLookup(_ handler: (String, @escaping (Result<String, Error>) -> Void) -> Void) {
+    internal func didSelectAddressLookup(_ handler: @escaping (_ searchTerm: String, _ resultProvider: @escaping ([PostalAddress]) -> Void) -> Void) {
         // TODO: Present it the right way
+        // Search for `internal weak var presentationDelegate: NavigationDelegate?`
+        
+        let addressLookupComponent = AddressLookupComponent(
+            context: context,
+            style: configuration.style,
+            initialAddress: configuration.shopperInformation?.billingAddress,
+            supportedCountryCodes: configuration.billingAddress.countryCodes,
+            lookupProvider: handler,
+            completionHandler: { [weak self] address in
+                guard let self else { return }
+                configuration.shopperInformation?.billingAddress = address // TODO: This is not the right place to store it - figure out where it should be
+                viewController.dismiss(animated: true)
+            }
+        )
+        
+        self.addressLookupComponent = addressLookupComponent
+        
         viewController.present(
             addressLookupComponent.viewController,
             animated: true
