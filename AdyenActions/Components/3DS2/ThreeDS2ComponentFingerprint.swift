@@ -11,7 +11,6 @@ import Foundation
 internal extension ThreeDS2Component {
     
     struct Fingerprint: Codable, Equatable { // swiftlint:disable:this explicit_acl
-        // TODO: Make this an enum with two states .fingerprint & opaqueError
         internal let deviceInformation: String?
         internal let sdkEphemeralPublicKey: EphemeralPublicKey?
         internal let sdkReferenceNumber: String?
