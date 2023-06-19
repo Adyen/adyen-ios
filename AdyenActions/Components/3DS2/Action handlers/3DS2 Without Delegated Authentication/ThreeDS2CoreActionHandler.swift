@@ -92,57 +92,39 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
             serviceParameters.directoryServerRootCertificates = token.directoryServerRootCertificates
 
             service.service(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { [weak self] _ in
-                if let encodedFingerprint = self?.getFingerprint(messageVersion: token.threeDSMessageVersion,
-                                                                 completionHandler: completionHandler) {
-                    completionHandler(.success(encodedFingerprint))
-                }
+                self?.getFingerprint(messageVersion: token.threeDSMessageVersion,
+                                     completionHandler: completionHandler)
             }
         } catch {
             didFail(with: error, completionHandler: completionHandler)
         }
     }
 
-    private func getFingerprint<R>(messageVersion: String, completionHandler: @escaping (Result<R, Error>) -> Void) -> String? {
+    private func getFingerprint(messageVersion: String, completionHandler: @escaping (Result<String, Error>) -> Void) {
+        do {
+            switch transaction(messageVersion: messageVersion) {
+            case let .success(transaction):
+                let encodedFingerprint = try Coder.encodeBase64(ThreeDS2Component.Fingerprint(authenticationRequestParameters: transaction.authenticationParameters,
+                                                                                              delegatedAuthenticationSDKOutput: nil))
+                self.transaction = transaction
+                completionHandler(.success(encodedFingerprint))
+
+            case let .failure(error):
+                let encodedError = try Coder.encodeBase64(ThreeDS2Component.Fingerprint(threeDS2SDKError: error.base64Representation()))
+                completionHandler(.success(encodedError))
+            }
+        } catch {
+            didFail(with: error, completionHandler: completionHandler)
+        }
+    }
+
+    private func transaction(messageVersion: String) -> Result<AnyADYTransaction, NSError> {
         do {
             let newTransaction = try service.transaction(withMessageVersion: messageVersion)
-            self.transaction = newTransaction
-            do {
-                return try self.encodedFingerprint(fingerprint: .fingerprint(authenticationParameters: newTransaction.authenticationParameters))
-            } catch {
-                didFail(with: error, completionHandler: completionHandler)
-            }
-
+            return .success(newTransaction)
         } catch let error as NSError {
-            do {
-                return try self.encodedFingerprint(fingerprint: .error(base64String: error.base64Representation()))
-            } catch {
-                didFail(with: error, completionHandler: completionHandler)
-            }
-        } catch {
-            didFail(with: error, completionHandler: completionHandler)
+            return .failure(error)
         }
-        return nil
-    }
-
-    fileprivate enum Fingerprint {
-        case fingerprint(authenticationParameters: AnyAuthenticationRequestParameters)
-        case error(base64String: String)
-        
-        fileprivate var value: ThreeDS2Component.Fingerprint {
-            get throws {
-                switch self {
-                case let .error(base64String: base64):
-                    return .init(threeDS2SDKError: base64)
-                case let .fingerprint(authenticationParameters: authenticationParameters):
-                    return try .init(authenticationRequestParameters: authenticationParameters, delegatedAuthenticationSDKOutput: nil)
-                }
-            }
-        }
-    }
-
-    private func encodedFingerprint(fingerprint: Fingerprint) throws -> String {
-        let encodedFingerprint = try Coder.encodeBase64(fingerprint.value)
-        return encodedFingerprint
     }
     
     // MARK: - Challenge
