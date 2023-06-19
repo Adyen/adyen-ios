@@ -102,14 +102,17 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
             withName: displayInformation.logoName,
             environment: context.apiContext.environment
         )
-        var listItem = ListItem(
+        let identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: "defaultComponent"
+        )
+        return .init(
             title: displayInformation.title,
             subtitle: displayInformation.subtitle,
-            imageURL: imageURL,
-            style: self.listItemStyle
+            icon: .init(url: imageURL),
+            style: self.listItemStyle,
+            identifier: identifier
         )
-        listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "defaultComponent")
-        return listItem
     }()
     
     private lazy var submitButtonItem: FormButtonItem = {
