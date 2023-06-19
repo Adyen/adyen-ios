@@ -55,9 +55,12 @@ public final class GiftCardComponent: PresentableComponent,
 
     /// The delegate that handles shopper confirmation UI when the balance of the gift card is sufficient to pay.
     public weak var readyToSubmitComponentDelegate: ReadyToSubmitPaymentComponentDelegate?
-    
+
     /// The localization parameters.
     public var localizationParameters: LocalizationParameters?
+
+    /// Indicates whether to show the security code field at all.
+    internal let showsSecurityCodeField: Bool
 
     /// Initializes the partial payment component with a gift card payment method.
     ///
@@ -65,15 +68,18 @@ public final class GiftCardComponent: PresentableComponent,
     ///   - paymentMethod: The gift card payment method.
     ///   - context:The context object for this component.
     ///   - amount: The amount to pay.
-    ///   - style:  The Component's UI style.
+    ///   - style: The Component's UI style.
+    ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
     public convenience init(paymentMethod: GiftCardPaymentMethod,
                             context: AdyenContext,
                             amount: Amount,
-                            style: FormComponentStyle = FormComponentStyle()) {
+                            style: FormComponentStyle = FormComponentStyle(),
+                            showsSecurityCodeField: Bool = true) {
         self.init(partialPaymentMethodType: .giftCard(paymentMethod),
                   context: context,
                   amount: amount,
                   style: style,
+                  showsSecurityCodeField: showsSecurityCodeField,
                   publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
     
@@ -83,15 +89,18 @@ public final class GiftCardComponent: PresentableComponent,
     ///   - paymentMethod: The meal voucher payment method.
     ///   - context:The context object for this component.
     ///   - amount: The amount to pay.
-    ///   - style:  The Component's UI style.
+    ///   - style: The Component's UI style.
+    ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
     public convenience init(paymentMethod: MealVoucherPaymentMethod,
                             context: AdyenContext,
                             amount: Amount,
-                            style: FormComponentStyle = FormComponentStyle()) {
+                            style: FormComponentStyle = FormComponentStyle(),
+                            showsSecurityCodeField: Bool = true) {
         self.init(partialPaymentMethodType: .mealVoucher(paymentMethod),
                   context: context,
                   amount: amount,
                   style: style,
+                  showsSecurityCodeField: showsSecurityCodeField,
                   publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
     
@@ -99,10 +108,12 @@ public final class GiftCardComponent: PresentableComponent,
                   context: AdyenContext,
                   amount: Amount,
                   style: FormComponentStyle = FormComponentStyle(),
+                  showsSecurityCodeField: Bool = true,
                   publicKeyProvider: AnyPublicKeyProvider) {
         self.partialPaymentMethodType = partialPaymentMethodType
         self.context = context
         self.style = style
+        self.showsSecurityCodeField = showsSecurityCodeField
         self.publicKeyProvider = publicKeyProvider
         self.amount = amount
     }
@@ -114,19 +125,26 @@ public final class GiftCardComponent: PresentableComponent,
     public var requiresModalPresentation: Bool { true }
 
     private lazy var formViewController: FormViewController = {
+
         let formViewController = FormViewController(style: style)
-        formViewController.delegate = self
         formViewController.localizationParameters = localizationParameters
+        formViewController.delegate = self
         formViewController.title = partialPaymentMethodType.partialPaymentMethod.displayInformation(using: localizationParameters).title
         formViewController.append(errorItem)
         formViewController.append(numberItem)
-        
-        switch partialPaymentMethodType {
-        case .giftCard:
+
+        switch (partialPaymentMethodType, showsSecurityCodeField) {
+        case (.giftCard, true):
             formViewController.append(securityCodeItem)
-        case .mealVoucher:
-            let splitTextItem = FormSplitItem(items: expiryDateItem, securityCodeItem, style: style.textField)
+        case (.giftCard, false):
+            break // Nothing additionally to add
+            
+        case (.mealVoucher, true):
+            let splitTextItem = FormSplitItem(items: expiryDateItem, securityCodeItem,
+                                              style: style.textField)
             formViewController.append(splitTextItem)
+        case (.mealVoucher, false):
+            formViewController.append(expiryDateItem)
         }
         
         formViewController.append(FormSpacerItem())
@@ -291,7 +309,7 @@ extension GiftCardComponent {
 
     private func check(balance: Balance, toPay amount: Amount) -> Result<BalanceChecker.Result, Swift.Error> {
         do {
-            return .success(try BalanceChecker().check(balance: balance, isEnoughToPay: amount))
+            return try .success(BalanceChecker().check(balance: balance, isEnoughToPay: amount))
         } catch {
             return .failure(error)
         }
