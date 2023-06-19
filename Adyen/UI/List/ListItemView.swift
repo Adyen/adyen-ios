@@ -64,14 +64,16 @@ public final class ListItemView: UIView, AnyFormItemView {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "trailingTextLabel")
         }
         
-        imageView.imageURL = item?.imageURL
-        imageView.isHidden = item?.iconMode.isHidden == true
+        imageView.imageURL = item?.icon?.url
+        imageView.isHidden = item?.icon == nil
     }
     
     private func updateImageView(style: ListItemStyle) {
         imageView.contentMode = style.image.contentMode
-        guard item?.iconMode.canBeModified == true else {
-            return imageView.layer.borderWidth = 0
+        
+        guard item?.icon?.canBeModified == true else {
+            imageView.layer.borderWidth = 0
+            return
         }
 
         imageView.clipsToBounds = style.image.clipsToBounds
@@ -92,7 +94,7 @@ public final class ListItemView: UIView, AnyFormItemView {
     override public func layoutSubviews() {
         super.layoutSubviews()
 
-        guard item?.iconMode.canBeModified == true else {
+        guard item?.icon?.canBeModified == true else {
             return imageView.adyen.round(using: .none)
         }
 
@@ -176,11 +178,6 @@ public final class ListItemView: UIView, AnyFormItemView {
     
     override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        
-        guard item?.iconMode.canBeModified == true else {
-            return imageView.layer.borderColor = nil
-        }
-
         imageView.layer.borderColor = item?.style.image.borderColor?.cgColor ?? UIColor.Adyen.componentSeparator.cgColor
     }
     

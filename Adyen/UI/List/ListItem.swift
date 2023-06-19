@@ -10,30 +10,23 @@ import Foundation
 @_spi(AdyenInternal)
 public class ListItem: FormItem {
 
-    public enum IconMode {
-        /// Icon is hidden
-        case none
-        /// Custom image that should not be styled/altered e.g. Apple Pay
-        case custom
-        /// Standard icon that can be styled
-        case generic
-        
-        /// Whether or not the icon should be hidden
-        public var isHidden: Bool {
-            switch self {
-            case .custom: return false
-            case .generic: return false
-            case .none: return true
-            }
-        }
-        
+    public struct Icon: Hashable {
+        /// The url of the icon image
+        public let url: URL?
         /// Whether or not the icon should be styled/altered
-        public var canBeModified: Bool {
-            switch self {
-            case .custom: return false
-            case .generic: return true
-            case .none: return false
-            }
+        public let canBeModified: Bool
+        
+        /// Initializes the icon of the `ListItem`
+        ///
+        /// - Parameters:
+        ///   - url: The url of the icon image
+        ///   - canBeModified: Whether or not the icon should be styled/altered
+        public init(
+            url: URL?,
+            canBeModified: Bool = true
+        ) {
+            self.url = url
+            self.canBeModified = canBeModified
         }
     }
     
@@ -48,8 +41,8 @@ public class ListItem: FormItem {
     /// The subtitle of the item.
     public var subtitle: String?
     
-    /// A URL to an image to display.
-    public var imageURL: URL?
+    /// The icon to display
+    public var icon: Icon?
 
     /// The trailing text of the item.
     public var trailingText: String?
@@ -60,45 +53,40 @@ public class ListItem: FormItem {
     /// The handler to invoke when the item is deleted.
     public var deletionHandler: ((IndexPath, @escaping Completion<Bool>) -> Void)?
     
-    /// An identifier for the `ListItem`,
-    /// that is set to the `ListItemView.accessibilityIdentifier`.
+    /// The `accessibilityIdentifier` to be used on the `ListItem`
     public var identifier: String?
-
-    /// Specifies the icon behavior
-    public let iconMode: IconMode
     
     /// Initializes the list item.
     ///
     /// - Parameters:
     ///   - title: The title of the item.
     ///   - subtitle: The subtitle of the item.
-    ///   - imageURL: A URL to an image to display.
+    ///   - icon: The icon of the item.
     ///   - trailingText: The trailing text.
     ///   - style: The list item style.
+    ///   - identifier: The `accessibilityIdentifier` to be used on the `ListItem`
     ///   - selectionHandler: The closure to execute when an item is selected.
-    ///   - iconMode: Specifies the icon behavior
     public init(
         title: String,
         subtitle: String? = nil,
-        imageURL: URL? = nil,
+        icon: Icon? = nil,
         trailingText: String? = nil,
         style: ListItemStyle = ListItemStyle(),
-        selectionHandler: (() -> Void)? = nil,
-        iconMode: IconMode = .generic
+        identifier: String? = nil,
+        selectionHandler: (() -> Void)? = nil
     ) {
         self.title = title
         self.subtitle = subtitle
-        self.imageURL = imageURL
+        self.icon = icon
         self.trailingText = trailingText
         self.style = style
+        self.identifier = identifier
         self.selectionHandler = selectionHandler
-        self.iconMode = iconMode
     }
     
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
-    
 }
 
 // MARK: - Hashable & Equatable
@@ -108,12 +96,11 @@ extension ListItem: Hashable {
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(title)
-        hasher.combine(imageURL)
+        hasher.combine(icon)
         hasher.combine(trailingText)
     }
     
     public static func == (lhs: ListItem, rhs: ListItem) -> Bool {
-        lhs.title == rhs.title && lhs.imageURL == rhs.imageURL && lhs.trailingText == rhs.trailingText
+        lhs.title == rhs.title && lhs.icon == rhs.icon && lhs.trailingText == rhs.trailingText
     }
-    
 }

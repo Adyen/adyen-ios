@@ -92,12 +92,17 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
         let listItem = ListItem(
             title: displayInformation.title,
             subtitle: displayInformation.subtitle,
-            imageURL: imageURL,
+            icon: .init(
+                url: imageURL,
+                canBeModified: !isProtected
+            ),
             trailingText: displayInformation.disclosureText,
-            style: style.listItem,
-            iconMode: isProtected ? .custom : .generic
+            style: style.listItem
         )
-        listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
+        listItem.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: listItem.title
+        )
         listItem.selectionHandler = { [weak self, weak component] in
             guard let self = self, let component = component else { return }
             guard !(component is AlreadyPaidPaymentComponent) else { return }
