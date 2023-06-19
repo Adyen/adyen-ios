@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,7 +14,8 @@ import Foundation
  */
 public struct PaymentComponentData {
 
-    internal let amount: Amount?
+    /// The payment amount.
+    public let amount: Amount?
     
     /// The payment method details submitted by the payment component.
     public let paymentMethod: PaymentMethodDetails
@@ -25,7 +26,8 @@ public struct PaymentComponentData {
     /// The partial payment order if any.
     public let order: PartialPaymentOrder?
 
-    /// The payment amount.
+    /// The remaining amount if there is an order, the full amount otherwise.
+    @available(*, deprecated, message: "This property is deprecated. Use the amount property if needed.")
     public var amountToPay: Amount? {
         order?.remainingAmount ?? amount
     }
@@ -97,7 +99,7 @@ public struct PaymentComponentData {
     ///   - checkoutAttemptId: The checkoutAttempt identifier.
     ///   - installments: Installments selection if specified.
     @_spi(AdyenInternal)
-    public init(paymentMethodDetails: PaymentMethodDetails,
+    public init(paymentMethodDetails: some PaymentMethodDetails,
                 amount: Amount?,
                 order: PartialPaymentOrder?,
                 storePaymentMethod: Bool? = nil,

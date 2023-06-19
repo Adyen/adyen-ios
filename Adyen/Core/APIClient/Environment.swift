@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -43,6 +43,12 @@ public struct Environment: AnyAPIEnvironment {
 
     /// Adyen's India live  environment.
     public static let liveIndia = Environment(baseURL: URL(string: "https://checkoutshopper-live-in.adyen.com/")!)
+    
+    /// Determines if the environment is one of Adyen's live environments.
+    @_spi(AdyenInternal)
+    public var isLive: Bool {
+        baseURL.absoluteString.hasPrefix("https://checkoutshopper-live")
+    }
 
     /// Initializes an `Environment` object.
     ///

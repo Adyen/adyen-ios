@@ -9,7 +9,7 @@ on:
     
 jobs:
   tests:
-    runs-on: macos-11
+    runs-on: macos-12
     continue-on-error: true
     strategy:
       fail-fast: false
@@ -24,8 +24,8 @@ jobs:
         - destination: 'OS=13.7,name=iPhone 8'
           scheme: AdyenUIHost
     steps:
-    - uses: actions/checkout@v2
-    - uses: n1hility/cancel-previous-runs@v2
+    - uses: actions/checkout@v3
+    - uses: n1hility/cancel-previous-runs@v3
       with:
         token: ${{ secrets.MANUAL_ACTION_TOKEN }}
 

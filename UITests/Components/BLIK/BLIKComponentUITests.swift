@@ -102,17 +102,17 @@ final class BLIKComponentUITests: XCTestCase {
         let config = BLIKComponent.Configuration(style: style)
         sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
-        UIApplication.shared.mainKeyWindow?.rootViewController = sut.viewController
+        UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
 
         let submitButton: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
 
         // start loading
         submitButton.showsActivityIndicator = true
-        assertViewHeirarchy(matching: sut.viewController, named: "initial_state")
+        assertViewControllerImage(matching: sut.viewController, named: "initial_state")
 
         // stop loading
         sut.stopLoading()
         submitButton.showsActivityIndicator = false
-        assertViewHeirarchy(matching: sut.viewController, named: "stopped_loading")
+        assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
     }
 }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -31,8 +31,13 @@ internal struct PaymentsRequest: APIRequest {
         let currentConfiguration = ConfigurationConstants.current
 
         // Important: for the demo purpose we are setting amount here.
-        // If you choose not to provide amount to the payment component - it could be specified by your backend.
-        let amount = data.amountToPay ?? currentConfiguration.amount
+        // If you choose not to provide the amount to the payment component - it could be specified by your backend.
+        let amount = data.amount ?? currentConfiguration.amount
+        
+        // If there is an order in the request, amount is optional
+        if data.order == nil {
+            try container.encode(amount, forKey: .amount)
+        }
         
         try container.encode(data.paymentMethod.encodable, forKey: .details)
         try container.encode(data.supportNativeRedirect, forKey: .supportNativeRedirect)
@@ -48,7 +53,6 @@ internal struct PaymentsRequest: APIRequest {
         try container.encode(Locale.current.identifier, forKey: .shopperLocale)
         try container.encodeIfPresent(data.browserInfo, forKey: .browserInfo)
         try container.encode("iOS", forKey: .channel)
-        try container.encode(amount, forKey: .amount)
         try container.encode(ConfigurationConstants.reference, forKey: .reference)
         try container.encode(currentConfiguration.countryCode, forKey: .countryCode)
         try container.encode(ConfigurationConstants.returnUrl, forKey: .returnUrl)
@@ -58,6 +62,8 @@ internal struct PaymentsRequest: APIRequest {
         try container.encodeIfPresent(data.order?.compactOrder, forKey: .order)
         try container.encodeIfPresent(data.installments, forKey: .installments)
         try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
+        try container.encode(ConfigurationConstants.recurringProcessingModel, forKey: .recurringProcessingModel)
+        try container.encodeIfPresent(data.checkoutAttemptId, forKey: .checkoutAttemptId)
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -85,6 +91,7 @@ internal struct PaymentsRequest: APIRequest {
         case installments
         case lineItems
         case delegatedAuthenticationData
+        case recurringProcessingModel
     }
     
 }

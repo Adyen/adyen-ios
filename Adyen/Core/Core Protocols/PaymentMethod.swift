@@ -30,6 +30,9 @@ public protocol PaymentMethod: Decodable {
     func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent?
 }
 
+/// A protocol to define any partial payment method such as gift cards, `MealVoucher` etc.
+public protocol PartialPaymentMethod: PaymentMethod {}
+
 @_spi(AdyenInternal)
 public extension PaymentMethod {
     

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -101,33 +101,34 @@ extension ModalViewController {
     /// e.g `viewController.adyen.finalPresentationFrame(in:keyboardRect:)`.
     internal func finalPresentationFrame(with keyboardRect: CGRect = .zero) -> CGRect {
         view.layer.layoutIfNeeded()
-        let expectedWidth = Dimensions.greatestPresentableWidth
-        var frame = UIScreen.main.bounds
-        frame.origin.x = (frame.width - expectedWidth) / 2
-        frame.size.width = expectedWidth
-
-        let smallestHeightPossible = frame.height * Dimensions.leastPresentableHeightScale
-        let biggestHeightPossible = frame.height * Dimensions.greatestPresentableHeightScale
+        let frame = Dimensions.keyWindowSize(for: self.view.window)
         guard preferredContentSize != .zero else { return frame }
 
         let bottomPadding = max(abs(keyboardRect.height), view.safeAreaInsets.bottom)
-        let expectedHeight = preferredContentSize.height + bottomPadding
+        let contentHeight = preferredContentSize.height + bottomPadding
+        
+        let expectedHeight = expectedHeight(for: contentHeight, in: frame)
+        let expectedWidth = Dimensions.expectedWidth(for: self.view.window)
+        let expectedSize = CGSize(width: expectedWidth, height: expectedHeight)
+        return calculateFrame(for: expectedSize, in: frame)
+    }
 
-        func calculateFrame(for expectedHeight: CGFloat) {
-            frame.origin.y += frame.size.height - expectedHeight
-            frame.size.height = expectedHeight
-        }
+    private func calculateFrame(for expectedSize: CGSize, in parent: CGRect) -> CGRect {
+        var parent = parent
+        parent.origin.y += parent.size.height - expectedSize.height
+        parent.size.height = expectedSize.height
+        parent.origin.x = (parent.width - expectedSize.width) / 2
+        parent.size.width = expectedSize.width
+        return parent
+    }
 
-        switch expectedHeight {
-        case let height where height < smallestHeightPossible:
-            calculateFrame(for: smallestHeightPossible)
-        case let height where height > biggestHeightPossible:
-            calculateFrame(for: biggestHeightPossible)
-        default:
-            calculateFrame(for: expectedHeight)
-        }
-
-        return frame
+    private func expectedHeight(for content: CGFloat, in parent: CGRect) -> CGFloat {
+        let smallestPossibleHeight = parent.height * Dimensions.leastPresentableScale
+        let biggestPossibleHeight = parent.height * Dimensions.greatestPresentableScale
+        var expectedHeight = content
+        expectedHeight = min(expectedHeight, biggestPossibleHeight)
+        expectedHeight = max(expectedHeight, smallestPossibleHeight)
+        return expectedHeight
     }
 
 }

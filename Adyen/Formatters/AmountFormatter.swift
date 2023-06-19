@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -87,7 +87,7 @@ public final class AmountFormatter {
         // The below overrides are obtained from https://en.wikipedia.org/wiki/ISO_4217
         
         switch currencyCode {
-        case "ISK", "CLP", "COP":
+        case "CLP", "COP":
             // iOS returns 0, which is in accordance with ISO-4217, but conflicts with the Adyen backend.
             return 2
         case "MRO":

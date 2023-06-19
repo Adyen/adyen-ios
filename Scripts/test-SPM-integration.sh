@@ -46,6 +46,7 @@ let package = Package(
                 .product(name: \"AdyenDropIn\", package: \"Adyen\"),
                 .product(name: \"AdyenWeChatPay\", package: \"Adyen\"),
                 .product(name: \"AdyenSwiftUI\", package: \"Adyen\"),
+                .product(name: \"AdyenCashAppPay\", package: \"Adyen\"),
                 .product(name: \"AdyenAuthentication\", package: \"AdyenAuthentication\")
             ]
         )
@@ -62,19 +63,19 @@ xcodebuild clean -scheme TempProject -destination 'generic/platform=iOS' > /dev/
 
 # Archive for generic iOS device
 echo '############# Archive for generic iOS device ###############'
-xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS'
+xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS' -skipPackagePluginValidation
 
 # Build for generic iOS device
 echo '############# Build for generic iOS device ###############'
-xcodebuild build -scheme TempProject -destination 'generic/platform=iOS'
+xcodebuild build -scheme TempProject -destination 'generic/platform=iOS' -skipPackagePluginValidation
 
 # Archive for x86_64 simulator
 echo '############# Archive for x86_64 simulator ###############'
-xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64
+xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation
 
 # Build for x86_64 simulator
 echo '############# Build for x86_64 simulator ###############'
-xcodebuild build -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64
+xcodebuild build -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation
 
 # Clean up.
 cd ../

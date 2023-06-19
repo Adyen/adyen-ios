@@ -32,7 +32,7 @@ public final class CardNumberFormatter: NumericFormatter {
         case .diners where length < 15:
             return [4, 6, 4]
         default:
-            return [4, 4, 4, 4, 4]
+            return Array(repeating: 4, count: (length / 4) + 1)
         }
     }
 }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,10 +39,15 @@ internal struct SessionRequest: APIRequest {
         try container.encode(ConfigurationConstants.additionalData, forKey: .additionalData)
         try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
         
-        let installmentOptions = ["card": InstallmentOptions(monthValues: [2, 3, 5], includesRevolving: false),
-                                  "visa": InstallmentOptions(monthValues: [3, 6, 9], includesRevolving: true)]
+        // Toggle these for installments (nice to add these in the settings)
+        //        let installmentOptions = ["card": InstallmentOptions(monthValues: [2, 3, 5], includesRevolving: false),
+        //                                  "visa": InstallmentOptions(monthValues: [3, 6, 9], includesRevolving: true)]
+        //
+        //        try container.encode(installmentOptions, forKey: .installmentOptions)
         
-        try container.encode(installmentOptions, forKey: .installmentOptions)
+        // Toggle these to enable/disable displaying the store pm switch (nice to add these in the settings)
+        //        try container.encode("askForConsent", forKey: .storePaymentMethodMode)
+        //        try container.encode("CardOnFile", forKey: .recurringProcessingModel)
     }
     
     internal enum CodingKeys: CodingKey {
