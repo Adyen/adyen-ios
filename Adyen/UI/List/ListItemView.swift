@@ -72,8 +72,7 @@ public final class ListItemView: UIView, AnyFormItemView {
         imageView.contentMode = style.image.contentMode
         
         guard item?.icon?.canBeModified == true else {
-            imageView.layer.borderWidth = 0
-            return
+            return imageView.layer.borderWidth = 0
         }
 
         imageView.clipsToBounds = style.image.clipsToBounds
