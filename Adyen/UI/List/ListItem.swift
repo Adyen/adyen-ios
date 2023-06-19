@@ -18,6 +18,7 @@ public class ListItem: FormItem {
         /// Standard icon that can be styled
         case generic
         
+        /// Whether or not the icon should be hidden
         public var isHidden: Bool {
             switch self {
             case .custom: return false
@@ -26,6 +27,7 @@ public class ListItem: FormItem {
             }
         }
         
+        /// Whether or not the icon should be styled/altered
         public var canBeModified: Bool {
             switch self {
             case .custom: return false
