@@ -38,7 +38,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     // TODO: Replace with configuration
     private let style: FormComponentStyle
     private let localizationParameters: LocalizationParameters?
-    private var address: PostalAddress?
+    private var prefillAddress: PostalAddress?
     private let supportedCountryCodes: [String]?
     private let lookupProvider: (_ searchTerm: String, _ resultProvider: @escaping ([PostalAddress]) -> Void) -> Void
     private let completionHandler: (PostalAddress) -> Void
@@ -53,7 +53,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     public init(
         context: AdyenContext,
         style: FormComponentStyle,
-        initialAddress: PostalAddress?,
+        prefillAddress: PostalAddress?,
         supportedCountryCodes: [String]?,
         localizationParameters: LocalizationParameters? = nil,
         lookupProvider: @escaping (_ searchTerm: String, _ resultProvider: @escaping ([PostalAddress]) -> Void) -> Void,
@@ -61,7 +61,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     ) {
         self.context = context
         self.style = style
-        self.address = initialAddress
+        self.prefillAddress = prefillAddress
         self.supportedCountryCodes = supportedCountryCodes
         self.lookupProvider = lookupProvider
         self.completionHandler = completionHandler
@@ -89,7 +89,8 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     internal lazy var searchButtonItem: FormSearchButtonItem = {
         
         FormSearchButtonItem(
-            placeholder: "Search your address"
+            placeholder: "Search your address",
+            style: style // TODO: Confirm that the styling actually works as expected
         ) { [weak self] in
             guard let self else { return }
             showAddressSearch()
@@ -129,7 +130,6 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
             subtitle: address.formattedLocation,
             selectionHandler: { [weak self] in
                 guard let self else { return }
-                self.address = address
                 billingAddressItem.value = address
                 dismissSearchTapped()
             },
@@ -140,13 +140,13 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     internal lazy var billingAddressItem: FormAddressItem = {
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "billingAddress")
         
-        let item = FormAddressItem(initialCountry: address?.country ?? "NL", // TODO: Provide better initialCountry
+        let item = FormAddressItem(initialCountry: prefillAddress?.country ?? "NL", // TODO: Provide better initialCountry
                                    style: style.addressStyle,
                                    localizationParameters: localizationParameters,
                                    identifier: identifier,
                                    supportedCountryCodes: supportedCountryCodes,
                                    addressViewModelBuilder: DefaultAddressViewModelBuilder()) // TODO: Make this injectable?
-        address.map { item.value = $0 }
+        prefillAddress.map { item.value = $0 }
         item.style.backgroundColor = UIColor.Adyen.lightGray
         item.title = nil
         return item
@@ -164,8 +164,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     @objc
     private func doneTapped() {
         if formViewController.validate() {
-            guard let address else { return }
-            completionHandler(address)
+            completionHandler(billingAddressItem.value)
         }
     }
     

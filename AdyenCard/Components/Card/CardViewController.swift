@@ -112,7 +112,7 @@ internal class CardViewController: FormViewController {
     internal var validAddress: PostalAddress? {
         switch configuration.billingAddress.mode {
         case .full, .fullLookup:
-            let address = items.billingAddressItem.value
+            let address = items.billingAddressItem.value // TODO: Get the value for fullLookup from the other item!
             guard AddressValidator().isValid(address: address,
                                              addressMode: configuration.billingAddress.mode,
                                              addressViewModel: items.billingAddressItem.addressViewModel) else {

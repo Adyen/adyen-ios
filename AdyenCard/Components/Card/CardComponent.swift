@@ -218,15 +218,18 @@ extension CardComponent: CardViewControllerDelegate {
         // TODO: Present it the right way
         // Search for `internal weak var presentationDelegate: NavigationDelegate?`
         
+        let prefillAddress = self.cardViewController.validAddress ?? configuration.shopperInformation?.billingAddress
+        
         let addressLookupComponent = AddressLookupComponent(
             context: context,
             style: configuration.style,
-            initialAddress: configuration.shopperInformation?.billingAddress,
+            prefillAddress: prefillAddress,
             supportedCountryCodes: configuration.billingAddress.countryCodes,
             lookupProvider: handler,
             completionHandler: { [weak self] address in
                 guard let self else { return }
-                configuration.shopperInformation?.billingAddress = address // TODO: This is not the right place to store it - figure out where it should be
+                self.cardViewController.items.billingAddressItem.value = address
+                self.cardViewController.items.lookupBillingAddressItem.title = address.formatted
                 viewController.dismiss(animated: true)
             }
         )

@@ -13,7 +13,7 @@ public final class FormSearchButtonItem: FormItem {
     public var subitems: [FormItem] = []
     
     /// Indicates the item's UI styling.
-//    public let style: searchstyle
+    public let style: ViewStyle
     
     public var identifier: String?
     
@@ -26,13 +26,15 @@ public final class FormSearchButtonItem: FormItem {
     /// Initializes the button item.
     ///
     /// - Parameter placeholder: The search bar placeholder
+    /// - Parameter style: The style of the search bar
     /// - Parameter selectionHandler: A closure that will be invoked when a button is selected.
     public init(
         placeholder: String,
+        style: ViewStyle,
         selectionHandler: @escaping () -> Void
     ) {
-        // TODO: Add styling
         self.selectionHandler = selectionHandler
+        self.style = style
         self.placeholder = placeholder
     }
     

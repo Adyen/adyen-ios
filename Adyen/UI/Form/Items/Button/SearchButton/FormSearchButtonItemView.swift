@@ -12,19 +12,18 @@ internal final class FormSearchButtonItemView: FormItemView<FormSearchButtonItem
     /// Initializes the footer item view.
     ///
     /// - Parameter item: The item represented by the view.
-    internal required init(item: FormSearchButtonItem) {
+    internal required init(
+        item: FormSearchButtonItem
+    ) {
         super.init(item: item)
-        backgroundColor = .clear // item.style.backgroundColor
         
-        addSubview(searchBar)
-        addSubview(button)
-
+        backgroundColor = item.style.backgroundColor
         preservesSuperviewLayoutMargins = true
         
-        bind(item.$placeholder, to: searchBar, at: \.placeholder)
-        
+        addSubview(searchBar)
         searchBar.adyen.anchor(inside: self, with: .init(top: 0, left: 8, bottom: 0, right: -8))
-        button.adyen.anchor(inside: self)
+        
+        bind(item.$placeholder, to: searchBar, at: \.placeholder)
     }
     
     // MARK: - Submit Button
@@ -34,20 +33,17 @@ internal final class FormSearchButtonItemView: FormItemView<FormSearchButtonItem
         searchBar.searchBarStyle = .prominent
         searchBar.isTranslucent = false
         searchBar.backgroundImage = UIImage()
-//        searchBar.barTintColor = style.backgroundColor // TODO: Styling
-        searchBar.isUserInteractionEnabled = false
+        searchBar.barTintColor = item.style.backgroundColor
         searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.delegate = self
         return searchBar
     }()
+}
+
+extension FormSearchButtonItemView: UISearchBarDelegate {
     
-    private lazy var button: UIButton = {
-        let button = UIButton(type: .custom)
-        button.addTarget(self, action: #selector(didSelectSubmitButton), for: .touchUpInside)
-        return button
-    }()
-    
-    @objc private func didSelectSubmitButton() {
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         item.selectionHandler()
+        return false
     }
-    
 }
