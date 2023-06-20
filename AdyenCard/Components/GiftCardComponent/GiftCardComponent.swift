@@ -233,7 +233,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
             return .failure(Error.invalidPayment)
         }
         do {
-            return .success(try BalanceChecker().check(balance: balance, isEnoughToPay: amount))
+            return try .success(BalanceChecker().check(balance: balance, isEnoughToPay: amount))
         } catch {
             return .failure(error)
         }

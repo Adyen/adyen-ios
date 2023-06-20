@@ -147,7 +147,7 @@ public final class RedirectComponent: ActionComponent {
             handleNativeMobileRedirect(withReturnURL: returnURL, redirectStateData: redirectStateData, action)
         } else {
             do {
-                notifyDelegateDidProvide(redirectDetails: try RedirectDetails(returnURL: returnURL), action)
+                try notifyDelegateDidProvide(redirectDetails: RedirectDetails(returnURL: returnURL), action)
             } catch {
                 delegate?.didFail(with: error, from: self)
             }
