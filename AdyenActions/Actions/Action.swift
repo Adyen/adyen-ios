@@ -46,17 +46,17 @@ public enum Action: Decodable {
         
         switch type {
         case .redirect, .nativeRedirect:
-            self = .redirect(try RedirectAction(from: decoder))
+            self = try .redirect(RedirectAction(from: decoder))
         case .threeDS2Fingerprint:
-            self = .threeDS2Fingerprint(try ThreeDS2FingerprintAction(from: decoder))
+            self = try .threeDS2Fingerprint(ThreeDS2FingerprintAction(from: decoder))
         case .threeDS2Challenge:
-            self = .threeDS2Challenge(try ThreeDS2ChallengeAction(from: decoder))
+            self = try .threeDS2Challenge(ThreeDS2ChallengeAction(from: decoder))
         case .threeDS2:
-            self = .threeDS2(try ThreeDS2Action(from: decoder))
+            self = try .threeDS2(ThreeDS2Action(from: decoder))
         case .sdk:
-            self = .sdk(try SDKAction(from: decoder))
+            self = try .sdk(SDKAction(from: decoder))
         case .await:
-            self = .await(try AwaitAction(from: decoder))
+            self = try .await(AwaitAction(from: decoder))
         case .voucher:
             self = try Self.handleVoucherType(from: decoder)
         case .qrCode:
@@ -68,9 +68,9 @@ public enum Action: Decodable {
     private static func handleQRCodeType(from decoder: Decoder) throws -> Action {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         if (try? container.decode(QRCodePaymentMethod.self, forKey: .paymentMethodType)) != nil {
-            return .qrCode(try QRCodeAction(from: decoder))
+            return try .qrCode(QRCodeAction(from: decoder))
         } else {
-            return .redirect(try RedirectAction(from: decoder))
+            return try .redirect(RedirectAction(from: decoder))
         }
     }
     
@@ -78,9 +78,9 @@ public enum Action: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         // extract bacs from others since it is not fully a voucher
         if (try? container.decode(String.self, forKey: .paymentMethodType)) == Constant.bacsDirectDebitName {
-            return .document(try DocumentAction(from: decoder))
+            return try .document(DocumentAction(from: decoder))
         } else {
-            return .voucher(try VoucherAction(from: decoder))
+            return try .voucher(VoucherAction(from: decoder))
         }
     }
     

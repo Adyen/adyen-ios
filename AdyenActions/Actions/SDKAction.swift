@@ -19,7 +19,7 @@ public enum SDKAction: Decodable {
         
         switch type {
         case .weChatPay:
-            self = .weChatPay(try WeChatPaySDKAction(from: decoder))
+            self = try .weChatPay(WeChatPaySDKAction(from: decoder))
         }
     }
     

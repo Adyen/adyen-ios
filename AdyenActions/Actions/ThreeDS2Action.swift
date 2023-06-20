@@ -23,9 +23,9 @@ public enum ThreeDS2Action: Decodable {
 
         switch type {
         case .challenge:
-            self = .challenge(try ThreeDS2ChallengeAction(from: decoder))
+            self = try .challenge(ThreeDS2ChallengeAction(from: decoder))
         case .fingerprint:
-            self = .fingerprint(try ThreeDS2FingerprintAction(from: decoder))
+            self = try .fingerprint(ThreeDS2FingerprintAction(from: decoder))
         }
     }
 

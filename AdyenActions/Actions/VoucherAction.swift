@@ -63,19 +63,19 @@ public enum VoucherAction: Decodable {
 
         switch type {
         case .dokuIndomaret:
-            self = .dokuIndomaret(try DokuVoucherAction(from: decoder))
+            self = try .dokuIndomaret(DokuVoucherAction(from: decoder))
         case .dokuAlfamart:
-            self = .dokuAlfamart(try DokuVoucherAction(from: decoder))
+            self = try .dokuAlfamart(DokuVoucherAction(from: decoder))
         case .econtextStores:
-            self = .econtextStores(try EContextStoresVoucherAction(from: decoder))
+            self = try .econtextStores(EContextStoresVoucherAction(from: decoder))
         case .econtextATM:
-            self = .econtextATM(try EContextATMVoucherAction(from: decoder))
+            self = try .econtextATM(EContextATMVoucherAction(from: decoder))
         case .boletoBancairoSantander:
-            self = .boletoBancairoSantander(try BoletoVoucherAction(from: decoder))
+            self = try .boletoBancairoSantander(BoletoVoucherAction(from: decoder))
         case .oxxo:
-            self = .oxxo(try OXXOVoucherAction(from: decoder))
+            self = try .oxxo(OXXOVoucherAction(from: decoder))
         case .multibanco:
-            self = .multibanco(try MultibancoVoucherAction(from: decoder))
+            self = try .multibanco(MultibancoVoucherAction(from: decoder))
         }
     }
 
