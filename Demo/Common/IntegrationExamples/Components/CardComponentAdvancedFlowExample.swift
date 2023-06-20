@@ -20,7 +20,6 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    
     // MARK: - Action Handling
 
     private lazy var adyenActionComponent: AdyenActionComponent = {
