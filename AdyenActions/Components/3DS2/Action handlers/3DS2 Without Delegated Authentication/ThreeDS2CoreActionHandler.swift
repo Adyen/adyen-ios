@@ -155,9 +155,15 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         transaction.performChallenge(with: challengeParameters) { [weak self] challengeResult, error in
             guard let result = challengeResult else {
                 if let error = error as? NSError {
-                    self?.didFinish(threeDS2SDKError: error.base64Representation(),
-                                    authorizationToken: challengeAction.authorisationToken,
-                                    completionHandler: completionHandler)
+                    switch (error.domain, error.code) {
+                    case (ADYRuntimeErrorDomain, Int(ADYRuntimeErrorCode.challengeCancelled.rawValue)):
+                        self?.didFail(with: error,
+                                      completionHandler: completionHandler)
+                    default:
+                        self?.didFinish(threeDS2SDKError: error.base64Representation(),
+                                        authorizationToken: challengeAction.authorisationToken,
+                                        completionHandler: completionHandler)
+                    }
                 } else {
                     self?.didFail(with: UnknownError(errorDescription: "Both error and result are nil, this should never happen."),
                                   completionHandler: completionHandler)
