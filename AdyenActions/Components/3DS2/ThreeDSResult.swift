@@ -53,7 +53,8 @@ public struct ThreeDSResult: Decodable {
         let oldPayload: Payload = try Coder.decodeBase64(payload)
         let newPayload = Payload(authorisationToken: oldPayload.authorisationToken,
                                  delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
-                                 threeDS2SDKError: oldPayload.threeDS2SDKError, transStatus: oldPayload.transStatus)
+                                 threeDS2SDKError: oldPayload.threeDS2SDKError,
+                                 transStatus: oldPayload.transStatus)
         let newPayloadData = try JSONEncoder().encode(newPayload)
         return .init(payload: newPayloadData.base64EncodedString())
     }

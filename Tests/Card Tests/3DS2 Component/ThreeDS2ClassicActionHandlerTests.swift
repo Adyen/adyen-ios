@@ -193,11 +193,25 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
 
         sut.handle(challengeAction) { result in
             switch result {
-            case .success:
+            case .success(let actionHandlerResult):
+                switch actionHandlerResult {
+                case .details(let additionalDetails as ThreeDS2Details):
+                    switch additionalDetails {
+                    case .challengeResult(let threeDSResult):
+                        struct Payload: Codable {
+                            let threeDS2SDKError: String?
+                        }
+                        // Check if there is a threeDS2SDKError in the payload.
+                        let payload: Payload? = try? Coder.decodeBase64(threeDSResult.payload)
+                        XCTAssertNotNil(payload?.threeDS2SDKError)
+                    default:
+                        XCTFail()
+                    }
+                default:
+                    XCTFail()
+                }
+            case .failure:
                 XCTFail()
-            case let .failure(error):
-                let error = error as! Dummy
-                XCTAssertEqual(error, Dummy.error)
             }
             resultExpectation.fulfill()
         }

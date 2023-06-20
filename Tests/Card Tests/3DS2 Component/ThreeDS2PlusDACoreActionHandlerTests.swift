@@ -173,7 +173,8 @@ import XCTest
                     transactionStatus: "Y"
                 ),
                 delegatedAuthenticationSDKOutput: expectedSDKRegistrationOutput,
-                authorizationToken: "authToken"
+                authorizationToken: "authToken",
+                threeDS2SDKError: nil
             )
 
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
@@ -218,11 +219,16 @@ import XCTest
 
             sut.handle(challengeAction, event: analyticsEvent) { result in
                 switch result {
-                case .success:
+                case let .success(result):
+                    
+                    struct Payload: Codable {
+                        let threeDS2SDKError: String?
+                    }
+
+                    let payload: Payload? = try? Coder.decodeBase64(result.payload)
+                    XCTAssertNotNil(payload?.threeDS2SDKError)
+                case .failure:
                     XCTFail()
-                case let .failure(error):
-                    let error = error as! Dummy
-                    XCTAssertEqual(error, Dummy.error)
                 }
                 resultExpectation.fulfill()
             }
