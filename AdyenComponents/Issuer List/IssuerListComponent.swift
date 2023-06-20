@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -76,13 +76,21 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     private func convertIssuersToListItem(listViewController: ListViewController, issuers: [Issuer]) {
         let items = issuers.map { issuer -> ListItem in
 
-            let listItem = ListItem(title: issuer.name, style: configuration.style.listItem)
-            listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: listItem.title)
-            listItem.imageURL = LogoURLProvider.logoURL(for: issuer,
-                                                        localizedParameters: configuration.localizationParameters,
-                                                        paymentMethod: issuerListPaymentMethod,
-                                                        environment: context.apiContext.environment)
-
+            let logoUrl = LogoURLProvider.logoURL(
+                for: issuer,
+                localizedParameters: configuration.localizationParameters,
+                paymentMethod: issuerListPaymentMethod,
+                environment: context.apiContext.environment
+            )
+            let listItem = ListItem(
+                title: issuer.name,
+                icon: .init(url: logoUrl),
+                style: configuration.style.listItem
+            )
+            listItem.identifier = ViewIdentifierBuilder.build(
+                scopeInstance: self,
+                postfix: listItem.title
+            )
             listItem.selectionHandler = { [weak self] in
                 guard let self = self else { return }
                 let details = IssuerListDetails(paymentMethod: self.issuerListPaymentMethod,
@@ -92,7 +100,6 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
                                                        order: self.order))
                 listViewController.startLoading(for: listItem)
             }
-
             return listItem
         }
         listViewController.reload(newSections: [ListSection(items: items)], animated: false)
