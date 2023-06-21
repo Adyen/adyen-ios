@@ -17,10 +17,21 @@ public final class FormAddressLookupItem: FormValueItem<PostalAddress?, FormText
     private var initialCountry: String
     
     @_spi(AdyenInternal)
-    public private(set) var addressViewModel: AddressViewModel
+    public var addressViewModel: AddressViewModel {
+        addressViewModelBuilder.build(
+            context: .init(
+                countryCode: value?.country ?? initialCountry,
+                isOptional: false
+            )
+        )
+    }
+    
+    private let addressViewModelBuilder: AddressViewModelBuilder
     
     override public var value: PostalAddress? {
-        didSet { updateValidationFailureMessage() }
+        didSet {
+            updateValidationFailureMessage()
+        }
     }
     
     /// A closure that will be invoked when the item is selected.
@@ -44,7 +55,7 @@ public final class FormAddressLookupItem: FormValueItem<PostalAddress?, FormText
     ) {
         self.initialCountry = initialCountry
         self.localizationParameters = localizationParameters
-        self.addressViewModel = addressViewModelBuilder.build(context: .init(countryCode: initialCountry, isOptional: false))
+        self.addressViewModelBuilder = addressViewModelBuilder
         super.init(value: prefillAddress, style: style.textField)
         self.identifier = identifier
         self.title = localizedString(.billingAddressSectionTitle, localizationParameters)

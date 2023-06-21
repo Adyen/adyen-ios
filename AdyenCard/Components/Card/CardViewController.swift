@@ -115,7 +115,8 @@ internal class CardViewController: FormViewController {
         
         switch configuration.billingAddress.mode {
         case .fullLookup:
-            address = items.lookupBillingAddressItem.value
+            guard let lookupBillingAddress = items.lookupBillingAddressItem.value else { return nil }
+            address = lookupBillingAddress
             requiredFields = items.lookupBillingAddressItem.addressViewModel.requiredFields
             
         case .full:
