@@ -722,7 +722,7 @@
 		F99D453E2627165400880D72 /* FormErrorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D453D2627165400880D72 /* FormErrorItem.swift */; };
 		F99D454A262716EF00880D72 /* FormErrorItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D4549262716EF00880D72 /* FormErrorItemStyle.swift */; };
 		F99D4556262717A500880D72 /* FormErrorItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D4555262717A500880D72 /* FormErrorItemView.swift */; };
-		F99D4603262D647400880D72 /* FormErrorItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D4602262D647400880D72 /* FormErrorItemTests.swift */; };
+		F99D4603262D647400880D72 /* AddressViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D4602262D647400880D72 /* AddressViewModelTests.swift */; };
 		F99E7278261F6C6F00EA5B78 /* KeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99E7277261F6C6F00EA5B78 /* KeyboardObserver.swift */; };
 		F99E73C02624846F00EA5B78 /* BalanceCheckRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99E73AA2624845F00EA5B78 /* BalanceCheckRequest.swift */; };
 		F99E73CB2624847100EA5B78 /* BalanceCheckRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99E73AA2624845F00EA5B78 /* BalanceCheckRequest.swift */; };
@@ -1248,6 +1248,7 @@
 		81C400662A3B0D8F007EC51C /* FormSearchButtonItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSearchButtonItemView.swift; sourceTree = "<group>"; };
 		81C4006A2A40A526007EC51C /* FormAddressLookupItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAddressLookupItem.swift; sourceTree = "<group>"; };
 		81C4006C2A41A2BC007EC51C /* FormAddressLookupItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAddressLookupItemView.swift; sourceTree = "<group>"; };
+		81C4006F2A4347FD007EC51C /* FormErrorItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormErrorItemTests.swift; sourceTree = "<group>"; };
 		A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankDetailsEncryptorTests.swift; sourceTree = "<group>"; };
 		A0113D9A2763887800AD395C /* ActionNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionNavigationBar.swift; sourceTree = "<group>"; };
@@ -1855,7 +1856,7 @@
 		F99D453D2627165400880D72 /* FormErrorItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormErrorItem.swift; sourceTree = "<group>"; };
 		F99D4549262716EF00880D72 /* FormErrorItemStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormErrorItemStyle.swift; sourceTree = "<group>"; };
 		F99D4555262717A500880D72 /* FormErrorItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormErrorItemView.swift; sourceTree = "<group>"; };
-		F99D4602262D647400880D72 /* FormErrorItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormErrorItemTests.swift; sourceTree = "<group>"; };
+		F99D4602262D647400880D72 /* AddressViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressViewModelTests.swift; sourceTree = "<group>"; };
 		F99E7277261F6C6F00EA5B78 /* KeyboardObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardObserver.swift; sourceTree = "<group>"; };
 		F99E73AA2624845F00EA5B78 /* BalanceCheckRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceCheckRequest.swift; sourceTree = "<group>"; };
 		F99F08572383EA2A00EBB948 /* ValidatorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatorMock.swift; sourceTree = "<group>"; };
@@ -2400,6 +2401,14 @@
 				81C400662A3B0D8F007EC51C /* FormSearchButtonItemView.swift */,
 			);
 			path = SearchButton;
+            sourceTree = "<group>";
+        };
+		81C4006E2A4347F6007EC51C /* Address */ = {
+			isa = PBXGroup;
+			children = (
+				F99D4602262D647400880D72 /* AddressViewModelTests.swift */,
+			);
+			path = Address;
 			sourceTree = "<group>";
 		};
 		A009837B279859BE007E68C4 /* ACH Direct Debit */ = {
@@ -4578,7 +4587,7 @@
 		F99D4601262D643400880D72 /* Error Item */ = {
 			isa = PBXGroup;
 			children = (
-				F99D4602262D647400880D72 /* FormErrorItemTests.swift */,
+				81C4006F2A4347FD007EC51C /* FormErrorItemTests.swift */,
 			);
 			path = "Error Item";
 			sourceTree = "<group>";
@@ -4603,6 +4612,7 @@
 		F99F08612383F29000EBB948 /* FormItems */ = {
 			isa = PBXGroup;
 			children = (
+				81C4006E2A4347F6007EC51C /* Address */,
 				F99D4601262D643400880D72 /* Error Item */,
 				F99F08622383F29700EBB948 /* Text */,
 			);
@@ -6229,7 +6239,7 @@
 				E773EA3C2523432B00119499 /* CardTypeProviderMock.swift in Sources */,
 				C97C16AC280702B200534419 /* TelemetryFlavorTests.swift in Sources */,
 				E9E3DB062226B3B200697074 /* CoderTests.swift in Sources */,
-				F99D4603262D647400880D72 /* FormErrorItemTests.swift in Sources */,
+				F99D4603262D647400880D72 /* AddressViewModelTests.swift in Sources */,
 				E9E3DABE221EA47800697074 /* StringExtensionsTests.swift in Sources */,
 				F95B6D9025231880002C9062 /* PhoneNumberValidatorTests.swift in Sources */,
 				F9639B5224E29E340073F38A /* PresentationDelegateMock.swift in Sources */,

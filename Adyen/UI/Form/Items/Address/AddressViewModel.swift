@@ -91,7 +91,7 @@ extension AddressField {
 @_spi(AdyenInternal)
 public extension PostalAddress {
 
-    /// Validates whether all required fields are filled in
+    /// Validates whether all required fields are filled in and are not empty
     func satisfies(requiredFields: Set<AddressField>) -> Bool {
 
         let fieldsValues = [
@@ -100,9 +100,10 @@ public extension PostalAddress {
             AddressField.postalCode.rawValue: postalCode,
             AddressField.stateOrProvince.rawValue: stateOrProvince,
             AddressField.street.rawValue: street,
-            AddressField.houseNumberOrName.rawValue: houseNumberOrName
-        ]
- 
+            AddressField.houseNumberOrName.rawValue: houseNumberOrName,
+            AddressField.apartment.rawValue: apartment
+        ].compactMapValues { $0 }
+        
         let satisfied = checkIfAllFieldsPresent(
             fieldsValues: fieldsValues,
             requiredAddressFields: requiredFields
@@ -112,12 +113,12 @@ public extension PostalAddress {
     }
 
     private func checkIfAllFieldsPresent(
-        fieldsValues: [String: String?],
+        fieldsValues: [String: String],
         requiredAddressFields: Set<AddressField>
     ) -> Bool {
         requiredAddressFields.allSatisfy {
-            guard let value = fieldsValues[$0.rawValue] else { return false }
-            return value != nil
+            guard let fieldValue = fieldsValues[$0.rawValue] else { return false }
+            return !fieldValue.isEmpty
         }
     }
 }

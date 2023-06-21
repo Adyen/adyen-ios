@@ -110,26 +110,29 @@ internal class CardViewController: FormViewController {
     }
 
     internal var validAddress: PostalAddress? {
+        let address: PostalAddress
+        let requiredFields: Set<AddressField>
+        
         switch configuration.billingAddress.mode {
         case .fullLookup:
-            let address = items.lookupBillingAddressItem.value
-            let requiredFields = items.lookupBillingAddressItem.addressViewModel.requiredFields
-            guard let address, address.satisfies(requiredFields: requiredFields) else { return nil }
-            return address
+            address = items.lookupBillingAddressItem.value
+            requiredFields = items.lookupBillingAddressItem.addressViewModel.requiredFields
             
         case .full:
-            let address = items.billingAddressItem.value
-            let requiredFields = items.billingAddressItem.addressViewModel.requiredFields
-            guard address.satisfies(requiredFields: requiredFields) else { return nil }
-            return address
+            address = items.billingAddressItem.value
+            requiredFields = items.billingAddressItem.addressViewModel.requiredFields
             
         case .postalCode:
-            guard !items.postalCodeItem.value.isEmpty else { return nil }
-            return PostalAddress(postalCode: items.postalCodeItem.value)
-                
+            address = items.billingAddressItem.value
+            requiredFields = items.billingAddressItem.addressViewModel.requiredFields
+            
         case .none:
             return nil
         }
+        
+        guard address.satisfies(requiredFields: requiredFields) else { return nil }
+        
+        return address
     }
 
     internal var kcpDetails: KCPDetails? {
