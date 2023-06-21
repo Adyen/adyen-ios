@@ -228,8 +228,7 @@ extension CardComponent: CardViewControllerDelegate {
             lookupProvider: handler,
             completionHandler: { [weak self] address in
                 guard let self else { return }
-                self.cardViewController.items.billingAddressItem.value = address
-                self.cardViewController.items.lookupBillingAddressItem.title = address.formatted
+                self.cardViewController.items.lookupBillingAddressItem.value = address
                 viewController.dismiss(animated: true)
             }
         )

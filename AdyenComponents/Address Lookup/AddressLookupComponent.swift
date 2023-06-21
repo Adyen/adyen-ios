@@ -81,7 +81,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
         formViewController.delegate = self
         
         formViewController.append(searchButtonItem)
-        formViewController.append(billingAddressItem)
+        formViewController.append(billingAddressItem) // TODO: Attach the billing address item closer to the search button
 
         return formViewController
     }()
@@ -93,11 +93,17 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
             style: style // TODO: Confirm that the styling actually works as expected
         ) { [weak self] in
             guard let self else { return }
-            showAddressSearch()
+            showAddressSearch(
+                in: viewController as? UINavigationController,
+                animated: true
+            )
         }
     }()
     
-    private func showAddressSearch() {
+    private func showAddressSearch(
+        in navigationController: UINavigationController?, // TODO: Feels weird to pass a navigation controller here
+        animated: Bool
+    ) {
         let searchController = AsyncSearchViewController(
             style: style,
             searchBarPlaceholder: "Search your address",
@@ -117,10 +123,19 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
             action: #selector(dismissSearchTapped)
         )
         
-        UIView.transition(with: viewController.view, duration: 0.2, options: .transitionCrossDissolve) { [weak self] in
-            guard let self else { return }
-
-            (viewController as? UINavigationController)?.pushViewController(searchController, animated: false)
+        let transitionToSearch: () -> Void = {
+            navigationController?.pushViewController(searchController, animated: false)
+        }
+        
+        if animated {
+            UIView.transition(
+                with: viewController.view,
+                duration: 0.2,
+                options: .transitionCrossDissolve,
+                animations: transitionToSearch
+            )
+        } else {
+            transitionToSearch()
         }
     }
     
@@ -132,20 +147,20 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
                 guard let self else { return }
                 billingAddressItem.value = address
                 dismissSearchTapped()
-            },
-            iconMode: .none
+            }
         )
     }
     
     internal lazy var billingAddressItem: FormAddressItem = {
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "billingAddress")
-        
-        let item = FormAddressItem(initialCountry: prefillAddress?.country ?? "NL", // TODO: Provide better initialCountry
-                                   style: style.addressStyle,
-                                   localizationParameters: localizationParameters,
-                                   identifier: identifier,
-                                   supportedCountryCodes: supportedCountryCodes,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder()) // TODO: Make this injectable?
+        let item = FormAddressItem(
+            initialCountry: prefillAddress?.country ?? "NL", // TODO: Provide better initialCountry
+            style: style.addressStyle,
+            localizationParameters: localizationParameters,
+            identifier: identifier,
+            supportedCountryCodes: supportedCountryCodes,
+            addressViewModelBuilder: DefaultAddressViewModelBuilder() // TODO: Make this injectable?
+        )
         prefillAddress.map { item.value = $0 }
         item.style.backgroundColor = UIColor.Adyen.lightGray
         item.title = nil

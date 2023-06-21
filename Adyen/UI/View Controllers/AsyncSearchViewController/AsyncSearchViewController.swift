@@ -12,19 +12,16 @@ public class AsyncSearchViewController: UIViewController, UISearchBarDelegate {
     public typealias ResultProvider = (_ searchTerm: String, _ handler: @escaping ([ListItem]) -> Void) -> Void
     
     private enum InterfaceState {
-        case initial
         case loading
-        case noEntries(searchTerm: String)
+        case empty(searchTerm: String)
         case showingResults(results: [ListItem])
     }
     
     private let localizationParameters: LocalizationParameters?
     private let style: ViewStyle
     private let searchBarPlaceholder: String?
-    private var interfaceState: InterfaceState = .initial {
-        didSet {
-            updateInterface()
-        }
+    private var interfaceState: InterfaceState = .empty(searchTerm: "") {
+        didSet { updateInterface() }
     }
 
     private lazy var resultsListViewController = ListViewController(style: style)
@@ -65,58 +62,41 @@ public class AsyncSearchViewController: UIViewController, UISearchBarDelegate {
         return searchBar
     }()
     
-    private var emptyView: EmptyView? {
-        willSet {
-            emptyView?.removeFromSuperview()
-        }
-        didSet {
-            guard let emptyView else { return }
-            view.addSubview(emptyView)
-            
-            // TODO: This doesn't feel ideal doing it here - maybe custom function?
-            
-            NSLayoutConstraint.activate([
-                emptyView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 0),
-                emptyView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0),
-                emptyView.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor)
-            ])
-        }
-    }
+    private lazy var emptyView: EmptyView = {
+        .init(
+            searchTerm: "",
+            localizationParameters: localizationParameters
+        )
+    }()
     
-    private var loadingView: UIActivityIndicatorView? {
-        willSet {
-            loadingView?.removeFromSuperview()
+    private lazy var loadingView: UIActivityIndicatorView = {
+        let loadingView = UIActivityIndicatorView(style: .whiteLarge)
+        if #available(iOS 13.0, *) {
+            loadingView.color = .secondarySystemFill
         }
-        didSet {
-            guard let loadingView else { return }
-            view.addSubview(loadingView)
-            
-            // TODO: This doesn't feel ideal doing it here - maybe custom function?
-            
-            if #available(iOS 13.0, *) {
-                loadingView.color = .secondarySystemFill
-            }
-            
-            loadingView.adyen.anchor(inside: view.layoutMarginsGuide)
-            
-            loadingView.startAnimating()
-        }
-    }
+        loadingView.hidesWhenStopped = true
+        return loadingView
+    }()
 
     override public func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = style.backgroundColor
-        view.addSubview(searchBar)
         
         if #available(iOS 13.0, *) {
             isModalInPresentation = true
         }
+        
+        view.addSubview(loadingView)
+        view.addSubview(emptyView)
         
         resultsListViewController.willMove(toParent: self)
         addChild(resultsListViewController)
         view.addSubview(resultsListViewController.view)
         resultsListViewController.didMove(toParent: self)
         resultsListViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        searchBar.setContentCompressionResistancePriority(.required, for: .vertical)
+        view.addSubview(searchBar)
 
         NSLayoutConstraint.activate([
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
@@ -126,8 +106,16 @@ public class AsyncSearchViewController: UIViewController, UISearchBarDelegate {
             resultsListViewController.view.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
             resultsListViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            resultsListViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+            resultsListViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+            
+            emptyView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 0),
+            emptyView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0),
+            emptyView.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor)
         ])
+        
+        loadingView.adyen.anchor(inside: view)
+        
+        updateInterface()
     }
     
     override public func viewWillAppear(_ animated: Bool) {
@@ -138,33 +126,24 @@ public class AsyncSearchViewController: UIViewController, UISearchBarDelegate {
     
     private func updateInterface() {
         
+        emptyView.isHidden = true
+        loadingView.stopAnimating()
+        resultsListViewController.view.isHidden = true
+        
         switch interfaceState {
-        case .initial:
-            emptyView = nil
-            loadingView = nil
-            resultsListViewController.view.isHidden = true
             
         case .loading:
-            emptyView = nil
-            loadingView = UIActivityIndicatorView(style: .whiteLarge)
-            resultsListViewController.view.isHidden = true
+            loadingView.startAnimating()
             
-        case let .noEntries(searchTerm):
-            emptyView = EmptyView(
-                searchTerm: searchTerm,
-                localizationParameters: localizationParameters
-            )
-            loadingView = nil
-            resultsListViewController.view.isHidden = true
+        case let .empty(searchTerm):
+            emptyView.isHidden = false
+            emptyView.searchTerm = searchTerm
             
         case let .showingResults(results):
-            emptyView = nil
-            loadingView = nil
             resultsListViewController.reload(
                 newSections: [.init(items: results)]
             )
             resultsListViewController.view.isHidden = false
-            print(results)
         }
     }
     
@@ -185,9 +164,7 @@ public class AsyncSearchViewController: UIViewController, UISearchBarDelegate {
                 return
             }
             
-            interfaceState = searchText.isEmpty ?
-                .initial :
-                .noEntries(searchTerm: searchText)
+            interfaceState = .empty(searchTerm: searchText)
         }
     }
     

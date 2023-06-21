@@ -111,20 +111,22 @@ internal class CardViewController: FormViewController {
 
     internal var validAddress: PostalAddress? {
         switch configuration.billingAddress.mode {
-        case .full, .fullLookup:
-            let address = items.billingAddressItem.value // TODO: Get the value for fullLookup from the other item!
-            guard AddressValidator().isValid(address: address,
-                                             addressMode: configuration.billingAddress.mode,
-                                             addressViewModel: items.billingAddressItem.addressViewModel) else {
-                return nil
-            }
+        case .fullLookup:
+            let address = items.lookupBillingAddressItem.value
+            let requiredFields = items.lookupBillingAddressItem.addressViewModel.requiredFields
+            guard let address, address.satisfies(requiredFields: requiredFields) else { return nil }
             return address
+            
+        case .full:
+            let address = items.billingAddressItem.value
+            let requiredFields = items.billingAddressItem.addressViewModel.requiredFields
+            guard address.satisfies(requiredFields: requiredFields) else { return nil }
+            return address
+            
         case .postalCode:
-            if items.postalCodeItem.value.isEmpty {
-                return nil
-            } else {
-                return PostalAddress(postalCode: items.postalCodeItem.value)
-            }
+            guard !items.postalCodeItem.value.isEmpty else { return nil }
+            return PostalAddress(postalCode: items.postalCodeItem.value)
+                
         case .none:
             return nil
         }
@@ -249,17 +251,10 @@ internal class CardViewController: FormViewController {
         switch configuration.billingAddress.mode {
         case let .fullLookup(handler):
             let item = items.lookupBillingAddressItem
-            item.buttonSelectionHandler = { [weak self] in
-                guard let self else { return }
+            item.selectionHandler = { [weak cardDelegate] in
                 cardDelegate?.didSelectAddressLookup(handler)
-//                item.title = "Hello World"
-//                item.showsActivityIndicator = true
-//                handler("Hello World") { result in
-//                    item.showsActivityIndicator = false
-//                    item.title = (try? result.get()) ?? "💥"
-//                }
             }
-            append(items.lookupBillingAddressItem)
+            append(item)
         case .full:
             append(items.billingAddressItem)
         case .postalCode:
@@ -274,6 +269,9 @@ internal class CardViewController: FormViewController {
 
         append(FormSpacerItem())
         append(items.button)
+        items.button.buttonSelectionHandler = { [weak cardDelegate] in
+            cardDelegate?.didSelectSubmitButton()
+        }
         append(FormSpacerItem(numberOfSpaces: 2))
     }
 
@@ -291,10 +289,6 @@ internal class CardViewController: FormViewController {
     private func setupViewRelations() {
         observe(items.numberContainerItem.numberItem.publisher) { [weak self] in self?.didChange(pan: $0) }
         observe(items.numberContainerItem.numberItem.$binValue) { [weak self] in self?.didChange(bin: $0) }
-
-        items.button.buttonSelectionHandler = { [weak cardDelegate] in
-            cardDelegate?.didSelectSubmitButton()
-        }
     }
 
     private func didChange(pan: String) {

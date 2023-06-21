@@ -11,7 +11,9 @@ extension AsyncSearchViewController {
     internal class EmptyView: UIStackView {
         
         private let localizationParameters: LocalizationParameters?
-        private let searchTerm: String
+        public var searchTerm: String {
+            didSet { updateLabels() }
+        }
         
         private lazy var titleLabel: UILabel = {
             let titleLabel = UILabel()
@@ -26,7 +28,6 @@ extension AsyncSearchViewController {
 
         private lazy var subtitleLabel: UILabel = {
             let subtitleLabel = UILabel()
-            subtitleLabel.text = "‘\(searchTerm)’ did not match with anything, try again or use manual address entry" // TODO: Make "manual address entry" tappable and add a handler
             subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
             subtitleLabel.numberOfLines = 0
             subtitleLabel.textAlignment = .center
@@ -53,11 +54,28 @@ extension AsyncSearchViewController {
             axis = .vertical
             alignment = .center
             distribution = .fill
+            
+            updateLabels()
         }
         
         @available(*, unavailable)
         internal required init(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
+        }
+    }
+}
+
+private extension AsyncSearchViewController.EmptyView {
+    
+    func updateLabels() {
+        // TODO: Make "manual address entry" tappable and add a handler
+        
+        if searchTerm.isEmpty {
+            titleLabel.text = "Enter your address"
+            subtitleLabel.text = "or use manual address entry"
+        } else {
+            titleLabel.text = "No results found"
+            subtitleLabel.text = "‘\(searchTerm)’ did not match with anything, try again or use manual address entry"
         }
     }
 }

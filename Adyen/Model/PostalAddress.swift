@@ -130,6 +130,7 @@ extension PostalAddress {
         return CNPostalAddressFormatter.string(from: address, style: .mailingAddress).replacingOccurrences(of: "\n", with: ", ")
     }
     
+    @_spi(AdyenInternal)
     public var formattedLocation: String {
         let address = CNMutablePostalAddress()
         city.map { address.city = $0 }

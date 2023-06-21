@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -55,6 +55,17 @@ public struct AddressViewModel {
 
 }
 
+@_spi(AdyenInternal)
+public extension AddressViewModel {
+    
+    /// Returns non-optional fields
+    var requiredFields: Set<AddressField> {
+        let allAddressFieldsInScheme: Set<AddressField> = Set(scheme.flatMap(\.children))
+        let optionalAddressFields: Set<AddressField> = Set(optionalFields)
+        return allAddressFieldsInScheme.subtracting(optionalAddressFields)
+    }
+}
+
 extension AddressField {
 
     internal var contentType: UITextContentType? {
@@ -75,5 +86,38 @@ extension AddressField {
             return .countryName
         }
     }
+}
 
+@_spi(AdyenInternal)
+public extension PostalAddress {
+
+    /// Validates whether all required fields are filled in
+    func satisfies(requiredFields: Set<AddressField>) -> Bool {
+
+        let fieldsValues = [
+            AddressField.city.rawValue: city,
+            AddressField.country.rawValue: country,
+            AddressField.postalCode.rawValue: postalCode,
+            AddressField.stateOrProvince.rawValue: stateOrProvince,
+            AddressField.street.rawValue: street,
+            AddressField.houseNumberOrName.rawValue: houseNumberOrName
+        ]
+ 
+        let satisfied = checkIfAllFieldsPresent(
+            fieldsValues: fieldsValues,
+            requiredAddressFields: requiredFields
+        )
+        
+        return satisfied
+    }
+
+    private func checkIfAllFieldsPresent(
+        fieldsValues: [String: String?],
+        requiredAddressFields: Set<AddressField>
+    ) -> Bool {
+        requiredAddressFields.allSatisfy {
+            guard let value = fieldsValues[$0.rawValue] else { return false }
+            return value != nil
+        }
+    }
 }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -197,7 +197,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
             separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
             separatorView.heightAnchor.constraint(equalToConstant: 1.0)
         ]
-        
+
         NSLayoutConstraint.activate(constraints)
     }
     
