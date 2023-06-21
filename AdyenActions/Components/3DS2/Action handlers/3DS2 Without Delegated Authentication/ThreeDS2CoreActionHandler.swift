@@ -154,20 +154,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                                                          threeDSRequestorAppURL: threeDSRequestorAppURL ?? token.threeDSRequestorAppURL)
         transaction.performChallenge(with: challengeParameters) { [weak self] challengeResult, error in
             guard let result = challengeResult else {
-                if let error = error as? NSError {
-                    switch (error.domain, error.code) {
-                    case (ADYRuntimeErrorDomain, Int(ADYRuntimeErrorCode.challengeCancelled.rawValue)):
-                        self?.didFail(with: error,
-                                      completionHandler: completionHandler)
-                    default:
-                        self?.didFinish(threeDS2SDKError: error.base64Representation(),
-                                        authorizationToken: challengeAction.authorisationToken,
-                                        completionHandler: completionHandler)
-                    }
-                } else {
-                    self?.didFail(with: UnknownError(errorDescription: "Both error and result are nil, this should never happen."),
-                                  completionHandler: completionHandler)
-                }
+                self?.processChallengeError(error: error, challengeAction: challengeAction, completionHandler: completionHandler)
                 return
             }
 
@@ -175,7 +162,27 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                             authorizationToken: challengeAction.authorisationToken,
                             completionHandler: completionHandler)
         }
-
+    }
+    
+    /// Invoked to handle the error flow of a challenge handling by the 3ds2sdk.
+    /// For challenge cancelled we return the control back to the merchant immediately as an error.
+    private func processChallengeError(error: Error?,
+                                       challengeAction: ThreeDS2ChallengeAction,
+                                       completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
+        if let error = error as? NSError {
+            switch (error.domain, error.code) {
+            case (ADYRuntimeErrorDomain, Int(ADYRuntimeErrorCode.challengeCancelled.rawValue)):
+                self.didFail(with: error,
+                             completionHandler: completionHandler)
+            default:
+                self.didFinish(threeDS2SDKError: error.base64Representation(),
+                               authorizationToken: challengeAction.authorisationToken,
+                               completionHandler: completionHandler)
+            }
+        } else {
+            self.didFail(with: UnknownError(errorDescription: "Both error and result are nil, this should never happen."),
+                         completionHandler: completionHandler)
+        }
     }
     
     private func didFinish(threeDS2SDKError: String,
