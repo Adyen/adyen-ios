@@ -82,9 +82,7 @@ public final class FormAddressLookupItem: FormValueItem<PostalAddress?, FormText
     @AdyenObservable(nil) public var validationFailureMessage: String?
     
     public func isValid() -> Bool {
-        guard let address = value else {
-            return false
-        }
+        guard let address = value else { return false }
         return address.satisfies(requiredFields: addressViewModel.requiredFields)
     }
 }

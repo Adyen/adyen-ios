@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,6 +39,12 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     internal let supportedCountryCodes: [String]?
     
     internal let addressViewModelBuilder: AddressViewModelBuilder
+    
+    override public var value: PostalAddress {
+        didSet {
+            updateCountrySelectItem()
+        }
+    }
     
     @_spi(AdyenInternal)
     public private(set) var addressViewModel: AddressViewModel
@@ -104,6 +110,22 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     }
     
     // MARK: - Private
+    
+    private func updateCountrySelectItem() {
+        
+        guard
+            let country = value.country,
+            country != countrySelectItem.value.identifier
+        else { return }
+        
+        guard
+            let matchingElement = countrySelectItem.selectableValues.first(where: { $0.identifier == value.country })
+        else {
+            return // TODO: Log an error for the merchant
+        }
+        
+        countrySelectItem.value = matchingElement
+    }
     
     private func reloadFields() {
         let subRegions = RegionRepository.subRegions(for: context.countryCode)

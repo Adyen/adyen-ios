@@ -34,32 +34,41 @@ extension IntegrationExample {
               let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else { return nil }
         let style = FormComponentStyle()
         var config = CardComponent.Configuration(style: style)
-        config.billingAddress.mode = .full
+//        config.billingAddress.mode = .full
         
-//        config.billingAddress.mode = .fullLookup { searchTerm, lookupResultProvider in
-//            /*
-//             Thoughts:
-//             - Delaying + cancelling an existing lookup should be left to the implementing party
-//             */
-//            print(searchTerm)
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//                let address = PostalAddress(
-//                    city: "Amsterdam",
-//                    country: "NL",
-//                    houseNumberOrName: "109",
-//                    postalCode: "1053WR",
-//                    stateOrProvince: "Noord Holland",
-//                    street: "Da Costakade (\(searchTerm))",
-//                    apartment: "2"
-//                )
-//
-//                lookupResultProvider([
-//                    address,
-//                    address,
-//                    address
-//                ])
-//            }
-//        }
+        config.billingAddress.mode = .fullLookup { searchTerm, lookupResultProvider in
+            /*
+             Thoughts:
+             - Delaying + cancelling an existing lookup should be left to the implementing party
+             */
+            print(searchTerm)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                let newYork = PostalAddress(
+                    city: "New York",
+                    country: "US",
+                    houseNumberOrName: "14",
+                    postalCode: "10019",
+                    stateOrProvince: "NY",
+                    street: "8th Ave",
+                    apartment: nil
+                )
+                
+                let amsterdam = PostalAddress(
+                    city: "Amsterdam",
+                    country: "NL",
+                    houseNumberOrName: "109",
+                    postalCode: "1053WR",
+                    stateOrProvince: "Noord Holland",
+                    street: "Da Costakade (\(searchTerm))",
+                    apartment: "2"
+                )
+
+                lookupResultProvider([
+                    amsterdam,
+                    newYork
+                ])
+            }
+        }
         return CardComponent(paymentMethod: paymentMethod,
                              context: context,
                              configuration: config)
