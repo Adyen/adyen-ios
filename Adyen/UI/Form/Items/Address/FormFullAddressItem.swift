@@ -18,6 +18,12 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         }
     }
     
+    public override var value: PostalAddress {
+        didSet {
+            updateCountrySelectItem()
+        }
+    }
+    
     private var items: [FormItem] = []
     
     private let localizationParameters: LocalizationParameters?
@@ -104,6 +110,18 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     }
     
     // MARK: - Private
+    
+    private func updateCountrySelectItem() {
+        guard let country = value.country, country != countrySelectItem.value.identifier else {
+            return
+        }
+        
+        guard let matchingElement = countrySelectItem.selectableValues.first(where: { $0.identifier == value.country }) else {
+            return // TODO: Log an error for the merchant
+        }
+        
+        countrySelectItem.value = matchingElement
+    }
     
     private func reloadFields() {
         let subRegions = RegionRepository.subRegions(for: context.countryCode)
