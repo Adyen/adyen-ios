@@ -75,6 +75,84 @@ class SessionTests: XCTestCase {
         }
         waitForExpectations(timeout: 2, handler: nil)
     }
+
+    func testInitializationFailingWithoutCountyCode() throws {
+        let apiClient = APIClientMock()
+        let dictionary = [
+            "storedPaymentMethods": [
+                storedCreditCardDictionary,
+                storedCreditCardDictionary,
+                storedPayPalDictionary,
+                storedBcmcDictionary
+            ],
+            "paymentMethods": [
+                creditCardDictionary,
+                issuerListDictionary
+            ]
+        ]
+        let expectedPaymentMethods = try Coder.decode(dictionary) as PaymentMethods
+        apiClient.mockedResults = [.success(SessionSetupResponse(countryCode: nil,
+                                                                 shopperLocale: "US",
+                                                                 paymentMethods: expectedPaymentMethods,
+                                                                 amount: .init(value: 220, currencyCode: "USD"),
+                                                                 sessionData: "session_data_1",
+                                                                 configuration: .init(installmentOptions: nil, enableStoreDetails: false)))]
+        let expectation = expectation(description: "Expect session object to be initialized")
+        AdyenSession.initialize(with: .init(sessionIdentifier: "session_id",
+                                            initialSessionData: "session_data_0",
+                                            context: AdyenContext(apiContext: Dummy.apiContext, payment: nil)),
+                                delegate: SessionDelegateMock(),
+                                presentationDelegate: PresentationDelegateMock(),
+                                baseAPIClient: apiClient) { result in
+            switch result {
+            case let .failure(error):
+                XCTAssertEqual(error.localizedDescription, "CountryCode value was not passed via /sessions. Make sure to provide 'countryCode' value to AdyenSession.Configuration.")
+            case let .success(session):
+                XCTFail()
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+
+    func testInitializationWitDirectlySetCountyCode() throws {
+        let apiClient = APIClientMock()
+        let dictionary = [
+            "storedPaymentMethods": [
+                storedCreditCardDictionary,
+                storedCreditCardDictionary,
+                storedPayPalDictionary,
+                storedBcmcDictionary
+            ],
+            "paymentMethods": [
+                creditCardDictionary,
+                issuerListDictionary
+            ]
+        ]
+        let expectedPaymentMethods = try Coder.decode(dictionary) as PaymentMethods
+        apiClient.mockedResults = [.success(SessionSetupResponse(countryCode: "US",
+                                                                 shopperLocale: "US",
+                                                                 paymentMethods: expectedPaymentMethods,
+                                                                 amount: .init(value: 220, currencyCode: "USD"),
+                                                                 sessionData: "session_data_1",
+                                                                 configuration: .init(installmentOptions: nil, enableStoreDetails: false)))]
+        let expectation = expectation(description: "Expect session object to be initialized")
+        AdyenSession.initialize(with: .init(sessionIdentifier: "session_id",
+                                            initialSessionData: "session_data_0",
+                                            context: AdyenContext(apiContext: Dummy.apiContext, payment: nil)),
+                                delegate: SessionDelegateMock(),
+                                presentationDelegate: PresentationDelegateMock(),
+                                baseAPIClient: apiClient) { result in
+            switch result {
+            case .failure:
+                XCTFail()
+            case let .success(session):
+                XCTAssertEqual(session.sessionContext.countryCode, "US")
+            }
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2, handler: nil)
+    }
     
     func testDidSubmitWithNoActionAndNoOrder() throws {
         let expectedPaymentMethods = try Coder.decode(paymentMethodsDictionary) as PaymentMethods

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,12 +19,16 @@ public final class AdyenSession {
     
     /// Session configuration.
     public struct Configuration {
+
+        internal let context: AdyenContext?
         
         internal let sessionIdentifier: String
         
         internal let initialSessionData: String
         
-        internal let context: AdyenContext
+        internal let apiContext: APIContext
+
+        internal let countryCode: String?
         
         internal let actionComponent: AdyenActionComponent.Configuration
         
@@ -33,7 +37,7 @@ public final class AdyenSession {
         /// - Parameters:
         ///   - sessionIdentifier: The session identifier.
         ///   - initialSessionData: The initial session data.
-        ///   - context: The context object for this component.
+        ///   - context: The context object for this session.
         ///   - localizationParameters: The localization parameters
         ///   - actionComponent: The action handling configuration.
         public init(sessionIdentifier: String,
@@ -42,9 +46,34 @@ public final class AdyenSession {
                     actionComponent: AdyenActionComponent.Configuration = .init()) {
             self.sessionIdentifier = sessionIdentifier
             self.initialSessionData = initialSessionData
-            self.context = context
+            self.apiContext = context.apiContext
             self.actionComponent = actionComponent
+            self.context = context
+            self.countryCode = context.payment?.countryCode
         }
+
+        /// Initializes a new Configuration object
+        ///
+        /// - Parameters:
+        ///   - sessionIdentifier: The session identifier.
+        ///   - initialSessionData: The initial session data.
+        ///   - apiContext: The API context object for this session.
+        ///   - countryCode: The country code to create `Payment`
+        ///   - localizationParameters: The localization parameters
+        ///   - actionComponent: The action handling configuration.
+        public init(sessionIdentifier: String,
+                    initialSessionData: String,
+                    apiContext: APIContext,
+                    countryCode: String? = nil,
+                    actionComponent: AdyenActionComponent.Configuration = .init()) {
+            self.sessionIdentifier = sessionIdentifier
+            self.initialSessionData = initialSessionData
+            self.apiContext = apiContext
+            self.actionComponent = actionComponent
+            self.countryCode = countryCode
+            self.context = nil
+        }
+        
     }
     
     /// The session information
@@ -57,7 +86,7 @@ public final class AdyenSession {
         public let identifier: String
         
         /// Country Code
-        public let countryCode: String?
+        public let countryCode: String
         
         /// Shopper Locale
         public let shopperLocale: String?
@@ -74,6 +103,18 @@ public final class AdyenSession {
         /// Component related configuration object
         internal let configuration: SessionSetupResponse.Configuration
     }
+
+    public lazy var adyenContext: AdyenContext = {
+        if let context = configuration.context {
+            return context
+        }
+        var payment: Payment?
+        if let countryCode = configuration.countryCode {
+            payment = Payment(amount: sessionContext.amount, countryCode: countryCode)
+        }
+        return AdyenContext(apiContext: configuration.apiContext,
+                            payment: payment)
+    }()
     
     /// The session context information.
     public internal(set) var sessionContext: Context
@@ -93,7 +134,7 @@ public final class AdyenSession {
                                   delegate: AdyenSessionDelegate,
                                   presentationDelegate: PresentationDelegate,
                                   completion: @escaping ((Result<AdyenSession, Error>) -> Void)) {
-        let baseAPIClient = APIClient(apiContext: configuration.context.apiContext)
+        let baseAPIClient = APIClient(apiContext: configuration.apiContext)
             .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
             .retryOnErrorAPIClient()
         initialize(with: configuration,
@@ -136,9 +177,14 @@ public final class AdyenSession {
         apiClient.perform(request) { result in
             switch result {
             case let .success(response):
+                guard let countryCode = response.countryCode
+                    ?? configuration.context?.payment?.countryCode
+                    ?? configuration.countryCode else {
+                    return completion(.failure(AdyenSessionError.noCountryCode))
+                }
                 let sessionContext = Context(data: response.sessionData,
                                              identifier: sessionId,
-                                             countryCode: response.countryCode,
+                                             countryCode: countryCode,
                                              shopperLocale: response.shopperLocale,
                                              amount: response.amount,
                                              paymentMethods: response.paymentMethods,
@@ -153,7 +199,7 @@ public final class AdyenSession {
     // MARK: - Action Handling for Components
 
     internal lazy var actionComponent: ActionHandlingComponent = {
-        let handler = AdyenActionComponent(context: configuration.context,
+        let handler = AdyenActionComponent(context: adyenContext,
                                            configuration: configuration.actionComponent)
         handler.delegate = self
         handler.presentationDelegate = presentationDelegate
@@ -165,7 +211,7 @@ public final class AdyenSession {
     internal let configuration: Configuration
     
     internal lazy var apiClient: APIClientProtocol = {
-        let apiClient = SessionAPIClient(apiClient: APIClient(apiContext: configuration.context.apiContext), session: self)
+        let apiClient = SessionAPIClient(apiClient: APIClient(apiContext: configuration.apiContext), session: self)
         return apiClient
             .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
             .retryOnErrorAPIClient()
