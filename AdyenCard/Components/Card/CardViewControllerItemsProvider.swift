@@ -25,7 +25,7 @@ extension CardViewController {
 
         private let scope: String
 
-        private let defaultCountryCode: String
+        private let initialCountry: String
         
         private let addressViewModelBuilder: AddressViewModelBuilder
 
@@ -35,7 +35,7 @@ extension CardViewController {
                       shopperInformation: PrefilledShopperInformation?,
                       cardLogos: [FormCardLogosItem.CardTypeLogo],
                       scope: String,
-                      defaultCountryCode: String,
+                      initialCountryCode: String,
                       localizationParameters: LocalizationParameters?,
                       addressViewModelBuilder: AddressViewModelBuilder) {
             self.formStyle = formStyle
@@ -44,15 +44,14 @@ extension CardViewController {
             self.shopperInformation = shopperInformation
             self.cardLogos = cardLogos
             self.scope = scope
-            self.defaultCountryCode = defaultCountryCode
+            self.initialCountry = initialCountryCode
             self.localizationParameters = localizationParameters
             self.addressViewModelBuilder = addressViewModelBuilder
         }
 
         internal lazy var billingAddressItem: FormAddressItem = {
             let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "billingAddress")
-            
-            let item = FormAddressItem(initialCountry: initialCountryForBillingAddressItem,
+            let item = FormAddressItem(initialCountry: initialCountry,
                                        style: formStyle.addressStyle,
                                        localizationParameters: localizationParameters,
                                        identifier: identifier,
@@ -66,9 +65,8 @@ extension CardViewController {
         internal lazy var lookupBillingAddressItem: FormAddressLookupItem = {
             let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "billingAddress")
             let prefillAddress = shopperInformation?.billingAddress
-            
             let item = FormAddressLookupItem(
-                initialCountry: initialCountryForBillingAddressItem,
+                initialCountry: initialCountry,
                 prefillAddress: prefillAddress,
                 style: formStyle.addressStyle,
                 localizationParameters: localizationParameters,
@@ -196,28 +194,4 @@ extension CardViewController {
 
     }
 
-}
-
-private extension CardViewController.ItemsProvider {
-    
-    var initialCountryForBillingAddressItem: String {
-        
-        guard
-            let countryCodes = configuration.billingAddress.countryCodes,
-            let firstCountryCode = countryCodes.first
-        else {
-            return shopperInformation?.billingAddress?.country ?? defaultCountryCode
-        }
-        
-        // check and match the initial country from shopper prefill info
-        // with the supported countries
-        guard
-            let prefillCountryCode = shopperInformation?.billingAddress?.country,
-            countryCodes.contains(prefillCountryCode)
-        else {
-            return firstCountryCode
-        }
-        
-        return prefillCountryCode
-    }
 }

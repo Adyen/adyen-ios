@@ -7,6 +7,8 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
+// TODO: Refactor this
+
 @_spi(AdyenInternal)
 public final class AddressLookupComponent: NSObject, PresentableComponent {
     
@@ -33,7 +35,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
         return UINavigationController(rootViewController: securedViewController)
     }()
     
-    public var context: Adyen.AdyenContext
+    public var context: Adyen.AdyenContext // TODO: Is this needed?
     
     // TODO: Replace with configuration
     private let style: FormComponentStyle
@@ -44,6 +46,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     private let completionHandler: (PostalAddress) -> Void
     
     public var requiresModalPresentation: Bool = false
+    private var initialCountry: String
     
     /// Initializes the component.
     /// - Parameters:
@@ -53,12 +56,14 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     public init(
         context: AdyenContext,
         style: FormComponentStyle,
+        initialCountry: String,
         prefillAddress: PostalAddress?,
         supportedCountryCodes: [String]?,
         localizationParameters: LocalizationParameters? = nil,
         lookupProvider: @escaping (_ searchTerm: String, _ resultProvider: @escaping ([PostalAddress]) -> Void) -> Void,
         completionHandler: @escaping (PostalAddress) -> Void
     ) {
+        self.initialCountry = initialCountry
         self.context = context
         self.style = style
         self.prefillAddress = prefillAddress
@@ -145,6 +150,11 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
             subtitle: address.formattedLocation,
             selectionHandler: { [weak self] in
                 guard let self else { return }
+                // TODO: The country is not updated in the UI for some reason!!!
+                // Probably because the billinAddress doesn't update country when setting the value
+                // This is the current behavior as usually the address is not set
+                // but it's also a bug as when the merchant wants to prefill the address, the country is always the default country
+                // - only a user change would update the country but it would not be reflected in the value
                 billingAddressItem.value = address
                 dismissSearchTapped()
             }
@@ -154,12 +164,12 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     internal lazy var billingAddressItem: FormAddressItem = {
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "billingAddress")
         let item = FormAddressItem(
-            initialCountry: prefillAddress?.country ?? "NL", // TODO: Provide better initialCountry
+            initialCountry: initialCountry,
             style: style.addressStyle,
             localizationParameters: localizationParameters,
             identifier: identifier,
             supportedCountryCodes: supportedCountryCodes,
-            addressViewModelBuilder: DefaultAddressViewModelBuilder() // TODO: Make this injectable?
+            addressViewModelBuilder: DefaultAddressViewModelBuilder() // TODO: Make this injectable!
         )
         prefillAddress.map { item.value = $0 }
         item.style.backgroundColor = UIColor.Adyen.lightGray

@@ -39,6 +39,7 @@ internal class CardViewController: FormViewController {
     ///   - payment: The payment object to visualize payment amount.
     ///   - logoProvider: The provider for logo image URLs.
     ///   - supportedCardTypes: The list of supported cards.
+    ///   - initialCountryCode: The initially used country code for the billing address
     ///   - scope: The view's scope.
     ///   - localizationParameters: Localization parameters.
     internal init(configuration: CardComponent.Configuration,
@@ -47,14 +48,14 @@ internal class CardViewController: FormViewController {
                   payment: Payment?,
                   logoProvider: LogoURLProvider,
                   supportedCardTypes: [CardType],
+                  initialCountryCode: String,
                   scope: String,
                   localizationParameters: LocalizationParameters?) {
         self.configuration = configuration
         self.shopperInformation = shopperInformation
         self.supportedCardTypes = supportedCardTypes
         self.formStyle = formStyle
-
-        let countryCode = payment?.countryCode ?? Locale.current.regionCode ?? CardComponent.Constant.defaultCountryCode
+        
         let cardLogos = supportedCardTypes.map {
             FormCardLogosItem.CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
         }
@@ -65,7 +66,7 @@ internal class CardViewController: FormViewController {
                                    shopperInformation: shopperInformation,
                                    cardLogos: cardLogos,
                                    scope: scope,
-                                   defaultCountryCode: countryCode,
+                                   initialCountryCode: initialCountryCode,
                                    localizationParameters: localizationParameters,
                                    addressViewModelBuilder: DefaultAddressViewModelBuilder())
         super.init(style: formStyle)

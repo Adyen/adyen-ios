@@ -171,12 +171,14 @@ public class CardComponent: PresentableComponent,
     private lazy var securedViewController = SecuredViewController(child: cardViewController, style: configuration.style)
     
     internal lazy var cardViewController: CardViewController = {
+        
         let formViewController = CardViewController(configuration: configuration,
                                                     shopperInformation: configuration.shopperInformation,
                                                     formStyle: configuration.style,
                                                     payment: payment,
                                                     logoProvider: LogoURLProvider(environment: context.apiContext.environment),
                                                     supportedCardTypes: supportedCardTypes,
+                                                    initialCountryCode: initialCountryCode,
                                                     scope: String(describing: self),
                                                     localizationParameters: configuration.localizationParameters)
         formViewController.delegate = self
@@ -221,6 +223,7 @@ extension CardComponent: CardViewControllerDelegate {
         let addressLookupComponent = AddressLookupComponent(
             context: context,
             style: configuration.style,
+            initialCountry: initialCountryCode,
             prefillAddress: cardViewController.items.lookupBillingAddressItem.value,
             supportedCountryCodes: configuration.billingAddress.countryCodes,
             lookupProvider: handler,
@@ -242,3 +245,23 @@ extension CardComponent: CardViewControllerDelegate {
 
 @_spi(AdyenInternal)
 extension CardComponent: PublicKeyConsumer {}
+
+private extension CardComponent {
+    
+    private var initialCountryCode: String {
+        
+        guard
+            let supportedCountryCodes = configuration.billingAddress.countryCodes,
+            let firstSupportedCountryCode = supportedCountryCodes.first, // supportedCountryCodes is not empty
+            let preferredCountry = configuration.shopperInformation?.billingAddress?.country
+        else {
+            return payment?.countryCode ?? Locale.current.regionCode ?? CardComponent.Constant.defaultCountryCode
+        }
+        
+        if supportedCountryCodes.contains(preferredCountry) {
+            return preferredCountry
+        }
+        
+        return firstSupportedCountryCode
+    }
+}
