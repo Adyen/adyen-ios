@@ -117,7 +117,10 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         }
         
         guard let matchingElement = countrySelectItem.selectableValues.first(where: { $0.identifier == value.country }) else {
-            return // TODO: Log an error for the merchant
+            AdyenAssertion.assertionFailure(
+                message: "The provided country '\(country)' is not supported per configuration."
+            )
+            return
         }
         
         countrySelectItem.value = matchingElement
