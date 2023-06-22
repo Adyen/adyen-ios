@@ -124,8 +124,8 @@ internal class CardViewController: FormViewController {
             requiredFields = items.billingAddressItem.addressViewModel.requiredFields
             
         case .postalCode:
-            address = items.billingAddressItem.value
-            requiredFields = items.billingAddressItem.addressViewModel.requiredFields
+            address = PostalAddress(postalCode: items.postalCodeItem.value)
+            requiredFields = [.postalCode]
             
         case .none:
             return nil
