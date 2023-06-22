@@ -35,6 +35,18 @@ internal final class ComponentsViewController: UIViewController {
         return cardComponentExample
     }()
 
+    private lazy var applePayComponentAdvancedFlowExample: ApplePayComponentAdvancedFlowExample = {
+        let applePayComponentAdvancedFlow = ApplePayComponentAdvancedFlowExample()
+        applePayComponentAdvancedFlow.presenter = self
+        return applePayComponentAdvancedFlow
+    }()
+
+    private lazy var applePayComponentExample: ApplePayComponentExample = {
+        let applePayComponent = ApplePayComponentExample()
+        applePayComponentExample.presenter = self
+        return applePayComponentExample
+    }()
+
     // MARK: - View
     
     override internal func loadView() {
@@ -51,6 +63,9 @@ internal final class ComponentsViewController: UIViewController {
             ],
             [
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent)
+            ],
+            [
+                ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)
             ]
         ]
         
@@ -78,6 +93,15 @@ internal final class ComponentsViewController: UIViewController {
             cardComponentAdvancedFlowExample.start()
         }
     }
+
+    internal func presentApplePayComponent() {
+        if componentsView.isUsingSession {
+            applePayComponentExample.start()
+        } else {
+            applePayComponentAdvancedFlowExample.start()
+        }
+    }
+
 }
 
 // MARK: - Presenter
