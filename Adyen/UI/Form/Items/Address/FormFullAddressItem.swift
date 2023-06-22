@@ -18,6 +18,12 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         }
     }
     
+    override public var value: PostalAddress {
+        didSet {
+            updateCountrySelectItem()
+        }
+    }
+    
     private var items: [FormItem] = []
     
     private let localizationParameters: LocalizationParameters?
@@ -39,12 +45,6 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     internal let supportedCountryCodes: [String]?
     
     internal let addressViewModelBuilder: AddressViewModelBuilder
-    
-    override public var value: PostalAddress {
-        didSet {
-            updateCountrySelectItem()
-        }
-    }
     
     @_spi(AdyenInternal)
     public private(set) var addressViewModel: AddressViewModel
@@ -112,15 +112,11 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     // MARK: - Private
     
     private func updateCountrySelectItem() {
+        guard let country = value.country, country != countrySelectItem.value.identifier else {
+            return
+        }
         
-        guard
-            let country = value.country,
-            country != countrySelectItem.value.identifier
-        else { return }
-        
-        guard
-            let matchingElement = countrySelectItem.selectableValues.first(where: { $0.identifier == value.country })
-        else {
+        guard let matchingElement = countrySelectItem.selectableValues.first(where: { $0.identifier == value.country }) else {
             return // TODO: Log an error for the merchant
         }
         
