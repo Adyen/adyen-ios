@@ -58,7 +58,7 @@ public struct AddressViewModel {
 @_spi(AdyenInternal)
 public extension AddressViewModel {
     
-    /// Returns non-optional fields
+    /// Returns all fields that are not specified as `optionalFields`
     var requiredFields: Set<AddressField> {
         let allAddressFieldsInScheme: Set<AddressField> = Set(scheme.flatMap(\.children))
         let optionalAddressFields: Set<AddressField> = Set(optionalFields)
@@ -91,7 +91,7 @@ extension AddressField {
 @_spi(AdyenInternal)
 public extension PostalAddress {
 
-    /// Validates whether all required fields are filled in and are not empty
+    /// Validates whether all required fields are filled in and not empty
     func satisfies(requiredFields: Set<AddressField>) -> Bool {
 
         let fieldsValues = [
