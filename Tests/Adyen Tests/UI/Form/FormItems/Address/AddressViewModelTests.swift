@@ -28,4 +28,63 @@ class AddressViewModelTests: XCTestCase {
         address.houseNumberOrName = "1"
         XCTAssertTrue(address.satisfies(requiredFields: Set(AddressField.allCases)))
     }
+    
+    func testViewModelRequiredFields() throws {
+        
+        let viewModelBuilder = DefaultAddressViewModelBuilder()
+
+        // MARK: Default Cases
+        
+        // Generic Country Code - All optional fields
+        XCTAssertTrue(
+            viewModelBuilder.build(context: .init(countryCode: "XX", isOptional: true)).requiredFields.isEmpty
+        )
+        
+        // Generic Country Code
+        XCTAssertEqual(
+            viewModelBuilder.build(context: .init(countryCode: "XX", isOptional: false)).requiredFields,
+            [
+                .street,
+                .houseNumberOrName,
+                .postalCode,
+                .city,
+                .stateOrProvince
+            ]
+        )
+        
+        // MARK: Specific cases
+        
+        // United States
+        XCTAssertEqual(
+            viewModelBuilder.build(context: .init(countryCode: "US", isOptional: false)).requiredFields,
+            [
+                .street,
+                .city,
+                .postalCode,
+                .stateOrProvince
+            ]
+        )
+        
+        // Canada
+        XCTAssertEqual(
+            viewModelBuilder.build(context: .init(countryCode: "CA", isOptional: false)).requiredFields,
+            [
+                .street,
+                .city,
+                .postalCode,
+                .stateOrProvince
+            ]
+        )
+        
+        // Great Britain
+        XCTAssertEqual(
+            viewModelBuilder.build(context: .init(countryCode: "GB", isOptional: false)).requiredFields,
+            [
+                .street,
+                .city,
+                .postalCode,
+                .houseNumberOrName
+            ]
+        )
+    }
 }
