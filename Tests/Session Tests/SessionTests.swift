@@ -63,6 +63,7 @@ class SessionTests: XCTestCase {
             case .failure:
                 XCTFail()
             case let .success(session):
+                XCTAssertEqual(session.adyenContext.payment?.countryCode, self.context.payment?.countryCode)
                 XCTAssertEqual(session.sessionContext.identifier, "session_id")
                 XCTAssertEqual(session.sessionContext.data, "session_data_1")
                 XCTAssertEqual(session.sessionContext.shopperLocale, "US")
@@ -129,8 +130,9 @@ class SessionTests: XCTestCase {
                 issuerListDictionary
             ]
         ]
+        let expectedCountryCode = "MX"
         let expectedPaymentMethods = try Coder.decode(dictionary) as PaymentMethods
-        apiClient.mockedResults = [.success(SessionSetupResponse(countryCode: "US",
+        apiClient.mockedResults = [.success(SessionSetupResponse(countryCode: nil,
                                                                  shopperLocale: "US",
                                                                  paymentMethods: expectedPaymentMethods,
                                                                  amount: .init(value: 220, currencyCode: "USD"),
@@ -139,7 +141,8 @@ class SessionTests: XCTestCase {
         let expectation = expectation(description: "Expect session object to be initialized")
         AdyenSession.initialize(with: .init(sessionIdentifier: "session_id",
                                             initialSessionData: "session_data_0",
-                                            context: AdyenContext(apiContext: Dummy.apiContext, payment: nil)),
+                                            apiContext: Dummy.apiContext,
+                                            countryCode: expectedCountryCode),
                                 delegate: SessionDelegateMock(),
                                 presentationDelegate: PresentationDelegateMock(),
                                 baseAPIClient: apiClient) { result in
@@ -147,7 +150,8 @@ class SessionTests: XCTestCase {
             case .failure:
                 XCTFail()
             case let .success(session):
-                XCTAssertEqual(session.sessionContext.countryCode, "US")
+                XCTAssertEqual(session.adyenContext.payment?.countryCode, expectedCountryCode)
+                XCTAssertEqual(session.sessionContext.countryCode, expectedCountryCode)
             }
             expectation.fulfill()
         }

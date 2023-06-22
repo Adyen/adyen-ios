@@ -108,10 +108,8 @@ public final class AdyenSession {
         if let context = configuration.context {
             return context
         }
-        var payment: Payment?
-        if let countryCode = configuration.countryCode {
-            payment = Payment(amount: sessionContext.amount, countryCode: countryCode)
-        }
+        
+        var payment = Payment(amount: sessionContext.amount, countryCode: sessionContext.countryCode)
         return AdyenContext(apiContext: configuration.apiContext,
                             payment: payment)
     }()
