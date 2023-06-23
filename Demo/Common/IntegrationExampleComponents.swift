@@ -36,13 +36,20 @@ extension IntegrationExample {
         var config = CardComponent.Configuration(style: style)
 //        config.billingAddress.mode = .full
         
+        // Add a searchTask property to your controller
+        var searchTask: DispatchWorkItem? {
+            willSet { searchTask?.cancel() }
+        }
+        
         config.billingAddress.mode = .fullLookup { searchTerm, lookupResultProvider in
             /*
              Thoughts:
              - Delaying + cancelling an existing lookup should be left to the implementing party
              */
-            print(searchTerm)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+
+            // Replace previous task with a new one
+            let task = DispatchWorkItem {
+                
                 let newYork = PostalAddress(
                     city: "New York",
                     country: "US",
@@ -68,6 +75,10 @@ extension IntegrationExample {
                     newYork
                 ])
             }
+            
+            searchTask = task
+
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3, execute: task)
         }
         return CardComponent(paymentMethod: paymentMethod,
                              context: context,

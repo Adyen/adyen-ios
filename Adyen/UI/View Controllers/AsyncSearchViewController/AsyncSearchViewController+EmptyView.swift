@@ -22,7 +22,6 @@ extension AsyncSearchViewController {
             titleLabel.textAlignment = .center
             titleLabel.translatesAutoresizingMaskIntoConstraints = false
             titleLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
-
             return titleLabel
         }()
 
@@ -68,6 +67,7 @@ extension AsyncSearchViewController {
 private extension AsyncSearchViewController.EmptyView {
     
     func updateLabels() {
+        // TODO: Make Generic
         // TODO: Make "manual address entry" tappable and add a handler
         
         if searchTerm.isEmpty {

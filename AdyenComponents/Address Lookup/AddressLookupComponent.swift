@@ -147,7 +147,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     private func listItem(for address: PostalAddress) -> ListItem {
         .init(
             title: address.formattedStreet,
-            subtitle: address.formattedLocation,
+            subtitle: address.formattedLocation(using: localizationParameters),
             selectionHandler: { [weak self] in
                 guard let self else { return }
                 billingAddressItem.value = address
@@ -195,6 +195,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     }
     
     deinit {
+        // TODO: Make sure that everything get's released properly
         print("☠️ \(String(describing: self))")
     }
 }

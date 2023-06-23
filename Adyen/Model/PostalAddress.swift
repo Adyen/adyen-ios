@@ -107,10 +107,13 @@ extension PostalAddress {
     
     /// Multi line mailing address
     @_spi(AdyenInternal)
-    public var formatted: String {
+    public func formatted(using localizationParameters: LocalizationParameters?) -> String {
         let address = CNMutablePostalAddress()
         city.map { address.city = $0 }
-        country.map { address.isoCountryCode = $0 }
+        country.map {
+            address.isoCountryCode = $0
+            address.country = countryName(for: $0, using: localizationParameters)
+        }
         stateOrProvince.map { address.state = $0 }
         postalCode.map { address.postalCode = $0 }
         address.street = [street, houseNumberOrName, apartment]
@@ -127,18 +130,33 @@ extension PostalAddress {
             .compactMap { $0 }
             .joined(separator: " ")
         
-        return CNPostalAddressFormatter.string(from: address, style: .mailingAddress).replacingOccurrences(of: "\n", with: ", ")
+        return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
+            .replacingOccurrences(of: "\n", with: ", ")
     }
     
     @_spi(AdyenInternal)
-    public var formattedLocation: String {
+    public func formattedLocation(using localizationParameters: LocalizationParameters?) -> String {
         let address = CNMutablePostalAddress()
         city.map { address.city = $0 }
-        country.map { address.isoCountryCode = $0 }
+        country.map {
+            address.isoCountryCode = $0
+            address.country = countryName(for: $0, using: localizationParameters)
+        }
         stateOrProvince.map { address.state = $0 }
         postalCode.map { address.postalCode = $0 }
         
-        return CNPostalAddressFormatter.string(from: address, style: .mailingAddress).replacingOccurrences(of: "\n", with: ", ")
+        return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
+            .replacingOccurrences(of: "\n", with: ", ")
     }
     
+    private func countryName(
+        for countryCode: String,
+        using localizationParameters: LocalizationParameters?
+    ) -> String {
+        let locale = Locale(identifier: localizationParameters?.locale ?? Locale.current.identifier)
+        return RegionRepository.region(
+            from: locale as NSLocale,
+            for: countryCode
+        )?.name ?? countryCode
+    }
 }

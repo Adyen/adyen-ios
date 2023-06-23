@@ -119,14 +119,14 @@ internal class FormAddressLookupItemView<ItemType: FormAddressLookupItem>: FormV
     }
     
     private func updateValueLabel() {
-        guard let address = item.value, !address.formatted.isEmpty else {
+        guard let address = item.value, !address.formatted(using: item.localizationParameters).isEmpty else {
             // TODO: Use a different placeholder text so it can be customized by the merchant!
             valueLabel.text = localizedString(.billingAddressSectionTitle, item.localizationParameters)
             valueLabel.textColor = item.style.placeholderText?.color ?? .Adyen.componentPlaceholderText
             return
         }
         
-        valueLabel.text = address.formatted
+        valueLabel.text = address.formatted(using: item.localizationParameters)
         valueLabel.textColor = item.style.text.color
     }
     

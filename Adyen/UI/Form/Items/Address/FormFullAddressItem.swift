@@ -95,7 +95,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     internal lazy var countryPickerItem: FormRegionPickerItem = {
         let locale = Locale(identifier: localizationParameters?.locale ?? Locale.current.identifier)
         let countries = RegionRepository.regions(from: locale as NSLocale,
-                                                 countryCodes: supportedCountryCodes).sorted { $0.name < $1.name }
+                                                 with: supportedCountryCodes).sorted { $0.name < $1.name }
         let defaultCountry = countries.first { $0.identifier == initialCountry } ?? countries[0]
         let item = FormRegionPickerItem(preselectedValue: defaultCountry,
                                         selectableValues: countries,
