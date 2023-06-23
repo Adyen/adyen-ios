@@ -47,6 +47,6 @@ class FormAddressItemTests: XCTestCase {
         
         formAddressItem.value = .init(country: "XX")
         
-        wait(for: [expectation])
+        wait(for: [expectation], timeout: 0)
     }
 }
