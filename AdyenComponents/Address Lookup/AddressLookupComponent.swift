@@ -12,30 +12,10 @@ import Foundation
 @_spi(AdyenInternal)
 public final class AddressLookupComponent: NSObject, PresentableComponent {
     
-    public lazy var viewController: UIViewController = {
-        let securedViewController = SecuredViewController(
-            child: formViewController,
-            style: style
-        )
-        securedViewController.navigationItem.leftBarButtonItem = .init(
-            barButtonSystemItem: .cancel, // TODO: Localization
-            target: self,
-            action: #selector(cancelTapped)
-        )
-        securedViewController.navigationItem.rightBarButtonItem = .init(
-            barButtonSystemItem: .done, // TODO: Localization
-            target: self,
-            action: #selector(doneTapped)
-        )
-
-        if #available(iOS 13.0, *) {
-            securedViewController.isModalInPresentation = true
-        }
-        
-        return UINavigationController(rootViewController: securedViewController)
-    }()
+    public var viewController: UIViewController { navigationController }
     
-    public var context: Adyen.AdyenContext // TODO: Is this needed?
+    public var context: Adyen.AdyenContext
+    public var requiresModalPresentation: Bool = false
     
     // TODO: Replace with configuration
     private let style: FormComponentStyle
@@ -43,10 +23,15 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     private var prefillAddress: PostalAddress?
     private let supportedCountryCodes: [String]?
     private let lookupProvider: (_ searchTerm: String, _ resultProvider: @escaping ([PostalAddress]) -> Void) -> Void
-    private let completionHandler: (PostalAddress) -> Void
     
-    public var requiresModalPresentation: Bool = false
+    private let completionHandler: (PostalAddress) -> Void
     private var initialCountry: String
+    
+    /// Flag to indicate if the address lookup should be dismissed when search is cancelled
+    ///
+    /// Context: We show the search immediately when no address to prefill is provided
+    /// and cancelling from this state should dismiss the whole flow.
+    private var shouldDismissOnSearchDismissal: Bool
     
     /// Initializes the component.
     /// - Parameters:
@@ -71,134 +56,133 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
         self.lookupProvider = lookupProvider
         self.completionHandler = completionHandler
         self.localizationParameters = localizationParameters
+        self.shouldDismissOnSearchDismissal = prefillAddress == nil
     }
     
-    internal lazy var searchResultsViewController: ListViewController = {
-        let searchResultsViewController = ListViewController(style: style) // TODO: Make sure styling works
-        searchResultsViewController.delegate = self
-        return searchResultsViewController
+    // MARK: ViewControllers
+    
+    private lazy var navigationController: UINavigationController = {
+        UINavigationController(
+            rootViewController: prefillAddress == nil ? searchController : securedViewController
+        )
     }()
     
-    internal lazy var formViewController: FormViewController = {
-        let formViewController = FormViewController(style: style)
-        formViewController.localizationParameters = localizationParameters
-        formViewController.title = "Billing Address"
-        formViewController.delegate = self
-        
-        formViewController.append(searchButtonItem)
-        formViewController.append(billingAddressItem) // TODO: Attach the billing address item closer to the search button
-
-        return formViewController
-    }()
-    
-    internal lazy var searchButtonItem: FormSearchButtonItem = {
-        
-        FormSearchButtonItem(
-            placeholder: "Search your address",
-            style: style // TODO: Confirm that the styling actually works as expected
-        ) { [weak self] in
-            guard let self else { return }
-            showAddressSearch(
-                in: viewController as? UINavigationController,
-                animated: true
-            )
+    private var securedViewController: SecuredViewController {
+        let securedViewController = SecuredViewController(
+            child: formViewController,
+            style: style
+        )
+        securedViewController.navigationItem.leftBarButtonItem = .init(
+            barButtonSystemItem: .cancel, // TODO: Localization & Styling
+            target: self,
+            action: #selector(cancelTapped)
+        )
+        securedViewController.navigationItem.rightBarButtonItem = .init(
+            barButtonSystemItem: .done, // TODO: Localization & Styling
+            target: self,
+            action: #selector(doneTapped)
+        )
+        if #available(iOS 13.0, *) {
+            securedViewController.isModalInPresentation = true
         }
-    }()
+        return securedViewController
+    }
     
-    private func showAddressSearch(
-        in navigationController: UINavigationController?, // TODO: Feels weird to pass a navigation controller here
-        animated: Bool
-    ) {
+    private var searchController: AsyncSearchViewController {
+        
+        let resultProvider: AsyncSearchViewController.ResultProvider = { [weak self] searchTerm, resultHandler in
+            self?.lookupProvider(searchTerm) { [weak self] results in
+                guard let self else { return }
+                resultHandler(results.map(listItem(for:)))
+            }
+        }
+        
         let searchController = AsyncSearchViewController(
             style: style,
             searchBarPlaceholder: "Search your address",
-            resultProvider: { [weak self] searchTerm, resultHandler in
-                self?.lookupProvider(searchTerm) { [weak self] results in
-                    guard let self else { return }
-                    resultHandler(results.map(listItem(for:)))
-                }
-            }
+            resultProvider: resultProvider
         )
         
-        searchController.title = formViewController.title
-        searchController.navigationItem.hidesBackButton = true
+        searchController.title = "Billing Address"
         searchController.navigationItem.rightBarButtonItem = .init(
-            barButtonSystemItem: .cancel, // TODO: Localization
+            barButtonSystemItem: .cancel, // TODO: Localization & Styling
             target: self,
             action: #selector(dismissSearchTapped)
         )
         
-        let transitionToSearch: () -> Void = {
-            navigationController?.pushViewController(searchController, animated: false)
-        }
-        
-        if animated {
-            UIView.transition(
-                with: viewController.view,
-                duration: 0.2,
-                options: .transitionCrossDissolve,
-                animations: transitionToSearch
-            )
-        } else {
-            transitionToSearch()
-        }
+        return searchController
     }
     
     private func listItem(for address: PostalAddress) -> ListItem {
         .init(
             title: address.formattedStreet,
-            subtitle: address.formattedLocation(using: localizationParameters),
-            selectionHandler: { [weak self] in
-                guard let self else { return }
-                billingAddressItem.value = address
-                dismissSearchTapped()
-            }
-        )
+            subtitle: address.formattedLocation(using: localizationParameters)
+        ) { [weak self] in
+            self?.showForm(with: address)
+        }
     }
     
-    internal lazy var billingAddressItem: FormAddressItem = {
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "billingAddress")
-        let item = FormAddressItem(
-            initialCountry: initialCountry,
-            style: style.addressStyle,
+    internal lazy var formViewController: AddressLookupFormViewController = {
+        AddressLookupFormViewController(
+            formStyle: style,
             localizationParameters: localizationParameters,
-            identifier: identifier,
-            supportedCountryCodes: supportedCountryCodes,
-            addressViewModelBuilder: DefaultAddressViewModelBuilder() // TODO: Make this injectable!
-        )
-        prefillAddress.map { item.value = $0 }
-        item.style.backgroundColor = UIColor.Adyen.lightGray
-        item.title = nil
-        return item
+            initialCountry: initialCountry,
+            prefillAddress: prefillAddress,
+            supportedCountryCodes: supportedCountryCodes
+        ) { [weak self] in
+            self?.showSearch()
+        }
     }()
-    
-    @objc
-    private func dismissSearchTapped() {
-        UIView.transition(with: viewController.view, duration: 0.2, options: .transitionCrossDissolve) { [weak self] in
-            guard let self else { return }
+}
 
-            (viewController as? UINavigationController)?.popToRootViewController(animated: false)
-        }
+// MARK: - Action Handling
+
+@objc
+private extension AddressLookupComponent {
+    
+    func dismissSearchTapped() {
+        if shouldDismissOnSearchDismissal { return cancelTapped() }
+        showForm(with: prefillAddress)
     }
     
-    @objc
-    private func doneTapped() {
-        if formViewController.validate() {
-            completionHandler(billingAddressItem.value)
-        }
+    func doneTapped() {
+        guard formViewController.validate() else { return }
+        completionHandler(formViewController.billingAddressItem.value)
     }
     
-    @objc
-    private func cancelTapped() {
+    func cancelTapped() {
         // TODO: Implement stuff in a delegate
         viewController.dismiss(animated: true)
     }
+}
+
+// MARK: - Navigation
+
+private extension AddressLookupComponent {
+
+    private func showForm(with address: PostalAddress?) {
+        address.map { formViewController.billingAddressItem.value = $0 }
+        show(viewController: securedViewController)
+        shouldDismissOnSearchDismissal = false
+    }
     
-    deinit {
-        // TODO: Make sure that everything get's released properly
-        print("☠️ \(String(describing: self))")
+    private func showSearch() {
+        prefillAddress = formViewController.billingAddressItem.value // Storing the value as the form resets when it disappears
+        show(viewController: searchController)
+    }
+    
+    private func show(viewController: UIViewController) {
+        UIView.transition(
+            with: navigationController.view,
+            duration: 0.2,
+            options: .transitionCrossDissolve
+        ) {
+            self.navigationController.viewControllers = [viewController]
+        }
     }
 }
+
+// MARK: - ViewControllerDelegate
 
 @_spi(AdyenInternal)
 extension AddressLookupComponent: ViewControllerDelegate {

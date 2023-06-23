@@ -102,6 +102,7 @@
 		8140A3742A3317F700896403 /* AddressLookupComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8140A3732A3317F700896403 /* AddressLookupComponent.swift */; };
 		8140A3762A3327B500896403 /* AdyenComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9175E55259393E800D653BE /* AdyenComponents.framework */; };
 		8196F8BC2A2F7255007046B7 /* AdyenSdkVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8196F8BB2A2F7255007046B7 /* AdyenSdkVersion.swift */; };
+		81BA08332A45D7C100308160 /* AddressLookupFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08322A45D7C100308160 /* AddressLookupFormViewController.swift */; };
 		81C4005D2A3A085D007EC51C /* AsyncSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C4005C2A3A085D007EC51C /* AsyncSearchViewController.swift */; };
 		81C400602A3A0AF3007EC51C /* AsyncSearchViewController+EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C4005F2A3A0AF3007EC51C /* AsyncSearchViewController+EmptyView.swift */; };
 		81C400642A3B0C58007EC51C /* FormSearchButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C400632A3B0C58007EC51C /* FormSearchButtonItem.swift */; };
@@ -1243,6 +1244,7 @@
 		5AF8CD4C26691D3A00102339 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		8140A3732A3317F700896403 /* AddressLookupComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupComponent.swift; sourceTree = "<group>"; };
 		8196F8BB2A2F7255007046B7 /* AdyenSdkVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSdkVersion.swift; sourceTree = "<group>"; };
+		81BA08322A45D7C100308160 /* AddressLookupFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupFormViewController.swift; sourceTree = "<group>"; };
 		81C4005C2A3A085D007EC51C /* AsyncSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncSearchViewController.swift; sourceTree = "<group>"; };
 		81C4005F2A3A0AF3007EC51C /* AsyncSearchViewController+EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AsyncSearchViewController+EmptyView.swift"; sourceTree = "<group>"; };
 		81C400632A3B0C58007EC51C /* FormSearchButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSearchButtonItem.swift; sourceTree = "<group>"; };
@@ -2383,6 +2385,7 @@
 			isa = PBXGroup;
 			children = (
 				8140A3732A3317F700896403 /* AddressLookupComponent.swift */,
+				81BA08322A45D7C100308160 /* AddressLookupFormViewController.swift */,
 			);
 			path = "Address Lookup";
 			sourceTree = "<group>";
@@ -2403,8 +2406,8 @@
 				81C400662A3B0D8F007EC51C /* FormSearchButtonItemView.swift */,
 			);
 			path = SearchButton;
-            sourceTree = "<group>";
-        };
+			sourceTree = "<group>";
+		};
 		81C4006E2A4347F6007EC51C /* Address */ = {
 			isa = PBXGroup;
 			children = (
@@ -6471,6 +6474,7 @@
 				C9D8EBA02745556B006D8CA1 /* BACSDirectDebitDetails.swift in Sources */,
 				E7D874F327DF5CDC00D3C00A /* ApplePayComponentError.swift in Sources */,
 				00F621C027EB153400C04097 /* AtomeDetails.swift in Sources */,
+				81BA08332A45D7C100308160 /* AddressLookupFormViewController.swift in Sources */,
 				F9175E8B259394E100D653BE /* SEPADirectDebitComponent.swift in Sources */,
 				5A15D589264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift in Sources */,
 				F9175E8A259394E100D653BE /* SEPADirectDebitDetails.swift in Sources */,
