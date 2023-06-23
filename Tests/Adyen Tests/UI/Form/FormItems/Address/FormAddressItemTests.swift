@@ -9,7 +9,12 @@ import XCTest
 
 class FormAddressItemTests: XCTestCase {
 
-    func testCountrySelectItemUpdate() throws {
+    override func tearDown() {
+        super.tearDown()
+        AdyenAssertion.listener = nil
+    }
+    
+    func testCountryPickerItemUpdate() throws {
         
         let formAddressItem = FormAddressItem(
             initialCountry: "NL",
@@ -18,9 +23,30 @@ class FormAddressItemTests: XCTestCase {
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
-        XCTAssertEqual(formAddressItem.countrySelectItem.value.identifier, "NL")
+        XCTAssertEqual(formAddressItem.countryPickerItem.value.identifier, "NL")
         
         formAddressItem.value = .init(country: "US")
-        XCTAssertEqual(formAddressItem.countrySelectItem.value.identifier, "US")
+        XCTAssertEqual(formAddressItem.countryPickerItem.value.identifier, "US")
+    }
+    
+    func testCountryPickerItemUpdateUnsupportedCountry() throws {
+        
+        let formAddressItem = FormAddressItem(
+            initialCountry: "NL",
+            style: .init(),
+            supportedCountryCodes: ["NL", "US"],
+            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+        )
+        
+        let expectation = XCTestExpectation(description: "Setting unsupported country should fail")
+        
+        AdyenAssertion.listener = { assertion in
+            XCTAssertEqual(assertion, "The provided country 'XX' is not supported per configuration.")
+            expectation.fulfill()
+        }
+        
+        formAddressItem.value = .init(country: "XX")
+        
+        wait(for: [expectation])
     }
 }
