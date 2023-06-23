@@ -77,7 +77,7 @@ internal final class DARegistrationViewController: UIViewController {
                 self?.registrationView.progressText.text = self?.timeLeft(timeInterval: $0)
             },
             onExpiration: { [weak self] in
-                self?.firstButtonTapped()
+                self?.secondButtonTapped()
             }
         )
         timeoutTimer?.startTimer()

@@ -113,7 +113,7 @@ internal final class DAApprovalViewController: UIViewController {
                 self?.approvalView.progressText.text = self?.timeLeft(timeInterval: $0)
             },
             onExpiration: { [weak self] in
-                self?.firstButtonTapped()
+                self?.secondButtonTapped()
             }
         )
         timeoutTimer?.startTimer()
