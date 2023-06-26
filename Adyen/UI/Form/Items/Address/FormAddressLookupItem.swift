@@ -8,13 +8,11 @@ import Foundation
 
 /// An address form item for address lookup.
 @_spi(AdyenInternal)
-public final class FormAddressLookupItem: FormValueItem<PostalAddress?, FormTextItemStyle>, AdyenObserver, ValidatableFormItem, Hidable {
-    
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
-    
-    public let localizationParameters: LocalizationParameters?
+public final class FormAddressLookupItem: FormValueDetailItem<PostalAddress?> {
     
     private var initialCountry: String
+    
+    private let localizationParameters: LocalizationParameters?
     
     @_spi(AdyenInternal)
     public var addressViewModel: AddressViewModel {
@@ -31,11 +29,9 @@ public final class FormAddressLookupItem: FormValueItem<PostalAddress?, FormText
     override public var value: PostalAddress? {
         didSet {
             updateValidationFailureMessage()
+            updateFormattedValue()
         }
     }
-    
-    /// A closure that will be invoked when the item is selected.
-    public var selectionHandler: (() -> Void)?
 
     /// Initializes the split text item.
     /// - Parameters:
@@ -54,13 +50,20 @@ public final class FormAddressLookupItem: FormValueItem<PostalAddress?, FormText
         addressViewModelBuilder: AddressViewModelBuilder
     ) {
         self.initialCountry = initialCountry
-        self.localizationParameters = localizationParameters
         self.addressViewModelBuilder = addressViewModelBuilder
-        super.init(value: prefillAddress, style: style.textField)
+        self.localizationParameters = localizationParameters
+        
+        super.init(
+            value: prefillAddress,
+            style: style.textField,
+            placeholder: localizedString(.billingAddressSectionTitle, localizationParameters) // TODO: Use different key for customizability
+        )
+        
         self.identifier = identifier
         self.title = localizedString(.billingAddressSectionTitle, localizationParameters)
         
         updateValidationFailureMessage()
+        updateFormattedValue()
     }
     
     // MARK: - Public
@@ -69,20 +72,23 @@ public final class FormAddressLookupItem: FormValueItem<PostalAddress?, FormText
         builder.build(with: self)
     }
     
-    /// Resets the item's value to an empty `PostalAddress`.
-    public func reset() {
-        value = PostalAddress()
-    }
-
-    public func updateValidationFailureMessage() {
-        // TODO: Localization
-        validationFailureMessage = (value != nil) ? "Invalid Address" : "Address required"
-    }
+    // MARK: - ValidatableFormItem
     
-    @AdyenObservable(nil) public var validationFailureMessage: String?
-    
-    public func isValid() -> Bool {
+    override public func isValid() -> Bool {
         guard let address = value else { return false }
         return address.satisfies(requiredFields: addressViewModel.requiredFields)
+    }
+}
+
+// MARK: - Convenience
+
+private extension FormAddressLookupItem {
+    
+    func updateValidationFailureMessage() {
+        validationFailureMessage = (value != nil) ? "Invalid Address" : "Address required" // TODO: Localization
+    }
+    
+    func updateFormattedValue() {
+        formattedValue = value?.formatted(using: localizationParameters)
     }
 }
