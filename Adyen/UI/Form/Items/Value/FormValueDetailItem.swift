@@ -15,6 +15,7 @@ open class FormValueDetailItem<ValueType: Equatable>: FormValueItem<ValueType, F
     /// A closure that will be invoked when the item is selected.
     public var selectionHandler: (() -> Void)?
     
+    /// The formatted value to show in the view
     @AdyenObservable(nil) public var formattedValue: String?
     
     public init(
@@ -27,9 +28,12 @@ open class FormValueDetailItem<ValueType: Equatable>: FormValueItem<ValueType, F
         super.init(value: value, style: style)
     }
     
-    // MARK: - ValidatableFormItem
+    // MARK: ValidatableFormItem
     
     @AdyenObservable(nil) public var validationFailureMessage: String?
     
-    public func isValid() -> Bool { true }
+    public func isValid() -> Bool {
+        AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: self))'")
+        return false
+    }
 }
