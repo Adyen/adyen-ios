@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,13 +8,18 @@
 import Adyen3DS2
 import Foundation
 
+internal enum ThreeDS2ActionHandlerError: Error {
+    case cancellation(AdditionalDetails)
+    case underlyingError(Error)
+}
+
 internal protocol AnyThreeDS2ActionHandler {
 
     func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
-                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void)
+                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void)
 
     func handle(_ challengeAction: ThreeDS2ChallengeAction,
-                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void)
+                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void)
     
     var threeDSRequestorAppURL: URL? { get set }
 }

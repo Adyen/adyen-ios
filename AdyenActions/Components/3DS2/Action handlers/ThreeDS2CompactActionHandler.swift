@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -64,7 +64,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
     /// - Parameter completionHandler: The completion closure.
     internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void) {
         let event = Analytics.Event(component: "\(threeDS2EventName).fingerprint",
                                     flavor: _isDropIn ? .dropin : .components,
                                     environment: context.apiContext.environment)
@@ -72,10 +72,16 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
             switch result {
             case let .success(encodedFingerprint):
                 self?.fingerprintSubmitter.submit(fingerprint: encodedFingerprint,
-                                                  paymentData: fingerprintAction.paymentData,
-                                                  completionHandler: completionHandler)
+                                                  paymentData: fingerprintAction.paymentData) { result in
+                    switch result {
+                    case let .success(threeDS2Result):
+                        completionHandler(.success(threeDS2Result))
+                    case let .failure(error):
+                        completionHandler(.failure(.underlyingError(error)))
+                    }
+                }
             case let .failure(error):
-                completionHandler(.failure(error))
+                completionHandler(.failure(.underlyingError(error)))
             }
         }
     }
@@ -87,7 +93,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     /// - Parameter challengeAction: The challenge action as received from the Checkout API.
     /// - Parameter completionHandler: The completion closure.
     internal func handle(_ challengeAction: ThreeDS2ChallengeAction,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void) {
         let event = Analytics.Event(component: "\(threeDS2EventName).challenge",
                                     flavor: _isDropIn ? .dropin : .components,
                                     environment: context.apiContext.environment)
@@ -96,13 +102,18 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
             case let .success(result):
                 self?.handle(result, completionHandler: completionHandler)
             case let .failure(error):
-                completionHandler(.failure(error))
+                switch error {
+                case let .cancellationAction(threeDSResult):
+                    completionHandler(.failure(.cancellation(ThreeDS2Details.challengeResult(threeDSResult))))
+                default:
+                    completionHandler(.failure(.underlyingError(error)))
+                }
             }
         }
     }
 
     private func handle(_ threeDSResult: ThreeDSResult,
-                        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+                        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void) {
         let additionalDetails = ThreeDS2Details.completed(threeDSResult)
         completionHandler(.success(.details(additionalDetails)))
     }

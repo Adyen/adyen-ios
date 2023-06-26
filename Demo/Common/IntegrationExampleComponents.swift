@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -281,7 +281,17 @@ extension IntegrationExample: PaymentComponentDelegate {
 extension IntegrationExample: ActionComponentDelegate {
 
     internal func didFail(with error: Error, from component: ActionComponent) {
-        finish(with: error)
+        switch error {
+        case let ThreeDS2Component.Error.challengeCancelled(componentData):
+            let request = PaymentDetailsRequest(
+                details: componentData.details,
+                paymentData: nil,
+                merchantAccount: ConfigurationConstants.current.merchantAccount
+            )
+            apiClient.perform(request, completionHandler: paymentResponseHandler)
+        default:
+            finish(with: error)
+        }
     }
 
     internal func didComplete(from component: ActionComponent) {

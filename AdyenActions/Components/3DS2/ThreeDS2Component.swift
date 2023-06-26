@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -134,11 +134,18 @@ public final class ThreeDS2Component: ActionComponent {
         switch threeDS2Action {
         case let .fingerprint(fingerprintAction):
             threeDS2CompactFlowHandler.handle(fingerprintAction) { [weak self] result in
-                self?.didReceive(result, paymentData: nil)
+                self?.didReceive(result.mapError { $0 }, paymentData: nil)
             }
         case let .challenge(challengeAction):
             threeDS2CompactFlowHandler.handle(challengeAction) { [weak self] result in
-                self?.didReceive(result, paymentData: nil)
+                self?.didReceive(result.mapError {
+                    switch $0 {
+                    case let .cancellation(threeDS2Result):
+                        return ThreeDS2Component.Error.challengeCancelled(ActionComponentData(details: threeDS2Result, paymentData: nil))
+                    default:
+                        return $0
+                    }
+                }, paymentData: nil)
             }
         }
     }
@@ -150,7 +157,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
     public func handle(_ fingerprintAction: ThreeDS2FingerprintAction) {
         threeDS2ClassicFlowHandler.handle(fingerprintAction) { [weak self] result in
-            self?.didReceive(result, paymentData: fingerprintAction.paymentData)
+            self?.didReceive(result.mapError { $0 }, paymentData: fingerprintAction.paymentData)
         }
     }
     
@@ -161,7 +168,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// - Parameter challengeAction: The challenge action as received from the Checkout API.
     public func handle(_ challengeAction: ThreeDS2ChallengeAction) {
         threeDS2ClassicFlowHandler.handle(challengeAction) { [weak self] result in
-            self?.didReceive(result, paymentData: challengeAction.paymentData)
+            self?.didReceive(result.mapError { $0 }, paymentData: challengeAction.paymentData)
         }
     }
     
@@ -271,7 +278,8 @@ extension ThreeDS2Component {
 
         /// Indicates that the Checkout API returned an unexpected `Action` during processing the 3DS2 flow.
         case unexpectedAction
-
+        
+        case challengeCancelled(ActionComponentData)
     }
 
 }

@@ -15,6 +15,13 @@ extension NSError {
     }
 }
 
+internal enum ThreeDS2CoreActionHandlerError: Error {
+    case cancellationAction(ThreeDSResult)
+    case underlyingError(Error)
+    case unknown(Error)
+    case missingTransaction
+}
+
 internal protocol AnyThreeDS2CoreActionHandler: Component {
     var threeDSRequestorAppURL: URL? { get set }
     
@@ -24,11 +31,11 @@ internal protocol AnyThreeDS2CoreActionHandler: Component {
     
     func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
                 event: Analytics.Event,
-                completionHandler: @escaping (Result<String, Error>) -> Void)
+                completionHandler: @escaping (Result<String, ThreeDS2CoreActionHandlerError>) -> Void)
     
     func handle(_ challengeAction: ThreeDS2ChallengeAction,
                 event: Analytics.Event,
-                completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void)
+                completionHandler: @escaping (Result<ThreeDSResult, ThreeDS2CoreActionHandlerError>) -> Void)
 }
 
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
@@ -68,7 +75,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     /// - Parameter completionHandler: The completion closure.
     internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
                          event: Analytics.Event,
-                         completionHandler: @escaping (Result<String, Error>) -> Void) {
+                         completionHandler: @escaping (Result<String, ThreeDS2CoreActionHandlerError>) -> Void) {
         Analytics.sendEvent(event)
 
         createFingerprint(fingerprintAction) { [weak self] result in
@@ -76,13 +83,13 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
             case let .success(encodedFingerprint):
                 completionHandler(.success(encodedFingerprint))
             case let .failure(error):
-                self?.didFail(with: error, completionHandler: completionHandler)
+                self?.didFail(with: .underlyingError(error), completionHandler: completionHandler)
             }
         }
     }
 
     private func createFingerprint(_ action: ThreeDS2FingerprintAction,
-                                   completionHandler: @escaping (Result<String, Error>) -> Void) {
+                                   completionHandler: @escaping (Result<String, ThreeDS2CoreActionHandlerError>) -> Void) {
         do {
             let token = try Coder.decodeBase64(action.fingerprintToken) as ThreeDS2Component.FingerprintToken
 
@@ -96,11 +103,11 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                                      completionHandler: completionHandler)
             }
         } catch {
-            didFail(with: error, completionHandler: completionHandler)
+            didFail(with: .underlyingError(error), completionHandler: completionHandler)
         }
     }
 
-    private func getFingerprint(messageVersion: String, completionHandler: @escaping (Result<String, Error>) -> Void) {
+    private func getFingerprint(messageVersion: String, completionHandler: @escaping (Result<String, ThreeDS2CoreActionHandlerError>) -> Void) {
         do {
             switch transaction(messageVersion: messageVersion) {
             case let .success(transaction):
@@ -114,7 +121,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                 completionHandler(.success(encodedError))
             }
         } catch {
-            didFail(with: error, completionHandler: completionHandler)
+            didFail(with: .underlyingError(error), completionHandler: completionHandler)
         }
     }
 
@@ -136,9 +143,9 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     /// - Parameter completionHandler: The completion closure.
     internal func handle(_ challengeAction: ThreeDS2ChallengeAction,
                          event: Analytics.Event,
-                         completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
+                         completionHandler: @escaping (Result<ThreeDSResult, ThreeDS2CoreActionHandlerError>) -> Void) {
         guard let transaction = transaction else {
-            return didFail(with: ThreeDS2Component.Error.missingTransaction, completionHandler: completionHandler)
+            return didFail(with: .missingTransaction, completionHandler: completionHandler)
         }
 
         Analytics.sendEvent(event)
@@ -147,7 +154,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         do {
             token = try Coder.decodeBase64(challengeAction.challengeToken) as ThreeDS2Component.ChallengeToken
         } catch {
-            return didFail(with: error, completionHandler: completionHandler)
+            return didFail(with: .underlyingError(error), completionHandler: completionHandler)
         }
 
         let challengeParameters = ADYChallengeParameters(challengeToken: token,
@@ -168,38 +175,46 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     /// For challenge cancelled we return the control back to the merchant immediately as an error.
     private func processChallengeError(error: Error?,
                                        challengeAction: ThreeDS2ChallengeAction,
-                                       completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
+                                       completionHandler: @escaping (Result<ThreeDSResult, ThreeDS2CoreActionHandlerError>) -> Void) {
         if let error = error as? NSError {
             switch (error.domain, error.code) {
             case (ADYRuntimeErrorDomain, Int(ADYRuntimeErrorCode.challengeCancelled.rawValue)):
-                self.didFail(with: error,
-                             completionHandler: completionHandler)
+                do {
+                    let cancellationResult = try ThreeDSResult(authorizationToken: challengeAction.authorisationToken,
+                                                               threeDS2SDKError: error.base64Representation())
+                    let cancellationError = ThreeDS2CoreActionHandlerError.cancellationAction(cancellationResult)
+                    self.didFail(with: cancellationError,
+                                 completionHandler: completionHandler)
+                } catch {
+                    self.didFail(with: .unknown(UnknownError(errorDescription: "Unable to create ThreeDSResult on error.")),
+                                 completionHandler: completionHandler)
+                }
             default:
                 self.didFinish(threeDS2SDKError: error.base64Representation(),
                                authorizationToken: challengeAction.authorisationToken,
                                completionHandler: completionHandler)
             }
         } else {
-            self.didFail(with: UnknownError(errorDescription: "Both error and result are nil, this should never happen."),
+            self.didFail(with: .unknown(UnknownError(errorDescription: "Both error and result are nil, this should never happen.")),
                          completionHandler: completionHandler)
         }
     }
     
     private func didFinish(threeDS2SDKError: String,
                            authorizationToken: String?,
-                           completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
+                           completionHandler: @escaping (Result<ThreeDSResult, ThreeDS2CoreActionHandlerError>) -> Void) {
         do {
             let threeDSResult = try ThreeDSResult(authorizationToken: authorizationToken, threeDS2SDKError: threeDS2SDKError)
             transaction = nil
             completionHandler(.success(threeDSResult))
         } catch {
-            completionHandler(.failure(error))
+            completionHandler(.failure(.underlyingError(error)))
         }
     }
 
     private func didFinish(with challengeResult: AnyChallengeResult,
                            authorizationToken: String?,
-                           completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
+                           completionHandler: @escaping (Result<ThreeDSResult, ThreeDS2CoreActionHandlerError>) -> Void) {
         do {
             let threeDSResult = try ThreeDSResult(from: challengeResult,
                                                   delegatedAuthenticationSDKOutput: nil,
@@ -209,12 +224,12 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
             transaction = nil
             completionHandler(.success(threeDSResult))
         } catch {
-            completionHandler(.failure(error))
+            completionHandler(.failure(.underlyingError(error)))
         }
     }
     
-    private func didFail<R>(with error: Error,
-                            completionHandler: @escaping (Result<R, Error>) -> Void) {
+    private func didFail<R>(with error: ThreeDS2CoreActionHandlerError,
+                            completionHandler: @escaping (Result<R, ThreeDS2CoreActionHandlerError>) -> Void) {
         transaction = nil
 
         completionHandler(.failure(error))
