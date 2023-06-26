@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,6 +10,26 @@ import Foundation
 @_spi(AdyenInternal)
 public class ListItem: FormItem {
 
+    public struct Icon: Hashable {
+        /// The url of the icon image
+        public let url: URL?
+        /// Whether or not the icon should be styled/altered
+        public let canBeModified: Bool
+        
+        /// Initializes the icon of the `ListItem`
+        ///
+        /// - Parameters:
+        ///   - url: The url of the icon image
+        ///   - canBeModified: Whether or not the icon should be styled/altered
+        public init(
+            url: URL?,
+            canBeModified: Bool = true
+        ) {
+            self.url = url
+            self.canBeModified = canBeModified
+        }
+    }
+    
     public var subitems: [FormItem] = []
     
     /// The list item style.
@@ -21,8 +41,8 @@ public class ListItem: FormItem {
     /// The subtitle of the item.
     public var subtitle: String?
     
-    /// A URL to an image to display.
-    public var imageURL: URL?
+    /// The icon to display
+    public var icon: Icon?
 
     /// The trailing text of the item.
     public var trailingText: String?
@@ -33,41 +53,40 @@ public class ListItem: FormItem {
     /// The handler to invoke when the item is deleted.
     public var deletionHandler: ((IndexPath, @escaping Completion<Bool>) -> Void)?
     
-    /// An identifier for the `ListItem`,
-    /// that is set to the `ListItemView.accessibilityIdentifier`.
+    /// The `accessibilityIdentifier` to be used on the `ListItem`
     public var identifier: String?
-
-    /// The flag to indicate if an icon is a custom image that should not be tempered.
-    public let canModifyIcon: Bool
     
     /// Initializes the list item.
     ///
     /// - Parameters:
     ///   - title: The title of the item.
-    ///   - imageURL: A URL to an image to display.
+    ///   - subtitle: The subtitle of the item.
+    ///   - icon: The icon of the item.
     ///   - trailingText: The trailing text.
     ///   - style: The list item style.
-    ///                               should be shown in the item's cell.
+    ///   - identifier: The `accessibilityIdentifier` to be used on the `ListItem`
     ///   - selectionHandler: The closure to execute when an item is selected.
-    ///   - canModifyIcon: The flag to indicate that image could be tampered.
-    public init(title: String,
-                imageURL: URL? = nil,
-                trailingText: String? = nil,
-                style: ListItemStyle = ListItemStyle(),
-                selectionHandler: (() -> Void)? = nil,
-                canModifyIcon: Bool = true) {
+    public init(
+        title: String,
+        subtitle: String? = nil,
+        icon: Icon? = nil,
+        trailingText: String? = nil,
+        style: ListItemStyle = ListItemStyle(),
+        identifier: String? = nil,
+        selectionHandler: (() -> Void)? = nil
+    ) {
         self.title = title
-        self.imageURL = imageURL
+        self.subtitle = subtitle
+        self.icon = icon
         self.trailingText = trailingText
         self.style = style
+        self.identifier = identifier
         self.selectionHandler = selectionHandler
-        self.canModifyIcon = canModifyIcon
     }
     
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
-    
 }
 
 // MARK: - Hashable & Equatable
@@ -77,12 +96,11 @@ extension ListItem: Hashable {
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(title)
-        hasher.combine(imageURL)
+        hasher.combine(icon)
         hasher.combine(trailingText)
     }
     
     public static func == (lhs: ListItem, rhs: ListItem) -> Bool {
-        lhs.title == rhs.title && lhs.imageURL == rhs.imageURL && lhs.trailingText == rhs.trailingText
+        lhs.title == rhs.title && lhs.icon == rhs.icon && lhs.trailingText == rhs.trailingText
     }
-    
 }
