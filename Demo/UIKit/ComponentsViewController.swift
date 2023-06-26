@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,16 +7,46 @@
 import SwiftUI
 import UIKit
 
-internal final class ComponentsViewController: UIViewController, Presenter {
+internal final class ComponentsViewController: UIViewController {
     
     private lazy var componentsView = ComponentsView()
 
-    private lazy var integrationExample: IntegrationExample = {
-        let integrationExample = IntegrationExample()
-        integrationExample.presenter = self
-        return integrationExample
+    private lazy var dropInExample: DropInExample = {
+        let dropIn = DropInExample()
+        dropIn.presenter = self
+        return dropIn
     }()
-    
+
+    private lazy var dropInAdvancedFlowExample: DropInAdvancedFlowExample = {
+        let dropInAdvancedFlow = DropInAdvancedFlowExample()
+        dropInAdvancedFlow.presenter = self
+        return dropInAdvancedFlow
+    }()
+
+    private lazy var cardComponentAdvancedFlowExample: CardComponentAdvancedFlowExample = {
+        let cardComponentAdvancedFlow = CardComponentAdvancedFlowExample()
+        cardComponentAdvancedFlow.presenter = self
+        return cardComponentAdvancedFlow
+    }()
+
+    private lazy var cardComponentExample: CardComponentExample = {
+        let cardComponentExample = CardComponentExample()
+        cardComponentExample.presenter = self
+        return cardComponentExample
+    }()
+
+    private lazy var applePayComponentAdvancedFlowExample: ApplePayComponentAdvancedFlowExample = {
+        let applePayComponentAdvancedFlow = ApplePayComponentAdvancedFlowExample()
+        applePayComponentAdvancedFlow.presenter = self
+        return applePayComponentAdvancedFlow
+    }()
+
+    private lazy var applePayComponentExample: ApplePayComponentExample = {
+        let applePayComponent = ApplePayComponentExample()
+        applePayComponentExample.presenter = self
+        return applePayComponentExample
+    }()
+
     // MARK: - View
     
     override internal func loadView() {
@@ -32,20 +62,12 @@ internal final class ComponentsViewController: UIViewController, Presenter {
                 ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
             ],
             [
-                ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
-                ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
-                ComponentsItem(title: "Online Banking PL", selectionHandler: presentOnlineBankingPolandComponent),
-                ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
-                ComponentsItem(title: "BACS Direct Debit", selectionHandler: presentBACSDirectDebitComponent),
-                ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent),
-                ComponentsItem(title: "Convenience Stores", selectionHandler: presentConvenienceStore)
+                ComponentsItem(title: "Card", selectionHandler: presentCardComponent)
             ],
             [
                 ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)
             ]
         ]
-        
-        requestInitialData()
         
         if #available(iOS 13.0.0, *) {
             addConfigurationButton()
@@ -56,82 +78,36 @@ internal final class ComponentsViewController: UIViewController, Presenter {
 
     internal func presentDropInComponent() {
         if componentsView.isUsingSession {
-            integrationExample.presentDropInComponentSession()
+            dropInExample.start()
         } else {
-            integrationExample.presentDropInComponent()
+            dropInAdvancedFlowExample.start()
         }
     }
+
+    // MARK: - Components
 
     internal func presentCardComponent() {
         if componentsView.isUsingSession {
-            integrationExample.presentCardComponentSession()
+            cardComponentExample.start()
         } else {
-            integrationExample.presentCardComponent()
-        }
-    }
-
-    internal func presentIdealComponent() {
-        if componentsView.isUsingSession {
-            integrationExample.presentIdealComponentSession()
-        } else {
-            integrationExample.presentIdealComponent()
-        }
-    }
-
-    internal func presentOnlineBankingPolandComponent() {
-        if componentsView.isUsingSession {
-            integrationExample.presentOnlineBankingPolandComponent()
-        } else {
-            integrationExample.presentOnlineBankingPolandComponentSession()
-        }
-    }
-
-    internal func presentSEPADirectDebitComponent() {
-        if componentsView.isUsingSession {
-            integrationExample.presentSEPADirectDebitComponentSession()
-        } else {
-            integrationExample.presentSEPADirectDebitComponent()
-        }
-    }
-
-    internal func presentBACSDirectDebitComponent() {
-        if componentsView.isUsingSession {
-            integrationExample.presentBACSDirectDebitComponentSession()
-        } else {
-            integrationExample.presentBACSDirectDebitComponent()
-        }
-    }
-
-    internal func presentMBWayComponent() {
-        if componentsView.isUsingSession {
-            integrationExample.presentMBWayComponentSession()
-        } else {
-            integrationExample.presentMBWayComponent()
+            cardComponentAdvancedFlowExample.start()
         }
     }
 
     internal func presentApplePayComponent() {
         if componentsView.isUsingSession {
-            integrationExample.presentApplePayComponentSession()
+            applePayComponentExample.start()
         } else {
-            integrationExample.presentApplePayComponent()
+            applePayComponentAdvancedFlowExample.start()
         }
     }
 
-    internal func presentConvenienceStore() {
-        if componentsView.isUsingSession {
-            integrationExample.presentConvenienceStoreSession()
-        } else {
-            integrationExample.presentConvenienceStore()
-        }
-    }
+}
+
+// MARK: - Presenter
+
+extension ComponentsViewController: PresenterExampleProtocol {
     
-    internal func requestInitialData() {
-        integrationExample.requestInitialData()
-    }
-
-    // MARK: - Presenter
-
     internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
@@ -150,6 +126,16 @@ internal final class ComponentsViewController: UIViewController, Presenter {
         alertController.addAction(UIAlertAction(title: "OK", style: .default))
 
         present(viewController: alertController, completion: nil)
+    }
+    
+    internal func showLoadingIndicator() {
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        componentsView.showsLoadingIndicator = true
+    }
+    
+    internal func hideLoadingIndicator() {
+        navigationItem.rightBarButtonItem?.isEnabled = true
+        componentsView.showsLoadingIndicator = false
     }
 
     internal func present(viewController: UIViewController, completion: (() -> Void)?) {
@@ -203,7 +189,6 @@ extension ComponentsViewController {
     private func onConfigurationClosed(_ configuration: Configuration) {
         ConfigurationConstants.current = configuration
         dismiss(completion: nil)
-        requestInitialData()
     }
     
 }
