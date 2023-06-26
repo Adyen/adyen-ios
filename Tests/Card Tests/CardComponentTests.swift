@@ -366,7 +366,7 @@ class CardComponentTests: XCTestCase {
         wait(for: .milliseconds(300))
         
         XCTAssertEqual(switchView.onTintColor, .systemYellow)
-        XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!.cgColor, UIColor.systemYellow.cgColor)
+        XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .systemYellow)
         XCTAssertEqual(securityCodeItemView!.separatorView.backgroundColor!.cgColor, UIColor.systemYellow.cgColor)
     }
 
