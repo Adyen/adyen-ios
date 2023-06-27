@@ -6,9 +6,10 @@
 
 import Foundation
 
-internal class FormValueDetailItemView<ValueType,ItemType: FormValueDetailItem<ValueType>>:
-    FormValueItemView<ValueType, FormTextItemStyle, ItemType> {
-    private var itemObserver: Observation?
+internal class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueItem<ValueType>>:
+    FormValidatableValueItemView<ValueType, ItemType> {
+    
+    override var accessibilityLabelView: UIView? { return valueLabel }
     
     internal required init(item: ItemType) {
         super.init(item: item)
@@ -19,7 +20,6 @@ internal class FormValueDetailItemView<ValueType,ItemType: FormValueDetailItem<V
         setupObservers()
         
         updateValueLabel(with: item.formattedValue)
-        updateValidationStatus()
     }
     
     // MARK: - Views
@@ -89,21 +89,7 @@ internal class FormValueDetailItemView<ValueType,ItemType: FormValueDetailItem<V
         return valueLabel
     }()
     
-    internal lazy var alertLabel: UILabel = {
-        let alertLabel = UILabel(style: item.style.title)
-        alertLabel.textColor = item.style.errorColor
-        alertLabel.isAccessibilityElement = false
-        alertLabel.numberOfLines = 0
-        alertLabel.text = item.validationFailureMessage
-        alertLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "alertLabel") }
-        alertLabel.isHidden = true
-        
-        return alertLabel
-    }()
-    
     // MARK: - Selection
-    
-    // TODO: Switch to a UIControl / UIButton instead as becoming first responser is also triggered when another form field finishes
     
     @objc
     private func selectionButtonTapped() {
@@ -113,16 +99,8 @@ internal class FormValueDetailItemView<ValueType,ItemType: FormValueDetailItem<V
     // MARK: - Convenience
     
     private func setupObservers() {
-        itemObserver = observe(item.publisher) { [weak self] _ in
-            self?.updateValidationStatus()
-        }
-        
         observe(item.$formattedValue) { [weak self] in
             self?.updateValueLabel(with: $0)
-        }
-        
-        observe(item.$validationFailureMessage) { [weak self] in
-            self?.alertLabel.text = $0
         }
     }
     
@@ -150,37 +128,5 @@ internal class FormValueDetailItemView<ValueType,ItemType: FormValueDetailItem<V
     private func configureConstraints() {
         selectionButton.adyen.anchor(inside: self)
         separatorView.bottomAnchor.constraint(equalTo: valueLabel.bottomAnchor, constant: 4).isActive = true
-    }
-    
-    // MARK: - Validation
-    
-    override public func validate() {
-        updateValidationStatus(forced: true)
-    }
-    
-    private func updateValidationStatus(forced: Bool = false) {
-        if !item.isValid() && forced {
-            hideAlertLabel(false)
-            highlightSeparatorView(color: item.style.errorColor)
-            titleLabel.textColor = item.style.errorColor
-            valueLabel.accessibilityLabel = item.validationFailureMessage
-        } else {
-            hideAlertLabel(true)
-            unhighlightSeparatorView()
-            titleLabel.textColor = defaultTitleColor
-            valueLabel.accessibilityLabel = item.title
-        }
-    }
-    
-    private func hideAlertLabel(_ hidden: Bool, animated: Bool = true) {
-        guard hidden || alertLabel.text != nil else { return }
-        alertLabel.adyen.hide(animationKey: "hide_alertLabel", hidden: hidden, animated: animated)
-    }
-    
-    internal func resetValidationStatus() {
-        hideAlertLabel(true, animated: false)
-        unhighlightSeparatorView()
-        titleLabel.textColor = defaultTitleColor
-        valueLabel.accessibilityLabel = item.title
     }
 }

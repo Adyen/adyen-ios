@@ -8,7 +8,7 @@ import Foundation
 
 /// An address form item for address lookup.
 @_spi(AdyenInternal)
-public final class FormAddressLookupItem: FormValueDetailItem<PostalAddress?> {
+public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?> {
     
     private var initialCountry: String
     

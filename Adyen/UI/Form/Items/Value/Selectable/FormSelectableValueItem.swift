@@ -7,7 +7,7 @@
 import Foundation
 
 @_spi(AdyenInternal)
-open class FormValueDetailItem<ValueType: Equatable>: FormValueItem<ValueType, FormTextItemStyle>, ValidatableFormItem {
+open class FormSelectableValueItem<ValueType: Equatable>: FormValidatableValueItem<ValueType> {
     
     /// The placeholder of the item.
     public let placeholder: String
@@ -26,14 +26,5 @@ open class FormValueDetailItem<ValueType: Equatable>: FormValueItem<ValueType, F
         self.placeholder = placeholder
         
         super.init(value: value, style: style)
-    }
-    
-    // MARK: ValidatableFormItem
-    
-    @AdyenObservable(nil) public var validationFailureMessage: String?
-    
-    public func isValid() -> Bool {
-        AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: self))'")
-        return false
     }
 }
