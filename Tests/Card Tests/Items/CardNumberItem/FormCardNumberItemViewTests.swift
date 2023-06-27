@@ -33,16 +33,8 @@ class FormCardNumberItemViewTests: XCTestCase {
     }
     
     func testCustomAccessoryViewWhenValueIsEmpty() {
-        let validationExpectation = XCTestExpectation(description: "Expect validator.isValid() to be called.")
-        validator.handleIsValid = { _ in
-            validationExpectation.fulfill()
-            return false
-        }
-        
         sut.isEditing = true
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
-        
-        wait(for: [validationExpectation], timeout: 5)
         
         if case .customView = sut.accessory {} else {
             XCTFail()

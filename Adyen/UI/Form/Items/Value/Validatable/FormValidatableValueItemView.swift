@@ -72,16 +72,25 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     }
     
     open func updateValidationStatus(forced: Bool = false) {
-        if !item.isValid(), forced {
+        
+        guard forced else {
+            hideAlertLabel(true)
+            isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
+            titleLabel.textColor = defaultTitleColor
+            accessibilityLabelView?.accessibilityLabel = item.title
+            return
+        }
+        
+        if item.isValid() {
+            hideAlertLabel(true)
+            highlightSeparatorView(color: tintColor)
+            titleLabel.textColor = tintColor
+            accessibilityLabelView?.accessibilityLabel = item.title
+        } else {
             hideAlertLabel(false)
             highlightSeparatorView(color: item.style.errorColor)
             titleLabel.textColor = item.style.errorColor
             accessibilityLabelView?.accessibilityLabel = item.validationFailureMessage
-        } else {
-            hideAlertLabel(true)
-            unhighlightSeparatorView()
-            titleLabel.textColor = defaultTitleColor
-            accessibilityLabelView?.accessibilityLabel = item.title
         }
     }
     
