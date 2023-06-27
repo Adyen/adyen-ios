@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// An validatable item in a form in which holds a generic value.
+/// A validatable item in a form in which holds a generic value.
 @_spi(AdyenInternal)
 open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueType, FormTextItemStyle>, ValidatableFormItem {
     

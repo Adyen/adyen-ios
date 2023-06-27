@@ -4,14 +4,16 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
+import UIKit
 
-internal class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueItem<ValueType>>:
+/// An abstract view representing a selectable value item.
+@_spi(AdyenInternal)
+open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueItem<ValueType>>:
     FormValidatableValueItemView<ValueType, ItemType> {
     
-    override var accessibilityLabelView: UIView? { return valueLabel }
+    override internal var accessibilityLabelView: UIView? { valueLabel }
     
-    internal required init(item: ItemType) {
+    public required init(item: ItemType) {
         super.init(item: item)
         
         addSubview(selectionButton)

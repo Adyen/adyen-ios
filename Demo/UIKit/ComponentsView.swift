@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -17,6 +17,9 @@ internal final class ComponentsView: UIView {
         tableView.anchor(inside: self)
         tableView.tableHeaderView = switchContainerView
         switchContainerView.bounds.size.height = 55
+        
+        addSubview(activityIndicator)
+        activityIndicator.anchor(inside: self)
     }
     
     @available(*, unavailable)
@@ -28,9 +31,43 @@ internal final class ComponentsView: UIView {
         sessionSwitch.isOn
     }
     
+    internal var showsLoadingIndicator: Bool {
+        get {
+            self.activityIndicator.isAnimating
+        }
+        set {
+            if newValue {
+                self.activityIndicator.startAnimating()
+            } else {
+                self.activityIndicator.stopAnimating()
+            }
+        }
+    }
+    
     // MARK: - Items
     
     internal var items = [[ComponentsItem]]()
+    
+    // MARK: - Loading
+    
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator: UIActivityIndicatorView
+        if #available(iOS 13.0, *) {
+            activityIndicator = UIActivityIndicatorView(style: .large)
+        } else {
+            activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        }
+        activityIndicator.hidesWhenStopped = true
+        
+        if #available(iOS 13.0, *) {
+            activityIndicator.color = .label
+            activityIndicator.backgroundColor = .systemGroupedBackground.withAlphaComponent(0.7)
+        } else {
+            activityIndicator.backgroundColor = .black.withAlphaComponent(0.3)
+        }
+        
+        return activityIndicator
+    }()
     
     // MARK: - Table View
     
@@ -77,7 +114,8 @@ internal final class ComponentsView: UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(switchStackView)
-        switchStackView.anchor(inside: view, with: UIEdgeInsets(top: 10, left: 20, bottom: -10, right: -20))
+        switchStackView.anchor(inside: view.layoutMarginsGuide,
+                               with: .init(top: 0, left: 20, bottom: 0, right: -20))
         return view
     }()
     

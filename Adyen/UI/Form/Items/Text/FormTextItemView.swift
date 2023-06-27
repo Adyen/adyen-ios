@@ -241,19 +241,16 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         let textFieldNotEmpty = !(textField.text ?? "").isEmpty
         
         // if validation check is allowed during editing, ignore editing check
-        let shouldValidate = item.allowsValidationWhileEditing || !isEditing
+        let forceShowValidationStatus = (forced || textFieldNotEmpty)
+            && (item.allowsValidationWhileEditing || !isEditing)
         
-        let forceShowValidationStatus = (forced || textFieldNotEmpty) && shouldValidate
-        
-        defer {
-            super.updateValidationStatus(forced: forceShowValidationStatus)
+        if forceShowValidationStatus {
+            accessory = item.isValid() ? .valid : .invalid
+        } else {
+            removeAccessoryIfNeeded()
         }
         
-        guard forceShowValidationStatus else {
-            return removeAccessoryIfNeeded()
-        }
-        
-        accessory = item.isValid() ? .valid : .invalid
+        super.updateValidationStatus(forced: forceShowValidationStatus)
     }
     
     public func notifyDelegateOfMaxLengthIfNeeded() {

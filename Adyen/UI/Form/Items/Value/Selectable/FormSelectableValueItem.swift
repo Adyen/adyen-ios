@@ -6,6 +6,7 @@
 
 import Foundation
 
+/// An selectable item in a form in which holds a generic value.
 @_spi(AdyenInternal)
 open class FormSelectableValueItem<ValueType: Equatable>: FormValidatableValueItem<ValueType> {
     

@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
+import UIKit
 
 /// An abstract view representing a validatable value item.
 @_spi(AdyenInternal)
