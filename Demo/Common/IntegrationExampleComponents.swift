@@ -281,17 +281,16 @@ extension IntegrationExample: PaymentComponentDelegate {
 extension IntegrationExample: ActionComponentDelegate {
 
     internal func didFail(with error: Error, from component: ActionComponent) {
-        switch error {
-        case let ThreeDS2Component.Error.challengeCancelled(componentData):
+        if case let ThreeDS2Component.Error.challengeCancelled(componentData) = error {
             let request = PaymentDetailsRequest(
                 details: componentData.details,
                 paymentData: nil,
                 merchantAccount: ConfigurationConstants.current.merchantAccount
             )
-            apiClient.perform(request, completionHandler: paymentResponseHandler)
-        default:
-            finish(with: error)
+            apiClient.perform(request) { _ in /* fire and forget this request.*/ }
         }
+        finish(with: error)
+        
     }
 
     internal func didComplete(from component: ActionComponent) {

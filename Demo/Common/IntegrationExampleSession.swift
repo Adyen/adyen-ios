@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,6 +21,12 @@ extension IntegrationExample: AdyenSessionDelegate {
     }
     
     func didFail(with error: Error, from component: Component, session: AdyenSession) {
+        switch error {
+        case let ThreeDS2Component.Error.challengeCancelled(actionComponentData):
+            print("BOB: How do we handle this case at point?")
+        default:
+            break
+        }
         setupSession()
         dismissAndShowAlert(false, error.localizedDescription)
     }
