@@ -4,17 +4,15 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
+import Foundation
 
-/// A view representing a value detail item.
+/// An abstract view representing a selectable value item.
 @_spi(AdyenInternal)
-open class FormValueDetailItemView<ValueType, ItemType: FormValueDetailItem<ValueType>>:
-    FormValueItemView<ValueType, FormTextItemStyle, ItemType> {
-    private var itemObserver: Observation?
+open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueItem<ValueType>>:
+    FormValidatableValueItemView<ValueType, ItemType> {
     
-    /// Initializes the value detail item view.
-    ///
-    /// - Parameter item: The item represented by the view.
+    override internal var accessibilityLabelView: UIView? { valueLabel }
+    
     public required init(item: ItemType) {
         super.init(item: item)
         
@@ -24,7 +22,6 @@ open class FormValueDetailItemView<ValueType, ItemType: FormValueDetailItem<Valu
         setupObservers()
         
         updateValueLabel(with: item.formattedValue)
-        updateValidationStatus()
     }
     
     // MARK: - Views
@@ -94,18 +91,6 @@ open class FormValueDetailItemView<ValueType, ItemType: FormValueDetailItem<Valu
         return valueLabel
     }()
     
-    internal lazy var alertLabel: UILabel = {
-        let alertLabel = UILabel(style: item.style.title)
-        alertLabel.textColor = item.style.errorColor
-        alertLabel.isAccessibilityElement = false
-        alertLabel.numberOfLines = 0
-        alertLabel.text = item.validationFailureMessage
-        alertLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "alertLabel") }
-        alertLabel.isHidden = true
-        
-        return alertLabel
-    }()
-    
     // MARK: - Selection
     
     @objc
@@ -116,16 +101,8 @@ open class FormValueDetailItemView<ValueType, ItemType: FormValueDetailItem<Valu
     // MARK: - Convenience
     
     private func setupObservers() {
-        itemObserver = observe(item.publisher) { [weak self] _ in
-            self?.updateValidationStatus()
-        }
-        
         observe(item.$formattedValue) { [weak self] in
             self?.updateValueLabel(with: $0)
-        }
-        
-        observe(item.$validationFailureMessage) { [weak self] in
-            self?.alertLabel.text = $0
         }
     }
     
@@ -153,37 +130,5 @@ open class FormValueDetailItemView<ValueType, ItemType: FormValueDetailItem<Valu
     private func configureConstraints() {
         selectionButton.adyen.anchor(inside: self)
         separatorView.bottomAnchor.constraint(equalTo: valueLabel.bottomAnchor, constant: 4).isActive = true
-    }
-    
-    // MARK: - Validation
-    
-    override public func validate() {
-        updateValidationStatus(forced: true)
-    }
-    
-    private func updateValidationStatus(forced: Bool = false) {
-        if !item.isValid(), forced {
-            hideAlertLabel(false)
-            highlightSeparatorView(color: item.style.errorColor)
-            titleLabel.textColor = item.style.errorColor
-            valueLabel.accessibilityLabel = item.validationFailureMessage
-        } else {
-            hideAlertLabel(true)
-            unhighlightSeparatorView()
-            titleLabel.textColor = defaultTitleColor
-            valueLabel.accessibilityLabel = item.title
-        }
-    }
-    
-    private func hideAlertLabel(_ hidden: Bool, animated: Bool = true) {
-        guard hidden || alertLabel.text != nil else { return }
-        alertLabel.adyen.hide(animationKey: "hide_alertLabel", hidden: hidden, animated: animated)
-    }
-    
-    internal func resetValidationStatus() {
-        hideAlertLabel(true, animated: false)
-        unhighlightSeparatorView()
-        titleLabel.textColor = defaultTitleColor
-        valueLabel.accessibilityLabel = item.title
     }
 }

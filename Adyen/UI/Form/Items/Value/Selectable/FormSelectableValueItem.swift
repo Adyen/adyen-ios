@@ -5,11 +5,10 @@
 //
 
 import Foundation
-import UIKit
 
-/// An item in a form that holds a value and displays it in a formatted way
+/// An selectable item in a form in which holds a generic value.
 @_spi(AdyenInternal)
-open class FormValueDetailItem<ValueType: Equatable>: FormValueItem<ValueType, FormTextItemStyle>, ValidatableFormItem {
+open class FormSelectableValueItem<ValueType: Equatable>: FormValidatableValueItem<ValueType> {
     
     /// The placeholder of the item.
     public let placeholder: String
@@ -20,7 +19,6 @@ open class FormValueDetailItem<ValueType: Equatable>: FormValueItem<ValueType, F
     /// The formatted value to show in the view
     @AdyenObservable(nil) public var formattedValue: String?
     
-    /// Create new instance of FormValueDetailItem
     public init(
         value: ValueType,
         style: FormTextItemStyle,
@@ -29,14 +27,5 @@ open class FormValueDetailItem<ValueType: Equatable>: FormValueItem<ValueType, F
         self.placeholder = placeholder
         
         super.init(value: value, style: style)
-    }
-    
-    // MARK: ValidatableFormItem
-    
-    @AdyenObservable(nil) public var validationFailureMessage: String?
-    
-    public func isValid() -> Bool {
-        AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: self))'")
-        return false
     }
 }
