@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -137,7 +137,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     private func handle(_ action: ThreeDS2Action) {
         let component = createThreeDS2Component()
         currentActionComponent = component
-
+        
         component.handle(action)
     }
     
@@ -153,10 +153,11 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
                                                                     appearanceConfiguration: configuration.threeDS.appearanceConfiguration,
                                                                     requestorAppURL: configuration.threeDS.requestorAppURL,
                                                                     delegateAuthentication: configuration.threeDS.delegateAuthentication)
-        let component = ThreeDS2Component(context: context, configuration: threeDS2Configuration)
+        let component = ThreeDS2Component(context: context,
+                                          configuration: threeDS2Configuration,
+                                          presentationDelegate: presentationDelegate)
         component._isDropIn = _isDropIn
         component.delegate = delegate
-        component.presentationDelegate = presentationDelegate
 
         return component
     }

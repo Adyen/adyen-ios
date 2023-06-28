@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -45,13 +45,15 @@ extension ComponentWrapper {
 internal func createDefaultThreeDS2CoreActionHandler(
     context: AdyenContext,
     appearanceConfiguration: ADYAppearanceConfiguration,
-    delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?
+    delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?,
+    presentationDelegate: PresentationDelegate?
 ) -> AnyThreeDS2CoreActionHandler {
     #if canImport(AdyenAuthentication)
         if #available(iOS 14.0, *), let delegatedAuthenticationConfiguration = delegatedAuthenticationConfiguration {
             return ThreeDS2PlusDACoreActionHandler(context: context,
                                                    appearanceConfiguration: appearanceConfiguration,
-                                                   delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration)
+                                                   delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration,
+                                                   presentationDelegate: presentationDelegate)
         } else {
             return ThreeDS2CoreActionHandler(context: context,
                                              appearanceConfiguration: appearanceConfiguration)

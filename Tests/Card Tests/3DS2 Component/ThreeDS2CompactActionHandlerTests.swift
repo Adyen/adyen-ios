@@ -42,13 +42,13 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
     }
     
     func testSettingThreeDSRequestorAppURL() {
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration())
+        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration(), presentationDelegate: nil)
         sut.threeDSRequestorAppURL = URL(string: "http://google.com")
         XCTAssertEqual(sut.coreActionHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
     }
 
     func testWrappedComponent() {
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration())
+        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration(), presentationDelegate: nil)
         XCTAssertEqual(sut.wrappedComponent.context.apiContext.clientKey, Dummy.apiContext.clientKey)
         XCTAssertEqual(sut.wrappedComponent.context.apiContext.environment.baseURL, Dummy.apiContext.environment.baseURL)
 
@@ -73,7 +73,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
                                                           paymentData: "paymentData")
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service)
+        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service, presentationDelegate: nil)
         sut.handle(fingerprintAction) { result in
             switch result {
             case .success:
@@ -105,7 +105,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         service.mockedTransaction = transaction
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, service: service)
+        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, service: service, presentationDelegate: nil)
         sut.threeDSRequestorAppURL = URL(string: "http://google.com")
         sut.transaction = transaction
         sut.handle(challengeAction) { challengeResult in
@@ -148,7 +148,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             completion(nil, Dummy.error)
         }
 
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service)
+        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service, presentationDelegate: nil)
         sut.transaction = mockedTransaction
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
@@ -178,7 +178,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             completion(nil, Dummy.error)
         }
 
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service)
+        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service, presentationDelegate: nil)
         sut.transaction = mockedTransaction
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
@@ -205,7 +205,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
 
         let service = AnyADYServiceMock()
 
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service)
+        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service, presentationDelegate: nil)
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         sut.handle(challengeAction) { result in
@@ -241,7 +241,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
                                                                                       messageVersion: "messageVersion")
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service)
+        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service, presentationDelegate: nil)
         sut.handle(fingerprintAction) { result in
             switch result {
             case .success:
@@ -270,7 +270,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         service.authenticationRequestParameters = authenticationRequestParameters
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service)
+        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service, presentationDelegate: nil)
         sut.handle(fingerprintAction) { result in
             switch result {
             case let .success(result):
@@ -306,7 +306,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         service.authenticationRequestParameters = authenticationRequestParameters
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service)
+        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service, presentationDelegate: nil)
         sut.handle(fingerprintAction) { result in
             switch result {
             case let .success(result):
@@ -339,7 +339,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         service.authenticationRequestParameters = authenticationRequestParameters
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service)
+        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service, presentationDelegate: nil)
         sut.handle(fingerprintAction) { result in
             switch result {
             case .success:

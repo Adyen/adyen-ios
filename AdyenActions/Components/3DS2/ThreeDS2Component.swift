@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -58,15 +58,29 @@ public final class ThreeDS2Component: ActionComponent {
             /// The Apple registered development team identifier.
             public let appleTeamIdentifier: String
 
+            /// The configuration for Delegated Authentication Component style
+            public let delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle
+
+            /// The localization parameters, leave it nil to use the default parameters.
+            public let localizationParameters: LocalizationParameters?
+
             /// Initializes a new instance.
             ///
             /// - Parameter localizedRegistrationReason: The localized reason string show to the user while registration flow.
             /// - Parameter localizedAuthenticationReason: The localized reason string show to the user while authentication flow.
             /// - Parameter appleTeamIdentifier: The Apple registered development team identifier.
-            public init(localizedRegistrationReason: String, localizedAuthenticationReason: String, appleTeamIdentifier: String) {
+            /// - Parameter delegatedAuthenticationComponentStyle: The delegated authentication component style.
+            /// - Parameter localizationParameters: The localization parameters, leave it nil to use the default parameters.
+            public init(localizedRegistrationReason: String,
+                        localizedAuthenticationReason: String,
+                        appleTeamIdentifier: String,
+                        delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle = .init(),
+                        localizationParameters: LocalizationParameters? = nil) {
                 self.localizedRegistrationReason = localizedRegistrationReason
                 self.localizedAuthenticationReason = localizedAuthenticationReason
                 self.appleTeamIdentifier = appleTeamIdentifier
+                self.delegatedAuthenticationComponentStyle = delegatedAuthenticationComponentStyle
+                self.localizationParameters = localizationParameters
             }
         }
         
@@ -76,6 +90,7 @@ public final class ThreeDS2Component: ActionComponent {
         ///   - redirectComponentStyle: `RedirectComponent` style
         ///   - appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
         ///   - requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
+        ///   - delegateAuthentication: The configuration for delegate authentication
         public init(redirectComponentStyle: RedirectComponentStyle? = nil,
                     appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
                     requestorAppURL: URL? = nil,
@@ -91,10 +106,14 @@ public final class ThreeDS2Component: ActionComponent {
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component's configuration.
+    /// - Parameter presentationDelegate: Delegates `PresentableComponent`'s presentation.
     public init(context: AdyenContext,
-                configuration: Configuration = Configuration()) {
+                configuration: Configuration = Configuration(),
+                presentationDelegate: PresentationDelegate?) {
         self.context = context
         self.configuration = configuration
+        self.presentationDelegate = presentationDelegate
+
         self.updateConfiguration()
     }
     
@@ -110,9 +129,11 @@ public final class ThreeDS2Component: ActionComponent {
                               threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
                               threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
                               redirectComponent: AnyRedirectComponent,
-                              configuration: Configuration = Configuration()) {
+                              configuration: Configuration = Configuration(),
+                              presentationDelegate: PresentationDelegate?) {
         self.init(context: context,
-                  configuration: configuration)
+                  configuration: configuration,
+                  presentationDelegate: presentationDelegate)
         self.threeDS2CompactFlowHandler = threeDS2CompactFlowHandler
         self.threeDS2ClassicFlowHandler = threeDS2ClassicFlowHandler
         self.redirectComponent = redirectComponent
@@ -208,7 +229,8 @@ public final class ThreeDS2Component: ActionComponent {
     internal lazy var threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler = {
         let handler = ThreeDS2CompactActionHandler(context: context,
                                                    appearanceConfiguration: configuration.appearanceConfiguration,
-                                                   delegatedAuthenticationConfiguration: configuration.delegateAuthentication)
+                                                   delegatedAuthenticationConfiguration: configuration.delegateAuthentication,
+                                                   presentationDelegate: presentationDelegate)
 
         handler._isDropIn = _isDropIn
         handler.threeDSRequestorAppURL = configuration.requestorAppURL
@@ -219,10 +241,10 @@ public final class ThreeDS2Component: ActionComponent {
     internal lazy var threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler = {
         let handler = ThreeDS2ClassicActionHandler(context: context,
                                                    appearanceConfiguration: configuration.appearanceConfiguration,
-                                                   delegatedAuthenticationConfiguration: configuration.delegateAuthentication)
+                                                   delegatedAuthenticationConfiguration: configuration.delegateAuthentication,
+                                                   presentationDelegate: presentationDelegate)
         handler._isDropIn = _isDropIn
         handler.threeDSRequestorAppURL = configuration.requestorAppURL
-
         return handler
     }()
 

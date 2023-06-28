@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -49,6 +49,16 @@ internal final class ExpirationTimer {
     internal func stopTimer() {
         timer?.invalidate()
         timer = nil
+    }
+    
+    internal func pauseTimer() {
+        stopTimer()
+    }
+    
+    internal func resumeTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: tickInterval, repeats: true) { [weak self] _ in
+            self?.onTimerTick()
+        }
     }
     
     private func onTimerTick() {
