@@ -303,6 +303,7 @@
                             self.performDelegatedRegistration(sdkInput) { [weak self] result in
                                 self?.deliver(challengeResult: challengeResult,
                                               delegatedAuthenticationSDKOutput: result.successResult,
+                                              withDeleteDelegatedAuthenticationCredentials: nil,
                                               completionHandler: completionHandler)
                             }
                         },
@@ -310,6 +311,11 @@
                             completionHandler(.success(challengeResult))
                         }
                     )
+                } else if presenter.userInput == .deleteDA {
+                    deliver(challengeResult: challengeResult,
+                            delegatedAuthenticationSDKOutput: nil,
+                            withDeleteDelegatedAuthenticationCredentials: true,
+                            completionHandler: completionHandler)
                 } else {
                     completionHandler(.success(challengeResult))
                 }
@@ -320,12 +326,13 @@
         
         private func deliver(challengeResult: ThreeDSResult,
                              delegatedAuthenticationSDKOutput: String?,
+                             withDeleteDelegatedAuthenticationCredentials: Bool?,
                              completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
 
             do {
                 let threeDSResult = try challengeResult.withDelegatedAuthenticationSDKOutput(
                     delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput
-                )
+                ).withDeleteDelegatedAuthenticationCredentials(deleteDelegatedAuthenticationCredentials: withDeleteDelegatedAuthenticationCredentials)
 
                 transaction = nil
                 completionHandler(.success(threeDSResult))
