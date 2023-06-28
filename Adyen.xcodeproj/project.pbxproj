@@ -118,6 +118,8 @@
 		5AD755DB268E11DA0040B919 /* VoucherComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD755DA268E11DA0040B919 /* VoucherComponentExtensions.swift */; };
 		5AF730EA2667C3F10091C573 /* APIContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF730E92667C3F10091C573 /* APIContextTests.swift */; };
 		5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF8CD4C26691D3A00102339 /* Dummy.swift */; };
+		8100F2BD2A4C3407008C09E7 /* FormValidatableItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8100F2BC2A4C3407008C09E7 /* FormValidatableItemViewTests.swift */; };
+		8100F2C02A4C37E4008C09E7 /* FormSelectableItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8100F2BF2A4C37E3008C09E7 /* FormSelectableItemViewTests.swift */; };
 		8169B9EC2A0506CC00AAC9F8 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
 		8169B9F42A08F02D00AAC9F8 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		81BA083B2A49DFEF00308160 /* FormSelectableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA083A2A49DFEF00308160 /* FormSelectableValueItem.swift */; };
@@ -1252,6 +1254,8 @@
 		5AD755DA268E11DA0040B919 /* VoucherComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherComponentExtensions.swift; sourceTree = "<group>"; };
 		5AF730E92667C3F10091C573 /* APIContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContextTests.swift; sourceTree = "<group>"; };
 		5AF8CD4C26691D3A00102339 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
+		8100F2BC2A4C3407008C09E7 /* FormValidatableItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableItemViewTests.swift; sourceTree = "<group>"; };
+		8100F2BF2A4C37E3008C09E7 /* FormSelectableItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableItemViewTests.swift; sourceTree = "<group>"; };
 		81BA083A2A49DFEF00308160 /* FormSelectableValueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableValueItem.swift; sourceTree = "<group>"; };
 		81BA083C2A49DFF700308160 /* FormSelectableValueItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableValueItemView.swift; sourceTree = "<group>"; };
 		81BA08452A4B16B500308160 /* FormValidatableValueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableValueItem.swift; sourceTree = "<group>"; };
@@ -2420,6 +2424,22 @@
 				5A988B642653D9370007F4C0 /* BoletoComponentTests.swift */,
 			);
 			path = Boleto;
+			sourceTree = "<group>";
+		};
+		8100F2BE2A4C3410008C09E7 /* Validatable */ = {
+			isa = PBXGroup;
+			children = (
+				8100F2BC2A4C3407008C09E7 /* FormValidatableItemViewTests.swift */,
+			);
+			path = Validatable;
+			sourceTree = "<group>";
+		};
+		8100F2C12A4C37EC008C09E7 /* Selectable */ = {
+			isa = PBXGroup;
+			children = (
+				8100F2BF2A4C37E3008C09E7 /* FormSelectableItemViewTests.swift */,
+			);
+			path = Selectable;
 			sourceTree = "<group>";
 		};
 		81BA08442A4B154D00308160 /* Selectable */ = {
@@ -4646,6 +4666,7 @@
 				81C4006E2A4347F6007EC51C /* Address */,
 				F99D4601262D643400880D72 /* Error Item */,
 				F99F08622383F29700EBB948 /* Text */,
+				8100F2BE2A4C3410008C09E7 /* Validatable */,
 			);
 			path = FormItems;
 			sourceTree = "<group>";
@@ -4655,6 +4676,7 @@
 			children = (
 				F99F08632383F2B000EBB948 /* FormTextItemViewTests.swift */,
 				F99F08652383F2D300EBB948 /* FormTextItemViewDelegateMock.swift */,
+				8100F2C12A4C37EC008C09E7 /* Selectable */,
 			);
 			path = Text;
 			sourceTree = "<group>";
@@ -6280,6 +6302,7 @@
 				C927083927590B7900D15EA0 /* BACSInputPresenterProtocolMock.swift in Sources */,
 				E702BE192602525E00280682 /* AssertsTests.swift in Sources */,
 				F9639B4924E28DC80073F38A /* IntervalCalculatorMock.swift in Sources */,
+				8100F2BD2A4C3407008C09E7 /* FormValidatableItemViewTests.swift in Sources */,
 				C92F6DBE26AFF336004BD516 /* PostalAddressMocks.swift in Sources */,
 				E7CC63D2287EFFC00034108B /* DummyHelper.swift in Sources */,
 				5A988B652653D9370007F4C0 /* BoletoComponentTests.swift in Sources */,
@@ -6317,6 +6340,7 @@
 				5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */,
 				F9885435272C17BD00F34557 /* PaymentMethodListComponentDelegateMock.swift in Sources */,
 				F9BA21BF246D36AC00D36A63 /* LazyOptionalTests.swift in Sources */,
+				8100F2C02A4C37E4008C09E7 /* FormSelectableItemViewTests.swift in Sources */,
 				E9021DF2225CC6D0009CF7F4 /* RedirectDetailsTests.swift in Sources */,
 				C981254E2851E9AF006D1374 /* PaymentComponentSubject.swift in Sources */,
 				F96F44E123BF5C2000871C1F /* LocalizationTests.swift in Sources */,

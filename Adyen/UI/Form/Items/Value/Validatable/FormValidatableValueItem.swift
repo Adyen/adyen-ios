@@ -14,7 +14,7 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
     @AdyenObservable(nil) public var validationFailureMessage: String?
     
     public func isValid() -> Bool {
-        AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: self))'")
+        AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
         return false
     }
 }
