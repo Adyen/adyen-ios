@@ -122,13 +122,15 @@ schemes:
 
 mkdir -p Tests
 mkdir -p Source
-cp "../Tests/DropIn Tests/DropInTests.swift" Tests/DropInTests.swift
+
 cp "../Tests/Card Tests/3DS2 Component/ThreeDS2PlusDACoreActionHandlerTests.swift" Tests/ThreeDS2PlusDACoreActionHandlerTests.swift
 cp "../Tests/Card Tests/3DS2 Component/AnyADYServiceMock.swift" Tests/AnyADYServiceMock.swift
 cp "../Tests/Card Tests/3DS2 Component/AuthenticationServiceMock.swift" Tests/AuthenticationServiceMock.swift
 cp "../Tests/Card Tests/3DS2 Component/ThreeDSResultExtension.swift" Tests/ThreeDSResultExtension.swift
 cp "../Tests/Helpers/XCTestCaseExtensions.swift" Tests/XCTestCaseExtensions.swift
 cp "../Tests/DummyData/Dummy.swift" Tests/Dummy.swift
+cp "../Tests/DropIn Tests/DropInTests.swift" Tests/DropInTests.swift
+cp "../Tests/DropIn Tests/DropInDelegateMock.swift" Tests/DropInDelegateMock.swift
 cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/
 cp "../Demo/Configuration.swift" Source/Configuration.swift
