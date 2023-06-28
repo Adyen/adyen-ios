@@ -6,6 +6,10 @@
 
 import UIKit
 
+public protocol AsyncSearchViewControllerEmptyView: UIView {
+    var searchTerm: String { get set }
+}
+
 @_spi(AdyenInternal)
 public class AsyncSearchViewController: UIViewController, UISearchBarDelegate {
 
@@ -17,7 +21,6 @@ public class AsyncSearchViewController: UIViewController, UISearchBarDelegate {
         case showingResults(results: [ListItem])
     }
     
-    private let localizationParameters: LocalizationParameters?
     private let style: ViewStyle
     private let searchBarPlaceholder: String?
     private var interfaceState: InterfaceState = .empty(searchTerm: "") {
@@ -26,20 +29,18 @@ public class AsyncSearchViewController: UIViewController, UISearchBarDelegate {
 
     private lazy var resultsListViewController = ListViewController(style: style)
     
-    // Debounced search
-    private var searchTask: DispatchWorkItem? // TODO: Better put this inside a searchbar
-    
     private let resultProvider: ResultProvider
     
     public init(
         style: ViewStyle,
         searchBarPlaceholder: String? = nil,
+        emptyView: AsyncSearchViewControllerEmptyView,
         localizationParameters: LocalizationParameters? = nil,
         resultProvider: @escaping ResultProvider
     ) {
         self.style = style
-        self.searchBarPlaceholder = searchBarPlaceholder
-        self.localizationParameters = localizationParameters
+        self.searchBarPlaceholder = searchBarPlaceholder ?? localizedString(.searchPlaceholder, localizationParameters)
+        self.emptyView = emptyView
         self.resultProvider = resultProvider
         
         super.init(nibName: nil, bundle: nil)
@@ -53,7 +54,7 @@ public class AsyncSearchViewController: UIViewController, UISearchBarDelegate {
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .prominent
-        searchBar.placeholder = searchBarPlaceholder ?? localizedString(.searchPlaceholder, localizationParameters)
+        searchBar.placeholder = searchBarPlaceholder
         searchBar.isTranslucent = false
         searchBar.backgroundImage = UIImage()
         searchBar.barTintColor = style.backgroundColor
@@ -62,12 +63,7 @@ public class AsyncSearchViewController: UIViewController, UISearchBarDelegate {
         return searchBar
     }()
     
-    private lazy var emptyView: EmptyView = {
-        .init(
-            searchTerm: "",
-            localizationParameters: localizationParameters
-        )
-    }()
+    private let emptyView: AsyncSearchViewControllerEmptyView
     
     private lazy var loadingView: UIActivityIndicatorView = {
         let loadingView = UIActivityIndicatorView(style: .whiteLarge)
@@ -152,8 +148,6 @@ public class AsyncSearchViewController: UIViewController, UISearchBarDelegate {
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         interfaceState = .loading
-        
-        // TODO: Discussion - We should not interfer with delaying anything - it's up to the merchant to cancel or not start network calls (Give examples, like: https://stackoverflow.com/questions/42444310/live-search-throttle-in-swift-3/48666001#48666001)
         
         // Even with an empty search text we call the result provider to provide a way to cancel any requests if needed
         resultProvider(searchText) { [weak self] results in

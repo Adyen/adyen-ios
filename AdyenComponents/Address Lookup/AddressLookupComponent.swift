@@ -90,6 +90,13 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     
     private var searchController: AsyncSearchViewController {
         
+        let emptyView = AddressLookupSearchEmptyView(
+            localizationParameters: localizationParameters
+        ) { [weak self] in
+            guard let self else { return }
+            showForm(with: prefillAddress)
+        }
+        
         let resultProvider: AsyncSearchViewController.ResultProvider = { [weak self] searchTerm, resultHandler in
             self?.lookupProvider(searchTerm) { [weak self] results in
                 guard let self else { return }
@@ -100,6 +107,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
         let searchController = AsyncSearchViewController(
             style: style,
             searchBarPlaceholder: "Search your address",
+            emptyView: emptyView,
             resultProvider: resultProvider
         )
         
