@@ -303,7 +303,7 @@
                             self.performDelegatedRegistration(sdkInput) { [weak self] result in
                                 self?.deliver(challengeResult: challengeResult,
                                               delegatedAuthenticationSDKOutput: result.successResult,
-                                              withDeleteDelegatedAuthenticationCredentials: nil,
+                                              deleteDelegatedAuthenticationCredentials: nil,
                                               completionHandler: completionHandler)
                             }
                         },
@@ -314,7 +314,7 @@
                 } else if presenter.userInput == .deleteDA {
                     deliver(challengeResult: challengeResult,
                             delegatedAuthenticationSDKOutput: nil,
-                            withDeleteDelegatedAuthenticationCredentials: true,
+                            deleteDelegatedAuthenticationCredentials: true,
                             completionHandler: completionHandler)
                 } else {
                     completionHandler(.success(challengeResult))
@@ -326,13 +326,14 @@
         
         private func deliver(challengeResult: ThreeDSResult,
                              delegatedAuthenticationSDKOutput: String?,
-                             withDeleteDelegatedAuthenticationCredentials: Bool?,
+                             deleteDelegatedAuthenticationCredentials: Bool?,
                              completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
 
             do {
                 let threeDSResult = try challengeResult.withDelegatedAuthenticationSDKOutput(
-                    delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput
-                ).withDeleteDelegatedAuthenticationCredentials(deleteDelegatedAuthenticationCredentials: withDeleteDelegatedAuthenticationCredentials)
+                    delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
+                    deleteDelegatedAuthenticationCredentials: deleteDelegatedAuthenticationCredentials
+                )
 
                 transaction = nil
                 completionHandler(.success(threeDSResult))

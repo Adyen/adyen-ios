@@ -41,26 +41,17 @@ public struct ThreeDSResult: Decodable {
         self.payload = try container.decode(String.self, forKey: .payload)
     }
     
-    internal func withDelegatedAuthenticationSDKOutput(delegatedAuthenticationSDKOutput: String?) throws -> ThreeDSResult {
+    internal func withDelegatedAuthenticationSDKOutput(delegatedAuthenticationSDKOutput: String?,
+                                                       deleteDelegatedAuthenticationCredentials: Bool?) throws -> ThreeDSResult {
         let oldPayload: Payload = try Coder.decodeBase64(payload)
         let newPayload = Payload(authorisationToken: oldPayload.authorisationToken,
                                  delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
-                                 deleteDelegatedAuthenticationCredentials: nil,
-                                 transStatus: oldPayload.transStatus)
-        let newPayloadData = try JSONEncoder().encode(newPayload)
-        return .init(payload: newPayloadData.base64EncodedString())
-    }
-    
-    internal func withDeleteDelegatedAuthenticationCredentials(deleteDelegatedAuthenticationCredentials: Bool?) throws -> ThreeDSResult {
-        let oldPayload: Payload = try Coder.decodeBase64(payload)
-        let newPayload = Payload(authorisationToken: oldPayload.authorisationToken,
-                                 delegatedAuthenticationSDKOutput: oldPayload.delegatedAuthenticationSDKOutput,
                                  deleteDelegatedAuthenticationCredentials: deleteDelegatedAuthenticationCredentials,
                                  transStatus: oldPayload.transStatus)
         let newPayloadData = try JSONEncoder().encode(newPayload)
         return .init(payload: newPayloadData.base64EncodedString())
     }
-
+    
     internal init(authenticated: Bool, authorizationToken: String?) throws {
         var payloadJson = ["transStatus": authenticated ? "Y" : "N"]
 
