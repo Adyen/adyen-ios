@@ -8,6 +8,19 @@
 import XCTest
 
 class LocalizationTests: XCTestCase {
+
+    // MARK: - Enforced translation
+
+    func testEnforcedLocalization() {
+        var parameters = LocalizationParameters(locale: "it-IT")
+        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Conferma il pagamento di test")
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Verifica la Carta")
+
+        parameters = LocalizationParameters(locale: "ar")
+        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "تأكيد الدفع باستخدام test")
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "التحقق من بطاقتك")
+    }
+
     // MARK: - Button title
 
     func testLocalizationWitZeroPayment() {

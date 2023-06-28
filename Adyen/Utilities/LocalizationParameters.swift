@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,6 +9,8 @@ import Foundation
 /// The localization parameters to control some aspects of how localized strings are fetched,
 /// like the localization table to use and the separator of the key strings.
 public struct LocalizationParameters: Equatable {
+
+    internal let enforcedLocale: String?
 
     /// The locale identifier for external resources.
     /// By default current locale is used.
@@ -27,7 +29,8 @@ public struct LocalizationParameters: Equatable {
     /// if not found, then the internal SDK bundle is used.
     public let bundle: Bundle?
     
-    /// Initializes an LocalizationParameters.
+    /// Initializes LocalizationParameters with device specific locale.
+    /// This is recommended approach for localization and it follows Apple’s [localization](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPInternational/InternationalizingYourCode/InternationalizingYourCode.html#//apple_ref/doc/uid/10000171i-CH4-SW3) guidlines.
     ///
     /// - Parameters:
     ///   - bundle: The custom bundle to search.
@@ -40,5 +43,18 @@ public struct LocalizationParameters: Equatable {
         self.tableName = tableName
         self.keySeparator = keySeparator
         self.locale = locale ?? Locale.current.identifier
+        self.enforcedLocale = nil
+    }
+
+    /// Initializes LocalizationParameters with enforced locale.
+    ///
+    /// - Parameters:
+    ///   - locale: The locale to be enforced.
+    public init(locale: String) {
+        self.bundle = nil
+        self.tableName = nil
+        self.keySeparator = nil
+        self.enforcedLocale = locale
+        self.locale = locale
     }
 }
