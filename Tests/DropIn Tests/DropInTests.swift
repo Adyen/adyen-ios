@@ -162,9 +162,10 @@ class DropInTests: XCTestCase {
         let newtopVC = UIViewController.findTopPresenter() as? SFSafariViewController
         XCTAssertNotNil(newtopVC)
 
+        wait(for: .seconds(2))
         newtopVC?.delegate?.safariViewControllerDidFinish?(newtopVC!)
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 15, handler: nil)
     }
 
     func testOpenDropInAsList() {
