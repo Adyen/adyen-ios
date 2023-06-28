@@ -227,29 +227,26 @@ public final class DropInComponent: NSObject,
     private func didSelectCancelButton(isRoot: Bool, component: PresentableComponent) {
         guard !paymentInProgress || component is Cancellable else { return }
 
-        userDidCancel(component)
-        
         if isRoot {
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         } else {
+            userDidCancel(component)
             navigationController.popViewController(animated: true)
         }
     }
 
+    /// This methos is called when
     internal func userDidCancel(_ component: Component) {
-        stopLoading()
-        component.cancelIfNeeded()
-
         if let component = (component as? PaymentComponent) ?? selectedPaymentComponent, paymentInProgress {
             delegate?.didCancel(component: component, from: self)
         }
 
-        paymentInProgress = false
+        stopLoading()
     }
 
     public func stopLoading() {
         paymentInProgress = false
-        (rootComponent as? ComponentLoader)?.stopLoading()
+        rootComponent.stopLoadingIfNeeded()
         selectedPaymentComponent?.stopLoadingIfNeeded()
     }
     

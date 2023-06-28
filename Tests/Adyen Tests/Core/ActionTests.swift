@@ -10,19 +10,8 @@ import XCTest
 class ActionTests: XCTestCase {
     
     func testRedirectActionDecoding() {
-        let json =
-            """
-            {
-                "type": "redirect",
-                "url": "https://example.org/",
-                "paymentData": "example_data"
-            }
-            """
-        
-        let action = try? JSONDecoder().decode(Action.self, from: json.data(using: .utf8)!)
-        
         var redirectAction: RedirectAction?
-        if case let .redirect(redirect)? = action {
+        if case let .redirect(redirect) = Dummy.redirectAction {
             redirectAction = redirect
         }
         

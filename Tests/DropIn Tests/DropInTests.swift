@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import AdyenDropIn
 import XCTest
+import SafariServices
 
 class DropInTests: XCTestCase {
 
@@ -99,9 +100,7 @@ class DropInTests: XCTestCase {
               "type" : "paysafecard"
             }
           ],
-          "oneClickPaymentMethods" : [],
           "storedPaymentMethods" : [],
-          "groups" : []
         }
         """
     
@@ -114,9 +113,7 @@ class DropInTests: XCTestCase {
               "type" : "sepadirectdebit"
             }
           ],
-          "oneClickPaymentMethods" : [],
           "storedPaymentMethods" : [],
-          "groups" : []
         }
         """
 
@@ -132,6 +129,42 @@ class DropInTests: XCTestCase {
         sut = nil
         context = nil
         try super.tearDownWithError()
+    }
+
+    func testCancelDropInDelegate() {
+        let config = DropInComponent.Configuration()
+
+        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
+        sut = DropInComponent(paymentMethods: paymentMethods,
+                              context: context,
+                              configuration: config)
+        let delegateMock = DropInDelegateMock()
+        delegateMock.didSubmitHandler = { paymentData, component in
+            self.sut.handle(Dummy.redirectAction)
+        }
+
+        let waitExpectation = expectation(description: "Expect Drop-In to call didCancel")
+        delegateMock.didCancelHandler = { _,_ in
+            waitExpectation.fulfill()
+        }
+
+        sut.delegate = delegateMock
+
+        let root = UIViewController()
+        UIApplication.shared.keyWindow?.rootViewController = root
+        root.present(sut.viewController, animated: true, completion: nil)
+
+        wait(for: .seconds(2))
+        let topVC = self.sut.viewController.findChild(of: ListViewController.self)
+        topVC?.tableView(topVC!.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
+
+        wait(for: .seconds(2))
+        let newtopVC = UIViewController.findTopPresenter() as? SFSafariViewController
+        XCTAssertNotNil(newtopVC)
+
+        newtopVC?.delegate?.safariViewControllerDidFinish?(newtopVC!)
+
+        waitForExpectations(timeout: 10, handler: nil)
     }
 
     func testOpenDropInAsList() {
