@@ -545,7 +545,7 @@ import XCTest
             }
         
             let expectedResult = try XCTUnwrap(try? ThreeDSResult(from: AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTransactionIdentifier", transactionStatus: "Y"),
-                                                                  delegatedAuthenticationSDKOutput: nil,
+                                                                  delegatedAuthenticationSDKOutput: nil, // // We shouldn't receive
                                                                   deleteDelegatedAuthenticationCredentials: nil, // We shouldn't receive
                                                                   authorizationToken: "authToken"
             ))
