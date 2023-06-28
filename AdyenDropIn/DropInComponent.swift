@@ -235,7 +235,6 @@ public final class DropInComponent: NSObject,
         }
     }
 
-    /// This methos is called when
     internal func userDidCancel(_ component: Component) {
         if let component = (component as? PaymentComponent) ?? selectedPaymentComponent, paymentInProgress {
             delegate?.didCancel(component: component, from: self)
