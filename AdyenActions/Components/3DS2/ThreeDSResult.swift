@@ -25,10 +25,11 @@ public struct ThreeDSResult: Decodable {
 
     internal init(from challengeResult: AnyChallengeResult,
                   delegatedAuthenticationSDKOutput: String?,
+                  deleteDelegatedAuthenticationCredentials: Bool?,
                   authorizationToken: String?) throws {
         let payload = Payload(authorisationToken: authorizationToken,
                               delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
-                              deleteDelegatedAuthenticationCredentials: nil,
+                              deleteDelegatedAuthenticationCredentials: deleteDelegatedAuthenticationCredentials,
                               transStatus: challengeResult.transactionStatus)
         
         let payloadData = try JSONEncoder().encode(payload)
