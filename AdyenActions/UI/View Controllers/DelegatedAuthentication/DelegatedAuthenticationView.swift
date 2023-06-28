@@ -126,7 +126,6 @@ internal final class DelegatedAuthenticationView: UIView {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.isScrollEnabled = false
         textView.isEditable = false
-        textView.isSelectable = false
         return textView
     }()
 
