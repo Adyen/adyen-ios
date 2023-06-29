@@ -1,5 +1,5 @@
 //
-// Copyright © 2020 Adyen. All rights reserved.
+// Copyright © 2023 Adyen. All rights reserved.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -32,13 +32,13 @@ class IssuerListComponentTests: XCTestCase {
     func testSelection() {
         // Given
         let searchViewController = sut.viewController as! SearchViewController
-        let listViewController = searchViewController.childViewController as! ListViewController
+        let listViewController = searchViewController.resultsListViewController
         let expectedIssuer = paymentMethod.issuers[0]
 
         let expectation = expectation(description: "Call didSubmit")
         let mockDelegate = PaymentComponentDelegateMock()
         mockDelegate.onDidSubmit = { paymentData, paymentComponent in
-            XCTAssertEqual(paymentData.amountToPay, Dummy.payment.amount)
+            XCTAssertEqual(paymentData.amount, Dummy.payment.amount)
             
             XCTAssertTrue(paymentData.paymentMethod is IssuerListDetails)
             let details = paymentData.paymentMethod as! IssuerListDetails
@@ -46,6 +46,10 @@ class IssuerListComponentTests: XCTestCase {
 
             expectation.fulfill()
         }
+        
+        UIApplication.shared.keyWindow?.rootViewController = searchViewController
+        
+        wait(for: .milliseconds(300))
 
         sut.delegate = mockDelegate
         listViewController.tableView(listViewController.tableView, didSelectRowAt: .init(item: 0, section: 0))
