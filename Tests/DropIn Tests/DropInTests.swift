@@ -159,7 +159,7 @@ class DropInTests: XCTestCase {
         topVC?.tableView(topVC!.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
 
         wait(for: .seconds(2))
-        let newtopVC = UIViewController.findTopPresenter() as? SFSafariViewController
+        let newtopVC = sut.viewController.adyen.topPresenter as? SFSafariViewController
         XCTAssertNotNil(newtopVC)
 
         wait(for: .seconds(2))
