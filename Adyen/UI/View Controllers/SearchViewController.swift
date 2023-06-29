@@ -23,7 +23,10 @@ public class SearchViewController: UIViewController {
     }
     
     internal private(set) var interfaceState: InterfaceState = .empty(searchTerm: "") {
-        didSet { updateInterface() }
+        didSet {
+            guard interfaceState != oldValue else { return }
+            updateInterface()
+        }
     }
     
     public lazy var resultsListViewController = ListViewController(style: style)
@@ -99,7 +102,7 @@ public class SearchViewController: UIViewController {
         updateInterface()
         
         // Allow for immediate population
-        lookupAddress(for: "")
+        lookUpAddress(for: "")
     }
     
     override public func viewWillAppear(_ animated: Bool) {
@@ -169,7 +172,7 @@ public class SearchViewController: UIViewController {
         """) }
     }
     
-    private func lookupAddress(for searchText: String) {
+    private func lookUpAddress(for searchText: String) {
         interfaceState = .loading
         
         resultProvider(searchText) { [weak self] results in
@@ -188,7 +191,7 @@ public class SearchViewController: UIViewController {
 extension SearchViewController: UISearchBarDelegate {
     
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        lookupAddress(for: searchText)
+        lookUpAddress(for: searchText)
     }
     
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
