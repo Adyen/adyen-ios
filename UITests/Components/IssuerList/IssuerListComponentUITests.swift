@@ -30,7 +30,7 @@ final class IssuerListComponentUITests: XCTestCase {
         paymentMethod = try! Coder.decode(issuerListDictionary) as IssuerListPaymentMethod
         sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
         searchViewController = sut.viewController as? SearchViewController
-        listViewController = searchViewController.childViewController as? ListViewController
+        listViewController = searchViewController.resultsListViewController
     }
 
     override func tearDownWithError() throws {

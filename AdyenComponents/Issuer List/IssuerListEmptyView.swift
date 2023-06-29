@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
+/// The empty view to be used in the IssuerListComponent SearchViewController
 internal class IssuerListEmptyView: UIStackView, SearchViewControllerEmptyView {
     
     private let localizationParameters: LocalizationParameters?
@@ -50,12 +51,10 @@ internal class IssuerListEmptyView: UIStackView, SearchViewControllerEmptyView {
     
     // MARK: - Stack View
     
-    internal init(
-        searchTerm: String = "",
-        localizationParameters: LocalizationParameters? = nil
-    ) {
+    internal init(localizationParameters: LocalizationParameters? = nil) {
+        
         self.localizationParameters = localizationParameters
-        self.searchTerm = searchTerm
+        self.searchTerm = ""
         
         super.init(frame: .zero)
         
@@ -84,6 +83,6 @@ internal class IssuerListEmptyView: UIStackView, SearchViewControllerEmptyView {
 private extension IssuerListEmptyView {
     
     func updateLabels() {
-        titleLabel.text = localizedString(.paybybankTitle, localizationParameters) + " '\(searchTerm)'"
+        titleLabel.text = "\(localizedString(.paybybankTitle, localizationParameters)) '\(searchTerm)'"
     }
 }

@@ -16,14 +16,17 @@ public class SearchViewController: UIViewController {
 
     public typealias ResultProvider = (_ searchTerm: String, _ handler: @escaping ([ListItem]) -> Void) -> Void
     
-    private enum InterfaceState {
+    internal enum InterfaceState {
         case loading
         case empty(searchTerm: String)
         case showingResults(results: [ListItem])
     }
     
-    private var interfaceState: InterfaceState = .empty(searchTerm: "") {
-        didSet { updateInterface() }
+    internal private(set) var interfaceState: InterfaceState = .empty(searchTerm: "") {
+        didSet {
+            guard interfaceState != oldValue else { return }
+            updateInterface()
+        }
     }
     
     public lazy var resultsListViewController = ListViewController(style: style)
@@ -99,7 +102,7 @@ public class SearchViewController: UIViewController {
         updateInterface()
         
         // Allow for immediate population
-        lookupAddress(for: "")
+        lookUpAddress(for: "")
     }
     
     override public func viewWillAppear(_ animated: Bool) {
@@ -169,7 +172,7 @@ public class SearchViewController: UIViewController {
         """) }
     }
     
-    private func lookupAddress(for searchText: String) {
+    private func lookUpAddress(for searchText: String) {
         interfaceState = .loading
         
         resultProvider(searchText) { [weak self] results in
@@ -188,10 +191,28 @@ public class SearchViewController: UIViewController {
 extension SearchViewController: UISearchBarDelegate {
     
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        lookupAddress(for: searchText)
+        lookUpAddress(for: searchText)
     }
     
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+    }
+}
+
+extension SearchViewController.InterfaceState: Equatable {
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.loading, .loading):
+            return true
+            
+        case let (.empty(lhsSearchTerm), .empty(rhsSearchTerm)):
+            return lhsSearchTerm == rhsSearchTerm
+            
+        case let (.showingResults(lhsResults), .showingResults(rhsResults)):
+            return lhsResults == rhsResults
+            
+        default: return false
+        }
     }
 }

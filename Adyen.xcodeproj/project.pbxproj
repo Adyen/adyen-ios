@@ -128,6 +128,13 @@
 		81BA08392A49C95700308160 /* FormSelectableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08382A49C95700308160 /* FormSelectableValueItem.swift */; };
 		81BA083F2A4AD96900308160 /* FormValidatableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA083E2A4AD96900308160 /* FormValidatableValueItem.swift */; };
 		81BA08412A4AD97400308160 /* FormValidatableValueItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08402A4AD97400308160 /* FormValidatableValueItemView.swift */; };
+		8100F2BD2A4C3407008C09E7 /* FormValidatableItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8100F2BC2A4C3407008C09E7 /* FormValidatableItemViewTests.swift */; };
+		8100F2C02A4C37E4008C09E7 /* FormSelectableItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8100F2BF2A4C37E3008C09E7 /* FormSelectableItemViewTests.swift */; };
+		8169B9EC2A0506CC00AAC9F8 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
+		81896E832A4DB10000C532CA /* IssuerListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81896E822A4DB10000C532CA /* IssuerListEmptyView.swift */; };
+		81896E852A4DB5F300C532CA /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81896E842A4DB5F300C532CA /* SearchViewControllerTests.swift */; };
+		81BA083B2A49DFEF00308160 /* FormSelectableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA083A2A49DFEF00308160 /* FormSelectableValueItem.swift */; };
+		81BA083D2A49DFF700308160 /* FormSelectableValueItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA083C2A49DFF700308160 /* FormSelectableValueItemView.swift */; };
 		81BA08472A4B16B600308160 /* FormValidatableValueItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08462A4B16B600308160 /* FormValidatableValueItemView.swift */; };
 		81BA08482A4B16B600308160 /* FormValidatableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08452A4B16B500308160 /* FormValidatableValueItem.swift */; };
 		81C400642A3B0C58007EC51C /* FormSearchButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C400632A3B0C58007EC51C /* FormSearchButtonItem.swift */; };
@@ -1267,6 +1274,12 @@
 		81BA08382A49C95700308160 /* FormSelectableValueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableValueItem.swift; sourceTree = "<group>"; };
 		81BA083E2A4AD96900308160 /* FormValidatableValueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableValueItem.swift; sourceTree = "<group>"; };
 		81BA08402A4AD97400308160 /* FormValidatableValueItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableValueItemView.swift; sourceTree = "<group>"; };
+		8100F2BC2A4C3407008C09E7 /* FormValidatableItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableItemViewTests.swift; sourceTree = "<group>"; };
+		8100F2BF2A4C37E3008C09E7 /* FormSelectableItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableItemViewTests.swift; sourceTree = "<group>"; };
+		81896E822A4DB10000C532CA /* IssuerListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerListEmptyView.swift; sourceTree = "<group>"; };
+		81896E842A4DB5F300C532CA /* SearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerTests.swift; sourceTree = "<group>"; };
+		81BA083A2A49DFEF00308160 /* FormSelectableValueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableValueItem.swift; sourceTree = "<group>"; };
+		81BA083C2A49DFF700308160 /* FormSelectableValueItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableValueItemView.swift; sourceTree = "<group>"; };
 		81BA08452A4B16B500308160 /* FormValidatableValueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableValueItem.swift; sourceTree = "<group>"; };
 		81BA08462A4B16B600308160 /* FormValidatableValueItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableValueItemView.swift; sourceTree = "<group>"; };
 		81C4005F2A3A0AF3007EC51C /* AddressLookupSearchEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupSearchEmptyView.swift; sourceTree = "<group>"; };
@@ -2440,7 +2453,23 @@
 			path = Boleto;
 			sourceTree = "<group>";
 		};
-		8140A3752A3317FE00896403 /* Address Lookup */ = {
+		8100F2BE2A4C3410008C09E7 /* Validatable */ = {
+			isa = PBXGroup;
+			children = (
+				8100F2BC2A4C3407008C09E7 /* FormValidatableItemViewTests.swift */,
+			);
+			path = Validatable;
+			sourceTree = "<group>";
+		};
+		8100F2C12A4C37EC008C09E7 /* Selectable */ = {
+			isa = PBXGroup;
+			children = (
+				8100F2BF2A4C37E3008C09E7 /* FormSelectableItemViewTests.swift */,
+			);
+			path = Selectable;
+			sourceTree = "<group>";
+		};
+        8140A3752A3317FE00896403 /* Address Lookup */ = {
 			isa = PBXGroup;
 			children = (
 				8140A3732A3317F700896403 /* AddressLookupComponent.swift */,
@@ -3080,6 +3109,7 @@
 			children = (
 				E28098BD220DBAA80087928F /* IssuerListComponent.swift */,
 				8108315C2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift */,
+				81896E822A4DB10000C532CA /* IssuerListEmptyView.swift */,
 				E9AFF87D224BB149005A0D8D /* IssuerListDetails.swift */,
 			);
 			path = "Issuer List";
@@ -4680,6 +4710,7 @@
 			children = (
 				F99F08602383F28800EBB948 /* Form */,
 				F9FE39E22679E09200F02A9B /* LoadingViewTests.swift */,
+				81896E842A4DB5F300C532CA /* SearchViewControllerTests.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -4698,6 +4729,8 @@
 				81C4006E2A4347F6007EC51C /* Address */,
 				F99D4601262D643400880D72 /* Error Item */,
 				F99F08622383F29700EBB948 /* Text */,
+				8100F2C12A4C37EC008C09E7 /* Selectable */,
+				8100F2BE2A4C3410008C09E7 /* Validatable */,
 			);
 			path = FormItems;
 			sourceTree = "<group>";
@@ -6305,6 +6338,7 @@
 				F96AE51B26038602009F82BD /* XCTestCaseExtension.swift in Sources */,
 				F9EDB78D2395643A00CFB3C9 /* CardComponentTests.swift in Sources */,
 				5A988C342657D5290007F4C0 /* BoletoVoucherShareableVoucherViewProviderTests.swift in Sources */,
+				81896E852A4DB5F300C532CA /* SearchViewControllerTests.swift in Sources */,
 				F9842CD025710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift in Sources */,
 				F9D57535238291A1009C18B5 /* BCMCComponentTests.swift in Sources */,
 				A009837F27986B50007E68C4 /* BankDetailsEncryptorTests.swift in Sources */,
@@ -6338,6 +6372,7 @@
 				C927083927590B7900D15EA0 /* BACSInputPresenterProtocolMock.swift in Sources */,
 				E702BE192602525E00280682 /* AssertsTests.swift in Sources */,
 				F9639B4924E28DC80073F38A /* IntervalCalculatorMock.swift in Sources */,
+				8100F2BD2A4C3407008C09E7 /* FormValidatableItemViewTests.swift in Sources */,
 				C92F6DBE26AFF336004BD516 /* PostalAddressMocks.swift in Sources */,
 				E7CC63D2287EFFC00034108B /* DummyHelper.swift in Sources */,
 				5A988B652653D9370007F4C0 /* BoletoComponentTests.swift in Sources */,
@@ -6375,6 +6410,7 @@
 				5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */,
 				F9885435272C17BD00F34557 /* PaymentMethodListComponentDelegateMock.swift in Sources */,
 				F9BA21BF246D36AC00D36A63 /* LazyOptionalTests.swift in Sources */,
+				8100F2C02A4C37E4008C09E7 /* FormSelectableItemViewTests.swift in Sources */,
 				E9021DF2225CC6D0009CF7F4 /* RedirectDetailsTests.swift in Sources */,
 				C981254E2851E9AF006D1374 /* PaymentComponentSubject.swift in Sources */,
 				F96F44E123BF5C2000871C1F /* LocalizationTests.swift in Sources */,
@@ -6590,6 +6626,7 @@
 				00EA4ED7280590050053D938 /* AtomeAddressViewModelBuilder.swift in Sources */,
 				E7D874F527E0E26100D3C00A /* ApplePayConfiguration.swift in Sources */,
 				C9BF0DB327353A2600DCAA1E /* BACSDirectDebitComponent.swift in Sources */,
+				81896E832A4DB10000C532CA /* IssuerListEmptyView.swift in Sources */,
 				F9175EE32593952600D653BE /* BLIKDetails.swift in Sources */,
 				810831592A4C7F810092FAF7 /* AddressLookupSearchEmptyView.swift in Sources */,
 				8108315D2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift in Sources */,

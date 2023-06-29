@@ -15,7 +15,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     
     /// The view to set the `accessibilityLabel` on when invalid
     internal var accessibilityLabelView: UIView? {
-        AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: self))'")
+        AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
         return nil
     }
     

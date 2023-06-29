@@ -94,8 +94,8 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
     // MARK: - Selection
     
     @objc
-    private func selectionButtonTapped() {
-        item.selectionHandler?()
+    internal func selectionButtonTapped() {
+        item.selectionHandler()
     }
     
     // MARK: - Convenience
@@ -115,16 +115,6 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
         
         valueLabel.text = formattedValue
         valueLabel.textColor = item.style.text.color
-    }
-    
-    override open func configureSeparatorView() {
-        let constraints = [
-            separatorView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: 1.0)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
     }
     
     private func configureConstraints() {

@@ -14,7 +14,7 @@ open class FormSelectableValueItem<ValueType: Equatable>: FormValidatableValueIt
     public let placeholder: String
     
     /// A closure that will be invoked when the item is selected.
-    public var selectionHandler: (() -> Void)?
+    public var selectionHandler: () -> Void
     
     /// The formatted value to show in the view
     @AdyenObservable(nil) public var formattedValue: String?
@@ -25,6 +25,10 @@ open class FormSelectableValueItem<ValueType: Equatable>: FormValidatableValueIt
         placeholder: String
     ) {
         self.placeholder = placeholder
+        
+        selectionHandler = {
+            AdyenAssertion.assertionFailure(message: "'selectionHandler' needs to be provided on '\(String(describing: Self.self))'")
+        }
         
         super.init(value: value, style: style)
     }

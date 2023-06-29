@@ -50,24 +50,14 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     }
 
     private lazy var searchViewController: SearchViewController = {
-        let searchViewController = SearchViewController(
+        SearchViewController(
             style: configuration.style,
             emptyView: IssuerListEmptyView(),
             localizationParameters: configuration.localizationParameters
         ) { [weak self] searchText, handler in
             guard let self else { return }
-            
-            if searchText.isEmpty {
-                handler(listItems(for: issuerListPaymentMethod.issuers))
-            } else {
-                let filteredIssuers = issuerListPaymentMethod.issuers.filter {
-                    $0.name.range(of: searchText, options: .caseInsensitive) != nil
-                }
-                handler(listItems(for: filteredIssuers))
-            }
+            handler(listItems(for: searchText))
         }
-        
-        return searchViewController
     }()
 
     public func stopLoading() {
@@ -78,7 +68,22 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
 
     // MARK: - Private
 
-    private func listItems(for issuers: [Issuer]) -> [ListItem] {
+    private func listItems(for searchText: String) -> [ListItem] {
+        let issuers = filteredIssuers(for: searchText)
+        return listItems(from: issuers)
+    }
+
+    private func filteredIssuers(for searchText: String) -> [Issuer] {
+        if searchText.isEmpty {
+            return issuerListPaymentMethod.issuers
+        }
+        
+        return issuerListPaymentMethod.issuers.filter {
+            $0.name.range(of: searchText, options: .caseInsensitive) != nil
+        }
+    }
+    
+    private func listItems(from issuers: [Issuer]) -> [ListItem] {
         issuers.map { issuer -> ListItem in
 
             let logoUrl = LogoURLProvider.logoURL(
