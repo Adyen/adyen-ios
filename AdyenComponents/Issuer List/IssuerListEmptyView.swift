@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Foundation
+import UIKit
 
 /// The empty view to be used in the IssuerListComponent SearchViewController
 internal class IssuerListEmptyView: UIStackView, SearchViewControllerEmptyView {
