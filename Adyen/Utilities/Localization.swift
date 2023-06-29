@@ -35,11 +35,10 @@ public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationPa
         translationAttempt = enforceLocalizedString(key: key.key, locale: enforcedLocale)
     } else {
         translationAttempt = attempt(buildPossibleInputs(key.key, parameters))
-            .flatMap(\.adyen.nilIfEmpty)
     }
 
     // Use fallback in case attempt result is nil or empty
-    let result = translationAttempt ?? fallbackLocalizedString(key: key.key)
+    let result = translationAttempt.flatMap(\.adyen.nilIfEmpty) ?? fallbackLocalizedString(key: key.key)
     
     guard !arguments.isEmpty else {
         return result
