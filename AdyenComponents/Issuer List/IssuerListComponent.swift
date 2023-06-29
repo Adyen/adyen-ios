@@ -56,7 +56,7 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
             localizationParameters: configuration.localizationParameters
         ) { [weak self] searchText, handler in
             guard let self else { return }
-            handler(listItems(for: searchText))
+            handler(self.listItems(for: searchText))
         }
     }()
 
