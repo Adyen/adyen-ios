@@ -179,11 +179,11 @@ public class SearchViewController: UIViewController {
             guard let self else { return }
             
             if !results.isEmpty {
-                interfaceState = .showingResults(results: results)
+                self.interfaceState = .showingResults(results: results)
                 return
             }
             
-            interfaceState = .empty(searchTerm: searchText)
+            self.interfaceState = .empty(searchTerm: searchText)
         }
     }
 }
