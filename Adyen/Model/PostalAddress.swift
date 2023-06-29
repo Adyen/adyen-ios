@@ -101,6 +101,10 @@ public struct PostalAddress: Equatable, Encodable {
             .map { $0?.trimmingCharacters(in: .whitespaces).adyen.nilIfEmpty }
         return zip(lhsFields, rhsFields).allSatisfy { $0 == $1 }
     }
+    
+    public var isEmpty: Bool {
+        self == .init()
+    }
 }
 
 extension PostalAddress {

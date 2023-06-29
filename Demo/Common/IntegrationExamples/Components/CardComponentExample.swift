@@ -80,7 +80,40 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         }
         
         let style = FormComponentStyle()
-        let config = CardComponent.Configuration(style: style)
+        var config = CardComponent.Configuration(style: style)
+        config.billingAddress.mode = .full
+        config.billingAddress.lookupHandler = { searchTerm, completion in
+            
+            // TODO: This could result in a incomplete looking cell - maybe we should validate the PostalAddress before?
+            
+            if searchTerm.isEmpty {
+                completion([])
+                return
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                
+                if searchTerm.count > 3 {
+                    completion([])
+                    return
+                }
+                
+                completion([
+                    .init(
+                        city: "[CITY] \(searchTerm)"
+                    ),
+                    .init(
+                        city: "City",
+                        country: "NL",
+                        houseNumberOrName: "1",
+                        postalCode: "12345",
+                        stateOrProvince: "State",
+                        street: "Street",
+                        apartment: "2"
+                    )
+                ])
+            }
+        }
         let component = CardComponent(paymentMethod: paymentMethod,
                                       context: context,
                                       configuration: config)

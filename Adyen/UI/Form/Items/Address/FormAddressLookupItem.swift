@@ -11,17 +11,13 @@ import Foundation
 public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?> {
     
     private var initialCountry: String
-    
+    private var context: AddressViewModelBuilderContext
     private let localizationParameters: LocalizationParameters?
     
+    /// The view model to validate the address with
     @_spi(AdyenInternal)
     public var addressViewModel: AddressViewModel {
-        addressViewModelBuilder.build(
-            context: .init(
-                countryCode: value?.country ?? initialCountry,
-                isOptional: false
-            )
-        )
+        addressViewModelBuilder.build(context: self.context)
     }
     
     private let addressViewModelBuilder: AddressViewModelBuilder
@@ -52,6 +48,7 @@ public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?
         self.initialCountry = initialCountry
         self.addressViewModelBuilder = addressViewModelBuilder
         self.localizationParameters = localizationParameters
+        self.context = .init(countryCode: prefillAddress?.country ?? initialCountry, isOptional: false)
         
         super.init(
             value: prefillAddress,
@@ -64,6 +61,10 @@ public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?
         
         updateValidationFailureMessage()
         updateFormattedValue()
+    }
+    
+    public func updateOptionalStatus(isOptional: Bool) {
+        context.isOptional = isOptional
     }
     
     // MARK: - Public

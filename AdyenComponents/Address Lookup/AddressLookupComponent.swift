@@ -88,7 +88,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
         return securedViewController
     }
     
-    private var searchController: AsyncSearchViewController {
+    private var searchController: SearchViewController {
         
         let emptyView = AddressLookupSearchEmptyView(
             localizationParameters: localizationParameters
@@ -97,19 +97,21 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
             showForm(with: prefillAddress)
         }
         
-        let resultProvider: AsyncSearchViewController.ResultProvider = { [weak self] searchTerm, resultHandler in
-            self?.lookupProvider(searchTerm) { [weak self] results in
-                guard let self else { return }
-                resultHandler(results.map(listItem(for:)))
-            }
-        }
-        
-        let searchController = AsyncSearchViewController(
+        let searchController = SearchViewController(
             style: style,
             searchBarPlaceholder: "Search your address",
             emptyView: emptyView,
-            resultProvider: resultProvider
-        )
+            localizationParameters: localizationParameters
+        ) { [weak self] searchTerm, resultHandler in
+            self?.lookupProvider(searchTerm) { [weak self] results in
+                guard let self else { return }
+                resultHandler(results.compactMap(listItem(for:)))
+            }
+        }
+        
+        if #available(iOS 13.0, *) {
+            searchController.isModalInPresentation = true
+        }
         
         searchController.title = "Billing Address"
         searchController.navigationItem.rightBarButtonItem = .init(
@@ -121,10 +123,18 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
         return searchController
     }
     
-    private func listItem(for address: PostalAddress) -> ListItem {
-        .init(
-            title: address.formattedStreet,
-            subtitle: address.formattedLocation(using: localizationParameters)
+    private func listItem(for address: PostalAddress) -> ListItem? {
+        guard !address.isEmpty else { return nil }
+        
+        let formattedStreet = address.formattedStreet
+        let formattedLocation = address.formattedLocation(using: localizationParameters)
+        
+        let title = !formattedStreet.isEmpty ? formattedStreet : formattedLocation
+        let subtitle = !formattedStreet.isEmpty ? formattedLocation : nil
+        
+        return .init(
+            title: title,
+            subtitle: subtitle
         ) { [weak self] in
             self?.showForm(with: address)
         }

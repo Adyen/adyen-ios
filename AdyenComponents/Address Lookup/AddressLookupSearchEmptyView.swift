@@ -7,7 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
-class AddressLookupSearchEmptyView: UIStackView, AsyncSearchViewControllerEmptyView {
+internal class AddressLookupSearchEmptyView: UIStackView, SearchViewControllerEmptyView {
     
     /// The action to dismiss the search
     private let dismissSearchLink = "dismissSearch://"
@@ -33,6 +33,7 @@ class AddressLookupSearchEmptyView: UIStackView, AsyncSearchViewControllerEmptyV
         textView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "textView")
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.isScrollEnabled = false
+        textView.isEditable = false
         return textView
     }()
     
@@ -73,7 +74,6 @@ class AddressLookupSearchEmptyView: UIStackView, AsyncSearchViewControllerEmptyV
 private extension AddressLookupSearchEmptyView {
     
     func updateLabels() {
-        // TODO: Make "manual address entry" tappable
         // TODO: Localization
         
         if searchTerm.isEmpty {
@@ -86,8 +86,10 @@ private extension AddressLookupSearchEmptyView {
     }
     
     private func configureSubtitleLabel(for searchTerm: String) {
+        // TODO: Localization
+        
         let string = searchTerm.isEmpty ?
-            "or use manual address entry" :
+            "or use %#manual address entry%#" :
             "'\(searchTerm)' did not match with anything, try again or use %#manual address entry%#"
         
         let paragraphStyle = NSMutableParagraphStyle()

@@ -7,26 +7,47 @@
 import UIKit
 
 @_spi(AdyenInternal)
-public protocol SearchViewControllerDelegate: AnyObject {
-
-    func textDidChange(_ searchBar: UISearchBar, searchText: String)
+public protocol SearchViewControllerEmptyView: UIView {
+    var searchTerm: String { get set }
 }
 
 @_spi(AdyenInternal)
 public class SearchViewController: UIViewController {
 
-    internal let childViewController: UIViewController
+    public typealias ResultProvider = (_ searchTerm: String, _ handler: @escaping ([ListItem]) -> Void) -> Void
+    
+    private enum InterfaceState {
+        case loading
+        case empty(searchTerm: String)
+        case showingResults(results: [ListItem])
+    }
+    
+    private var interfaceState: InterfaceState = .empty(searchTerm: "") {
+        didSet { updateInterface() }
+    }
+    
+    public lazy var resultsListViewController = ListViewController(style: style)
     private let localizationParameters: LocalizationParameters?
-    private let style: ViewStyle
-
-    public init(childViewController: UIViewController,
-                style: ViewStyle,
-                delegate: SearchViewControllerDelegate,
-                localizationParameters: LocalizationParameters? = nil) {
-        self.childViewController = childViewController
+    internal let style: ViewStyle
+    private let searchBarPlaceholder: String?
+    private let resultProvider: ResultProvider
+    private let shouldFocusSearchBarOnAppearance: Bool
+    
+    public init(
+        style: ViewStyle,
+        searchBarPlaceholder: String? = nil,
+        emptyView: SearchViewControllerEmptyView,
+        shouldFocusSearchBarOnAppearance: Bool = false,
+        localizationParameters: LocalizationParameters? = nil,
+        resultProvider: @escaping ResultProvider
+    ) {
+        self.emptyView = emptyView
         self.style = style
-        self.delegate = delegate
+        self.resultProvider = resultProvider
+        self.searchBarPlaceholder = searchBarPlaceholder ?? localizedString(.searchPlaceholder, localizationParameters)
         self.localizationParameters = localizationParameters
+        self.shouldFocusSearchBarOnAppearance = shouldFocusSearchBarOnAppearance
+        
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -34,11 +55,22 @@ public class SearchViewController: UIViewController {
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    internal let emptyView: SearchViewControllerEmptyView
 
-    private lazy var searchBar: UISearchBar = {
+    internal lazy var loadingView: UIActivityIndicatorView = {
+        let loadingView = UIActivityIndicatorView(style: .whiteLarge)
+        if #available(iOS 13.0, *) {
+            loadingView.color = .secondarySystemFill
+        }
+        loadingView.hidesWhenStopped = true
+        return loadingView
+    }()
+    
+    internal lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .prominent
-        searchBar.placeholder = localizedString(.searchPlaceholder, localizationParameters)
+        searchBar.placeholder = searchBarPlaceholder
         searchBar.isTranslucent = false
         searchBar.backgroundImage = UIImage()
         searchBar.barTintColor = style.backgroundColor
@@ -47,88 +79,86 @@ public class SearchViewController: UIViewController {
         return searchBar
     }()
 
-    private lazy var imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "search",
-                                  in: Bundle.coreInternalResources,
-                                  compatibleWith: nil)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        imageView.setContentHuggingPriority(.required, for: .vertical)
-
-        return imageView
-    }()
-
-    private lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel()
-        titleLabel.font = UIFont.preferredFont(forTextStyle: .title2).adyen.font(with: .bold)
-        titleLabel.numberOfLines = 0
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
-
-        return titleLabel
-    }()
-
-    private lazy var subtitleLabel: UILabel = {
-        let subtitleLabel = UILabel()
-        subtitleLabel.text = localizedString(.paybybankSubtitle, localizationParameters)
-        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        subtitleLabel.numberOfLines = 0
-
-        return subtitleLabel
-    }()
-
-    // MARK: - Stack View
-
-    private lazy var noResultsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [imageView, titleLabel, subtitleLabel])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.setCustomSpacing(32.0, after: imageView)
-        stackView.setCustomSpacing(4.0, after: titleLabel)
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.distribution = .fill
-
-        return stackView
-    }()
-
-    private weak var delegate: SearchViewControllerDelegate?
-
     override public func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = style.backgroundColor
-        view.addSubview(searchBar)
-        view.addSubview(noResultsStackView)
-        noResultsStackView.isHidden = true
-        childViewController.willMove(toParent: self)
-        addChild(childViewController)
-        view.addSubview(childViewController.view)
-        childViewController.didMove(toParent: self)
-        childViewController.view.translatesAutoresizingMaskIntoConstraints = false
 
+        view.addSubview(loadingView)
+        view.addSubview(emptyView)
+        
+        resultsListViewController.willMove(toParent: self)
+        addChild(resultsListViewController)
+        view.addSubview(resultsListViewController.view)
+        resultsListViewController.didMove(toParent: self)
+        resultsListViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        searchBar.setContentCompressionResistancePriority(.required, for: .vertical)
+        view.addSubview(searchBar)
+        
+        setupConstraints()
+        updateInterface()
+        
+        // Allow for immediate population
+        lookupAddress(for: "")
+    }
+    
+    override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if shouldFocusSearchBarOnAppearance {
+            searchBar.becomeFirstResponder()
+        }
+    }
+    
+    private func setupConstraints() {
+        
         NSLayoutConstraint.activate([
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
             searchBar.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 0),
 
-            noResultsStackView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 0),
-            noResultsStackView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0),
-            noResultsStackView.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor),
-
-            childViewController.view.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
-            childViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            childViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            childViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+            resultsListViewController.view.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
+            resultsListViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            resultsListViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+            
+            emptyView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 0),
+            emptyView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0),
+            emptyView.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor, constant: 0)
         ])
+        
+        loadingView.adyen.anchor(inside: self.view)
+    }
+    
+    private func updateInterface() {
+        
+        emptyView.isHidden = true
+        loadingView.stopAnimating()
+        resultsListViewController.view.isHidden = true
+        
+        switch interfaceState {
+            
+        case .loading:
+            loadingView.startAnimating()
+            
+        case let .empty(searchTerm):
+            emptyView.isHidden = false
+            emptyView.searchTerm = searchTerm
+            
+        case let .showingResults(results):
+            resultsListViewController.reload(
+                newSections: [.init(items: results)]
+            )
+            resultsListViewController.view.isHidden = false
+        }
     }
 
     override public var preferredContentSize: CGSize {
         get {
-            guard childViewController.isViewLoaded else { return .zero }
-            let innerSize = childViewController.preferredContentSize
+            guard resultsListViewController.isViewLoaded else { return .zero }
+            let innerSize = resultsListViewController.preferredContentSize
             return CGSize(width: innerSize.width,
-                          height: UIScreen.main.bounds.height * 0.7)
+                          height: .greatestFiniteMagnitude)
         }
 
         // swiftlint:disable:next unused_setter_value
@@ -138,26 +168,27 @@ public class SearchViewController: UIViewController {
         setter - no implemented.
         """) }
     }
-
-    public func showNoSearchResultsView(searchText: String) {
-        titleLabel.text = localizedString(.paybybankTitle, localizationParameters) + " '\(searchText)'"
-        noResultsStackView.isHidden = false
-        childViewController.view.isHidden = true
+    
+    private func lookupAddress(for searchText: String) {
+        interfaceState = .loading
+        
+        resultProvider(searchText) { [weak self] results in
+            guard let self else { return }
+            
+            if !results.isEmpty {
+                interfaceState = .showingResults(results: results)
+                return
+            }
+            
+            interfaceState = .empty(searchTerm: searchText)
+        }
     }
-
-    private func hideNoSearchResultsView() {
-        noResultsStackView.isHidden = true
-        childViewController.view.isHidden = false
-    }
-
 }
 
-@_spi(AdyenInternal)
 extension SearchViewController: UISearchBarDelegate {
-
+    
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        hideNoSearchResultsView()
-        delegate?.textDidChange(searchBar, searchText: searchText)
+        lookupAddress(for: searchText)
     }
     
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
