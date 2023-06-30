@@ -18,7 +18,7 @@ internal extension Bundle {
     static let core: Bundle = .init(for: FormView.self)
 
     /// The bundle in which the framework's resources are located.
-    static let coreInternalResources: Bundle = .module
+    public static let coreInternalResources: Bundle = .module
 
     // swiftlint:enable explicit_acl
 }

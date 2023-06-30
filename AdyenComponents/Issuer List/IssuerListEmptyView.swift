@@ -5,11 +5,38 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Foundation
+import UIKit
+
+extension IssuerListEmptyView {
+    
+    internal struct Style: ViewStyle {
+        
+        internal var title: TextStyle
+        internal var subtitle: TextStyle
+        internal var backgroundColor: UIColor
+        
+        internal init(
+            title: TextStyle = .init(
+                font: .preferredFont(forTextStyle: .title2).adyen.font(with: .bold),
+                color: .Adyen.componentLabel
+            ),
+            subtitle: TextStyle = .init(
+                font: .preferredFont(forTextStyle: .subheadline),
+                color: .Adyen.componentSecondaryLabel
+            ),
+            backgroundColor: UIColor = .clear
+        ) {
+            self.title = title
+            self.subtitle = subtitle
+            self.backgroundColor = backgroundColor
+        }
+    }
+}
 
 /// The empty view to be used in the IssuerListComponent SearchViewController
 internal class IssuerListEmptyView: UIStackView, SearchViewControllerEmptyView {
     
+    private let style: Style
     private let localizationParameters: LocalizationParameters?
     
     public var searchTerm: String {
@@ -31,7 +58,6 @@ internal class IssuerListEmptyView: UIStackView, SearchViewControllerEmptyView {
     
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.font = UIFont.preferredFont(forTextStyle: .title2).adyen.font(with: .bold) // TODO: Styling
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
         
@@ -41,8 +67,7 @@ internal class IssuerListEmptyView: UIStackView, SearchViewControllerEmptyView {
     }()
 
     private lazy var subtitleLabel: UILabel = {
-        let subtitleLabel = UILabel() // TODO: Styling
-        subtitleLabel.text = localizedString(.paybybankSubtitle, localizationParameters)
+        let subtitleLabel = UILabel()
         subtitleLabel.numberOfLines = 0
         subtitleLabel.textAlignment = .center
         
@@ -51,8 +76,11 @@ internal class IssuerListEmptyView: UIStackView, SearchViewControllerEmptyView {
     
     // MARK: - Stack View
     
-    internal init(localizationParameters: LocalizationParameters? = nil) {
-        
+    internal init(
+        style: Style = .init(),
+        localizationParameters: LocalizationParameters? = nil
+    ) {
+        self.style = style
         self.localizationParameters = localizationParameters
         self.searchTerm = ""
         
@@ -84,5 +112,11 @@ private extension IssuerListEmptyView {
     
     func updateLabels() {
         titleLabel.text = "\(localizedString(.paybybankTitle, localizationParameters)) '\(searchTerm)'"
+        subtitleLabel.text = localizedString(.paybybankSubtitle, localizationParameters)
+        
+        titleLabel.font = style.title.font
+        subtitleLabel.font = style.subtitle.font
+        titleLabel.textColor = style.title.color
+        subtitleLabel.textColor = style.subtitle.color
     }
 }
