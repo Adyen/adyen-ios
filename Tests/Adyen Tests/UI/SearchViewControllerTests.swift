@@ -67,7 +67,7 @@ class SearchViewControllerTests: XCTestCase {
             emptyView: emptyView
         ) { searchTerm, handler in
             if searchTerm == testSearchTerm {
-                DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     handler(resultItems)
                     expectation.fulfill()
                 }
@@ -91,9 +91,11 @@ class SearchViewControllerTests: XCTestCase {
             textDidChange: testSearchTerm
         )
         
+        wait(for: .milliseconds(300))
+        
         interfaceStates.append(searchViewController.interfaceState) // Loading
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 2)
         
         interfaceStates.append(searchViewController.interfaceState) // Showing Results (resultItems)
         
