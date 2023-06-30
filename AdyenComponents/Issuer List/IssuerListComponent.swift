@@ -27,6 +27,9 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     /// Component's configuration.
     public var configuration: Configuration
     
+    /// The title of the view controller
+    private let title: String
+    
     /// Initializes the issuer list component.
     ///
     /// - Parameter paymentMethod: The issuer list payment method.
@@ -38,7 +41,7 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
         self.issuerListPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
-        viewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
+        self.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
     }
     
     private let issuerListPaymentMethod: IssuerListPaymentMethod
@@ -46,13 +49,17 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     // MARK: - Presentable Component Protocol
     
     public var viewController: UIViewController {
-        searchViewController
+        let viewController = searchViewController
+        viewController.title = title
+        return viewController
     }
 
     private lazy var searchViewController: SearchViewController = {
         SearchViewController(
             style: configuration.style,
-            emptyView: IssuerListEmptyView(),
+            emptyView: IssuerListEmptyView(
+                localizationParameters: configuration.localizationParameters
+            ),
             localizationParameters: configuration.localizationParameters
         ) { [weak self] searchText, handler in
             guard let self else { return }
