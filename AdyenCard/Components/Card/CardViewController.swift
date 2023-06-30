@@ -115,15 +115,14 @@ internal class CardViewController: FormViewController {
         let requiredFields: Set<AddressField>
         
         switch configuration.billingAddress.mode {
+        case .lookup:
+            guard let lookupBillingAddress = items.lookupBillingAddressItem.value else { return nil }
+            address = lookupBillingAddress
+            requiredFields = items.lookupBillingAddressItem.addressViewModel.requiredFields
+            
         case .full:
-            if configuration.billingAddress.lookupHandler != nil {
-                guard let lookupBillingAddress = items.lookupBillingAddressItem.value else { return nil }
-                address = lookupBillingAddress
-                requiredFields = items.lookupBillingAddressItem.addressViewModel.requiredFields
-            } else {
-                address = items.billingAddressItem.value
-                requiredFields = items.billingAddressItem.addressViewModel.requiredFields
-            }
+            address = items.billingAddressItem.value
+            requiredFields = items.billingAddressItem.addressViewModel.requiredFields
             
         case .postalCode:
             address = PostalAddress(postalCode: items.postalCodeItem.value)
@@ -190,12 +189,10 @@ internal class CardViewController: FormViewController {
     private func updateBillingAddressOptionalStatus(brands: [CardBrand]) {
         let isOptional = configuration.billingAddress.isOptional(for: brands.map(\.type))
         switch configuration.billingAddress.mode {
+        case .lookup:
+            items.lookupBillingAddressItem.updateOptionalStatus(isOptional: isOptional)
         case .full:
-            if configuration.billingAddress.lookupHandler != nil {
-                items.lookupBillingAddressItem.updateOptionalStatus(isOptional: isOptional)
-            } else {
-                items.billingAddressItem.updateOptionalStatus(isOptional: isOptional)
-            }
+            items.billingAddressItem.updateOptionalStatus(isOptional: isOptional)
         case .postalCode:
             items.postalCodeItem.updateOptionalStatus(isOptional: isOptional)
         case .none:
@@ -259,16 +256,16 @@ internal class CardViewController: FormViewController {
         }
 
         switch configuration.billingAddress.mode {
-        case .full:
-            if let handler = configuration.billingAddress.lookupHandler {
-                let item = items.lookupBillingAddressItem
-                item.selectionHandler = { [weak cardDelegate] in
-                    cardDelegate?.didSelectAddressLookup(handler)
-                }
-                append(item)
-            } else {
-                append(items.billingAddressItem)
+        case let .lookup(handler):
+            let item = items.lookupBillingAddressItem
+            item.selectionHandler = { [weak cardDelegate] in
+                cardDelegate?.didSelectAddressLookup(handler)
             }
+            append(item)
+            
+        case .full:
+            append(items.billingAddressItem)
+            
         case .postalCode:
             append(items.postalCodeItem)
         case .none:

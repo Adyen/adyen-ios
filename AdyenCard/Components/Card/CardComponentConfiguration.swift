@@ -9,10 +9,6 @@
 /// Billing address fields configurations
 public struct BillingAddressConfiguration {
     
-    // TODO: Discuss separate lookupHandler, vs case fullLookup(handler: LookupHandler) on CardComponent.AddressFormType
-    
-    public typealias LookupHandler = (_ searchTerm: String, _ completionHandler: @escaping (_ result: [PostalAddress]) -> Void) -> Void
-    
     /// Initializes a new instance of `BillingAddressConfiguration`.
     public init() { /* Empty initializer */ }
     
@@ -25,9 +21,6 @@ public struct BillingAddressConfiguration {
     
     /// Indicates the requirement level of a field.
     public var requirementPolicy: RequirementPolicy = .required
-    
-    /// A handler providing `PostalAddress`es based on a search term
-    public var lookupHandler: LookupHandler?
     
     /// Indicates the requirement level of a field.
     public enum RequirementPolicy {
@@ -95,6 +88,10 @@ extension CardComponent {
     
     /// The mode of address form of card component
     public enum AddressFormType {
+        
+        public typealias LookupHandler = (_ searchTerm: String, _ completionHandler: @escaping (_ result: [PostalAddress]) -> Void) -> Void
+        
+        case lookup(handler: LookupHandler)
         
         /// Display full address form
         case full

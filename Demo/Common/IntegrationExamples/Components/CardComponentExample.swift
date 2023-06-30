@@ -81,10 +81,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         
         let style = FormComponentStyle()
         var config = CardComponent.Configuration(style: style)
-        config.billingAddress.mode = .full
-        config.billingAddress.lookupHandler = { searchTerm, completion in
-            
-            // TODO: This could result in a incomplete looking cell - maybe we should validate the PostalAddress before?
+        config.billingAddress.mode = .lookup(handler: { searchTerm, completion in
             
             if searchTerm.isEmpty {
                 completion([])
@@ -113,7 +110,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
                     )
                 ])
             }
-        }
+        })
         let component = CardComponent(paymentMethod: paymentMethod,
                                       context: context,
                                       configuration: config)
