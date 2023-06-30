@@ -16,12 +16,6 @@ public class SearchViewController: UIViewController {
 
     public typealias ResultProvider = (_ searchTerm: String, _ handler: @escaping ([ListItem]) -> Void) -> Void
     
-    internal enum InterfaceState {
-        case loading
-        case empty(searchTerm: String)
-        case showingResults(results: [ListItem])
-    }
-    
     internal private(set) var interfaceState: InterfaceState = .empty(searchTerm: "") {
         didSet {
             guard interfaceState != oldValue else { return }
@@ -63,9 +57,7 @@ public class SearchViewController: UIViewController {
 
     internal lazy var loadingView: UIActivityIndicatorView = {
         let loadingView = UIActivityIndicatorView(style: .whiteLarge)
-        if #available(iOS 13.0, *) {
-            loadingView.color = .secondarySystemFill
-        }
+        loadingView.color = .Adyen.componentLoadingMessageColor
         loadingView.hidesWhenStopped = true
         return loadingView
     }()
@@ -196,23 +188,5 @@ extension SearchViewController: UISearchBarDelegate {
     
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-    }
-}
-
-extension SearchViewController.InterfaceState: Equatable {
-    
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-        case (.loading, .loading):
-            return true
-            
-        case let (.empty(lhsSearchTerm), .empty(rhsSearchTerm)):
-            return lhsSearchTerm == rhsSearchTerm
-            
-        case let (.showingResults(lhsResults), .showingResults(rhsResults)):
-            return lhsResults == rhsResults
-            
-        default: return false
-        }
     }
 }
