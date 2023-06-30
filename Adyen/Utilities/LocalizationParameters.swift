@@ -30,7 +30,7 @@ public struct LocalizationParameters: Equatable {
     public let bundle: Bundle?
     
     /// Initializes LocalizationParameters with device specific locale.
-    /// This is recommended approach for localization and it follows Apple’s [localization](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPInternational/InternationalizingYourCode/InternationalizingYourCode.html#//apple_ref/doc/uid/10000171i-CH4-SW3) guidlines.
+    /// This is recommended approach for localization and it follows Apple’s [localization](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPInternational/InternationalizingYourCode/InternationalizingYourCode.html#//apple_ref/doc/uid/10000171i-CH4-SW3) guidelines.
     ///
     /// - Parameters:
     ///   - bundle: The custom bundle to search.
