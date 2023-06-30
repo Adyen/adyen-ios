@@ -42,7 +42,13 @@ final class IssuerListComponentUITests: XCTestCase {
 
     func testStartStopLoading() {
         XCTAssertNotNil(listViewController)
+        
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .milliseconds(300))
+        
         let items = listViewController!.sections[0].items
+        
         let index = 0
         let item = items[index]
         var cell = listViewController!.tableView.visibleCells[index] as! ListCell
