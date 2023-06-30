@@ -6,9 +6,9 @@
 
 import Foundation
 
-internal extension SearchViewController {
+extension SearchViewController {
     
-    enum InterfaceState {
+    internal enum InterfaceState {
         case loading
         case empty(searchTerm: String)
         case showingResults(results: [ListItem])
@@ -19,7 +19,7 @@ internal extension SearchViewController {
 
 extension SearchViewController.InterfaceState: Equatable {
     
-    static func == (lhs: Self, rhs: Self) -> Bool {
+    internal static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case (.loading, .loading):
             return true
