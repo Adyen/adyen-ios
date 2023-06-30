@@ -88,7 +88,7 @@ class SearchViewControllerTests: XCTestCase {
         
         searchViewController.searchBar.delegate?.searchBar?(
             searchViewController.searchBar,
-            textDidChange: ""
+            textDidChange: testSearchTerm
         )
         
         interfaceStates.append(searchViewController.interfaceState) // Loading
