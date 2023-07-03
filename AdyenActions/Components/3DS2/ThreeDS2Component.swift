@@ -174,8 +174,10 @@ public final class ThreeDS2Component: ActionComponent {
                 return ThreeDS2Component.Error.challengeCancelled(ActionComponentData(details: threeDS2Result, paymentData: nil))
             case .missingTransaction:
                 return ThreeDS2Component.Error.missingTransaction
-            default:
-                return $0
+            case let .unknown(unknownError):
+                return unknownError
+            case let .underlyingError(underlyingError):
+                return underlyingError
             }
         }
         

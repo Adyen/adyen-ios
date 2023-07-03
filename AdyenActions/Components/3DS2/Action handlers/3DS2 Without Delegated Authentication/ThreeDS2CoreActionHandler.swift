@@ -18,7 +18,7 @@ extension NSError {
 internal enum ThreeDS2CoreActionHandlerError: Error {
     case cancellationAction(ThreeDSResult)
     case underlyingError(Error)
-    case unknown(Error)
+    case unknown(UnknownError)
     case missingTransaction
 }
 

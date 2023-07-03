@@ -11,6 +11,7 @@ import Foundation
 internal enum ThreeDS2ActionHandlerError: Error {
     case cancellation(AdditionalDetails)
     case underlyingError(Error)
+    case unknown(UnknownError)
     case missingTransaction
 }
 

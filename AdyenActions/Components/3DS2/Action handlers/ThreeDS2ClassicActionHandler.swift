@@ -65,14 +65,15 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
             flavor: _isDropIn ? .dropin : .components,
             environment: context.apiContext.environment
         )
-        coreActionHandler.handle(fingerprintAction, event: event) { result in
+        coreActionHandler.handle(fingerprintAction, event: event) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case let .success(encodedFingerprint):
                 let additionalDetails = ThreeDS2Details.fingerprint(encodedFingerprint)
                 let result = ThreeDSActionHandlerResult.details(additionalDetails)
                 completionHandler(.success(result))
             case let .failure(error):
-                completionHandler(.failure(.underlyingError(error)))
+                completionHandler(.failure(self.onReceiveError(error: error)))
             }
         }
     }
@@ -91,18 +92,12 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
             environment: context.apiContext.environment
         )
         coreActionHandler.handle(challengeAction, event: event) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case let .success(result):
-                self?.handle(result, completionHandler: completionHandler)
+                self.handle(result, completionHandler: completionHandler)
             case let .failure(error):
-                switch error {
-                case let .cancellationAction(threeDSResult):
-                    completionHandler(.failure(.cancellation(ThreeDS2Details.challengeResult(threeDSResult))))
-                case .missingTransaction:
-                    completionHandler(.failure(.missingTransaction))
-                default:
-                    completionHandler(.failure(.underlyingError(error)))
-                }
+                completionHandler(.failure(self.onReceiveError(error: error)))
             }
         }
     }
@@ -111,6 +106,19 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void) {
         let additionalDetails = ThreeDS2Details.challengeResult(threeDSResult)
         completionHandler(.success(.details(additionalDetails)))
+    }
+
+    private func onReceiveError(error: ThreeDS2CoreActionHandlerError) -> ThreeDS2ActionHandlerError {
+        switch error {
+        case let .cancellationAction(threeDSResult):
+            return .cancellation(ThreeDS2Details.challengeResult(threeDSResult))
+        case .missingTransaction:
+            return .missingTransaction
+        case let .unknown(unknownError):
+            return .unknown(unknownError)
+        case let .underlyingError(underlyingError):
+            return .underlyingError(underlyingError)
+        }
     }
 
     // MARK: - Private
