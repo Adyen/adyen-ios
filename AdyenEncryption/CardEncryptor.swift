@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// An object that provides static methods for encrypting card information and retrieving public keys from the server.
+/// An object that provides static methods for encrypting card information.
 public enum CardEncryptor: AnyEncryptor {
     
     // MARK: - Card Encryption
