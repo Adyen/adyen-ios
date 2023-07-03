@@ -177,8 +177,8 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                                             challengeAction: ThreeDS2ChallengeAction,
                                             completionHandler: @escaping (Result<ThreeDSResult, ThreeDS2CoreActionHandlerError>) -> Void) {
         guard let error = error as? NSError else {
-            self.didFail(with: .unknown(UnknownError(errorDescription: "Both error and result are nil, this should never happen.")),
-                         completionHandler: completionHandler)
+            didFail(with: .unknown(UnknownError(errorDescription: "Both error and result are nil, this should never happen.")),
+                    completionHandler: completionHandler)
             return
         }
         switch (error.domain, error.code) {
@@ -187,16 +187,16 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                 let cancellationResult = try ThreeDSResult(authorizationToken: challengeAction.authorisationToken,
                                                            threeDS2SDKError: error.base64Representation())
                 let cancellationError = ThreeDS2CoreActionHandlerError.cancellationAction(cancellationResult)
-                self.didFail(with: cancellationError,
-                             completionHandler: completionHandler)
+                didFail(with: cancellationError,
+                        completionHandler: completionHandler)
             } catch {
-                self.didFail(with: .unknown(UnknownError(errorDescription: "Unable to create ThreeDSResult on error.")),
-                             completionHandler: completionHandler)
+                didFail(with: .unknown(UnknownError(errorDescription: "Unable to create ThreeDSResult on error.")),
+                        completionHandler: completionHandler)
             }
         default:
-            self.didFinish(threeDS2SDKError: error.base64Representation(),
-                           authorizationToken: challengeAction.authorisationToken,
-                           completionHandler: completionHandler)
+            didFinish(threeDS2SDKError: error.base64Representation(),
+                      authorizationToken: challengeAction.authorisationToken,
+                      completionHandler: completionHandler)
         }
     }
     
