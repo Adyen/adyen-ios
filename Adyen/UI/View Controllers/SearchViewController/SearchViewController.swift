@@ -79,6 +79,9 @@ public class SearchViewController: UIViewController {
         view.backgroundColor = style.backgroundColor
 
         view.addSubview(loadingView)
+        
+        emptyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardTapped)))
+        emptyView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(emptyView)
         
         resultsListViewController.willMove(toParent: self)
@@ -112,14 +115,15 @@ public class SearchViewController: UIViewController {
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
             searchBar.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 0),
 
-            resultsListViewController.view.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
             resultsListViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            resultsListViewController.view.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
             resultsListViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
             
             emptyView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 0),
             emptyView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0),
-            emptyView.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor, constant: 0)
+            emptyView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
+            emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         ])
         
         loadingView.adyen.anchor(inside: self.view)
@@ -177,6 +181,11 @@ public class SearchViewController: UIViewController {
             
             self.interfaceState = .empty(searchTerm: searchText)
         }
+    }
+    
+    @objc
+    private func dismissKeyboardTapped() {
+        searchBar.resignFirstResponder()
     }
 }
 
