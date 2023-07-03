@@ -51,10 +51,13 @@ internal class AddressLookupFormViewController: FormViewController {
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "billingAddress")
         let item = FormAddressItem(
             initialCountry: initialCountry,
-            style: formStyle.addressStyle,
-            localizationParameters: localizationParameters,
+            configuration: .init(
+                style: formStyle.addressStyle,
+                localizationParameters: localizationParameters,
+                supportedCountryCodes: supportedCountryCodes,
+                showsHeader: false
+            ),
             identifier: identifier,
-            supportedCountryCodes: supportedCountryCodes,
             addressViewModelBuilder: DefaultAddressViewModelBuilder() // TODO: Make this injectable!
         )
         prefillAddress.map { item.value = $0 }

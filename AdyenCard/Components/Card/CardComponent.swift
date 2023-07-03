@@ -222,17 +222,20 @@ extension CardComponent: CardViewControllerDelegate {
         
         let addressLookupComponent = AddressLookupComponent(
             context: context,
-            style: configuration.style,
+            configuration: .init(
+                style: configuration.style,
+                localizationParameters: configuration.localizationParameters,
+                supportedCountryCodes: configuration.billingAddress.countryCodes
+            ),
             initialCountry: initialCountryCode,
             prefillAddress: cardViewController.items.lookupBillingAddressItem.value,
-            supportedCountryCodes: configuration.billingAddress.countryCodes,
-            lookupProvider: handler,
-            completionHandler: { [weak self] address in
-                guard let self else { return }
-                self.cardViewController.items.lookupBillingAddressItem.value = address
-                viewController.dismiss(animated: true)
-            }
-        )
+            lookupProvider: handler
+        ) { [weak self] address in
+            
+            guard let self else { return }
+            self.cardViewController.items.lookupBillingAddressItem.value = address
+            viewController.dismiss(animated: true)
+        }
         
         self.addressLookupComponent = addressLookupComponent
         

@@ -53,7 +53,7 @@ public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?
         super.init(
             value: prefillAddress,
             style: style.textField,
-            placeholder: localizedString(.billingAddressSectionTitle, localizationParameters) // TODO: Use different key for customizability
+            placeholder: "Enter your billing address" // TODO: Localization
         )
         
         self.identifier = identifier

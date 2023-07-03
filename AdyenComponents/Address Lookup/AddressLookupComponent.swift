@@ -10,20 +10,42 @@ import Foundation
 // TODO: Refactor this
 
 @_spi(AdyenInternal)
+public extension AddressLookupComponent {
+    
+    // TODO: Documentation
+    
+    struct Configuration {
+        
+        internal let style: FormComponentStyle
+        internal let localizationParameters: LocalizationParameters?
+        internal let supportedCountryCodes: [String]?
+        
+        public init(
+            style: FormComponentStyle = .init(),
+            localizationParameters: LocalizationParameters? = nil,
+            supportedCountryCodes: [String]? = nil
+        ) {
+            self.style = style
+            self.localizationParameters = localizationParameters
+            self.supportedCountryCodes = supportedCountryCodes
+        }
+    }
+}
+
+@_spi(AdyenInternal)
 public final class AddressLookupComponent: NSObject, PresentableComponent {
+    
+    public typealias LookupProvider = (_ searchTerm: String, _ resultProvider: @escaping ([PostalAddress]) -> Void) -> Void
     
     public var viewController: UIViewController { navigationController }
     
-    public var context: Adyen.AdyenContext
+    public var context: AdyenContext
     public var requiresModalPresentation: Bool = false
     
-    // TODO: Replace with configuration
-    private let style: FormComponentStyle
-    private let localizationParameters: LocalizationParameters?
-    private var prefillAddress: PostalAddress?
-    private let supportedCountryCodes: [String]?
-    private let lookupProvider: (_ searchTerm: String, _ resultProvider: @escaping ([PostalAddress]) -> Void) -> Void
+    private let configuration: Configuration
     
+    private var prefillAddress: PostalAddress?
+    private let lookupProvider: LookupProvider
     private let completionHandler: (PostalAddress) -> Void
     private var initialCountry: String
     
@@ -35,27 +57,26 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     
     /// Initializes the component.
     /// - Parameters:
-    ///   - paymentMethod: The payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
+    ///   - initialCountry: The initial country to be used
+    ///   - prefillAddress: The address to be prefilled
+    ///   - lookupProvider: A closure to provide results based on the search term
+    ///   - completionHandler: A closure that provides an address called on completion
     public init(
         context: AdyenContext,
-        style: FormComponentStyle,
+        configuration: Configuration,
         initialCountry: String,
         prefillAddress: PostalAddress?,
-        supportedCountryCodes: [String]?,
-        localizationParameters: LocalizationParameters? = nil,
-        lookupProvider: @escaping (_ searchTerm: String, _ resultProvider: @escaping ([PostalAddress]) -> Void) -> Void,
+        lookupProvider: @escaping LookupProvider,
         completionHandler: @escaping (PostalAddress) -> Void
     ) {
         self.initialCountry = initialCountry
         self.context = context
-        self.style = style
+        self.configuration = configuration
         self.prefillAddress = prefillAddress
-        self.supportedCountryCodes = supportedCountryCodes
         self.lookupProvider = lookupProvider
         self.completionHandler = completionHandler
-        self.localizationParameters = localizationParameters
         self.shouldDismissOnSearchDismissal = prefillAddress == nil
     }
     
@@ -70,7 +91,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     private var securedViewController: SecuredViewController {
         let securedViewController = SecuredViewController(
             child: formViewController,
-            style: style
+            style: configuration.style
         )
         securedViewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
@@ -91,18 +112,18 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     private var searchController: SearchViewController {
         
         let emptyView = AddressLookupSearchEmptyView(
-            localizationParameters: localizationParameters
+            localizationParameters: configuration.localizationParameters
         ) { [weak self] in
             guard let self else { return }
             showForm(with: prefillAddress)
         }
         
         let searchController = SearchViewController(
-            style: style,
-            searchBarPlaceholder: "Search your address",
+            style: configuration.style,
+            searchBarPlaceholder: "Search your address", // TODO: Localization
             emptyView: emptyView,
             shouldFocusSearchBarOnAppearance: true,
-            localizationParameters: localizationParameters
+            localizationParameters: configuration.localizationParameters
         ) { [weak self] searchTerm, resultHandler in
             self?.lookupProvider(searchTerm) { [weak self] results in
                 guard let self else { return }
@@ -114,7 +135,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
             searchController.isModalInPresentation = true
         }
         
-        searchController.title = "Billing Address"
+        searchController.title = "Billing Address" // TODO: Localization
         searchController.navigationItem.rightBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
@@ -128,7 +149,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
         guard !address.isEmpty else { return nil }
         
         let formattedStreet = address.formattedStreet
-        let formattedLocation = address.formattedLocation(using: localizationParameters)
+        let formattedLocation = address.formattedLocation(using: configuration.localizationParameters)
         
         let title = !formattedStreet.isEmpty ? formattedStreet : formattedLocation
         let subtitle = !formattedStreet.isEmpty ? formattedLocation : nil
@@ -143,11 +164,11 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
     
     internal lazy var formViewController: AddressLookupFormViewController = {
         AddressLookupFormViewController(
-            formStyle: style,
-            localizationParameters: localizationParameters,
+            formStyle: configuration.style,
+            localizationParameters: configuration.localizationParameters,
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,
-            supportedCountryCodes: supportedCountryCodes
+            supportedCountryCodes: configuration.supportedCountryCodes
         ) { [weak self] in
             self?.showSearch()
         }

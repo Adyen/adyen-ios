@@ -33,7 +33,7 @@ extension AddressLookupSearchEmptyView {
     }
 }
 
-internal class AddressLookupSearchEmptyView: UIStackView, SearchViewControllerEmptyView {
+internal class AddressLookupSearchEmptyView: UIView, SearchViewControllerEmptyView {
     
     /// The action to dismiss the search
     private let dismissSearchLink = "dismissSearch://"
@@ -61,6 +61,7 @@ internal class AddressLookupSearchEmptyView: UIStackView, SearchViewControllerEm
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.isScrollEnabled = false
         textView.isEditable = false
+        textView.isSelectable = true
         return textView
     }()
     
@@ -81,15 +82,25 @@ internal class AddressLookupSearchEmptyView: UIStackView, SearchViewControllerEm
         
         super.init(frame: .zero)
         
-        addArrangedSubview(titleLabel)
-        setCustomSpacing(4.0, after: titleLabel)
+        let contentStack = UIStackView(
+            arrangedSubviews: [
+                titleLabel,
+                subtitleLabel
+            ]
+        )
+        contentStack.translatesAutoresizingMaskIntoConstraints = false
+        contentStack.axis = .vertical
+        contentStack.alignment = .center
+        contentStack.distribution = .fill
+        addSubview(contentStack)
         
-        addArrangedSubview(subtitleLabel)
+        contentStack.setCustomSpacing(4.0, after: titleLabel)
         
-        translatesAutoresizingMaskIntoConstraints = false
-        axis = .vertical
-        alignment = .center
-        distribution = .fill
+        NSLayoutConstraint.activate([
+            contentStack.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 16),
+            contentStack.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -16),
+            contentStack.centerYAnchor.constraint(equalTo: layoutMarginsGuide.centerYAnchor, constant: 0)
+        ])
         
         updateLabels()
     }
