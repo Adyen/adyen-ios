@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -32,9 +32,11 @@ public protocol AnyFormTextItemView: AnyFormItemView {
 
 /// A view representing a basic logic of text item.
 @_spi(AdyenInternal)
-open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, FormTextItemStyle, ItemType>,
+open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemView<String, ItemType>,
     UITextFieldDelegate,
     AnyFormTextItemView {
+    
+    override public var accessibilityLabelView: UIView? { textField }
     
     /// Initializes the text item view.
     ///
@@ -57,7 +59,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
             self?.alertLabel.text = newValue
         }
     }
-    
+
     override public func reset() {
         item.value = ""
         resetValidationStatus()
@@ -124,20 +126,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         return textField
     }()
     
-    // MARK: - Alert Label
-    
-    internal lazy var alertLabel: UILabel = {
-        let alertLabel = UILabel(style: item.style.title)
-        alertLabel.textColor = item.style.errorColor
-        alertLabel.isAccessibilityElement = false
-        alertLabel.numberOfLines = 0
-        alertLabel.text = item.validationFailureMessage
-        alertLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "alertLabel") }
-        alertLabel.isHidden = true
-        
-        return alertLabel
-    }()
-    
     // MARK: - Accessory view
     
     /// Accessory of the entry text field.
@@ -179,8 +167,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     // MARK: - Validation
     
     override public func validate() {
-        guard !isHidden else { return }
-        updateValidationStatus(forced: true)
+        if isHidden { return }
+        super.validate()
     }
     
     // MARK: - Editing
@@ -197,7 +185,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
             separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
             separatorView.heightAnchor.constraint(equalToConstant: 1.0)
         ]
-        
+
         NSLayoutConstraint.activate(constraints)
     }
     
@@ -249,30 +237,20 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         isEditing = true
     }
 
-    open func updateValidationStatus(forced: Bool = false) {
-        let textFieldNotEmpty = textField.text.map(\.isEmpty) == false
+    override open func updateValidationStatus(forced: Bool = false) {
+        let textFieldNotEmpty = !(textField.text ?? "").isEmpty
+        
         // if validation check is allowed during editing, ignore editing check
         let forceShowValidationStatus = (forced || textFieldNotEmpty)
             && (item.allowsValidationWhileEditing || !isEditing)
-        if item.isValid(), forceShowValidationStatus {
-            accessory = .valid
-            hideAlertLabel(true)
-            highlightSeparatorView(color: tintColor)
-            titleLabel.textColor = tintColor
-            textField.accessibilityLabel = item.title
-        } else if forceShowValidationStatus {
-            accessory = .invalid
-            hideAlertLabel(false)
-            highlightSeparatorView(color: item.style.errorColor)
-            titleLabel.textColor = item.style.errorColor
-            textField.accessibilityLabel = item.validationFailureMessage
+        
+        if forceShowValidationStatus {
+            accessory = item.isValid() ? .valid : .invalid
         } else {
             removeAccessoryIfNeeded()
-            hideAlertLabel(true)
-            isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
-            titleLabel.textColor = defaultTitleColor
-            textField.accessibilityLabel = item.title
         }
+        
+        super.updateValidationStatus(forced: forceShowValidationStatus)
     }
     
     public func notifyDelegateOfMaxLengthIfNeeded() {
@@ -282,24 +260,14 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
         }
     }
 
-    internal func resetValidationStatus() {
+    override internal func resetValidationStatus() {
+        super.resetValidationStatus()
         removeAccessoryIfNeeded()
-        hideAlertLabel(true, animated: false)
-        unhighlightSeparatorView()
-        titleLabel.textColor = defaultTitleColor
     }
 
     private func removeAccessoryIfNeeded() {
-        if case .customView = accessory {
-            /* Do nothing */
-        } else {
-            accessory = .none
-        }
-    }
-    
-    private func hideAlertLabel(_ hidden: Bool, animated: Bool = true) {
-        guard hidden || alertLabel.text != nil else { return }
-        alertLabel.adyen.hide(animationKey: "hide_alertLabel", hidden: hidden, animated: animated)
+        if case .customView = accessory { return }
+        accessory = .none
     }
 }
 

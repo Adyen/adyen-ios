@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,6 +15,12 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     private var context: AddressViewModelBuilderContext {
         didSet {
             reloadFields()
+        }
+    }
+    
+    override public var value: PostalAddress {
+        didSet {
+            updateCountryPicker()
         }
     }
     
@@ -73,8 +79,8 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         self.identifier = identifier
         reloadFields()
         
-        bind(countrySelectItem.publisher, at: \.identifier, to: self, at: \.value.country)
-        observe(countrySelectItem.publisher, eventHandler: { [weak self] event in
+        bind(countryPickerItem.publisher, at: \.identifier, to: self, at: \.value.country)
+        observe(countryPickerItem.publisher, eventHandler: { [weak self] event in
             self?.context.countryCode = event.element.identifier
         })
     }
@@ -86,7 +92,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         return item
     }()
     
-    internal lazy var countrySelectItem: FormRegionPickerItem = {
+    internal lazy var countryPickerItem: FormRegionPickerItem = {
         let locale = Locale(identifier: localizationParameters?.locale ?? Locale.current.identifier)
         let countries = RegionRepository.regions(from: locale as NSLocale,
                                                  countryCodes: supportedCountryCodes).sorted { $0.name < $1.name }
@@ -105,13 +111,28 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     // MARK: - Private
     
+    private func updateCountryPicker() {
+        guard let country = value.country, country != countryPickerItem.value.identifier else {
+            return
+        }
+        
+        guard let matchingElement = countryPickerItem.selectableValues.first(where: { $0.identifier == value.country }) else {
+            AdyenAssertion.assertionFailure(
+                message: "The provided country '\(country)' is not supported per configuration."
+            )
+            return
+        }
+        
+        countryPickerItem.value = matchingElement
+    }
+    
     private func reloadFields() {
         let subRegions = RegionRepository.subRegions(for: context.countryCode)
         addressViewModel = addressViewModelBuilder.build(context: context)
         
         items = [FormSpacerItem(),
                  headerItem.addingDefaultMargins(),
-                 countrySelectItem]
+                 countryPickerItem]
         for field in addressViewModel.scheme {
             switch field {
             case let .item(fieldType):
