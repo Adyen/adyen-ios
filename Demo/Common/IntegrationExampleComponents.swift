@@ -284,7 +284,7 @@ extension IntegrationExample: ActionComponentDelegate {
         if case let ThreeDS2Component.Error.challengeCancelled(componentData) = error {
             let request = PaymentDetailsRequest(
                 details: componentData.details,
-                paymentData: nil,
+                paymentData: componentData.paymentData,
                 merchantAccount: ConfigurationConstants.current.merchantAccount
             )
             apiClient.perform(request) { _ in /* fire and forget this request.*/ }
