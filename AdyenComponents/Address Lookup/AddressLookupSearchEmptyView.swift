@@ -7,10 +7,38 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
+extension AddressLookupSearchEmptyView {
+    
+    internal struct Style: ViewStyle {
+        
+        internal var title: TextStyle
+        internal var subtitle: TextStyle
+        internal var backgroundColor: UIColor
+        
+        internal init(
+            title: TextStyle = .init(
+                font: .preferredFont(forTextStyle: .headline),
+                color: .Adyen.componentLabel
+            ),
+            subtitle: TextStyle = .init(
+                font: .preferredFont(forTextStyle: .subheadline),
+                color: .Adyen.componentSecondaryLabel
+            ),
+            backgroundColor: UIColor = .clear
+        ) {
+            self.title = title
+            self.subtitle = subtitle
+            self.backgroundColor = backgroundColor
+        }
+    }
+}
+
 internal class AddressLookupSearchEmptyView: UIStackView, SearchViewControllerEmptyView {
     
     /// The action to dismiss the search
     private let dismissSearchLink = "dismissSearch://"
+    
+    private let style: Style
     
     private let localizationParameters: LocalizationParameters?
     
@@ -20,7 +48,6 @@ internal class AddressLookupSearchEmptyView: UIStackView, SearchViewControllerEm
     
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.font = UIFont.preferredFont(forTextStyle: .title2).adyen.font(with: .bold) // TODO: Styling
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -43,9 +70,11 @@ internal class AddressLookupSearchEmptyView: UIStackView, SearchViewControllerEm
     
     internal init(
         searchTerm: String = "",
+        style: Style = .init(),
         localizationParameters: LocalizationParameters? = nil,
         dismissHandler: @escaping () -> Void
     ) {
+        self.style = style
         self.localizationParameters = localizationParameters
         self.searchTerm = searchTerm
         self.dismissHandler = dismissHandler
@@ -82,6 +111,12 @@ private extension AddressLookupSearchEmptyView {
             titleLabel.text = "No results found"
         }
         
+        titleLabel.textColor = style.title.color
+        subtitleLabel.textColor = style.subtitle.color
+        
+        titleLabel.font = style.title.font
+        subtitleLabel.font = style.subtitle.font
+        
         configureSubtitleLabel(for: searchTerm)
     }
     
@@ -97,7 +132,9 @@ private extension AddressLookupSearchEmptyView {
         let attributedString = NSMutableAttributedString(
             string: string,
             attributes: [
-                NSAttributedString.Key.paragraphStyle: paragraphStyle
+                .paragraphStyle: paragraphStyle,
+                .font: style.subtitle.font,
+                .foregroundColor: style.subtitle.color
             ]
         )
         if let range = string.adyen.linkRanges().first {

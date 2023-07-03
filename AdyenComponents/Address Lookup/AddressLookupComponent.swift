@@ -73,12 +73,12 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
             style: style
         )
         securedViewController.navigationItem.leftBarButtonItem = .init(
-            barButtonSystemItem: .cancel, // TODO: Localization & Styling
+            barButtonSystemItem: .cancel,
             target: self,
             action: #selector(cancelTapped)
         )
         securedViewController.navigationItem.rightBarButtonItem = .init(
-            barButtonSystemItem: .done, // TODO: Localization & Styling
+            barButtonSystemItem: .done,
             target: self,
             action: #selector(doneTapped)
         )
@@ -101,6 +101,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
             style: style,
             searchBarPlaceholder: "Search your address",
             emptyView: emptyView,
+            shouldFocusSearchBarOnAppearance: true,
             localizationParameters: localizationParameters
         ) { [weak self] searchTerm, resultHandler in
             self?.lookupProvider(searchTerm) { [weak self] results in
@@ -115,7 +116,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
         
         searchController.title = "Billing Address"
         searchController.navigationItem.rightBarButtonItem = .init(
-            barButtonSystemItem: .cancel, // TODO: Localization & Styling
+            barButtonSystemItem: .cancel,
             target: self,
             action: #selector(dismissSearchTapped)
         )

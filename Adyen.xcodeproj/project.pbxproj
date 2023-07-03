@@ -126,7 +126,6 @@
 		8140A3742A3317F700896403 /* AddressLookupComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8140A3732A3317F700896403 /* AddressLookupComponent.swift */; };
 		8140A3762A3327B500896403 /* AdyenComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9175E55259393E800D653BE /* AdyenComponents.framework */; };
 		8169B9EC2A0506CC00AAC9F8 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
-		81896E832A4DB10000C532CA /* IssuerListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81896E822A4DB10000C532CA /* IssuerListEmptyView.swift */; };
 		81896E852A4DB5F300C532CA /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81896E842A4DB5F300C532CA /* SearchViewControllerTests.swift */; };
 		81BA08332A45D7C100308160 /* AddressLookupFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08322A45D7C100308160 /* AddressLookupFormViewController.swift */; };
 		81BA08372A49C93100308160 /* FormSelectableValueItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08362A49C93100308160 /* FormSelectableValueItemView.swift */; };
@@ -1268,7 +1267,6 @@
 		8108315C2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerListEmptyView.swift; sourceTree = "<group>"; };
 		81129AE52A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchViewController+InterfaceState.swift"; sourceTree = "<group>"; };
 		8140A3732A3317F700896403 /* AddressLookupComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupComponent.swift; sourceTree = "<group>"; };
-		81896E822A4DB10000C532CA /* IssuerListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerListEmptyView.swift; sourceTree = "<group>"; };
 		81896E842A4DB5F300C532CA /* SearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerTests.swift; sourceTree = "<group>"; };
 		81BA08322A45D7C100308160 /* AddressLookupFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupFormViewController.swift; sourceTree = "<group>"; };
 		81BA08362A49C93100308160 /* FormSelectableValueItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableValueItemView.swift; sourceTree = "<group>"; };
@@ -3102,7 +3100,6 @@
 			children = (
 				E28098BD220DBAA80087928F /* IssuerListComponent.swift */,
 				8108315C2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift */,
-				81896E822A4DB10000C532CA /* IssuerListEmptyView.swift */,
 				E9AFF87D224BB149005A0D8D /* IssuerListDetails.swift */,
 			);
 			path = "Issuer List";
@@ -6617,7 +6614,6 @@
 				00EA4ED7280590050053D938 /* AtomeAddressViewModelBuilder.swift in Sources */,
 				E7D874F527E0E26100D3C00A /* ApplePayConfiguration.swift in Sources */,
 				C9BF0DB327353A2600DCAA1E /* BACSDirectDebitComponent.swift in Sources */,
-				81896E832A4DB10000C532CA /* IssuerListEmptyView.swift in Sources */,
 				F9175EE32593952600D653BE /* BLIKDetails.swift in Sources */,
 				810831592A4C7F810092FAF7 /* AddressLookupSearchEmptyView.swift in Sources */,
 				8108315D2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift in Sources */,
