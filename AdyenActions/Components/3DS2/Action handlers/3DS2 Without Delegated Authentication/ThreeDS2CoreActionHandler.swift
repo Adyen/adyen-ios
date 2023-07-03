@@ -161,7 +161,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                                                          threeDSRequestorAppURL: threeDSRequestorAppURL ?? token.threeDSRequestorAppURL)
         transaction.performChallenge(with: challengeParameters) { [weak self] challengeResult, error in
             guard let result = challengeResult else {
-                self?.processChallengeError(error: error, challengeAction: challengeAction, completionHandler: completionHandler)
+                self?.didReceiveErrorOnChallenge(error: error, challengeAction: challengeAction, completionHandler: completionHandler)
                 return
             }
 
@@ -173,30 +173,30 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     
     /// Invoked to handle the error flow of a challenge handling by the 3ds2sdk.
     /// For challenge cancelled we return the control back to the merchant immediately as an error.
-    private func processChallengeError(error: Error?,
-                                       challengeAction: ThreeDS2ChallengeAction,
-                                       completionHandler: @escaping (Result<ThreeDSResult, ThreeDS2CoreActionHandlerError>) -> Void) {
-        if let error = error as? NSError {
-            switch (error.domain, error.code) {
-            case (ADYRuntimeErrorDomain, Int(ADYRuntimeErrorCode.challengeCancelled.rawValue)):
-                do {
-                    let cancellationResult = try ThreeDSResult(authorizationToken: challengeAction.authorisationToken,
-                                                               threeDS2SDKError: error.base64Representation())
-                    let cancellationError = ThreeDS2CoreActionHandlerError.cancellationAction(cancellationResult)
-                    self.didFail(with: cancellationError,
-                                 completionHandler: completionHandler)
-                } catch {
-                    self.didFail(with: .unknown(UnknownError(errorDescription: "Unable to create ThreeDSResult on error.")),
-                                 completionHandler: completionHandler)
-                }
-            default:
-                self.didFinish(threeDS2SDKError: error.base64Representation(),
-                               authorizationToken: challengeAction.authorisationToken,
-                               completionHandler: completionHandler)
-            }
-        } else {
+    private func didReceiveErrorOnChallenge(error: Error?,
+                                            challengeAction: ThreeDS2ChallengeAction,
+                                            completionHandler: @escaping (Result<ThreeDSResult, ThreeDS2CoreActionHandlerError>) -> Void) {
+        guard let error = error as? NSError else {
             self.didFail(with: .unknown(UnknownError(errorDescription: "Both error and result are nil, this should never happen.")),
                          completionHandler: completionHandler)
+            return
+        }
+        switch (error.domain, error.code) {
+        case (ADYRuntimeErrorDomain, Int(ADYRuntimeErrorCode.challengeCancelled.rawValue)):
+            do {
+                let cancellationResult = try ThreeDSResult(authorizationToken: challengeAction.authorisationToken,
+                                                           threeDS2SDKError: error.base64Representation())
+                let cancellationError = ThreeDS2CoreActionHandlerError.cancellationAction(cancellationResult)
+                self.didFail(with: cancellationError,
+                             completionHandler: completionHandler)
+            } catch {
+                self.didFail(with: .unknown(UnknownError(errorDescription: "Unable to create ThreeDSResult on error.")),
+                             completionHandler: completionHandler)
+            }
+        default:
+            self.didFinish(threeDS2SDKError: error.base64Representation(),
+                           authorizationToken: challengeAction.authorisationToken,
+                           completionHandler: completionHandler)
         }
     }
     

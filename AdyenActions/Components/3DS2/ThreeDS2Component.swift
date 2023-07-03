@@ -134,18 +134,11 @@ public final class ThreeDS2Component: ActionComponent {
         switch threeDS2Action {
         case let .fingerprint(fingerprintAction):
             threeDS2CompactFlowHandler.handle(fingerprintAction) { [weak self] result in
-                self?.didReceive(result.mapError { $0 }, paymentData: nil)
+                self?.didReceive(result, paymentData: nil)
             }
         case let .challenge(challengeAction):
             threeDS2CompactFlowHandler.handle(challengeAction) { [weak self] result in
-                self?.didReceive(result.mapError {
-                    switch $0 {
-                    case let .cancellation(threeDS2Result):
-                        return ThreeDS2Component.Error.challengeCancelled(ActionComponentData(details: threeDS2Result, paymentData: nil))
-                    default:
-                        return $0
-                    }
-                }, paymentData: nil)
+                self?.didReceive(result, paymentData: nil)
             }
         }
     }
@@ -157,7 +150,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
     public func handle(_ fingerprintAction: ThreeDS2FingerprintAction) {
         threeDS2ClassicFlowHandler.handle(fingerprintAction) { [weak self] result in
-            self?.didReceive(result.mapError { $0 }, paymentData: fingerprintAction.paymentData)
+            self?.didReceive(result, paymentData: fingerprintAction.paymentData)
         }
     }
     
@@ -168,14 +161,25 @@ public final class ThreeDS2Component: ActionComponent {
     /// - Parameter challengeAction: The challenge action as received from the Checkout API.
     public func handle(_ challengeAction: ThreeDS2ChallengeAction) {
         threeDS2ClassicFlowHandler.handle(challengeAction) { [weak self] result in
-            self?.didReceive(result.mapError { $0 }, paymentData: challengeAction.paymentData)
+            self?.didReceive(result, paymentData: challengeAction.paymentData)
         }
     }
     
     // MARK: - Private
 
-    private func didReceive(_ result: Result<ThreeDSActionHandlerResult, Swift.Error>, paymentData: String?) {
-        switch result {
+    private func didReceive(_ result: Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>, paymentData: String?) {
+        let mappedResult: Result<ThreeDSActionHandlerResult, Swift.Error> = result.mapError {
+            switch $0 {
+            case let .cancellation(threeDS2Result):
+                return ThreeDS2Component.Error.challengeCancelled(ActionComponentData(details: threeDS2Result, paymentData: nil))
+            case .missingTransaction:
+                return ThreeDS2Component.Error.missingTransaction
+            default:
+                return $0
+            }
+        }
+        
+        switch mappedResult {
         case let .success(result):
             didReceive(result, paymentData: paymentData)
         case let .failure(error):

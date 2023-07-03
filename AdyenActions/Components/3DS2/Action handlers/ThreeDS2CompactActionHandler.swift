@@ -105,6 +105,8 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
                 switch error {
                 case let .cancellationAction(threeDSResult):
                     completionHandler(.failure(.cancellation(ThreeDS2Details.challengeResult(threeDSResult))))
+                case .missingTransaction:
+                    completionHandler(.failure(.missingTransaction))
                 default:
                     completionHandler(.failure(.underlyingError(error)))
                 }
