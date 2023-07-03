@@ -165,7 +165,7 @@
 "adyen.qrCode.timerExpirationMessage" = "A QR-kód ennyi ideig érvényes: %@";
 "adyen.paybybank.subtitle" = "A keresési lekérdezéssel nem található bank…";
 "adyen.paybybank.title" = "Nincs találat a következőre:";
-"adyen.search.placeholder" = "Keresés...";
+"adyen.search.placeholder" = "Keresés…";
 "adyen.upi.modeSelection" = "Jelölje meg, hogyan szeretné használni az UPI-t.";
 "adyen.UPIVpa.validationMessage" = "Adjon meg egy helyes virtuális fizetési címet";
 "adyen.UPIQrcode.generationMessage" = "Hozzon létre QR-kódot, amelyet letölthet vagy amelyről képernyőképet készíthet, és töltse fel az UPI alkalmazásba a fizetés végrehajtásához.";
@@ -175,3 +175,18 @@
 "adyen.QRCode.generateQRCode" = "QR-kód létrehozása";
 "adyen.UPI.QRCodeInstructions" = "A fizetés befejezéséhez készítsen képernyőképet és töltse fel az UPI-alkalmazásban, vagy a kívánt UPI-alkalmazással olvassa be a QR-kódot.";
 "adyen.cashAppPay.title" = "";
+"adyen.threeds2.DA.registration.title" = "Biztonságos és gyors fizetés!";
+"adyen.threeds2.DA.registration.description" = "Biometrikus adataival legközelebb gyorsabban fizethet ezen az eszközön.";
+"adyen.threeds2.DA.registration.positiveButton" = "Gyors fizetés engedélyezése";
+"adyen.threeds2.DA.registration.negativeButton" = "Most nem";
+"adyen.threeds2.DA.registration.timeLeft" = "Engedélyezéshez rendelkezésre álló idő: %@";
+"adyen.threeds2.DA.approval.title" = "Tranzakció jóváhagyása";
+"adyen.threeds2.DA.approval.description" = "A személyazonossága igazolásához a biometrikus adataival hagyja jóvá ezt a vásárlást a fizetés elvégzése érdekében.";
+"adyen.threeds2.DA.approval.positiveButton" = "Biometria használata";
+"adyen.threeds2.DA.approval.negativeButton" = "Jóváhagyás más módon";
+"adyen.threeds2.DA.approval.timeLeft" = "Jóváhagyásra rendelkezésre álló idő: %@";
+"adyen.threeds2.DA.approval.removeCredentialsText" = "A %#hitelesítő adatok eltávolításával%# bármikor leiratkozhat.";
+"adyen.threeds2.DA.approval.remove.alert.title" = "Eltávolítja a hitelesítő adatokat?";
+"adyen.threeds2.DA.approval.remove.alert.description" = "Biztosan eltávolítja a hitelesítő adatait?";
+"adyen.threeds2.DA.approval.remove.alert.positiveButton" = "Eltávolítás";
+"adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Mégse";
