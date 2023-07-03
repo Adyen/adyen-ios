@@ -34,7 +34,7 @@ extension IssuerListEmptyView {
 }
 
 /// The empty view to be used in the IssuerListComponent SearchViewController
-internal class IssuerListEmptyView: UIStackView, SearchViewControllerEmptyView {
+internal class IssuerListEmptyView: UIView, SearchViewControllerEmptyView {
     
     private let style: Style
     private let localizationParameters: LocalizationParameters?
@@ -87,18 +87,27 @@ internal class IssuerListEmptyView: UIStackView, SearchViewControllerEmptyView {
         
         super.init(frame: .zero)
         
-        addArrangedSubview(imageView)
-        setCustomSpacing(32.0, after: imageView)
+        let contentStack = UIStackView(
+            arrangedSubviews: [
+                imageView,
+                titleLabel,
+                subtitleLabel
+            ]
+        )
+        contentStack.translatesAutoresizingMaskIntoConstraints = false
+        contentStack.axis = .vertical
+        contentStack.alignment = .center
+        contentStack.distribution = .fill
+        addSubview(contentStack)
         
-        addArrangedSubview(titleLabel)
-        setCustomSpacing(4.0, after: titleLabel)
+        contentStack.setCustomSpacing(32.0, after: imageView)
+        contentStack.setCustomSpacing(4.0, after: titleLabel)
         
-        addArrangedSubview(subtitleLabel)
-        
-        translatesAutoresizingMaskIntoConstraints = false
-        axis = .vertical
-        alignment = .center
-        distribution = .fill
+        NSLayoutConstraint.activate([
+            contentStack.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 16),
+            contentStack.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -16),
+            contentStack.centerYAnchor.constraint(equalTo: layoutMarginsGuide.centerYAnchor, constant: 0)
+        ])
         
         updateLabels()
     }
