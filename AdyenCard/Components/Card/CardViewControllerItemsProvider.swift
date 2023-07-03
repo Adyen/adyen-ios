@@ -51,11 +51,28 @@ extension CardViewController {
 
         internal lazy var billingAddressItem: FormAddressItem = {
             let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "billingAddress")
-            let item = FormAddressItem(initialCountry: initialCountry,
-                                       style: formStyle.addressStyle,
-                                       localizationParameters: localizationParameters,
+
+            // check and match the initial country from shopper prefill info
+            // with the supported countries
+            let initialCountry: String?
+            if let countryCodes = configuration.billingAddress.countryCodes, !countryCodes.isEmpty {
+                if let prefillCountryCode = shopperInformation?.billingAddress?.country,
+                   countryCodes.contains(prefillCountryCode) {
+                    initialCountry = prefillCountryCode
+                } else {
+                    initialCountry = countryCodes.first
+                }
+            } else {
+                initialCountry = shopperInformation?.billingAddress?.country
+            }
+            
+            let item = FormAddressItem(initialCountry: initialCountry ?? defaultCountryCode,
+                                       configuration: .init(
+                                           style: formStyle.addressStyle,
+                                           localizationParameters: localizationParameters,
+                                           supportedCountryCodes: configuration.billingAddress.countryCodes
+                                       ),
                                        identifier: identifier,
-                                       supportedCountryCodes: configuration.billingAddress.countryCodes,
                                        addressViewModelBuilder: addressViewModelBuilder)
             shopperInformation?.billingAddress.map { item.value = $0 }
             item.style.backgroundColor = UIColor.Adyen.lightGray

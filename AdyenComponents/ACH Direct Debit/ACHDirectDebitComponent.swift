@@ -219,10 +219,12 @@ public final class ACHDirectDebitComponent: PaymentComponent,
             initialCountry = prefillCountryCode
         }
         let item = FormAddressItem(initialCountry: initialCountry,
-                                   style: configuration.style.addressStyle,
-                                   localizationParameters: configuration.localizationParameters,
+                                   configuration: .init(
+                                       style: configuration.style.addressStyle,
+                                       localizationParameters: configuration.localizationParameters,
+                                       supportedCountryCodes: configuration.billingAddressCountryCodes
+                                   ),
                                    identifier: identifier,
-                                   supportedCountryCodes: configuration.billingAddressCountryCodes,
                                    addressViewModelBuilder: DefaultAddressViewModelBuilder())
         configuration.shopperInformation?.billingAddress.map { item.value = $0 }
         item.style.backgroundColor = UIColor.Adyen.lightGray
