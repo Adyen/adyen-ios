@@ -161,8 +161,12 @@ class ThreeDS2ComponentTests: XCTestCase {
         delegate.onDidFail = { error, component in
             XCTAssertTrue(component === sut)
 
-            let error = error as! ThreeDS2Component.Error
-            XCTAssertEqual(error, .unexpectedAction)
+            switch error as? ThreeDS2Component.Error {
+            case .unexpectedAction:
+                break
+            default:
+                XCTFail()
+            }
             delegateExpectation.fulfill()
         }
         sut.delegate = delegate
@@ -180,7 +184,7 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
         threeDS2ActionHandler.mockedFingerprintResult = .success(.action(.threeDS2(.challenge(mockedAction))))
-        threeDS2ActionHandler.mockedChallengeResult = .failure(Dummy.error)
+        threeDS2ActionHandler.mockedChallengeResult = .failure(.underlyingError(Dummy.error))
 
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { action in
@@ -211,7 +215,7 @@ class ThreeDS2ComponentTests: XCTestCase {
     func testFullFlowFingerprintFailure() throws {
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
-        threeDS2ActionHandler.mockedFingerprintResult = .failure(Dummy.error)
+        threeDS2ActionHandler.mockedFingerprintResult = .failure(.underlyingError(Dummy.error))
 
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { action in

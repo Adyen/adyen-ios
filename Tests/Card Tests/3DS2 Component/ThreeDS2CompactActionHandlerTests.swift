@@ -79,9 +79,15 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             case .success:
                 XCTFail()
             case let .failure(error):
-                let decodingError = error as! DecodingError
-                switch decodingError {
-                case .dataCorrupted: ()
+                switch error {
+                case .underlyingError(let decodingError as DecodingError):
+                    switch decodingError {
+                    case .dataCorrupted: ()
+                    default:
+                        XCTFail()
+                    }
+
+                    break
                 default:
                     XCTFail()
                 }
@@ -202,8 +208,12 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             case .success:
                 XCTFail()
             case let .failure(error):
-                let error = error as! DecodingError
-                switch error {
+                guard case .underlyingError(let underlyingError) = error else {
+                    XCTFail()
+                    return
+                }
+                let decodingError = underlyingError as! DecodingError
+                switch decodingError {
                 case .dataCorrupted: ()
                 default:
                     XCTFail()
@@ -228,9 +238,9 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             case .success:
                 XCTFail()
             case let .failure(error):
-                let error = error as! ThreeDS2Component.Error
                 switch error {
-                case .missingTransaction: ()
+                case .missingTransaction:
+                    break
                 default:
                     XCTFail()
                 }
@@ -261,10 +271,15 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             switch result {
             case .success:
                 XCTFail()
-            case let .failure(error):
-                let decodingError = error as! DecodingError
-                switch decodingError {
-                case .dataCorrupted: ()
+            case .failure(let actionHandlerError):
+                switch actionHandlerError {
+                case .underlyingError(let underlyingError):
+                    switch underlyingError as? DecodingError{
+                    case .dataCorrupted:
+                        break
+                    default:
+                        XCTFail()
+                    }
                 default:
                     XCTFail()
                 }
@@ -348,7 +363,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
     func testFingerprintFlowSubmitterFailure() throws {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
 
-        submitter.mockedResult = .failure(Dummy.error)
+        submitter.mockedResult = .failure(.underlyingError(Dummy.error))
 
         let service = AnyADYServiceMock()
         service.authenticationRequestParameters = authenticationRequestParameters
@@ -360,7 +375,12 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             case .success:
                 XCTFail()
             case let .failure(error):
-                XCTAssertEqual(error as? Dummy, Dummy.error)
+                switch error {
+                case .underlyingError:
+                    break
+                default:
+                    XCTFail()
+                }
             }
             resultExpectation.fulfill()
         }

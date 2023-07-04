@@ -83,11 +83,11 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
             case let .success(encodedFingerprint):
                 completionHandler(.success(encodedFingerprint))
             case let .failure(error):
-                self?.didFail(with: .underlyingError(error), completionHandler: completionHandler)
+                self?.didFail(with: error, completionHandler: completionHandler)
             }
         }
     }
-
+    
     private func createFingerprint(_ action: ThreeDS2FingerprintAction,
                                    completionHandler: @escaping (Result<String, ThreeDS2CoreActionHandlerError>) -> Void) {
         do {

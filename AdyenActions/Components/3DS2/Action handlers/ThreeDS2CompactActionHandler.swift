@@ -82,7 +82,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
                     }
                 }
             case let .failure(error):
-                completionHandler(.failure(self.onReceiveError(error: error)))
+                completionHandler(.failure(ThreeDS2ActionHandlerError(error: error)))
             }
         }
     }
@@ -104,7 +104,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
             case let .success(result):
                 self.handle(result, completionHandler: completionHandler)
             case let .failure(error):
-                completionHandler(.failure(self.onReceiveError(error: error)))
+                completionHandler(.failure(ThreeDS2ActionHandlerError(error: error)))
             }
         }
     }
@@ -115,23 +115,25 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
         completionHandler(.success(.details(additionalDetails)))
     }
     
-    private func onReceiveError(error: ThreeDS2CoreActionHandlerError) -> ThreeDS2ActionHandlerError {
-        switch error {
-        case let .cancellationAction(threeDSResult):
-            return .cancellation(ThreeDS2Details.challengeResult(threeDSResult))
-        case .missingTransaction:
-            return .missingTransaction
-        case let .unknown(unknownError):
-            return .unknown(unknownError)
-        case let .underlyingError(underlyingError):
-            return .underlyingError(underlyingError)
-        }
-    }
-
     // MARK: - Private
 
     private let fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter
 
     private let threeDS2EventName = "3ds2"
 
+}
+
+private extension ThreeDS2ActionHandlerError {
+    init(error: ThreeDS2CoreActionHandlerError) {
+        switch error {
+        case let .cancellationAction(threeDSResult):
+            self = .cancellation(ThreeDS2Details.challengeResult(threeDSResult))
+        case .missingTransaction:
+            self = .missingTransaction
+        case let .unknown(unknownError):
+            self = .unknown(unknownError)
+        case let .underlyingError(underlyingError):
+            self = .underlyingError(underlyingError)
+        }
+    }
 }
