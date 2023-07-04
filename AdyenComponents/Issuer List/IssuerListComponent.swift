@@ -55,16 +55,21 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     }
 
     private lazy var searchViewController: SearchViewController = {
-        SearchViewController(
-            style: configuration.style,
-            emptyView: IssuerListEmptyView(
-                localizationParameters: configuration.localizationParameters
-            ),
-            localizationParameters: configuration.localizationParameters
+        
+        let viewModel = SearchViewController.ViewModel(
+            localizationParameters: configuration.localizationParameters,
+            style: configuration.style
         ) { [weak self] searchText, handler in
             guard let self else { return }
             handler(self.listItems(for: searchText))
         }
+        
+        return SearchViewController(
+            viewModel: viewModel,
+            emptyView: IssuerListEmptyView(
+                localizationParameters: configuration.localizationParameters
+            )
+        )
     }()
 
     public func stopLoading() {
