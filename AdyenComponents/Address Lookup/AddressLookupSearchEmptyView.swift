@@ -114,12 +114,10 @@ internal class AddressLookupSearchEmptyView: UIView, SearchViewControllerEmptyVi
 private extension AddressLookupSearchEmptyView {
     
     func updateLabels() {
-        // TODO: Localization
-        
         if searchTerm.isEmpty {
-            titleLabel.text = "Enter your address"
+            titleLabel.text = "Enter your address" // TODO: Alex - Localization
         } else {
-            titleLabel.text = "No results found"
+            titleLabel.text = "No results found" // TODO: Alex - Localization
         }
         
         titleLabel.textColor = style.title.color
@@ -132,11 +130,10 @@ private extension AddressLookupSearchEmptyView {
     }
     
     private func configureSubtitleLabel(for searchTerm: String) {
-        // TODO: Localization
         
         let string = searchTerm.isEmpty ?
-            "or use %#manual address entry%#" :
-            "'\(searchTerm)' did not match with anything, try again or use %#manual address entry%#"
+            "or use %#manual address entry%#" : // TODO: Alex - Localization
+            "'\(searchTerm)' did not match with anything, try again or use %#manual address entry%#" // TODO: Alex - Localization
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center

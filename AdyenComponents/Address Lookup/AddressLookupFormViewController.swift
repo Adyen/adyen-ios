@@ -6,12 +6,17 @@
 
 @_spi(AdyenInternal) import Adyen
 
+// TODO: Alex - Telemetry
+
+/// A `FormViewController` with a `FormSearchButtonItem` and `FormAddressItem`
+/// to be used via the `AddressLookupComponent`
 internal class AddressLookupFormViewController: FormViewController {
     
     private let supportedCountryCodes: [String]?
     private let prefillAddress: PostalAddress?
     private let initialCountry: String
     private let formStyle: FormComponentStyle
+    private let addressViewModelBuilder: AddressViewModelBuilder
     private let showSearchHandler: () -> Void
     
     internal init(
@@ -20,6 +25,7 @@ internal class AddressLookupFormViewController: FormViewController {
         initialCountry: String,
         prefillAddress: PostalAddress?,
         supportedCountryCodes: [String]?,
+        addressViewModelBuilder: AddressViewModelBuilder = DefaultAddressViewModelBuilder(),
         handleShowSearch: @escaping () -> Void
     ) {
         self.formStyle = formStyle
@@ -27,21 +33,21 @@ internal class AddressLookupFormViewController: FormViewController {
         self.prefillAddress = prefillAddress
         self.supportedCountryCodes = supportedCountryCodes
         self.showSearchHandler = handleShowSearch
+        self.addressViewModelBuilder = addressViewModelBuilder
         
         super.init(style: formStyle)
         
         self.localizationParameters = localizationParameters
-        title = "Billing Address"
-//        delegate = self // TODO: Implement
+        title = localizedString(.billingAddressSectionTitle, localizationParameters)
         
         append(searchButtonItem)
-        append(billingAddressItem) // TODO: Attach the billing address item closer to the search button
+        append(billingAddressItem)
     }
     
     internal lazy var searchButtonItem: FormSearchButtonItem = {
         FormSearchButtonItem(
-            placeholder: "Search your address",
-            style: formStyle // TODO: Confirm that the styling actually works as expected
+            placeholder: "Search your address", // TODO: Alex - Localization
+            style: formStyle
         ) { [weak self] in
             self?.showSearchHandler()
         }
@@ -58,7 +64,7 @@ internal class AddressLookupFormViewController: FormViewController {
                 showsHeader: false
             ),
             identifier: identifier,
-            addressViewModelBuilder: DefaultAddressViewModelBuilder() // TODO: Make this injectable!
+            addressViewModelBuilder: addressViewModelBuilder
         )
         prefillAddress.map { item.value = $0 }
         item.style.backgroundColor = UIColor.Adyen.lightGray

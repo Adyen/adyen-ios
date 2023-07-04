@@ -6,6 +6,8 @@
 
 import UIKit
 
+// TODO: Alex - Telemetry?
+
 @_spi(AdyenInternal)
 public protocol SearchViewControllerEmptyView: UIView {
     var searchTerm: String { get set }

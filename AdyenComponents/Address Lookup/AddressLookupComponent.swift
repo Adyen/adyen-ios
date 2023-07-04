@@ -7,12 +7,10 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
-// TODO: Refactor this
-
 @_spi(AdyenInternal)
 public extension AddressLookupComponent {
     
-    // TODO: Documentation
+    // TODO: Alex - Documentation
     
     struct Configuration {
         
@@ -31,6 +29,8 @@ public extension AddressLookupComponent {
         }
     }
 }
+
+// TODO: Alex - Documentation
 
 @_spi(AdyenInternal)
 public final class AddressLookupComponent: NSObject, PresentableComponent {
@@ -120,7 +120,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
         
         let searchController = SearchViewController(
             style: configuration.style,
-            searchBarPlaceholder: "Search your address", // TODO: Localization
+            searchBarPlaceholder: "Search your address", // TODO: Alex - Localization
             emptyView: emptyView,
             shouldFocusSearchBarOnAppearance: true,
             localizationParameters: configuration.localizationParameters
@@ -135,7 +135,7 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
             searchController.isModalInPresentation = true
         }
         
-        searchController.title = "Billing Address" // TODO: Localization
+        searchController.title = "Billing Address" // TODO: Alex - Localization
         searchController.navigationItem.rightBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
@@ -191,7 +191,7 @@ private extension AddressLookupComponent {
     }
     
     func cancelTapped() {
-        // TODO: Implement stuff in a delegate
+        // TODO: Alex - How to dismiss correctly like a component
         viewController.dismiss(animated: true)
     }
 }
@@ -229,7 +229,7 @@ extension AddressLookupComponent: ViewControllerDelegate {
     // MARK: - ViewControllerDelegate
 
     public func viewWillAppear(viewController: UIViewController) {
-//        sendTelemetryEvent() // TODO: Implement
+//        sendTelemetryEvent() // TODO: Alex - Telemetry
 //        populateFields()
     }
 }
