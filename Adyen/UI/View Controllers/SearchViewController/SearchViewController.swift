@@ -12,38 +12,19 @@ public protocol SearchViewControllerEmptyView: UIView {
 }
 
 @_spi(AdyenInternal)
-public class SearchViewController: UIViewController {
+public class SearchViewController: UIViewController, AdyenObserver {
 
-    public typealias ResultProvider = (_ searchTerm: String, _ handler: @escaping ([ListItem]) -> Void) -> Void
+    private let viewModel: ViewModel
+    internal let emptyView: SearchViewControllerEmptyView
     
-    internal private(set) var interfaceState: InterfaceState = .empty(searchTerm: "") {
-        didSet {
-            guard interfaceState != oldValue else { return }
-            updateInterface()
-        }
-    }
-    
-    public lazy var resultsListViewController = ListViewController(style: style)
-    private let localizationParameters: LocalizationParameters?
-    internal let style: ViewStyle
-    private let searchBarPlaceholder: String?
-    private let resultProvider: ResultProvider
-    private let shouldFocusSearchBarOnAppearance: Bool
+    public lazy var resultsListViewController = ListViewController(style: viewModel.style)
     
     public init(
-        style: ViewStyle,
-        searchBarPlaceholder: String? = nil,
-        emptyView: SearchViewControllerEmptyView,
-        shouldFocusSearchBarOnAppearance: Bool = false,
-        localizationParameters: LocalizationParameters? = nil,
-        resultProvider: @escaping ResultProvider
+        viewModel: ViewModel,
+        emptyView: SearchViewControllerEmptyView
     ) {
         self.emptyView = emptyView
-        self.style = style
-        self.resultProvider = resultProvider
-        self.searchBarPlaceholder = searchBarPlaceholder ?? localizedString(.searchPlaceholder, localizationParameters)
-        self.localizationParameters = localizationParameters
-        self.shouldFocusSearchBarOnAppearance = shouldFocusSearchBarOnAppearance
+        self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -52,8 +33,6 @@ public class SearchViewController: UIViewController {
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    internal let emptyView: SearchViewControllerEmptyView
 
     internal lazy var loadingView: UIActivityIndicatorView = {
         let loadingView = UIActivityIndicatorView(style: .whiteLarge)
@@ -65,10 +44,10 @@ public class SearchViewController: UIViewController {
     internal lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .prominent
-        searchBar.placeholder = searchBarPlaceholder
+        searchBar.placeholder = viewModel.searchBarPlaceholder
         searchBar.isTranslucent = false
         searchBar.backgroundImage = UIImage()
-        searchBar.barTintColor = style.backgroundColor
+        searchBar.barTintColor = viewModel.style.backgroundColor
         searchBar.delegate = self
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         return searchBar
@@ -76,7 +55,7 @@ public class SearchViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = style.backgroundColor
+        view.backgroundColor = viewModel.style.backgroundColor
 
         view.addSubview(loadingView)
         
@@ -94,16 +73,19 @@ public class SearchViewController: UIViewController {
         view.addSubview(searchBar)
         
         setupConstraints()
-        updateInterface()
         
-        // Allow for immediate population
-        lookUpAddress(for: "")
+        updateInterface(with: viewModel.interfaceState)
+        observe(viewModel.$interfaceState) { [weak self] in
+            self?.updateInterface(with: $0)
+        }
+        
+        viewModel.handleViewDidLoad()
     }
     
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if shouldFocusSearchBarOnAppearance {
+        if viewModel.shouldFocusSearchBarOnAppearance {
             searchBar.becomeFirstResponder()
         }
     }
@@ -129,7 +111,7 @@ public class SearchViewController: UIViewController {
         loadingView.adyen.anchor(inside: self.view)
     }
     
-    private func updateInterface() {
+    private func updateInterface(with interfaceState: InterfaceState) {
         
         emptyView.isHidden = true
         loadingView.stopAnimating()
@@ -168,21 +150,6 @@ public class SearchViewController: UIViewController {
         """) }
     }
     
-    private func lookUpAddress(for searchText: String) {
-        interfaceState = .loading
-        
-        resultProvider(searchText) { [weak self] results in
-            guard let self else { return }
-            
-            if !results.isEmpty {
-                self.interfaceState = .showingResults(results: results)
-                return
-            }
-            
-            self.interfaceState = .empty(searchTerm: searchText)
-        }
-    }
-    
     @objc
     private func dismissKeyboardTapped() {
         searchBar.resignFirstResponder()
@@ -192,7 +159,7 @@ public class SearchViewController: UIViewController {
 extension SearchViewController: UISearchBarDelegate {
     
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        lookUpAddress(for: searchText)
+        viewModel.handleSearchTextDidChange(searchText)
     }
     
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
