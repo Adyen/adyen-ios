@@ -118,18 +118,22 @@ public final class AddressLookupComponent: NSObject, PresentableComponent {
             showForm(with: prefillAddress)
         }
         
-        let searchController = SearchViewController(
+        let viewModel = SearchViewController.ViewModel(
+            localizationParameters: configuration.localizationParameters,
             style: configuration.style,
             searchBarPlaceholder: "Search your address", // TODO: Alex - Localization
-            emptyView: emptyView,
-            shouldFocusSearchBarOnAppearance: true,
-            localizationParameters: configuration.localizationParameters
+            shouldFocusSearchBarOnAppearance: true
         ) { [weak self] searchTerm, resultHandler in
             self?.lookupProvider(searchTerm) { [weak self] results in
                 guard let self else { return }
                 resultHandler(results.compactMap(listItem(for:)))
             }
         }
+        
+        let searchController = SearchViewController(
+            viewModel: viewModel,
+            emptyView: emptyView
+        )
         
         if #available(iOS 13.0, *) {
             searchController.isModalInPresentation = true
