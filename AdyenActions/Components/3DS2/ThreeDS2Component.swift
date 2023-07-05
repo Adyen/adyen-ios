@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -99,8 +99,21 @@ public final class ThreeDS2Component: ActionComponent {
     
     // MARK: - Private
 
-    private func didReceive(_ result: Result<ThreeDSActionHandlerResult, Swift.Error>, paymentData: String?) {
-        switch result {
+    private func didReceive(_ result: Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>, paymentData: String?) {
+        let mappedResult: Result<ThreeDSActionHandlerResult, Swift.Error> = result.mapError {
+            switch $0 {
+            case let .cancellation(threeDS2Result):
+                return ThreeDS2Component.Error.challengeCancelled(ActionComponentData(details: threeDS2Result, paymentData: nil))
+            case .missingTransaction:
+                return ThreeDS2Component.Error.missingTransaction
+            case let .unknown(unknownError):
+                return unknownError
+            case let .underlyingError(underlyingError):
+                return underlyingError
+            }
+        }
+
+        switch mappedResult {
         case let .success(result):
             didReceive(result, paymentData: paymentData)
         case let .failure(error):
@@ -197,6 +210,7 @@ extension ThreeDS2Component {
         /// Indicates that the Checkout API returned an unexpected `Action` during processing the 3DS2 flow.
         case unexpectedAction
 
+        case challengeCancelled(ActionComponentData)
     }
 
 }

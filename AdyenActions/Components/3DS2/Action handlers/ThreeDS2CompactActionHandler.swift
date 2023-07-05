@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -60,18 +60,25 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     /// - Parameter completionHandler: The completion closure.
     /// :nodoc:
     internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void) {
         let event = Analytics.Event(component: "\(threeDS2EventName).fingerprint",
                                     flavor: _isDropIn ? .dropin : .components,
                                     environment: apiContext.environment)
         coreActionHandler.handle(fingerprintAction, event: event) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case let .success(encodedFingerprint):
-                self?.fingerprintSubmitter.submit(fingerprint: encodedFingerprint,
-                                                  paymentData: fingerprintAction.paymentData,
-                                                  completionHandler: completionHandler)
+                self.fingerprintSubmitter.submit(fingerprint: encodedFingerprint,
+                                                 paymentData: fingerprintAction.paymentData) { result in
+                    switch result {
+                    case let .success(threeDS2Result):
+                        completionHandler(.success(threeDS2Result))
+                    case let .failure(error):
+                        completionHandler(.failure(.underlyingError(error)))
+                    }
+                }
             case let .failure(error):
-                completionHandler(.failure(error))
+                completionHandler(.failure(ThreeDS2ActionHandlerError(error: error)))
             }
         }
     }
@@ -84,22 +91,23 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     /// - Parameter completionHandler: The completion closure.
     /// :nodoc:
     internal func handle(_ challengeAction: ThreeDS2ChallengeAction,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void) {
         let event = Analytics.Event(component: "\(threeDS2EventName).challenge",
                                     flavor: _isDropIn ? .dropin : .components,
                                     environment: apiContext.environment)
         coreActionHandler.handle(challengeAction, event: event) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case let .success(result):
-                self?.handle(result, completionHandler: completionHandler)
+                self.handle(result, completionHandler: completionHandler)
             case let .failure(error):
-                completionHandler(.failure(error))
+                completionHandler(.failure(ThreeDS2ActionHandlerError(error: error)))
             }
         }
     }
 
     private func handle(_ threeDSResult: ThreeDSResult,
-                        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+                        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void) {
         let additionalDetails = ThreeDS2Details.completed(threeDSResult)
         completionHandler(.success(.details(additionalDetails)))
     }
@@ -111,4 +119,19 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
 
     private let threeDS2EventName = "3ds2"
 
+}
+
+private extension ThreeDS2ActionHandlerError {
+    init(error: ThreeDS2CoreActionHandlerError) {
+        switch error {
+        case let .cancellationAction(threeDSResult):
+            self = .cancellation(ThreeDS2Details.challengeResult(threeDSResult))
+        case .missingTransaction:
+            self = .missingTransaction
+        case let .unknown(unknownError):
+            self = .unknown(unknownError)
+        case let .underlyingError(underlyingError):
+            self = .underlyingError(underlyingError)
+        }
+    }
 }
