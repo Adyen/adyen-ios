@@ -278,9 +278,6 @@ internal class CardViewController: FormViewController {
 
         append(FormSpacerItem())
         append(items.button)
-        items.button.buttonSelectionHandler = { [weak cardDelegate] in
-            cardDelegate?.didSelectSubmitButton()
-        }
         append(FormSpacerItem(numberOfSpaces: 2))
     }
 
@@ -298,6 +295,10 @@ internal class CardViewController: FormViewController {
     private func setupViewRelations() {
         observe(items.numberContainerItem.numberItem.publisher) { [weak self] in self?.didChange(pan: $0) }
         observe(items.numberContainerItem.numberItem.$binValue) { [weak self] in self?.didChange(bin: $0) }
+        
+        items.button.buttonSelectionHandler = { [weak cardDelegate] in
+            cardDelegate?.didSelectSubmitButton()
+        }
     }
 
     private func didChange(pan: String) {

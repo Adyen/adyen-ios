@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// A form item that represents a single button with a spinner.
+/// A form item that represents a search bar button.
 @_spi(AdyenInternal)
 public final class FormSearchButtonItem: FormItem {
 

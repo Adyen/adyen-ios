@@ -67,13 +67,11 @@ public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?
         context.isOptional = isOptional
     }
     
-    // MARK: - Public
-    
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
     
-    // MARK: - ValidatableFormItem
+    // MARK: ValidatableFormItem
     
     override public func isValid() -> Bool {
         guard let address = value else { return false }

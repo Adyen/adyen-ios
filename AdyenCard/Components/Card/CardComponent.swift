@@ -5,7 +5,6 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-@_spi(AdyenInternal) import AdyenComponents
 import AdyenNetworking
 import Foundation
 import UIKit
@@ -215,6 +214,7 @@ extension CardComponent: CardViewControllerDelegate {
     }
     
     internal func didSelectAddressLookup(_ handler: @escaping AddressLookupViewController.LookupProvider) {
+        
         let viewModel = AddressLookupViewController.ViewModel(
             style: configuration.style,
             localizationParameters: configuration.localizationParameters,

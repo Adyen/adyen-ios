@@ -36,6 +36,7 @@ internal class AddressLookupSearchViewController: SearchViewController {
             searchBarPlaceholder: "Search your address", // TODO: Alex - Localization
             shouldFocusSearchBarOnAppearance: true
         ) { [weak delegate] in
+            // TODO: Provide extra cell at the end to switch to manual input or provide navigation item
             delegate?.addressLookupSearchLookUp(searchTerm: $0, resultHandler: $1)
         }
         

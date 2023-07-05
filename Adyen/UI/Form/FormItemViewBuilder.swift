@@ -108,6 +108,7 @@ public struct FormItemViewBuilder {
         FormSearchButtonItemView(item: item)
     }
     
+    /// Builds `FormAddressLookupItemView` from `FormAddressLookupItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormAddressLookupItem) -> FormItemView<FormAddressLookupItem> {
         FormAddressLookupItemView(item: item)

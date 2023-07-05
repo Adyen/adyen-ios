@@ -81,36 +81,58 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         
         let style = FormComponentStyle()
         var config = CardComponent.Configuration(style: style)
-        config.billingAddress.mode = .lookup(handler: { searchTerm, completion in
+        
+        // Add a searchTask property to your controller
+        var searchTask: DispatchWorkItem? {
+            willSet { searchTask?.cancel() }
+        }
+        
+        // TODO: Alex - Better example code
+        config.billingAddress.mode = .lookup(handler: { searchTerm, completionHandler in
             
             if searchTerm.isEmpty {
-                completion([])
+                searchTask = nil
+                completionHandler([])
                 return
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            // Replace previous task with a new one
+            let task = DispatchWorkItem {
                 
-                if searchTerm.count > 3 {
-                    completion([])
-                    return
-                }
+                let newYork = PostalAddress(
+                    city: "New York",
+                    country: "US",
+                    houseNumberOrName: "14",
+                    postalCode: "10019",
+                    stateOrProvince: "NY",
+                    street: "8th Ave",
+                    apartment: nil
+                )
                 
-                completion([
-                    .init(
-                        city: "[CITY] \(searchTerm)"
-                    ),
-                    .init(
-                        city: "City",
-                        country: "NL",
-                        houseNumberOrName: "1",
-                        postalCode: "12345",
-                        stateOrProvince: "State",
-                        street: "Street",
-                        apartment: "2"
-                    )
+                let amsterdam = PostalAddress(
+                    city: "Amsterdam",
+                    country: "NL",
+                    houseNumberOrName: "123",
+                    postalCode: "1234AB",
+                    stateOrProvince: "Noord Holland",
+                    street: "Singel",
+                    apartment: "4"
+                )
+                
+                let incomplete = PostalAddress(city: "Random City (Incomplete Address)")
+
+                completionHandler([
+                    amsterdam,
+                    newYork,
+                    incomplete
                 ])
             }
+            
+            searchTask = task
+
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3, execute: task)
         })
+        
         let component = CardComponent(paymentMethod: paymentMethod,
                                       context: context,
                                       configuration: config)
