@@ -8,6 +8,8 @@ import UIKit
 
 // TODO: Alex - Telemetry?
 
+// TODO: TESTS
+
 @_spi(AdyenInternal)
 public protocol SearchViewControllerEmptyView: UIView {
     var searchTerm: String { get set }

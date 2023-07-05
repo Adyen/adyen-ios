@@ -189,8 +189,6 @@ public class CardComponent: PresentableComponent,
     
     private let panThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
     private let binThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
-    
-    private var addressLookupComponent: AddressLookupComponent?
 }
 
 extension CardComponent: CardViewControllerDelegate {
@@ -216,33 +214,21 @@ extension CardComponent: CardViewControllerDelegate {
         }
     }
     
-    internal func didSelectAddressLookup(_ handler: @escaping (_ searchTerm: String, _ resultProvider: @escaping ([PostalAddress]) -> Void) -> Void) {
-        // TODO: Alex - Present it the right way
-        // Search for `internal weak var presentationDelegate: NavigationDelegate?`
-        
-        let addressLookupComponent = AddressLookupComponent(
-            context: context,
-            configuration: .init(
-                style: configuration.style,
-                localizationParameters: configuration.localizationParameters,
-                supportedCountryCodes: configuration.billingAddress.countryCodes
-            ),
+    internal func didSelectAddressLookup(_ handler: @escaping AddressLookupViewController.LookupProvider) {
+        let viewModel = AddressLookupViewController.ViewModel(
+            style: configuration.style,
+            localizationParameters: configuration.localizationParameters,
+            supportedCountryCodes: configuration.billingAddress.countryCodes,
             initialCountry: initialCountryCode,
             prefillAddress: cardViewController.items.lookupBillingAddressItem.value,
             lookupProvider: handler
         ) { [weak self] address in
-            
             guard let self else { return }
-            self.cardViewController.items.lookupBillingAddressItem.value = address
-            viewController.dismiss(animated: true)
+            address.map { self.cardViewController.items.lookupBillingAddressItem.value = $0 }
+            self.viewController.dismiss(animated: true)
         }
         
-        self.addressLookupComponent = addressLookupComponent
-        
-        viewController.present(
-            addressLookupComponent.viewController,
-            animated: true
-        )
+        viewController.present(AddressLookupViewController(viewModel: viewModel), animated: true)
     }
 }
 

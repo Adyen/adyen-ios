@@ -4,12 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
-
 // TODO: Alex - Telemetry
 
 /// A `FormViewController` with a `FormSearchButtonItem` and `FormAddressItem`
-/// to be used via the `AddressLookupComponent`
+/// to be used via the `AddressLookupViewController`
 internal class AddressLookupFormViewController: FormViewController {
     
     private let supportedCountryCodes: [String]?
@@ -42,6 +40,19 @@ internal class AddressLookupFormViewController: FormViewController {
         
         append(searchButtonItem)
         append(billingAddressItem)
+    }
+    
+    func validateAddress() -> PostalAddress? {
+        validate() ? address : nil
+    }
+    
+    var address: PostalAddress {
+        get {
+            billingAddressItem.value
+        }
+        set {
+            billingAddressItem.value = newValue
+        }
     }
     
     internal lazy var searchButtonItem: FormSearchButtonItem = {
