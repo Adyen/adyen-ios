@@ -4,8 +4,6 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
-
 /// A view representing a button item.
 internal final class FormSearchButtonItemView: FormItemView<FormSearchButtonItem> {
     
@@ -29,14 +27,12 @@ internal final class FormSearchButtonItemView: FormItemView<FormSearchButtonItem
     // MARK: - Submit Button
     
     private lazy var searchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.searchBarStyle = .prominent
-        searchBar.isTranslucent = false
-        searchBar.backgroundImage = UIImage()
-        searchBar.barTintColor = item.style.backgroundColor
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
-        searchBar.delegate = self
-        return searchBar
+
+        .prominent(
+            placeholder: item.placeholder,
+            backgroundColor: item.style.backgroundColor,
+            delegate: self
+        )
     }()
 }
 

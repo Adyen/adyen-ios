@@ -6,7 +6,7 @@
 
 import UIKit
 
-// TODO: TESTS
+// TODO: Alex - TESTS
 
 @_spi(AdyenInternal)
 public class AddressLookupViewController: UINavigationController, AdyenObserver {
@@ -33,92 +33,62 @@ public class AddressLookupViewController: UINavigationController, AdyenObserver 
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+// MARK: - View Controller Factory
+
+private extension AddressLookupViewController {
     
-    private var searchController: SearchViewController {
+    private func buildSearchController() -> SearchViewController {
         
-        let emptyView = AddressLookupSearchEmptyView(
-            localizationParameters: viewModel.localizationParameters
-        ) { [weak self] in
-            guard let self else { return }
-            self.viewModel.handleSwitchToManualEntryTapped()
-        }
-        
-        let viewModel = SearchViewController.ViewModel(
-            localizationParameters: viewModel.localizationParameters,
+        AddressLookupSearchViewController(
             style: viewModel.style,
-            searchBarPlaceholder: "Search your address", // TODO: Alex - Localization
-            shouldFocusSearchBarOnAppearance: true
-        ) { [weak self] searchTerm, resultHandler in
-            self?.viewModel.lookUp(searchTerm: searchTerm, resultHandler: resultHandler)
-        }
-        
-        let searchController = SearchViewController(
-            viewModel: viewModel,
-            emptyView: emptyView
+            localizationParameters: viewModel.localizationParameters,
+            delegate: self
         )
-        
-        if #available(iOS 13.0, *) {
-            searchController.isModalInPresentation = true
-        }
-        
-        searchController.title = localizedString(.billingAddressSectionTitle, viewModel.localizationParameters)
-        searchController.navigationItem.rightBarButtonItem = .init(
-            barButtonSystemItem: .cancel,
-            target: self,
-            action: #selector(dismissSearch)
-        )
-        
-        return searchController
     }
     
-    private var securedViewController: SecuredViewController {
+    private func buildAddressLookupController() -> AddressLookupFormViewController {
         
-        let securedViewController = SecuredViewController(
-            child: formViewController,
-            style: viewModel.style
-        )
-        securedViewController.navigationItem.leftBarButtonItem = .init(
-            barButtonSystemItem: .cancel,
-            target: self,
-            action: #selector(dismissAddressLookup)
-        )
-        securedViewController.navigationItem.rightBarButtonItem = .init(
-            barButtonSystemItem: .done,
-            target: self,
-            action: #selector(doneTapped)
-        )
-        if #available(iOS 13.0, *) {
-            securedViewController.isModalInPresentation = true
-        }
-        return securedViewController
-    }
-    
-    internal lazy var formViewController: AddressLookupFormViewController = {
         AddressLookupFormViewController(
             formStyle: viewModel.style,
             localizationParameters: viewModel.localizationParameters,
             initialCountry: viewModel.initialCountry,
             prefillAddress: viewModel.prefillAddress,
-            supportedCountryCodes: viewModel.supportedCountryCodes
-        ) { [weak self] in
-            guard let self else { return }
-            self.viewModel.handleShowSearchTapped(currentInput: self.formViewController.address)
-        }
-    }()
+            supportedCountryCodes: viewModel.supportedCountryCodes,
+            delegate: self
+        )
+    }
+}
+
+// MARK: - Delegate Conformances
+
+extension AddressLookupViewController: AddressLookupSearchViewControllerDelegate {
     
-    @objc
-    private func doneTapped() {
-        guard let validAddress = formViewController.validateAddress() else { return }
+    func addressLookupSearchSwitchToManualEntry() {
+        viewModel.handleSwitchToManualEntryTapped()
+    }
+    
+    func addressLookupSearchLookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
+        viewModel.lookUp(searchTerm: searchTerm, resultHandler: resultHandler)
+    }
+    
+    func addressLookupSearchCancel() {
+        viewModel.handleDismissSearchTapped()
+    }
+}
+
+extension AddressLookupViewController: AddressLookupFormViewControllerDelegate {
+    
+    func addressLookupFormShowSearch(currentInput: PostalAddress) {
+        viewModel.handleShowSearchTapped(currentInput: currentInput)
+    }
+    
+    func addressLookupFormSubmit(validAddress: PostalAddress) {
         viewModel.handleSubmit(address: validAddress)
     }
     
-    @objc
-    private func dismissSearch() {
-        viewModel.handleDismissSearchTapped()
-    }
-    
-    @objc
-    private func dismissAddressLookup() {
+    func addressLookupFormDismiss() {
         viewModel.handleDismissAddressLookupTapped()
     }
 }
@@ -127,13 +97,15 @@ public class AddressLookupViewController: UINavigationController, AdyenObserver 
 
 private extension AddressLookupViewController {
     
-    func updateInterface(for interfaceState: AddressLookupViewController.ViewModel.InterfaceState) {
+    func updateInterface(for interfaceState: AddressLookupViewController.InterfaceState) {
         switch interfaceState {
         case let .form(prefillAddress):
-            prefillAddress.map { formViewController.billingAddressItem.value = $0 }
-            show(viewController: securedViewController)
+            let addressLookupController = buildAddressLookupController()
+            prefillAddress.map { addressLookupController.billingAddressItem.value = $0 }
+            show(viewController: addressLookupController)
+            
         case .search:
-            show(viewController: searchController)
+            show(viewController: buildSearchController())
         }
     }
     

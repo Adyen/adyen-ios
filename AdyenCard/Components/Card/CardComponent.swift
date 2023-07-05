@@ -228,7 +228,12 @@ extension CardComponent: CardViewControllerDelegate {
             self.viewController.dismiss(animated: true)
         }
         
-        viewController.present(AddressLookupViewController(viewModel: viewModel), animated: true)
+        let securedViewController = SecuredViewController(
+            child: AddressLookupViewController(viewModel: viewModel),
+            style: configuration.style
+        )
+        
+        viewController.present(securedViewController, animated: true)
     }
 }
 

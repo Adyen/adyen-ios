@@ -6,34 +6,33 @@
 
 import UIKit
 
-// TODO: TESTS
+// TODO: Alex - TESTS
 
-@_spi(AdyenInternal)
 public extension AddressLookupViewController {
-    
-    // TODO: Alex - Documentation
     
     typealias LookupProvider = (_ searchTerm: String, _ resultProvider: @escaping ([PostalAddress]) -> Void) -> Void
     
+    /// Defining the currently active screen
+    internal enum InterfaceState: Equatable {
+        case form(prefillAddress: PostalAddress?)
+        case search
+    }
+    
+    /// The view model for the ``AddressLookupViewController``
     struct ViewModel {
-        
-        internal enum InterfaceState: Equatable {
-            case form(prefillAddress: PostalAddress?)
-            case search
-        }
         
         internal let style: FormComponentStyle
         internal let localizationParameters: LocalizationParameters?
         internal let supportedCountryCodes: [String]?
+        internal let initialCountry: String
         
         private let lookupProvider: LookupProvider
         private let completionHandler: (PostalAddress?) -> Void
         
-        internal private(set) var initialCountry: String
-        
         @AdyenObservable(nil)
         internal private(set) var prefillAddress: PostalAddress?
         
+        /// The interface state defines the currently active screen.
         @AdyenObservable(InterfaceState.form(prefillAddress: nil))
         internal var interfaceState: InterfaceState
         
@@ -41,10 +40,20 @@ public extension AddressLookupViewController {
         ///
         /// Context: We show the search immediately when no address to prefill is provided
         /// and cancelling from this state should dismiss the whole flow.
-        
         @AdyenObservable(false)
         private var shouldDismissOnSearchDismissal: Bool
         
+        /// Initializes a ``AddressLookupViewController``
+        ///
+        /// - Parameters:
+        ///   - style: The form style.
+        ///   - localizationParameters: The localization parameters.
+        ///   - supportedCountryCodes: Supported country codes. If `nil`, all country codes are listed.
+        ///   - initialCountry: The initially selected country.
+        ///   - prefillAddress: The address to prefill the form with. If `nil` the search screen is shown on first appearance.
+        ///   - lookupProvider: A closure providing addresses based on a search term
+        ///   - completionHandler: A closure that takes an optional address.
+        ///    It's the presenters responsibility to dismiss the viewController.
         public init(
             style: FormComponentStyle,
             localizationParameters: LocalizationParameters?,
@@ -62,46 +71,51 @@ public extension AddressLookupViewController {
             self.initialCountry = initialCountry
             self.prefillAddress = prefillAddress
         }
-        
-        internal func handleViewDidLoad() {
-            shouldDismissOnSearchDismissal = (prefillAddress == nil)
-            
-            if let prefillAddress {
-                interfaceState = .form(prefillAddress: prefillAddress)
-            } else {
-                interfaceState = .search
-            }
-        }
-        
-        internal func handleShowSearchTapped(currentInput: PostalAddress) {
-            prefillAddress = currentInput
-            interfaceState = .search
-        }
-        
-        internal func handleSwitchToManualEntryTapped() {
-            handleShowForm(with: prefillAddress)
-        }
-        
-        internal func handleDismissSearchTapped() {
-            if shouldDismissOnSearchDismissal { return completionHandler(nil) }
-            handleShowForm(with: prefillAddress)
-        }
-        
-        internal func handleDismissAddressLookupTapped() {
-            completionHandler(nil)
-        }
-        
-        internal func lookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
-            lookupProvider(searchTerm) { results in
-                resultHandler(results.compactMap(listItem(for:)))
-            }
-        }
-        
-        internal func handleSubmit(address: PostalAddress) {
-            completionHandler(address)
-        }
     }
 }
+
+// MARK: - Internal Interface
+
+extension AddressLookupViewController.ViewModel {
+    
+    internal func handleViewDidLoad() {
+        shouldDismissOnSearchDismissal = (prefillAddress == nil)
+        
+        if let prefillAddress {
+            interfaceState = .form(prefillAddress: prefillAddress)
+        } else {
+            interfaceState = .search
+        }
+    }
+    
+    internal func handleShowSearchTapped(currentInput: PostalAddress) {
+        prefillAddress = currentInput
+        interfaceState = .search
+    }
+    
+    internal func handleSwitchToManualEntryTapped() {
+        handleShowForm(with: prefillAddress)
+    }
+    
+    internal func handleDismissSearchTapped() {
+        if shouldDismissOnSearchDismissal { return completionHandler(nil) }
+        handleShowForm(with: prefillAddress)
+    }
+    
+    internal func handleDismissAddressLookupTapped() {
+        completionHandler(nil)
+    }
+    
+    internal func lookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
+        lookupProvider(searchTerm) { resultHandler($0.compactMap(listItem(for:))) }
+    }
+    
+    internal func handleSubmit(address: PostalAddress) {
+        completionHandler(address)
+    }
+}
+
+// MARK: - Convenience
 
 private extension AddressLookupViewController.ViewModel {
     

@@ -8,8 +8,6 @@ import UIKit
 
 // TODO: Alex - Telemetry?
 
-// TODO: TESTS
-
 @_spi(AdyenInternal)
 public protocol SearchViewControllerEmptyView: UIView {
     var searchTerm: String { get set }
@@ -46,15 +44,12 @@ public class SearchViewController: UIViewController, AdyenObserver {
     }()
     
     internal lazy var searchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.searchBarStyle = .prominent
-        searchBar.placeholder = viewModel.searchBarPlaceholder
-        searchBar.isTranslucent = false
-        searchBar.backgroundImage = UIImage()
-        searchBar.barTintColor = viewModel.style.backgroundColor
-        searchBar.delegate = self
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
-        return searchBar
+        
+        .prominent(
+            placeholder: viewModel.searchBarPlaceholder,
+            backgroundColor: viewModel.style.backgroundColor,
+            delegate: self
+        )
     }()
 
     override public func viewDidLoad() {

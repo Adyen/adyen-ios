@@ -5,9 +5,18 @@
 //
 
 // TODO: Alex - Telemetry
+// TODO: Alex - Documentation
 
-/// A `FormViewController` with a `FormSearchButtonItem` and `FormAddressItem`
-/// to be used via the `AddressLookupViewController`
+protocol AddressLookupFormViewControllerDelegate: AnyObject {
+    
+    func addressLookupFormShowSearch(currentInput: PostalAddress)
+    func addressLookupFormSubmit(validAddress: PostalAddress)
+    func addressLookupFormDismiss()
+}
+
+/// A ``FormViewController`` with a ``FormSearchButtonItem`` and ``FormAddressItem``
+///
+/// To be used via the ``AddressLookupViewController``
 internal class AddressLookupFormViewController: FormViewController {
     
     private let supportedCountryCodes: [String]?
@@ -15,7 +24,7 @@ internal class AddressLookupFormViewController: FormViewController {
     private let initialCountry: String
     private let formStyle: FormComponentStyle
     private let addressViewModelBuilder: AddressViewModelBuilder
-    private let showSearchHandler: () -> Void
+    private weak var lookupDelegate: AddressLookupFormViewControllerDelegate?
     
     internal init(
         formStyle: FormComponentStyle,
@@ -24,13 +33,13 @@ internal class AddressLookupFormViewController: FormViewController {
         prefillAddress: PostalAddress?,
         supportedCountryCodes: [String]?,
         addressViewModelBuilder: AddressViewModelBuilder = DefaultAddressViewModelBuilder(),
-        handleShowSearch: @escaping () -> Void
+        delegate: AddressLookupFormViewControllerDelegate
     ) {
         self.formStyle = formStyle
         self.initialCountry = initialCountry
         self.prefillAddress = prefillAddress
         self.supportedCountryCodes = supportedCountryCodes
-        self.showSearchHandler = handleShowSearch
+        self.lookupDelegate = delegate
         self.addressViewModelBuilder = addressViewModelBuilder
         
         super.init(style: formStyle)
@@ -38,21 +47,23 @@ internal class AddressLookupFormViewController: FormViewController {
         self.localizationParameters = localizationParameters
         title = localizedString(.billingAddressSectionTitle, localizationParameters)
         
+        navigationItem.leftBarButtonItem = .init(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(dismissAddressLookup)
+        )
+        navigationItem.rightBarButtonItem = .init(
+            barButtonSystemItem: .done,
+            target: self,
+            action: #selector(submitTapped)
+        )
+        
+        if #available(iOS 13.0, *) {
+            isModalInPresentation = true
+        }
+        
         append(searchButtonItem)
         append(billingAddressItem)
-    }
-    
-    func validateAddress() -> PostalAddress? {
-        validate() ? address : nil
-    }
-    
-    var address: PostalAddress {
-        get {
-            billingAddressItem.value
-        }
-        set {
-            billingAddressItem.value = newValue
-        }
     }
     
     internal lazy var searchButtonItem: FormSearchButtonItem = {
@@ -60,7 +71,8 @@ internal class AddressLookupFormViewController: FormViewController {
             placeholder: "Search your address", // TODO: Alex - Localization
             style: formStyle
         ) { [weak self] in
-            self?.showSearchHandler()
+            guard let self else { return }
+            self.lookupDelegate?.addressLookupFormShowSearch(currentInput: self.billingAddressItem.value)
         }
     }()
     
@@ -82,4 +94,18 @@ internal class AddressLookupFormViewController: FormViewController {
         item.title = nil
         return item
     }()
+}
+
+private extension AddressLookupFormViewController {
+    
+    @objc
+    private func submitTapped() {
+        guard validate() else { return }
+        lookupDelegate?.addressLookupFormSubmit(validAddress: billingAddressItem.value)
+    }
+    
+    @objc
+    private func dismissAddressLookup() {
+        lookupDelegate?.addressLookupFormDismiss()
+    }
 }
