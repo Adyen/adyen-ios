@@ -35,9 +35,38 @@ internal class AddressLookupSearchViewController: SearchViewController {
             style: style,
             searchBarPlaceholder: "Search your address", // TODO: Alex - Localization
             shouldFocusSearchBarOnAppearance: true
-        ) { [weak delegate] in
+        ) { [weak delegate] searchTerm, resultHandler in
             // TODO: Provide extra cell at the end to switch to manual input or provide navigation item
-            delegate?.addressLookupSearchLookUp(searchTerm: $0, resultHandler: $1)
+            
+            let handler: ([ListItem]) -> Void = { items in
+                if items.isEmpty {
+                    return resultHandler(items)
+                }
+                
+                // TODO: Alex - Discuss decision with Design Team
+                
+                var itemsWithManualButton = items
+                var listItemStyle = ListItemStyle()
+                listItemStyle.title.font = .preferredFont(forTextStyle: .subheadline)
+                listItemStyle.title.color = .Adyen.componentSecondaryLabel
+                listItemStyle.title.textAlignment = .center
+                listItemStyle.subtitle.font = .preferredFont(forTextStyle: .subheadline)
+                listItemStyle.subtitle.color = .Adyen.defaultBlue
+                listItemStyle.subtitle.textAlignment = .center
+                
+                itemsWithManualButton.append(
+                    .init(
+                        title: "Select your address or use",
+                        subtitle: "manual address entry",
+                        style: listItemStyle
+                    ) { [weak delegate] in
+                        delegate?.addressLookupSearchSwitchToManualEntry()
+                    }
+                )
+                resultHandler(itemsWithManualButton)
+            }
+            
+            delegate?.addressLookupSearchLookUp(searchTerm: searchTerm, resultHandler: handler)
         }
         
         self.delegate = delegate

@@ -105,7 +105,7 @@ public final class ListItemView: UIView, AnyFormItemView {
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return titleLabel
     }()
     
@@ -133,7 +133,7 @@ public final class ListItemView: UIView, AnyFormItemView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.setContentHuggingPriority(.required, for: .vertical)
         stackView.axis = .vertical
-        stackView.alignment = .leading
+        stackView.alignment = .fill
         stackView.distribution = .fill
         return stackView
     }()
