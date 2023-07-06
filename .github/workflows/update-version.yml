@@ -15,7 +15,7 @@ jobs:
         fetch-depth: 0
     - uses: n1hility/cancel-previous-runs@v3
       with:
-        token: ${{ secrets.MANUAL_ACTION_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
@@ -33,4 +33,4 @@ jobs:
         commit-message: "chore: updated version"
         title: Update version
         body: Update version.
-        token: ${{ secrets.MANUAL_ACTION_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
