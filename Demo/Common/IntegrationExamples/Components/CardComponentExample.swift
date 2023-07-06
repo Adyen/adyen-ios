@@ -82,55 +82,9 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         let style = FormComponentStyle()
         var config = CardComponent.Configuration(style: style)
         
-        // Add a searchTask property to your controller
-        var searchTask: DispatchWorkItem? {
-            willSet { searchTask?.cancel() }
-        }
-        
-        // TODO: Alex - Better example code
+        let addressProvider = AddressLookupProvider()
         config.billingAddress.mode = .lookup(handler: { searchTerm, completionHandler in
-            
-            if searchTerm.isEmpty {
-                searchTask = nil
-                completionHandler([])
-                return
-            }
-            
-            // Replace previous task with a new one
-            let task = DispatchWorkItem {
-                
-                let newYork = PostalAddress(
-                    city: "New York",
-                    country: "US",
-                    houseNumberOrName: "14",
-                    postalCode: "10019",
-                    stateOrProvince: "NY",
-                    street: "8th Ave",
-                    apartment: nil
-                )
-                
-                let amsterdam = PostalAddress(
-                    city: "Amsterdam",
-                    country: "NL",
-                    houseNumberOrName: "123",
-                    postalCode: "1234AB",
-                    stateOrProvince: "Noord Holland",
-                    street: "Singel",
-                    apartment: "4"
-                )
-                
-                let incomplete = PostalAddress(city: "Random City (Incomplete Address)")
-
-                completionHandler([
-                    amsterdam,
-                    newYork,
-                    incomplete
-                ])
-            }
-            
-            searchTask = task
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3, execute: task)
+            addressProvider.lookUp(searchTerm: searchTerm, resultHandler: completionHandler)
         })
         
         let component = CardComponent(paymentMethod: paymentMethod,
