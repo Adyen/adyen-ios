@@ -7,6 +7,7 @@
 import UIKit
 
 // TODO: Alex - TESTS
+// TODO: Alex - Telemetry?
 
 public extension AddressLookupViewController {
     
@@ -98,7 +99,7 @@ extension AddressLookupViewController.ViewModel {
     }
     
     internal func handleDismissSearchTapped() {
-        if shouldDismissOnSearchDismissal { return completionHandler(nil) }
+        if shouldDismissOnSearchDismissal { return handleDismissAddressLookupTapped() }
         handleShowForm(with: prefillAddress)
     }
     
@@ -133,10 +134,7 @@ private extension AddressLookupViewController.ViewModel {
         let title = !formattedStreet.isEmpty ? formattedStreet : formattedLocation
         let subtitle = !formattedStreet.isEmpty ? formattedLocation : nil
         
-        return .init(
-            title: title,
-            subtitle: subtitle
-        ) {
+        return .init(title: title, subtitle: subtitle) {
             self.handleShowForm(with: address)
         }
     }

@@ -9,11 +9,10 @@ import UIKit
 // TODO: Alex - Documentation
 
 extension AddressLookupSearchViewController {
-
+    
     class EmptyView: UIView, SearchViewControllerEmptyView {
         
         /// The action to dismiss the search
-        private let dismissSearchLink = "dismissSearch://"
         private let style: Style
         private let localizationParameters: LocalizationParameters?
         
@@ -30,13 +29,11 @@ extension AddressLookupSearchViewController {
             return titleLabel
         }()
         
-        private lazy var subtitleLabel: UITextView = {
-            let textView = UITextView()
+        private lazy var subtitleLabel: LinkTextView = {
+            let textView = LinkTextView { [weak self] _ in
+                self?.dismissHandler()
+            }
             textView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "textView")
-            textView.translatesAutoresizingMaskIntoConstraints = false
-            textView.isScrollEnabled = false
-            textView.isEditable = false
-            textView.isSelectable = true
             return textView
         }()
         
@@ -109,43 +106,11 @@ private extension AddressLookupSearchViewController.EmptyView {
     }
     
     private func configureSubtitleLabel(for searchTerm: String) {
-        
+
         let string = searchTerm.isEmpty ?
             "or use %#manual address entry%#" : // TODO: Alex - Localization
             "'\(searchTerm)' did not match with anything, try again or use %#manual address entry%#" // TODO: Alex - Localization
-        
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-        let attributes: [NSAttributedString.Key : Any] = [
-            .paragraphStyle: paragraphStyle,
-            .font: style.subtitle.font,
-            .foregroundColor: style.subtitle.color
-        ]
-        let attributedString = NSMutableAttributedString(
-            string: string,
-            attributes: attributes
-        )
-        if let range = string.adyen.linkRanges().first {
-            attributedString.addAttribute(.link, value: dismissSearchLink, range: range)
-        }
-        attributedString.mutableString.replaceOccurrences(of: "%#", with: "", range: NSRange(location: 0, length: attributedString.length))
-        
-        subtitleLabel.attributedText = attributedString
-        subtitleLabel.delegate = self
-    }
-}
 
-// MARK: - Navigation
-
-extension AddressLookupSearchViewController.EmptyView: UITextViewDelegate {
-    
-    internal func textView(
-        _ textView: UITextView,
-        shouldInteractWith URL: URL,
-        in characterRange: NSRange,
-        interaction: UITextItemInteraction
-    ) -> Bool {
-        if URL.absoluteString == dismissSearchLink { dismissHandler() }
-        return false
+        subtitleLabel.update(text: string, style: style.subtitle)
     }
 }

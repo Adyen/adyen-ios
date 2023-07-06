@@ -35,38 +35,8 @@ internal class AddressLookupSearchViewController: SearchViewController {
             style: style,
             searchBarPlaceholder: "Search your address", // TODO: Alex - Localization
             shouldFocusSearchBarOnAppearance: true
-        ) { [weak delegate] searchTerm, resultHandler in
-            // TODO: Provide extra cell at the end to switch to manual input or provide navigation item
-            
-            let handler: ([ListItem]) -> Void = { items in
-                if items.isEmpty {
-                    return resultHandler(items)
-                }
-                
-                // TODO: Alex - Discuss decision with Design Team
-                
-                var itemsWithManualButton = items
-                var listItemStyle = ListItemStyle()
-                listItemStyle.title.font = .preferredFont(forTextStyle: .subheadline)
-                listItemStyle.title.color = .Adyen.componentSecondaryLabel
-                listItemStyle.title.textAlignment = .center
-                listItemStyle.subtitle.font = .preferredFont(forTextStyle: .subheadline)
-                listItemStyle.subtitle.color = .Adyen.defaultBlue
-                listItemStyle.subtitle.textAlignment = .center
-                
-                itemsWithManualButton.append(
-                    .init(
-                        title: "Select your address or use",
-                        subtitle: "manual address entry",
-                        style: listItemStyle
-                    ) { [weak delegate] in
-                        delegate?.addressLookupSearchSwitchToManualEntry()
-                    }
-                )
-                resultHandler(itemsWithManualButton)
-            }
-            
-            delegate?.addressLookupSearchLookUp(searchTerm: searchTerm, resultHandler: handler)
+        ) { [weak delegate] in
+            delegate?.addressLookupSearchLookUp(searchTerm: $0, resultHandler: $1)
         }
         
         self.delegate = delegate
@@ -87,10 +57,58 @@ internal class AddressLookupSearchViewController: SearchViewController {
             target: self,
             action: #selector(cancelSearch)
         )
+        
+        searchBar.textContentType = .fullStreetAddress
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let footerView = FooterView { [weak self] in
+            self?.switchToManualEntry()
+        }
+        
+        resultsListViewController.tableView.update(tableFooterView: footerView)
+    }
+    
+    override internal func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        resultsListViewController.tableView.update(tableFooterView: resultsListViewController.tableView.tableFooterView)
+    }
+    
+    @objc
+    private func switchToManualEntry() {
+        delegate?.addressLookupSearchSwitchToManualEntry()
     }
     
     @objc
     private func cancelSearch() {
         delegate?.addressLookupSearchCancel()
+    }
+}
+
+extension UITableView {
+    
+    func update(tableFooterView: UIView?) {
+        
+        self.tableFooterView = nil
+        
+        guard let tableFooterView else { return }
+        
+//        tableFooterView.subviews.forEach {
+//            $0.setNeedsLayout()
+//            $0.layoutIfNeeded()
+//        }
+//
+//        tableFooterView.setNeedsLayout()
+//        tableFooterView.layoutIfNeeded()
+//
+//        let preferredSize = tableFooterView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+//        let preferredHeight2 = tableFooterView.systemLayoutSizeFitting(bounds.size)
+//
+        let newSize = tableFooterView.systemLayoutSizeFitting(.init(width: bounds.width, height: 0))
+        tableFooterView.frame.size.height = newSize.height
+        self.tableFooterView = tableFooterView
     }
 }
