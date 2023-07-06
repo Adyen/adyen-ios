@@ -39,7 +39,7 @@ public class AddressLookupViewController: UINavigationController, AdyenObserver 
 
 private extension AddressLookupViewController {
     
-    private func buildSearchController() -> SearchViewController {
+    private func buildSearchViewController() -> SearchViewController {
         
         AddressLookupSearchViewController(
             style: viewModel.style,
@@ -48,13 +48,13 @@ private extension AddressLookupViewController {
         )
     }
     
-    private func buildAddressLookupController() -> AddressLookupFormViewController {
+    private func buildFormViewController(prefillAddress: PostalAddress?) -> AddressLookupFormViewController {
         
         AddressLookupFormViewController(
             formStyle: viewModel.style,
             localizationParameters: viewModel.localizationParameters,
             initialCountry: viewModel.initialCountry,
-            prefillAddress: viewModel.prefillAddress,
+            prefillAddress: prefillAddress,
             supportedCountryCodes: viewModel.supportedCountryCodes,
             delegate: self
         )
@@ -100,12 +100,10 @@ private extension AddressLookupViewController {
     func updateInterface(for interfaceState: AddressLookupViewController.InterfaceState) {
         switch interfaceState {
         case let .form(prefillAddress):
-            let addressLookupController = buildAddressLookupController()
-            prefillAddress.map { addressLookupController.billingAddressItem.value = $0 }
-            show(viewController: addressLookupController)
+            show(viewController: buildFormViewController(prefillAddress: prefillAddress))
             
         case .search:
-            show(viewController: buildSearchController())
+            show(viewController: buildSearchViewController())
         }
     }
     
