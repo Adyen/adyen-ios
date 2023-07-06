@@ -231,7 +231,6 @@ internal class ThreeDS2CoreActionHandler: Component {
 
         do {
             let threeDSResult = try ThreeDSResult(from: challengeResult,
-                                                  delegatedAuthenticationSDKOutput: nil,
                                                   authorizationToken: authorizationToken,
                                                   threeDS2SDKError: nil)
 

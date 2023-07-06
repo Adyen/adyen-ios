@@ -207,7 +207,6 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
             case .success:
                 XCTFail()
             case let .failure(error):
-                let error = error as! ThreeDS2Component.Error
                 switch error {
                 case .missingTransaction: ()
                 default:

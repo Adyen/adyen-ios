@@ -15,7 +15,6 @@ public struct ThreeDSResult: Decodable {
 
     private struct Payload: Codable {
         internal let authorisationToken: String?
-        internal let delegatedAuthenticationSDKOutput: String?
         internal let threeDS2SDKError: String?
         internal let transStatus: String?
     }
@@ -23,7 +22,6 @@ public struct ThreeDSResult: Decodable {
     internal init(authorizationToken: String?,
                   threeDS2SDKError: String?) throws {
         let payload = Payload(authorisationToken: authorizationToken,
-                              delegatedAuthenticationSDKOutput: nil,
                               threeDS2SDKError: threeDS2SDKError,
                               transStatus: nil)
         let payloadData = try JSONEncoder().encode(payload)
@@ -31,11 +29,9 @@ public struct ThreeDSResult: Decodable {
     }
 
     internal init(from challengeResult: AnyChallengeResult,
-                  delegatedAuthenticationSDKOutput: String?,
                   authorizationToken: String?,
                   threeDS2SDKError: String?) throws {
         let payload = Payload(authorisationToken: authorizationToken,
-                              delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
                               threeDS2SDKError: threeDS2SDKError,
                               transStatus: challengeResult.transactionStatus)
         
