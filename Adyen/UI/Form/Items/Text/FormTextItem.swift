@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,7 @@ import UIKit
 
 /// An item in which text can be entered using a text field.
 @_spi(AdyenInternal)
-open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFormItem, InputViewRequiringFormItem {
+open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFormItem {
 
     /// The placeholder of the text field.
     @AdyenObservable(nil) public var placeholder: String?
@@ -24,9 +24,6 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
 
     /// The validator to use for validating the text in the text field.
     public var validator: Validator?
-
-    /// A message that is displayed when validation fails. Observable.
-    @AdyenObservable(nil) public var validationFailureMessage: String?
 
     /// The auto-capitalization style for the text field.
     public var autocapitalizationType: UITextAutocapitalizationType = .sentences
@@ -47,7 +44,7 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
         super.init(value: "", style: style)
     }
 
-    public func isValid() -> Bool {
+    override public func isValid() -> Bool {
         validator?.isValid(value) ?? true
     }
     
