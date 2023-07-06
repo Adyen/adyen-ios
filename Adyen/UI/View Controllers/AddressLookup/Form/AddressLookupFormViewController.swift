@@ -4,8 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-// TODO: Alex - Telemetry
-// TODO: Alex - Documentation
+// TODO: Alex - Telemetry?
 
 protocol AddressLookupFormViewControllerDelegate: AnyObject {
     

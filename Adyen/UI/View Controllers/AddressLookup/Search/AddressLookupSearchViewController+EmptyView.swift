@@ -6,15 +6,14 @@
 
 import UIKit
 
-// TODO: Alex - Documentation
-
 extension AddressLookupSearchViewController {
     
+    /// The view that is shown when the address lookup search result is empty
     class EmptyView: UIView, SearchViewControllerEmptyView {
         
-        /// The action to dismiss the search
         private let style: Style
         private let localizationParameters: LocalizationParameters?
+        private let dismissHandler: () -> Void
         
         public var searchTerm: String {
             didSet { updateLabels() }
@@ -37,8 +36,13 @@ extension AddressLookupSearchViewController {
             return textView
         }()
         
-        private let dismissHandler: () -> Void
-        
+        /// Initializes the `EmptyView` for the ``AddressLookupSearchViewController``
+        ///
+        /// - Parameters:
+        ///   - searchTerm: The search term that caused an empty state.
+        ///   - style: The style of the view.
+        ///   - localizationParameters: The localization parameters.
+        ///   - dismissHandler: A closure that is called when manual entry is requested.
         internal init(
             searchTerm: String = "",
             style: Style = .init(),

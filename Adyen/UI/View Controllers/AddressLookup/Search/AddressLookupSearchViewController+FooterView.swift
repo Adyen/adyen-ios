@@ -6,10 +6,9 @@
 
 import Foundation
 
-// TODO: Documentation
-
 extension AddressLookupSearchViewController {
     
+    /// The footer view for the result list to allow switching to manual entry
     class FooterView: UIView {
         
         private let style: Style
@@ -27,7 +26,7 @@ extension AddressLookupSearchViewController {
             self.backgroundColor = style.backgroundColor
             
             let label = UILabel()
-            label.text = "Select your address"
+            label.text = "Select your address" // TODO: Alex - Localization
             label.backgroundColor = .yellow
             label.numberOfLines = 0
             label.adyen.apply(style.title)
@@ -35,11 +34,15 @@ extension AddressLookupSearchViewController {
             let textView = LinkTextView { [weak self] _ in
                 self?.selectionHandler()
             }
-            textView.update(text: "or %#enter manually%#", style: style.subtitle)
+            textView.update(
+                text: "or %#enter manually%#", // TODO: Alex - Localization
+                style: style.subtitle
+            )
             
             let stackView = UIStackView(arrangedSubviews: [label, textView])
             stackView.axis = .vertical
             addSubview(stackView)
+            
             stackView.adyen.anchor(inside: self, with: .init(top: 16, left: 16, bottom: -16, right: -16))
         }
         

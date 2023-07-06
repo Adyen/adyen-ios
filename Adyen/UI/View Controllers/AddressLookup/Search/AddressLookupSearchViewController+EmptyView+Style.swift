@@ -8,6 +8,7 @@ import Foundation
 
 extension AddressLookupSearchViewController.EmptyView {
     
+    /// Initializes the `Style` of the ``AddressLookupSearchViewController.EmptyView``
     internal struct Style: ViewStyle {
         
         internal var title: TextStyle
