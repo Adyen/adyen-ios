@@ -6,10 +6,14 @@
 
 // TODO: Alex - Telemetry?
 
+/// The delegate protocol of the ``AddressLookupFormViewController``
 protocol AddressLookupFormViewControllerDelegate: AnyObject {
     
+    /// Address search was requested
     func addressLookupFormShowSearch(currentInput: PostalAddress)
+    /// A valid address is requested to be submitted
     func addressLookupFormSubmit(validAddress: PostalAddress)
+    /// Dismissal of address lookup is requested
     func addressLookupFormDismiss()
 }
 
