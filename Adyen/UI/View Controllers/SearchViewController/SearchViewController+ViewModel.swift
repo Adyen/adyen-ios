@@ -6,8 +6,6 @@
 
 import Foundation
 
-// TODO: Alex - TESTS
-
 extension SearchViewController {
     
     /// The view model for the `SearchViewController`

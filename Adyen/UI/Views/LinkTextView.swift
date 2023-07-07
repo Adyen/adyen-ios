@@ -6,8 +6,6 @@
 
 import UIKit
 
-// TODO: Alex - TESTS
-
 /// A text view that easily makes links - delimited with a `linkRangeDelimiter` - selectable
 ///
 /// Use ``update(text:style:linkRangeDelimiter:)`` to update the content

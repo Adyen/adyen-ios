@@ -89,7 +89,7 @@ class FormAddressItemTests: XCTestCase {
         
         formAddressItem.updateOptionalStatus(isOptional: true)
         
-        wait(for: [expectation], timeout: 300)
+        wait(for: [expectation], timeout: 2)
     }
 }
 

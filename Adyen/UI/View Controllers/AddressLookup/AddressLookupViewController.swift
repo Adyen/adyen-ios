@@ -6,8 +6,6 @@
 
 import UIKit
 
-// TODO: Alex - TESTS
-
 @_spi(AdyenInternal)
 public class AddressLookupViewController: UINavigationController, AdyenObserver {
     
@@ -25,8 +23,6 @@ public class AddressLookupViewController: UINavigationController, AdyenObserver 
         observe(viewModel.$interfaceState) { [weak self] interfaceState in
             self?.updateInterface(for: interfaceState)
         }
-        
-        viewModel.handleViewDidLoad()
     }
     
     @available(*, unavailable)

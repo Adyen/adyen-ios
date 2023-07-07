@@ -6,9 +6,6 @@
 
 import UIKit
 
-// TODO: Alex - TESTS
-// TODO: Alex - Telemetry?
-
 public extension AddressLookupViewController {
     
     typealias LookupProvider = (_ searchTerm: String, _ resultProvider: @escaping ([PostalAddress]) -> Void) -> Void
@@ -42,7 +39,7 @@ public extension AddressLookupViewController {
         /// Context: We show the search immediately when no address to prefill is provided
         /// and cancelling from this state should dismiss the whole flow.
         @AdyenObservable(false)
-        private var shouldDismissOnSearchDismissal: Bool
+        internal var shouldDismissOnSearchDismissal: Bool
         
         /// Initializes a ``AddressLookupViewController``
         ///
@@ -71,6 +68,8 @@ public extension AddressLookupViewController {
             self.completionHandler = completionHandler
             self.initialCountry = initialCountry
             self.prefillAddress = prefillAddress
+            
+            setInitialInterfaceState()
         }
     }
 }
@@ -79,7 +78,7 @@ public extension AddressLookupViewController {
 
 extension AddressLookupViewController.ViewModel {
     
-    internal func handleViewDidLoad() {
+    private func setInitialInterfaceState() {
         shouldDismissOnSearchDismissal = (prefillAddress == nil)
         
         if let prefillAddress {
@@ -99,8 +98,11 @@ extension AddressLookupViewController.ViewModel {
     }
     
     internal func handleDismissSearchTapped() {
-        if shouldDismissOnSearchDismissal { return handleDismissAddressLookupTapped() }
-        handleShowForm(with: prefillAddress)
+        if shouldDismissOnSearchDismissal {
+            handleDismissAddressLookupTapped()
+        } else {
+            handleSwitchToManualEntryTapped()
+        }
     }
     
     internal func handleDismissAddressLookupTapped() {
