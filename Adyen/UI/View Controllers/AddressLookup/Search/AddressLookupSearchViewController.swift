@@ -72,8 +72,10 @@ internal class AddressLookupSearchViewController: SearchViewController {
         searchBar.textContentType = .fullStreetAddress
     }
     
-    override func viewDidLoad() {
+    override internal func viewDidLoad() {
         super.viewDidLoad()
+        
+        // TODO: Alex - Align with Design Team
         
         let footerView = FooterView { [weak self] in
             self?.switchToManualEntry()
@@ -92,6 +94,8 @@ internal class AddressLookupSearchViewController: SearchViewController {
         delegate?.addressLookupSearchCancel()
     }
 }
+
+// MARK: - UITableView Extension
 
 extension UITableView {
     

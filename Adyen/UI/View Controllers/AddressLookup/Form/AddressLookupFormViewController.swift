@@ -4,10 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-// TODO: Alex - Telemetry?
-
 /// The delegate protocol of the ``AddressLookupFormViewController``
-protocol AddressLookupFormViewControllerDelegate: AnyObject {
+internal protocol AddressLookupFormViewControllerDelegate: AnyObject {
     
     /// Address search was requested
     func addressLookupFormShowSearch(currentInput: PostalAddress)

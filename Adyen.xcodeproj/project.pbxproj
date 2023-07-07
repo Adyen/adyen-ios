@@ -5755,6 +5755,7 @@
 		};
 		C96A8E2C26CA801E000BB8C6 /* Update Localization strings files */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -5945,6 +5946,7 @@
 		};
 		F986B551285B4208002A471C /* Update the LocalizationKey.swift file */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);

@@ -6,7 +6,7 @@
 
 internal class FormAddressLookupItemView: FormSelectableValueItemView<PostalAddress?, FormAddressLookupItem> {
     
-    override func reset() {
+    override internal func reset() {
         item.value = PostalAddress()
         resetValidationStatus()
     }
