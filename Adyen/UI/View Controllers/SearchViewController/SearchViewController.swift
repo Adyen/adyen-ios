@@ -6,22 +6,33 @@
 
 import UIKit
 
+/// Protocol specifying the interface of a view that is shown
+/// when the results of the ``SearchViewController`` are empty.
 @_spi(AdyenInternal)
-public protocol SearchViewControllerEmptyView: UIView {
+public protocol SearchResultsEmptyView: UIView {
+    /// The searchTerm that caused the search results to be empty
+    ///
+    /// Use this value to update your messaging
     var searchTerm: String { get set }
 }
 
+/// A view controller that shows search results in a ``ListViewController``
 @_spi(AdyenInternal)
 public class SearchViewController: UIViewController, AdyenObserver {
 
     private let viewModel: ViewModel
-    internal let emptyView: SearchViewControllerEmptyView
+    internal let emptyView: SearchResultsEmptyView
     
     public lazy var resultsListViewController = ListViewController(style: viewModel.style)
     
+    /// Initializes the search view controller.
+    ///
+    /// - Parameters:
+    ///   - viewModel: The business logic of the search view controller
+    ///   - emptyView: The view (conforming to ``SearchResultsEmptyView``) to show when the search results are empty.
     public init(
         viewModel: ViewModel,
-        emptyView: SearchViewControllerEmptyView
+        emptyView: SearchResultsEmptyView
     ) {
         self.emptyView = emptyView
         self.viewModel = viewModel
