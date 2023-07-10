@@ -7,28 +7,32 @@
 @_spi(AdyenInternal) @testable import Adyen
 import XCTest
 
-class KeyboardObserverTests: XCTestCase {
-    
-    class DummyAdyenObserver: AdyenObserver {}
-    var adyenObserver: DummyAdyenObserver?
+class KeyboardObserverTests: XCTestCase, AdyenObserver {
     
     func testKeyboardNotificationHandling() {
         
         let keyboardObserver = KeyboardObserver()
+        
+        let validExpectation = expectation(description: "Observer was called (valid notification)")
+        let invalidExpectation = expectation(description: "Observer was called (invalid notification)")
+        
         var expectedRects: [CGRect] = [
             .init(origin: .zero, size: .init(width: 100, height: 100)),
             .zero
         ]
-        let expectation = expectation(description: "Observer was called")
-        expectation.expectedFulfillmentCount = 2
+        
+        var expectations: [XCTestExpectation] = [
+            validExpectation,
+            invalidExpectation
+        ]
         
         // Given
         
-        adyenObserver = DummyAdyenObserver()
-        adyenObserver!.observe(keyboardObserver.$keyboardRect) { rect in
+        observe(keyboardObserver.$keyboardRect) { rect in
             XCTAssertEqual(rect, expectedRects.first)
             expectedRects = Array(expectedRects.dropFirst())
-            expectation.fulfill()
+            expectations.first!.fulfill()
+            expectations = Array(expectations.dropFirst())
         }
         
         // When
@@ -38,20 +42,20 @@ class KeyboardObserverTests: XCTestCase {
         NotificationCenter.default.post(
             name: UIResponder.keyboardWillChangeFrameNotification,
             object: nil,
-            userInfo: [UIResponder.keyboardFrameEndUserInfoKey: expectedRects]
+            userInfo: [UIResponder.keyboardFrameEndUserInfoKey: expectedRects.first!]
         )
         
-        // In valid Notification
+        wait(for: [validExpectation], timeout: 1)
+        
+        // Invalid Notification
         
         NotificationCenter.default.post(
             name: UIResponder.keyboardWillChangeFrameNotification,
             object: nil,
             userInfo: ["RandomKey": 1]
         )
-        
-        // Then
-        
-        wait(for: [expectation], timeout: 2)
+
+        wait(for: [invalidExpectation], timeout: 1)
         
         XCTAssertEqual(expectedRects.count, 0)
     }
