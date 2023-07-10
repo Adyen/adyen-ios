@@ -63,10 +63,17 @@ internal class AddressLookupSearchViewController: SearchViewController {
         
         title = localizedString(.billingAddressSectionTitle, viewModel.localizationParameters)
         
-        navigationItem.rightBarButtonItem = .init(
+        navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(cancelSearch)
+        )
+        
+        navigationItem.rightBarButtonItem = .init(
+            title: "Manual Entry", // TODO: Alex - Localization
+            style: .plain,
+            target: self,
+            action: #selector(switchToManualEntry)
         )
         
         searchBar.textContentType = .fullStreetAddress

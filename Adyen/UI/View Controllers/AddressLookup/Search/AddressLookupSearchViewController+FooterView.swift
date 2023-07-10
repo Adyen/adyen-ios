@@ -25,25 +25,19 @@ extension AddressLookupSearchViewController {
             
             self.backgroundColor = style.backgroundColor
             
-            let label = UILabel()
-            label.text = "Select your address" // TODO: Alex - Localization
-            label.backgroundColor = .yellow
-            label.numberOfLines = 0
-            label.adyen.apply(style.title)
-            
             let textView = LinkTextView { [weak self] _ in
                 self?.selectionHandler()
             }
             textView.update(
-                text: "or %#enter manually%#", // TODO: Alex - Localization
-                style: style.subtitle
+                text: "Select your address\nor %#enter manually%#", // TODO: Alex - Localization
+                style: style.title
             )
             
-            let stackView = UIStackView(arrangedSubviews: [label, textView])
+            let stackView = UIStackView(arrangedSubviews: [textView])
             stackView.axis = .vertical
             addSubview(stackView)
             
-            stackView.adyen.anchor(inside: self, with: .init(top: 16, left: 16, bottom: -16, right: -16))
+            stackView.adyen.anchor(inside: self, with: .init(top: 24, left: 16, bottom: -16, right: -16))
         }
         
         @available(*, unavailable)
@@ -63,7 +57,6 @@ extension AddressLookupSearchViewController.FooterView {
     struct Style: ViewStyle {
         
         internal var title: TextStyle
-        internal var subtitle: TextStyle
         internal var backgroundColor: UIColor
         
         internal init(
@@ -71,14 +64,9 @@ extension AddressLookupSearchViewController.FooterView {
                 font: .preferredFont(forTextStyle: .subheadline),
                 color: .Adyen.componentSecondaryLabel
             ),
-            subtitle: TextStyle = .init(
-                font: .preferredFont(forTextStyle: .subheadline),
-                color: .Adyen.componentSecondaryLabel
-            ),
             backgroundColor: UIColor = .clear
         ) {
             self.title = title
-            self.subtitle = subtitle
             self.backgroundColor = backgroundColor
         }
     }
