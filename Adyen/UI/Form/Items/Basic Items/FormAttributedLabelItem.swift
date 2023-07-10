@@ -1,10 +1,9 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
 import UIKit
 
 /// Simple form item that represent a single attributed UILabel element.
@@ -14,7 +13,7 @@ public class FormAttributedLabelItem: FormItem {
     public var subitems: [FormItem] = []
 
     public init(originalText: String,
-                link: String,
+                links: [String],
                 style: TextStyle,
                 linkTextStyle: TextStyle,
                 identifier: String? = nil) {
@@ -22,7 +21,7 @@ public class FormAttributedLabelItem: FormItem {
         self.style = style
         self.linkTextStyle = linkTextStyle
         self.originalText = originalText
-        self.link = link
+        self.links = links
     }
 
     public var identifier: String?
@@ -36,62 +35,35 @@ public class FormAttributedLabelItem: FormItem {
     /// The text of the label.
     public var originalText: String
 
-    // The link label.
-    public var link: String
+    // The links present in the label.
+    public var links: [String]
 
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
-        let label = ADYLabel()
-        label.numberOfLines = 0
-        label.textAlignment = style.textAlignment
-        label.textColor = style.color
-        label.font = style.font
-        label.backgroundColor = style.backgroundColor
-        let attributedString = NSMutableAttributedString(string: originalText.replacingOccurrences(of: "#", with: " "))
-
-        let linkRanges = linkRangesInString()
-
-        let attributes = createAttributes(from: linkTextStyle)
-        for linkRange in linkRanges {
-            attributedString.addAttributes(attributes, range: linkRange)
-        }
-
-        label.attributedText = attributedString
-        label.accessibilityIdentifier = identifier
-
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
-        label.addGestureRecognizer(tapGesture)
-        label.isUserInteractionEnabled = true
-        label.addGestureRecognizer(tapGesture)
-        return label
-    }
-
-    @objc private func labelTapped(gesture: UITapGestureRecognizer) {
-        if let url = URL(string: link) {
+        let label = LinkTextViewFormItem { [weak self] linkIndex in
+            guard let self else { return }
+            guard linkIndex < links.count, let url = URL(string: links[linkIndex]) else {
+                AdyenAssertion.assertionFailure(message: "Insufficient amount of links provided")
+                return
+            }
+            
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
+        
+        label.update(
+            text: originalText,
+            style: style,
+            linkRangeDelimiter: "#"
+        )
+        
+        label.accessibilityIdentifier = identifier
+
+        return label
     }
+}
 
-    private func linkRangesInString() -> [NSRange] {
-        let pattern = "#(.+?)#"
-        var ranges: [NSRange] = []
-        do {
-            let regex = try NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options.caseInsensitive)
-            let matches = regex.matches(in: originalText, options: [], range: NSRange(location: 0, length: originalText.utf16.count))
-
-            matches.forEach { match in
-                let range = match.range(at: 0)
-                ranges.append(range)
-            }
-        } catch {
-            adyenPrint(error)
-        }
-        return ranges
-    }
-
-    private func createAttributes(from style: TextStyle) -> [NSAttributedString.Key: Any] {
-        [.foregroundColor: style.color,
-         .font: style.font,
-         .backgroundColor: style.backgroundColor]
-    }
-
+private class LinkTextViewFormItem: LinkTextView, AnyFormItemView {
+    
+    public var childItemViews: [AnyFormItemView] { [] }
+    
+    public func reset() {}
 }

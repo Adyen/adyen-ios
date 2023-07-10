@@ -71,6 +71,7 @@ public class LinkTextView: UITextView {
         )
         
         self.attributedText = attributedString
+        self.backgroundColor = style.backgroundColor
     }
 }
 
