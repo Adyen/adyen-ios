@@ -44,10 +44,11 @@ internal struct SessionRequest: APIRequest {
         //                                  "visa": InstallmentOptions(monthValues: [3, 6, 9], includesRevolving: true)]
         //
         //        try container.encode(installmentOptions, forKey: .installmentOptions)
-        
-        // Toggle these to enable/disable displaying the store pm switch (nice to add these in the settings)
-        //        try container.encode("askForConsent", forKey: .storePaymentMethodMode)
-        //        try container.encode("CardOnFile", forKey: .recurringProcessingModel)
+
+        if ConfigurationConstants.current.cardComponentConfiguration.showsStorePaymentMethodField {
+            try container.encode("askForConsent", forKey: .storePaymentMethodMode)
+            try container.encode("CardOnFile", forKey: .recurringProcessingModel)
+        }
     }
     
     internal enum CodingKeys: CodingKey {
