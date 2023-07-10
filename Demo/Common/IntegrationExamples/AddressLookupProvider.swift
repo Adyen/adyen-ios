@@ -8,7 +8,7 @@ import Adyen
 import Contacts
 
 /// Example implementation of an address lookup provider with debouncing and cancelling previous calls
-public class AddressLookupProvider {
+public class DemoAddressLookupProvider {
     
     private let minDebounceDelay: TimeInterval = 0.3
     private let artificialNetworkCallDelay: TimeInterval = 0.5
@@ -33,8 +33,14 @@ public class AddressLookupProvider {
         searchTask = nil
         
         if searchTerm.isEmpty {
-            // An empty list results in an empty state to be shown
-            // Instead of showing an empty list this could be an option to provide last used addresses
+            
+            /*
+             An empty list results in an empty state to be shown.
+             
+             Instead of providing an empty list this could be an option
+             to provide last used / saved user addresses
+             */
+            
             resultHandler([])
             return
         }
@@ -45,7 +51,7 @@ public class AddressLookupProvider {
 
 // MARK: - Convenience
 
-private extension AddressLookupProvider {
+private extension DemoAddressLookupProvider {
     
     func searchTask(
         for searchTerm: String,
@@ -80,7 +86,7 @@ private extension AddressLookupProvider {
 
 // MARK: - Dummy Data
 
-private extension AddressLookupProvider {
+private extension DemoAddressLookupProvider {
     
     func dummyAddresses(for searchTerm: String) -> [PostalAddress] {
         [

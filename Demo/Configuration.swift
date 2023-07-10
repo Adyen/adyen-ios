@@ -92,9 +92,16 @@ internal struct CardComponentConfiguration: Codable {
     internal var showsStorePaymentMethodField = true
     internal var showsStoredCardSecurityCodeField = true
     internal var showsSecurityCodeField = true
-    internal var addressMode: CardComponent.AddressFormType = .none
+    internal var addressMode: AddressFormType = .none
     internal var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
     internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
+    
+    internal enum AddressFormType: String, Codable, CaseIterable {
+        case lookup
+        case full
+        case postalCode
+        case none
+    }
 }
 
 internal struct DemoAppSettings: Codable {
@@ -106,6 +113,7 @@ internal struct DemoAppSettings: Codable {
     internal let apiVersion: Int
     internal let merchantAccount: String
     internal let cardComponentConfiguration: CardComponentConfiguration
+    internal let addressLookupProvider = DemoAddressLookupProvider()
 
     internal var amount: Amount { Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil) }
     internal var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
@@ -119,7 +127,8 @@ internal struct DemoAppSettings: Codable {
         cardComponentConfiguration: defaultCardComponentConfiguration
     )
 
-    internal static let defaultCardComponentConfiguration = CardComponentConfiguration(showsHolderNameField: false,
+    internal static let defaultCardComponentConfiguration = CardComponentConfiguration(
+        showsHolderNameField: false,
         showsStorePaymentMethodField: true,
         showsStoredCardSecurityCodeField: true,
         showsSecurityCodeField: true,
@@ -153,15 +162,16 @@ internal struct DemoAppSettings: Codable {
         storedCardConfig.showsSecurityCodeField = cardComponentConfiguration.showsStoredCardSecurityCodeField
 
         var billingAddressConfig = BillingAddressConfiguration()
-        billingAddressConfig.mode = cardComponentConfiguration.addressMode
+        billingAddressConfig.mode = cardComponentAddressFormType(from: cardComponentConfiguration.addressMode)
 
-        return .init(showsHolderNameField: cardComponentConfiguration.showsHolderNameField,
-                     showsStorePaymentMethodField: cardComponentConfiguration.showsStorePaymentMethodField,
-                     showsSecurityCodeField: cardComponentConfiguration.showsSecurityCodeField,
-                     koreanAuthenticationMode: cardComponentConfiguration.koreanAuthenticationMode,
-                     socialSecurityNumberMode: cardComponentConfiguration.socialSecurityNumberMode,
-                     storedCardConfiguration: storedCardConfig,
-                     billingAddress: billingAddressConfig
+        return .init(
+            showsHolderNameField: cardComponentConfiguration.showsHolderNameField,
+            showsStorePaymentMethodField: cardComponentConfiguration.showsStorePaymentMethodField,
+            showsSecurityCodeField: cardComponentConfiguration.showsSecurityCodeField,
+            koreanAuthenticationMode: cardComponentConfiguration.koreanAuthenticationMode,
+            socialSecurityNumberMode: cardComponentConfiguration.socialSecurityNumberMode,
+            storedCardConfiguration: storedCardConfig,
+            billingAddress: billingAddressConfig
         )
     }
 
@@ -170,15 +180,32 @@ internal struct DemoAppSettings: Codable {
         storedCardConfig.showsSecurityCodeField = cardComponentConfiguration.showsStoredCardSecurityCodeField
 
         var billingAddressConfig = BillingAddressConfiguration()
-        billingAddressConfig.mode = cardComponentConfiguration.addressMode
+        billingAddressConfig.mode = cardComponentAddressFormType(from: cardComponentConfiguration.addressMode)
 
-        return .init(showsHolderNameField: cardComponentConfiguration.showsHolderNameField,
-                                                 showsStorePaymentMethodField: cardComponentConfiguration.showsStorePaymentMethodField,
-                                                 showsSecurityCodeField: cardComponentConfiguration.showsSecurityCodeField,
-                                                 koreanAuthenticationMode: cardComponentConfiguration.koreanAuthenticationMode,
-                                                 socialSecurityNumberMode: cardComponentConfiguration.socialSecurityNumberMode,
-                                                 storedCardConfiguration: storedCardConfig,
-                                                 billingAddress: billingAddressConfig)
+        return .init(
+            showsHolderNameField: cardComponentConfiguration.showsHolderNameField,
+            showsStorePaymentMethodField: cardComponentConfiguration.showsStorePaymentMethodField,
+            showsSecurityCodeField: cardComponentConfiguration.showsSecurityCodeField,
+            koreanAuthenticationMode: cardComponentConfiguration.koreanAuthenticationMode,
+            socialSecurityNumberMode: cardComponentConfiguration.socialSecurityNumberMode,
+            storedCardConfiguration: storedCardConfig,
+            billingAddress: billingAddressConfig
+        )
 
+    }
+    
+    private func cardComponentAddressFormType(from addressFormType: CardComponentConfiguration.AddressFormType) -> CardComponent.AddressFormType {
+        switch addressFormType {
+        case .lookup:
+            return .lookup { searchTerm, completionHandler in
+                self.addressLookupProvider.lookUp(searchTerm: searchTerm, resultHandler: completionHandler)
+            }
+        case .full:
+            return .full
+        case .postalCode:
+            return .postalCode
+        case .none:
+            return .none
+        }
     }
 }
