@@ -160,7 +160,8 @@ public extension AdyenScope where Base == String {
         return lowerIndex...upperIndex
     }
     
-    func linkRanges() -> [NSRange] {
+    /// Returns a list of ``NSRange`` indicating links using following regex pattern: `#(.+?)#`
+    var linkRanges: [NSRange] {
         let pattern = "#(.+?)#"
         var ranges: [NSRange] = []
         do {
