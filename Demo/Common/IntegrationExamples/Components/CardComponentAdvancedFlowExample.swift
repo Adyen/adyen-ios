@@ -69,12 +69,10 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         guard let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
         }
-        
-        let style = FormComponentStyle()
-        let config = CardComponent.Configuration(style: style)
+
         let component = CardComponent(paymentMethod: paymentMethod,
                                       context: context,
-                                      configuration: config)
+                                      configuration: ConfigurationConstants.current.cardConfiguration)
         component.cardComponentDelegate = self
         component.delegate = self
         return component

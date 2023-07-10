@@ -68,7 +68,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
 
         configuration.actionComponent.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
         configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
-        configuration.card.billingAddress.mode = .postalCode
+        configuration.card = ConfigurationConstants.current.cardDropInConfiguration
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
         return configuration
     }
