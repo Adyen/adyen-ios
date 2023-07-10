@@ -15,6 +15,7 @@ internal struct ConfigurationView: View {
         case merchantAccount = "Merchant Account"
         case region = "Region"
         case payment = "Payment"
+        case cardComponent = "Card Component"
     }
     
     @ObservedObject internal var viewModel: ConfigurationViewModel
@@ -43,10 +44,11 @@ internal struct ConfigurationView: View {
     internal var body: some View {
         NavigationView {
             Form {
-                wrapInSection(view: apiVersionSection, section: .apiVersion)
-                wrapInSection(view: merchantAccountSection, section: .merchantAccount)
-                wrapInSection(view: regionSection, section: .region)
+                apiVersionSection
+                merchantAccountSection
+                regionSection
                 wrapInSection(view: paymentSection, section: .payment)
+                wrapInSection(view: cardComponentSection, section: .cardComponent)
             }.navigationBarTitle("Configuration", displayMode: .inline)
                 .navigationBarItems(
                     leading: Button("Default", action: viewModel.defaultTapped),
@@ -68,12 +70,24 @@ internal struct ConfigurationView: View {
     }
     
     private var apiVersionSection: some View {
-        TextField(ConfigurationSection.apiVersion.rawValue, text: $viewModel.apiVersion)
-            .keyboardType(.numberPad)
+        HStack {
+            Text("API Version")
+            TextField(ConfigurationSection.apiVersion.rawValue, text: $viewModel.apiVersion)
+                .keyboardType(.numberPad)
+                .multilineTextAlignment(.trailing)
+                .padding(.trailing, 10)
+        }
     }
     
     private var merchantAccountSection: some View {
-        TextField(ConfigurationSection.merchantAccount.rawValue, text: $viewModel.merchantAccount)
+        HStack {
+            Text("Merchant Account")
+            TextField(ConfigurationSection.merchantAccount.rawValue, text: $viewModel.merchantAccount)
+                .keyboardType(.numberPad)
+                .multilineTextAlignment(.trailing)
+                .padding(.trailing, 10)
+        }
+
     }
     
     private var regionSection: some View {
@@ -112,8 +126,22 @@ internal struct ConfigurationView: View {
                 rows: filteredCurrencies,
                 transform: { ListItemView(viewModel: $0.toListItemViewModel) }
             )
-            TextField("Amount", text: $viewModel.value)
-                .keyboardType(.numberPad)
+            HStack {
+                Text("Amount ")
+                TextField("Amount", text: $viewModel.value)
+                    .keyboardType(.numberPad)
+                    .multilineTextAlignment(.trailing)
+                    .padding(.trailing, 10)
+            }
+        }
+
+    }
+
+    private var cardComponentSection: some View {
+        NavigationLink(destination: CardComponentSettingsView(viewModel: viewModel)) {
+            HStack {
+                Text("Card Component")
+            }
         }
     }
     
