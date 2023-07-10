@@ -28,7 +28,7 @@ extension SearchViewController {
         /// - Parameters:
         ///   - localizationParameters: The localization parameters.
         ///   - style: The style of the view.
-        ///   - searchBarPlaceholder: The placeholder for the searchbar. Defaults to the default `.searchPlaceholder` when `nil`.
+        ///   - searchBarPlaceholder: The placeholder for the search bar. Defaults to the default `.searchPlaceholder` when `nil`.
         ///   - shouldFocusSearchBarOnAppearance: Whether to focus the search bar on viewWillAppear.
         ///   - resultProvider: A closure to provide result list items for a search term.
         public init(
