@@ -113,7 +113,6 @@ internal struct DemoAppSettings: Codable {
     internal let apiVersion: Int
     internal let merchantAccount: String
     internal let cardComponentConfiguration: CardComponentConfiguration
-    internal let addressLookupProvider = DemoAddressLookupProvider()
 
     internal var amount: Amount { Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil) }
     internal var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
@@ -197,8 +196,9 @@ internal struct DemoAppSettings: Codable {
     private func cardComponentAddressFormType(from addressFormType: CardComponentConfiguration.AddressFormType) -> CardComponent.AddressFormType {
         switch addressFormType {
         case .lookup:
+            let addressLookupProvider = DemoAddressLookupProvider()
             return .lookup { searchTerm, completionHandler in
-                self.addressLookupProvider.lookUp(searchTerm: searchTerm, resultHandler: completionHandler)
+                addressLookupProvider.lookUp(searchTerm: searchTerm, resultHandler: completionHandler)
             }
         case .full:
             return .full
