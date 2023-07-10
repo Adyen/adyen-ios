@@ -27,26 +27,20 @@ public class FormAttributedLabelItem: FormItem {
     public var identifier: String?
 
     /// The style of the label.
-    public var style: TextStyle
+    private let style: TextStyle
 
     /// The style of the link text.
-    public var linkTextStyle: TextStyle
+    private let linkTextStyle: TextStyle
 
     /// The text of the label.
-    public var originalText: String
+    private let originalText: String
 
     // The links present in the label.
-    public var links: [String]
+    private let links: [String]
 
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         let label = LinkTextViewFormItem { [weak self] linkIndex in
-            guard let self else { return }
-            guard linkIndex < links.count, let url = URL(string: links[linkIndex]) else {
-                AdyenAssertion.assertionFailure(message: "Insufficient amount of links provided")
-                return
-            }
-            
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            self?.handleLinkTapped(atIndex: linkIndex)
         }
         
         label.update(
@@ -58,6 +52,15 @@ public class FormAttributedLabelItem: FormItem {
         label.accessibilityIdentifier = identifier
 
         return label
+    }
+    
+    private func handleLinkTapped(atIndex linkIndex: Int) {
+        guard linkIndex < links.count, let url = URL(string: links[linkIndex]) else {
+            AdyenAssertion.assertionFailure(message: "Link index \(linkIndex) out of bounds \(links.count)")
+            return
+        }
+        
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 }
 
