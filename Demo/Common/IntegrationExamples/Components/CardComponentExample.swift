@@ -78,18 +78,10 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         guard let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
         }
-        
-        let style = FormComponentStyle()
-        var config = CardComponent.Configuration(style: style)
-        
-        let addressProvider = AddressLookupProvider()
-        config.billingAddress.mode = .lookup(handler: { searchTerm, completionHandler in
-            addressProvider.lookUp(searchTerm: searchTerm, resultHandler: completionHandler)
-        })
-        
+
         let component = CardComponent(paymentMethod: paymentMethod,
                                       context: context,
-                                      configuration: config)
+                                      configuration: ConfigurationConstants.current.cardConfiguration)
         component.delegate = session
         return component
     }

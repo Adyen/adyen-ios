@@ -95,7 +95,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
         }
 
         configuration.actionComponent.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
-        configuration.card.billingAddress.mode = .postalCode
+        configuration.card = ConfigurationConstants.current.cardDropInConfiguration
         configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
         return configuration
     }

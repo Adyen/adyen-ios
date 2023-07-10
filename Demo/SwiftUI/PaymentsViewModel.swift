@@ -86,7 +86,7 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable {
         )
     }
     
-    private func onConfigurationClosed(_ configuration: Configuration) {
+    private func onConfigurationClosed(_ configuration: DemoAppSettings) {
         ConfigurationConstants.current = configuration
         dismiss(completion: nil)
     }

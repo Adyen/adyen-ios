@@ -92,7 +92,7 @@ extension CardComponent {
         public typealias LookupHandler = (_ searchTerm: String, _ completionHandler: @escaping (_ result: [PostalAddress]) -> Void) -> Void
         
         case lookup(handler: LookupHandler)
-        
+
         /// Display full address form
         case full
 
@@ -101,10 +101,11 @@ extension CardComponent {
 
         /// Do not display address form
         case none
+
     }
 
     /// The mode of input field on Component UI
-    public enum FieldVisibility {
+    public enum FieldVisibility: String, Codable, CaseIterable {
 
         /// Always show the field.
         case show
@@ -114,6 +115,7 @@ extension CardComponent {
 
         /// Show the field when a specific condition is met.
         case auto
+
     }
 
     /// Card component configuration.
