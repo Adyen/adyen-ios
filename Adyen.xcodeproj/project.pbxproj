@@ -131,6 +131,7 @@
 		81BA083D2A49DFF700308160 /* FormSelectableValueItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA083C2A49DFF700308160 /* FormSelectableValueItemView.swift */; };
 		81BA08472A4B16B600308160 /* FormValidatableValueItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08462A4B16B600308160 /* FormValidatableValueItemView.swift */; };
 		81BA08482A4B16B600308160 /* FormValidatableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08452A4B16B500308160 /* FormValidatableValueItem.swift */; };
+		81D8E2E92A5C06AC00BC12FD /* KeyboardObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D8E2E82A5C06AC00BC12FD /* KeyboardObserverTests.swift */; };
 		81E031912A09190300EA965E /* (null) in Sources */ = {isa = PBXBuildFile; };
 		81E031932A0A703C00EA965E /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		81E031942A0A75F200EA965E /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67461F264262F000E9184D /* ConfigurationView.swift */; };
@@ -1271,6 +1272,7 @@
 		81BA08452A4B16B500308160 /* FormValidatableValueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableValueItem.swift; sourceTree = "<group>"; };
 		81BA08462A4B16B600308160 /* FormValidatableValueItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableValueItemView.swift; sourceTree = "<group>"; };
 		81C4006F2A4347FD007EC51C /* FormErrorItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormErrorItemTests.swift; sourceTree = "<group>"; };
+		81D8E2E82A5C06AC00BC12FD /* KeyboardObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardObserverTests.swift; sourceTree = "<group>"; };
 		81EA6C112A44836E0071A141 /* FormAddressItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAddressItemTests.swift; sourceTree = "<group>"; };
 		A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankDetailsEncryptorTests.swift; sourceTree = "<group>"; };
@@ -3985,6 +3987,7 @@
 				E702BE182602525E00280682 /* AssertsTests.swift */,
 				F9838D22263193E000963483 /* BalanceCheckerTests.swift */,
 				E9E3DB052226B3B200697074 /* CoderTests.swift */,
+				81D8E2E82A5C06AC00BC12FD /* KeyboardObserverTests.swift */,
 				E7768BDB26B416C3000851B3 /* DateValidationTests.swift */,
 				F9BA21BE246D36AC00D36A63 /* LazyOptionalTests.swift */,
 				E2B317A12265BC9400C1BB30 /* LengthValidatorTests.swift */,
@@ -6305,6 +6308,7 @@
 				F9D57528237C3EE3009C18B5 /* UIView+Search.swift in Sources */,
 				E9E3DAC2221ECE1000697074 /* CardSecurityCodeFormatterTests.swift in Sources */,
 				F9A6C453265640E000D8CD3E /* InstantPaymentComponentTests.swift in Sources */,
+				81D8E2E92A5C06AC00BC12FD /* KeyboardObserverTests.swift in Sources */,
 				C9126051275A3A2800C03DC4 /* BACSItemsFactoryTests.swift in Sources */,
 				F9D5751423757013009C18B5 /* CardPublicKeyValidatorTests.swift in Sources */,
 				0058692528BE0FB700B65A19 /* QRCodeViewDelegateMock.swift in Sources */,

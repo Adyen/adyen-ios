@@ -6,22 +6,36 @@
 
 import UIKit
 
+/// Protocol specifying the interface of a view that is shown
+/// when the results of the ``SearchViewController`` are empty.
 @_spi(AdyenInternal)
-public protocol SearchViewControllerEmptyView: UIView {
+public protocol SearchResultsEmptyView: UIView {
+    /// The searchTerm that caused the search results to be empty
+    ///
+    /// Use this value to update your messaging
     var searchTerm: String { get set }
 }
 
+/// A view controller that shows search results in a ``ListViewController``
 @_spi(AdyenInternal)
 public class SearchViewController: UIViewController, AdyenObserver {
+    
+    internal lazy var keyboardObserver = KeyboardObserver()
+    private var emptyViewBottomConstraint: NSLayoutConstraint?
 
     private let viewModel: ViewModel
-    internal let emptyView: SearchViewControllerEmptyView
+    internal let emptyView: SearchResultsEmptyView
     
     public lazy var resultsListViewController = ListViewController(style: viewModel.style)
     
+    /// Initializes the search view controller.
+    ///
+    /// - Parameters:
+    ///   - viewModel: The business logic of the search view controller
+    ///   - emptyView: The view (conforming to ``SearchResultsEmptyView``) to show when the search results are empty.
     public init(
         viewModel: ViewModel,
-        emptyView: SearchViewControllerEmptyView
+        emptyView: SearchResultsEmptyView
     ) {
         self.emptyView = emptyView
         self.viewModel = viewModel
@@ -74,6 +88,10 @@ public class SearchViewController: UIViewController, AdyenObserver {
         
         setupConstraints()
         
+        observe(keyboardObserver.$keyboardRect) { [weak self] in
+            self?.handleKeyboardHeightDidChange(keyboardHeight: $0.height)
+        }
+        
         updateInterface(with: viewModel.interfaceState)
         observe(viewModel.$interfaceState) { [weak self] in
             self?.updateInterface(with: $0)
@@ -92,6 +110,9 @@ public class SearchViewController: UIViewController, AdyenObserver {
     
     private func setupConstraints() {
         
+        emptyViewBottomConstraint = emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        emptyViewBottomConstraint?.isActive = true
+        
         NSLayoutConstraint.activate([
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
@@ -104,11 +125,11 @@ public class SearchViewController: UIViewController, AdyenObserver {
             
             emptyView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 0),
             emptyView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0),
-            emptyView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
-            emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+            emptyView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0)
         ])
         
-        loadingView.adyen.anchor(inside: self.view)
+        loadingView.adyen.anchor(inside: view.layoutMarginsGuide)
+        loadingView.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor, constant: 0).isActive = true
     }
     
     private func updateInterface(with interfaceState: InterfaceState) {
@@ -131,6 +152,14 @@ public class SearchViewController: UIViewController, AdyenObserver {
                 newSections: [.init(items: results)]
             )
             resultsListViewController.view.isHidden = false
+        }
+    }
+    
+    private func handleKeyboardHeightDidChange(keyboardHeight: CGFloat) {
+        self.view.setNeedsLayout()
+        UIView.animate(withDuration: 0.2) {
+            self.emptyViewBottomConstraint?.constant = -keyboardHeight
+            self.view.layoutIfNeeded()
         }
     }
 

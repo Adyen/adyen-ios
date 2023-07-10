@@ -9,7 +9,7 @@ import XCTest
 
 class SearchViewControllerTests: XCTestCase {
     
-    class DummyEmptyView: UIView, SearchViewControllerEmptyView {
+    class DummyEmptyView: UIView, SearchResultsEmptyView {
         
         var searchTerm: String = ""
         
