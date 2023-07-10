@@ -28,17 +28,17 @@ internal struct CardComponentSettingsView: View {
                     }
                     Picker("Select address mode", selection: $viewModel.addressMode) {
                         ForEach(CardComponent.AddressFormType.allCases, id: \.self) {
-                            Text($0.rawValue)
+                            Text($0.displayName)
                         }
                     }
                     Picker("Social Security Number Mode", selection: $viewModel.socialSecurityNumberMode) {
                         ForEach(CardComponent.FieldVisibility.allCases, id: \.self) {
-                            Text($0.rawValue)
+                            Text($0.displayName)
                         }
                     }
                     Picker("Korean Authentication Mode", selection: $viewModel.koreanAuthenticationMode) {
                         ForEach(CardComponent.FieldVisibility.allCases, id: \.self) {
-                            Text($0.rawValue)
+                            Text($0.displayName)
                         }
                     }
                 }

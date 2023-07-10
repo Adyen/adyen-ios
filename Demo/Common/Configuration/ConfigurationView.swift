@@ -82,12 +82,15 @@ internal struct ConfigurationView: View {
     private var merchantAccountSection: some View {
         HStack {
             Text("Merchant Account")
-            TextField(ConfigurationSection.merchantAccount.rawValue, text: $viewModel.merchantAccount)
-                .keyboardType(.numberPad)
-                .multilineTextAlignment(.trailing)
-                .padding(.trailing, 10)
+            merchantSection
         }
+    }
 
+    private var merchantSection: some View {
+        return TextField(ConfigurationSection.merchantAccount.rawValue, text: $viewModel.merchantAccount)
+            .keyboardType(.numberPad)
+            .multilineTextAlignment(.trailing)
+            .padding(.trailing, 10)
     }
     
     private var regionSection: some View {

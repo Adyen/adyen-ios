@@ -90,26 +90,34 @@ extension CardComponent {
     public enum AddressFormType: String, Codable, CaseIterable {
 
         /// Display full address form
-        case full = "Full"
+        case full
 
         /// Display simple form with only zip code field
-        case postalCode = "PostalCode"
+        case postalCode
 
         /// Do not display address form
-        case none = "None"
+        case none
+
+        public var displayName: String {
+            return self.rawValue.capitalized
+        }
     }
 
     /// The mode of input field on Component UI
     public enum FieldVisibility: String, Codable, CaseIterable {
 
         /// Always show the field.
-        case show = "Show"
+        case show
 
         /// Never show the field.
-        case hide = "Hide"
+        case hide
 
         /// Show the field when a specific condition is met.
-        case auto = "Auto"
+        case auto
+
+        public var displayName: String {
+            return self.rawValue.capitalized
+        }
     }
 
     /// Card component configuration.
