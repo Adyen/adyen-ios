@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,40 +7,34 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-internal final class DropInNavigationController: UINavigationController, KeyboardObserver, PreferredContentSizeConsumer {
+internal final class DropInNavigationController: UINavigationController, PreferredContentSizeConsumer, AdyenObserver {
     
     internal typealias CancelHandler = (Bool, PresentableComponent) -> Void
     
     private let cancelHandler: CancelHandler?
     
-    private var keyboardRect: CGRect = .zero
-
-    internal var keyboardObserver: Any?
-    
     internal let style: NavigationStyle
+    
+    internal lazy var keyboardObserver = KeyboardObserver()
     
     internal init(rootComponent: PresentableComponent, style: NavigationStyle, cancelHandler: @escaping CancelHandler) {
         self.style = style
         self.cancelHandler = cancelHandler
         super.init(nibName: nil, bundle: Bundle(for: DropInNavigationController.self))
         setup(root: rootComponent)
-        startObserving()
-    }
-    
-    deinit {
-        stopObserving()
-    }
-
-    internal func startObserving() {
-        startObserving { [weak self] in
-            self?.keyboardRect = $0
-            self?.updateTopViewControllerIfNeeded()
-        }
     }
     
     @available(*, unavailable)
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override internal func viewDidLoad() {
+        super.viewDidLoad()
+        
+        observe(keyboardObserver.$keyboardRect) { [weak self] _ in
+            self?.updateTopViewControllerIfNeeded()
+        }
     }
 
     internal func willUpdatePreferredContentSize() { /* Empty implementation */ }
@@ -68,7 +62,7 @@ internal final class DropInNavigationController: UINavigationController, Keyboar
     internal func updateTopViewControllerIfNeeded(animated: Bool = true) {
         guard let topViewController = topViewController as? WrapperViewController else { return }
 
-        let frame = topViewController.requiresKeyboardInput ? self.keyboardRect : .zero
+        let frame = topViewController.requiresKeyboardInput ? keyboardObserver.keyboardRect : .zero
         topViewController.updateFrame(keyboardRect: frame, animated: animated)
     }
     
