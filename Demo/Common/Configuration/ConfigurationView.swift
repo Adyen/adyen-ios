@@ -70,27 +70,15 @@ internal struct ConfigurationView: View {
     }
     
     private var apiVersionSection: some View {
-        HStack {
-            Text("API Version")
-            TextField(ConfigurationSection.apiVersion.rawValue, text: $viewModel.apiVersion)
-                .keyboardType(.numberPad)
-                .multilineTextAlignment(.trailing)
-                .padding(.trailing, 10)
-        }
+        TextFieldItemView(title: "API Version",
+                     value: $viewModel.apiVersion,
+                     placeholder: ConfigurationSection.apiVersion.rawValue)
     }
     
     private var merchantAccountSection: some View {
-        HStack {
-            Text("Merchant Account")
-            merchantSection
-        }
-    }
-
-    private var merchantSection: some View {
-        return TextField(ConfigurationSection.merchantAccount.rawValue, text: $viewModel.merchantAccount)
-            .keyboardType(.numberPad)
-            .multilineTextAlignment(.trailing)
-            .padding(.trailing, 10)
+        TextFieldItemView(title: "Merchant Account",
+                     value: $viewModel.merchantAccount,
+                     placeholder: ConfigurationSection.merchantAccount.rawValue)
     }
     
     private var regionSection: some View {
@@ -129,13 +117,9 @@ internal struct ConfigurationView: View {
                 rows: filteredCurrencies,
                 transform: { ListItemView(viewModel: $0.toListItemViewModel) }
             )
-            HStack {
-                Text("Amount ")
-                TextField("Amount", text: $viewModel.value)
-                    .keyboardType(.numberPad)
-                    .multilineTextAlignment(.trailing)
-                    .padding(.trailing, 10)
-            }
+            TextFieldItemView(title: "Amount ",
+                         value: $viewModel.value,
+                         placeholder: "Amount")
         }
 
     }
@@ -172,6 +156,32 @@ internal struct ConfigurationView: View {
         viewModel.currencyCode = currencyCode
     }
     
+}
+
+@available(iOS 13.0.0, *)
+internal struct TextFieldItemView: View {
+
+    internal let title: String
+    internal let placeholder: String
+    internal let keyboardType: UIKeyboardType
+    internal let value: Binding<String>
+
+    internal init(title: String, value: Binding<String>, placeholder: String, keyboardType: UIKeyboardType = .numberPad) {
+        self.title = title
+        self.placeholder = placeholder
+        self.keyboardType = keyboardType
+        self.value = value
+   }
+
+   internal var body: some View {
+        HStack {
+            Text(title)
+            TextField(placeholder, text: value)
+                .keyboardType(keyboardType)
+                .multilineTextAlignment(.trailing)
+                .padding(.trailing, 10)
+        }
+   }
 }
 
 @available(iOS 13.0.0, *)

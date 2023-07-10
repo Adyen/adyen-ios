@@ -98,9 +98,6 @@ extension CardComponent {
         /// Do not display address form
         case none
 
-        public var displayName: String {
-            return self.rawValue.capitalized
-        }
     }
 
     /// The mode of input field on Component UI
@@ -115,9 +112,6 @@ extension CardComponent {
         /// Show the field when a specific condition is met.
         case auto
 
-        public var displayName: String {
-            return self.rawValue.capitalized
-        }
     }
 
     /// Card component configuration.

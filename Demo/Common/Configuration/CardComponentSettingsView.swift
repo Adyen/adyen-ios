@@ -53,3 +53,17 @@ internal struct CardComponentSettingsView: View {
         .navigationViewStyle(.stack)
     }
 }
+
+extension CardComponent.AddressFormType {
+
+    public var displayName: String {
+        return self.rawValue.capitalized
+    }
+}
+
+extension CardComponent.FieldVisibility {
+
+    public var displayName: String {
+        return self.rawValue.capitalized
+    }
+}
