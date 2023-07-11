@@ -5,6 +5,7 @@
 //
 
 import SwiftUI
+import AdyenCard
 
 @available(iOS 13.0.0, *)
 internal final class ConfigurationViewModel: ObservableObject {
@@ -14,13 +15,20 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var value: String = ""
     @Published internal var apiVersion: String = ""
     @Published internal var merchantAccount: String = ""
+    @Published internal var showsHolderNameField = false
+    @Published internal var showsStorePaymentMethodField = true
+    @Published internal var showsStoredCardSecurityCodeField = true
+    @Published internal var showsSecurityCodeField = true
+    @Published internal var addressMode: CardComponent.AddressFormType = .none
+    @Published internal var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
+    @Published internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
     
-    private let onDone: (Configuration) -> Void
-    private let configuration: Configuration
+    private let onDone: (DemoAppSettings) -> Void
+    private let configuration: DemoAppSettings
     
     internal init(
-        configuration: Configuration,
-        onDone: @escaping (Configuration) -> Void
+        configuration: DemoAppSettings,
+        onDone: @escaping (DemoAppSettings) -> Void
     ) {
         self.onDone = onDone
         self.configuration = configuration
@@ -28,12 +36,19 @@ internal final class ConfigurationViewModel: ObservableObject {
         applyConfiguration(configuration)
     }
     
-    private func applyConfiguration(_ configuration: Configuration) {
+    private func applyConfiguration(_ configuration: DemoAppSettings) {
         self.countryCode = configuration.countryCode
         self.currencyCode = configuration.currencyCode
         self.value = configuration.value.description
         self.apiVersion = configuration.apiVersion.description
         self.merchantAccount = configuration.merchantAccount
+        self.showsHolderNameField = configuration.cardComponentConfiguration.showsHolderNameField
+        self.showsStorePaymentMethodField = configuration.cardComponentConfiguration.showsStorePaymentMethodField
+        self.showsStoredCardSecurityCodeField = configuration.cardComponentConfiguration.showsStoredCardSecurityCodeField
+        self.showsSecurityCodeField = configuration.cardComponentConfiguration.showsSecurityCodeField
+        self.addressMode = configuration.cardComponentConfiguration.addressMode
+        self.socialSecurityNumberMode = configuration.cardComponentConfiguration.socialSecurityNumberMode
+        self.koreanAuthenticationMode = configuration.cardComponentConfiguration.koreanAuthenticationMode
     }
     
     internal func doneTapped() {
@@ -41,16 +56,24 @@ internal final class ConfigurationViewModel: ObservableObject {
     }
     
     internal func defaultTapped() {
-        applyConfiguration(Configuration.defaultConfiguration)
+        applyConfiguration(DemoAppSettings.defaultConfiguration)
     }
     
-    private var currentConfiguration: Configuration {
-        Configuration(
+    private var currentConfiguration: DemoAppSettings {
+        DemoAppSettings(
             countryCode: countryCode,
             value: Int(value) ?? configuration.value,
             currencyCode: currencyCode,
             apiVersion: Int(apiVersion) ?? configuration.apiVersion,
-            merchantAccount: merchantAccount
+            merchantAccount: merchantAccount, cardComponentConfiguration: CardComponentConfiguration(
+                showsHolderNameField: showsHolderNameField,
+                showsStorePaymentMethodField: showsStorePaymentMethodField,
+                showsStoredCardSecurityCodeField: showsStoredCardSecurityCodeField,
+                showsSecurityCodeField: showsSecurityCodeField,
+                addressMode: addressMode,
+                socialSecurityNumberMode: socialSecurityNumberMode,
+                koreanAuthenticationMode: koreanAuthenticationMode
+            )
         )
     }
     
