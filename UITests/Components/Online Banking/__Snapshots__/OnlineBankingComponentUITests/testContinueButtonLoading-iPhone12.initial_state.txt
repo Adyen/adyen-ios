@@ -1,7 +1,7 @@
 <UIView; frame = (0 0; 390 844); autoresize = W+H; backgroundColor = <UIDynamicSystemColor; name = systemBackgroundColor>; layer = <CALayer>>
    | <UIView; frame = (0 47; 390 763); autoresize = W+H; backgroundColor = <UIDynamicSystemColor; name = systemBackgroundColor>; layer = <CALayer>>
-   |    | <Adyen.FormView; baseClass = UIScrollView; frame = (0 0; 390 763); clipsToBounds = YES; gestureRecognizers = <NSArray>; backgroundColor = <UIDynamicSystemColor; name = systemBackgroundColor>; layer = <CALayer>; contentOffset: {0, 0}; contentSize: {390, 226}; adjustedContentInset: {0, 0, 0, 0}>
-   |    |    | <UIStackView; frame = (0 0; 390 226); layer = <CALayer>>
+   |    | <Adyen.FormView; baseClass = UIScrollView; frame = (0 0; 390 763); clipsToBounds = YES; gestureRecognizers = <NSArray>; backgroundColor = <UIDynamicSystemColor; name = systemBackgroundColor>; layer = <CALayer>; contentOffset: {0, 0}; contentSize: {390, 244.33333333333334}; adjustedContentInset: {0, 0, 0, 0}>
+   |    |    | <UIStackView; frame = (0 0; 390 244.333); layer = <CALayer>>
    |    |    |    | <Adyen.FormSpacerItemView; frame = (0 0; 390 16); layer = <CALayer>>
    |    |    |    |    | <UIStackView; frame = (16 0; 358 16); userInteractionEnabled = NO; layer = <CALayer>>
    |    |    |    |    |    | <UIView; frame = (179 0; 0 8); layer = <CALayer>>
@@ -26,19 +26,27 @@
    |    |    |    |    |    |    | <UIView; frame = (0 8; 0 0); layer = <CALayer>>
    |    |    |    |    |    | <UIView; frame = (179 24; 0 8); layer = <CALayer>>
    |    |    |    |    |    |    | <UIView; frame = (0 8; 0 0); layer = <CALayer>>
-   |    |    |    | <_TtCC5Adyen17FormContainerItemP33_6CC626EA3D8ECC5BCCC946E678B5BDA817FormContainerView; frame = (0 104.333; 390 31.6667); layer = <CALayer>>
-   |    |    |    |    | <Adyen.ADYLabel; baseClass = UILabel; frame = (16 8; 358 15.6667); text = 'By continuing you agree w...'; gestureRecognizers = <NSArray>; backgroundColor = UIExtendedGrayColorSpace 0 0; layer = <_UILabelLayer>>
-   |    |    |    | <Adyen.FormSpacerItemView; frame = (0 136; 390 8); layer = <CALayer>>
+   |    |    |    | <_TtCC5Adyen17FormContainerItemP33_6CC626EA3D8ECC5BCCC946E678B5BDA817FormContainerView; frame = (0 104.333; 390 50); layer = <CALayer>>
+   |    |    |    |    | <_TtC5AdyenP33_8A217EF8C6819129BD8AE280B481829A20LinkTextViewFormItem; baseClass = UITextView; frame = (16 8; 358 34); text = 'By continuing you agree w...'; clipsToBounds = YES; gestureRecognizers = <NSArray>; backgroundColor = UIExtendedGrayColorSpace 0 0; layer = <CALayer>; contentOffset: {0, 0}; contentSize: {358, 34}; adjustedContentInset: {0, 0, 0, 0}>
+   |    |    |    |    |    | <_UITextLayoutView; frame = (0 0; 0 0); layer = <CALayer>>
+   |    |    |    |    |    | <<_UITextContainerView; frame = (0 0; 358 34); backgroundColor = UIExtendedGrayColorSpace 0 0; layer = <CALayer>> minSize = {0, 34}, maxSize = {358, 34}, textContainer = <NSTextContainer size = (358.000000,18.000000); widthTracksTextView = YES; heightTracksTextView = YES>; exclusionPaths =; lineBreakMode = 0>
+   |    |    |    |    |    |    | <_UITextLayoutCanvasView; frame = (0 0; 358 34); backgroundColor = UIExtendedGrayColorSpace 0 0; layer = <CALayer>>
+   |    |    |    |    |    |    |    | <_UITextLayoutFragmentView; frame = (8.33333 7; 368.333 19); opaque = NO; layer = <CALayer>>
+   |    |    |    |    |    | <_UIScrollViewScrollIndicator; frame = (352 -39; 3 36); alpha = 0; autoresize = LM; layer = <CALayer>>
+   |    |    |    |    |    |    | <UIView; frame = (0 0; 3 36); backgroundColor = UIExtendedGrayColorSpace 0 0.35; layer = <CALayer>>
+   |    |    |    |    |    | <_UIScrollViewScrollIndicator; frame = (-39 28; 36 3); alpha = 0; autoresize = TM; layer = <CALayer>>
+   |    |    |    |    |    |    | <UIView; frame = (0 0; 36 3); backgroundColor = UIExtendedGrayColorSpace 0 0.35; layer = <CALayer>>
+   |    |    |    | <Adyen.FormSpacerItemView; frame = (0 154.333; 390 8); layer = <CALayer>>
    |    |    |    |    | <UIStackView; frame = (16 0; 358 8); userInteractionEnabled = NO; layer = <CALayer>>
    |    |    |    |    |    | <UIView; frame = (179 0; 0 8); layer = <CALayer>>
    |    |    |    |    |    |    | <UIView; frame = (0 8; 0 0); layer = <CALayer>>
-   |    |    |    | <Adyen.FormButtonItemView; frame = (0 144; 390 66); backgroundColor = UIExtendedGrayColorSpace 0 0; layer = <CALayer>>
+   |    |    |    | <Adyen.FormButtonItemView; frame = (0 162.333; 390 66); backgroundColor = UIExtendedGrayColorSpace 0 0; layer = <CALayer>>
    |    |    |    |    | <Adyen.SubmitButton; baseClass = UIControl; frame = (16 8; 358 50); backgroundColor = UIExtendedSRGBColorSpace 0 0.478431 1 1; layer = <CALayer>>
    |    |    |    |    |    | <_TtCC5Adyen12SubmitButton14BackgroundView; frame = (0 0; 358 50); clipsToBounds = YES; userInteractionEnabled = NO; backgroundColor = UIExtendedSRGBColorSpace 0 0.478431 1 1; layer = <CALayer>>
    |    |    |    |    |    | <UIActivityIndicatorView; frame = (169 15; 20 20); backgroundColor = UIExtendedGrayColorSpace 0 0; layer = <CALayer>>
    |    |    |    |    |    |    | <UIImageView; frame = (0 0; 20 20); opaque = NO; userInteractionEnabled = NO; animations = { contents=<CAKeyframeAnimation>; contentsMultiplyColor=<CAKeyframeAnimation>; }; layer = <CALayer>>
    |    |    |    |    |    | <UILabel; frame = (0 0; 358 50); text = 'Continue'; alpha = 0; userInteractionEnabled = NO; backgroundColor = UIExtendedGrayColorSpace 0 0; layer = <_UILabelLayer>>
-   |    |    |    | <Adyen.FormSpacerItemView; frame = (0 210; 390 16); layer = <CALayer>>
+   |    |    |    | <Adyen.FormSpacerItemView; frame = (0 228.333; 390 16); layer = <CALayer>>
    |    |    |    |    | <UIStackView; frame = (16 0; 358 16); userInteractionEnabled = NO; layer = <CALayer>>
    |    |    |    |    |    | <UIView; frame = (179 0; 0 8); layer = <CALayer>>
    |    |    |    |    |    |    | <UIView; frame = (0 8; 0 0); layer = <CALayer>>
