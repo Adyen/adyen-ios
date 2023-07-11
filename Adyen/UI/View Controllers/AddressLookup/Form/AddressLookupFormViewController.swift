@@ -69,7 +69,7 @@ internal class AddressLookupFormViewController: FormViewController {
     
     internal lazy var searchButtonItem: FormSearchButtonItem = {
         FormSearchButtonItem(
-            placeholder: "Search your address", // TODO: Alex - Localization
+            placeholder: localizedString(.addressLookupSearchPlaceholder, localizationParameters),
             style: formStyle
         ) { [weak self] in
             guard let self else { return }

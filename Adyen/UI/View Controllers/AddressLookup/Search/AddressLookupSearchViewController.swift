@@ -44,7 +44,7 @@ internal class AddressLookupSearchViewController: SearchViewController {
         let viewModel = SearchViewController.ViewModel(
             localizationParameters: localizationParameters,
             style: style,
-            searchBarPlaceholder: "Search your address", // TODO: Alex - Localization
+            searchBarPlaceholder: localizedString(.addressLookupSearchPlaceholder, localizationParameters),
             shouldFocusSearchBarOnAppearance: true
         ) { [weak delegate] in
             delegate?.addressLookupSearchLookUp(searchTerm: $0, resultHandler: $1)
@@ -69,6 +69,8 @@ internal class AddressLookupSearchViewController: SearchViewController {
             action: #selector(cancelSearch)
         )
         
+        // TODO: Alex - Align with Design Team
+        
         navigationItem.rightBarButtonItem = .init(
             title: "Manual Entry", // TODO: Alex - Localization
             style: .plain,
@@ -81,8 +83,6 @@ internal class AddressLookupSearchViewController: SearchViewController {
     
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        
-        // TODO: Alex - Align with Design Team
         
         let footerView = FooterView { [weak self] in
             self?.switchToManualEntry()

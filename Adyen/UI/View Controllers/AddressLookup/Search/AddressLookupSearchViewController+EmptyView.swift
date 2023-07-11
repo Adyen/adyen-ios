@@ -95,9 +95,9 @@ private extension AddressLookupSearchViewController.EmptyView {
     
     func updateLabels() {
         if searchTerm.isEmpty {
-            titleLabel.text = "Enter your address" // TODO: Alex - Localization
+            titleLabel.text = localizedString(.addressLookupSearchEmptyTitle, localizationParameters)
         } else {
-            titleLabel.text = "No results found" // TODO: Alex - Localization
+            titleLabel.text = localizedString(.addressLookupSearchEmptyTitleNoResults, localizationParameters)
         }
         
         titleLabel.textColor = style.title.color
@@ -111,10 +111,14 @@ private extension AddressLookupSearchViewController.EmptyView {
     
     private func configureSubtitleLabel(for searchTerm: String) {
 
-        let string = searchTerm.isEmpty ?
-            "or use %#manual address entry%#" : // TODO: Alex - Localization
-            "'\(searchTerm)' did not match with anything, try again or use %#manual address entry%#" // TODO: Alex - Localization
+        let subtitle: String = {
+            if searchTerm.isEmpty {
+                return localizedString(.addressLookupSearchEmptySubtitle, localizationParameters)
+            } else {
+                return localizedString(.addressLookupSearchEmptySubtitleNoResults, localizationParameters, searchTerm)
+            }
+        }()
 
-        subtitleLabel.update(text: string, style: style.subtitle)
+        subtitleLabel.update(text: subtitle, style: style.subtitle)
     }
 }

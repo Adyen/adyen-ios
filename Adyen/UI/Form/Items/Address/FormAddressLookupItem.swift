@@ -53,7 +53,7 @@ public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?
         super.init(
             value: prefillAddress,
             style: style.textField,
-            placeholder: "Enter your billing address" // TODO: Alex - Localization
+            placeholder: localizedString(.billingAddressPlaceholder, localizationParameters)
         )
         
         self.identifier = identifier
@@ -85,7 +85,13 @@ public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?
 private extension FormAddressLookupItem {
     
     func updateValidationFailureMessage() {
-        validationFailureMessage = (value != nil) ? "Invalid Address" : "Address required" // TODO: Alex - Localization
+        validationFailureMessage = {
+            if value == nil {
+                return localizedString(.addressLookupItemValidationFailureMessageEmpty, localizationParameters)
+            } else {
+                return localizedString(.addressLookupItemValidationFailureMessageInvalid, localizationParameters)
+            }
+        }()
     }
     
     func updateFormattedValue() {

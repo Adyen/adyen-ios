@@ -28,6 +28,9 @@ extension AddressLookupSearchViewController {
             let textView = LinkTextView { [weak self] _ in
                 self?.selectionHandler()
             }
+            
+            // TODO: Alex - Align with Design Team
+            
             textView.update(
                 text: "Select your address\nor %#enter manually%#", // TODO: Alex - Localization
                 style: style.title
