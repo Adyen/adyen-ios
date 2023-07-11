@@ -20,8 +20,10 @@ internal struct CardComponentSettingsView: View {
                     Toggle(isOn: $viewModel.showsHolderNameField) {
                         Text("Holder Name")
                     }
-                    Toggle(isOn: $viewModel.showsStorePaymentMethodField) {
-                        Text("Stored Payment Method")
+                    if let currentAPIVersion = Int(viewModel.apiVersion), currentAPIVersion >= 70 {
+                        Toggle(isOn: $viewModel.showsStorePaymentMethodField) {
+                            Text("Stored Payment Method")
+                        }
                     }
                     Toggle(isOn: $viewModel.showsSecurityCodeField) {
                         Text("Security Code")
