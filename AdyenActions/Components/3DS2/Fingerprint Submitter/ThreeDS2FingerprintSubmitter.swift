@@ -8,14 +8,10 @@
 import AdyenNetworking
 import Foundation
 
-internal enum ThreeDS2FingerprintSubmitterError: Error {
-    case underlyingError(Error)
-}
-
 internal protocol AnyThreeDS2FingerprintSubmitter {
     func submit(fingerprint: String,
                 paymentData: String?,
-                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2FingerprintSubmitterError>) -> Void)
+                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void)
 }
 
 internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitter {
@@ -31,7 +27,7 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
 
     internal func submit(fingerprint: String,
                          paymentData: String?,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2FingerprintSubmitterError>) -> Void) {
+                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
 
         let request = Submit3DS2FingerprintRequest(clientKey: apiContext.clientKey,
                                                    fingerprint: fingerprint,
@@ -43,12 +39,12 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
     }
 
     private func handle(_ result: Result<Submit3DS2FingerprintResponse, Swift.Error>,
-                        completionHandler: (Result<ThreeDSActionHandlerResult, ThreeDS2FingerprintSubmitterError>) -> Void) {
+                        completionHandler: (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         switch result {
         case let .success(response):
             completionHandler(.success(response.result))
         case let .failure(error):
-            completionHandler(.failure(.underlyingError(error)))
+            completionHandler(.failure(error))
         }
     }
 }

@@ -363,7 +363,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
     func testFingerprintFlowSubmitterFailure() throws {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
 
-        submitter.mockedResult = .failure(.underlyingError(Dummy.error))
+        submitter.mockedResult = .failure(Dummy.error)
 
         let service = AnyADYServiceMock()
         service.authenticationRequestParameters = authenticationRequestParameters

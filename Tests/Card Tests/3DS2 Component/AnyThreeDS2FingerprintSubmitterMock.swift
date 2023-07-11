@@ -10,9 +10,9 @@
 import Foundation
 
 final class AnyThreeDS2FingerprintSubmitterMock: AnyThreeDS2FingerprintSubmitter {
-    var mockedResult: Result<ThreeDSActionHandlerResult, ThreeDS2FingerprintSubmitterError>?
+    var mockedResult: Result<ThreeDSActionHandlerResult, Error>?
 
-    func submit(fingerprint: String, paymentData: String?, completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2FingerprintSubmitterError>) -> Void) {
+    func submit(fingerprint: String, paymentData: String?, completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         guard let result = mockedResult else { assertionFailure(); return }
         completionHandler(result)
     }

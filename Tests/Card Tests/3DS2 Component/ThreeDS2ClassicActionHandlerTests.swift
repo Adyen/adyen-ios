@@ -118,9 +118,14 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
             case .success:
                 XCTFail()
             case let .failure(error):
-                let decodingError = error as! DecodingError
-                switch decodingError {
-                case .dataCorrupted: ()
+                
+                switch error {
+                case .underlyingError(let error as DecodingError):
+                    switch error {
+                    case .dataCorrupted: ()
+                    default:
+                        XCTFail()
+                    }
                 default:
                     XCTFail()
                 }
