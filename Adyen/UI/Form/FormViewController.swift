@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,7 @@ import UIKit
 /// Displays a form for the user to enter details.
 @objc(ADYFormViewController)
 @_spi(AdyenInternal)
-open class FormViewController: UIViewController, Localizable, KeyboardObserver, AdyenObserver, PreferredContentSizeConsumer {
+open class FormViewController: UIViewController, Localizable, AdyenObserver, PreferredContentSizeConsumer {
 
     fileprivate enum Animations {
         fileprivate static let keyboardBottomInset = "keyboardBottomInset"
@@ -23,6 +23,8 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
 
     /// Delegate to handle different viewController events.
     public weak var delegate: ViewControllerDelegate?
+    
+    internal lazy var keyboardObserver = KeyboardObserver()
 
     // MARK: - Public
 
@@ -32,11 +34,6 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     public init(style: ViewStyle) {
         self.style = style
         super.init(nibName: nil, bundle: Bundle(for: FormViewController.self))
-        startObserving()
-    }
-
-    deinit {
-        stopObserving()
     }
 
     // MARK: - View lifecycle
@@ -46,6 +43,10 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         addFormView()
         itemManager.topLevelItemViews.forEach(formView.appendItemView(_:))
         delegate?.viewDidLoad(viewController: self)
+        
+        observe(keyboardObserver.$keyboardRect) { [weak self] _ in
+            self?.didUpdatePreferredContentSize()
+        }
     }
 
     override open func viewWillAppear(_ animated: Bool) {
@@ -91,20 +92,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         """) }
     }
 
-    // MARK: - KeyboardObserver
-
-    public var keyboardObserver: Any?
-
-    public func startObserving() {
-        startObserving { [weak self] in
-            self?.keyboardRect = $0
-            self?.didUpdatePreferredContentSize()
-        }
-    }
-
     // MARK: - Private Properties
-
-    private var keyboardRect: CGRect = .zero
 
     private lazy var itemManager = FormViewItemManager()
 
@@ -113,7 +101,7 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     public func willUpdatePreferredContentSize() { /* Empty implementation */ }
 
     public func didUpdatePreferredContentSize() {
-        let bottomInset: CGFloat = keyboardRect.height - view.safeAreaInsets.bottom
+        let bottomInset: CGFloat = keyboardObserver.keyboardRect.height - view.safeAreaInsets.bottom
         let context = AnimationContext(animationKey: Animations.keyboardBottomInset,
                                        duration: 0.25,
                                        options: [.beginFromCurrentState, .layoutSubviews],
