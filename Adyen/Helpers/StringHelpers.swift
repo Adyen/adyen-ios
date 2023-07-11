@@ -166,7 +166,7 @@ public extension AdyenScope where Base == String {
         var ranges: [NSRange] = []
         do {
             let regex = try NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options.caseInsensitive)
-            let matches = regex.matches(in: base, options: [], range: NSRange(location: 0, length: base.utf16.count))
+            let matches = regex.matches(in: base, options: [], range: NSRange(base.startIndex..., in: base))
 
             matches.forEach { match in
                 let range = match.range(at: 0)
