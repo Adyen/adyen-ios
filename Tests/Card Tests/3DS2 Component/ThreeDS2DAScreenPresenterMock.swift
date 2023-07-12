@@ -57,9 +57,11 @@ final class ThreeDS2DAScreenPresenterMock: ThreeDS2PlusDAScreenPresenterProtocol
     var userInput: ThreeDS2PlusDAScreenUserInput = .noInput
     
     init(showRegistrationReturnState: ShowRegistrationScreenMockState,
-         showApprovalScreenReturnState: ShowApprovalScreenMockState) {
+         showApprovalScreenReturnState: ShowApprovalScreenMockState,
+         userInput: ThreeDS2PlusDAScreenUserInput = .noInput) {
         self.showRegistrationReturnState = showRegistrationReturnState
         self.showApprovalScreenReturnState = showApprovalScreenReturnState
+        self.userInput = userInput
     }
 }
 

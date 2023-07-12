@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -159,6 +159,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         do {
             let threeDSResult = try ThreeDSResult(from: challengeResult,
                                                   delegatedAuthenticationSDKOutput: nil,
+                                                  deleteDelegatedAuthenticationCredentials: nil,
                                                   authorizationToken: authorizationToken)
 
             transaction = nil

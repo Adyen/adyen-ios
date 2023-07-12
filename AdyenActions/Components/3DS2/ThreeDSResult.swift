@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,14 +18,18 @@ public struct ThreeDSResult: Decodable {
         
         internal let delegatedAuthenticationSDKOutput: String?
         
+        internal let deleteDelegatedAuthenticationCredentials: Bool?
+        
         internal let transStatus: String?
     }
 
     internal init(from challengeResult: AnyChallengeResult,
                   delegatedAuthenticationSDKOutput: String?,
+                  deleteDelegatedAuthenticationCredentials: Bool?,
                   authorizationToken: String?) throws {
         let payload = Payload(authorisationToken: authorizationToken,
                               delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
+                              deleteDelegatedAuthenticationCredentials: deleteDelegatedAuthenticationCredentials,
                               transStatus: challengeResult.transactionStatus)
         
         let payloadData = try JSONEncoder().encode(payload)
@@ -38,15 +42,17 @@ public struct ThreeDSResult: Decodable {
         self.payload = try container.decode(String.self, forKey: .payload)
     }
     
-    internal func withDelegatedAuthenticationSDKOutput(delegatedAuthenticationSDKOutput: String?) throws -> ThreeDSResult {
+    internal func withDelegatedAuthenticationSDKOutput(delegatedAuthenticationSDKOutput: String?,
+                                                       deleteDelegatedAuthenticationCredentials: Bool?) throws -> ThreeDSResult {
         let oldPayload: Payload = try Coder.decodeBase64(payload)
         let newPayload = Payload(authorisationToken: oldPayload.authorisationToken,
                                  delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
+                                 deleteDelegatedAuthenticationCredentials: deleteDelegatedAuthenticationCredentials,
                                  transStatus: oldPayload.transStatus)
         let newPayloadData = try JSONEncoder().encode(newPayload)
         return .init(payload: newPayloadData.base64EncodedString())
     }
-
+    
     internal init(authenticated: Bool, authorizationToken: String?) throws {
         var payloadJson = ["transStatus": authenticated ? "Y" : "N"]
 

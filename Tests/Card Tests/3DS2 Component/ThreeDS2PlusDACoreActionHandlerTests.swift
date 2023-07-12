@@ -175,6 +175,7 @@ import XCTest
                     transactionStatus: "Y"
                 ),
                 delegatedAuthenticationSDKOutput: expectedSDKRegistrationOutput,
+                deleteDelegatedAuthenticationCredentials: nil,
                 authorizationToken: "authToken"
             )
             
@@ -420,7 +421,7 @@ import XCTest
             waitForExpectations(timeout: 20, handler: nil)
         }
         
-        func testDelegatedAuthenticationWhenRemovingCredentials() {
+        func testDelegatedAuthenticationFingerPrintResultWhenRemovingCredentials() {
             // The token and result are base 64 encoded.
             enum TestData {
                 // Token with delegatedAuthenticationSDKInput
@@ -449,7 +450,8 @@ import XCTest
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
                                                       service: service,
                                                       presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback,
-                                                                                               showApprovalScreenReturnState: .removeCredentials),
+                                                                                               showApprovalScreenReturnState: .removeCredentials,
+                                                                                               userInput: .deleteDA),
                                                       delegatedAuthenticationService: authenticationServiceMock)
             
             let fingerprintAction = ThreeDS2FingerprintAction(fingerprintToken: TestData.fingerprintToken,
@@ -467,6 +469,61 @@ import XCTest
         
             waitForExpectations(timeout: 20, handler: nil)
         }
+        
+        func testDelegatedAuthenticationChallengeResultWhenRemovingCredentials() throws {
+            let service = AnyADYServiceMock()
+            service.authenticationRequestParameters = authenticationRequestParameters
+
+            let transaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
+            transaction.onPerformChallenge = { params, completion in
+                completion(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y"), nil)
+            }
+            service.mockedTransaction = transaction
+        
+            let authenticationServiceMock = AuthenticationServiceMock()
+        
+            authenticationServiceMock.onRegister = { _ in
+                XCTFail("On Register should not be called when the user doesn't consent to register")
+                return self.expectedSDKRegistrationOutput
+            }
+        
+            let expectedResult = try XCTUnwrap(try? ThreeDSResult(from: AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTransactionIdentifier", transactionStatus: "Y"),
+                                                                  delegatedAuthenticationSDKOutput: nil,
+                                                                  deleteDelegatedAuthenticationCredentials: true, // We shouldn receive
+                                                                  authorizationToken: "authToken"
+            ))
+            
+            struct DeviceSupportCheckerMock: AdyenAuthentication.DeviceSupportCheckerProtocol {
+                var isDeviceSupported: Bool
+                
+                func checkSupport() throws -> String {
+                    return ""
+                }
+            }
+            
+            let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
+            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
+                                                      service: service,
+                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback,
+                                                                                               showApprovalScreenReturnState: .fallback,
+                                                                                               userInput: .deleteDA),
+                                                      delegatedAuthenticationService: authenticationServiceMock,
+                                                      deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true))
+            sut.transaction = transaction
+            sut.delegatedAuthenticationState.isDeviceRegistrationFlow = true
+            sut.handle(challengeAction, event: analyticsEvent) { challengeResult in
+                switch challengeResult {
+                case let .success(result):
+                    XCTAssertEqual(result, expectedResult)
+                case .failure:
+                    XCTFail()
+                }
+                resultExpectation.fulfill()
+            }
+
+            waitForExpectations(timeout: 2, handler: nil)
+        }
+
 
         func testDelegatedAuthenticationRegistrationFlowWhenUserDoesntConsentToRegister() throws {
 
@@ -488,7 +545,8 @@ import XCTest
             }
         
             let expectedResult = try XCTUnwrap(try? ThreeDSResult(from: AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTransactionIdentifier", transactionStatus: "Y"),
-                                                                  delegatedAuthenticationSDKOutput: nil, // We shouldn't receive
+                                                                  delegatedAuthenticationSDKOutput: nil, // // We shouldn't receive
+                                                                  deleteDelegatedAuthenticationCredentials: nil, // We shouldn't receive
                                                                   authorizationToken: "authToken"
             ))
             
