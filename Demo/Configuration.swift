@@ -6,6 +6,8 @@
 
 @_spi(AdyenInternal) import Adyen
 import AdyenActions
+import AdyenCard
+import AdyenDropIn
 import Foundation
 import PassKit
 
@@ -49,7 +51,7 @@ internal enum ConfigurationConstants {
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
 
     static let merchantAccount = "{YOUR_MERCHANT_ACCOUNT}"
-    
+
     static let appleTeamIdentifier = "{YOUR_APPLE_DEVELOPMENT_TEAM_ID}"
 
     static let lineItems = [["description": "Socks",
@@ -77,15 +79,25 @@ internal enum ConfigurationConstants {
         return [shippingByCar, shippingByPlane]
     }()
     
-    static var current = Configuration.loadConfiguration() {
-        didSet { Configuration.saveConfiguration(current) }
+    static var current = DemoAppSettings.loadConfiguration() {
+        didSet { DemoAppSettings.saveConfiguration(current) }
     }
 
     // swiftlint:enable explicit_acl
     // swiftlint:enable line_length
 }
 
-internal struct Configuration: Codable {
+internal struct CardComponentConfiguration: Codable {
+    internal var showsHolderNameField = false
+    internal var showsStorePaymentMethodField = true
+    internal var showsStoredCardSecurityCodeField = true
+    internal var showsSecurityCodeField = true
+    internal var addressMode: CardComponent.AddressFormType = .none
+    internal var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
+    internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
+}
+
+internal struct DemoAppSettings: Codable {
     private static let defaultsKey = "ConfigurationKey"
     
     internal var countryCode: String
@@ -93,21 +105,31 @@ internal struct Configuration: Codable {
     internal var currencyCode: String
     internal let apiVersion: Int
     internal let merchantAccount: String
-    
+    internal let cardComponentConfiguration: CardComponentConfiguration
+
     internal var amount: Amount { Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil) }
     internal var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
     
-    internal static let defaultConfiguration = Configuration(
+    internal static let defaultConfiguration = DemoAppSettings(
         countryCode: "NL",
         value: 17408,
         currencyCode: "EUR",
         apiVersion: 69,
-        merchantAccount: ConfigurationConstants.merchantAccount
+        merchantAccount: ConfigurationConstants.merchantAccount,
+        cardComponentConfiguration: defaultCardComponentConfiguration
     )
+
+    internal static let defaultCardComponentConfiguration = CardComponentConfiguration(showsHolderNameField: false,
+                                                                                       showsStorePaymentMethodField: true,
+                                                                                       showsStoredCardSecurityCodeField: true,
+                                                                                       showsSecurityCodeField: true,
+                                                                                       addressMode: .none,
+                                                                                       socialSecurityNumberMode: .auto,
+                                                                                       koreanAuthenticationMode: .auto)
     
-    fileprivate static func loadConfiguration() -> Configuration {
+    fileprivate static func loadConfiguration() -> DemoAppSettings {
         var config = UserDefaults.standard.data(forKey: defaultsKey)
-            .flatMap { try? JSONDecoder().decode(Configuration.self, from: $0) }
+            .flatMap { try? JSONDecoder().decode(DemoAppSettings.self, from: $0) }
             ?? defaultConfiguration
         switch CommandLine.arguments.first {
         case "SG":
@@ -119,10 +141,42 @@ internal struct Configuration: Codable {
         return config
     }
     
-    fileprivate static func saveConfiguration(_ configuration: Configuration) {
+    fileprivate static func saveConfiguration(_ configuration: DemoAppSettings) {
         if let configurationData = try? JSONEncoder().encode(configuration) {
             UserDefaults.standard.setValue(configurationData, forKey: defaultsKey)
         }
     }
-    
+
+    internal var cardConfiguration: CardComponent.Configuration {
+        var storedCardConfig = StoredCardConfiguration()
+        storedCardConfig.showsSecurityCodeField = cardComponentConfiguration.showsStoredCardSecurityCodeField
+
+        var billingAddressConfig = BillingAddressConfiguration()
+        billingAddressConfig.mode = cardComponentConfiguration.addressMode
+
+        return .init(showsHolderNameField: cardComponentConfiguration.showsHolderNameField,
+                     showsStorePaymentMethodField: cardComponentConfiguration.showsStorePaymentMethodField,
+                     showsSecurityCodeField: cardComponentConfiguration.showsSecurityCodeField,
+                     koreanAuthenticationMode: cardComponentConfiguration.koreanAuthenticationMode,
+                     socialSecurityNumberMode: cardComponentConfiguration.socialSecurityNumberMode,
+                     storedCardConfiguration: storedCardConfig,
+                     billingAddress: billingAddressConfig)
+    }
+
+    internal var cardDropInConfiguration: DropInComponent.Card {
+        var storedCardConfig = StoredCardConfiguration()
+        storedCardConfig.showsSecurityCodeField = cardComponentConfiguration.showsStoredCardSecurityCodeField
+
+        var billingAddressConfig = BillingAddressConfiguration()
+        billingAddressConfig.mode = cardComponentConfiguration.addressMode
+
+        return .init(showsHolderNameField: cardComponentConfiguration.showsHolderNameField,
+                     showsStorePaymentMethodField: cardComponentConfiguration.showsStorePaymentMethodField,
+                     showsSecurityCodeField: cardComponentConfiguration.showsSecurityCodeField,
+                     koreanAuthenticationMode: cardComponentConfiguration.koreanAuthenticationMode,
+                     socialSecurityNumberMode: cardComponentConfiguration.socialSecurityNumberMode,
+                     storedCardConfiguration: storedCardConfig,
+                     billingAddress: billingAddressConfig)
+
+    }
 }
