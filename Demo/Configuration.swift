@@ -126,15 +126,13 @@ internal struct DemoAppSettings: Codable {
         cardComponentConfiguration: defaultCardComponentConfiguration
     )
 
-    internal static let defaultCardComponentConfiguration = CardComponentConfiguration(
-        showsHolderNameField: false,
-        showsStorePaymentMethodField: true,
-        showsStoredCardSecurityCodeField: true,
-        showsSecurityCodeField: true,
-        addressMode: .none,
-        socialSecurityNumberMode: .auto,
-        koreanAuthenticationMode: .auto
-    )
+    internal static let defaultCardComponentConfiguration = CardComponentConfiguration(showsHolderNameField: false,
+                                                                                       showsStorePaymentMethodField: true,
+                                                                                       showsStoredCardSecurityCodeField: true,
+                                                                                       showsSecurityCodeField: true,
+                                                                                       addressMode: .none,
+                                                                                       socialSecurityNumberMode: .auto,
+                                                                                       koreanAuthenticationMode: .auto)
     
     fileprivate static func loadConfiguration() -> DemoAppSettings {
         var config = UserDefaults.standard.data(forKey: defaultsKey)
@@ -163,15 +161,13 @@ internal struct DemoAppSettings: Codable {
         var billingAddressConfig = BillingAddressConfiguration()
         billingAddressConfig.mode = cardComponentAddressFormType(from: cardComponentConfiguration.addressMode)
 
-        return .init(
-            showsHolderNameField: cardComponentConfiguration.showsHolderNameField,
-            showsStorePaymentMethodField: cardComponentConfiguration.showsStorePaymentMethodField,
-            showsSecurityCodeField: cardComponentConfiguration.showsSecurityCodeField,
-            koreanAuthenticationMode: cardComponentConfiguration.koreanAuthenticationMode,
-            socialSecurityNumberMode: cardComponentConfiguration.socialSecurityNumberMode,
-            storedCardConfiguration: storedCardConfig,
-            billingAddress: billingAddressConfig
-        )
+        return .init(showsHolderNameField: cardComponentConfiguration.showsHolderNameField,
+                     showsStorePaymentMethodField: cardComponentConfiguration.showsStorePaymentMethodField,
+                     showsSecurityCodeField: cardComponentConfiguration.showsSecurityCodeField,
+                     koreanAuthenticationMode: cardComponentConfiguration.koreanAuthenticationMode,
+                     socialSecurityNumberMode: cardComponentConfiguration.socialSecurityNumberMode,
+                     storedCardConfiguration: storedCardConfig,
+                     billingAddress: billingAddressConfig)
     }
 
     internal var cardDropInConfiguration: DropInComponent.Card {
@@ -181,15 +177,13 @@ internal struct DemoAppSettings: Codable {
         var billingAddressConfig = BillingAddressConfiguration()
         billingAddressConfig.mode = cardComponentAddressFormType(from: cardComponentConfiguration.addressMode)
 
-        return .init(
-            showsHolderNameField: cardComponentConfiguration.showsHolderNameField,
-            showsStorePaymentMethodField: cardComponentConfiguration.showsStorePaymentMethodField,
-            showsSecurityCodeField: cardComponentConfiguration.showsSecurityCodeField,
-            koreanAuthenticationMode: cardComponentConfiguration.koreanAuthenticationMode,
-            socialSecurityNumberMode: cardComponentConfiguration.socialSecurityNumberMode,
-            storedCardConfiguration: storedCardConfig,
-            billingAddress: billingAddressConfig
-        )
+        return .init(showsHolderNameField: cardComponentConfiguration.showsHolderNameField,
+                     showsStorePaymentMethodField: cardComponentConfiguration.showsStorePaymentMethodField,
+                     showsSecurityCodeField: cardComponentConfiguration.showsSecurityCodeField,
+                     koreanAuthenticationMode: cardComponentConfiguration.koreanAuthenticationMode,
+                     socialSecurityNumberMode: cardComponentConfiguration.socialSecurityNumberMode,
+                     storedCardConfiguration: storedCardConfig,
+                     billingAddress: billingAddressConfig)
 
     }
     

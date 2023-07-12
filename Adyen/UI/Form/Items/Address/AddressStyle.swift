@@ -11,10 +11,12 @@ import UIKit
 public struct AddressStyle: FormValueItemStyle {
 
     /// The section header style.
-    public var title: TextStyle
+    public var title = TextStyle(font: .preferredFont(forTextStyle: .headline),
+                                 color: UIColor.Adyen.componentLabel,
+                                 textAlignment: .natural)
 
     /// The text field style.
-    public var textField: FormTextItemStyle
+    public var textField = FormTextItemStyle()
 
     /// The tint color of the view.
     public var tintColor: UIColor? {
@@ -24,7 +26,7 @@ public struct AddressStyle: FormValueItemStyle {
     }
 
     /// The background color of the view.
-    public var backgroundColor: UIColor
+    public var backgroundColor: UIColor = .clear
 
     /// The color of form view item's separator line.
     public var separatorColor: UIColor? { textField.separatorColor }
@@ -36,12 +38,8 @@ public struct AddressStyle: FormValueItemStyle {
     ///   - tintColor: The tint color of the view.
     ///   - backgroundColor: The background color of the view.
     public init(
-        title: TextStyle = TextStyle(
-            font: .preferredFont(forTextStyle: .headline),
-            color: UIColor.Adyen.componentLabel,
-            textAlignment: .natural
-        ),
-        textField: FormTextItemStyle = FormTextItemStyle(),
+        title: TextStyle,
+        textField: FormTextItemStyle,
         tintColor: UIColor? = nil,
         backgroundColor: UIColor = .clear
     ) {
@@ -50,4 +48,7 @@ public struct AddressStyle: FormValueItemStyle {
         self.tintColor = tintColor
         self.backgroundColor = backgroundColor
     }
+    
+    /// Initializes the form address item configuration with default values
+    public init() {}
 }
