@@ -24,9 +24,13 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         }
     }
     
-    private var items: [FormItem] = []
+    private var items: [FormItem] = [] {
+        didSet {
+            delegate?.didUpdateItems(items)
+        }
+    }
     
-    private let localizationParameters: LocalizationParameters?
+    internal let configuration: Configuration
     
     private var observers: [AddressField: Observation] = [:]
     
@@ -34,15 +38,13 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     private var initialCountry: String
     
-    private lazy var validationMessage = localizedString(.validationAlertTitle, localizationParameters)
+    private lazy var validationMessage = localizedString(.validationAlertTitle, configuration.localizationParameters)
     
-    private lazy var optionalMessage = localizedString(.fieldTitleOptional, localizationParameters)
+    private lazy var optionalMessage = localizedString(.fieldTitleOptional, configuration.localizationParameters)
     
     internal weak var delegate: SelfRenderingFormItemDelegate?
     
     override public var subitems: [FormItem] { items }
-    
-    internal let supportedCountryCodes: [String]?
     
     internal let addressViewModelBuilder: AddressViewModelBuilder
     
@@ -58,24 +60,19 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     /// Initializes the split text item.
     /// - Parameters:
     ///   - initialCountry: The items displayed side-by-side. Must be two.
-    ///   - style: The `FormSplitItemView` UI style.
-    ///   - localizationParameters: The localization parameters
+    ///   - configuration: The configuration of the FormAddressItem
     ///   - identifier: The item identifier
-    ///   - supportedCountryCodes: Supported country codes. If `nil`, all country codes are listed.
     ///   - addressViewModelBuilder: The Address view model builder
     public init(initialCountry: String,
-                style: AddressStyle,
-                localizationParameters: LocalizationParameters? = nil,
+                configuration: Configuration,
                 identifier: String? = nil,
-                supportedCountryCodes: [String]? = nil,
                 addressViewModelBuilder: AddressViewModelBuilder) {
         self.initialCountry = initialCountry
-        self.localizationParameters = localizationParameters
-        self.supportedCountryCodes = supportedCountryCodes
+        self.configuration = configuration
         self.addressViewModelBuilder = addressViewModelBuilder
         self.context = .init(countryCode: initialCountry, isOptional: false)
         addressViewModel = addressViewModelBuilder.build(context: context)
-        super.init(value: PostalAddress(), style: style)
+        super.init(value: PostalAddress(), style: configuration.style)
         self.identifier = identifier
         reloadFields()
         
@@ -86,21 +83,21 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     }
     
     internal lazy var headerItem: FormLabelItem = {
-        let item = FormLabelItem(text: localizedString(.billingAddressSectionTitle, localizationParameters),
+        let item = FormLabelItem(text: localizedString(.billingAddressSectionTitle, configuration.localizationParameters),
                                  style: style.title)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
         return item
     }()
     
     internal lazy var countryPickerItem: FormRegionPickerItem = {
-        let locale = Locale(identifier: localizationParameters?.locale ?? Locale.current.identifier)
+        let locale = Locale(identifier: configuration.localizationParameters?.locale ?? Locale.current.identifier)
         let countries = RegionRepository.regions(from: locale as NSLocale,
-                                                 countryCodes: supportedCountryCodes).sorted { $0.name < $1.name }
+                                                 countryCodes: configuration.supportedCountryCodes).sorted { $0.name < $1.name }
         let defaultCountry = countries.first { $0.identifier == initialCountry } ?? countries[0]
         let item = FormRegionPickerItem(preselectedValue: defaultCountry,
                                         selectableValues: countries,
                                         style: style.textField)
-        item.title = localizedString(.countryFieldTitle, localizationParameters)
+        item.title = localizedString(.countryFieldTitle, configuration.localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "country")
         return item
     }()
@@ -130,9 +127,14 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         let subRegions = RegionRepository.subRegions(for: context.countryCode)
         addressViewModel = addressViewModelBuilder.build(context: context)
         
-        items = [FormSpacerItem(),
-                 headerItem.addingDefaultMargins(),
-                 countryPickerItem]
+        let header: FormItem? = configuration.showsHeader ? headerItem.addingDefaultMargins() : nil
+        
+        var items = [
+            FormSpacerItem(),
+            header,
+            countryPickerItem
+        ].compactMap { $0 }
+        
         for field in addressViewModel.scheme {
             switch field {
             case let .item(fieldType):
@@ -146,7 +148,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             }
         }
         
-        delegate?.didUpdateItems(items)
+        self.items = items
     }
     
     private func create(for field: AddressField, from viewModel: AddressViewModel, subRegions: [Region]?) -> FormItem {
@@ -166,7 +168,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         let item = FormRegionPickerItem(preselectedValue: defaultRegion,
                                         selectableValues: subRegions,
                                         style: style.textField)
-        item.title = viewModel.labels[.stateOrProvince].map { localizedString($0, localizationParameters) }
+        item.title = viewModel.labels[.stateOrProvince].map { localizedString($0, configuration.localizationParameters) }
         
         bind(item: item, to: .stateOrProvince, subRegions: subRegions)
         return item
@@ -175,8 +177,8 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     private func createTextItem(for field: AddressField, from viewModel: AddressViewModel) -> FormItem {
         let item = FormTextInputItem(style: style.textField)
         item.validationFailureMessage = validationMessage
-        item.title = viewModel.labels[field].map { localizedString($0, localizationParameters) }
-        item.placeholder = viewModel.placeholder[field].map { localizedString($0, localizationParameters) }
+        item.title = viewModel.labels[field].map { localizedString($0, configuration.localizationParameters) }
+        item.placeholder = viewModel.placeholder[field].map { localizedString($0, configuration.localizationParameters) }
         item.contentType = field.contentType
         
         if viewModel.optionalFields.contains(field) {
