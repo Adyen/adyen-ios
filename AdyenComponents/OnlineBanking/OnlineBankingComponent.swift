@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -56,7 +56,7 @@ public final class OnlineBankingComponent: PaymentComponent,
         originalText:
         localizedString(.onlineBankingTermsAndConditions,
                         configuration.localizationParameters),
-        link: termsAndConditionsLink,
+        links: [termsAndConditionsLink],
         style: configuration.style.footnoteLabel,
         linkTextStyle: configuration.style.linkTextLabel,
         identifier: ViewIdentifierBuilder.build(scopeInstance: self,
