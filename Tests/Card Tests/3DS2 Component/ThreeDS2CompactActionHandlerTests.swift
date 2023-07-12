@@ -208,13 +208,15 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             case .success:
                 XCTFail()
             case let .failure(error):
-                guard case .underlyingError(let underlyingError) = error else {
-                    XCTFail()
-                    return
-                }
-                let decodingError = underlyingError as! DecodingError
-                switch decodingError {
-                case .dataCorrupted: ()
+                switch error {
+                case .underlyingError(let decodingError as DecodingError):
+                    switch decodingError {
+                    case .dataCorrupted: ()
+                    default:
+                        XCTFail()
+                    }
+
+                    break
                 default:
                     XCTFail()
                 }
@@ -273,13 +275,14 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
                 XCTFail()
             case .failure(let actionHandlerError):
                 switch actionHandlerError {
-                case .underlyingError(let underlyingError):
-                    switch underlyingError as? DecodingError{
-                    case .dataCorrupted:
-                        break
+                case .underlyingError(let decodingError as DecodingError):
+                    switch decodingError {
+                    case .dataCorrupted: ()
                     default:
                         XCTFail()
                     }
+
+                    break
                 default:
                     XCTFail()
                 }
