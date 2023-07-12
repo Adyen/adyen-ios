@@ -113,6 +113,12 @@ public struct FormItemViewBuilder {
     public func build(with item: FormAddressLookupItem) -> FormItemView<FormAddressLookupItem> {
         FormAddressLookupItemView(item: item)
     }
+    
+    /// Builds `FormPickerItemView` from `FormPickerItem`.
+    @_spi(AdyenInternal)
+    public func build<T>(with item: FormPickerItem<T>) -> FormItemView<FormPickerItem<T>> {
+        FormPickerItemView(item: item)
+    }
 
     @_spi(AdyenInternal)
     public static func build(_ item: FormItem) -> AnyFormItemView {

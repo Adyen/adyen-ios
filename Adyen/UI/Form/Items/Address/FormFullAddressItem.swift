@@ -57,9 +57,11 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         }
     }
 
+    // TODO: Alex - Make initialCountry Optional
+    
     /// Initializes the split text item.
     /// - Parameters:
-    ///   - initialCountry: The items displayed side-by-side. Must be two.
+    ///   - initialCountry: The initially set country
     ///   - configuration: The configuration of the FormAddressItem
     ///   - identifier: The item identifier
     ///   - addressViewModelBuilder: The Address view model builder
@@ -76,9 +78,9 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         self.identifier = identifier
         reloadFields()
         
-        bind(countryPickerItem.publisher, at: \.identifier, to: self, at: \.value.country)
+//        bind(countryPickerItem.publisher, at: \.identifier, to: self, at: \.value.country) // TODO: How to deal with nil Regions?
         observe(countryPickerItem.publisher, eventHandler: { [weak self] event in
-            self?.context.countryCode = event.element.identifier
+            self?.context.countryCode = event?.identifier ?? "" // TODO: How to deal with nil Regions?
         })
     }
     
@@ -89,14 +91,18 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         return item
     }()
     
-    internal lazy var countryPickerItem: FormRegionPickerItem = {
+    internal lazy var countryPickerItem: FormCountryPickerItem = {
         let locale = Locale(identifier: configuration.localizationParameters?.locale ?? Locale.current.identifier)
         let countries = RegionRepository.regions(from: locale as NSLocale,
                                                  with: configuration.supportedCountryCodes).sorted { $0.name < $1.name }
-        let defaultCountry = countries.first { $0.identifier == initialCountry } ?? countries[0]
-        let item = FormRegionPickerItem(preselectedValue: defaultCountry,
-                                        selectableValues: countries,
-                                        style: style.textField)
+        let defaultCountry = countries.first { $0.identifier == initialCountry }
+        let item = FormCountryPickerItem(
+            prefillValue: defaultCountry,
+            selectableValues: countries,
+            title: "Country Title",
+            placeholder: "Country Placeholder",
+            style: style.textField
+        )
         item.title = localizedString(.countryFieldTitle, configuration.localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "country")
         return item
@@ -109,11 +115,11 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     // MARK: - Private
     
     private func updateCountryPicker() {
-        guard let country = value.country, country != countryPickerItem.value.identifier else {
+        guard let country = value.country, country != countryPickerItem.value?.identifier else {
             return
         }
         
-        guard let matchingElement = countryPickerItem.selectableValues.first(where: { $0.identifier == value.country }) else {
+        guard let matchingElement = countryPickerItem.selectableValues.first(where: { $0?.identifier == value.country }) else {
             AdyenAssertion.assertionFailure(
                 message: "The provided country '\(country)' is not supported per configuration."
             )
