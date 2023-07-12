@@ -92,17 +92,15 @@ internal class ThreeDS2CoreActionHandler: Component {
             serviceParameters.directoryServerPublicKey = token.directoryServerPublicKey
 
             service.service(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { [weak self] _ in
-                if let encodedFingerprint = self?.getFingerprint(messageVersion: token.threeDSMessageVersion,
-                                                                 completionHandler: completionHandler) {
-                    completionHandler(.success(encodedFingerprint))
-                }
+                self?.getFingerprint(messageVersion: token.threeDSMessageVersion,
+                                     completionHandler: completionHandler)
             }
         } catch {
             didFail(with: .underlyingError(error), completionHandler: completionHandler)
         }
     }
 
-    private func getFingerprint(messageVersion: String, completionHandler: @escaping (Result<String, ThreeDS2CoreActionHandlerError>) -> Void) -> String? {
+    private func getFingerprint(messageVersion: String, completionHandler: @escaping (Result<String, ThreeDS2CoreActionHandlerError>) -> Void) {
         do {
             switch transaction(messageVersion: messageVersion) {
             case let .success(newTransaction):
@@ -119,21 +117,6 @@ internal class ThreeDS2CoreActionHandler: Component {
         } catch {
             didFail(with: .underlyingError(error), completionHandler: completionHandler)
         }
-
-        do {
-            let newTransaction = try service.transaction(withMessageVersion: messageVersion)
-            self.transaction = newTransaction
-
-            let fingerprint = try ThreeDS2Component.Fingerprint(
-                authenticationRequestParameters: newTransaction.authenticationParameters
-            )
-            let encodedFingerprint = try Coder.encodeBase64(fingerprint)
-
-            return encodedFingerprint
-        } catch {
-            didFail(with: .underlyingError(error), completionHandler: completionHandler)
-        }
-        return nil
     }
     
     private func transaction(messageVersion: String) -> Result<AnyADYTransaction, NSError> {

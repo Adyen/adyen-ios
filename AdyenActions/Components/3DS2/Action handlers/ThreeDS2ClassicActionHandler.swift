@@ -65,15 +65,14 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
             flavor: _isDropIn ? .dropin : .components,
             environment: apiContext.environment
         )
-        coreActionHandler.handle(fingerprintAction, event: event) { [weak self] result in
-            guard let self = self else { return }
+        coreActionHandler.handle(fingerprintAction, event: event) { result in
             switch result {
             case let .success(encodedFingerprint):
                 let additionalDetails = ThreeDS2Details.fingerprint(encodedFingerprint)
                 let result = ThreeDSActionHandlerResult.details(additionalDetails)
                 completionHandler(.success(result))
             case let .failure(error):
-                completionHandler(.failure(self.onReceiveError(error: error)))
+                completionHandler(.failure(ThreeDS2ActionHandlerError(error: error)))
             }
         }
     }
@@ -98,7 +97,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
             case let .success(result):
                 self.handle(result, completionHandler: completionHandler)
             case let .failure(error):
-                completionHandler(.failure(self.onReceiveError(error: error)))
+                completionHandler(.failure(ThreeDS2ActionHandlerError(error: error)))
             }
         }
     }
@@ -109,19 +108,6 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
         completionHandler(.success(.details(additionalDetails)))
     }
     
-    private func onReceiveError(error: ThreeDS2CoreActionHandlerError) -> ThreeDS2ActionHandlerError {
-        switch error {
-        case let .cancellationAction(threeDSResult):
-            return .cancellation(ThreeDS2Details.challengeResult(threeDSResult))
-        case .missingTransaction:
-            return .missingTransaction
-        case let .unknown(unknownError):
-            return .unknown(unknownError)
-        case let .underlyingError(underlyingError):
-            return .underlyingError(underlyingError)
-        }
-    }
-
     // MARK: - Private
 
     private let fingerprintEventName = "3ds2fingerprint"

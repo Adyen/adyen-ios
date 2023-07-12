@@ -120,18 +120,3 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     private let threeDS2EventName = "3ds2"
 
 }
-
-private extension ThreeDS2ActionHandlerError {
-    init(error: ThreeDS2CoreActionHandlerError) {
-        switch error {
-        case let .cancellationAction(threeDSResult):
-            self = .cancellation(ThreeDS2Details.challengeResult(threeDSResult))
-        case .missingTransaction:
-            self = .missingTransaction
-        case let .unknown(unknownError):
-            self = .unknown(unknownError)
-        case let .underlyingError(underlyingError):
-            self = .underlyingError(underlyingError)
-        }
-    }
-}

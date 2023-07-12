@@ -12,6 +12,19 @@ internal enum ThreeDS2ActionHandlerError: Error {
     case underlyingError(Error)
     case unknown(UnknownError)
     case missingTransaction
+    
+    init(error: ThreeDS2CoreActionHandlerError) {
+        switch error {
+        case let .cancellationAction(threeDSResult):
+            self = .cancellation(ThreeDS2Details.challengeResult(threeDSResult))
+        case .missingTransaction:
+            self = .missingTransaction
+        case let .unknown(unknownError):
+            self = .unknown(unknownError)
+        case let .underlyingError(underlyingError):
+            self = .underlyingError(underlyingError)
+        }
+    }
 }
 
 /// :nodoc:
