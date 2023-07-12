@@ -78,9 +78,11 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         self.identifier = identifier
         reloadFields()
         
-//        bind(countryPickerItem.publisher, at: \.identifier, to: self, at: \.value.country) // TODO: How to deal with nil Regions?
         observe(countryPickerItem.publisher, eventHandler: { [weak self] event in
-            self?.context.countryCode = event?.identifier ?? "" // TODO: How to deal with nil Regions?
+            // TODO: How to deal with nil Regions? - Make sure all fields are populated on all changes!
+            guard let region = event else { return }
+            self?.value.country = region.identifier
+            self?.context.countryCode = region.identifier
         })
     }
     
@@ -96,6 +98,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         let countries = RegionRepository.regions(from: locale as NSLocale,
                                                  with: configuration.supportedCountryCodes).sorted { $0.name < $1.name }
         let defaultCountry = countries.first { $0.identifier == initialCountry }
+        
         let item = FormCountryPickerItem(
             prefillValue: defaultCountry,
             selectableValues: countries,
@@ -119,7 +122,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             return
         }
         
-        guard let matchingElement = countryPickerItem.selectableValues.first(where: { $0?.identifier == value.country }) else {
+        guard let matchingElement = countryPickerItem.selectableValues.first(where: { $0.identifier == value.country }) else {
             AdyenAssertion.assertionFailure(
                 message: "The provided country '\(country)' is not supported per configuration."
             )

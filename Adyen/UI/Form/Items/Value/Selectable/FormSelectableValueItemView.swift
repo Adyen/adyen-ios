@@ -8,8 +8,8 @@ import UIKit
 
 /// An abstract view representing a selectable value item.
 @_spi(AdyenInternal)
-open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueItem<ValueType>>:
-    FormValidatableValueItemView<ValueType, ItemType> {
+open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueItem<ValueType?>>:
+    FormValidatableValueItemView<ValueType?, ItemType> {
     
     override internal var accessibilityLabelView: UIView? { valueLabel }
     

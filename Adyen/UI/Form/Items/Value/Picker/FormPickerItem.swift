@@ -6,14 +6,22 @@
 
 import Foundation
 
+@_spi(AdyenInternal)
+public protocol FormPickable: Equatable {
+    
+    var identifier: String { get }
+    var displayTitle: String { get }
+    var displaySubtitle: String? { get }
+}
+
 /// An address form item for address lookup.
 @_spi(AdyenInternal)
-open class FormPickerItem<ValueType: Equatable>: FormSelectableValueItem<ValueType> {
+open class FormPickerItem<ValueType: FormPickable>: FormSelectableValueItem<ValueType?> {
     
-    private let localizationParameters: LocalizationParameters?
+    public let localizationParameters: LocalizationParameters?
     public private(set) var isOptional: Bool = false
     
-    override public var value: ValueType {
+    override public var value: ValueType? {
         didSet {
             updateValidationFailureMessage()
             updateFormattedValue()
@@ -30,7 +38,7 @@ open class FormPickerItem<ValueType: Equatable>: FormSelectableValueItem<ValueTy
     ///   - localizationParameters: The localization parameters
     ///   - identifier: The item identifier
     public init(
-        prefillValue: ValueType,
+        prefillValue: ValueType?,
         selectableValues: [ValueType],
         title: String,
         placeholder: String,

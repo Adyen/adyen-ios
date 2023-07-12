@@ -23,7 +23,7 @@ public class SearchViewController: UIViewController, AdyenObserver {
     internal lazy var keyboardObserver = KeyboardObserver()
     private var emptyViewBottomConstraint: NSLayoutConstraint?
 
-    private let viewModel: ViewModel
+    internal let viewModel: ViewModel
     internal let emptyView: SearchResultsEmptyView
     
     public lazy var resultsListViewController = ListViewController(style: viewModel.style)

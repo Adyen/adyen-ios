@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-internal class FormPickerItemView<ValueType: Equatable>: FormSelectableValueItemView<ValueType, FormPickerItem<ValueType>> {
+internal class FormPickerItemView<ValueType: FormPickable>: FormSelectableValueItemView<ValueType, FormPickerItem<ValueType>> {
     
     private var shouldBecomeFirstResponder: Bool = false
     
@@ -16,22 +16,26 @@ internal class FormPickerItemView<ValueType: Equatable>: FormSelectableValueItem
         super.init(item: item)
         item.selectionHandler = { [weak self] in
             
-            let viewModel = AddressLookupViewController.ViewModel(
-                style: FormComponentStyle(),
-                localizationParameters: nil,
-                supportedCountryCodes: ["NL"],
-                initialCountry: "NL",
-                prefillAddress: nil,
-                lookupProvider: { searchTerm, handler in handler([.init(city: searchTerm)]) }
-            ) { [weak self] address in
-                guard let self else { return }
-                print(address)
-                self.viewController?.dismiss(animated: true)
+            let topPresenter = self?.viewController
+            
+            let pickerViewController = FormPickerSearchViewController(
+                localizationParameters: item.localizationParameters,
+                style: item.style,
+                title: item.title,
+                options: item.selectableValues
+            ) { [weak topPresenter] selectedItem in
+                item.value = selectedItem
+                topPresenter?.dismiss(animated: true)
             }
             
-            let searchViewController = AddressLookupViewController(viewModel: viewModel)
+            if #available(iOS 15.0, *) {
+                if let presentationController = pickerViewController.presentationController as? UISheetPresentationController {
+                    presentationController.prefersGrabberVisible = true
+                    presentationController.detents = [.medium(), .large()]
+                }
+            }
             
-            self?.viewController?.present(searchViewController, animated: true)
+            topPresenter?.present(pickerViewController, animated: true)
         }
     }
     

@@ -111,7 +111,7 @@ private extension DemoAddressLookupProvider {
             PostalAddress(
                 city: "Random City (Incomplete Address)"
             )
-        ].filter { $0.formatted.lowercased().contains(searchTerm.lowercased()) }
+        ].filter { $0.formatted.range(of: searchTerm, options: .caseInsensitive) != nil }
     }
 }
 

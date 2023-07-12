@@ -8,13 +8,19 @@ import Foundation
 
 // TODO: Replace FormRegionPickerItem with this and rename!
 
+extension Region: FormPickable {
+    
+    public var displayTitle: String { name }
+    public var displaySubtitle: String? { identifier }
+}
+
 /// An address form item for address lookup.
 @_spi(AdyenInternal)
-public final class FormCountryPickerItem: FormPickerItem<Region?> {
+public final class FormCountryPickerItem: FormPickerItem<Region> {
     
     override public init(
         prefillValue: Region?,
-        selectableValues: [Region?],
+        selectableValues: [Region],
         title: String,
         placeholder: String,
         style: FormTextItemStyle,
@@ -47,6 +53,6 @@ public final class FormCountryPickerItem: FormPickerItem<Region?> {
     }
     
     override public func updateFormattedValue() {
-        print(#function)
+        formattedValue = value?.name
     }
 }
