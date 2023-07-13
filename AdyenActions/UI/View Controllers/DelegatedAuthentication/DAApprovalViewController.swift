@@ -42,14 +42,13 @@ internal final class DAApprovalViewController: UIViewController {
                                                                        progressTextStyle: style.remainingTimeTextStyle,
                                                                        firstButtonStyle: style.primaryButton,
                                                                        secondButtonStyle: style.secondaryButton,
-                                                                       textViewStyle: style.textViewStyle)
+                                                                       textViewStyle: style.textViewStyle,
+                                                                       linkSelectionHandler: deleteCredentialSelected)
     
     private let style: DelegatedAuthenticationComponentStyle
     private var timeoutTimer: ExpirationTimer?
     private let localizationParameters: LocalizationParameters?
     
-    /// The action to delete the credentials is via a link in a UITextView.
-    private let textViewRemoveCredentialsLink = "removeCredential://"
     internal typealias Handler = () -> Void
     
     internal init(style: DelegatedAuthenticationComponentStyle,
@@ -87,22 +86,10 @@ internal final class DAApprovalViewController: UIViewController {
         approvalView.firstButton.title = localizedString(.threeds2DAApprovalPositiveButton, localizationParameters)
         approvalView.secondButton.title = localizedString(.threeds2DAApprovalNegativeButton, localizationParameters)
         configureProgress()
-        configureTextView()
+        approvalView.textView.update(text: localizedString(.threeds2DAApprovalRemoveCredentialsText, localizationParameters),
+                                     style: style.textViewStyle)
     }
     
-    private func configureTextView() {
-        let string = localizedString(.threeds2DAApprovalRemoveCredentialsText, localizationParameters)
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-        let attributedString = NSMutableAttributedString(string: string, attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
-        if let range = string.adyen.linkRanges().first {
-            attributedString.addAttribute(.link, value: textViewRemoveCredentialsLink, range: range)
-        }
-        attributedString.mutableString.replaceOccurrences(of: "%#", with: "", range: NSRange(location: 0, length: attributedString.length))
-        approvalView.textView.attributedText = attributedString
-        approvalView.textView.delegate = self
-    }
-
     private func configureProgress() {
         let timeout = Constants.timeout
         approvalView.progressText.text = timeLeft(timeInterval: timeout)
@@ -144,6 +131,10 @@ internal final class DAApprovalViewController: UIViewController {
         setter - not implemented.
         """) }
     }
+    
+    private func deleteCredentialSelected(index: Int) {
+        removeCredential()
+    }
 }
 
 extension DAApprovalViewController: DelegatedAuthenticationViewDelegate {
@@ -162,14 +153,5 @@ extension DAApprovalViewController: DelegatedAuthenticationViewDelegate {
         approvalView.secondButton.showsActivityIndicator = true
         timeoutTimer?.stopTimer()
         approveDifferentlyHandler()
-    }
-}
-
-extension DAApprovalViewController: UITextViewDelegate {
-    internal func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        if URL.absoluteString == textViewRemoveCredentialsLink {
-            removeCredential()
-        }
-        return false
     }
 }

@@ -22,6 +22,7 @@ internal final class DelegatedAuthenticationView: UIView {
     private let firstButtonStyle: ButtonStyle
     private let secondButtonStyle: ButtonStyle
     private let textViewStyle: TextStyle
+    private let linkSelectionHandler: (Int) -> Void
     
     internal weak var delegate: DelegatedAuthenticationViewDelegate?
     
@@ -120,8 +121,8 @@ internal final class DelegatedAuthenticationView: UIView {
         return stackView
     }()
 
-    internal lazy var textView: UITextView = {
-        let textView = UITextView(style: textViewStyle)
+    internal lazy var textView: LinkTextView = {
+        let textView = LinkTextView(linkSelectionHandler: linkSelectionHandler)
         textView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "textView")
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.isScrollEnabled = false
@@ -138,7 +139,8 @@ internal final class DelegatedAuthenticationView: UIView {
                   progressTextStyle: TextStyle,
                   firstButtonStyle: ButtonStyle,
                   secondButtonStyle: ButtonStyle,
-                  textViewStyle: TextStyle) {
+                  textViewStyle: TextStyle,
+                  linkSelectionHandler: @escaping (Int) -> Void = { _ in }) {
         self.logoStyle = logoStyle
         self.headerTextStyle = headerTextStyle
         self.descriptionTextStyle = descriptionTextStyle
@@ -147,7 +149,7 @@ internal final class DelegatedAuthenticationView: UIView {
         self.firstButtonStyle = firstButtonStyle
         self.secondButtonStyle = secondButtonStyle
         self.textViewStyle = textViewStyle
-
+        self.linkSelectionHandler = linkSelectionHandler
         super.init(frame: .zero)
         configureViews()
     }
