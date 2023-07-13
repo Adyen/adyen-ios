@@ -110,11 +110,13 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
         guard let formattedValue, !formattedValue.isEmpty else {
             valueLabel.text = item.placeholder
             valueLabel.textColor = item.style.placeholderText?.color ?? .Adyen.componentPlaceholderText
+            resetValidationStatus()
             return
         }
         
         valueLabel.text = formattedValue
         valueLabel.textColor = item.style.text.color
+        validate()
     }
     
     private func configureConstraints() {

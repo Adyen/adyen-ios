@@ -93,7 +93,7 @@ private extension DemoAddressLookupProvider {
             PostalAddress(
                 city: "New York",
                 country: "US",
-                houseNumberOrName: "14",
+                houseNumberOrName: nil,
                 postalCode: "10019",
                 stateOrProvince: "NY",
                 street: "8th Ave",
@@ -111,7 +111,7 @@ private extension DemoAddressLookupProvider {
             PostalAddress(
                 city: "Random City (Incomplete Address)"
             )
-        ].filter { $0.formatted.lowercased().contains(searchTerm.lowercased()) }
+        ].filter { $0.formatted.range(of: searchTerm, options: .caseInsensitive) != nil }
     }
 }
 
