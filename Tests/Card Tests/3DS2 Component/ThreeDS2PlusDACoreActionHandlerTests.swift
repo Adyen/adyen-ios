@@ -136,14 +136,9 @@ import XCTest
                 case .success:
                     XCTFail()
                 case let .failure(error):
-                    switch error {
-                    case .underlyingError(let error as DecodingError):
-                        switch error {
-                        case .dataCorrupted:
-                            break
-                        default:
-                            XCTFail()
-                        }
+                    let decodingError = error as? DecodingError
+                    switch decodingError {
+                    case .dataCorrupted?: ()
                     default:
                         XCTFail()
                     }
@@ -256,9 +251,9 @@ import XCTest
                 case .success:
                     XCTFail()
                 case let .failure(error):
-                    switch error {
-                    case .missingTransaction:
-                        break
+                    let componentError = error as? ThreeDS2Component.Error
+                    switch componentError {
+                    case .missingTransaction?: ()
                     default:
                         XCTFail()
                     }
@@ -295,15 +290,9 @@ import XCTest
                 case .success:
                     XCTFail()
                 case let .failure(error):
-                    
-                    switch error {
-                    case .underlyingError(let error as DecodingError):
-                        switch error {
-                        case .dataCorrupted:
-                            break
-                        default:
-                            XCTFail()
-                        }
+                    let decodingError = error as? DecodingError
+                    switch decodingError {
+                    case .dataCorrupted?: ()
                     default:
                         XCTFail()
                     }
