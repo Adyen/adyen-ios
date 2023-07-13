@@ -6,7 +6,8 @@ xcodebuild clean -project Adyen.xcodeproj \
  -scheme AdyenUIHost \
  -destination="generic/platform=iOS" \
  -sdk iphoneos \
- -configuration Release
+ -configuration Release \
+ -skipPackagePluginValidation
 
 mkdir -p $BUILD_PATH
 
@@ -17,6 +18,7 @@ xcodebuild archive -project Adyen.xcodeproj \
 -configuration Release \
 -archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
 -allowProvisioningUpdates \
+-skipPackagePluginValidation \
 -authenticationKeyID $XCODE_AUTHENTICATION_KEY_ID \
 -authenticationKeyIssuerID $XCODE_AUTHENTICATION_KEY_ISSUER_ID \
 -authenticationKeyPath $3
@@ -26,6 +28,7 @@ xcodebuild -exportArchive \
 -exportOptionsPlist exportOptions.plist \
 -exportPath $BUILD_PATH \
 -allowProvisioningUpdates \
+-skipPackagePluginValidation \
 -authenticationKeyID $XCODE_AUTHENTICATION_KEY_ID \
 -authenticationKeyIssuerID $XCODE_AUTHENTICATION_KEY_ISSUER_ID \
 -authenticationKeyPath $3
