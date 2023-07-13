@@ -6,6 +6,7 @@
 
 import Foundation
 
+/// A wrapper struct to use as item in ``FormPickerItem``
 @_spi(AdyenInternal)
 public struct FormPickable: Equatable {
     
@@ -27,7 +28,7 @@ public struct FormPickable: Equatable {
     }
 }
 
-/// An address form item for address lookup.
+/// An form item for picking values.
 @_spi(AdyenInternal)
 open class FormPickerItem: FormSelectableValueItem<FormPickable?> {
     

@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// An address form item for address lookup.
+/// An picker form item for picking regions.
 @_spi(AdyenInternal)
 public final class FormRegionPickerItem: FormPickerItem {
     
