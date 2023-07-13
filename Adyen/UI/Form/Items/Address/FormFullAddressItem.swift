@@ -21,7 +21,6 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     override public var value: PostalAddress {
         didSet {
             updateCountryPicker()
-            // TODO: Alex - Also update the subregion picker if needed
         }
     }
     
@@ -190,11 +189,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             style: style.textField
         )
         
-        observe(item.publisher, eventHandler: { [weak self] event in
-            guard let region = event else { return }
-            self?.value.stateOrProvince = region.identifier
-        })
-        
+        bind(item: item, to: .stateOrProvince, subRegions: subRegions)
         return item
     }
     
@@ -215,6 +210,18 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         
         bind(item: item, to: field)
         return item
+    }
+    
+    private func bind(item: FormRegionPickerItem, to field: AddressField, subRegions: [Region]) {
+        observers[field].map(remove)
+        publisherObservers[field].map(remove)
+        observers[field] = bind(item.publisher, at: \.?.identifier, to: self, at: \.value.stateOrProvince)
+        func update(address: PostalAddress) {
+            let region = subRegions.first { $0.identifier == address.stateOrProvince }
+            item.updateValue(with: region)
+        }
+
+        publisherObservers[.stateOrProvince] = observe(publisher, eventHandler: update(address:))
     }
     
     private func bind(item: FormTextInputItem, to field: AddressField) {

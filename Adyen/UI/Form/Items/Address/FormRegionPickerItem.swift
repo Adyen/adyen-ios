@@ -10,6 +10,8 @@ import Foundation
 @_spi(AdyenInternal)
 public final class FormRegionPickerItem: FormPickerItem {
     
+    private let shouldShowCountryFlags: Bool
+    
     public required init(
         preselectedRegion: Region?,
         selectableRegions: [Region],
@@ -24,6 +26,8 @@ public final class FormRegionPickerItem: FormPickerItem {
         let preselectedValue = preselectedRegion?.toFormPickable(shouldShowCountryFlag: shouldShowCountryFlags)
         let selectableValues = selectableRegions.map { $0.toFormPickable(shouldShowCountryFlag: shouldShowCountryFlags) }
         
+        self.shouldShowCountryFlags = shouldShowCountryFlags
+        
         super.init(
             preselectedValue: preselectedValue,
             selectableValues: selectableValues,
@@ -37,12 +41,16 @@ public final class FormRegionPickerItem: FormPickerItem {
         self.validationFailureMessage = validationFailureMessage
     }
     
+    public func updateValue(with region: Region?) {
+        self.value = region?.toFormPickable(shouldShowCountryFlag: shouldShowCountryFlags)
+    }
+    
     override public func resetValue() {
         value = nil
     }
     
     override public func updateValidationFailureMessage() {
-        // Nothing to do here
+        // Nothing to update here
     }
     
     override public func updateFormattedValue() {
