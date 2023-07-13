@@ -60,7 +60,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     /// - Parameter completionHandler: The completion closure.
     /// :nodoc:
     internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void) {
+                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         let event = Analytics.Event(component: "\(threeDS2EventName).fingerprint",
                                     flavor: _isDropIn ? .dropin : .components,
                                     environment: apiContext.environment)
@@ -74,11 +74,11 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
                     case let .success(threeDS2Result):
                         completionHandler(.success(threeDS2Result))
                     case let .failure(error):
-                        completionHandler(.failure(.underlyingError(error)))
+                        completionHandler(.failure(error))
                     }
                 }
             case let .failure(error):
-                completionHandler(.failure(ThreeDS2ActionHandlerError(error: error)))
+                completionHandler(.failure(error))
             }
         }
     }
@@ -91,7 +91,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     /// - Parameter completionHandler: The completion closure.
     /// :nodoc:
     internal func handle(_ challengeAction: ThreeDS2ChallengeAction,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void) {
+                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         let event = Analytics.Event(component: "\(threeDS2EventName).challenge",
                                     flavor: _isDropIn ? .dropin : .components,
                                     environment: apiContext.environment)
@@ -101,13 +101,13 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
             case let .success(result):
                 self.handle(result, completionHandler: completionHandler)
             case let .failure(error):
-                completionHandler(.failure(ThreeDS2ActionHandlerError(error: error)))
+                completionHandler(.failure(error))
             }
         }
     }
 
     private func handle(_ threeDSResult: ThreeDSResult,
-                        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void) {
+                        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         let additionalDetails = ThreeDS2Details.completed(threeDSResult)
         completionHandler(.success(.details(additionalDetails)))
     }

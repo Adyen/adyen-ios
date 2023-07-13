@@ -190,7 +190,7 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
         threeDS2ActionHandler.mockedFingerprintResult = .success(.action(.threeDS2(.challenge(mockedAction))))
-        threeDS2ActionHandler.mockedChallengeResult = .failure(.underlyingError(Dummy.error))
+        threeDS2ActionHandler.mockedChallengeResult = .failure(Dummy.error)
 
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { action in
@@ -221,7 +221,7 @@ class ThreeDS2ComponentTests: XCTestCase {
     func testFullFlowFingerprintFailure() throws {
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
-        threeDS2ActionHandler.mockedFingerprintResult = .failure(.underlyingError(Dummy.error))
+        threeDS2ActionHandler.mockedFingerprintResult = .failure(Dummy.error)
 
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { action in

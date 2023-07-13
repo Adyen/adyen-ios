@@ -59,7 +59,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     /// - Parameter completionHandler: The completion closure.
     /// :nodoc:
     internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void) {
+                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         let event = Analytics.Event(
             component: fingerprintEventName,
             flavor: _isDropIn ? .dropin : .components,
@@ -72,7 +72,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
                 let result = ThreeDSActionHandlerResult.details(additionalDetails)
                 completionHandler(.success(result))
             case let .failure(error):
-                completionHandler(.failure(ThreeDS2ActionHandlerError(error: error)))
+                completionHandler(.failure(error))
             }
         }
     }
@@ -85,7 +85,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     /// - Parameter completionHandler: The completion closure.
     /// :nodoc:
     internal func handle(_ challengeAction: ThreeDS2ChallengeAction,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void) {
+                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         let event = Analytics.Event(
             component: challengeEventName,
             flavor: _isDropIn ? .dropin : .components,
@@ -97,13 +97,13 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
             case let .success(result):
                 self.handle(result, completionHandler: completionHandler)
             case let .failure(error):
-                completionHandler(.failure(ThreeDS2ActionHandlerError(error: error)))
+                completionHandler(.failure(error))
             }
         }
     }
 
     private func handle(_ threeDSResult: ThreeDSResult,
-                        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void) {
+                        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         let additionalDetails = ThreeDS2Details.challengeResult(threeDSResult)
         completionHandler(.success(.details(additionalDetails)))
     }
