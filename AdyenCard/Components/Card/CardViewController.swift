@@ -254,6 +254,11 @@ internal class CardViewController: FormViewController {
         if let installmentsItem = items.installmentsItem {
             append(installmentsItem)
         }
+        
+        if configuration.showsStorePaymentMethodField {
+            append(items.storeDetailsItem)
+            append(FormSpacerItem())
+        }
 
         switch configuration.billingAddress.mode {
         case let .lookup(handler):
@@ -270,10 +275,6 @@ internal class CardViewController: FormViewController {
             append(items.postalCodeItem)
         case .none:
             break
-        }
-
-        if configuration.showsStorePaymentMethodField {
-            append(items.storeDetailsItem)
         }
 
         append(FormSpacerItem())
