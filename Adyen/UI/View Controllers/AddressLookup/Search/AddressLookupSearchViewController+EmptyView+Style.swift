@@ -8,27 +8,16 @@ import Foundation
 
 extension AddressLookupSearchViewController.EmptyView {
     
-    /// Initializes the `Style` of the ``AddressLookupSearchViewController.EmptyView``
     internal struct Style: ViewStyle {
         
-        internal var title: TextStyle
-        internal var subtitle: TextStyle
-        internal var backgroundColor: UIColor
-        
-        internal init(
-            title: TextStyle = .init(
-                font: .preferredFont(forTextStyle: .headline),
-                color: .Adyen.componentLabel
-            ),
-            subtitle: TextStyle = .init(
-                font: .preferredFont(forTextStyle: .subheadline),
-                color: .Adyen.componentSecondaryLabel
-            ),
-            backgroundColor: UIColor = .clear
-        ) {
-            self.title = title
-            self.subtitle = subtitle
-            self.backgroundColor = backgroundColor
-        }
+        internal var title: TextStyle = .init(
+            font: .preferredFont(forTextStyle: .headline),
+            color: .Adyen.componentLabel
+        )
+        internal var subtitle: TextStyle = .init(
+            font: .preferredFont(forTextStyle: .subheadline),
+            color: .Adyen.componentSecondaryLabel
+        )
+        internal var backgroundColor: UIColor = .clear
     }
 }

@@ -24,6 +24,7 @@ public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?
     
     override public var value: PostalAddress? {
         didSet {
+            updateContext()
             updateValidationFailureMessage()
             updateFormattedValue()
         }
@@ -83,6 +84,11 @@ public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?
 // MARK: - Convenience
 
 private extension FormAddressLookupItem {
+    
+    func updateContext() {
+        guard let country = value?.country else { return }
+        context.countryCode = country
+    }
     
     func updateValidationFailureMessage() {
         validationFailureMessage = {
