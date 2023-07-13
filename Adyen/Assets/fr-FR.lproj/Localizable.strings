@@ -163,14 +163,14 @@
 "adyen.onlineBanking.termsAndConditions" = "En continuant, vous acceptez les #conditions générales#";
 "adyen.qrCode.instructionMessage" = "Faites une capture d'écran ou enregistrez le code QR, ouvrez votre application bancaire et chargez ce dernier pour valider les détails et effectuer le paiement.";
 "adyen.qrCode.timerExpirationMessage" = "Ce code QR est valide pendant %@";
-"adyen.paybybank.subtitle" = "Aucune banque ne correspond à votre recherche...";
+"adyen.paybybank.subtitle" = "Aucune banque ne correspond à votre recherche…";
 "adyen.paybybank.title" = "Aucun résultat pour";
-"adyen.search.placeholder" = "Recherche...";
+"adyen.search.placeholder" = "Recherche…";
 "adyen.upi.modeSelection" = "Choisissez la façon dont vous souhaitez utiliser l'application UPI.";
 "adyen.UPIVpa.validationMessage" = "Entrez une adresse de paiement virtuelle valide";
 "adyen.UPIQrcode.generationMessage" = "Générez le code QR à télécharger ou à prendre en photo et importez-le dans l'application UPI pour effectuer le paiement.";
 "adyen.UPIQrcode.timerMessage" = "Vous avez %@ pour approuver";
-"adyen.upiCollect.confirmPayment" = "En attente de votre confirmation...";
+"adyen.upiCollect.confirmPayment" = "En attente de votre confirmation…";
 "adyen.upi.vpaWaitingMessage" = "Ouvrez votre application UPI pour confirmer le paiement";
 "adyen.QRCode.generateQRCode" = "Générer un code QR";
 "adyen.UPI.QRCodeInstructions" = "Effectuez une capture d'écran afin de l'importer dans l'application UPI ou scannez le code QR à l'aide de votre application UPI préférée pour procéder au paiement.";

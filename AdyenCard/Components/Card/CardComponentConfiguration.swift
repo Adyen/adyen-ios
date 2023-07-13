@@ -87,7 +87,7 @@ public protocol AnyCardComponentConfiguration {
 extension CardComponent {
 
     /// The mode of address form of card component
-    public enum AddressFormType {
+    public enum AddressFormType: String, Codable, CaseIterable {
 
         /// Display full address form
         case full
@@ -97,10 +97,11 @@ extension CardComponent {
 
         /// Do not display address form
         case none
+
     }
 
     /// The mode of input field on Component UI
-    public enum FieldVisibility {
+    public enum FieldVisibility: String, Codable, CaseIterable {
 
         /// Always show the field.
         case show
@@ -110,6 +111,7 @@ extension CardComponent {
 
         /// Show the field when a specific condition is met.
         case auto
+
     }
 
     /// Card component configuration.

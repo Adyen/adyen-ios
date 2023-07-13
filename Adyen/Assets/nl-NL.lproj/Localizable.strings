@@ -163,14 +163,14 @@
 "adyen.onlineBanking.termsAndConditions" = "Door verder te gaan gaat u akkoord met de #algemene voorwaarden#";
 "adyen.qrCode.instructionMessage" = "Maak een schermafbeelding of sla de QR-code op, open uw bankapp en upload de QR-code om de gegevens te verifiëren en de betaling te voltooien.";
 "adyen.qrCode.timerExpirationMessage" = "Deze QR-code is %@ geldig";
-"adyen.paybybank.subtitle" = "Geen banken voor uw zoekopdracht...";
+"adyen.paybybank.subtitle" = "Geen banken voor uw zoekopdracht…";
 "adyen.paybybank.title" = "Geen resultaten voor";
-"adyen.search.placeholder" = "Zoeken...";
+"adyen.search.placeholder" = "Zoeken…";
 "adyen.upi.modeSelection" = "Maak een selectie over hoe u UPI wilt gebruiken.";
 "adyen.UPIVpa.validationMessage" = "Voer een correct virtueel betalingsadres in";
 "adyen.UPIQrcode.generationMessage" = "Genereer de QR-code. U kunt deze downloaden of er een schermafbeelding van maken en deze uploaden naar de UPI-app om de betaling te voltooien.";
 "adyen.UPIQrcode.timerMessage" = "Je hebt nog %@ voor je goedkeuring";
-"adyen.upiCollect.confirmPayment" = "In afwachting van uw bevestiging...";
+"adyen.upiCollect.confirmPayment" = "In afwachting van uw bevestiging…";
 "adyen.upi.vpaWaitingMessage" = "Open je UPI-app om de betaling te bevestigen";
 "adyen.QRCode.generateQRCode" = "Genereer QR-code";
 "adyen.UPI.QRCodeInstructions" = "Maak een schermafbeelding en upload deze in de UPI-app of scan de QR-code met je favoriete UPI-app om de betaling te voltooien.";

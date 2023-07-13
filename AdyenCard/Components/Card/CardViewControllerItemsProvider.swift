@@ -67,10 +67,12 @@ extension CardViewController {
             }
             
             let item = FormAddressItem(initialCountry: initialCountry ?? defaultCountryCode,
-                                       style: formStyle.addressStyle,
-                                       localizationParameters: localizationParameters,
+                                       configuration: .init(
+                                           style: formStyle.addressStyle,
+                                           localizationParameters: localizationParameters,
+                                           supportedCountryCodes: configuration.billingAddress.countryCodes
+                                       ),
                                        identifier: identifier,
-                                       supportedCountryCodes: configuration.billingAddress.countryCodes,
                                        addressViewModelBuilder: addressViewModelBuilder)
             shopperInformation?.billingAddress.map { item.value = $0 }
             item.style.backgroundColor = UIColor.Adyen.lightGray

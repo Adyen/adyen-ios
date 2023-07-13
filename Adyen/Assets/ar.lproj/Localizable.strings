@@ -163,14 +163,14 @@
 "adyen.onlineBanking.termsAndConditions" = "بالمتابعة، فإنك توافق على #الشروط و الأحكام#";
 "adyen.qrCode.instructionMessage" = "التقط لقطة شاشة أو احفظ رمز الاستجابة السريعة، وافتح تطبيقك المصرفي وحمِّل رمز الاستجابة السريعة للتحقق من التفاصيل وإتمام الدفع.";
 "adyen.qrCode.timerExpirationMessage" = "رمز الاستجابة السريعة هذا صالح لـ %@";
-"adyen.paybybank.subtitle" = "لم يتم العثور على أي بنوك لاستعلام البحث الخاص بك...";
+"adyen.paybybank.subtitle" = "لم يتم العثور على أي بنوك لاستعلام البحث الخاص بك…";
 "adyen.paybybank.title" = "لا توجد نتائج لـ";
-"adyen.search.placeholder" = "بحث...";
+"adyen.search.placeholder" = "بحث…";
 "adyen.upi.modeSelection" = "حدد كيف ترغب في استخدام تطبيق UPI.";
 "adyen.UPIVpa.validationMessage" = "أدخل عنوان دفع افتراضي صحيح";
 "adyen.UPIQrcode.generationMessage" = "أنشئ رمز الاستجابة السريعة الذي يمكنك تنزيله أو خذ لقطة شاشة له وقم بتحميله على تطبيق UPI لإكمال الدفع.";
 "adyen.UPIQrcode.timerMessage" = "أمامك ٪@ للموافقة";
-"adyen.upiCollect.confirmPayment" = "في انتظار تأكيدك...";
+"adyen.upiCollect.confirmPayment" = "في انتظار تأكيدك…";
 "adyen.upi.vpaWaitingMessage" = "افتح تطبيق UPI لتأكيد الدفع";
 "adyen.QRCode.generateQRCode" = "إنشاء رمز استجابة سريعة";
 "adyen.UPI.QRCodeInstructions" = "التقط لقطة شاشة لتحميلها في تطبيق UPI أو امسح رمز الاستجابة السريعة باستخدام تطبيق UPI الذي تُفضله لإتمام الدفع.";

@@ -163,14 +163,14 @@
 "adyen.onlineBanking.termsAndConditions" = "Wenn Sie fortfahren, stimmen Sie den #Allgemeinen Geschäftsbedingungen# zu";
 "adyen.qrCode.instructionMessage" = "Erstellen Sie einen Screenshot oder speichern Sie den QR-Code, öffnen Sie Ihre Bankanwendung und laden Sie den QR-Code hoch, um die Details zu verifizieren und die Zahlung abzuschließen.";
 "adyen.qrCode.timerExpirationMessage" = "Dieser QR-Code gilt für %@";
-"adyen.paybybank.subtitle" = "Es wurden keine Banken mit Ihrer Suchanfrage gefunden …";
+"adyen.paybybank.subtitle" = "Es wurden keine Banken mit Ihrer Suchanfrage gefunden…";
 "adyen.paybybank.title" = "Keine Ergebnisse für";
-"adyen.search.placeholder" = "Suche …";
+"adyen.search.placeholder" = "Suche…";
 "adyen.upi.modeSelection" = "Legen Sie fest, wie Sie UPI nutzen möchten.";
 "adyen.UPIVpa.validationMessage" = "Geben Sie eine korrekte virtuelle Zahlungsadresse ein";
 "adyen.UPIQrcode.generationMessage" = "Generieren Sie einen QR-Code, den Sie herunterladen oder als Screenshot hochladen können, und laden Sie ihn in der UPI-App hoch, um die Zahlung abzuschließen.";
 "adyen.UPIQrcode.timerMessage" = "Sie haben noch %@ Minuten Zeit für die Genehmigung.";
-"adyen.upiCollect.confirmPayment" = "Wir warten auf Ihre Bestätigung …";
+"adyen.upiCollect.confirmPayment" = "Wir warten auf Ihre Bestätigung…";
 "adyen.upi.vpaWaitingMessage" = "Öffnen Sie Ihre UPI-App, um die Zahlung zu bestätigen.";
 "adyen.QRCode.generateQRCode" = "QR-Code generieren";
 "adyen.UPI.QRCodeInstructions" = "Machen Sie einen Screenshot, um ihn in der UPI-App hochzuladen, oder scannen Sie den QR-Code mit Ihrer bevorzugten UPI-App, um die Zahlung abzuschließen.";

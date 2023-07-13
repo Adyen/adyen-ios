@@ -367,7 +367,7 @@ class CardComponentTests: XCTestCase {
         
         XCTAssertEqual(switchView.onTintColor, .systemYellow)
         XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .systemYellow)
-        XCTAssertEqual(securityCodeItemView!.separatorView.backgroundColor?.cgColor, UIColor.systemYellow.cgColor)
+        XCTAssertEqual(securityCodeItemView!.separatorView.backgroundColor!.cgColor, UIColor.systemYellow.cgColor)
     }
 
     func testSuccessTintColorCustomization() throws {
@@ -1680,7 +1680,7 @@ class CardComponentTests: XCTestCase {
 
         let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
         
-        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.supportedCountryCodes, ["UK"])
+        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.configuration.supportedCountryCodes, ["UK"])
         XCTAssertEqual(countryItemView?.inputControl.label, "United Kingdom")
     }
     
@@ -1699,7 +1699,7 @@ class CardComponentTests: XCTestCase {
 
         let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
         
-        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.supportedCountryCodes, ["US", "JP"])
+        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.configuration.supportedCountryCodes, ["US", "JP"])
         XCTAssertEqual(countryItemView?.inputControl.label, "United States")
     }
     
@@ -1718,7 +1718,7 @@ class CardComponentTests: XCTestCase {
 
         let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
         
-        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.supportedCountryCodes, ["UK"])
+        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.configuration.supportedCountryCodes, ["UK"])
         XCTAssertEqual(countryItemView?.inputControl.label, "United Kingdom")
     }
     

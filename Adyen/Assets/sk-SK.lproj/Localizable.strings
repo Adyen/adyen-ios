@@ -163,14 +163,14 @@
 "adyen.onlineBanking.termsAndConditions" = "Pokračovaním súhlasíte so #zmluvnými podmienkami#";
 "adyen.qrCode.instructionMessage" = "Urobte snímku obrazovky alebo si uložte QR kód, otvorte bankovú aplikáciu, nahrajte QR kód, overte údaje a dokončite platbu.";
 "adyen.qrCode.timerExpirationMessage" = "Tento kód QR platí %@";
-"adyen.paybybank.subtitle" = "Pre váš vyhľadávací dotaz sa nenašli žiadne banky...";
+"adyen.paybybank.subtitle" = "Pre váš vyhľadávací dotaz sa nenašli žiadne banky…";
 "adyen.paybybank.title" = "Žiadne výsledky pre";
-"adyen.search.placeholder" = "Vyhľadávanie...";
+"adyen.search.placeholder" = "Vyhľadávanie…";
 "adyen.upi.modeSelection" = "Vyberte si, ako by ste chceli používať UPI.";
 "adyen.UPIVpa.validationMessage" = "Zadajte správnu adresu pre virtuálnu platbu";
 "adyen.UPIQrcode.generationMessage" = "Vygenerujte kód QR. Ten si môžete stiahnuť alebo môžete urobiť snímku obrazovky a nahrať ju do aplikácie UPI na dokončenie platby.";
 "adyen.UPIQrcode.timerMessage" = "Na schválenie máte %@";
-"adyen.upiCollect.confirmPayment" = "Čakáme na vaše potvrdenie...";
+"adyen.upiCollect.confirmPayment" = "Čakáme na vaše potvrdenie…";
 "adyen.upi.vpaWaitingMessage" = "Otvorte aplikáciu UPI a potvrďte platbu";
 "adyen.QRCode.generateQRCode" = "Generovať QR kód";
 "adyen.UPI.QRCodeInstructions" = "Urobte snímku obrazovky, ktorú nahrajte do aplikácie UPI, alebo naskenujte kód QR pomocou preferovanej aplikácie UPI a dokončite platbu.";

@@ -165,7 +165,7 @@
 "adyen.qrCode.timerExpirationMessage" = "A QR-kód ennyi ideig érvényes: %@";
 "adyen.paybybank.subtitle" = "A keresési lekérdezéssel nem található bank…";
 "adyen.paybybank.title" = "Nincs találat a következőre:";
-"adyen.search.placeholder" = "Keresés...";
+"adyen.search.placeholder" = "Keresés…";
 "adyen.upi.modeSelection" = "Jelölje meg, hogyan szeretné használni az UPI-t.";
 "adyen.UPIVpa.validationMessage" = "Adjon meg egy helyes virtuális fizetési címet";
 "adyen.UPIQrcode.generationMessage" = "Hozzon létre QR-kódot, amelyet letölthet vagy amelyről képernyőképet készíthet, és töltse fel az UPI alkalmazásba a fizetés végrehajtásához.";

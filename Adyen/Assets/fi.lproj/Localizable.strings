@@ -165,12 +165,12 @@
 "adyen.qrCode.timerExpirationMessage" = "Tämä QR-koodi on voimassa %@";
 "adyen.paybybank.subtitle" = "Hakukyselylläsi ei löytynyt yhtään pankkia.";
 "adyen.paybybank.title" = "Ei tuloksia haulle";
-"adyen.search.placeholder" = "Hae...";
+"adyen.search.placeholder" = "Hae…";
 "adyen.upi.modeSelection" = "Valitse, kuinka haluat käyttää UPI-sovellusta.";
 "adyen.UPIVpa.validationMessage" = "Syötä oikea virtuaalinen maksuosoite";
 "adyen.UPIQrcode.generationMessage" = "Luo QR-koodi, jonka voit ladata tai josta voit ottaa kuvakaappauksen ja lähettää sen UPI-sovellukseen suorittaaksesi maksun loppuun.";
 "adyen.UPIQrcode.timerMessage" = "Sinulla on %@ hyväksyttävänä";
-"adyen.upiCollect.confirmPayment" = "Odottaa vahvistustasi...";
+"adyen.upiCollect.confirmPayment" = "Odottaa vahvistustasi…";
 "adyen.upi.vpaWaitingMessage" = "Avaa UPI-sovellus vahvistaaksesi maksun";
 "adyen.QRCode.generateQRCode" = "Tuota QR-koodi";
 "adyen.UPI.QRCodeInstructions" = "Suorita maksu ottamalla kuvakaappaus, jonka voit ladata UPI-sovellukseen, tai skannaamalla QR-koodi haluamallasi UPI-sovelluksella.";

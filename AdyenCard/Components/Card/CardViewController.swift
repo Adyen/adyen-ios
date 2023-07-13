@@ -110,24 +110,25 @@ internal class CardViewController: FormViewController {
     }
 
     internal var validAddress: PostalAddress? {
+        let address: PostalAddress
+        let requiredFields: Set<AddressField>
+        
         switch configuration.billingAddress.mode {
         case .full:
-            let address = items.billingAddressItem.value
-            guard AddressValidator().isValid(address: address,
-                                             addressMode: configuration.billingAddress.mode,
-                                             addressViewModel: items.billingAddressItem.addressViewModel) else {
-                return nil
-            }
-            return address
+            address = items.billingAddressItem.value
+            requiredFields = items.billingAddressItem.addressViewModel.requiredFields
+            
         case .postalCode:
-            if items.postalCodeItem.value.isEmpty {
-                return nil
-            } else {
-                return PostalAddress(postalCode: items.postalCodeItem.value)
-            }
+            address = PostalAddress(postalCode: items.postalCodeItem.value)
+            requiredFields = [AddressField.postalCode]
+            
         case .none:
             return nil
         }
+        
+        guard address.satisfies(requiredFields: requiredFields) else { return nil }
+        
+        return address
     }
 
     internal var kcpDetails: KCPDetails? {
@@ -335,14 +336,14 @@ extension FormValueItem where ValueType == String {
 }
 
 extension CardViewController: CardViewControllerProtocol {
-    func update(storePaymentMethodFieldVisibility isVisible: Bool) {
+    internal func update(storePaymentMethodFieldVisibility isVisible: Bool) {
         if !isVisible {
             items.storeDetailsItem.value = false
         }
         items.storeDetailsItem.isVisible = isVisible
     }
 
-    func update(storePaymentMethodFieldValue isOn: Bool) {
+    internal func update(storePaymentMethodFieldValue isOn: Bool) {
         items.storeDetailsItem.value = items.storeDetailsItem.isVisible && isOn
     }
 }
