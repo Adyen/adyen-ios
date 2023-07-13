@@ -8,33 +8,13 @@
 import Adyen3DS2
 import Foundation
 
-internal enum ThreeDS2ActionHandlerError: Error {
-    case cancellation(AdditionalDetails)
-    case underlyingError(Error)
-    case unknown(UnknownError)
-    case missingTransaction
-    
-    internal init(error: ThreeDS2CoreActionHandlerError) {
-        switch error {
-        case let .cancellationAction(threeDSResult):
-            self = .cancellation(ThreeDS2Details.challengeResult(threeDSResult))
-        case .missingTransaction:
-            self = .missingTransaction
-        case let .unknown(unknownError):
-            self = .unknown(unknownError)
-        case let .underlyingError(underlyingError):
-            self = .underlyingError(underlyingError)
-        }
-    }
-}
-
 internal protocol AnyThreeDS2ActionHandler {
 
     func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
-                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void)
+                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void)
 
     func handle(_ challengeAction: ThreeDS2ChallengeAction,
-                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void)
+                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void)
     
     var threeDSRequestorAppURL: URL? { get set }
 }

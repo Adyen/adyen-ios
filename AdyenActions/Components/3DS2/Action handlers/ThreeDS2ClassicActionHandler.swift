@@ -59,21 +59,20 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
     /// - Parameter completionHandler: The completion closure.
     internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void) {
+                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         let event = Analytics.Event(
             component: fingerprintEventName,
             flavor: _isDropIn ? .dropin : .components,
             environment: context.apiContext.environment
         )
-        coreActionHandler.handle(fingerprintAction, event: event) { [weak self] result in
-            guard let self = self else { return }
+        coreActionHandler.handle(fingerprintAction, event: event) { result in
             switch result {
             case let .success(encodedFingerprint):
                 let additionalDetails = ThreeDS2Details.fingerprint(encodedFingerprint)
                 let result = ThreeDSActionHandlerResult.details(additionalDetails)
                 completionHandler(.success(result))
             case let .failure(error):
-                completionHandler(.failure(ThreeDS2ActionHandlerError(error: error)))
+                completionHandler(.failure(error))
             }
         }
     }
@@ -85,29 +84,28 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     /// - Parameter challengeAction: The challenge action as received from the Checkout API.
     /// - Parameter completionHandler: The completion closure.
     internal func handle(_ challengeAction: ThreeDS2ChallengeAction,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void) {
+                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         let event = Analytics.Event(
             component: challengeEventName,
             flavor: _isDropIn ? .dropin : .components,
             environment: context.apiContext.environment
         )
         coreActionHandler.handle(challengeAction, event: event) { [weak self] result in
-            guard let self = self else { return }
             switch result {
             case let .success(result):
-                self.handle(result, completionHandler: completionHandler)
+                self?.handle(result, completionHandler: completionHandler)
             case let .failure(error):
-                completionHandler(.failure(ThreeDS2ActionHandlerError(error: error)))
+                completionHandler(.failure(error))
             }
         }
     }
 
     private func handle(_ threeDSResult: ThreeDSResult,
-                        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, ThreeDS2ActionHandlerError>) -> Void) {
+                        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         let additionalDetails = ThreeDS2Details.challengeResult(threeDSResult)
         completionHandler(.success(.details(additionalDetails)))
     }
-    
+
     // MARK: - Private
 
     private let fingerprintEventName = "3ds2fingerprint"
