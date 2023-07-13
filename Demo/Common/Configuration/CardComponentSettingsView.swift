@@ -20,8 +20,13 @@ internal struct CardComponentSettingsView: View {
                     Toggle(isOn: $viewModel.showsHolderNameField) {
                         Text("Holder Name")
                     }
+                    
                     Toggle(isOn: $viewModel.showsStorePaymentMethodField) {
-                        Text("Stored Payment Method")
+                        VStack(alignment: .leading) {
+                            Text("Stored Payment Method")
+                            Text("(v70 and above)")
+                                .foregroundColor(.gray)
+                        }
                     }
                     Toggle(isOn: $viewModel.showsSecurityCodeField) {
                         Text("Security Code")
