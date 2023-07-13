@@ -28,12 +28,14 @@ internal class FormPickerItemView<ValueType: FormPickable>: FormSelectableValueI
                 topPresenter?.dismiss(animated: true)
             }
             
-            if #available(iOS 15.0, *) {
-                if let presentationController = pickerViewController.presentationController as? UISheetPresentationController {
-                    presentationController.prefersGrabberVisible = true
-                    presentationController.detents = [.medium(), .large()]
-                }
-            }
+            // TODO: Alex - Align with Design Team
+            
+//            if #available(iOS 15.0, *) {
+//                if let presentationController = pickerViewController.presentationController as? UISheetPresentationController {
+//                    presentationController.prefersGrabberVisible = true
+//                    presentationController.detents = [.medium(), .large()]
+//                }
+//            }
             
             topPresenter?.present(pickerViewController, animated: true)
         }

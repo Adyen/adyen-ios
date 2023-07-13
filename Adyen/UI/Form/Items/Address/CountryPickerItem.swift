@@ -11,7 +11,16 @@ import Foundation
 extension Region: FormPickable {
     
     public var displayTitle: String { name }
-    public var displaySubtitle: String? { identifier }
+    
+    public var displaySubtitle: String? {
+        if let countryFlag = identifier.adyen.countryFlag {
+            return "\(countryFlag) \(identifier)"
+        }
+        
+        return identifier
+    }
+
+    public var displayIcon: UIImage? { nil }
 }
 
 /// An address form item for address lookup.

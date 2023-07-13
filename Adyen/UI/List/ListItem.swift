@@ -9,26 +9,6 @@ import Foundation
 /// A selectable item displayed in the list.
 @_spi(AdyenInternal)
 public class ListItem: FormItem {
-
-    public struct Icon: Hashable {
-        /// The url of the icon image
-        public let url: URL?
-        /// Whether or not the icon should be styled/altered
-        public let canBeModified: Bool
-        
-        /// Initializes the icon of the `ListItem`
-        ///
-        /// - Parameters:
-        ///   - url: The url of the icon image
-        ///   - canBeModified: Whether or not the icon should be styled/altered
-        public init(
-            url: URL?,
-            canBeModified: Bool = true
-        ) {
-            self.url = url
-            self.canBeModified = canBeModified
-        }
-    }
     
     public var subitems: [FormItem] = []
     

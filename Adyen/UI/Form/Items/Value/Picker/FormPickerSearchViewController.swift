@@ -23,7 +23,7 @@ public final class FormPickerSearchViewController<ValueType: FormPickable>: UINa
             localizationParameters: localizationParameters,
             style: updatedStyle,
             searchBarPlaceholder: nil,
-            shouldFocusSearchBarOnAppearance: false
+            shouldFocusSearchBarOnAppearance: true // TODO: Alex - Align with Design Team
         ) { searchTerm, handler in
             
             let results = options
@@ -35,7 +35,7 @@ public final class FormPickerSearchViewController<ValueType: FormPickable>: UINa
         
         let searchViewController = SearchViewController(
             viewModel: viewModel,
-            emptyView: FormPickerEmptyView()
+            emptyView: EmptyView()
         )
         
         searchViewController.title = title
@@ -66,6 +66,7 @@ private extension FormPickable {
         .init(
             title: displayTitle,
             subtitle: displaySubtitle,
+            icon: listItemIcon,
             identifier: identifier,
             selectionHandler: { selectionHandler(self) }
         )
@@ -80,17 +81,9 @@ private extension FormPickable {
         guard let subtitle = displaySubtitle else { return false }
         return subtitle.range(of: searchTerm, options: .caseInsensitive) != nil
     }
-}
-
-// TODO: Build a better empty view
-
-private class FormPickerEmptyView: UILabel, SearchResultsEmptyView {
     
-    internal var searchTerm: String = "" {
-        didSet {
-            textAlignment = .center
-            numberOfLines = 0
-            text = "No results for '\(searchTerm)'"
-        }
+    private var listItemIcon: ListItem.Icon? {
+        guard let displayIcon else { return nil }
+        return .init(location: .local(image: displayIcon))
     }
 }

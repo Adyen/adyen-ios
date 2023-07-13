@@ -10,6 +10,8 @@ import Foundation
 public protocol FormPickable: Equatable {
     
     var identifier: String { get }
+    
+    var displayIcon: UIImage? { get }
     var displayTitle: String { get }
     var displaySubtitle: String? { get }
 }
