@@ -91,12 +91,21 @@ private extension DemoAddressLookupProvider {
     func dummyAddresses(for searchTerm: String) -> [PostalAddress] {
         [
             PostalAddress(
-                city: "New York",
+                city: "New York (NY)",
                 country: "US",
                 houseNumberOrName: "14",
                 postalCode: "10019",
                 stateOrProvince: "NY",
                 street: "8th Ave",
+                apartment: nil
+            ),
+            PostalAddress(
+                city: "Cheyenne",
+                country: "US",
+                houseNumberOrName: nil,
+                postalCode: "82003",
+                stateOrProvince: "WY",
+                street: "1280 Thorn Street",
                 apartment: nil
             ),
             PostalAddress(

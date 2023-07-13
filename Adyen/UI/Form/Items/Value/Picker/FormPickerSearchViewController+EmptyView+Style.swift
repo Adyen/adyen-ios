@@ -8,27 +8,18 @@ import Foundation
 
 extension FormPickerSearchViewController.EmptyView {
     
-    /// Initializes the `Style` of the ``FormPickerSearchViewController.EmptyView``
-    internal struct Style: ViewStyle {
+    public struct Style: ViewStyle {
         
-        internal var title: TextStyle
-        internal var subtitle: TextStyle
-        internal var backgroundColor: UIColor
+        public var title: TextStyle = .init(
+            font: .preferredFont(forTextStyle: .headline),
+            color: .Adyen.componentLabel
+        )
+        public var subtitle: TextStyle = .init(
+            font: .preferredFont(forTextStyle: .subheadline),
+            color: .Adyen.componentSecondaryLabel
+        )
+        public var backgroundColor: UIColor = .clear
         
-        internal init(
-            title: TextStyle = .init(
-                font: .preferredFont(forTextStyle: .headline),
-                color: .Adyen.componentLabel
-            ),
-            subtitle: TextStyle = .init(
-                font: .preferredFont(forTextStyle: .subheadline),
-                color: .Adyen.componentSecondaryLabel
-            ),
-            backgroundColor: UIColor = .clear
-        ) {
-            self.title = title
-            self.subtitle = subtitle
-            self.backgroundColor = backgroundColor
-        }
+        public init() {}
     }
 }

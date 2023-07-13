@@ -7,21 +7,18 @@
 import Foundation
 
 @_spi(AdyenInternal)
-public final class FormPickerSearchViewController<ValueType: FormPickable>: UINavigationController {
+public final class FormPickerSearchViewController: UINavigationController {
     
     public init(
         localizationParameters: LocalizationParameters? = nil,
-        style: ViewStyle,
+        style: Style = .init(),
         title: String?,
-        options: [ValueType],
-        selectionHandler: @escaping (ValueType) -> Void
+        options: [FormPickable],
+        selectionHandler: @escaping (FormPickable) -> Void
     ) {
-        var updatedStyle = style
-        updatedStyle.backgroundColor = .Adyen.componentBackground // TODO: Allow to pass this through
-        
         let viewModel = SearchViewController.ViewModel(
             localizationParameters: localizationParameters,
-            style: updatedStyle,
+            style: style,
             searchBarPlaceholder: nil,
             shouldFocusSearchBarOnAppearance: true // TODO: Alex - Align with Design Team
         ) { searchTerm, handler in
@@ -60,12 +57,14 @@ public final class FormPickerSearchViewController<ValueType: FormPickable>: UINa
     }
 }
 
+// MARK: FormPickable Convenience
+
 private extension FormPickable {
     
     func toListItem(with selectionHandler: @escaping (Self) -> Void) -> ListItem {
         .init(
-            title: displayTitle,
-            subtitle: displaySubtitle,
+            title: title,
+            subtitle: subtitle,
             icon: listItemIcon,
             identifier: identifier,
             selectionHandler: { selectionHandler(self) }
@@ -76,14 +75,14 @@ private extension FormPickable {
         if searchTerm.isEmpty { return true }
         
         if identifier.range(of: searchTerm, options: .caseInsensitive) != nil { return true }
-        if displayTitle.range(of: searchTerm, options: .caseInsensitive) != nil { return true }
+        if title.range(of: searchTerm, options: .caseInsensitive) != nil { return true }
         
-        guard let subtitle = displaySubtitle else { return false }
+        guard let subtitle = subtitle else { return false }
         return subtitle.range(of: searchTerm, options: .caseInsensitive) != nil
     }
     
     private var listItemIcon: ListItem.Icon? {
-        guard let displayIcon else { return nil }
-        return .init(location: .local(image: displayIcon))
+        guard let icon else { return nil }
+        return .init(location: .local(image: icon))
     }
 }

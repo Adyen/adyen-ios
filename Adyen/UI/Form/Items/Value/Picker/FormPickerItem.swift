@@ -7,23 +7,34 @@
 import Foundation
 
 @_spi(AdyenInternal)
-public protocol FormPickable: Equatable {
+public struct FormPickable: Equatable {
     
-    var identifier: String { get }
+    public let identifier: String
+    public let icon: UIImage?
+    public let title: String
+    public let subtitle: String?
     
-    var displayIcon: UIImage? { get }
-    var displayTitle: String { get }
-    var displaySubtitle: String? { get }
+    public init(
+        identifier: String,
+        icon: UIImage? = nil,
+        title: String,
+        subtitle: String?
+    ) {
+        self.identifier = identifier
+        self.icon = icon
+        self.title = title
+        self.subtitle = subtitle
+    }
 }
 
 /// An address form item for address lookup.
 @_spi(AdyenInternal)
-open class FormPickerItem<ValueType: FormPickable>: FormSelectableValueItem<ValueType?> {
+open class FormPickerItem: FormSelectableValueItem<FormPickable?> {
     
     public let localizationParameters: LocalizationParameters?
     public private(set) var isOptional: Bool = false
     
-    override public var value: ValueType? {
+    override public var value: FormPickable? {
         didSet {
             updateValidationFailureMessage()
             updateFormattedValue()
@@ -31,17 +42,20 @@ open class FormPickerItem<ValueType: FormPickable>: FormSelectableValueItem<Valu
     }
     
     @AdyenObservable([])
-    public var selectableValues: [ValueType]
+    public var selectableValues: [FormPickable]
 
-    /// Initializes the split text item.
+    /// Initializes the form picker item item.
     /// - Parameters:
-    ///   - prefillRegion: The provided prefill region
+    ///   - prefillValue: The value to prefill.
+    ///   - selectableValues: The selectable values.
+    ///   - title: The title of the screen
+    ///   - placeholder: The placeholder of the item when the value is `nil`
     ///   - style: The `FormTextItemStyle` UI style.
-    ///   - localizationParameters: The localization parameters
+    ///   - localizationParameters: The localization parameters.
     ///   - identifier: The item identifier
     public init(
-        prefillValue: ValueType?,
-        selectableValues: [ValueType],
+        preselectedValue: FormPickable?,
+        selectableValues: [FormPickable],
         title: String,
         placeholder: String,
         style: FormTextItemStyle,
@@ -51,7 +65,7 @@ open class FormPickerItem<ValueType: FormPickable>: FormSelectableValueItem<Valu
         self.localizationParameters = localizationParameters
 
         super.init(
-            value: prefillValue,
+            value: preselectedValue,
             style: style,
             placeholder: placeholder
         )
@@ -59,7 +73,7 @@ open class FormPickerItem<ValueType: FormPickable>: FormSelectableValueItem<Valu
         self.selectableValues = selectableValues
         
         self.identifier = identifier
-        self.title = localizedString(.countryFieldTitle, localizationParameters)
+        self.title = title
         
         updateValidationFailureMessage()
         updateFormattedValue()
@@ -81,8 +95,8 @@ open class FormPickerItem<ValueType: FormPickable>: FormSelectableValueItem<Valu
     
     override public func isValid() -> Bool {
         if isOptional { return true }
-        AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
-        return false
+        guard let value else { return false }
+        return selectableValues.contains { $0.identifier == value.identifier }
     }
     
     public func updateValidationFailureMessage() {

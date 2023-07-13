@@ -138,6 +138,14 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     }
     
     internal func unhighlightSeparatorView() {
+        
+        if window == nil {
+            // We don't want to animate the separator if the view is not visible yet
+            // as this can cause glitches on first appearance with a prefilled value
+            self.separatorView.backgroundColor = self.item.style.separatorColor
+            return
+        }
+        
         let context = AnimationContext(animationKey: Animation.separatorHighlighting.rawValue,
                                        duration: 0.0,
                                        delay: 0.0,

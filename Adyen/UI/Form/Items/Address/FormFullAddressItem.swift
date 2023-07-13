@@ -21,6 +21,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     override public var value: PostalAddress {
         didSet {
             updateCountryPicker()
+            // TODO: Alex - Also update the subregion picker if needed
         }
     }
     
@@ -59,7 +60,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
 
     // TODO: Alex - Make initialCountry Optional
     
-    /// Initializes the split text item.
+    /// Initializes the form address item.
     /// - Parameters:
     ///   - initialCountry: The initially set country
     ///   - configuration: The configuration of the FormAddressItem
@@ -79,7 +80,6 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         reloadFields()
         
         observe(countryPickerItem.publisher, eventHandler: { [weak self] event in
-            // TODO: How to deal with nil Regions? - Make sure all fields are populated on all changes!
             guard let region = event else { return }
             self?.value.country = region.identifier
             self?.context.countryCode = region.identifier
@@ -93,22 +93,27 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         return item
     }()
     
-    internal lazy var countryPickerItem: FormCountryPickerItem = {
-        let locale = Locale(identifier: configuration.localizationParameters?.locale ?? Locale.current.identifier)
-        let countries = RegionRepository.regions(from: locale as NSLocale,
-                                                 with: configuration.supportedCountryCodes).sorted { $0.name < $1.name }
+    internal lazy var countryPickerItem: FormRegionPickerItem = {
+        let locale = Locale(identifier: self.configuration.localizationParameters?.locale ?? Locale.current.identifier)
+        
+        let countries = RegionRepository.regions(
+            from: locale as NSLocale,
+            with: self.configuration.supportedCountryCodes
+        )
+        .sorted { $0.name < $1.name }
+        
         let defaultCountry = countries.first { $0.identifier == initialCountry }
         
-        let item = FormCountryPickerItem(
-            prefillValue: defaultCountry,
-            selectableValues: countries,
-            title: "Country Title",
-            placeholder: "Country Placeholder",
-            style: style.textField
+        return FormRegionPickerItem(
+            preselectedRegion: defaultCountry,
+            selectableRegions: countries,
+            shouldShowCountryFlags: true,
+            validationFailureMessage: ".countryFieldValidationFailureMessage", // TODO: Alex - Localization
+            title: localizedString(.countryFieldTitle, configuration.localizationParameters),
+            placeholder: ".countryFieldPlaceholder", // TODO: Alex - Localization
+            style: style.textField,
+            identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "country")
         )
-        item.title = localizedString(.countryFieldTitle, configuration.localizationParameters)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "country")
-        return item
     }()
     
     public func updateOptionalStatus(isOptional: Bool) {
@@ -173,13 +178,23 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     }
     
     private func createPickerItem(from viewModel: AddressViewModel, subRegions: [Region]) -> FormItem {
-        let defaultRegion = subRegions.first { $0.identifier == value.stateOrProvince } ?? subRegions[0]
-        let item = FormRegionPickerItem(preselectedValue: defaultRegion,
-                                        selectableValues: subRegions,
-                                        style: style.textField)
-        item.title = viewModel.labels[.stateOrProvince].map { localizedString($0, configuration.localizationParameters) }
+        let defaultRegion = subRegions.first { $0.identifier == value.stateOrProvince }
+        let title = viewModel.labels[.stateOrProvince].map { localizedString($0, configuration.localizationParameters) } ?? ""
+        let item = FormRegionPickerItem(
+            preselectedRegion: defaultRegion,
+            selectableRegions: subRegions,
+            shouldShowCountryFlags: false,
+            validationFailureMessage: "Invalid \(title)", // TODO: Alex - Localization
+            title: title,
+            placeholder: title,
+            style: style.textField
+        )
         
-        bind(item: item, to: .stateOrProvince, subRegions: subRegions)
+        observe(item.publisher, eventHandler: { [weak self] event in
+            guard let region = event else { return }
+            self?.value.stateOrProvince = region.identifier
+        })
+        
         return item
     }
     
@@ -200,22 +215,6 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         
         bind(item: item, to: field)
         return item
-    }
-    
-    private func bind(item: FormRegionPickerItem, to field: AddressField, subRegions: [Region]) {
-        observers[field].map(remove)
-        publisherObservers[field].map(remove)
-        observers[field] = bind(item.publisher, at: \.identifier, to: self, at: \.value.stateOrProvince)
-        func update(address: PostalAddress) {
-            let region = subRegions.first { subRegion in
-                subRegion.identifier == address.stateOrProvince
-            }
-            if let region = region {
-                item.value = RegionPickerItem(identifier: region.identifier, element: region)
-            }
-        }
-        update(address: value)
-        publisherObservers[.stateOrProvince] = observe(publisher, eventHandler: update(address:))
     }
     
     private func bind(item: FormTextInputItem, to field: AddressField) {

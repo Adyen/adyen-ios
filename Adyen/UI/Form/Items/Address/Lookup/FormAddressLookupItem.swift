@@ -24,12 +24,13 @@ public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?
     
     override public var value: PostalAddress? {
         didSet {
+            updateContext()
             updateValidationFailureMessage()
             updateFormattedValue()
         }
     }
 
-    /// Initializes the split text item.
+    /// Initializes the address lookup item.
     /// - Parameters:
     ///   - initialCountry: The items displayed side-by-side. Must be two.
     ///   - prefillAddress: The provided prefill address
@@ -83,6 +84,11 @@ public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?
 // MARK: - Convenience
 
 private extension FormAddressLookupItem {
+    
+    func updateContext() {
+        guard let country = value?.country else { return }
+        context.countryCode = country
+    }
     
     func updateValidationFailureMessage() {
         validationFailureMessage = {

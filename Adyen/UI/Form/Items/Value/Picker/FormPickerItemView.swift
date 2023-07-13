@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-internal class FormPickerItemView<ValueType: FormPickable>: FormSelectableValueItemView<ValueType, FormPickerItem<ValueType>> {
+internal class FormPickerItemView: FormSelectableValueItemView<FormPickable, FormPickerItem> {
     
     private var shouldBecomeFirstResponder: Bool = false
     
@@ -12,7 +12,7 @@ internal class FormPickerItemView<ValueType: FormPickable>: FormSelectableValueI
         window?.rootViewController?.adyen.topPresenter
     }
     
-    internal required init(item: FormPickerItem<ValueType>) {
+    internal required init(item: FormPickerItem) {
         super.init(item: item)
         item.selectionHandler = { [weak self] in
             
@@ -20,7 +20,6 @@ internal class FormPickerItemView<ValueType: FormPickable>: FormSelectableValueI
             
             let pickerViewController = FormPickerSearchViewController(
                 localizationParameters: item.localizationParameters,
-                style: item.style,
                 title: item.title,
                 options: item.selectableValues
             ) { [weak topPresenter] selectedItem in

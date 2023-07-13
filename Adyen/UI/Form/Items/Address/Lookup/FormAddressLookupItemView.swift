@@ -6,6 +6,11 @@
 
 internal class FormAddressLookupItemView: FormSelectableValueItemView<PostalAddress, FormAddressLookupItem> {
     
+    internal required init(item: FormAddressLookupItem) {
+        super.init(item: item)
+        self.numberOfLines = 0
+    }
+    
     override internal func reset() {
         item.value = PostalAddress()
         resetValidationStatus()

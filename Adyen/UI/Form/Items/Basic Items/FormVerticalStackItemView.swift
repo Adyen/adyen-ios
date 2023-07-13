@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,7 +16,7 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
 
     private var observations: [Observation] = []
 
-    /// Initializes the split item view.
+    /// Initializes the vertical stack item view.
     ///
     /// - Parameter item: The item represented by the view.
     public required init(item: FormItemType) {

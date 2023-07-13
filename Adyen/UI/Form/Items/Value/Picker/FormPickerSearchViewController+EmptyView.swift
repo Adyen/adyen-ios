@@ -8,8 +8,8 @@ import Foundation
 
 extension FormPickerSearchViewController {
     
-    /// The view that is shown when the address lookup search result is empty
-    class EmptyView: UIView, SearchResultsEmptyView {
+    /// The view that is shown when the form picker search result is empty
+    public class EmptyView: UIView, SearchResultsEmptyView {
         
         private let style: Style
         private let localizationParameters: LocalizationParameters?
