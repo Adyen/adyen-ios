@@ -34,7 +34,7 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
     /// :nodoc:
     internal func submit(fingerprint: String,
                          paymentData: String?,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Swift.Error>) -> Void) {
 
         let request = Submit3DS2FingerprintRequest(clientKey: apiContext.clientKey,
                                                    fingerprint: fingerprint,

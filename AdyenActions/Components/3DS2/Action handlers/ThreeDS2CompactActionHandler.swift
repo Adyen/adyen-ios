@@ -69,14 +69,8 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
             switch result {
             case let .success(encodedFingerprint):
                 self.fingerprintSubmitter.submit(fingerprint: encodedFingerprint,
-                                                 paymentData: fingerprintAction.paymentData) { result in
-                    switch result {
-                    case let .success(threeDS2Result):
-                        completionHandler(.success(threeDS2Result))
-                    case let .failure(error):
-                        completionHandler(.failure(error))
-                    }
-                }
+                                                 paymentData: fingerprintAction.paymentData,
+                                                 completionHandler: completionHandler)
             case let .failure(error):
                 completionHandler(.failure(error))
             }
