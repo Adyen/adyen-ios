@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -99,7 +99,7 @@ public final class BoletoComponent: PaymentComponent,
         if let emailItem = component.emailItem {
             bind(sendCopyByEmailItem.publisher, to: emailItem, at: \.isHidden.wrappedValue, with: { !$0 })
         }
-        (component.viewController as? SecuredViewController)?.delegate = self
+        (component.viewController as? SecuredViewController<FormViewController>)?.delegate = self
         component.delegate = self
         return component
     }()

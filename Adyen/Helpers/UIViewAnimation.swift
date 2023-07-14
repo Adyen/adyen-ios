@@ -103,8 +103,10 @@ extension AdyenScope where Base: UIView {
     private func animateNext(context: AnimationContext) {
         let completion: (Bool) -> Void = {
             context.completion?($0)
-            base.animations.removeFirst()
-            base.animations.first.map(animateNext)
+            if base.animations.count > 0 {
+                base.animations.removeFirst()
+                base.animations.first.map(animateNext)
+            }
         }
 
         if let springContext = context as? SpringAnimationContext {
