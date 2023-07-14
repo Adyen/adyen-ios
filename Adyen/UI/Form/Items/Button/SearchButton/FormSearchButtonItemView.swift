@@ -4,6 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import UIKit
+
 /// A view representing a button item.
 internal final class FormSearchButtonItemView: FormItemView<FormSearchButtonItem> {
     
