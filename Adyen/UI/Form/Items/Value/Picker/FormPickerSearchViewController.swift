@@ -13,8 +13,8 @@ public final class FormPickerSearchViewController: UINavigationController {
         localizationParameters: LocalizationParameters? = nil,
         style: Style = .init(),
         title: String?,
-        options: [FormPickable],
-        selectionHandler: @escaping (FormPickable) -> Void
+        options: [FormPickerElement],
+        selectionHandler: @escaping (FormPickerElement) -> Void
     ) {
         let viewModel = SearchViewController.ViewModel(
             localizationParameters: localizationParameters,
@@ -57,9 +57,9 @@ public final class FormPickerSearchViewController: UINavigationController {
     }
 }
 
-// MARK: FormPickable Convenience
+// MARK: FormPickerElement Convenience
 
-private extension FormPickable {
+private extension FormPickerElement {
     
     func toListItem(with selectionHandler: @escaping (Self) -> Void) -> ListItem {
         .init(

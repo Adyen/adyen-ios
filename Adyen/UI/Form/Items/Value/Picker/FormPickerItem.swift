@@ -8,7 +8,7 @@ import Foundation
 
 /// A wrapper struct to use as item in ``FormPickerItem``
 @_spi(AdyenInternal)
-public struct FormPickable: Equatable {
+public struct FormPickerElement: Equatable {
     
     public let identifier: String
     public let icon: UIImage?
@@ -30,12 +30,12 @@ public struct FormPickable: Equatable {
 
 /// An form item for picking values.
 @_spi(AdyenInternal)
-open class FormPickerItem: FormSelectableValueItem<FormPickable?> {
+open class FormPickerItem: FormSelectableValueItem<FormPickerElement?> {
     
     public let localizationParameters: LocalizationParameters?
     public private(set) var isOptional: Bool = false
     
-    override public var value: FormPickable? {
+    override public var value: FormPickerElement? {
         didSet {
             updateValidationFailureMessage()
             updateFormattedValue()
@@ -43,7 +43,7 @@ open class FormPickerItem: FormSelectableValueItem<FormPickable?> {
     }
     
     @AdyenObservable([])
-    public var selectableValues: [FormPickable]
+    public var selectableValues: [FormPickerElement]
 
     /// Initializes the form picker item item.
     /// - Parameters:
@@ -55,8 +55,8 @@ open class FormPickerItem: FormSelectableValueItem<FormPickable?> {
     ///   - localizationParameters: The localization parameters.
     ///   - identifier: The item identifier
     public init(
-        preselectedValue: FormPickable?,
-        selectableValues: [FormPickable],
+        preselectedValue: FormPickerElement?,
+        selectableValues: [FormPickerElement],
         title: String,
         placeholder: String,
         style: FormTextItemStyle,

@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// An picker form item for picking regions.
+/// A picker form item for picking regions.
 @_spi(AdyenInternal)
 public final class FormRegionPickerItem: FormPickerItem {
     
@@ -23,8 +23,8 @@ public final class FormRegionPickerItem: FormPickerItem {
         localizationParameters: LocalizationParameters? = nil,
         identifier: String? = nil
     ) {
-        let preselectedValue = preselectedRegion?.toFormPickable(shouldShowCountryFlag: shouldShowCountryFlags)
-        let selectableValues = selectableRegions.map { $0.toFormPickable(shouldShowCountryFlag: shouldShowCountryFlags) }
+        let preselectedValue = preselectedRegion?.toFormPickerElement(shouldShowCountryFlag: shouldShowCountryFlags)
+        let selectableValues = selectableRegions.map { $0.toFormPickerElement(shouldShowCountryFlag: shouldShowCountryFlags) }
         
         self.shouldShowCountryFlags = shouldShowCountryFlags
         
@@ -42,7 +42,7 @@ public final class FormRegionPickerItem: FormPickerItem {
     }
     
     public func updateValue(with region: Region?) {
-        self.value = region?.toFormPickable(shouldShowCountryFlag: shouldShowCountryFlags)
+        self.value = region?.toFormPickerElement(shouldShowCountryFlag: shouldShowCountryFlags)
     }
     
     override public func resetValue() {
@@ -58,21 +58,21 @@ public final class FormRegionPickerItem: FormPickerItem {
     }
 }
 
-// MARK: - Region to FormPickable
+// MARK: - Region to FormPickerElement
 
 private extension Region {
     
-    func toFormPickable(shouldShowCountryFlag: Bool) -> FormPickable {
+    func toFormPickerElement(shouldShowCountryFlag: Bool) -> FormPickerElement {
         .init(
             identifier: identifier,
             icon: nil,
             title: name,
-            subtitle: subtitle(shouldShowCountryFlag: shouldShowCountryFlag)
+            subtitle: subtitle(showingCountryFlag: shouldShowCountryFlag)
         )
     }
     
-    func subtitle(shouldShowCountryFlag: Bool) -> String {
-        if shouldShowCountryFlag, let countryFlag = identifier.adyen.countryFlag {
+    func subtitle(showingCountryFlag: Bool) -> String {
+        if showingCountryFlag, let countryFlag = identifier.adyen.countryFlag {
             return "\(countryFlag) \(identifier)"
         }
         
