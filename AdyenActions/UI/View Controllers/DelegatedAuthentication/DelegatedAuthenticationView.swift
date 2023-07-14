@@ -125,8 +125,6 @@ internal final class DelegatedAuthenticationView: UIView {
         let textView = LinkTextView(linkSelectionHandler: linkSelectionHandler)
         textView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "textView")
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.isScrollEnabled = false
-        textView.isEditable = false
         return textView
     }()
 
