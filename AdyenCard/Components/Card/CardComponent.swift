@@ -171,6 +171,8 @@ public class CardComponent: PresentableComponent,
     
     internal lazy var cardViewController: CardViewController = {
         
+        let code = initialCountryCode
+        
         let formViewController = CardViewController(configuration: configuration,
                                                     shopperInformation: configuration.shopperInformation,
                                                     formStyle: configuration.style,
@@ -244,18 +246,17 @@ private extension CardComponent {
     
     private var initialCountryCode: String {
         
-        guard
+        if
+            let preferredCountry = configuration.shopperInformation?.billingAddress?.country,
             let supportedCountryCodes = configuration.billingAddress.countryCodes,
-            let firstSupportedCountryCode = supportedCountryCodes.first, // supportedCountryCodes is not empty
-            let preferredCountry = configuration.shopperInformation?.billingAddress?.country
-        else {
-            return payment?.countryCode ?? Locale.current.regionCode ?? CardComponent.Constant.defaultCountryCode
-        }
-        
-        if supportedCountryCodes.contains(preferredCountry) {
+            supportedCountryCodes.isEmpty || supportedCountryCodes.contains(preferredCountry) {
             return preferredCountry
         }
         
-        return firstSupportedCountryCode
+        return
+            configuration.billingAddress.countryCodes?.first ??
+            payment?.countryCode ??
+            Locale.current.regionCode ??
+            CardComponent.Constant.defaultCountryCode
     }
 }

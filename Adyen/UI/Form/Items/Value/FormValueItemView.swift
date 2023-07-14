@@ -109,6 +109,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
             // We don't want to animate the separator if the view is not visible yet
             // as this can cause glitches on first appearance with a prefilled value
             self.separatorView.backgroundColor = color
+            adyen.cancelAnimations(with: Animation.separatorHighlighting.rawValue)
             return
         }
         
@@ -143,6 +144,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
             // We don't want to animate the separator if the view is not visible yet
             // as this can cause glitches on first appearance with a prefilled value
             self.separatorView.backgroundColor = self.item.style.separatorColor
+            adyen.cancelAnimations(with: Animation.separatorHighlighting.rawValue)
             return
         }
         
