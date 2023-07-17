@@ -24,8 +24,9 @@ internal struct CardComponentSettingsView: View {
                     Toggle(isOn: $viewModel.showsStorePaymentMethodField) {
                         VStack(alignment: .leading) {
                             Text("Stored Payment Method")
-                            Text("(v70 and above)")
+                            Text("(Requires API version 70 or higher)")
                                 .foregroundColor(.gray)
+                                .font(.footnote)
                         }
                     }
                     Toggle(isOn: $viewModel.showsSecurityCodeField) {
