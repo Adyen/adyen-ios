@@ -45,7 +45,7 @@ enum PostalAddressMocks {
                                                     country: "US",
                                                     houseNumberOrName: "",
                                                     postalCode: "",
-                                                    stateOrProvince: "AL",
+                                                    stateOrProvince: "",
                                                     street: "",
                                                     apartment: nil)
 }

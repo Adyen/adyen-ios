@@ -147,7 +147,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
                                        initialCountry: initialCountry,
                                        identifier: identifier,
                                        style: configuration.style.addressStyle,
-                                       presenter: viewController,
+                                       presenter: self,
                                        addressViewModelBuilder: addressViewModelBuilder())
     }()
     
@@ -162,7 +162,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
                                        initialCountry: initialCountry,
                                        identifier: identifier,
                                        style: configuration.style.addressStyle,
-                                       presenter: viewController,
+                                       presenter: self,
                                        addressViewModelBuilder: addressViewModelBuilder())
     }()
     
@@ -238,6 +238,18 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         shopperInformation.telephoneNumber.map { phoneItem?.value = $0 }
         shopperInformation.billingAddress.map { addressItem?.value = $0 }
         shopperInformation.deliveryAddress.map { deliveryAddressItem?.value = $0 }
+    }
+}
+
+@_spi(AdyenInternal)
+extension AbstractPersonalInformationComponent: ViewControllerPresenter {
+    
+    public func presentViewController(_ viewController: UIViewController, animated: Bool) {
+        self.viewController.presentViewController(viewController, animated: animated)
+    }
+    
+    public func dismissViewController(animated: Bool) {
+        self.viewController.dismissViewController(animated: animated)
     }
 }
 

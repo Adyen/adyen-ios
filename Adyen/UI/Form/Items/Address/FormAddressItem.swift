@@ -58,8 +58,6 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             headerItem.text = title ?? ""
         }
     }
-
-    // TODO: Alex - Make initialCountry Optional
     
     /// Initializes the form address item.
     /// - Parameters:
@@ -78,7 +76,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         self.addressViewModelBuilder = addressViewModelBuilder
         self.context = .init(countryCode: initialCountry, isOptional: false)
         addressViewModel = addressViewModelBuilder.build(context: context)
-        super.init(value: PostalAddress(), style: configuration.style)
+        super.init(value: PostalAddress(country: initialCountry), style: configuration.style)
         self.identifier = identifier
         reloadFields()
         

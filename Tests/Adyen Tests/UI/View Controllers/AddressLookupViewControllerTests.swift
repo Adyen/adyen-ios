@@ -104,7 +104,6 @@ class AddressLookupViewControllerTests: XCTestCase {
         // Given
         
         let results = PostalAddressMocks.all
-        let prefillAddress = results.first!
         let currentInput = results.last!
         var expectedCompletionHandlerAddress: PostalAddress?
         
