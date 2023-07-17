@@ -10,7 +10,7 @@ jobs:
         fetch-depth: 0
     - uses: n1hility/cancel-previous-runs@v3
       with:
-        token: ${{ secrets.MANUAL_ACTION_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
@@ -56,7 +56,7 @@ jobs:
         DEMO_SERVER_API_KEY: ${{ secrets.DEMO_SERVER_TEST_ENV_API_KEY }}
         MERCHANT_ACCOUNT: ${{ secrets.MERCHANT_ACCOUNT }}
         APPLE_DEVELOPMENT_TEAM_ID: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
-        ENVIRONMENT: ${{ env.ENVIRONMENT }}
+        ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
       run: |
         # client Key
         sed -i '' "s/static let clientKey.*$/static let clientKey = \"$CLIENT_KEY\"/g" ./Demo/Configuration.swift

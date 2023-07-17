@@ -4,9 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import Foundation
+import UIKit
 
 internal struct SessionRequest: APIRequest {
     
@@ -44,10 +45,13 @@ internal struct SessionRequest: APIRequest {
         //                                  "visa": InstallmentOptions(monthValues: [3, 6, 9], includesRevolving: true)]
         //
         //        try container.encode(installmentOptions, forKey: .installmentOptions)
-        
-        // Toggle these to enable/disable displaying the store pm switch (nice to add these in the settings)
-        //        try container.encode("askForConsent", forKey: .storePaymentMethodMode)
-        //        try container.encode("CardOnFile", forKey: .recurringProcessingModel)
+
+        if ConfigurationConstants.current.cardComponentConfiguration.showsStorePaymentMethodField {
+            AdyenAssertion.assert(message: "API version should be v70 or above to apply card component's store payment method field",
+                                  condition: ConfigurationConstants.current.apiVersion < 70)
+            try container.encode("askForConsent", forKey: .storePaymentMethodMode)
+            try container.encode("CardOnFile", forKey: .recurringProcessingModel)
+        }
     }
     
     internal enum CodingKeys: CodingKey {
