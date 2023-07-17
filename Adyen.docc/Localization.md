@@ -1,18 +1,49 @@
 # Localization
 
-1. In Xcode create a new "Strings File" with the name `Localizable`.
-    - If you are supporting multiple languages, make sure you check them all in for the `Localizable.string` under "Localization" in the "File Inspector".
-    - For each locale, your iOS project will have a corresponding file. For example: `it-IT.lproj/Localizable.string`.
-2. Override all necessary strings with desired values for all your localizations. The list of available strings can be found [here](https://github.com/Adyen/adyen-ios/blob/develop/Adyen/Assets/Generated/LocalizationKey.swift).
+By default, the SDK attempts to use a device's locale. If current device's locale is not supported, SDK falls back to the **en-US** locale. 
+Localization only picks up locales that are listed in the `Localizations` property of your app's `Info.plist` file.
 
-## Custom localization
+## Overriding a string 
 
-In case your want to use a different localization file name, different key format or a different bundle - use `LocalizationParameters` to specify these values.
-In example below, the SDK will look for key `adyen_submitButton_formatted` in `Translation.string` file in a bundle `customBundle`. 
+You can override strings for each key, and for each language and locale. 
 
-```swift
-let parameters = LocalizationParameters(bundle: customBundle,
-                                        tableName: "Translation",
+1. In Xcode, [create a new](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) or use your existing `Localizable.strings` file.
+
+For example, if your app uses English and Spanish, create a `Localizable.strings` file for each locale:
+
+- English: `en-US.lproj/Localizable.string`
+
+- Spanish: `es-ES.lproj/Localizable.string`
+
+2. Find the key for the string you want to translate in the [list of available strings](https://github.com/Adyen/adyen-ios/blob/develop/Adyen/Assets/Generated/LocalizationKey.swift) and override it for each desired locale:
+
+For example, if you want to override the payment button text to **Subscribe for [AMOUNT]**.
+
+- English, in the `en-US.lproj/Localizable.string` file:
+~~~
+"adyen.submitButton.formatted" = "Subscribe for %@";
+~~~
+
+- Spanish, in the `es-ES.lproj/Localizable.string` file:
+~~~
+"adyen.submitButton.formatted" = "Suscríbete por %@";
+~~~
+
+### Custom localization file name
+
+To use a custom localization file name, key format, or bundle, you must configure `LocalizationParameters`.
+
+|Parameter | Description | Default value |
+| --- | --- | --- |
+|`bundle`| Your bundle. | `Bundle.main` |
+|`tableName` | Your localization file name. | `Localizable.strings` |
+|`keySeparator` | The separator for the key for each string. | dot |
+
+In the following example, the SDK looks for the key `adyen_submitButton_formatted` in the `YOUR_LOCALIZATION_FILE.strings` file in **CommonLibrary** bundle. 
+
+~~~~swift
+let parameters = LocalizationParameters(bundle: Bundle(for: MyCommonLibraryClass.type),
+                                        tableName: "YOUR_LOCALIZATION_FILE",
                                         keySeparator: "_")
-configuration.localizationParameters = parameters // Any component
-```
+configuration.localizationParameters = parameters // Any Component.
+~~~~
