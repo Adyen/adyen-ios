@@ -37,7 +37,7 @@ To use a custom localization file name, key format, or bundle, you must configur
 | --- | --- | --- |
 |`bundle`| Your bundle. | `Bundle.main` |
 |`tableName` | Your localization file name. | `Localizable.strings` |
-|`keySeparator` | The separator for the key for each string. | dot |
+|`keySeparator` | The separator for the key for each string. | `"."` |
 
 In the following example, the SDK looks for the key `adyen_submitButton_formatted` in the `YOUR_LOCALIZATION_FILE.strings` file in **CommonLibrary** bundle. 
 
