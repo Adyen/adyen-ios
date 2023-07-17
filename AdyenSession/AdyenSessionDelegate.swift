@@ -78,7 +78,7 @@ public extension AdyenSessionDelegate {
     
     func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {}
     
-    // Providing default implementation on the deprecated one to prevent forced comformance.
+    // Providing default implementation on the deprecated one to prevent forced conformance.
     func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession) {}
 }
 
