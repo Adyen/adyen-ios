@@ -225,6 +225,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
                                        supportedCountryCodes: configuration.billingAddressCountryCodes
                                    ),
                                    identifier: identifier,
+                                   presenter: viewController,
                                    addressViewModelBuilder: DefaultAddressViewModelBuilder())
         configuration.shopperInformation?.billingAddress.map { item.value = $0 }
         item.style.backgroundColor = UIColor.Adyen.lightGray
@@ -247,8 +248,10 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     // MARK: - Private
     
     private lazy var formViewController: FormViewController = {
-        let formViewController = FormViewController(style: configuration.style)
-        formViewController.localizationParameters = configuration.localizationParameters
+        let formViewController = FormViewController(
+            style: configuration.style,
+            localizationParameters: configuration.localizationParameters
+        )
         formViewController.delegate = self
 
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title

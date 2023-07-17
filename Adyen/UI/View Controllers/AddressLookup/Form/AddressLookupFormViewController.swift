@@ -43,9 +43,11 @@ internal class AddressLookupFormViewController: FormViewController {
         self.lookupDelegate = delegate
         self.addressViewModelBuilder = addressViewModelBuilder
         
-        super.init(style: formStyle)
+        super.init(
+            style: formStyle,
+            localizationParameters: localizationParameters
+        )
         
-        self.localizationParameters = localizationParameters
         title = localizedString(.billingAddressSectionTitle, localizationParameters)
         
         navigationItem.leftBarButtonItem = .init(
@@ -88,6 +90,7 @@ internal class AddressLookupFormViewController: FormViewController {
                 showsHeader: false
             ),
             identifier: identifier,
+            presenter: self,
             addressViewModelBuilder: addressViewModelBuilder
         )
         prefillAddress.map { item.value = $0 }

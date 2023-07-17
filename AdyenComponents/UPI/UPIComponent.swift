@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -152,8 +152,10 @@ public final class UPIComponent: PaymentComponent,
     // MARK: - Private
 
     private lazy var formViewController: FormViewController = {
-        let formViewController = FormViewController(style: configuration.style)
-        formViewController.localizationParameters = configuration.localizationParameters
+        let formViewController = FormViewController(
+            style: configuration.style,
+            localizationParameters: configuration.localizationParameters
+        )
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
         formViewController.append(instructionsLabelItem.addingDefaultMargins())

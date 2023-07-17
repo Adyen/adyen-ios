@@ -34,6 +34,7 @@ open class FormPickerItem: FormSelectableValueItem<FormPickerElement?> {
     
     public let localizationParameters: LocalizationParameters?
     public private(set) var isOptional: Bool = false
+    internal private(set) weak var presenter: ViewControllerPresenter?
     
     override public var value: FormPickerElement? {
         didSet {
@@ -60,10 +61,12 @@ open class FormPickerItem: FormSelectableValueItem<FormPickerElement?> {
         title: String,
         placeholder: String,
         style: FormTextItemStyle,
+        presenter: ViewControllerPresenter?,
         localizationParameters: LocalizationParameters? = nil,
         identifier: String? = nil
     ) {
         self.localizationParameters = localizationParameters
+        self.presenter = presenter
 
         super.init(
             value: preselectedValue,

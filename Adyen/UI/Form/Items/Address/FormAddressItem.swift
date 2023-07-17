@@ -48,6 +48,8 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     internal let addressViewModelBuilder: AddressViewModelBuilder
     
+    private weak var presenter: ViewControllerPresenter?
+    
     @_spi(AdyenInternal)
     public private(set) var addressViewModel: AddressViewModel
 
@@ -68,9 +70,11 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     public init(initialCountry: String,
                 configuration: Configuration,
                 identifier: String? = nil,
+                presenter: ViewControllerPresenter?,
                 addressViewModelBuilder: AddressViewModelBuilder) {
         self.initialCountry = initialCountry
         self.configuration = configuration
+        self.presenter = presenter
         self.addressViewModelBuilder = addressViewModelBuilder
         self.context = .init(countryCode: initialCountry, isOptional: false)
         addressViewModel = addressViewModelBuilder.build(context: context)
@@ -111,6 +115,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             title: localizedString(.countryFieldTitle, configuration.localizationParameters),
             placeholder: ".countryFieldPlaceholder", // TODO: Alex - Localization
             style: style.textField,
+            presenter: presenter,
             identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "country")
         )
     }()
@@ -186,7 +191,8 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             validationFailureMessage: "Invalid \(title)", // TODO: Alex - Localization
             title: title,
             placeholder: title,
-            style: style.textField
+            style: style.textField,
+            presenter: presenter
         )
         
         bind(item: item, to: .stateOrProvince, subRegions: subRegions)

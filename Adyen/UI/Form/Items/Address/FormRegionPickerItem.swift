@@ -20,6 +20,7 @@ public final class FormRegionPickerItem: FormPickerItem {
         title: String,
         placeholder: String,
         style: FormTextItemStyle,
+        presenter: ViewControllerPresenter?,
         localizationParameters: LocalizationParameters? = nil,
         identifier: String? = nil
     ) {
@@ -34,6 +35,7 @@ public final class FormRegionPickerItem: FormPickerItem {
             title: title,
             placeholder: placeholder,
             style: style,
+            presenter: presenter,
             localizationParameters: localizationParameters,
             identifier: identifier
         )

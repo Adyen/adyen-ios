@@ -19,6 +19,8 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
     internal let style: AddressStyle
 
     internal let addressViewModelBuilder: AddressViewModelBuilder
+    
+    private weak var presenter: ViewControllerPresenter?
 
     internal lazy var item: FormAddressItem = {
         let addressItem = FormAddressItem(initialCountry: initialCountry,
@@ -27,6 +29,7 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
                                               localizationParameters: localizationParameters
                                           ),
                                           identifier: identifier,
+                                          presenter: presenter,
                                           addressViewModelBuilder: addressViewModelBuilder)
         value.map { addressItem.value = $0 }
         return addressItem
@@ -36,11 +39,13 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
                   initialCountry: String,
                   identifier: String,
                   style: AddressStyle,
+                  presenter: ViewControllerPresenter?,
                   addressViewModelBuilder: AddressViewModelBuilder) {
         self.value = value
         self.initialCountry = initialCountry
         self.identifier = identifier
         self.style = style
+        self.presenter = presenter
         self.addressViewModelBuilder = addressViewModelBuilder
     }
 
