@@ -9,7 +9,7 @@ You can override strings for each key, and for each language and locale.
 
 1. In Xcode, [create a new](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) or use your existing `Localizable.strings` file.
 
-For example, if your app uses English and Spanish, create a `Localizable.strings` file for each locale:
+For example, if your app uses English and Spanish, your project folder should have a `Localizable.strings` file for each locale:
 
 - English: `en-US.lproj/Localizable.string`
 
