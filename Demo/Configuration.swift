@@ -113,7 +113,7 @@ internal struct DemoAppSettings: Codable {
         countryCode: "NL",
         value: 17408,
         currencyCode: "EUR",
-        apiVersion: 69,
+        apiVersion: 70,
         merchantAccount: ConfigurationConstants.merchantAccount,
         cardComponentConfiguration: defaultCardComponentConfiguration
     )
