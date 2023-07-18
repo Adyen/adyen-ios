@@ -182,7 +182,7 @@
             isDeviceRegisteredForDelegatedAuthentication(
                 delegatedAuthenticationInput: delegatedAuthenticationInput,
                 registeredHandler: { [weak self] in
-                    guard let self = self else { return }
+                    guard let self else { return }
                     self.showApprovalScreenWhenDeviceIsRegistered(delegatedAuthenticationInput: delegatedAuthenticationInput,
                                                                   completion: completion,
                                                                   failureHandler: failureHandler)
@@ -198,7 +198,7 @@
                                                               failureHandler: @escaping (Error) -> Void) {
             presenter.showApprovalScreen(component: self,
                                          approveAuthenticationHandler: { [weak self] in
-                                             guard let self = self else { return }
+                                             guard let self else { return }
                                              self.executeDAAuthenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
                                                                         authenticatedHandler: { completion(.success($0)) },
                                                                         failedAuthenticationHandler: failureHandler)
@@ -232,8 +232,8 @@
                 switch result {
                 case let .failure(error):
                     notRegisteredHandler(error)
-                case let .success(success):
-                    if success {
+                case let .success(isRegistered):
+                    if isRegistered {
                         registeredHandler()
                     } else {
                         notRegisteredHandler(ThreeDS2PlusDACoreActionError.deviceIsNotRegistered)
@@ -246,9 +246,7 @@
 
         internal var shouldShowRegistrationScreen: Bool {
             delegatedAuthenticationState.isDeviceRegistrationFlow
-                && presenter.userInput != .approveDifferently
-                && presenter.userInput != .deleteDA
-                && presenter.userInput != .biometric
+                && presenter.userInput.canShowRegistration
                 && deviceSupportCheckerService.isDeviceSupported
         }
                         
@@ -296,22 +294,10 @@
                     return
                 }
                 if shouldShowRegistrationScreen {
-                    presenter.showRegistrationScreen(
-                        component: self,
-                        registerDelegatedAuthenticationHandler: { [weak self] in
-                            guard let self = self else { return }
-                            self.performDelegatedRegistration(sdkInput) { [weak self] result in
-                                self?.deliver(challengeResult: challengeResult,
-                                              delegatedAuthenticationSDKOutput: result.successResult,
-                                              deleteDelegatedAuthenticationCredentials: nil,
-                                              completionHandler: completionHandler)
-                            }
-                        },
-                        fallbackHandler: {
-                            completionHandler(.success(challengeResult))
-                        }
-                    )
-                } else if presenter.userInput == .deleteDA {
+                    showDelegatedAuthenticationRegistration(sdkInput: sdkInput,
+                                                            challengeResult: challengeResult,
+                                                            completionHandler: completionHandler)
+                } else if presenter.userInput.consentedToDeleteCredentials {
                     deliver(challengeResult: challengeResult,
                             delegatedAuthenticationSDKOutput: nil,
                             deleteDelegatedAuthenticationCredentials: true,
@@ -324,6 +310,24 @@
             }
         }
         
+        private func showDelegatedAuthenticationRegistration(sdkInput: String,
+                                                             challengeResult: ThreeDSResult,
+                                                             completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
+            presenter.showRegistrationScreen(component: self,
+                                             registerDelegatedAuthenticationHandler: { [weak self] in
+                                                 guard let self else { return }
+                                                 self.performDelegatedRegistration(sdkInput) { [weak self] result in
+                                                     self?.deliver(challengeResult: challengeResult,
+                                                                   delegatedAuthenticationSDKOutput: result.successResult,
+                                                                   deleteDelegatedAuthenticationCredentials: nil,
+                                                                   completionHandler: completionHandler)
+                                                 }
+                                             },
+                                             fallbackHandler: {
+                                                 completionHandler(.success(challengeResult))
+                                             })
+        }
+        
         private func deliver(challengeResult: ThreeDSResult,
                              delegatedAuthenticationSDKOutput: String?,
                              deleteDelegatedAuthenticationCredentials: Bool?,
@@ -334,7 +338,6 @@
                     delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
                     deleteDelegatedAuthenticationCredentials: deleteDelegatedAuthenticationCredentials
                 )
-
                 transaction = nil
                 completionHandler(.success(threeDSResult))
             } catch {

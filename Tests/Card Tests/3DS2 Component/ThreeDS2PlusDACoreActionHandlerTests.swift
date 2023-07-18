@@ -578,6 +578,18 @@ import XCTest
 
             waitForExpectations(timeout: 2, handler: nil)
         }
+        
+        func testThreeDS2PlusDAScreenUserInput() {
+            XCTAssertTrue(ThreeDS2PlusDAScreenUserInput.noInput.canShowRegistration)
+            XCTAssertFalse(ThreeDS2PlusDAScreenUserInput.approveDifferently.canShowRegistration)
+            XCTAssertFalse(ThreeDS2PlusDAScreenUserInput.biometric.canShowRegistration)
+            XCTAssertFalse(ThreeDS2PlusDAScreenUserInput.deleteDA.canShowRegistration)
+            
+            XCTAssertFalse(ThreeDS2PlusDAScreenUserInput.noInput.consentedToDeleteCredentials)
+            XCTAssertFalse(ThreeDS2PlusDAScreenUserInput.approveDifferently.consentedToDeleteCredentials)
+            XCTAssertFalse(ThreeDS2PlusDAScreenUserInput.biometric.consentedToDeleteCredentials)
+            XCTAssertTrue(ThreeDS2PlusDAScreenUserInput.deleteDA.consentedToDeleteCredentials)
+        }
     }
 
 struct DeviceSupportCheckerMock: AdyenAuthentication.DeviceSupportCheckerProtocol {
