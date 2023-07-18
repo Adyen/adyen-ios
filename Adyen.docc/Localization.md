@@ -1,7 +1,7 @@
 # Localization
 
-By default, the SDK attempts to use a device's locale. If current device's locale is not supported, SDK falls back to the **en-US** locale. 
-Localization only picks up locales that are listed in the `Localizations` property of your app's `Info.plist` file.
+By default, the SDK attempts to use a device's locale. If the preferred device's locales are not supported, the SDK falls back to the **en-US** locale.
+Localization only picks up locales that are listed in the `CFBundleLocalizations` property of your app's `Info.plist` file.
 
 ## Overriding a string 
 
