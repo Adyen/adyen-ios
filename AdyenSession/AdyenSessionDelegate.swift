@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,7 +21,17 @@ public protocol AdyenSessionDelegate: AnyObject {
     ///   - resultCode: The result code of the completed payment.
     ///   - component: The component object.
     ///   - session: The session object.
+    @available(*, deprecated, message: "Use the new `didComplete(with result:, component:, session:` method instead.")
     func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession)
+    
+    /// Invoked when the component finishes without any further steps needed by the application.
+    /// The application only needs to dismiss the component.
+    ///
+    /// - Parameters:
+    ///   - result: The result object of the completed payment.
+    ///   - component: The component object.
+    ///   - session: The session object.
+    func didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession)
     
     /// Invoked when a payment component fails.
     ///
@@ -67,6 +77,9 @@ public extension AdyenSessionDelegate {
     func handlerForAdditionalDetails(in component: ActionComponent, session: AdyenSession) -> AdyenSessionPaymentDetailsHandler? { nil }
     
     func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {}
+    
+    // Providing default implementation on the deprecated one to prevent forced conformance.
+    func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession) {}
 }
 
 /// Describes the interface to take over the step where data is provided for the payments call.
@@ -96,7 +109,7 @@ public protocol AdyenSessionPaymentDetailsHandler {
     func didProvide(_ actionComponentData: ActionComponentData, from component: ActionComponent, session: AdyenSession)
 }
 
-/// Represents the result of a payment via ``AdyenSession``.
+/// Represents the status of a payment via ``AdyenSession``.
 public enum SessionPaymentResultCode: String {
     /// Indicates the payment was successfully authorised.
     case authorised = "Authorised"

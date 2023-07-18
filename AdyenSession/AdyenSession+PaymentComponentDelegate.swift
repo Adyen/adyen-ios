@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,11 +18,15 @@ extension AdyenSession: PaymentComponentDelegate {
         handler.didSubmit(data, from: component, dropInComponent: nil, session: self)
     }
     
-    internal func finish(with resultCode: SessionPaymentResultCode, component: Component) {
-        let success = resultCode == .authorised || resultCode == .received || resultCode == .pending
+    internal func finish(with result: AdyenSessionResult, component: Component) {
+        let success = result.resultCode == .authorised
+            || result.resultCode == .received
+            || result.resultCode == .pending
         component.finalizeIfNeeded(with: success) { [weak self] in
             guard let self = self else { return }
-            self.delegate?.didComplete(with: resultCode, component: component, session: self)
+            // keeping deprecated one until v6
+            self.delegate?.didComplete(with: result.resultCode, component: component, session: self)
+            self.delegate?.didComplete(with: result, component: component, session: self)
         }
     }
     
@@ -89,8 +93,9 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
                 handleOrderBlock()
             }
         } else {
-            finish(with: SessionPaymentResultCode(paymentResultCode: response.resultCode),
-                   component: currentComponent)
+            let result = AdyenSessionResult(resultCode: SessionPaymentResultCode(paymentResultCode: response.resultCode),
+                                            encodedResult: response.sessionResult)
+            finish(with: result, component: currentComponent)
         }
     }
     
