@@ -149,7 +149,6 @@
 		81B001BC2A55B4040015BFA3 /* AddressLookupSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001BB2A55B4040015BFA3 /* AddressLookupSearchViewController.swift */; };
 		81B001C02A55C2C50015BFA3 /* AddressLookupSearchViewController+EmptyView+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001BF2A55C2C50015BFA3 /* AddressLookupSearchViewController+EmptyView+Style.swift */; };
 		81B001C22A55C5C10015BFA3 /* UISearchBar+Prominent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001C12A55C5C10015BFA3 /* UISearchBar+Prominent.swift */; };
-		81B001C42A56BB2E0015BFA3 /* AddressLookupSearchViewController+FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001C32A56BB2E0015BFA3 /* AddressLookupSearchViewController+FooterView.swift */; };
 		81B001C62A56E9D40015BFA3 /* LinkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001C52A56E9D40015BFA3 /* LinkTextView.swift */; };
 		81BA08372A49C93100308160 /* FormSelectableValueItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08362A49C93100308160 /* FormSelectableValueItemView.swift */; };
 		81BA08392A49C95700308160 /* FormSelectableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08382A49C95700308160 /* FormSelectableValueItem.swift */; };
@@ -1311,7 +1310,6 @@
 		81B001BB2A55B4040015BFA3 /* AddressLookupSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupSearchViewController.swift; sourceTree = "<group>"; };
 		81B001BF2A55C2C50015BFA3 /* AddressLookupSearchViewController+EmptyView+Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressLookupSearchViewController+EmptyView+Style.swift"; sourceTree = "<group>"; };
 		81B001C12A55C5C10015BFA3 /* UISearchBar+Prominent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Prominent.swift"; sourceTree = "<group>"; };
-		81B001C32A56BB2E0015BFA3 /* AddressLookupSearchViewController+FooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressLookupSearchViewController+FooterView.swift"; sourceTree = "<group>"; };
 		81B001C52A56E9D40015BFA3 /* LinkTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
 		81BA08322A45D7C100308160 /* AddressLookupFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupFormViewController.swift; sourceTree = "<group>"; };
 		81BA08362A49C93100308160 /* FormSelectableValueItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableValueItemView.swift; sourceTree = "<group>"; };
@@ -2572,7 +2570,6 @@
 			isa = PBXGroup;
 			children = (
 				81B001BB2A55B4040015BFA3 /* AddressLookupSearchViewController.swift */,
-				81B001C32A56BB2E0015BFA3 /* AddressLookupSearchViewController+FooterView.swift */,
 				81C4005F2A3A0AF3007EC51C /* AddressLookupSearchViewController+EmptyView.swift */,
 				81B001BF2A55C2C50015BFA3 /* AddressLookupSearchViewController+EmptyView+Style.swift */,
 			);
@@ -6154,7 +6151,6 @@
 				813EF9E42A5DAB7600C65D15 /* FormRegionPickerItem.swift in Sources */,
 				E97B972322B238C400505476 /* Analytics.swift in Sources */,
 				F95B6D8C252316DA002C9062 /* PhoneNumberValidator.swift in Sources */,
-				81B001C42A56BB2E0015BFA3 /* AddressLookupSearchViewController+FooterView.swift in Sources */,
 				C9B6683927C903FE006950B9 /* AdyenContext.swift in Sources */,
 				F9838D392631AD1900963483 /* Balance.swift in Sources */,
 				E9021E022264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift in Sources */,
