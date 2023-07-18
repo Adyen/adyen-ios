@@ -46,8 +46,11 @@ internal class AddressLookupSearchViewController: SearchViewController {
             style: style,
             searchBarPlaceholder: localizedString(.addressLookupSearchPlaceholder, localizationParameters),
             shouldFocusSearchBarOnAppearance: true
-        ) { [weak delegate] in
-            delegate?.addressLookupSearchLookUp(searchTerm: $0, resultHandler: $1)
+        ) { [weak delegate] searchTerm, resultHandler in
+            delegate?.addressLookupSearchLookUp(searchTerm: searchTerm) {
+                guard let delegate else { return }
+                resultHandler(Self.listItems(from: $0, with: delegate))
+            }
         }
         
         self.delegate = delegate
@@ -69,51 +72,32 @@ internal class AddressLookupSearchViewController: SearchViewController {
             action: #selector(cancelSearch)
         )
         
-        // TODO: Alex - Align with Design Team
-        
-        navigationItem.rightBarButtonItem = .init(
-            title: "Manual Entry", // TODO: Alex - Localization
-            style: .plain,
-            target: self,
-            action: #selector(switchToManualEntry)
-        )
-        
         searchBar.textContentType = .fullStreetAddress
-    }
-    
-    override internal func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let footerView = FooterView { [weak self] in
-            self?.switchToManualEntry()
-        }
-
-        resultsListViewController.tableView.update(tableFooterView: footerView)
-    }
-    
-    @objc
-    private func switchToManualEntry() {
-        delegate?.addressLookupSearchSwitchToManualEntry()
     }
     
     @objc
     private func cancelSearch() {
         delegate?.addressLookupSearchCancel()
     }
-}
-
-// MARK: - UITableView Extension
-
-extension UITableView {
     
-    func update(tableFooterView: UIView?) {
+    private static func listItems(
+        from results: [ListItem],
+        with delegate: AddressLookupSearchViewControllerDelegate
+    ) -> [ListItem] {
         
-        self.tableFooterView = nil
+        if results.isEmpty {
+            return results
+        }
         
-        guard let tableFooterView else { return }
-
-        let newSize = tableFooterView.systemLayoutSizeFitting(.init(width: bounds.width, height: 0))
-        tableFooterView.frame.size.height = newSize.height
-        self.tableFooterView = tableFooterView
+        var style = ListItemStyle()
+        style.title.color = .Adyen.defaultBlue // TODO: Fix
+        let manualEntryListItem = ListItem(
+            title: "Enter Address Manually",
+            style: style
+        ) {
+            delegate.addressLookupSearchSwitchToManualEntry()
+        }
+        
+        return [manualEntryListItem] + results
     }
 }
