@@ -153,9 +153,19 @@ public class SearchViewController: UIViewController, AdyenObserver {
     }
     
     private func handleKeyboardHeightDidChange(keyboardHeight: CGFloat) {
+        
+        let updateConstraint: () -> Void = {
+            self.emptyViewBottomConstraint?.constant = -keyboardHeight
+        }
+        
+        guard view.window != nil else {
+            updateConstraint()
+            return
+        }
+        
         self.view.setNeedsLayout()
         UIView.animate(withDuration: 0.2) {
-            self.emptyViewBottomConstraint?.constant = -keyboardHeight
+            updateConstraint()
             self.view.layoutIfNeeded()
         }
     }

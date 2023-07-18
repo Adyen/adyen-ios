@@ -405,9 +405,9 @@ public struct LocalizationKey {
     /// No results found
     public static let addressLookupSearchEmptyTitleNoResults = LocalizationKey(key: "adyen.address.lookup.search.empty.title.noResults")
     
-    /// or use %#manual address entry%#
+    /// or use #manual address entry#
     public static let addressLookupSearchEmptySubtitle = LocalizationKey(key: "adyen.address.lookup.search.empty.subtitle")
-    /// %@ did not match with anything, try again or use %#manual address entry%#
+    /// '%@' did not match with anything, try again or use #manual address entry#
     public static let addressLookupSearchEmptySubtitleNoResults = LocalizationKey(key: "adyen.address.lookup.search.empty.subtitle.noResults")
     
     /// Address required

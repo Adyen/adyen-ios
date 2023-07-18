@@ -69,6 +69,18 @@ internal class AddressLookupFormViewController: FormViewController {
         append(billingAddressItem)
     }
     
+    override internal func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // TODO: Alex - Validate with Design Team
+        var itemWithoutCountry = billingAddressItem.value
+        itemWithoutCountry.country = nil
+        self.navigationItem.rightBarButtonItem?.isEnabled = !itemWithoutCountry.isEmpty
+        observe(billingAddressItem.publisher, eventHandler: { [weak self] _ in
+            self?.navigationItem.rightBarButtonItem?.isEnabled = true
+        })
+    }
+    
     internal lazy var searchButtonItem: FormSearchButtonItem = {
         FormSearchButtonItem(
             placeholder: localizedString(.addressLookupSearchPlaceholder, localizationParameters),
@@ -102,13 +114,13 @@ internal class AddressLookupFormViewController: FormViewController {
 private extension AddressLookupFormViewController {
     
     @objc
-    private func submitTapped() {
+    func submitTapped() {
         guard validate() else { return }
         lookupDelegate?.addressLookupFormSubmit(validAddress: billingAddressItem.value)
     }
     
     @objc
-    private func dismissAddressLookup() {
+    func dismissAddressLookup() {
         lookupDelegate?.addressLookupFormDismiss()
     }
 }

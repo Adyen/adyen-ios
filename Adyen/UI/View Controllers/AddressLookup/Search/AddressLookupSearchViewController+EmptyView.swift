@@ -119,6 +119,10 @@ private extension AddressLookupSearchViewController.EmptyView {
             }
         }()
 
-        subtitleLabel.update(text: subtitle, style: style.subtitle)
+        subtitleLabel.update(
+            text: subtitle,
+            style: style.subtitle,
+            linkRangeDelimiter: "#"
+        )
     }
 }
