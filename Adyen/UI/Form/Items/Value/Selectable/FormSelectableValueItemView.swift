@@ -77,6 +77,7 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
     }()
     
     internal lazy var chevronView: UIImageView = {
+        // TODO: Alex - Align with Design Team (Is different between Address Lookup and Picker?)
         let chevron = UIImage(named: "chevron", in: Bundle.coreInternalResources, compatibleWith: nil)
         let imageView = UIImageView(image: chevron)
         imageView.translatesAutoresizingMaskIntoConstraints = false
