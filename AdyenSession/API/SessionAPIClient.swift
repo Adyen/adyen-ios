@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -29,8 +29,9 @@ internal final class SessionAPIClient: APIClientProtocol {
                 if let response = response as? SessionResponse {
                     self?.session?.sessionContext.data = response.sessionData
                 }
-                if let response = response as? PaymentResultCodeAware {
+                if let response = response as? SessionPaymentResultAware {
                     self?.session?.sessionContext.resultCode = response.resultCode
+                    self?.session?.sessionContext.sessionResult = response.sessionResult
                 }
             }
             completionHandler(result)
