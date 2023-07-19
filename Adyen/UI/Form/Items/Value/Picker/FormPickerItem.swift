@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
+import UIKit
 
 /// A wrapper struct to use as item in ``FormPickerItem``
 @_spi(AdyenInternal)

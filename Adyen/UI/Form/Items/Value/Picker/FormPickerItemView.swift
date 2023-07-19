@@ -4,6 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import UIKit
+
 internal class FormPickerItemView: FormSelectableValueItemView<FormPickerElement, FormPickerItem> {
     
     internal required init(item: FormPickerItem) {
@@ -25,7 +27,6 @@ internal class FormPickerItemView: FormSelectableValueItemView<FormPickerElement
         }
     }
     
-    // TODO: Alex - Align with Design Team
     override func validate() {
         if item.isValid() {
             updateValidationStatus(forced: false)
