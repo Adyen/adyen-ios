@@ -146,6 +146,8 @@
 		81BA08392A49C95700308160 /* FormSelectableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08382A49C95700308160 /* FormSelectableValueItem.swift */; };
 		81BA083F2A4AD96900308160 /* FormValidatableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA083E2A4AD96900308160 /* FormValidatableValueItem.swift */; };
 		81BA08412A4AD97400308160 /* FormValidatableValueItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08402A4AD97400308160 /* FormValidatableValueItemView.swift */; };
+		81BBB3472A66DAA600AF1F9E /* AddressLookupSearchViewController+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BBB3462A66DAA600AF1F9E /* AddressLookupSearchViewController+Style.swift */; };
+		81BBB3492A66DD5800AF1F9E /* AddressLookupViewController+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BBB3482A66DD5800AF1F9E /* AddressLookupViewController+Style.swift */; };
 		81C400642A3B0C58007EC51C /* FormSearchButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C400632A3B0C58007EC51C /* FormSearchButtonItem.swift */; };
 		81C400672A3B0D8F007EC51C /* FormSearchButtonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C400662A3B0D8F007EC51C /* FormSearchButtonItemView.swift */; };
 		81C4006B2A40A526007EC51C /* FormAddressLookupItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C4006A2A40A526007EC51C /* FormAddressLookupItem.swift */; };
@@ -1300,6 +1302,8 @@
 		81BA08382A49C95700308160 /* FormSelectableValueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableValueItem.swift; sourceTree = "<group>"; };
 		81BA083E2A4AD96900308160 /* FormValidatableValueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableValueItem.swift; sourceTree = "<group>"; };
 		81BA08402A4AD97400308160 /* FormValidatableValueItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableValueItemView.swift; sourceTree = "<group>"; };
+		81BBB3462A66DAA600AF1F9E /* AddressLookupSearchViewController+Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressLookupSearchViewController+Style.swift"; sourceTree = "<group>"; };
+		81BBB3482A66DD5800AF1F9E /* AddressLookupViewController+Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressLookupViewController+Style.swift"; sourceTree = "<group>"; };
 		81C4005F2A3A0AF3007EC51C /* AddressLookupSearchViewController+EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressLookupSearchViewController+EmptyView.swift"; sourceTree = "<group>"; };
 		81C400632A3B0C58007EC51C /* FormSearchButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSearchButtonItem.swift; sourceTree = "<group>"; };
 		81C400662A3B0D8F007EC51C /* FormSearchButtonItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSearchButtonItemView.swift; sourceTree = "<group>"; };
@@ -2523,6 +2527,7 @@
 			children = (
 				81B001B22A5468220015BFA3 /* AddressLookupViewController.swift */,
 				81B001B52A5470950015BFA3 /* AddressLookupViewController+ViewModel.swift */,
+				81BBB3482A66DD5800AF1F9E /* AddressLookupViewController+Style.swift */,
 				81B001BD2A55B5D00015BFA3 /* Search */,
 				81B001BE2A55B5D60015BFA3 /* Form */,
 			);
@@ -2533,6 +2538,7 @@
 			isa = PBXGroup;
 			children = (
 				81B001BB2A55B4040015BFA3 /* AddressLookupSearchViewController.swift */,
+				81BBB3462A66DAA600AF1F9E /* AddressLookupSearchViewController+Style.swift */,
 				81C4005F2A3A0AF3007EC51C /* AddressLookupSearchViewController+EmptyView.swift */,
 				81B001BF2A55C2C50015BFA3 /* AddressLookupSearchViewController+EmptyView+Style.swift */,
 			);
@@ -6237,6 +6243,7 @@
 				F96F44CD23B257D700871C1F /* Logger.swift in Sources */,
 				A06B7A9A2A1CEC59008FC09D /* StoredCashAppPayPaymentMethod.swift in Sources */,
 				E216D3BC221AAB240013CBCF /* FormItem.swift in Sources */,
+				81BBB3472A66DAA600AF1F9E /* AddressLookupSearchViewController+Style.swift in Sources */,
 				E9093403228EDADA00C9F04B /* Payment.swift in Sources */,
 				A0414C2E2790420B00DF3FE9 /* PublicKeyProvider.swift in Sources */,
 				E216D3CD221AFBB90013CBCF /* Validator.swift in Sources */,
@@ -6311,6 +6318,7 @@
 				A0C9B59B288AE34600D6BDAB /* InstallmentOptions.swift in Sources */,
 				81BA08412A4AD97400308160 /* FormValidatableValueItemView.swift in Sources */,
 				E9093401228C54CD00C9F04B /* LogoURLProvider.swift in Sources */,
+				81BBB3492A66DD5800AF1F9E /* AddressLookupViewController+Style.swift in Sources */,
 				F99E7278261F6C6F00EA5B78 /* KeyboardObserver.swift in Sources */,
 				E21895E622A7CC56001B6EE0 /* FormSplitItemView.swift in Sources */,
 				E9021DF8225E2240009CF7F4 /* ListSection.swift in Sources */,

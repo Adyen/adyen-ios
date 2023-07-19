@@ -11,7 +11,7 @@ extension AddressLookupSearchViewController {
     /// The view that is shown when the address lookup search result is empty
     class EmptyView: UIView, SearchResultsEmptyView {
         
-        private let style: Style
+        private let style: AddressLookupSearchEmptyStyle
         private let localizationParameters: LocalizationParameters?
         private let dismissHandler: () -> Void
         
@@ -45,7 +45,7 @@ extension AddressLookupSearchViewController {
         ///   - dismissHandler: A closure that is called when manual entry is requested.
         internal init(
             searchTerm: String = "",
-            style: Style = .init(),
+            style: AddressLookupSearchEmptyStyle = .init(),
             localizationParameters: LocalizationParameters? = nil,
             dismissHandler: @escaping () -> Void
         ) {

@@ -31,7 +31,7 @@ internal class AddressLookupSearchViewController: SearchViewController {
     ///   - localizationParameters: The localization parameters
     ///   - delegate: The delegate conforming to ``AddressLookupSearchViewControllerDelegate``
     internal init(
-        style: ViewStyle,
+        style: AddressLookupSearchStyle = .init(),
         localizationParameters: LocalizationParameters?,
         delegate: AddressLookupSearchViewControllerDelegate
     ) {
@@ -49,7 +49,7 @@ internal class AddressLookupSearchViewController: SearchViewController {
         ) { [weak delegate] searchTerm, resultHandler in
             delegate?.addressLookupSearchLookUp(searchTerm: searchTerm) {
                 guard let delegate else { return }
-                resultHandler(Self.listItems(from: $0, with: delegate))
+                resultHandler(Self.listItems(from: $0, with: delegate, style: style.manualEntryListItem))
             }
         }
         
@@ -82,17 +82,16 @@ internal class AddressLookupSearchViewController: SearchViewController {
     
     private static func listItems(
         from results: [ListItem],
-        with delegate: AddressLookupSearchViewControllerDelegate
+        with delegate: AddressLookupSearchViewControllerDelegate,
+        style: ListItemStyle
     ) -> [ListItem] {
         
         if results.isEmpty {
             return results
         }
         
-        var style = ListItemStyle()
-        style.title.color = .Adyen.defaultBlue // TODO: Fix
         let manualEntryListItem = ListItem(
-            title: "Enter Address Manually",
+            title: "Enter Address Manually", // TODO: Alex - Localization
             style: style
         ) {
             delegate.addressLookupSearchSwitchToManualEntry()

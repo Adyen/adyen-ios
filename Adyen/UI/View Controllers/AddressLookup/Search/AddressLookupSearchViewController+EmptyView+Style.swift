@@ -6,18 +6,15 @@
 
 import UIKit
 
-extension AddressLookupSearchViewController.EmptyView {
+public struct AddressLookupSearchEmptyStyle: ViewStyle {
     
-    internal struct Style: ViewStyle {
-        
-        internal var title: TextStyle = .init(
-            font: .preferredFont(forTextStyle: .headline),
-            color: .Adyen.componentLabel
-        )
-        internal var subtitle: TextStyle = .init(
-            font: .preferredFont(forTextStyle: .subheadline),
-            color: .Adyen.componentSecondaryLabel
-        )
-        internal var backgroundColor: UIColor = .clear
-    }
+    public var title: TextStyle = .init(
+        font: .preferredFont(forTextStyle: .headline),
+        color: .Adyen.componentLabel
+    )
+    public var subtitle: TextStyle = .init(
+        font: .preferredFont(forTextStyle: .subheadline),
+        color: .Adyen.componentSecondaryLabel
+    )
+    public var backgroundColor: UIColor = .Adyen.componentBackground
 }

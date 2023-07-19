@@ -218,7 +218,6 @@ extension CardComponent: CardViewControllerDelegate {
     internal func didSelectAddressLookup(_ handler: @escaping AddressLookupViewController.LookupProvider) {
         
         let viewModel = AddressLookupViewController.ViewModel(
-            style: configuration.style,
             localizationParameters: configuration.localizationParameters,
             supportedCountryCodes: configuration.billingAddress.countryCodes,
             initialCountry: initialCountryCode,

@@ -19,7 +19,7 @@ public extension AddressLookupViewController {
     /// The view model for the ``AddressLookupViewController``
     struct ViewModel {
         
-        internal let style: FormComponentStyle
+        internal let style: AddressLookupStyle
         internal let localizationParameters: LocalizationParameters?
         internal let supportedCountryCodes: [String]?
         internal let initialCountry: String
@@ -53,7 +53,7 @@ public extension AddressLookupViewController {
         ///   - completionHandler: A closure that takes an optional address.
         ///    It's the presenters responsibility to dismiss the viewController.
         public init(
-            style: FormComponentStyle,
+            style: AddressLookupStyle = .init(),
             localizationParameters: LocalizationParameters?,
             supportedCountryCodes: [String]?,
             initialCountry: String,
