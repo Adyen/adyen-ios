@@ -98,7 +98,10 @@ open class FormPickerItem: FormSelectableValueItem<FormPickerElement?> {
     // MARK: ValidatableFormItem
     
     override public func isValid() -> Bool {
-        if isOptional { return true }
+        if isOptional {
+            return true
+        }
+        
         guard let value else { return false }
         return selectableValues.contains { $0.identifier == value.identifier }
     }

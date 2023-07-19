@@ -145,7 +145,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         
         let header: FormItem? = configuration.showsHeader ? headerItem.addingDefaultMargins() : nil
         
-        var items = [
+        var formItems = [
             FormSpacerItem(),
             header,
             countryPickerItem
@@ -155,16 +155,16 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             switch field {
             case let .item(fieldType):
                 let item = create(for: fieldType, from: addressViewModel, subRegions: subRegions)
-                items.append(item)
+                formItems.append(item)
             case let .split(lhs, rhs):
                 let item = FormSplitItem(items: create(for: lhs, from: addressViewModel, subRegions: subRegions),
                                          create(for: rhs, from: addressViewModel, subRegions: subRegions),
                                          style: style)
-                items.append(item)
+                formItems.append(item)
             }
         }
         
-        self.items = items
+        self.items = formItems
     }
     
     private func create(for field: AddressField, from viewModel: AddressViewModel, subRegions: [Region]?) -> FormItem {
@@ -181,14 +181,14 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     private func createPickerItem(from viewModel: AddressViewModel, subRegions: [Region]) -> FormItem {
         let defaultRegion = subRegions.first { $0.identifier == value.stateOrProvince }
-        let title = viewModel.labels[.stateOrProvince].map { localizedString($0, configuration.localizationParameters) } ?? ""
+        let itemTitle = viewModel.labels[.stateOrProvince].map { localizedString($0, configuration.localizationParameters) } ?? ""
         let item = FormRegionPickerItem(
             preselectedRegion: defaultRegion,
             selectableRegions: subRegions,
             shouldShowCountryFlags: false,
-            validationFailureMessage: localizedString(.pickerValidationFailureMessageInvalid, configuration.localizationParameters, title),
-            title: title,
-            placeholder: title,
+            validationFailureMessage: localizedString(.pickerValidationFailureMessageInvalid, configuration.localizationParameters, itemTitle),
+            title: itemTitle,
+            placeholder: itemTitle,
             style: style.textField,
             presenter: presenter
         )

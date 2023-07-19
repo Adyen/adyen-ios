@@ -75,7 +75,9 @@ public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?
     // MARK: ValidatableFormItem
     
     override public func isValid() -> Bool {
-        if context.isOptional { return true }
+        if context.isOptional {
+            return true
+        }
         guard let address = value else { return false }
         return address.satisfies(requiredFields: addressViewModel.requiredFields)
     }

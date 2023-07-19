@@ -72,13 +72,18 @@ private extension FormPickerElement {
     }
     
     func matches(searchTerm: String) -> Bool {
-        if searchTerm.isEmpty { return true }
+        if searchTerm.isEmpty {
+            return true
+        }
         
-        if identifier.range(of: searchTerm, options: .caseInsensitive) != nil { return true }
-        if title.range(of: searchTerm, options: .caseInsensitive) != nil { return true }
+        if identifier.range(of: searchTerm, options: .caseInsensitive) != nil {
+            return true
+        }
+        if title.range(of: searchTerm, options: .caseInsensitive) != nil {
+            return true
+        }
         
-        guard let subtitle = subtitle else { return false }
-        return subtitle.range(of: searchTerm, options: .caseInsensitive) != nil
+        return subtitle?.range(of: searchTerm, options: .caseInsensitive) != nil
     }
     
     private var listItemIcon: ListItem.Icon? {

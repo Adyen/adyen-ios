@@ -27,7 +27,7 @@ internal class FormPickerItemView: FormSelectableValueItemView<FormPickerElement
         }
     }
     
-    override func validate() {
+    internal override func validate() {
         if item.isValid() {
             updateValidationStatus(forced: false)
         } else {
@@ -35,7 +35,7 @@ internal class FormPickerItemView: FormSelectableValueItemView<FormPickerElement
         }
     }
     
-    override internal func reset() {
+    internal override func reset() {
         item.resetValue()
         resetValidationStatus()
     }
