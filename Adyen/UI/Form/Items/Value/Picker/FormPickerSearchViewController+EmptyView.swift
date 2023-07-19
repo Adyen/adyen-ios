@@ -91,8 +91,8 @@ private extension FormPickerSearchViewController.EmptyView {
     }
     
     func updateLabels() {
-        titleLabel.text = "No results found" // TODO: Alex - Localization
-        subtitleLabel.text = "for '\(searchTerm)'" // TODO: Alex - Localization
+        titleLabel.text = localizedString(.pickerSearchEmptyTitle, localizationParameters)
+        subtitleLabel.text = localizedString(.pickerSearchEmptySubtitle, localizationParameters, searchTerm)
         
         titleLabel.textColor = style.title.color
         subtitleLabel.textColor = style.subtitle.color

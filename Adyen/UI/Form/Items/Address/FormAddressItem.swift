@@ -109,9 +109,9 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             preselectedRegion: defaultCountry,
             selectableRegions: countries,
             shouldShowCountryFlags: true,
-            validationFailureMessage: ".countryFieldValidationFailureMessage", // TODO: Alex - Localization
+            validationFailureMessage: localizedString(.countryFieldValidationFailureMessageInvalid, configuration.localizationParameters),
             title: localizedString(.countryFieldTitle, configuration.localizationParameters),
-            placeholder: ".countryFieldPlaceholder", // TODO: Alex - Localization
+            placeholder: localizedString(.countryFieldPlaceholder, configuration.localizationParameters),
             style: style.textField,
             presenter: presenter,
             identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "country")
@@ -186,7 +186,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             preselectedRegion: defaultRegion,
             selectableRegions: subRegions,
             shouldShowCountryFlags: false,
-            validationFailureMessage: "Invalid \(title)", // TODO: Alex - Localization
+            validationFailureMessage: localizedString(.pickerValidationFailureMessageInvalid, configuration.localizationParameters, title),
             title: title,
             placeholder: title,
             style: style.textField,

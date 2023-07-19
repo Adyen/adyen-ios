@@ -75,6 +75,9 @@ internal class AddressLookupFormViewController: FormViewController {
         super.viewDidLoad()
         
         // TODO: Alex - Validate with Design Team
+        // The done button should only be enabled once at least one field is filled in.
+        // Either by prefilling or manually entering.
+        // The country field is excluded as it is always prefilled.
         var itemWithoutCountry = billingAddressItem.value
         itemWithoutCountry.country = nil
         self.navigationItem.rightBarButtonItem?.isEnabled = !itemWithoutCountry.isEmpty
