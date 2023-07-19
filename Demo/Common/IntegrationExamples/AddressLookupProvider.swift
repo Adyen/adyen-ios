@@ -118,7 +118,8 @@ private extension DemoAddressLookupProvider {
                 apartment: "4"
             ),
             PostalAddress(
-                city: "Random City (Incomplete Address)"
+                city: "Random City",
+                street: "Incomplete Address"
             )
         ].filter { $0.formatted.range(of: searchTerm, options: .caseInsensitive) != nil }
     }

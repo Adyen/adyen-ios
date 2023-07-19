@@ -40,7 +40,7 @@ private extension AddressLookupViewController {
     private func buildSearchViewController() -> SearchViewController {
         
         AddressLookupSearchViewController(
-            style: viewModel.style,
+            style: viewModel.style.search,
             localizationParameters: viewModel.localizationParameters,
             delegate: self
         )
@@ -49,7 +49,7 @@ private extension AddressLookupViewController {
     private func buildFormViewController(prefillAddress: PostalAddress?) -> AddressLookupFormViewController {
         
         AddressLookupFormViewController(
-            formStyle: viewModel.style,
+            formStyle: viewModel.style.form,
             localizationParameters: viewModel.localizationParameters,
             initialCountry: viewModel.initialCountry,
             prefillAddress: prefillAddress,
