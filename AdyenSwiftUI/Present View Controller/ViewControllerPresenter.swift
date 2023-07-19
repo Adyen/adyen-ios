@@ -17,12 +17,12 @@ import SwiftUI
         /// and presents the new one,
         /// set it to `nil` to dismiss the previous view Controller if any.
         func present(viewController: Binding<UIViewController?>) -> some View {
-            modifier(ViewControllerPresenter(viewController: viewController))
+            modifier(FullScreenViewControllerPresenter(viewController: viewController))
         }
     }
 
     @available(iOS 13.0, *)
-    internal struct ViewControllerPresenter: ViewModifier {
+    internal struct FullScreenViewControllerPresenter: ViewModifier {
 
         @Binding internal var viewController: UIViewController?
 
