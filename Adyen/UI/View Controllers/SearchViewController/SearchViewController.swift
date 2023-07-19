@@ -52,6 +52,7 @@ public class SearchViewController: UIViewController, AdyenObserver {
         let loadingView = UIActivityIndicatorView(style: .whiteLarge)
         loadingView.color = .Adyen.componentLoadingMessageColor
         loadingView.hidesWhenStopped = true
+        loadingView.translatesAutoresizingMaskIntoConstraints = false
         return loadingView
     }()
     
@@ -122,11 +123,13 @@ public class SearchViewController: UIViewController, AdyenObserver {
             
             emptyView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 0),
             emptyView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0),
-            emptyView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0)
+            emptyView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
+            
+            loadingView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 0),
+            loadingView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0),
+            loadingView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
+            loadingView.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor, constant: 0)
         ])
-        
-        loadingView.adyen.anchor(inside: view.layoutMarginsGuide)
-        loadingView.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor, constant: 0).isActive = true
     }
     
     private func updateInterface(with interfaceState: InterfaceState) {
