@@ -108,9 +108,6 @@ public class SearchViewController: UIViewController, AdyenObserver {
     
     private func setupConstraints() {
         
-        emptyViewBottomConstraint = emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
-        emptyViewBottomConstraint?.isActive = true
-        
         NSLayoutConstraint.activate([
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
@@ -130,6 +127,9 @@ public class SearchViewController: UIViewController, AdyenObserver {
             loadingView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
             loadingView.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor, constant: 0)
         ])
+        
+        emptyViewBottomConstraint = emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        emptyViewBottomConstraint?.isActive = true
     }
     
     private func updateInterface(with interfaceState: InterfaceState) {

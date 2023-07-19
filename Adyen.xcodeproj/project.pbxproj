@@ -362,7 +362,7 @@
 		E7166A5224EAC5BA007CCDEF /* BinLookupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5124EAC5BA007CCDEF /* BinLookupRequest.swift */; };
 		E7166A5424EACC44007CCDEF /* BinLookupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5324EACC44007CCDEF /* BinLookupResponse.swift */; };
 		E7166A5624EAD99F007CCDEF /* BinInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5524EAD99F007CCDEF /* BinInfoProvider.swift */; };
-		E71D82FB260D0B0500A4F15B /* ViewControllerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6DAA25274A3D002C9062 /* ViewControllerPresenter.swift */; };
+		E71D82FB260D0B0500A4F15B /* FullScreenViewControllerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6DAA25274A3D002C9062 /* FullScreenViewControllerPresenter.swift */; };
 		E71E8F3E257921D10054B03D /* StoredBLIKPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */; };
 		E72375D327AAB90D0020DCF9 /* AdyenActions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9175F8C2594986900D653BE /* AdyenActions.framework */; };
 		E72375D827AABF400020DCF9 /* AdyenWeChatPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; };
@@ -1808,7 +1808,7 @@
 		F95B6DA025274551002C9062 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		F95B6DA325274551002C9062 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F95B6DA525274551002C9062 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F95B6DAA25274A3D002C9062 /* ViewControllerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerPresenter.swift; sourceTree = "<group>"; };
+		F95B6DAA25274A3D002C9062 /* FullScreenViewControllerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewControllerPresenter.swift; sourceTree = "<group>"; };
 		F95B6DAD25274D9C002C9062 /* PaymentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentsViewModel.swift; sourceTree = "<group>"; };
 		F95D76062565447B0088A353 /* AdyenTests.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = AdyenTests.strings; sourceTree = "<group>"; };
 		F95D76142565449A0088A353 /* AdyenTestsCustomSeparator.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = AdyenTestsCustomSeparator.strings; sourceTree = "<group>"; };
@@ -4538,7 +4538,7 @@
 		F95B6DA925274A30002C9062 /* Present View Controller */ = {
 			isa = PBXGroup;
 			children = (
-				F95B6DAA25274A3D002C9062 /* ViewControllerPresenter.swift */,
+				F95B6DAA25274A3D002C9062 /* FullScreenViewControllerPresenter.swift */,
 			);
 			path = "Present View Controller";
 			sourceTree = "<group>";
@@ -6905,7 +6905,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E71D82FB260D0B0500A4F15B /* ViewControllerPresenter.swift in Sources */,
+				E71D82FB260D0B0500A4F15B /* FullScreenViewControllerPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
