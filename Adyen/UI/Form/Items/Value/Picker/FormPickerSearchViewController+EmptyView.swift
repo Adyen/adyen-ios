@@ -91,8 +91,6 @@ private extension FormPickerSearchViewController.EmptyView {
     }
     
     func updateLabels() {
-        // TODO: Alex - Align with Design Team
-        
         titleLabel.text = "No results found" // TODO: Alex - Localization
         subtitleLabel.text = "for '\(searchTerm)'" // TODO: Alex - Localization
         

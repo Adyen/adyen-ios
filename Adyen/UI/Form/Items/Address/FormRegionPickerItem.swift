@@ -69,7 +69,7 @@ private extension Region {
             identifier: identifier,
             icon: nil,
             title: name,
-            subtitle: subtitle(showingCountryFlag: shouldShowCountryFlag) // TODO: Alex - Align with Design Team
+            subtitle: subtitle(showingCountryFlag: shouldShowCountryFlag)
         )
     }
     

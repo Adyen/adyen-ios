@@ -20,7 +20,7 @@ public final class FormPickerSearchViewController: UINavigationController {
             localizationParameters: localizationParameters,
             style: style,
             searchBarPlaceholder: nil,
-            shouldFocusSearchBarOnAppearance: true // TODO: Alex - Align with Design Team
+            shouldFocusSearchBarOnAppearance: true
         ) { searchTerm, handler in
             
             let results = options
