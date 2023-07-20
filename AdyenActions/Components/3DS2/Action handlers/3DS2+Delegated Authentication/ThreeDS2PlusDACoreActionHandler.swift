@@ -170,12 +170,8 @@
         /// else calls the completion with a failure.
         private func performDelegatedAuthentication(_ fingerprintToken: ThreeDS2Component.FingerprintToken,
                                                     completion: @escaping (Result<String, DelegateAuthenticationError>) -> Void) {
-            let failureHandler: (Error?) -> Void = { cause in
-                completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: cause)))
-            }
-            
             guard let delegatedAuthenticationInput = fingerprintToken.delegatedAuthenticationSDKInput else {
-                failureHandler(ThreeDS2PlusDACoreActionError.sdkInputNotAvailableForApproval)
+                completion(.failure(.authenticationFailed(cause: ThreeDS2PlusDACoreActionError.sdkInputNotAvailableForApproval)))
                 return
             }
             
@@ -184,32 +180,38 @@
                 registeredHandler: { [weak self] in
                     guard let self else { return }
                     self.showApprovalScreenWhenDeviceIsRegistered(delegatedAuthenticationInput: delegatedAuthenticationInput,
-                                                                  completion: completion,
-                                                                  failureHandler: failureHandler)
+                                                                  completion: completion)
                 },
-                notRegisteredHandler: failureHandler
+                notRegisteredHandler: {
+                    completion(.failure(.authenticationFailed(cause: $0)))
+                }
             )
         }
         
         // MARK: Delegated Authentication Approval
         
         private func showApprovalScreenWhenDeviceIsRegistered(delegatedAuthenticationInput: String,
-                                                              completion: @escaping (Result<String, DelegateAuthenticationError>) -> Void,
-                                                              failureHandler: @escaping (Error) -> Void) {
-            presenter.showApprovalScreen(component: self,
-                                         approveAuthenticationHandler: { [weak self] in
-                                             guard let self else { return }
-                                             self.executeDAAuthenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
-                                                                        authenticatedHandler: { completion(.success($0)) },
-                                                                        failedAuthenticationHandler: failureHandler)
-                                         },
-                                         fallbackHandler: {
-                                             failureHandler(ThreeDS2PlusDACoreActionError.noConsentForApproval)
-                                         },
-                                         removeCredentialsHandler: { [weak delegatedAuthenticationService] in
-                                             try? delegatedAuthenticationService?.reset()
-                                             failureHandler(ThreeDS2PlusDACoreActionError.removeCredentialsDuringApproval)
-                                         })
+                                                              completion: @escaping (Result<String, DelegateAuthenticationError>) -> Void) {
+            presenter.showApprovalScreen(
+                component: self,
+                approveAuthenticationHandler: { [weak self] in
+                    guard let self else { return }
+                    self.executeDAAuthenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                               authenticatedHandler: {
+                                                   completion(.success($0))
+                                               },
+                                               failedAuthenticationHandler: {
+                                                   completion(.failure(.authenticationFailed(cause: $0)))
+                                               })
+                },
+                fallbackHandler: {
+                    completion(.failure(.authenticationFailed(cause: ThreeDS2PlusDACoreActionError.noConsentForApproval)))
+                },
+                removeCredentialsHandler: { [weak delegatedAuthenticationService] in
+                    try? delegatedAuthenticationService?.reset()
+                    completion(.failure(.authenticationFailed(cause: ThreeDS2PlusDACoreActionError.removeCredentialsDuringApproval)))
+                }
+            )
         }
 
         private func executeDAAuthenticate(delegatedAuthenticationInput: String,
