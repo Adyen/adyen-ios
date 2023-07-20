@@ -77,6 +77,13 @@ internal class AddressLookupSearchViewController: SearchViewController {
             action: #selector(cancelSearch)
         )
         
+        navigationItem.rightBarButtonItem = .init(
+            barButtonSystemItem: .done,
+            target: nil,
+            action: nil
+        )
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        
         searchBar.textContentType = .fullStreetAddress
     }
     

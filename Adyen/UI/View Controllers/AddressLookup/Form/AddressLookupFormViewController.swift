@@ -74,7 +74,6 @@ internal class AddressLookupFormViewController: FormViewController {
     override internal func viewDidLoad() {
         super.viewDidLoad()
         
-        // TODO: Alex - Validate with Design Team
         // The done button should only be enabled once at least one field is filled in.
         // Either by prefilling or manually entering.
         // The country field is excluded as it is always prefilled.
