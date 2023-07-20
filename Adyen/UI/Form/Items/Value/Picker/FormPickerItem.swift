@@ -29,6 +29,7 @@ public struct FormPickerElement: Equatable {
 }
 
 /// An form item for picking values.
+/// This class acts like an abstract class and is supposed to be subclassed.
 @_spi(AdyenInternal)
 open class FormPickerItem: FormSelectableValueItem<FormPickerElement?> {
     

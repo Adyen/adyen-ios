@@ -18,7 +18,7 @@ class FormAddressLookupItemTests: XCTestCase {
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
-        XCTAssertEqual(addressLookupItem.value, PostalAddress(country: "NL"))
+        XCTAssertNil(addressLookupItem.value)
         XCTAssertFalse(addressLookupItem.isValid())
         
         addressLookupItem.updateOptionalStatus(isOptional: true)
@@ -48,9 +48,9 @@ class FormAddressLookupItemTests: XCTestCase {
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
-        XCTAssertEqual(addressLookupItem.validationFailureMessage, "Invalid Address")
-        addressLookupItem.value = nil
         XCTAssertEqual(addressLookupItem.validationFailureMessage, "Address required")
+        addressLookupItem.value = PostalAddressMocks.emptyUSPostalAddress
+        XCTAssertEqual(addressLookupItem.validationFailureMessage, "Invalid Address")
     }
     
     func testFormattedValue() {
@@ -61,6 +61,8 @@ class FormAddressLookupItemTests: XCTestCase {
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
+        XCTAssertNil(addressLookupItem.formattedValue)
+        addressLookupItem.value = PostalAddress(country: "NL")
         XCTAssertEqual(addressLookupItem.formattedValue, "Netherlands")
     }
 }

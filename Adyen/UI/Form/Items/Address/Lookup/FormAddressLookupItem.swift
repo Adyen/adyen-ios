@@ -52,7 +52,7 @@ public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?
         self.context = .init(countryCode: prefillAddress?.country ?? initialCountry, isOptional: false)
         
         super.init(
-            value: prefillAddress ?? .init(country: initialCountry),
+            value: prefillAddress,
             style: style.textField,
             placeholder: localizedString(.billingAddressPlaceholder, localizationParameters)
         )

@@ -158,6 +158,7 @@
 		81BBB3492A66DD5800AF1F9E /* AddressLookupViewController+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BBB3482A66DD5800AF1F9E /* AddressLookupViewController+Style.swift */; };
 		81BBB34B2A692F6500AF1F9E /* FormPickerSearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BBB34A2A692F6500AF1F9E /* FormPickerSearchViewControllerTests.swift */; };
 		81BBB34D2A6938A400AF1F9E /* FormAddressLookupItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BBB34C2A6938A400AF1F9E /* FormAddressLookupItemTests.swift */; };
+		81BBB34F2A694C9300AF1F9E /* FormPickerItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BBB34E2A694C9300AF1F9E /* FormPickerItemTests.swift */; };
 		81C400642A3B0C58007EC51C /* FormSearchButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C400632A3B0C58007EC51C /* FormSearchButtonItem.swift */; };
 		81C400672A3B0D8F007EC51C /* FormSearchButtonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C400662A3B0D8F007EC51C /* FormSearchButtonItemView.swift */; };
 		81C4006B2A40A526007EC51C /* FormAddressLookupItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C4006A2A40A526007EC51C /* FormAddressLookupItem.swift */; };
@@ -1324,6 +1325,7 @@
 		81BBB3482A66DD5800AF1F9E /* AddressLookupViewController+Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressLookupViewController+Style.swift"; sourceTree = "<group>"; };
 		81BBB34A2A692F6500AF1F9E /* FormPickerSearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerSearchViewControllerTests.swift; sourceTree = "<group>"; };
 		81BBB34C2A6938A400AF1F9E /* FormAddressLookupItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAddressLookupItemTests.swift; sourceTree = "<group>"; };
+		81BBB34E2A694C9300AF1F9E /* FormPickerItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItemTests.swift; sourceTree = "<group>"; };
 		81C4005F2A3A0AF3007EC51C /* AddressLookupSearchViewController+EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressLookupSearchViewController+EmptyView.swift"; sourceTree = "<group>"; };
 		81C400632A3B0C58007EC51C /* FormSearchButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSearchButtonItem.swift; sourceTree = "<group>"; };
 		81C400662A3B0D8F007EC51C /* FormSearchButtonItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSearchButtonItemView.swift; sourceTree = "<group>"; };
@@ -2611,6 +2613,14 @@
 				81BA08362A49C93100308160 /* FormSelectableValueItemView.swift */,
 			);
 			path = Selectable;
+			sourceTree = "<group>";
+		};
+		81BBB3502A694C9700AF1F9E /* Picker */ = {
+			isa = PBXGroup;
+			children = (
+				81BBB34E2A694C9300AF1F9E /* FormPickerItemTests.swift */,
+			);
+			path = Picker;
 			sourceTree = "<group>";
 		};
 		81C400652A3B0D87007EC51C /* SearchButton */ = {
@@ -4844,6 +4854,7 @@
 				F99F08622383F29700EBB948 /* Text */,
 				8100F2C12A4C37EC008C09E7 /* Selectable */,
 				8100F2BE2A4C3410008C09E7 /* Validatable */,
+				81BBB3502A694C9700AF1F9E /* Picker */,
 			);
 			path = FormItems;
 			sourceTree = "<group>";
@@ -6594,6 +6605,7 @@
 				F9B997A425C8554F00891084 /* DokuVoucherUITests.swift in Sources */,
 				E9E3DAD3221EEFF700697074 /* CardExpiryDateValidatorTests.swift in Sources */,
 				E7D5311C2447065B000046B4 /* PreselectedPaymentComponentTests.swift in Sources */,
+				81BBB34F2A694C9300AF1F9E /* FormPickerItemTests.swift in Sources */,
 				F99F08662383F2D300EBB948 /* FormTextItemViewDelegateMock.swift in Sources */,
 				F926D55523FBF1A800D058D3 /* QiwiWalletComponentTests.swift in Sources */,
 				5A238C9F263BDEA200758FEF /* PreApplePayComponentTests.swift in Sources */,
