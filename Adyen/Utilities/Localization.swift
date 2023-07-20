@@ -31,10 +31,13 @@ private struct LocalizationInput {
 public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
     var translationAttempt: String?
 
-    if let enforcedLocale = parameters?.enforcedLocale {
+    switch parameters?.mode {
+    case let .enforced(locale: enforcedLocale):
         translationAttempt = enforceLocalizedString(key: key.key, locale: enforcedLocale)
-    } else {
+    case let .natural(bundle: bundle, tableName: tableName, keySeparator: keySeparator, locale: _):
         translationAttempt = attempt(buildPossibleInputs(key.key, parameters))
+    case .none:
+        break
     }
 
     // Use fallback in case attempt result is nil or empty
