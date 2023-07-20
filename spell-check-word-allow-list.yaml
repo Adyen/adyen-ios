@@ -184,3 +184,4 @@ whiteList:
   - cashapp
   - cashtag
   - referer
+  - uid
