@@ -42,7 +42,7 @@ internal final class ComponentsViewController: UIViewController {
     }()
 
     private lazy var applePayComponentExample: ApplePayComponentExample = {
-        let applePayComponent = ApplePayComponentExample()
+        let applePayComponentExample = ApplePayComponentExample()
         applePayComponentExample.presenter = self
         return applePayComponentExample
     }()
