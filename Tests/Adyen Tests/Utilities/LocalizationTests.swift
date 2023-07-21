@@ -78,7 +78,7 @@ class LocalizationTests: XCTestCase {
 
         XCTAssertEqual(parameters.bundle, Bundle(for: LocalizationTests.self))
         XCTAssertNil(parameters.keySeparator)
-        XCTAssertEqual(parameters.tableName, "AdyenTest")
+        XCTAssertEqual(parameters.tableName, "AdyenTests")
         XCTAssertNil(parameters.locale)
     }
 
