@@ -56,7 +56,7 @@ jobs:
         DEMO_SERVER_API_KEY: ${{ secrets.DEMO_SERVER_TEST_ENV_API_KEY }}
         MERCHANT_ACCOUNT: ${{ secrets.MERCHANT_ACCOUNT }}
         APPLE_DEVELOPMENT_TEAM_ID: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
-        ENVIRONMENT: ${{ env.ENVIRONMENT }}
+        ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
       run: |
         # client Key
         sed -i '' "s/static let clientKey.*$/static let clientKey = \"$CLIENT_KEY\"/g" ./Demo/Configuration.swift
