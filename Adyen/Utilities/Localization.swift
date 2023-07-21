@@ -34,7 +34,7 @@ public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationPa
     switch parameters?.mode {
     case let .enforced(locale: enforcedLocale):
         translationAttempt = enforceLocalizedString(key: key.key, locale: enforcedLocale)
-    case let .natural(bundle: bundle, tableName: tableName, keySeparator: keySeparator, locale: _):
+    case .natural:
         translationAttempt = attempt(buildPossibleInputs(key.key, parameters))
     case .none:
         break
@@ -131,11 +131,14 @@ public enum PaymentStyle {
 public func localizedSubmitButtonTitle(with amount: Amount?,
                                        style: PaymentStyle,
                                        _ parameters: LocalizationParameters?) -> String {
-    if let amount = amount, amount.value == 0 {
+    var tempAmount = amount
+    tempAmount?.localeIdentifier = parameters?.locale
+    if let amount = tempAmount, amount.value == 0 {
         return localizedZeroPaymentAuthorisationButtonTitle(style: style,
                                                             parameters)
     }
-    guard let formattedAmount = amount?.formatted else {
+
+    guard let formattedAmount = tempAmount?.formatted else {
         return localizedString(.submitButton, parameters)
     }
     
