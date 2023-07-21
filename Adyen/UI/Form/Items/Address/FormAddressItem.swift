@@ -185,11 +185,12 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     private func createPickerItem(from viewModel: AddressViewModel, subRegions: [Region]) -> FormItem {
         let defaultRegion = subRegions.first { $0.identifier == value.stateOrProvince }
         let itemTitle = viewModel.labels[.stateOrProvince].map { localizedString($0, configuration.localizationParameters) } ?? ""
+        let failureMessage = localizedString(.pickerValidationFailureMessageInvalid, configuration.localizationParameters, itemTitle)
         let item = FormRegionPickerItem(
             preselectedRegion: defaultRegion,
             selectableRegions: subRegions,
             shouldShowCountryFlags: false,
-            validationFailureMessage: localizedString(.pickerValidationFailureMessageInvalid, configuration.localizationParameters, itemTitle),
+            validationFailureMessage: failureMessage,
             title: itemTitle,
             placeholder: itemTitle,
             style: style.textField,
