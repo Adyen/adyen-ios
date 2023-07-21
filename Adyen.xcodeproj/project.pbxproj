@@ -222,6 +222,7 @@
 		A0BC64E628F062E400CED2A1 /* AdyenSessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BC64E528F062E400CED2A1 /* AdyenSessionAware.swift */; };
 		A0C9B59B288AE34600D6BDAB /* InstallmentOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41E5526CBCA6E0089AD6C /* InstallmentOptions.swift */; };
 		A0D48FB827109B0200C0B82C /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */; };
+		A0DDA6A72A6162F500EBD6AF /* AdyenSessionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DDA6A62A6162F500EBD6AF /* AdyenSessionResult.swift */; };
 		A0DE8F6D26CEA04500F2F1E8 /* Installments.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE8F6C26CEA04500F2F1E8 /* Installments.swift */; };
 		A0F41EAC26CD4AA50089AD6C /* FormCardInstallmentsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41EAB26CD4AA50089AD6C /* FormCardInstallmentsItem.swift */; };
 		A0F4559B295F0F58001742C7 /* MealVoucherPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F4559A295F0F58001742C7 /* MealVoucherPaymentMethod.swift */; };
@@ -1384,6 +1385,7 @@
 		A0B180302A2DE445003C608E /* MealVoucherDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealVoucherDetails.swift; sourceTree = "<group>"; };
 		A0BC64E528F062E400CED2A1 /* AdyenSessionAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSessionAware.swift; sourceTree = "<group>"; };
 		A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayHelpers.swift; sourceTree = "<group>"; };
+		A0DDA6A62A6162F500EBD6AF /* AdyenSessionResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSessionResult.swift; sourceTree = "<group>"; };
 		A0DE8F6C26CEA04500F2F1E8 /* Installments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Installments.swift; sourceTree = "<group>"; };
 		A0F41E5526CBCA6E0089AD6C /* InstallmentOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallmentOptions.swift; sourceTree = "<group>"; };
 		A0F41EAB26CD4AA50089AD6C /* FormCardInstallmentsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardInstallmentsItem.swift; sourceTree = "<group>"; };
@@ -4435,6 +4437,7 @@
 				F9B8AF5D27DA4EA400DC0894 /* AdyenSession+DropInComponentDelegate.swift */,
 				F92980C327CF558E000CA5CA /* AdyenSession+ActionComponentDelegate.swift */,
 				F92980C527CF563C000CA5CA /* AdyenSession+PartialPaymentDelegate.swift */,
+				A0DDA6A62A6162F500EBD6AF /* AdyenSessionResult.swift */,
 			);
 			path = AdyenSession;
 			sourceTree = "<group>";
@@ -6917,6 +6920,7 @@
 				F967580E27D1253000A16FB6 /* SelfRetainingAPIClient.swift in Sources */,
 				F9B8AF5E27DA4EA400DC0894 /* AdyenSession+DropInComponentDelegate.swift in Sources */,
 				F92980B227CE2B55000CA5CA /* AdyenSession.swift in Sources */,
+				A0DDA6A72A6162F500EBD6AF /* AdyenSessionResult.swift in Sources */,
 				F92980C427CF558E000CA5CA /* AdyenSession+ActionComponentDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
