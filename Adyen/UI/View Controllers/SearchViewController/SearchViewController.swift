@@ -101,7 +101,9 @@ public class SearchViewController: UIViewController, AdyenObserver {
         super.viewWillAppear(animated)
         
         if viewModel.shouldFocusSearchBarOnAppearance {
-            searchBar.becomeFirstResponder()
+            DispatchQueue.main.async { // Fix for iOS 17
+                self.searchBar.becomeFirstResponder()
+            }
         }
     }
     
