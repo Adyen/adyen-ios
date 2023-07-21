@@ -131,18 +131,17 @@ public enum PaymentStyle {
 public func localizedSubmitButtonTitle(with amount: Amount?,
                                        style: PaymentStyle,
                                        _ parameters: LocalizationParameters?) -> String {
-    var tempAmount = amount
-    tempAmount?.localeIdentifier = parameters?.locale
-    if let amount = tempAmount, amount.value == 0 {
-        return localizedZeroPaymentAuthorisationButtonTitle(style: style,
-                                                            parameters)
-    }
-
-    guard let formattedAmount = tempAmount?.formatted else {
+    guard let amount = amount else {
         return localizedString(.submitButton, parameters)
     }
-    
-    return localizedString(.submitButtonFormatted, parameters, formattedAmount)
+
+    if amount.value == 0 {
+        return localizedZeroPaymentAuthorisationButtonTitle(style: style, parameters)
+    }
+
+    var tempAmount = amount
+    tempAmount.localeIdentifier = parameters?.locale
+    return localizedString(.submitButtonFormatted, parameters, tempAmount.formatted)
 }
 
 private func localizedZeroPaymentAuthorisationButtonTitle(style: PaymentStyle,
