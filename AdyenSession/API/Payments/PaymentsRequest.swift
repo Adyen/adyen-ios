@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -75,7 +75,7 @@ internal struct PaymentsRequest: APIRequest {
     }
 }
 
-internal struct PaymentsResponse: SessionResponse, PaymentResultCodeAware {
+internal struct PaymentsResponse: SessionResponse, SessionPaymentResultAware {
     
     internal let resultCode: ResultCode
     
@@ -85,11 +85,14 @@ internal struct PaymentsResponse: SessionResponse, PaymentResultCodeAware {
     
     internal let sessionData: String
     
+    internal let sessionResult: String?
+    
     private enum CodingKeys: String, CodingKey {
         case action
         case order
         case sessionData
         case resultCode
+        case sessionResult
     }
 }
 

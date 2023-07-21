@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -29,10 +29,19 @@ private struct LocalizationInput {
 /// - Returns: The localized string for the given key, or the key itself if the localized string could not be found.
 @_spi(AdyenInternal)
 public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
-    
+    var translationAttempt: String?
+
+    switch parameters?.mode {
+    case let .enforced(locale: enforcedLocale):
+        translationAttempt = enforceLocalizedString(key: key.key, locale: enforcedLocale)
+    case let .natural(bundle: bundle, tableName: tableName, keySeparator: keySeparator, locale: _):
+        translationAttempt = attempt(buildPossibleInputs(key.key, parameters))
+    case .none:
+        break
+    }
+
     // Use fallback in case attempt result is nil or empty
-    let result = attempt(buildPossibleInputs(key.key, parameters))
-        .flatMap(\.adyen.nilIfEmpty) ?? fallbackLocalizedString(key: key.key)
+    let result = translationAttempt.flatMap(\.adyen.nilIfEmpty) ?? fallbackLocalizedString(key: key.key)
     
     guard !arguments.isEmpty else {
         return result
@@ -52,6 +61,12 @@ private func fallbackLocalizedString(key: String) -> String {
             .flatMap(Bundle.init(path:))
             .map { NSLocalizedString(key, tableName: nil, bundle: $0, comment: "") } ?? key
     }
+}
+
+private func enforceLocalizedString(key: String, locale: String) -> String? {
+    Bundle.coreInternalResources.path(forResource: locale, ofType: "lproj")
+        .flatMap(Bundle.init(path:))
+        .map { NSLocalizedString(key, tableName: nil, bundle: $0, comment: "") }
 }
 
 private func buildPossibleInputs(_ key: String,

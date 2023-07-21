@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -12,8 +12,11 @@ internal protocol SessionResponse: Response {
     var sessionData: String { get }
 }
 
-internal protocol PaymentResultCodeAware {
+/// A protocol that contains payment result values for session calls.
+internal protocol SessionPaymentResultAware {
     var resultCode: PaymentsResponse.ResultCode { get }
+    
+    var sessionResult: String? { get }
 }
 
 internal struct SessionSetupRequest: Request {
