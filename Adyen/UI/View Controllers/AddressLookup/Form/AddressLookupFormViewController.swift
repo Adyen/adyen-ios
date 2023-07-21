@@ -45,9 +45,11 @@ internal class AddressLookupFormViewController: FormViewController {
         self.lookupDelegate = delegate
         self.addressViewModelBuilder = addressViewModelBuilder
         
-        super.init(style: formStyle)
+        super.init(
+            style: formStyle,
+            localizationParameters: localizationParameters
+        )
         
-        self.localizationParameters = localizationParameters
         title = localizedString(.billingAddressSectionTitle, localizationParameters)
         
         navigationItem.leftBarButtonItem = .init(
@@ -72,7 +74,9 @@ internal class AddressLookupFormViewController: FormViewController {
     override internal func viewDidLoad() {
         super.viewDidLoad()
         
-        // TODO: Alex - Validate with Design Team
+        // The done button should only be enabled once at least one field is filled in.
+        // Either by prefilling or manually entering.
+        // The country field is excluded as it is always prefilled.
         var itemWithoutCountry = billingAddressItem.value
         itemWithoutCountry.country = nil
         self.navigationItem.rightBarButtonItem?.isEnabled = !itemWithoutCountry.isEmpty
@@ -102,6 +106,7 @@ internal class AddressLookupFormViewController: FormViewController {
                 showsHeader: false
             ),
             identifier: identifier,
+            presenter: self,
             addressViewModelBuilder: addressViewModelBuilder
         )
         prefillAddress.map { item.value = $0 }

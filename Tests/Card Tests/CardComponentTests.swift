@@ -728,7 +728,7 @@ class CardComponentTests: XCTestCase {
         let view: UIView = sut.viewController.view
 
         let houseNumberItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.houseNumberOrName"))
-        let countryItemView: FormRegionPickerItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.country"))
+        let countryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.country"))
         let addressItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.street"))
         let apartmentSuiteItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.apartment"))
         let cityItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.city"))
@@ -737,7 +737,7 @@ class CardComponentTests: XCTestCase {
         let headerItemView: UILabel = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.title"))
 
         XCTAssertEqual(countryItemView.titleLabel.text, "Country")
-        XCTAssertEqual(countryItemView.inputControl.label, "Netherlands")
+        XCTAssertEqual(countryItemView.item.value!.title, "Netherlands")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "House number")
         XCTAssertEqual(addressItemView.titleLabel.text, "Street")
         XCTAssertEqual(apartmentSuiteItemView.titleLabel.text, "Apartment / Suite (optional)")
@@ -782,11 +782,11 @@ class CardComponentTests: XCTestCase {
         let view: UIView = sut.viewController.view
 
         let houseNumberItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.houseNumberOrName"))
-        let countryItemView: FormRegionPickerItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.country"))
+        let countryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.country"))
         let addressItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.street"))
         let apartmentSuiteItemView = view.findView(with: "AdyenCard.CardComponent.billingAddress.apartment") as? FormTextInputItemView
         let cityItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.city"))
-        let provinceOrTerritoryItemView: FormRegionPickerItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.stateOrProvince"))
+        let provinceOrTerritoryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.stateOrProvince"))
         let postalCodeItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.postalCode"))
         let headerItemView: UILabel = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.title"))
 
@@ -794,7 +794,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNil(apartmentSuiteItemView)
 
         XCTAssertEqual(countryItemView.titleLabel.text, "Country")
-        XCTAssertEqual(countryItemView.inputControl.label, "United States")
+        XCTAssertEqual(countryItemView.item.value!.title, "United States")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "Apartment / Suite (optional)")
         XCTAssertEqual(addressItemView.titleLabel.text, "Address")
         XCTAssertEqual(cityItemView.titleLabel.text, "City")
@@ -831,18 +831,18 @@ class CardComponentTests: XCTestCase {
         wait(for: .milliseconds(300))
 
         let houseNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.houseNumberOrName")
-        let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
+        let countryItemView: FormPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
         let addressItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.street")
         let apartmentSuiteItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.apartment")
         let cityItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.city")
-        let provinceOrTerritoryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.stateOrProvince")
+        let provinceOrTerritoryItemView: FormPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.stateOrProvince")
         let postalCodeItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.postalCode")
         let headerItemView: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.title")
 
         XCTAssertNil(apartmentSuiteItemView)
 
         XCTAssertEqual(countryItemView!.titleLabel.text, "Country")
-        XCTAssertEqual(countryItemView!.inputControl.label, "United Kingdom")
+        XCTAssertEqual(countryItemView!.item.value!.title, "United Kingdom")
         XCTAssertEqual(houseNumberItemView!.titleLabel.text, "House number")
         XCTAssertEqual(addressItemView!.titleLabel.text, "Street")
         XCTAssertEqual(cityItemView!.titleLabel.text, "City / Town")
@@ -865,17 +865,17 @@ class CardComponentTests: XCTestCase {
         let view: UIView = sut.viewController.view
 
         var houseNumberItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.houseNumberOrName"))
-        var countryItemView: FormRegionPickerItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.country"))
+        var countryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.country"))
         var addressItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.street"))
         var apartmentSuiteItemView: FormTextInputItemView! = view.findView(with: "AdyenCard.CardComponent.billingAddress.apartment")
         var cityItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.city"))
-        var provinceOrTerritoryItemView: FormRegionPickerItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.stateOrProvince"))
+        var provinceOrTerritoryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.stateOrProvince"))
         var postalCodeItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.postalCode"))
 
         XCTAssertNil(apartmentSuiteItemView)
 
         XCTAssertEqual(countryItemView.titleLabel.text, "Country")
-        XCTAssertEqual(countryItemView.inputControl.label, "Canada")
+        XCTAssertEqual(countryItemView.item.value!.title, "Canada")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "Apartment / Suite (optional)")
         XCTAssertEqual(addressItemView.titleLabel.text, "Address")
         XCTAssertEqual(cityItemView.titleLabel.text, "City")
@@ -896,7 +896,7 @@ class CardComponentTests: XCTestCase {
         postalCodeItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.billingAddress.postalCode"))
 
         XCTAssertEqual(countryItemView.titleLabel.text, "Country")
-        XCTAssertEqual(countryItemView.inputControl.label, "Brazil")
+        XCTAssertEqual(countryItemView.item.value!.title, "Brazil")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "House number")
         XCTAssertEqual(addressItemView.titleLabel.text, "Street")
         XCTAssertEqual(cityItemView.titleLabel.text, "City")
@@ -1512,7 +1512,7 @@ class CardComponentTests: XCTestCase {
                                                   country: "US",
                                                   houseNumberOrName: "",
                                                   postalCode: "",
-                                                  stateOrProvince: "AL",
+                                                  stateOrProvince: "",
                                                   street: "",
                                                   apartment: nil)
 
@@ -1523,13 +1523,13 @@ class CardComponentTests: XCTestCase {
         // show view controller
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(100))
         
         // When
         // hide view controller
         UIApplication.shared.keyWindow?.rootViewController = UIViewController()
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(100))
 
         // Then
         let postalAddress = sut.cardViewController.items.billingAddressItem.value
@@ -1678,10 +1678,10 @@ class CardComponentTests: XCTestCase {
 
         wait(for: .milliseconds(300))
 
-        let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
+        let countryItemView: FormPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
         
         XCTAssertEqual(sut.cardViewController.items.billingAddressItem.configuration.supportedCountryCodes, ["UK"])
-        XCTAssertEqual(countryItemView?.inputControl.label, "United Kingdom")
+        XCTAssertEqual(countryItemView?.item.value!.title, "United Kingdom")
     }
     
     func testAddressWithSupportedCountriesWithMatchingPrefill() {
@@ -1697,10 +1697,10 @@ class CardComponentTests: XCTestCase {
 
         wait(for: .milliseconds(300))
 
-        let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
+        let countryItemView: FormPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
         
         XCTAssertEqual(sut.cardViewController.items.billingAddressItem.configuration.supportedCountryCodes, ["US", "JP"])
-        XCTAssertEqual(countryItemView?.inputControl.label, "United States")
+        XCTAssertEqual(countryItemView?.item.value!.title, "United States")
     }
     
     func testAddressWithSupportedCountriesWithNonMatchingPrefill() {
@@ -1716,10 +1716,10 @@ class CardComponentTests: XCTestCase {
 
         wait(for: .milliseconds(300))
 
-        let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
+        let countryItemView: FormPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
         
         XCTAssertEqual(sut.cardViewController.items.billingAddressItem.configuration.supportedCountryCodes, ["UK"])
-        XCTAssertEqual(countryItemView?.inputControl.label, "United Kingdom")
+        XCTAssertEqual(countryItemView?.item.value!.title, "United Kingdom")
     }
     
     func testOptionalInvalidFullAddressWithCertainSchemes() throws {
@@ -1753,8 +1753,9 @@ class CardComponentTests: XCTestCase {
         let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
 
         let postalCodeField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.fullAddressZipCode))
-
         let cityField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.city))
+        
+        let stateField: FormPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.stateOrProvince))
         
         populate(textItemView: securityCodeField, with: "737")
         populate(textItemView: numberField, with: "4111 1120 1426 7661")
@@ -1762,6 +1763,8 @@ class CardComponentTests: XCTestCase {
         
         populate(textItemView: postalCodeField, with: "123")
         populate(textItemView: cityField, with: "Amsterdam")
+        
+        stateField.item.value = stateField.item.selectableValues.first!
         
         wait(for: .milliseconds(800))
         
@@ -2022,6 +2025,8 @@ class CardComponentTests: XCTestCase {
 
         let cityField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.city))
         let streetField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.street))
+        
+        let stateField: FormPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.stateOrProvince))
 
         populate(textItemView: securityCodeField, with: "737")
         populate(textItemView: numberField, with: "4111 1120 1426 7661")
@@ -2030,6 +2035,8 @@ class CardComponentTests: XCTestCase {
         populate(textItemView: postalCodeField, with: "123")
         populate(textItemView: cityField, with: "Seattle")
         populate(textItemView: streetField, with: "Test Street")
+        stateField.item.value = stateField.item.selectableValues.first!
+        
 
         wait(for: .milliseconds(800))
 
@@ -2084,6 +2091,8 @@ class CardComponentTests: XCTestCase {
         let houseNumberOrNameField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.houseNumberOrName))
         let streetField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.street))
 
+        let stateField: FormPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.stateOrProvince))
+        
         populate(textItemView: securityCodeField, with: "737")
         populate(textItemView: numberField, with: "4111 1120 1426 7661")
         populate(textItemView: expiryDateField, with: "12/30")
@@ -2092,6 +2101,8 @@ class CardComponentTests: XCTestCase {
         populate(textItemView: cityField, with: "Seattle")
         populate(textItemView: houseNumberOrNameField, with: "12")
         populate(textItemView: streetField, with: "Test Street")
+        
+        stateField.item.value = stateField.item.selectableValues.first!
 
         wait(for: .milliseconds(800))
 

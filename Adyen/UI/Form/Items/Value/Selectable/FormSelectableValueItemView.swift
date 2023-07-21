@@ -8,8 +8,14 @@ import UIKit
 
 /// An abstract view representing a selectable value item.
 @_spi(AdyenInternal)
-open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueItem<ValueType>>:
-    FormValidatableValueItemView<ValueType, ItemType> {
+open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueItem<ValueType?>>:
+    FormValidatableValueItemView<ValueType?, ItemType> {
+    
+    internal var numberOfLines: Int = 1 {
+        didSet {
+            valueLabel.numberOfLines = numberOfLines
+        }
+    }
     
     override internal var accessibilityLabelView: UIView? { valueLabel }
     
@@ -83,8 +89,8 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
     
     /// The value label view.
     internal lazy var valueLabel: UILabel = {
-        let valueLabel = UILabel(style: item.style.text)
-        valueLabel.numberOfLines = 0
+        let valueLabel = ValueLabel(style: item.style.text)
+        valueLabel.numberOfLines = numberOfLines
         valueLabel.isAccessibilityElement = false
         valueLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "valueLabel") }
 
@@ -122,5 +128,17 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
     private func configureConstraints() {
         selectionButton.adyen.anchor(inside: self)
         separatorView.bottomAnchor.constraint(equalTo: valueLabel.bottomAnchor, constant: 4).isActive = true
+    }
+}
+
+/// A label reporting it's intrinsic content size to match the text field of the ``FormTextItemView``
+private class ValueLabel: UILabel {
+    
+    override var intrinsicContentSize: CGSize {
+        let size = super.intrinsicContentSize
+        return .init(
+            width: size.width,
+            height: size.height + 3
+        )
     }
 }

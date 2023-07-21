@@ -87,9 +87,11 @@ public final class CashAppPayComponent: PaymentComponent,
     // MARK: - Private
 
     private lazy var formViewController: FormViewController = {
-        let formViewController = FormViewController(style: configuration.style)
+        let formViewController = FormViewController(
+            style: configuration.style,
+            localizationParameters: configuration.localizationParameters
+        )
         formViewController.delegate = self
-        formViewController.localizationParameters = configuration.localizationParameters
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
     
         if configuration.showsStorePaymentMethodField {

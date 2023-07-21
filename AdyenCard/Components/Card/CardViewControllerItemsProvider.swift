@@ -27,6 +27,8 @@ extension CardViewController {
 
         private let initialCountry: String
         
+        private weak var presenter: ViewControllerPresenter?
+        
         private let addressViewModelBuilder: AddressViewModelBuilder
 
         internal init(formStyle: FormComponentStyle,
@@ -36,6 +38,7 @@ extension CardViewController {
                       cardLogos: [FormCardLogosItem.CardTypeLogo],
                       scope: String,
                       initialCountryCode: String,
+                      presenter: ViewControllerPresenter?,
                       localizationParameters: LocalizationParameters?,
                       addressViewModelBuilder: AddressViewModelBuilder) {
             self.formStyle = formStyle
@@ -45,6 +48,7 @@ extension CardViewController {
             self.cardLogos = cardLogos
             self.scope = scope
             self.initialCountry = initialCountryCode
+            self.presenter = presenter
             self.localizationParameters = localizationParameters
             self.addressViewModelBuilder = addressViewModelBuilder
         }
@@ -59,6 +63,7 @@ extension CardViewController {
                                            supportedCountryCodes: configuration.billingAddress.countryCodes
                                        ),
                                        identifier: identifier,
+                                       presenter: presenter,
                                        addressViewModelBuilder: addressViewModelBuilder)
             shopperInformation?.billingAddress.map { item.value = $0 }
             item.style.backgroundColor = UIColor.Adyen.lightGray

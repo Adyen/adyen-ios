@@ -30,7 +30,7 @@ public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?
         }
     }
 
-    /// Initializes the split text item.
+    /// Initializes the address lookup item.
     /// - Parameters:
     ///   - initialCountry: The items displayed side-by-side. Must be two.
     ///   - prefillAddress: The provided prefill address
@@ -75,7 +75,9 @@ public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?
     // MARK: ValidatableFormItem
     
     override public func isValid() -> Bool {
-        if context.isOptional { return true }
+        if context.isOptional {
+            return true
+        }
         guard let address = value else { return false }
         return address.satisfies(requiredFields: addressViewModel.requiredFields)
     }

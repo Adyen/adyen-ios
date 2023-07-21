@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -34,8 +34,10 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     private let fields: [PersonalInformation]
 
     internal lazy var formViewController: FormViewController = {
-        let formViewController = FormViewController(style: configuration.style)
-        formViewController.localizationParameters = configuration.localizationParameters
+        let formViewController = FormViewController(
+            style: configuration.style,
+            localizationParameters: configuration.localizationParameters
+        )
 
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.delegate = self
@@ -145,6 +147,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
                                        initialCountry: initialCountry,
                                        identifier: identifier,
                                        style: configuration.style.addressStyle,
+                                       presenter: self,
                                        addressViewModelBuilder: addressViewModelBuilder())
     }()
     
@@ -159,6 +162,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
                                        initialCountry: initialCountry,
                                        identifier: identifier,
                                        style: configuration.style.addressStyle,
+                                       presenter: self,
                                        addressViewModelBuilder: addressViewModelBuilder())
     }()
     
@@ -234,6 +238,18 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         shopperInformation.telephoneNumber.map { phoneItem?.value = $0 }
         shopperInformation.billingAddress.map { addressItem?.value = $0 }
         shopperInformation.deliveryAddress.map { deliveryAddressItem?.value = $0 }
+    }
+}
+
+@_spi(AdyenInternal)
+extension AbstractPersonalInformationComponent: ViewControllerPresenter {
+    
+    public func presentViewController(_ viewController: UIViewController, animated: Bool) {
+        self.viewController.presentViewController(viewController, animated: animated)
+    }
+    
+    public func dismissViewController(animated: Bool) {
+        self.viewController.dismissViewController(animated: animated)
     }
 }
 

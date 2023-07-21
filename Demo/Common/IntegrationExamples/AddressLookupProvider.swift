@@ -100,6 +100,15 @@ private extension DemoAddressLookupProvider {
                 apartment: nil
             ),
             PostalAddress(
+                city: "Cheyenne",
+                country: "US",
+                houseNumberOrName: nil,
+                postalCode: "82003",
+                stateOrProvince: "WY",
+                street: "1280 Thorn Street",
+                apartment: nil
+            ),
+            PostalAddress(
                 city: "Amsterdam",
                 country: "NL",
                 houseNumberOrName: "123",

@@ -392,24 +392,30 @@ public struct LocalizationKey {
     public static let threeds2DAApprovalRemoveAlertPositiveButton = LocalizationKey(key: "adyen.threeds2.DA.approval.remove.alert.positiveButton")
     /// Cancel
     public static let threeds2DAApprovalRemoveAlertNegativeButton = LocalizationKey(key: "adyen.threeds2.DA.approval.remove.alert.negativeButton")
-    
-    // TODO: Alex - Create on Smartling
-    
+    /// No results found
+    public static let pickerSearchEmptyTitle = LocalizationKey(key: "adyen.picker.search.empty.title")
+    /// for '%@'
+    public static let pickerSearchEmptySubtitle = LocalizationKey(key: "adyen.picker.search.empty.subtitle")
+    /// Country
+    public static let countryFieldPlaceholder = LocalizationKey(key: "adyen.countryField.placeholder")
+    /// Invalid country
+    public static let countryFieldValidationFailureMessageInvalid = LocalizationKey(key: "adyen.countryField.validationFailureMessage.invalid")
+    /// Invalid %@
+    public static let pickerValidationFailureMessageInvalid = LocalizationKey(key: "picker.validationFailureMessage.invalid")
     /// Search your address
     public static let addressLookupSearchPlaceholder = LocalizationKey(key: "adyen.address.lookup.search.placeholder")
     /// Your billing address
     public static let billingAddressPlaceholder = LocalizationKey(key: "adyen.address.billingAddress.placeholder")
-    
-    /// Enter your address
+    /// Can't search your address?
     public static let addressLookupSearchEmptyTitle = LocalizationKey(key: "adyen.address.lookup.search.empty.title")
+    /// You can always #enter your address manually#
+    public static let addressLookupSearchEmptySubtitle = LocalizationKey(key: "adyen.address.lookup.search.empty.subtitle")
     /// No results found
     public static let addressLookupSearchEmptyTitleNoResults = LocalizationKey(key: "adyen.address.lookup.search.empty.title.noResults")
-    
-    /// or use #manual address entry#
-    public static let addressLookupSearchEmptySubtitle = LocalizationKey(key: "adyen.address.lookup.search.empty.subtitle")
     /// '%@' did not match with anything, try again or use #manual address entry#
     public static let addressLookupSearchEmptySubtitleNoResults = LocalizationKey(key: "adyen.address.lookup.search.empty.subtitle.noResults")
-    
+    /// Enter address manually
+    public static let addressLookupSearchManualEntryItemTitle = LocalizationKey(key: "adyen.address.lookup.search.manualEntryItem.title")
     /// Address required
     public static let addressLookupItemValidationFailureMessageEmpty = LocalizationKey(key: "adyen.address.lookup.item.validationFailureMessage.empty")
     /// Invalid Address

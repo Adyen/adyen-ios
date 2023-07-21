@@ -49,7 +49,12 @@ internal class AddressLookupSearchViewController: SearchViewController {
         ) { [weak delegate] searchTerm, resultHandler in
             delegate?.addressLookupSearchLookUp(searchTerm: searchTerm) {
                 guard let delegate else { return }
-                resultHandler(Self.listItems(from: $0, with: delegate, style: style.manualEntryListItem))
+                resultHandler(Self.listItems(
+                    from: $0,
+                    with: delegate,
+                    style: style.manualEntryListItem,
+                    localizationParameters: localizationParameters
+                ))
             }
         }
         
@@ -72,6 +77,13 @@ internal class AddressLookupSearchViewController: SearchViewController {
             action: #selector(cancelSearch)
         )
         
+        navigationItem.rightBarButtonItem = .init(
+            barButtonSystemItem: .done,
+            target: nil,
+            action: nil
+        )
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        
         searchBar.textContentType = .fullStreetAddress
     }
     
@@ -83,7 +95,8 @@ internal class AddressLookupSearchViewController: SearchViewController {
     private static func listItems(
         from results: [ListItem],
         with delegate: AddressLookupSearchViewControllerDelegate,
-        style: ListItemStyle
+        style: ListItemStyle,
+        localizationParameters: LocalizationParameters?
     ) -> [ListItem] {
         
         if results.isEmpty {
@@ -91,7 +104,7 @@ internal class AddressLookupSearchViewController: SearchViewController {
         }
         
         let manualEntryListItem = ListItem(
-            title: "Enter Address Manually", // TODO: Alex - Localization
+            title: localizedString(.addressLookupSearchManualEntryItemTitle, localizationParameters),
             style: style
         ) {
             delegate.addressLookupSearchSwitchToManualEntry()

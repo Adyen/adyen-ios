@@ -34,12 +34,6 @@ public struct FormItemViewBuilder {
         FormPhoneExtensionPickerItemView(item: item)
     }
 
-    /// Builds `FormRegionPickerItemView` from `FormRegionPickerItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormRegionPickerItem) -> BaseFormPickerItemView<Region> {
-        FormRegionPickerItemView(item: item)
-    }
-
     /// Builds `FormIssuerPickerItemView` from `FormIssuerPickerItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormIssuersPickerItem) -> BaseFormPickerItemView<Issuer> {
@@ -112,6 +106,12 @@ public struct FormItemViewBuilder {
     @_spi(AdyenInternal)
     public func build(with item: FormAddressLookupItem) -> FormItemView<FormAddressLookupItem> {
         FormAddressLookupItemView(item: item)
+    }
+    
+    /// Builds `FormPickerItemView` from `FormPickerItem`.
+    @_spi(AdyenInternal)
+    public func build(with item: FormPickerItem) -> FormItemView<FormPickerItem> {
+        FormPickerItemView(item: item)
     }
 
     @_spi(AdyenInternal)

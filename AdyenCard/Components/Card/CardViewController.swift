@@ -24,10 +24,32 @@ internal class CardViewController: FormViewController {
     private let supportedCardTypes: [CardType]
 
     private let formStyle: FormComponentStyle
-
-    internal var items: ItemsProvider
     
     private var issuingCountryCode: String?
+    
+    private let payment: Payment?
+    
+    private let initialCountryCode: String
+    
+    private let scope: String
+    
+    private let cardLogos: [FormCardLogosItem.CardTypeLogo]
+    
+    internal lazy var items = {
+        
+        ItemsProvider(
+            formStyle: formStyle,
+            payment: payment,
+            configuration: configuration,
+            shopperInformation: shopperInformation,
+            cardLogos: cardLogos,
+            scope: scope,
+            initialCountryCode: initialCountryCode,
+            presenter: self,
+            localizationParameters: localizationParameters,
+            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+        )
+    }()
 
     // MARK: Init view controller
 
@@ -55,22 +77,18 @@ internal class CardViewController: FormViewController {
         self.shopperInformation = shopperInformation
         self.supportedCardTypes = supportedCardTypes
         self.formStyle = formStyle
+        self.scope = scope
+        self.initialCountryCode = initialCountryCode
+        self.payment = payment
         
-        let cardLogos = supportedCardTypes.map {
-            FormCardLogosItem.CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
+        self.cardLogos = supportedCardTypes.map {
+            .init(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
         }
-
-        self.items = ItemsProvider(formStyle: formStyle,
-                                   payment: payment,
-                                   configuration: configuration,
-                                   shopperInformation: shopperInformation,
-                                   cardLogos: cardLogos,
-                                   scope: scope,
-                                   initialCountryCode: initialCountryCode,
-                                   localizationParameters: localizationParameters,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
-        super.init(style: formStyle)
-        self.localizationParameters = localizationParameters
+        
+        super.init(
+            style: formStyle,
+            localizationParameters: localizationParameters
+        )
     }
 
     // MARK: - View lifecycle
