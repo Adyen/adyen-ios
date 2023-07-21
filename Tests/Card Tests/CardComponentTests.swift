@@ -1977,54 +1977,33 @@ class CardComponentTests: XCTestCase {
     }
 
     func testPayButtonLocaleBasedFormating() {
-        configuration.localizationParameters = LocalizationParameters(locale: "ko-KR")
-
         let amount = Amount(value: 1234567, currencyCode: "USD")
         let context = AdyenContext(apiContext: Dummy.apiContext, payment: Payment(amount: amount, countryCode: "US"))
+
+        // When
+        configuration.localizationParameters = LocalizationParameters(locale: "ko-KR")
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: configuration)
-
-        // When
-        sut.cardViewController.viewWillAppear(false)
 
         // Then
         var items = sut.cardViewController.items
         XCTAssertEqual(items.button.title, "Pay US$12,345.67")
     }
 
-    func testPayButtonLocaleBasedFormatingOptionA() {
-        configuration.localizationParameters = LocalizationParameters(locale: "ru-RU")
-
+    func testPayButtonEnforceedLocaleBasedFormating() {
         let amount = Amount(value: 1234567, currencyCode: "USD")
         let context = AdyenContext(apiContext: Dummy.apiContext, payment: Payment(amount: amount, countryCode: "US"))
+
+        // When
+        configuration.localizationParameters = LocalizationParameters(enforcedLocale: "ru-RU")
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: configuration)
 
-        // When
-        sut.cardViewController.viewWillAppear(false)
-
         // Then
         var items = sut.cardViewController.items
-        XCTAssertEqual(items.button.title, "Pay 12 345,67 $")
-    }
-
-    func testPayButtonLocaleBasedFormatingOptionB() {
-        configuration.localizationParameters = LocalizationParameters(locale: "en-US")
-
-        let amount = Amount(value: 1234567, currencyCode: "USD")
-        let context = AdyenContext(apiContext: Dummy.apiContext, payment: Payment(amount: amount, countryCode: "US"))
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
-
-        // When
-        sut.cardViewController.viewWillAppear(false)
-
-        // Then
-        var items = sut.cardViewController.items
-        XCTAssertEqual(items.button.title, "Pay $12,345.67")
+        XCTAssertEqual(items.button.title, "Заплатить 12 345,67 $")
     }
 
     func testCardHolderNameValidatorWithMinimumLength() {
