@@ -140,7 +140,7 @@ public func localizedSubmitButtonTitle(with amount: Amount?,
     }
 
     var tempAmount = amount
-    tempAmount.localeIdentifier = parameters?.locale
+    tempAmount.localeIdentifier = amount.localeIdentifier ?? parameters?.locale
     return localizedString(.submitButtonFormatted, parameters, tempAmount.formatted)
 }
 
