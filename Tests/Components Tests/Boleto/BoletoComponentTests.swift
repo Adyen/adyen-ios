@@ -161,25 +161,22 @@ class BoletoComponentTests: XCTestCase {
         
         wait(for: .milliseconds(300))
         
-        let emailSwitchItem: FormToggleItemView? = viewController.view.findView(by: "sendCopyToEmailItem") as? FormToggleItemView
-        
-        XCTAssertNotNil(emailSwitchItem)
-        
-        let emailSwitch: UISwitch? = emailSwitchItem!.findView(by: "sendCopyToEmailItem.switch") as? UISwitch
-        let emailItem: FormItemView? = viewController.view.findView(by: "emailItem") as? FormTextItemView<FormTextInputItem>
+        let emailSwitchItem: FormToggleItemView = viewController.view.findView(by: "sendCopyToEmailItem") as! FormToggleItemView
+        let emailSwitch: UISwitch = emailSwitchItem.findView(by: "sendCopyToEmailItem.switch") as! UISwitch
+        let emailItem: FormItemView = viewController.view.findView(by: "emailItem") as! FormTextItemView<FormTextInputItem>
         
         // Test that email switch has false by default
-        XCTAssertNotNil(emailSwitch)
-        XCTAssertFalse(emailSwitch!.isOn)
+        XCTAssertFalse(emailSwitch.isOn)
         
         // Test that email field is hidden
-        XCTAssertNotNil(emailItem)
-        XCTAssertTrue(emailItem!.isHidden)
+        XCTAssertTrue(emailItem.isHidden)
         
-        emailSwitchItem?.accessibilityActivate()
+        emailSwitchItem.accessibilityActivate()
 
+        wait(for: .milliseconds(10))
+        
         // Test that email field is visible
-        XCTAssertFalse(emailItem!.isHidden)
+        XCTAssertFalse(emailItem.isHidden)
     }
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
