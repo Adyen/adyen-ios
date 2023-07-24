@@ -29,7 +29,7 @@ class ThrottlerTests: XCTestCase {
                 }
             }
             
-            wait(for: .milliseconds(100))
+            wait(for: .milliseconds(50))
         }
         
         waitForExpectations(timeout: 100, handler: nil)

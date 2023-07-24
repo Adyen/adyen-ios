@@ -362,6 +362,7 @@ class CardComponentTests: XCTestCase {
         )
 
         UIApplication.shared.keyWindow?.rootViewController = component.viewController
+        UIApplication.shared.keyWindow?.layer.speed = 10.0
 
         let switchView: UISwitch! = component.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
@@ -420,7 +421,7 @@ class CardComponentTests: XCTestCase {
 
         sut.viewDidLoad(viewController: sut.cardViewController)
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 1)
     }
 
     func testStoredCardPaymentWithNoPayment() {
@@ -645,7 +646,7 @@ class CardComponentTests: XCTestCase {
 
         tapSubmitButton(on: view)
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 1)
     }
     
     func testCardNumberShouldPassFocusToDate() {
@@ -729,7 +730,8 @@ class CardComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
+        UIApplication.shared.keyWindow?.layer.speed = 10.0
+        
         // When
         wait(for: .milliseconds(50))
 
@@ -783,7 +785,8 @@ class CardComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
+        UIApplication.shared.keyWindow?.layer.speed = 10.0
+        
         // When
         wait(for: .milliseconds(50))
 
@@ -956,12 +959,14 @@ class CardComponentTests: XCTestCase {
 
         self.tapSubmitButton(on: sut.viewController.view)
 
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 1)
     }
 
     func testKCP() {
         // Given
+        var configuration = CardComponent.Configuration()
         configuration.koreanAuthenticationMode = .auto
+        
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(brands: [CardBrand(type: .koreanLocalCard)],
@@ -973,8 +978,10 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration,
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
+        
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
+        UIApplication.shared.keyWindow?.layer.speed = 10.0
+        
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
@@ -993,8 +1000,6 @@ class CardComponentTests: XCTestCase {
             delegateExpectation.fulfill()
         }
         
-        wait(for: .milliseconds(50))
-        
         let taxNumberItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.additionalAuthCodeItem")
         let passwordItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.additionalAuthPasswordItem")
         XCTAssertTrue(taxNumberItemView!.isHidden)
@@ -1002,7 +1007,7 @@ class CardComponentTests: XCTestCase {
 
         self.fillCard(on: sut.viewController.view, with: Dummy.kcpCard)
         
-        wait(for: .milliseconds(50))
+        wait(for: .milliseconds(500))
 
         XCTAssertEqual(passwordItemView!.titleLabel.text, "First 2 digits of card password")
         XCTAssertEqual(taxNumberItemView!.titleLabel.text, "Birthdate or Corporate registration number")
@@ -1013,12 +1018,14 @@ class CardComponentTests: XCTestCase {
 
         self.tapSubmitButton(on: sut.viewController.view)
         
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 1)
     }
 
     func testBrazilSSNAuto() {
         // Given
+        var configuration = CardComponent.Configuration()
         configuration.socialSecurityNumberMode = .auto
+        
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: true)],
@@ -1030,8 +1037,10 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration,
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
+        
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
+        UIApplication.shared.keyWindow?.layer.speed = 10.0
+        
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
@@ -1053,7 +1062,7 @@ class CardComponentTests: XCTestCase {
 
         fillCard(on: sut.viewController.view, with: Dummy.visaCard)
 
-        wait(for: .milliseconds(50))
+        wait(for: .milliseconds(500))
         XCTAssertEqual(brazilSSNItemView!.titleLabel.text, "CPF/CNPJ")
         XCTAssertFalse(brazilSSNItemView!.isHidden)
         populate(textItemView: brazilSSNItemView!, with: "123.123.123-12")
@@ -1063,11 +1072,11 @@ class CardComponentTests: XCTestCase {
         let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: false)])
         sut.cardViewController.update(binInfo: newResponse)
 
-        wait(for: .milliseconds(900))
+        wait(for: .milliseconds(500))
 
         XCTAssertTrue(brazilSSNItemView!.isHidden)
 
-        waitForExpectations(timeout: 20, handler: nil)
+        waitForExpectations(timeout: 1)
     }
     
     func testBrazilSSNDisabled() {
@@ -1731,6 +1740,8 @@ class CardComponentTests: XCTestCase {
     }
     
     func testOptionalInvalidFullAddressWithCertainSchemes() throws {
+        
+        var configuration = CardComponent.Configuration()
         configuration.billingAddress.mode = .full
         configuration.billingAddress.countryCodes = ["US"]
         configuration.billingAddress.requirementPolicy = .optionalForCardTypes([.visa])
@@ -1751,10 +1762,9 @@ class CardComponentTests: XCTestCase {
         sut.delegate = delegate
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        UIApplication.shared.keyWindow?.layer.speed = 10
         
         let view: UIView = sut.cardViewController.view
-
-        wait(for: .milliseconds(50))
         
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
         let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
@@ -1767,11 +1777,9 @@ class CardComponentTests: XCTestCase {
         populate(textItemView: securityCodeField, with: "737")
         populate(textItemView: numberField, with: "4111 1120 1426 7661")
         populate(textItemView: expiryDateField, with: "12/30")
-        
         populate(textItemView: postalCodeField, with: "123")
         populate(textItemView: cityField, with: "Amsterdam")
-        
-        wait(for: .milliseconds(800))
+        wait(for: .milliseconds(500))
         
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
@@ -1789,7 +1797,7 @@ class CardComponentTests: XCTestCase {
         
         tapSubmitButton(on: sut.viewController.view)
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 1)
     }
     
     func testOptionalValidFullAddressWithCertainSchemes() throws {
@@ -1827,7 +1835,7 @@ class CardComponentTests: XCTestCase {
         populate(textItemView: numberField, with: "4111 1120 1426 7661")
         populate(textItemView: expiryDateField, with: "12/30")
         
-        wait(for: .milliseconds(800))
+        wait(for: .milliseconds(50))
         
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
@@ -1843,7 +1851,7 @@ class CardComponentTests: XCTestCase {
         
         tapSubmitButton(on: sut.viewController.view)
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 1)
     }
     
     func testOptionalValidPostalAddressWithCertainSchemes() throws {
@@ -1884,7 +1892,7 @@ class CardComponentTests: XCTestCase {
         populate(textItemView: expiryDateField, with: "12/30")
         populate(textItemView: postalCodeField, with: "123")
         
-        wait(for: .milliseconds(800))
+        wait(for: .milliseconds(50))
         
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
@@ -1900,7 +1908,7 @@ class CardComponentTests: XCTestCase {
         
         tapSubmitButton(on: sut.viewController.view)
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 1)
     }
     
     func testOptionalInvalidPostalAddressWithCertainSchemes() throws {
@@ -1937,7 +1945,7 @@ class CardComponentTests: XCTestCase {
         populate(textItemView: numberField, with: "4111 1120 1426 7661")
         populate(textItemView: expiryDateField, with: "12/30")
         
-        wait(for: .milliseconds(800))
+        wait(for: .milliseconds(500))
         
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
@@ -1953,7 +1961,7 @@ class CardComponentTests: XCTestCase {
         
         tapSubmitButton(on: sut.viewController.view)
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 1)
     }
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
@@ -2069,7 +2077,7 @@ class CardComponentTests: XCTestCase {
         populate(textItemView: cityField, with: "Seattle")
         populate(textItemView: streetField, with: "Test Street")
 
-        wait(for: .milliseconds(800))
+        wait(for: .milliseconds(50))
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
@@ -2084,7 +2092,7 @@ class CardComponentTests: XCTestCase {
 
         tapSubmitButton(on: sut.viewController.view)
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 1)
     }
 
     func testOptionalApartmentNameNonNil() throws {
@@ -2131,7 +2139,7 @@ class CardComponentTests: XCTestCase {
         populate(textItemView: houseNumberOrNameField, with: "12")
         populate(textItemView: streetField, with: "Test Street")
 
-        wait(for: .milliseconds(800))
+        wait(for: .milliseconds(50))
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
@@ -2146,7 +2154,7 @@ class CardComponentTests: XCTestCase {
 
         tapSubmitButton(on: sut.viewController.view)
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 1)
     }
 
     func testNoStateOrProvincePresentInBillingAddress() throws {
@@ -2193,7 +2201,7 @@ class CardComponentTests: XCTestCase {
         populate(textItemView: houseNumberOrNameField, with: "12")
         populate(textItemView: streetField, with: "Test Street")
 
-        wait(for: .milliseconds(800))
+        wait(for: .milliseconds(50))
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
@@ -2208,7 +2216,7 @@ class CardComponentTests: XCTestCase {
 
         tapSubmitButton(on: sut.viewController.view)
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 1)
     }
     
     func testExpiryFieldValues() {
@@ -2221,7 +2229,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNil(expiryDateItem.expiryYear)
         
         fillCard(on: sut.viewController.view, with: Dummy.visaCard)
-        wait(for: .milliseconds(200))
+        wait(for: .milliseconds(50))
         
         XCTAssertEqual(expiryDateItem.expiryYear, "2030")
         XCTAssertEqual(expiryDateItem.expiryMonth, "03")

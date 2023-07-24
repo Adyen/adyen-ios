@@ -158,6 +158,7 @@ class BoletoComponentTests: XCTestCase {
         let viewController = component.viewController
         
         UIApplication.shared.keyWindow?.rootViewController = viewController
+        UIApplication.shared.keyWindow?.layer.speed = 10
         
         wait(for: .milliseconds(50))
         
@@ -173,7 +174,7 @@ class BoletoComponentTests: XCTestCase {
         
         emailSwitchItem.accessibilityActivate()
 
-        wait(for: .milliseconds(10))
+        wait(for: .milliseconds(100))
         
         // Test that email field is visible
         XCTAssertFalse(emailItem.isHidden)
