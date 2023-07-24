@@ -1,7 +1,11 @@
 # Localization
 
-By default, the SDK attempts to use a device's locale. If the preferred device's locales are not supported, the SDK falls back to the **en-US** locale.
+By default, the SDK attempts to use a device's locale for translation and monetary values formating. If the preferred device's locales are not supported, the SDK falls back to the **en-US** locale.
 Localization only picks up locales that are listed in the `CFBundleLocalizations` property of your app's `Info.plist` file.
+
+## Overriding monetary formatting
+
+To inforce monetary values formating use `locale` property on `LocalizationParameters`.
 
 ## Overriding a string 
 
@@ -47,3 +51,7 @@ let parameters = LocalizationParameters(bundle: Bundle(for: MyCommonLibraryClass
                                         keySeparator: "_")
 configuration.localizationParameters = parameters // Any Component.
 ~~~~
+
+## Enforcing locale
+
+If you willing to enforce a specific locale and monetary values formating regardless of a current shopper's device locale - use `LocalizationParameters(enforcedLocale: MY_LOCALE)`
