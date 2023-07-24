@@ -171,8 +171,6 @@ public class CardComponent: PresentableComponent,
     
     internal lazy var cardViewController: CardViewController = {
         
-        let code = initialCountryCode
-        
         let formViewController = CardViewController(configuration: configuration,
                                                     shopperInformation: configuration.shopperInformation,
                                                     formStyle: configuration.style,

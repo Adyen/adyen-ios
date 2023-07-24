@@ -40,7 +40,7 @@ internal final class FormSearchButtonItemView: FormItemView<FormSearchButtonItem
 
 extension FormSearchButtonItemView: UISearchBarDelegate {
     
-    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+    internal func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         item.selectionHandler()
         return false
     }

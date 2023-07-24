@@ -43,7 +43,7 @@ public struct BillingAddressConfiguration {
         case .optional:
             return true
         case let .optionalForCardTypes(optionalCardTypes):
-            return optionalCardTypes.isDisjoint(with: cardTypes) == false
+            return !optionalCardTypes.isDisjoint(with: cardTypes)
         }
     }
     

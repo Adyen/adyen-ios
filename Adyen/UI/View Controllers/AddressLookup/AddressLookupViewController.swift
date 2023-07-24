@@ -63,30 +63,30 @@ private extension AddressLookupViewController {
 
 extension AddressLookupViewController: AddressLookupSearchViewControllerDelegate {
     
-    func addressLookupSearchSwitchToManualEntry() {
+    internal func addressLookupSearchSwitchToManualEntry() {
         viewModel.handleSwitchToManualEntryTapped()
     }
     
-    func addressLookupSearchLookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
+    internal func addressLookupSearchLookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
         viewModel.lookUp(searchTerm: searchTerm, resultHandler: resultHandler)
     }
     
-    func addressLookupSearchCancel() {
+    internal func addressLookupSearchCancel() {
         viewModel.handleDismissSearchTapped()
     }
 }
 
 extension AddressLookupViewController: AddressLookupFormViewControllerDelegate {
     
-    func addressLookupFormShowSearch(currentInput: PostalAddress) {
+    internal func addressLookupFormShowSearch(currentInput: PostalAddress) {
         viewModel.handleShowSearchTapped(currentInput: currentInput)
     }
     
-    func addressLookupFormSubmit(validAddress: PostalAddress) {
+    internal func addressLookupFormSubmit(validAddress: PostalAddress) {
         viewModel.handleSubmit(address: validAddress)
     }
     
-    func addressLookupFormDismiss() {
+    internal func addressLookupFormDismiss() {
         viewModel.handleDismissAddressLookupTapped()
     }
 }

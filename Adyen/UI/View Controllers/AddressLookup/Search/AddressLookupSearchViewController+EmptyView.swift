@@ -9,7 +9,7 @@ import UIKit
 extension AddressLookupSearchViewController {
     
     /// The view that is shown when the address lookup search result is empty
-    class EmptyView: UIView, SearchResultsEmptyView {
+    internal class EmptyView: UIView, SearchResultsEmptyView {
         
         private let style: AddressLookupSearchEmptyStyle
         private let localizationParameters: LocalizationParameters?

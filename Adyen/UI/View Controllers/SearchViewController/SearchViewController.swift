@@ -102,7 +102,7 @@ public class SearchViewController: UIViewController, AdyenObserver {
         super.viewWillAppear(animated)
         
         if viewModel.shouldFocusSearchBarOnAppearance {
-            DispatchQueue.main.async { // Fix for iOS 17
+            DispatchQueue.main.async { // Fix animation glitch on iOS 17
                 self.searchBar.becomeFirstResponder()
             }
         }

@@ -202,7 +202,7 @@
 "adyen.address.lookup.search.empty.title" = "Can't search your address?";
 "adyen.address.lookup.search.empty.subtitle" = "You can always #enter your address manually#";
 "adyen.address.lookup.search.empty.title.noResults" = "No results found";
-"adyen.address.lookup.search.manualEntryItem.title" = "Enter address manually";
 "adyen.address.lookup.search.empty.subtitle.noResults" = "'%@' did not match with anything, try again or use #manual address entry#";
+"adyen.address.lookup.search.manualEntryItem.title" = "Enter address manually";
 "adyen.address.lookup.item.validationFailureMessage.empty" = "Address required";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Invalid Address";
