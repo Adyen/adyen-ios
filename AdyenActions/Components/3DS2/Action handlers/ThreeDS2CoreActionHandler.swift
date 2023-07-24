@@ -185,7 +185,9 @@ internal class ThreeDS2CoreActionHandler: Component {
                            authorizationToken: String?,
                            completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
         do {
-            let threeDSResult = try ThreeDSResult(authorizationToken: authorizationToken, threeDS2SDKError: threeDS2SDKError)
+            let threeDSResult = try ThreeDSResult(authorizationToken: authorizationToken,
+                                                  threeDS2SDKError: threeDS2SDKError,
+                                                  transStatus: "U")
             transaction = nil
             completionHandler(.success(threeDSResult))
         } catch {

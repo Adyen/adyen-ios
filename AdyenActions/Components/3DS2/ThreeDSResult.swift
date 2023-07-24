@@ -20,7 +20,8 @@ public struct ThreeDSResult: Decodable {
     }
     
     internal init(authorizationToken: String?,
-                  threeDS2SDKError: String?) throws {
+                  threeDS2SDKError: String?,
+                  transStatus: String) throws {
         let payload = Payload(authorisationToken: authorizationToken,
                               threeDS2SDKError: threeDS2SDKError,
                               transStatus: nil)
