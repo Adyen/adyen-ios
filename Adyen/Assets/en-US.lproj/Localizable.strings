@@ -193,7 +193,7 @@
 
 
 "adyen.picker.search.empty.title" = "No results found";
-"adyen.picker.search.empty.subtitle" = "for '%@'";
+"adyen.picker.search.empty.subtitle" = "'%@' did not match with anything";
 "adyen.countryField.placeholder" = "Country";
 "adyen.countryField.validationFailureMessage.invalid" = "Invalid country";
 "picker.validationFailureMessage.invalid" = "Invalid %@";
