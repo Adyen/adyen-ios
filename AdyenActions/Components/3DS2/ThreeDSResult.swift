@@ -24,7 +24,7 @@ public struct ThreeDSResult: Decodable {
                   transStatus: String) throws {
         let payload = Payload(authorisationToken: authorizationToken,
                               threeDS2SDKError: threeDS2SDKError,
-                              transStatus: nil)
+                              transStatus: transStatus)
         let payloadData = try JSONEncoder().encode(payload)
         self.payload = payloadData.base64EncodedString()
     }

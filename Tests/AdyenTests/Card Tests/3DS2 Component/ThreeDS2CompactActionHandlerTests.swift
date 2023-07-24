@@ -152,11 +152,13 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
                     switch additionalDetails {
                     case .completed(let threeDSResult):
                         struct Payload: Codable {
-                            let threeDS2SDKError: String?
+                            let threeDS2SDKError: String
+                            let transStatus: String?
                         }
                         // Check if there is a threeDS2SDKError in the payload.
                         let payload: Payload? = try? Coder.decodeBase64(threeDSResult.payload)
                         XCTAssertNotNil(payload?.threeDS2SDKError)
+                        XCTAssertEqual(payload?.transStatus, "U")
                     default:
                         XCTFail()
                     }
