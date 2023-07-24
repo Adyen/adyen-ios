@@ -144,7 +144,7 @@ class GiftCardComponentTests: XCTestCase {
         }
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
+        
         wait(for: .milliseconds(50))
 
         XCTAssertTrue(errorView!.isHidden)
@@ -152,10 +152,9 @@ class GiftCardComponentTests: XCTestCase {
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        
+        wait(until: errorView!, at: \.isHidden, is: false, timeout: 1)
 
-        wait(for: .seconds(1))
-
-        XCTAssertFalse(errorView!.isHidden)
         XCTAssertEqual(sut.errorItem.message, "An unknown error occurred")
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -207,10 +206,9 @@ class GiftCardComponentTests: XCTestCase {
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
-
-        wait(for: .seconds(1))
-
-        XCTAssertFalse(errorView!.isHidden)
+        
+        wait(until: errorView!, at: \.isHidden, is: false, timeout: 1)
+        
         XCTAssertEqual(sut.errorItem.message, "Gift cards are only valid in the currency they were issued in")
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -246,9 +244,8 @@ class GiftCardComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        wait(for: .seconds(1))
-
-        XCTAssertFalse(errorView!.isHidden)
+        wait(until: errorView!, at: \.isHidden, is: false, timeout: 1)
+        
         XCTAssertEqual(sut.errorItem.message, "Gift cards are only valid in the currency they were issued in")
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -284,9 +281,8 @@ class GiftCardComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        wait(for: .seconds(1))
-
-        XCTAssertFalse(errorView!.isHidden)
+        wait(until: errorView!, at: \.isHidden, is: false, timeout: 1)
+        
         XCTAssertEqual(sut.errorItem.message, "This gift card has zero balance")
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -335,9 +331,8 @@ class GiftCardComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        wait(for: .seconds(1))
-
-        XCTAssertTrue(errorView!.isHidden)
+        wait(until: errorView!, at: \.isHidden, is: true, timeout: 1)
+        
         XCTAssertNil(sut.errorItem.message)
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -387,9 +382,8 @@ class GiftCardComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        wait(for: .seconds(1))
-
-        XCTAssertTrue(errorView!.isHidden)
+        wait(until: errorView!, at: \.isHidden, is: true, timeout: 1)
+        
         XCTAssertNil(sut.errorItem.message)
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -442,9 +436,8 @@ class GiftCardComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        wait(for: .seconds(1))
-
-        XCTAssertTrue(errorView!.isHidden)
+        wait(until: errorView!, at: \.isHidden, is: true, timeout: 1)
+        
         XCTAssertNil(sut.errorItem.message)
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -497,9 +490,8 @@ class GiftCardComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        wait(for: .seconds(1))
-
-        XCTAssertTrue(errorView!.isHidden)
+        wait(until: errorView!, at: \.isHidden, is: true, timeout: 1)
+        
         XCTAssertNil(sut.errorItem.message)
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -551,9 +543,8 @@ class GiftCardComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        wait(for: .seconds(1))
-
-        XCTAssertFalse(errorView!.isHidden)
+        wait(until: errorView!, at: \.isHidden, is: false, timeout: 1)
+        
         XCTAssertEqual(sut.errorItem.message, "An unknown error occurred")
 
         waitForExpectations(timeout: 10, handler: nil)

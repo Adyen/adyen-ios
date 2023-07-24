@@ -146,9 +146,9 @@ class DropInTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = root
         root.present(sut.viewController, animated: true, completion: nil)
 
-        wait(for: .seconds(2))
+        wait(until: { self.sut.viewController.findChild(of: ListViewController.self) != nil }, timeout: 1)
+        
         let topVC = self.sut.viewController.findChild(of: ListViewController.self)
-        XCTAssertNotNil(topVC)
         XCTAssertEqual(topVC!.sections.count, 1)
         XCTAssertEqual(topVC!.sections[0].items.count, 2)
     }
@@ -165,7 +165,7 @@ class DropInTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = root
         root.present(sut.viewController, animated: true, completion: nil)
 
-        wait(for: .seconds(2))
+        wait(for: .seconds(1))
         XCTAssertNil(self.sut.viewController.findChild(of: ListViewController.self))
     }
 
@@ -181,7 +181,7 @@ class DropInTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = root
         root.present(sut.viewController, animated: true, completion: nil)
 
-        wait(for: .seconds(2))
+        wait(for: .seconds(1))
         XCTAssertNotNil(self.sut.viewController.findChild(of: ListViewController.self))
     }
 
@@ -198,11 +198,11 @@ class DropInTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = root
         root.present(sut.viewController, animated: true, completion: nil)
 
-        wait(for: .seconds(2))
+        wait(for: .seconds(1))
         let topVC = self.sut.viewController.findChild(of: ListViewController.self)
         topVC?.tableView(topVC!.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
 
-        wait(for: .seconds(2))
+        wait(for: .seconds(1))
         let newtopVC = self.sut.viewController.findChild(of: ADYViewController.self)
         XCTAssertEqual(newtopVC?.title, "Apple Pay")
     }
@@ -229,7 +229,7 @@ class DropInTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = root
         root.present(sut.viewController, animated: true, completion: nil)
 
-        wait(for: .seconds(2))
+        wait(for: .seconds(1))
 
         let topVC = self.sut.viewController.findChild(of: ListViewController.self)
         XCTAssertNotNil(topVC)
@@ -250,7 +250,7 @@ class DropInTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = root
         root.present(sut.viewController, animated: true, completion: nil)
         
-        wait(for: .seconds(2))
+        wait(for: .seconds(1))
         
         // presented screen is SEPA (payment list is skipped)
         let topVC = sut.viewController.findChild(of: SecuredViewController.self)
@@ -270,7 +270,7 @@ class DropInTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = root
         root.present(sut.viewController, animated: true, completion: nil)
         
-        wait(for: .seconds(2))
+        wait(for: .seconds(1))
         
         // presented screen should be payment list with 1 instant payment element
         let topVC = sut.viewController.findChild(of: ListViewController.self)

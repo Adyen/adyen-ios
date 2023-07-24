@@ -10,45 +10,31 @@
 import XCTest
 
 class LoadingViewTests: XCTestCase {
-    
-    var sut: LoadingView!
-    var viewController: UIViewController!
-    
-    override func setUp() {
-        super.setUp()
-        let contentView = UIView()
-        sut = LoadingView(contentView: contentView)
-
-        viewController = UIViewController()
-        viewController.view.addSubview(sut)
-        viewController.view.backgroundColor = .white
-        sut.adyen.anchor(inside: viewController.view)
-    }
 
     func testShowingSpinnerDelay() throws {
-        UIApplication.shared.keyWindow?.rootViewController = viewController
+        
+        let loadingView = LoadingView(contentView: UIView())
+        loadingView.spinnerAppearanceDelay = .milliseconds(50)
+        loadingView.showsActivityIndicator = true
+        
+        XCTAssertEqual(loadingView.showsActivityIndicator, false)
         
         wait(for: .milliseconds(50))
         
-        sut.showsActivityIndicator = true
-        XCTAssertEqual(sut.showsActivityIndicator, false)
-        
-        wait(for: .milliseconds(1100))
-        XCTAssertEqual(sut.showsActivityIndicator, true)
+        XCTAssertEqual(loadingView.showsActivityIndicator, true)
     }
     
-    func testHiddingSpinner() throws {
-        UIApplication.shared.keyWindow?.rootViewController = viewController
+    func testHidingSpinner() throws {
+        
+        let loadingView = LoadingView(contentView: UIView())
+        
+        loadingView.showsActivityIndicator = true
         
         wait(for: .milliseconds(50))
         
-        sut.showsActivityIndicator = true
-        
-        wait(for: .milliseconds(50))
-        
-        sut.showsActivityIndicator = false
-        XCTAssertEqual(sut.showsActivityIndicator, false)
-        XCTAssertNil(sut.workItem)
+        loadingView.showsActivityIndicator = false
+        XCTAssertEqual(loadingView.showsActivityIndicator, false)
+        XCTAssertNil(loadingView.workItem)
     }
 
 }

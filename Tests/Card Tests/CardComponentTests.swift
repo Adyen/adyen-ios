@@ -363,16 +363,20 @@ class CardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = component.viewController
         UIApplication.shared.keyWindow?.layer.speed = 10.0
+        wait(for: .milliseconds(50))
 
         let switchView: UISwitch! = component.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
         XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .gray)
         
-        wait(for: .milliseconds(50))
-        
         self.focus(textItemView: securityCodeItemView!)
         
-        wait(for: .milliseconds(50))
+        wait(
+            until: securityCodeItemView!.separatorView,
+            at: \.backgroundColor?.cgColor,
+            is: UIColor.systemYellow.cgColor,
+            timeout: 1
+        )
         
         XCTAssertEqual(switchView.onTintColor, .systemYellow)
         XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .systemYellow)
@@ -766,7 +770,12 @@ class CardComponentTests: XCTestCase {
         let payButtonItemViewButton: UIControl? = view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
         
-        wait(for: .milliseconds(50))
+        wait(
+            until: postalCodeItemView.alertLabel,
+            at: \.isHidden,
+            is: false,
+            timeout: 1
+        )
 
         XCTAssertFalse(houseNumberItemView.alertLabel.isHidden)
         XCTAssertFalse(addressItemView.alertLabel.isHidden)
@@ -1365,7 +1374,7 @@ class CardComponentTests: XCTestCase {
         
         // valid card but still active. logos still should be hidden
         populate(textItemView: cardNumberItemView, with: Dummy.visaCard.number!)
-        wait(for: .seconds(2))
+        wait(for: .seconds(1))
         XCTAssertTrue(logoItemView!.isHidden)
         
         // with valid card and inactive, logos should hide

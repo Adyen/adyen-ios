@@ -72,8 +72,11 @@ class AdyenActionComponentTests: XCTestCase {
         let action = Action.redirect(RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data"))
         sut.handle(action)
 
-        wait(for: .seconds(2))
-
+        wait(
+            until: { UIViewController.findTopPresenter() is SFSafariViewController },
+            timeout: 2
+        )
+        
         let topPresentedViewController = UIViewController.findTopPresenter()
         XCTAssertNotNil(topPresentedViewController as? SFSafariViewController)
     }
@@ -85,17 +88,20 @@ class AdyenActionComponentTests: XCTestCase {
         let action = Action.await(AwaitAction(paymentData: "SOME_DATA", paymentMethodType: .blik))
         sut.handle(action)
         
-        wait(for: .seconds(2))
-        
         let waitExpectation = expectation(description: "Expect AwaitViewController to be presented")
         
-        let topPresentedViewController = UIViewController.findTopPresenter()
-        XCTAssertNotNil(topPresentedViewController as? AdyenActions.AwaitViewController)
+        wait(
+            until: { UIViewController.findTopPresenter() is AdyenActions.AwaitViewController },
+            timeout: 2
+        )
 
         (sut.presentationDelegate as! UIViewController).dismiss(animated: true) {
-            let topPresentedViewController = UIViewController.findTopPresenter()
-            XCTAssertNil(topPresentedViewController as? AdyenActions.AwaitViewController)
 
+            self.wait(
+                until: { !(UIViewController.findTopPresenter() is AdyenActions.AwaitViewController) },
+                timeout: 2
+            )
+            
             waitExpectation.fulfill()
         }
 
@@ -116,7 +122,7 @@ class AdyenActionComponentTests: XCTestCase {
         let sdkAction = try! JSONDecoder().decode(SDKAction.self, from: weChatActionResponse.data(using: .utf8)!)
         sut.handle(Action.sdk(sdkAction))
 
-        waitForExpectations(timeout: 15, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
 
     func test3DSAction() {
@@ -124,13 +130,10 @@ class AdyenActionComponentTests: XCTestCase {
         let action = try! JSONDecoder().decode(ThreeDS2Action.self, from: threeDSFingerprintAction.data(using: .utf8)!)
         sut.handle(Action.threeDS2(action))
 
-        let waitExpectation = expectation(description: "Expect in app browser to be presented and then dismissed")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-            XCTAssertNotNil(sut.currentActionComponent as? ThreeDS2Component)
-            waitExpectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 10, handler: nil)
+        wait(
+            until: { sut.currentActionComponent is ThreeDS2Component },
+            timeout: 2
+        )
     }
 
     func testVoucherAction() {
@@ -140,20 +143,24 @@ class AdyenActionComponentTests: XCTestCase {
         let action = try! JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)
         sut.handle(Action.voucher(action))
         
-        wait(for: .seconds(2))
-        
-        let waitExpectation = expectation(description: "Expect VoucherViewController to be presented")
-        let topPresentedViewController = UIViewController.findTopPresenter()
-        XCTAssertNotNil(topPresentedViewController?.view as? VoucherView)
+        self.wait(
+            until: { UIViewController.findTopPresenter()?.view is VoucherView },
+            timeout: 2,
+            message: "Top presenter view should be VoucherView"
+        )
 
+        let waitExpectation = expectation(description: "Expect VoucherViewController to be presented")
         (sut.presentationDelegate as! UIViewController).dismiss(animated: true) {
-            let topPresentedViewController = UIViewController.findTopPresenter()
-            XCTAssertNil(topPresentedViewController as? VoucherViewController)
+            
+            self.wait(
+                until: { !(UIViewController.findTopPresenter() is VoucherViewController) },
+                timeout: 2
+            )
 
             waitExpectation.fulfill()
         }
 
-        waitForExpectations(timeout: 10, handler: nil)
+        wait(for: [waitExpectation], timeout: 10)
     }
 }
 

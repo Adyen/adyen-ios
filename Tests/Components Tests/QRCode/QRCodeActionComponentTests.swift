@@ -71,7 +71,7 @@ class QRCodeActionComponentTests: XCTestCase {
         
         sut.handle(action)
         
-        waitForExpectations(timeout: 60, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
     func testComponentFailure() {
