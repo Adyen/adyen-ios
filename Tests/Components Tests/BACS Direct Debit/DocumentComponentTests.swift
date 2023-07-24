@@ -28,7 +28,7 @@ class DocumentComponentTests: XCTestCase {
             
             UIApplication.shared.keyWindow?.rootViewController = viewController
             
-            wait(for: .milliseconds(300))
+            wait(for: .milliseconds(50))
             
             let pdfButton: UIButton? = viewController.view.findView(by: "mainButton")
             let messageLabel: UILabel? = viewController.view.findView(by: "messageLabel")

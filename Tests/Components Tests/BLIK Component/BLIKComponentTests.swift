@@ -67,7 +67,7 @@ class BLIKComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         XCTAssertEqual(sut.viewController.title, method.name.uppercased())
     }
 

@@ -67,7 +67,7 @@ class MBWayComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
@@ -87,7 +87,7 @@ class MBWayComponentTests: XCTestCase {
                                         configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -105,7 +105,7 @@ class MBWayComponentTests: XCTestCase {
                                  configuration: MBWayComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
 
         // Then
         let view: UIView = sut.viewController.view

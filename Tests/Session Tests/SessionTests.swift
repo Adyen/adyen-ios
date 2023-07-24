@@ -360,7 +360,7 @@ class SessionTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = dropInComponent.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
         let paymentMethod = expectedPaymentMethods.regular.last as! MBWayPaymentMethod
@@ -1006,7 +1006,7 @@ class SessionTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = cardComponent.viewController
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertNotNil(cardComponent.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem"))
         XCTAssertTrue(cardComponent.configuration.showsStorePaymentMethodField)
@@ -1024,7 +1024,7 @@ class SessionTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = cardComponent.viewController
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertNil(cardComponent.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem"))
         XCTAssertFalse(cardComponent.configuration.showsStorePaymentMethodField)

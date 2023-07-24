@@ -111,7 +111,7 @@ class VoucherComponentTests: XCTestCase {
             
             optionsButton.sendActions(for: .touchUpInside)
             
-            wait(for: .milliseconds(300))
+            wait(for: .milliseconds(50))
             
             let alertSheet = UIViewController.findTopPresenter() as? UIAlertController
             XCTAssertNotNil(alertSheet)
@@ -151,7 +151,7 @@ class VoucherComponentTests: XCTestCase {
             
             optionsButton.sendActions(for: .touchUpInside)
             
-            wait(for: .milliseconds(300))
+            wait(for: .milliseconds(50))
             
             let alertSheet = UIViewController.findTopPresenter() as? UIAlertController
             XCTAssertNotNil(alertSheet)

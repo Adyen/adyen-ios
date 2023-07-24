@@ -91,7 +91,7 @@ class QiwiWalletComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem")
         let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem.titleLabel")
@@ -133,7 +133,7 @@ class QiwiWalletComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.CardComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, self.method.name)
@@ -168,7 +168,7 @@ class QiwiWalletComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem")
 

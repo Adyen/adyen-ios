@@ -65,7 +65,7 @@ class AffirmComponentUITests: XCTestCase {
             didSubmitExpectation.fulfill()
         }
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
 
         assertViewControllerImage(matching: sut.viewController, named: "shopper-info-prefilled")
 
@@ -85,7 +85,7 @@ class AffirmComponentUITests: XCTestCase {
                                          configuration: config)
         UIApplication.shared.adyen.mainKeyWindow?.rootViewController = prefillSut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
 
         // Then
 
@@ -127,7 +127,7 @@ class AffirmComponentUITests: XCTestCase {
                                          configuration: config)
         UIApplication.shared.adyen.mainKeyWindow?.rootViewController = prefillSut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
 
         // Then
         let expectedFirstName = try XCTUnwrap(shopperInformation.shopperName?.firstName)
@@ -167,7 +167,7 @@ class AffirmComponentUITests: XCTestCase {
                                   context: context)
         UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
 
         // Then
         let firstName = try XCTUnwrap(sut.firstNameItem?.value)

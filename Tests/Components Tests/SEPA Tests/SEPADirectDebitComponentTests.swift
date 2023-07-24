@@ -112,7 +112,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
         let nameItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.titleLabel")
@@ -162,7 +162,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, sepaPaymentMethod.name)
@@ -180,7 +180,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertFalse(sut.button.showsActivityIndicator)
         sut.button.showsActivityIndicator = true
@@ -194,7 +194,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
@@ -226,7 +226,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
             expectation.fulfill()
         }
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")

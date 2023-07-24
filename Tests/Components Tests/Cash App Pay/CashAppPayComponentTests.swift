@@ -78,7 +78,7 @@ import XCTest
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
             UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-            wait(for: .milliseconds(300))
+            wait(for: .milliseconds(50))
             
             let storeDetailsItemView: FormToggleItemView? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem")
             let storeDetailsItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem.titleLabel")
@@ -99,7 +99,7 @@ import XCTest
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
             UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-            wait(for: .milliseconds(300))
+            wait(for: .milliseconds(50))
             
             let storeDetailsToggleView: UIView? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem")
             
@@ -112,7 +112,7 @@ import XCTest
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
             UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-            wait(for: .milliseconds(300))
+            wait(for: .milliseconds(50))
             
             let storeDetailsToggleView: UIView? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem")
             
@@ -124,10 +124,10 @@ import XCTest
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
             UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-            wait(for: .milliseconds(300))
+            wait(for: .milliseconds(50))
 
             UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-            wait(for: .milliseconds(300))
+            wait(for: .milliseconds(50))
             
             XCTAssertFalse(sut.cashAppPayButton.showsActivityIndicator)
             sut.cashAppPayButton.showsActivityIndicator = true
@@ -200,7 +200,7 @@ import XCTest
                 delegateExpectation.fulfill()
             }
             
-            wait(for: .milliseconds(300))
+            wait(for: .milliseconds(50))
             
             sut.submitApprovedRequest(with: [oneTimeGrant], profile: .init(id: "testId", cashtag: "testtag"))
             
@@ -233,7 +233,7 @@ import XCTest
                 delegateExpectation.fulfill()
             }
             
-            wait(for: .milliseconds(300))
+            wait(for: .milliseconds(50))
             
             sut.submitApprovedRequest(with: [oneTimeGrant, onFileGrant], profile: .init(id: "testId", cashtag: "testtag"))
             

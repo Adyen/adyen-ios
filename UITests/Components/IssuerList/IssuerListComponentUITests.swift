@@ -45,7 +45,7 @@ final class IssuerListComponentUITests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         let items = listViewController!.sections[0].items
         

@@ -146,7 +146,7 @@ class UPIComponentUITests: XCTestCase {
             didSubmitExpectation.fulfill()
         }
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
 
         let virtualPaymentAddressItem: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem")
         self.populate(textItemView: virtualPaymentAddressItem, with: "testvpa@icici")
@@ -185,7 +185,7 @@ class UPIComponentUITests: XCTestCase {
             XCTAssertEqual(data.type, "upi_qr")
             dummyExpectation.fulfill()
         }
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         assertViewControllerImage(matching: sut.viewController, named: "upi_qr_flow")
     }
 

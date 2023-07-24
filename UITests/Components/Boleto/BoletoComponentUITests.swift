@@ -113,7 +113,7 @@ final class BoletoComponentUITests: XCTestCase {
             dummyExpectation.fulfill()
         }
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         assertViewControllerImage(matching: sut.viewController, named: "boleto_flow")
     }
     
@@ -143,7 +143,7 @@ final class BoletoComponentUITests: XCTestCase {
             dummyExpectation.fulfill()
         }
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         assertViewControllerImage(matching: sut.viewController, named: "boleto_flow")
     }
 }

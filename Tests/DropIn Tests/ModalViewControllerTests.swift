@@ -43,7 +43,7 @@ class ModalViewControllerTests: XCTestCase {
         sut.loadView()
         sut.viewDidLoad()
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         test()
     }

@@ -124,7 +124,7 @@ class AwaitComponentTests: XCTestCase {
 
             let view = viewController.awaitView
             
-            self?.wait(for: .milliseconds(300))
+            self?.wait(for: .milliseconds(50))
 
             XCTAssertEqual(view.messageLabel.textColor, UIColor.red)
             XCTAssertEqual(view.messageLabel.textAlignment, .center)

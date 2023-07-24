@@ -84,7 +84,7 @@ class DokuComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
@@ -106,7 +106,7 @@ class DokuComponentTests: XCTestCase {
                                        configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -134,7 +134,7 @@ class DokuComponentTests: XCTestCase {
                                 configuration: DokuComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
 
         // Then
         let view: UIView = sut.viewController.view

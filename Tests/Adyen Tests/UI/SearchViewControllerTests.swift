@@ -79,25 +79,25 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertEqual(viewModel.interfaceState, .empty(searchTerm: ""))
         viewModel.handleSearchTextDidChange(resultsSearchTerm)
         XCTAssertEqual(viewModel.interfaceState, .loading)
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         XCTAssertEqual(viewModel.interfaceState, .showingResults(results: resultItems))
         
         // Results -> Loading -> Results
         viewModel.handleSearchTextDidChange(resultsSearchTerm)
         XCTAssertEqual(viewModel.interfaceState, .loading)
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         XCTAssertEqual(viewModel.interfaceState, .showingResults(results: resultItems))
         
         // Results -> Loading -> Empty
         viewModel.handleSearchTextDidChange(emptySearchTerm)
         XCTAssertEqual(viewModel.interfaceState, .loading)
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         XCTAssertEqual(viewModel.interfaceState, .empty(searchTerm: emptySearchTerm))
         
         // Empty -> Loading -> Empty
         viewModel.handleSearchTextDidChange(emptySearchTerm)
         XCTAssertEqual(viewModel.interfaceState, .loading)
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         XCTAssertEqual(viewModel.interfaceState, .empty(searchTerm: emptySearchTerm))
     }
     
@@ -132,7 +132,7 @@ class SearchViewControllerTests: XCTestCase {
         
         // Allow setup in viewDidLoad
         UIApplication.shared.keyWindow?.rootViewController = searchViewController
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         searchViewController.searchBar.delegate?.searchBar?(
             searchViewController.searchBar,
@@ -162,7 +162,7 @@ class SearchViewControllerTests: XCTestCase {
         )
         
         UIApplication.shared.keyWindow?.rootViewController = searchViewController
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         // When
         viewModel.interfaceState = .empty(searchTerm: testSearchTerm)
@@ -189,7 +189,7 @@ class SearchViewControllerTests: XCTestCase {
         )
         
         UIApplication.shared.keyWindow?.rootViewController = searchViewController
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         // When
         viewModel.interfaceState = .loading
@@ -217,7 +217,7 @@ class SearchViewControllerTests: XCTestCase {
         )
         
         UIApplication.shared.keyWindow?.rootViewController = searchViewController
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         // When
         viewModel.interfaceState = .showingResults(results: resultItems)

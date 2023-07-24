@@ -86,7 +86,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
         XCTAssertFalse(button.showsActivityIndicator)
         sut.startLoading(for: component)
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertTrue(button.showsActivityIndicator)
         self.sut.stopLoadingIfNeeded()
@@ -139,7 +139,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
         
         let separator = view.findView(by: "separatorLine")
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertEqual(view.backgroundColor, .green)
         XCTAssertEqual(listViewTitle.textColor, .white)
@@ -164,7 +164,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
         let submitButton = submitButtonContainer!.findView(by: "button")
         let submitButtonLabel: UILabel! = submitButton!.findView(by: "titleLabel")
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertEqual(submitButtonLabel.text, "Pay €1.00")
     }
@@ -178,7 +178,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
         let submitButton = submitButtonContainer!.findView(by: "button")
         let submitButtonLabel: UILabel! = submitButton!.findView(by: "titleLabel")
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
 
         XCTAssertEqual(submitButtonLabel.text, "Pay")
     }
@@ -192,7 +192,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
         let listView: ListItemView? = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.defaultComponent")
         let listViewTitle: UILabel! = listView!.findView(by: "titleLabel")
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertEqual(listViewTitle.text, "PayPal")
     }
@@ -207,7 +207,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
         let listViewTitle: UILabel! = listView!.findView(by: "titleLabel")
         let listViewSubtitle: UILabel! = listView!.findView(by: "subtitleLabel")
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertEqual(listViewTitle.text, "•••• 1111")
         XCTAssertEqual(listViewSubtitle.text, "Expires 08/18")

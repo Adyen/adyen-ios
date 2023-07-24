@@ -102,7 +102,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           publicKeyProvider: PublicKeyProviderMock())
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem")
         let nameItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem.titleLabel")
@@ -169,7 +169,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
 
         // Then
         let view: UIView = sut.viewController.view
@@ -189,7 +189,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           publicKeyProvider: PublicKeyProviderMock())
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, method.name.uppercased())
@@ -214,7 +214,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           publicKeyProvider: PublicKeyProviderMock())
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertFalse(sut.payButton.showsActivityIndicator)
         sut.payButton.showsActivityIndicator = true
@@ -229,7 +229,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           publicKeyProvider: PublicKeyProviderMock())
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.payButtonItem.button")
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem")
@@ -267,7 +267,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
             expectation.fulfill()
         }
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.payButtonItem.button")
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem")

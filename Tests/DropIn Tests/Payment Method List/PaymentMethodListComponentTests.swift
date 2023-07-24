@@ -57,7 +57,7 @@ class PaymentMethodListComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.listViewController
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         let cell = sut.listViewController.tableView.visibleCells[0] as! ListCell
         XCTAssertFalse(cell.showsActivityIndicator)
@@ -76,7 +76,7 @@ class PaymentMethodListComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.listViewController
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         let sectionHeader = try XCTUnwrap(sut.listViewController.tableView.headerView(forSection: 0) as? ListHeaderView)
         sectionHeader.trailingButton.sendActions(for: .touchUpInside)
@@ -100,7 +100,7 @@ class PaymentMethodListComponentTests: XCTestCase {
                                                                 commit: .delete,
                                                                 forRowAt: IndexPath(item: 0, section: 0))
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertEqual(sut.listViewController.tableView.visibleCells.count, 1)
         XCTAssertEqual(sut.componentSections.count, 1)
@@ -117,12 +117,12 @@ class PaymentMethodListComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.listViewController
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         let sectionHeader = try XCTUnwrap(sut.listViewController.tableView.headerView(forSection: 0) as? ListHeaderView)
         sectionHeader.trailingButton.sendActions(for: .touchUpInside)
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         let allCells = sut.listViewController.tableView.visibleCells
         
@@ -141,7 +141,7 @@ class PaymentMethodListComponentTests: XCTestCase {
                                                                 commit: .delete,
                                                                 forRowAt: IndexPath(item: 0, section: 0))
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertEqual(sut.listViewController.tableView.visibleCells.count, 2)
         XCTAssertEqual(sut.componentSections.count, 2)

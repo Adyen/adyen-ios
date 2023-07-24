@@ -62,7 +62,7 @@ class PreApplePayComponentTests: XCTestCase {
         viewController.view = view
         UIApplication.shared.keyWindow?.rootViewController = viewController
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         let hintLabel: UILabel? = viewController.view.findView(by: "hintLabel")
         XCTAssertEqual(hintLabel?.text, model.hint)
@@ -99,7 +99,7 @@ class PreApplePayComponentTests: XCTestCase {
         
         applePayButton?.sendActions(for: .touchUpInside)
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertTrue(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController is PKPaymentAuthorizationViewController)
         UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: false, completion: nil)
@@ -115,7 +115,7 @@ class PreApplePayComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = UIViewController()
         UIApplication.shared.keyWindow?.rootViewController?.present(component: sut)
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         let hintLabel = self.sut.viewController.view.findView(by: "hintLabel") as? UILabel
         

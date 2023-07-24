@@ -133,7 +133,7 @@ class QRCodeActionComponentTests: XCTestCase {
 
             UIApplication.shared.keyWindow?.rootViewController = viewController
 
-            wait(for: .milliseconds(300))
+            wait(for: .milliseconds(50))
 
             let copyButton: SubmitButton? = viewController.view.findView(by: "copyCodeButton")
             XCTAssertNotNil(copyButton)
@@ -164,7 +164,7 @@ class QRCodeActionComponentTests: XCTestCase {
             let viewController = component.viewController as! QRCodeViewController
             UIApplication.shared.keyWindow?.rootViewController = viewController
             viewController.qrCodeView.delegate = delgate
-            wait(for: .milliseconds(300))
+            wait(for: .milliseconds(50))
             let saveAsImageButton: SubmitButton? = viewController.view.findView(by: "saveAsImageButton")
             XCTAssertNotNil(saveAsImageButton)
             saveAsImageButton?.sendActions(for: .touchUpInside)

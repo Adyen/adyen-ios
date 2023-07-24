@@ -15,13 +15,13 @@ class RedirectComponentTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: false)
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
     }
     
     override func setUp() {
         super.setUp()
         UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: false)
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
     }
 
     func testUIConfiguration() {

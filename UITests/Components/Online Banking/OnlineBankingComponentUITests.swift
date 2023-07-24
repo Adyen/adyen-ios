@@ -86,7 +86,7 @@ class OnlineBankingComponentUITests: XCTestCase {
             sut.stopLoadingIfNeeded()
             didContnueExpectation.fulfill()
         }
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         assertViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
     }
 

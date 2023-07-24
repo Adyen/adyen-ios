@@ -93,7 +93,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         /// Test firstName field
         self.assertTextInputUI(ViewIdentifier.firstName,
@@ -184,7 +184,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         let submitButton: UIControl? = sut.viewController.view.findView(with: ViewIdentifier.payButton)
 
@@ -212,7 +212,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
@@ -234,7 +234,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
                                               configuration: config)
         UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -267,7 +267,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
                                        configuration: BasicPersonalInfoFormComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
 
         // Then
         let view: UIView = sut.viewController.view
