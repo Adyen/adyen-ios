@@ -51,6 +51,84 @@ class AddressLookupViewControllerTests: XCTestCase {
         XCTAssertNotNil(addressLookupViewController.viewControllers.first as? AddressLookupFormViewController)
     }
     
+    func testDoneButtonState() {
+        // Given
+        
+        let results = PostalAddressMocks.all
+        
+        let viewModel = AddressLookupViewController.ViewModel(
+            style: .init(),
+            localizationParameters: nil,
+            supportedCountryCodes: nil,
+            initialCountry: "NL",
+            prefillAddress: results.first
+        ) { _, _ in
+            // Nothing to do...
+        } completionHandler: { address in
+            XCTAssert(false, "Completion handler should not have been called")
+        }
+
+        let addressLookupViewController = AddressLookupViewController(viewModel: viewModel)
+        
+        UIApplication.shared.keyWindow?.rootViewController = addressLookupViewController
+        wait(for: .milliseconds(300))
+        
+        // When - No prefill
+        
+        _ = {
+            viewModel.interfaceState = .form(prefillAddress: nil)
+            self.wait(for: .milliseconds(300))
+            
+            // Then
+            
+            XCTAssertEqual(
+                addressLookupViewController.viewControllers.first?.navigationItem.rightBarButtonItem?.isEnabled,
+                false
+            )
+        }
+        
+        // When - Prefill with country only
+        
+        _ = {
+            viewModel.interfaceState = .form(prefillAddress: .init(country: "US"))
+            self.wait(for: .milliseconds(300))
+            
+            let formViewController = addressLookupViewController.viewControllers.first as! AddressLookupFormViewController
+            
+            // Then
+            
+            XCTAssertEqual(
+                formViewController.navigationItem.rightBarButtonItem?.isEnabled,
+                false
+            )
+            
+            // + Adding street name value
+            
+            formViewController.billingAddressItem.value.street = "Random Street"
+            
+            // Then
+            
+            XCTAssertEqual(
+                formViewController.navigationItem.rightBarButtonItem?.isEnabled,
+                true
+            )
+        }()
+        
+        // When - Prefill with country + any other field
+        
+        _ = {
+            viewModel.interfaceState = .form(prefillAddress: .init(country: "NL", street: "Singel"))
+            self.wait(for: .milliseconds(300))
+            
+            // Then
+            
+            XCTAssertEqual(
+                addressLookupViewController.viewControllers.first?.navigationItem.rightBarButtonItem?.isEnabled,
+                true
+            )
+        }()
+    }
+    
     // MARK: - ViewModel
     
     func testViewModelInitialization() {
