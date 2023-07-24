@@ -1,11 +1,11 @@
 # Localization
 
-By default, the SDK attempts to use a device's locale for translation and monetary values formating. If the preferred device's locales are not supported, the SDK falls back to the **en-US** locale.
+By default, the SDK attempts to use a device's locale for translation of text and formatting of monetary values. If the preferred device's locales are not supported, the SDK falls back to the **en-US** locale.
 Localization only picks up locales that are listed in the `CFBundleLocalizations` property of your app's `Info.plist` file.
 
-## Overriding monetary formatting
+## Overriding default formatting of monetary values 
 
-To inforce monetary values formating use `locale` property on `LocalizationParameters`.
+To enforce your own formatting for monetary values, use the `locale` property on `LocalizationParameters`.
 
 ## Overriding a string 
 
@@ -54,4 +54,35 @@ configuration.localizationParameters = parameters // Any Component.
 
 ## Enforcing locale
 
-If you willing to enforce a specific locale and monetary values formating regardless of a current shopper's device locale - use `LocalizationParameters(enforcedLocale: MY_LOCALE)`
+To enforce a specific locale and formatting of monetary values no matter which locale the shopper's device uses, use `LocalizationParameters(enforcedLocale: MY_LOCALE)`.
+
+List of currently avaialble locales:
+
+| Language | Locale code | Fallback |
+| --- | --- | :---: |
+| Arabic - International | ar | |
+| Chinese - Simplified | zh-CN | |
+| Chinese - Traditional | zh-TW | |
+| Croatian | hr-HR | |
+| Czech | cs-CZ | |
+| Danish | da-DK | |
+| Dutch | nl-NL | |
+| English - US | en-US | ✱ |
+| Finnish | fi-FI | |
+| French | fr-FR | |
+| German | de-DE | |
+| Greek | el-GR | |
+| Hungarian | hu-HU | |
+| Italian | it-IT | |
+| Japanese | ja-JP | |
+| Korean | ko-KR | |
+| Norwegian | no-NO | |
+| Polish | pl-PL | |
+| Portuguese - Brazil | pt-BR | |
+| Portuguese - Portugal | pt-PT | |
+| Romanian | ro-RO | |
+| Russian | ru-RU | |
+| Slovak | sk-SK | |
+| Slovenian | sl-SI | |
+| Spanish | es-ES | |
+| Swedish | sv-SE | |
