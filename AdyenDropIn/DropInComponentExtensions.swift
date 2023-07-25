@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -22,7 +22,10 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
 
     internal func didLoad(_ paymentMethodListComponent: PaymentMethodListComponent) {
         let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
-        context.analyticsProvider.sendTelemetryEvent(flavor: .dropIn(paymentMethods: paymentMethodTypes))
+        context.analyticsProvider.sendTelemetryEvent(
+            flavor: .dropIn(paymentMethods: paymentMethodTypes),
+            amount: context.payment?.amount
+        )
     }
     
     internal func didSelect(_ component: PaymentComponent,

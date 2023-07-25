@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -30,7 +30,7 @@ public enum TelemetryFlavor {
 
 @_spi(AdyenInternal)
 public protocol TelemetryTrackerProtocol {
-    func sendTelemetryEvent(flavor: TelemetryFlavor)
+    func sendTelemetryEvent(flavor: TelemetryFlavor, amount: Amount?)
 }
 
 // MARK: - TelemetryTrackerProtocol
@@ -38,7 +38,7 @@ public protocol TelemetryTrackerProtocol {
 @_spi(AdyenInternal)
 extension AnalyticsProvider: TelemetryTrackerProtocol {
 
-    internal func sendTelemetryEvent(flavor: TelemetryFlavor) {
+    internal func sendTelemetryEvent(flavor: TelemetryFlavor, amount: Amount?) {
         guard configuration.isEnabled else { return }
         guard configuration.isTelemetryEnabled else { return }
         if case .dropInComponent = flavor { return }
@@ -46,8 +46,12 @@ extension AnalyticsProvider: TelemetryTrackerProtocol {
         let telemetryData = TelemetryData(flavor: flavor)
 
         fetchCheckoutAttemptId { [weak self] checkoutAttemptId in
-            let telemetryRequest = TelemetryRequest(data: telemetryData,
-                                                    checkoutAttemptId: checkoutAttemptId)
+            let telemetryRequest = TelemetryRequest(
+                data: telemetryData,
+                checkoutAttemptId: checkoutAttemptId,
+                amount: amount
+            )
+            
             self?.apiClient.perform(telemetryRequest) { _ in }
         }
     }

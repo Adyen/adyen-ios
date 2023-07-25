@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -71,6 +71,14 @@ extension TrackableComponent where Self: PaymentMethodAware {
 
     public func sendTelemetryEvent() {
         let flavor: TelemetryFlavor = _isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
-        context.analyticsProvider.sendTelemetryEvent(flavor: flavor)
+        context.analyticsProvider.sendTelemetryEvent(flavor: flavor, amount: nil)
+    }
+}
+
+extension TrackableComponent where Self: PaymentAware & PaymentMethodAware {
+    
+    public func sendTelemetryEvent() {
+        let flavor: TelemetryFlavor = _isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
+        context.analyticsProvider.sendTelemetryEvent(flavor: flavor, amount: payment?.amount)
     }
 }

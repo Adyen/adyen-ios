@@ -36,10 +36,15 @@ internal struct TelemetryRequest: APIRequest {
     private let paymentMethods: [String]
     private let component: String
     private let checkoutAttemptId: String?
+    private let amount: Amount?
 
     // MARK: - Initializers
 
-    internal init(data: TelemetryData, checkoutAttemptId: String?) {
+    internal init(
+        data: TelemetryData,
+        checkoutAttemptId: String?,
+        amount: Amount?
+    ) {
         self.version = data.version
         self.channel = data.channel
         self.locale = data.locale
@@ -53,6 +58,7 @@ internal struct TelemetryRequest: APIRequest {
         self.paymentMethods = data.paymentMethods
         self.component = data.component
         self.checkoutAttemptId = checkoutAttemptId
+        self.amount = amount
     }
 
     internal enum CodingKeys: CodingKey {
@@ -69,5 +75,6 @@ internal struct TelemetryRequest: APIRequest {
         case paymentMethods
         case component
         case checkoutAttemptId
+        case amount
     }
 }
