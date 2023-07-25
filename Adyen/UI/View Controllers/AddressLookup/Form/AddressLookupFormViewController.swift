@@ -79,7 +79,7 @@ internal class AddressLookupFormViewController: FormViewController {
         // The country field is excluded as it is always prefilled.
         var itemWithoutCountry = billingAddressItem.value
         itemWithoutCountry.country = nil
-        self.navigationItem.rightBarButtonItem?.isEnabled = !itemWithoutCountry.isEmpty
+        navigationItem.rightBarButtonItem?.isEnabled = !itemWithoutCountry.isEmpty
         observe(billingAddressItem.publisher, eventHandler: { [weak self] _ in
             self?.navigationItem.rightBarButtonItem?.isEnabled = true
         })
