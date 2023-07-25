@@ -288,11 +288,6 @@ extension DropInAdvancedFlowExample: StoredPaymentMethodsDelegate {
 extension DropInAdvancedFlowExample: ActionComponentDelegate {
 
     internal func didFail(with error: Error, from component: ActionComponent) {
-//        if component is ThreeDS2Component {
-//            if case let ThreeDS2Component.Error.challengeCancelled(actionComponentData) = error {
-//                sendPaymentDetails(data: actionComponentData, handler: { _ in })
-//            }
-//        }
         finish(with: error)
     }
 
