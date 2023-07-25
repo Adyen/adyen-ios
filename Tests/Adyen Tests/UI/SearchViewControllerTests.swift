@@ -79,25 +79,25 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertEqual(viewModel.interfaceState, .empty(searchTerm: ""))
         viewModel.handleSearchTextDidChange(resultsSearchTerm)
         XCTAssertEqual(viewModel.interfaceState, .loading)
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         XCTAssertEqual(viewModel.interfaceState, .showingResults(results: resultItems))
         
         // Results -> Loading -> Results
         viewModel.handleSearchTextDidChange(resultsSearchTerm)
         XCTAssertEqual(viewModel.interfaceState, .loading)
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         XCTAssertEqual(viewModel.interfaceState, .showingResults(results: resultItems))
         
         // Results -> Loading -> Empty
         viewModel.handleSearchTextDidChange(emptySearchTerm)
         XCTAssertEqual(viewModel.interfaceState, .loading)
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         XCTAssertEqual(viewModel.interfaceState, .empty(searchTerm: emptySearchTerm))
         
         // Empty -> Loading -> Empty
         viewModel.handleSearchTextDidChange(emptySearchTerm)
         XCTAssertEqual(viewModel.interfaceState, .loading)
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         XCTAssertEqual(viewModel.interfaceState, .empty(searchTerm: emptySearchTerm))
     }
     
@@ -131,8 +131,7 @@ class SearchViewControllerTests: XCTestCase {
         )
         
         // Allow setup in viewDidLoad
-        UIApplication.shared.keyWindow?.rootViewController = searchViewController
-        wait(for: .milliseconds(50))
+        setupRootViewController(searchViewController)
         
         searchViewController.searchBar.delegate?.searchBar?(
             searchViewController.searchBar,
@@ -161,8 +160,8 @@ class SearchViewControllerTests: XCTestCase {
             emptyView: emptyView
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = searchViewController
-        wait(for: .milliseconds(50))
+        // Allow setup in viewDidLoad
+        setupRootViewController(searchViewController)
         
         // When
         viewModel.interfaceState = .empty(searchTerm: testSearchTerm)
@@ -188,8 +187,8 @@ class SearchViewControllerTests: XCTestCase {
             emptyView: emptyView
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = searchViewController
-        wait(for: .milliseconds(50))
+        // Allow setup in viewDidLoad
+        setupRootViewController(searchViewController)
         
         // When
         viewModel.interfaceState = .loading
@@ -216,8 +215,8 @@ class SearchViewControllerTests: XCTestCase {
             emptyView: emptyView
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = searchViewController
-        wait(for: .milliseconds(50))
+        // Allow setup in viewDidLoad
+        setupRootViewController(searchViewController)
         
         // When
         viewModel.interfaceState = .showingResults(results: resultItems)

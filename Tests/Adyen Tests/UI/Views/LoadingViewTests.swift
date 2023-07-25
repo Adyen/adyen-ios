@@ -30,7 +30,7 @@ class LoadingViewTests: XCTestCase {
         
         loadingView.showsActivityIndicator = true
         
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         loadingView.showsActivityIndicator = false
         XCTAssertEqual(loadingView.showsActivityIndicator, false)

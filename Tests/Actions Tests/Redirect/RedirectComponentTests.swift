@@ -14,14 +14,12 @@ class RedirectComponentTests: XCTestCase {
     
     override func tearDown() {
         super.tearDown()
-        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: false)
-        wait(for: .milliseconds(50))
+        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
     }
     
     override func setUp() {
         super.setUp()
-        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: false)
-        wait(for: .milliseconds(50))
+        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
     }
 
     func testUIConfiguration() {
@@ -194,10 +192,9 @@ class RedirectComponentTests: XCTestCase {
         let action = RedirectAction(url: URL(string: "https://www.adyen.com?returnUrlQueryString=anything")!, paymentData: "test_data")
         sut.handle(action)
         
-        wait(for: .seconds(2))
-        
-        let topPresentedViewController = UIViewController.findTopPresenter()
-        XCTAssertNotNil(topPresentedViewController as? SFSafariViewController)
+        wait(until: {
+            UIViewController.findTopPresenter() is SFSafariViewController
+        }, timeout: 1)
     }
 
     @available(iOS 13.0, *)
@@ -217,12 +214,13 @@ class RedirectComponentTests: XCTestCase {
             waitExpectation.fulfill()
         }
         
-        wait(for: .seconds(2))
+        wait(until: {
+            UIViewController.findTopPresenter() is SFSafariViewController
+        }, timeout: 1)
+        
+        let topPresentedViewController = UIViewController.findTopPresenter() as! SFSafariViewController
 
-        let topPresentedViewController = UIViewController.findTopPresenter() as? SFSafariViewController
-        XCTAssertNotNil(topPresentedViewController)
-
-        topPresentedViewController!.presentationController?.delegate?.presentationControllerDidDismiss?(topPresentedViewController!.presentationController!)
+        topPresentedViewController.presentationController?.delegate?.presentationControllerDidDismiss?(topPresentedViewController.presentationController!)
 
         waitForExpectations(timeout: 10, handler: nil)
     }

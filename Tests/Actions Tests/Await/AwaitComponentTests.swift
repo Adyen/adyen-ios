@@ -120,11 +120,8 @@ class AwaitComponentTests: XCTestCase {
             XCTAssertNotNil(component.viewController as? AwaitViewController)
             let viewController = component.viewController as! AwaitViewController
 
-            UIApplication.shared.keyWindow?.rootViewController = viewController
-
+            self?.setupRootViewController(viewController)
             let view = viewController.awaitView
-            
-            self?.wait(for: .milliseconds(50))
 
             XCTAssertEqual(view.messageLabel.textColor, UIColor.red)
             XCTAssertEqual(view.messageLabel.textAlignment, .center)

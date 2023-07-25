@@ -102,7 +102,7 @@ class FormTextItemViewTests: XCTestCase {
     func testValidationStatusIsNoneWhenValueIsEmpty() {
         sut.isEditing = true
         
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         XCTAssertEqual(sut.separatorView.backgroundColor?.toHexString(), sut.tintColor.toHexString())
         XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.tintColor.toHexString())
@@ -124,7 +124,7 @@ class FormTextItemViewTests: XCTestCase {
         
         sut.isEditing = true
         
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         XCTAssertEqual(sut.separatorView.backgroundColor?.toHexString(), sut.tintColor.toHexString())
         XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.tintColor.toHexString())
@@ -150,7 +150,7 @@ class FormTextItemViewTests: XCTestCase {
         
         sut.isEditing = true
     
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         XCTAssertEqual(sut.separatorView.backgroundColor?.toHexString(), sut.tintColor.toHexString())
         XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.tintColor.toHexString())

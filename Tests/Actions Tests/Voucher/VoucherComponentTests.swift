@@ -111,10 +111,11 @@ class VoucherComponentTests: XCTestCase {
             
             optionsButton.sendActions(for: .touchUpInside)
             
-            wait(for: .milliseconds(50))
+            wait(until: {
+                UIViewController.findTopPresenter() is UIAlertController
+            }, timeout: 1)
             
             let alertSheet = UIViewController.findTopPresenter() as? UIAlertController
-            XCTAssertNotNil(alertSheet)
             XCTAssertEqual(alertSheet?.actions.count, 4)
             XCTAssertEqual(alertSheet?.actions[0].title, "Copy code")
             XCTAssertEqual(alertSheet?.actions[1].title, "Download PDF")
@@ -151,10 +152,11 @@ class VoucherComponentTests: XCTestCase {
             
             optionsButton.sendActions(for: .touchUpInside)
             
-            wait(for: .milliseconds(50))
-            
+            wait(until: {
+                UIViewController.findTopPresenter() is UIAlertController
+            }, timeout: 1)
+
             let alertSheet = UIViewController.findTopPresenter() as? UIAlertController
-            XCTAssertNotNil(alertSheet)
             XCTAssertEqual(alertSheet?.actions.count, 3)
             XCTAssertEqual(alertSheet?.actions[0].title, "Copy code")
             XCTAssertEqual(alertSheet?.actions[1].title, "Save as image")
@@ -165,7 +167,7 @@ class VoucherComponentTests: XCTestCase {
         
         sut.handle(action)
         
-        waitForExpectations(timeout: 60, handler: nil)
+        waitForExpectations(timeout: 1)
     }
     
     func testEContextStoresVoucherComponent() throws {

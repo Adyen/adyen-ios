@@ -361,9 +361,7 @@ class CardComponentTests: XCTestCase {
             configuration: configuration
         )
 
-        UIApplication.shared.keyWindow?.rootViewController = component.viewController
-        UIApplication.shared.keyWindow?.layer.speed = 10.0
-        wait(for: .milliseconds(50))
+        setupRootViewController(component.viewController)
 
         let switchView: UISwitch! = component.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
@@ -733,9 +731,8 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: configuration)
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        UIApplication.shared.keyWindow?.layer.speed = 10.0
-        wait(for: .milliseconds(50))
+        
+        setupRootViewController(sut.viewController)
         
         // When
 
@@ -793,9 +790,8 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: configuration)
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        UIApplication.shared.keyWindow?.layer.speed = 10.0
-        wait(for: .milliseconds(50))
+        
+        setupRootViewController(sut.viewController)
         
         // When
 
@@ -988,8 +984,7 @@ class CardComponentTests: XCTestCase {
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        UIApplication.shared.keyWindow?.layer.speed = 10.0
+        setupRootViewController(sut.viewController)
         
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -1047,8 +1042,7 @@ class CardComponentTests: XCTestCase {
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        UIApplication.shared.keyWindow?.layer.speed = 10.0
+        setupRootViewController(sut.viewController)
         
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -1770,8 +1764,7 @@ class CardComponentTests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        UIApplication.shared.keyWindow?.layer.speed = 10
+        setupRootViewController(sut.viewController)
         
         let view: UIView = sut.cardViewController.view
         

@@ -576,7 +576,7 @@ class SessionTests: XCTestCase {
         let order = PartialPaymentOrder(pspReference: "ref", orderData: nil)
         sut.cancelOrder(order, component: PaymentComponentMock(paymentMethod: paymentMethod))
         
-        wait(for: .seconds(1))
+        wait(for: .aMoment)
         XCTAssertEqual(sut.sessionContext.data, "session_data_1")
     }
     
