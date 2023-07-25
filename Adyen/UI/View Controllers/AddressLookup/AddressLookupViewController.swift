@@ -61,7 +61,7 @@ private extension AddressLookupViewController {
 
 // MARK: - Delegate Conformances
 
-extension AddressLookupViewController: AddressLookupSearchViewControllerDelegate {
+extension AddressLookupViewController: AddressLookupSearchDelegate {
     
     internal func addressLookupSearchSwitchToManualEntry() {
         viewModel.handleSwitchToManualEntryTapped()
