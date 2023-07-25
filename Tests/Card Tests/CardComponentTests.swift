@@ -324,6 +324,44 @@ class CardComponentTests: XCTestCase {
 
         wait(for: [expectationBin, expectationCardType], timeout: 10)
     }
+    
+    func testAddressLookupProviderCalled() throws {
+        
+        let lookupHandlerExpectation = expectation(description: "Lookup handler is called")
+        
+        // Given
+        var configuration = CardComponent.Configuration()
+        configuration.showsHolderNameField = true
+        configuration.billingAddress.mode = .lookup(handler: { searchTerm, completionHandler in
+            completionHandler([.init(city: searchTerm)])
+            lookupHandlerExpectation.fulfill()
+        })
+        configuration.shopperInformation = shopperInformation
+
+        let component = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+
+        // When
+        
+        UIApplication.shared.keyWindow?.rootViewController = component.viewController
+        wait(for: .milliseconds(50))
+
+        // Then
+        let view: UIView = component.cardViewController.view
+
+        let billingAddressView: FormAddressLookupItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
+        let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
+        let billingAddress = billingAddressView.item.value
+        XCTAssertEqual(expectedBillingAddress, billingAddress)
+        
+        billingAddressView.item.selectionHandler()
+        wait(for: .milliseconds(50))
+        
+        XCTAssertTrue(UIViewController.findTopPresenter() is SecuredViewController<AddressLookupViewController>)
+    }
 
     func testCVVFormatterChange() {
 
@@ -1542,6 +1580,45 @@ class CardComponentTests: XCTestCase {
         // Then
         let postalAddress = sut.cardViewController.items.billingAddressItem.value
         XCTAssertEqual(expectedPostalAddress, postalAddress)
+    }
+    
+    func testCardPrefillingGivenBillingAddressInLookupModeShouldPrefillItems() throws {
+        // Given
+        var configuration = CardComponent.Configuration()
+        configuration.showsHolderNameField = true
+        configuration.billingAddress.mode = .lookup(handler: { searchTerm, completionHandler in
+            completionHandler([.init(city: searchTerm)])
+        })
+        configuration.shopperInformation = shopperInformation
+
+        let component = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+
+        // When
+        
+        UIApplication.shared.keyWindow?.rootViewController = component.cardViewController
+        wait(for: .milliseconds(50))
+
+        // Then
+        let view: UIView = component.cardViewController.view
+
+        let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
+        let expectedHoldername = try XCTUnwrap(shopperInformation.card?.holderName)
+        let holdername = holdernameView.item.value
+        XCTAssertEqual(expectedHoldername, holdername)
+
+        let socialSecurityNumberView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.socialSecurityNumber))
+        let expectedSocialSecurityNumber = try XCTUnwrap(shopperInformation.socialSecurityNumber)
+        let socialSecurityNumber = socialSecurityNumberView.item.value
+        XCTAssertEqual(expectedSocialSecurityNumber, socialSecurityNumber)
+
+        let billingAddressView: FormAddressLookupItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
+        let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
+        let billingAddress = billingAddressView.item.value
+        XCTAssertEqual(expectedBillingAddress, billingAddress)
     }
 
     func testCardPrefillingGivenBillingAddressInFullModeShouldPrefillItems() throws {

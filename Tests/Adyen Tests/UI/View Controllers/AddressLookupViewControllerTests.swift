@@ -27,7 +27,7 @@ class AddressLookupViewControllerTests: XCTestCase {
             resultProvider(results)
             expectation.fulfill()
         } completionHandler: { address in
-            XCTAssert(false, "Completion handler should not have been called")
+            XCTFail("Completion handler should not have been called")
         }
 
         // When
@@ -35,7 +35,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         let addressLookupViewController = AddressLookupViewController(viewModel: viewModel)
         
         UIApplication.shared.keyWindow?.rootViewController = addressLookupViewController
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         // Then
         
@@ -43,11 +43,12 @@ class AddressLookupViewControllerTests: XCTestCase {
         XCTAssertNotNil(addressLookupViewController.viewControllers.first as? AddressLookupFormViewController)
         
         viewModel.interfaceState = .search
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 1)
         XCTAssertNotNil(addressLookupViewController.viewControllers.first as? AddressLookupSearchViewController)
         
-        viewModel.interfaceState = .form(prefillAddress: nil)
-        wait(for: .milliseconds(300))
+        addressLookupViewController.addressLookupSearchSwitchToManualEntry()
+        wait(for: .milliseconds(50))
+        XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: results.first))
         XCTAssertNotNil(addressLookupViewController.viewControllers.first as? AddressLookupFormViewController)
     }
     
@@ -65,19 +66,19 @@ class AddressLookupViewControllerTests: XCTestCase {
         ) { _, _ in
             // Nothing to do...
         } completionHandler: { address in
-            XCTAssert(false, "Completion handler should not have been called")
+            XCTFail("Completion handler should not have been called")
         }
 
         let addressLookupViewController = AddressLookupViewController(viewModel: viewModel)
         
         UIApplication.shared.keyWindow?.rootViewController = addressLookupViewController
-        wait(for: .milliseconds(300))
+        wait(for: .milliseconds(50))
         
         // When - No prefill
         
         _ = {
             viewModel.interfaceState = .form(prefillAddress: nil)
-            self.wait(for: .milliseconds(300))
+            self.wait(for: .milliseconds(50))
             
             // Then
             
@@ -91,7 +92,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         
         _ = {
             viewModel.interfaceState = .form(prefillAddress: .init(country: "US"))
-            self.wait(for: .milliseconds(300))
+            self.wait(for: .milliseconds(50))
             
             let formViewController = addressLookupViewController.viewControllers.first as! AddressLookupFormViewController
             
@@ -118,7 +119,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         
         _ = {
             viewModel.interfaceState = .form(prefillAddress: .init(country: "NL", street: "Singel"))
-            self.wait(for: .milliseconds(300))
+            self.wait(for: .milliseconds(50))
             
             // Then
             
@@ -127,6 +128,78 @@ class AddressLookupViewControllerTests: XCTestCase {
                 true
             )
         }()
+    }
+    
+    func testSearchDismissalNoPrefillNoAction() {
+        
+        // Given
+        
+        let emptyCompletionExpectation = expectation(description: "Completion handler called with nil object")
+        
+        let viewModel = AddressLookupViewController.ViewModel(
+            style: .init(),
+            localizationParameters: nil,
+            supportedCountryCodes: nil,
+            initialCountry: "NL",
+            prefillAddress: nil
+        ) { searchTerm, resultProvider in
+            XCTFail("Lookup provider should not have been called")
+        } completionHandler: { address in
+            XCTAssertNil(address)
+            emptyCompletionExpectation.fulfill()
+        }
+        
+        // Then
+        
+        viewModel.handleDismissSearchTapped()
+        
+        wait(for: [emptyCompletionExpectation], timeout: 1)
+    }
+    
+    func testSearchDismissalAfterInteraction() {
+        
+        // Given
+        
+        let completionHandlerExpectation = expectation(description: "Completion handler called")
+        
+        var expectedCompletionResults: [PostalAddress?] = [nil, .init()]
+        
+        let viewModel = AddressLookupViewController.ViewModel(
+            style: .init(),
+            localizationParameters: nil,
+            supportedCountryCodes: nil,
+            initialCountry: "NL",
+            prefillAddress: nil
+        ) { searchTerm, resultProvider in
+            // Nothing to do...
+        } completionHandler: { address in
+            XCTAssertEqual(expectedCompletionResults.first!, address)
+            expectedCompletionResults = Array(expectedCompletionResults.dropFirst())
+            if expectedCompletionResults.count == 0 {
+                completionHandlerExpectation.fulfill()
+            }
+        }
+        
+        // Then
+        
+        let addressLookupViewController = AddressLookupViewController(viewModel: viewModel)
+        
+        UIApplication.shared.keyWindow?.rootViewController = addressLookupViewController
+        wait(for: .milliseconds(50))
+        
+        addressLookupViewController.addressLookupSearchSwitchToManualEntry()
+        XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: nil))
+        
+        addressLookupViewController.addressLookupFormShowSearch(currentInput: .init())
+        XCTAssertEqual(viewModel.interfaceState, .search)
+        
+        addressLookupViewController.addressLookupSearchCancel() // Should not cancel the flow
+        XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: .init()))
+        
+        addressLookupViewController.addressLookupFormDismiss()
+        addressLookupViewController.addressLookupFormSubmit(validAddress: .init())
+        
+        wait(for: [completionHandlerExpectation], timeout: 1)
     }
     
     // MARK: - ViewModel
@@ -142,9 +215,9 @@ class AddressLookupViewControllerTests: XCTestCase {
             initialCountry: "NL",
             prefillAddress: nil
         ) { searchTerm, resultProvider in
-            XCTAssert(false, "Lookup provider should not have been called")
+            XCTFail("Lookup provider should not have been called")
         } completionHandler: { address in
-            XCTAssert(false, "Completion handler should not have been called")
+            XCTFail("Completion handler should not have been called")
         }
         
         // Then
@@ -166,9 +239,9 @@ class AddressLookupViewControllerTests: XCTestCase {
             initialCountry: "NL",
             prefillAddress: prefillAddress
         ) { searchTerm, resultProvider in
-            XCTAssert(false, "Lookup provider should not have been called")
+            XCTFail("Lookup provider should not have been called")
         } completionHandler: { address in
-            XCTAssert(false, "Completion handler should not have been called")
+            XCTFail("Completion handler should not have been called")
         }
         
         // Then
@@ -236,6 +309,6 @@ class AddressLookupViewControllerTests: XCTestCase {
         
         // Then
         
-        wait(for: [completionHandlerExpectation], timeout: 2)
+        wait(for: [completionHandlerExpectation], timeout: 1)
     }
 }
