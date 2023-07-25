@@ -346,17 +346,25 @@ class CardComponentTests: XCTestCase {
     }
 
     func testTintColorCustomization() {
-        var style = FormComponentStyle(tintColor: .systemYellow)
-        style.textField.title.color = .gray
-        configuration.style = style
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        
+        var configuration = CardComponent.Configuration()
+        
+        configuration.style = {
+            var style = FormComponentStyle(tintColor: .systemYellow)
+            style.textField.title.color = .gray
+            return style
+        }()
+        
+        let component = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        UIApplication.shared.keyWindow?.rootViewController = component.viewController
 
-        let switchView: UISwitch! = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch")
-        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+        let switchView: UISwitch! = component.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch")
+        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
         XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .gray)
         
         wait(for: .milliseconds(300))
