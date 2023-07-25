@@ -11,45 +11,36 @@ import XCTest
 
 class BoletoComponentTests: XCTestCase {
 
-    private var context: AdyenContext!
-
-    private var sut: BoletoComponent!
     private var method = BoletoPaymentMethod(type: .boleto, name: "Boleto Bancario")
-
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        context = AdyenContext(apiContext: Dummy.apiContext, payment: Dummy.payment, analyticsProvider: AnalyticsProviderMock())
-    }
-
-    override func tearDownWithError() throws {
-        context = nil
-        try super.tearDownWithError()
-    }
     
     func testFullPrefilledInfo() throws {
         // Given
+        
         let prefilledInformation = Dummy.dummyFullPrefilledInformation
         let brazilSocialSecurityNumberFormatter = BrazilSocialSecurityNumberFormatter()
+        let context = Dummy.context(with: AnalyticsProviderMock())
         
-        sut = BoletoComponent(paymentMethod: method,
-                              context: context,
-                              configuration: Dummy.getConfiguration(with: prefilledInformation, showEmailAddress: true))
+        let component = BoletoComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: Dummy.getConfiguration(with: prefilledInformation, showEmailAddress: true)
+        )
         
-        let sutVC = sut.viewController
+        let viewController = component.viewController
         
-        UIApplication.shared.keyWindow?.rootViewController = sutVC
+        UIApplication.shared.keyWindow?.rootViewController = viewController
         
         wait(for: .milliseconds(300))
         
-        let firstNameField: UITextField? = sutVC.view.findView(by: "firstNameItem.textField") as? UITextField
-        let lastNameField: UITextField? = sutVC.view.findView(by: "lastNameItem.textField") as? UITextField
-        let socialSecurityNumberField: UITextField? = sutVC.view.findView(by: "socialSecurityNumberItem.textField") as? UITextField
-        let emailField: UITextField? = sutVC.view.findView(by: "emailItem.textField") as? UITextField
+        let firstNameField: UITextField? = viewController.view.findView(by: "firstNameItem.textField") as? UITextField
+        let lastNameField: UITextField? = viewController.view.findView(by: "lastNameItem.textField") as? UITextField
+        let socialSecurityNumberField: UITextField? = viewController.view.findView(by: "socialSecurityNumberItem.textField") as? UITextField
+        let emailField: UITextField? = viewController.view.findView(by: "emailItem.textField") as? UITextField
 
-        let streetField = sutVC.view.findView(by: "addressItem.street.textField") as? UITextField
-        let houseNumberField = sutVC.view.findView(by: "addressItem.houseNumberOrName.textField") as? UITextField
-        let cityField = sutVC.view.findView(by: "addressItem.city.textField") as? UITextField
-        let postalCodeField = sutVC.view.findView(by: "addressItem.postalCode.textField") as? UITextField
+        let streetField = viewController.view.findView(by: "addressItem.street.textField") as? UITextField
+        let houseNumberField = viewController.view.findView(by: "addressItem.houseNumberOrName.textField") as? UITextField
+        let cityField = viewController.view.findView(by: "addressItem.city.textField") as? UITextField
+        let postalCodeField = viewController.view.findView(by: "addressItem.postalCode.textField") as? UITextField
 
         XCTAssertNotNil(firstNameField)
         XCTAssertEqual(firstNameField?.text, prefilledInformation.shopperName?.firstName)
@@ -78,25 +69,30 @@ class BoletoComponentTests: XCTestCase {
     }
     
     func testNoPrefilledInformation() {
-        sut = BoletoComponent(paymentMethod: method,
-                              context: context,
-                              configuration: Dummy.getConfiguration(showEmailAddress: true))
         
-        let sutVC = sut.viewController
+        let context = Dummy.context(with: AnalyticsProviderMock())
         
-        UIApplication.shared.keyWindow?.rootViewController = sutVC
+        let component = BoletoComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: Dummy.getConfiguration(showEmailAddress: true)
+        )
+        
+        let viewController = component.viewController
+        
+        UIApplication.shared.keyWindow?.rootViewController = viewController
         
         wait(for: .milliseconds(300))
         
-        let firstNameField: UITextField? = sutVC.view.findView(by: "firstNameItem.textField") as? UITextField
-        let lastNameField: UITextField? = sutVC.view.findView(by: "lastNameItem.textField") as? UITextField
-        let socialSecurityNumberField: UITextField? = sutVC.view.findView(by: "socialSecurityNumberItem.textField") as? UITextField
-        let emailField: UITextField? = sutVC.view.findView(by: "emailItem.textField") as? UITextField
+        let firstNameField: UITextField? = viewController.view.findView(by: "firstNameItem.textField") as? UITextField
+        let lastNameField: UITextField? = viewController.view.findView(by: "lastNameItem.textField") as? UITextField
+        let socialSecurityNumberField: UITextField? = viewController.view.findView(by: "socialSecurityNumberItem.textField") as? UITextField
+        let emailField: UITextField? = viewController.view.findView(by: "emailItem.textField") as? UITextField
 
-        let streetField = sutVC.view.findView(by: "addressItem.street.textField") as? UITextField
-        let houseNumberField = sutVC.view.findView(by: "addressItem.houseNumberOrName.textField") as? UITextField
-        let cityField = sutVC.view.findView(by: "addressItem.city.textField") as? UITextField
-        let postalCodeField = sutVC.view.findView(by: "addressItem.postalCode.textField") as? UITextField
+        let streetField = viewController.view.findView(by: "addressItem.street.textField") as? UITextField
+        let houseNumberField = viewController.view.findView(by: "addressItem.houseNumberOrName.textField") as? UITextField
+        let cityField = viewController.view.findView(by: "addressItem.city.textField") as? UITextField
+        let postalCodeField = viewController.view.findView(by: "addressItem.postalCode.textField") as? UITextField
 
         XCTAssertNotNil(firstNameField)
         XCTAssertNil(firstNameField?.text?.adyen.nilIfEmpty)
@@ -124,18 +120,23 @@ class BoletoComponentTests: XCTestCase {
     }
     
     func testNoEmailSection() {
-        sut = BoletoComponent(paymentMethod: method,
-                              context: context,
-                              configuration: Dummy.getConfiguration(showEmailAddress: false))
         
-        let sutVC = sut.viewController
+        let context = Dummy.context(with: AnalyticsProviderMock())
         
-        UIApplication.shared.keyWindow?.rootViewController = sutVC
+        let component = BoletoComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: Dummy.getConfiguration(showEmailAddress: false)
+        )
+        
+        let viewController = component.viewController
+        
+        UIApplication.shared.keyWindow?.rootViewController = viewController
         
         wait(for: .milliseconds(300))
         
-        let emailSwitch: UISwitch? = sutVC.view.findView(by: "sendCopyToEmailItem.switch") as? UISwitch
-        let emailField: UITextField? = sutVC.view.findView(by: "emailItem.textField") as? UITextField
+        let emailSwitch: UISwitch? = viewController.view.findView(by: "sendCopyToEmailItem.switch") as? UISwitch
+        let emailField: UITextField? = viewController.view.findView(by: "emailItem.textField") as? UITextField
         
         // Test that email switch does not exist
         XCTAssertNil(emailSwitch)
@@ -145,47 +146,52 @@ class BoletoComponentTests: XCTestCase {
     }
     
     func testEmailFieldHiding() {
-        sut = BoletoComponent(paymentMethod: method,
-                              context: context,
-                              configuration: Dummy.getConfiguration(with: Dummy.dummyFullPrefilledInformation, showEmailAddress: true))
         
-        let sutVC = sut.viewController
+        let context = Dummy.context(with: AnalyticsProviderMock())
         
-        UIApplication.shared.keyWindow?.rootViewController = sutVC
+        let component = BoletoComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: Dummy.getConfiguration(with: Dummy.dummyFullPrefilledInformation, showEmailAddress: true)
+        )
+        
+        let viewController = component.viewController
+        
+        UIApplication.shared.keyWindow?.rootViewController = viewController
         
         wait(for: .milliseconds(300))
         
-        let emailSwitchItem: FormToggleItemView? = sutVC.view.findView(by: "sendCopyToEmailItem") as? FormToggleItemView
-        
-        XCTAssertNotNil(emailSwitchItem)
-        
-        let emailSwitch: UISwitch? = emailSwitchItem!.findView(by: "sendCopyToEmailItem.switch") as? UISwitch
-        let emailItem: FormItemView? = sutVC.view.findView(by: "emailItem") as? FormTextItemView<FormTextInputItem>
+        let emailSwitchItem: FormToggleItemView = viewController.view.findView(by: "sendCopyToEmailItem") as! FormToggleItemView
+        let emailSwitch: UISwitch = emailSwitchItem.findView(by: "sendCopyToEmailItem.switch") as! UISwitch
+        let emailItem: FormItemView = viewController.view.findView(by: "emailItem") as! FormTextItemView<FormTextInputItem>
         
         // Test that email switch has false by default
-        XCTAssertNotNil(emailSwitch)
-        XCTAssertFalse(emailSwitch!.isOn)
+        XCTAssertFalse(emailSwitch.isOn)
         
         // Test that email field is hidden
-        XCTAssertNotNil(emailItem)
-        XCTAssertTrue(emailItem!.isHidden)
+        XCTAssertTrue(emailItem.isHidden)
         
-        emailSwitchItem?.accessibilityActivate()
+        emailSwitchItem.accessibilityActivate()
 
+        wait(for: .milliseconds(10))
+        
         // Test that email field is visible
-        XCTAssertFalse(emailItem!.isHidden)
+        XCTAssertFalse(emailItem.isHidden)
     }
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
-        sut = BoletoComponent(paymentMethod: method,
-                              context: context,
-                              configuration: Dummy.getConfiguration(with: Dummy.dummyFullPrefilledInformation, showEmailAddress: true))
+        
+        let component = BoletoComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: Dummy.getConfiguration(with: Dummy.dummyFullPrefilledInformation, showEmailAddress: true)
+        )
 
         // When
-        sut.viewWillAppear(viewController: sut.viewController)
+        component.viewWillAppear(viewController: component.viewController)
 
         // Then
         XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)

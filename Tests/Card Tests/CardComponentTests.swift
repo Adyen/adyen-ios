@@ -346,17 +346,25 @@ class CardComponentTests: XCTestCase {
     }
 
     func testTintColorCustomization() {
-        var style = FormComponentStyle(tintColor: .systemYellow)
-        style.textField.title.color = .gray
-        configuration.style = style
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        
+        var configuration = CardComponent.Configuration()
+        
+        configuration.style = {
+            var style = FormComponentStyle(tintColor: .systemYellow)
+            style.textField.title.color = .gray
+            return style
+        }()
+        
+        let component = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        UIApplication.shared.keyWindow?.rootViewController = component.viewController
 
-        let switchView: UISwitch! = sut.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch")
-        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+        let switchView: UISwitch! = component.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch")
+        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
         XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .gray)
         
         wait(for: .milliseconds(300))
@@ -1977,6 +1985,36 @@ class CardComponentTests: XCTestCase {
 
         var items = sut.cardViewController.items
         XCTAssertFalse(items.holderNameItem.isValid())
+    }
+
+    func testPayButtonLocaleBasedFormating() {
+        let amount = Amount(value: 1234567, currencyCode: "USD")
+        let context = AdyenContext(apiContext: Dummy.apiContext, payment: Payment(amount: amount, countryCode: "US"))
+
+        // When
+        configuration.localizationParameters = LocalizationParameters(locale: "ko-KR")
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration)
+
+        // Then
+        var items = sut.cardViewController.items
+        XCTAssertEqual(items.button.title, "Pay US$12,345.67")
+    }
+
+    func testPayButtonEnforceedLocaleBasedFormating() {
+        let amount = Amount(value: 1234567, currencyCode: "USD")
+        let context = AdyenContext(apiContext: Dummy.apiContext, payment: Payment(amount: amount, countryCode: "US"))
+
+        // When
+        configuration.localizationParameters = LocalizationParameters(enforcedLocale: "ru-RU")
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration)
+
+        // Then
+        var items = sut.cardViewController.items
+        XCTAssertEqual(items.button.title, "Заплатить 12 345,67 $")
     }
 
     func testCardHolderNameValidatorWithMinimumLength() {

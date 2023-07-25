@@ -43,8 +43,8 @@ internal final class ComponentsViewController: UIViewController {
 
     private lazy var applePayComponentExample: ApplePayComponentExample = {
         let applePayComponent = ApplePayComponentExample()
-        applePayComponentExample.presenter = self
-        return applePayComponentExample
+        applePayComponent.presenter = self
+        return applePayComponent
     }()
 
     // MARK: - View

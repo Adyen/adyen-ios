@@ -71,6 +71,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
                                                context: context,
                                                configuration: config)
         component.delegate = self
+        component.applePayDelegate = self
         return component
     }
 
