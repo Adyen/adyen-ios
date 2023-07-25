@@ -1,39 +1,34 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import UIKit
 
+/// Observe changes to the keyboard frames to update the UI accordingly
 @_spi(AdyenInternal)
-public protocol KeyboardObserver: AnyObject {
-
-    func startObserving()
-
-    func stopObserving()
-
-    var keyboardObserver: Any? { get set }
-}
-
-@_spi(AdyenInternal)
-extension KeyboardObserver {
-
-    public func startObserving(_ observer: @escaping (_ keyboardRect: CGRect) -> Void) {
-        let notificationName = UIResponder.keyboardWillChangeFrameNotification
-        keyboardObserver = NotificationCenter.default.addObserver(forName: notificationName,
-                                                                  object: nil,
-                                                                  queue: OperationQueue.main) { notification in
-            var keyboardRect: CGRect = .zero
-            if let bounds = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-                keyboardRect = bounds.intersection(UIScreen.main.bounds)
-            }
-            observer(keyboardRect)
-        }
+public class KeyboardObserver {
+    
+    /// The observable keyboard rect
+    @AdyenObservable(CGRect.zero)
+    public private(set) var keyboardRect: CGRect
+    
+    public init() {
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleKeyboardWillChangeFrameNotification),
+                                               name: UIResponder.keyboardWillChangeFrameNotification,
+                                               object: nil)
     }
-
-    public func stopObserving() {
-        keyboardObserver.map(NotificationCenter.default.removeObserver)
-        keyboardObserver = nil
+    
+    @objc
+    private func handleKeyboardWillChangeFrameNotification(_ notification: Notification) {
+        
+        guard let bounds = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+            return self.keyboardRect = .zero
+        }
+        
+        self.keyboardRect = bounds.intersection(UIScreen.main.bounds)
     }
 }

@@ -4,9 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import Foundation
+import UIKit
 
 internal struct SessionRequest: APIRequest {
     
@@ -46,6 +47,8 @@ internal struct SessionRequest: APIRequest {
         //        try container.encode(installmentOptions, forKey: .installmentOptions)
 
         if ConfigurationConstants.current.cardComponentConfiguration.showsStorePaymentMethodField {
+            AdyenAssertion.assert(message: "API version should be v70 or above to apply card component's store payment method field",
+                                  condition: ConfigurationConstants.current.apiVersion < 70)
             try container.encode("askForConsent", forKey: .storePaymentMethodMode)
             try container.encode("CardOnFile", forKey: .recurringProcessingModel)
         }

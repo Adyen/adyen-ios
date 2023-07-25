@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "Search Small@1x.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "Search Small@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "Search Small@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "search.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

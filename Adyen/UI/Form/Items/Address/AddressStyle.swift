@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -30,4 +30,25 @@ public struct AddressStyle: FormValueItemStyle {
 
     /// The color of form view item's separator line.
     public var separatorColor: UIColor? { textField.separatorColor }
+    
+    /// Initializes the form address item configuration.
+    /// - Parameters:
+    ///   - title: The section header style.
+    ///   - textField: The text field style.
+    ///   - tintColor: The tint color of the view.
+    ///   - backgroundColor: The background color of the view.
+    public init(
+        title: TextStyle,
+        textField: FormTextItemStyle,
+        tintColor: UIColor? = nil,
+        backgroundColor: UIColor = .clear
+    ) {
+        self.title = title
+        self.textField = textField
+        self.tintColor = tintColor
+        self.backgroundColor = backgroundColor
+    }
+    
+    /// Initializes the form address item configuration with default values
+    public init() {}
 }

@@ -27,6 +27,9 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     /// Component's configuration.
     public var configuration: Configuration
     
+    /// The title of the view controller
+    private let title: String
+    
     /// Initializes the issuer list component.
     ///
     /// - Parameter paymentMethod: The issuer list payment method.
@@ -38,7 +41,7 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
         self.issuerListPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
-        viewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
+        self.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
     }
     
     private let issuerListPaymentMethod: IssuerListPaymentMethod
@@ -46,35 +49,54 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     // MARK: - Presentable Component Protocol
     
     public var viewController: UIViewController {
-        searchViewController
+        let viewController = searchViewController
+        viewController.title = title
+        return viewController
     }
 
     private lazy var searchViewController: SearchViewController = {
-        SearchViewController(childViewController: listViewController,
-                             style: configuration.style,
-                             delegate: self)
+        
+        let viewModel = SearchViewController.ViewModel(
+            localizationParameters: configuration.localizationParameters,
+            style: configuration.style
+        ) { [weak self] searchText, handler in
+            guard let self else { return }
+            handler(self.listItems(for: searchText))
+        }
+        
+        return SearchViewController(
+            viewModel: viewModel,
+            emptyView: IssuerListEmptyView(
+                localizationParameters: configuration.localizationParameters
+            )
+        )
     }()
 
     public func stopLoading() {
-        listViewController.stopLoading()
+        searchViewController.resultsListViewController.stopLoading()
     }
     
     public var requiresModalPresentation: Bool = true
 
     // MARK: - Private
     
-    private lazy var listViewController: ListViewController = {
-        let listViewController = ListViewController(style: configuration.style)
-        listViewController.delegate = self
-        let issuers = issuerListPaymentMethod.issuers
+    private func listItems(for searchText: String) -> [ListItem] {
+        let issuers = filteredIssuers(for: searchText)
+        return listItems(from: issuers)
+    }
 
-        convertIssuersToListItem(listViewController: listViewController, issuers: issuers)
-
-        return listViewController
-    }()
-
-    private func convertIssuersToListItem(listViewController: ListViewController, issuers: [Issuer]) {
-        let items = issuers.map { issuer -> ListItem in
+    private func filteredIssuers(for searchText: String) -> [Issuer] {
+        if searchText.isEmpty {
+            return issuerListPaymentMethod.issuers
+        }
+        
+        return issuerListPaymentMethod.issuers.filter {
+            $0.name.range(of: searchText, options: .caseInsensitive) != nil
+        }
+    }
+    
+    private func listItems(from issuers: [Issuer]) -> [ListItem] {
+        issuers.map { issuer -> ListItem in
 
             let logoUrl = LogoURLProvider.logoURL(
                 for: issuer,
@@ -98,11 +120,10 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
                 self.submit(data: PaymentComponentData(paymentMethodDetails: details,
                                                        amount: self.payment?.amount,
                                                        order: self.order))
-                listViewController.startLoading(for: listItem)
+                self.searchViewController.resultsListViewController.startLoading(for: listItem)
             }
             return listItem
         }
-        listViewController.reload(newSections: [ListSection(items: items)], animated: false)
     }
 }
 
@@ -111,23 +132,6 @@ extension IssuerListComponent: ViewControllerDelegate {
 
     public func viewWillAppear(viewController: UIViewController) {
         sendTelemetryEvent()
-    }
-}
-
-@_spi(AdyenInternal)
-extension IssuerListComponent: SearchViewControllerDelegate {
-    public func textDidChange(_ searchBar: UISearchBar, searchText: String) {
-        if searchText.isEmpty {
-            convertIssuersToListItem(listViewController: listViewController, issuers: issuerListPaymentMethod.issuers)
-        } else {
-            let filteredIssuers = issuerListPaymentMethod.issuers.filter { $0.name.range(of: searchText, options: .caseInsensitive) != nil }
-            if filteredIssuers.isEmpty {
-                searchViewController.showNoSearchResultsView(searchText: searchText)
-                listViewController.reload(newSections: [], animated: false)
-            } else {
-                convertIssuersToListItem(listViewController: listViewController, issuers: filteredIssuers)
-            }
-        }
     }
 }
 

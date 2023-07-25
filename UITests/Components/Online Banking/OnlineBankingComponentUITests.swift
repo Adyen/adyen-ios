@@ -103,12 +103,12 @@ class OnlineBankingComponentUITests: XCTestCase {
 
         // start loading
         button.showsActivityIndicator = true
-        assertViewHeirarchy(matching: sut.viewController, named: "initial_state")
+        assertViewControllerImage(matching: sut.viewController, named: "initial_state")
 
         // stop loading
         sut.stopLoading()
         button.showsActivityIndicator = false
-        assertViewHeirarchy(matching: sut.viewController, named: "stopped_loading")
+        assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
     }
 
 }

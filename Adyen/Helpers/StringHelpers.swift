@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -158,6 +158,24 @@ public extension AdyenScope where Base == String {
         let upperIndex = base.index(lowerIndex, offsetBy: clampedRange.upperBound - clampedRange.lowerBound)
         
         return lowerIndex...upperIndex
+    }
+    
+    /// Returns a list of ``NSRange`` indicating links using following regex pattern: `#(.+?)#`
+    var linkRanges: [NSRange] {
+        let pattern = "#(.+?)#"
+        var ranges: [NSRange] = []
+        do {
+            let regex = try NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options.caseInsensitive)
+            let matches = regex.matches(in: base, options: [], range: NSRange(base.startIndex..., in: base))
+
+            matches.forEach { match in
+                let range = match.range(at: 0)
+                ranges.append(range)
+            }
+        } catch {
+            adyenPrint(error)
+        }
+        return ranges
     }
 }
 

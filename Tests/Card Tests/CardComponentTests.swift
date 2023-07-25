@@ -1680,7 +1680,7 @@ class CardComponentTests: XCTestCase {
 
         let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
         
-        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.supportedCountryCodes, ["UK"])
+        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.configuration.supportedCountryCodes, ["UK"])
         XCTAssertEqual(countryItemView?.inputControl.label, "United Kingdom")
     }
     
@@ -1699,7 +1699,7 @@ class CardComponentTests: XCTestCase {
 
         let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
         
-        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.supportedCountryCodes, ["US", "JP"])
+        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.configuration.supportedCountryCodes, ["US", "JP"])
         XCTAssertEqual(countryItemView?.inputControl.label, "United States")
     }
     
@@ -1718,7 +1718,7 @@ class CardComponentTests: XCTestCase {
 
         let countryItemView: FormRegionPickerItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.billingAddress.country")
         
-        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.supportedCountryCodes, ["UK"])
+        XCTAssertEqual(sut.cardViewController.items.billingAddressItem.configuration.supportedCountryCodes, ["UK"])
         XCTAssertEqual(countryItemView?.inputControl.label, "United Kingdom")
     }
     
@@ -1974,6 +1974,36 @@ class CardComponentTests: XCTestCase {
 
         var items = sut.cardViewController.items
         XCTAssertFalse(items.holderNameItem.isValid())
+    }
+
+    func testPayButtonLocaleBasedFormating() {
+        let amount = Amount(value: 1234567, currencyCode: "USD")
+        let context = AdyenContext(apiContext: Dummy.apiContext, payment: Payment(amount: amount, countryCode: "US"))
+
+        // When
+        configuration.localizationParameters = LocalizationParameters(locale: "ko-KR")
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration)
+
+        // Then
+        var items = sut.cardViewController.items
+        XCTAssertEqual(items.button.title, "Pay US$12,345.67")
+    }
+
+    func testPayButtonEnforceedLocaleBasedFormating() {
+        let amount = Amount(value: 1234567, currencyCode: "USD")
+        let context = AdyenContext(apiContext: Dummy.apiContext, payment: Payment(amount: amount, countryCode: "US"))
+
+        // When
+        configuration.localizationParameters = LocalizationParameters(enforcedLocale: "ru-RU")
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration)
+
+        // Then
+        var items = sut.cardViewController.items
+        XCTAssertEqual(items.button.title, "Заплатить 12 345,67 $")
     }
 
     func testCardHolderNameValidatorWithMinimumLength() {

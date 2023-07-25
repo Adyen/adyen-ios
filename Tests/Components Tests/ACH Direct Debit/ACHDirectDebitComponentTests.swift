@@ -62,7 +62,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.bankRoutingNumberItem.validationFailureMessage, localizedString(.achAccountLocationFieldInvalid, sut.configuration.localizationParameters))
         
         XCTAssertEqual(sut.billingAddressItem.headerItem.text, localizedString(.billingAddressSectionTitle, sut.configuration.localizationParameters))
-        XCTAssertEqual(sut.billingAddressItem.supportedCountryCodes, ["US", "UK"])
+        XCTAssertEqual(sut.billingAddressItem.configuration.supportedCountryCodes, ["US", "UK"])
 
         XCTAssertEqual(sut.payButton.title, localizedSubmitButtonTitle(with: sut.payment?.amount,
                                                                        style: .immediate,

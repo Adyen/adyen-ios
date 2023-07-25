@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,7 +15,7 @@ extension Bundle {
     internal static let core: Bundle = .init(for: FormView.self)
 
     /// The bundle in which the framework's resources are located.
-    internal static let coreInternalResources: Bundle = {
+    public static let coreInternalResources: Bundle = {
         let url = core.url(forResource: "Adyen", withExtension: "bundle")
         let bundle = url.flatMap { Bundle(url: $0) }
         return bundle ?? core

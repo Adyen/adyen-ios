@@ -8,7 +8,7 @@
 import XCTest
 
 class FormAddressItemTests: XCTestCase {
-
+    
     override func tearDown() {
         super.tearDown()
         AdyenAssertion.listener = nil
@@ -18,8 +18,9 @@ class FormAddressItemTests: XCTestCase {
         
         let formAddressItem = FormAddressItem(
             initialCountry: "NL",
-            style: .init(),
-            supportedCountryCodes: ["NL", "US"],
+            configuration: .init(
+                supportedCountryCodes: ["NL", "US"]
+            ),
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
@@ -33,8 +34,9 @@ class FormAddressItemTests: XCTestCase {
         
         let formAddressItem = FormAddressItem(
             initialCountry: "NL",
-            style: .init(),
-            supportedCountryCodes: ["NL", "US"],
+            configuration: .init(
+                supportedCountryCodes: ["NL", "US"]
+            ),
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
@@ -48,5 +50,59 @@ class FormAddressItemTests: XCTestCase {
         formAddressItem.value = .init(country: "XX")
         
         wait(for: [expectation], timeout: 0)
+    }
+    
+    func testShowsHeader() throws {
+        
+        let formAddressItemWithHeader = FormAddressItem(
+            initialCountry: "NL",
+            configuration: .init(),
+            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+        )
+        
+        XCTAssertTrue(formAddressItemWithHeader.flatSubitems.contains { $0 === formAddressItemWithHeader.headerItem })
+        
+        let formAddressItemWithOutHeader = FormAddressItem(
+            initialCountry: "NL",
+            configuration: .init(showsHeader: false),
+            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+        )
+        
+        XCTAssertFalse(formAddressItemWithHeader.flatSubitems.contains { $0 === formAddressItemWithOutHeader.headerItem })
+    }
+    
+    func testUpdateContext() {
+        
+        let expectation = expectation(description: "Should call delegate.didUpdateItems")
+        
+        let formAddressDelegate = AddressDelegateDummy { items in
+            expectation.fulfill()
+        }
+        
+        let formAddressItem = FormAddressItem(
+            initialCountry: "NL",
+            configuration: .init(),
+            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+        )
+        
+        formAddressItem.delegate = formAddressDelegate
+        
+        formAddressItem.updateOptionalStatus(isOptional: true)
+        
+        wait(for: [expectation], timeout: 300)
+    }
+}
+
+// MARK: - Helpers
+
+fileprivate class AddressDelegateDummy: SelfRenderingFormItemDelegate {
+    let didUpdateItemsHandler: (_ items: [FormItem]) -> Void
+    
+    init(didUpdateItemsHandler: @escaping (_ items: [FormItem]) -> Void) {
+        self.didUpdateItemsHandler = didUpdateItemsHandler
+    }
+    
+    func didUpdateItems(_ items: [Adyen.FormItem]) {
+        didUpdateItemsHandler(items)
     }
 }

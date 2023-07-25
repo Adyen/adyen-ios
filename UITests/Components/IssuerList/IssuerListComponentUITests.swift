@@ -30,7 +30,7 @@ final class IssuerListComponentUITests: XCTestCase {
         paymentMethod = try! Coder.decode(issuerListDictionary) as IssuerListPaymentMethod
         sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
         searchViewController = sut.viewController as? SearchViewController
-        listViewController = searchViewController.childViewController as? ListViewController
+        listViewController = searchViewController.resultsListViewController
     }
 
     override func tearDownWithError() throws {
@@ -42,7 +42,13 @@ final class IssuerListComponentUITests: XCTestCase {
 
     func testStartStopLoading() {
         XCTAssertNotNil(listViewController)
+        
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        wait(for: .milliseconds(300))
+        
         let items = listViewController!.sections[0].items
+        
         let index = 0
         let item = items[index]
         var cell = listViewController!.tableView.visibleCells[index] as! ListCell
