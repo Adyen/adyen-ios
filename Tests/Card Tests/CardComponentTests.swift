@@ -735,9 +735,9 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         UIApplication.shared.keyWindow?.layer.speed = 10.0
+        wait(for: .milliseconds(50))
         
         // When
-        wait(for: .milliseconds(50))
 
         let view: UIView = sut.viewController.view
 
@@ -795,9 +795,9 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         UIApplication.shared.keyWindow?.layer.speed = 10.0
+        wait(for: .milliseconds(50))
         
         // When
-        wait(for: .milliseconds(50))
 
         let view: UIView = sut.viewController.view
 
@@ -830,7 +830,7 @@ class CardComponentTests: XCTestCase {
         let payButtonItemViewButton: UIControl? = view.findView(with: "AdyenCard.CardComponent.payButtonItem.button")
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
         
-        wait(for: .milliseconds(50))
+        wait(until: postalCodeItemView.alertLabel, at: \.isHidden, is: false, timeout: 1)
 
         XCTAssertTrue(houseNumberItemView.alertLabel.isHidden)
         XCTAssertFalse(addressItemView.alertLabel.isHidden)
@@ -1016,12 +1016,12 @@ class CardComponentTests: XCTestCase {
 
         self.fillCard(on: sut.viewController.view, with: Dummy.kcpCard)
         
-        wait(for: .milliseconds(500))
-
+        wait(until: passwordItemView!, at: \.isHidden, is: false, timeout: 1)
+        XCTAssertFalse(taxNumberItemView!.isHidden)
+        
         XCTAssertEqual(passwordItemView!.titleLabel.text, "First 2 digits of card password")
         XCTAssertEqual(taxNumberItemView!.titleLabel.text, "Birthdate or Corporate registration number")
-        XCTAssertFalse(taxNumberItemView!.isHidden)
-        XCTAssertFalse(passwordItemView!.isHidden)
+        
         self.populate(textItemView: taxNumberItemView!, with: "121212")
         self.populate(textItemView: passwordItemView!, with: "12")
 
