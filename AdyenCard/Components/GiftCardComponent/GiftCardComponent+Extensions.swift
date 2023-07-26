@@ -8,7 +8,11 @@
 import UIKit
 
 @_spi(AdyenInternal)
-extension GiftCardComponent: TrackableComponent {}
+extension GiftCardComponent: TrackableComponent {
+    public func sendTelemetryEvent() {
+        sendTelemetryEvent(withAmount: context.payment?.amount)
+    }
+}
 
 @_spi(AdyenInternal)
 extension GiftCardComponent: ViewControllerDelegate {

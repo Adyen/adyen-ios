@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -62,7 +62,11 @@ public final class InstantPaymentComponent: PaymentComponent {
 }
 
 @_spi(AdyenInternal)
-extension InstantPaymentComponent: TrackableComponent {}
+extension InstantPaymentComponent: TrackableComponent {
+    public func sendTelemetryEvent() {
+        sendTelemetryEvent(withAmount: context.payment?.amount)
+    }
+}
 
 /// Describes a payment details that contains nothing but the payment method type name.
 public struct InstantPaymentDetails: PaymentMethodDetails {
