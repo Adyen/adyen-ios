@@ -70,11 +70,11 @@ extension CardViewController {
             return item
         }()
         
-        internal lazy var lookupBillingAddressItem: FormAddressLookupItem = {
+        internal lazy var billingAddressPickerItem: FormAddressPickerItem = {
             let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "billingAddress")
             let prefillAddress = shopperInformation?.billingAddress
             
-            let item = FormAddressLookupItem(
+            let item = FormAddressPickerItem(
                 initialCountry: initialCountry,
                 prefillAddress: prefillAddress,
                 style: formStyle.addressStyle,

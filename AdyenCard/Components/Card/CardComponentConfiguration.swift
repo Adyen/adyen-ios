@@ -95,8 +95,15 @@ extension CardComponent {
         case lookup(handler: LookupHandler)
 
         /// Display full address form
+        @available(*, deprecated, message: "This property is deprecated. Use `.fullInline` instead")
         case full
-
+        
+        /// Display full address form inline
+        case fullInline
+        
+        /// Display full address form on a separate screen
+        case fullDetached
+        
         /// Display simple form with only zip code field
         case postalCode
 
@@ -204,19 +211,6 @@ extension CardComponent {
             self.socialSecurityNumberMode = socialSecurityNumberMode
             self.installmentConfiguration = installmentConfiguration
             self.billingAddress = billingAddress
-        }
-
-        internal func bcmcConfiguration() -> Configuration {
-            var storedCardConfiguration = stored
-            storedCardConfiguration.showsSecurityCodeField = false
-            var configuration = Configuration(style: style,
-                                              showsHolderNameField: showsHolderNameField,
-                                              showsStorePaymentMethodField: showsStorePaymentMethodField,
-                                              showsSecurityCodeField: false,
-                                              storedCardConfiguration: storedCardConfiguration,
-                                              allowedCardTypes: [.bcmc])
-            configuration.excludedCardTypes = []
-            return configuration
         }
 
         internal func showAdditionalAuthenticationFields(for issuingCountryCode: String?) -> Bool {

@@ -99,22 +99,22 @@ extension AddressLookupViewController.ViewModel {
     
     internal func handleDismissSearchTapped() {
         if shouldDismissOnSearchDismissal {
-            handleDismissAddressLookupTapped()
+            handleDismissAddressLookup()
         } else {
             handleSwitchToManualEntryTapped()
         }
-    }
-    
-    internal func handleDismissAddressLookupTapped() {
-        completionHandler(nil)
     }
     
     internal func lookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
         lookupProvider(searchTerm) { resultHandler($0.compactMap(listItem(for:))) }
     }
     
-    internal func handleSubmit(address: PostalAddress) {
-        completionHandler(address)
+    internal func handleAddressInputFormCompletion(validAddress: PostalAddress?) {
+        completionHandler(validAddress)
+    }
+    
+    private func handleDismissAddressLookup() {
+        completionHandler(nil)
     }
 }
 
