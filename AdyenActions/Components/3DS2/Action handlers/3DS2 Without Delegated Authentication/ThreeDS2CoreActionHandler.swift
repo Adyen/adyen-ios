@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -26,6 +26,10 @@ internal protocol AnyThreeDS2CoreActionHandler: Component {
 
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
 internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
+    
+    private enum Constant {
+        static let transStatusWhenError = "U"
+    }
     
     internal let context: AdyenContext
 
@@ -187,7 +191,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
             // When we get an error we need to send transStatus as "U" along with the threeDS2SDKError field.
             let threeDSResult = try ThreeDSResult(authorizationToken: authorizationToken,
                                                   threeDS2SDKError: threeDS2SDKError,
-                                                  transStatus: "U")
+                                                  transStatus: Constant.transStatusWhenError)
             transaction = nil
             completionHandler(.success(threeDSResult))
         } catch {
