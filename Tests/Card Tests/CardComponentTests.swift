@@ -325,16 +325,13 @@ class CardComponentTests: XCTestCase {
         wait(for: [expectationBin, expectationCardType], timeout: 10)
     }
     
-    func testAddressLookupProviderCalled() throws {
-        
-        let lookupHandlerExpectation = expectation(description: "Lookup handler is called")
+    func testAddressLookupPrefill() throws {
         
         // Given
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .lookup(handler: { searchTerm, completionHandler in
-            completionHandler([.init(city: searchTerm)])
-            lookupHandlerExpectation.fulfill()
+            XCTFail("Lookup handler should not be called")
         })
         configuration.shopperInformation = shopperInformation
 
