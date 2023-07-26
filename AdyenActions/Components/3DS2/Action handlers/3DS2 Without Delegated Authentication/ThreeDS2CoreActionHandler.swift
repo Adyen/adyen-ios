@@ -8,13 +8,6 @@
 import Adyen3DS2
 import Foundation
 
-// TODO: Remove this once 3ds2 sdk is released.
-extension NSError {
-    func base64Representation() -> String {
-        "base64Representation"
-    }
-}
-
 internal protocol AnyThreeDS2CoreActionHandler: Component {
     var threeDSRequestorAppURL: URL? { get set }
     
