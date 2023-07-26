@@ -8,13 +8,6 @@ import Adyen
 import Adyen3DS2
 import Foundation
 
-// TODO: Remove this once 3ds2 sdk is released.
-extension NSError {
-    func base64Representation() -> String {
-        "base64Representation"
-    }
-}
-
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
 /// :nodoc:
 internal class ThreeDS2CoreActionHandler: Component {
