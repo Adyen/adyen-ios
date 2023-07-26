@@ -17,7 +17,7 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
         }
     }
     
-    override internal var accessibilityLabelView: UIView? { valueLabel }
+    override internal var accessibilityLabelView: UIView? { selectionButton }
     
     public required init(item: ItemType) {
         super.init(item: item)
@@ -113,6 +113,8 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
     }
     
     private func updateValueLabel(with formattedValue: String?) {
+        accessibilityLabelView?.accessibilityValue = formattedValue
+        
         guard let formattedValue, !formattedValue.isEmpty else {
             valueLabel.text = item.placeholder
             valueLabel.textColor = item.style.placeholderText?.color ?? .Adyen.componentPlaceholderText
