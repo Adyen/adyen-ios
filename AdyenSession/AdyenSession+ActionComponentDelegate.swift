@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -25,8 +25,12 @@ extension AdyenSession: ActionComponentDelegate {
             AdyenAssertion.assertionFailure(message: "Missing resultCode.")
             return
         }
+        // keeping deprecated one until v6
         delegate?.didComplete(with: SessionPaymentResultCode(paymentResultCode: resultCode),
                               component: currentComponent, session: self)
+        let result = AdyenSessionResult(resultCode: SessionPaymentResultCode(paymentResultCode: resultCode),
+                                        encodedResult: sessionContext.sessionResult)
+        delegate?.didComplete(with: result, component: currentComponent, session: self)
     }
 
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {

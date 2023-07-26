@@ -121,8 +121,8 @@ internal final class DropInExample: InitialDataFlowProtocol {
 
 extension DropInExample: AdyenSessionDelegate {
 
-    func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession) {
-        dismissAndShowAlert(resultCode.isSuccess, resultCode.rawValue)
+    func didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession) {
+        dismissAndShowAlert(result.resultCode.isSuccess, result.resultCode.rawValue)
     }
 
     func didFail(with error: Error, from component: Component, session: AdyenSession) {
