@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,6 +18,10 @@ extension NSError {
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
 /// :nodoc:
 internal class ThreeDS2CoreActionHandler: Component {
+    
+    private enum Constant {
+        static let transStatusWhenError = "U"
+    }
     
     /// :nodoc:
     internal let apiContext: APIContext
@@ -187,7 +191,7 @@ internal class ThreeDS2CoreActionHandler: Component {
         do {
             let threeDSResult = try ThreeDSResult(authorizationToken: authorizationToken,
                                                   threeDS2SDKError: threeDS2SDKError,
-                                                  transStatus: "U")
+                                                  transStatus: Constant.transStatusWhenError)
             transaction = nil
             completionHandler(.success(threeDSResult))
         } catch {
