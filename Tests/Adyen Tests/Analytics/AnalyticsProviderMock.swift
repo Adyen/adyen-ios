@@ -10,6 +10,7 @@ import Foundation
 @_spi(AdyenInternal) @testable import Adyen
 
 class AnalyticsProviderMock: AnalyticsProviderProtocol {
+    
     var checkoutAttemptId: String? { underlyingCheckoutAttemptId }
 
     // MARK: - checkoutAttemptId
@@ -31,7 +32,7 @@ class AnalyticsProviderMock: AnalyticsProviderProtocol {
         sendTelemetryEventCallsCount > 0
     }
 
-    func sendTelemetryEvent(flavor: TelemetryFlavor) {
+    func sendTelemetryEvent(flavor: TelemetryFlavor, amount: Adyen.Amount?) {
         sendTelemetryEventCallsCount += 1
     }
 }
