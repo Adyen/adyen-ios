@@ -74,6 +74,6 @@ jobs:
       if: ${{ env.sonarToken != 0 }}
       run: |
         git fetch --unshallow --no-tags
-        sonar-scanner -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        sonar-scanner -Dsonar.token=${{ secrets.SONAR_TOKEN }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
