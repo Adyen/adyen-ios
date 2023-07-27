@@ -9,8 +9,6 @@ import Foundation
 
 internal protocol AnyChallengeResult {
 
-    var sdkTransactionIdentifier: String { get }
-
     var transactionStatus: String { get }
 }
 

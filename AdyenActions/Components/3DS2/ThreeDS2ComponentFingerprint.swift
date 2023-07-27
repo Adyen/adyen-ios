@@ -11,26 +11,39 @@ import Foundation
 internal extension ThreeDS2Component {
     
     struct Fingerprint: Codable, Equatable { // swiftlint:disable:this explicit_acl
-        
-        internal let deviceInformation: String
-        internal let sdkEphemeralPublicKey: EphemeralPublicKey
-        internal let sdkReferenceNumber: String
-        internal let sdkApplicationIdentifier: String
-        internal let sdkTransactionIdentifier: String
+        internal let deviceInformation: String?
+        internal let sdkEphemeralPublicKey: EphemeralPublicKey?
+        internal let sdkReferenceNumber: String?
+        internal let sdkApplicationIdentifier: String?
+        internal let sdkTransactionIdentifier: String?
         internal let delegatedAuthenticationSDKOutput: String?
+        internal let threeDS2SDKError: String?
         
-        internal init(deviceInformation: String,
-                      sdkEphemeralPublicKey: ThreeDS2Component.Fingerprint.EphemeralPublicKey,
-                      sdkReferenceNumber: String,
-                      sdkApplicationIdentifier: String,
-                      sdkTransactionIdentifier: String,
-                      delegatedAuthenticationSDKOutput: String?) {
+        internal init(deviceInformation: String?,
+                      sdkEphemeralPublicKey: ThreeDS2Component.Fingerprint.EphemeralPublicKey?,
+                      sdkReferenceNumber: String?,
+                      sdkApplicationIdentifier: String?,
+                      sdkTransactionIdentifier: String?,
+                      delegatedAuthenticationSDKOutput: String?,
+                      threeDS2SDKError: String?) {
             self.deviceInformation = deviceInformation
             self.sdkEphemeralPublicKey = sdkEphemeralPublicKey
             self.sdkReferenceNumber = sdkReferenceNumber
             self.sdkApplicationIdentifier = sdkApplicationIdentifier
             self.sdkTransactionIdentifier = sdkTransactionIdentifier
             self.delegatedAuthenticationSDKOutput = delegatedAuthenticationSDKOutput
+            self.threeDS2SDKError = threeDS2SDKError
+        }
+        
+        internal init(threeDS2SDKError: String) {
+            self.threeDS2SDKError = threeDS2SDKError
+            
+            self.deviceInformation = nil
+            self.sdkEphemeralPublicKey = nil
+            self.sdkReferenceNumber = nil
+            self.sdkApplicationIdentifier = nil
+            self.sdkTransactionIdentifier = nil
+            self.delegatedAuthenticationSDKOutput = nil
         }
         
         internal init(authenticationRequestParameters: AnyAuthenticationRequestParameters,
@@ -44,6 +57,7 @@ internal extension ThreeDS2Component {
             self.sdkApplicationIdentifier = authenticationRequestParameters.sdkApplicationIdentifier
             self.sdkTransactionIdentifier = authenticationRequestParameters.sdkTransactionIdentifier
             self.delegatedAuthenticationSDKOutput = delegatedAuthenticationSDKOutput
+            self.threeDS2SDKError = nil
         }
         
         internal func withDelegatedAuthenticationSDKOutput(delegatedAuthenticationSDKOutput: String?) -> Fingerprint {
@@ -52,7 +66,8 @@ internal extension ThreeDS2Component {
                   sdkReferenceNumber: sdkReferenceNumber,
                   sdkApplicationIdentifier: sdkApplicationIdentifier,
                   sdkTransactionIdentifier: sdkTransactionIdentifier,
-                  delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput)
+                  delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
+                  threeDS2SDKError: threeDS2SDKError)
         }
         
         private enum CodingKeys: String, CodingKey {
@@ -62,6 +77,7 @@ internal extension ThreeDS2Component {
             case sdkApplicationIdentifier = "sdkAppID"
             case sdkTransactionIdentifier = "sdkTransID"
             case delegatedAuthenticationSDKOutput
+            case threeDS2SDKError
         }
         
     }
