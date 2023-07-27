@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -196,7 +196,6 @@ extension ThreeDS2Component {
 
         /// Indicates that the Checkout API returned an unexpected `Action` during processing the 3DS2 flow.
         case unexpectedAction
-
     }
 
 }

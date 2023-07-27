@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,15 +13,30 @@ public struct ThreeDSResult: Decodable {
     /// The payload to submit to verify the authentication.
     public let payload: String
 
-    internal init(from challengeResult: AnyChallengeResult, authorizationToken: String?) throws {
-        var payloadJson = ["transStatus": challengeResult.transactionStatus]
+    private struct Payload: Codable {
+        internal let authorisationToken: String?
+        internal let threeDS2SDKError: String?
+        internal let transStatus: String?
+    }
+    
+    internal init(authorizationToken: String?,
+                  threeDS2SDKError: String?,
+                  transStatus: String) throws {
+        let payload = Payload(authorisationToken: authorizationToken,
+                              threeDS2SDKError: threeDS2SDKError,
+                              transStatus: transStatus)
+        let payloadData = try JSONEncoder().encode(payload)
+        self.payload = payloadData.base64EncodedString()
+    }
 
-        if let authorizationToken = authorizationToken {
-            payloadJson["authorisationToken"] = authorizationToken
-        }
-
-        let payloadData = try JSONSerialization.data(withJSONObject: payloadJson,
-                                                     options: [])
+    internal init(from challengeResult: AnyChallengeResult,
+                  authorizationToken: String?,
+                  threeDS2SDKError: String?) throws {
+        let payload = Payload(authorisationToken: authorizationToken,
+                              threeDS2SDKError: threeDS2SDKError,
+                              transStatus: challengeResult.transactionStatus)
+        
+        let payloadData = try JSONEncoder().encode(payload)
 
         self.payload = payloadData.base64EncodedString()
     }

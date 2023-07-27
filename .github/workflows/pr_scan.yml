@@ -12,10 +12,10 @@ jobs:
     runs-on: macos-12
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: n1hility/cancel-previous-runs@v2
+    - uses: actions/checkout@v3
+    - uses: n1hility/cancel-previous-runs@v3
       with:
-        token: ${{ secrets.MANUAL_ACTION_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
     - uses: actions/setup-java@v1
       with:
         java-version: '11'

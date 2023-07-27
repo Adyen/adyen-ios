@@ -73,9 +73,9 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             case .success:
                 XCTFail()
             case let .failure(error):
-                let decodingError = error as! DecodingError
+                let decodingError = error as? DecodingError
                 switch decodingError {
-                case .dataCorrupted: ()
+                case .dataCorrupted?: ()
                 default:
                     XCTFail()
                 }
@@ -146,10 +146,27 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         sut.handle(challengeAction) { result in
             switch result {
-            case .success:
+            case .success(let actionHandlerResult):
+                switch actionHandlerResult {
+                case .details(let additionalDetails as ThreeDS2Details):
+                    switch additionalDetails {
+                    case .completed(let threeDSResult):
+                        struct Payload: Codable {
+                            let threeDS2SDKError: String
+                            let transStatus: String?
+                        }
+                        // Check if there is a threeDS2SDKError in the payload.
+                        let payload: Payload? = try? Coder.decodeBase64(threeDSResult.payload)
+                        XCTAssertNotNil(payload?.threeDS2SDKError)
+                        XCTAssertEqual(payload?.transStatus, "U")
+                    default:
+                        XCTFail()
+                    }
+                default:
+                    XCTFail()
+                }
+            case .failure:
                 XCTFail()
-            case let .failure(error):
-                XCTAssertNotNil(error as? Dummy)
             }
             resultExpectation.fulfill()
         }
@@ -179,9 +196,9 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             case .success:
                 XCTFail()
             case let .failure(error):
-                let error = error as! DecodingError
-                switch error {
-                case .dataCorrupted: ()
+                let decodingError = error as? DecodingError
+                switch decodingError {
+                case .dataCorrupted?: ()
                 default:
                     XCTFail()
                 }
@@ -205,9 +222,9 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             case .success:
                 XCTFail()
             case let .failure(error):
-                let error = error as! ThreeDS2Component.Error
-                switch error {
-                case .missingTransaction: ()
+                let componentError = error as? ThreeDS2Component.Error
+                switch componentError {
+                case .missingTransaction?: ()
                 default:
                     XCTFail()
                 }
@@ -239,9 +256,9 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             case .success:
                 XCTFail()
             case let .failure(error):
-                let decodingError = error as! DecodingError
+                let decodingError = error as? DecodingError
                 switch decodingError {
-                case .dataCorrupted: ()
+                case .dataCorrupted?: ()
                 default:
                     XCTFail()
                 }
@@ -339,6 +356,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             case let .failure(error):
                 XCTAssertEqual(error as? Dummy, Dummy.error)
             }
+
             resultExpectation.fulfill()
         }
 

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -92,9 +92,10 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
             environment: apiContext.environment
         )
         coreActionHandler.handle(challengeAction, event: event) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case let .success(result):
-                self?.handle(result, completionHandler: completionHandler)
+                self.handle(result, completionHandler: completionHandler)
             case let .failure(error):
                 completionHandler(.failure(error))
             }
@@ -106,7 +107,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
         let additionalDetails = ThreeDS2Details.challengeResult(threeDSResult)
         completionHandler(.success(.details(additionalDetails)))
     }
-
+    
     // MARK: - Private
 
     private let fingerprintEventName = "3ds2fingerprint"

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -47,7 +47,7 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
 
     /// :nodoc:
     private func handle(_ result: Result<Submit3DS2FingerprintResponse, Swift.Error>,
-                        completionHandler: (Result<ThreeDSActionHandlerResult, Swift.Error>) -> Void) {
+                        completionHandler: (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         switch result {
         case let .success(response):
             completionHandler(.success(response.result))

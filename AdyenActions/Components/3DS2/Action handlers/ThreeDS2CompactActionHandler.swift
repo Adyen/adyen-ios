@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -65,11 +65,12 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
                                     flavor: _isDropIn ? .dropin : .components,
                                     environment: apiContext.environment)
         coreActionHandler.handle(fingerprintAction, event: event) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case let .success(encodedFingerprint):
-                self?.fingerprintSubmitter.submit(fingerprint: encodedFingerprint,
-                                                  paymentData: fingerprintAction.paymentData,
-                                                  completionHandler: completionHandler)
+                self.fingerprintSubmitter.submit(fingerprint: encodedFingerprint,
+                                                 paymentData: fingerprintAction.paymentData,
+                                                 completionHandler: completionHandler)
             case let .failure(error):
                 completionHandler(.failure(error))
             }
@@ -89,9 +90,10 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
                                     flavor: _isDropIn ? .dropin : .components,
                                     environment: apiContext.environment)
         coreActionHandler.handle(challengeAction, event: event) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case let .success(result):
-                self?.handle(result, completionHandler: completionHandler)
+                self.handle(result, completionHandler: completionHandler)
             case let .failure(error):
                 completionHandler(.failure(error))
             }
