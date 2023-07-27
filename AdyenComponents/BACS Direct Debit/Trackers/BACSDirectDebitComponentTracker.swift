@@ -39,7 +39,7 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
 
     internal func sendTelemetryEvent() {
         let flavor: TelemetryFlavor = isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
-        telemetryTracker.sendTelemetryEvent(flavor: flavor, amount: amount)
+        telemetryTracker.sendTelemetryEvent(flavor: flavor)
     }
 
 }

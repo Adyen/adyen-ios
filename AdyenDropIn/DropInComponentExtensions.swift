@@ -22,10 +22,7 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
 
     internal func didLoad(_ paymentMethodListComponent: PaymentMethodListComponent) {
         let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
-        context.analyticsProvider.sendTelemetryEvent(
-            flavor: .dropIn(paymentMethods: paymentMethodTypes),
-            amount: context.payment?.amount
-        )
+        context.analyticsProvider.sendTelemetryEvent(flavor: .dropIn(paymentMethods: paymentMethodTypes))
     }
     
     internal func didSelect(_ component: PaymentComponent,

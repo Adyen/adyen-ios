@@ -165,10 +165,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     // MARK: - Private
 
     private func sendTelemetryEvent() {
-        context.analyticsProvider.sendTelemetryEvent(
-            flavor: .dropIn(paymentMethods: []),
-            amount: context.payment?.amount
-        )
+        context.analyticsProvider.sendTelemetryEvent(flavor: .dropIn(paymentMethods: []))
     }
 }
 

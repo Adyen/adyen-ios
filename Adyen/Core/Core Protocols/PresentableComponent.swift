@@ -69,16 +69,8 @@ public protocol TrackableComponent: Component {
 @_spi(AdyenInternal)
 extension TrackableComponent where Self: PaymentMethodAware {
 
-    public func sendTelemetryEvent(withAmount amount: Amount?) {
-        let flavor: TelemetryFlavor = _isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
-        context.analyticsProvider.sendTelemetryEvent(flavor: flavor, amount: amount)
-    }
-}
-
-@_spi(AdyenInternal)
-extension TrackableComponent where Self: PaymentAware & PaymentMethodAware {
-    
     public func sendTelemetryEvent() {
-        sendTelemetryEvent(withAmount: payment?.amount)
+        let flavor: TelemetryFlavor = _isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
+        context.analyticsProvider.sendTelemetryEvent(flavor: flavor)
     }
 }

@@ -126,11 +126,7 @@ extension ApplePayComponent {
 }
 
 @_spi(AdyenInternal)
-extension ApplePayComponent: TrackableComponent {
-    public func sendTelemetryEvent() {
-        sendTelemetryEvent(withAmount: context.payment?.amount)
-    }
-}
+extension ApplePayComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
 extension ApplePayComponent: ViewControllerDelegate {

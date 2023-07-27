@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,10 +16,12 @@ public final class AdyenContext: PaymentAware {
     public let apiContext: APIContext
 
     /// The payment information.
-    public private(set) var payment: Payment?
+    public private(set) var payment: Payment? {
+        didSet { updateAnalyticsProvider() }
+    }
 
     @_spi(AdyenInternal)
-    public let analyticsProvider: AnalyticsProviderProtocol
+    public private(set) var analyticsProvider: AnalyticsProviderProtocol
 
     // MARK: - Initializers
 
@@ -28,13 +30,17 @@ public final class AdyenContext: PaymentAware {
     ///   - apiContext: The API context used to retrieve internal resources.
     ///   - analyticsConfiguration: A configuration object that specifies the behavior for the analytics.
     ///   - payment: The payment information.
-    public init(apiContext: APIContext, payment: Payment?, analyticsConfiguration: AnalyticsConfiguration = .init()) {
-        self.apiContext = apiContext
-        self.payment = payment
-
-        let apiClient = APIClient(apiContext: apiContext)
-        self.analyticsProvider = AnalyticsProvider(apiClient: apiClient,
-                                                   configuration: analyticsConfiguration)
+    public convenience init(apiContext: APIContext, payment: Payment?, analyticsConfiguration: AnalyticsConfiguration = .init()) {
+        let analyticsProvider = AnalyticsProvider(
+            apiClient: APIClient(apiContext: apiContext),
+            configuration: analyticsConfiguration
+        )
+        
+        self.init(
+            apiContext: apiContext,
+            payment: payment,
+            analyticsProvider: analyticsProvider
+        )
     }
 
     internal init(apiContext: APIContext,
@@ -43,10 +49,18 @@ public final class AdyenContext: PaymentAware {
         self.apiContext = apiContext
         self.analyticsProvider = analyticsProvider
         self.payment = payment
+        
+        updateAnalyticsProvider()
     }
 
     @_spi(AdyenInternal)
     public func update(payment: Payment?) {
         self.payment = payment
+    }
+}
+
+private extension AdyenContext {
+    func updateAnalyticsProvider() {
+        self.analyticsProvider.amount = payment?.amount
     }
 }

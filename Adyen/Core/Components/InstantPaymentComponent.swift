@@ -62,11 +62,7 @@ public final class InstantPaymentComponent: PaymentComponent {
 }
 
 @_spi(AdyenInternal)
-extension InstantPaymentComponent: TrackableComponent {
-    public func sendTelemetryEvent() {
-        sendTelemetryEvent(withAmount: context.payment?.amount)
-    }
-}
+extension InstantPaymentComponent: TrackableComponent {}
 
 /// Describes a payment details that contains nothing but the payment method type name.
 public struct InstantPaymentDetails: PaymentMethodDetails {

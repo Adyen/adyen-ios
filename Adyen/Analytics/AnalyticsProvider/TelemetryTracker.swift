@@ -30,7 +30,7 @@ public enum TelemetryFlavor {
 
 @_spi(AdyenInternal)
 public protocol TelemetryTrackerProtocol {
-    func sendTelemetryEvent(flavor: TelemetryFlavor, amount: Amount?)
+    func sendTelemetryEvent(flavor: TelemetryFlavor)
 }
 
 // MARK: - TelemetryTrackerProtocol
@@ -38,12 +38,13 @@ public protocol TelemetryTrackerProtocol {
 @_spi(AdyenInternal)
 extension AnalyticsProvider: TelemetryTrackerProtocol {
 
-    internal func sendTelemetryEvent(flavor: TelemetryFlavor, amount: Amount?) {
+    internal func sendTelemetryEvent(flavor: TelemetryFlavor) {
         guard configuration.isEnabled else { return }
         guard configuration.isTelemetryEnabled else { return }
         if case .dropInComponent = flavor { return }
 
         let telemetryData = TelemetryData(flavor: flavor)
+        let amount = amount
 
         fetchCheckoutAttemptId { [weak self] checkoutAttemptId in
             let telemetryRequest = TelemetryRequest(

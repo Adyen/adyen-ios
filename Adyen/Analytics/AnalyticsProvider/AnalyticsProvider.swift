@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -27,8 +27,10 @@ public struct AnalyticsConfiguration {
 @_spi(AdyenInternal)
 public protocol AnalyticsProviderProtocol: TelemetryTrackerProtocol {
     
-    var checkoutAttemptId: String? { get }
+    /// The payment-amount to be tracked
+    var amount: Amount? { get set }
     
+    var checkoutAttemptId: String? { get }
     func fetchAndCacheCheckoutAttemptIdIfNeeded()
 }
 
@@ -39,6 +41,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     internal let apiClient: APIClientProtocol
     internal let configuration: AnalyticsConfiguration
     internal private(set) var checkoutAttemptId: String?
+    internal var amount: Amount?
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<CheckoutAttemptIdResponse>
 
     // MARK: - Initializers
