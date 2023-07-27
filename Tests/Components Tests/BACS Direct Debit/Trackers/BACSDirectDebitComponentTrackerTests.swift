@@ -21,7 +21,6 @@ class BACSDirectDebitComponentTrackerTests: XCTestCase {
         sut = BACSDirectDebitComponentTracker(paymentMethod: paymentMethod,
                                               apiContext: apiContext,
                                               telemetryTracker: analyticsProvider,
-                                              amount: nil,
                                               isDropIn: false)
     }
 

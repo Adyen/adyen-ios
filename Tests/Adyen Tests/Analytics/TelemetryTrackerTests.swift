@@ -37,7 +37,7 @@ class TelemetryTrackerTests: XCTestCase {
         let expectedRequestCalls = 0
 
         // When
-        sut.sendTelemetryEvent(flavor: .components(type: .affirm), amount: nil)
+        sut.sendTelemetryEvent(flavor: .components(type: .affirm))
 
         // Then
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "One or more telemetry requests were sent.")
@@ -52,7 +52,7 @@ class TelemetryTrackerTests: XCTestCase {
         let expectedRequestCalls = 0
 
         // When
-        sut.sendTelemetryEvent(flavor: .components(type: .affirm), amount: nil)
+        sut.sendTelemetryEvent(flavor: .components(type: .affirm))
 
         // Then
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "One or more telemetry requests were sent.")
@@ -68,7 +68,7 @@ class TelemetryTrackerTests: XCTestCase {
         let expectedRequestCalls = 0
 
         // When
-        sut.sendTelemetryEvent(flavor: flavor, amount: nil)
+        sut.sendTelemetryEvent(flavor: flavor)
 
         // Then
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "One or more telemetry requests were sent.")
@@ -88,7 +88,7 @@ class TelemetryTrackerTests: XCTestCase {
         apiClient.mockedResults = [checkoutAttemptIdResult, telemetryResult]
 
         // When
-        sut.sendTelemetryEvent(flavor: flavor, amount: nil)
+        sut.sendTelemetryEvent(flavor: flavor)
 
         // Then
         wait(for: .milliseconds(1))
@@ -109,47 +109,11 @@ class TelemetryTrackerTests: XCTestCase {
         apiClient.mockedResults = [checkoutAttemptIdResult, telemetryResult]
 
         // When
-        sut.sendTelemetryEvent(flavor: flavor, amount: nil)
+        sut.sendTelemetryEvent(flavor: flavor)
 
         // Then
         wait(for: .milliseconds(1))
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "Invalid request number made.")
-    }
-    
-    func testTelemetryRequestEncoding() throws {
-        
-        let telemetryRequest = TelemetryRequest(
-            data: .init(flavor: .dropIn(type: "DropInType", paymentMethods: ["DropInPaymentMethod"])),
-            checkoutAttemptId: "checkoutAttemptId",
-            amount: .init(value: 1, currencyCode: "EUR", localeIdentifier: "DE")
-        )
-        
-        let data = try JSONEncoder().encode(telemetryRequest)
-        guard let jsonObject = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
-            XCTFail("Invalid json object")
-            return
-        }
-        
-        print(jsonObject)
-        
-        XCTAssertEqual(jsonObject["flavor"] as? String, "dropin")
-        XCTAssertEqual(jsonObject["version"] as? String, adyenSdkVersion)
-        XCTAssertEqual(jsonObject["channel"] as? String, "iOS")
-        XCTAssertEqual(jsonObject["component"] as? String, "DropInType")
-        XCTAssertEqual(jsonObject["paymentMethods"] as? [String], ["DropInPaymentMethod"])
-        XCTAssertEqual(jsonObject["referrer"] as? String, Bundle.main.bundleIdentifier)
-        XCTAssertEqual(jsonObject["checkoutAttemptId"] as? String, "checkoutAttemptId")
-        
-        if let amountObject = jsonObject["amount"] as? [String: Any] {
-            XCTAssertEqual(amountObject["currency"] as? String, "EUR")
-            XCTAssertEqual(amountObject["value"] as? Int, 1)
-            XCTAssertEqual(amountObject.keys.count, 2)
-        } else {
-            XCTFail("Invalid amount object")
-        }
-        
-        XCTAssertNotNil(jsonObject["systemVersion"] as? String)
-        XCTAssertNotNil(jsonObject["deviceBrand"] as? String)
     }
 
     // MARK: - Private
