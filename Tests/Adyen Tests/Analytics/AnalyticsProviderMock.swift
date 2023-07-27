@@ -10,6 +10,8 @@ import Foundation
 @_spi(AdyenInternal) @testable import Adyen
 
 class AnalyticsProviderMock: AnalyticsProviderProtocol {
+    
+    var amount: Amount?
     var checkoutAttemptId: String? { underlyingCheckoutAttemptId }
 
     // MARK: - checkoutAttemptId
