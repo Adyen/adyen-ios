@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -239,6 +239,56 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
         case .visa: return "visa"
         case .warehouse: return "warehouse"
         case let .other(named: name): return name
+        }
+    }
+    
+    /// The brand name of the card type
+    public var name: String {
+        switch self {
+        case .accel: return "Accel"
+        case .alphaBankBonusMasterCard: return "Alpha Bank Bonus MasterCard"
+        case .alphaBankBonusVISA: return "Alpha Bank Bonus VISA"
+        case .argencard: return "Argencard"
+        case .americanExpress: return "American Express"
+        case .bcmc: return "BCMC"
+        case .bijenkorfCard: return "de Bijenkorf Card"
+        case .cabal: return "Cabal"
+        case .carteBancaire: return "Carte Bancaire"
+        case .cencosud: return "Cencosud"
+        case .chequeDejeneur: return "Chèque Déjeuner"
+        case .chinaUnionPay: return "China UnionPay"
+        case .codensa: return "Codensa"
+        case .creditUnion24: return "Credit Union 24"
+        case .dankort: return "Dankort"
+        case .dankortVISA: return "Dankort VISA"
+        case .diners: return "Diners Club"
+        case .discover: return "Discover"
+        case .elo: return "Elo"
+        case .forbrugsforeningen: return "Forbrugsforeningen"
+        case .hiper: return "Hiper"
+        case .hipercard: return "Hipercard"
+        case .jcb: return "JCB"
+        case .karenMillen: return "KarenMillen"
+        case .kcp: return "Korea Cyber Payment"
+        case .koreanLocalCard: return "Korean local card"
+        case .laser: return "Laser (Discontinued in 2014)"
+        case .maestro: return "Maestro"
+        case .maestroUK: return "Maestro UK"
+        case .masterCard: return "MasterCard"
+        case .mir: return "Mir"
+        case .naranja: return "Naranja"
+        case .netplus: return "Net+"
+        case .nyce: return "NYCE"
+        case .oasis: return "Oasis"
+        case .pulse: return "Pulse"
+        case .shopping: return "Shopping"
+        case .solo: return "Solo"
+        case .star: return "STAR"
+        case .troy: return "Troy"
+        case .uatp: return "Universal Air Travel Plan"
+        case .visa: return "VISA"
+        case .warehouse: return "The Warehouse"
+        case let .other(name): return name
         }
     }
     

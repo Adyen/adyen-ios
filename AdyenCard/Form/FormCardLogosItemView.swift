@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -32,8 +32,11 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
         collectionView.adyen.anchor(inside: self, with: UIEdgeInsets(top: 4, left: 16, bottom: -8, right: -16))
         collectionView.register(CardLogoCell.self, forCellWithReuseIdentifier: CardLogoCell.reuseIdentifier)
         collectionView.dataSource = self
+        
+        collectionView.accessibilityLabel = "List of accepted credit cards" // TODO: Localize
+        collectionView.accessibilityValue = item.cardLogos.map(\.type.name).joined(separator: ", ")
+        collectionView.isAccessibilityElement = false
     }
-    
 }
 
 extension FormCardLogosItemView: UICollectionViewDataSource {
@@ -43,8 +46,7 @@ extension FormCardLogosItemView: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardLogoCell.reuseIdentifier, for: indexPath)
-        if let cell = cell as? CardLogoCell,
-           let logo = item.cardLogos.adyen[safeIndex: indexPath.row] {
+        if let cell = cell as? CardLogoCell, let logo = item.cardLogos.adyen[safeIndex: indexPath.row] {
             cell.update(imageUrl: logo.url, style: item.style.icon)
         }
         return cell
