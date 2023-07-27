@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -72,7 +72,6 @@ public final class BACSDirectDebitComponent: PaymentComponent, PaymentAware, Pre
         let tracker = BACSDirectDebitComponentTracker(paymentMethod: bacsPaymentMethod,
                                                       apiContext: context.apiContext,
                                                       telemetryTracker: context.analyticsProvider,
-                                                      amount: context.payment?.amount,
                                                       isDropIn: _isDropIn)
         let itemsFactory = BACSItemsFactory(styleProvider: configuration.style,
                                             localizationParameters: configuration.localizationParameters,

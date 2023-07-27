@@ -18,7 +18,6 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
     private let paymentMethod: BACSDirectDebitPaymentMethod
     private let apiContext: APIContext
     private let telemetryTracker: TelemetryTrackerProtocol
-    private let amount: Amount?
     private let isDropIn: Bool
 
     // MARK: - Initializers
@@ -26,12 +25,10 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
     internal init(paymentMethod: BACSDirectDebitPaymentMethod,
                   apiContext: APIContext,
                   telemetryTracker: TelemetryTrackerProtocol,
-                  amount: Amount?,
                   isDropIn: Bool) {
         self.paymentMethod = paymentMethod
         self.apiContext = apiContext
         self.telemetryTracker = telemetryTracker
-        self.amount = amount
         self.isDropIn = isDropIn
     }
 
