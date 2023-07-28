@@ -16,9 +16,7 @@ public final class AdyenContext: PaymentAware {
     public let apiContext: APIContext
 
     /// The payment information.
-    public private(set) var payment: Payment? {
-        didSet { updateAnalyticsProvider() }
-    }
+    public private(set) var payment: Payment?
 
     @_spi(AdyenInternal)
     public private(set) var analyticsProvider: AnalyticsProviderProtocol
@@ -31,6 +29,7 @@ public final class AdyenContext: PaymentAware {
     ///   - analyticsConfiguration: A configuration object that specifies the behavior for the analytics.
     ///   - payment: The payment information.
     public convenience init(apiContext: APIContext, payment: Payment?, analyticsConfiguration: AnalyticsConfiguration = .init()) {
+        
         let analyticsProvider = AnalyticsProvider(
             apiClient: APIClient(apiContext: apiContext),
             configuration: analyticsConfiguration
@@ -41,6 +40,12 @@ public final class AdyenContext: PaymentAware {
             payment: payment,
             analyticsProvider: analyticsProvider
         )
+        
+        analyticsProvider.additionalFieldProvider = { [weak self] in
+            .init(
+                amount: self?.payment?.amount
+            )
+        }
     }
 
     internal init(apiContext: APIContext,
@@ -49,18 +54,10 @@ public final class AdyenContext: PaymentAware {
         self.apiContext = apiContext
         self.analyticsProvider = analyticsProvider
         self.payment = payment
-        
-        updateAnalyticsProvider()
     }
 
     @_spi(AdyenInternal)
     public func update(payment: Payment?) {
         self.payment = payment
-    }
-}
-
-private extension AdyenContext {
-    func updateAnalyticsProvider() {
-        self.analyticsProvider.amount = payment?.amount
     }
 }

@@ -25,13 +25,19 @@ public struct AnalyticsConfiguration {
 }
 
 @_spi(AdyenInternal)
+/// Additional fields to be provided with a ``TelemetryRequest``
+public struct AdditionalAnalyticsFields {
+    /// The amount of the payment
+    public let amount: Amount?
+}
+
+@_spi(AdyenInternal)
 public protocol AnalyticsProviderProtocol: TelemetryTrackerProtocol {
-    
-    /// The payment-amount to be tracked
-    var amount: Amount? { get set }
     
     var checkoutAttemptId: String? { get }
     func fetchAndCacheCheckoutAttemptIdIfNeeded()
+    
+    var additionalFields: AdditionalAnalyticsFields? { get }
 }
 
 internal final class AnalyticsProvider: AnalyticsProviderProtocol {
@@ -41,19 +47,25 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     internal let apiClient: APIClientProtocol
     internal let configuration: AnalyticsConfiguration
     internal private(set) var checkoutAttemptId: String?
-    internal var amount: Amount?
+    internal var additionalFieldProvider: (() -> AdditionalAnalyticsFields)?
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<CheckoutAttemptIdResponse>
 
     // MARK: - Initializers
 
-    internal init(apiClient: APIClientProtocol,
-                  configuration: AnalyticsConfiguration) {
+    internal init(
+        apiClient: APIClientProtocol,
+        configuration: AnalyticsConfiguration
+    ) {
         self.apiClient = apiClient
         self.configuration = configuration
         self.uniqueAssetAPIClient = UniqueAssetAPIClient<CheckoutAttemptIdResponse>(apiClient: apiClient)
     }
 
     // MARK: - Internal
+    
+    internal var additionalFields: AdditionalAnalyticsFields? {
+        additionalFieldProvider?()
+    }
     
     internal func fetchAndCacheCheckoutAttemptIdIfNeeded() {
         fetchCheckoutAttemptId { _ in /* Do nothing, the point is to trigger the fetching and cache the value  */ }

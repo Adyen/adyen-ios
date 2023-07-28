@@ -35,15 +35,14 @@ internal struct TelemetryRequest: APIRequest {
     private let containerWidth: Int?
     private let paymentMethods: [String]
     private let component: String
-    private let checkoutAttemptId: String?
     private let amount: Amount?
+    private let checkoutAttemptId: String?
 
     // MARK: - Initializers
 
     internal init(
         data: TelemetryData,
-        checkoutAttemptId: String?,
-        amount: Amount?
+        checkoutAttemptId: String?
     ) {
         self.version = data.version
         self.channel = data.channel
@@ -57,8 +56,8 @@ internal struct TelemetryRequest: APIRequest {
         self.containerWidth = data.containerWidth
         self.paymentMethods = data.paymentMethods
         self.component = data.component
+        self.amount = data.amount
         self.checkoutAttemptId = checkoutAttemptId
-        self.amount = amount
     }
 
     internal enum CodingKeys: CodingKey {

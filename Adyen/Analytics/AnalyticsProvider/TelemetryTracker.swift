@@ -43,14 +43,15 @@ extension AnalyticsProvider: TelemetryTrackerProtocol {
         guard configuration.isTelemetryEnabled else { return }
         if case .dropInComponent = flavor { return }
 
-        let telemetryData = TelemetryData(flavor: flavor)
-        let amount = amount
-
+        let telemetryData = TelemetryData(
+            flavor: flavor,
+            amount: additionalFields?.amount
+        )
+        
         fetchCheckoutAttemptId { [weak self] checkoutAttemptId in
             let telemetryRequest = TelemetryRequest(
                 data: telemetryData,
-                checkoutAttemptId: checkoutAttemptId,
-                amount: amount
+                checkoutAttemptId: checkoutAttemptId
             )
             
             self?.apiClient.perform(telemetryRequest) { _ in }
