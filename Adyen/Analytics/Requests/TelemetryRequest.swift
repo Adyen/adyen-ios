@@ -40,10 +40,7 @@ internal struct TelemetryRequest: APIRequest {
 
     // MARK: - Initializers
 
-    internal init(
-        data: TelemetryData,
-        checkoutAttemptId: String?
-    ) {
+    internal init(data: TelemetryData, checkoutAttemptId: String?) {
         self.version = data.version
         self.channel = data.channel
         self.locale = data.locale
