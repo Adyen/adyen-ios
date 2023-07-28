@@ -166,9 +166,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     // MARK: - Validation
     
-    override public func validate() {
-        if isHidden { return }
-        super.validate()
+    override public func validate() -> Bool {
+        if isHidden { return true }
+        return super.validate()
     }
     
     // MARK: - Editing

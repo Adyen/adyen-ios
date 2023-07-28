@@ -288,7 +288,7 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
         case .uatp: return "Universal Air Travel Plan"
         case .visa: return "VISA"
         case .warehouse: return "The Warehouse"
-        case let .other(name): return name
+        case let .other(name): return name.replacingOccurrences(of: "_", with: " ")
         }
     }
     

@@ -166,9 +166,18 @@ open class FormViewController: UIViewController, Localizable, AdyenObserver, Pre
 
     @_spi(AdyenInternal)
     public func showValidation() {
+        var firstInvalidItemView: UIView?
+        
         itemManager.flatItemViews
             .compactMap { $0 as? AnyFormValueItemView }
-            .forEach { $0.validate() }
+            .forEach {
+                let isValid = $0.validate()
+                if !isValid && firstInvalidItemView == nil {
+                    firstInvalidItemView = $0
+                }
+            }
+        
+        UIAccessibility.post(notification: .screenChanged, argument: firstInvalidItemView)
     }
 
     private func getAllValidatableItems() -> [ValidatableFormItem] {

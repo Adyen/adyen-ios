@@ -67,8 +67,9 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     
     // MARK: - Validation
     
-    override public func validate() {
+    override public func validate() -> Bool {
         updateValidationStatus(forced: true)
+        return item.isValid()
     }
     
     open func updateValidationStatus(forced: Bool = false) {

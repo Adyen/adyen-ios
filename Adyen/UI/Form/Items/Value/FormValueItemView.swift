@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -67,7 +67,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     
     /// Subclasses can override this method to stay notified
     /// when form value item view should performe UI mutations based on a validation status.
-    open func validate() {}
+    open func validate() -> Bool { true }
     
     // MARK: - Separator View
     
@@ -168,7 +168,8 @@ public protocol AnyFormValueItemView: AnyFormItemView {
     /// Indicates if the item is currently being edited.
     var isEditing: Bool { get set }
     
-    /// Invoke validation check. Performs all necessary UI transformations based on a validation result.
-    func validate()
-    
+    /// Invoke validation check.
+    /// Performs all necessary UI transformations based on a validation result.
+    /// - Returns: Whether or not the item of the view is valid
+    @discardableResult func validate() -> Bool
 }

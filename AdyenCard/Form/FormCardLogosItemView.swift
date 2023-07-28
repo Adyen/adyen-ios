@@ -35,7 +35,7 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
         
         collectionView.accessibilityLabel = "List of accepted credit cards" // TODO: Localize
         collectionView.accessibilityValue = item.cardLogos.map(\.type.name).joined(separator: ", ")
-        collectionView.isAccessibilityElement = false
+        collectionView.isAccessibilityElement = true
     }
 }
 
@@ -48,6 +48,7 @@ extension FormCardLogosItemView: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardLogoCell.reuseIdentifier, for: indexPath)
         if let cell = cell as? CardLogoCell, let logo = item.cardLogos.adyen[safeIndex: indexPath.row] {
             cell.update(imageUrl: logo.url, style: item.style.icon)
+            cell.accessibilityTraits = .image
         }
         return cell
     }
