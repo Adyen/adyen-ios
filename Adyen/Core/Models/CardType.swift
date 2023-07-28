@@ -271,7 +271,7 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
         case .karenMillen: return "KarenMillen"
         case .kcp: return "Korea Cyber Payment"
         case .koreanLocalCard: return "Korean local card"
-        case .laser: return "Laser (Discontinued in 2014)"
+        case .laser: return "Laser"
         case .maestro: return "Maestro"
         case .maestroUK: return "Maestro UK"
         case .masterCard: return "MasterCard"
