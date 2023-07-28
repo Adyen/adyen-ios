@@ -35,8 +35,8 @@ internal struct TelemetryRequest: APIRequest {
     private let containerWidth: Int?
     private let paymentMethods: [String]
     private let component: String
-    private let amount: Amount?
-    private let checkoutAttemptId: String?
+    internal let amount: Amount?
+    internal let checkoutAttemptId: String?
 
     // MARK: - Initializers
 

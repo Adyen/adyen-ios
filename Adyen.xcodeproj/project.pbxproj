@@ -136,6 +136,7 @@
 		81BA08472A4B16B600308160 /* FormValidatableValueItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08462A4B16B600308160 /* FormValidatableValueItemView.swift */; };
 		81BA08482A4B16B600308160 /* FormValidatableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08452A4B16B500308160 /* FormValidatableValueItem.swift */; };
 		81D8E2E92A5C06AC00BC12FD /* KeyboardObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D8E2E82A5C06AC00BC12FD /* KeyboardObserverTests.swift */; };
+		81DC5A512A73C52500DBF2D1 /* AdyenContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DC5A502A73C52500DBF2D1 /* AdyenContextTests.swift */; };
 		81E031912A09190300EA965E /* (null) in Sources */ = {isa = PBXBuildFile; };
 		81E031932A0A703C00EA965E /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		81E031942A0A75F200EA965E /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67461F264262F000E9184D /* ConfigurationView.swift */; };
@@ -1281,6 +1282,7 @@
 		81BA08462A4B16B600308160 /* FormValidatableValueItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableValueItemView.swift; sourceTree = "<group>"; };
 		81C4006F2A4347FD007EC51C /* FormErrorItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormErrorItemTests.swift; sourceTree = "<group>"; };
 		81D8E2E82A5C06AC00BC12FD /* KeyboardObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardObserverTests.swift; sourceTree = "<group>"; };
+		81DC5A502A73C52500DBF2D1 /* AdyenContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenContextTests.swift; sourceTree = "<group>"; };
 		81EA6C112A44836E0071A141 /* FormAddressItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAddressItemTests.swift; sourceTree = "<group>"; };
 		A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankDetailsEncryptorTests.swift; sourceTree = "<group>"; };
@@ -3827,6 +3829,7 @@
 				F9639B4624E283060073F38A /* BackoffSchedulerTests.swift */,
 				F9639B4C24E298C70073F38A /* SimpleSchedulerTests.swift */,
 				A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */,
+				81DC5A502A73C52500DBF2D1 /* AdyenContextTests.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -6439,6 +6442,7 @@
 				F9B997A425C8554F00891084 /* DokuVoucherUITests.swift in Sources */,
 				E9E3DAD3221EEFF700697074 /* CardExpiryDateValidatorTests.swift in Sources */,
 				E7D5311C2447065B000046B4 /* PreselectedPaymentComponentTests.swift in Sources */,
+				81DC5A512A73C52500DBF2D1 /* AdyenContextTests.swift in Sources */,
 				F99F08662383F2D300EBB948 /* FormTextItemViewDelegateMock.swift in Sources */,
 				F926D55523FBF1A800D058D3 /* QiwiWalletComponentTests.swift in Sources */,
 				5A238C9F263BDEA200758FEF /* PreApplePayComponentTests.swift in Sources */,
