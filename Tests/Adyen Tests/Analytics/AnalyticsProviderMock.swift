@@ -11,7 +11,7 @@ import Foundation
 
 class AnalyticsProviderMock: AnalyticsProviderProtocol {
     
-    var amount: Amount?
+    var additionalFields: AdditionalAnalyticsFields?
     var checkoutAttemptId: String? { underlyingCheckoutAttemptId }
 
     // MARK: - checkoutAttemptId

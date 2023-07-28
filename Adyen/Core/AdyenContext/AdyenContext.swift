@@ -19,7 +19,7 @@ public final class AdyenContext: PaymentAware {
     public private(set) var payment: Payment?
 
     @_spi(AdyenInternal)
-    public private(set) var analyticsProvider: AnalyticsProviderProtocol
+    public let analyticsProvider: AnalyticsProviderProtocol
 
     // MARK: - Initializers
 
