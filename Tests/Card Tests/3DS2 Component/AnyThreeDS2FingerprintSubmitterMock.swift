@@ -10,7 +10,6 @@
 import Foundation
 
 final class AnyThreeDS2FingerprintSubmitterMock: AnyThreeDS2FingerprintSubmitter {
-
     var mockedResult: Result<ThreeDSActionHandlerResult, Error>?
 
     func submit(fingerprint: String, paymentData: String?, completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
