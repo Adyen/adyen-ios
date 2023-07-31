@@ -67,7 +67,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     
     /// Subclasses can override this method to stay notified
     /// when form value item view should performe UI mutations based on a validation status.
-    open func validate() -> Bool { true }
+    open func validate() {}
     
     // MARK: - Separator View
     
@@ -170,6 +170,5 @@ public protocol AnyFormValueItemView: AnyFormItemView {
     
     /// Invoke validation check.
     /// Performs all necessary UI transformations based on a validation result.
-    /// - Returns: Whether or not the item of the view is valid
-    @discardableResult func validate() -> Bool
+    func validate()
 }

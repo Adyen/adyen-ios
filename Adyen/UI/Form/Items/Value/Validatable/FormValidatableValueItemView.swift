@@ -9,7 +9,7 @@ import UIKit
 /// An abstract view representing a validatable value item.
 @_spi(AdyenInternal)
 open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValueItem<ValueType>>:
-    FormValueItemView<ValueType, FormTextItemStyle, ItemType> {
+    FormValueItemView<ValueType, FormTextItemStyle, ItemType>, AnyFormValidatableItemView {
     
     private var itemObserver: Observation?
     
@@ -67,9 +67,12 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     
     // MARK: - Validation
     
-    override public func validate() -> Bool {
+    public var isValid: Bool {
+        item.isValid()
+    }
+    
+    override public func validate() {
         updateValidationStatus(forced: true)
-        return item.isValid()
     }
     
     open func updateValidationStatus(forced: Bool = false) {
@@ -106,4 +109,11 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         titleLabel.textColor = defaultTitleColor
         accessibilityLabelView?.accessibilityLabel = item.title
     }
+}
+
+@_spi(AdyenInternal)
+public protocol AnyFormValidatableItemView {
+    
+    /// Whether or not the value is valid
+    var isValid: Bool { get }
 }
