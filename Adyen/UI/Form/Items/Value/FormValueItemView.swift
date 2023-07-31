@@ -170,4 +170,5 @@ public protocol AnyFormValueItemView: AnyFormItemView {
     
     /// Invoke validation check. Performs all necessary UI transformations based on a validation result.
     func validate()
+    
 }
