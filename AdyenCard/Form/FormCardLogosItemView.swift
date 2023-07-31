@@ -48,7 +48,6 @@ extension FormCardLogosItemView: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardLogoCell.reuseIdentifier, for: indexPath)
         if let cell = cell as? CardLogoCell, let logo = item.cardLogos.adyen[safeIndex: indexPath.row] {
             cell.update(imageUrl: logo.url, style: item.style.icon)
-            cell.accessibilityTraits = .image
         }
         return cell
     }
@@ -92,6 +91,7 @@ extension FormCardLogosItemView {
             super.init(frame: frame)
             contentView.addSubview(cardTypeImageView)
             cardTypeImageView.adyen.anchor(inside: contentView)
+            accessibilityTraits = .image
         }
         
         @available(*, unavailable)
