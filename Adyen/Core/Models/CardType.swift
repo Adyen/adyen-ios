@@ -190,8 +190,6 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
         default: self = .other(named: rawValue)
         }
     }
-
-    // swiftlint:enable cyclomatic_complexity function_body_length
     
     public var rawValue: String {
         switch self {
@@ -241,7 +239,7 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
         case let .other(named: name): return name
         }
     }
-    
+
     /// The brand name of the card type
     public var name: String {
         switch self {
@@ -292,6 +290,7 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
         }
     }
     
+    // swiftlint:enable cyclomatic_complexity function_body_length
 }
 
 extension CardType {
