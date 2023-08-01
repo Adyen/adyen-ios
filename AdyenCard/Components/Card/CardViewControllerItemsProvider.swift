@@ -52,23 +52,6 @@ extension CardViewController {
             self.localizationParameters = localizationParameters
             self.addressViewModelBuilder = addressViewModelBuilder
         }
-
-        internal lazy var billingAddressItem: FormAddressItem = {
-            let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "billingAddress")
-
-            let item = FormAddressItem(initialCountry: initialCountry,
-                                       configuration: .init(
-                                           style: formStyle.addressStyle,
-                                           localizationParameters: localizationParameters,
-                                           supportedCountryCodes: configuration.billingAddress.countryCodes
-                                       ),
-                                       identifier: identifier,
-                                       presenter: presenter,
-                                       addressViewModelBuilder: addressViewModelBuilder)
-            shopperInformation?.billingAddress.map { item.value = $0 }
-            item.style.backgroundColor = UIColor.Adyen.lightGray
-            return item
-        }()
         
         internal lazy var billingAddressPickerItem: FormAddressPickerItem = {
             let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "billingAddress")

@@ -95,14 +95,7 @@ extension CardComponent {
         case lookup(handler: LookupHandler)
 
         /// Display full address form
-        @available(*, deprecated, message: "This property is deprecated. Use `.fullInline` instead")
         case full
-        
-        /// Display full address form inline
-        case fullInline
-        
-        /// Display full address form on a separate screen
-        case fullDetached
         
         /// Display simple form with only zip code field
         case postalCode

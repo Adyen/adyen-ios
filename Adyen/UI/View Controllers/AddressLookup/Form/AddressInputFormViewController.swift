@@ -24,17 +24,6 @@ public class AddressInputFormViewController: FormViewController {
         
         title = localizedString(.billingAddressSectionTitle, viewModel.localizationParameters)
         
-        navigationItem.leftBarButtonItem = .init(
-            barButtonSystemItem: .cancel,
-            target: self,
-            action: #selector(dismissAddressLookup)
-        )
-        navigationItem.rightBarButtonItem = .init(
-            barButtonSystemItem: .done,
-            target: self,
-            action: #selector(submitTapped)
-        )
-        
         if #available(iOS 13.0, *) {
             isModalInPresentation = true
         }
@@ -44,6 +33,8 @@ public class AddressInputFormViewController: FormViewController {
         }
         
         append(billingAddressItem)
+        
+        setupNavigationItems()
     }
     
     override public func viewDidLoad() {
@@ -61,9 +52,15 @@ public class AddressInputFormViewController: FormViewController {
     }
     
     internal lazy var searchButtonItem: FormSearchButtonItem = {
-        FormSearchButtonItem(
+        let identifier = ViewIdentifierBuilder.build(
+            scopeInstance: Self.self,
+            postfix: "searchBar"
+        )
+        
+        return FormSearchButtonItem(
             placeholder: localizedString(.addressLookupSearchPlaceholder, localizationParameters),
-            style: viewModel.style
+            style: viewModel.style,
+            identifier: identifier
         ) { [weak self] in
             guard let self else { return }
             self.viewModel.handleShowSearch(currentInput: self.billingAddressItem.value)
@@ -71,14 +68,17 @@ public class AddressInputFormViewController: FormViewController {
     }()
     
     internal lazy var billingAddressItem: FormAddressItem = {
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "billingAddress")
+        let identifier = ViewIdentifierBuilder.build(
+            scopeInstance: Self.self,
+            postfix: "billingAddress"
+        )
+        
         let item = FormAddressItem(
             initialCountry: viewModel.initialCountry,
             configuration: .init(
                 style: viewModel.style.addressStyle,
                 localizationParameters: viewModel.localizationParameters,
-                supportedCountryCodes: viewModel.supportedCountryCodes,
-                showsHeader: false
+                supportedCountryCodes: viewModel.supportedCountryCodes
             ),
             identifier: identifier,
             presenter: self,
@@ -92,6 +92,27 @@ public class AddressInputFormViewController: FormViewController {
 }
 
 private extension AddressInputFormViewController {
+    
+    func setupNavigationItems() {
+        
+        navigationItem.leftBarButtonItem = .init(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(dismissAddressLookup)
+        )
+        navigationItem.rightBarButtonItem = .init(
+            barButtonSystemItem: .done,
+            target: self,
+            action: #selector(submitTapped)
+        )
+        
+        let doneButtonIdentifier = ViewIdentifierBuilder.build(
+            scopeInstance: Self.self,
+            postfix: "button.done"
+        )
+        
+        navigationItem.rightBarButtonItem?.accessibilityIdentifier = doneButtonIdentifier
+    }
     
     @objc
     func submitTapped() {

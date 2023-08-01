@@ -98,8 +98,7 @@ internal struct CardComponentConfiguration: Codable {
     
     internal enum AddressFormType: String, Codable, CaseIterable {
         case lookup
-        case fullInline
-        case fullDetached
+        case full
         case postalCode
         case none
     }
@@ -219,10 +218,8 @@ private extension DemoAppSettings {
             return .lookup { searchTerm, completionHandler in
                 addressLookupProvider.lookUp(searchTerm: searchTerm, resultHandler: completionHandler)
             }
-        case .fullInline:
-            return .fullInline
-        case .fullDetached:
-            return .fullDetached
+        case .full:
+            return .full
         case .postalCode:
             return .postalCode
         case .none:

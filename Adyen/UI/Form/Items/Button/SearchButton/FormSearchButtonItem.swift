@@ -31,10 +31,12 @@ public final class FormSearchButtonItem: FormItem {
     public init(
         placeholder: String,
         style: ViewStyle,
+        identifier: String,
         selectionHandler: @escaping () -> Void
     ) {
         self.selectionHandler = selectionHandler
         self.style = style
+        self.identifier = identifier
         self.placeholder = placeholder
     }
     

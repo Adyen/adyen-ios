@@ -133,14 +133,10 @@ internal class CardViewController: FormViewController {
         let requiredFields: Set<AddressField>
         
         switch configuration.billingAddress.mode {
-        case .lookup, .fullDetached:
+        case .lookup, .full:
             guard let lookupBillingAddress = items.billingAddressPickerItem.value else { return nil }
             address = lookupBillingAddress
             requiredFields = items.billingAddressPickerItem.addressViewModel.requiredFields
-            
-        case .full, .fullInline:
-            address = items.billingAddressItem.value
-            requiredFields = items.billingAddressItem.addressViewModel.requiredFields
             
         case .postalCode:
             address = PostalAddress(postalCode: items.postalCodeItem.value)
@@ -207,10 +203,8 @@ internal class CardViewController: FormViewController {
     private func updateBillingAddressOptionalStatus(brands: [CardBrand]) {
         let isOptional = configuration.billingAddress.isOptional(for: brands.map(\.type))
         switch configuration.billingAddress.mode {
-        case .lookup, .fullDetached:
+        case .lookup, .full:
             items.billingAddressPickerItem.updateOptionalStatus(isOptional: isOptional)
-        case .full, .fullInline:
-            items.billingAddressItem.updateOptionalStatus(isOptional: isOptional)
         case .postalCode:
             items.postalCodeItem.updateOptionalStatus(isOptional: isOptional)
         case .none:
@@ -286,18 +280,15 @@ internal class CardViewController: FormViewController {
             }
             append(item)
             
-        case .full, .fullInline:
-            append(items.billingAddressItem)
-            
-        case .postalCode:
-            append(items.postalCodeItem)
-            
-        case .fullDetached:
+        case .full:
             let item = items.billingAddressPickerItem
             item.selectionHandler = { [weak cardDelegate] in
                 cardDelegate?.didSelectAddressPicker(lookupProvider: nil)
             }
             append(item)
+            
+        case .postalCode:
+            append(items.postalCodeItem)
             
         case .none:
             break
@@ -312,7 +303,7 @@ internal class CardViewController: FormViewController {
         guard let shopperInformation = shopperInformation else { return }
 
         shopperInformation.billingAddress.map { billingAddress in
-            items.billingAddressItem.value = billingAddress
+            items.billingAddressPickerItem.value = billingAddress
             billingAddress.postalCode.map { items.postalCodeItem.value = $0 }
         }
         shopperInformation.card.map { items.holderNameItem.value = $0.holderName }

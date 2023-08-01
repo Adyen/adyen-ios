@@ -55,19 +55,19 @@ extension AddressInputFormViewController {
             self.completionHandler = completionHandler
         }
         
-        var shouldShowSearch: Bool {
+        public var shouldShowSearch: Bool {
             showSearchHandler != nil
         }
         
-        func handleShowSearch(currentInput: PostalAddress) {
+        public func handleShowSearch(currentInput: PostalAddress) {
             showSearchHandler?(currentInput)
         }
         
-        func handleSubmit(validAddress: PostalAddress) {
+        public func handleSubmit(validAddress: PostalAddress) {
             completionHandler(validAddress)
         }
         
-        func handleDismiss() {
+        public func handleDismiss() {
             completionHandler(nil)
         }
     }

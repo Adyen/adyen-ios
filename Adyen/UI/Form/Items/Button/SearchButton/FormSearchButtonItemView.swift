@@ -36,6 +36,10 @@ internal final class FormSearchButtonItemView: FormItemView<FormSearchButtonItem
             delegate: self
         )
     }()
+    
+    override func becomeFirstResponder() -> Bool {
+        searchBar.becomeFirstResponder()
+    }
 }
 
 extension FormSearchButtonItemView: UISearchBarDelegate {

@@ -54,27 +54,6 @@ class FormAddressItemTests: XCTestCase {
         wait(for: [expectation], timeout: 0)
     }
     
-    func testShowsHeader() throws {
-        
-        let formAddressItemWithHeader = FormAddressItem(
-            initialCountry: "NL",
-            configuration: .init(),
-            presenter: nil,
-            addressViewModelBuilder: DefaultAddressViewModelBuilder()
-        )
-        
-        XCTAssertTrue(formAddressItemWithHeader.flatSubitems.contains { $0 === formAddressItemWithHeader.headerItem })
-        
-        let formAddressItemWithOutHeader = FormAddressItem(
-            initialCountry: "NL",
-            configuration: .init(showsHeader: false),
-            presenter: nil,
-            addressViewModelBuilder: DefaultAddressViewModelBuilder()
-        )
-        
-        XCTAssertFalse(formAddressItemWithHeader.flatSubitems.contains { $0 === formAddressItemWithOutHeader.headerItem })
-    }
-    
     func testUpdateContext() {
         
         let expectation = expectation(description: "Should call delegate.didUpdateItems")

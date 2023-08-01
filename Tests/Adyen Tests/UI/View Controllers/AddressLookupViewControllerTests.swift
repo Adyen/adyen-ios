@@ -40,7 +40,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         // Then
         
         // Should show form initially as a prefillAddress was provided
-        XCTAssertNotNil(addressLookupViewController.viewControllers.first as? AddressLookupFormViewController)
+        XCTAssertNotNil(addressLookupViewController.viewControllers.first as? AddressInputFormViewController)
         
         viewModel.interfaceState = .search
         wait(for: [expectation], timeout: 1)
@@ -49,85 +49,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         addressLookupViewController.addressLookupSearchSwitchToManualEntry()
         wait(for: .milliseconds(50))
         XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: results.first))
-        XCTAssertNotNil(addressLookupViewController.viewControllers.first as? AddressLookupFormViewController)
-    }
-    
-    func testDoneButtonState() {
-        // Given
-        
-        let results = PostalAddressMocks.all
-        
-        let viewModel = AddressLookupViewController.ViewModel(
-            style: .init(),
-            localizationParameters: nil,
-            supportedCountryCodes: nil,
-            initialCountry: "NL",
-            prefillAddress: results.first
-        ) { _, _ in
-            // Nothing to do...
-        } completionHandler: { address in
-            XCTFail("Completion handler should not have been called")
-        }
-
-        let addressLookupViewController = AddressLookupViewController(viewModel: viewModel)
-        
-        UIApplication.shared.keyWindow?.rootViewController = addressLookupViewController
-        wait(for: .milliseconds(50))
-        
-        // When - No prefill
-        
-        _ = {
-            viewModel.interfaceState = .form(prefillAddress: nil)
-            self.wait(for: .milliseconds(50))
-            
-            // Then
-            
-            XCTAssertEqual(
-                addressLookupViewController.viewControllers.first?.navigationItem.rightBarButtonItem?.isEnabled,
-                false
-            )
-        }
-        
-        // When - Prefill with country only
-        
-        _ = {
-            viewModel.interfaceState = .form(prefillAddress: .init(country: "US"))
-            self.wait(for: .milliseconds(50))
-            
-            let formViewController = addressLookupViewController.viewControllers.first as! AddressLookupFormViewController
-            
-            // Then
-            
-            XCTAssertEqual(
-                formViewController.navigationItem.rightBarButtonItem?.isEnabled,
-                false
-            )
-            
-            // + Adding street name value
-            
-            formViewController.billingAddressItem.value.street = "Random Street"
-            
-            // Then
-            
-            XCTAssertEqual(
-                formViewController.navigationItem.rightBarButtonItem?.isEnabled,
-                true
-            )
-        }()
-        
-        // When - Prefill with country + any other field
-        
-        _ = {
-            viewModel.interfaceState = .form(prefillAddress: .init(country: "NL", street: "Singel"))
-            self.wait(for: .milliseconds(50))
-            
-            // Then
-            
-            XCTAssertEqual(
-                addressLookupViewController.viewControllers.first?.navigationItem.rightBarButtonItem?.isEnabled,
-                true
-            )
-        }()
+        XCTAssertNotNil(addressLookupViewController.viewControllers.first as? AddressInputFormViewController)
     }
     
     func testSearchDismissalNoPrefillNoAction() {
@@ -162,8 +84,6 @@ class AddressLookupViewControllerTests: XCTestCase {
         
         let completionHandlerExpectation = expectation(description: "Completion handler called")
         
-        var expectedCompletionResults: [PostalAddress?] = [nil, .init()]
-        
         let viewModel = AddressLookupViewController.ViewModel(
             style: .init(),
             localizationParameters: nil,
@@ -173,11 +93,8 @@ class AddressLookupViewControllerTests: XCTestCase {
         ) { searchTerm, resultProvider in
             // Nothing to do...
         } completionHandler: { address in
-            XCTAssertEqual(expectedCompletionResults.first!, address)
-            expectedCompletionResults = Array(expectedCompletionResults.dropFirst())
-            if expectedCompletionResults.count == 0 {
-                completionHandlerExpectation.fulfill()
-            }
+            XCTAssertNil(address)
+            completionHandlerExpectation.fulfill()
         }
         
         // Then
@@ -187,17 +104,16 @@ class AddressLookupViewControllerTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = addressLookupViewController
         wait(for: .milliseconds(50))
         
-        addressLookupViewController.addressLookupSearchSwitchToManualEntry()
+        addressLookupViewController.viewModel.handleSwitchToManualEntryTapped()
         XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: nil))
         
-        addressLookupViewController.addressLookupFormShowSearch(currentInput: .init())
+        addressLookupViewController.viewModel.handleShowSearchTapped(currentInput: PostalAddress())
         XCTAssertEqual(viewModel.interfaceState, .search)
         
-        addressLookupViewController.addressLookupSearchCancel() // Should not cancel the flow
-        XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: .init()))
+        addressLookupViewController.viewModel.handleDismissSearchTapped() // Should not cancel the flow
+        XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: PostalAddress()))
         
-        addressLookupViewController.addressLookupFormDismiss()
-        addressLookupViewController.addressLookupFormSubmit(validAddress: .init())
+        addressLookupViewController.viewModel.handleDismissSearchTapped() // Should trigger completion handler with nil postal address -> cancel flow
         
         wait(for: [completionHandlerExpectation], timeout: 1)
     }
@@ -302,10 +218,10 @@ class AddressLookupViewControllerTests: XCTestCase {
         // When - Submitting address
         
         expectedCompletionHandlerAddress = results.first!
-        viewModel.handleSubmit(address: results.first!)
+        viewModel.handleAddressInputFormCompletion(validAddress: results.first!)
         
         expectedCompletionHandlerAddress = nil
-        viewModel.handleDismissAddressLookupTapped()
+        viewModel.handleDismissSearchTapped()
         
         // Then
         
