@@ -110,7 +110,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             selectableRegions: countries,
             shouldShowCountryFlags: true,
             validationFailureMessage: localizedString(
-                .countryFieldValidationFailureMessageInvalid,
+                .countryFieldInvalid,
                 configuration.localizationParameters
             ),
             title: localizedString(.countryFieldTitle, configuration.localizationParameters),

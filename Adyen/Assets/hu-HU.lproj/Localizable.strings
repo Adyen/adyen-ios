@@ -83,8 +83,11 @@
 "adyen.pix.copyButton" = "Kód másolása";
 "adyen.pix.instructions.copiedMessage" = "Kód a vágólapra másolva";
 "adyen.billingAddressSection.title" = "Számlázási cím";
+"adyen.billingAddress.placeholder" = "Az Ön számlázási címe";
 "adyen.deliveryAddressSection.title" = "Szállítási cím";
 "adyen.countryField.title" = "Ország";
+"adyen.countryField.placeholder" = "Ország";
+"adyen.countryField.invalid" = "Érvénytelen ország";
 "adyen.addressField.title" = "Cím";
 "adyen.addressField.placeholder" = "Cím";
 "adyen.streetField.title" = "Utca";
@@ -190,3 +193,13 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "Biztosan eltávolítja a hitelesítő adatait?";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "Eltávolítás";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Mégse";
+"adyen.picker.search.empty.title" = "Nincs találat";
+"adyen.picker.search.empty.subtitle" = "A keresett „%@” kifejezésre nincs találat";
+"adyen.address.lookup.search.placeholder" = "Keresse meg a címét";
+"adyen.address.lookup.search.empty.title" = "Nem tudja megkeresni a címét?";
+"adyen.address.lookup.search.empty.subtitle" = "Mindig #beírhatja manuálisan a címét#";
+"adyen.address.lookup.search.empty.title.noResults" = "Nincs találat";
+"adyen.address.lookup.search.empty.subtitle.noResults" = "A keresett „%@„ kifejezésre nincs találat, próbálkozzon újra, vagy #írja be manuálisan a címet#";
+"adyen.address.lookup.item.validationFailureMessage.empty" = "A cím megadása kötelező";
+"adyen.address.lookup.item.validationFailureMessage.invalid" = "Érvénytelen cím";
+"adyen.address.lookup.search.manualEntryItem.title" = "Manuálisan írjon be egy címet";

@@ -80,8 +80,11 @@
 "adyen.pix.copyButton" = "复制代码";
 "adyen.pix.instructions.copiedMessage" = "代码复制到剪贴板";
 "adyen.billingAddressSection.title" = "账单地址";
+"adyen.billingAddress.placeholder" = "您的账单地址";
 "adyen.deliveryAddressSection.title" = "寄送地址";
 "adyen.countryField.title" = "国家/地区";
+"adyen.countryField.placeholder" = "国家/地区";
+"adyen.countryField.invalid" = "无效国家/地区";
 "adyen.addressField.title" = "地址";
 "adyen.addressField.placeholder" = "地址";
 "adyen.streetField.title" = "街道";
@@ -186,3 +189,13 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "确定要移除凭据吗？";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "删除";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "取消";
+"adyen.picker.search.empty.title" = "未找到任何结果";
+"adyen.picker.search.empty.subtitle" = "“%@”无匹配内容";
+"adyen.address.lookup.search.placeholder" = "搜索地址";
+"adyen.address.lookup.search.empty.title" = "无法搜索地址？";
+"adyen.address.lookup.search.empty.subtitle" = "您随时可以#手动输入地址#";
+"adyen.address.lookup.search.empty.title.noResults" = "未找到任何结果";
+"adyen.address.lookup.search.empty.subtitle.noResults" = "“%@”无匹配内容，请重试或者使用#手动地址条目#";
+"adyen.address.lookup.item.validationFailureMessage.empty" = "地址为必填项";
+"adyen.address.lookup.item.validationFailureMessage.invalid" = "无效地址";
+"adyen.address.lookup.search.manualEntryItem.title" = "手动输入地址";

@@ -178,10 +178,16 @@ public struct LocalizationKey {
     public static let pixInstructionsCopiedMessage = LocalizationKey(key: "adyen.pix.instructions.copiedMessage")
     /// Billing address
     public static let billingAddressSectionTitle = LocalizationKey(key: "adyen.billingAddressSection.title")
+    /// Your billing address
+    public static let billingAddressPlaceholder = LocalizationKey(key: "adyen.billingAddress.placeholder")
     /// Delivery Address
     public static let deliveryAddressSectionTitle = LocalizationKey(key: "adyen.deliveryAddressSection.title")
     /// Country
     public static let countryFieldTitle = LocalizationKey(key: "adyen.countryField.title")
+    /// Country
+    public static let countryFieldPlaceholder = LocalizationKey(key: "adyen.countryField.placeholder")
+    /// Invalid country
+    public static let countryFieldInvalid = LocalizationKey(key: "adyen.countryField.invalid")
     /// Address
     public static let addressFieldTitle = LocalizationKey(key: "adyen.addressField.title")
     /// Address
@@ -394,18 +400,10 @@ public struct LocalizationKey {
     public static let threeds2DAApprovalRemoveAlertNegativeButton = LocalizationKey(key: "adyen.threeds2.DA.approval.remove.alert.negativeButton")
     /// No results found
     public static let pickerSearchEmptyTitle = LocalizationKey(key: "adyen.picker.search.empty.title")
-    /// for '%@'
+    /// '%@' did not match with anything
     public static let pickerSearchEmptySubtitle = LocalizationKey(key: "adyen.picker.search.empty.subtitle")
-    /// Country
-    public static let countryFieldPlaceholder = LocalizationKey(key: "adyen.countryField.placeholder")
-    /// Invalid country
-    public static let countryFieldValidationFailureMessageInvalid = LocalizationKey(key: "adyen.countryField.validationFailureMessage.invalid")
-    /// Invalid %@
-    public static let pickerValidationFailureMessageInvalid = LocalizationKey(key: "picker.validationFailureMessage.invalid")
     /// Search your address
     public static let addressLookupSearchPlaceholder = LocalizationKey(key: "adyen.address.lookup.search.placeholder")
-    /// Your billing address
-    public static let billingAddressPlaceholder = LocalizationKey(key: "adyen.address.billingAddress.placeholder")
     /// Can't search your address?
     public static let addressLookupSearchEmptyTitle = LocalizationKey(key: "adyen.address.lookup.search.empty.title")
     /// You can always #enter your address manually#
@@ -414,12 +412,12 @@ public struct LocalizationKey {
     public static let addressLookupSearchEmptyTitleNoResults = LocalizationKey(key: "adyen.address.lookup.search.empty.title.noResults")
     /// '%@' did not match with anything, try again or use #manual address entry#
     public static let addressLookupSearchEmptySubtitleNoResults = LocalizationKey(key: "adyen.address.lookup.search.empty.subtitle.noResults")
-    /// Enter address manually
-    public static let addressLookupSearchManualEntryItemTitle = LocalizationKey(key: "adyen.address.lookup.search.manualEntryItem.title")
     /// Address required
     public static let addressLookupItemValidationFailureMessageEmpty = LocalizationKey(key: "adyen.address.lookup.item.validationFailureMessage.empty")
     /// Invalid Address
     public static let addressLookupItemValidationFailureMessageInvalid = LocalizationKey(key: "adyen.address.lookup.item.validationFailureMessage.invalid")
+    /// Enter address manually
+    public static let addressLookupSearchManualEntryItemTitle = LocalizationKey(key: "adyen.address.lookup.search.manualEntryItem.title")
     
     internal let key: String
     
@@ -429,4 +427,5 @@ public struct LocalizationKey {
     }
 
 }
+
 // swiftlint:enable all

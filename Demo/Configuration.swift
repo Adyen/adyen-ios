@@ -105,6 +105,12 @@ internal struct CardComponentConfiguration: Codable {
     }
 }
 
+internal struct DropInConfiguration: Codable {
+    internal var allowDisablingStoredPaymentMethods: Bool = false
+    internal var allowsSkippingPaymentList: Bool = false
+    internal var allowPreselectedPaymentView: Bool = true
+}
+
 internal struct DemoAppSettings: Codable {
     private static let defaultsKey = "ConfigurationKey"
     
@@ -114,6 +120,7 @@ internal struct DemoAppSettings: Codable {
     internal let apiVersion: Int
     internal let merchantAccount: String
     internal let cardComponentConfiguration: CardComponentConfiguration
+    internal let dropInConfiguration: DropInConfiguration
 
     internal var amount: Amount { Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil) }
     internal var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
@@ -124,7 +131,8 @@ internal struct DemoAppSettings: Codable {
         currencyCode: "EUR",
         apiVersion: 70,
         merchantAccount: ConfigurationConstants.merchantAccount,
-        cardComponentConfiguration: defaultCardComponentConfiguration
+        cardComponentConfiguration: defaultCardComponentConfiguration,
+        dropInConfiguration: defaultDropInConfiguration
     )
 
     internal static let defaultCardComponentConfiguration = CardComponentConfiguration(showsHolderNameField: false,
@@ -134,6 +142,10 @@ internal struct DemoAppSettings: Codable {
                                                                                        addressMode: .none,
                                                                                        socialSecurityNumberMode: .auto,
                                                                                        koreanAuthenticationMode: .auto)
+
+    internal static let defaultDropInConfiguration = DropInConfiguration(allowDisablingStoredPaymentMethods: false,
+                                                                         allowsSkippingPaymentList: false,
+                                                                         allowPreselectedPaymentView: true)
     
     fileprivate static func loadConfiguration() -> DemoAppSettings {
         var config = UserDefaults.standard.data(forKey: defaultsKey)
@@ -187,6 +199,18 @@ internal struct DemoAppSettings: Codable {
                      billingAddress: billingAddressConfig)
 
     }
+
+    internal var dropInSettings: DropInComponent.Configuration {
+        let dropInConfig = DropInComponent.Configuration(allowsSkippingPaymentList: dropInConfiguration.allowsSkippingPaymentList,
+                                                         allowPreselectedPaymentView: dropInConfiguration.allowPreselectedPaymentView)
+
+        dropInConfig.paymentMethodsList.allowDisablingStoredPaymentMethods = dropInConfiguration.allowDisablingStoredPaymentMethods
+
+        return dropInConfig
+    }
+}
+
+private extension DemoAppSettings {
     
     private func cardComponentAddressFormType(from addressFormType: CardComponentConfiguration.AddressFormType) -> CardComponent.AddressFormType {
         switch addressFormType {

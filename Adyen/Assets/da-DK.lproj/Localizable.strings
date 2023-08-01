@@ -83,8 +83,11 @@
 "adyen.pix.copyButton" = "Kopiér koden";
 "adyen.pix.instructions.copiedMessage" = "Koden er kopieret til udklipsholderen";
 "adyen.billingAddressSection.title" = "Faktureringsadresse";
+"adyen.billingAddress.placeholder" = "Din faktureringsadresse";
 "adyen.deliveryAddressSection.title" = "Leveringsadresse";
 "adyen.countryField.title" = "Land";
+"adyen.countryField.placeholder" = "Land";
+"adyen.countryField.invalid" = "Ugyldigt land";
 "adyen.addressField.title" = "Adresse";
 "adyen.addressField.placeholder" = "Adresse";
 "adyen.streetField.title" = "Gade";
@@ -190,3 +193,13 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "Er du sikker på, at du vil fjerne dine legitimationsoplysninger?";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "Fjern";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Annuller";
+"adyen.picker.search.empty.title" = "Ingen resultater fundet";
+"adyen.picker.search.empty.subtitle" = "Fandt ikke noget match for '%@'";
+"adyen.address.lookup.search.placeholder" = "Søg på din adresse";
+"adyen.address.lookup.search.empty.title" = "Kan du ikke søge på din adresse?";
+"adyen.address.lookup.search.empty.subtitle" = "Du kan altid #indtaste din adresse manuelt#";
+"adyen.address.lookup.search.empty.title.noResults" = "Ingen resultater fundet";
+"adyen.address.lookup.search.empty.subtitle.noResults" = "Fandt ikke noget match for '%@'. Prøv igen eller #indtast adresse manuelt#.";
+"adyen.address.lookup.item.validationFailureMessage.empty" = "Adresse er påkrævet";
+"adyen.address.lookup.item.validationFailureMessage.invalid" = "Ugyldig adresse";
+"adyen.address.lookup.search.manualEntryItem.title" = "Indtast adresse manuelt";
