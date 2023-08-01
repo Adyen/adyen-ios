@@ -90,7 +90,7 @@ extension ApplePayComponent {
         ///   - allowOnboarding: Flag to allow shoppers to add new cards for Apple Pay  if there is none. Default is `false`.
         /// - Important: When created via this init, rest of the properties of this configuration
         /// are ignored since the request should already be populated.
-        ///  - Use this initializer to support any new additions the `PKPaymentRequest` object,
+        ///  - Use this initializer to support any new additions to the `PKPaymentRequest` object,
         ///  such as recurring payments via its `recurringPaymentRequest` property.
         /// - Throws: An error object describing whether any required field in the request is missing.
         public init(paymentRequest: PKPaymentRequest,
