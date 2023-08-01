@@ -23,7 +23,7 @@ jobs:
              echo -e "${RED}$FILE_NAME file doesn't exits in the root of the respository${NC}"
              exit 1
           fi 
-          echo "LABELS=$(cat $FILE_PATH),chore" >> $GITHUB_OUTPUT
+          echo "LABELS=$(cat $FILE_PATH),chore,improve" >> $GITHUB_OUTPUT
         id: get-allowed_labels
         env:
           PROJECT_ROOT: ${{ github.workspace }}
@@ -39,7 +39,7 @@ jobs:
         id: pr-labels
 
       - run: |
-          ALLOWED_LABELS="$ALLOWED_LABELS,chore"
+          ALLOWED_LABELS="$ALLOWED_LABELS,chore,improve"
           IFS=',' read -r -a ALLOWED_LABELS_ARRAY <<< "$ALLOWED_LABELS"
 
           SHOULD_FAIL_JOB="false"
@@ -49,7 +49,7 @@ jobs:
 
           for LABEL in "${ALLOWED_LABELS_ARRAY[@]}"; do
             LABEL=$(echo "$LABEL" | sed 's/^ *//g' | sed 's/ *$//g')
-            if [[ "$LABEL" == "chore" ]]; then
+            if [[ "$LABEL" == "chore"  || "$LABEL" == "improve" ]]; then
               continue
             fi
             if [[ "$PR_LABELS" == *"$LABEL"* ]]; then
