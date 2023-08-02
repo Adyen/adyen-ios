@@ -93,7 +93,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         ) { searchTerm, resultProvider in
             // Nothing to do...
         } completionHandler: { address in
-            XCTAssertNil(address)
+            XCTAssertEqual(address, .init())
             completionHandlerExpectation.fulfill()
         }
         
@@ -113,7 +113,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         addressLookupViewController.viewModel.handleDismissSearchTapped() // Should not cancel the flow
         XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: PostalAddress()))
         
-        addressLookupViewController.viewModel.handleDismissSearchTapped() // Should trigger completion handler with nil postal address -> cancel flow
+        addressLookupViewController.viewModel.handleAddressInputFormCompletion(validAddress: .init()) // Should trigger completion handler with postal address
         
         wait(for: [completionHandlerExpectation], timeout: 1)
     }
@@ -221,7 +221,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         viewModel.handleAddressInputFormCompletion(validAddress: results.first!)
         
         expectedCompletionHandlerAddress = nil
-        viewModel.handleDismissSearchTapped()
+        viewModel.handleAddressInputFormCompletion(validAddress: nil)
         
         // Then
         

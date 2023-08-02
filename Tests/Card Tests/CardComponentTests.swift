@@ -35,12 +35,14 @@ class CardComponentTests: XCTestCase {
         sut = CardComponent(paymentMethod: method,
                             context: context,
                             configuration: configuration)
+        UIApplication.shared.keyWindow?.layer.speed = 10
         try super.setUpWithError()
     }
 
     override func tearDownWithError() throws {
         configuration = nil
         sut = nil
+        UIApplication.shared.keyWindow?.layer.speed = 1
         try super.tearDownWithError()
     }
 
@@ -357,7 +359,7 @@ class CardComponentTests: XCTestCase {
         billingAddressView.item.selectionHandler()
         wait(for: .milliseconds(50))
         
-        XCTAssertTrue(UIViewController.findTopPresenter() is SecuredViewController<AddressLookupViewController>)
+        XCTAssertTrue(UIViewController.findTopPresenter()?.children.first is AddressLookupViewController)
     }
 
     func testCVVFormatterChange() {
@@ -1423,7 +1425,7 @@ class CardComponentTests: XCTestCase {
         let socialSecurityNumber = socialSecurityNumberView.item.value
         XCTAssertEqual(expectedSocialSecurityNumber, socialSecurityNumber)
 
-        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
+        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
         let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
         let billingAddress = billingAddressView.item.value
         XCTAssertEqual(expectedBillingAddress, billingAddress)
@@ -1488,10 +1490,9 @@ class CardComponentTests: XCTestCase {
         let socialSecurityNumber = socialSecurityNumberView.item.value
         XCTAssertTrue(socialSecurityNumber.isEmpty)
 
-        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
-        let expectedBillingAddress = PostalAddressMocks.emptyUSPostalAddress
+        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
         let billingAddress = billingAddressView.item.value
-        XCTAssertEqual(expectedBillingAddress, billingAddress)
+        XCTAssertNil(billingAddress)
     }
 
     func testCardPrefillingGivenNoShopperInformationAndPostalCodeModeShouldNotPrefillItems() throws {
@@ -1543,15 +1544,14 @@ class CardComponentTests: XCTestCase {
         let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
         let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
         let billingAddress = billingAddressView.item.value
-        XCTAssertEqual(expectedBillingAddress, billingAddress)
         
         billingAddressView.item.selectionHandler()
         wait(for: .milliseconds(50))
         
-        let presentedViewController = UIViewController.findTopPresenter()?.children.first as? UINavigationController
-        XCTAssertTrue(presentedViewController?.viewControllers.first is AddressInputFormViewController)
+        let presentedViewController = try XCTUnwrap(UIViewController.findTopPresenter()?.children.first as? UINavigationController)
+        XCTAssertTrue(presentedViewController.viewControllers.first is AddressInputFormViewController)
         
-        let inputForm = try XCTUnwrap(presentedViewController?.viewControllers.first as? AddressInputFormViewController)
+        let inputForm = try XCTUnwrap(presentedViewController.viewControllers.first as? AddressInputFormViewController)
         XCTAssertEqual(inputForm.billingAddressItem.configuration.supportedCountryCodes, ["UK"])
         XCTAssertEqual(inputForm.billingAddressItem.countryPickerItem.value?.identifier, "UK")
     }
@@ -1586,6 +1586,7 @@ class CardComponentTests: XCTestCase {
         
         let inputForm = try XCTUnwrap(presentedViewController?.viewControllers.first as? AddressInputFormViewController)
         XCTAssertEqual(inputForm.billingAddressItem.configuration.supportedCountryCodes, ["US", "JP"])
+        XCTAssertEqual(inputForm.billingAddressItem.value, expectedBillingAddress)
     }
     
     func testAddressWithSupportedCountriesWithNonMatchingPrefill() throws {
@@ -1606,10 +1607,6 @@ class CardComponentTests: XCTestCase {
         let view: UIView = component.cardViewController.view
         
         let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
-        let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
-        let billingAddress = billingAddressView.item.value
-        XCTAssertEqual(expectedBillingAddress, billingAddress)
-        
         billingAddressView.item.selectionHandler()
         wait(for: .milliseconds(50))
         
@@ -1651,19 +1648,17 @@ class CardComponentTests: XCTestCase {
         let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
         let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
 
-        let postalCodeField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.fullAddressZipCode))
-        let cityField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.city))
-        
-        let stateField: FormPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.stateOrProvince))
+        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
         
         populate(textItemView: securityCodeField, with: "737")
         populate(textItemView: numberField, with: "4111 1120 1426 7661")
         populate(textItemView: expiryDateField, with: "12/30")
         
-        populate(textItemView: postalCodeField, with: "123")
-        populate(textItemView: cityField, with: "Amsterdam")
-        
-        stateField.item.value = stateField.item.selectableValues.first!
+        billingAddressView.item.value = PostalAddress(
+            city: "City",
+            postalCode: "123",
+            stateOrProvince: "AZ"
+        )
         
         wait(for: .milliseconds(800))
         
@@ -1674,8 +1669,9 @@ class CardComponentTests: XCTestCase {
             XCTAssertTrue(data.paymentMethod is CardDetails)
 
             XCTAssertNotNil(sut.cardViewController.validAddress)
-            XCTAssertNotNil(data.billingAddress?.country)
-            XCTAssertNotNil(data.billingAddress?.stateOrProvince)
+            XCTAssertEqual(data.billingAddress?.country, billingAddressView.item.value?.country)
+            XCTAssertEqual(data.billingAddress?.city, billingAddressView.item.value?.city)
+            XCTAssertEqual(data.billingAddress?.stateOrProvince, billingAddressView.item.value?.stateOrProvince)
 
             sut.stopLoadingIfNeeded()
             delegateExpectation.fulfill()
@@ -1950,23 +1946,14 @@ class CardComponentTests: XCTestCase {
         let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
         let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
  
-        let postalCodeField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.fullAddressZipCode))
-
-        let cityField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.city))
-        let streetField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.street))
-        
-        let stateField: FormPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.stateOrProvince))
+        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
 
         populate(textItemView: securityCodeField, with: "737")
         populate(textItemView: numberField, with: "4111 1120 1426 7661")
         populate(textItemView: expiryDateField, with: "12/30")
 
-        populate(textItemView: postalCodeField, with: "123")
-        populate(textItemView: cityField, with: "Seattle")
-        populate(textItemView: streetField, with: "Test Street")
-        stateField.item.value = stateField.item.selectableValues.first!
+        billingAddressView.item.value = PostalAddress(city: "Seattle", postalCode: "123", stateOrProvince: "AZ", street: "Test Street")
         
-
         wait(for: .milliseconds(800))
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
@@ -2014,24 +2001,19 @@ class CardComponentTests: XCTestCase {
         let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
         let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
 
-        let postalCodeField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.fullAddressZipCode))
-
-        let cityField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.city))
-        let houseNumberOrNameField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.houseNumberOrName))
-        let streetField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.street))
-
-        let stateField: FormPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.stateOrProvince))
+        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
         
         populate(textItemView: securityCodeField, with: "737")
         populate(textItemView: numberField, with: "4111 1120 1426 7661")
         populate(textItemView: expiryDateField, with: "12/30")
 
-        populate(textItemView: postalCodeField, with: "123")
-        populate(textItemView: cityField, with: "Seattle")
-        populate(textItemView: houseNumberOrNameField, with: "12")
-        populate(textItemView: streetField, with: "Test Street")
-        
-        stateField.item.value = stateField.item.selectableValues.first!
+        billingAddressView.item.value = PostalAddress(
+            city: "Seattle",
+            houseNumberOrName: "12",
+            postalCode: "123",
+            stateOrProvince: "AZ",
+            street: "Test Street"
+        )
 
         wait(for: .milliseconds(800))
 
@@ -2080,20 +2062,18 @@ class CardComponentTests: XCTestCase {
         let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
         let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
 
-        let postalCodeField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.fullAddressZipCode))
-
-        let cityField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.city))
-        let houseNumberOrNameField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.houseNumberOrName))
-        let streetField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.street))
+        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
 
         populate(textItemView: securityCodeField, with: "737")
         populate(textItemView: numberField, with: "4596 1234 2345 087")
         populate(textItemView: expiryDateField, with: "12/30")
 
-        populate(textItemView: postalCodeField, with: "123")
-        populate(textItemView: cityField, with: "London")
-        populate(textItemView: houseNumberOrNameField, with: "12")
-        populate(textItemView: streetField, with: "Test Street")
+        billingAddressView.item.value = PostalAddress(
+            city: "London",
+            houseNumberOrName: "12",
+            postalCode: "123",
+            street: "Test Street"
+        )
 
         wait(for: .milliseconds(800))
 

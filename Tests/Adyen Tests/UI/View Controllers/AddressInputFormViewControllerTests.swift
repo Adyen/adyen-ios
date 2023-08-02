@@ -11,9 +11,6 @@ import XCTest
 
 class AddressInputFormViewControllerTests: XCTestCase {
     
-    // TODO: Implement
-    // TODO: Also make sure that the search bar is tested to be/not be there
-    
     override class func setUp() {
         UIApplication.shared.keyWindow?.layer.speed = 10
     }
@@ -328,19 +325,16 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        // show view controller
         UIApplication.shared.keyWindow?.rootViewController = viewController
+        wait(for: .milliseconds(5))
         
-        wait(for: .milliseconds(100))
-        
-        // When
-        // hide view controller
         UIApplication.shared.keyWindow?.rootViewController = UIViewController()
-        
-        wait(for: .milliseconds(100))
+        wait(for: .milliseconds(5))
 
-        // Then
-        XCTAssertEqual(viewController.billingAddressItem.value.street, "")
+        XCTAssertEqual(
+            viewController.billingAddressItem.value.street,
+            ""
+        )
     }
 }
 
