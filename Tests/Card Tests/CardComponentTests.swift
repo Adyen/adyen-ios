@@ -733,28 +733,40 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(expiryDateItemView!.isFirstResponder)
     }
 
-    func testDateShouldPassFocusToCVC() {
+    func testDateShouldPassFocusToCVC() throws {
         // Given
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        let configuration = CardComponent.Configuration()
+        let component = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
 
-        let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
-        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+        let viewController = component.viewController
+        
+        UIApplication.shared.keyWindow?.rootViewController = viewController
+        wait(for: .milliseconds(50))
+        
+        let view: UIView = viewController.view
+        let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.expiryDateItem"))
+        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
 
         wait(for: .milliseconds(300))
         
-        expiryDateItemView?.becomeFirstResponder()
-        self.append(textItemView: expiryDateItemView!, with: "3")
+        expiryDateItemView.becomeFirstResponder()
+        self.append(textItemView: expiryDateItemView, with: "3")
         
         wait(for: .milliseconds(300))
         
-        XCTAssertTrue(expiryDateItemView!.textField.isFirstResponder)
-        self.append(textItemView: expiryDateItemView!, with: "3")
-        self.append(textItemView: expiryDateItemView!, with: "0")
+        XCTAssertTrue(expiryDateItemView.textField.isFirstResponder)
+        self.append(textItemView: expiryDateItemView, with: "3")
+        self.append(textItemView: expiryDateItemView, with: "0")
         
         wait(for: .milliseconds(300))
         
-        XCTAssertTrue(securityCodeItemView!.textField.isFirstResponder)
-        XCTAssertFalse(expiryDateItemView!.textField.isFirstResponder)
+        XCTAssertTrue(securityCodeItemView.textField.isFirstResponder)
+        XCTAssertFalse(expiryDateItemView.textField.isFirstResponder)
     }
 
     func testPostalCode() {
