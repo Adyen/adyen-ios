@@ -8,6 +8,7 @@ import SwiftUI
 import AdyenCard
 
 @available(iOS 13.0.0, *)
+
 internal final class ConfigurationViewModel: ObservableObject {
     
     @Published internal var countryCode: String = ""
@@ -22,7 +23,10 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var addressMode: CardComponent.AddressFormType = .none
     @Published internal var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
     @Published internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
-    
+    @Published internal var allowDisablingStoredPaymentMethods: Bool = false
+    @Published internal var allowsSkippingPaymentList: Bool = false
+    @Published internal var allowPreselectedPaymentView: Bool = true
+
     private let onDone: (DemoAppSettings) -> Void
     private let configuration: DemoAppSettings
     
@@ -49,6 +53,9 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.addressMode = configuration.cardComponentConfiguration.addressMode
         self.socialSecurityNumberMode = configuration.cardComponentConfiguration.socialSecurityNumberMode
         self.koreanAuthenticationMode = configuration.cardComponentConfiguration.koreanAuthenticationMode
+        self.allowDisablingStoredPaymentMethods = configuration.dropInConfiguration.allowDisablingStoredPaymentMethods
+        self.allowsSkippingPaymentList = configuration.dropInConfiguration.allowsSkippingPaymentList
+        self.allowPreselectedPaymentView = configuration.dropInConfiguration.allowPreselectedPaymentView
     }
     
     internal func doneTapped() {
@@ -72,11 +79,13 @@ internal final class ConfigurationViewModel: ObservableObject {
                 showsSecurityCodeField: showsSecurityCodeField,
                 addressMode: addressMode,
                 socialSecurityNumberMode: socialSecurityNumberMode,
-                koreanAuthenticationMode: koreanAuthenticationMode
-            )
+                koreanAuthenticationMode: koreanAuthenticationMode),
+            dropInConfiguration: DropInConfiguration(allowDisablingStoredPaymentMethods: allowDisablingStoredPaymentMethods,
+                                                     allowsSkippingPaymentList: allowsSkippingPaymentList,
+                                                     allowPreselectedPaymentView: allowPreselectedPaymentView)
         )
     }
-    
+
     internal static let currencies: [CurrencyDisplayInfo] = {
         let currencyCodeKey = NSLocale.Key.currencyCode.rawValue
         let uniqueCurrencies = Set(
