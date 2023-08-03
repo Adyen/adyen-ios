@@ -63,10 +63,8 @@ class AddressInputFormViewControllerTests: XCTestCase {
         
         let doneButton: UIControl? = navigationControllerView?.findView(with: "AddressInputFormViewController.button.done")
         doneButton?.sendActions(for: .touchUpInside)
-
-        wait(for: .milliseconds(700))
-
-        XCTAssertFalse(houseNumberItemView.alertLabel.isHidden)
+        
+        wait(until: houseNumberItemView.alertLabel, at: \.isHidden, is: false, timeout: 1)
         XCTAssertFalse(addressItemView.alertLabel.isHidden)
         XCTAssertTrue(apartmentSuiteItemView.alertLabel.isHidden)
         XCTAssertFalse(cityItemView.alertLabel.isHidden)
@@ -122,10 +120,8 @@ class AddressInputFormViewControllerTests: XCTestCase {
         let doneButton: UIControl? = navigationControllerView?.findView(with: "AddressInputFormViewController.button.done")
         doneButton?.sendActions(for: .touchUpInside)
         
-        wait(for: .milliseconds(300))
-
+        wait(until: addressItemView.alertLabel, at: \.isHidden, is: false, timeout: 1)
         XCTAssertTrue(houseNumberItemView.alertLabel.isHidden)
-        XCTAssertFalse(addressItemView.alertLabel.isHidden)
         XCTAssertFalse(cityItemView.alertLabel.isHidden)
         XCTAssertFalse(postalCodeItemView.alertLabel.isHidden)
     }
