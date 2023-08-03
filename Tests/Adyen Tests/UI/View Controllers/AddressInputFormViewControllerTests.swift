@@ -29,13 +29,13 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: viewController)
+        UIApplication.shared.keyWindow!.rootViewController = UINavigationController(rootViewController: viewController)
         
         // When
         wait(for: .milliseconds(5))
 
         let view: UIView = viewController.view
-        let navigationControllerView = UIApplication.shared.keyWindow?.rootViewController?.view
+        let navigationControllerView: UIView = try XCTUnwrap(UIApplication.shared.keyWindow?.rootViewController?.view)
 
         let houseNumberItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.houseNumberOrName"))
         let countryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.country"))
@@ -61,10 +61,15 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertTrue(provinceOrTerritoryItemView.alertLabel.isHidden)
         XCTAssertTrue(postalCodeItemView.alertLabel.isHidden)
         
-        let doneButton: UIControl = try XCTUnwrap(navigationControllerView?.findView(with: "AddressInputFormViewController.button.done"))
+        wait(
+            until: { navigationControllerView.findView(with: "AddressInputFormViewController.button.done") != nil },
+            timeout: 1
+        )
+        
+        let doneButton: UIControl = try XCTUnwrap(navigationControllerView.findView(with: "AddressInputFormViewController.button.done"))
         doneButton.sendActions(for: .touchUpInside)
         
-        wait(until: houseNumberItemView.alertLabel, at: \.isHidden, is: false, timeout: 10)
+        wait(until: houseNumberItemView.alertLabel, at: \.isHidden, is: false, timeout: 1)
         XCTAssertFalse(addressItemView.alertLabel.isHidden)
         XCTAssertTrue(apartmentSuiteItemView.alertLabel.isHidden)
         XCTAssertFalse(cityItemView.alertLabel.isHidden)
