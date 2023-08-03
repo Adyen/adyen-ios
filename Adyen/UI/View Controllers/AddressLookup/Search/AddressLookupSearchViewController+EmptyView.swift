@@ -24,7 +24,7 @@ extension AddressLookupSearchViewController {
         ///   - dismissHandler: A closure that is called when manual entry is requested.
         internal init(
             searchTerm: String = "",
-            style: EmptyStateStyle = .init(),
+            style: EmptyStateViewStyle = .init(),
             localizationParameters: LocalizationParameters? = nil,
             dismissHandler: @escaping () -> Void
         ) {

@@ -7,7 +7,7 @@
 import UIKit
 
 /// The style of the empty state view
-public struct EmptyStateStyle: ViewStyle {
+public struct EmptyStateViewStyle: ViewStyle {
     
     public var title: TextStyle = .init(
         font: .preferredFont(forTextStyle: .headline),
@@ -24,7 +24,7 @@ public struct EmptyStateStyle: ViewStyle {
 @_spi(AdyenInternal)
 public class EmptyStateView<SubtitleLabel: UIView>: UIView, SearchResultsEmptyView {
     
-    internal let style: EmptyStateStyle
+    internal let style: EmptyStateViewStyle
     internal let localizationParameters: LocalizationParameters?
     
     public var searchTerm: String
@@ -49,7 +49,7 @@ public class EmptyStateView<SubtitleLabel: UIView>: UIView, SearchResultsEmptyVi
     internal init(
         searchTerm: String = "",
         subtitleLabel: SubtitleLabel,
-        style: EmptyStateStyle = .init(),
+        style: EmptyStateViewStyle = .init(),
         localizationParameters: LocalizationParameters? = nil
     ) {
         self.style = style
