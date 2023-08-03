@@ -10,7 +10,7 @@ import PassKit
 
 extension ApplePayComponent {
 
-    /// Describes the error that can occur during Apple Pay payment.
+    /// Describes the errors that can occur during Apple Pay payment.
     public enum Error: Swift.Error, LocalizedError {
         /// Indicates that the user can't make payments on any of the payment request’s supported networks.
         case userCannotMakePayment
@@ -20,6 +20,9 @@ extension ApplePayComponent {
 
         /// Indicates that the summaryItems array is empty.
         case emptySummaryItems
+        
+        /// Indicates that the merchant identifier is missing.
+        case emptyMerchantIdentifier
 
         /// Indicates that the grand total summary item is a negative value.
         case negativeGrandTotal
@@ -44,6 +47,8 @@ extension ApplePayComponent {
                 return "The current device's hardware doesn't support ApplePay."
             case .emptySummaryItems:
                 return "The summaryItems array is empty."
+            case .emptyMerchantIdentifier:
+                return "The merchant identifier is missing, provide a valid one."
             case .negativeGrandTotal:
                 return "The grand total summary item should be greater than or equal to zero."
             case .invalidSummaryItem:

@@ -96,7 +96,7 @@ extension ApplePayComponent {
         public init(paymentRequest: PKPaymentRequest,
                     allowOnboarding: Bool = false) throws {
             guard !paymentRequest.merchantIdentifier.isEmpty else {
-                throw UnknownError(errorDescription: "Merchant identifier cannot be empty")
+                throw ApplePayComponent.Error.emptyMerchantIdentifier
             }
             self.paymentRequest = paymentRequest
             
