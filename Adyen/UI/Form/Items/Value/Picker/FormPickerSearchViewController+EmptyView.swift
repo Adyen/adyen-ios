@@ -9,32 +9,11 @@ import UIKit
 extension FormPickerSearchViewController {
     
     /// The view that is shown when the form picker search result is empty
-    public class EmptyView: UIView, SearchResultsEmptyView {
+    public class EmptyView: EmptyStateView<UILabel> {
         
-        private let style: Style
-        private let localizationParameters: LocalizationParameters?
-        
-        public var searchTerm: String {
+        override public var searchTerm: String {
             didSet { updateLabels() }
         }
-        
-        private lazy var titleLabel: UILabel = {
-            let titleLabel = UILabel()
-            titleLabel.numberOfLines = 0
-            titleLabel.textAlignment = .center
-            titleLabel.translatesAutoresizingMaskIntoConstraints = false
-            titleLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
-            return titleLabel
-        }()
-        
-        private lazy var subtitleLabel: UILabel = {
-            let titleLabel = UILabel()
-            titleLabel.numberOfLines = 0
-            titleLabel.textAlignment = .center
-            titleLabel.translatesAutoresizingMaskIntoConstraints = false
-            titleLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
-            return titleLabel
-        }()
         
         /// Initializes the `EmptyView` for the ``FormPickerSearchViewController``
         ///
@@ -44,60 +23,35 @@ extension FormPickerSearchViewController {
         ///   - localizationParameters: The localization parameters.
         internal init(
             searchTerm: String = "",
-            style: Style = .init(),
+            style: EmptyStateStyle = .init(),
             localizationParameters: LocalizationParameters? = nil
         ) {
-            self.style = style
-            self.localizationParameters = localizationParameters
-            self.searchTerm = searchTerm
+            super.init(
+                searchTerm: searchTerm,
+                subtitleLabel: Self.setupSubtitleLabel(),
+                style: style,
+                localizationParameters: localizationParameters
+            )
             
-            super.init(frame: .zero)
-            
-            setupContent()
-            updateLabels()
+            subtitleLabel.adyen.apply(style.subtitle)
         }
         
         @available(*, unavailable)
         internal required init(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
-    }
-}
-
-// MARK: - Updating Interface
-
-private extension FormPickerSearchViewController.EmptyView {
-    
-    func setupContent() {
-        let contentStack = UIStackView(
-            arrangedSubviews: [
-                titleLabel,
-                subtitleLabel
-            ]
-        )
-        contentStack.translatesAutoresizingMaskIntoConstraints = false
-        contentStack.axis = .vertical
-        contentStack.alignment = .center
-        contentStack.distribution = .fill
-        addSubview(contentStack)
         
-        contentStack.setCustomSpacing(4.0, after: titleLabel)
+        private static func setupSubtitleLabel() -> UILabel {
+            let subtitleLabel = UILabel()
+            subtitleLabel.numberOfLines = 0
+            subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+            subtitleLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
+            return subtitleLabel
+        }
         
-        NSLayoutConstraint.activate([
-            contentStack.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 16),
-            contentStack.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -16),
-            contentStack.centerYAnchor.constraint(equalTo: layoutMarginsGuide.centerYAnchor, constant: 0)
-        ])
-    }
-    
-    func updateLabels() {
-        titleLabel.text = localizedString(.pickerSearchEmptyTitle, localizationParameters)
-        subtitleLabel.text = localizedString(.pickerSearchEmptySubtitle, localizationParameters, searchTerm)
-        
-        titleLabel.textColor = style.title.color
-        subtitleLabel.textColor = style.subtitle.color
-        
-        titleLabel.font = style.title.font
-        subtitleLabel.font = style.subtitle.font
+        private func updateLabels() {
+            titleLabel.text = localizedString(.pickerSearchEmptyTitle, localizationParameters)
+            subtitleLabel.text = localizedString(.pickerSearchEmptySubtitle, localizationParameters, searchTerm)
+        }
     }
 }

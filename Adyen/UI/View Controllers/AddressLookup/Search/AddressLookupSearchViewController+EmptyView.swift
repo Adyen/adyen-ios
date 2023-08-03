@@ -9,32 +9,11 @@ import UIKit
 extension AddressLookupSearchViewController {
     
     /// The view that is shown when the address lookup search result is empty
-    internal class EmptyView: UIView, SearchResultsEmptyView {
+    internal class EmptyView: EmptyStateView<LinkTextView> {
         
-        private let style: AddressLookupSearchEmptyStyle
-        private let localizationParameters: LocalizationParameters?
-        private let dismissHandler: () -> Void
-        
-        public var searchTerm: String {
+        override public var searchTerm: String {
             didSet { updateLabels() }
         }
-        
-        private lazy var titleLabel: UILabel = {
-            let titleLabel = UILabel()
-            titleLabel.numberOfLines = 0
-            titleLabel.textAlignment = .center
-            titleLabel.translatesAutoresizingMaskIntoConstraints = false
-            titleLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
-            return titleLabel
-        }()
-        
-        private lazy var subtitleLabel: LinkTextView = {
-            let textView = LinkTextView { [weak self] _ in
-                self?.dismissHandler()
-            }
-            textView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "textView")
-            return textView
-        }()
         
         /// Initializes the `EmptyView` for the ``AddressLookupSearchViewController``
         ///
@@ -45,18 +24,17 @@ extension AddressLookupSearchViewController {
         ///   - dismissHandler: A closure that is called when manual entry is requested.
         internal init(
             searchTerm: String = "",
-            style: AddressLookupSearchEmptyStyle = .init(),
+            style: EmptyStateStyle = .init(),
             localizationParameters: LocalizationParameters? = nil,
             dismissHandler: @escaping () -> Void
         ) {
-            self.style = style
-            self.localizationParameters = localizationParameters
-            self.searchTerm = searchTerm
-            self.dismissHandler = dismissHandler
+            super.init(
+                searchTerm: searchTerm,
+                subtitleLabel: Self.setupSubtitleLabel(with: dismissHandler),
+                style: style,
+                localizationParameters: localizationParameters
+            )
             
-            super.init(frame: .zero)
-            
-            setupContent()
             updateLabels()
         }
         
@@ -71,26 +49,12 @@ extension AddressLookupSearchViewController {
 
 private extension AddressLookupSearchViewController.EmptyView {
     
-    func setupContent() {
-        let contentStack = UIStackView(
-            arrangedSubviews: [
-                titleLabel,
-                subtitleLabel
-            ]
-        )
-        contentStack.translatesAutoresizingMaskIntoConstraints = false
-        contentStack.axis = .vertical
-        contentStack.alignment = .center
-        contentStack.distribution = .fill
-        addSubview(contentStack)
-        
-        contentStack.setCustomSpacing(4.0, after: titleLabel)
-        
-        NSLayoutConstraint.activate([
-            contentStack.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 16),
-            contentStack.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -16),
-            contentStack.centerYAnchor.constraint(equalTo: layoutMarginsGuide.centerYAnchor, constant: 0)
-        ])
+    private static func setupSubtitleLabel(with dismissHandler: @escaping () -> Void) -> LinkTextView {
+        let textView = LinkTextView { _ in
+            dismissHandler()
+        }
+        textView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "textView")
+        return textView
     }
     
     func updateLabels() {
@@ -100,16 +64,10 @@ private extension AddressLookupSearchViewController.EmptyView {
             titleLabel.text = localizedString(.addressLookupSearchEmptyTitleNoResults, localizationParameters)
         }
         
-        titleLabel.textColor = style.title.color
-        subtitleLabel.textColor = style.subtitle.color
-        
-        titleLabel.font = style.title.font
-        subtitleLabel.font = style.subtitle.font
-        
         configureSubtitleLabel(for: searchTerm)
     }
     
-    private func configureSubtitleLabel(for searchTerm: String) {
+    func configureSubtitleLabel(for searchTerm: String) {
 
         let subtitle: String = {
             if searchTerm.isEmpty {

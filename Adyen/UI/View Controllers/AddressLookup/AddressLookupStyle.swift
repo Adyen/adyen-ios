@@ -6,6 +6,7 @@
 
 import UIKit
 
+/// The style of the screen that performs an address lookup
 public struct AddressLookupStyle: ViewStyle {
     
     public var backgroundColor: UIColor = .Adyen.componentBackground
