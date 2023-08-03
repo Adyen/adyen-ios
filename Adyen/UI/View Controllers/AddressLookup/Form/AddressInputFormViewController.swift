@@ -6,9 +6,7 @@
 
 import UIKit
 
-/// A ``FormViewController`` with a (optional)``FormSearchButtonItem`` and ``FormAddressItem``
-///
-/// To be used via the ``AddressInputViewController``
+/// A ``FormViewController`` with a ``FormAddressItem`` and optional ``FormSearchButtonItem``
 @_spi(AdyenInternal)
 public class AddressInputFormViewController: FormViewController {
     
