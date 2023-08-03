@@ -103,13 +103,6 @@ private extension AddressInputFormViewController {
             target: self,
             action: #selector(submitTapped)
         )
-        
-        let doneButtonIdentifier = ViewIdentifierBuilder.build(
-            scopeInstance: Self.self,
-            postfix: "button.done"
-        )
-        
-        navigationItem.rightBarButtonItem?.accessibilityIdentifier = doneButtonIdentifier
     }
     
     @objc

@@ -152,6 +152,8 @@
 		81B001BC2A55B4040015BFA3 /* AddressLookupSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001BB2A55B4040015BFA3 /* AddressLookupSearchViewController.swift */; };
 		81B001C22A55C5C10015BFA3 /* UISearchBar+Prominent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001C12A55C5C10015BFA3 /* UISearchBar+Prominent.swift */; };
 		81B001C62A56E9D40015BFA3 /* LinkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001C52A56E9D40015BFA3 /* LinkTextView.swift */; };
+		81B505792A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B505782A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift */; };
+		81B5057A2A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B505782A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift */; };
 		81BA08372A49C93100308160 /* FormSelectableValueItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08362A49C93100308160 /* FormSelectableValueItemView.swift */; };
 		81BA08392A49C95700308160 /* FormSelectableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08382A49C95700308160 /* FormSelectableValueItem.swift */; };
 		81BA083F2A4AD96900308160 /* FormValidatableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA083E2A4AD96900308160 /* FormValidatableValueItem.swift */; };
@@ -1324,6 +1326,7 @@
 		81B001BB2A55B4040015BFA3 /* AddressLookupSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupSearchViewController.swift; sourceTree = "<group>"; };
 		81B001C12A55C5C10015BFA3 /* UISearchBar+Prominent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Prominent.swift"; sourceTree = "<group>"; };
 		81B001C52A56E9D40015BFA3 /* LinkTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
+		81B505782A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+XCTest.swift"; sourceTree = "<group>"; };
 		81BA08322A45D7C100308160 /* AddressInputFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInputFormViewController.swift; sourceTree = "<group>"; };
 		81BA08362A49C93100308160 /* FormSelectableValueItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableValueItemView.swift; sourceTree = "<group>"; };
 		81BA08382A49C95700308160 /* FormSelectableValueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableValueItem.swift; sourceTree = "<group>"; };
@@ -2824,6 +2827,7 @@
 				A04E60D227E0E6280051C72C /* XCTestCase+Result.swift */,
 				00EACBC5288013990082B360 /* XCTestCase+Coder.swift */,
 				F92385B62757AE8B0082F7B7 /* XCTestCaseExtensions.swift */,
+				81B505782A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -6608,6 +6612,7 @@
 				C92708422759106500D15EA0 /* BACSRouterProtocolMock.swift in Sources */,
 				00EACBC9288013AE0082B360 /* XCTestCase+Coder.swift in Sources */,
 				E7975F982880421600A12C40 /* XCTestCase+Result.swift in Sources */,
+				81B505792A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift in Sources */,
 				F90FB7BE2446EBB9005BFE0E /* BrowserInfoTests.swift in Sources */,
 				00F621C527F1AF5A00C04097 /* AtomeComponentTests.swift in Sources */,
 				E73C567F25EFCC4200B57758 /* IssuerListComponentTests.swift in Sources */,
@@ -7029,6 +7034,7 @@
 				F9CCA3CD296ECC8800AD643D /* Dummy.swift in Sources */,
 				F9CCA3CF296ECCA900AD643D /* PaymentComponentDelegateMock.swift in Sources */,
 				003C03B0297AFFA30022269A /* UPIComponentUITests.swift in Sources */,
+				81B5057A2A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift in Sources */,
 				F9CCA3CE296ECC9C00AD643D /* DummyPaymentMethods.swift in Sources */,
 				0022096429A8C39100B2BACD /* DokuComponentUITests.swift in Sources */,
 				F9CCA3C8296ECB9900AD643D /* IssuerListComponentUITests.swift in Sources */,

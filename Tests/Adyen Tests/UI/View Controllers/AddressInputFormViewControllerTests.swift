@@ -29,13 +29,12 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow!.rootViewController = UINavigationController(rootViewController: viewController)
+        UIApplication.shared.keyWindow!.rootViewController = viewController
         
         // When
         wait(for: .milliseconds(5))
 
         let view: UIView = viewController.view
-        let navigationControllerView: UIView = try XCTUnwrap(UIApplication.shared.keyWindow?.rootViewController?.view)
 
         let houseNumberItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.houseNumberOrName"))
         let countryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.country"))
@@ -61,22 +60,19 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertTrue(provinceOrTerritoryItemView.alertLabel.isHidden)
         XCTAssertTrue(postalCodeItemView.alertLabel.isHidden)
         
-        wait(
-            until: { navigationControllerView.findView(with: "AddressInputFormViewController.button.done") != nil },
-            timeout: 1
-        )
+        let doneButton = try XCTUnwrap(viewController.navigationItem.rightBarButtonItem)
+        try doneButton.tap()
         
-        let doneButton: UIControl = try XCTUnwrap(navigationControllerView.findView(with: "AddressInputFormViewController.button.done"))
-        doneButton.sendActions(for: .touchUpInside)
+        wait(for: .milliseconds(50))
         
-        wait(until: houseNumberItemView.alertLabel, at: \.isHidden, is: false, timeout: 1)
+        XCTAssertFalse(houseNumberItemView.alertLabel.isHidden)
         XCTAssertFalse(addressItemView.alertLabel.isHidden)
         XCTAssertTrue(apartmentSuiteItemView.alertLabel.isHidden)
         XCTAssertFalse(cityItemView.alertLabel.isHidden)
         XCTAssertFalse(provinceOrTerritoryItemView.alertLabel.isHidden)
         XCTAssertFalse(postalCodeItemView.alertLabel.isHidden)
     }
-
+    
     func testAddressUS() throws {
         
         // Given
@@ -88,13 +84,12 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: viewController)
+        UIApplication.shared.keyWindow?.rootViewController = viewController
 
         // When
         wait(for: .milliseconds(5))
 
         let view: UIView = viewController.view
-        let navigationControllerView = UIApplication.shared.keyWindow?.rootViewController?.view
 
         let houseNumberItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.houseNumberOrName"))
         let countryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.country"))
@@ -122,11 +117,13 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertTrue(cityItemView.alertLabel.isHidden)
         XCTAssertTrue(postalCodeItemView.alertLabel.isHidden)
 
-        let doneButton: UIControl = try XCTUnwrap(navigationControllerView?.findView(with: "AddressInputFormViewController.button.done"))
-        doneButton.sendActions(for: .touchUpInside)
+        let doneButton = try XCTUnwrap(viewController.navigationItem.rightBarButtonItem)
+        try doneButton.tap()
         
-        wait(until: addressItemView.alertLabel, at: \.isHidden, is: false, timeout: 10)
+        wait(for: .milliseconds(50))
+        
         XCTAssertTrue(houseNumberItemView.alertLabel.isHidden)
+        XCTAssertFalse(addressItemView.alertLabel.isHidden)
         XCTAssertFalse(cityItemView.alertLabel.isHidden)
         XCTAssertFalse(postalCodeItemView.alertLabel.isHidden)
     }
