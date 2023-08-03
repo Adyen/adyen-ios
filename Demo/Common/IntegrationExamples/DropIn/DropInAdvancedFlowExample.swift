@@ -22,13 +22,13 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
         presenter?.showLoadingIndicator()
         requestPaymentMethods(order: nil) { [weak self] result in
             guard let self else { return }
-            
+
             self.presenter?.hideLoadingIndicator()
-                
+
             switch result {
             case let .success(paymentMethods):
                 self.presentComponent(with: paymentMethods)
-                
+
             case let .failure(error):
                 self.presenter?.presentAlert(with: error, retryHandler: nil)
             }
@@ -69,7 +69,10 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
         configuration.actionComponent.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
         configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         configuration.card = ConfigurationConstants.current.cardDropInConfiguration
-        configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
+        configuration.allowsSkippingPaymentList = ConfigurationConstants.current.dropInSettings.allowsSkippingPaymentList
+        configuration.allowPreselectedPaymentView = ConfigurationConstants.current.dropInSettings.allowPreselectedPaymentView
+        // swiftlint:disable:next line_length
+        configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = ConfigurationConstants.current.dropInSettings.paymentMethodsList.allowDisablingStoredPaymentMethods
         return configuration
     }
 
