@@ -6,6 +6,7 @@
 
 import UIKit
 
+/// The style of the search screen for address lookup
 public struct AddressLookupSearchStyle: ViewStyle {
     
     public var backgroundColor: UIColor = .Adyen.componentBackground
@@ -16,5 +17,5 @@ public struct AddressLookupSearchStyle: ViewStyle {
         return listItemStyle
     }()
     
-    public var emptyView: AddressLookupSearchEmptyStyle = .init()
+    public var emptyView: EmptyStateStyle = .init()
 }
