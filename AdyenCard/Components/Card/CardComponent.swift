@@ -112,9 +112,7 @@ public class CardComponent: PresentableComponent,
         self.publicKeyProvider = publicKeyProvider
         self.binInfoProvider = binProvider
 
-        let excludedCardTypes = configuration.excludedCardTypes
-        let allowedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
-        self.supportedCardTypes = allowedCardTypes.minus(excludedCardTypes)
+        self.supportedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
     }
     
     // MARK: - Presentable Component Protocol

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,10 +18,16 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
             updateFormState()
         }
     }
+    
+    internal let shouldHideIfOptional: Bool
 
     /// Initializes the form security code item.
-    internal init(style: FormTextItemStyle = FormTextItemStyle(),
-                  localizationParameters: LocalizationParameters? = nil) {
+    internal init(
+        style: FormTextItemStyle = FormTextItemStyle(),
+        shouldHideIfOptional: Bool = false,
+        localizationParameters: LocalizationParameters? = nil
+    ) {
+        self.shouldHideIfOptional = shouldHideIfOptional
         self.localizationParameters = localizationParameters
         super.init(style: style)
         

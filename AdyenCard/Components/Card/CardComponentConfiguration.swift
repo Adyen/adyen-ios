@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -149,9 +149,12 @@ extension CardComponent {
         /// By default list of supported cards is extracted from component's `AnyCardPaymentMethod`.
         /// Use this property to enforce a custom collection of card types.
         public var allowedCardTypes: [CardType]?
-
-        /// Indicates the card brands excluded from the supported brands.
-        internal var excludedCardTypes: Set<CardType> = [.bcmc]
+        
+        /// Indicates whether or not to show the supported card logos under the card number item
+        internal var shouldShowSupportedCardLogos: Bool = true // TODO: Write tests
+        
+        /// Indicates whether or not to hide the security code field if it's marked as optional
+        internal var shouldHideSecurityCodeFieldIfOptional: Bool = false // TODO: Write tests
 
         /// Installments options to present to the user.
         public var installmentConfiguration: InstallmentConfiguration?
@@ -204,15 +207,13 @@ extension CardComponent {
         }
 
         internal func bcmcConfiguration() -> Configuration {
-            var storedCardConfiguration = stored
-            storedCardConfiguration.showsSecurityCodeField = false
             var configuration = Configuration(style: style,
                                               showsHolderNameField: showsHolderNameField,
                                               showsStorePaymentMethodField: showsStorePaymentMethodField,
-                                              showsSecurityCodeField: false,
-                                              storedCardConfiguration: storedCardConfiguration,
-                                              allowedCardTypes: [.bcmc])
-            configuration.excludedCardTypes = []
+                                              storedCardConfiguration: stored,
+                                              allowedCardTypes: [.bcmc, .visa, .maestro])
+            configuration.shouldShowSupportedCardLogos = false
+            configuration.shouldHideSecurityCodeFieldIfOptional = true
             return configuration
         }
 

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -17,9 +17,17 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     
     internal let style: FormTextItemStyle
     
+    internal let shouldShowSupportedCardLogos: Bool
+    
     private let localizationParameters: LocalizationParameters?
    
-    internal lazy var subitems: [FormItem] = [numberItem, supportedCardLogosItem]
+    internal lazy var subitems: [FormItem] = {
+        var subItems: [FormItem] = [numberItem]
+        if shouldShowSupportedCardLogos {
+            subItems.append(supportedCardLogosItem)
+        }
+        return subItems
+    }()
     
     internal lazy var numberItem: FormCardNumberItem = {
         let item = FormCardNumberItem(cardTypeLogos: cardTypeLogos,
@@ -36,16 +44,20 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     }()
     
     internal init(cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
+                  shouldShowSupportedCardLogos: Bool = true,
                   style: FormTextItemStyle,
                   localizationParameters: LocalizationParameters?) {
         self.cardTypeLogos = cardTypeLogos
+        self.shouldShowSupportedCardLogos = shouldShowSupportedCardLogos
         self.localizationParameters = localizationParameters
         self.style = style
         
-        observe(numberItem.$isActive) { [weak self] _ in
-            guard let self = self else { return }
-            // logo item should be visible when field is invalid after active state changes
-            self.supportedCardLogosItem.isHidden.wrappedValue = self.numberItem.isValid()
+        if shouldShowSupportedCardLogos {
+            observe(numberItem.$isActive) { [weak self] _ in
+                guard let self = self else { return }
+                // logo item should be visible when field is invalid after active state changes
+                self.supportedCardLogosItem.isHidden.wrappedValue = self.numberItem.isValid()
+            }
         }
     }
     

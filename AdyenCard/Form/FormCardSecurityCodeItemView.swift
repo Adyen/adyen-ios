@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -25,6 +25,7 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         }
 
         observe(item.$isOptional) { [weak self] _ in
+            self?.updateVisibility()
             self?.updateValidationStatus()
         }
         
@@ -56,6 +57,9 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         cardHintView.isHighlighted = false
     }
     
+    private func updateVisibility() {
+        isHidden = (item.shouldHideIfOptional && item.isOptional)
+    }
 }
 
 extension FormCardSecurityCodeItemView {
