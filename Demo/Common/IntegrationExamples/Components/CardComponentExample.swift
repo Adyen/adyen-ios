@@ -151,6 +151,7 @@ extension CardComponentExample: AdyenSessionDelegate {
 
 extension CardComponentExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {
-        // The implementation of this delegate method is not needed when using AdyenSession
+        let componentViewController = viewController(for: component)
+        presenter?.present(viewController: componentViewController, completion: nil)
     }
 }
