@@ -126,8 +126,10 @@ public final class GiftCardComponent: PresentableComponent,
 
     private lazy var formViewController: FormViewController = {
 
-        let formViewController = FormViewController(style: style)
-        formViewController.localizationParameters = localizationParameters
+        let formViewController = FormViewController(
+            style: style,
+            localizationParameters: localizationParameters
+        )
         formViewController.delegate = self
         formViewController.title = partialPaymentMethodType.partialPaymentMethod.displayInformation(using: localizationParameters).title
         formViewController.append(errorItem)

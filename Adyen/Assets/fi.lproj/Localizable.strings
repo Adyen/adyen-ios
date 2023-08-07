@@ -83,8 +83,11 @@
 "adyen.pix.copyButton" = "Kopioi koodi";
 "adyen.pix.instructions.copiedMessage" = "Koodi kopioitu leikepöydälle";
 "adyen.billingAddressSection.title" = "Laskutusosoite";
+"adyen.billingAddress.placeholder" = "Laskutusosoitteesi";
 "adyen.deliveryAddressSection.title" = "Toimitusosoite";
 "adyen.countryField.title" = "Maa";
+"adyen.countryField.placeholder" = "Maa";
+"adyen.countryField.invalid" = "Virheellinen maa";
 "adyen.addressField.title" = "Osoite";
 "adyen.addressField.placeholder" = "Osoite";
 "adyen.streetField.title" = "Katu";
@@ -190,3 +193,13 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "Haluatko varmasti poistaa kirjautumistietosi?";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "Poista";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Peruuta";
+"adyen.picker.search.empty.title" = "Tuloksia ei löytynyt";
+"adyen.picker.search.empty.subtitle" = "'%@' ei tuottanut tuloksia";
+"adyen.address.lookup.search.placeholder" = "Hae osoitteesi";
+"adyen.address.lookup.search.empty.title" = "Eikö osoitetta löydy?";
+"adyen.address.lookup.search.empty.subtitle" = "Voit myös #syöttää osoitteen manuaalisesti#";
+"adyen.address.lookup.search.empty.title.noResults" = "Tuloksia ei löytynyt";
+"adyen.address.lookup.search.empty.subtitle.noResults" = "'%@' ei tuottanut tuloksia. Yritä uudelleen tai käytä #manuaalista osoitteen syöttöä#";
+"adyen.address.lookup.item.validationFailureMessage.empty" = "Osoite vaaditaan";
+"adyen.address.lookup.item.validationFailureMessage.invalid" = "Virheellinen osoite";
+"adyen.address.lookup.search.manualEntryItem.title" = "Syötä osoite manuaalisesti";

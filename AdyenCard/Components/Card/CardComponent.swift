@@ -170,12 +170,14 @@ public class CardComponent: PresentableComponent,
     private lazy var securedViewController = SecuredViewController(child: cardViewController, style: configuration.style)
     
     internal lazy var cardViewController: CardViewController = {
+        
         let formViewController = CardViewController(configuration: configuration,
                                                     shopperInformation: configuration.shopperInformation,
                                                     formStyle: configuration.style,
                                                     payment: payment,
                                                     logoProvider: LogoURLProvider(environment: context.apiContext.environment),
                                                     supportedCardTypes: supportedCardTypes,
+                                                    initialCountryCode: initialCountryCode,
                                                     scope: String(describing: self),
                                                     localizationParameters: configuration.localizationParameters)
         formViewController.delegate = self
@@ -211,7 +213,47 @@ extension CardComponent: CardViewControllerDelegate {
         }
     }
     
+    internal func didSelectAddressLookup(_ handler: @escaping AddressLookupViewController.LookupProvider) {
+        
+        let viewModel = AddressLookupViewController.ViewModel(
+            localizationParameters: configuration.localizationParameters,
+            supportedCountryCodes: configuration.billingAddress.countryCodes,
+            initialCountry: initialCountryCode,
+            prefillAddress: cardViewController.items.lookupBillingAddressItem.value,
+            lookupProvider: handler
+        ) { [weak self] address in
+            guard let self else { return }
+            address.map { self.cardViewController.items.lookupBillingAddressItem.value = $0 }
+            self.viewController.dismiss(animated: true)
+        }
+        
+        let securedViewController = SecuredViewController(
+            child: AddressLookupViewController(viewModel: viewModel),
+            style: configuration.style
+        )
+        
+        viewController.present(securedViewController, animated: true)
+    }
 }
 
 @_spi(AdyenInternal)
 extension CardComponent: PublicKeyConsumer {}
+
+private extension CardComponent {
+    
+    private var initialCountryCode: String {
+        
+        if
+            let preferredCountry = configuration.shopperInformation?.billingAddress?.country,
+            let supportedCountryCodes = configuration.billingAddress.countryCodes,
+            supportedCountryCodes.isEmpty || supportedCountryCodes.contains(preferredCountry) {
+            return preferredCountry
+        }
+        
+        return
+            configuration.billingAddress.countryCodes?.first ??
+            payment?.countryCode ??
+            Locale.current.regionCode ??
+            CardComponent.Constant.defaultCountryCode
+    }
+}

@@ -64,8 +64,6 @@ class OnlineBankingComponentTests: XCTestCase {
     }
 
     private func getFormViewController() -> FormViewController {
-        let securedviewController = sut.viewController as! SecuredViewController
-        let childViewController = securedviewController.childViewController as! FormViewController
-        return childViewController
+        return (sut.viewController as! SecuredViewController<FormViewController>).childViewController
     }
 }

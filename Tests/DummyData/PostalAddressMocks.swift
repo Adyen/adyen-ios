@@ -7,6 +7,16 @@
 @_spi(AdyenInternal) import Adyen
 
 enum PostalAddressMocks {
+    
+    static var all: [PostalAddress] {
+        return [
+            newYorkPostalAddress,
+            losAngelesPostalAddress,
+            singaporePostalAddress,
+            emptyUSPostalAddress
+        ]
+    }
+    
     static let newYorkPostalAddress = PostalAddress(city: "New York",
                                                     country: "US",
                                                     houseNumberOrName: "14",
@@ -14,6 +24,7 @@ enum PostalAddressMocks {
                                                     stateOrProvince: "NY",
                                                     street: "8th Ave",
                                                     apartment: nil)
+    
     static let losAngelesPostalAddress = PostalAddress(city: "Los Angeles",
                                                        country: "US",
                                                        houseNumberOrName: "3310",
@@ -23,7 +34,7 @@ enum PostalAddressMocks {
                                                        apartment: nil)
     
     static let singaporePostalAddress = PostalAddress(city: "Singapore",
-                                                      country: "Singapore",
+                                                      country: "SG",
                                                       houseNumberOrName: "109",
                                                       postalCode: "179097",
                                                       stateOrProvince: "North East Community",
@@ -34,7 +45,7 @@ enum PostalAddressMocks {
                                                     country: "US",
                                                     houseNumberOrName: "",
                                                     postalCode: "",
-                                                    stateOrProvince: "AL",
+                                                    stateOrProvince: "",
                                                     street: "",
                                                     apartment: nil)
 }

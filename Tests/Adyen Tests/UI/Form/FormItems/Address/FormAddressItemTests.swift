@@ -21,13 +21,14 @@ class FormAddressItemTests: XCTestCase {
             configuration: .init(
                 supportedCountryCodes: ["NL", "US"]
             ),
+            presenter: nil,
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
-        XCTAssertEqual(formAddressItem.countryPickerItem.value.identifier, "NL")
+        XCTAssertEqual(formAddressItem.countryPickerItem.value!.identifier, "NL")
         
         formAddressItem.value = .init(country: "US")
-        XCTAssertEqual(formAddressItem.countryPickerItem.value.identifier, "US")
+        XCTAssertEqual(formAddressItem.countryPickerItem.value!.identifier, "US")
     }
     
     func testCountryPickerItemUpdateUnsupportedCountry() throws {
@@ -37,6 +38,7 @@ class FormAddressItemTests: XCTestCase {
             configuration: .init(
                 supportedCountryCodes: ["NL", "US"]
             ),
+            presenter: nil,
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
@@ -57,6 +59,7 @@ class FormAddressItemTests: XCTestCase {
         let formAddressItemWithHeader = FormAddressItem(
             initialCountry: "NL",
             configuration: .init(),
+            presenter: nil,
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
@@ -65,6 +68,7 @@ class FormAddressItemTests: XCTestCase {
         let formAddressItemWithOutHeader = FormAddressItem(
             initialCountry: "NL",
             configuration: .init(showsHeader: false),
+            presenter: nil,
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
@@ -82,6 +86,7 @@ class FormAddressItemTests: XCTestCase {
         let formAddressItem = FormAddressItem(
             initialCountry: "NL",
             configuration: .init(),
+            presenter: nil,
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
@@ -89,7 +94,7 @@ class FormAddressItemTests: XCTestCase {
         
         formAddressItem.updateOptionalStatus(isOptional: true)
         
-        wait(for: [expectation], timeout: 300)
+        wait(for: [expectation], timeout: 2)
     }
 }
 

@@ -83,8 +83,11 @@
 "adyen.pix.copyButton" = "Kopiraj kodo";
 "adyen.pix.instructions.copiedMessage" = "Koda je kopirana v odložišče";
 "adyen.billingAddressSection.title" = "Naslov za račun";
+"adyen.billingAddress.placeholder" = "Vaš naslov za račun";
 "adyen.deliveryAddressSection.title" = "Naslov za dostavo";
 "adyen.countryField.title" = "Država";
+"adyen.countryField.placeholder" = "Država";
+"adyen.countryField.invalid" = "Neveljavna država";
 "adyen.addressField.title" = "Naslov";
 "adyen.addressField.placeholder" = "Naslov";
 "adyen.streetField.title" = "Ulica";
@@ -190,3 +193,13 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "Ali ste prepričani, da želite odstraniti svoje poverilnice?";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "Odstrani";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Prekliči";
+"adyen.picker.search.empty.title" = "Nobenega rezultata ni bilo mogoče najti";
+"adyen.picker.search.empty.subtitle" = "»%@« se ni ujemalo z ničemer";
+"adyen.address.lookup.search.placeholder" = "Poiščite svoj naslov";
+"adyen.address.lookup.search.empty.title" = "Ne morete iskati svojega naslova?";
+"adyen.address.lookup.search.empty.subtitle" = "Vedno lahko #ročno vnesete svoj naslov#";
+"adyen.address.lookup.search.empty.title.noResults" = "Nobenega rezultata ni bilo mogoče najti";
+"adyen.address.lookup.search.empty.subtitle.noResults" = "»%@« se ni ujemalo z ničemer, poskusite znova ali uporabite #ročni vnos naslova#";
+"adyen.address.lookup.item.validationFailureMessage.empty" = "Naslov je obvezen";
+"adyen.address.lookup.item.validationFailureMessage.invalid" = "Neveljaven naslov";
+"adyen.address.lookup.search.manualEntryItem.title" = "Naslov vnesite ročno";
