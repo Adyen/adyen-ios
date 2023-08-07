@@ -92,9 +92,9 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         }
         
         let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel,
-                                                                           target: self,
-                                                                           action: #selector(cancelPressed))
+        component.viewController.navigationItem.leftBarButtonItem = .init(barButtonSystemItem: .cancel,
+                                                                          target: self,
+                                                                          action: #selector(cancelPressed))
         return navigation
     }
 
@@ -151,6 +151,7 @@ extension CardComponentExample: AdyenSessionDelegate {
 
 extension CardComponentExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {
-        // The implementation of this delegate method is not needed when using AdyenSession
+        let componentViewController = viewController(for: component)
+        presenter?.present(viewController: componentViewController, completion: nil)
     }
 }

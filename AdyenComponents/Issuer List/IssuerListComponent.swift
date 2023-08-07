@@ -79,7 +79,7 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     public var requiresModalPresentation: Bool = true
 
     // MARK: - Private
-    
+
     private func listItems(for searchText: String) -> [ListItem] {
         let issuers = filteredIssuers(for: searchText)
         return listItems(from: issuers)

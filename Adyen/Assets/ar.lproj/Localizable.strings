@@ -83,8 +83,11 @@
 "adyen.pix.copyButton" = "نسخ الرمز";
 "adyen.pix.instructions.copiedMessage" = "تم نسخ الرمز إلى الحافظة";
 "adyen.billingAddressSection.title" = "عنوان الفواتير";
+"adyen.billingAddress.placeholder" = "عنوانك الخاص بإرسال الفواتير";
 "adyen.deliveryAddressSection.title" = "عنوان التسليم";
 "adyen.countryField.title" = "البلد";
+"adyen.countryField.placeholder" = "البلد";
+"adyen.countryField.invalid" = "بلد غير صحيح";
 "adyen.addressField.title" = "العنوان";
 "adyen.addressField.placeholder" = "العنوان";
 "adyen.streetField.title" = "الشارع";
@@ -190,3 +193,13 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "هل ترغب بالتأكيد في إزالة بيانات الاعتماد الخاصة بك؟";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "إزالة";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "إلغاء";
+"adyen.picker.search.empty.title" = "لم يتم العثور على نتائج";
+"adyen.picker.search.empty.subtitle" = "٪ @ لم يتطابق مع أي شيء";
+"adyen.address.lookup.search.placeholder" = "ابحث عن عنوانك";
+"adyen.address.lookup.search.empty.title" = "لا تستطيع البحث عن عنوانك؟";
+"adyen.address.lookup.search.empty.subtitle" = "يمكنك دائمًا #إدخال عنوانك يدويًا#";
+"adyen.address.lookup.search.empty.title.noResults" = "لم يتم العثور على نتائج";
+"adyen.address.lookup.search.empty.subtitle.noResults" = "لم يتطابق '%@' مع أي شيء، حاول مرة أخرى أو استخدم #إدخال العنوان يدويًا#";
+"adyen.address.lookup.item.validationFailureMessage.empty" = "العنوان مطلوب";
+"adyen.address.lookup.item.validationFailureMessage.invalid" = "عنوان غير صحيح";
+"adyen.address.lookup.search.manualEntryItem.title" = "أدخل العنوان يدويًا";

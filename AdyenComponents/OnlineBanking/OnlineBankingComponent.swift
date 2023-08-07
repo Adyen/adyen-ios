@@ -124,8 +124,10 @@ public final class OnlineBankingComponent: PaymentComponent,
     }
 
     private lazy var formViewController: FormViewController = {
-        let formViewController = FormViewController(style: configuration.style)
-        formViewController.localizationParameters = configuration.localizationParameters
+        let formViewController = FormViewController(
+            style: configuration.style,
+            localizationParameters: configuration.localizationParameters
+        )
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         formViewController.append(issuerListPickerItem)
