@@ -179,7 +179,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
         
         let firstInvalidItemView = itemManager.flatItemViews
             .compactMap { $0 as? AnyFormValidatableItemView }
-            .first { $0.isValid }
+            .first { !$0.isValid }
         
         if let firstInvalidItemView {
             UIAccessibility.post(notification: .screenChanged, argument: firstInvalidItemView)
