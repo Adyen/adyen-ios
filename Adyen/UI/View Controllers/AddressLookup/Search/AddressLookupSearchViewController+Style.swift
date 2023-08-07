@@ -17,5 +17,5 @@ public struct AddressLookupSearchStyle: ViewStyle {
         return listItemStyle
     }()
     
-    public var emptyView: EmptyStateStyle = .init()
+    public var emptyView: EmptyStateViewStyle = .init()
 }

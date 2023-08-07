@@ -23,7 +23,7 @@ extension FormPickerSearchViewController {
         ///   - localizationParameters: The localization parameters.
         internal init(
             searchTerm: String = "",
-            style: EmptyStateStyle = .init(),
+            style: EmptyStateViewStyle = .init(),
             localizationParameters: LocalizationParameters? = nil
         ) {
             super.init(
