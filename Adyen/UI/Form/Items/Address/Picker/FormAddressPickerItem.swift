@@ -6,9 +6,9 @@
 
 import Foundation
 
-/// An address form item for address lookup.
+/// An address form item that allows picking an address on a separate screen.
 @_spi(AdyenInternal)
-public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?> {
+public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?> {
     
     private var initialCountry: String
     private var context: AddressViewModelBuilderContext
@@ -85,7 +85,7 @@ public final class FormAddressLookupItem: FormSelectableValueItem<PostalAddress?
 
 // MARK: - Convenience
 
-private extension FormAddressLookupItem {
+private extension FormAddressPickerItem {
     
     func updateContext() {
         guard let country = value?.country else { return }

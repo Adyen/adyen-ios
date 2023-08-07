@@ -96,7 +96,7 @@ extension CardComponent {
 
         /// Display full address form
         case full
-
+        
         /// Display simple form with only zip code field
         case postalCode
 
@@ -204,19 +204,6 @@ extension CardComponent {
             self.socialSecurityNumberMode = socialSecurityNumberMode
             self.installmentConfiguration = installmentConfiguration
             self.billingAddress = billingAddress
-        }
-
-        internal func bcmcConfiguration() -> Configuration {
-            var storedCardConfiguration = stored
-            storedCardConfiguration.showsSecurityCodeField = false
-            var configuration = Configuration(style: style,
-                                              showsHolderNameField: showsHolderNameField,
-                                              showsStorePaymentMethodField: showsStorePaymentMethodField,
-                                              showsSecurityCodeField: false,
-                                              storedCardConfiguration: storedCardConfiguration,
-                                              allowedCardTypes: [.bcmc])
-            configuration.excludedCardTypes = []
-            return configuration
         }
 
         internal func showAdditionalAuthenticationFields(for issuingCountryCode: String?) -> Bool {

@@ -46,15 +46,10 @@ private extension AddressLookupViewController {
         )
     }
     
-    private func buildFormViewController(prefillAddress: PostalAddress?) -> AddressLookupFormViewController {
+    private func buildFormViewController(prefillAddress: PostalAddress?) -> AddressInputFormViewController {
         
-        AddressLookupFormViewController(
-            formStyle: viewModel.style.form,
-            localizationParameters: viewModel.localizationParameters,
-            initialCountry: viewModel.initialCountry,
-            prefillAddress: prefillAddress,
-            supportedCountryCodes: viewModel.supportedCountryCodes,
-            delegate: self
+        AddressInputFormViewController(
+            viewModel: viewModel.addressInputFormViewModel(with: prefillAddress)
         )
     }
 }
@@ -73,21 +68,6 @@ extension AddressLookupViewController: AddressLookupSearchDelegate {
     
     internal func addressLookupSearchCancel() {
         viewModel.handleDismissSearchTapped()
-    }
-}
-
-extension AddressLookupViewController: AddressLookupFormViewControllerDelegate {
-    
-    internal func addressLookupFormShowSearch(currentInput: PostalAddress) {
-        viewModel.handleShowSearchTapped(currentInput: currentInput)
-    }
-    
-    internal func addressLookupFormSubmit(validAddress: PostalAddress) {
-        viewModel.handleSubmit(address: validAddress)
-    }
-    
-    internal func addressLookupFormDismiss() {
-        viewModel.handleDismissAddressLookupTapped()
     }
 }
 
@@ -113,5 +93,23 @@ private extension AddressLookupViewController {
         ) {
             self.viewControllers = [viewController]
         }
+    }
+}
+
+private extension AddressLookupViewController.ViewModel {
+    
+    func addressInputFormViewModel(
+        with prefillAddress: PostalAddress?
+    ) -> AddressInputFormViewController.ViewModel {
+        
+        .init(
+            style: style.form,
+            localizationParameters: localizationParameters,
+            initialCountry: initialCountry,
+            prefillAddress: prefillAddress,
+            supportedCountryCodes: supportedCountryCodes,
+            handleShowSearch: handleShowSearchTapped(currentInput:),
+            completionHandler: handleAddressInputFormCompletion(validAddress:)
+        )
     }
 }

@@ -7,11 +7,11 @@
 @_spi(AdyenInternal) @testable import Adyen
 import XCTest
 
-class FormAddressLookupItemTests: XCTestCase {
+class FormAddressPickerItemTests: XCTestCase {
     
     func testEmptyPrefillAddress() {
         
-        let addressLookupItem = FormAddressLookupItem(
+        let addressLookupItem = FormAddressPickerItem(
             initialCountry: "NL",
             prefillAddress: nil,
             style: .init(),
@@ -28,7 +28,7 @@ class FormAddressLookupItemTests: XCTestCase {
     
     func testPrefillAddress() {
         
-        let addressLookupItem = FormAddressLookupItem(
+        let addressLookupItem = FormAddressPickerItem(
             initialCountry: "NL",
             prefillAddress: PostalAddressMocks.singaporePostalAddress,
             style: .init(),
@@ -41,7 +41,7 @@ class FormAddressLookupItemTests: XCTestCase {
     
     func testValidationFailureMessage() {
         
-        let addressLookupItem = FormAddressLookupItem(
+        let addressLookupItem = FormAddressPickerItem(
             initialCountry: "NL",
             prefillAddress: nil,
             style: .init(),
@@ -54,7 +54,7 @@ class FormAddressLookupItemTests: XCTestCase {
     }
     
     func testFormattedValue() {
-        let addressLookupItem = FormAddressLookupItem(
+        let addressLookupItem = FormAddressPickerItem(
             initialCountry: "NL",
             prefillAddress: nil,
             style: .init(),
