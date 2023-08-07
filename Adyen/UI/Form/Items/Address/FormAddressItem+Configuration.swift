@@ -18,8 +18,6 @@ public extension FormAddressItem {
         internal let localizationParameters: LocalizationParameters?
         /// Supported country codes. If `nil`, all country codes are listed.
         internal let supportedCountryCodes: [String]?
-        /// Whether to show a title header.
-        internal let showsHeader: Bool
         
         /// Initializes the form address item configuration.
         /// - Parameters:
@@ -30,13 +28,11 @@ public extension FormAddressItem {
         public init(
             style: AddressStyle = AddressStyle(),
             localizationParameters: LocalizationParameters? = nil,
-            supportedCountryCodes: [String]? = nil,
-            showsHeader: Bool = true
+            supportedCountryCodes: [String]? = nil
         ) {
             self.style = style
             self.localizationParameters = localizationParameters
             self.supportedCountryCodes = supportedCountryCodes
-            self.showsHeader = showsHeader
         }
     }
 }

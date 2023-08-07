@@ -24,10 +24,31 @@ internal class CardViewController: FormViewController {
     private let supportedCardTypes: [CardType]
 
     private let formStyle: FormComponentStyle
-
-    internal var items: ItemsProvider
     
     private var issuingCountryCode: String?
+    
+    private let payment: Payment?
+    
+    private let initialCountryCode: String
+    
+    private let scope: String
+    
+    private let cardLogos: [FormCardLogosItem.CardTypeLogo]
+    
+    internal lazy var items = {
+        
+        ItemsProvider(
+            formStyle: formStyle,
+            payment: payment,
+            configuration: configuration,
+            shopperInformation: shopperInformation,
+            cardLogos: cardLogos,
+            scope: scope,
+            initialCountryCode: initialCountryCode,
+            localizationParameters: localizationParameters,
+            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+        )
+    }()
 
     // MARK: Init view controller
 
@@ -39,6 +60,7 @@ internal class CardViewController: FormViewController {
     ///   - payment: The payment object to visualize payment amount.
     ///   - logoProvider: The provider for logo image URLs.
     ///   - supportedCardTypes: The list of supported cards.
+    ///   - initialCountryCode: The initially used country code for the billing address
     ///   - scope: The view's scope.
     ///   - localizationParameters: Localization parameters.
     internal init(configuration: CardComponent.Configuration,
@@ -47,29 +69,25 @@ internal class CardViewController: FormViewController {
                   payment: Payment?,
                   logoProvider: LogoURLProvider,
                   supportedCardTypes: [CardType],
+                  initialCountryCode: String,
                   scope: String,
                   localizationParameters: LocalizationParameters?) {
         self.configuration = configuration
         self.shopperInformation = shopperInformation
         self.supportedCardTypes = supportedCardTypes
         self.formStyle = formStyle
-
-        let countryCode = payment?.countryCode ?? Locale.current.regionCode ?? CardComponent.Constant.defaultCountryCode
-        let cardLogos = supportedCardTypes.map {
-            FormCardLogosItem.CardTypeLogo(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
+        self.scope = scope
+        self.initialCountryCode = initialCountryCode
+        self.payment = payment
+        
+        self.cardLogos = supportedCardTypes.map {
+            .init(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
         }
-
-        self.items = ItemsProvider(formStyle: formStyle,
-                                   payment: payment,
-                                   configuration: configuration,
-                                   shopperInformation: shopperInformation,
-                                   cardLogos: cardLogos,
-                                   scope: scope,
-                                   defaultCountryCode: countryCode,
-                                   localizationParameters: localizationParameters,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
-        super.init(style: formStyle)
-        self.localizationParameters = localizationParameters
+        
+        super.init(
+            style: formStyle,
+            localizationParameters: localizationParameters
+        )
     }
 
     // MARK: - View lifecycle
@@ -114,13 +132,14 @@ internal class CardViewController: FormViewController {
         let requiredFields: Set<AddressField>
         
         switch configuration.billingAddress.mode {
-        case .full:
-            address = items.billingAddressItem.value
-            requiredFields = items.billingAddressItem.addressViewModel.requiredFields
+        case .lookup, .full:
+            guard let lookupBillingAddress = items.billingAddressPickerItem.value else { return nil }
+            address = lookupBillingAddress
+            requiredFields = items.billingAddressPickerItem.addressViewModel.requiredFields
             
         case .postalCode:
             address = PostalAddress(postalCode: items.postalCodeItem.value)
-            requiredFields = [AddressField.postalCode]
+            requiredFields = [.postalCode]
             
         case .none:
             return nil
@@ -183,8 +202,8 @@ internal class CardViewController: FormViewController {
     private func updateBillingAddressOptionalStatus(brands: [CardBrand]) {
         let isOptional = configuration.billingAddress.isOptional(for: brands.map(\.type))
         switch configuration.billingAddress.mode {
-        case .full:
-            items.billingAddressItem.updateOptionalStatus(isOptional: isOptional)
+        case .lookup, .full:
+            items.billingAddressPickerItem.updateOptionalStatus(isOptional: isOptional)
         case .postalCode:
             items.postalCodeItem.updateOptionalStatus(isOptional: isOptional)
         case .none:
@@ -246,18 +265,32 @@ internal class CardViewController: FormViewController {
         if let installmentsItem = items.installmentsItem {
             append(installmentsItem)
         }
-
-        switch configuration.billingAddress.mode {
-        case .full:
-            append(items.billingAddressItem)
-        case .postalCode:
-            append(items.postalCodeItem)
-        case .none:
-            break
-        }
-
+        
         if configuration.showsStorePaymentMethodField {
             append(items.storeDetailsItem)
+            append(FormSpacerItem())
+        }
+
+        switch configuration.billingAddress.mode {
+        case let .lookup(handler):
+            let item = items.billingAddressPickerItem
+            item.selectionHandler = { [weak cardDelegate] in
+                cardDelegate?.didSelectAddressPicker(lookupProvider: handler)
+            }
+            append(item)
+            
+        case .full:
+            let item = items.billingAddressPickerItem
+            item.selectionHandler = { [weak cardDelegate] in
+                cardDelegate?.didSelectAddressPicker(lookupProvider: nil)
+            }
+            append(item)
+            
+        case .postalCode:
+            append(items.postalCodeItem)
+            
+        case .none:
+            break
         }
 
         append(FormSpacerItem())
@@ -269,7 +302,7 @@ internal class CardViewController: FormViewController {
         guard let shopperInformation = shopperInformation else { return }
 
         shopperInformation.billingAddress.map { billingAddress in
-            items.billingAddressItem.value = billingAddress
+            items.billingAddressPickerItem.value = billingAddress
             billingAddress.postalCode.map { items.postalCodeItem.value = $0 }
         }
         shopperInformation.card.map { items.holderNameItem.value = $0.holderName }
@@ -279,7 +312,7 @@ internal class CardViewController: FormViewController {
     private func setupViewRelations() {
         observe(items.numberContainerItem.numberItem.publisher) { [weak self] in self?.didChange(pan: $0) }
         observe(items.numberContainerItem.numberItem.$binValue) { [weak self] in self?.didChange(bin: $0) }
-
+        
         items.button.buttonSelectionHandler = { [weak cardDelegate] in
             cardDelegate?.didSelectSubmitButton()
         }
@@ -320,7 +353,9 @@ internal class CardViewController: FormViewController {
 }
 
 internal protocol CardViewControllerDelegate: AnyObject {
-
+    
+    func didSelectAddressPicker(lookupProvider: AddressLookupViewController.LookupProvider?)
+    
     func didSelectSubmitButton()
 
     func didChange(bin: String)
