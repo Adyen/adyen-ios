@@ -141,7 +141,7 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
     /// Fallback option for any other scheme name
     case other(named: String)
     
-    // swiftlint:disable cyclomatic_complexity function_body_length
+    // swiftlint:disable cyclomatic_complexity
     public init(rawValue: String) {
         switch rawValue {
         case "accel": self = .accel
@@ -241,6 +241,7 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
     }
 
     /// The brand name of the card type
+    @_spi(AdyenInternal)
     public var name: String {
         switch self {
         case .accel: return "Accel"
@@ -289,8 +290,7 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
         case let .other(name): return name.replacingOccurrences(of: "_", with: " ")
         }
     }
-    
-    // swiftlint:enable cyclomatic_complexity function_body_length
+    // swiftlint:enable cyclomatic_complexity
 }
 
 extension CardType {
