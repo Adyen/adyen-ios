@@ -25,9 +25,6 @@ extension AdyenSession: ActionComponentDelegate {
             AdyenAssertion.assertionFailure(message: "Missing resultCode.")
             return
         }
-        // keeping deprecated one until v6
-        delegate?.didComplete(with: SessionPaymentResultCode(paymentResultCode: resultCode),
-                              component: currentComponent, session: self)
         let result = AdyenSessionResult(resultCode: SessionPaymentResultCode(paymentResultCode: resultCode),
                                         encodedResult: sessionContext.sessionResult)
         delegate?.didComplete(with: result, component: currentComponent, session: self)
