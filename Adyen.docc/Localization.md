@@ -86,3 +86,14 @@ List of currently avaialble locales:
 | Slovenian | sl-SI | |
 | Spanish | es-ES | |
 | Swedish | sv-SE | |
+
+## Add new locale
+
+If Adyen SDK does not satisfy your app's localisation:
+1) make sure respected locale is listed in `CFBundleLocalizations` property of your app's `Info.plist` file;
+2) translate [all keys](https://github.com/Adyen/adyen-ios/blob/develop/Adyen/Assets/en-US.lproj/Localizable.strings);
+3) create new `Localizable.strings` file for a respected locale in Xcode (ex. `uk_UA.lproj/Localizable.string`).
+
+> Note: File name, bundle and separator could be configured via `LocalizationParameters`.
+
+> ⚠️ Enforced locale is not possible for new locales.
