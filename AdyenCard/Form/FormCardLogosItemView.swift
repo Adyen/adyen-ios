@@ -33,7 +33,7 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
         collectionView.register(CardLogoCell.self, forCellWithReuseIdentifier: CardLogoCell.reuseIdentifier)
         collectionView.dataSource = self
         
-        collectionView.accessibilityLabel = "List of accepted credit cards" // TODO: Localize
+        collectionView.accessibilityLabel = "Accepted cards" // TODO: Localize
         collectionView.accessibilityValue = item.cardLogos.map(\.type.name).joined(separator: ", ")
         collectionView.isAccessibilityElement = true
     }
@@ -91,7 +91,6 @@ extension FormCardLogosItemView {
             super.init(frame: frame)
             contentView.addSubview(cardTypeImageView)
             cardTypeImageView.adyen.anchor(inside: contentView)
-            accessibilityTraits = .image
         }
         
         @available(*, unavailable)
