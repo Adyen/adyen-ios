@@ -71,7 +71,7 @@ extension ApplePayComponent {
         
         /// The payment request object needed for Apple Pay. Must contain all the required fileds
         /// such as `merchantIdentifier`, `summaryItems`, `currencyCode`, and `countryCode`.
-        public private(set) var paymentRequest: PKPaymentRequest?
+        internal var paymentRequest: PKPaymentRequest?
 
         /// Initializes the configuration.
         ///
