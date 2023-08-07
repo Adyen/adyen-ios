@@ -1,11 +1,11 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import SwiftUI
 import AdyenCard
+import SwiftUI
 
 @available(iOS 13.0.0, *)
 
@@ -20,7 +20,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var showsStorePaymentMethodField = true
     @Published internal var showsStoredCardSecurityCodeField = true
     @Published internal var showsSecurityCodeField = true
-    @Published internal var addressMode: CardComponent.AddressFormType = .none
+    @Published internal var addressMode: CardComponentConfiguration.AddressFormType = .none
     @Published internal var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
     @Published internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
     @Published internal var allowDisablingStoredPaymentMethods: Bool = false

@@ -79,8 +79,11 @@
 "adyen.pix.copyButton" = "複製代碼";
 "adyen.pix.instructions.copiedMessage" = "已將代碼複製到剪貼簿";
 "adyen.billingAddressSection.title" = "帳單地址";
+"adyen.billingAddress.placeholder" = "您的帳單地址";
 "adyen.deliveryAddressSection.title" = "派送地址";
 "adyen.countryField.title" = "國家/地區";
+"adyen.countryField.placeholder" = "國家/地區";
+"adyen.countryField.invalid" = "國家／地區無效";
 "adyen.addressField.title" = "地址";
 "adyen.addressField.placeholder" = "地址";
 "adyen.streetField.title" = "街道";
@@ -185,3 +188,13 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "是否確定要移除您的認證？";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "移除";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "取消";
+"adyen.picker.search.empty.title" = "找不到任何結果";
+"adyen.picker.search.empty.subtitle" = "「%@」不符合任何搜尋內容";
+"adyen.address.lookup.search.placeholder" = "搜尋您的地址";
+"adyen.address.lookup.search.empty.title" = "無法搜尋您的地址？";
+"adyen.address.lookup.search.empty.subtitle" = "可以隨時#手動輸入您的地址#";
+"adyen.address.lookup.search.empty.title.noResults" = "找不到任何結果";
+"adyen.address.lookup.search.empty.subtitle.noResults" = "「%@」不符合任何搜尋內容，請再試一次或#手動輸入地址#";
+"adyen.address.lookup.item.validationFailureMessage.empty" = "必須填寫地址";
+"adyen.address.lookup.item.validationFailureMessage.invalid" = "地址無效";
+"adyen.address.lookup.search.manualEntryItem.title" = "手動輸入地址";
