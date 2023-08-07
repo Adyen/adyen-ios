@@ -32,10 +32,6 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
         collectionView.adyen.anchor(inside: self, with: UIEdgeInsets(top: 4, left: 16, bottom: -8, right: -16))
         collectionView.register(CardLogoCell.self, forCellWithReuseIdentifier: CardLogoCell.reuseIdentifier)
         collectionView.dataSource = self
-        
-        collectionView.accessibilityLabel = "Accepted cards" // TODO: Localize
-        collectionView.accessibilityValue = item.cardLogos.map(\.type.name).joined(separator: ", ")
-        collectionView.isAccessibilityElement = true
     }
 }
 
@@ -47,7 +43,7 @@ extension FormCardLogosItemView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardLogoCell.reuseIdentifier, for: indexPath)
         if let cell = cell as? CardLogoCell, let logo = item.cardLogos.adyen[safeIndex: indexPath.row] {
-            cell.update(imageUrl: logo.url, style: item.style.icon)
+            cell.update(imageUrl: logo.url, altText: logo.type.name, style: item.style.icon)
         }
         return cell
     }
@@ -98,8 +94,9 @@ extension FormCardLogosItemView {
             fatalError("init(coder:) has not been implemented")
         }
         
-        internal func update(imageUrl: URL, style: ImageStyle) {
+        internal func update(imageUrl: URL, altText: String, style: ImageStyle) {
             cardTypeImageView.imageURL = imageUrl
+            cardTypeImageView.updateAltText(altText)
             
             cardTypeImageView.layer.masksToBounds = style.clipsToBounds
             cardTypeImageView.layer.borderWidth = style.borderWidth
