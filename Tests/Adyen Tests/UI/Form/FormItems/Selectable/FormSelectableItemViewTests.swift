@@ -10,7 +10,7 @@ import XCTest
 
 fileprivate let placeholderText = "Placeholder"
 
-fileprivate class FormSelectableValueItemMock: FormSelectableValueItem<String> {
+fileprivate class FormSelectableValueItemMock: FormSelectableValueItem<String?> {
     required init() {
         super.init(value: "", style: .init(), placeholder: placeholderText)
     }

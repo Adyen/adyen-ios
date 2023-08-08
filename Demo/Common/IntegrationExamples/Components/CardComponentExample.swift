@@ -92,9 +92,9 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         }
         
         let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel,
-                                                                           target: self,
-                                                                           action: #selector(cancelPressed))
+        component.viewController.navigationItem.leftBarButtonItem = .init(barButtonSystemItem: .cancel,
+                                                                          target: self,
+                                                                          action: #selector(cancelPressed))
         return navigation
     }
 
