@@ -117,10 +117,10 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
 /// A type-erased form value item view that provides a validation check
 @_spi(AdyenInternal)
 public protocol AnyFormValidatableValueItemView: AnyFormValueItemView {
-    
+
     /// Invoke validation check. Performs all necessary UI transformations based on a validation result.
     func showValidation()
-    
+
     /// Whether or not the value is valid
     var isValid: Bool { get }
 }

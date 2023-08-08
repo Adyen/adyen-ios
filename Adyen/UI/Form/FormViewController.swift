@@ -172,7 +172,6 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
 
     @_spi(AdyenInternal)
     public func showValidation() {
-        
         let validatableItemViews = itemManager.flatItemViews
             .compactMap { $0 as? AnyFormValidatableValueItemView }
         

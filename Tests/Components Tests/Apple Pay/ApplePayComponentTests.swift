@@ -265,7 +265,7 @@ class ApplePayComponentTest: XCTestCase {
                                                                 merchantIdentifier: "test_id")
         configuration.requiredBillingContactFields = expectedRequiredBillingFields
         configuration.requiredShippingContactFields = expectedRequiredShippingFields
-        let paymentRequest = configuration.createPaymentRequest(supportedNetworks: paymentMethod.supportedNetworks)
+        let paymentRequest = configuration.paymentRequest(with: paymentMethod.supportedNetworks)
         XCTAssertEqual(paymentRequest.paymentSummaryItems, expectedSummaryItems)
         XCTAssertEqual(paymentRequest.merchantCapabilities, PKMerchantCapability.capability3DS)
         XCTAssertEqual(paymentRequest.currencyCode, currencyCode)
@@ -294,7 +294,7 @@ class ApplePayComponentTest: XCTestCase {
                                                                 merchantIdentifier: "test_id")
         configuration.requiredBillingContactFields = expectedRequiredBillingFields
         configuration.requiredShippingContactFields = expectedRequiredShippingFields
-        let paymentRequest = configuration.createPaymentRequest(supportedNetworks: paymentMethod.supportedNetworks)
+        let paymentRequest = configuration.paymentRequest(with: paymentMethod.supportedNetworks)
 
         XCTAssertEqual(paymentRequest.paymentSummaryItems.count, 1)
         XCTAssertEqual(paymentRequest.paymentSummaryItems[0].label, "TEST")
@@ -306,6 +306,78 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(paymentRequest.countryCode, payment.countryCode)
         XCTAssertEqual(paymentRequest.requiredBillingContactFields, expectedRequiredBillingFields)
         XCTAssertEqual(paymentRequest.requiredShippingContactFields, expectedRequiredShippingFields)
+    }
+    
+    @available(iOS 16.0, *)
+    func testNewInitSuccess() {
+        let request = PKPaymentRequest()
+        request.merchantIdentifier = "test_id"
+        request.countryCode = getRandomCountryCode()
+        request.currencyCode = getRandomCurrencyCode()
+        request.merchantCapabilities = [.capability3DS, .capabilityCredit]
+        request.paymentSummaryItems = [
+            PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
+            PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
+        ]
+        
+        request.recurringPaymentRequest = PKRecurringPaymentRequest(paymentDescription: "recurring",
+                                                                    regularBilling: .init(label: "recurring item", amount: 1500, type: .final),
+                                                                    managementURL: URL(string: "test")!)
+        
+        let config = try! ApplePayComponent.Configuration(paymentRequest: request)
+        
+        let component = try! ApplePayComponent(paymentMethod: paymentMethod, context: Dummy.context, configuration: config)
+        
+        XCTAssertEqual(component.paymentRequest.countryCode, request.countryCode)
+        XCTAssertEqual(component.paymentRequest.currencyCode, request.currencyCode)
+        XCTAssertEqual(component.paymentRequest.paymentSummaryItems, request.paymentSummaryItems)
+        XCTAssertNotNil(component.paymentRequest.recurringPaymentRequest)
+        XCTAssertEqual(component.paymentRequest.supportedNetworks, paymentMethod.supportedNetworks)
+    }
+    
+    func testNewInitMissingMerchantIdenfitifer() {
+        let request = PKPaymentRequest()
+        request.currencyCode = getRandomCurrencyCode()
+        request.countryCode = getRandomCountryCode()
+        request.paymentSummaryItems = [
+            PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
+            PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
+        ]
+        
+        XCTAssertThrowsError(try ApplePayComponent.Configuration(paymentRequest: request))
+    }
+    
+    func testNewInitMissingCountryCode() {
+        let request = PKPaymentRequest()
+        request.merchantIdentifier = "test_id"
+        request.currencyCode = getRandomCurrencyCode()
+        request.paymentSummaryItems = [
+            PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
+            PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
+        ]
+        
+        XCTAssertThrowsError(try ApplePayComponent.Configuration(paymentRequest: request))
+    }
+    
+    func testNewInitMissingCurrencyCode() {
+        let request = PKPaymentRequest()
+        request.merchantIdentifier = "test_id"
+        request.countryCode = getRandomCountryCode()
+        request.paymentSummaryItems = [
+            PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
+            PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
+        ]
+        
+        XCTAssertThrowsError(try ApplePayComponent.Configuration(paymentRequest: request))
+    }
+    
+    func testNewInitMissingSummaryItems() {
+        let request = PKPaymentRequest()
+        request.merchantIdentifier = "test_id"
+        request.currencyCode = getRandomCurrencyCode()
+        request.countryCode = getRandomCountryCode()
+        
+        XCTAssertThrowsError(try ApplePayComponent.Configuration(paymentRequest: request))
     }
 
     func testBrandsFiltering() {
