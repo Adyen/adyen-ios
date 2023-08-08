@@ -163,12 +163,12 @@
 		81BBB34B2A692F6500AF1F9E /* FormPickerSearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BBB34A2A692F6500AF1F9E /* FormPickerSearchViewControllerTests.swift */; };
 		81BBB34D2A6938A400AF1F9E /* FormAddressPickerItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BBB34C2A6938A400AF1F9E /* FormAddressPickerItemTests.swift */; };
 		81BBB34F2A694C9300AF1F9E /* FormPickerItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BBB34E2A694C9300AF1F9E /* FormPickerItemTests.swift */; };
+		81BBB6742A82792100C1A04B /* UIView+Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BBB6732A82792100C1A04B /* UIView+Accessibility.swift */; };
 		81C400642A3B0C58007EC51C /* FormSearchButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C400632A3B0C58007EC51C /* FormSearchButtonItem.swift */; };
 		81C400672A3B0D8F007EC51C /* FormSearchButtonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C400662A3B0D8F007EC51C /* FormSearchButtonItemView.swift */; };
 		81C4006B2A40A526007EC51C /* FormAddressPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C4006A2A40A526007EC51C /* FormAddressPickerItem.swift */; };
 		81C4006D2A41A2BC007EC51C /* FormAddressPickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C4006C2A41A2BC007EC51C /* FormAddressPickerItemView.swift */; };
 		81D8E2E92A5C06AC00BC12FD /* KeyboardObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D8E2E82A5C06AC00BC12FD /* KeyboardObserverTests.swift */; };
-		81DB85002A8133920008CF9C /* UIImageView+AltText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DB84FF2A8133920008CF9C /* UIImageView+AltText.swift */; };
 		81DC5A552A77ED0400DBF2D1 /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = 81DC5A542A77ED0400DBF2D1 /* Adyen3DS2 */; };
 		81DC5A572A77ED0F00DBF2D1 /* AdyenAuthentication in Frameworks */ = {isa = PBXBuildFile; productRef = 81DC5A562A77ED0F00DBF2D1 /* AdyenAuthentication */; };
 		81DC5A592A79287400DBF2D1 /* AddressInputFormViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DC5A582A79287400DBF2D1 /* AddressInputFormViewControllerTests.swift */; };
@@ -1338,6 +1338,7 @@
 		81BBB34A2A692F6500AF1F9E /* FormPickerSearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerSearchViewControllerTests.swift; sourceTree = "<group>"; };
 		81BBB34C2A6938A400AF1F9E /* FormAddressPickerItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAddressPickerItemTests.swift; sourceTree = "<group>"; };
 		81BBB34E2A694C9300AF1F9E /* FormPickerItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItemTests.swift; sourceTree = "<group>"; };
+		81BBB6732A82792100C1A04B /* UIView+Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Accessibility.swift"; sourceTree = "<group>"; };
 		81C4005F2A3A0AF3007EC51C /* AddressLookupSearchViewController+EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressLookupSearchViewController+EmptyView.swift"; sourceTree = "<group>"; };
 		81C400632A3B0C58007EC51C /* FormSearchButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSearchButtonItem.swift; sourceTree = "<group>"; };
 		81C400662A3B0D8F007EC51C /* FormSearchButtonItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSearchButtonItemView.swift; sourceTree = "<group>"; };
@@ -1345,7 +1346,6 @@
 		81C4006C2A41A2BC007EC51C /* FormAddressPickerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAddressPickerItemView.swift; sourceTree = "<group>"; };
 		81C4006F2A4347FD007EC51C /* FormErrorItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormErrorItemTests.swift; sourceTree = "<group>"; };
 		81D8E2E82A5C06AC00BC12FD /* KeyboardObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardObserverTests.swift; sourceTree = "<group>"; };
-		81DB84FF2A8133920008CF9C /* UIImageView+AltText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+AltText.swift"; sourceTree = "<group>"; };
 		81DC5A582A79287400DBF2D1 /* AddressInputFormViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInputFormViewControllerTests.swift; sourceTree = "<group>"; };
 		81DC5A5C2A7BADB200DBF2D1 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		81EA6C112A44836E0071A141 /* FormAddressItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAddressItemTests.swift; sourceTree = "<group>"; };
@@ -3403,7 +3403,7 @@
 			isa = PBXGroup;
 			children = (
 				81B001C12A55C5C10015BFA3 /* UISearchBar+Prominent.swift */,
-				81DB84FF2A8133920008CF9C /* UIImageView+AltText.swift */,
+				81BBB6732A82792100C1A04B /* UIView+Accessibility.swift */,
 				E2C0E0C0220D7E5E008616F6 /* SubmitButton.swift */,
 				81A2E3BF2A5C453F00CF5F9C /* LinkTextView.swift */,
 				E28098C5220DCF3F0087928F /* NetworkImageView.swift */,
@@ -6189,6 +6189,7 @@
 				E216D3C3221AEDBE0013CBCF /* Formatter.swift in Sources */,
 				F9B798CB23AB706D00A2103C /* ListComponentStyle.swift in Sources */,
 				E2B3C216233507030067891D /* UIColorHelpers.swift in Sources */,
+				81BBB6742A82792100C1A04B /* UIView+Accessibility.swift in Sources */,
 				F9AC61C624376C9B0062A00D /* AdyenScope.swift in Sources */,
 				00EB3F54291543C700E2B67C /* SearchViewController.swift in Sources */,
 				E7085912261F1C8E00D0153B /* FormAddressItem.swift in Sources */,
@@ -6349,7 +6350,6 @@
 				81BA08372A49C93100308160 /* FormSelectableValueItemView.swift in Sources */,
 				A0DE8F6D26CEA04500F2F1E8 /* Installments.swift in Sources */,
 				F939CD7725EE56BA00018DEC /* LoadingComponent.swift in Sources */,
-				81DB85002A8133920008CF9C /* UIImageView+AltText.swift in Sources */,
 				E7806EBD26147AB700101DBB /* ViewControllerDelegate.swift in Sources */,
 				E749FD1E23CF4998000D18BA /* NavigationStyle.swift in Sources */,
 				F9354BED23A7C34D00A6760B /* ButtonStyle.swift in Sources */,

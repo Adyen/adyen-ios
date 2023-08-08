@@ -96,7 +96,10 @@ extension FormCardLogosItemView {
         
         internal func update(imageUrl: URL, altText: String, style: ImageStyle) {
             cardTypeImageView.imageURL = imageUrl
-            cardTypeImageView.updateAltText(altText)
+            
+            cardTypeImageView.isAccessibilityElement = true
+            cardTypeImageView.accessibilityValue = altText
+            cardTypeImageView.accessibilityTraits.insert(.image)
             
             cardTypeImageView.layer.masksToBounds = style.clipsToBounds
             cardTypeImageView.layer.borderWidth = style.borderWidth
