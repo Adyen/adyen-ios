@@ -9,7 +9,7 @@ import UIKit
 /// An abstract view representing a validatable value item.
 @_spi(AdyenInternal)
 open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValueItem<ValueType>>:
-    FormValueItemView<ValueType, FormTextItemStyle, ItemType>, AnyFormValidatableItemView {
+    FormValueItemView<ValueType, FormTextItemStyle, ItemType>, AnyFormValidatableValueItemView {
     
     private var itemObserver: Observation?
     
@@ -71,7 +71,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         item.isValid()
     }
     
-    override public func validate() {
+    public func showValidation() {
         updateValidationStatus(forced: true)
     }
     
@@ -114,8 +114,12 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     }
 }
 
+/// A type-erased form value item view that provides a validation check
 @_spi(AdyenInternal)
-public protocol AnyFormValidatableItemView {
+public protocol AnyFormValidatableValueItemView: AnyFormValueItemView {
+    
+    /// Invoke validation check. Performs all necessary UI transformations based on a validation result.
+    func showValidation()
     
     /// Whether or not the value is valid
     var isValid: Bool { get }

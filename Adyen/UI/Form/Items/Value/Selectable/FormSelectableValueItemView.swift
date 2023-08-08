@@ -124,7 +124,7 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
         
         valueLabel.text = formattedValue
         valueLabel.textColor = item.style.text.color
-        validate()
+        showValidation()
     }
     
     private func configureConstraints() {

@@ -173,13 +173,12 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     @_spi(AdyenInternal)
     public func showValidation() {
         
-        itemManager.flatItemViews
-            .compactMap { $0 as? AnyFormValueItemView }
-            .forEach { $0.validate() }
+        let validatableItemViews = itemManager.flatItemViews
+            .compactMap { $0 as? AnyFormValidatableValueItemView }
         
-        let firstInvalidItemView = itemManager.flatItemViews
-            .compactMap { $0 as? AnyFormValidatableItemView }
-            .first { !$0.isValid }
+        validatableItemViews.forEach { $0.showValidation() }
+        
+        let firstInvalidItemView = validatableItemViews.first { !$0.isValid }
         
         if let firstInvalidItemView {
             UIAccessibility.post(notification: .screenChanged, argument: firstInvalidItemView)
