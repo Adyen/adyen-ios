@@ -37,7 +37,7 @@ public protocol AnalyticsProviderProtocol: TelemetryTrackerProtocol {
     var checkoutAttemptId: String? { get }
     func fetchAndCacheCheckoutAttemptIdIfNeeded()
     
-    var additionalFields: AdditionalAnalyticsFields? { get }
+    var additionalFields: (() -> AdditionalAnalyticsFields)? { get }
 }
 
 internal final class AnalyticsProvider: AnalyticsProviderProtocol {
@@ -47,7 +47,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     internal let apiClient: APIClientProtocol
     internal let configuration: AnalyticsConfiguration
     internal private(set) var checkoutAttemptId: String?
-    internal var additionalFieldProvider: (() -> AdditionalAnalyticsFields)?
+    internal var additionalFields: (() -> AdditionalAnalyticsFields)?
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<CheckoutAttemptIdResponse>
 
     // MARK: - Initializers
@@ -62,10 +62,6 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     }
 
     // MARK: - Internal
-    
-    internal var additionalFields: AdditionalAnalyticsFields? {
-        additionalFieldProvider?()
-    }
     
     internal func fetchAndCacheCheckoutAttemptIdIfNeeded() {
         fetchCheckoutAttemptId { _ in /* Do nothing, the point is to trigger the fetching and cache the value  */ }

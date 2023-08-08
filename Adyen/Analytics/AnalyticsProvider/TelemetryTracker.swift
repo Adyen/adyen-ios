@@ -43,9 +43,11 @@ extension AnalyticsProvider: TelemetryTrackerProtocol {
         guard configuration.isTelemetryEnabled else { return }
         if case .dropInComponent = flavor { return }
 
+        let additonalFields = additionalFields?()
+        
         let telemetryData = TelemetryData(
             flavor: flavor,
-            amount: additionalFields?.amount
+            amount: additonalFields?.amount
         )
 
         fetchCheckoutAttemptId { [weak self] checkoutAttemptId in
