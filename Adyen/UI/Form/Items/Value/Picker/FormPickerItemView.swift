@@ -31,7 +31,7 @@ internal class FormPickerItemView: FormSelectableValueItemView<FormPickerElement
         if item.isValid() {
             updateValidationStatus(forced: false)
         } else {
-            super.validate()
+            super.showValidation()
         }
     }
     
