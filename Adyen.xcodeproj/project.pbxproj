@@ -163,6 +163,7 @@
 		81BBB34B2A692F6500AF1F9E /* FormPickerSearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BBB34A2A692F6500AF1F9E /* FormPickerSearchViewControllerTests.swift */; };
 		81BBB34D2A6938A400AF1F9E /* FormAddressPickerItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BBB34C2A6938A400AF1F9E /* FormAddressPickerItemTests.swift */; };
 		81BBB34F2A694C9300AF1F9E /* FormPickerItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BBB34E2A694C9300AF1F9E /* FormPickerItemTests.swift */; };
+		81BBB6742A82792100C1A04B /* UIView+Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BBB6732A82792100C1A04B /* UIView+Accessibility.swift */; };
 		81C400642A3B0C58007EC51C /* FormSearchButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C400632A3B0C58007EC51C /* FormSearchButtonItem.swift */; };
 		81C400672A3B0D8F007EC51C /* FormSearchButtonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C400662A3B0D8F007EC51C /* FormSearchButtonItemView.swift */; };
 		81C4006B2A40A526007EC51C /* FormAddressPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C4006A2A40A526007EC51C /* FormAddressPickerItem.swift */; };
@@ -1337,6 +1338,7 @@
 		81BBB34A2A692F6500AF1F9E /* FormPickerSearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerSearchViewControllerTests.swift; sourceTree = "<group>"; };
 		81BBB34C2A6938A400AF1F9E /* FormAddressPickerItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAddressPickerItemTests.swift; sourceTree = "<group>"; };
 		81BBB34E2A694C9300AF1F9E /* FormPickerItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItemTests.swift; sourceTree = "<group>"; };
+		81BBB6732A82792100C1A04B /* UIView+Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Accessibility.swift"; sourceTree = "<group>"; };
 		81C4005F2A3A0AF3007EC51C /* AddressLookupSearchViewController+EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressLookupSearchViewController+EmptyView.swift"; sourceTree = "<group>"; };
 		81C400632A3B0C58007EC51C /* FormSearchButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSearchButtonItem.swift; sourceTree = "<group>"; };
 		81C400662A3B0D8F007EC51C /* FormSearchButtonItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSearchButtonItemView.swift; sourceTree = "<group>"; };
@@ -3401,6 +3403,7 @@
 			isa = PBXGroup;
 			children = (
 				81B001C12A55C5C10015BFA3 /* UISearchBar+Prominent.swift */,
+				81BBB6732A82792100C1A04B /* UIView+Accessibility.swift */,
 				E2C0E0C0220D7E5E008616F6 /* SubmitButton.swift */,
 				81A2E3BF2A5C453F00CF5F9C /* LinkTextView.swift */,
 				E28098C5220DCF3F0087928F /* NetworkImageView.swift */,
@@ -6186,6 +6189,7 @@
 				E216D3C3221AEDBE0013CBCF /* Formatter.swift in Sources */,
 				F9B798CB23AB706D00A2103C /* ListComponentStyle.swift in Sources */,
 				E2B3C216233507030067891D /* UIColorHelpers.swift in Sources */,
+				81BBB6742A82792100C1A04B /* UIView+Accessibility.swift in Sources */,
 				F9AC61C624376C9B0062A00D /* AdyenScope.swift in Sources */,
 				00EB3F54291543C700E2B67C /* SearchViewController.swift in Sources */,
 				E7085912261F1C8E00D0153B /* FormAddressItem.swift in Sources */,

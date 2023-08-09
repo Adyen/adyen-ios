@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -33,7 +33,6 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
         collectionView.register(CardLogoCell.self, forCellWithReuseIdentifier: CardLogoCell.reuseIdentifier)
         collectionView.dataSource = self
     }
-    
 }
 
 extension FormCardLogosItemView: UICollectionViewDataSource {
@@ -43,9 +42,8 @@ extension FormCardLogosItemView: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardLogoCell.reuseIdentifier, for: indexPath)
-        if let cell = cell as? CardLogoCell,
-           let logo = item.cardLogos.adyen[safeIndex: indexPath.row] {
-            cell.update(imageUrl: logo.url, style: item.style.icon)
+        if let cell = cell as? CardLogoCell, let logo = item.cardLogos.adyen[safeIndex: indexPath.row] {
+            cell.update(imageUrl: logo.url, altText: logo.type.name, style: item.style.icon)
         }
         return cell
     }
@@ -96,8 +94,12 @@ extension FormCardLogosItemView {
             fatalError("init(coder:) has not been implemented")
         }
         
-        internal func update(imageUrl: URL, style: ImageStyle) {
+        internal func update(imageUrl: URL, altText: String, style: ImageStyle) {
             cardTypeImageView.imageURL = imageUrl
+            
+            cardTypeImageView.isAccessibilityElement = true
+            cardTypeImageView.accessibilityValue = altText
+            cardTypeImageView.accessibilityTraits.insert(.image)
             
             cardTypeImageView.layer.masksToBounds = style.clipsToBounds
             cardTypeImageView.layer.borderWidth = style.borderWidth
