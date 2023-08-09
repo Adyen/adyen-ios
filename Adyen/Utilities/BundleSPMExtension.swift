@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,13 +13,10 @@ import Foundation
 /// The Bundle extension in `BundleExtension.swift` is used instead.
 @_spi(AdyenInternal)
 extension Bundle {
-    // swiftlint:disable explicit_acl
 
     /// The main bundle of the framework.
-    static let core: Bundle = .init(for: FormView.self)
+    internal static let core: Bundle = .init(for: FormView.self)
 
     /// The bundle in which the framework's resources are located.
     public static let coreInternalResources: Bundle = .module
-
-    // swiftlint:enable explicit_acl
 }

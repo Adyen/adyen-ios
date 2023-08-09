@@ -83,8 +83,11 @@
 "adyen.pix.copyButton" = "Skopírovať kód";
 "adyen.pix.instructions.copiedMessage" = "Kód bol skopírovaný do schránky";
 "adyen.billingAddressSection.title" = "Fakturačná adresa";
+"adyen.billingAddress.placeholder" = "Vaša fakturačná adresa";
 "adyen.deliveryAddressSection.title" = "Dodacia adresa";
 "adyen.countryField.title" = "Krajina";
+"adyen.countryField.placeholder" = "Krajina";
+"adyen.countryField.invalid" = "Neplatná krajina";
 "adyen.addressField.title" = "Adresa";
 "adyen.addressField.placeholder" = "Adresa";
 "adyen.streetField.title" = "Ulica";
@@ -190,3 +193,13 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "Naozaj chcete odstrániť svoje prihlasovacie údaje?";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "Odstrániť";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Zrušiť";
+"adyen.picker.search.empty.title" = "Nenašli sa žiadne výsledky";
+"adyen.picker.search.empty.subtitle" = "'%@' sa s ničím nezhoduje";
+"adyen.address.lookup.search.placeholder" = "Vyhľadajte svoju adresu";
+"adyen.address.lookup.search.empty.title" = "Nemôžete vyhľadať svoju adresu?";
+"adyen.address.lookup.search.empty.subtitle" = "Vždy môžete #zadať svoju adresu ručne#";
+"adyen.address.lookup.search.empty.title.noResults" = "Nenašli sa žiadne výsledky";
+"adyen.address.lookup.search.empty.subtitle.noResults" = "'%@' sa s ničím nezhoduje, skúste to znova alebo použite #ručné zadanie adresy#";
+"adyen.address.lookup.item.validationFailureMessage.empty" = "Adresa sa požaduje";
+"adyen.address.lookup.item.validationFailureMessage.invalid" = "Neplatná adresa";
+"adyen.address.lookup.search.manualEntryItem.title" = "Manuálne zadajte adresu";

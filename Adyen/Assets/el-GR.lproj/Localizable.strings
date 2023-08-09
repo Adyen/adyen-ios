@@ -83,8 +83,11 @@
 "adyen.pix.copyButton" = "Αντιγραφή κωδικού";
 "adyen.pix.instructions.copiedMessage" = "Ο κωδικός αντιγράφτηκε στο πρόχειρο";
 "adyen.billingAddressSection.title" = "Διεύθυνση τιμολόγησης";
+"adyen.billingAddress.placeholder" = "Η διεύθυνση τιμολόγησής σας";
 "adyen.deliveryAddressSection.title" = "Διεύθυνση παράδοσης";
 "adyen.countryField.title" = "Χώρα";
+"adyen.countryField.placeholder" = "Χώρα";
+"adyen.countryField.invalid" = "Μη έγκυρη χώρα";
 "adyen.addressField.title" = "Διεύθυνση";
 "adyen.addressField.placeholder" = "Διεύθυνση";
 "adyen.streetField.title" = "Οδός";
@@ -190,3 +193,13 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "Θέλετε σίγουρα να διαγράψετε τα διαπιστευτήριά σας;";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "Αφαίρεση";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Άκυρο";
+"adyen.picker.search.empty.title" = "Δεν βρέθηκαν αποτελέσματα";
+"adyen.picker.search.empty.subtitle" = "Ο όρος '%@' δεν ταιριάζει με τίποτα";
+"adyen.address.lookup.search.placeholder" = "Αναζητήστε τη διεύθυνσή σας";
+"adyen.address.lookup.search.empty.title" = "Δεν μπορείτε να κάνετε αναζήτηση της διεύθυνσής σας;";
+"adyen.address.lookup.search.empty.subtitle" = "Μπορείτε πάντα να #εισαγάγετε τη διεύθυνσή σας μη αυτόματα#";
+"adyen.address.lookup.search.empty.title.noResults" = "Δεν βρέθηκαν αποτελέσματα";
+"adyen.address.lookup.search.empty.subtitle.noResults" = "Το '%@' δεν ταιριάζει με τίποτα. Προσπαθήστε ξανά ή χρησιμοποιήστε #μη αυτόματη εισαγωγή διεύθυνσης#";
+"adyen.address.lookup.item.validationFailureMessage.empty" = "Απαιτείται διεύθυνση";
+"adyen.address.lookup.item.validationFailureMessage.invalid" = "Μη έγκυρη διεύθυνση";
+"adyen.address.lookup.search.manualEntryItem.title" = "Εισαγάγετε τη διεύθυνση μη αυτόματα";

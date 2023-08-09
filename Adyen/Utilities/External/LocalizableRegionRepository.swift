@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -29,7 +29,10 @@ public struct Region: Decodable, CustomStringConvertible, Equatable {
 /// Fetch localized geographic regions from external.
 internal enum RegionRepository {
 
-    internal static func regions(from locale: NSLocale, countryCodes: [String]? = nil) -> [Region] {
+    internal static func regions(
+        from locale: NSLocale,
+        with countryCodes: [String]? = nil
+    ) -> [Region] {
         (countryCodes ?? NSLocale.isoCountryCodes).map { countryCode in
             Region(identifier: countryCode,
                    name: locale.displayName(forKey: .countryCode, value: countryCode) ?? countryCode)
@@ -38,6 +41,13 @@ internal enum RegionRepository {
 
     internal static func subRegions(for countryCode: String) -> [Region]? {
         allRegions[countryCode]
+    }
+    
+    internal static func region(
+        from locale: NSLocale,
+        for countryCode: String
+    ) -> Region? {
+        RegionRepository.regions(from: locale).first { region in region.identifier == countryCode }
     }
 
 }

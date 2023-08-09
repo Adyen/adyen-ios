@@ -24,8 +24,6 @@ extension AdyenSession: PaymentComponentDelegate {
             || result.resultCode == .pending
         component.finalizeIfNeeded(with: success) { [weak self] in
             guard let self = self else { return }
-            // keeping deprecated one until v6
-            self.delegate?.didComplete(with: result.resultCode, component: component, session: self)
             self.delegate?.didComplete(with: result, component: component, session: self)
         }
     }

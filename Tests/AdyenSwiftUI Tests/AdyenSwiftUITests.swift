@@ -10,16 +10,18 @@ import XCTest
 
 class AdyenSwiftUITests: XCTestCase {
 
-    var app: XCUIApplication!
-
-    override func setUp() {
-        super.setUp()
-        app = XCUIApplication()
+    func buildTestableApp() -> XCUIApplication {
+        let app = XCUIApplication()
         app.launchArguments = ["-UITests"]
+        return app
     }
 
     func testDropInAdvanced() throws {
+        
+        let app = buildTestableApp()
         app.launch()
+        let sessionSwitch = sessionSwitch(in: app)
+        
         XCTAssertEqual(sessionSwitch.value as! String, "1", "Session switch should be on by default")
         
         // Enabling Advanced Flow
@@ -35,7 +37,11 @@ class AdyenSwiftUITests: XCTestCase {
     }
 
     func testCardComponentAdvanced() throws {
+        
+        let app = buildTestableApp()
         app.launch()
+        let sessionSwitch = sessionSwitch(in: app)
+        
         XCTAssertEqual(sessionSwitch.value as! String, "1", "Session switch should be on by default")
         
         // Enabling Advanced Flow
@@ -51,22 +57,9 @@ class AdyenSwiftUITests: XCTestCase {
                    app.textFields["3 digits"]]
         )
     }
-
-    // TODO: Enable again once implemented
-//    func testSepaComponentAdvanced() throws {
-//        app.launch()
-//        sessionSwitch.tap() // Enabling Advanced Flow
-//        XCTAssertFalse(sessionSwitch.isEnabled)
-//        app.buttons["SEPA Direct Debit"].tap()
-//
-//        wait(for: [app.buttons["Pay €174.08"],
-//                   app.staticTexts["SEPA Direct Debit"],
-//                   app.textFields["J. Smith"],
-//                   app.textFields["NL26 INGB 0336 1691 16"]]
-//        )
-//    }
     
-    private var sessionSwitch: XCUIElement {
+    private func sessionSwitch(in app: XCUIApplication) -> XCUIElement {
+        
         app.switches["sessionSwitch"]
             .children(matching: .switch)
             .firstMatch

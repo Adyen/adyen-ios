@@ -58,7 +58,6 @@ internal class IssuerListEmptyView: UIView, SearchResultsEmptyView {
     
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.font = UIFont.preferredFont(forTextStyle: .title2).adyen.font(with: .bold)
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
         

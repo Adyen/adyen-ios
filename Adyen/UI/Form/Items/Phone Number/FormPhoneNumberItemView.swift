@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,7 @@ import UIKit
 
 internal final class FormPhoneNumberItemView: FormTextItemView<FormPhoneNumberItem> {
     
-    /// Initializes the split text item view.
+    /// Initializes the phone number item view.
     ///
     /// - Parameter item: The item represented by the view.
     internal required init(item: FormPhoneNumberItem) {

@@ -92,9 +92,16 @@ internal struct CardComponentConfiguration: Codable {
     internal var showsStorePaymentMethodField = true
     internal var showsStoredCardSecurityCodeField = true
     internal var showsSecurityCodeField = true
-    internal var addressMode: CardComponent.AddressFormType = .none
+    internal var addressMode: AddressFormType = .none
     internal var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
     internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
+    
+    internal enum AddressFormType: String, Codable, CaseIterable {
+        case lookup
+        case full
+        case postalCode
+        case none
+    }
 }
 
 internal struct DropInConfiguration: Codable {
@@ -164,7 +171,7 @@ internal struct DemoAppSettings: Codable {
         storedCardConfig.showsSecurityCodeField = cardComponentConfiguration.showsStoredCardSecurityCodeField
 
         var billingAddressConfig = BillingAddressConfiguration()
-        billingAddressConfig.mode = cardComponentConfiguration.addressMode
+        billingAddressConfig.mode = cardComponentAddressFormType(from: cardComponentConfiguration.addressMode)
 
         return .init(showsHolderNameField: cardComponentConfiguration.showsHolderNameField,
                      showsStorePaymentMethodField: cardComponentConfiguration.showsStorePaymentMethodField,
@@ -180,7 +187,7 @@ internal struct DemoAppSettings: Codable {
         storedCardConfig.showsSecurityCodeField = cardComponentConfiguration.showsStoredCardSecurityCodeField
 
         var billingAddressConfig = BillingAddressConfiguration()
-        billingAddressConfig.mode = cardComponentConfiguration.addressMode
+        billingAddressConfig.mode = cardComponentAddressFormType(from: cardComponentConfiguration.addressMode)
 
         return .init(showsHolderNameField: cardComponentConfiguration.showsHolderNameField,
                      showsStorePaymentMethodField: cardComponentConfiguration.showsStorePaymentMethodField,
@@ -199,5 +206,24 @@ internal struct DemoAppSettings: Codable {
         dropInConfig.paymentMethodsList.allowDisablingStoredPaymentMethods = dropInConfiguration.allowDisablingStoredPaymentMethods
 
         return dropInConfig
+    }
+}
+
+private extension DemoAppSettings {
+    
+    private func cardComponentAddressFormType(from addressFormType: CardComponentConfiguration.AddressFormType) -> CardComponent.AddressFormType {
+        switch addressFormType {
+        case .lookup:
+            let addressLookupProvider = DemoAddressLookupProvider()
+            return .lookup { searchTerm, completionHandler in
+                addressLookupProvider.lookUp(searchTerm: searchTerm, resultHandler: completionHandler)
+            }
+        case .full:
+            return .full
+        case .postalCode:
+            return .postalCode
+        case .none:
+            return .none
+        }
     }
 }
