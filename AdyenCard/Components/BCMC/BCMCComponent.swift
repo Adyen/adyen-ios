@@ -51,17 +51,14 @@ public final class BCMCComponent: CardComponent {
 private extension CardComponent.Configuration {
     
     func bcmcConfiguration() -> CardComponent.Configuration {
-        var storedCardConfiguration = stored
-        storedCardConfiguration.showsSecurityCodeField = false
         var configuration = CardComponent.Configuration(
             style: style,
             showsHolderNameField: showsHolderNameField,
             showsStorePaymentMethodField: showsStorePaymentMethodField,
-            showsSecurityCodeField: false,
-            storedCardConfiguration: storedCardConfiguration,
-            allowedCardTypes: [.bcmc]
+            storedCardConfiguration: stored,
+            allowedCardTypes: [.bcmc, .visa, .maestro]
         )
-        configuration.excludedCardTypes = []
+        configuration.shouldShowSupportedCardLogos = false
         return configuration
     }
 }
