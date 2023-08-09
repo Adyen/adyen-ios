@@ -25,7 +25,6 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         }
 
         observe(item.$isOptional) { [weak self] _ in
-            self?.updateVisibility()
             self?.updateValidationStatus()
         }
         
@@ -55,10 +54,6 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
     override internal func textFieldDidEndEditing(_ text: UITextField) {
         super.textFieldDidEndEditing(text)
         cardHintView.isHighlighted = false
-    }
-    
-    private func updateVisibility() {
-        isHidden = (item.shouldHideIfOptional && item.isOptional)
     }
 }
 

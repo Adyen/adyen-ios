@@ -152,9 +152,6 @@ extension CardComponent {
         
         /// Indicates whether or not to show the supported card logos under the card number item
         internal var shouldShowSupportedCardLogos: Bool = true // TODO: Write tests
-        
-        /// Indicates whether or not to hide the security code field if it's marked as optional
-        internal var shouldHideSecurityCodeFieldIfOptional: Bool = false // TODO: Write tests
 
         /// Installments options to present to the user.
         public var installmentConfiguration: InstallmentConfiguration?
@@ -213,7 +210,6 @@ extension CardComponent {
                                               storedCardConfiguration: stored,
                                               allowedCardTypes: [.bcmc, .visa, .maestro])
             configuration.shouldShowSupportedCardLogos = false
-            configuration.shouldHideSecurityCodeFieldIfOptional = true
             return configuration
         }
 

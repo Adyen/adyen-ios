@@ -18,16 +18,12 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
             updateFormState()
         }
     }
-    
-    internal let shouldHideIfOptional: Bool
 
     /// Initializes the form security code item.
     internal init(
         style: FormTextItemStyle = FormTextItemStyle(),
-        shouldHideIfOptional: Bool = false,
         localizationParameters: LocalizationParameters? = nil
     ) {
-        self.shouldHideIfOptional = shouldHideIfOptional
         self.localizationParameters = localizationParameters
         super.init(style: style)
         

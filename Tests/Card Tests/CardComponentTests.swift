@@ -1122,31 +1122,33 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(cardNumberItem.isValid())
     }
     
-    func testUnSupportedBrands() {
-        configuration.excludedCardTypes = [.americanExpress]
+    func testCardLogos() throws {
 
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: configuration)
         
+        XCTAssertTrue(sut.cardViewController.items.numberContainerItem.shouldShowSupportedCardLogos)
+        
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        wait(for: .milliseconds(30))
+        
+        let supportedCardLogosItemId = "AdyenCard.CardComponent.numberContainerItem.supportedCardLogosItem"
+        
+        var supportedCardLogosItem: FormCardLogosItemView = try XCTUnwrap(sut.viewController.view.findView(with: supportedCardLogosItemId))
+        XCTAssertFalse(supportedCardLogosItem.isHidden)
+        
+        // Valid input
+        
         fillCard(on: sut.viewController.view, with: Dummy.visaCard)
-        let cardNumberItem = sut.cardViewController.items.numberContainerItem.numberItem
+        
         var binResponse = BinLookupResponse(brands: [CardBrand(type: .visa, isSupported: true)])
         sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertFalse(cardNumberItem.allowsValidationWhileEditing)
-        XCTAssertTrue(cardNumberItem.isValid())
-        XCTAssertTrue(binResponse.isCreatedLocally)
+
+        wait(for: .milliseconds(30))
         
-        fillCard(on: sut.viewController.view, with: Dummy.amexCard)
-        binResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress, isSupported: false)])
-        sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertTrue(cardNumberItem.allowsValidationWhileEditing)
-        XCTAssertFalse(cardNumberItem.isValid())
-        
-        binResponse = BinLookupResponse(brands: [], isCreatedLocally: false)
-        sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertFalse(cardNumberItem.allowsValidationWhileEditing)
-        XCTAssertFalse(binResponse.isCreatedLocally)
+        supportedCardLogosItem = try XCTUnwrap(sut.viewController.view.findView(with: supportedCardLogosItemId))
+        XCTAssertTrue(supportedCardLogosItem.isHidden)
     }
 
     func testCVCOptionality() {

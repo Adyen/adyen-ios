@@ -105,7 +105,6 @@ extension CardViewController {
 
         internal lazy var securityCodeItem: FormCardSecurityCodeItem = {
             let securityCodeItem = FormCardSecurityCodeItem(style: formStyle.textField,
-                                                            shouldHideIfOptional: configuration.shouldHideSecurityCodeFieldIfOptional,
                                                             localizationParameters: localizationParameters)
             securityCodeItem.localizationParameters = localizationParameters
             securityCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "securityCodeItem")
