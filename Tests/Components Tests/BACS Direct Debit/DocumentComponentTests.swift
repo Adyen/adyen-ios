@@ -51,7 +51,7 @@ class DocumentComponentTests: XCTestCase {
         
     }
     
-    func testMainSecondaryButtons() {
+    func testMainSecondaryButtons() throws {
         let mainButtonExpectation = expectation(description: "Main button tapped")
         
         let delegateMock = DocumentActionViewDelegateMock()
@@ -66,16 +66,13 @@ class DocumentComponentTests: XCTestCase {
         let sut = DocumentActionView(viewModel: viewModel, style: style)
         sut.delegate = delegateMock
         
-        asyncAfterDelay {
-            let mainButton: UIButton? = sut.findView(by: "mainButton")
-            let messageLabel: UILabel? = sut.findView(by: "messageLabel")
-            XCTAssertNotNil(mainButton)
+        let mainButton: UIButton = try XCTUnwrap(sut.findView(by: "mainButton"))
+        let messageLabel: UILabel = try XCTUnwrap(sut.findView(by: "messageLabel"))
             
-            XCTAssertEqual(mainButton?.titleLabel?.text, viewModel.buttonTitle)
-            XCTAssertEqual(messageLabel?.text, viewModel.message)
+        XCTAssertEqual(mainButton.title(for: .normal), viewModel.buttonTitle)
+        XCTAssertEqual(messageLabel.text, viewModel.message)
             
-            mainButton?.sendActions(for: .touchUpInside)
-        }
+        mainButton.sendActions(for: .touchUpInside)
         
         waitForExpectations(timeout: 5, handler: nil)
     }

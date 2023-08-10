@@ -29,7 +29,7 @@ extension XCTestCase {
         until target: Target,
         at keyPath: KeyPath<Target, Value>,
         is expectedValue: Value,
-        timeout: TimeInterval
+        timeout: TimeInterval = 1
     ) {
         wait(
             until: { target[keyPath: keyPath] == expectedValue },
@@ -40,7 +40,7 @@ extension XCTestCase {
     
     func wait(
         until expectation: () -> Bool,
-        timeout: TimeInterval,
+        timeout: TimeInterval = 1,
         message: String? = nil
     ) {
         var timeLeft = Int(timeout * 1000)
@@ -60,7 +60,7 @@ extension XCTestCase {
     func waitForViewController<T: UIViewController>(
         ofType: T.Type,
         toBecomeChildOf viewController: UIViewController,
-        timeout: TimeInterval
+        timeout: TimeInterval = 1
     ) throws -> T {
         
         wait(
@@ -75,7 +75,7 @@ extension XCTestCase {
     @discardableResult
     func waitUntilTopPresenter<T: UIViewController>(
         isOfType: T.Type,
-        timeout: TimeInterval
+        timeout: TimeInterval = 1
     ) throws -> T {
         
         wait(

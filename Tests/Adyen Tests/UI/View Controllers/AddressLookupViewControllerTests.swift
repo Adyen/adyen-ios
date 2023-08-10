@@ -9,7 +9,7 @@ import XCTest
 
 class AddressLookupViewControllerTests: XCTestCase {
     
-    func testViewControllerBinding() {
+    func testViewControllerBinding() throws {
         
         // Given
         
@@ -33,9 +33,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         // When
         
         let addressLookupViewController = AddressLookupViewController(viewModel: viewModel)
-        
-        UIApplication.shared.keyWindow?.rootViewController = addressLookupViewController
-        wait(for: .milliseconds(50))
+        try setupRootViewController(addressLookupViewController)
         
         // Then
         
@@ -47,7 +45,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         XCTAssertNotNil(addressLookupViewController.viewControllers.first as? AddressLookupSearchViewController)
         
         addressLookupViewController.addressLookupSearchSwitchToManualEntry()
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: results.first))
         XCTAssertNotNil(addressLookupViewController.viewControllers.first as? AddressInputFormViewController)
     }
@@ -78,7 +76,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         wait(for: [emptyCompletionExpectation], timeout: 1)
     }
     
-    func testSearchDismissalAfterInteraction() {
+    func testSearchDismissalAfterInteraction() throws {
         
         // Given
         
@@ -100,9 +98,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         // Then
         
         let addressLookupViewController = AddressLookupViewController(viewModel: viewModel)
-        
-        UIApplication.shared.keyWindow?.rootViewController = addressLookupViewController
-        wait(for: .milliseconds(50))
+        try setupRootViewController(addressLookupViewController)
         
         addressLookupViewController.viewModel.handleSwitchToManualEntryTapped()
         XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: nil))

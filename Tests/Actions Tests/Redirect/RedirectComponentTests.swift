@@ -14,25 +14,25 @@ class RedirectComponentTests: XCTestCase {
     
     override func tearDown() {
         super.tearDown()
-        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
+        try? setupRootViewController(UIViewController())
     }
     
     override func setUp() {
         super.setUp()
-        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
+        try? setupRootViewController(UIViewController())
     }
 
-    func testUIConfiguration() {
+    func testUIConfiguration() throws {
         let action = RedirectAction(url: URL(string: "https://adyen.com")!, paymentData: "data")
         let style = RedirectComponentStyle(preferredBarTintColor: UIColor.red,
                                            preferredControlTintColor: UIColor.black,
                                            modalPresentationStyle: .fullScreen)
         let sut = BrowserComponent(url: action.url, context: Dummy.context,
                                    style: style)
-        XCTAssertNotNil(sut.viewController as? SFSafariViewController)
-        XCTAssertEqual(sut.viewController.modalPresentationStyle, .fullScreen)
-        XCTAssertEqual((sut.viewController as! SFSafariViewController).preferredBarTintColor, UIColor.red)
-        XCTAssertEqual((sut.viewController as! SFSafariViewController).preferredControlTintColor, UIColor.black)
+        let safari = try XCTUnwrap(sut.viewController as? SFSafariViewController)
+        XCTAssertEqual(safari.modalPresentationStyle, .fullScreen)
+        XCTAssertEqual(safari.preferredBarTintColor, UIColor.red)
+        XCTAssertEqual(safari.preferredControlTintColor, UIColor.black)
     }
     
     func testOpenCustomSchemeSuccess() {
@@ -239,17 +239,18 @@ class RedirectComponentTests: XCTestCase {
             redirectExpectation.fulfill()
         }
         delegate.onDidFail = { _, _ in XCTFail("Should not call onDidFail") }
-
+        
         // When
         // action handled
         sut.handle(action)
-        wait(for: .seconds(1))
+        
+        wait(for: [presentExpectation], timeout: 1)
 
         // and redirect received
         XCTAssertTrue(RedirectComponent.applicationDidOpen(from: URL(string: "https://www.adyen.com?redirectResult=XXX")!))
 
         // Then
-        waitForExpectations(timeout: 5, handler: nil)
+        wait(for: [redirectExpectation], timeout: 1)
     }
     
     func testNativeRedirectHappyScenario() {
