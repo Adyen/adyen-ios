@@ -142,9 +142,7 @@ class DropInTests: XCTestCase {
                               context: context,
                               configuration: config)
 
-        let root = UIViewController()
-        try setupRootViewController(root)
-        root.present(sut.viewController, animated: true, completion: nil)
+        try presentOnRoot(sut.viewController)
 
         let topVC = try waitForViewController(ofType: ListViewController.self, toBecomeChildOf: sut.viewController, timeout: 1)
         XCTAssertEqual(topVC.sections.count, 1)
@@ -159,11 +157,12 @@ class DropInTests: XCTestCase {
                               context: context,
                               configuration: config)
 
-        let root = UIViewController()
-        try setupRootViewController(root)
-        root.present(sut.viewController, animated: true, completion: nil)
+        let presentationExpectation = expectation(description: "presentation completion called")
+        try presentOnRoot(sut.viewController, animated: true) {
+            presentationExpectation.fulfill()
+        }
 
-        wait(for: .seconds(1))
+        wait(for: [presentationExpectation], timeout: 1)
         
         XCTAssertNil(self.sut.viewController.firstChild(of: ListViewController.self))
     }
@@ -176,9 +175,7 @@ class DropInTests: XCTestCase {
                               context: context,
                               configuration: config)
 
-        let root = UIViewController()
-        try setupRootViewController(root)
-        root.present(sut.viewController, animated: true, completion: nil)
+        try presentOnRoot(sut.viewController, animated: true)
 
         try waitForViewController(ofType: ListViewController.self, toBecomeChildOf: sut.viewController, timeout: 1)
     }
@@ -192,9 +189,7 @@ class DropInTests: XCTestCase {
                               context: context,
                               configuration: config)
 
-        let root = UIViewController()
-        try setupRootViewController(root)
-        root.present(sut.viewController, animated: true, completion: nil)
+        try presentOnRoot(sut.viewController, animated: true)
 
         let topVC = try waitForViewController(ofType: ListViewController.self, toBecomeChildOf: sut.viewController, timeout: 1)
         topVC.tableView(topVC.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
@@ -221,9 +216,7 @@ class DropInTests: XCTestCase {
                               context: context,
                               configuration: config)
 
-        let root = UIViewController()
-        try setupRootViewController(root)
-        root.present(sut.viewController, animated: true, completion: nil)
+        try presentOnRoot(sut.viewController, animated: true)
 
         let topVC = try waitForViewController(ofType: ListViewController.self, toBecomeChildOf: sut.viewController, timeout: 1)
         XCTAssertEqual(topVC.sections.count, 2)
@@ -239,9 +232,7 @@ class DropInTests: XCTestCase {
                               context: context,
                               configuration: config)
         
-        let root = UIViewController()
-        try setupRootViewController(root)
-        root.present(sut.viewController, animated: true, completion: nil)
+        try presentOnRoot(sut.viewController, animated: true)
         
         // presented screen is SEPA (payment list is skipped)
         let topVC = try waitForViewController(ofType: SecuredViewController<FormViewController>.self, toBecomeChildOf: sut.viewController, timeout: 1)
@@ -256,9 +247,7 @@ class DropInTests: XCTestCase {
                               context: context,
                               configuration: config)
         
-        let root = UIViewController()
-        try setupRootViewController(root)
-        root.present(sut.viewController, animated: true, completion: nil)
+        try presentOnRoot(sut.viewController, animated: true)
         
         // presented screen should be payment list with 1 instant payment element
         let topVC = try waitForViewController(ofType: ListViewController.self, toBecomeChildOf: sut.viewController, timeout: 1)
@@ -272,13 +261,11 @@ class DropInTests: XCTestCase {
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymentMethods, context: Dummy.context, configuration: config)
 
-        let root = UIViewController()
-        try setupRootViewController(root)
-        root.present(sut.viewController, animated: true, completion: nil)
+        try presentOnRoot(sut.viewController, animated: true)
 
         let waitExpectation = expectation(description: "Expect Drop-In to finalize")
 
-        wait(for: .seconds(1))
+        wait(for: .aMoment)
         sut.finalizeIfNeeded(with: true) {
             waitExpectation.fulfill()
         }

@@ -69,11 +69,7 @@ class QRCodeActionComponentUITests: XCTestCase {
         presentationDelegate.doPresent = { component in
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
             
-            UIApplication.shared.adyen.mainKeyWindow?.rootViewController = component.viewController
-            
-            // wait until the expiration label is rendered
-            self.wait(for: .seconds(1))
-            
+            try self.setupRootViewController(component.viewController)
             self.assertViewControllerImage(matching: component.viewController, named: "promptPay")
 
             dummyExpectation.fulfill()
@@ -130,11 +126,7 @@ class QRCodeActionComponentUITests: XCTestCase {
         presentationDelegate.doPresent = { component in
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
             
-            UIApplication.shared.adyen.mainKeyWindow?.rootViewController = component.viewController
-            
-            // wait until the expiration label is rendered
-            self.wait(for: .seconds(1))
-            
+            try self.setupRootViewController(component.viewController)
             self.assertViewControllerImage(matching: component.viewController, named: "pix")
 
             dummyExpectation.fulfill()
@@ -191,11 +183,7 @@ class QRCodeActionComponentUITests: XCTestCase {
         presentationDelegate.doPresent = { component in
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
 
-            UIApplication.shared.adyen.mainKeyWindow?.rootViewController = component.viewController
-
-            // wait until the expiration label is rendered
-            self.wait(for: .seconds(1))
-
+            try self.setupRootViewController(component.viewController)
             self.assertViewControllerImage(matching: component.viewController, named: "upi")
 
             dummyExpectation.fulfill()
@@ -258,7 +246,7 @@ class QRCodeActionComponentUITests: XCTestCase {
                 child: ModalViewController(rootViewController: qrCodeViewController, navBarType: .custom(pollingComponentToolBar)))
 
             // wait until the expiration label is rendered
-            self.wait(for: .seconds(1))
+            self.wait(for: .aMoment)
             XCTAssertNotNil(wrapperVC)
             self.assertViewControllerImage(matching: component.viewController, named: "upi_cancel_button")
 

@@ -17,13 +17,7 @@ class ApplePayComponentTest: XCTestCase {
     lazy var amount = Amount(value: 2, currencyCode: "USD")
     lazy var payment = Payment(amount: amount, countryCode: getRandomCountryCode())
     let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: nil)
-
-    private var emptyVC: UIViewController {
-        let vc = UIViewController()
-        vc.view.backgroundColor = .white
-        return vc
-    }
-
+    
     override func setUp() {
         let configuration = ApplePayComponent.Configuration(payment: Dummy.createTestApplePayPayment(),
                                                             merchantIdentifier: "test_id")
@@ -41,18 +35,19 @@ class ApplePayComponentTest: XCTestCase {
     override func tearDown() {
         sut = nil
         mockDelegate = nil
-        UIApplication.shared.keyWindow!.rootViewController?.dismiss(animated: false)
-        UIApplication.shared.keyWindow!.rootViewController = emptyVC
+        
+        if let presentedViewController = try? rootViewController.presentedViewController {
+            presentedViewController.dismiss(animated: true)
+            wait(for: .aMoment)
+            try? self.setupRootViewController(UIViewController())
+        }
     }
 
-    func testApplePayViewControllerShouldCallDelegateDidFail() {
+    func testApplePayViewControllerShouldCallDelegateDidFail() throws {
         guard Available.iOS12 else { return }
 
-        // This is necessary to give ApplePay time to disappear from screen.
-        wait(for: .seconds(2))
-
         sut.delegate = mockDelegate
-        let viewController = sut!.viewController
+        
         let onDidFailExpectation = expectation(description: "Wait for delegate call")
         mockDelegate.onDidFail = { error, component in
             XCTAssertEqual(error as! ComponentError, ComponentError.cancelled)
@@ -60,39 +55,35 @@ class ApplePayComponentTest: XCTestCase {
             self.mockDelegate = nil // to prevent false triggering
         }
 
-        UIApplication.shared.keyWindow!.rootViewController = emptyVC
-        UIApplication.shared.keyWindow!.rootViewController!.present(viewController, animated: false)
+        let authorizationViewController = try XCTUnwrap(sut?.viewController as? PKPaymentAuthorizationViewController)
         
-        wait(for: .seconds(1))
-        self.sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
+        try presentOnRoot(authorizationViewController)
+        
+        self.sut.paymentAuthorizationViewControllerDidFinish(authorizationViewController)
 
         waitForExpectations(timeout: 10)
-        XCTAssertTrue(viewController !== self.sut.viewController)
+        XCTAssertTrue(authorizationViewController !== self.sut.viewController)
     }
 
-    func testApplePayViewControllerShouldCallFinalizeCompletion() {
+    func testApplePayViewControllerShouldCallFinalizeCompletion() throws {
         guard Available.iOS12 else { return }
-
-        // This is necessary to give ApplePay time to disappear from screen.
-        wait(for: .seconds(2))
 
         let viewController = sut!.viewController
         let onDidFinalizeExpectation = expectation(description: "Wait for didFinalize call")
 
-        UIApplication.shared.keyWindow!.rootViewController = emptyVC
-        UIApplication.shared.keyWindow!.rootViewController!.present(viewController, animated: false)
+        let authorizationViewController = try XCTUnwrap(sut?.viewController as? PKPaymentAuthorizationViewController)
         
-        wait(for: .seconds(1))
+        try presentOnRoot(viewController)
 
         sut.finalizeIfNeeded(with: true) {
             onDidFinalizeExpectation.fulfill()
         }
-        sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
+        sut.paymentAuthorizationViewControllerDidFinish(authorizationViewController)
 
         waitForExpectations(timeout: 10)
     }
 
-    func testApplePayShipping() {
+    func testApplePayShipping() throws {
         guard Available.iOS12 else { return }
 
         var configuration = ApplePayComponent.Configuration(payment: Dummy.createTestApplePayPayment(),
@@ -101,9 +92,9 @@ class ApplePayComponentTest: XCTestCase {
         shippingMethods.forEach { $0.identifier = UUID().uuidString }
         configuration.shippingMethods = shippingMethods
 
-        sut = try! ApplePayComponent(paymentMethod: paymentMethod,
-                                     context: Dummy.context,
-                                     configuration: configuration)
+        let sut = try ApplePayComponent(paymentMethod: paymentMethod,
+                                        context: Dummy.context,
+                                        configuration: configuration)
         sut.applePayDelegate = mockApplePayDelegate
         mockApplePayDelegate.onShippingMethodChange = { method, payment in
             .init(paymentSummaryItems: [
@@ -112,20 +103,22 @@ class ApplePayComponentTest: XCTestCase {
             ])
         }
 
-        wait(for: .seconds(1))
         let onShippingSelected = expectation(description: "Wait for didFinalize call")
-        let selectedShippingMethod: PKShippingMethod? = shippingMethods.first
+        let selectedShippingMethod: PKShippingMethod = try XCTUnwrap(shippingMethods.first)
 
         XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 20000)
         XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 5)
-        XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "summary_4")
+        XCTAssertEqual(self.sut.applePayPayment.summaryItems.last?.label, "summary_4")
 
-        sut.paymentAuthorizationViewController(sut!.viewController as! PKPaymentAuthorizationViewController,
-                                               didSelect: selectedShippingMethod!) { update in
+        let authorizationViewController = try XCTUnwrap(sut.viewController as? PKPaymentAuthorizationViewController)
+        
+        sut.paymentAuthorizationViewController(authorizationViewController,
+                                               didSelect: selectedShippingMethod) { update in
+            
             XCTAssertEqual(self.mockApplePayDelegate.shippingMethod, shippingMethods.first)
-            XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 222200)
-            XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 2)
-            XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "New Item 2")
+            XCTAssertEqual(sut.applePayPayment.amountMinorUnits, 222200)
+            XCTAssertEqual(sut.applePayPayment.summaryItems.count, 2)
+            XCTAssertEqual(sut.applePayPayment.summaryItems.last!.label, "New Item 2")
             onShippingSelected.fulfill()
         }
 
@@ -143,7 +136,6 @@ class ApplePayComponentTest: XCTestCase {
             ])
         }
 
-        wait(for: .seconds(1))
         let onContactSelected = expectation(description: "Wait for didFinalize call")
         let contact = PKContact()
         contact.name = PersonNameComponents()
@@ -178,7 +170,6 @@ class ApplePayComponentTest: XCTestCase {
             ])
         }
 
-        wait(for: .seconds(1))
         let onContactSelected = expectation(description: "Wait for didFinalize call")
 
         XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 20000)

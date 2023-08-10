@@ -30,12 +30,10 @@ class StoredCardComponentTests: XCTestCase {
     func testUIWithClientKey() throws {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
-        UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
-
-        wait(for: .seconds(1))
+        try presentOnRoot(sut.viewController)
         
-        let alertController = sut.viewController as! UIAlertController
-        let textField: UITextField! = alertController.textFields!.first
+        let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
+        let textField: UITextField? = alertController.textFields?.first
         XCTAssertNotNil(textField)
 
         XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
@@ -48,11 +46,10 @@ class StoredCardComponentTests: XCTestCase {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
         PublicKeyProvider.publicKeysCache[Dummy.apiContext.clientKey] = Dummy.publicKey
 
-        UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
+        try presentOnRoot(sut.viewController)
 
-        wait(for: .seconds(1))
-        let alertController = sut.viewController as! UIAlertController
-        let textField: UITextField! = alertController.textFields!.first
+        let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
+        let textField: UITextField? = alertController.textFields?.first
         XCTAssertNotNil(textField)
 
         XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
@@ -91,12 +88,10 @@ class StoredCardComponentTests: XCTestCase {
         }
         sut.storedCardAlertManager.publicKeyProvider = publicKeyProvider
 
-        UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
-
-        wait(for: .seconds(1))
+        try presentOnRoot(sut.viewController)
         
-        let alertController = sut.viewController as! UIAlertController
-        let textField: UITextField! = alertController.textFields!.first
+        let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
+        let textField: UITextField? = alertController.textFields?.first
         XCTAssertNotNil(textField)
 
         textField!.text = "737"
@@ -137,9 +132,7 @@ class StoredCardComponentTests: XCTestCase {
         }
         sut.storedCardAlertManager.publicKeyProvider = publicKeyProvider
 
-        UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
-
-        wait(for: .seconds(1))
+        try presentOnRoot(sut.viewController)
         
         let alertController = sut.viewController as! UIAlertController
         let textField: UITextField! = alertController.textFields!.first
@@ -169,9 +162,7 @@ class StoredCardComponentTests: XCTestCase {
                                              holderName: "holderName")
         let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
-        UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
-
-        wait(for: .seconds(1))
+        try presentOnRoot(sut.viewController)
         
         let alertController = sut.viewController as! UIAlertController
         let textField: UITextField! = alertController.textFields!.first
@@ -209,9 +200,7 @@ class StoredCardComponentTests: XCTestCase {
     func testCVCLimitForNonAMEX() throws {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
-        UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
-
-        wait(for: .seconds(1))
+        try presentOnRoot(sut.viewController)
         
         let alertController = sut.viewController as! UIAlertController
         let textField: UITextField! = alertController.textFields!.first
@@ -242,9 +231,7 @@ class StoredCardComponentTests: XCTestCase {
     func testCVCLimitForUnknownCardType() throws {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
-        UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
-
-        wait(for: .seconds(1))
+        try presentOnRoot(sut.viewController)
         
         let alertController = sut.viewController as! UIAlertController
         let textField: UITextField! = alertController.textFields!.first

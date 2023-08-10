@@ -26,31 +26,23 @@ class DropInActionsTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testOpenRedirectActionOnDropIn() {
+    func testOpenRedirectActionOnDropIn() throws {
         let config = DropInComponent.Configuration()
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymentMethods,
                               context: context,
                               configuration: config)
-
-        let waitExpectation = expectation(description: "Expect SafariViewController to open")
-        let root = UIViewController()
-        UIApplication.shared.keyWindow?.rootViewController = root
-        root.present(sut.viewController, animated: true, completion: {
+    
+        try presentOnRoot(sut.viewController, animated: true, completion: {
             let action = Action.redirect(RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data"))
             self.sut.handle(action)
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-                XCTAssertNotNil(self.sut.viewController.adyen.topPresenter as? SFSafariViewController)
-                waitExpectation.fulfill()
-            }
         })
-
-        waitForExpectations(timeout: 15, handler: nil)
+        
+        try self.waitUntilTopPresenter(isOfType: SFSafariViewController.self)
     }
 
-    func testOpenExternalApp() {
+    func testOpenExternalApp() throws {
         let config = DropInComponent.Configuration()
 
         let waitExpectation = expectation(description: "Expect a callback")
@@ -65,11 +57,8 @@ class DropInActionsTests: XCTestCase {
         mock.didOpenExternalApplicationHandler = { _ in
             waitExpectation.fulfill()
         }
-
-        let root = UIViewController()
-        UIApplication.shared.keyWindow?.rootViewController = root
-
-        root.present(sut.viewController, animated: true) {
+        
+        try presentOnRoot(sut.viewController, animated: true) {
             self.sut.didOpenExternalApplication(component: RedirectComponent(context: Dummy.context))
         }
 

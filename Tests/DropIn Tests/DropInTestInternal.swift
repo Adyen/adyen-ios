@@ -20,18 +20,17 @@ class DropInInternalTests: XCTestCase {
                                   context: Dummy.context,
                                   configuration: config)
 
-        let root = UIViewController()
-        try setupRootViewController(root)
-        root.present(sut.viewController, animated: true, completion: nil)
-
+        try presentOnRoot(sut.viewController, animated: true)
+        
         let waitExpectation = expectation(description: "Expect Drop-In to finalize")
 
         let topVC = try waitForViewController(ofType: ListViewController.self, toBecomeChildOf: sut.viewController, timeout: 1)
         topVC.tableView(topVC.tableView, didSelectRowAt: .init(item: 0, section: 0))
+        
         let cell = try XCTUnwrap(topVC.tableView.cellForRow(at: .init(item: 0, section: 0)) as? ListCell)
         XCTAssertTrue(cell.showsActivityIndicator)
 
-        wait(for: .seconds(1))
+        wait(for: .aMoment)
 
         sut.finalizeIfNeeded(with: true) {
             XCTAssertFalse(cell.showsActivityIndicator)

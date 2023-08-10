@@ -16,6 +16,20 @@ extension XCTestCase {
         window.layer.speed = 10 // 10x Animation speed
         wait(for: .aMoment) // Waiting for a moment to give the viewController time to be presented
     }
+    
+    func presentOnRoot(_ viewController: UIViewController, animated: Bool = false, completion: (() -> Void)? = nil) throws {
+        let root = UIViewController()
+        root.view.backgroundColor = .white
+        try setupRootViewController(root)
+        root.present(viewController, animated: false, completion: completion)
+        wait(for: .aMoment)
+    }
+    
+    var rootViewController: UIViewController {
+        get throws {
+            try XCTUnwrap(UIApplication.shared.adyen.mainKeyWindow?.rootViewController)
+        }
+    }
 }
 
 extension DispatchTimeInterval {

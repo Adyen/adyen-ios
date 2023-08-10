@@ -73,7 +73,7 @@ class StoredCardAlertManagerTests: XCTestCase {
         XCTAssertEqual(alertController.actions[1].title, localizedSubmitButtonTitle(with: amount, style: .immediate, sut.localizationParameters))
     }
     
-    func testResetFieldsAfterCancel() {
+    func testResetFieldsAfterCancel() throws {
         let method = try! Coder.decode(storedCardDictionary) as StoredCardPaymentMethod
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         let sut = StoredCardAlertManager(paymentMethod: method,
@@ -84,9 +84,7 @@ class StoredCardAlertManagerTests: XCTestCase {
         let alertController = sut.alertController
         let textField = alertController.textFields!.first!
         
-        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: false, completion: nil)
-        
-        wait(for: .seconds(1))
+        try presentOnRoot(alertController)
         
         let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters) }!
         let cancelAction = alertController.actions.first { $0.title == localizedString(.cancelButton, sut.localizationParameters) }!

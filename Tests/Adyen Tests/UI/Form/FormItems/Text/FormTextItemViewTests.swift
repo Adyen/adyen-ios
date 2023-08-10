@@ -135,10 +135,8 @@ class FormTextItemViewTests: XCTestCase {
         wait(for: [validationExpectation], timeout: 5)
         XCTAssertEqual(sut.accessory, .invalid)
         
-        wait(for: .seconds(1))
-        
-        XCTAssertEqual(sut.separatorView.backgroundColor?.toHexString(), item.style.errorColor.toHexString())
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), item.style.errorColor.toHexString())
+        wait(until: sut.separatorView, at: \.backgroundColor, is: item.style.errorColor)
+        wait(until: sut.titleLabel, at: \.textColor, is: item.style.errorColor)
     }
     
     func testValidationStatusIsValidWhenValueIsValid() {
