@@ -11,14 +11,6 @@ import XCTest
 
 class AddressInputFormViewControllerTests: XCTestCase {
     
-    override class func setUp() {
-        UIApplication.shared.keyWindow?.layer.speed = 10
-    }
-    
-    override class func tearDown() {
-        UIApplication.shared.keyWindow?.layer.speed = 1
-    }
-    
     func testAddressNL() throws {
         // Given
         let viewController = AddressInputFormViewController(
@@ -29,10 +21,9 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow!.rootViewController = viewController
+        try setupRootViewController(viewController)
         
         // When
-        wait(for: .milliseconds(5))
 
         let view: UIView = viewController.view
 
@@ -63,9 +54,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         let doneButton = try XCTUnwrap(viewController.navigationItem.rightBarButtonItem)
         try doneButton.tap()
         
-        wait(for: .milliseconds(50))
-        
-        XCTAssertFalse(houseNumberItemView.alertLabel.isHidden)
+        wait(until: houseNumberItemView.alertLabel, at: \.isHidden, is: false, timeout: 1)
         XCTAssertFalse(addressItemView.alertLabel.isHidden)
         XCTAssertTrue(apartmentSuiteItemView.alertLabel.isHidden)
         XCTAssertFalse(cityItemView.alertLabel.isHidden)
@@ -84,10 +73,9 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = viewController
-
+        try setupRootViewController(viewController)
+        
         // When
-        wait(for: .milliseconds(5))
 
         let view: UIView = viewController.view
 
@@ -120,10 +108,8 @@ class AddressInputFormViewControllerTests: XCTestCase {
         let doneButton = try XCTUnwrap(viewController.navigationItem.rightBarButtonItem)
         try doneButton.tap()
         
-        wait(for: .milliseconds(50))
-        
+        wait(until: addressItemView.alertLabel, at: \.isHidden, is: false, timeout: 1)
         XCTAssertTrue(houseNumberItemView.alertLabel.isHidden)
-        XCTAssertFalse(addressItemView.alertLabel.isHidden)
         XCTAssertFalse(cityItemView.alertLabel.isHidden)
         XCTAssertFalse(postalCodeItemView.alertLabel.isHidden)
     }
@@ -139,9 +125,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: viewController)
-
-        wait(for: .milliseconds(5))
+        try setupRootViewController(UINavigationController(rootViewController: viewController))
         
         let view: UIView = viewController.view
 
@@ -174,9 +158,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: viewController)
-
-        wait(for: .milliseconds(5))
+        try setupRootViewController(UINavigationController(rootViewController: viewController))
 
         let view: UIView = viewController.view
 
@@ -234,9 +216,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: viewController)
-
-        wait(for: .milliseconds(5))
+        try setupRootViewController(UINavigationController(rootViewController: viewController))
         
         let view: UIView = viewController.view
         let searchItemView: FormSearchButtonItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.searchBar"))
@@ -246,7 +226,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         wait(for: [searchExpectation], timeout: 1)
     }
     
-    func testDoneButtonStateNoPrefill() {
+    func testDoneButtonStateNoPrefill() throws {
         
         let viewController = AddressInputFormViewController(
             viewModel: self.viewModel(
@@ -256,8 +236,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: viewController)
-        self.wait(for: .milliseconds(5))
+        try setupRootViewController(UINavigationController(rootViewController: viewController))
         
         XCTAssertEqual(
             viewController.navigationItem.rightBarButtonItem?.isEnabled,
@@ -265,7 +244,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         )
     }
     
-    func testDoneButtonStatePrefillCountryAddingStreet() {
+    func testDoneButtonStatePrefillCountryAddingStreet() throws {
         
         let viewController = AddressInputFormViewController(
             viewModel: self.viewModel(
@@ -275,8 +254,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
 
-        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: viewController)
-        self.wait(for: .milliseconds(5))
+        try setupRootViewController(UINavigationController(rootViewController: viewController))
         
         XCTAssertEqual(
             viewController.navigationItem.rightBarButtonItem?.isEnabled,
@@ -294,7 +272,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         )
     }
     
-    func testDoneButtonStatePrefillCountryAndStreet() {
+    func testDoneButtonStatePrefillCountryAndStreet() throws {
         
         let viewController = AddressInputFormViewController(
             viewModel: self.viewModel(
@@ -304,8 +282,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: viewController)
-        self.wait(for: .milliseconds(5))
+        try setupRootViewController(UINavigationController(rootViewController: viewController))
         
         XCTAssertEqual(
             viewController.navigationItem.rightBarButtonItem?.isEnabled,
@@ -323,11 +300,8 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = viewController
-        wait(for: .milliseconds(5))
-        
-        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
-        wait(for: .milliseconds(5))
+        try setupRootViewController(viewController)
+        try setupRootViewController(UIViewController())
 
         XCTAssertEqual(
             viewController.billingAddressItem.value.street,
