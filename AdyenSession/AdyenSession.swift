@@ -57,7 +57,7 @@ public final class AdyenSession {
         public let identifier: String
         
         /// Country Code
-        public let countryCode: String
+        public let countryCode: String?
         
         /// Shopper Locale
         public let shopperLocale: String?
