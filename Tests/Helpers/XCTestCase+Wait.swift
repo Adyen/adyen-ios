@@ -10,6 +10,9 @@ import UIKit
 import XCTest
 
 extension XCTestCase {
+    
+    // MARK: - Wait For
+    
     func wait(for interval: DispatchTimeInterval) {
         let dummyExpectation = XCTestExpectation(description: "wait for a few seconds.")
 
@@ -19,6 +22,8 @@ extension XCTestCase {
 
         wait(for: [dummyExpectation], timeout: 100)
     }
+    
+    // MARK: - Wait Until
     
     func wait<Value: Equatable, Target: AnyObject>(
         until target: Target,
@@ -46,6 +51,39 @@ extension XCTestCase {
             timeLeft -= incrementInterval
         }
         
-        XCTAssertTrue(expectation(), message ?? "Expectation was not met before timeout \(timeout)")
+        XCTAssertTrue(expectation(), message ?? "Expectation was not met before timeout \(timeout)s")
+    }
+    
+    // MARK: - Wait For/Until UIViewController
+    
+    @discardableResult
+    func waitForViewController<T: UIViewController>(
+        ofType: T.Type,
+        toBecomeChildOf viewController: UIViewController,
+        timeout: TimeInterval
+    ) throws -> T {
+        
+        wait(
+            until: { viewController.firstChild(of: T.self) != nil },
+            timeout: timeout,
+            message: "\(String(describing: T.self)) did not appear on \(String(describing: viewController.self)) before timeout \(timeout)s"
+        )
+        
+        return try XCTUnwrap(viewController.firstChild(of: T.self))
+    }
+    
+    @discardableResult
+    func waitUntilTopPresenter<T: UIViewController>(
+        isOfType: T.Type,
+        timeout: TimeInterval
+    ) throws -> T {
+        
+        wait(
+            until: { (try? UIViewController.topPresenter() is T) ?? false },
+            timeout: timeout,
+            message: "\(String(describing: T.self)) did not become top presenter before timeout \(timeout)s"
+        )
+        
+        return try XCTUnwrap(UIViewController.topPresenter() as? T)
     }
 }

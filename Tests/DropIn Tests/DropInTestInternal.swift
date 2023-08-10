@@ -12,7 +12,7 @@ import XCTest
 
 class DropInInternalTests: XCTestCase {
 
-    func testFinaliseIfNeededSelectedComponent() {
+    func testFinaliseIfNeededSelectedComponent() throws {
         let config = DropInComponent.Configuration()
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
@@ -21,16 +21,14 @@ class DropInInternalTests: XCTestCase {
                                   configuration: config)
 
         let root = UIViewController()
-        UIApplication.shared.keyWindow?.rootViewController = root
+        try setupRootViewController(root)
         root.present(sut.viewController, animated: true, completion: nil)
 
         let waitExpectation = expectation(description: "Expect Drop-In to finalize")
 
-        wait(for: .seconds(1))
-
-        let topVC = sut.viewController.findChild(of: ListViewController.self)
-        topVC?.tableView(topVC!.tableView, didSelectRowAt: .init(item: 0, section: 0))
-        let cell = topVC?.tableView.cellForRow(at: .init(item: 0, section: 0)) as! ListCell
+        let topVC = try waitForViewController(ofType: ListViewController.self, toBecomeChildOf: sut.viewController, timeout: 1)
+        topVC.tableView(topVC.tableView, didSelectRowAt: .init(item: 0, section: 0))
+        let cell = try XCTUnwrap(topVC.tableView.cellForRow(at: .init(item: 0, section: 0)) as? ListCell)
         XCTAssertTrue(cell.showsActivityIndicator)
 
         wait(for: .seconds(1))

@@ -102,7 +102,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(items.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
-    func testUIConfiguration() {
+    func testUIConfiguration() throws {
         var cardComponentStyle = FormComponentStyle()
         cardComponentStyle.backgroundColor = .green
 
@@ -140,9 +140,7 @@ class CardComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         let cardNumberItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.titleLabel")
@@ -237,7 +235,7 @@ class CardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.CardComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, method.name)
@@ -251,7 +249,7 @@ class CardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         let securityCodeView: FormCardSecurityCodeItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
 
@@ -262,7 +260,7 @@ class CardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         let securityCodeView: FormCardSecurityCodeItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
 
@@ -273,7 +271,7 @@ class CardComponentTests: XCTestCase {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         let securityCodeCvvHint: FormCardSecurityCodeItemView.HintView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.cvvHintIcon")
@@ -319,7 +317,7 @@ class CardComponentTests: XCTestCase {
         })
         sut.cardComponentDelegate = delegateMock
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         self.fillCard(on: sut.viewController.view, with: Dummy.bancontactCard)
         self.tapSubmitButton(on: sut.viewController.view)
@@ -346,7 +344,7 @@ class CardComponentTests: XCTestCase {
         // When
         
         UIApplication.shared.keyWindow?.rootViewController = component.viewController
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
 
         // Then
         let view: UIView = component.cardViewController.view
@@ -357,16 +355,16 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(expectedBillingAddress, billingAddress)
         
         billingAddressView.item.selectionHandler()
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
-        XCTAssertTrue(UIViewController.findTopPresenter()?.children.first is AddressLookupViewController)
+        XCTAssertTrue(try UIViewController.topPresenter().children.first is AddressLookupViewController)
     }
 
     func testCVVFormatterChange() {
 
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
         let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
@@ -382,7 +380,7 @@ class CardComponentTests: XCTestCase {
 
     }
 
-    func testTintColorCustomization() {
+    func testTintColorCustomization() throws {
         
         var configuration = CardComponent.Configuration()
         
@@ -398,7 +396,7 @@ class CardComponentTests: XCTestCase {
             configuration: configuration
         )
 
-        setupRootViewController(component.viewController)
+        try setupRootViewController(component.viewController)
 
         let switchView: UISwitch! = component.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
@@ -428,8 +426,7 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration)
 
         // When
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
 
         // Then
         let view: UIView = sut.viewController.view
@@ -438,7 +435,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(securityCodeItemView?.titleLabel.textColor, .gray)
 
         populate(textItemView: securityCodeItemView!, with: "123")
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
 
         let successIcon: UIImageView? = try XCTUnwrap(securityCodeItemView?.cardHintView)
         XCTAssertEqual(successIcon?.tintColor, .systemYellow)
@@ -463,18 +460,18 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    func testStoredCardPaymentWithNoPayment() {
+    func testStoredCardPaymentWithNoPayment() throws {
         let context = Dummy.context(with: nil)
         let sut = CardComponent(paymentMethod: storedMethod,
                                 context: context)
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
-        let vc = sut.viewController as? UIAlertController
-        XCTAssertEqual(vc?.message, "Please enter the CVC code for •••• 1234")
-        XCTAssertEqual(vc?.title, "Verify your card")
-        XCTAssertEqual(vc?.actions[0].title, "Cancel")
-        XCTAssertEqual(vc?.actions[1].title, "Pay")
+        let vc = try XCTUnwrap(sut.viewController as? UIAlertController)
+        XCTAssertEqual(vc.message, "Please enter the CVC code for •••• 1234")
+        XCTAssertEqual(vc.title, "Verify your card")
+        XCTAssertEqual(vc.actions[0].title, "Cancel")
+        XCTAssertEqual(vc.actions[1].title, "Pay")
     }
 
     func testStoredCardPaymentWithPayment() throws {
@@ -483,11 +480,11 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
-        let vc = sut.viewController as? UIAlertController
-        XCTAssertEqual(vc?.message, "Please enter the CVC code for •••• 1234")
-        XCTAssertEqual(vc?.title, "Verify your card")
-        XCTAssertEqual(vc?.actions[0].title, "Cancel")
-        XCTAssertEqual(vc?.actions[1].title, "Pay €1.00")
+        let vc = try XCTUnwrap(sut.viewController as? UIAlertController)
+        XCTAssertEqual(vc.message, "Please enter the CVC code for •••• 1234")
+        XCTAssertEqual(vc.title, "Verify your card")
+        XCTAssertEqual(vc.actions[0].title, "Cancel")
+        XCTAssertEqual(vc.actions[1].title, "Pay €1.00")
     }
 
     func testStoredCardPaymentLocalization() throws {
@@ -499,11 +496,11 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
-        let vc = sut.viewController as? UIAlertController
-        XCTAssertEqual(vc?.message, "Test-Please enter the CVC code for •••• 1234")
-        XCTAssertEqual(vc?.title, "Test-Verify your card")
-        XCTAssertEqual(vc?.actions[0].title, "Test-Cancel")
-        XCTAssertEqual(vc?.actions[1].title, "Test-Pay €1.00")
+        let vc = try XCTUnwrap(sut.viewController as? UIAlertController)
+        XCTAssertEqual(vc.message, "Test-Please enter the CVC code for •••• 1234")
+        XCTAssertEqual(vc.title, "Test-Verify your card")
+        XCTAssertEqual(vc.actions[0].title, "Test-Cancel")
+        XCTAssertEqual(vc.actions[1].title, "Test-Pay €1.00")
     }
 
     func testStoredCardPaymentLocalizationWithNoCVV() throws {
@@ -516,11 +513,11 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
-        let vc = sut.viewController as? UIAlertController
-        XCTAssertEqual(vc?.message, "•••• 1234")
-        XCTAssertEqual(vc?.title, "Test-Confirm Test name payment")
-        XCTAssertEqual(vc?.actions[0].title, "Test-Cancel")
-        XCTAssertEqual(vc?.actions[1].title, "Test-Pay €1.00")
+        let vc = try XCTUnwrap(sut.viewController as? UIAlertController)
+        XCTAssertEqual(vc.message, "•••• 1234")
+        XCTAssertEqual(vc.title, "Test-Confirm Test name payment")
+        XCTAssertEqual(vc.actions[0].title, "Test-Cancel")
+        XCTAssertEqual(vc.actions[1].title, "Test-Pay €1.00")
     }
 
     func testStoredCardPaymentWithNoCVV() throws {
@@ -532,14 +529,14 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
-        let vc = sut.viewController as? UIAlertController
-        XCTAssertEqual(vc?.message, "•••• 1234")
-        XCTAssertEqual(vc?.title, "Confirm Test name payment")
-        XCTAssertEqual(vc?.actions[0].title, "Cancel")
-        XCTAssertEqual(vc?.actions[1].title, "Pay €1.00")
+        let vc = try XCTUnwrap(sut.viewController as? UIAlertController)
+        XCTAssertEqual(vc.message, "•••• 1234")
+        XCTAssertEqual(vc.title, "Confirm Test name payment")
+        XCTAssertEqual(vc.actions[0].title, "Cancel")
+        XCTAssertEqual(vc.actions[1].title, "Pay €1.00")
     }
 
-    func testStoredCardPaymentWithNoCVVAndNoPayment() {
+    func testStoredCardPaymentWithNoCVVAndNoPayment() throws {
         configuration.stored.showsSecurityCodeField = false
         let context = Dummy.context(with: nil)
         let sut = CardComponent(paymentMethod: storedMethod,
@@ -548,11 +545,11 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
-        let vc = sut.viewController as? UIAlertController
-        XCTAssertEqual(vc?.message, "•••• 1234")
-        XCTAssertEqual(vc?.title, "Confirm Test name payment")
-        XCTAssertEqual(vc?.actions[0].title, "Cancel")
-        XCTAssertEqual(vc?.actions[1].title, "Pay")
+        let vc = try XCTUnwrap(sut.viewController as? UIAlertController)
+        XCTAssertEqual(vc.message, "•••• 1234")
+        XCTAssertEqual(vc.title, "Confirm Test name payment")
+        XCTAssertEqual(vc.actions[0].title, "Cancel")
+        XCTAssertEqual(vc.actions[1].title, "Pay")
     }
 
     func testOneClickPayment() {
@@ -580,7 +577,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(cardLogoView)
         let cardNumberItem = cardNumberItemView!.item
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 6)
         XCTAssertFalse(cardLogoView.primaryLogoView.isHidden)
@@ -599,11 +596,11 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(cardLogoView)
         let cardNumberItem = cardNumberItemView!.item
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         self.populate(textItemView: cardNumberItemView!, with: "1231")
         
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 3)
         XCTAssertFalse(cardLogoView.primaryLogoView.isHidden)
@@ -622,11 +619,11 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(cardLogoView)
         let cardNumberItem = cardNumberItemView!.item
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         self.populate(textItemView: cardNumberItemView!, with: "3400")
         
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 3)
         XCTAssertFalse(cardLogoView.primaryLogoView.isHidden)
@@ -671,7 +668,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertEqual(sut.cardViewController.items.button.showsActivityIndicator, false)
         }
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
 
         let view: UIView = sut.viewController.view
 
@@ -704,7 +701,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(cardNumberItemView!.isFirstResponder)
         
         populate(textItemView: cardNumberItemView, with: Dummy.amexCard.number!)
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         XCTAssertTrue(cardNumberItemView!.isFirstResponder)
         XCTAssertFalse(expiryDateItemView!.isFirstResponder)
@@ -717,7 +714,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(cardNumberItemView!.isFirstResponder)
         
         populate(textItemView: cardNumberItemView, with: Dummy.amexCard.number!)
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         XCTAssertFalse(cardNumberItemView!.isFirstResponder)
         XCTAssertTrue(expiryDateItemView!.isFirstResponder)
@@ -730,7 +727,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(cardNumberItemView!.isFirstResponder)
         
         populate(textItemView: cardNumberItemView, with: "6771830000000000006")
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         XCTAssertFalse(cardNumberItemView!.isFirstResponder)
         XCTAssertTrue(expiryDateItemView!.isFirstResponder)
@@ -749,24 +746,24 @@ class CardComponentTests: XCTestCase {
         let viewController = component.viewController
         
         UIApplication.shared.keyWindow?.rootViewController = viewController
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         let view: UIView = viewController.view
         let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.expiryDateItem"))
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         expiryDateItemView.becomeFirstResponder()
         self.append(textItemView: expiryDateItemView, with: "3")
         
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         XCTAssertTrue(expiryDateItemView.textField.isFirstResponder)
         self.append(textItemView: expiryDateItemView, with: "3")
         self.append(textItemView: expiryDateItemView, with: "0")
         
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         XCTAssertTrue(securityCodeItemView.textField.isFirstResponder)
         XCTAssertFalse(expiryDateItemView.textField.isFirstResponder)
@@ -804,7 +801,7 @@ class CardComponentTests: XCTestCase {
             delegateExpectation.fulfill()
         }
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         self.fillCard(on: sut.viewController.view, with: Dummy.visaCard)
 
@@ -818,7 +815,7 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    func testKCP() {
+    func testKCP() throws {
         // Given
         var configuration = CardComponent.Configuration()
         configuration.koreanAuthenticationMode = .auto
@@ -835,7 +832,7 @@ class CardComponentTests: XCTestCase {
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
         
-        setupRootViewController(sut.viewController)
+        try setupRootViewController(sut.viewController)
         
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -876,7 +873,7 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    func testBrazilSSNAuto() {
+    func testBrazilSSNAuto() throws {
         // Given
         var configuration = CardComponent.Configuration()
         configuration.socialSecurityNumberMode = .auto
@@ -893,7 +890,7 @@ class CardComponentTests: XCTestCase {
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
         
-        setupRootViewController(sut.viewController)
+        try setupRootViewController(sut.viewController)
         
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -910,7 +907,7 @@ class CardComponentTests: XCTestCase {
             delegateExpectation.fulfill()
         }
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         let brazilSSNItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem")
         XCTAssertTrue(brazilSSNItemView!.isHidden)
 
@@ -1091,7 +1088,7 @@ class CardComponentTests: XCTestCase {
                                 binProvider: cardTypeProviderMock)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
         XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
@@ -1121,7 +1118,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(sut.cardViewController.installments)
     }
     
-    func testInstallmentsWithDefaultOptions() {
+    func testInstallmentsWithDefaultOptions() throws {
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
         configuration.installmentConfiguration = InstallmentConfiguration(defaultOptions: defaultInstallmentOptions)
         let cardTypeProviderMock = BinInfoProviderMock()
@@ -1131,9 +1128,8 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration,
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
         XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
@@ -1156,7 +1152,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(sut.cardViewController.installments)
     }
 
-    func testInstallmentsWitCardBasedOptions() {
+    func testInstallmentsWitCardBasedOptions() throws {
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
             InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions)
@@ -1167,9 +1163,8 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration,
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        
+        try setupRootViewController(sut.viewController)
         
         let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
         XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
@@ -1204,11 +1199,9 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
     }
     
-    func testSupportedCardLogoVisibility() {
+    func testSupportedCardLogoVisibility() throws {
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
 
         let numberItem = sut.cardViewController.items.numberContainerItem.numberItem
         
@@ -1224,16 +1217,16 @@ class CardComponentTests: XCTestCase {
         
         // with valid card and inactive, logos should hide
         numberItem.isActive = false
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         XCTAssertTrue(logoItemView!.isHidden)
         
         // invalid card and active/inactive numberitem, logos should be visible
         populate(textItemView: cardNumberItemView, with: "1234")
         numberItem.isActive = true
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         XCTAssertFalse(logoItemView!.isHidden)
         numberItem.isActive = false
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         XCTAssertFalse(logoItemView!.isHidden)
     }
 
@@ -1247,15 +1240,11 @@ class CardComponentTests: XCTestCase {
         sut.cardViewController.items.postalCodeItem.value = "1501 NH"
 
         // show view controller
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         // When
         // hide view controller
-        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(UIViewController())
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.postalCodeItem.value.isEmpty)
@@ -1270,15 +1259,11 @@ class CardComponentTests: XCTestCase {
         sut.cardViewController.items.numberContainerItem.numberItem.value = "4111 1111 1111 1111"
         
         // show view controller
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         // When
         // hide view controller
-        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(UIViewController())
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.numberContainerItem.numberItem.value.isEmpty)
@@ -1293,15 +1278,11 @@ class CardComponentTests: XCTestCase {
         sut.cardViewController.items.expiryDateItem.value = "03/24"
 
         // show view controller
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         // When
         // hide view controller
-        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(UIViewController())
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.expiryDateItem.value.isEmpty)
@@ -1316,15 +1297,11 @@ class CardComponentTests: XCTestCase {
         sut.cardViewController.items.securityCodeItem.value = "935"
 
         // show view controller
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         // When
         // hide view controller
-        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(UIViewController())
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.securityCodeItem.value.isEmpty)
@@ -1340,15 +1317,11 @@ class CardComponentTests: XCTestCase {
         sut.cardViewController.items.holderNameItem.value = "Katrina del Mar"
 
         // show view controller
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         // When
         // hide view controller
-        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(UIViewController())
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.holderNameItem.value.isEmpty)
@@ -1363,15 +1336,11 @@ class CardComponentTests: XCTestCase {
         sut.cardViewController.items.storeDetailsItem.value = true
 
         // show view controller
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         // When
         // hide view controller
-        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(UIViewController())
 
         // Then
         XCTAssertFalse(sut.cardViewController.items.storeDetailsItem.value)
@@ -1394,8 +1363,7 @@ class CardComponentTests: XCTestCase {
 
         // When
         
-        UIApplication.shared.keyWindow?.rootViewController = component.cardViewController
-        wait(for: .milliseconds(50))
+        try setupRootViewController(component.cardViewController)
 
         // Then
         let view: UIView = component.cardViewController.view
@@ -1429,7 +1397,7 @@ class CardComponentTests: XCTestCase {
         // When
         UIApplication.shared.keyWindow?.rootViewController = sut.cardViewController
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
 
         // Then
         let view: UIView = sut.cardViewController.view
@@ -1463,7 +1431,7 @@ class CardComponentTests: XCTestCase {
         // When
         UIApplication.shared.keyWindow?.rootViewController = prefilledSut.cardViewController
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
 
         // Then
         let view: UIView = prefilledSut.cardViewController.view
@@ -1496,7 +1464,7 @@ class CardComponentTests: XCTestCase {
         // When
         UIApplication.shared.keyWindow?.rootViewController = sut.cardViewController
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
 
         // Then
         let view: UIView = sut.cardViewController.view
@@ -1526,7 +1494,7 @@ class CardComponentTests: XCTestCase {
         // When
         UIApplication.shared.keyWindow?.rootViewController = sut.cardViewController
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
 
         // Then
         let view: UIView = sut.cardViewController.view
@@ -1564,9 +1532,9 @@ class CardComponentTests: XCTestCase {
         let billingAddress = billingAddressView.item.value
         
         billingAddressView.item.selectionHandler()
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
-        let presentedViewController = try XCTUnwrap(UIViewController.findTopPresenter()?.children.first as? UINavigationController)
+        let presentedViewController = try XCTUnwrap(UIViewController.topPresenter().children.first as? UINavigationController)
         XCTAssertTrue(presentedViewController.viewControllers.first is AddressInputFormViewController)
         
         let inputForm = try XCTUnwrap(presentedViewController.viewControllers.first as? AddressInputFormViewController)
@@ -1586,7 +1554,7 @@ class CardComponentTests: XCTestCase {
         )
         
         UIApplication.shared.keyWindow?.rootViewController = component.viewController
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         // Then
         let view: UIView = component.cardViewController.view
@@ -1597,12 +1565,12 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(expectedBillingAddress, billingAddress)
         
         billingAddressView.item.selectionHandler()
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
-        let presentedViewController = UIViewController.findTopPresenter()?.children.first as? UINavigationController
-        XCTAssertTrue(presentedViewController?.viewControllers.first is AddressInputFormViewController)
+        let presentedViewController = try XCTUnwrap(UIViewController.topPresenter().children.first as? UINavigationController)
+        XCTAssertTrue(presentedViewController.viewControllers.first is AddressInputFormViewController)
         
-        let inputForm = try XCTUnwrap(presentedViewController?.viewControllers.first as? AddressInputFormViewController)
+        let inputForm = try XCTUnwrap(presentedViewController.viewControllers.first as? AddressInputFormViewController)
         XCTAssertEqual(inputForm.billingAddressItem.configuration.supportedCountryCodes, ["US", "JP"])
         XCTAssertEqual(inputForm.billingAddressItem.value, expectedBillingAddress)
     }
@@ -1619,19 +1587,19 @@ class CardComponentTests: XCTestCase {
         )
         
         UIApplication.shared.keyWindow?.rootViewController = component.viewController
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         // Then
         let view: UIView = component.cardViewController.view
         
         let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
         billingAddressView.item.selectionHandler()
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
-        let presentedViewController = UIViewController.findTopPresenter()?.children.first as? UINavigationController
-        XCTAssertTrue(presentedViewController?.viewControllers.first is AddressInputFormViewController)
+        let presentedViewController = try XCTUnwrap(UIViewController.topPresenter().children.first as? UINavigationController)
+        XCTAssertTrue(presentedViewController.viewControllers.first is AddressInputFormViewController)
         
-        let inputForm = try XCTUnwrap(presentedViewController?.viewControllers.first as? AddressInputFormViewController)
+        let inputForm = try XCTUnwrap(presentedViewController.viewControllers.first as? AddressInputFormViewController)
         XCTAssertEqual(inputForm.billingAddressItem.configuration.supportedCountryCodes, ["UK"])
         XCTAssertEqual(inputForm.billingAddressItem.countryPickerItem.value?.identifier, "UK")
     }
@@ -1658,7 +1626,7 @@ class CardComponentTests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         
-        setupRootViewController(sut.viewController)
+        try setupRootViewController(sut.viewController)
         
         let view: UIView = sut.cardViewController.view
         
@@ -1725,7 +1693,7 @@ class CardComponentTests: XCTestCase {
         
         let view: UIView = sut.cardViewController.view
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
         let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
@@ -1735,7 +1703,7 @@ class CardComponentTests: XCTestCase {
         populate(textItemView: numberField, with: "4111 1120 1426 7661")
         populate(textItemView: expiryDateField, with: "12/30")
         
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
@@ -1779,7 +1747,7 @@ class CardComponentTests: XCTestCase {
         
         let view: UIView = sut.cardViewController.view
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
         let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
@@ -1792,7 +1760,7 @@ class CardComponentTests: XCTestCase {
         populate(textItemView: expiryDateField, with: "12/30")
         populate(textItemView: postalCodeField, with: "123")
         
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
@@ -1835,7 +1803,7 @@ class CardComponentTests: XCTestCase {
         
         let view: UIView = sut.cardViewController.view
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
         let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
@@ -1958,7 +1926,7 @@ class CardComponentTests: XCTestCase {
 
         let view: UIView = sut.cardViewController.view
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
 
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
         let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
@@ -2013,7 +1981,7 @@ class CardComponentTests: XCTestCase {
 
         let view: UIView = sut.cardViewController.view
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
 
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
         let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
@@ -2033,7 +2001,7 @@ class CardComponentTests: XCTestCase {
             street: "Test Street"
         )
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
@@ -2074,7 +2042,7 @@ class CardComponentTests: XCTestCase {
 
         let view: UIView = sut.cardViewController.view
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
 
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
         let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
@@ -2093,7 +2061,7 @@ class CardComponentTests: XCTestCase {
             street: "Test Street"
         )
 
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
@@ -2121,7 +2089,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNil(expiryDateItem.expiryYear)
         
         fillCard(on: sut.viewController.view, with: Dummy.visaCard)
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         XCTAssertEqual(expiryDateItem.expiryYear, "2030")
         XCTAssertEqual(expiryDateItem.expiryMonth, "03")

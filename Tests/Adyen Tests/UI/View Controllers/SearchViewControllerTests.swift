@@ -103,7 +103,7 @@ class SearchViewControllerTests: XCTestCase {
     
     // MARK: - SearchViewController
     
-    func testViewModelBinding() {
+    func testViewModelBinding() throws {
         
         let testSearchTerm = "This is a search"
         
@@ -131,7 +131,7 @@ class SearchViewControllerTests: XCTestCase {
         )
         
         // Allow setup in viewDidLoad
-        setupRootViewController(searchViewController)
+        try setupRootViewController(searchViewController)
         
         searchViewController.searchBar.delegate?.searchBar?(
             searchViewController.searchBar,
@@ -161,7 +161,7 @@ class SearchViewControllerTests: XCTestCase {
         )
         
         // Allow setup in viewDidLoad
-        setupRootViewController(searchViewController)
+        try setupRootViewController(searchViewController)
         
         // When
         viewModel.interfaceState = .empty(searchTerm: testSearchTerm)
@@ -188,7 +188,7 @@ class SearchViewControllerTests: XCTestCase {
         )
         
         // Allow setup in viewDidLoad
-        setupRootViewController(searchViewController)
+        try setupRootViewController(searchViewController)
         
         // When
         viewModel.interfaceState = .loading
@@ -216,7 +216,7 @@ class SearchViewControllerTests: XCTestCase {
         )
         
         // Allow setup in viewDidLoad
-        setupRootViewController(searchViewController)
+        try setupRootViewController(searchViewController)
         
         // When
         viewModel.interfaceState = .showingResults(results: resultItems)

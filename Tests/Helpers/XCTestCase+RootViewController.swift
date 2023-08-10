@@ -10,9 +10,10 @@ import XCTest
 
 extension XCTestCase {
     
-    func setupRootViewController(_ viewController: UIViewController) {
-        UIApplication.shared.adyen.mainKeyWindow!.rootViewController = viewController
-        UIApplication.shared.adyen.mainKeyWindow!.layer.speed = 10 // 10x Animation speed
+    func setupRootViewController(_ viewController: UIViewController) throws {
+        let window = try XCTUnwrap(UIApplication.shared.adyen.mainKeyWindow)
+        window.rootViewController = viewController
+        window.layer.speed = 10 // 10x Animation speed
         wait(for: .aMoment) // Waiting for a moment to give the viewController time to be presented
     }
 }

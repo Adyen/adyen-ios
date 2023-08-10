@@ -28,14 +28,11 @@ class VoucherComponentTests: XCTestCase {
 
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
         presentationDelegate.doPresent = { [self] component in
-            let component = component as! PresentableComponentWrapper
+            let component = try XCTUnwrap(component as? PresentableComponentWrapper)
             XCTAssert(component.component === sut)
             
-            let view = sut.view
-            
-            XCTAssertNotNil(view)
-            
-            checkViewModel(view!.model, forAction: action)
+            let view = try XCTUnwrap(sut.view)
+            checkViewModel(view.model, forAction: action)
             
             presentationDelegateExpectation.fulfill()
         }
@@ -50,14 +47,11 @@ class VoucherComponentTests: XCTestCase {
         
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
         presentationDelegate.doPresent = { [self] component in
-            let component = component as! PresentableComponentWrapper
+            let component = try XCTUnwrap(component as? PresentableComponentWrapper)
             XCTAssert(component.component === sut)
             
-            let view = sut.view
-            
-            XCTAssertNotNil(view)
-            
-            checkViewModel(view!.model, forAction: action)
+            let view = try XCTUnwrap(sut.view)
+            checkViewModel(view.model, forAction: action)
             
             presentationDelegateExpectation.fulfill()
         }
@@ -72,14 +66,11 @@ class VoucherComponentTests: XCTestCase {
         
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
         presentationDelegate.doPresent = { [self] component in
-            let component = component as! PresentableComponentWrapper
+            let component = try XCTUnwrap(component as? PresentableComponentWrapper)
             XCTAssert(component.component === sut)
             
-            let view = sut.view
-            
-            XCTAssertNotNil(view)
-            
-            checkViewModel(view!.model, forAction: action)
+            let view = try XCTUnwrap(sut.view)
+            checkViewModel(view.model, forAction: action)
             
             presentationDelegateExpectation.fulfill()
         }
@@ -94,16 +85,13 @@ class VoucherComponentTests: XCTestCase {
         
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
         presentationDelegate.doPresent = { [self] component in
-            let component = component as! PresentableComponentWrapper
+            let component = try XCTUnwrap(component as? PresentableComponentWrapper)
             XCTAssert(component.component === sut)
             
-            UIApplication.shared.keyWindow?.rootViewController = component.viewController
+            try self.setupRootViewController(component.viewController)
             
-            let view = sut.view
-            
-            XCTAssertNotNil(view)
-            
-            checkViewModel(view!.model, forAction: action)
+            let view = try XCTUnwrap(sut.view)
+            checkViewModel(view.model, forAction: action)
             
             let optionsButton: UIButton! = component.viewController.view.findView(with: "AdyenActions.VoucherComponent.voucherView.secondaryButton")
             XCTAssertNotNil(optionsButton)
@@ -111,16 +99,12 @@ class VoucherComponentTests: XCTestCase {
             
             optionsButton.sendActions(for: .touchUpInside)
             
-            wait(until: {
-                UIViewController.findTopPresenter() is UIAlertController
-            }, timeout: 1)
-            
-            let alertSheet = UIViewController.findTopPresenter() as? UIAlertController
-            XCTAssertEqual(alertSheet?.actions.count, 4)
-            XCTAssertEqual(alertSheet?.actions[0].title, "Copy code")
-            XCTAssertEqual(alertSheet?.actions[1].title, "Download PDF")
-            XCTAssertEqual(alertSheet?.actions[2].title, "Read instructions")
-            XCTAssertEqual(alertSheet?.actions[3].title, "Cancel")
+            let alertSheet = try waitUntilTopPresenter(isOfType: UIAlertController.self, timeout: 1)
+            XCTAssertEqual(alertSheet.actions.count, 4)
+            XCTAssertEqual(alertSheet.actions[0].title, "Copy code")
+            XCTAssertEqual(alertSheet.actions[1].title, "Download PDF")
+            XCTAssertEqual(alertSheet.actions[2].title, "Read instructions")
+            XCTAssertEqual(alertSheet.actions[3].title, "Cancel")
             
             presentationDelegateExpectation.fulfill()
         }
@@ -135,32 +119,24 @@ class VoucherComponentTests: XCTestCase {
         
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
         presentationDelegate.doPresent = { [self] component in
-            let component = component as! PresentableComponentWrapper
+            let component = try XCTUnwrap(component as? PresentableComponentWrapper)
             XCTAssert(component.component === sut)
             
-            UIApplication.shared.keyWindow?.rootViewController = component.viewController
+            try self.setupRootViewController(component.viewController)
             
-            let view = sut.view
+            let view = try XCTUnwrap(sut.view)
+            checkViewModel(view.model, forAction: action)
             
-            XCTAssertNotNil(view)
-            
-            checkViewModel(view!.model, forAction: action)
-            
-            let optionsButton: UIButton! = component.viewController.view.findView(with: "AdyenActions.VoucherComponent.voucherView.secondaryButton")
-            XCTAssertNotNil(optionsButton)
+            let optionsButton: UIButton = try XCTUnwrap(component.viewController.view.findView(with: "AdyenActions.VoucherComponent.voucherView.secondaryButton"))
             XCTAssertEqual(optionsButton.titleLabel?.text, "More options")
             
             optionsButton.sendActions(for: .touchUpInside)
             
-            wait(until: {
-                UIViewController.findTopPresenter() is UIAlertController
-            }, timeout: 1)
-
-            let alertSheet = UIViewController.findTopPresenter() as? UIAlertController
-            XCTAssertEqual(alertSheet?.actions.count, 3)
-            XCTAssertEqual(alertSheet?.actions[0].title, "Copy code")
-            XCTAssertEqual(alertSheet?.actions[1].title, "Save as image")
-            XCTAssertEqual(alertSheet?.actions[2].title, "Cancel")
+            let alertSheet = try waitUntilTopPresenter(isOfType: UIAlertController.self, timeout: 1)
+            XCTAssertEqual(alertSheet.actions.count, 3)
+            XCTAssertEqual(alertSheet.actions[0].title, "Copy code")
+            XCTAssertEqual(alertSheet.actions[1].title, "Save as image")
+            XCTAssertEqual(alertSheet.actions[2].title, "Cancel")
             
             presentationDelegateExpectation.fulfill()
         }
@@ -175,14 +151,11 @@ class VoucherComponentTests: XCTestCase {
         
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
         presentationDelegate.doPresent = { [self] component in
-            let component = component as! PresentableComponentWrapper
+            let component = try XCTUnwrap(component as? PresentableComponentWrapper)
             XCTAssert(component.component === sut)
             
-            let view = sut.view
-            
-            XCTAssertNotNil(view)
-            
-            checkViewModel(view!.model, forAction: action)
+            let view = try XCTUnwrap(sut.view)
+            checkViewModel(view.model, forAction: action)
             
             presentationDelegateExpectation.fulfill()
         }

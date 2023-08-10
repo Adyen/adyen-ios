@@ -59,10 +59,10 @@ class AdyenActionComponentTests: XCTestCase {
     }
     """
 
-    func testRedirectToHttpWebLink() {
+    func testRedirectToHttpWebLink() throws {
         let sut = AdyenActionComponent(context: Dummy.context)
         let delegate = ActionComponentDelegateMock()
-        sut.presentationDelegate = UIViewController.findTopPresenter()
+        sut.presentationDelegate = try UIViewController.topPresenter()
         sut.delegate = delegate
 
         delegate.onDidOpenExternalApplication = { _ in
@@ -71,34 +71,26 @@ class AdyenActionComponentTests: XCTestCase {
 
         let action = Action.redirect(RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data"))
         sut.handle(action)
-
-        wait(
-            until: { UIViewController.findTopPresenter() is SFSafariViewController },
-            timeout: 2
-        )
         
-        let topPresentedViewController = UIViewController.findTopPresenter()
-        XCTAssertNotNil(topPresentedViewController as? SFSafariViewController)
+        try waitUntilTopPresenter(isOfType: SFSafariViewController.self, timeout: 2)
     }
 
-    func testAwaitAction() {
+    func testAwaitAction() throws {
         let sut = AdyenActionComponent(context: Dummy.context)
-        sut.presentationDelegate = UIViewController.findTopPresenter()
+        sut.presentationDelegate = try UIViewController.topPresenter()
 
         let action = Action.await(AwaitAction(paymentData: "SOME_DATA", paymentMethodType: .blik))
         sut.handle(action)
         
         let waitExpectation = expectation(description: "Expect AwaitViewController to be presented")
         
-        wait(
-            until: { UIViewController.findTopPresenter() is AdyenActions.AwaitViewController },
-            timeout: 2
-        )
-
-        (sut.presentationDelegate as! UIViewController).dismiss(animated: true) {
+        try waitUntilTopPresenter(isOfType: AdyenActions.AwaitViewController.self, timeout: 2)
+        
+        let presentingViewController = try XCTUnwrap(sut.presentationDelegate as? UIViewController)
+        presentingViewController.dismiss(animated: true) {
 
             self.wait(
-                until: { !(UIViewController.findTopPresenter() is AdyenActions.AwaitViewController) },
+                until: { (try? UIViewController.topPresenter() is AdyenActions.AwaitViewController) == false },
                 timeout: 2
             )
             
@@ -136,24 +128,24 @@ class AdyenActionComponentTests: XCTestCase {
         )
     }
 
-    func testVoucherAction() {
+    func testVoucherAction() throws {
         let sut = AdyenActionComponent(context: Dummy.context)
-        sut.presentationDelegate = UIViewController.findTopPresenter()
+        sut.presentationDelegate = try UIViewController.topPresenter()
         
         let action = try! JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)
         sut.handle(Action.voucher(action))
         
         self.wait(
-            until: { UIViewController.findTopPresenter()?.view is VoucherView },
+            until: { (try? UIViewController.topPresenter())?.view is VoucherView },
             timeout: 2,
             message: "Top presenter view should be VoucherView"
         )
 
         let waitExpectation = expectation(description: "Expect VoucherViewController to be presented")
         (sut.presentationDelegate as! UIViewController).dismiss(animated: true) {
-            
+
             self.wait(
-                until: { !(UIViewController.findTopPresenter() is VoucherViewController) },
+                until: { ((try? UIViewController.topPresenter())?.view is VoucherView) == false },
                 timeout: 2
             )
 

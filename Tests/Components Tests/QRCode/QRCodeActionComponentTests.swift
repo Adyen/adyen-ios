@@ -127,13 +127,9 @@ class QRCodeActionComponentTests: XCTestCase {
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
 
-        presentationDelegate.doPresent = { [self] component in
-            XCTAssertNotNil(component.viewController as? QRCodeViewController)
-            let viewController = component.viewController as! QRCodeViewController
-
-            UIApplication.shared.keyWindow?.rootViewController = viewController
-
-            wait(for: .milliseconds(50))
+        presentationDelegate.doPresent = { component in
+            let viewController = try XCTUnwrap(component.viewController as? QRCodeViewController)
+            try self.setupRootViewController(viewController)
 
             let copyButton: SubmitButton? = viewController.view.findView(by: "copyCodeButton")
             XCTAssertNotNil(copyButton)
@@ -159,12 +155,11 @@ class QRCodeActionComponentTests: XCTestCase {
         sut.presentationDelegate = presentationDelegate
         let delgate = QRCodeViewDelegateMock()
 
-        presentationDelegate.doPresent = { [self] component in
-            XCTAssertNotNil(component.viewController as? QRCodeViewController)
-            let viewController = component.viewController as! QRCodeViewController
-            UIApplication.shared.keyWindow?.rootViewController = viewController
+        presentationDelegate.doPresent = { component in
+            let viewController = try XCTUnwrap(component.viewController as? QRCodeViewController)
+            try self.setupRootViewController(viewController)
             viewController.qrCodeView.delegate = delgate
-            wait(for: .milliseconds(50))
+            
             let saveAsImageButton: SubmitButton? = viewController.view.findView(by: "saveAsImageButton")
             XCTAssertNotNil(saveAsImageButton)
             saveAsImageButton?.sendActions(for: .touchUpInside)

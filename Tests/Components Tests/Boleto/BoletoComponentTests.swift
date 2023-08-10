@@ -145,7 +145,7 @@ class BoletoComponentTests: XCTestCase {
         XCTAssertNil(emailField)
     }
     
-    func testEmailFieldHiding() {
+    func testEmailFieldHiding() throws {
         
         let context = Dummy.context(with: AnalyticsProviderMock())
         
@@ -157,9 +157,7 @@ class BoletoComponentTests: XCTestCase {
         
         let viewController = component.viewController
         
-        setupRootViewController(viewController)
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(viewController)
         
         let emailSwitchItem: FormToggleItemView = viewController.view.findView(by: "sendCopyToEmailItem") as! FormToggleItemView
         let emailSwitch: UISwitch = emailSwitchItem.findView(by: "sendCopyToEmailItem.switch") as! UISwitch
