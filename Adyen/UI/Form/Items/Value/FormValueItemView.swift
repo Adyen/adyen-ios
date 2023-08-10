@@ -63,12 +63,6 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
     }
     
-    // MARK: - Validation
-    
-    /// Subclasses can override this method to stay notified
-    /// when form value item view should performe UI mutations based on a validation status.
-    open func validate() {}
-    
     // MARK: - Separator View
     
     /// Indicates if the separator should be shown.
@@ -185,8 +179,4 @@ public protocol AnyFormValueItemView: AnyFormItemView {
     
     /// Indicates if the item is currently being edited.
     var isEditing: Bool { get set }
-    
-    /// Invoke validation check. Performs all necessary UI transformations based on a validation result.
-    func validate()
-    
 }
