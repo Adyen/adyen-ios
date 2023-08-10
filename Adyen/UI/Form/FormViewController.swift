@@ -9,7 +9,7 @@ import UIKit
 /// Displays a form for the user to enter details.
 @objc(ADYFormViewController)
 @_spi(AdyenInternal)
-open class FormViewController: UIViewController, Localizable, AdyenObserver, PreferredContentSizeConsumer {
+open class FormViewController: UIViewController, AdyenObserver, PreferredContentSizeConsumer {
 
     fileprivate enum Animations {
         fileprivate static let keyboardBottomInset = "keyboardBottomInset"
@@ -30,9 +30,15 @@ open class FormViewController: UIViewController, Localizable, AdyenObserver, Pre
 
     /// Initializes the FormViewController.
     ///
-    /// - Parameter style: The `FormViewController` UI style.
-    public init(style: ViewStyle) {
+    /// - Parameters:
+    ///   - style: The `FormViewController` UI style.
+    ///   - localizationParameters: The localization parameters.
+    public init(
+        style: ViewStyle,
+        localizationParameters: LocalizationParameters?
+    ) {
         self.style = style
+        self.localizationParameters = localizationParameters
         super.init(nibName: nil, bundle: Bundle(for: FormViewController.self))
     }
 
@@ -143,7 +149,7 @@ open class FormViewController: UIViewController, Localizable, AdyenObserver, Pre
 
     // MARK: - Localizable
 
-    public var localizationParameters: LocalizationParameters?
+    public let localizationParameters: LocalizationParameters?
 
     // MARK: - Validity
 
@@ -166,9 +172,16 @@ open class FormViewController: UIViewController, Localizable, AdyenObserver, Pre
 
     @_spi(AdyenInternal)
     public func showValidation() {
-        itemManager.flatItemViews
-            .compactMap { $0 as? AnyFormValueItemView }
-            .forEach { $0.validate() }
+        let validatableItemViews = itemManager.flatItemViews
+            .compactMap { $0 as? AnyFormValidatableValueItemView }
+        
+        validatableItemViews.forEach { $0.showValidation() }
+        
+        let firstInvalidItemView = validatableItemViews.first { !$0.isValid }
+        
+        if let firstInvalidItemView {
+            UIAccessibility.post(notification: .screenChanged, argument: firstInvalidItemView)
+        }
     }
 
     private func getAllValidatableItems() -> [ValidatableFormItem] {

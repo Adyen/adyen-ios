@@ -253,7 +253,7 @@ class DropInTests: XCTestCase {
         wait(for: .seconds(1))
         
         // presented screen is SEPA (payment list is skipped)
-        let topVC = sut.viewController.findChild(of: SecuredViewController.self)
+        let topVC = sut.viewController.findChild(of: SecuredViewController<FormViewController>.self)
         XCTAssertNotNil(topVC)
         XCTAssertEqual(topVC?.title, "SEPA Direct Debit")
     }

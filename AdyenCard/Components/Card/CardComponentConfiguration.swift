@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -43,7 +43,7 @@ public struct BillingAddressConfiguration {
         case .optional:
             return true
         case let .optionalForCardTypes(optionalCardTypes):
-            return optionalCardTypes.isDisjoint(with: cardTypes) == false
+            return !optionalCardTypes.isDisjoint(with: cardTypes)
         }
     }
     
@@ -85,19 +85,23 @@ public protocol AnyCardComponentConfiguration {
 }
 
 extension CardComponent {
-
-    /// The mode of address form of card component
-    public enum AddressFormType: String, Codable, CaseIterable {
+    
+    /// The mode of the address form of the card component
+    public enum AddressFormType {
+        
+        public typealias LookupHandler = (_ searchTerm: String, _ completionHandler: @escaping (_ result: [PostalAddress]) -> Void) -> Void
+        
+        /// Display a form item that allows address lookup and entering the address on a separate screen
+        case lookup(handler: LookupHandler)
 
         /// Display full address form
         case full
-
+        
         /// Display simple form with only zip code field
         case postalCode
 
         /// Do not display address form
         case none
-
     }
 
     /// The mode of input field on Component UI
@@ -111,7 +115,6 @@ extension CardComponent {
 
         /// Show the field when a specific condition is met.
         case auto
-
     }
 
     /// Card component configuration.
@@ -201,19 +204,6 @@ extension CardComponent {
             self.socialSecurityNumberMode = socialSecurityNumberMode
             self.installmentConfiguration = installmentConfiguration
             self.billingAddress = billingAddress
-        }
-
-        internal func bcmcConfiguration() -> Configuration {
-            var storedCardConfiguration = stored
-            storedCardConfiguration.showsSecurityCodeField = false
-            var configuration = Configuration(style: style,
-                                              showsHolderNameField: showsHolderNameField,
-                                              showsStorePaymentMethodField: showsStorePaymentMethodField,
-                                              showsSecurityCodeField: false,
-                                              storedCardConfiguration: storedCardConfiguration,
-                                              allowedCardTypes: [.bcmc])
-            configuration.excludedCardTypes = []
-            return configuration
         }
 
         internal func showAdditionalAuthenticationFields(for issuingCountryCode: String?) -> Bool {

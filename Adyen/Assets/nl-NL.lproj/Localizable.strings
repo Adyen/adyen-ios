@@ -83,8 +83,11 @@
 "adyen.pix.copyButton" = "Code kopiëren";
 "adyen.pix.instructions.copiedMessage" = "De code is naar het klembord gekopieerd";
 "adyen.billingAddressSection.title" = "Factuuradres";
+"adyen.billingAddress.placeholder" = "Uw factuuradres";
 "adyen.deliveryAddressSection.title" = "Bezorgadres";
 "adyen.countryField.title" = "Land";
+"adyen.countryField.placeholder" = "Land";
+"adyen.countryField.invalid" = "Ongeldig land";
 "adyen.addressField.title" = "Adres";
 "adyen.addressField.placeholder" = "Adres";
 "adyen.streetField.title" = "Straatnaam";
@@ -190,3 +193,13 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "Weet u zeker dat u uw gegevens wilt verwijderen?";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "Verwijderen";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Annuleer";
+"adyen.picker.search.empty.title" = "Geen resultaten gevonden";
+"adyen.picker.search.empty.subtitle" = "Geen resultaten gevonden voor '%@'";
+"adyen.address.lookup.search.placeholder" = "Zoek uw adres";
+"adyen.address.lookup.search.empty.title" = "Werd uw adres niet gevonden?";
+"adyen.address.lookup.search.empty.subtitle" = "U kunt #uw adres handmatig invoeren#";
+"adyen.address.lookup.search.empty.title.noResults" = "Geen resultaten gevonden";
+"adyen.address.lookup.search.empty.subtitle.noResults" = "Geen resulaten gevonden voor '%@', probeer het opnieuw of gebruik #adres handmatig invoeren#";
+"adyen.address.lookup.item.validationFailureMessage.empty" = "Adres verplicht";
+"adyen.address.lookup.item.validationFailureMessage.invalid" = "Ongeldig adres";
+"adyen.address.lookup.search.manualEntryItem.title" = "Voer het adres handmatig in";

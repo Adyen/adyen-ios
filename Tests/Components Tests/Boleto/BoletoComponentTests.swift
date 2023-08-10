@@ -50,7 +50,7 @@ class BoletoComponentTests: XCTestCase {
 
         XCTAssertNotNil(socialSecurityNumberField)
         let formattedSocialSecurityNumber = brazilSocialSecurityNumberFormatter.formattedValue(for: prefilledInformation.socialSecurityNumber!)
-        XCTAssertEqual(formattedSocialSecurityNumber, socialSecurityNumberField?.text)
+        XCTAssertEqual(socialSecurityNumberField?.text, formattedSocialSecurityNumber)
         
         XCTAssertNotNil(emailField)
         XCTAssertEqual(emailField?.text, prefilledInformation.emailAddress)

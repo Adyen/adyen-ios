@@ -11,7 +11,6 @@
 import Foundation
 
 final class AnyThreeDS2ActionHandlerMock: AnyThreeDS2ActionHandler {
-    
     var threeDSRequestorAppURL: URL?
 
     var mockedFingerprintResult: Result<ThreeDSActionHandlerResult, Error>?
