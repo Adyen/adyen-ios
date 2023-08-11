@@ -37,8 +37,8 @@ extension XCTestCase {
         try setupRootViewController(root)
         let presentationExpectation = XCTestExpectation(description: "Wait for the presentation to complete")
         root.present(viewController, animated: animated) {
-            presentationExpectation.fulfill()
             completion?()
+            presentationExpectation.fulfill()
         }
         wait(for: [presentationExpectation], timeout: 1)
     }

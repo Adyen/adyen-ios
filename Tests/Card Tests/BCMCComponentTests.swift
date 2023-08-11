@@ -114,16 +114,14 @@ class BCMCComponentTests: XCTestCase {
         
         try setupRootViewController(sut.viewController)
         
-        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
-        XCTAssertNotNil(cardNumberItemView)
-        let textItemView: FormCardNumberItemView? = cardNumberItemView!.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
-        XCTAssertNotNil(textItemView)
-        self.populate(textItemView: textItemView!, with: Dummy.bancontactCard.number!)
+        let cardNumberItemView: FormCardNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
+        let textItemView: FormCardNumberItemView = try XCTUnwrap(cardNumberItemView.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
+        self.populate(textItemView: textItemView, with: Dummy.bancontactCard.number!)
         
-        let cardNumberItem = cardNumberItemView!.item
+        let cardNumberItem = cardNumberItemView.item
         XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 1)
         XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.url, LogoURLProvider.logoURL(withName: "bcmc", environment: context.apiContext.environment))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.cardTypeLogos"))
+        wait { sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.cardTypeLogos") != nil }
     }
     
     func testInvalidCardTypeDetection() throws {

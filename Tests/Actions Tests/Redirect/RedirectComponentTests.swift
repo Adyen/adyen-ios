@@ -16,11 +16,6 @@ class RedirectComponentTests: XCTestCase {
         super.tearDown()
         try? setupRootViewController(UIViewController())
     }
-    
-    override func setUp() {
-        super.setUp()
-        try? setupRootViewController(UIViewController())
-    }
 
     func testUIConfiguration() throws {
         let action = RedirectAction(url: URL(string: "https://adyen.com")!, paymentData: "data")

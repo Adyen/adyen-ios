@@ -37,8 +37,9 @@ class ApplePayComponentTest: XCTestCase {
         mockDelegate = nil
         
         if let presentedViewController = try? rootViewController.presentedViewController {
-            presentedViewController.dismiss(animated: true)
-            wait(for: .aMoment)
+            let dismissExpectation = expectation(description: "Presented view controller is dismissed")
+            presentedViewController.dismiss(animated: true) { dismissExpectation.fulfill() }
+            wait(for: [dismissExpectation], timeout: 1)
             try? self.setupRootViewController(UIViewController())
         }
     }

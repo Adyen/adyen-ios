@@ -61,7 +61,7 @@ class QiwiWalletComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_continueTo"), sut.configuration.localizationParameters, method.name))
     }
     
-    func testUIConfiguration() {
+    func testUIConfiguration() throws {
         var style = FormComponentStyle()
         
         /// Footer
@@ -89,12 +89,10 @@ class QiwiWalletComponentTests: XCTestCase {
         let config = QiwiWalletComponent.Configuration(style: style)
         let sut = QiwiWalletComponent(paymentMethod: method, context: context, configuration: config)
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem")
-        let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem.titleLabel")
+        let phoneNumberViewTitleLabel: UILabel = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem.titleLabel"))
         let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem.textField")
         
         let phoneExtensionView: FormPhoneExtensionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormPhoneNumberItem.phoneExtensionPickerItem")
@@ -105,10 +103,10 @@ class QiwiWalletComponentTests: XCTestCase {
         
         /// Test phone number field
         XCTAssertEqual(phoneNumberView?.backgroundColor, .red)
-        XCTAssertEqual(phoneNumberViewTitleLabel?.textColor, sut.viewController.view.tintColor)
-        XCTAssertEqual(phoneNumberViewTitleLabel?.backgroundColor, .blue)
-        XCTAssertEqual(phoneNumberViewTitleLabel?.textAlignment, .center)
-        XCTAssertEqual(phoneNumberViewTitleLabel?.font, .systemFont(ofSize: 20))
+        wait(until: phoneNumberViewTitleLabel, at: \.textColor, is: sut.viewController.view.tintColor)
+        XCTAssertEqual(phoneNumberViewTitleLabel.backgroundColor, .blue)
+        XCTAssertEqual(phoneNumberViewTitleLabel.textAlignment, .center)
+        XCTAssertEqual(phoneNumberViewTitleLabel.font, .systemFont(ofSize: 20))
         XCTAssertEqual(phoneNumberViewTextField?.backgroundColor, .red)
         XCTAssertEqual(phoneNumberViewTextField?.textAlignment, .right)
         XCTAssertEqual(phoneNumberViewTextField?.textColor, .red)
@@ -128,12 +126,10 @@ class QiwiWalletComponentTests: XCTestCase {
         XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
     }
     
-    func testBigTitle() {
+    func testBigTitle() throws {
         let sut = QiwiWalletComponent(paymentMethod: method, context: context, configuration: QiwiWalletComponent.Configuration())
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.CardComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, self.method.name)
@@ -145,7 +141,7 @@ class QiwiWalletComponentTests: XCTestCase {
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
-    func testSubmit() {
+    func testSubmit() throws {
         let phoneExtensions = [PhoneExtension(value: "+3", countryCode: "UK")]
         let method = QiwiWalletPaymentMethod(type: .qiwiWallet, name: "test_name", phoneExtensions: phoneExtensions)
         let sut = QiwiWalletComponent(paymentMethod: method, context: context, configuration: QiwiWalletComponent.Configuration())
@@ -166,9 +162,7 @@ class QiwiWalletComponentTests: XCTestCase {
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
         }
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem")
 
