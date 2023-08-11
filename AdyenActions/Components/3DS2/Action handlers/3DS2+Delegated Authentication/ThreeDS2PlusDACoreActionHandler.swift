@@ -136,10 +136,10 @@
                 performDelegatedAuthentication(token) { [weak self] result in
                     guard let self = self else { return }
                     self.delegatedAuthenticationState.isDeviceRegistrationFlow = result.successResult == nil
-                    guard let fingerprintResult = createFingerPrintResult(authenticationSDKOutput: result.successResult?.sdkOutput,
-                                                                          fingerprintResult: fingerprintResult,
-                                                                          deleteDelegatedAuthenticationCredentials: result.successResult?.deleteDelegatedAuthenticationCredentials,
-                                                                          completionHandler: completionHandler) else { return }
+                    guard let fingerprintResult = self.createFingerPrintResult(authenticationSDKOutput: result.successResult?.sdkOutput,
+                                                                               fingerprintResult: fingerprintResult,
+                                                                               deleteDelegatedAuthenticationCredentials: result.successResult?.deleteDelegatedAuthenticationCredentials,
+                                                                               completionHandler: completionHandler) else { return }
                     completionHandler(.success(fingerprintResult))
                 }
             } catch {
@@ -219,14 +219,14 @@
                 },
                 removeCredentialsHandler: { [weak self] in
                     guard let self else { return }
-                    executeDAAuthenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
-                                          authenticatedHandler: { [weak delegatedAuthenticationService] sdkOutput in
-                                              try? delegatedAuthenticationService?.reset() // TODO: Robert: Decide if we need to reset the credentials from the device for the MVP.
-                                              completion(.success((sdkOutput, true)))
-                                          },
-                                          failedAuthenticationHandler: { error in
-                                              completion(.failure(.authenticationFailed(cause: error)))
-                                          })
+                    self.executeDAAuthenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                               authenticatedHandler: { [weak delegatedAuthenticationService] sdkOutput in
+                                                   try? delegatedAuthenticationService?.reset() // TODO: Robert: Decide if we need to reset the credentials from the device for the MVP.
+                                                   completion(.success((sdkOutput, true)))
+                                               },
+                                               failedAuthenticationHandler: { error in
+                                                   completion(.failure(.authenticationFailed(cause: error)))
+                                               })
                 }
             )
         }
