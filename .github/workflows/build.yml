@@ -11,7 +11,7 @@ on:
     
 jobs:
   tests-old:
-    name: Runing old iOS tests ${{ matrix.iOS }}
+    name: Testing iOS ${{ matrix.iOS }}
     runs-on: macos-12
     continue-on-error: true
     strategy:
@@ -32,7 +32,8 @@ jobs:
 
     - name: Prepare iOS ${{ matrix.iOS }} simulator
       run: |
-        xcversion simulators --install='iOS ${OS}'
+        echo ${OS}
+        xcversion simulators --install="iOS ${OS}"
         xcrun simctl list devices ${OS}
       env:
         OS: ${{ matrix.iOS }}
@@ -48,7 +49,7 @@ jobs:
         name: ${{ matrix.iPhone }}
         
   tests-new:
-    name: Runing New iOS tests ${{ matrix.iOS }}
+    name: Testing iOS ${{ matrix.iOS }}
     runs-on: macos-13
     continue-on-error: true
     strategy:
