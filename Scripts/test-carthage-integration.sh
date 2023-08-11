@@ -2,9 +2,10 @@
 
 set -e # Any subsequent(*) commands which fail will cause the shell script to exit immediately
 
-function echo_header {
+function echo_group {
   echo " "
-  echo "===   $1"
+  echo "::endgroup::"
+  echo "::group:: $1"
 }
 
 function print_help {
@@ -39,22 +40,21 @@ done
 
 if [ "$NEED_CLEANUP" == true ]
 then
-  echo_header "Clean up $PROJECT_NAME"
   rm -rf $PROJECT_NAME
   mkdir -p $PROJECT_NAME && cd $PROJECT_NAME
-
-  echo_header "Setup Carthage"
-  CWD=$(pwd)
-  CURRENT_COMMIT=$(git rev-parse HEAD)
-
-  echo "git \"file://$CWD/../\" \"$CURRENT_COMMIT\"" > Cartfile
-  echo "github \"adyen/adyen-authentication-ios\" == 1.1.2" >> Cartfile
-  carthage update --use-xcframeworks --configuration Debug
 else
   cd $PROJECT_NAME
 fi
 
-echo_header "Generate Project"
+echo_group "Setup Carthage"
+CWD=$(pwd)
+CURRENT_COMMIT=$(git rev-parse HEAD)
+
+echo "git \"file://$CWD/../\" \"$CURRENT_COMMIT\"" > Cartfile
+echo "github \"adyen/adyen-authentication-ios\" == 1.1.2" >> Cartfile
+carthage update --use-xcframeworks --configuration Debug
+
+echo_group "Generate Project"
 echo "
 name: $PROJECT_NAME
 targets:
@@ -135,12 +135,28 @@ cp "../Demo/Configuration.swift" Source/Configuration.swift
 
 xcodegen generate
 
-echo_header "Run Tests"
-xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 14" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | xcpretty && exit ${PIPESTATUS[0]}
+echo_group "Archive for generic iOS device"
+xcodebuild clean build archive \
+  -project $PROJECT_NAME.xcodeproj \
+  -scheme App \
+  -destination 'generic/platform=iOS' \
+  | xcpretty && exit ${PIPESTATUS[0]}
 
-if [ "$NEED_CLEANUP" == true ]
-then
-  echo_header "Clean up"
-  cd ../
-  rm -rf $PROJECT_NAME
-fi
+echo_group "Archive for for x86_64 simulator"
+xcodebuild clean build archive \
+  -project $PROJECT_NAME.xcodeproj \
+  -scheme App \
+  -destination 'generic/platform=iOS Simulator' \
+  | xcpretty && exit ${PIPESTATUS[0]}
+  
+echo_group "Run Tests"
+xcodebuild build test \
+  -project $PROJECT_NAME.xcodeproj \
+  -scheme App \
+  -destination "name=iPhone 14" \
+  -skipPackagePluginValidation \
+  CODE_SIGNING_REQUIRED=NO \
+  CODE_SIGNING_ALLOWED=NO \
+  | xcpretty && exit ${PIPESTATUS[0]}
+  
+echo "::endgroup::"

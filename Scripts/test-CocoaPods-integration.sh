@@ -1,9 +1,9 @@
 #!/bin/bash
 
-function echo_header {
+function echo_group {
   echo " "
   echo "::endgroup::"
-  echo "::group:: $1"            
+  echo "::group:: $1"
 }
 
 function print_help {
@@ -46,7 +46,6 @@ done
 
 if [ "$NEED_CLEANUP" == true ]
 then
-  echo_header "Clean up $PROJECT_NAME"
   rm -rf $PROJECT_NAME
   mkdir -p $PROJECT_NAME && cd $PROJECT_NAME
 else
@@ -54,7 +53,7 @@ else
 fi
 
 # Create the Package.swift.
-echo_header "Generate Project"
+echo_group "::group::Generate Project"
 echo "
 name: $PROJECT_NAME
 targets:
@@ -99,7 +98,7 @@ cp "../Demo/Configuration.swift" Source/Configuration.swift
 xcodegen generate
 
 # Create a Podfile with our pod as dependency.
-
+echo_group "Pod Install"
 if [ "$INCLUDE_WECHAT" == false ]
 then
   echo "platform :ios, '11.0'
@@ -114,15 +113,6 @@ then
     pod 'Adyen/CashAppPay', :path => '../'
   end
 
-  post_install do |installer|
-    installer.pods_project.targets.each do |target|
-        target.build_configurations.each do |config|
-            config.build_settings['EXPANDED_CODE_SIGN_IDENTITY'] = \"\"
-            config.build_settings['CODE_SIGNING_REQUIRED'] = \"NO\"
-            config.build_settings['CODE_SIGNING_ALLOWED'] = \"NO\"
-        end
-    end
-   end
   " >> Podfile
 else
   echo "platform :ios, '11.0'
@@ -137,34 +127,29 @@ else
     pod 'Adyen/CashAppPay', :path => '../'
   end
 
-  post_install do |installer|
-    installer.pods_project.targets.each do |target|
-        target.build_configurations.each do |config|
-            config.build_settings['EXPANDED_CODE_SIGN_IDENTITY'] = \"\"
-            config.build_settings['CODE_SIGNING_REQUIRED'] = \"NO\"
-            config.build_settings['CODE_SIGNING_ALLOWED'] = \"NO\"
-        end
-    end
-  end
   " >> Podfile
 fi
 
-# Install the pods.
 pod install
 
-# Archive for generic iOS device
-echo '::debug::############# Archive for generic iOS device ###############'
-xcodebuild clean build archive -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS' | xcpretty && exit ${PIPESTATUS[0]}
+echo_group "Archive for generic iOS device"
+xcodebuild clean build archive \
+  -scheme App \
+  -workspace $PROJECT_NAME.xcworkspace \
+  -destination 'generic/platform=iOS' \
+  | xcpretty && exit ${PIPESTATUS[0]}
 
-# Archive for x86_64 simulator
-echo '############# Archive for simulator ###############'
-xcodebuild clean build archive -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS Simulator' | xcpretty && exit ${PIPESTATUS[0]}
-
-# Testing
-echo '############# Testing ###############'
+echo_group "Archive for for x86_64 simulator"
+xcodebuild clean build archive \
+  -scheme App \
+  -workspace $PROJECT_NAME.xcworkspace \
+  -destination 'generic/platform=iOS Simulator' \
+  | xcpretty && exit ${PIPESTATUS[0]}
+  
+echo_group "Run Tests"
 xcodebuild test \
-  -scheme TempProject-Package \
-  -workspace TempProject.xcworkspace \
+  -scheme App \
+  -workspace $PROJECT_NAME.xcworkspace \
   -destination "name=iPhone 14" \
   -skipPackagePluginValidation \
   CODE_SIGNING_REQUIRED=NO \

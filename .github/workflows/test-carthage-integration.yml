@@ -12,6 +12,7 @@ on:
 jobs:
 
   carthage:
+    name: Generate fixture for Carthage and run tests
     runs-on: macos-13
     steps:
     - uses: actions/checkout@v3
@@ -26,13 +27,10 @@ jobs:
 
     - name: Resolve dependencies
       run: |
-        brew update
         brew install xcodegen
-        brew upgrade carthage
 
     - name: Test Carthage Integration
       env:
         GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        carthage version
         Scripts/test-carthage-integration.sh

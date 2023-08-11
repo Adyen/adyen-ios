@@ -6,12 +6,12 @@ on:
 
   push:
     branches:
-    - master
     - develop
 
 jobs:
 
-  pods:
+  pod-test:
+    name: Generate fixture for Cocoapods and run tests
     runs-on: macos-13
     steps:
     - uses: actions/checkout@v3
@@ -24,13 +24,28 @@ jobs:
       with:
         xcode-version: latest-stable
 
-    - name: Lint Cocoapods
+    - name: Install dependencies
       run: |
-        gem install cocoapods -v 1.10.2
-        pod repo update
-        pod lib lint Adyen.podspec --allow-warnings --verbose
+        brew install xcodegen
 
     - name: Test Cocoapods Integration
       run: |
-        Scripts/test-CocoaPods-integration.sh -w
         Scripts/test-CocoaPods-integration.sh
+        
+    - name: Test Cocoapods Integration without WeChatPay
+      run: |
+        Scripts/test-CocoaPods-integration.sh -w
+
+  pod-lint:
+    name: Run linter for Cocoapods
+    runs-on: macos-13
+    steps:
+    - uses: actions/checkout@v3
+    - uses: n1hility/cancel-previous-runs@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Lint Cocoapods
+      run: |
+        pod repo update
+        pod lib lint Adyen.podspec --allow-warnings --verbose
