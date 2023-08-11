@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -88,6 +88,10 @@ public final class SpringAnimationContext: AnimationContext {
 @_spi(AdyenInternal)
 extension AdyenScope where Base: UIView {
     
+    public func cancelAnimations(with key: String) {
+        base.animations.removeAll { $0.animationKey == key }
+    }
+    
     public func animate(context: AnimationContext) {
         base.animations.append(context)
         
@@ -99,8 +103,10 @@ extension AdyenScope where Base: UIView {
     private func animateNext(context: AnimationContext) {
         let completion: (Bool) -> Void = {
             context.completion?($0)
-            base.animations.removeFirst()
-            base.animations.first.map(animateNext)
+            if base.animations.count > 0 {
+                base.animations.removeFirst()
+                base.animations.first.map(animateNext)
+            }
         }
 
         if let springContext = context as? SpringAnimationContext {

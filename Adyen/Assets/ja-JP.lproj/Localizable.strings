@@ -83,8 +83,11 @@
 "adyen.pix.copyButton" = "コードをコピー";
 "adyen.pix.instructions.copiedMessage" = "コードをクリップボードにコピーしました";
 "adyen.billingAddressSection.title" = "ご請求住所";
+"adyen.billingAddress.placeholder" = "ご請求先住所";
 "adyen.deliveryAddressSection.title" = "配送先住所";
 "adyen.countryField.title" = "国";
+"adyen.countryField.placeholder" = "国";
+"adyen.countryField.invalid" = "国名が正しくありません";
 "adyen.addressField.title" = "住所";
 "adyen.addressField.placeholder" = "住所";
 "adyen.streetField.title" = "番地";
@@ -190,3 +193,13 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "認証情報を削除してもよろしいですか？";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "削除";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "キャンセル";
+"adyen.picker.search.empty.title" = "結果が見つかりませんでした";
+"adyen.picker.search.empty.subtitle" = "'%@' との一致はありませんでした";
+"adyen.address.lookup.search.placeholder" = "住所を検索してください";
+"adyen.address.lookup.search.empty.title" = "住所を検索できませんか？";
+"adyen.address.lookup.search.empty.subtitle" = "いつでも手動で#住所を入力#できます";
+"adyen.address.lookup.search.empty.title.noResults" = "結果が見つかりませんでした";
+"adyen.address.lookup.search.empty.subtitle.noResults" = "「%@」との一致はありませんでした。もう一度試すか、#手動でアドレスを入力#してください";
+"adyen.address.lookup.item.validationFailureMessage.empty" = "住所が必要です";
+"adyen.address.lookup.item.validationFailureMessage.invalid" = "住所が無効です";
+"adyen.address.lookup.search.manualEntryItem.title" = "住所を手動で入力してください";

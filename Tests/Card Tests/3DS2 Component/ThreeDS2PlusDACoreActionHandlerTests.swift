@@ -138,9 +138,9 @@ import XCTest
                 case .success:
                     XCTFail()
                 case let .failure(error):
-                    let decodingError = error as! DecodingError
+                    let decodingError = error as? DecodingError
                     switch decodingError {
-                    case .dataCorrupted: ()
+                    case .dataCorrupted?: ()
                     default:
                         XCTFail()
                     }
@@ -176,7 +176,8 @@ import XCTest
                 ),
                 delegatedAuthenticationSDKOutput: expectedSDKRegistrationOutput,
                 deleteDelegatedAuthenticationCredentials: nil,
-                authorizationToken: "authToken"
+                authorizationToken: "authToken",
+                threeDS2SDKError: nil
             )
             
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
@@ -223,11 +224,16 @@ import XCTest
 
             sut.handle(challengeAction, event: analyticsEvent) { result in
                 switch result {
-                case .success:
+                case let .success(result):
+                    
+                    struct Payload: Codable {
+                        let threeDS2SDKError: String?
+                    }
+
+                    let payload: Payload? = try? Coder.decodeBase64(result.payload)
+                    XCTAssertNotNil(payload?.threeDS2SDKError)
+                case .failure:
                     XCTFail()
-                case let .failure(error):
-                    let error = error as! Dummy
-                    XCTAssertEqual(error, Dummy.error)
                 }
                 resultExpectation.fulfill()
             }
@@ -249,9 +255,9 @@ import XCTest
                 case .success:
                     XCTFail()
                 case let .failure(error):
-                    let error = error as! ThreeDS2Component.Error
-                    switch error {
-                    case .missingTransaction: ()
+                    let componentError = error as? ThreeDS2Component.Error
+                    switch componentError {
+                    case .missingTransaction?: ()
                     default:
                         XCTFail()
                     }
@@ -288,9 +294,9 @@ import XCTest
                 case .success:
                     XCTFail()
                 case let .failure(error):
-                    let error = error as! DecodingError
-                    switch error {
-                    case .dataCorrupted: ()
+                    let decodingError = error as? DecodingError
+                    switch decodingError {
+                    case .dataCorrupted?: ()
                     default:
                         XCTFail()
                     }
@@ -490,8 +496,8 @@ import XCTest
             let expectedResult = try XCTUnwrap(try? ThreeDSResult(from: AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTransactionIdentifier", transactionStatus: "Y"),
                                                                   delegatedAuthenticationSDKOutput: nil,
                                                                   deleteDelegatedAuthenticationCredentials: true, // We shouldn receive
-                                                                  authorizationToken: "authToken"
-            ))
+                                                                  authorizationToken: "authToken",
+                                                                  threeDS2SDKError: nil))
             
             struct DeviceSupportCheckerMock: AdyenAuthentication.DeviceSupportCheckerProtocol {
                 var isDeviceSupported: Bool
@@ -547,8 +553,8 @@ import XCTest
             let expectedResult = try XCTUnwrap(try? ThreeDSResult(from: AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTransactionIdentifier", transactionStatus: "Y"),
                                                                   delegatedAuthenticationSDKOutput: nil, // // We shouldn't receive
                                                                   deleteDelegatedAuthenticationCredentials: nil, // We shouldn't receive
-                                                                  authorizationToken: "authToken"
-            ))
+                                                                  authorizationToken: "authToken",
+                                                                  threeDS2SDKError: nil))
             
             struct DeviceSupportCheckerMock: AdyenAuthentication.DeviceSupportCheckerProtocol {
                 var isDeviceSupported: Bool

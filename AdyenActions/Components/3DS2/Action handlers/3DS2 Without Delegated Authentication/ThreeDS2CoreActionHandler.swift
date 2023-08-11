@@ -27,6 +27,10 @@ internal protocol AnyThreeDS2CoreActionHandler: Component {
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
 internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     
+    private enum Constant {
+        static let transStatusWhenError = "U"
+    }
+    
     internal let context: AdyenContext
 
     /// The appearance configuration of the 3D Secure 2 challenge UI.
@@ -73,7 +77,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
             }
         }
     }
-
+    
     private func createFingerprint(_ action: ThreeDS2FingerprintAction,
                                    completionHandler: @escaping (Result<String, Error>) -> Void) {
         do {
@@ -85,34 +89,43 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
             serviceParameters.directoryServerRootCertificates = token.directoryServerRootCertificates
 
             service.service(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { [weak self] _ in
-                if let encodedFingerprint = self?.getFingerprint(messageVersion: token.threeDSMessageVersion,
-                                                                 completionHandler: completionHandler) {
-                    completionHandler(.success(encodedFingerprint))
-                }
+                self?.getFingerprint(messageVersion: token.threeDSMessageVersion,
+                                     completionHandler: completionHandler)
             }
         } catch {
             didFail(with: error, completionHandler: completionHandler)
         }
     }
 
-    private func getFingerprint<R>(messageVersion: String, completionHandler: @escaping (Result<R, Error>) -> Void) -> String? {
+    private func getFingerprint(messageVersion: String, completionHandler: @escaping (Result<String, Error>) -> Void) {
         do {
-            let newTransaction = try service.transaction(withMessageVersion: messageVersion)
-            self.transaction = newTransaction
+            switch transaction(messageVersion: messageVersion) {
+            case let .success(transaction):
+                let encodedFingerprint = try Coder.encodeBase64(ThreeDS2Component.Fingerprint(
+                    authenticationRequestParameters: transaction.authenticationParameters,
+                    delegatedAuthenticationSDKOutput: nil
+                ))
+                self.transaction = transaction
+                completionHandler(.success(encodedFingerprint))
 
-            let fingerprint = try ThreeDS2Component.Fingerprint(
-                authenticationRequestParameters: newTransaction.authenticationParameters,
-                delegatedAuthenticationSDKOutput: nil
-            )
-            let encodedFingerprint = try Coder.encodeBase64(fingerprint)
-
-            return encodedFingerprint
+            case let .failure(error):
+                let encodedError = try Coder.encodeBase64(ThreeDS2Component.Fingerprint(threeDS2SDKError: error.base64Representation()))
+                completionHandler(.success(encodedError))
+            }
         } catch {
             didFail(with: error, completionHandler: completionHandler)
         }
-        return nil
     }
 
+    private func transaction(messageVersion: String) -> Result<AnyADYTransaction, NSError> {
+        do {
+            let newTransaction = try service.transaction(withMessageVersion: messageVersion)
+            return .success(newTransaction)
+        } catch let error as NSError {
+            return .failure(error)
+        }
+    }
+    
     // MARK: - Challenge
 
     /// Handles the 3D Secure 2 challenge action.
@@ -140,8 +153,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                                                          threeDSRequestorAppURL: threeDSRequestorAppURL ?? token.threeDSRequestorAppURL)
         transaction.performChallenge(with: challengeParameters) { [weak self] challengeResult, error in
             guard let result = challengeResult else {
-                let error = error ?? UnknownError(errorDescription: "Both error and result are nil, this should never happen.")
-                self?.didFail(with: error, completionHandler: completionHandler)
+                self?.didReceiveErrorOnChallenge(error: error, challengeAction: challengeAction, completionHandler: completionHandler)
                 return
             }
 
@@ -149,19 +161,37 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                             authorizationToken: challengeAction.authorisationToken,
                             completionHandler: completionHandler)
         }
-
     }
-
-    private func didFinish(with challengeResult: AnyChallengeResult,
+    
+    /// Invoked to handle the error flow of a challenge handling by the 3ds2sdk.
+    /// For challenge cancelled we return the control back to the merchant immediately as an error.
+    private func didReceiveErrorOnChallenge(error: Error?,
+                                            challengeAction: ThreeDS2ChallengeAction,
+                                            completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
+        guard let error = error as? NSError else {
+            didFail(with: UnknownError(errorDescription: "Both error and result are nil, this should never happen."),
+                    completionHandler: completionHandler)
+            return
+        }
+        switch (error.domain, error.code) {
+        case (ADYRuntimeErrorDomain, Int(ADYRuntimeErrorCode.challengeCancelled.rawValue)):
+            didFail(with: error,
+                    completionHandler: completionHandler)
+        default:
+            didFinish(threeDS2SDKError: error.base64Representation(),
+                      authorizationToken: challengeAction.authorisationToken,
+                      completionHandler: completionHandler)
+        }
+    }
+    
+    private func didFinish(threeDS2SDKError: String,
                            authorizationToken: String?,
                            completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
-
         do {
-            let threeDSResult = try ThreeDSResult(from: challengeResult,
-                                                  delegatedAuthenticationSDKOutput: nil,
-                                                  deleteDelegatedAuthenticationCredentials: nil,
-                                                  authorizationToken: authorizationToken)
-
+            // When we get an error we need to send transStatus as "U" along with the threeDS2SDKError field.
+            let threeDSResult = try ThreeDSResult(authorizationToken: authorizationToken,
+                                                  threeDS2SDKError: threeDS2SDKError,
+                                                  transStatus: Constant.transStatusWhenError)
             transaction = nil
             completionHandler(.success(threeDSResult))
         } catch {
@@ -169,6 +199,23 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         }
     }
 
+    private func didFinish(with challengeResult: AnyChallengeResult,
+                           authorizationToken: String?,
+                           completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
+        do {
+            let threeDSResult = try ThreeDSResult(from: challengeResult,
+                                                  delegatedAuthenticationSDKOutput: nil,
+                                                  deleteDelegatedAuthenticationCredentials: nil,
+                                                  authorizationToken: authorizationToken,
+                                                  threeDS2SDKError: nil)
+
+            transaction = nil
+            completionHandler(.success(threeDSResult))
+        } catch {
+            completionHandler(.failure(error))
+        }
+    }
+    
     private func didFail<R>(with error: Error,
                             completionHandler: @escaping (Result<R, Error>) -> Void) {
         transaction = nil

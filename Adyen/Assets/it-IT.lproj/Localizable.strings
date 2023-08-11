@@ -83,8 +83,11 @@
 "adyen.pix.copyButton" = "Copia codice";
 "adyen.pix.instructions.copiedMessage" = "Codice copiato negli appunti";
 "adyen.billingAddressSection.title" = "Indirizzo di fatturazione";
+"adyen.billingAddress.placeholder" = "Il tuo indirizzo di fatturazione";
 "adyen.deliveryAddressSection.title" = "Indirizzo di consegna";
 "adyen.countryField.title" = "Paese";
+"adyen.countryField.placeholder" = "Paese";
+"adyen.countryField.invalid" = "Paese non valido";
 "adyen.addressField.title" = "Indirizzo";
 "adyen.addressField.placeholder" = "Indirizzo";
 "adyen.streetField.title" = "Via";
@@ -190,3 +193,13 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "Sei sicuro di voler rimuovere le tue credenziali?";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "Rimuovi";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Annulla";
+"adyen.picker.search.empty.title" = "Nessun risultato trovato";
+"adyen.picker.search.empty.subtitle" = "'%@' non corrisponde a nulla";
+"adyen.address.lookup.search.placeholder" = "Cerca il tuo indirizzo";
+"adyen.address.lookup.search.empty.title" = "Non riesci a cercare il tuo indirizzo?";
+"adyen.address.lookup.search.empty.subtitle" = "Puoi sempre #immettere il tuo indirizzo #manualmente";
+"adyen.address.lookup.search.empty.title.noResults" = "Nessun risultato trovato";
+"adyen.address.lookup.search.empty.subtitle.noResults" = "%@ non corrisponde a nulla, riprova o usa #inserimento indirizzo manuale#";
+"adyen.address.lookup.item.validationFailureMessage.empty" = "Indirizzo richiesto";
+"adyen.address.lookup.item.validationFailureMessage.invalid" = "Indirizzo non valido";
+"adyen.address.lookup.search.manualEntryItem.title" = "Inserisci l'indirizzo manualmente";

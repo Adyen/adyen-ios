@@ -61,7 +61,8 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
             throw Error.userCannotMakePayment
         }
 
-        self.paymentRequest = configuration.createPaymentRequest(supportedNetworks: supportedNetworks)
+        var configuration = configuration
+        self.paymentRequest = configuration.paymentRequest(with: supportedNetworks)
         guard let viewController = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest) else {
             throw UnknownError(
                 errorDescription: "Failed to instantiate PKPaymentAuthorizationViewController because of unknown error"

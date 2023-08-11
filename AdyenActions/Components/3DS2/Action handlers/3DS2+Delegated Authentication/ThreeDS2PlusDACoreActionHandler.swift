@@ -129,7 +129,9 @@
             }
         }
     
-        private func addSDKOutputIfNeeded(toFingerprintResult fingerprintResult: String, _ fingerprintAction: ThreeDS2FingerprintAction, completionHandler: @escaping (Result<String, Error>) -> Void) {
+        private func addSDKOutputIfNeeded(toFingerprintResult fingerprintResult: String,
+                                          _ fingerprintAction: ThreeDS2FingerprintAction,
+                                          completionHandler: @escaping (Result<String, Error>) -> Void) {
             do {
                 let token = try Coder.decodeBase64(fingerprintAction.fingerprintToken) as ThreeDS2Component.FingerprintToken
                 let fingerprintResult: ThreeDS2Component.Fingerprint = try Coder.decodeBase64(fingerprintResult)

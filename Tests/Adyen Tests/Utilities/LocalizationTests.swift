@@ -8,6 +8,25 @@
 import XCTest
 
 class LocalizationTests: XCTestCase {
+
+    // MARK: - Enforced translation
+
+    func testEnforcedLocalization() {
+        var parameters = LocalizationParameters(enforcedLocale: "it-IT")
+        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Conferma il pagamento di test")
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Verifica la Carta")
+
+        XCTAssertNil(parameters.bundle)
+        XCTAssertNil(parameters.keySeparator)
+        XCTAssertNil(parameters.tableName)
+        XCTAssertEqual(parameters.locale, "it-IT")
+
+        parameters = LocalizationParameters(enforcedLocale: "ar")
+        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "تأكيد الدفع باستخدام test")
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "التحقق من بطاقتك")
+        XCTAssertEqual(parameters.locale, "ar")
+    }
+
     // MARK: - Button title
 
     func testLocalizationWitZeroPayment() {
@@ -20,9 +39,14 @@ class LocalizationTests: XCTestCase {
     
     /// Default Separator
     func testLocalizationWithCustomRecognizedTableNameAndDefaultSeparator() {
-        let parameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
+        let parameters = LocalizationParameters(tableName: "AdyenUIHost")
         XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Test-Confirm test payment")
         XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Test-Verify your card")
+
+        XCTAssertNil(parameters.bundle)
+        XCTAssertNil(parameters.keySeparator)
+        XCTAssertEqual(parameters.tableName, "AdyenUIHost")
+        XCTAssertNil(parameters.locale)
     }
 
     /// Unrecognized Separator
@@ -30,6 +54,11 @@ class LocalizationTests: XCTestCase {
         let parameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: "*")
         XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Test-Confirm test payment")
         XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Test-Verify your card")
+
+        XCTAssertNil(parameters.bundle)
+        XCTAssertEqual(parameters.keySeparator, "*")
+        XCTAssertEqual(parameters.tableName, "AdyenUIHost")
+        XCTAssertNil(parameters.locale)
     }
 
     /// Recognized Separator
@@ -43,10 +72,14 @@ class LocalizationTests: XCTestCase {
 
     func testLocalizationWithCustomRecognizedTableNameAndDefaultSeparatorAndCustomBundle() {
         let parameters = LocalizationParameters(bundle: Bundle(for: LocalizationTests.self),
-                                                tableName: "AdyenTests",
-                                                keySeparator: nil)
+                                                tableName: "AdyenTests")
         XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle-Confirm test payment")
         XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle-Verify your card")
+
+        XCTAssertEqual(parameters.bundle, Bundle(for: LocalizationTests.self))
+        XCTAssertNil(parameters.keySeparator)
+        XCTAssertEqual(parameters.tableName, "AdyenTests")
+        XCTAssertNil(parameters.locale)
     }
 
     func testLocalizationWithCustomBundleFallbackToMainBundle() {

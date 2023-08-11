@@ -91,9 +91,22 @@ internal struct CardComponentConfiguration: Codable {
     internal var showsStorePaymentMethodField = true
     internal var showsStoredCardSecurityCodeField = true
     internal var showsSecurityCodeField = true
-    internal var addressMode: CardComponent.AddressFormType = .none
+    internal var addressMode: AddressFormType = .none
     internal var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
     internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
+    
+    internal enum AddressFormType: String, Codable, CaseIterable {
+        case lookup
+        case full
+        case postalCode
+        case none
+    }
+}
+
+internal struct DropInConfiguration: Codable {
+    internal var allowDisablingStoredPaymentMethods: Bool = false
+    internal var allowsSkippingPaymentList: Bool = false
+    internal var allowPreselectedPaymentView: Bool = true
 }
 
 internal struct DemoAppSettings: Codable {
@@ -105,6 +118,7 @@ internal struct DemoAppSettings: Codable {
     internal let apiVersion: Int
     internal let merchantAccount: String
     internal let cardComponentConfiguration: CardComponentConfiguration
+    internal let dropInConfiguration: DropInConfiguration
 
     internal var amount: Amount { Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil) }
     internal var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
@@ -115,7 +129,8 @@ internal struct DemoAppSettings: Codable {
         currencyCode: "EUR",
         apiVersion: 70,
         merchantAccount: ConfigurationConstants.merchantAccount,
-        cardComponentConfiguration: defaultCardComponentConfiguration
+        cardComponentConfiguration: defaultCardComponentConfiguration,
+        dropInConfiguration: defaultDropInConfiguration
     )
 
     internal static let defaultCardComponentConfiguration = CardComponentConfiguration(showsHolderNameField: false,
@@ -125,6 +140,10 @@ internal struct DemoAppSettings: Codable {
                                                                                        addressMode: .none,
                                                                                        socialSecurityNumberMode: .auto,
                                                                                        koreanAuthenticationMode: .auto)
+
+    internal static let defaultDropInConfiguration = DropInConfiguration(allowDisablingStoredPaymentMethods: false,
+                                                                         allowsSkippingPaymentList: false,
+                                                                         allowPreselectedPaymentView: true)
     
     fileprivate static func loadConfiguration() -> DemoAppSettings {
         var config = UserDefaults.standard.data(forKey: defaultsKey)
@@ -151,7 +170,7 @@ internal struct DemoAppSettings: Codable {
         storedCardConfig.showsSecurityCodeField = cardComponentConfiguration.showsStoredCardSecurityCodeField
 
         var billingAddressConfig = BillingAddressConfiguration()
-        billingAddressConfig.mode = cardComponentConfiguration.addressMode
+        billingAddressConfig.mode = cardComponentAddressFormType(from: cardComponentConfiguration.addressMode)
 
         return .init(showsHolderNameField: cardComponentConfiguration.showsHolderNameField,
                      showsStorePaymentMethodField: cardComponentConfiguration.showsStorePaymentMethodField,
@@ -167,7 +186,7 @@ internal struct DemoAppSettings: Codable {
         storedCardConfig.showsSecurityCodeField = cardComponentConfiguration.showsStoredCardSecurityCodeField
 
         var billingAddressConfig = BillingAddressConfiguration()
-        billingAddressConfig.mode = cardComponentConfiguration.addressMode
+        billingAddressConfig.mode = cardComponentAddressFormType(from: cardComponentConfiguration.addressMode)
 
         return .init(showsHolderNameField: cardComponentConfiguration.showsHolderNameField,
                      showsStorePaymentMethodField: cardComponentConfiguration.showsStorePaymentMethodField,
@@ -177,5 +196,33 @@ internal struct DemoAppSettings: Codable {
                      storedCardConfiguration: storedCardConfig,
                      billingAddress: billingAddressConfig)
 
+    }
+
+    internal var dropInSettings: DropInComponent.Configuration {
+        let dropInConfig = DropInComponent.Configuration(allowsSkippingPaymentList: dropInConfiguration.allowsSkippingPaymentList,
+                                                         allowPreselectedPaymentView: dropInConfiguration.allowPreselectedPaymentView)
+
+        dropInConfig.paymentMethodsList.allowDisablingStoredPaymentMethods = dropInConfiguration.allowDisablingStoredPaymentMethods
+
+        return dropInConfig
+    }
+}
+
+private extension DemoAppSettings {
+    
+    private func cardComponentAddressFormType(from addressFormType: CardComponentConfiguration.AddressFormType) -> CardComponent.AddressFormType {
+        switch addressFormType {
+        case .lookup:
+            let addressLookupProvider = DemoAddressLookupProvider()
+            return .lookup { searchTerm, completionHandler in
+                addressLookupProvider.lookUp(searchTerm: searchTerm, resultHandler: completionHandler)
+            }
+        case .full:
+            return .full
+        case .postalCode:
+            return .postalCode
+        case .none:
+            return .none
+        }
     }
 }

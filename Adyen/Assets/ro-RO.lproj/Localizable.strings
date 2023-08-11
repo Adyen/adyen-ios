@@ -83,8 +83,11 @@
 "adyen.pix.copyButton" = "Copiați codul";
 "adyen.pix.instructions.copiedMessage" = "Cod copiat în clipboard";
 "adyen.billingAddressSection.title" = "Adresa de facturare";
+"adyen.billingAddress.placeholder" = "Adresa dvs. de facturare";
 "adyen.deliveryAddressSection.title" = "Adresă de livrare";
 "adyen.countryField.title" = "Țară";
+"adyen.countryField.placeholder" = "Țară";
+"adyen.countryField.invalid" = "Țară incorectă";
 "adyen.addressField.title" = "Adresă";
 "adyen.addressField.placeholder" = "Adresă";
 "adyen.streetField.title" = "Strada";
@@ -190,3 +193,13 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "Sigur doriți să vă eliminați acreditările?";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "Ștergere";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Anulare";
+"adyen.picker.search.empty.title" = "Nu s-au găsit rezultate";
+"adyen.picker.search.empty.subtitle" = "'%@' nu s-a potrivit cu nimic";
+"adyen.address.lookup.search.placeholder" = "Căutați adresa dvs.";
+"adyen.address.lookup.search.empty.title" = "Nu vă puteți căuta adresa?";
+"adyen.address.lookup.search.empty.subtitle" = "Puteți oricând să #completați adresa dvs. manual#";
+"adyen.address.lookup.search.empty.title.noResults" = "Nu s-au găsit rezultate";
+"adyen.address.lookup.search.empty.subtitle.noResults" = "'%@' nu s-a potrivit cu nimic, încercați din nou sau folosiți #completarea manuală a adresei#";
+"adyen.address.lookup.item.validationFailureMessage.empty" = "Adresa este necesară";
+"adyen.address.lookup.item.validationFailureMessage.invalid" = "Adresă incorectă";
+"adyen.address.lookup.search.manualEntryItem.title" = "Introduceți adresa manual";

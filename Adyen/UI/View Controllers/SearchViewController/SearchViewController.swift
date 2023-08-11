@@ -23,7 +23,7 @@ public class SearchViewController: UIViewController, AdyenObserver {
     internal lazy var keyboardObserver = KeyboardObserver()
     private var emptyViewBottomConstraint: NSLayoutConstraint?
 
-    private let viewModel: ViewModel
+    internal let viewModel: ViewModel
     internal let emptyView: SearchResultsEmptyView
     
     public lazy var resultsListViewController = ListViewController(style: viewModel.style)
@@ -52,19 +52,17 @@ public class SearchViewController: UIViewController, AdyenObserver {
         let loadingView = UIActivityIndicatorView(style: .whiteLarge)
         loadingView.color = .Adyen.componentLoadingMessageColor
         loadingView.hidesWhenStopped = true
+        loadingView.translatesAutoresizingMaskIntoConstraints = false
         return loadingView
     }()
     
     internal lazy var searchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.searchBarStyle = .prominent
-        searchBar.placeholder = viewModel.searchBarPlaceholder
-        searchBar.isTranslucent = false
-        searchBar.backgroundImage = UIImage()
-        searchBar.barTintColor = viewModel.style.backgroundColor
-        searchBar.delegate = self
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
-        return searchBar
+        
+        .prominent(
+            placeholder: viewModel.searchBarPlaceholder,
+            backgroundColor: viewModel.style.backgroundColor,
+            delegate: self
+        )
     }()
 
     override public func viewDidLoad() {
@@ -104,14 +102,13 @@ public class SearchViewController: UIViewController, AdyenObserver {
         super.viewWillAppear(animated)
         
         if viewModel.shouldFocusSearchBarOnAppearance {
-            searchBar.becomeFirstResponder()
+            DispatchQueue.main.async { // Fix animation glitch on iOS 17
+                self.searchBar.becomeFirstResponder()
+            }
         }
     }
     
     private func setupConstraints() {
-        
-        emptyViewBottomConstraint = emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
-        emptyViewBottomConstraint?.isActive = true
         
         NSLayoutConstraint.activate([
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
@@ -125,11 +122,16 @@ public class SearchViewController: UIViewController, AdyenObserver {
             
             emptyView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 0),
             emptyView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0),
-            emptyView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0)
+            emptyView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
+            
+            loadingView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 0),
+            loadingView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0),
+            loadingView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
+            loadingView.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor, constant: 0)
         ])
         
-        loadingView.adyen.anchor(inside: view.layoutMarginsGuide)
-        loadingView.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor, constant: 0).isActive = true
+        emptyViewBottomConstraint = emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        emptyViewBottomConstraint?.isActive = true
     }
     
     private func updateInterface(with interfaceState: InterfaceState) {
@@ -156,9 +158,19 @@ public class SearchViewController: UIViewController, AdyenObserver {
     }
     
     private func handleKeyboardHeightDidChange(keyboardHeight: CGFloat) {
+        
+        let updateConstraint: () -> Void = {
+            self.emptyViewBottomConstraint?.constant = -keyboardHeight
+        }
+        
+        guard view.window != nil else {
+            updateConstraint()
+            return
+        }
+        
         self.view.setNeedsLayout()
         UIView.animate(withDuration: 0.2) {
-            self.emptyViewBottomConstraint?.constant = -keyboardHeight
+            updateConstraint()
             self.view.layoutIfNeeded()
         }
     }

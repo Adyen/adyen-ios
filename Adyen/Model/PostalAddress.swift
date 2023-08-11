@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -101,15 +101,23 @@ public struct PostalAddress: Equatable, Encodable {
             .map { $0?.trimmingCharacters(in: .whitespaces).adyen.nilIfEmpty }
         return zip(lhsFields, rhsFields).allSatisfy { $0 == $1 }
     }
+    
+    public var isEmpty: Bool {
+        self == .init()
+    }
 }
 
 extension PostalAddress {
     
+    /// Multi line mailing address
     @_spi(AdyenInternal)
-    public var formatted: String {
+    public func formatted(using localizationParameters: LocalizationParameters?) -> String {
         let address = CNMutablePostalAddress()
         city.map { address.city = $0 }
-        country.map { address.isoCountryCode = $0 }
+        country.map {
+            address.isoCountryCode = $0
+            address.country = countryName(for: $0, using: localizationParameters)
+        }
         stateOrProvince.map { address.state = $0 }
         postalCode.map { address.postalCode = $0 }
         address.street = [street, houseNumberOrName, apartment]
@@ -119,4 +127,40 @@ extension PostalAddress {
         return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
     }
     
+    @_spi(AdyenInternal)
+    public var formattedStreet: String {
+        let address = CNMutablePostalAddress()
+        address.street = [street, houseNumberOrName, apartment]
+            .compactMap { $0 }
+            .joined(separator: " ")
+        
+        return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
+            .replacingOccurrences(of: "\n", with: ", ")
+    }
+    
+    @_spi(AdyenInternal)
+    public func formattedLocation(using localizationParameters: LocalizationParameters?) -> String {
+        let address = CNMutablePostalAddress()
+        city.map { address.city = $0 }
+        country.map {
+            address.isoCountryCode = $0
+            address.country = countryName(for: $0, using: localizationParameters)
+        }
+        stateOrProvince.map { address.state = $0 }
+        postalCode.map { address.postalCode = $0 }
+        
+        return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
+            .replacingOccurrences(of: "\n", with: ", ")
+    }
+    
+    private func countryName(
+        for countryCode: String,
+        using localizationParameters: LocalizationParameters?
+    ) -> String {
+        let locale = Locale(identifier: localizationParameters?.locale ?? Locale.current.identifier)
+        return RegionRepository.region(
+            from: locale as NSLocale,
+            for: countryCode
+        )?.name ?? countryCode
+    }
 }

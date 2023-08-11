@@ -83,8 +83,11 @@
 "adyen.pix.copyButton" = "Kopiera kod";
 "adyen.pix.instructions.copiedMessage" = "Koden kopierades till Urklipp";
 "adyen.billingAddressSection.title" = "Faktureringsadress";
+"adyen.billingAddress.placeholder" = "Din faktureringsadress";
 "adyen.deliveryAddressSection.title" = "Leveransadress";
 "adyen.countryField.title" = "Land";
+"adyen.countryField.placeholder" = "Land";
+"adyen.countryField.invalid" = "Ogiltigt land";
 "adyen.addressField.title" = "Adress";
 "adyen.addressField.placeholder" = "Adress";
 "adyen.streetField.title" = "Gatuadress";
@@ -190,3 +193,13 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "Är du säker på att du vill ta bort dina autentiseringsuppgifter?";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "Ta bort";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Avbryt";
+"adyen.picker.search.empty.title" = "Inga resultat hittades";
+"adyen.picker.search.empty.subtitle" = "Det finns inga matchningar för ”%@”";
+"adyen.address.lookup.search.placeholder" = "Sök upp din adress";
+"adyen.address.lookup.search.empty.title" = "Kan du inte söka efter din adress?";
+"adyen.address.lookup.search.empty.subtitle" = "Du kan alltid #ange din adress manuellt#";
+"adyen.address.lookup.search.empty.title.noResults" = "Inga resultat hittades";
+"adyen.address.lookup.search.empty.subtitle.noResults" = "Det finns inga matchningar för ”%@”. Försök igen eller använd #manuell adressinmatning#";
+"adyen.address.lookup.item.validationFailureMessage.empty" = "Adress krävs";
+"adyen.address.lookup.item.validationFailureMessage.invalid" = "Ogiltig adress";
+"adyen.address.lookup.search.manualEntryItem.title" = "Ange adress manuellt";
