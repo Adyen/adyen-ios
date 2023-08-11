@@ -90,22 +90,27 @@ class PreApplePayComponentTests: XCTestCase {
         presentationMock.doDismiss = { completion in completion?() }
         sut.presentationDelegate = presentationMock
         
-        let applePayButton = self.sut.viewController.view.findView(by: "applePayButton") as? PKPaymentButton
-        
-        XCTAssertNotNil(applePayButton)
-        
-        applePayButton?.sendActions(for: .touchUpInside)
-        
         try setupRootViewController(sut.viewController)
         
-        XCTAssertTrue(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController is PKPaymentAuthorizationViewController)
-        UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: false, completion: nil)
+        let applePayButton = try XCTUnwrap(self.sut.viewController.view.findView(by: "applePayButton") as? PKPaymentButton)
+        applePayButton.sendActions(for: .touchUpInside)
+        
+        wait { (try? rootViewController.presentedViewController) is PKPaymentAuthorizationViewController }
+
+        let authenticationDismissExpectation = expectation(description: "PKPaymentAuthorizationViewController was dismissed")
+        
+        let presentedViewController = try XCTUnwrap(rootViewController.presentedViewController as? PKPaymentAuthorizationViewController)
+        presentedViewController.dismiss(animated: true) {
+            authenticationDismissExpectation.fulfill()
+        }
+        
+        wait(for: [authenticationDismissExpectation], timeout: 1)
 
         sut.finalizeIfNeeded(with: false) {
             dismissExpectation.fulfill()
         }
 
-        waitForExpectations(timeout: 10, handler: nil)
+        wait(for: [dismissExpectation], timeout: 1)
     }
     
     func testHintLabelAmount() throws {

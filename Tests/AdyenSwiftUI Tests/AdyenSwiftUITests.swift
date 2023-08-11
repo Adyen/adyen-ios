@@ -26,7 +26,7 @@ class AdyenSwiftUITests: XCTestCase {
         
         // Enabling Advanced Flow
         sessionSwitch.tap()
-        XCTAssertEqual(sessionSwitch.value as! String, "0")
+        wait { (sessionSwitch.value as! String) == "0" }
         
         app.buttons["Drop In"].tap()
 
@@ -46,7 +46,7 @@ class AdyenSwiftUITests: XCTestCase {
         
         // Enabling Advanced Flow
         sessionSwitch.tap()
-        XCTAssertEqual(sessionSwitch.value as! String, "0")
+        wait { (sessionSwitch.value as! String) == "0" }
         
         app.buttons["Card"].tap()
 

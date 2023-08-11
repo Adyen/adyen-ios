@@ -79,7 +79,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, sut.configuration.localizationParameters))
     }
     
-    func testUIConfiguration() {
+    func testUIConfiguration() throws {
         var sepaComponentStyle = FormComponentStyle()
         
         /// Footer
@@ -110,12 +110,10 @@ class SEPADirectDebitComponentTests: XCTestCase {
                                            context: context,
                                            configuration: configuration)
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
-        let nameItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.titleLabel")
+        let nameItemViewTitleLabel: UILabel = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.titleLabel"))
         let nameItemViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.textField")
         
         let ibanItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem")
@@ -127,10 +125,10 @@ class SEPADirectDebitComponentTests: XCTestCase {
         
         /// Test card number field
         XCTAssertEqual(nameItemView?.backgroundColor, .red)
-        XCTAssertEqual(nameItemViewTitleLabel?.textColor, sut.viewController.view.tintColor)
-        XCTAssertEqual(nameItemViewTitleLabel?.backgroundColor, .blue)
-        XCTAssertEqual(nameItemViewTitleLabel?.textAlignment, .center)
-        XCTAssertEqual(nameItemViewTitleLabel?.font, .systemFont(ofSize: 20))
+        wait { nameItemViewTitleLabel.textColor == sut.viewController.view.tintColor }
+        XCTAssertEqual(nameItemViewTitleLabel.backgroundColor, .blue)
+        XCTAssertEqual(nameItemViewTitleLabel.textAlignment, .center)
+        XCTAssertEqual(nameItemViewTitleLabel.font, .systemFont(ofSize: 20))
         XCTAssertEqual(nameItemViewTextField?.backgroundColor, .red)
         XCTAssertEqual(nameItemViewTextField?.textAlignment, .right)
         XCTAssertEqual(nameItemViewTextField?.textColor, .red)
