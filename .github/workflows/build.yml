@@ -23,6 +23,8 @@ jobs:
         - destination: 'OS=13.7,name=iPhone 11'
           scheme: AdyenUIHost
     steps:
+    - name: Set Name
+      run: echo "JOB_NAME=Testing iOS${{ matrix.iOS }}" >> $GITHUB_ENV
     - uses: actions/checkout@v3
     - uses: n1hility/cancel-previous-runs@v3
       with:
@@ -51,7 +53,7 @@ jobs:
         destination: ${{ matrix.destination }}
         
   tests-new:
-    name: Runing New iOS tests
+    name: Runing New iOS tests ${{ matrix.iOS }}
     runs-on: macos-13
     continue-on-error: true
     strategy:
@@ -66,6 +68,8 @@ jobs:
           iPhone: '14'
           
     steps:
+    - name: Set Name
+      run: echo "JOB_NAME=Testing iOS${{ matrix.iOS }}" >> $GITHUB_ENV
     - uses: actions/checkout@v3
     - uses: n1hility/cancel-previous-runs@v3
       with:
@@ -77,7 +81,7 @@ jobs:
         
     - name: Prepare iOS Simulator
       run: |
-        xcodes runtimes install "iOS ${iOS}"
+        sudo xcodes runtimes install "iOS ${iOS}"
         xcrun simctl list devices ${iOS}
       env:
         iOS: ${{ matrix.iOS }}
