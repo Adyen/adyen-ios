@@ -10,6 +10,10 @@ import XCTest
 
 public extension UIViewController {
 
+    /// Returns the first child of the viewControllers children that matches the type
+    ///
+    /// - Parameters:
+    ///  - type: The type of the viewController
     func firstChild<T: UIViewController>(of type: T.Type) -> T? {
         if let result = self as? T {
             return result
@@ -24,6 +28,9 @@ public extension UIViewController {
         return nil
     }
 
+    /// Returns the current top viewController
+    ///
+    /// - Throws: if there is no rootViewController can be found on the window
     static func topPresenter() throws -> UIViewController {
         let rootViewController = try XCTUnwrap(UIApplication.shared.adyen.mainKeyWindow?.rootViewController)
         return rootViewController.adyen.topPresenter

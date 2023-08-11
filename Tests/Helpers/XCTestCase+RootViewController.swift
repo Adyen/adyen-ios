@@ -10,6 +10,12 @@ import XCTest
 
 extension XCTestCase {
     
+    /// Sets the rootViewController on the key window, waits a moment for it to appear and increases the animation speed for faster tests
+    ///
+    /// - Parameters:
+    ///   - viewController: The view controller to set as the rootViewController
+    ///
+    /// - Throws: If the key window can't be found
     func setupRootViewController(_ viewController: UIViewController) throws {
         let window = try XCTUnwrap(UIApplication.shared.adyen.mainKeyWindow)
         window.rootViewController = viewController
@@ -17,14 +23,29 @@ extension XCTestCase {
         wait(for: .aMoment) // Waiting for a moment to give the viewController time to be presented
     }
     
+    /// Presents a view controller on the root and waits for the presentation to complete
+    ///
+    /// - Parameters:
+    ///   - viewController: The view controller to present on the root
+    ///   - animated: Whether or not to animate the presentation
+    ///   - completion: The optional block to be called after the view controller was presented
+    ///
+    /// - Throws: If the key window can't be found
     func presentOnRoot(_ viewController: UIViewController, animated: Bool = false, completion: (() -> Void)? = nil) throws {
         let root = UIViewController()
         root.view.backgroundColor = .white
         try setupRootViewController(root)
-        root.present(viewController, animated: false, completion: completion)
-        wait(for: .aMoment)
+        let presentationExpectation = XCTestExpectation(description: "Wait for the presentation to complete")
+        root.present(viewController, animated: animated) {
+            presentationExpectation.fulfill()
+            completion?()
+        }
+        wait(for: [presentationExpectation], timeout: 1)
     }
     
+    /// Returns the current rootViewController
+    ///
+    /// - Throws: If the key window can't be found
     var rootViewController: UIViewController {
         get throws {
             try XCTUnwrap(UIApplication.shared.adyen.mainKeyWindow?.rootViewController)
