@@ -67,7 +67,8 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         
         let fingerprint = try ThreeDS2Component.Fingerprint(
             authenticationRequestParameters: authenticationRequestParameters,
-            delegatedAuthenticationSDKOutput: nil
+            delegatedAuthenticationSDKOutput: nil,
+            deleteDelegatedAuthenticationCredentials: nil
         )
         let expectedFingerprint = try Coder.encodeBase64(fingerprint)
         
