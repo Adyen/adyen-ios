@@ -3,6 +3,7 @@ name: Compatibility Test
 on:
   push:
     branches:
+    - v4
     - develop
     - release-*
     
