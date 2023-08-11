@@ -11,46 +11,41 @@ on:
     
 jobs:
   tests-old:
-    name: Runing old iOS tests
+    name: Runing old iOS tests ${{ matrix. 
     runs-on: macos-12
     continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
         include:
-        - destination: 'OS=12.4,name=iPhone X'
+        - iOS: '12.4'
+          iPhone: 'X'
           scheme: AdyenUIKitTests
-        - destination: 'OS=13.7,name=iPhone 11'
+        - iOS: '13.7'
+          iPhone: '11'
           scheme: AdyenUIHost
     steps:
-    - name: Set Name
-      run: echo "JOB_NAME=Testing iOS${{ matrix.iOS }}" >> $GITHUB_ENV
     - uses: actions/checkout@v3
     - uses: n1hility/cancel-previous-runs@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Prepare iOS 12.4 simulator
-      if: contains(matrix.destination, 'OS=12.4')
+    - name: Prepare iOS ${{ matrix.iOS }} simulator
       run: |
-        xcversion simulators --install='iOS 12.4'
-        xcrun simctl create iPhone-X "iPhone X" "com.apple.CoreSimulator.SimRuntime.iOS-12-4"
-        xcrun simctl list devices 12.4
-
-    - name: Prepare iOS 13.7 simulator
-      if: contains(matrix.destination, 'OS=13.7')
-      run: |
-        xcversion simulators --install='iOS 13.7'
-        xcrun simctl create iPhone-11 "iPhone 11" "com.apple.CoreSimulator.SimRuntime.iOS-13-7"
-        xcrun simctl list devices 13.7
+        xcversion simulators --install='${OS}'
+        xcrun simctl list devices ${OS}
+      env:
+        OS: ${{ matrix.iOS }}
+        name: ${{ matrix.iPhone }}
 
     - name: Build and test
       run: |
-        xcodebuild build test -project ${project} -scheme "${scheme}" -destination "${destination}" -skipPackagePluginValidation | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild build test -project ${project} -scheme "${scheme}" -destination "OS=${OS},name=iPhone ${name}" -skipPackagePluginValidation | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
         scheme: ${{ matrix.scheme }}
-        destination: ${{ matrix.destination }}
+        OS: ${{ matrix.iOS }}
+        name: ${{ matrix.iPhone }}
         
   tests-new:
     name: Runing New iOS tests ${{ matrix.iOS }}
@@ -68,8 +63,6 @@ jobs:
           iPhone: '14'
           
     steps:
-    - name: Set Name
-      run: echo "JOB_NAME=Testing iOS${{ matrix.iOS }}" >> $GITHUB_ENV
     - uses: actions/checkout@v3
     - uses: n1hility/cancel-previous-runs@v3
       with:
@@ -79,7 +72,7 @@ jobs:
       run: |
         brew install xcodesorg/made/xcodes
         
-    - name: Prepare iOS Simulator
+    - name: Prepare iOS ${{ matrix.iOS }} Simulator
       run: |
         sudo xcodes runtimes install "iOS ${iOS}"
         xcrun simctl list devices ${iOS}
@@ -88,7 +81,7 @@ jobs:
 
     - name: Build and test
       run: |
-        xcodebuild build test -project ${project} -scheme "${scheme}" -destination "OS=${OS},name=${name}" -skipPackagePluginValidation | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild build test -project ${project} -scheme "${scheme}" -destination "OS=${OS},name=iPhone ${name}" -skipPackagePluginValidation | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
         scheme: 'AdyenUIHost'
