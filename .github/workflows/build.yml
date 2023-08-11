@@ -11,7 +11,7 @@ on:
     
 jobs:
   tests-old:
-    name: Runing old iOS tests ${{ matrix. 
+    name: Runing old iOS tests ${{ matrix.iOS }}
     runs-on: macos-12
     continue-on-error: true
     strategy:
@@ -74,10 +74,10 @@ jobs:
         
     - name: Prepare iOS ${{ matrix.iOS }} Simulator
       run: |
-        sudo xcodes runtimes install "iOS ${iOS}"
-        xcrun simctl list devices ${iOS}
+        sudo xcodes runtimes install "iOS ${OS}"
+        xcrun simctl list devices ${OS}
       env:
-        iOS: ${{ matrix.iOS }}
+        OS: ${{ matrix.iOS }}
 
     - name: Build and test
       run: |
