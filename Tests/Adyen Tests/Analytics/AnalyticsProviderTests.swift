@@ -194,7 +194,7 @@ class AnalyticsProviderTests: XCTestCase {
             configuration: AnalyticsConfiguration()
         )
         
-        analyticsProvider.additionalFieldProvider = {
+        analyticsProvider.additionalFields = {
             return .init(amount: amount)
         }
         
