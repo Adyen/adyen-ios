@@ -1,11 +1,13 @@
 name: Compatibility Test
 
 on:
+  pull_request:
+    types: [opened, synchronize, reopened]
   push:
-    branches:
-    - v4
-    - develop
-    - release-*
+      branches:
+      - v4
+      - develop
+      - release-*
     
 jobs:
   tests-old:
