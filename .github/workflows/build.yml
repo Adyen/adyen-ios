@@ -70,27 +70,31 @@ jobs:
     - uses: n1hility/cancel-previous-runs@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Install dependencies
+      run: |
+        brew install xcodesorg/made/xcodes
         
-    - name: Prepare iOS 14.7 simulator
-      if: contains(matrix.destination, 'OS=14.7')
+    - name: Prepare iOS 14.5 simulator
+      if: contains(matrix.destination, 'OS=14.5')
       run: |
-        xcversion simulators --install='iOS 14.7'
-        xcrun simctl create iPhone-12 "iPhone 12" "com.apple.CoreSimulator.SimRuntime.iOS-14-7"
-        xcrun simctl list devices 14.7
+        xcodes runtimes install "iOS 14.5"
+        xcrun simctl create iPhone-12 "iPhone 12" "com.apple.CoreSimulator.SimRuntime.iOS-14-5"
+        xcrun simctl list devices 14.5
 
-    - name: Prepare iOS 15.7 simulator
-      if: contains(matrix.destination, 'OS=15.7')
+    - name: Prepare iOS 15.5 simulator
+      if: contains(matrix.destination, 'OS=15.5')
       run: |
-        xcversion simulators --install='iOS 15.7'
-        xcrun simctl create iPhone-13 "iPhone 13" "com.apple.CoreSimulator.SimRuntime.iOS-15-7"
-        xcrun simctl list devices 15.7
+        xcversion simulators --install='iOS 15.5'
+        xcrun simctl create iPhone-13 "iPhone 13" "com.apple.CoreSimulator.SimRuntime.iOS-15-5"
+        xcrun simctl list devices 15.5
 
-    - name: Prepare iOS 16.6 simulator
-      if: contains(matrix.destination, 'OS=16.6')
+    - name: Prepare iOS 16.4 simulator
+      if: contains(matrix.destination, 'OS=16.4')
       run: |
-        xcversion simulators --install='iOS 16.6'
-        xcrun simctl create iPhone-14 "iPhone 14" "com.apple.CoreSimulator.SimRuntime.iOS-16-6"
-        xcrun simctl list devices 16.6
+        xcversion simulators --install='iOS 16.4'
+        xcrun simctl create iPhone-14 "iPhone 14" "com.apple.CoreSimulator.SimRuntime.iOS-16-4"
+        xcrun simctl list devices 16.4
 
     - name: Build and test
       run: |
