@@ -220,8 +220,8 @@
                 removeCredentialsHandler: { [weak self] in
                     guard let self else { return }
                     self.executeDAAuthenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
-                                               authenticatedHandler: { [weak delegatedAuthenticationService] sdkOutput in
-                                                   try? delegatedAuthenticationService?.reset() // TODO: Robert: Decide if we need to reset the credentials from the device for the MVP.
+                                               authenticatedHandler: { [weak self] sdkOutput in
+                                                   try? self?.delegatedAuthenticationService.reset() // TODO: Robert: Decide if we need to reset the credentials from the device for the MVP.
                                                    completion(.success((sdkOutput, true)))
                                                },
                                                failedAuthenticationHandler: { error in
