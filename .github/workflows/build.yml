@@ -32,7 +32,7 @@ jobs:
 
     - name: Prepare iOS ${{ matrix.iOS }} simulator
       run: |
-        xcversion simulators --install='${OS}'
+        xcversion simulators --install='iOS ${OS}'
         xcrun simctl list devices ${OS}
       env:
         OS: ${{ matrix.iOS }}
