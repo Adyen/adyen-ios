@@ -1,5 +1,11 @@
 #!/bin/bash
 
+function echo_header {
+  echo " "
+  echo "::endgroup::"
+  echo "::group:: $1"            
+}
+
 function print_help {
   echo "Test CocoaPods Integration"
   echo " "
@@ -7,11 +13,15 @@ function print_help {
   echo " "
   echo "options:"
   echo "-w, --exclude-wechat      exclude wechat module"
+  echo "-c, --no-clean            ignore cleanup"
+  echo "-p, --project             specify project name"
 }
 
 set -e # Any subsequent(*) commands which fail will cause the shell script to exit immediately
 
 INCLUDE_WECHAT=true
+NEED_CLEANUP=true
+PROJECT_NAME=TempProject
 
 while test $# -gt 0; do
   case "$1" in
@@ -19,63 +29,74 @@ while test $# -gt 0; do
       print_help
       exit 0
       ;;
+    -c|--no-clean)
+      NEED_CLEANUP=false
+      shift
+      ;;
     -w|--include-wechat)
       INCLUDE_WECHAT=false
+      shift
+      ;;
+    -p|--project)
+      PROJECT_NAME="$1"
       shift
       ;;
   esac
 done
 
-PROJECT_NAME=TempProject
-
-function clean_up {
-  cd ../
+if [ "$NEED_CLEANUP" == true ]
+then
+  echo_header "Clean up $PROJECT_NAME"
   rm -rf $PROJECT_NAME
-  echo "exited"
-}
-
-# Delete the temp folder if the script exited with error.
-trap "clean_up" 0 1 2 3 6
-
-rm -rf $PROJECT_NAME
-
-mkdir -p $PROJECT_NAME && cd $PROJECT_NAME
-
-# Create a new Xcode project.
-swift package init
+  mkdir -p $PROJECT_NAME && cd $PROJECT_NAME
+else
+  cd $PROJECT_NAME
+fi
 
 # Create the Package.swift.
-echo "// swift-tools-version:5.3
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+echo_header "Generate Project"
+echo "
+name: $PROJECT_NAME
+targets:
+  $PROJECT_NAME:
+    type: application
+    platform: iOS
+    sources: Source
+    testTargets: Tests
+    settings:
+      base:
+        INFOPLIST_FILE: Source/UIKit/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.adyen.$PROJECT_NAME
+  Tests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: Tests
+schemes:
+  App:
+    build:
+      targets:
+        $PROJECT_NAME: all
+        Tests: [tests]
+    test:
+      commandLineArguments: "-UITests"
+      targets:
+        - Tests
+" > project.yml
 
-import PackageDescription
+mkdir -p Tests
+mkdir -p Source
+cp "../Tests/DropIn Tests/DropInTests.swift" Tests/DropInTests.swift
+cp "../Tests/Card Tests/3DS2 Component/ThreeDS2PlusDACoreActionHandlerTests.swift" Tests/ThreeDS2PlusDACoreActionHandlerTests.swift
+cp "../Tests/Card Tests/3DS2 Component/AnyADYServiceMock.swift" Tests/AnyADYServiceMock.swift
+cp "../Tests/Card Tests/3DS2 Component/AuthenticationServiceMock.swift" Tests/AuthenticationServiceMock.swift
+cp "../Tests/Card Tests/3DS2 Component/ThreeDSResultExtension.swift" Tests/ThreeDSResultExtension.swift
+cp "../Tests/Helpers/XCTestCaseExtensions.swift" Tests/XCTestCaseExtensions.swift
+cp "../Tests/DummyData/Dummy.swift" Tests/Dummy.swift
+cp -a "../Demo/Common" Source/
+cp -a "../Demo/UIKit" Source/
+cp "../Demo/Configuration.swift" Source/Configuration.swift
 
-let package = Package(
-    name: \"TempProject\",
-    platforms: [
-        .iOS(.v11)
-    ],
-    products: [
-        .library(
-            name: \"TempProject\",
-            targets: [\"TempProject\"]),
-    ],
-    dependencies: [],
-    targets: [
-        .target(
-            name: \"TempProject\",
-            dependencies: []),
-        .testTarget(
-            name: \"TempProjectTests\",
-            dependencies: [\"TempProject\"]),
-    ]
-)
-
-" > Package.swift
-
-swift package update
-
-swift package generate-xcodeproj
+xcodegen generate
 
 # Create a Podfile with our pod as dependency.
 
@@ -132,17 +153,22 @@ fi
 pod install
 
 # Archive for generic iOS device
-echo '############# Archive for generic iOS device ###############'
-xcodebuild archive -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS'
-
-# Build for generic iOS device
-echo '############# Build for generic iOS device ###############'
-xcodebuild clean build -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS'
+echo '::debug::############# Archive for generic iOS device ###############'
+xcodebuild clean build archive -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS' | xcpretty && exit ${PIPESTATUS[0]}
 
 # Archive for x86_64 simulator
 echo '############# Archive for simulator ###############'
-xcodebuild archive -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS Simulator'
+xcodebuild clean build archive -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS Simulator' | xcpretty && exit ${PIPESTATUS[0]}
 
-# Build for x86_64 simulator
-echo '############# Build for simulator ###############'
-xcodebuild clean build -scheme TempProject-Package -workspace TempProject.xcworkspace -destination 'generic/platform=iOS Simulator'
+# Testing
+echo '############# Testing ###############'
+xcodebuild test \
+  -scheme TempProject-Package \
+  -workspace TempProject.xcworkspace \
+  -destination "name=iPhone 14" \
+  -skipPackagePluginValidation \
+  CODE_SIGNING_REQUIRED=NO \
+  CODE_SIGNING_ALLOWED=NO \
+  | xcpretty && exit ${PIPESTATUS[0]}
+
+echo "::endgroup::"
