@@ -166,6 +166,44 @@ class AnalyticsProviderTests: XCTestCase {
             XCTAssertNil(self.sut.checkoutAttemptId)
         }
     }
+    
+    func testAdditionalFields() throws {
+     
+        // Given
+        
+        let amount = Amount(value: 1, currencyCode: "EUR")
+        let checkoutAttemptId = self.checkoutAttemptIdMockValue
+        
+        let telemetryExpectation = expectation(description: "Telemetry request is triggered")
+        
+        let apiClient = APIClientMock()
+        apiClient.mockedResults = [
+            .success(CheckoutAttemptIdResponse(identifier: checkoutAttemptId)),
+            .success(TelemetryResponse())
+        ]
+        apiClient.onExecute = { request in
+            if let telemetryRequest = request as? TelemetryRequest {
+                XCTAssertEqual(telemetryRequest.amount, amount)
+                XCTAssertEqual(telemetryRequest.checkoutAttemptId, checkoutAttemptId)
+                telemetryExpectation.fulfill()
+            }
+        }
+        
+        let analyticsProvider = AnalyticsProvider(
+            apiClient: apiClient,
+            configuration: AnalyticsConfiguration()
+        )
+        
+        analyticsProvider.additionalFields = {
+            return .init(amount: amount)
+        }
+        
+        // When
+        
+        analyticsProvider.sendTelemetryEvent(flavor: .components(type: .achDirectDebit))
+        
+        wait(for: [telemetryExpectation], timeout: 1)
+    }
 
     // MARK: - Private
 
