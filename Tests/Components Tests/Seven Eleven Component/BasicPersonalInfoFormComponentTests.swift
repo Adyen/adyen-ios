@@ -60,7 +60,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_confirmPurchase"), sut.configuration.localizationParameters))
     }
 
-    func testUIConfiguration() {
+    func testUIConfiguration() throws {
         var style = FormComponentStyle()
 
         /// Footer
@@ -96,22 +96,22 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         wait(for: .milliseconds(50))
         
         /// Test firstName field
-        self.assertTextInputUI(ViewIdentifier.firstName,
-                               view: sut.viewController.view,
-                               style: style.textField,
-                               isFirstField: true)
+        try assertTextInputUI(ViewIdentifier.firstName,
+                              view: sut.viewController.view,
+                              style: style.textField,
+                              isFirstField: true)
 
         /// Test lastName field
-        self.assertTextInputUI(ViewIdentifier.lastName,
-                               view: sut.viewController.view,
-                               style: style.textField,
-                               isFirstField: false)
+        try assertTextInputUI(ViewIdentifier.lastName,
+                              view: sut.viewController.view,
+                              style: style.textField,
+                              isFirstField: false)
 
         /// Test email field
-        self.assertTextInputUI(ViewIdentifier.email,
-                               view: sut.viewController.view,
-                               style: style.textField,
-                               isFirstField: false)
+        try assertTextInputUI(ViewIdentifier.email,
+                              view: sut.viewController.view,
+                              style: style.textField,
+                              isFirstField: false)
 
         let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: ViewIdentifier.phone)
         let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: ViewIdentifier.phoneTitleLabel)
@@ -142,21 +142,23 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     private func assertTextInputUI(_ identifier: String,
                                    view: UIView,
                                    style: FormTextItemStyle,
-                                   isFirstField: Bool) {
+                                   isFirstField: Bool) throws {
 
-        let textView: FormTextInputItemView? = view.findView(with: identifier)
-        let textViewTitleLabel: UILabel? = view.findView(with: "\(identifier).titleLabel")
-        let textViewTextField: UITextField? = view.findView(with: "\(identifier).textField")
-
-        XCTAssertEqual(textView?.backgroundColor, .red)
-        XCTAssertEqual(textViewTitleLabel?.textColor, isFirstField ? view.tintColor : style.title.color)
-        XCTAssertEqual(textViewTitleLabel?.backgroundColor, style.title.backgroundColor)
-        XCTAssertEqual(textViewTitleLabel?.textAlignment, style.title.textAlignment)
-        XCTAssertEqual(textViewTitleLabel?.font, style.title.font)
-        XCTAssertEqual(textViewTextField?.backgroundColor, style.backgroundColor)
-        XCTAssertEqual(textViewTextField?.textAlignment, style.text.textAlignment)
-        XCTAssertEqual(textViewTextField?.textColor, style.text.color)
-        XCTAssertEqual(textViewTextField?.font, style.text.font)
+        let textView: FormTextInputItemView = try XCTUnwrap(view.findView(with: identifier))
+        let textViewTitleLabel: UILabel = try XCTUnwrap(view.findView(with: "\(identifier).titleLabel"))
+        let textViewTextField: UITextField = try XCTUnwrap(view.findView(with: "\(identifier).textField"))
+        
+        let expectedTitleTextColor = isFirstField ? view.tintColor : style.title.color
+        
+        XCTAssertEqual(textView.backgroundColor, .red)
+        wait { textViewTitleLabel.textColor == expectedTitleTextColor }
+        XCTAssertEqual(textViewTitleLabel.backgroundColor, style.title.backgroundColor)
+        XCTAssertEqual(textViewTitleLabel.textAlignment, style.title.textAlignment)
+        XCTAssertEqual(textViewTitleLabel.font, style.title.font)
+        XCTAssertEqual(textViewTextField.backgroundColor, style.backgroundColor)
+        XCTAssertEqual(textViewTextField.textAlignment, style.text.textAlignment)
+        XCTAssertEqual(textViewTextField.textColor, style.text.color)
+        XCTAssertEqual(textViewTextField.font, style.text.font)
     }
 
     func testSubmitForm() throws {
