@@ -84,6 +84,8 @@
 		00F621C027EB153400C04097 /* AtomeDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621BF27EB153400C04097 /* AtomeDetails.swift */; };
 		00F621C227EB1E3100C04097 /* AtomePaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621C127EB1E3100C04097 /* AtomePaymentMethod.swift */; };
 		00F621C527F1AF5A00C04097 /* AtomeComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F621C427F1AF5A00C04097 /* AtomeComponentTests.swift */; };
+		00FFD8F02A865BFB008D4A5A /* ApplePaySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FFD8EF2A865BFB008D4A5A /* ApplePaySettingsView.swift */; };
+		00FFD8F12A865BFB008D4A5A /* ApplePaySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FFD8EF2A865BFB008D4A5A /* ApplePaySettingsView.swift */; };
 		5A1315C926296B100092366D /* ProgressViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1315C826296B100092366D /* ProgressViewStyle.swift */; };
 		5A15D589264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */; };
 		5A15D5A1264BE1E500A8E3C7 /* PrefilledShopperInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */; };
@@ -1265,6 +1267,7 @@
 		00F621BF27EB153400C04097 /* AtomeDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeDetails.swift; sourceTree = "<group>"; };
 		00F621C127EB1E3100C04097 /* AtomePaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomePaymentMethod.swift; sourceTree = "<group>"; };
 		00F621C427F1AF5A00C04097 /* AtomeComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeComponentTests.swift; sourceTree = "<group>"; };
+		00FFD8EF2A865BFB008D4A5A /* ApplePaySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePaySettingsView.swift; sourceTree = "<group>"; };
 		5A1315C826296B100092366D /* ProgressViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewStyle.swift; sourceTree = "<group>"; };
 		5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoComponentExtensions.swift; sourceTree = "<group>"; };
 		5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefilledShopperInformation.swift; sourceTree = "<group>"; };
@@ -2506,6 +2509,7 @@
 				5A67461F264262F000E9184D /* ConfigurationView.swift */,
 				00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */,
 				001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */,
+				00FFD8EF2A865BFB008D4A5A /* ApplePaySettingsView.swift */,
 				5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */,
 				5A54600E264433CD00724A87 /* SearchBar.swift */,
 			);
@@ -6738,6 +6742,7 @@
 				E24FECF5226EF9AB00A65122 /* ComponentsViewController.swift in Sources */,
 				F9CFB05A28351709002F3B72 /* APIRequest.swift in Sources */,
 				E24FECF7226EF9D800A65122 /* ComponentsView.swift in Sources */,
+				00FFD8F02A865BFB008D4A5A /* ApplePaySettingsView.swift in Sources */,
 				F9FE24AD2625913C001874BB /* CancelOrderRequest.swift in Sources */,
 				F9A53C4D2549887F009000A7 /* PaymentDetailsRequest.swift in Sources */,
 			);
@@ -7007,6 +7012,7 @@
 				00A25E5E2A404303001B32B6 /* ComponentCreationError.swift in Sources */,
 				002A767D2A050140000684D2 /* ApplePayComponentAdvancedFlowExample.swift in Sources */,
 				00ED81B129DD74A800A6B52C /* InitialDataFlowProtocol.swift in Sources */,
+				00FFD8F12A865BFB008D4A5A /* ApplePaySettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -55,8 +55,9 @@ internal struct CardComponentSettingsView: View {
                 }
 
             }
+            .navigationBarTitle("")
+            .navigationBarHidden(true)
         }
-        .navigationViewStyle(.stack)
     }
 }
 

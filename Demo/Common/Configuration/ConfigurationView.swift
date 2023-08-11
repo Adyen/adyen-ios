@@ -17,6 +17,7 @@ internal struct ConfigurationView: View {
         case payment = "Payment"
         case cardComponent = "Card Component"
         case dropIn = "DropIn"
+        case applePay = "ApplePay"
     }
     
     @ObservedObject internal var viewModel: ConfigurationViewModel
@@ -51,6 +52,7 @@ internal struct ConfigurationView: View {
                 wrapInSection(view: paymentSection, section: .payment)
                 wrapInSection(view: cardComponentSection, section: .cardComponent)
                 wrapInSection(view: dropInSection, section: .dropIn)
+                wrapInSection(view: applePaySection, section: .applePay)
             }.navigationBarTitle("Configuration", displayMode: .inline)
                 .navigationBarItems(
                     leading: Button("Default", action: viewModel.defaultTapped),
@@ -141,7 +143,15 @@ internal struct ConfigurationView: View {
             }
         }
     }
-    
+
+    private var applePaySection: some View {
+        NavigationLink(destination: ApplePaySettingsView(viewModel: viewModel)) {
+            HStack {
+                Text("Apple Pay")
+            }
+        }
+    }
+
     private func pickerWithSearchBar<T: Hashable, P: Hashable>(
         with selectionBinding: Binding<String>,
         title: String,
