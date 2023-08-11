@@ -58,12 +58,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - destination: 'OS=14.7,name=iPhone 12'
-          scheme: AdyenUIHost
-        - destination: 'OS=15.7,name=iPhone 13'
-          scheme: AdyenUIHost
-        - destination: 'OS=16.6,name=iPhone 14'
-          scheme: AdyenUIHost
+        - iOS: '14.5'
+          iPhone: '12'
+        - iOS: '15.5'
+          iPhone: '13'
+        - iOS: '16.4'
+          iPhone: '14'
           
     steps:
     - uses: actions/checkout@v3
@@ -75,32 +75,19 @@ jobs:
       run: |
         brew install xcodesorg/made/xcodes
         
-    - name: Prepare iOS 14.5 simulator
-      if: contains(matrix.destination, 'OS=14.5')
+    - name: Prepare iOS Simulator
       run: |
-        xcodes runtimes install "iOS 14.5"
-        xcrun simctl create iPhone-12 "iPhone 12" "com.apple.CoreSimulator.SimRuntime.iOS-14-5"
-        xcrun simctl list devices 14.5
-
-    - name: Prepare iOS 15.5 simulator
-      if: contains(matrix.destination, 'OS=15.5')
-      run: |
-        xcversion simulators --install='iOS 15.5'
-        xcrun simctl create iPhone-13 "iPhone 13" "com.apple.CoreSimulator.SimRuntime.iOS-15-5"
-        xcrun simctl list devices 15.5
-
-    - name: Prepare iOS 16.4 simulator
-      if: contains(matrix.destination, 'OS=16.4')
-      run: |
-        xcversion simulators --install='iOS 16.4'
-        xcrun simctl create iPhone-14 "iPhone 14" "com.apple.CoreSimulator.SimRuntime.iOS-16-4"
-        xcrun simctl list devices 16.4
+        xcodes runtimes install "iOS ${iOS}"
+        xcrun simctl list devices ${iOS}
+      env:
+        iOS: ${{ matrix.iOS }}
 
     - name: Build and test
       run: |
-        xcodebuild build test -project ${project} -scheme "${scheme}" -destination "${destination}" -skipPackagePluginValidation | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild build test -project ${project} -scheme "${scheme}" -destination "OS=${OS},name=${name}" -skipPackagePluginValidation | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
-        scheme: ${{ matrix.scheme }}
-        destination: ${{ matrix.destination }}
+        scheme: 'AdyenUIHost'
+        OS: ${{ matrix.iOS }}
+        name: ${{ matrix.iPhone }}
 
