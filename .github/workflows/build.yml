@@ -18,9 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - destination: 'name=iPhone 11 Pro'
-          scheme: AdyenUIHost
-        - destination: 'OS=12.4,name=iPhone-X'
+        - destination: 'OS=12.4,name=iPhone X'
           scheme: AdyenUIKitTests
         - destination: 'OS=13.7,name=iPhone 11'
           scheme: AdyenUIHost
@@ -29,10 +27,6 @@ jobs:
     - uses: n1hility/cancel-previous-runs@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Prepare custom devices
-      run: |
-        sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
 
     - name: Prepare iOS 12.4 simulator
       if: contains(matrix.destination, 'OS=12.4')
@@ -45,7 +39,7 @@ jobs:
       if: contains(matrix.destination, 'OS=13.7')
       run: |
         xcversion simulators --install='iOS 13.7'
-        xcrun simctl create iPhone-6 "iPhone X" "com.apple.CoreSimulator.SimRuntime.iOS-13-7"
+        xcrun simctl create iPhone-11 "iPhone 11" "com.apple.CoreSimulator.SimRuntime.iOS-13-7"
         xcrun simctl list devices 13.7
 
     - name: Build and test
@@ -64,6 +58,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
+        - destination: 'OS=14.7,name=iPhone 12'
+          scheme: AdyenUIHost
         - destination: 'OS=15.7,name=iPhone 13'
           scheme: AdyenUIHost
         - destination: 'OS=16.6,name=iPhone 14'
@@ -74,30 +70,26 @@ jobs:
     - uses: n1hility/cancel-previous-runs@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Prepare custom devices
-      run: |
-        sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
         
     - name: Prepare iOS 14.7 simulator
       if: contains(matrix.destination, 'OS=14.7')
       run: |
         xcversion simulators --install='iOS 14.7'
-        xcrun simctl create "com.apple.CoreSimulator.SimDeviceType.iPhone-12" "com.apple.CoreSimulator.SimRuntime.iOS-14.7"
+        xcrun simctl create iPhone-12 "iPhone 12" "com.apple.CoreSimulator.SimRuntime.iOS-14-7"
         xcrun simctl list devices 14.7
 
     - name: Prepare iOS 15.7 simulator
       if: contains(matrix.destination, 'OS=15.7')
       run: |
         xcversion simulators --install='iOS 15.7'
-        xcrun simctl create "com.apple.CoreSimulator.SimDeviceType.iPhone-13" "com.apple.CoreSimulator.SimRuntime.iOS-15.7"
+        xcrun simctl create iPhone-13 "iPhone 13" "com.apple.CoreSimulator.SimRuntime.iOS-15-7"
         xcrun simctl list devices 15.7
 
     - name: Prepare iOS 16.6 simulator
       if: contains(matrix.destination, 'OS=16.6')
       run: |
         xcversion simulators --install='iOS 16.6'
-        xcrun simctl create "com.apple.CoreSimulator.SimDeviceType.iPhone-14" "com.apple.CoreSimulator.SimRuntime.iOS-16.6"
+        xcrun simctl create iPhone-14 "iPhone 14" "com.apple.CoreSimulator.SimRuntime.iOS-16-6"
         xcrun simctl list devices 16.6
 
     - name: Build and test
