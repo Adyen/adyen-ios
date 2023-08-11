@@ -46,7 +46,7 @@ class PreApplePayComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
     
-    func testUIConfiguration() {
+    func testUIConfiguration() throws {
         let applePayStyle = ApplePayStyle(paymentButtonStyle: .whiteOutline,
                                           paymentButtonType: .donate,
                                           cornerRadius: 10,
@@ -60,9 +60,8 @@ class PreApplePayComponentTests: XCTestCase {
         let view = PreApplePayView(model: model)
         let viewController = UIViewController()
         viewController.view = view
-        UIApplication.shared.keyWindow?.rootViewController = viewController
-        
-        wait(for: .milliseconds(50))
+
+        try setupRootViewController(viewController)
         
         let hintLabel: UILabel? = viewController.view.findView(by: "hintLabel")
         XCTAssertEqual(hintLabel?.text, model.hint)
@@ -80,11 +79,9 @@ class PreApplePayComponentTests: XCTestCase {
         XCTAssertEqual(style.paymentButtonType, .donate)
     }
     
-    func testApplePayPresented() {
+    func testApplePayPresented() throws {
         guard Available.iOS12 else { return }
         let dismissExpectation = expectation(description: "Dismiss Expectation")
-        
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let presentationMock = PresentationDelegateMock()
         presentationMock.doPresent = { component in
@@ -99,7 +96,7 @@ class PreApplePayComponentTests: XCTestCase {
         
         applePayButton?.sendActions(for: .touchUpInside)
         
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         XCTAssertTrue(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController is PKPaymentAuthorizationViewController)
         UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: false, completion: nil)
@@ -111,11 +108,9 @@ class PreApplePayComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func testHintLabelAmount() {
-        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
-        UIApplication.shared.keyWindow?.rootViewController?.present(component: sut)
+    func testHintLabelAmount() throws {
         
-        wait(for: .milliseconds(50))
+        try presentOnRoot(sut.viewController)
         
         let hintLabel = self.sut.viewController.view.findView(by: "hintLabel") as? UILabel
         

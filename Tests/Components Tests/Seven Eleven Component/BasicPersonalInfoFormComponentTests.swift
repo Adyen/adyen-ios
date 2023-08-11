@@ -91,9 +91,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
                                        context: Dummy.context,
                                        configuration: config)
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         /// Test firstName field
         try assertTextInputUI(ViewIdentifier.firstName,
@@ -184,9 +182,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
         }
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         let submitButton: UIControl? = sut.viewController.view.findView(with: ViewIdentifier.payButton)
 
@@ -207,14 +203,12 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         waitForExpectations(timeout: 10)
     }
 
-    func testBigTitle() {
+    func testBigTitle() throws {
         let sut = SevenElevenComponent(paymentMethod: paymentMethod,
                                        context: Dummy.context,
                                        configuration: BasicPersonalInfoFormComponent.Configuration())
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
@@ -234,9 +228,8 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         let prefillSut = SevenElevenComponent(paymentMethod: paymentMethod,
                                               context: Dummy.context,
                                               configuration: config)
-        UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
 
-        wait(for: .milliseconds(50))
+        try setupRootViewController(prefillSut.viewController)
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -267,9 +260,8 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         let sut = SevenElevenComponent(paymentMethod: paymentMethod,
                                        context: Dummy.context,
                                        configuration: BasicPersonalInfoFormComponent.Configuration())
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
 
         // Then
         let view: UIView = sut.viewController.view

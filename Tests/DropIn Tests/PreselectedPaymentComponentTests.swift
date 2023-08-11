@@ -80,17 +80,17 @@ class PreselectedPaymentComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 5)
     }
 
-    func testSubmitButtonLoading() {
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+    func testSubmitButtonLoading() throws {
+        
+        try setupRootViewController(sut.viewController)
+        
         let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton.button")
         XCTAssertFalse(button.showsActivityIndicator)
         sut.startLoading(for: component)
-
-        wait(for: .milliseconds(50))
         
-        XCTAssertTrue(button.showsActivityIndicator)
+        wait { button.showsActivityIndicator }
         self.sut.stopLoadingIfNeeded()
-        XCTAssertFalse(button.showsActivityIndicator)
+        wait { !button.showsActivityIndicator }
     }
     
     func testPressOpenAllButton() {
@@ -107,7 +107,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 5)
     }
     
-    func testUICustomization() {
+    func testUICustomization() throws {
         var formStyle = sut.style
         formStyle.backgroundColor = .green
         formStyle.separatorColor = .red
@@ -122,7 +122,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
         component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), context: Dummy.context)
         sut = PreselectedPaymentMethodComponent(component: component, title: "", style: formStyle, listItemStyle: listStyle)
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        try setupRootViewController(sut.viewController)
         
         let view = sut.viewController.view!
         let listView = view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.defaultComponent")
@@ -139,8 +139,6 @@ class PreselectedPaymentComponentTests: XCTestCase {
         
         let separator = view.findView(by: "separatorLine")
         
-        wait(for: .milliseconds(50))
-        
         XCTAssertEqual(view.backgroundColor, .green)
         XCTAssertEqual(listViewTitle.textColor, .white)
         XCTAssertEqual(listViewSubtitle.textColor, .white)
@@ -156,58 +154,52 @@ class PreselectedPaymentComponentTests: XCTestCase {
         XCTAssertEqual(separator!.backgroundColor, .red)
     }
     
-    func testPayButtonTitle() {
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+    func testPayButtonTitle() throws {
         sut = PreselectedPaymentMethodComponent(component: component, title: "", style: .init(), listItemStyle: .init())
+        
+        try setupRootViewController(sut.viewController)
         
         let submitButtonContainer = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton")
         let submitButton = submitButtonContainer!.findView(by: "button")
         let submitButtonLabel: UILabel! = submitButton!.findView(by: "titleLabel")
-        
-        wait(for: .milliseconds(50))
         
         XCTAssertEqual(submitButtonLabel.text, "Pay €1.00")
     }
 
-    func testPayButtonTitleNoPayment() {
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+    func testPayButtonTitleNoPayment() throws {
         component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), context: Dummy.context(with: nil))
         sut = PreselectedPaymentMethodComponent(component: component, title: "", style: .init(), listItemStyle: .init())
 
+        try setupRootViewController(sut.viewController)
+        
         let submitButtonContainer = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton")
         let submitButton = submitButtonContainer!.findView(by: "button")
         let submitButtonLabel: UILabel! = submitButton!.findView(by: "titleLabel")
 
-        wait(for: .milliseconds(50))
-
         XCTAssertEqual(submitButtonLabel.text, "Pay")
     }
     
-    func testPaypalComponent() {
+    func testPaypalComponent() throws {
         component = StoredPaymentMethodComponent(paymentMethod: getStoredPaypal(), context: Dummy.context)
         sut = PreselectedPaymentMethodComponent(component: component, title: "", style: FormComponentStyle(), listItemStyle: ListItemStyle())
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        try setupRootViewController(sut.viewController)
         
         let listView: ListItemView? = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.defaultComponent")
         let listViewTitle: UILabel! = listView!.findView(by: "titleLabel")
         
-        wait(for: .milliseconds(50))
-        
         XCTAssertEqual(listViewTitle.text, "PayPal")
     }
     
-    func testStoredCardComponent() {
+    func testStoredCardComponent() throws {
         component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), context: Dummy.context)
         sut = PreselectedPaymentMethodComponent(component: component, title: "", style: FormComponentStyle(), listItemStyle: ListItemStyle())
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        try setupRootViewController(sut.viewController)
         
         let listView = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.defaultComponent")
         let listViewTitle: UILabel! = listView!.findView(by: "titleLabel")
         let listViewSubtitle: UILabel! = listView!.findView(by: "subtitleLabel")
-        
-        wait(for: .milliseconds(50))
         
         XCTAssertEqual(listViewTitle.text, "•••• 1111")
         XCTAssertEqual(listViewSubtitle.text, "Expires 08/18")

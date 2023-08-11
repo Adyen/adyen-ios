@@ -81,7 +81,7 @@ class GiftCardComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
     
-    func testGiftCardUI() {
+    func testGiftCardUI() throws {
         
         // Given
         let paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
@@ -91,8 +91,7 @@ class GiftCardComponentTests: XCTestCase {
                                 publicKeyProvider: publicKeyProvider)
         
         // When
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         // Then
         XCTAssertNil(expiryDateItemView, "should not have expiry date field for gift card")
@@ -100,7 +99,7 @@ class GiftCardComponentTests: XCTestCase {
         XCTAssertEqual(securityCodeItemTitleLabel?.text, "Pin", "cvc title changes based on payment method")
     }
     
-    func testMealVoucherUI() {
+    func testMealVoucherUI() throws {
         
         // Given
         let paymentMethod = MealVoucherPaymentMethod(type: .mealVoucherSodexo, name: "Sodexo")
@@ -110,8 +109,7 @@ class GiftCardComponentTests: XCTestCase {
                                 publicKeyProvider: publicKeyProvider)
         
         // When
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         
         // Then
         XCTAssertNotNil(expiryDateItemView, "should have expiry date field for meal voucher")
@@ -143,9 +141,7 @@ class GiftCardComponentTests: XCTestCase {
             onCheckBalanceExpectation.fulfill()
         }
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -162,9 +158,7 @@ class GiftCardComponentTests: XCTestCase {
 
     func testCheckBalanceCardNumberFormatting() throws {
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -197,9 +191,7 @@ class GiftCardComponentTests: XCTestCase {
             onCheckBalanceExpectation.fulfill()
         }
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -234,9 +226,7 @@ class GiftCardComponentTests: XCTestCase {
             onCheckBalanceExpectation.fulfill()
         }
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -271,9 +261,7 @@ class GiftCardComponentTests: XCTestCase {
             onCheckBalanceExpectation.fulfill()
         }
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -321,9 +309,7 @@ class GiftCardComponentTests: XCTestCase {
             onSubmitExpectation.fulfill()
         }
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -372,9 +358,7 @@ class GiftCardComponentTests: XCTestCase {
             onShowConfirmationExpectation.fulfill()
         }
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -426,9 +410,7 @@ class GiftCardComponentTests: XCTestCase {
             XCTFail("readyToSubmitPaymentComponentDelegate.onShowConfirmation must not be called")
         }
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -480,9 +462,7 @@ class GiftCardComponentTests: XCTestCase {
             XCTFail("readyToSubmitPaymentComponentDelegate.onShowConfirmation must not be called")
         }
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
 
         XCTAssertTrue(errorView!.isHidden)
 
@@ -533,9 +513,7 @@ class GiftCardComponentTests: XCTestCase {
             XCTFail("readyToSubmitPaymentComponentDelegate.onShowConfirmation must not be called")
         }
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
 
         XCTAssertTrue(errorView!.isHidden)
 

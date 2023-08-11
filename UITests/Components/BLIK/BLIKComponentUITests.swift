@@ -94,7 +94,8 @@ final class BLIKComponentUITests: XCTestCase {
             XCTAssertEqual(self.sut.viewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(self.sut.button.showsActivityIndicator, false)
         }
-        wait(for: .milliseconds(50))
+        
+        wait(for: .aMoment)
         assertViewControllerImage(matching: sut.viewController, named: "blik_flow")
     }
 

@@ -123,7 +123,7 @@ class UPIComponentUITests: XCTestCase {
         XCTAssertNotNil(upiComponentDetails)
     }
 
-    func testUPIComponentDetailsForUPICollectFlow() {
+    func testUPIComponentDetailsForUPICollectFlow() throws {
         // Given
         let config = UPIComponent.Configuration(style: style)
         let sut = UPIComponent(paymentMethod: paymentMethod,
@@ -145,8 +145,8 @@ class UPIComponentUITests: XCTestCase {
             XCTAssertNotNil(data.type)
             didSubmitExpectation.fulfill()
         }
-
-        wait(for: .milliseconds(50))
+        
+        try setupRootViewController(sut.viewController)
 
         let virtualPaymentAddressItem: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem")
         self.populate(textItemView: virtualPaymentAddressItem, with: "testvpa@icici")
@@ -159,7 +159,7 @@ class UPIComponentUITests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
  
-    func testUPIComponentDetailsForUPIQRCodeFlow() {
+    func testUPIComponentDetailsForUPIQRCodeFlow() throws {
         // Given
         let config = UPIComponent.Configuration(style: style)
         let sut = UPIComponent(paymentMethod: paymentMethod,
@@ -171,8 +171,6 @@ class UPIComponentUITests: XCTestCase {
         let continueButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.generateQRCodeButton.button")
         continueButton?.sendActions(for: .touchUpInside)
         
-        let dummyExpectation = XCTestExpectation(description: "Dummy Expectation")
-        
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
         
@@ -183,9 +181,10 @@ class UPIComponentUITests: XCTestCase {
             let data = data.paymentMethod as! UPIComponentDetails
             XCTAssertNotNil(data.type)
             XCTAssertEqual(data.type, "upi_qr")
-            dummyExpectation.fulfill()
         }
-        wait(for: .milliseconds(50))
+        
+        try setupRootViewController(sut.viewController)
+        
         assertViewControllerImage(matching: sut.viewController, named: "upi_qr_flow")
     }
 

@@ -97,7 +97,7 @@ final class DokuComponentUITests: XCTestCase {
             XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
         }
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         assertViewControllerImage(matching: sut.viewController, named: "doku_flow")
     }
 

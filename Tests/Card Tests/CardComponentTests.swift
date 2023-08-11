@@ -744,31 +744,24 @@ class CardComponentTests: XCTestCase {
 
         let viewController = component.viewController
         
-        UIApplication.shared.keyWindow?.rootViewController = viewController
-        wait(for: .aMoment)
+        try setupRootViewController(viewController)
         
         let view: UIView = viewController.view
         let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.expiryDateItem"))
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
-
-        wait(for: .aMoment)
         
         expiryDateItemView.becomeFirstResponder()
+        wait { expiryDateItemView.textField.isFirstResponder }
+        
         self.append(textItemView: expiryDateItemView, with: "3")
-        
-        wait(for: .aMoment)
-        
-        XCTAssertTrue(expiryDateItemView.textField.isFirstResponder)
         self.append(textItemView: expiryDateItemView, with: "3")
         self.append(textItemView: expiryDateItemView, with: "0")
         
-        wait(for: .aMoment)
-        
-        XCTAssertTrue(securityCodeItemView.textField.isFirstResponder)
+        wait { securityCodeItemView.textField.isFirstResponder }
         XCTAssertFalse(expiryDateItemView.textField.isFirstResponder)
     }
 
-    func testPostalCode() {
+    func testPostalCode() throws {
         // Given
         configuration.billingAddress.mode = .postalCode
 
@@ -777,7 +770,8 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration,
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: BinInfoProviderMock())
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+
+        try setupRootViewController(sut.viewController)
 
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -799,8 +793,6 @@ class CardComponentTests: XCTestCase {
             sut.stopLoadingIfNeeded()
             delegateExpectation.fulfill()
         }
-
-        wait(for: .aMoment)
         
         self.fillCard(on: sut.viewController.view, with: Dummy.visaCard)
 
@@ -1070,7 +1062,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(expDateItem.isValid())
     }
     
-    func testInstallmentsWithDefaultAndCardBasedOptions() {
+    func testInstallmentsWithDefaultAndCardBasedOptions() throws {
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
             InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
@@ -1083,9 +1075,8 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration,
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
 
-        wait(for: .aMoment)
+        try setupRootViewController(sut.viewController)
         
         let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
         XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
@@ -1390,9 +1381,7 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration)
 
         // When
-        UIApplication.shared.keyWindow?.rootViewController = sut.cardViewController
-
-        wait(for: .aMoment)
+        try setupRootViewController(sut.cardViewController)
 
         // Then
         let view: UIView = sut.cardViewController.view
@@ -1424,9 +1413,7 @@ class CardComponentTests: XCTestCase {
                                          configuration: configuration)
 
         // When
-        UIApplication.shared.keyWindow?.rootViewController = prefilledSut.cardViewController
-
-        wait(for: .aMoment)
+        try setupRootViewController(prefilledSut.cardViewController)
 
         // Then
         let view: UIView = prefilledSut.cardViewController.view
@@ -1457,9 +1444,7 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration)
 
         // When
-        UIApplication.shared.keyWindow?.rootViewController = sut.cardViewController
-
-        wait(for: .aMoment)
+        try setupRootViewController(sut.cardViewController)
 
         // Then
         let view: UIView = sut.cardViewController.view
@@ -1487,9 +1472,7 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration)
 
         // When
-        UIApplication.shared.keyWindow?.rootViewController = sut.cardViewController
-
-        wait(for: .aMoment)
+        try setupRootViewController(sut.cardViewController)
 
         // Then
         let view: UIView = sut.cardViewController.view
@@ -1510,21 +1493,20 @@ class CardComponentTests: XCTestCase {
     func testAddressWithSupportedCountries() throws {
         configuration.billingAddress.mode = .full
         configuration.billingAddress.countryCodes = ["UK"]
-
+        configuration.shopperInformation = shopperInformation
+        
         let component = CardComponent(
             paymentMethod: method,
             context: context,
             configuration: configuration
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = component.viewController
-        
-        // Then
+        try setupRootViewController(component.viewController)
         let view: UIView = component.cardViewController.view
         
+        // Then
+        
         let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
-        let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
-        let billingAddress = billingAddressView.item.value
         
         billingAddressView.item.selectionHandler()
         wait(for: .aMoment)

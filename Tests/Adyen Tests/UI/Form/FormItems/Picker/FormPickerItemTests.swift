@@ -61,10 +61,10 @@ class FormPickerItemTests: XCTestCase {
         
         wait(for: [presentViewControllerExpectation], timeout: 1)
         
-        UIApplication.shared.keyWindow?.rootViewController? = presentedViewController!
-        self.wait(for: .milliseconds(300))
+        let root = try XCTUnwrap(presentedViewController)
+        try setupRootViewController(root)
         
-        let searchViewController = presentedViewController!.viewControllers.first as! SearchViewController
+        let searchViewController = try XCTUnwrap(root.viewControllers.first as? SearchViewController)
         searchViewController.viewModel.interfaceState.results?.first?.selectionHandler?()
         
         wait(for: [dismissViewControllerExpectation], timeout: 1)

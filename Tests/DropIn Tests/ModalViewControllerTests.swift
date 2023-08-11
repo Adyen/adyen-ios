@@ -11,40 +11,26 @@ import XCTest
 
 class ModalViewControllerTests: XCTestCase {
     
-    var sut: ModalViewController!
     lazy var viewController: UIViewController = {
         let view = UIViewController(nibName: nil, bundle: nil)
         view.title = "ModalViewControllerTest"
         return view
     }()
-    
-    override func tearDown() {
-        sut = nil
-    }
 
-    func testCustomStyle() {
+    func testCustomStyle() throws {
         var style = NavigationStyle()
         style.separatorColor = .red
         style.backgroundColor = .brown
 
-        loadAndRunTests(for: style) {
-            XCTAssertEqual(self.sut.separator.backgroundColor, .red)
-            XCTAssertEqual(self.sut.view.backgroundColor, .brown)
-        }
-    }
-    
-    fileprivate func loadAndRunTests(for style: NavigationStyle, test: @escaping () -> Void) {
-        sut = ModalViewController(
+        let sut = ModalViewController(
             rootViewController: viewController,
             style: style,
             navBarType: .regular
         )
-        UIApplication.shared.keyWindow?.rootViewController = sut
-        sut.loadView()
-        sut.viewDidLoad()
         
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut)
         
-        test()
+        XCTAssertEqual(sut.separator.backgroundColor, .red)
+        XCTAssertEqual(sut.view.backgroundColor, .brown)
     }
 }

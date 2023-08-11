@@ -63,11 +63,9 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_submitButton_formatted"), sut.configuration.localizationParameters, payment.amount.formatted))
     }
  
-    func testVCTitle() {
+    func testVCTitle() throws {
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.viewController)
         XCTAssertEqual(sut.viewController.title, method.name.uppercased())
     }
 

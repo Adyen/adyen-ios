@@ -86,18 +86,20 @@ class OnlineBankingComponentUITests: XCTestCase {
             sut.stopLoadingIfNeeded()
             didContnueExpectation.fulfill()
         }
-        wait(for: .milliseconds(50))
+        
+        wait(for: [didContnueExpectation], timeout: 1)
+        
         assertViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
     }
 
-    func testContinueButtonLoading() {
+    func testContinueButtonLoading() throws {
         // Given
         let config = OnlineBankingComponent.Configuration(style: style)
         let sut = OnlineBankingComponent(paymentMethod: paymentMethod,
                                          context: context,
                                          configuration: config)
 
-        UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
+        try setupRootViewController(sut.viewController)
        
         let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
 

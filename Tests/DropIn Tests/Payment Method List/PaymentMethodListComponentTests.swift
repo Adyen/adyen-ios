@@ -51,13 +51,11 @@ class PaymentMethodListComponentTests: XCTestCase {
         XCTAssertEqual(listViewController.sections[1].header?.title, "title")
     }
 
-    func testStartStopLoading() {
+    func testStartStopLoading() throws {
         let section = ComponentsSection(components: [storedComponent])
         let sut = PaymentMethodListComponent(context: Dummy.context, components: [section])
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.listViewController
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.listViewController)
         
         let cell = sut.listViewController.tableView.visibleCells[0] as! ListCell
         XCTAssertFalse(cell.showsActivityIndicator)
@@ -113,14 +111,12 @@ class PaymentMethodListComponentTests: XCTestCase {
                                         components: [storedComponent], footer: nil)
         let sut = PaymentMethodListComponent(context: Dummy.context, components: [section, ComponentsSection(components: [regularComponent])])
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.listViewController
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(sut.listViewController)
         
         let sectionHeader = try XCTUnwrap(sut.listViewController.tableView.headerView(forSection: 0) as? ListHeaderView)
         sectionHeader.trailingButton.sendActions(for: .touchUpInside)
         
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         let allCells = sut.listViewController.tableView.visibleCells
         
@@ -139,7 +135,7 @@ class PaymentMethodListComponentTests: XCTestCase {
                                                                 commit: .delete,
                                                                 forRowAt: IndexPath(item: 0, section: 0))
         
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         XCTAssertEqual(sut.listViewController.tableView.visibleCells.count, 2)
         XCTAssertEqual(sut.componentSections.count, 2)

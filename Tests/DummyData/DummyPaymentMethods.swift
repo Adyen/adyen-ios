@@ -116,7 +116,7 @@ let issuerListDictionary = [
             ],
             "key": "issuer",
             "type": "select"
-        ]
+        ] as [String: Any]
     ]
 ] as [String: Any]
 
@@ -173,7 +173,7 @@ let giroPayDictionaryWithOptionalDetails = [
             "key": "bic",
             "type": "text",
             "optional": true
-        ]
+        ] as [String: Any]
     ],
     "name": "GiroPay",
     "supportsRecurring": true,
@@ -236,14 +236,14 @@ let dokuIndomaretAction: [String: Any] = [
     "initialAmount": [
         "currency": "IDR",
         "value": 17408
-    ],
+    ] as [String: Any],
     "paymentMethodType": "doku_indomaret",
     "instructionsUrl": "https://www.doku.com/how-to-pay/indomaret.php",
     "shopperEmail": "Qwfqwf@POj.co",
     "totalAmount": [
         "currency": "IDR",
         "value": 17408
-    ],
+    ] as [String: Any],
     "expiresAt": "2021-02-02T22:00:00",
     "merchantName": "Adyen Demo Shop",
     "shopperName": "Qwfqwew Gewgewf",
@@ -256,14 +256,14 @@ let dokuAlfamartAction: [String: Any] = [
     "initialAmount": [
         "currency": "IDR",
         "value": 17408
-    ],
+    ] as [String: Any],
     "paymentMethodType": "doku_alfamart",
     "instructionsUrl": "https://www.doku.com/how-to-pay/alfamart.php",
     "shopperEmail": "Qsosih@oih.com",
     "totalAmount": [
         "currency": "IDR",
         "value": 17408
-    ],
+    ] as [String: Any],
     "expiresAt": "2021-02-02T22:58:00",
     "merchantName": "Adyen Demo Shop",
     "shopperName": "Qwodihqw Wqodihq",
@@ -276,13 +276,13 @@ let econtextStoresAction: [String: Any] = [
     "initialAmount": [
         "currency": "JPY",
         "value": 17408
-    ],
+    ] as [String: Any],
     "paymentMethodType": "econtext_stores",
     "instructionsUrl": "https://www.econtext.jp/support/cvs/8brand.html",
     "totalAmount": [
         "currency": "JPY",
         "value": 17408
-    ],
+    ] as [String: Any],
     "maskedTelephoneNumber": "11******89",
     "expiresAt": "2021-04-02T18:46:00",
     "merchantName": "TestMerchantCheckout",
@@ -296,13 +296,13 @@ let econtextATMAction: [String: Any] = [
     "initialAmount": [
         "currency": "JPY",
         "value": 17408
-    ],
+    ] as [String: Any],
     "paymentMethodType": "econtext_atm",
     "instructionsUrl": "https://www.econtext.jp/support/atm/index.html",
     "totalAmount": [
         "currency": "JPY",
         "value": 17408
-    ],
+    ] as [String: Any],
     "maskedTelephoneNumber": "11******89",
     "expiresAt": "2021-04-02T18:48:00",
     "merchantName": "TestMerchantCheckout",
@@ -315,13 +315,13 @@ let boletoAction: [String: Any] = [
     "initialAmount": [
         "currency": "BRL",
         "value": 17408
-    ],
+    ] as [String: Any],
     "downloadUrl": "https://test.adyen.com/hpp/generationBoleto.shtml?data=BQABAQCGgaWQP0LNLQ0",
     "paymentMethodType": "boletobancario_santander",
     "totalAmount": [
         "currency": "BRL",
         "value": 17408
-    ],
+    ] as [String: Any],
     "expiresAt": "2021-05-30T00:00:00",
     "type": "voucher",
     "passCreationToken": "test token".data(using: .utf8)?.base64EncodedString() ?? ""
@@ -335,12 +335,12 @@ let oxxoAction: [String: Any] = [
     "totalAmount": [
         "currency": "MXN",
         "value": 17408
-    ],
+    ] as [String: Any],
     "alternativeReference": "59168675976701",
     "initialAmount": [
         "currency": "MXN",
         "value": 17408
-    ],
+    ] as [String: Any],
     "type": "voucher",
     "merchantName": "TestMerchantCheckout",
     "expiresAt": "2021-08-15T00:00:00",
@@ -354,13 +354,13 @@ let multibancoVoucher: [String: Any] = [
     "initialAmount": [
         "currency": "EUR",
         "value": 17408
-    ],
+    ] as [String: Any],
     "reference": "522 771 332",
     "paymentMethodType": "multibanco",
     "totalAmount": [
         "currency": "EUR",
         "value": 17408
-    ],
+    ] as [String: Any],
     "expiresAt": "2021-08-30T12:00:10",
     "merchantName": "TestMerchant",
     "merchantReference": "Test Order Reference - iOS UIHost",
@@ -455,7 +455,7 @@ let qiwiWallet = [
             "key": "qiwiwallet.telephoneNumber",
             "type": "text"
         ]
-    ],
+    ] as [[String: Any]],
     "name": "Qiwi Wallet",
     "supportsRecurring": true,
     "type": "qiwiwallet"

@@ -13,60 +13,36 @@ import XCTest
 
 final class IssuerListComponentUITests: XCTestCase {
 
-    private var context: AdyenContext!
-    private var paymentMethod: IssuerListPaymentMethod!
-    private var sut: IssuerListComponent!
-    private var searchViewController: SearchViewController!
-    private var listViewController: ListViewController!
-
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-
-        initializeComponent()
-    }
-    
-    private func initializeComponent() {
-        context = Dummy.context
-        paymentMethod = try! Coder.decode(issuerListDictionary) as IssuerListPaymentMethod
-        sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
-        searchViewController = sut.viewController as? SearchViewController
-        listViewController = searchViewController.resultsListViewController
-    }
-
-    override func tearDownWithError() throws {
-        context = nil
-        paymentMethod = nil
-        sut = nil
-        try super.tearDownWithError()
-    }
-
-    func testStartStopLoading() {
-        XCTAssertNotNil(listViewController)
+    func testStartStopLoading() throws {
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        let context = Dummy.context
+        let paymentMethod = try Coder.decode(issuerListDictionary) as IssuerListPaymentMethod
         
-        wait(for: .milliseconds(50))
+        let sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
+        let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
+        let listViewController = searchViewController.resultsListViewController
         
-        let items = listViewController!.sections[0].items
+        try setupRootViewController(sut.viewController)
+        
+        let items = listViewController.sections[0].items
         
         let index = 0
         let item = items[index]
-        var cell = listViewController!.tableView.visibleCells[index] as! ListCell
+        var cell = try XCTUnwrap(getCell(for: item, tableView: listViewController.tableView))
         XCTAssertFalse(cell.showsActivityIndicator)
         assertViewControllerImage(matching: sut.viewController, named: "initial_state")
     
         // start loading
-        listViewController?.startLoading(for: item)
-        cell = getCell(for: item, tableView: listViewController!.tableView)!
+        listViewController.startLoading(for: item)
+        cell = try XCTUnwrap(getCell(for: item, tableView: listViewController.tableView))
         XCTAssertTrue(cell.showsActivityIndicator)
         assertViewControllerImage(matching: sut.viewController, named: "loading_first_cell")
         
         // stop loading
         sut.stopLoadingIfNeeded()
-        cell = getCell(for: item, tableView: listViewController!.tableView)!
+        cell = try XCTUnwrap(getCell(for: item, tableView: listViewController.tableView))
         XCTAssertFalse(cell.showsActivityIndicator)
         assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
-        
     }
     
     private func getCell(for item: ListItem, tableView: UITableView) -> ListCell? {

@@ -317,8 +317,6 @@ class BCMCComponentTests: XCTestCase {
                                                          expectationBin.fulfill()
                                                      })
         sut.cardComponentDelegate = delegateMock
-
-        wait(for: .milliseconds(50))
         
         fillCard(on: sut.viewController.view, with: Dummy.bancontactCard, simulateKeyStrokes: true)
         
@@ -411,24 +409,20 @@ class BCMCComponentTests: XCTestCase {
         try setupRootViewController(sut.viewController)
         
         // Enter invalid Card Number
-        let cardNumberView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
-        XCTAssertNotNil(cardNumberView)
-        self.populate(textItemView: cardNumberView!, with: "123")
+        let cardNumberView: FormCardNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
+        self.populate(textItemView: cardNumberView, with: "123")
         
         // Enter Expiry Date
-        let expiryDateView = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem")
-        XCTAssertNotNil(expiryDateView as? FormTextItemView<FormCardExpiryDateItem>)
-        let expiryDateItemView = expiryDateView as! FormTextItemView<FormCardExpiryDateItem>
-        self.populate(textItemView: expiryDateItemView, with: "10/20")
+        let expiryDateView: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem"))
+        self.populate(textItemView: expiryDateView, with: "10/20")
         
         // Tap submit button
         tapSubmitButton(on: sut.viewController.view)
         
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
-        let alertLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.alertLabel")
-        XCTAssertNotNil(alertLabel)
-        XCTAssertEqual(alertLabel?.text, cardNumberView?.item.validationFailureMessage)
+        let alertLabel: UILabel = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.alertLabel"))
+        XCTAssertEqual(alertLabel.text, cardNumberView.item.validationFailureMessage)
         
     }
     

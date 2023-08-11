@@ -14,13 +14,11 @@ class LoadingViewTests: XCTestCase {
     func testShowingSpinnerDelay() throws {
         
         let loadingView = LoadingView(contentView: UIView())
-        loadingView.spinnerAppearanceDelay = .milliseconds(50)
+        loadingView.spinnerAppearanceDelay = .milliseconds(10)
         loadingView.showsActivityIndicator = true
         
         XCTAssertEqual(loadingView.showsActivityIndicator, false)
-        
-        wait(for: .milliseconds(50))
-        
+        wait(for: loadingView.spinnerAppearanceDelay)
         XCTAssertEqual(loadingView.showsActivityIndicator, true)
     }
     

@@ -27,10 +27,7 @@ class BoletoComponentTests: XCTestCase {
         )
         
         let viewController = component.viewController
-        
-        UIApplication.shared.keyWindow?.rootViewController = viewController
-        
-        wait(for: .milliseconds(50))
+        try setupRootViewController(viewController)
         
         let firstNameField: UITextField? = viewController.view.findView(by: "firstNameItem.textField") as? UITextField
         let lastNameField: UITextField? = viewController.view.findView(by: "lastNameItem.textField") as? UITextField
