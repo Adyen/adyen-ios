@@ -123,4 +123,3 @@ class FormPickerItemTests: XCTestCase {
         AdyenAssertion.listener = nil
     }
 }
-

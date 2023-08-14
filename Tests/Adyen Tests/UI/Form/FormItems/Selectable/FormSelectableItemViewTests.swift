@@ -8,15 +8,15 @@
 @_spi(AdyenInternal) import AdyenCard
 import XCTest
 
-fileprivate let placeholderText = "Placeholder"
+private let placeholderText = "Placeholder"
 
-fileprivate class FormSelectableValueItemMock: FormSelectableValueItem<String?> {
+private class FormSelectableValueItemMock: FormSelectableValueItem<String?> {
     required init() {
         super.init(value: "", style: .init(), placeholder: placeholderText)
     }
 }
 
-fileprivate class FormSelectableValueItemViewMock: FormSelectableValueItemView<String, FormSelectableValueItemMock> {}
+private class FormSelectableValueItemViewMock: FormSelectableValueItemView<String, FormSelectableValueItemMock> {}
 
 class FormSelectableItemViewTests: XCTestCase {
     
