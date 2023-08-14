@@ -73,14 +73,14 @@ internal struct ConfigurationView: View {
     
     private var apiVersionSection: some View {
         TextFieldItemView(title: "API Version",
-                     value: $viewModel.apiVersion,
-                     placeholder: ConfigurationSection.apiVersion.rawValue)
+                          value: $viewModel.apiVersion,
+                          placeholder: ConfigurationSection.apiVersion.rawValue)
     }
     
     private var merchantAccountSection: some View {
         TextFieldItemView(title: "Merchant Account",
-                     value: $viewModel.merchantAccount,
-                     placeholder: ConfigurationSection.merchantAccount.rawValue)
+                          value: $viewModel.merchantAccount,
+                          placeholder: ConfigurationSection.merchantAccount.rawValue)
     }
     
     private var regionSection: some View {
@@ -120,8 +120,8 @@ internal struct ConfigurationView: View {
                 transform: { ListItemView(viewModel: $0.toListItemViewModel) }
             )
             TextFieldItemView(title: "Amount ",
-                         value: $viewModel.value,
-                         placeholder: "Amount")
+                              value: $viewModel.value,
+                              placeholder: "Amount")
         }
 
     }
@@ -181,9 +181,9 @@ internal struct TextFieldItemView: View {
         self.placeholder = placeholder
         self.keyboardType = keyboardType
         self.value = value
-   }
+    }
 
-   internal var body: some View {
+    internal var body: some View {
         HStack {
             Text(title)
             TextField(placeholder, text: value)
@@ -191,7 +191,7 @@ internal struct TextFieldItemView: View {
                 .multilineTextAlignment(.trailing)
                 .padding(.trailing, 10)
         }
-   }
+    }
 }
 
 @available(iOS 13.0.0, *)

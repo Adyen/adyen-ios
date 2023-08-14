@@ -195,7 +195,7 @@ class AnalyticsProviderTests: XCTestCase {
         )
         
         analyticsProvider.additionalFields = {
-            return .init(amount: amount)
+            .init(amount: amount)
         }
         
         // When
