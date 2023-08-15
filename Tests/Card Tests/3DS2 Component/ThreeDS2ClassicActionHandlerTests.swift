@@ -194,11 +194,11 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
 
         sut.handle(challengeAction) { result in
             switch result {
-            case .success(let actionHandlerResult):
+            case let .success(actionHandlerResult):
                 switch actionHandlerResult {
-                case .details(let additionalDetails as ThreeDS2Details):
+                case let .details(additionalDetails as ThreeDS2Details):
                     switch additionalDetails {
-                    case .challengeResult(let threeDSResult):
+                    case let .challengeResult(threeDSResult):
                         struct Payload: Codable {
                             let threeDS2SDKError: String?
                         }
