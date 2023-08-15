@@ -53,7 +53,7 @@ internal extension ThreeDS2Component {
         
         internal init(authenticationRequestParameters: AnyAuthenticationRequestParameters,
                       delegatedAuthenticationSDKOutput: String?,
-                      deleteDelegatedAuthenticationCredentials: Bool?) throws {
+                      deleteDelegatedAuthenticationCredential: Bool?) throws {
             let sdkEphemeralPublicKeyData = Data(authenticationRequestParameters.sdkEphemeralPublicKey.utf8)
             let sdkEphemeralPublicKey = try JSONDecoder().decode(EphemeralPublicKey.self, from: sdkEphemeralPublicKeyData)
             
