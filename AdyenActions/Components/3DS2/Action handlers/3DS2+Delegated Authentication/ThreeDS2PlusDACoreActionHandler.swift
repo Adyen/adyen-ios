@@ -155,7 +155,7 @@
             do {
                 let fingerprintResult = fingerprintResult.withDelegatedAuthenticationSDKOutput(
                     delegatedAuthenticationSDKOutput: authenticationSDKOutput,
-                    deleteDelegatedAuthenticationCredentials: deleteDelegatedAuthenticationCredentials
+                    deleteDelegatedAuthenticationCredentials: deleteDelegatedAuthenticationCredential
                 )
                 let encodedFingerprintResult = try Coder.encodeBase64(fingerprintResult)
                 return encodedFingerprintResult
