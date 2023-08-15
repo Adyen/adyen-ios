@@ -87,16 +87,16 @@ enum ConfigurationConstants {
     // swiftlint:enable line_length
 }
 
-struct CardComponentConfiguration: Codable {
-    var showsHolderNameField = false
-    var showsStorePaymentMethodField = true
-    var showsStoredCardSecurityCodeField = true
-    var showsSecurityCodeField = true
-    var addressMode: AddressFormType = .none
-    var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
-    var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
+internal struct CardComponentConfiguration: Codable {
+    internal var showsHolderNameField = false
+    internal var showsStorePaymentMethodField = true
+    internal var showsStoredCardSecurityCodeField = true
+    internal var showsSecurityCodeField = true
+    internal var addressMode: AddressFormType = .none
+    internal var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
+    internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
     
-    enum AddressFormType: String, Codable, CaseIterable {
+    internal enum AddressFormType: String, Codable, CaseIterable {
         case lookup
         case full
         case postalCode
@@ -104,10 +104,10 @@ struct CardComponentConfiguration: Codable {
     }
 }
 
-struct DropInConfiguration: Codable {
-    var allowDisablingStoredPaymentMethods: Bool = false
-    var allowsSkippingPaymentList: Bool = false
-    var allowPreselectedPaymentView: Bool = true
+internal struct DropInConfiguration: Codable {
+    internal var allowDisablingStoredPaymentMethods: Bool = false
+    internal var allowsSkippingPaymentList: Bool = false
+    internal var allowPreselectedPaymentView: Bool = true
 }
 
 struct DemoAppSettings: Codable {
@@ -134,17 +134,17 @@ struct DemoAppSettings: Codable {
         dropInConfiguration: defaultDropInConfiguration
     )
 
-    static let defaultCardComponentConfiguration = CardComponentConfiguration(showsHolderNameField: false,
-                                                                              showsStorePaymentMethodField: true,
-                                                                              showsStoredCardSecurityCodeField: true,
-                                                                              showsSecurityCodeField: true,
-                                                                              addressMode: .none,
-                                                                              socialSecurityNumberMode: .auto,
-                                                                              koreanAuthenticationMode: .auto)
+    internal static let defaultCardComponentConfiguration = CardComponentConfiguration(showsHolderNameField: false,
+                                                                                       showsStorePaymentMethodField: true,
+                                                                                       showsStoredCardSecurityCodeField: true,
+                                                                                       showsSecurityCodeField: true,
+                                                                                       addressMode: .none,
+                                                                                       socialSecurityNumberMode: .auto,
+                                                                                       koreanAuthenticationMode: .auto)
 
-    static let defaultDropInConfiguration = DropInConfiguration(allowDisablingStoredPaymentMethods: false,
-                                                                allowsSkippingPaymentList: false,
-                                                                allowPreselectedPaymentView: true)
+    internal static let defaultDropInConfiguration = DropInConfiguration(allowDisablingStoredPaymentMethods: false,
+                                                                         allowsSkippingPaymentList: false,
+                                                                         allowPreselectedPaymentView: true)
     
     fileprivate static func loadConfiguration() -> DemoAppSettings {
         var config = UserDefaults.standard.data(forKey: defaultsKey)
@@ -166,7 +166,7 @@ struct DemoAppSettings: Codable {
         }
     }
 
-    var cardConfiguration: CardComponent.Configuration {
+    internal var cardConfiguration: CardComponent.Configuration {
         var storedCardConfig = StoredCardConfiguration()
         storedCardConfig.showsSecurityCodeField = cardComponentConfiguration.showsStoredCardSecurityCodeField
 
@@ -182,7 +182,7 @@ struct DemoAppSettings: Codable {
                      billingAddress: billingAddressConfig)
     }
 
-    var cardDropInConfiguration: DropInComponent.Card {
+    internal var cardDropInConfiguration: DropInComponent.Card {
         var storedCardConfig = StoredCardConfiguration()
         storedCardConfig.showsSecurityCodeField = cardComponentConfiguration.showsStoredCardSecurityCodeField
 
@@ -199,7 +199,7 @@ struct DemoAppSettings: Codable {
 
     }
 
-    var dropInSettings: DropInComponent.Configuration {
+    internal var dropInSettings: DropInComponent.Configuration {
         let dropInConfig = DropInComponent.Configuration(allowsSkippingPaymentList: dropInConfiguration.allowsSkippingPaymentList,
                                                          allowPreselectedPaymentView: dropInConfiguration.allowPreselectedPaymentView)
 
