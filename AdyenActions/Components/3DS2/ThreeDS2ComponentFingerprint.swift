@@ -18,7 +18,7 @@ internal extension ThreeDS2Component {
         internal let sdkTransactionIdentifier: String?
 
         internal let delegatedAuthenticationSDKOutput: String?
-        internal let deleteDelegatedAuthenticationCredentials: Bool?
+        internal let deleteDelegatedAuthenticationCredential: Bool?
 
         internal let threeDS2SDKError: String?
 
@@ -28,7 +28,7 @@ internal extension ThreeDS2Component {
                       sdkApplicationIdentifier: String?,
                       sdkTransactionIdentifier: String?,
                       delegatedAuthenticationSDKOutput: String?,
-                      deleteDelegatedAuthenticationCredentials: Bool?,
+                      deleteDelegatedAuthenticationCredential: Bool?,
                       threeDS2SDKError: String?) {
             self.deviceInformation = deviceInformation
             self.sdkEphemeralPublicKey = sdkEphemeralPublicKey
@@ -37,12 +37,12 @@ internal extension ThreeDS2Component {
             self.sdkTransactionIdentifier = sdkTransactionIdentifier
             self.delegatedAuthenticationSDKOutput = delegatedAuthenticationSDKOutput
             self.threeDS2SDKError = threeDS2SDKError
-            self.deleteDelegatedAuthenticationCredentials = deleteDelegatedAuthenticationCredentials
+            self.deleteDelegatedAuthenticationCredential = deleteDelegatedAuthenticationCredential
         }
         
         internal init(threeDS2SDKError: String) {
             self.threeDS2SDKError = threeDS2SDKError
-            self.deleteDelegatedAuthenticationCredentials = nil
+            self.deleteDelegatedAuthenticationCredential = nil
             self.deviceInformation = nil
             self.sdkEphemeralPublicKey = nil
             self.sdkReferenceNumber = nil
@@ -63,7 +63,7 @@ internal extension ThreeDS2Component {
             self.sdkApplicationIdentifier = authenticationRequestParameters.sdkApplicationIdentifier
             self.sdkTransactionIdentifier = authenticationRequestParameters.sdkTransactionIdentifier
             self.delegatedAuthenticationSDKOutput = delegatedAuthenticationSDKOutput
-            self.deleteDelegatedAuthenticationCredentials = deleteDelegatedAuthenticationCredentials
+            self.deleteDelegatedAuthenticationCredential = deleteDelegatedAuthenticationCredential
             self.threeDS2SDKError = nil
         }
         
@@ -75,7 +75,7 @@ internal extension ThreeDS2Component {
                   sdkApplicationIdentifier: sdkApplicationIdentifier,
                   sdkTransactionIdentifier: sdkTransactionIdentifier,
                   delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
-                  deleteDelegatedAuthenticationCredentials: deleteDelegatedAuthenticationCredentials,
+                  deleteDelegatedAuthenticationCredential: deleteDelegatedAuthenticationCredential,
                   threeDS2SDKError: threeDS2SDKError)
         }
         
@@ -87,7 +87,7 @@ internal extension ThreeDS2Component {
             case sdkTransactionIdentifier = "sdkTransID"
             case delegatedAuthenticationSDKOutput
             case threeDS2SDKError
-            case deleteDelegatedAuthenticationCredentials
+            case deleteDelegatedAuthenticationCredential
         }
         
     }

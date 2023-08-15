@@ -94,7 +94,7 @@ import XCTest
             let expectedFingerprint = try ThreeDS2Component.Fingerprint(
                 authenticationRequestParameters: authenticationRequestParameters,
                 delegatedAuthenticationSDKOutput: nil,
-                deleteDelegatedAuthenticationCredentials: nil
+                deleteDelegatedAuthenticationCredential: nil
             )
         
             let authenticationServiceMock = AuthenticationServiceMock()

@@ -138,7 +138,7 @@
                     self.delegatedAuthenticationState.isDeviceRegistrationFlow = result.successResult == nil
                     guard let fingerprintResult = self.createFingerPrintResult(authenticationSDKOutput: result.successResult?.sdkOutput,
                                                                                fingerprintResult: fingerprintResult,
-                                                                               deleteDelegatedAuthenticationCredentials: result.successResult?.deleteDelegatedAuthenticationCredentials,
+                                                                               deleteDelegatedAuthenticationCredential: result.successResult?.deleteDelegatedAuthenticationCredential,
                                                                                completionHandler: completionHandler) else { return }
                     completionHandler(.success(fingerprintResult))
                 }
@@ -150,7 +150,7 @@
         
         private func createFingerPrintResult<R>(authenticationSDKOutput: String?,
                                                 fingerprintResult: ThreeDS2Component.Fingerprint,
-                                                deleteDelegatedAuthenticationCredentials: Bool?,
+                                                deleteDelegatedAuthenticationCredential: Bool?,
                                                 completionHandler: @escaping (Result<R, Error>) -> Void) -> String? {
             do {
                 let fingerprintResult = fingerprintResult.withDelegatedAuthenticationSDKOutput(
@@ -167,7 +167,7 @@
     
         // MARK: - Delegated Authentication
 
-        private typealias DAPayload = (sdkOutput: String, deleteDelegatedAuthenticationCredentials: Bool?) // TODO: Robert: Maybe better replace the tuple with a type for easier reading.
+        private typealias DAPayload = (sdkOutput: String, deleteDelegatedAuthenticationCredential: Bool?) // TODO: Robert: Maybe better replace the tuple with a type for easier reading.
         
         /// This method checks;
         /// 1. if DA has been registered on the device

@@ -104,7 +104,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                 let encodedFingerprint = try Coder.encodeBase64(ThreeDS2Component.Fingerprint(
                     authenticationRequestParameters: transaction.authenticationParameters,
                     delegatedAuthenticationSDKOutput: nil,
-                    deleteDelegatedAuthenticationCredentials: nil
+                    deleteDelegatedAuthenticationCredential: nil
                 ))
                 self.transaction = transaction
                 completionHandler(.success(encodedFingerprint))
