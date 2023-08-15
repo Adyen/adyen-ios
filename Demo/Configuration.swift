@@ -11,7 +11,7 @@ import AdyenDropIn
 import Foundation
 import PassKit
 
-enum ConfigurationConstants {
+internal enum ConfigurationConstants {
     // swiftlint:disable explicit_acl
     // swiftlint:disable line_length
 
@@ -110,21 +110,21 @@ internal struct DropInConfiguration: Codable {
     internal var allowPreselectedPaymentView: Bool = true
 }
 
-struct DemoAppSettings: Codable {
+internal struct DemoAppSettings: Codable {
     private static let defaultsKey = "ConfigurationKey"
     
-    var countryCode: String
-    let value: Int
-    var currencyCode: String
-    let apiVersion: Int
-    let merchantAccount: String
-    let cardComponentConfiguration: CardComponentConfiguration
-    let dropInConfiguration: DropInConfiguration
+    internal var countryCode: String
+    internal let value: Int
+    internal var currencyCode: String
+    internal let apiVersion: Int
+    internal let merchantAccount: String
+    internal let cardComponentConfiguration: CardComponentConfiguration
+    internal let dropInConfiguration: DropInConfiguration
 
-    var amount: Amount { Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil) }
-    var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
+    internal var amount: Amount { Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil) }
+    internal var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
     
-    static let defaultConfiguration = DemoAppSettings(
+    internal static let defaultConfiguration = DemoAppSettings(
         countryCode: "NL",
         value: 17408,
         currencyCode: "EUR",
