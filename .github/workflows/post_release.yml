@@ -11,10 +11,16 @@ jobs:
     name: Publish Cocoapods
     runs-on: macos-latest
     steps:
-    - uses: ./.github/workflows/publich_podspec.yml
+    - uses: ./.github/workflows/publich_podspec.yml 
 
   publish-docs:
     name: Publish Docs
     runs-on: macos-latest
     steps:
     - uses: ./.github/workflows/deploy-docs.yml
+
+  publish-app:
+    name: Publish Test App
+    runs-on: macos-latest
+    steps:
+    - uses: ./.github/workflows/publish-demo-app.yml
