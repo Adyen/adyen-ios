@@ -75,12 +75,12 @@ internal struct ConfigurationView: View {
         TextFieldItemView(title: "API Version",
                           value: $viewModel.apiVersion,
                           placeholder: ConfigurationSection.apiVersion.rawValue)
+                          keyboardType: .numberPad)
     }
     
     private var merchantAccountSection: some View {
         TextFieldItemView(title: "Merchant Account",
                           value: $viewModel.merchantAccount,
-                          placeholder: ConfigurationSection.merchantAccount.rawValue)
     }
     
     private var regionSection: some View {
@@ -122,6 +122,7 @@ internal struct ConfigurationView: View {
             TextFieldItemView(title: "Amount ",
                               value: $viewModel.value,
                               placeholder: "Amount")
+                              keyboardType: .numberPad)
         }
 
     }
@@ -176,7 +177,7 @@ internal struct TextFieldItemView: View {
     internal let keyboardType: UIKeyboardType
     internal let value: Binding<String>
 
-    internal init(title: String, value: Binding<String>, placeholder: String, keyboardType: UIKeyboardType = .numberPad) {
+    internal init(title: String, value: Binding<String>, placeholder: String, keyboardType: UIKeyboardType) {
         self.title = title
         self.placeholder = placeholder
         self.keyboardType = keyboardType
