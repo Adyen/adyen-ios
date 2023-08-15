@@ -10,8 +10,8 @@ import SwiftUI
 internal struct ApplePaySettingsView: View {
     @ObservedObject internal var viewModel: ConfigurationViewModel
 
-    private enum ConfigurationSection: String, CaseIterable {
-        case merchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
+    private enum ConfigurationSection {
+        static let merchantIdentifier = "{ merchant.com.domainname.appname }"
     }
 
     internal var body: some View {
@@ -20,7 +20,7 @@ internal struct ApplePaySettingsView: View {
                 Section {
                     TextFieldItemView(title: "Merchant Identifier",
                                       value: $viewModel.applePayMerchantIdentifier,
-                                      placeholder: ConfigurationSection.merchantIdentifier.rawValue,
+                                      placeholder: ConfigurationSection.merchantIdentifier,
                                       keyboardType: .default)
                     Toggle(isOn: $viewModel.allowOnboarding) {
                         Text("Allow OnBoarding")
