@@ -49,7 +49,7 @@ import SwiftUI
         }
 
         internal func makeUIViewController(context: UIViewControllerRepresentableContext<FullScreenView>) -> UIViewController {
-            UIViewController()
+            HostUIController()
         }
 
         internal func makeCoordinator() -> Coordinator {
@@ -58,11 +58,8 @@ import SwiftUI
 
         internal func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<FullScreenView>) {
             if let viewController = viewController, viewController !== context.coordinator.currentlyPresentedViewController {
-
                 dismissIfNeededThenPresent(viewController: viewController, presenter: uiViewController, context: context)
-
             } else if context.coordinator.currentlyPresentedViewController != nil, viewController == nil {
-
                 dismiss(presenter: uiViewController, context: context, completion: nil)
             }
         }
@@ -71,7 +68,6 @@ import SwiftUI
                                                 presenter: UIViewController,
                                                 context: UIViewControllerRepresentableContext<FullScreenView>) {
             if context.coordinator.currentlyPresentedViewController != nil {
-
                 dismiss(presenter: presenter, context: context) {
                     Self.present(viewController: viewController, presenter: presenter, context: context)
                 }
@@ -84,6 +80,7 @@ import SwiftUI
                                     presenter: UIViewController,
                                     context: UIViewControllerRepresentableContext<FullScreenView>) {
             guard !viewController.isBeingPresented, !viewController.isBeingDismissed else { return }
+            
             presenter.present(viewController, animated: true) {
                 context.coordinator.currentlyPresentedViewController = viewController
             }
@@ -101,4 +98,24 @@ import SwiftUI
             }
         }
     }
+
+fileprivate class HostUIController: UIViewController, UIViewControllerTransitioningDelegate {
+
+    init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        if presentedViewController != nil {
+            super.dismiss(animated: flag, completion: completion)
+        } else {
+            completion?()
+        }
+    }
+    
+}
 #endif
