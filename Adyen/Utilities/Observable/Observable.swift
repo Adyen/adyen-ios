@@ -9,7 +9,7 @@ import Foundation
 /// Wraps a value to make it observable.
 /// :nodoc:
 @propertyWrapper
-public final class Observable<ValueType: Equatable>: EventPublisher {
+public final class AdyenObservable<ValueType: Equatable>: EventPublisher {
     
     /// Initializes the observable.
     ///
