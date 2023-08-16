@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,6 +39,6 @@ public final class AdyenObservable<ValueType: Equatable>: EventPublisher {
     public var eventHandlers = [EventHandlerToken: EventHandler<Event>]()
     
     /// :nodoc:
-    public var projectedValue: Observable { self }
+    public var projectedValue: AdyenObservable { self }
     
 }
