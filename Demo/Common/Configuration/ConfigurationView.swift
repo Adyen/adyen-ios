@@ -50,9 +50,8 @@ internal struct ConfigurationView: View {
                 merchantAccountSection
                 regionSection
                 wrapInSection(view: paymentSection, section: .payment)
-                wrapInSection(view: cardComponentSection, section: .cardComponent)
                 wrapInSection(view: dropInSection, section: .dropIn)
-                wrapInSection(view: applePaySection, section: .applePay)
+                componentsSettingsView
             }.navigationBarTitle("Configuration", displayMode: .inline)
                 .navigationBarItems(
                     leading: Button("Default", action: viewModel.defaultTapped),
@@ -128,10 +127,10 @@ internal struct ConfigurationView: View {
 
     }
 
-    private var cardComponentSection: some View {
-        NavigationLink(destination: CardComponentSettingsView(viewModel: viewModel)) {
+    private var componentsSettingsView: some View {
+        NavigationLink(destination: ComponentsSettingsView(viewModel: viewModel)) {
             HStack {
-                Text("Card Component")
+                Text("Components")
             }
         }
     }
@@ -140,14 +139,6 @@ internal struct ConfigurationView: View {
         NavigationLink(destination: DropInSettingsView(viewModel: viewModel)) {
             HStack {
                 Text("DropIn")
-            }
-        }
-    }
-
-    private var applePaySection: some View {
-        NavigationLink(destination: ApplePaySettingsView(viewModel: viewModel)) {
-            HStack {
-                Text("Apple Pay")
             }
         }
     }

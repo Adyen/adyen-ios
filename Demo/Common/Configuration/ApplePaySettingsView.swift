@@ -11,7 +11,7 @@ internal struct ApplePaySettingsView: View {
     @ObservedObject internal var viewModel: ConfigurationViewModel
 
     private enum ConfigurationSection {
-        static let merchantIdentifier = "{ merchant.com.domainname.appname }"
+        static let merchantIdentifier = "merchant.com.domainname.appname"
     }
 
     internal var body: some View {
