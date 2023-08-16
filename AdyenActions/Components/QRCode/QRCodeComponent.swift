@@ -51,7 +51,7 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     private let progress = Progress()
     
     /// :nodoc:
-    @Observable(nil) private var expirationText: String?
+    @AdyenObservable(nil) private var expirationText: String?
     
     /// :nodoc:
     private let expirationTimeout: TimeInterval
