@@ -75,8 +75,13 @@ class AmountFormatterTests: XCTestCase {
             
             XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "CVE", localeIdentifier: "ko_KR"), "CVE 123,456.00")
             XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "CVE", localeIdentifier: "fr_FR"), "123 456,00 CVE")
+
+            if Available.iOS17 {
+                XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "ISK", localeIdentifier: "is_IS"), "123.456 kr.")
+            } else {
+                XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "ISK", localeIdentifier: "is_IS"), "123.456 ISK")
+            }
             
-            XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "ISK", localeIdentifier: "is_IS"), "123.456 ISK")
             XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "ISK"), "ISK 123,456")
         } else {
             // pre iOS 13 formatting seems to add a character that looks exactly like a space but is not a space.
