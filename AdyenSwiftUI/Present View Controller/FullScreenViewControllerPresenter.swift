@@ -102,7 +102,7 @@ import SwiftUI
 fileprivate class HostUIController: UIViewController, UIViewControllerTransitioningDelegate {
 
     init() {
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil, bundle: Bundle(for: HostUIController.self))
     }
 
     required init?(coder: NSCoder) {
