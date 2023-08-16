@@ -15,9 +15,8 @@ internal struct ConfigurationView: View {
         case merchantAccount = "Merchant Account"
         case region = "Region"
         case payment = "Payment"
-        case cardComponent = "Card Component"
+        case components = "Components"
         case dropIn = "DropIn"
-        case applePay = "ApplePay"
     }
     
     @ObservedObject internal var viewModel: ConfigurationViewModel
@@ -51,7 +50,7 @@ internal struct ConfigurationView: View {
                 regionSection
                 wrapInSection(view: paymentSection, section: .payment)
                 wrapInSection(view: dropInSection, section: .dropIn)
-                componentsSettingsView
+                wrapInSection(view: componentsSection, section: .components)
             }.navigationBarTitle("Configuration", displayMode: .inline)
                 .navigationBarItems(
                     leading: Button("Default", action: viewModel.defaultTapped),
@@ -127,7 +126,7 @@ internal struct ConfigurationView: View {
 
     }
 
-    private var componentsSettingsView: some View {
+    private var componentsSection: some View {
         NavigationLink(destination: ComponentsSettingsView(viewModel: viewModel)) {
             HStack {
                 Text("Components")
