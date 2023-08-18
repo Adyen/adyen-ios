@@ -166,7 +166,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     // MARK: - Validation
     
-    public override var isValid: Bool {
+    override public var isValid: Bool {
         if isHidden { return true }
         return super.isValid
     }

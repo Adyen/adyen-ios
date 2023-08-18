@@ -98,7 +98,7 @@ class SessionTests: XCTestCase {
                                                              sessionData: "session_data",
                                                              sessionResult: "sessionResultString"))]
         let didSubmitExpectation = expectation(description: "Expect payments call to be made")
-        apiClient.onExecute = {
+        apiClient.onExecute = { _ in
             didSubmitExpectation.fulfill()
         }
         sut.didSubmit(data, from: component)
@@ -220,7 +220,7 @@ class SessionTests: XCTestCase {
         ]
         let didSubmitExpectation = expectation(description: "Expect payments and payments details calls to be made")
         didSubmitExpectation.expectedFulfillmentCount = 2
-        apiClient.onExecute = {
+        apiClient.onExecute = { _ in
             didSubmitExpectation.fulfill()
         }
         
@@ -307,7 +307,7 @@ class SessionTests: XCTestCase {
         ]
         let apiCallsExpectation = expectation(description: "Expect two API calls to be made")
         apiCallsExpectation.expectedFulfillmentCount = 2
-        apiClient.onExecute = {
+        apiClient.onExecute = { _ in
             apiCallsExpectation.fulfill()
         }
         sut.didSubmit(data, from: component, in: dropInComponent)
@@ -344,7 +344,7 @@ class SessionTests: XCTestCase {
         
         apiClient.mockedResults = [.failure(Dummy.error)]
         let didSubmitExpectation = expectation(description: "Expect payments call to be made")
-        apiClient.onExecute = {
+        apiClient.onExecute = { _ in
             didSubmitExpectation.fulfill()
         }
         sut.didSubmit(data, from: component)
@@ -422,7 +422,7 @@ class SessionTests: XCTestCase {
             )
         ]
         let didSubmitExpectation = expectation(description: "Expect payments call to be made")
-        apiClient.onExecute = {
+        apiClient.onExecute = { _ in
             didSubmitExpectation.fulfill()
         }
         
@@ -444,7 +444,7 @@ class SessionTests: XCTestCase {
                                                                  transactionLimit: Amount(value: 30, currencyCode: "EUR")))]
         
         let expectation = expectation(description: "Expect API call to be made")
-        apiClient.onExecute = {
+        apiClient.onExecute = { _ in
             expectation.fulfill()
         }
         sut.checkBalance(with: paymentData, component: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
@@ -470,7 +470,7 @@ class SessionTests: XCTestCase {
                                                                  transactionLimit: nil))]
         
         let expectation = expectation(description: "Expect API call to be made")
-        apiClient.onExecute = {
+        apiClient.onExecute = { _ in
             expectation.fulfill()
         }
         // get .failure
@@ -493,7 +493,7 @@ class SessionTests: XCTestCase {
         apiClient.mockedResults = [.failure(BalanceChecker.Error.zeroBalance)]
         
         let expectation = expectation(description: "Expect API call to be made")
-        apiClient.onExecute = {
+        apiClient.onExecute = { _ in
             expectation.fulfill()
         }
         // get .failure
@@ -516,7 +516,7 @@ class SessionTests: XCTestCase {
                                                                 sessionData: "session_data2"))]
         
         let expectation = expectation(description: "Expect API call to be made")
-        apiClient.onExecute = {
+        apiClient.onExecute = { _ in
             expectation.fulfill()
         }
         sut.requestOrder(for: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
@@ -538,7 +538,7 @@ class SessionTests: XCTestCase {
         apiClient.mockedResults = [.failure(PartialPaymentError.missingOrderData)]
         
         let expectation = expectation(description: "Expect API call to be made")
-        apiClient.onExecute = {
+        apiClient.onExecute = { _ in
             expectation.fulfill()
         }
         sut.requestOrder(for: PaymentComponentMock(paymentMethod: paymentMethod)) { result in

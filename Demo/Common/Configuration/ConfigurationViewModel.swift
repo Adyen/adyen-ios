@@ -79,7 +79,8 @@ internal final class ConfigurationViewModel: ObservableObject {
                 showsSecurityCodeField: showsSecurityCodeField,
                 addressMode: addressMode,
                 socialSecurityNumberMode: socialSecurityNumberMode,
-                koreanAuthenticationMode: koreanAuthenticationMode),
+                koreanAuthenticationMode: koreanAuthenticationMode
+            ),
             dropInConfiguration: DropInConfiguration(allowDisablingStoredPaymentMethods: allowDisablingStoredPaymentMethods,
                                                      allowsSkippingPaymentList: allowsSkippingPaymentList,
                                                      allowPreselectedPaymentView: allowPreselectedPaymentView)

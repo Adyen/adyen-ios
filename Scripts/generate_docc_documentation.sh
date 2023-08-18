@@ -74,7 +74,7 @@ let package = Package(
         .package(
             name: \"Adyen3DS2\",
             url: \"https://github.com/Adyen/adyen-3ds2-ios\",
-            .exact(Version(2, 3, 1))
+            .exact(Version(2, 3, 2))
         ),
         .package(
             name: \"AdyenNetworking\",
@@ -151,13 +151,11 @@ rm -rf $FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive
 # Move the new DocC archive to the its final place
 mv $TEMP_PROJECT_PATH/$DERIVED_DATA_PATH/Build/Products/Release-iphoneos/$FRAMEWORK_NAME.doccarchive $FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive
 
-CURRENT_MARKETING_VERSION=$(agvtool what-marketing-version -terse1)
-
 # Generate the DocC html pages
 $(xcrun --find docc) process-archive \
 transform-for-static-hosting $FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive \
 --output-path $DOCS_ROOT/html \
---hosting-base-path /adyen-ios/$CURRENT_MARKETING_VERSION
+--hosting-base-path /adyen-ios/$LATEST_VERSION
 
 # Clean up.
 rm -rf $TEMP_PROJECT_FOLDER
