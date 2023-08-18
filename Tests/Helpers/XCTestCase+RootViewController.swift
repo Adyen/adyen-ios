@@ -20,6 +20,7 @@ extension XCTestCase {
         let window = try XCTUnwrap(UIApplication.shared.adyen.mainKeyWindow)
         window.rootViewController = viewController
         window.layer.speed = 10 // 10x Animation speed
+        
         wait(for: .aMoment) // Waiting for a moment to give the viewController time to be presented
     }
     
@@ -55,6 +56,6 @@ extension XCTestCase {
 
 extension DispatchTimeInterval {
     
-    /// .milliseconds(50)
-    static var aMoment: Self { .milliseconds(50) }
+    /// .milliseconds(30)
+    static var aMoment: Self { .milliseconds(30) }
 }

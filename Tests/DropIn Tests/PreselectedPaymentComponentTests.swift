@@ -69,15 +69,9 @@ class PreselectedPaymentComponentTests: XCTestCase {
         let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton.button")
         button.sendActions(for: .touchUpInside)
         
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertTrue(self.delegate.didProceedCalled)
-            XCTAssertFalse(self.delegate.didRequestAllPaymentMethodsCalled)
-            XCTAssertTrue(self.delegate.componentToProceed === self.component)
-            
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        wait { self.delegate.didProceedCalled }
+        XCTAssertFalse(self.delegate.didRequestAllPaymentMethodsCalled)
+        XCTAssertTrue(self.delegate.componentToProceed === self.component)
     }
 
     func testSubmitButtonLoading() throws {
@@ -93,18 +87,14 @@ class PreselectedPaymentComponentTests: XCTestCase {
         wait { !button.showsActivityIndicator }
     }
     
-    func testPressOpenAllButton() {
+    func testPressOpenAllButton() throws {
+        
         let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.openAllButton.button")
         button!.sendActions(for: .touchUpInside)
         
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            XCTAssertFalse(self.delegate.didProceedCalled)
-            XCTAssertTrue(self.delegate.didRequestAllPaymentMethodsCalled)
-            XCTAssertNil(self.delegate.componentToProceed)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5)
+        wait { self.delegate.didRequestAllPaymentMethodsCalled }
+        XCTAssertFalse(self.delegate.didProceedCalled)
+        XCTAssertNil(self.delegate.componentToProceed)
     }
     
     func testUICustomization() throws {

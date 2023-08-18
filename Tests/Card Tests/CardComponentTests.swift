@@ -14,8 +14,7 @@ class CardComponentTests: XCTestCase {
 
     var context = Dummy.context
     let payment = Dummy.payment
-    var configuration: CardComponent.Configuration!
-    var sut: CardComponent!
+    var configuration = CardComponent.Configuration()
 
     let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard])
 
@@ -32,21 +31,13 @@ class CardComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         configuration = CardComponent.Configuration()
-        sut = CardComponent(paymentMethod: method,
-                            context: context,
-                            configuration: configuration)
-        UIApplication.shared.keyWindow?.layer.speed = 10
         try super.setUpWithError()
     }
 
-    override func tearDownWithError() throws {
-        configuration = nil
-        sut = nil
-        UIApplication.shared.keyWindow?.layer.speed = 1
-        try super.tearDownWithError()
-    }
-
     func testRequiresKeyboardInput() {
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration)
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
 
         XCTAssertTrue((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
@@ -230,11 +221,13 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(sut.viewController.view.backgroundColor, .green)
     }
 
-    func testBigTitle() {
+    func testBigTitle() throws {
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .aMoment)
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration)
+        
+        try setupRootViewController(sut.viewController)
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.CardComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, method.name)
@@ -255,22 +248,26 @@ class CardComponentTests: XCTestCase {
         XCTAssertNil(securityCodeView)
     }
 
-    func testShowCVVField() {
+    func testShowCVVField() throws {
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .aMoment)
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration)
+        
+        try setupRootViewController(sut.viewController)
         
         let securityCodeView: FormCardSecurityCodeItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
 
         XCTAssertNotNil(securityCodeView)
     }
 
-    func testCVVHintChange() {
+    func testCVVHintChange() throws {
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .aMoment)
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration)
+        
+        try setupRootViewController(sut.viewController)
         
         let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         let securityCodeCvvHint: FormCardSecurityCodeItemView.HintView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.cvvHintIcon")
@@ -359,11 +356,13 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(try UIViewController.topPresenter().children.first is AddressLookupViewController)
     }
 
-    func testCVVFormatterChange() {
+    func testCVVFormatterChange() throws{
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration)
 
-        wait(for: .aMoment)
+        try setupRootViewController(sut.viewController)
         
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
         let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
@@ -583,9 +582,14 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(cardLogoView.secondaryLogoView.isHidden)
     }
 
-    func testShouldShowNoCardTypesOnInvalidPANEnter() {
+    func testShouldShowNoCardTypesOnInvalidPANEnter() throws {
         // Given
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration)
+        
+        try setupRootViewController(sut.viewController)
 
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(cardNumberItemView)
@@ -606,9 +610,13 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(cardLogoView.secondaryLogoView.isHidden)
     }
 
-    func testShouldShowCardTypesOnPANEnter() {
+    func testShouldShowCardTypesOnPANEnter() throws {
         // Given
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration)
+        
+        try setupRootViewController(sut.viewController)
 
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(cardNumberItemView)
@@ -684,9 +692,13 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
     
-    func testCardNumberShouldPassFocusToDate() {
-        // Given
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+    func testCardNumberShouldPassFocusToDate() throws {
+        
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration)
+        
+        try setupRootViewController(sut.viewController)
 
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
@@ -954,7 +966,14 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(brazilSSNItemView!.isHidden)
     }
 
-    func testLuhnCheck() {
+    func testLuhnCheck() throws {
+        
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration)
+        
+        try setupRootViewController(sut.viewController)
+        
         let brands = [CardBrand(type: .visa, isLuhnCheckEnabled: true),
                       CardBrand(type: .masterCard, isLuhnCheckEnabled: false)]
 
@@ -1030,7 +1049,14 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(cvcItem.isValid())
     }
 
-    func testExpiryDateOptionality() {
+    func testExpiryDateOptionality() throws {
+        
+        let sut = CardComponent(paymentMethod: method,
+                                context: context,
+                                configuration: configuration)
+        
+        try setupRootViewController(sut.viewController)
+        
         let brands = [CardBrand(type: .visa, expiryDatePolicy: .required),
                       CardBrand(type: .americanExpress, expiryDatePolicy: .optional),
                       CardBrand(type: .masterCard, expiryDatePolicy: .hidden)]
@@ -1189,6 +1215,12 @@ class CardComponentTests: XCTestCase {
     
     func testSupportedCardLogoVisibility() throws {
 
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+        
         try setupRootViewController(sut.viewController)
 
         let numberItem = sut.cardViewController.items.numberContainerItem.numberItem
