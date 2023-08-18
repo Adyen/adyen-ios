@@ -25,7 +25,8 @@ public final class BCMCComponent: CardComponent {
         let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: context.apiContext),
                                               publicKeyProvider: publicKeyProvider,
-                                              minBinLength: Constant.thresholdBINLength)
+                                              minBinLength: Constant.thresholdBINLength,
+                                              binLookupType: configuration.binLookupType)
         super.init(paymentMethod: paymentMethod,
                    context: context,
                    configuration: configuration,
@@ -58,7 +59,8 @@ private extension CardComponent.Configuration {
             storedCardConfiguration: stored,
             allowedCardTypes: [.bcmc, .visa, .maestro]
         )
-        configuration.shouldShowSupportedCardLogos = false
+        configuration.showsSupportedCardLogos = false
+        configuration.binLookupType = .bcmc
         return configuration
     }
 }

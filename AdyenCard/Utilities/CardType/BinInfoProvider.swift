@@ -19,11 +19,13 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
 
     private let apiClient: APIClientProtocol
 
-    private var binLookupService: BinLookupService?
+    private var binLookupService: AnyBinLookupService?
     
     private let publicKeyProvider: AnyPublicKeyProvider
 
     private let fallbackCardTypeProvider: AnyBinInfoProvider
+    
+    private let binLookupType: BinLookupRequestType
     
     /// Create a new instance of CardTypeProvider.
     /// - Parameters:
@@ -33,11 +35,13 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     internal init(apiClient: APIClientProtocol,
                   publicKeyProvider: AnyPublicKeyProvider,
                   fallbackCardTypeProvider: AnyBinInfoProvider = FallbackBinInfoProvider(),
-                  minBinLength: Int) {
+                  minBinLength: Int,
+                  binLookupType: BinLookupRequestType) {
         self.apiClient = apiClient
         self.publicKeyProvider = publicKeyProvider
         self.fallbackCardTypeProvider = fallbackCardTypeProvider
         self.minBinLength = minBinLength
+        self.binLookupType = binLookupType
     }
     
     /// Request card types based on entered BIN.
@@ -57,8 +61,9 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
             return fallback()
         }
 
-        let useService: (BinLookupService) -> Void = { service in
-            service.requestCardType(for: bin, supportedCardTypes: supportedTypes) { result in
+        let lookupType = binLookupType
+        let useService: (AnyBinLookupService) -> Void = { service in
+            service.requestCardType(for: bin, lookupType: lookupType, supportedCardTypes: supportedTypes) { result in
                 switch result {
                 case let .success(response):
                     completion(response)

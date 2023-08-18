@@ -85,7 +85,8 @@ public class CardComponent: PresentableComponent,
         let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: context.apiContext),
                                               publicKeyProvider: publicKeyProvider,
-                                              minBinLength: Constant.thresholdBINLength)
+                                              minBinLength: Constant.thresholdBINLength,
+                                              binLookupType: configuration.binLookupType)
         self.init(paymentMethod: paymentMethod,
                   context: context,
                   configuration: configuration,

@@ -161,6 +161,9 @@ extension CardComponent {
         
         /// Billing address fields configurations.
         public var billingAddress: BillingAddressConfiguration
+        
+        /// The type used for the bin lookup
+        internal var binLookupType: BinLookupRequestType = .card
 
         /// Configuration of Card component.
         /// - Parameters:
