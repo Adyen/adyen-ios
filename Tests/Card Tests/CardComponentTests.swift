@@ -1007,10 +1007,10 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(supportedCardLogosItem.isHidden)
     }
 
-    func testCVCOptionality() {
+    func testCVCDisplayMode() {
         let brands = [CardBrand(type: .visa, cvcPolicy: .required),
-                      CardBrand(type: .americanExpress, cvcPolicy: .hidden),
-                      CardBrand(type: .masterCard, cvcPolicy: .optional)]
+                      CardBrand(type: .americanExpress, cvcPolicy: .optional),
+                      CardBrand(type: .masterCard, cvcPolicy: .hidden)]
 
         let method = CardPaymentMethod(type: .card,
                                        name: "Test name",
@@ -1023,20 +1023,31 @@ class CardComponentTests: XCTestCase {
 
         let cvcItem = sut.cardViewController.items.securityCodeItem
         cvcItem.value = ""
-        cvcItem.isOptional = brands[0].isCVCOptional
+        cvcItem.displayMode = brands[0].securityCodeItemDisplayMode
         XCTAssertFalse(cvcItem.isValid())
         cvcItem.value = "1"
         XCTAssertFalse(cvcItem.isValid())
         cvcItem.value = "123"
         XCTAssertTrue(cvcItem.isValid())
 
-        cvcItem.isOptional = brands[1].isCVCOptional
+        cvcItem.displayMode = brands[1].securityCodeItemDisplayMode
         XCTAssertTrue(cvcItem.isValid())
         cvcItem.value = "1"
         XCTAssertFalse(cvcItem.isValid())
-        // no value or correct value (3-4 digits) is valid
+        cvcItem.value = "" // no value or correct value (3-4 digits) is valid
+        XCTAssertTrue(cvcItem.isValid())
+        
+        cvcItem.displayMode = brands[2].securityCodeItemDisplayMode
+        XCTAssertTrue(cvcItem.isValid())
+        cvcItem.value = "1"
+        XCTAssertTrue(cvcItem.isValid())
         cvcItem.value = ""
         XCTAssertTrue(cvcItem.isValid())
+        
+        cvcItem.displayMode = .required
+        cvcItem.value = "123"
+        cvcItem.displayMode = .hidden
+        XCTAssertEqual(cvcItem.value, "")
     }
 
     func testExpiryDateOptionality() {

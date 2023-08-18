@@ -17,13 +17,13 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     
     internal let style: FormTextItemStyle
     
-    internal let shouldShowSupportedCardLogos: Bool
+    internal let showsSupportedCardLogos: Bool
     
     private let localizationParameters: LocalizationParameters?
    
     internal lazy var subitems: [FormItem] = {
         var subItems: [FormItem] = [numberItem]
-        if shouldShowSupportedCardLogos {
+        if showsSupportedCardLogos {
             subItems.append(supportedCardLogosItem)
         }
         return subItems
@@ -44,15 +44,15 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     }()
     
     internal init(cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
-                  shouldShowSupportedCardLogos: Bool = true,
+                  showsSupportedCardLogos: Bool = true,
                   style: FormTextItemStyle,
                   localizationParameters: LocalizationParameters?) {
         self.cardTypeLogos = cardTypeLogos
-        self.shouldShowSupportedCardLogos = shouldShowSupportedCardLogos
+        self.showsSupportedCardLogos = showsSupportedCardLogos
         self.localizationParameters = localizationParameters
         self.style = style
         
-        if shouldShowSupportedCardLogos {
+        if showsSupportedCardLogos {
             observe(numberItem.$isActive) { [weak self] _ in
                 guard let self = self else { return }
                 // logo item should be visible when field is invalid after active state changes
@@ -68,7 +68,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     internal func update(brands: [CardBrand]) {
         numberItem.update(brands: brands)
         
-        guard shouldShowSupportedCardLogos else {
+        guard showsSupportedCardLogos else {
             supportedCardLogosItem.isHidden.wrappedValue = false
             return
         }

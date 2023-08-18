@@ -154,7 +154,7 @@ extension CardComponent {
         public var allowedCardTypes: [CardType]?
         
         /// Indicates whether or not to show the supported card logos under the card number item
-        internal var shouldShowSupportedCardLogos: Bool = true
+        internal var showsSupportedCardLogos: Bool = true
 
         /// Installments options to present to the user.
         public var installmentConfiguration: InstallmentConfiguration?
