@@ -22,6 +22,7 @@ class AdyenSwiftUITests: XCTestCase {
         app.launch()
         let sessionSwitch = sessionSwitch(in: app)
         
+        XCTAssertTrue(sessionSwitch.waitForExistence(timeout: 1))
         XCTAssertEqual(sessionSwitch.value as! String, "1", "Session switch should be on by default")
         
         // Enabling Advanced Flow
@@ -42,6 +43,7 @@ class AdyenSwiftUITests: XCTestCase {
         app.launch()
         let sessionSwitch = sessionSwitch(in: app)
         
+        XCTAssertTrue(sessionSwitch.waitForExistence(timeout: 1))
         XCTAssertEqual(sessionSwitch.value as! String, "1", "Session switch should be on by default")
         
         // Enabling Advanced Flow

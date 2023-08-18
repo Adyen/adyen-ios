@@ -181,6 +181,7 @@
 		81EA6C122A44836E0071A141 /* FormAddressItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EA6C112A44836E0071A141 /* FormAddressItemTests.swift */; };
 		81F3DDCC2A6FCCF400635ED7 /* XCTestCase+RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F3DDCB2A6FCCF400635ED7 /* XCTestCase+RootViewController.swift */; };
 		81F3DDCD2A6FCCF400635ED7 /* XCTestCase+RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F3DDCB2A6FCCF400635ED7 /* XCTestCase+RootViewController.swift */; };
+		81FEACD22A8FA2440051E1D6 /* UIViewController+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B2A18E2A84EE1E00FF8427 /* UIViewController+Search.swift */; };
 		A009837D279859DC007E68C4 /* ACHDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */; };
 		A009837F27986B50007E68C4 /* BankDetailsEncryptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */; };
 		A0113D9B2763887800AD395C /* ActionNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0113D9A2763887800AD395C /* ActionNavigationBar.swift */; };
@@ -7023,6 +7024,7 @@
 			files = (
 				F97BC2D92668EB4800F1D242 /* VoucherViewDelegateMock.swift in Sources */,
 				F9615FB2252DDA4800FA8EDD /* AdyenSwiftUITests.swift in Sources */,
+				81FEACD22A8FA2440051E1D6 /* UIViewController+Search.swift in Sources */,
 				819087A62A8684CB00643E6C /* XCTestCase+Wait.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
