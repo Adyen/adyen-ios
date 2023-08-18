@@ -351,7 +351,7 @@ private extension AddressInputFormViewControllerTests {
             prefillAddress: prefillAddress,
             supportedCountryCodes: nil,
             handleShowSearch: searchHandler,
-            completionHandler: { _ in}
+            completionHandler: { _ in }
         )
     }
 }

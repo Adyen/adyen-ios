@@ -79,7 +79,7 @@ class FormAddressItemTests: XCTestCase {
 
 // MARK: - Helpers
 
-fileprivate class AddressDelegateDummy: SelfRenderingFormItemDelegate {
+private class AddressDelegateDummy: SelfRenderingFormItemDelegate {
     let didUpdateItemsHandler: (_ items: [FormItem]) -> Void
     
     init(didUpdateItemsHandler: @escaping (_ items: [FormItem]) -> Void) {

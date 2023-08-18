@@ -57,7 +57,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         else { throw IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self)
         }
         let applePayPayment = try ApplePayPayment(payment: ConfigurationConstants.current.payment,
-                                                   brand: ConfigurationConstants.appName)
+                                                  brand: ConfigurationConstants.appName)
         var config = ApplePayComponent.Configuration(payment: applePayPayment,
                                                      merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
         config.allowOnboarding = true
@@ -68,8 +68,8 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         config.shippingMethods = ConfigurationConstants.shippingMethods
 
         let component = try ApplePayComponent(paymentMethod: paymentMethod,
-                                               context: context,
-                                               configuration: config)
+                                              context: context,
+                                              configuration: config)
         component.delegate = self
         component.applePayDelegate = self
         return component

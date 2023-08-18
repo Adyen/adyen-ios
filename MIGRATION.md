@@ -41,3 +41,6 @@
 
 ## 5.2.0
 - `amountToPay` property of `PaymentComponentData` has been deprecated. Use to `amount` property if needed. 
+
+## 5.3.0
+- The `didComplete` method signature of `AdyenSessionDelegate` has changed. You must replace `didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession)` with `didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession)`. Use the `resultCode` inside of the `AdyenSessionResult` if needed.

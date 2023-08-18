@@ -35,7 +35,8 @@ internal struct TelemetryRequest: APIRequest {
     private let containerWidth: Int?
     private let paymentMethods: [String]
     private let component: String
-    private let checkoutAttemptId: String?
+    internal let amount: Amount?
+    internal let checkoutAttemptId: String?
 
     // MARK: - Initializers
 
@@ -52,6 +53,7 @@ internal struct TelemetryRequest: APIRequest {
         self.containerWidth = data.containerWidth
         self.paymentMethods = data.paymentMethods
         self.component = data.component
+        self.amount = data.amount
         self.checkoutAttemptId = checkoutAttemptId
     }
 
@@ -69,5 +71,6 @@ internal struct TelemetryRequest: APIRequest {
         case paymentMethods
         case component
         case checkoutAttemptId
+        case amount
     }
 }

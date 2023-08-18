@@ -5,9 +5,9 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
+@testable import AdyenCard
 @testable import AdyenComponents
 @testable import AdyenDropIn
-@testable import AdyenCard
 #if canImport(AdyenCashAppPay)
     @testable import AdyenCashAppPay
 #endif

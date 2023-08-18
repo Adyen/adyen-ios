@@ -94,7 +94,10 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
             hideAlertLabel(false)
             highlightSeparatorView(color: item.style.errorColor)
             titleLabel.textColor = item.style.errorColor
-            accessibilityLabelView?.accessibilityLabel = item.validationFailureMessage
+            accessibilityLabelView?.accessibilityLabel = [
+                item.title,
+                item.validationFailureMessage
+            ].compactMap { $0 }.joined(separator: ", ")
         }
     }
     
