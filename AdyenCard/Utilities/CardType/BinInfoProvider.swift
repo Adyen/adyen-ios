@@ -79,7 +79,7 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
                 guard let self = self else { return }
                 switch result {
                 case let .success(publicKey):
-                    let service = BinLookupService(publicKey: publicKey, apiClient: self.apiClient, binLookupType: binLookupType)
+                    let service = BinLookupService(publicKey: publicKey, apiClient: self.apiClient, binLookupType: self.binLookupType)
                     self.binLookupService = service
                     useService(service)
                 case .failure:
