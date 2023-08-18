@@ -16,12 +16,7 @@ internal protocol AnyBinLookupService {
     
     typealias CompletionHandler = (Result<BinLookupResponse, Error>) -> Void
     
-    func requestCardType(
-        for bin: String,
-        lookupType: BinLookupRequestType,
-        supportedCardTypes: [CardType],
-        caller: @escaping CompletionHandler
-    )
+    func requestCardType(for bin: String, supportedCardTypes: [CardType], caller: @escaping CompletionHandler)
 }
 
 internal final class BinLookupService: AnyBinLookupService {
@@ -32,14 +27,16 @@ internal final class BinLookupService: AnyBinLookupService {
 
     private var cache = [String: BinLookupResponse]()
     
-    internal init(publicKey: String, apiClient: APIClientProtocol) {
+    private let binLookupType: BinLookupRequestType
+    
+    internal init(publicKey: String, apiClient: APIClientProtocol, binLookupType: BinLookupRequestType) {
         self.publicKey = publicKey
         self.apiClient = apiClient
+        self.binLookupType = binLookupType
     }
     
     internal func requestCardType(
         for bin: String,
-        lookupType: BinLookupRequestType,
         supportedCardTypes: [CardType],
         caller: @escaping CompletionHandler
     ) {
@@ -54,7 +51,7 @@ internal final class BinLookupService: AnyBinLookupService {
             return caller(.failure(error))
         }
         
-        let request = BinLookupRequest(encryptedBin: encryptedBin, supportedBrands: supportedCardTypes, type: lookupType)
+        let request = BinLookupRequest(encryptedBin: encryptedBin, supportedBrands: supportedCardTypes, type: binLookupType)
         apiClient.perform(request) { [weak self] result in
             _ = result.map { self?.cache[bin] = $0 }
             caller(result)

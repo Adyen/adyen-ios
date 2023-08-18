@@ -61,9 +61,8 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
             return fallback()
         }
 
-        let lookupType = binLookupType
         let useService: (AnyBinLookupService) -> Void = { service in
-            service.requestCardType(for: bin, lookupType: lookupType, supportedCardTypes: supportedTypes) { result in
+            service.requestCardType(for: bin, supportedCardTypes: supportedTypes) { result in
                 switch result {
                 case let .success(response):
                     completion(response)
@@ -80,7 +79,7 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
                 guard let self = self else { return }
                 switch result {
                 case let .success(publicKey):
-                    let service = BinLookupService(publicKey: publicKey, apiClient: self.apiClient)
+                    let service = BinLookupService(publicKey: publicKey, apiClient: self.apiClient, binLookupType: binLookupType)
                     self.binLookupService = service
                     useService(service)
                 case .failure:
