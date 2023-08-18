@@ -984,7 +984,7 @@ class CardComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
         
-        XCTAssertTrue(sut.cardViewController.items.numberContainerItem.shouldShowSupportedCardLogos)
+        XCTAssertTrue(sut.cardViewController.items.numberContainerItem.showsSupportedCardLogos)
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         wait(for: .milliseconds(30))
