@@ -36,17 +36,17 @@ open class FormValueItem<ValueType: Equatable, StyleType: FormValueItemStyle>: F
     }
 
     /// The publisher for value change updates.
-    public var publisher: AdyenObservable<ValueType>
+    public var publisher: Observable<ValueType>
 
     /// The style of  form item view.
     public var style: StyleType
 
     /// The title of the item.
-    @AdyenObservable(nil) public var title: String?
+    @Observable(nil) public var title: String?
 
     /// Create new instance of FormValueItem
     internal init(value: ValueType, style: StyleType) {
-        self.publisher = AdyenObservable(value)
+        self.publisher = Observable(value)
         self.style = style
         self.subitems = []
     }

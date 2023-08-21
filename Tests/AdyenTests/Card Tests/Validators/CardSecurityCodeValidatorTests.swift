@@ -11,7 +11,7 @@ import XCTest
 class CardSecurityCodeValidatorTests: XCTestCase {
     
     func testValidSecurityCodes() {
-        let observer = AdyenObservable<CardType?>(.masterCard)
+        let observer = Observable<CardType?>(.masterCard)
         let validator = CardSecurityCodeValidator(publisher: observer)
         
         XCTAssertTrue(validator.isValid("123"))

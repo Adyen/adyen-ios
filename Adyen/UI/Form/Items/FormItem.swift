@@ -10,7 +10,7 @@ import Foundation
 public protocol Hidable {
 
     /// :nodoc:
-    var isHidden: AdyenObservable<Bool> { get }
+    var isHidden: Observable<Bool> { get }
 }
 
 /// An item in a form.
