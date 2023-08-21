@@ -24,7 +24,7 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
             }
         }
 
-        observe(item.$isOptional) { [weak self] _ in
+        observe(item.$displayMode) { [weak self] _ in
             self?.updateValidationStatus()
         }
         
@@ -40,7 +40,11 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
     override internal func updateValidationStatus(forced: Bool = false) {
         super.updateValidationStatus(forced: forced)
 
-        if item.isOptional {
+        alpha = item.displayMode.isVisible ? 1.0 : 0.0
+        isUserInteractionEnabled = item.displayMode.isVisible
+        isAccessibilityElement = item.displayMode.isVisible
+        
+        if item.displayMode.isOptional {
             accessory = .customView(cardHintView)
         }
     }

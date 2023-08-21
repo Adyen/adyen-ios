@@ -64,10 +64,7 @@ extension CardComponent {
         /// By default list of supported cards is extracted from component's `AnyCardPaymentMethod`.
         /// Use this property to enforce a custom collection of card types.
         public var allowedCardTypes: [CardType]?
-
-        /// Indicates the card brands excluded from the supported brands.
-        internal var excludedCardTypes: Set<CardType> = [.bcmc]
-
+        
         /// Installments options to present to the user.
         public var installmentConfiguration: InstallmentConfiguration?
         
@@ -77,6 +74,12 @@ extension CardComponent {
         
         /// Indicates the requirement level of the address fields.
         public var billingAddressRequirementPolicy: RequirementPolicy = .required
+        
+        /// Indicates whether or not to show the supported card logos under the card number item
+        internal var showsSupportedCardLogos: Bool = true
+        
+        /// The type used for the bin lookup
+        internal var binLookupType: BinLookupRequestType = .card
         
         /// Indicates the requirement level of a field.
         public enum RequirementPolicy {
@@ -146,15 +149,13 @@ extension CardComponent {
         }
 
         internal func bcmcConfiguration() -> Configuration {
-            var storedCardConfiguration = stored
-            storedCardConfiguration.showsSecurityCodeField = false
             var configuration = Configuration(showsHolderNameField: showsHolderNameField,
                                               showsStorePaymentMethodField: showsStorePaymentMethodField,
-                                              showsSecurityCodeField: false,
                                               billingAddressMode: .none,
-                                              storedCardConfiguration: storedCardConfiguration,
-                                              allowedCardTypes: [.bcmc])
-            configuration.excludedCardTypes = []
+                                              storedCardConfiguration: stored,
+                                              allowedCardTypes: [.bcmc, .maestro, .visa])
+            configuration.showsSupportedCardLogos = false
+            configuration.binLookupType = .bcmc
             return configuration
         }
 
