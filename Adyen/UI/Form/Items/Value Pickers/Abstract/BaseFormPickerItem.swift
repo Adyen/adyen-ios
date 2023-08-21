@@ -47,12 +47,12 @@ open class BaseFormPickerItem<ElementType: CustomStringConvertible>: FormValueIt
     InputViewRequiringFormItem, Hidable {
 
     /// :nodoc:
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    public var isHidden: Observable<Bool> = Observable(false)
     
     /// The complete list of selectable values, as observable.
     /// Updating this notifies the observing view `BaseFormPickerItemView`
     /// and reloads the picker view.
-    @AdyenObservable([]) public var selectableValues: [BasePickerElement<ElementType>]
+    @Observable([]) public var selectableValues: [BasePickerElement<ElementType>]
 
     /// Initializes the picker item.
     ///

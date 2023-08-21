@@ -10,7 +10,7 @@ import Adyen
 internal final class FormCardExpiryDateItem: FormTextItem, Hidable {
     
     /// :nodoc:
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    public var isHidden: Observable<Bool> = Observable(false)
     
     /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
