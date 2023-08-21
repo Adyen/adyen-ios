@@ -34,3 +34,6 @@ func didFail(with error: Error, from component: PaymentComponent) {
 - Make `countryCode` non-optional for `Payment`.
 - Add assert check on `Payment` init to validate country code.
 - Move individual `ActionComponent` styles into one struct `ActionComponentStyle`, which is an instance variable in `DropInComponent.Style`.
+
+## 4.10.6
+- `Observable` has been renamed to `AdyenObservable` to avoid name collision with `@Observable` swift macro.
