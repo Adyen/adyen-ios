@@ -68,13 +68,8 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     internal func update(brands: [CardBrand]) {
         numberItem.update(brands: brands)
         
-        guard showsSupportedCardLogos else {
-            supportedCardLogosItem.isHidden.wrappedValue = false
-            return
-        }
-        
-        let containsSupportedBrand = brands.contains(where: \.isSupported)
-        supportedCardLogosItem.isHidden.wrappedValue = containsSupportedBrand
+        let shouldHideCardLogos = !showsSupportedCardLogos || brands.contains(where: \.isSupported)
+        supportedCardLogosItem.isHidden.wrappedValue = shouldHideCardLogos
     }
 }
 
