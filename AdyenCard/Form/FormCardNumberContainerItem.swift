@@ -68,8 +68,9 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
     internal func update(brands: [CardBrand]) {
         numberItem.update(brands: brands)
         
-        let shouldHideCardLogos = !showsSupportedCardLogos || brands.contains(where: \.isSupported)
-        supportedCardLogosItem.isHidden.wrappedValue = shouldHideCardLogos
+        if showsSupportedCardLogos {
+            supportedCardLogosItem.isHidden.wrappedValue = brands.contains(where: \.isSupported)
+        }
     }
 }
 
