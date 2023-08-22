@@ -41,14 +41,16 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func testDefaultConfigAllFieldsArePresent() {
-        let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.chinaUnionPay])
+        let brands: [CardType] = [.bcmc, .visa, .maestro]
+        let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context,
                                 configuration: CardComponent.Configuration())
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        XCTAssertEqual(sut.configuration.allowedCardTypes, [.bcmc, .visa, .maestro])
+        XCTAssertEqual(sut.configuration.allowedCardTypes, nil)
+        XCTAssertEqual(sut.supportedCardTypes, brands)
         wait(for: .milliseconds(300))
         
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
@@ -91,7 +93,8 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func testShowHolderNameField() {
-        let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.argencard])
+        let brands: [CardType] = [.argencard]
+        let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
@@ -100,7 +103,8 @@ class BCMCComponentTests: XCTestCase {
                                 configuration: configuration)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        XCTAssertEqual(sut.configuration.allowedCardTypes, [.bcmc, .visa, .maestro])
+        XCTAssertEqual(sut.configuration.allowedCardTypes, nil)
+        XCTAssertEqual(sut.supportedCardTypes, brands)
         
         wait(for: .milliseconds(300))
         
@@ -113,7 +117,8 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func testHideStorePaymentMethodField() {
-        let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.bcmc])
+        let brands: [CardType] = [.bcmc]
+        let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         var configuration = CardComponent.Configuration()
         configuration.showsStorePaymentMethodField = false
@@ -122,7 +127,9 @@ class BCMCComponentTests: XCTestCase {
                                 configuration: configuration)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        XCTAssertEqual(sut.configuration.allowedCardTypes, [.bcmc, .visa, .maestro])
+        XCTAssertEqual(sut.configuration.allowedCardTypes, nil)
+        XCTAssertEqual(sut.supportedCardTypes, brands)
+        
         wait(for: .milliseconds(300))
         
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
@@ -134,7 +141,8 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func testValidCardTypeDetection() {
-        let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.bcmc])
+        let brands: [CardType] = [.bcmc]
+        let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context)
@@ -149,8 +157,8 @@ class BCMCComponentTests: XCTestCase {
         self.populate(textItemView: textItemView!, with: Dummy.bancontactCard.number!)
         
         let cardNumberItem = cardNumberItemView!.item
-        XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 3)
-        XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.url, LogoURLProvider.logoURL(withName: "bcmc", environment: context.apiContext.environment))
+        XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 1)
+        XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.url, LogoURLProvider.logoURL(withName: brands.first!.rawValue, environment: context.apiContext.environment))
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem.cardTypeLogos"))
     }
     
@@ -230,7 +238,8 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func testDelegateCalledCorrectCard() {
-        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.americanExpress])
+        let brands: [CardType] = [.bcmc]
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context)
@@ -238,7 +247,7 @@ class BCMCComponentTests: XCTestCase {
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
         let expectationCardType = XCTestExpectation(description: "CardType Expectation")
-        let mockedBrands = [CardBrand(type: .bcmc, cvcPolicy: .optional), CardBrand(type: .maestro, cvcPolicy: .optional)]
+        let mockedBrands = [CardBrand(type: .bcmc, cvcPolicy: .optional)]
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { _ in },
                                                      onCardBrandChange: { value in
                                                          XCTAssertEqual(value, mockedBrands)
