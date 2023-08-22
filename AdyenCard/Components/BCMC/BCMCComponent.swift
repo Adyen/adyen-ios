@@ -56,8 +56,7 @@ private extension CardComponent.Configuration {
             style: style,
             showsHolderNameField: showsHolderNameField,
             showsStorePaymentMethodField: showsStorePaymentMethodField,
-            storedCardConfiguration: stored,
-            allowedCardTypes: [.bcmc, .visa, .maestro]
+            storedCardConfiguration: stored
         )
         configuration.showsSupportedCardLogos = false
         configuration.binLookupType = .bcmc
