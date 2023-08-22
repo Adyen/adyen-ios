@@ -152,8 +152,7 @@ extension CardComponent {
             var configuration = Configuration(showsHolderNameField: showsHolderNameField,
                                               showsStorePaymentMethodField: showsStorePaymentMethodField,
                                               billingAddressMode: .none,
-                                              storedCardConfiguration: stored,
-                                              allowedCardTypes: [.bcmc, .visa, .maestro])
+                                              storedCardConfiguration: stored)
             configuration.showsSupportedCardLogos = false
             configuration.binLookupType = .bcmc
             return configuration

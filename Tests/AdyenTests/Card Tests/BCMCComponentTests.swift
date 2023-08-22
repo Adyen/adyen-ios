@@ -39,7 +39,7 @@ class BCMCComponentTests: XCTestCase {
                                 apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        XCTAssertEqual(sut.configuration.allowedCardTypes, [.bcmc, .visa, .maestro])
+        XCTAssertEqual(sut.configuration.allowedCardTypes, nil)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
@@ -75,7 +75,7 @@ class BCMCComponentTests: XCTestCase {
         
         fillCard(on: sut.viewController.view, with: Dummy.bancontactCard)
 
-        var binResponse = BinLookupResponse(brands: [CardBrand(type: .bcmc, isSupported: true)])
+        let binResponse = BinLookupResponse(brands: [CardBrand(type: .bcmc, isSupported: true)])
         sut.cardViewController.update(binInfo: binResponse)
 
         wait(for: .milliseconds(30))
@@ -94,7 +94,7 @@ class BCMCComponentTests: XCTestCase {
                                 apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         
-        XCTAssertEqual(sut.configuration.allowedCardTypes, [.bcmc, .visa, .maestro])
+        XCTAssertEqual(sut.configuration.allowedCardTypes, nil)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
@@ -117,8 +117,8 @@ class BCMCComponentTests: XCTestCase {
                                 configuration: configuration,
                                 apiContext: Dummy.context)
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
-        XCTAssertEqual(sut.configuration.allowedCardTypes, [.bcmc, .visa, .maestro])
+        XCTAssertEqual(sut.supportedCardTypes, [CardType(rawValue: "any_test_brand_name")])
+        XCTAssertEqual(sut.configuration.allowedCardTypes, nil)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
@@ -133,11 +133,16 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func testValidCardTypeDetection() {
-        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
+        let brands = ["bcmc", "visa", "maestro"]
+        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context)
+        
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        
+        XCTAssertEqual(sut.configuration.allowedCardTypes, nil)
+        XCTAssertEqual(sut.supportedCardTypes, brands.map { .init(rawValue: $0) })
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
@@ -148,8 +153,8 @@ class BCMCComponentTests: XCTestCase {
             self.populate(textItemView: textItemView!, with: Dummy.bancontactCard.number!)
             
             let cardNumberItem = cardNumberItemView!.item
-            XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 3)
-            XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.url, LogoURLProvider.logoURL(withName: "bcmc", environment: sut.apiContext.environment))
+            XCTAssertEqual(cardNumberItem.cardTypeLogos.count, brands.count)
+            XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.url, LogoURLProvider.logoURL(withName: brands.first!, environment: sut.apiContext.environment))
             XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem.cardTypeLogos"))
             
             expectation.fulfill()
@@ -180,7 +185,8 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func testSubmitValidPaymentData() {
-        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["any_test_brand_name"])
+        let brands = ["bcmc", "visa", "maestro"]
+        let cardPaymentMethod = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context)
@@ -215,9 +221,7 @@ class BCMCComponentTests: XCTestCase {
         let binChangeCalled = expectation(description: "onBINDidChange was called")
         
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { _ in },
-                                                     onCardBrandChange: { value in
-            binChangeCalled.fulfill()
-        },
+                                                     onCardBrandChange: { value in binChangeCalled.fulfill() },
                                                      onSubmitLastFour: { _ in })
         sut.cardComponentDelegate = delegateMock
         
@@ -287,7 +291,8 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func testDelegateCalledCorrectCard() {
-        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .debit, brands: ["any_test_brand_name"])
+        let brands = ["bcmc", "visa", "maestro"]
+        let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 apiContext: Dummy.context)
