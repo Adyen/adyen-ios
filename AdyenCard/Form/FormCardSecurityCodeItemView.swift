@@ -42,7 +42,6 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         
         alpha = item.displayMode.isVisible ? 1.0 : 0.0
         isUserInteractionEnabled = item.displayMode.isVisible
-        isAccessibilityElement = item.displayMode.isVisible
         
         switch item.displayMode {
         case .optional:
