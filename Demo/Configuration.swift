@@ -8,6 +8,7 @@
 import AdyenActions
 import AdyenCard
 import AdyenDropIn
+import AdyenComponents
 import Foundation
 import PassKit
 
@@ -47,8 +48,6 @@ internal enum ConfigurationConstants {
     static let clientKey = "{YOUR_CLIENT_KEY}"
 
     static let demoServerAPIKey = "{YOUR_DEMO_SERVER_API_KEY}"
-
-    static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
 
     static let merchantAccount = "{YOUR_MERCHANT_ACCOUNT}"
 
@@ -110,6 +109,11 @@ internal struct DropInConfiguration: Codable {
     internal var allowPreselectedPaymentView: Bool = true
 }
 
+internal struct ApplePayConfiguration: Codable {
+    internal var merchantIdentifier: String
+    internal var allowOnboarding: Bool = false
+}
+
 internal struct DemoAppSettings: Codable {
     private static let defaultsKey = "ConfigurationKey"
     
@@ -120,6 +124,7 @@ internal struct DemoAppSettings: Codable {
     internal let merchantAccount: String
     internal let cardComponentConfiguration: CardComponentConfiguration
     internal let dropInConfiguration: DropInConfiguration
+    internal let applePayConfiguration: ApplePayConfiguration
 
     internal var amount: Amount { Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil) }
     internal var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
@@ -131,7 +136,8 @@ internal struct DemoAppSettings: Codable {
         apiVersion: 70,
         merchantAccount: ConfigurationConstants.merchantAccount,
         cardComponentConfiguration: defaultCardComponentConfiguration,
-        dropInConfiguration: defaultDropInConfiguration
+        dropInConfiguration: defaultDropInConfiguration,
+        applePayConfiguration: defaultApplePayConfiguration
     )
 
     internal static let defaultCardComponentConfiguration = CardComponentConfiguration(showsHolderNameField: false,
@@ -145,6 +151,8 @@ internal struct DemoAppSettings: Codable {
     internal static let defaultDropInConfiguration = DropInConfiguration(allowDisablingStoredPaymentMethods: false,
                                                                          allowsSkippingPaymentList: false,
                                                                          allowPreselectedPaymentView: true)
+
+    internal static let defaultApplePayConfiguration = ApplePayConfiguration(merchantIdentifier: "", allowOnboarding: false)
     
     fileprivate static func loadConfiguration() -> DemoAppSettings {
         var config = UserDefaults.standard.data(forKey: defaultsKey)
@@ -207,6 +215,22 @@ internal struct DemoAppSettings: Codable {
 
         return dropInConfig
     }
+
+    internal var applePaySettings: ApplePayComponent.Configuration? {
+        do {
+            let applePayPayment = try ApplePayPayment(payment: ConfigurationConstants.current.payment,
+                                                      brand: ConfigurationConstants.appName)
+            var config = ApplePayComponent.Configuration(payment: applePayPayment,
+                                                         merchantIdentifier:
+                                                            ConfigurationConstants.current.applePayConfiguration.merchantIdentifier)
+            config.allowOnboarding = applePayConfiguration.allowOnboarding
+            return config
+        } catch let error {
+            AdyenAssertion.assertionFailure(message: error.localizedDescription)
+        }
+        return nil
+    }
+
 }
 
 private extension DemoAppSettings {
