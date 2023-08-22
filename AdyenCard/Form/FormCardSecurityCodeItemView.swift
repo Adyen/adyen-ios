@@ -44,8 +44,11 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         isUserInteractionEnabled = item.displayMode.isVisible
         isAccessibilityElement = item.displayMode.isVisible
         
-        if item.displayMode.isOptional {
+        switch item.displayMode {
+        case .optional:
             accessory = .customView(cardHintView)
+        case .hidden, .required:
+            break
         }
     }
     

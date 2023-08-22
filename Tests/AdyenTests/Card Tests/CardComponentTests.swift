@@ -2486,7 +2486,7 @@ extension UIView {
 extension CardComponentTests {
     
     func fillCard(on view: UIView, with card: Card) {
-        let cardNumberItemView: FormCardNumberItemView? = view.findView(with: "AdyenCard.CardComponent.numberContainerItem.numberItem")
+        let cardNumberItemView: FormCardNumberItemView? = view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
         

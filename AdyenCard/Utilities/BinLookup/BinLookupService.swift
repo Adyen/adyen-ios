@@ -18,7 +18,7 @@ internal protocol AnyBinLookupService {
     typealias CompletionHandler = (Result<BinLookupResponse, Error>) -> Void
     
     /// :nodoc:
-    func requestCardType(for bin: String, supportedCardTypes: [CardType], caller: @escaping CompletionHandler)
+    func requestCardType(for bin: String, supportedCardTypes: [CardType], completion: @escaping CompletionHandler)
 }
 
 internal final class BinLookupService: AnyBinLookupService {
@@ -37,22 +37,22 @@ internal final class BinLookupService: AnyBinLookupService {
         self.binLookupType = binLookupType
     }
     
-    internal func requestCardType(for bin: String, supportedCardTypes: [CardType], caller: @escaping CompletionHandler) {
+    internal func requestCardType(for bin: String, supportedCardTypes: [CardType], completion: @escaping CompletionHandler) {
         if let cached = cache[bin] {
-            return caller(.success(cached))
+            return completion(.success(cached))
         }
 
         let encryptedBin: String
         do {
             encryptedBin = try CardEncryptor.encrypt(bin: bin, with: publicKey)
         } catch {
-            return caller(.failure(error))
+            return completion(.failure(error))
         }
         
         let request = BinLookupRequest(encryptedBin: encryptedBin, supportedBrands: supportedCardTypes, type: binLookupType)
         apiClient.perform(request) { [weak self] result in
             _ = result.map { self?.cache[bin] = $0 }
-            caller(result)
+            completion(result)
         }
     }
 }

@@ -20,13 +20,6 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
             case .hidden: return false
             }
         }
-
-        internal var isOptional: Bool {
-            switch self {
-            case .optional: return true
-            case .hidden, .required: return false
-            }
-        }
     }
     
     /// :nodoc:
