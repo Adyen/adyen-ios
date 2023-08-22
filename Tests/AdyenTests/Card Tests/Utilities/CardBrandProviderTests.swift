@@ -18,7 +18,8 @@ class CardBrandProviderTests: XCTestCase {
         apiClientMock = APIClientMock()
         sut = BinInfoProvider(apiClient: apiClientMock,
                               publicKeyProvider: publicKeyProvider,
-                              minBinLength: 11)
+                              minBinLength: 11,
+                              binLookupType: .card)
     }
 
     override func tearDown() {

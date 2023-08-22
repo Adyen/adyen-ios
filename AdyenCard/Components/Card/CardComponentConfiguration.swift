@@ -153,7 +153,7 @@ extension CardComponent {
                                               showsStorePaymentMethodField: showsStorePaymentMethodField,
                                               billingAddressMode: .none,
                                               storedCardConfiguration: stored,
-                                              allowedCardTypes: [.bcmc, .maestro, .visa])
+                                              allowedCardTypes: [.bcmc, .visa, .maestro])
             configuration.showsSupportedCardLogos = false
             configuration.binLookupType = .bcmc
             return configuration
