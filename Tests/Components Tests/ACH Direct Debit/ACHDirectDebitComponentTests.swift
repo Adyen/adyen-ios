@@ -101,7 +101,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                                                billingAddressCountryCodes: ["US", "UK"]),
                                           publicKeyProvider: PublicKeyProviderMock())
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem")
         let nameItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem.titleLabel")
@@ -166,7 +166,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
 
         // Then
         let view: UIView = sut.viewController.view
@@ -185,7 +185,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, method.name.uppercased())
@@ -209,7 +209,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         XCTAssertFalse(sut.payButton.showsActivityIndicator)
         sut.payButton.showsActivityIndicator = true
@@ -223,7 +223,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           context: context,
                                           publicKeyProvider: PublicKeyProviderMock())
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.payButtonItem.button")
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem")
@@ -259,7 +259,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
             expectation.fulfill()
         }
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.payButtonItem.button")
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem")

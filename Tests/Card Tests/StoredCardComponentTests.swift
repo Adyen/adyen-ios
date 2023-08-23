@@ -30,7 +30,7 @@ class StoredCardComponentTests: XCTestCase {
     func testUIWithClientKey() throws {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
-        try presentOnRoot(sut.viewController)
+        presentOnRoot(sut.viewController)
         
         let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
         let textField: UITextField? = alertController.textFields?.first
@@ -46,7 +46,7 @@ class StoredCardComponentTests: XCTestCase {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
         PublicKeyProvider.publicKeysCache[Dummy.apiContext.clientKey] = Dummy.publicKey
 
-        try presentOnRoot(sut.viewController)
+        presentOnRoot(sut.viewController)
 
         let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
         let textField: UITextField? = alertController.textFields?.first
@@ -88,7 +88,7 @@ class StoredCardComponentTests: XCTestCase {
         }
         sut.storedCardAlertManager.publicKeyProvider = publicKeyProvider
 
-        try presentOnRoot(sut.viewController)
+        presentOnRoot(sut.viewController)
         
         let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
         let textField: UITextField? = alertController.textFields?.first
@@ -132,7 +132,7 @@ class StoredCardComponentTests: XCTestCase {
         }
         sut.storedCardAlertManager.publicKeyProvider = publicKeyProvider
 
-        try presentOnRoot(sut.viewController)
+        presentOnRoot(sut.viewController)
         
         let alertController = sut.viewController as! UIAlertController
         let textField: UITextField! = alertController.textFields!.first
@@ -162,7 +162,7 @@ class StoredCardComponentTests: XCTestCase {
                                              holderName: "holderName")
         let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
-        try presentOnRoot(sut.viewController)
+        presentOnRoot(sut.viewController)
         
         let alertController = sut.viewController as! UIAlertController
         let textField: UITextField! = alertController.textFields!.first
@@ -200,7 +200,7 @@ class StoredCardComponentTests: XCTestCase {
     func testCVCLimitForNonAMEX() throws {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
-        try presentOnRoot(sut.viewController)
+        presentOnRoot(sut.viewController)
         
         let alertController = sut.viewController as! UIAlertController
         let textField: UITextField! = alertController.textFields!.first
@@ -231,7 +231,7 @@ class StoredCardComponentTests: XCTestCase {
     func testCVCLimitForUnknownCardType() throws {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
-        try presentOnRoot(sut.viewController)
+        presentOnRoot(sut.viewController)
         
         let alertController = sut.viewController as! UIAlertController
         let textField: UITextField! = alertController.textFields!.first

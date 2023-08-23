@@ -131,7 +131,7 @@ class CardComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let cardNumberItemView: FormTextItemView<FormCardNumberItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
         let cardNumberItemTitleLabel: UILabel = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.titleLabel"))
@@ -227,7 +227,7 @@ class CardComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.CardComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, method.name)
@@ -254,7 +254,7 @@ class CardComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let securityCodeView: FormCardSecurityCodeItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
 
@@ -267,7 +267,7 @@ class CardComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         let securityCodeCvvHint: FormCardSecurityCodeItemView.HintView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.cvvHintIcon")
@@ -362,7 +362,7 @@ class CardComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
         let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
@@ -394,7 +394,7 @@ class CardComponentTests: XCTestCase {
             configuration: configuration
         )
 
-        try setupRootViewController(component.viewController)
+        setupRootViewController(component.viewController)
 
         let switchView: UISwitch! = component.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
@@ -424,7 +424,7 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration)
 
         // When
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
 
         // Then
         let view: UIView = sut.viewController.view
@@ -589,7 +589,7 @@ class CardComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
 
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(cardNumberItemView)
@@ -616,7 +616,7 @@ class CardComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
 
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(cardNumberItemView)
@@ -698,7 +698,7 @@ class CardComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
 
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
@@ -756,7 +756,7 @@ class CardComponentTests: XCTestCase {
 
         let viewController = component.viewController
         
-        try setupRootViewController(viewController)
+        setupRootViewController(viewController)
         
         let view: UIView = viewController.view
         let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.expiryDateItem"))
@@ -783,7 +783,7 @@ class CardComponentTests: XCTestCase {
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: BinInfoProviderMock())
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
 
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -835,7 +835,7 @@ class CardComponentTests: XCTestCase {
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -893,7 +893,7 @@ class CardComponentTests: XCTestCase {
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -972,7 +972,7 @@ class CardComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let brands = [CardBrand(type: .visa, isLuhnCheckEnabled: true),
                       CardBrand(type: .masterCard, isLuhnCheckEnabled: false)]
@@ -1055,7 +1055,7 @@ class CardComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let brands = [CardBrand(type: .visa, expiryDatePolicy: .required),
                       CardBrand(type: .americanExpress, expiryDatePolicy: .optional),
@@ -1102,7 +1102,7 @@ class CardComponentTests: XCTestCase {
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
         XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
@@ -1143,7 +1143,7 @@ class CardComponentTests: XCTestCase {
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
         XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
@@ -1178,7 +1178,7 @@ class CardComponentTests: XCTestCase {
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
         XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
@@ -1221,7 +1221,7 @@ class CardComponentTests: XCTestCase {
             configuration: configuration
         )
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
 
         let numberItem = sut.cardViewController.items.numberContainerItem.numberItem
         
@@ -1258,11 +1258,11 @@ class CardComponentTests: XCTestCase {
         sut.cardViewController.items.postalCodeItem.value = "1501 NH"
 
         // show view controller
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         // When
         // hide view controller
-        try setupRootViewController(UIViewController())
+        setupRootViewController(UIViewController())
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.postalCodeItem.value.isEmpty)
@@ -1277,11 +1277,11 @@ class CardComponentTests: XCTestCase {
         sut.cardViewController.items.numberContainerItem.numberItem.value = "4111 1111 1111 1111"
         
         // show view controller
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         // When
         // hide view controller
-        try setupRootViewController(UIViewController())
+        setupRootViewController(UIViewController())
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.numberContainerItem.numberItem.value.isEmpty)
@@ -1296,11 +1296,11 @@ class CardComponentTests: XCTestCase {
         sut.cardViewController.items.expiryDateItem.value = "03/24"
 
         // show view controller
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         // When
         // hide view controller
-        try setupRootViewController(UIViewController())
+        setupRootViewController(UIViewController())
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.expiryDateItem.value.isEmpty)
@@ -1315,11 +1315,11 @@ class CardComponentTests: XCTestCase {
         sut.cardViewController.items.securityCodeItem.value = "935"
 
         // show view controller
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         // When
         // hide view controller
-        try setupRootViewController(UIViewController())
+        setupRootViewController(UIViewController())
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.securityCodeItem.value.isEmpty)
@@ -1335,11 +1335,11 @@ class CardComponentTests: XCTestCase {
         sut.cardViewController.items.holderNameItem.value = "Katrina del Mar"
 
         // show view controller
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         // When
         // hide view controller
-        try setupRootViewController(UIViewController())
+        setupRootViewController(UIViewController())
 
         // Then
         XCTAssertTrue(sut.cardViewController.items.holderNameItem.value.isEmpty)
@@ -1354,11 +1354,11 @@ class CardComponentTests: XCTestCase {
         sut.cardViewController.items.storeDetailsItem.value = true
 
         // show view controller
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         // When
         // hide view controller
-        try setupRootViewController(UIViewController())
+        setupRootViewController(UIViewController())
 
         // Then
         XCTAssertFalse(sut.cardViewController.items.storeDetailsItem.value)
@@ -1381,7 +1381,7 @@ class CardComponentTests: XCTestCase {
 
         // When
         
-        try setupRootViewController(component.cardViewController)
+        setupRootViewController(component.cardViewController)
 
         // Then
         let view: UIView = component.cardViewController.view
@@ -1413,7 +1413,7 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration)
 
         // When
-        try setupRootViewController(sut.cardViewController)
+        setupRootViewController(sut.cardViewController)
 
         // Then
         let view: UIView = sut.cardViewController.view
@@ -1445,7 +1445,7 @@ class CardComponentTests: XCTestCase {
                                          configuration: configuration)
 
         // When
-        try setupRootViewController(prefilledSut.cardViewController)
+        setupRootViewController(prefilledSut.cardViewController)
 
         // Then
         let view: UIView = prefilledSut.cardViewController.view
@@ -1476,7 +1476,7 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration)
 
         // When
-        try setupRootViewController(sut.cardViewController)
+        setupRootViewController(sut.cardViewController)
 
         // Then
         let view: UIView = sut.cardViewController.view
@@ -1504,7 +1504,7 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration)
 
         // When
-        try setupRootViewController(sut.cardViewController)
+        setupRootViewController(sut.cardViewController)
 
         // Then
         let view: UIView = sut.cardViewController.view
@@ -1533,7 +1533,7 @@ class CardComponentTests: XCTestCase {
             configuration: configuration
         )
         
-        try setupRootViewController(component.viewController)
+        setupRootViewController(component.viewController)
         let view: UIView = component.cardViewController.view
         
         // Then
@@ -1637,7 +1637,7 @@ class CardComponentTests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let view: UIView = sut.cardViewController.view
         
@@ -1937,7 +1937,7 @@ class CardComponentTests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         let view: UIView = sut.cardViewController.view
 
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
@@ -1989,7 +1989,7 @@ class CardComponentTests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         let view: UIView = sut.cardViewController.view
 
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))

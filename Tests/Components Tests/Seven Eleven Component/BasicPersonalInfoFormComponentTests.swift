@@ -91,7 +91,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
                                        context: Dummy.context,
                                        configuration: config)
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         /// Test firstName field
         try assertTextInputUI(ViewIdentifier.firstName,
@@ -182,7 +182,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
         }
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let submitButton: UIControl? = sut.viewController.view.findView(with: ViewIdentifier.payButton)
 
@@ -208,7 +208,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
                                        context: Dummy.context,
                                        configuration: BasicPersonalInfoFormComponent.Configuration())
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.BasicPersonalInfoFormComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
@@ -229,7 +229,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
                                               context: Dummy.context,
                                               configuration: config)
 
-        try setupRootViewController(prefillSut.viewController)
+        setupRootViewController(prefillSut.viewController)
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -261,7 +261,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
                                        context: Dummy.context,
                                        configuration: BasicPersonalInfoFormComponent.Configuration())
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
 
         // Then
         let view: UIView = sut.viewController.view

@@ -110,7 +110,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
                                            context: context,
                                            configuration: configuration)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
         let nameItemViewTitleLabel: UILabel = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.titleLabel"))

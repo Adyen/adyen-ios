@@ -95,7 +95,7 @@ class AtomeComponentUITests: XCTestCase {
             didSubmitExpectation.fulfill()
         }
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         let view: UIView = sut.viewController.view
         
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.payButton))

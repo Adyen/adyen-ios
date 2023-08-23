@@ -27,7 +27,7 @@ class BoletoComponentTests: XCTestCase {
         )
         
         let viewController = component.viewController
-        try setupRootViewController(viewController)
+        setupRootViewController(viewController)
         
         let firstNameField: UITextField? = viewController.view.findView(by: "firstNameItem.textField") as? UITextField
         let lastNameField: UITextField? = viewController.view.findView(by: "lastNameItem.textField") as? UITextField
@@ -154,7 +154,7 @@ class BoletoComponentTests: XCTestCase {
         
         let viewController = component.viewController
         
-        try setupRootViewController(viewController)
+        setupRootViewController(viewController)
         
         let emailSwitchItem: FormToggleItemView = viewController.view.findView(by: "sendCopyToEmailItem") as! FormToggleItemView
         let emailSwitch: UISwitch = emailSwitchItem.findView(by: "sendCopyToEmailItem.switch") as! UISwitch

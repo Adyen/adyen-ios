@@ -33,7 +33,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         // When
         
         let addressLookupViewController = AddressLookupViewController(viewModel: viewModel)
-        try setupRootViewController(addressLookupViewController)
+        setupRootViewController(addressLookupViewController)
         
         // Then
         
@@ -98,7 +98,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         // Then
         
         let addressLookupViewController = AddressLookupViewController(viewModel: viewModel)
-        try setupRootViewController(addressLookupViewController)
+        setupRootViewController(addressLookupViewController)
         
         addressLookupViewController.viewModel.handleSwitchToManualEntryTapped()
         XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: nil))

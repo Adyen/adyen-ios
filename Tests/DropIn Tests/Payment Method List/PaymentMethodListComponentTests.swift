@@ -55,7 +55,7 @@ class PaymentMethodListComponentTests: XCTestCase {
         let section = ComponentsSection(components: [storedComponent])
         let sut = PaymentMethodListComponent(context: Dummy.context, components: [section])
 
-        try setupRootViewController(sut.listViewController)
+        setupRootViewController(sut.listViewController)
         
         let cell = sut.listViewController.tableView.visibleCells[0] as! ListCell
         XCTAssertFalse(cell.showsActivityIndicator)
@@ -72,7 +72,7 @@ class PaymentMethodListComponentTests: XCTestCase {
                                         components: [storedComponent], footer: nil)
         let sut = PaymentMethodListComponent(context: Dummy.context, components: [section, ComponentsSection(components: [regularComponent])])
 
-        try setupRootViewController(sut.listViewController)
+        setupRootViewController(sut.listViewController)
         
         let sectionHeader = try XCTUnwrap(sut.listViewController.tableView.headerView(forSection: 0) as? ListHeaderView)
         sectionHeader.trailingButton.sendActions(for: .touchUpInside)
@@ -111,7 +111,7 @@ class PaymentMethodListComponentTests: XCTestCase {
                                         components: [storedComponent], footer: nil)
         let sut = PaymentMethodListComponent(context: Dummy.context, components: [section, ComponentsSection(components: [regularComponent])])
 
-        try setupRootViewController(sut.listViewController)
+        setupRootViewController(sut.listViewController)
         
         let sectionHeader = try XCTUnwrap(sut.listViewController.tableView.headerView(forSection: 0) as? ListHeaderView)
         sectionHeader.trailingButton.sendActions(for: .touchUpInside)

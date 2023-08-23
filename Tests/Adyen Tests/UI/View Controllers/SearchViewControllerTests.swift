@@ -132,7 +132,7 @@ class SearchViewControllerTests: XCTestCase {
         )
         
         // Allow setup in viewDidLoad
-        try setupRootViewController(searchViewController)
+        setupRootViewController(searchViewController)
         
         searchViewController.searchBar.delegate?.searchBar?(
             searchViewController.searchBar,
@@ -162,7 +162,7 @@ class SearchViewControllerTests: XCTestCase {
         )
         
         // Allow setup in viewDidLoad
-        try setupRootViewController(searchViewController)
+        setupRootViewController(searchViewController)
         
         // When
         viewModel.interfaceState = .empty(searchTerm: testSearchTerm)
@@ -189,7 +189,7 @@ class SearchViewControllerTests: XCTestCase {
         )
         
         // Allow setup in viewDidLoad
-        try setupRootViewController(searchViewController)
+        setupRootViewController(searchViewController)
         
         // When
         viewModel.interfaceState = .loading
@@ -217,7 +217,7 @@ class SearchViewControllerTests: XCTestCase {
         )
         
         // Allow setup in viewDidLoad
-        try setupRootViewController(searchViewController)
+        setupRootViewController(searchViewController)
         
         // When
         viewModel.interfaceState = .showingResults(results: resultItems)

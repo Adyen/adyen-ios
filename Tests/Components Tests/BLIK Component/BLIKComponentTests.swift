@@ -65,7 +65,7 @@ class BLIKComponentTests: XCTestCase {
  
     func testVCTitle() throws {
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         XCTAssertEqual(sut.viewController.title, method.name.uppercased())
     }
 

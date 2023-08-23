@@ -61,7 +61,7 @@ class PreApplePayComponentTests: XCTestCase {
         let viewController = UIViewController()
         viewController.view = view
 
-        try setupRootViewController(viewController)
+        setupRootViewController(viewController)
         
         let hintLabel: UILabel? = viewController.view.findView(by: "hintLabel")
         XCTAssertEqual(hintLabel?.text, model.hint)
@@ -90,7 +90,7 @@ class PreApplePayComponentTests: XCTestCase {
         presentationMock.doDismiss = { completion in completion?() }
         sut.presentationDelegate = presentationMock
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let applePayButton = try XCTUnwrap(self.sut.viewController.view.findView(by: "applePayButton") as? PKPaymentButton)
         applePayButton.sendActions(for: .touchUpInside)
@@ -115,7 +115,7 @@ class PreApplePayComponentTests: XCTestCase {
     
     func testHintLabelAmount() throws {
         
-        try presentOnRoot(sut.viewController)
+        presentOnRoot(sut.viewController)
         
         let hintLabel = self.sut.viewController.view.findView(by: "hintLabel") as? UILabel
         

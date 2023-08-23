@@ -28,7 +28,7 @@ class ModalViewControllerTests: XCTestCase {
             navBarType: .regular
         )
         
-        try setupRootViewController(sut)
+        setupRootViewController(sut)
         
         XCTAssertEqual(sut.separator.backgroundColor, .red)
         XCTAssertEqual(sut.view.backgroundColor, .brown)

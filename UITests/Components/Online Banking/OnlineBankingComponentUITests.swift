@@ -62,7 +62,7 @@ class OnlineBankingComponentUITests: XCTestCase {
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
-    func testPressContinueButton() {
+    func testPressContinueButton() throws {
         // Given
         let config = OnlineBankingComponent.Configuration(style: style)
         let sut = OnlineBankingComponent(paymentMethod: paymentMethod,
@@ -71,8 +71,10 @@ class OnlineBankingComponentUITests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
+        setupRootViewController(sut.viewController)
+        
         // Then
-        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
+        let button: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button"))
         button.sendActions(for: .touchUpInside)
 
         let didContnueExpectation = XCTestExpectation(description: "Dummy Expectation")
@@ -99,9 +101,9 @@ class OnlineBankingComponentUITests: XCTestCase {
                                          context: context,
                                          configuration: config)
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
        
-        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
+        let button: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button"))
 
         // start loading
         button.showsActivityIndicator = true

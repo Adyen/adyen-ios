@@ -84,7 +84,7 @@ class StoredCardAlertManagerTests: XCTestCase {
         let alertController = sut.alertController
         let textField = alertController.textFields!.first!
         
-        try presentOnRoot(alertController)
+        presentOnRoot(alertController)
         
         let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters) }!
         let cancelAction = alertController.actions.first { $0.title == localizedString(.cancelButton, sut.localizationParameters) }!

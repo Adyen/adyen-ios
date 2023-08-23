@@ -58,7 +58,7 @@ class ApplePayComponentTest: XCTestCase {
 
         let authorizationViewController = try XCTUnwrap(sut?.viewController as? PKPaymentAuthorizationViewController)
         
-        try presentOnRoot(authorizationViewController)
+        presentOnRoot(authorizationViewController)
         
         self.sut.paymentAuthorizationViewControllerDidFinish(authorizationViewController)
 
@@ -74,7 +74,7 @@ class ApplePayComponentTest: XCTestCase {
 
         let authorizationViewController = try XCTUnwrap(sut?.viewController as? PKPaymentAuthorizationViewController)
         
-        try presentOnRoot(viewController)
+        presentOnRoot(viewController)
 
         sut.finalizeIfNeeded(with: true) {
             onDidFinalizeExpectation.fulfill()

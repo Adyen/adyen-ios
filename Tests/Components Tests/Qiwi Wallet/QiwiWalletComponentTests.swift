@@ -89,7 +89,7 @@ class QiwiWalletComponentTests: XCTestCase {
         let config = QiwiWalletComponent.Configuration(style: style)
         let sut = QiwiWalletComponent(paymentMethod: method, context: context, configuration: config)
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem")
         let phoneNumberViewTitleLabel: UILabel = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem.titleLabel"))
@@ -129,7 +129,7 @@ class QiwiWalletComponentTests: XCTestCase {
     func testBigTitle() throws {
         let sut = QiwiWalletComponent(paymentMethod: method, context: context, configuration: QiwiWalletComponent.Configuration())
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.CardComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, self.method.name)
@@ -162,7 +162,7 @@ class QiwiWalletComponentTests: XCTestCase {
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
         }
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem")
 

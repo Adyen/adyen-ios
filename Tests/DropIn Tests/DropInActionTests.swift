@@ -34,7 +34,7 @@ class DropInActionsTests: XCTestCase {
                               context: context,
                               configuration: config)
     
-        try presentOnRoot(sut.viewController, animated: true, completion: {
+        presentOnRoot(sut.viewController, animated: true, completion: {
             let action = Action.redirect(RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data"))
             self.sut.handle(action)
         })
@@ -58,7 +58,7 @@ class DropInActionsTests: XCTestCase {
             waitExpectation.fulfill()
         }
         
-        try presentOnRoot(sut.viewController, animated: true) {
+        presentOnRoot(sut.viewController, animated: true) {
             self.sut.didOpenExternalApplication(component: RedirectComponent(context: Dummy.context))
         }
 

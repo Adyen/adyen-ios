@@ -358,7 +358,7 @@ class SessionTests: XCTestCase {
                                               context: context,
                                               title: nil)
         
-        try setupRootViewController(dropInComponent.viewController)
+        setupRootViewController(dropInComponent.viewController)
         
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
         let paymentMethod = expectedPaymentMethods.regular.last as! MBWayPaymentMethod
@@ -1001,7 +1001,7 @@ class SessionTests: XCTestCase {
         let cardComponent = CardComponent(paymentMethod: paymentMethod, context: context)
         cardComponent.delegate = sut
         
-        try setupRootViewController(cardComponent.viewController)
+        setupRootViewController(cardComponent.viewController)
         
         XCTAssertNotNil(cardComponent.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem"))
         XCTAssertTrue(cardComponent.configuration.showsStorePaymentMethodField)
@@ -1017,7 +1017,7 @@ class SessionTests: XCTestCase {
         let cardComponent = CardComponent(paymentMethod: paymentMethod, context: context)
         cardComponent.delegate = sut
         
-        try setupRootViewController(cardComponent.viewController)
+        setupRootViewController(cardComponent.viewController)
         
         XCTAssertNil(cardComponent.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem"))
         XCTAssertFalse(cardComponent.configuration.showsStorePaymentMethodField)

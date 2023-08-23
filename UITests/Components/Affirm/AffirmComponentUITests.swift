@@ -48,7 +48,7 @@ class AffirmComponentUITests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
 
         // Then
         let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
@@ -83,7 +83,7 @@ class AffirmComponentUITests: XCTestCase {
                                          context: context,
                                          configuration: config)
         
-        try setupRootViewController(prefillSut.viewController)
+        setupRootViewController(prefillSut.viewController)
 
         // Then
 
@@ -124,7 +124,7 @@ class AffirmComponentUITests: XCTestCase {
                                          context: Dummy.context(with: nil),
                                          configuration: config)
         
-        try setupRootViewController(prefillSut.viewController)
+        setupRootViewController(prefillSut.viewController)
 
         // Then
         let expectedFirstName = try XCTUnwrap(shopperInformation.shopperName?.firstName)
@@ -163,7 +163,7 @@ class AffirmComponentUITests: XCTestCase {
         let sut = AffirmComponent(paymentMethod: paymentMethod,
                                   context: context)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
 
         // Then
         let firstName = try XCTUnwrap(sut.firstNameItem?.value)

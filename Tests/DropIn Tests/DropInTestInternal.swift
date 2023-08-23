@@ -20,7 +20,7 @@ class DropInInternalTests: XCTestCase {
                                   context: Dummy.context,
                                   configuration: config)
 
-        try presentOnRoot(sut.viewController, animated: true)
+        presentOnRoot(sut.viewController, animated: true)
         
         let waitExpectation = expectation(description: "Expect Drop-In to finalize")
 

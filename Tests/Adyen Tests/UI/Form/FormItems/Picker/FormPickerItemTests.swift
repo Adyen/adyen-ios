@@ -62,7 +62,7 @@ class FormPickerItemTests: XCTestCase {
         wait(for: [presentViewControllerExpectation], timeout: 1)
         
         let root = try XCTUnwrap(presentedViewController)
-        try setupRootViewController(root)
+        setupRootViewController(root)
         
         let searchViewController = try XCTUnwrap(root.viewControllers.first as? SearchViewController)
         searchViewController.viewModel.interfaceState.results?.first?.selectionHandler?()

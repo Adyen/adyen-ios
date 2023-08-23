@@ -142,7 +142,7 @@ class VoucherViewTests: XCTestCase {
         viewController.view = sut
         sut.frame = UIScreen.main.bounds
         
-        try setupRootViewController(viewController)
+        setupRootViewController(viewController)
         
         return sut
     }

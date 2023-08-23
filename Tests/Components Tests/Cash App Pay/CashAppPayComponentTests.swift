@@ -77,7 +77,7 @@ import XCTest
             let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: true, style: componentStyle)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
-            try setupRootViewController(sut.viewController)
+            setupRootViewController(sut.viewController)
             
             let storeDetailsItemView: FormToggleItemView? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem")
             let storeDetailsItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem.titleLabel")
@@ -97,7 +97,7 @@ import XCTest
             let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: true)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
-            try setupRootViewController(sut.viewController)
+            setupRootViewController(sut.viewController)
             
             let storeDetailsToggleView: UIView? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem")
             
@@ -109,7 +109,7 @@ import XCTest
             let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: false)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
-            try setupRootViewController(sut.viewController)
+            setupRootViewController(sut.viewController)
             
             let storeDetailsToggleView: UIView? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem")
             
@@ -120,7 +120,7 @@ import XCTest
             let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: true)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
-            try setupRootViewController(sut.viewController)
+            setupRootViewController(sut.viewController)
             
             XCTAssertFalse(sut.cashAppPayButton.showsActivityIndicator)
             sut.cashAppPayButton.showsActivityIndicator = true
@@ -192,7 +192,7 @@ import XCTest
                 delegateExpectation.fulfill()
             }
             
-            try setupRootViewController(sut.viewController)
+            setupRootViewController(sut.viewController)
             
             sut.submitApprovedRequest(with: [oneTimeGrant], profile: .init(id: "testId", cashtag: "testtag"))
             
@@ -224,7 +224,7 @@ import XCTest
                 delegateExpectation.fulfill()
             }
             
-            try setupRootViewController(sut.viewController)
+            setupRootViewController(sut.viewController)
             
             sut.submitApprovedRequest(with: [oneTimeGrant, onFileGrant], profile: .init(id: "testId", cashtag: "testtag"))
             

@@ -47,7 +47,7 @@ class BCMCComponentTests: XCTestCase {
                                 context: context,
                                 configuration: CardComponent.Configuration())
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         XCTAssertEqual(sut.configuration.allowedCardTypes, [.bcmc])
         XCTAssertEqual(sut.configuration.excludedCardTypes, [])
@@ -71,7 +71,7 @@ class BCMCComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         XCTAssertEqual(sut.configuration.allowedCardTypes, [.bcmc])
         XCTAssertEqual(sut.configuration.excludedCardTypes, [])
@@ -93,7 +93,7 @@ class BCMCComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         XCTAssertEqual(sut.configuration.allowedCardTypes, [.bcmc])
         XCTAssertEqual(sut.configuration.excludedCardTypes, [])
@@ -112,7 +112,7 @@ class BCMCComponentTests: XCTestCase {
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let cardNumberItemView: FormCardNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
         let textItemView: FormCardNumberItemView = try XCTUnwrap(cardNumberItemView.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
@@ -130,7 +130,7 @@ class BCMCComponentTests: XCTestCase {
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(cardNumberItemView)
@@ -151,7 +151,7 @@ class BCMCComponentTests: XCTestCase {
         PublicKeyProvider.publicKeysCache[Dummy.apiContext.clientKey] = Dummy.publicKey
         sut.delegate = delegate
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called")
         delegate.onDidSubmit = { paymentData, component in
@@ -204,7 +204,7 @@ class BCMCComponentTests: XCTestCase {
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context)
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let expectationCardType = XCTestExpectation(description: "CardType Expectation")
         let mockedBrands = [CardBrand(type: .bcmc, cvcPolicy: .optional)]
@@ -232,7 +232,7 @@ class BCMCComponentTests: XCTestCase {
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context)
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
 
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
         expectationBin.expectedFulfillmentCount = 1
@@ -262,7 +262,7 @@ class BCMCComponentTests: XCTestCase {
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context)
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
 
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
         expectationBin.expectedFulfillmentCount = 1
@@ -299,7 +299,7 @@ class BCMCComponentTests: XCTestCase {
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
 
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
         expectationBin.expectedFulfillmentCount = 2
@@ -339,7 +339,7 @@ class BCMCComponentTests: XCTestCase {
                                 publicKeyProvider: PublicKeyProviderMock(),
                                 binProvider: cardTypeProviderMock)
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
 
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
         expectationBin.expectedFulfillmentCount = 2
@@ -384,7 +384,7 @@ class BCMCComponentTests: XCTestCase {
                                                      })
         sut.cardComponentDelegate = delegateMock
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         self.populate(textItemView: cardNumberItemView!, with: "32145")
@@ -406,7 +406,7 @@ class BCMCComponentTests: XCTestCase {
             XCTFail("delegate.didFail() must not be called")
         }
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         // Enter invalid Card Number
         let cardNumberView: FormCardNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
@@ -432,7 +432,7 @@ class BCMCComponentTests: XCTestCase {
         let sut = BCMCComponent(paymentMethod: paymentMethod,
                                 context: context)
 
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, cardPaymentMethod.name)

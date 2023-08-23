@@ -146,7 +146,7 @@ class UPIComponentUITests: XCTestCase {
             didSubmitExpectation.fulfill()
         }
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
 
         let virtualPaymentAddressItem: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem")
         self.populate(textItemView: virtualPaymentAddressItem, with: "testvpa@icici")
@@ -183,7 +183,7 @@ class UPIComponentUITests: XCTestCase {
             XCTAssertEqual(data.type, "upi_qr")
         }
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         assertViewControllerImage(matching: sut.viewController, named: "upi_qr_flow")
     }

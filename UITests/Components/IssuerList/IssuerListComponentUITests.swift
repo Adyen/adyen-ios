@@ -22,7 +22,7 @@ final class IssuerListComponentUITests: XCTestCase {
         let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
         let listViewController = searchViewController.resultsListViewController
         
-        try setupRootViewController(sut.viewController)
+        setupRootViewController(sut.viewController)
         
         let items = listViewController.sections[0].items
         

@@ -16,8 +16,18 @@ extension XCTestCase {
     ///   - viewController: The view controller to set as the rootViewController
     ///
     /// - Throws: If the key window can't be found
-    func setupRootViewController(_ viewController: UIViewController) throws {
-        let window = try XCTUnwrap(UIApplication.shared.adyen.mainKeyWindow)
+    func setupRootViewController(_ viewController: UIViewController) {
+        
+        let window: UIWindow = {
+            if let mainKeyWindow = UIApplication.shared.adyen.mainKeyWindow {
+                return mainKeyWindow
+            }
+            
+            let window = UIWindow(frame: UIScreen.main.bounds)
+            window.makeKeyAndVisible()
+            return window
+        }()
+        
         window.rootViewController = viewController
         window.layer.speed = 10 // 10x Animation speed
         
@@ -32,10 +42,10 @@ extension XCTestCase {
     ///   - completion: The optional block to be called after the view controller was presented
     ///
     /// - Throws: If the key window can't be found
-    func presentOnRoot(_ viewController: UIViewController, animated: Bool = false, completion: (() -> Void)? = nil) throws {
+    func presentOnRoot(_ viewController: UIViewController, animated: Bool = false, completion: (() -> Void)? = nil) {
         let root = UIViewController()
         root.view.backgroundColor = .white
-        try setupRootViewController(root)
+        setupRootViewController(root)
         let presentationExpectation = XCTestExpectation(description: "Wait for the presentation to complete")
         root.present(viewController, animated: animated) {
             completion?()
