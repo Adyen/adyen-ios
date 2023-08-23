@@ -8,13 +8,13 @@
 @_spi(AdyenInternal) import AdyenCard
 import XCTest
 
-fileprivate class FormValidatableValueItemMock: FormValidatableValueItem<String> {
+private class FormValidatableValueItemMock: FormValidatableValueItem<String> {
     required init() {
         super.init(value: "", style: .init())
     }
 }
 
-fileprivate class FormValidatableValueItemViewMock: FormValidatableValueItemView<String, FormValidatableValueItemMock> {}
+private class FormValidatableValueItemViewMock: FormValidatableValueItemView<String, FormValidatableValueItemMock> {}
 
 class FormValidatableItemViewTests: XCTestCase {
     

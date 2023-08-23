@@ -575,7 +575,6 @@ class GiftCardComponentTests: XCTestCase {
                                 showsSecurityCodeField: false,
                                 publicKeyProvider: publicKeyProvider)
         
-
         // When
         let mockViewController = UIViewController()
         sut.viewWillAppear(viewController: mockViewController)

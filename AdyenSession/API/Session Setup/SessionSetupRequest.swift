@@ -60,7 +60,7 @@ internal struct SessionSetupRequest: Request {
 
 internal struct SessionSetupResponse: SessionResponse {
     
-    internal let countryCode: String
+    internal let countryCode: String?
     
     internal let shopperLocale: String?
     

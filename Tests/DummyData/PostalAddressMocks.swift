@@ -9,7 +9,7 @@
 enum PostalAddressMocks {
     
     static var all: [PostalAddress] {
-        return [
+        [
             newYorkPostalAddress,
             losAngelesPostalAddress,
             singaporePostalAddress,
