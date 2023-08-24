@@ -47,9 +47,7 @@ class IssuerListComponentTests: XCTestCase {
             expectation.fulfill()
         }
         
-        UIApplication.shared.keyWindow?.rootViewController = searchViewController
-        
-        wait(for: .milliseconds(50))
+        setupRootViewController(searchViewController)
 
         sut.delegate = mockDelegate
         listViewController.tableView(listViewController.tableView, didSelectRowAt: .init(item: 0, section: 0))

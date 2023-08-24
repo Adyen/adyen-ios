@@ -505,7 +505,7 @@ class BCMCComponentTests: XCTestCase {
         
         wait(for: .aMoment)
         
-        let alertLabel: UILabel = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.alertLabel"))
+        let alertLabel: UILabel = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem.alertLabel"))
         XCTAssertEqual(alertLabel.text, cardNumberView.item.validationFailureMessage)
     }
     

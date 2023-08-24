@@ -82,9 +82,7 @@ class DokuComponentTests: XCTestCase {
                                 context: context,
                                 configuration: DokuComponent.Configuration())
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        setupRootViewController(sut.viewController)
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
@@ -104,9 +102,8 @@ class DokuComponentTests: XCTestCase {
         let prefillSut = DokuComponent(paymentMethod: paymentMethod,
                                        context: context,
                                        configuration: config)
-        UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
-
-        wait(for: .milliseconds(50))
+        
+        setupRootViewController(prefillSut.viewController)
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -132,9 +129,8 @@ class DokuComponentTests: XCTestCase {
         let sut = DokuComponent(paymentMethod: paymentMethod,
                                 context: context,
                                 configuration: DokuComponent.Configuration())
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        
+        setupRootViewController(sut.viewController)
 
         // Then
         let view: UIView = sut.viewController.view

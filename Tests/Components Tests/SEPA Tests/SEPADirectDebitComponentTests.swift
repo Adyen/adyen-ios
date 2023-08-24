@@ -158,9 +158,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod, context: context)
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
-        wait(for: .milliseconds(50))
+        setupRootViewController(sut.viewController)
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, sepaPaymentMethod.name)
@@ -176,9 +174,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod, context: context)
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        setupRootViewController(sut.viewController)
         
         XCTAssertFalse(sut.button.showsActivityIndicator)
         sut.button.showsActivityIndicator = true
@@ -190,9 +186,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod, context: context)
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(50))
+        setupRootViewController(sut.viewController)
         
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
@@ -209,7 +203,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod, context: context)
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
@@ -223,8 +217,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
             XCTAssertEqual(data.ownerName, "A. Klaassen")
             expectation.fulfill()
         }
-
-        wait(for: .milliseconds(50))
         
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")

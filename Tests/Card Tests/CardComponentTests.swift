@@ -998,8 +998,7 @@ class CardComponentTests: XCTestCase {
         
         XCTAssertTrue(sut.cardViewController.items.numberContainerItem.showsSupportedCardLogos)
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        wait(for: .milliseconds(30))
+        setupRootViewController(sut.viewController)
         
         let supportedCardLogosItemId = "AdyenCard.CardComponent.numberContainerItem.supportedCardLogosItem"
         
@@ -1013,7 +1012,7 @@ class CardComponentTests: XCTestCase {
         var binResponse = BinLookupResponse(brands: [CardBrand(type: .visa, isSupported: true)])
         sut.cardViewController.update(binInfo: binResponse)
 
-        wait(for: .milliseconds(30))
+        wait(for: .aMoment)
         
         supportedCardLogosItem = try XCTUnwrap(sut.viewController.view.findView(with: supportedCardLogosItemId))
         XCTAssertTrue(supportedCardLogosItem.isHidden)
