@@ -20,7 +20,8 @@ class FormCardNumberItemTests: XCTestCase {
         publicKeyProvider = PublicKeyProviderMock()
         cardBrandProvider = BinInfoProvider(apiClient: apiClient,
                                             publicKeyProvider: publicKeyProvider,
-                                            minBinLength: 11)
+                                            minBinLength: 11,
+                                            binLookupType: .card)
     }
 
     override func tearDown() {

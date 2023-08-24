@@ -1254,40 +1254,40 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(cardNumberItem.isValid())
     }
     
-    func testUnSupportedBrands() {
+    func testCardLogos() throws {
+
         let method = CardPaymentMethod(type: "bcmc", name: "Test name", fundingSource: .credit, brands: ["visa", "amex", "mc", "elo"])
-        var config = CardComponent.Configuration()
-        config.excludedCardTypes = [.americanExpress]
         
         let sut = CardComponent(paymentMethod: method,
                                 apiContext: Dummy.context,
-                                configuration: config,
-                                style: .init())
+                                configuration: CardComponent.Configuration())
+
+        XCTAssertTrue(sut.cardViewController.items.numberContainerItem.showsSupportedCardLogos)
+
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        wait(for: .milliseconds(30))
+
+        let supportedCardLogosItemId = "AdyenCard.CardComponent.numberContainerItem.supportedCardLogosItem"
+
+        var supportedCardLogosItem: FormCardLogosItemView = try XCTUnwrap(sut.viewController.view.findView(with: supportedCardLogosItemId))
+        XCTAssertFalse(supportedCardLogosItem.isHidden)
+
+        // Valid input
         
         fillCard(on: sut.viewController.view, with: Dummy.visaCard)
-        let cardNumberItem = sut.cardViewController.items.numberContainerItem.numberItem
         var binResponse = BinLookupResponse(brands: [CardBrand(type: .visa, isSupported: true)])
         sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertFalse(cardNumberItem.allowsValidationWhileEditing)
-        XCTAssertTrue(cardNumberItem.isValid())
-        XCTAssertTrue(binResponse.isCreatedLocally)
         
-        fillCard(on: sut.viewController.view, with: Dummy.amexCard)
-        binResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress, isSupported: false)])
-        sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertTrue(cardNumberItem.allowsValidationWhileEditing)
-        XCTAssertFalse(cardNumberItem.isValid())
+        wait(for: .milliseconds(30))
         
-        binResponse = BinLookupResponse(brands: [], isCreatedLocally: false)
-        sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertFalse(cardNumberItem.allowsValidationWhileEditing)
-        XCTAssertFalse(binResponse.isCreatedLocally)
+        supportedCardLogosItem = try XCTUnwrap(sut.viewController.view.findView(with: supportedCardLogosItemId))
+        XCTAssertTrue(supportedCardLogosItem.isHidden)
     }
     
-    func testCVCOptionality() {
+    func testCVCDisplayMode() {
         let brands = [CardBrand(type: .visa, cvcPolicy: .required),
-                      CardBrand(type: .masterCard, cvcPolicy: .hidden),
-                      CardBrand(type: .masterCard, cvcPolicy: .optional)]
+                      CardBrand(type: .americanExpress, cvcPolicy: .optional),
+                      CardBrand(type: .masterCard, cvcPolicy: .hidden)]
         
         let method = CardPaymentMethod(type: "visa",
                                        name: "Test name",
@@ -1300,20 +1300,31 @@ class CardComponentTests: XCTestCase {
         
         let cvcItem = sut.cardViewController.items.securityCodeItem
         cvcItem.value = ""
-        cvcItem.isOptional = brands[0].isCVCOptional
+        cvcItem.displayMode = brands[0].securityCodeItemDisplayMode
         XCTAssertFalse(cvcItem.isValid())
         cvcItem.value = "1"
         XCTAssertFalse(cvcItem.isValid())
         cvcItem.value = "123"
         XCTAssertTrue(cvcItem.isValid())
-        
-        cvcItem.isOptional = brands[1].isCVCOptional
+
+        cvcItem.displayMode = brands[1].securityCodeItemDisplayMode
         XCTAssertTrue(cvcItem.isValid())
         cvcItem.value = "1"
         XCTAssertFalse(cvcItem.isValid())
-        // no value or correct value (3-4 digits) is valid
+        cvcItem.value = "" // no value or correct value (3-4 digits) is valid
+        XCTAssertTrue(cvcItem.isValid())
+
+        cvcItem.displayMode = brands[2].securityCodeItemDisplayMode
+        XCTAssertTrue(cvcItem.isValid())
+        cvcItem.value = "1"
+        XCTAssertTrue(cvcItem.isValid())
         cvcItem.value = ""
         XCTAssertTrue(cvcItem.isValid())
+
+        cvcItem.displayMode = .required
+        cvcItem.value = "123"
+        cvcItem.displayMode = .hidden
+        XCTAssertEqual(cvcItem.value, "")
     }
     
     func testExpiryDateOptionality() {
@@ -1564,15 +1575,15 @@ class CardComponentTests: XCTestCase {
         
         var binResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress)])
         sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertEqual(logoItem.alpha, 0.3)
+        XCTAssertTrue(logoItem.isHidden.wrappedValue)
         
         binResponse = BinLookupResponse(brands: [])
         sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertEqual(logoItem.alpha, 1)
+        XCTAssertFalse(logoItem.isHidden.wrappedValue)
         
         binResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress, isSupported: false)])
         sut.cardViewController.update(binInfo: binResponse)
-        XCTAssertEqual(logoItem.alpha, 1)
+        XCTAssertFalse(logoItem.isHidden.wrappedValue)
     }
     
     func testClearShouldResetPostalCodeItemToEmptyValue() throws {
@@ -2472,10 +2483,10 @@ extension UIView {
     }
 }
 
-extension XCTestCase {
+extension CardComponentTests {
     
     func fillCard(on view: UIView, with card: Card) {
-        let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
+        let cardNumberItemView: FormCardNumberItemView? = view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
         

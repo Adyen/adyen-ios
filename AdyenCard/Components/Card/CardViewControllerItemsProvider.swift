@@ -80,6 +80,7 @@ extension CardViewController {
 
         internal lazy var numberContainerItem: FormCardNumberContainerItem = {
             let item = FormCardNumberContainerItem(cardTypeLogos: cardLogos,
+                                                   showsSupportedCardLogos: configuration.showsSupportedCardLogos,
                                                    style: formStyle.textField,
                                                    localizationParameters: localizationParameters)
             item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "numberContainerItem")

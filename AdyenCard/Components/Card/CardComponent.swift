@@ -93,7 +93,8 @@ public class CardComponent: PublicKeyConsumer,
         let publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: apiContext),
                                               publicKeyProvider: publicKeyProvider,
-                                              minBinLength: Constant.privateBinLength)
+                                              minBinLength: Constant.privateBinLength,
+                                              binLookupType: configuration.binLookupType)
         self.init(paymentMethod: paymentMethod,
                   apiContext: apiContext,
                   configuration: configuration,
@@ -130,9 +131,7 @@ public class CardComponent: PublicKeyConsumer,
         self.binInfoProvider = binProvider
 
         let paymentMethodCardTypes = paymentMethod.brands.compactMap(CardType.init)
-        let excludedCardTypes = configuration.excludedCardTypes
-        let allowedCardTypes = configuration.allowedCardTypes ?? paymentMethodCardTypes
-        self.supportedCardTypes = allowedCardTypes.minus(excludedCardTypes)
+        self.supportedCardTypes = configuration.allowedCardTypes ?? paymentMethodCardTypes
     }
     
     // MARK: - Presentable Component Protocol

@@ -15,8 +15,9 @@ public struct BCMCPaymentMethod: AnyCardPaymentMethod {
     public var name: String { cardPaymentMethod.name }
     
     /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`, `"bcmc"`.
-    /// In this case the brands is ["bcmc"].
-    public let brands: [String] = [PaymentMethodType.bcmc.rawValue]
+    ///
+    /// Used to configure the `allowedCardTypes` on the `BCMCComponent`'s configuration
+    public var brands: [String] { cardPaymentMethod.brands }
     
     /// :nodoc:
     public var fundingSource: CardFundingSource? { cardPaymentMethod.fundingSource }
