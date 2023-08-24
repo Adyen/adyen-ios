@@ -69,7 +69,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
 
     internal func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
         guard configuration.isEnabled else {
-            completion("do-not-track")
+            completion(nil)
             return
         }
         
