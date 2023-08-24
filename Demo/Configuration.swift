@@ -160,7 +160,7 @@ internal struct DemoAppSettings: Codable {
 
     internal static let defaultApplePayConfiguration = ApplePayConfiguration(merchantIdentifier: "", allowOnboarding: false)
 
-    internal static let defautAnalyticsConfiguration = AnalyticConfiguration(isEnabled: true)
+    internal static let defaultAnalyticsConfiguration = AnalyticConfiguration(isEnabled: true)
     
     fileprivate static func loadConfiguration() -> DemoAppSettings {
         var config = UserDefaults.standard.data(forKey: defaultsKey)
