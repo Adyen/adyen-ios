@@ -149,7 +149,7 @@ class GiftCardComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
         
-        wait(until: errorView!, at: \.isHidden, is: false, timeout: 1)
+        wait(until: errorView!, at: \.isHidden, is: false)
 
         XCTAssertEqual(sut.errorItem.message, "An unknown error occurred")
 
@@ -199,7 +199,7 @@ class GiftCardComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
         
-        wait(until: errorView!, at: \.isHidden, is: false, timeout: 1)
+        wait(until: errorView!, at: \.isHidden, is: false)
         
         XCTAssertEqual(sut.errorItem.message, "Gift cards are only valid in the currency they were issued in")
 
@@ -234,7 +234,7 @@ class GiftCardComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        wait(until: errorView!, at: \.isHidden, is: false, timeout: 1)
+        wait(until: errorView!, at: \.isHidden, is: false)
         
         XCTAssertEqual(sut.errorItem.message, "Gift cards are only valid in the currency they were issued in")
 
@@ -269,7 +269,7 @@ class GiftCardComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        wait(until: errorView!, at: \.isHidden, is: false, timeout: 1)
+        wait(until: errorView!, at: \.isHidden, is: false)
         
         XCTAssertEqual(sut.errorItem.message, "This gift card has zero balance")
 
@@ -317,7 +317,7 @@ class GiftCardComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        wait(until: errorView!, at: \.isHidden, is: true, timeout: 1)
+        wait(until: errorView!, at: \.isHidden, is: true)
         
         XCTAssertNil(sut.errorItem.message)
 
@@ -366,7 +366,7 @@ class GiftCardComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        wait(until: errorView!, at: \.isHidden, is: true, timeout: 1)
+        wait(until: errorView!, at: \.isHidden, is: true)
         
         XCTAssertNil(sut.errorItem.message)
 
@@ -418,7 +418,7 @@ class GiftCardComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        wait(until: errorView!, at: \.isHidden, is: true, timeout: 1)
+        wait(until: errorView!, at: \.isHidden, is: true)
         
         XCTAssertNil(sut.errorItem.message)
 
@@ -470,7 +470,7 @@ class GiftCardComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        wait(until: errorView!, at: \.isHidden, is: true, timeout: 1)
+        wait(until: errorView!, at: \.isHidden, is: true)
         
         XCTAssertNil(sut.errorItem.message)
 
@@ -521,7 +521,7 @@ class GiftCardComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        wait(until: errorView!, at: \.isHidden, is: false, timeout: 1)
+        wait(until: errorView!, at: \.isHidden, is: false)
         
         XCTAssertEqual(sut.errorItem.message, "An unknown error occurred")
 

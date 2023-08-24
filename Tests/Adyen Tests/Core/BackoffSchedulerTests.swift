@@ -35,7 +35,7 @@ class BackoffSchedulerTests: XCTestCase {
 
         XCTAssertTrue(sut.schedule(100, closure: closureToSchedule))
 
-        wait(until: { executionCounter == 100 }, timeout: 2)
+        wait { executionCounter == 100 }
         
         // Waiting a bit longer to make sure we stop at 100
         wait(for: .milliseconds(1))

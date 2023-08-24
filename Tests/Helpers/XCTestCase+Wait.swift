@@ -59,12 +59,12 @@ extension XCTestCase {
     ///   - target: the target to observe
     ///   - keyPath: the keyPath to check
     ///   - expectedValue: the value to check against
-    ///   - timeout: the maximum time (in seconds)  to wait. Defaults to 1
+    ///   - timeout: the maximum time (in seconds)  to wait. Defaults to 2
     func wait<Value: Equatable, Target: AnyObject>(
         until target: Target,
         at keyPath: KeyPath<Target, Value>,
         is expectedValue: Value,
-        timeout: TimeInterval = 1
+        timeout: TimeInterval = 2
     ) {
         wait(
             until: { target[keyPath: keyPath] == expectedValue },

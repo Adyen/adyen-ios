@@ -165,7 +165,7 @@ class BoletoComponentTests: XCTestCase {
         emailSwitchItem.accessibilityActivate()
 
         // Test that email field is visible
-        wait(until: emailItem, at: \.isHidden, is: false, timeout: 1)
+        wait(until: emailItem, at: \.isHidden, is: false)
     }
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {

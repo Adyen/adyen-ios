@@ -69,10 +69,10 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
 
     internal func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
         guard configuration.isEnabled else {
-            completion(nil)
+            completion("do-not-track")
             return
         }
-
+        
         let checkoutAttemptIdRequest = CheckoutAttemptIdRequest()
 
         uniqueAssetAPIClient.perform(checkoutAttemptIdRequest) { [weak self] result in

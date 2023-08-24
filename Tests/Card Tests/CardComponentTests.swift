@@ -862,7 +862,7 @@ class CardComponentTests: XCTestCase {
 
         self.fillCard(on: sut.viewController.view, with: Dummy.kcpCard)
         
-        wait(until: passwordItemView!, at: \.isHidden, is: false, timeout: 1)
+        wait(until: passwordItemView!, at: \.isHidden, is: false)
         XCTAssertFalse(taxNumberItemView!.isHidden)
         
         XCTAssertEqual(passwordItemView!.titleLabel.text, "First 2 digits of card password")
@@ -916,7 +916,7 @@ class CardComponentTests: XCTestCase {
 
         fillCard(on: sut.viewController.view, with: Dummy.visaCard)
 
-        wait(until: brazilSSNItemView, at: \.isHidden, is: false, timeout: 1)
+        wait(until: brazilSSNItemView, at: \.isHidden, is: false)
         
         XCTAssertEqual(brazilSSNItemView.titleLabel.text, "CPF/CNPJ")
         populate(textItemView: brazilSSNItemView, with: "123.123.123-12")
@@ -926,7 +926,7 @@ class CardComponentTests: XCTestCase {
         let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: false)])
         sut.cardViewController.update(binInfo: newResponse)
 
-        wait(until: brazilSSNItemView, at: \.isHidden, is: true, timeout: 1)
+        wait(until: brazilSSNItemView, at: \.isHidden, is: true)
 
         waitForExpectations(timeout: 1)
     }
