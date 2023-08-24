@@ -227,7 +227,7 @@ internal class CardViewController: FormViewController {
     
     /// Updates relevant other fields after number field changes
     private func updateFields(from brand: CardBrand?) {
-        items.securityCodeItem.isOptional = brand?.isCVCOptional ?? false
+        items.securityCodeItem.displayMode = brand?.securityCodeItemDisplayMode ?? .required
         items.expiryDateItem.isOptional = brand?.isExpiryDateOptional ?? false
         
         let kcpItemsHidden = shouldHideKcpItems(with: issuingCountryCode)
@@ -380,5 +380,16 @@ extension CardViewController: CardViewControllerProtocol {
 
     internal func update(storePaymentMethodFieldValue isOn: Bool) {
         items.storeDetailsItem.value = items.storeDetailsItem.isVisible && isOn
+    }
+}
+
+extension CardBrand {
+    
+    internal var securityCodeItemDisplayMode: FormCardSecurityCodeItem.DisplayMode {
+        switch self.cvcPolicy {
+        case .hidden: return .hidden
+        case .optional: return .optional
+        case .required: return .required
+        }
     }
 }
