@@ -25,7 +25,8 @@ public final class BCMCComponent: CardComponent {
         let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: context.apiContext),
                                               publicKeyProvider: publicKeyProvider,
-                                              minBinLength: Constant.thresholdBINLength)
+                                              minBinLength: Constant.thresholdBINLength,
+                                              binLookupType: configuration.binLookupType)
         super.init(paymentMethod: paymentMethod,
                    context: context,
                    configuration: configuration,
@@ -51,17 +52,14 @@ public final class BCMCComponent: CardComponent {
 private extension CardComponent.Configuration {
     
     func bcmcConfiguration() -> CardComponent.Configuration {
-        var storedCardConfiguration = stored
-        storedCardConfiguration.showsSecurityCodeField = false
         var configuration = CardComponent.Configuration(
             style: style,
             showsHolderNameField: showsHolderNameField,
             showsStorePaymentMethodField: showsStorePaymentMethodField,
-            showsSecurityCodeField: false,
-            storedCardConfiguration: storedCardConfiguration,
-            allowedCardTypes: [.bcmc]
+            storedCardConfiguration: stored
         )
-        configuration.excludedCardTypes = []
+        configuration.showsSupportedCardLogos = false
+        configuration.binLookupType = .bcmc
         return configuration
     }
 }

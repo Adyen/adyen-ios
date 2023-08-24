@@ -15,7 +15,7 @@ internal struct ConfigurationView: View {
         case merchantAccount = "Merchant Account"
         case region = "Region"
         case payment = "Payment"
-        case cardComponent = "Card Component"
+        case components = "Components"
         case dropIn = "DropIn"
     }
     
@@ -49,8 +49,8 @@ internal struct ConfigurationView: View {
                 merchantAccountSection
                 regionSection
                 wrapInSection(view: paymentSection, section: .payment)
-                wrapInSection(view: cardComponentSection, section: .cardComponent)
                 wrapInSection(view: dropInSection, section: .dropIn)
+                wrapInSection(view: componentsSection, section: .components)
             }.navigationBarTitle("Configuration", displayMode: .inline)
                 .navigationBarItems(
                     leading: Button("Default", action: viewModel.defaultTapped),
@@ -129,10 +129,10 @@ internal struct ConfigurationView: View {
 
     }
 
-    private var cardComponentSection: some View {
-        NavigationLink(destination: CardComponentSettingsView(viewModel: viewModel)) {
+    private var componentsSection: some View {
+        NavigationLink(destination: ComponentsSettingsView(viewModel: viewModel)) {
             HStack {
-                Text("Card Component")
+                Text("Components")
             }
         }
     }
@@ -144,7 +144,7 @@ internal struct ConfigurationView: View {
             }
         }
     }
-    
+
     private func pickerWithSearchBar<T: Hashable, P: Hashable>(
         with selectionBinding: Binding<String>,
         title: String,
