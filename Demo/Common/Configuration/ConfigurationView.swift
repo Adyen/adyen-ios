@@ -129,18 +129,42 @@ internal struct ConfigurationView: View {
 
     }
 
-    private var componentsSection: some View {
-        NavigationLink(destination: ComponentsSettingsView(viewModel: viewModel)) {
-            HStack {
-                Text("Components")
-            }
-        }
-    }
-
     private var dropInSection: some View {
         NavigationLink(destination: DropInSettingsView(viewModel: viewModel)) {
             HStack {
                 Text("DropIn")
+            }
+        }
+    }
+
+    private var componentsSection: some View {
+        return Group {
+            cardComponentSection
+            applePaySection
+            analyticsSection
+        }
+    }
+
+    internal var cardComponentSection: some View {
+        NavigationLink(destination: CardComponentSettingsView(viewModel: viewModel)) {
+            HStack {
+                Text("Card Component")
+            }
+        }
+    }
+
+    private var applePaySection: some View {
+        NavigationLink(destination: ApplePaySettingsView(viewModel: viewModel)) {
+            HStack {
+                Text("Apple Pay")
+            }
+        }
+    }
+
+    private var analyticsSection: some View {
+        NavigationLink(destination: AnalyticsSettingsView(viewModel: viewModel)) {
+            HStack {
+                Text("Analytics")
             }
         }
     }

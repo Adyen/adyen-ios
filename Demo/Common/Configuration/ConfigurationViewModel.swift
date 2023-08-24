@@ -28,6 +28,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var allowPreselectedPaymentView: Bool = true
     @Published internal var applePayMerchantIdentifier: String = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
     @Published internal var allowOnboarding: Bool = false
+    @Published internal var analyticsIsEnabled: Bool = true
 
     private let onDone: (DemoAppSettings) -> Void
     private let configuration: DemoAppSettings
@@ -60,6 +61,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.allowPreselectedPaymentView = configuration.dropInConfiguration.allowPreselectedPaymentView
         self.applePayMerchantIdentifier = configuration.applePayConfiguration.merchantIdentifier
         self.allowOnboarding = configuration.applePayConfiguration.allowOnboarding
+        self.analyticsIsEnabled = configuration.analyticsSettings.isEnabled
     }
     
     internal func doneTapped() {
@@ -89,7 +91,8 @@ internal final class ConfigurationViewModel: ObservableObject {
                                                      allowsSkippingPaymentList: allowsSkippingPaymentList,
                                                      allowPreselectedPaymentView: allowPreselectedPaymentView),
             applePayConfiguration: ApplePayConfiguration(merchantIdentifier: applePayMerchantIdentifier,
-                                                         allowOnboarding: allowOnboarding)
+                                                         allowOnboarding: allowOnboarding),
+            analyticsConfiguration: AnalyticConfiguration(isEnabled: analyticsIsEnabled)
         )
     }
 

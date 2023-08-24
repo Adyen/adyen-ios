@@ -53,7 +53,11 @@ internal struct PaymentsRequest: APIRequest {
         try container.encodeIfPresent(data.deliveryAddress, forKey: .deliveryAddress)
         try container.encodeIfPresent(data.socialSecurityNumber, forKey: .socialSecurityNumber)
         try container.encodeIfPresent(data.browserInfo, forKey: .browserInfo)
-        try container.encodeIfPresent(data.checkoutAttemptId, forKey: .checkoutAttemptId)
+        if !Analytics.isEnabled {
+            try container.encodeIfPresent("do-not-track", forKey: .checkoutAttemptId)
+        } else {
+            try container.encodeIfPresent(data.checkoutAttemptId, forKey: .checkoutAttemptId)
+        }
         try container.encodeIfPresent(data.order?.compactOrder, forKey: .order)
     }
     
