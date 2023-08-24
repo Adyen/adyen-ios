@@ -63,11 +63,7 @@ internal struct PaymentsRequest: APIRequest {
         try container.encodeIfPresent(data.installments, forKey: .installments)
         try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
         try container.encode(ConfigurationConstants.recurringProcessingModel, forKey: .recurringProcessingModel)
-        if !ConfigurationConstants.current.analyticsSettings.isEnabled {
-            try container.encodeIfPresent("do-not-track", forKey: .checkoutAttemptId)
-        } else {
-            try container.encodeIfPresent(data.checkoutAttemptId, forKey: .checkoutAttemptId)
-        }
+        try container.encodeIfPresent(data.checkoutAttemptId, forKey: .checkoutAttemptId)
     }
     
     private enum CodingKeys: String, CodingKey {
