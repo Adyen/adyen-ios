@@ -143,7 +143,7 @@ internal struct DemoAppSettings: Codable {
         cardComponentConfiguration: defaultCardComponentConfiguration,
         dropInConfiguration: defaultDropInConfiguration,
         applePayConfiguration: defaultApplePayConfiguration,
-        analyticsConfiguration: defautAnalyticsConfiguration
+        analyticsConfiguration: defaultAnalyticsConfiguration
     )
 
     internal static let defaultCardComponentConfiguration = CardComponentConfiguration(showsHolderNameField: false,
