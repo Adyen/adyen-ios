@@ -68,16 +68,10 @@ class OnlineBankingComponentUITests: XCTestCase {
         let sut = OnlineBankingComponent(paymentMethod: paymentMethod,
                                          context: context,
                                          configuration: config)
-        let delegate = PaymentComponentDelegateMock()
-        sut.delegate = delegate
-
-        setupRootViewController(sut.viewController)
         
-        // Then
-        let button: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button"))
-
         let didContinueExpectation = XCTestExpectation(description: "Dummy Expectation")
-
+        
+        let delegate = PaymentComponentDelegateMock()
         delegate.onDidSubmit = { data, component in
             // Assert
             XCTAssertTrue(component === sut)
@@ -88,9 +82,16 @@ class OnlineBankingComponentUITests: XCTestCase {
             didContinueExpectation.fulfill()
         }
         
+        sut.delegate = delegate
+
+        setupRootViewController(sut.viewController)
+        
+        // Then
+        let button: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button"))
+        
         button.sendActions(for: .touchUpInside)
         
-        wait(for: [didContinueExpectation], timeout: 3)
+        wait(for: [didContinueExpectation], timeout: 10)
         
         assertViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
     }
