@@ -69,7 +69,7 @@ class QRCodeActionComponentUITests: XCTestCase {
         presentationDelegate.doPresent = { component in
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
             
-            try self.setupRootViewController(component.viewController)
+            self.setupRootViewController(component.viewController)
             self.assertViewControllerImage(matching: component.viewController, named: "promptPay")
 
             dummyExpectation.fulfill()
@@ -126,7 +126,7 @@ class QRCodeActionComponentUITests: XCTestCase {
         presentationDelegate.doPresent = { component in
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
             
-            try self.setupRootViewController(component.viewController)
+            self.setupRootViewController(component.viewController)
             self.assertViewControllerImage(matching: component.viewController, named: "pix")
 
             dummyExpectation.fulfill()
@@ -183,7 +183,7 @@ class QRCodeActionComponentUITests: XCTestCase {
         presentationDelegate.doPresent = { component in
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
 
-            try self.setupRootViewController(component.viewController)
+            self.setupRootViewController(component.viewController)
             self.assertViewControllerImage(matching: component.viewController, named: "upi")
 
             dummyExpectation.fulfill()

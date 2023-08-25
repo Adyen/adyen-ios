@@ -88,7 +88,7 @@ class VoucherComponentTests: XCTestCase {
             let component = try XCTUnwrap(component as? PresentableComponentWrapper)
             XCTAssert(component.component === sut)
             
-            try self.setupRootViewController(component.viewController)
+            self.setupRootViewController(component.viewController)
             
             let view = try XCTUnwrap(sut.view)
             checkViewModel(view.model, forAction: action)
@@ -122,7 +122,7 @@ class VoucherComponentTests: XCTestCase {
             let component = try XCTUnwrap(component as? PresentableComponentWrapper)
             XCTAssert(component.component === sut)
             
-            try self.setupRootViewController(component.viewController)
+            self.setupRootViewController(component.viewController)
             
             let view = try XCTUnwrap(sut.view)
             checkViewModel(view.model, forAction: action)

@@ -129,7 +129,7 @@ class QRCodeActionComponentTests: XCTestCase {
 
         presentationDelegate.doPresent = { component in
             let viewController = try XCTUnwrap(component.viewController as? QRCodeViewController)
-            try self.setupRootViewController(viewController)
+            self.setupRootViewController(viewController)
 
             let copyButton: SubmitButton? = viewController.view.findView(by: "copyCodeButton")
             XCTAssertNotNil(copyButton)
@@ -157,7 +157,7 @@ class QRCodeActionComponentTests: XCTestCase {
 
         presentationDelegate.doPresent = { component in
             let viewController = try XCTUnwrap(component.viewController as? QRCodeViewController)
-            try self.setupRootViewController(viewController)
+            self.setupRootViewController(viewController)
             viewController.qrCodeView.delegate = delgate
             
             let saveAsImageButton: SubmitButton? = viewController.view.findView(by: "saveAsImageButton")

@@ -1002,7 +1002,7 @@ class CardComponentTests: XCTestCase {
         
         fillCard(on: sut.viewController.view, with: Dummy.visaCard)
         
-        var binResponse = BinLookupResponse(brands: [CardBrand(type: .visa, isSupported: true)])
+        let binResponse = BinLookupResponse(brands: [CardBrand(type: .visa, isSupported: true)])
         sut.cardViewController.update(binInfo: binResponse)
 
         wait(for: .aMoment)
