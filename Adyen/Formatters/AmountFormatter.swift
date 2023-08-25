@@ -87,19 +87,10 @@ public final class AmountFormatter {
         // The below overrides are obtained from https://en.wikipedia.org/wiki/ISO_4217
         
         switch currencyCode {
-        case "ISK", "CLP", "COP":
+        case "ISK", "CLP", "COP", "MRU", "RSD", "GHS":
             // iOS returns 0, which is in accordance with ISO-4217, but conflicts with the Adyen backend.
             return 2
-        case "MRO":
-            // iOS returns 0 instead.
-            return 1
-        case "RSD":
-            // iOS returns 0 instead.
-            return 2
-        case "CVE":
-            // iOS returns 2 instead.
-            return 0
-        case "GHC":
+        case "CVE", "IDR":
             // iOS returns 2 instead.
             return 0
         default:
