@@ -396,22 +396,15 @@ class CardComponentTests: XCTestCase {
 
         setupRootViewController(component.viewController)
 
-        let switchView: UISwitch! = component.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch")
-        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
-        XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .gray)
+        let switchView: UISwitch = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch"))
+        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
+        XCTAssertEqual(securityCodeItemView.titleLabel.textColor!, .gray)
         
-        self.focus(textItemView: securityCodeItemView!)
+        self.focus(textItemView: securityCodeItemView)
         
-        wait(
-            until: securityCodeItemView!.separatorView,
-            at: \.backgroundColor?.cgColor,
-            is: UIColor.systemYellow.cgColor,
-            timeout: 1
-        )
-        
+        wait(until: securityCodeItemView.separatorView, at: \.backgroundColor?.cgColor, is: UIColor.systemYellow.cgColor)
         XCTAssertEqual(switchView.onTintColor, .systemYellow)
-        XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .systemYellow)
-        XCTAssertEqual(securityCodeItemView!.separatorView.backgroundColor!.cgColor, UIColor.systemYellow.cgColor)
+        XCTAssertEqual(securityCodeItemView.titleLabel.textColor, .systemYellow)
     }
 
     func testSuccessTintColorCustomization() throws {
