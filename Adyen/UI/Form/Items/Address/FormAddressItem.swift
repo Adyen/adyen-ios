@@ -146,10 +146,13 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         let subRegions = RegionRepository.subRegions(for: context.countryCode)
         addressViewModel = addressViewModelBuilder.build(context: context)
         
-        var formItems: [FormItem] = [
+        let header: FormItem? = configuration.showsHeader ? headerItem.addingDefaultMargins() : nil
+        
+        var formItems = [
             FormSpacerItem(),
+            header,
             countryPickerItem
-        ]
+        ].compactMap { $0 }
         
         for field in addressViewModel.scheme {
             switch field {
