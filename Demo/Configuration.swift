@@ -7,8 +7,8 @@
 @_spi(AdyenInternal) import Adyen
 import AdyenActions
 import AdyenCard
-import AdyenDropIn
 import AdyenComponents
+import AdyenDropIn
 import Foundation
 import PassKit
 
@@ -230,10 +230,10 @@ internal struct DemoAppSettings: Codable {
                                                       brand: ConfigurationConstants.appName)
             var config = ApplePayComponent.Configuration(payment: applePayPayment,
                                                          merchantIdentifier:
-                                                            ConfigurationConstants.current.applePayConfiguration.merchantIdentifier)
+                                                         ConfigurationConstants.current.applePayConfiguration.merchantIdentifier)
             config.allowOnboarding = applePayConfiguration.allowOnboarding
             return config
-        } catch let error {
+        } catch {
             AdyenAssertion.assertionFailure(message: error.localizedDescription)
         }
         return nil
