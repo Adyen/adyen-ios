@@ -53,6 +53,8 @@ internal enum ConfigurationConstants {
 
     static let appleTeamIdentifier = "{YOUR_APPLE_DEVELOPMENT_TEAM_ID}"
 
+    static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
+
     static let lineItems = [["description": "Socks",
                              "quantity": "2",
                              "amountIncludingTax": "300",
@@ -158,7 +160,8 @@ internal struct DemoAppSettings: Codable {
                                                                          allowsSkippingPaymentList: false,
                                                                          allowPreselectedPaymentView: true)
 
-    internal static let defaultApplePayConfiguration = ApplePayConfiguration(merchantIdentifier: "", allowOnboarding: false)
+    internal static let defaultApplePayConfiguration = ApplePayConfiguration(merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
+                                                                             allowOnboarding: false)
 
     internal static let defaultAnalyticsConfiguration = AnalyticConfiguration(isEnabled: true)
     
