@@ -55,8 +55,8 @@
 		00A25E5D2A404303001B32B6 /* ComponentCreationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */; };
 		00A25E5E2A404303001B32B6 /* ComponentCreationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */; };
 		00A25E602A404342001B32B6 /* AdyenSdkVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5F2A404342001B32B6 /* AdyenSdkVersion.swift */; };
-		00C3DB0B2A8CBFA7009A90BD /* ComponentsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3DB0A2A8CBFA7009A90BD /* ComponentsSettingsView.swift */; };
-		00C3DB0C2A8CBFA7009A90BD /* ComponentsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3DB0A2A8CBFA7009A90BD /* ComponentsSettingsView.swift */; };
+		00C3DB0E2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */; };
+		00C3DB0F2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */; };
 		00D5B8662A4C63FE003CFCD0 /* CardComponentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */; };
 		00D5B8672A4C63FE003CFCD0 /* CardComponentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */; };
 		00EA4ED4280412140053D938 /* DefaultAddressViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */; };
@@ -1254,7 +1254,7 @@
 		008AD9DB2982C24000C33983 /* CancellableToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellableToolBar.swift; sourceTree = "<group>"; };
 		00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentCreationError.swift; sourceTree = "<group>"; };
 		00A25E5F2A404342001B32B6 /* AdyenSdkVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdyenSdkVersion.swift; sourceTree = "<group>"; };
-		00C3DB0A2A8CBFA7009A90BD /* ComponentsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentsSettingsView.swift; sourceTree = "<group>"; };
+		00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsSettingsView.swift; sourceTree = "<group>"; };
 		00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentSettingsView.swift; sourceTree = "<group>"; };
 		00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAddressViewModelBuilder.swift; sourceTree = "<group>"; };
 		00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeAddressViewModelBuilder.swift; sourceTree = "<group>"; };
@@ -2518,10 +2518,10 @@
 			isa = PBXGroup;
 			children = (
 				5A67461F264262F000E9184D /* ConfigurationView.swift */,
-				00C3DB0A2A8CBFA7009A90BD /* ComponentsSettingsView.swift */,
 				00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */,
 				001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */,
 				00FFD8EF2A865BFB008D4A5A /* ApplePaySettingsView.swift */,
+				00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */,
 				5A545FC62642F77500724A87 /* ConfigurationViewModel.swift */,
 				5A54600E264433CD00724A87 /* SearchBar.swift */,
 			);
@@ -6733,6 +6733,7 @@
 				E2C0E080220B0399008616F6 /* AppDelegate.swift in Sources */,
 				00D5B8662A4C63FE003CFCD0 /* CardComponentSettingsView.swift in Sources */,
 				004BA67F29D45A2E00A8C69B /* InitialDataFlowProtocol.swift in Sources */,
+				00C3DB0E2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */,
 				002A767C2A050140000684D2 /* ApplePayComponentAdvancedFlowExample.swift in Sources */,
 				00ED81B829E550E500A6B52C /* InitialDataAdvancedFlowProtocol.swift in Sources */,
 				F9885430272C078E00F34557 /* DisableStoredPaymentMethodRequest.swift in Sources */,
@@ -6743,7 +6744,6 @@
 				81A48DBB2A5709F600242341 /* AddressLookupProvider.swift in Sources */,
 				C9454C37276A340B0086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */,
 				004BA67B29D427F300A8C69B /* DropInExample.swift in Sources */,
-				00C3DB0B2A8CBFA7009A90BD /* ComponentsSettingsView.swift in Sources */,
 				A09ADA112807142600BF6802 /* SessionRequest.swift in Sources */,
 				E757F03925D2ED57007C813D /* APIClientMock.swift in Sources */,
 				E73C560625EE8C8D00B57758 /* APIClientHelper.swift in Sources */,
@@ -7008,7 +7008,6 @@
 				F9A53C4E2549887F009000A7 /* PaymentDetailsRequest.swift in Sources */,
 				002A767A2A039C96000684D2 /* ApplePayComponentExample.swift in Sources */,
 				F9A53D6325499B13009000A7 /* Configuration.swift in Sources */,
-				00C3DB0C2A8CBFA7009A90BD /* ComponentsSettingsView.swift in Sources */,
 				F95B6D9A2527454E002C9062 /* SceneDelegate.swift in Sources */,
 				00ED81BE29EEC50B00A6B52C /* CardComponentAdvancedFlowExample.swift in Sources */,
 				F95B6DD6252B4654002C9062 /* ComponentsItem.swift in Sources */,
@@ -7018,6 +7017,7 @@
 				5A545FDC2643CF2400724A87 /* ConfigurationViewModel.swift in Sources */,
 				00ED81B929E550E500A6B52C /* InitialDataAdvancedFlowProtocol.swift in Sources */,
 				F95B6DB525274DFF002C9062 /* CodingHelpers.swift in Sources */,
+				00C3DB0F2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */,
 				F9A53C452549887F009000A7 /* DefaultAPIClient.swift in Sources */,
 				C9454C38276A34150086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */,
 				00ED81C429F68C0F00A6B52C /* CardComponentExample.swift in Sources */,
