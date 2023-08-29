@@ -26,7 +26,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var allowDisablingStoredPaymentMethods: Bool = false
     @Published internal var allowsSkippingPaymentList: Bool = false
     @Published internal var allowPreselectedPaymentView: Bool = true
-    @Published internal var applePayMerchantIdentifier: String = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
+    @Published internal var applePayMerchantIdentifier: String = ""
     @Published internal var allowOnboarding: Bool = false
     @Published internal var analyticsIsEnabled: Bool = true
 
