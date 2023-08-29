@@ -114,6 +114,10 @@ internal struct ApplePayConfiguration: Codable {
     internal var allowOnboarding: Bool = false
 }
 
+internal struct AnalyticConfiguration: Codable {
+    internal var isEnabled: Bool = true
+}
+
 internal struct DemoAppSettings: Codable {
     private static let defaultsKey = "ConfigurationKey"
     
@@ -125,6 +129,7 @@ internal struct DemoAppSettings: Codable {
     internal let cardComponentConfiguration: CardComponentConfiguration
     internal let dropInConfiguration: DropInConfiguration
     internal let applePayConfiguration: ApplePayConfiguration
+    internal let analyticsConfiguration: AnalyticConfiguration
 
     internal var amount: Amount { Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil) }
     internal var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
@@ -137,7 +142,8 @@ internal struct DemoAppSettings: Codable {
         merchantAccount: ConfigurationConstants.merchantAccount,
         cardComponentConfiguration: defaultCardComponentConfiguration,
         dropInConfiguration: defaultDropInConfiguration,
-        applePayConfiguration: defaultApplePayConfiguration
+        applePayConfiguration: defaultApplePayConfiguration,
+        analyticsConfiguration: defaultAnalyticsConfiguration
     )
 
     internal static let defaultCardComponentConfiguration = CardComponentConfiguration(showsHolderNameField: false,
@@ -153,6 +159,8 @@ internal struct DemoAppSettings: Codable {
                                                                          allowPreselectedPaymentView: true)
 
     internal static let defaultApplePayConfiguration = ApplePayConfiguration(merchantIdentifier: "", allowOnboarding: false)
+
+    internal static let defaultAnalyticsConfiguration = AnalyticConfiguration(isEnabled: true)
     
     fileprivate static func loadConfiguration() -> DemoAppSettings {
         var config = UserDefaults.standard.data(forKey: defaultsKey)
@@ -229,6 +237,12 @@ internal struct DemoAppSettings: Codable {
             AdyenAssertion.assertionFailure(message: error.localizedDescription)
         }
         return nil
+    }
+
+    internal var analyticsSettings: AnalyticsConfiguration {
+        var analyticsConfiguration = AnalyticsConfiguration()
+        analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsConfiguration.isEnabled
+        return analyticsConfiguration
     }
 
 }
