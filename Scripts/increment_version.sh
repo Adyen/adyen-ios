@@ -25,3 +25,5 @@ CURRENT_BUILD=`agvtool vers -terse`
 
 echo "New Version:     ${CURRENT_VERSION} (${CURRENT_BUILD})"
 echo ""
+
+echo "### New Version: ${CURRENT_VERSION} (${CURRENT_BUILD})" >> $GITHUB_STEP_SUMMARY
