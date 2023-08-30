@@ -148,11 +148,11 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         
         let header: FormItem? = configuration.showsHeader ? headerItem.addingDefaultMargins() : nil
         
-        var formItems = [
+        var formItems: [FormItem?] = [
             FormSpacerItem(),
             header,
             countryPickerItem
-        ].compactMap { $0 }
+        ]
         
         for field in addressViewModel.scheme {
             switch field {
@@ -167,7 +167,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             }
         }
         
-        self.items = formItems
+        self.items = formItems.compactMap { $0 }
     }
     
     private func create(for field: AddressField, from viewModel: AddressViewModel, subRegions: [Region]?) -> FormItem {
