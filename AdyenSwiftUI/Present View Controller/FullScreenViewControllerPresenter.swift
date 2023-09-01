@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -49,7 +49,7 @@ import SwiftUI
         }
 
         internal func makeUIViewController(context: UIViewControllerRepresentableContext<FullScreenView>) -> UIViewController {
-            HostUIController()
+            UIViewController()
         }
 
         internal func makeCoordinator() -> Coordinator {
@@ -67,8 +67,8 @@ import SwiftUI
         private func dismissIfNeededThenPresent(viewController: UIViewController,
                                                 presenter: UIViewController,
                                                 context: UIViewControllerRepresentableContext<FullScreenView>) {
-            if context.coordinator.currentlyPresentedViewController != nil {
-                dismiss(presenter: presenter, context: context) {
+            if let presented = context.coordinator.currentlyPresentedViewController {
+                presented.dismiss(animated: true) {
                     Self.present(viewController: viewController, presenter: presenter, context: context)
                 }
             } else {
@@ -80,7 +80,6 @@ import SwiftUI
                                     presenter: UIViewController,
                                     context: UIViewControllerRepresentableContext<FullScreenView>) {
             guard !viewController.isBeingPresented, !viewController.isBeingDismissed else { return }
-            
             presenter.present(viewController, animated: true) {
                 context.coordinator.currentlyPresentedViewController = viewController
             }
@@ -98,24 +97,4 @@ import SwiftUI
             }
         }
     }
-
-private class HostUIController: UIViewController, UIViewControllerTransitioningDelegate {
-
-    init() {
-        super.init(nibName: nil, bundle: Bundle(for: HostUIController.self))
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
-        if presentedViewController != nil {
-            super.dismiss(animated: flag, completion: completion)
-        } else {
-            completion?()
-        }
-    }
-    
-}
 #endif
