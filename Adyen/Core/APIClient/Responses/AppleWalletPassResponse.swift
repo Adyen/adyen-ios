@@ -30,7 +30,7 @@ public struct AppleWalletPassResponse: Response {
         self.passData = passData
     }
 
-    internal enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case passBase64String = "passData"
     }
 }

@@ -71,7 +71,7 @@ extension ApplePayComponent {
         
         /// The payment request object needed for Apple Pay. Must contain all the required fileds
         /// such as `merchantIdentifier`, `summaryItems`, `currencyCode`, and `countryCode`.
-        internal var paymentRequest: PKPaymentRequest?
+        var paymentRequest: PKPaymentRequest?
 
         /// Initializes the configuration.
         ///
@@ -130,7 +130,7 @@ extension ApplePayComponent {
             return paymentRequest
         }
 
-        internal mutating func paymentRequest(with supportedNetworks: [PKPaymentNetwork]) -> PKPaymentRequest {
+        mutating func paymentRequest(with supportedNetworks: [PKPaymentNetwork]) -> PKPaymentRequest {
             // create the request from config properties if using old init
             let paymentRequest = paymentRequest ?? createPaymentRequest()
             paymentRequest.supportedNetworks = supportedNetworks
@@ -162,7 +162,7 @@ extension ApplePayComponent {
 
 extension ApplePayPaymentMethod {
 
-    internal var supportedNetworks: [PKPaymentNetwork] {
+    var supportedNetworks: [PKPaymentNetwork] {
         var networks = PKPaymentRequest.availableNetworks()
         if let brands = brands {
             let brandsSet = Set(brands)
@@ -175,7 +175,7 @@ extension ApplePayPaymentMethod {
 
 extension PKPaymentNetwork {
 
-    internal var txVariantName: String {
+    var txVariantName: String {
         if self == .masterCard { return "mc" }
         if #available(iOS 11.2, *), self == .cartesBancaires { return "cartebancaire" }
         return self.rawValue.lowercased()

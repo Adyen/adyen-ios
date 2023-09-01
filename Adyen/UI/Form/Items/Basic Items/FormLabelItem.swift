@@ -40,7 +40,7 @@ public class FormLabelItem: FormItem {
     }
 }
 
-internal class ADYLabel: UILabel, AnyFormItemView {
+class ADYLabel: UILabel, AnyFormItemView {
 
     public var childItemViews: [AnyFormItemView] { [] }
     

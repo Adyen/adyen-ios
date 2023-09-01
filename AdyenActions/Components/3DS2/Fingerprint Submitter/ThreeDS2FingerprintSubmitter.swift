@@ -8,26 +8,26 @@
 import AdyenNetworking
 import Foundation
 
-internal protocol AnyThreeDS2FingerprintSubmitter {
+protocol AnyThreeDS2FingerprintSubmitter {
     func submit(fingerprint: String,
                 paymentData: String?,
                 completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void)
 }
 
-internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitter {
+final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitter {
     
     private let apiClient: APIClientProtocol
     
     private let apiContext: APIContext
 
-    internal init(apiContext: APIContext, apiClient: APIClientProtocol? = nil) {
+    init(apiContext: APIContext, apiClient: APIClientProtocol? = nil) {
         self.apiContext = apiContext
         self.apiClient = apiClient ?? APIClient(apiContext: apiContext)
     }
 
-    internal func submit(fingerprint: String,
-                         paymentData: String?,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Swift.Error>) -> Void) {
+    func submit(fingerprint: String,
+                paymentData: String?,
+                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Swift.Error>) -> Void) {
 
         let request = Submit3DS2FingerprintRequest(clientKey: apiContext.clientKey,
                                                    fingerprint: fingerprint,

@@ -178,7 +178,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     // MARK: - Editing
     
-    override internal func didChangeEditingStatus() {
+    override func didChangeEditingStatus() {
         updateValidationStatus()
     }
     
@@ -265,7 +265,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         }
     }
 
-    override internal func resetValidationStatus() {
+    override func resetValidationStatus() {
         super.resetValidationStatus()
         removeAccessoryIfNeeded()
     }

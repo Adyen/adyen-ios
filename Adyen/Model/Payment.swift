@@ -26,7 +26,7 @@ public struct Payment: Codable {
         self.countryCode = countryCode
     }
 
-    internal init(amount: Amount, unsafeCountryCode: String) {
+    init(amount: Amount, unsafeCountryCode: String) {
         self.amount = amount
         self.countryCode = unsafeCountryCode
     }

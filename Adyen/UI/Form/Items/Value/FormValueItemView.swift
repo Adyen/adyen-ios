@@ -58,7 +58,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         }
     }
     
-    internal func didChangeEditingStatus() {
+    func didChangeEditingStatus() {
         guard showsSeparator else { return }
         isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
     }
@@ -72,7 +72,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         }
     }
     
-    internal lazy var separatorView: UIView = {
+    lazy var separatorView: UIView = {
         let separatorView = UIView()
         separatorView.backgroundColor = defaultSeparatorColor
         separatorView.isUserInteractionEnabled = false
@@ -81,7 +81,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         return separatorView
     }()
     
-    internal var defaultSeparatorColor: UIColor {
+    var defaultSeparatorColor: UIColor {
         if isEditing {
             return tintColor
         } else {
@@ -89,7 +89,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         }
     }
     
-    internal var defaultTitleColor: UIColor {
+    var defaultTitleColor: UIColor {
         if isEditing {
             return tintColor
         } else {
@@ -97,7 +97,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         }
     }
     
-    internal func highlightSeparatorView(color: UIColor) {
+    func highlightSeparatorView(color: UIColor) {
         
         if window == nil {
             // We don't want to animate the separator if the view is not visible yet
@@ -118,14 +118,14 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
                                        delay: 0.0,
                                        options: [.curveEaseInOut],
                                        animations: { [weak self] in
-            guard let self = self else { return }
-            transitionView.frame = self.separatorView.frame
-        },
+                                           guard let self = self else { return }
+                                           transitionView.frame = self.separatorView.frame
+                                       },
                                        completion: { [weak self] _ in
-            guard let self = self else { return }
-            self.separatorView.backgroundColor = color
-            transitionView.removeFromSuperview()
-        })
+                                           guard let self = self else { return }
+                                           self.separatorView.backgroundColor = color
+                                           transitionView.removeFromSuperview()
+                                       })
         
         adyen.animate(context: context)
     }
@@ -134,7 +134,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         case separatorHighlighting = "separator_highlighting"
     }
     
-    internal func unhighlightSeparatorView() {
+    func unhighlightSeparatorView() {
         
         if window == nil {
             // We don't want to animate the separator if the view is not visible yet

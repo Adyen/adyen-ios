@@ -11,7 +11,7 @@ import UIKit
 @_spi(AdyenInternal)
 public class AddressLookupViewController: UINavigationController, AdyenObserver {
     
-    internal private(set) var viewModel: ViewModel
+    private(set) var viewModel: ViewModel
     
     public init(viewModel: ViewModel) {
         self.viewModel = viewModel
@@ -58,15 +58,15 @@ private extension AddressLookupViewController {
 
 extension AddressLookupViewController: AddressLookupSearchDelegate {
     
-    internal func addressLookupSearchSwitchToManualEntry() {
+    func addressLookupSearchSwitchToManualEntry() {
         viewModel.handleSwitchToManualEntryTapped()
     }
     
-    internal func addressLookupSearchLookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
+    func addressLookupSearchLookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
         viewModel.lookUp(searchTerm: searchTerm, resultHandler: resultHandler)
     }
     
-    internal func addressLookupSearchCancel() {
+    func addressLookupSearchCancel() {
         viewModel.handleDismissSearchTapped()
     }
 }

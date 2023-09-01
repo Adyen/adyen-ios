@@ -27,7 +27,7 @@ public struct OrderStatusResponse: Response {
         self.paymentMethods = paymentMethods
     }
 
-    internal enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case remainingAmount
         case paymentMethods
     }

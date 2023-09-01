@@ -8,33 +8,33 @@
 import AdyenNetworking
 import Foundation
 
-internal struct CancelOrderRequest: APIRequest {
+struct CancelOrderRequest: APIRequest {
 
-    internal typealias ResponseType = CancelOrderResponse
+    typealias ResponseType = CancelOrderResponse
 
-    internal let order: PartialPaymentOrder
+    let order: PartialPaymentOrder
     
-    internal let sessionData: String
+    let sessionData: String
 
-    internal let path: String
+    let path: String
 
-    internal var counter: UInt = 0
+    var counter: UInt = 0
 
-    internal let method: HTTPMethod = .post
+    let method: HTTPMethod = .post
 
-    internal let headers: [String: String] = [:]
+    let headers: [String: String] = [:]
 
-    internal let queryParameters: [URLQueryItem] = []
+    let queryParameters: [URLQueryItem] = []
     
-    internal init(sessionId: String,
-                  sessionData: String,
-                  order: PartialPaymentOrder) {
+    init(sessionId: String,
+         sessionData: String,
+         order: PartialPaymentOrder) {
         self.path = "checkoutshopper/v1/sessions/\(sessionId)/orders/cancel"
         self.sessionData = sessionData
         self.order = order
     }
 
-    internal func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         try container.encode(order.compactOrder, forKey: .order)
@@ -47,7 +47,7 @@ internal struct CancelOrderRequest: APIRequest {
     }
 }
 
-internal struct CancelOrderResponse: SessionResponse {
+struct CancelOrderResponse: SessionResponse {
 
-    internal let sessionData: String
+    let sessionData: String
 }

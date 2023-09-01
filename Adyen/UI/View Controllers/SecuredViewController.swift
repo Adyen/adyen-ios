@@ -14,7 +14,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
 
     private let notificationCenter = NotificationCenter.default
 
-    internal let childViewController: ChildViewController
+    let childViewController: ChildViewController
 
     private let style: ViewStyle
 
@@ -48,7 +48,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
     }
 
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 

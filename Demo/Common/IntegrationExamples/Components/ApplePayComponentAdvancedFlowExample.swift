@@ -9,19 +9,19 @@ import AdyenActions
 import AdyenComponents
 import PassKit
 
-internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
+final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
 
     // MARK: - Properties
 
-    internal var paymentMethods: PaymentMethods?
-    internal var applePayComponent: ApplePayComponent?
-    internal weak var presenter: PresenterExampleProtocol?
+    var paymentMethods: PaymentMethods?
+    var applePayComponent: ApplePayComponent?
+    weak var presenter: PresenterExampleProtocol?
 
     // MARK: - Initializers
 
-    internal init() {}
+    init() {}
 
-    internal func start() {
+    func start() {
         presenter?.showLoadingIndicator()
         requestPaymentMethods(order: nil) { [weak self] result in
             guard let self else { return }
@@ -40,7 +40,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
     // MARK: Presentation
 
-    internal func presentComponent(with paymentMethods: PaymentMethods) {
+    func presentComponent(with paymentMethods: PaymentMethods) {
         do {
             let component = try applePayComponent(from: paymentMethods)
             let componentViewController = component.viewController
@@ -51,7 +51,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         }
     }
 
-    internal func applePayComponent(from paymentMethods: PaymentMethods?) throws -> ApplePayComponent {
+    func applePayComponent(from paymentMethods: PaymentMethods?) throws -> ApplePayComponent {
         guard
             let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self)
         else { throw IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self)
@@ -86,13 +86,13 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         }
     }
 
-    internal func finish(with result: PaymentsResponse) {
+    func finish(with result: PaymentsResponse) {
         let success = result.resultCode == .authorised || result.resultCode == .received || result.resultCode == .pending
         let message = "\(result.resultCode.rawValue) \(result.amount?.formatted ?? "")"
         finalize(success, message)
     }
 
-    internal func finish(with error: Error) {
+    func finish(with error: Error) {
         let message: String
         if let componentError = (error as? ComponentError), componentError == ComponentError.cancelled {
             message = "Cancelled"
@@ -109,7 +109,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         }
     }
 
-    internal func dismissAndShowAlert(_ success: Bool, _ message: String) {
+    func dismissAndShowAlert(_ success: Bool, _ message: String) {
         presenter?.dismiss {
             // Payment is processed. Add your code here.
             let title = success ? "Success" : "Error"
@@ -125,14 +125,14 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
 extension ApplePayComponentAdvancedFlowExample: PaymentComponentDelegate {
 
-    internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
+    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         let request = PaymentsRequest(data: data)
         apiClient.perform(request) { [weak self] result in
             self?.paymentResponseHandler(result: result)
         }
     }
 
-    internal func didFail(with error: Error, from component: PaymentComponent) {
+    func didFail(with error: Error, from component: PaymentComponent) {
         finish(with: error)
     }
 

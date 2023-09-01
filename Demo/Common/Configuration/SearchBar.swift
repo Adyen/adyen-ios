@@ -7,17 +7,17 @@
 import SwiftUI
 
 @available(iOS 13.0.0, *)
-internal struct SearchBar: UIViewRepresentable {
+struct SearchBar: UIViewRepresentable {
 
     @Binding private var searchString: String
     private let placeholder: String
     
-    internal init(searchString: Binding<String>, placeholder: String) {
+    init(searchString: Binding<String>, placeholder: String) {
         self._searchString = searchString
         self.placeholder = placeholder
     }
 
-    internal func makeUIView(context: UIViewRepresentableContext<SearchBar>) -> UISearchBar {
+    func makeUIView(context: UIViewRepresentableContext<SearchBar>) -> UISearchBar {
         let searchBar = UISearchBar(frame: .zero)
         searchBar.delegate = context.coordinator
         searchBar.placeholder = placeholder
@@ -26,18 +26,18 @@ internal struct SearchBar: UIViewRepresentable {
         return searchBar
     }
 
-    internal func updateUIView(
+    func updateUIView(
         _ uiView: UISearchBar,
         context: UIViewRepresentableContext<SearchBar>
     ) {
         uiView.text = searchString
     }
 
-    internal func makeCoordinator() -> SearchBar.Coordinator {
+    func makeCoordinator() -> SearchBar.Coordinator {
         Coordinator(text: $searchString)
     }
 
-    internal class Coordinator: NSObject, UISearchBarDelegate {
+    class Coordinator: NSObject, UISearchBarDelegate {
 
         @Binding private var text: String
 
@@ -45,7 +45,7 @@ internal struct SearchBar: UIViewRepresentable {
             _text = text
         }
 
-        internal func searchBar(
+        func searchBar(
             _ searchBar: UISearchBar,
             textDidChange searchText: String
         ) {

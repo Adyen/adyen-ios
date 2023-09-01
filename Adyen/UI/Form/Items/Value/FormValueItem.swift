@@ -42,7 +42,7 @@ open class FormValueItem<ValueType: Equatable, StyleType: FormValueItemStyle>: F
     @AdyenObservable(nil) public var title: String?
 
     /// Create new instance of FormValueItem
-    internal init(value: ValueType, style: StyleType) {
+    init(value: ValueType, style: StyleType) {
         self.publisher = AdyenObservable(value)
         self.style = style
         self.subitems = []

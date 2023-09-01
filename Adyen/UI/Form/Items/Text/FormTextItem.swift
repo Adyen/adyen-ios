@@ -49,7 +49,7 @@ open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFor
     }
     
     /// The formatted text value.
-    @AdyenObservable("") internal var formattedValue: String
+    @AdyenObservable("") var formattedValue: String
 
     // MARK: - Private
 
@@ -58,7 +58,7 @@ open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFor
     }
 
     @discardableResult
-    internal func textDidChange(value: String) -> String {
+    func textDidChange(value: String) -> String {
         let sanitizedValue = formatter?.sanitizedValue(for: value) ?? value
         
         publisher.wrappedValue = sanitizedValue
@@ -71,7 +71,7 @@ open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFor
 @_spi(AdyenInternal)
 extension AnyFormItemView {
 
-    internal func applyTextDelegateIfNeeded(delegate: FormTextItemViewDelegate) {
+    func applyTextDelegateIfNeeded(delegate: FormTextItemViewDelegate) {
         if let formTextItemView = self as? AnyFormTextItemView {
             formTextItemView.delegate = delegate
         }

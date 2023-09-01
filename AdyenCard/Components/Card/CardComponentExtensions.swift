@@ -15,7 +15,7 @@ import UIKit
 
 extension CardComponent {
     
-    internal func didSelectSubmitButton() {
+    func didSelectSubmitButton() {
         guard cardViewController.validate() else {
             return
         }

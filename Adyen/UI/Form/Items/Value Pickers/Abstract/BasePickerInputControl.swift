@@ -28,48 +28,48 @@ public protocol PickerTextInputControl: UIView {
 }
 
 /// A control to select a value from a list.
-internal class BasePickerInputControl: UIControl, PickerTextInputControl {
+class BasePickerInputControl: UIControl, PickerTextInputControl {
 
-    internal let style: TextStyle
+    let style: TextStyle
 
-    internal var childItemViews: [AnyFormItemView] = []
+    var childItemViews: [AnyFormItemView] = []
 
-    internal lazy var chevronView = UIImageView(image: accessoryImage)
+    lazy var chevronView = UIImageView(image: accessoryImage)
 
-    internal var onDidResignFirstResponder: (() -> Void)?
+    var onDidResignFirstResponder: (() -> Void)?
 
-    internal var onDidBecomeFirstResponder: (() -> Void)?
+    var onDidBecomeFirstResponder: (() -> Void)?
 
-    internal var onDidTap: (() -> Void)?
+    var onDidTap: (() -> Void)?
 
-    override internal var inputView: UIView? { customInputView }
+    override var inputView: UIView? { customInputView }
     
-    override internal var inputAccessoryView: UIView? { customInputAccessoryView }
+    override var inputAccessoryView: UIView? { customInputAccessoryView }
 
-    override internal var canBecomeFirstResponder: Bool { true }
+    override var canBecomeFirstResponder: Bool { true }
 
-    internal var accessoryImage: UIImage? { UIImage(named: "chevron_down",
-                                                    in: Bundle.coreInternalResources,
-                                                    compatibleWith: nil) }
+    var accessoryImage: UIImage? { UIImage(named: "chevron_down",
+                                           in: Bundle.coreInternalResources,
+                                           compatibleWith: nil) }
 
-    internal var customInputView: UIView
+    var customInputView: UIView
     
-    internal var customInputAccessoryView: UIView
+    var customInputAccessoryView: UIView
 
-    internal var showChevron: Bool {
+    var showChevron: Bool {
         get { !chevronView.isHidden }
         set { chevronView.isHidden = !newValue }
     }
 
-    internal var label: String? {
+    var label: String? {
         get { valueLabel.text }
         set { valueLabel.text = newValue }
     }
 
     /// The phone code label.
-    internal lazy var valueLabel = UILabel(style: style)
+    lazy var valueLabel = UILabel(style: style)
 
-    override internal var accessibilityIdentifier: String? {
+    override var accessibilityIdentifier: String? {
         didSet {
             valueLabel.accessibilityIdentifier = accessibilityIdentifier.map {
                 ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "label")
@@ -84,7 +84,7 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
     /// - Parameter inputView: The input view used in place of the system keyboard.
     /// - Parameter inputAccessoryView: The accessory view to show above the input view.
     /// - Parameter style: The UI style.
-    internal init(inputView: UIView, inputAccessoryView: UIView, style: TextStyle) {
+    init(inputView: UIView, inputAccessoryView: UIView, style: TextStyle) {
         self.customInputView = inputView
         self.customInputAccessoryView = inputAccessoryView
         self.style = style
@@ -95,17 +95,17 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
     }
 
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override internal func resignFirstResponder() -> Bool {
+    override func resignFirstResponder() -> Bool {
         let result = super.resignFirstResponder()
         onDidResignFirstResponder?()
         return result
     }
 
-    override internal func becomeFirstResponder() -> Bool {
+    override func becomeFirstResponder() -> Bool {
         let result = super.becomeFirstResponder()
         onDidBecomeFirstResponder?()
         return result

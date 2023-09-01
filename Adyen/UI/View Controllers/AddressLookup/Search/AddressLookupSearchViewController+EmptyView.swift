@@ -9,7 +9,7 @@ import UIKit
 extension AddressLookupSearchViewController {
     
     /// The view that is shown when the address lookup search result is empty
-    internal class EmptyView: EmptyStateView<LinkTextView> {
+    class EmptyView: EmptyStateView<LinkTextView> {
         
         override public var searchTerm: String {
             didSet { updateLabels() }
@@ -22,7 +22,7 @@ extension AddressLookupSearchViewController {
         ///   - style: The style of the view.
         ///   - localizationParameters: The localization parameters.
         ///   - dismissHandler: A closure that is called when manual entry is requested.
-        internal init(
+        init(
             searchTerm: String = "",
             style: EmptyStateViewStyle = .init(),
             localizationParameters: LocalizationParameters? = nil,
@@ -39,7 +39,7 @@ extension AddressLookupSearchViewController {
         }
         
         @available(*, unavailable)
-        internal required init(coder: NSCoder) {
+        required init(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
     }

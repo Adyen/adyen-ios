@@ -8,7 +8,7 @@ import Adyen
 import SwiftUI
 
 @available(iOS 13.0.0, *)
-internal struct ConfigurationView: View {
+struct ConfigurationView: View {
     
     private enum ConfigurationSection: String, CaseIterable {
         case apiVersion = "Api Version"
@@ -19,7 +19,7 @@ internal struct ConfigurationView: View {
         case dropIn = "DropIn"
     }
     
-    @ObservedObject internal var viewModel: ConfigurationViewModel
+    @ObservedObject var viewModel: ConfigurationViewModel
     @State private var countrySearchSting: String = ""
     private var filteredCountries: [CountryDisplayInfo] {
         if countrySearchSting.isEmpty {
@@ -38,11 +38,11 @@ internal struct ConfigurationView: View {
         }
     }
     
-    internal init(viewModel: ConfigurationViewModel) {
+    init(viewModel: ConfigurationViewModel) {
         self.viewModel = viewModel
     }
     
-    internal var body: some View {
+    var body: some View {
         NavigationView {
             Form {
                 apiVersionSection
@@ -138,14 +138,14 @@ internal struct ConfigurationView: View {
     }
 
     private var componentsSection: some View {
-        return Group {
+        Group {
             cardComponentSection
             applePaySection
             analyticsSection
         }
     }
 
-    internal var cardComponentSection: some View {
+    var cardComponentSection: some View {
         NavigationLink(destination: CardComponentSettingsView(viewModel: viewModel)) {
             HStack {
                 Text("Card Component")
@@ -196,21 +196,21 @@ internal struct ConfigurationView: View {
 }
 
 @available(iOS 13.0.0, *)
-internal struct TextFieldItemView: View {
+struct TextFieldItemView: View {
 
-    internal let title: String
-    internal let placeholder: String
-    internal let keyboardType: UIKeyboardType
-    internal let value: Binding<String>
+    let title: String
+    let placeholder: String
+    let keyboardType: UIKeyboardType
+    let value: Binding<String>
 
-    internal init(title: String, value: Binding<String>, placeholder: String, keyboardType: UIKeyboardType) {
+    init(title: String, value: Binding<String>, placeholder: String, keyboardType: UIKeyboardType) {
         self.title = title
         self.placeholder = placeholder
         self.keyboardType = keyboardType
         self.value = value
     }
 
-    internal var body: some View {
+    var body: some View {
         HStack {
             Text(title)
             TextField(placeholder, text: value)
@@ -249,7 +249,7 @@ extension CountryDisplayInfo {
         )
     }
     
-    internal func matches(_ predicate: String) -> Bool {
+    func matches(_ predicate: String) -> Bool {
         code.range(of: predicate, options: [.anchored, .caseInsensitive]) != nil ||
             name.range(of: predicate, options: [.anchored, .caseInsensitive]) != nil
     }
@@ -268,7 +268,7 @@ extension CurrencyDisplayInfo {
         ListItemView.ViewModel(title: code, subtitle: symbol, tag: code)
     }
     
-    internal func matches(_ predicate: String) -> Bool {
+    func matches(_ predicate: String) -> Bool {
         code.range(of: predicate, options: [.anchored, .caseInsensitive]) != nil ||
             symbol.range(of: predicate, options: [.anchored, .caseInsensitive]) != nil
     }

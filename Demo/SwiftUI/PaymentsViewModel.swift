@@ -6,7 +6,7 @@
 
 import SwiftUI
 
-internal final class PaymentsViewModel: ObservableObject, Identifiable {
+final class PaymentsViewModel: ObservableObject, Identifiable {
 
     private lazy var dropInExample: DropInExample = {
         let dropIn = DropInExample()
@@ -32,17 +32,17 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable {
         return cardComponentExample
     }()
 
-    @Published internal var viewControllerToPresent: UIViewController?
+    @Published var viewControllerToPresent: UIViewController?
 
-    @Published internal var items = [[ComponentsItem]]()
+    @Published var items = [[ComponentsItem]]()
     
-    @Published internal private(set) var isLoading: Bool = false
+    @Published private(set) var isLoading: Bool = false
     
-    @Published internal var isUsingSession: Bool = true
+    @Published var isUsingSession: Bool = true
 
     // MARK: - DropIn Component
 
-    internal func presentDropInComponent() {
+    func presentDropInComponent() {
         if isUsingSession {
             dropInExample.start()
         } else {
@@ -50,7 +50,7 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable {
         }
     }
 
-    internal func presentCardComponent() {
+    func presentCardComponent() {
         if isUsingSession {
             cardComponentExample.start()
         } else {
@@ -60,7 +60,7 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable {
 
     // TODO: add for other PM
 
-    internal func viewDidAppear() {
+    func viewDidAppear() {
         items = [
             [
                 ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
@@ -73,7 +73,7 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable {
     
     // MARK: - Configuration
     
-    internal func presentConfiguration() {
+    func presentConfiguration() {
         let configurationVC = UIHostingController(rootView: ConfigurationView(viewModel: getConfigurationVM()))
         configurationVC.isModalInPresentation = true
         present(viewController: configurationVC, completion: nil)
@@ -94,7 +94,7 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable {
 
 extension PaymentsViewModel: PresenterExampleProtocol {
     
-    internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
+    func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         
@@ -107,26 +107,26 @@ extension PaymentsViewModel: PresenterExampleProtocol {
         viewControllerToPresent = alertController
     }
 
-    internal func presentAlert(withTitle title: String, message: String?) {
+    func presentAlert(withTitle title: String, message: String?) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         viewControllerToPresent = alertController
     }
     
-    internal func showLoadingIndicator() {
+    func showLoadingIndicator() {
         isLoading = true
     }
     
-    internal func hideLoadingIndicator() {
+    func hideLoadingIndicator() {
         isLoading = false
     }
 
-    internal func present(viewController: UIViewController, completion: (() -> Void)?) {
+    func present(viewController: UIViewController, completion: (() -> Void)?) {
         viewControllerToPresent = viewController
         completion?()
     }
 
-    internal func dismiss(completion: (() -> Void)?) {
+    func dismiss(completion: (() -> Void)?) {
         viewControllerToPresent = nil
         completion?()
     }

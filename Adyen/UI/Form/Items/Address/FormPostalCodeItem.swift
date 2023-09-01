@@ -9,7 +9,7 @@ import Foundation
 @_spi(AdyenInternal)
 public final class FormPostalCodeItem: FormTextItem {
     
-    internal var localizationParameters: LocalizationParameters?
+    var localizationParameters: LocalizationParameters?
 
     /// Initializes the form postal code item.
     public init(style: FormTextItemStyle = FormTextItemStyle(),

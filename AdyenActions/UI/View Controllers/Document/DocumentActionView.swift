@@ -10,14 +10,14 @@ import SwiftUI
 import UIKit
 
 /// Callback protocol for document action views.
-internal protocol DocumentActionViewDelegate: AnyObject {
+protocol DocumentActionViewDelegate: AnyObject {
     
     func didComplete()
     
     func mainButtonTap(sourceView: UIView, downloadable: Downloadable)
 }
 
-internal final class DocumentActionView: UIView {
+final class DocumentActionView: UIView {
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [imageView, messageLabel, mainButton])
@@ -27,7 +27,7 @@ internal final class DocumentActionView: UIView {
         return stackView
     }()
     
-    internal lazy var imageView: NetworkImageView = {
+    lazy var imageView: NetworkImageView = {
         let imageView = NetworkImageView()
         imageView.imageURL = viewModel.logoURL
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "icon")
@@ -44,7 +44,7 @@ internal final class DocumentActionView: UIView {
         return imageView
     }()
     
-    internal lazy var messageLabel: UILabel = {
+    lazy var messageLabel: UILabel = {
         let label = UILabel(style: style.messageLabel)
         label.text = viewModel.message
         label.numberOfLines = 0
@@ -67,7 +67,7 @@ internal final class DocumentActionView: UIView {
         return button
     }()
 
-    internal weak var delegate: DocumentActionViewDelegate?
+    weak var delegate: DocumentActionViewDelegate?
     
     /// The view model.
     private let viewModel: DocumentActionViewModel
@@ -75,7 +75,7 @@ internal final class DocumentActionView: UIView {
     /// The UI style.
     private let style: DocumentComponentStyle
     
-    internal init(viewModel: DocumentActionViewModel, style: DocumentComponentStyle) {
+    init(viewModel: DocumentActionViewModel, style: DocumentComponentStyle) {
         self.viewModel = viewModel
         self.style = style
         super.init(frame: .zero)
@@ -83,7 +83,7 @@ internal final class DocumentActionView: UIView {
     }
     
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

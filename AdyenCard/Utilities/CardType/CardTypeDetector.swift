@@ -38,7 +38,7 @@ public extension AdyenScope where Base == [CardType] {
 
 extension Array where Element: Hashable {
 
-    internal func minus(_ set: Set<Element>) -> [Element] {
+    func minus(_ set: Set<Element>) -> [Element] {
         filter { !set.contains($0) }
     }
 }

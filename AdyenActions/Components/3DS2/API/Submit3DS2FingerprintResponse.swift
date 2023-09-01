@@ -8,15 +8,15 @@
 import AdyenNetworking
 import Foundation
 
-internal struct Submit3DS2FingerprintResponse: Response {
+struct Submit3DS2FingerprintResponse: Response {
 
-    internal let result: ThreeDSActionHandlerResult
+    let result: ThreeDSActionHandlerResult
 
-    internal init(result: ThreeDSActionHandlerResult) {
+    init(result: ThreeDSActionHandlerResult) {
         self.result = result
     }
 
-    internal init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         self.result = try ThreeDSActionHandlerResult(from: decoder)
     }
 }

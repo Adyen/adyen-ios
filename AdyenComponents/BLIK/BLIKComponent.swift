@@ -71,13 +71,13 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     }()
 
     /// The helper message item.
-    internal lazy var hintLabelItem: FormLabelItem = .init(text: localizedString(.blikHelp, configuration.localizationParameters),
-                                                           style: configuration.style.hintLabel,
-                                                           identifier: ViewIdentifierBuilder.build(scopeInstance: self,
-                                                                                                   postfix: "blikCodeHintLabel"))
+    lazy var hintLabelItem: FormLabelItem = .init(text: localizedString(.blikHelp, configuration.localizationParameters),
+                                                  style: configuration.style.hintLabel,
+                                                  identifier: ViewIdentifierBuilder.build(scopeInstance: self,
+                                                                                          postfix: "blikCodeHintLabel"))
 
     /// The BLIK code item.
-    internal lazy var codeItem: FormTextInputItem = {
+    lazy var codeItem: FormTextInputItem = {
         let item = FormTextInputItem(style: configuration.style.textField)
         item.title = localizedString(.blikCode, configuration.localizationParameters)
         item.placeholder = localizedString(.blikPlaceholder, configuration.localizationParameters)
@@ -90,7 +90,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     }()
 
     /// The footer item.
-    internal lazy var button: FormButtonItem = {
+    lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(with: payment?.amount,

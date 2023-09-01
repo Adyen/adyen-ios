@@ -9,20 +9,20 @@ import PassKit
 import UIKit
 
 /// :nodoc
-internal protocol PreApplePayViewDelegate: AnyObject {
+protocol PreApplePayViewDelegate: AnyObject {
     
     func pay()
     
 }
 
-internal final class PreApplePayView: UIView, Localizable {
+final class PreApplePayView: UIView, Localizable {
     
-    internal let model: Model
+    let model: Model
     
     /// The delegate of the view
-    internal weak var delegate: PreApplePayViewDelegate?
+    weak var delegate: PreApplePayViewDelegate?
     
-    internal var localizationParameters: LocalizationParameters?
+    var localizationParameters: LocalizationParameters?
     
     /// Creates PKPaymentButtonStyle based on Dark or Light Mode.
     private var paymentButtonStyleAuto: PKPaymentButtonStyle {
@@ -37,7 +37,7 @@ internal final class PreApplePayView: UIView, Localizable {
         return buttonStyle
     }
     
-    internal init(model: Model) {
+    init(model: Model) {
         self.model = model
         super.init(frame: .zero)
         
@@ -46,7 +46,7 @@ internal final class PreApplePayView: UIView, Localizable {
     }
     
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -104,10 +104,10 @@ internal final class PreApplePayView: UIView, Localizable {
 
 extension PreApplePayView {
     
-    internal struct Model {
+    struct Model {
         
-        internal let hint: String
+        let hint: String
         
-        internal let style: ApplePayStyle
+        let style: ApplePayStyle
     }
 }

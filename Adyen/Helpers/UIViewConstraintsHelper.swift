@@ -107,7 +107,7 @@ extension AdyenScope where Base: UIView {
             .init(top: 0, left: 0, bottom: 0, right: 0)
         }
         
-        internal init(edgeInsets: UIEdgeInsets) {
+        init(edgeInsets: UIEdgeInsets) {
             top = edgeInsets.top
             left = edgeInsets.left
             bottom = edgeInsets.bottom

@@ -63,9 +63,9 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     /// - Parameter context: The context object for this component.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter configuration: The Component UI style.
-    internal init(context: AdyenContext,
-                  awaitComponentBuilder: AnyPollingHandlerProvider,
-                  configuration: Configuration = .init()) {
+    init(context: AdyenContext,
+         awaitComponentBuilder: AnyPollingHandlerProvider,
+         configuration: Configuration = .init()) {
         self.context = context
         self.configuration = configuration
         self.awaitComponentBuilder = awaitComponentBuilder

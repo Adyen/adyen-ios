@@ -8,12 +8,12 @@
 import AdyenNetworking
 import Foundation
 
-internal protocol AnyBinInfoProvider: AnyObject {
+protocol AnyBinInfoProvider: AnyObject {
     func provide(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void)
 }
 
 /// Provide cardType detection based on BinLookup API.
-internal final class BinInfoProvider: AnyBinInfoProvider {
+final class BinInfoProvider: AnyBinInfoProvider {
     
     private let minBinLength: Int
 
@@ -32,11 +32,11 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     ///   - publicKeyProvider: Any instance of `AnyPublicKeyProvider`.
     ///   - fallbackCardTypeProvider: Any instance of `AnyCardBrandProvider` to be used as a fallback
     ///   if API not available or BIN too short.
-    internal init(apiClient: APIClientProtocol,
-                  publicKeyProvider: AnyPublicKeyProvider,
-                  fallbackCardTypeProvider: AnyBinInfoProvider = FallbackBinInfoProvider(),
-                  minBinLength: Int,
-                  binLookupType: BinLookupRequestType) {
+    init(apiClient: APIClientProtocol,
+         publicKeyProvider: AnyPublicKeyProvider,
+         fallbackCardTypeProvider: AnyBinInfoProvider = FallbackBinInfoProvider(),
+         minBinLength: Int,
+         binLookupType: BinLookupRequestType) {
         self.apiClient = apiClient
         self.publicKeyProvider = publicKeyProvider
         self.fallbackCardTypeProvider = fallbackCardTypeProvider
@@ -49,7 +49,7 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     ///   - bin: Card's BIN number. If longer than `minBinLength` - calls API, otherwise check local Regex.
     ///   - supportedTypes: Card brands supported by the merchant.
     ///   - completion:  Callback to notify about results.
-    internal func provide(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void) {
+    func provide(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void) {
         let fallback: () -> Void = { [weak fallbackCardTypeProvider] in
             fallbackCardTypeProvider?.provide(for: bin,
                                               supportedTypes: supportedTypes,

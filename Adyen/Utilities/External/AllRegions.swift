@@ -6,7 +6,7 @@
 
 import Foundation
 
-internal let allRegions: [String: [Region]] = [
+let allRegions: [String: [Region]] = [
     "US": [
         Region(identifier: "AL", name: "Alabama"),
         Region(identifier: "AK", name: "Alaska"),

@@ -16,13 +16,13 @@ public final class GiftCardComponent: PresentableComponent,
     LoadingComponent,
     AdyenObserver {
 
-    internal let amount: Amount
+    let amount: Amount
     
-    internal enum PartialPaymentMethodType {
+    enum PartialPaymentMethodType {
         case giftCard(GiftCardPaymentMethod)
         case mealVoucher(MealVoucherPaymentMethod)
         
-        internal var partialPaymentMethod: PartialPaymentMethod {
+        var partialPaymentMethod: PartialPaymentMethod {
             switch self {
             case let .giftCard(giftCardPaymentMethod):
                 return giftCardPaymentMethod
@@ -60,7 +60,7 @@ public final class GiftCardComponent: PresentableComponent,
     public var localizationParameters: LocalizationParameters?
 
     /// Indicates whether to show the security code field at all.
-    internal let showsSecurityCodeField: Bool
+    let showsSecurityCodeField: Bool
 
     /// Initializes the partial payment component with a gift card payment method.
     ///
@@ -104,12 +104,12 @@ public final class GiftCardComponent: PresentableComponent,
                   publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
     
-    internal init(partialPaymentMethodType: PartialPaymentMethodType,
-                  context: AdyenContext,
-                  amount: Amount,
-                  style: FormComponentStyle = FormComponentStyle(),
-                  showsSecurityCodeField: Bool = true,
-                  publicKeyProvider: AnyPublicKeyProvider) {
+    init(partialPaymentMethodType: PartialPaymentMethodType,
+         context: AdyenContext,
+         amount: Amount,
+         style: FormComponentStyle = FormComponentStyle(),
+         showsSecurityCodeField: Bool = true,
+         publicKeyProvider: AnyPublicKeyProvider) {
         self.partialPaymentMethodType = partialPaymentMethodType
         self.context = context
         self.style = style
@@ -157,14 +157,14 @@ public final class GiftCardComponent: PresentableComponent,
 
     // MARK: Items
 
-    internal lazy var errorItem: FormErrorItem = {
+    lazy var errorItem: FormErrorItem = {
         let item = FormErrorItem(iconName: "error",
                                  style: style.errorStyle)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "errorItem")
         return item
     }()
 
-    internal lazy var numberItem: FormTextInputItem = {
+    lazy var numberItem: FormTextInputItem = {
         let item = FormTextInputItem(style: style.textField)
         item.title = localizedString(.cardNumberItemTitle, localizationParameters)
         item.validator = NumericStringValidator(minimumLength: 15, maximumLength: 32)
@@ -176,7 +176,7 @@ public final class GiftCardComponent: PresentableComponent,
         return item
     }()
 
-    internal lazy var securityCodeItem: FormTextInputItem = {
+    lazy var securityCodeItem: FormTextInputItem = {
         let item = FormTextInputItem(style: style.textField)
         let title: String
         switch partialPaymentMethodType {
@@ -196,7 +196,7 @@ public final class GiftCardComponent: PresentableComponent,
         return item
     }()
     
-    internal lazy var expiryDateItem: FormCardExpiryDateItem = {
+    lazy var expiryDateItem: FormCardExpiryDateItem = {
         let expiryDateItem = FormCardExpiryDateItem(style: style.textField,
                                                     localizationParameters: localizationParameters)
         expiryDateItem.localizationParameters = localizationParameters
@@ -205,7 +205,7 @@ public final class GiftCardComponent: PresentableComponent,
         return expiryDateItem
     }()
 
-    internal lazy var button: FormButtonItem = {
+    lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedString(.cardApplyGiftcard, localizationParameters)
@@ -222,7 +222,7 @@ public final class GiftCardComponent: PresentableComponent,
         viewController.view.isUserInteractionEnabled = true
     }
 
-    internal func startLoading() {
+    func startLoading() {
         button.showsActivityIndicator = true
         viewController.view.isUserInteractionEnabled = false
     }
@@ -242,7 +242,7 @@ public final class GiftCardComponent: PresentableComponent,
 
 extension GiftCardComponent {
     
-    internal func didSelectSubmitButton() {
+    func didSelectSubmitButton() {
         hideError()
         guard formViewController.validate() else {
             return

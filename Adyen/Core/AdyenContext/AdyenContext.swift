@@ -49,9 +49,9 @@ public final class AdyenContext: PaymentAware {
     }
 
     /// Internal init for testing only
-    internal init(apiContext: APIContext,
-                  payment: Payment?,
-                  analyticsProvider: AnalyticsProviderProtocol) {
+    init(apiContext: APIContext,
+         payment: Payment?,
+         analyticsProvider: AnalyticsProviderProtocol) {
         self.apiContext = apiContext
         self.analyticsProvider = analyticsProvider
         self.payment = payment

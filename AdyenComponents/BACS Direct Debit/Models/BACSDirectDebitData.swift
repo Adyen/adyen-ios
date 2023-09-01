@@ -6,9 +6,9 @@
 
 import Foundation
 
-internal struct BACSDirectDebitData: Equatable {
-    internal let holderName: String
-    internal let bankAccountNumber: String
-    internal let bankLocationId: String
-    internal let shopperEmail: String
+struct BACSDirectDebitData: Equatable {
+    let holderName: String
+    let bankAccountNumber: String
+    let bankLocationId: String
+    let shopperEmail: String
 }

@@ -7,7 +7,7 @@
 import SwiftUI
 import UIKit
 
-internal final class ComponentsViewController: UIViewController {
+final class ComponentsViewController: UIViewController {
     
     private lazy var componentsView = ComponentsView()
 
@@ -49,11 +49,11 @@ internal final class ComponentsViewController: UIViewController {
 
     // MARK: - View
     
-    override internal func loadView() {
+    override func loadView() {
         view = componentsView
     }
     
-    override internal func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Components"
         
@@ -76,7 +76,7 @@ internal final class ComponentsViewController: UIViewController {
     
     // MARK: - DropIn Component
 
-    internal func presentDropInComponent() {
+    func presentDropInComponent() {
         if componentsView.isUsingSession {
             dropInExample.start()
         } else {
@@ -86,7 +86,7 @@ internal final class ComponentsViewController: UIViewController {
 
     // MARK: - Components
 
-    internal func presentCardComponent() {
+    func presentCardComponent() {
         if componentsView.isUsingSession {
             cardComponentExample.start()
         } else {
@@ -94,7 +94,7 @@ internal final class ComponentsViewController: UIViewController {
         }
     }
 
-    internal func presentApplePayComponent() {
+    func presentApplePayComponent() {
         if componentsView.isUsingSession {
             applePayComponentExample.start()
         } else {
@@ -108,7 +108,7 @@ internal final class ComponentsViewController: UIViewController {
 
 extension ComponentsViewController: PresenterExampleProtocol {
     
-    internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
+    func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
 
@@ -121,28 +121,28 @@ extension ComponentsViewController: PresenterExampleProtocol {
         present(viewController: alertController, completion: nil)
     }
 
-    internal func presentAlert(withTitle title: String, message: String?) {
+    func presentAlert(withTitle title: String, message: String?) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default))
 
         present(viewController: alertController, completion: nil)
     }
     
-    internal func showLoadingIndicator() {
+    func showLoadingIndicator() {
         navigationItem.rightBarButtonItem?.isEnabled = false
         componentsView.showsLoadingIndicator = true
     }
     
-    internal func hideLoadingIndicator() {
+    func hideLoadingIndicator() {
         navigationItem.rightBarButtonItem?.isEnabled = true
         componentsView.showsLoadingIndicator = false
     }
 
-    internal func present(viewController: UIViewController, completion: (() -> Void)?) {
+    func present(viewController: UIViewController, completion: (() -> Void)?) {
         topPresenter.present(viewController, animated: true, completion: completion)
     }
 
-    internal func dismiss(completion: (() -> Void)?) {
+    func dismiss(completion: (() -> Void)?) {
         dismiss(animated: true, completion: completion)
     }
 }

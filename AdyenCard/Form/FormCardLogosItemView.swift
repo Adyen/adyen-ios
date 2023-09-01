@@ -7,7 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
+final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
     
     private enum Constants {
         static let cardSpacing: CGFloat = 3
@@ -26,7 +26,7 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
         return collectionView
     }()
     
-    internal required init(item: FormCardLogosItem) {
+    required init(item: FormCardLogosItem) {
         super.init(item: item)
         addSubview(collectionView)
         collectionView.adyen.anchor(inside: self, with: UIEdgeInsets(top: 4, left: 16, bottom: -8, right: -16))
@@ -52,10 +52,10 @@ extension FormCardLogosItemView: UICollectionViewDataSource {
 extension FormCardLogosItemView {
     
     /// A `UICollectionView` that updates its `intrinsicContentSize` to make all rows visible.
-    internal class CardLogoCollectionView: UICollectionView {
+    class CardLogoCollectionView: UICollectionView {
         private var shouldInvalidateLayout = false
         
-        override internal func layoutSubviews() {
+        override func layoutSubviews() {
             super.layoutSubviews()
             if shouldInvalidateLayout {
                 collectionViewLayout.invalidateLayout()
@@ -63,13 +63,13 @@ extension FormCardLogosItemView {
             }
         }
         
-        override internal func reloadData() {
+        override func reloadData() {
             shouldInvalidateLayout = true
             invalidateIntrinsicContentSize()
             super.reloadData()
         }
         
-        override internal var intrinsicContentSize: CGSize {
+        override var intrinsicContentSize: CGSize {
             CGSize(width: contentSize.width, height: max(Constants.cardSize.height, contentSize.height))
         }
     }
@@ -94,7 +94,7 @@ extension FormCardLogosItemView {
             fatalError("init(coder:) has not been implemented")
         }
         
-        internal func update(imageUrl: URL, altText: String, style: ImageStyle) {
+        func update(imageUrl: URL, altText: String, style: ImageStyle) {
             cardTypeImageView.imageURL = imageUrl
             
             cardTypeImageView.isAccessibilityElement = true

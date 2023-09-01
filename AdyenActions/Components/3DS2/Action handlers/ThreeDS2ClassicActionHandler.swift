@@ -9,15 +9,15 @@ import Adyen3DS2
 import Foundation
 
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
-internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, ComponentWrapper {
+class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, ComponentWrapper {
     
-    internal let context: AdyenContext
+    let context: AdyenContext
 
-    internal var wrappedComponent: Component { coreActionHandler }
+    var wrappedComponent: Component { coreActionHandler }
 
-    internal let coreActionHandler: AnyThreeDS2CoreActionHandler
+    let coreActionHandler: AnyThreeDS2CoreActionHandler
 
-    internal var transaction: AnyADYTransaction? {
+    var transaction: AnyADYTransaction? {
         get {
             coreActionHandler.transaction
         }
@@ -28,7 +28,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     }
     
     /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
-    internal var threeDSRequestorAppURL: URL? {
+    var threeDSRequestorAppURL: URL? {
         get {
             coreActionHandler.threeDSRequestorAppURL
         }
@@ -38,11 +38,11 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
         }
     }
     
-    internal init(context: AdyenContext,
-                  service: AnyADYService = ADYServiceAdapter(),
-                  appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
-                  coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
-                  delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil) {
+    init(context: AdyenContext,
+         service: AnyADYService = ADYServiceAdapter(),
+         appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
+         coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
+         delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil) {
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,
             appearanceConfiguration: appearanceConfiguration,
@@ -58,8 +58,8 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     ///
     /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
     /// - Parameter completionHandler: The completion closure.
-    internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+    func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
+                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         let event = Analytics.Event(
             component: fingerprintEventName,
             flavor: _isDropIn ? .dropin : .components,
@@ -83,8 +83,8 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     ///
     /// - Parameter challengeAction: The challenge action as received from the Checkout API.
     /// - Parameter completionHandler: The completion closure.
-    internal func handle(_ challengeAction: ThreeDS2ChallengeAction,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+    func handle(_ challengeAction: ThreeDS2ChallengeAction,
+                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         let event = Analytics.Event(
             component: challengeEventName,
             flavor: _isDropIn ? .dropin : .components,

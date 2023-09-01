@@ -13,20 +13,20 @@ import AdyenNetworking
 import AdyenSession
 import UIKit
 
-internal final class DropInExample: InitialDataFlowProtocol {
+final class DropInExample: InitialDataFlowProtocol {
 
     // MARK: - Properties
 
-    internal weak var presenter: PresenterExampleProtocol?
+    weak var presenter: PresenterExampleProtocol?
 
     private var session: AdyenSession?
     private var dropInComponent: DropInComponent?
     
     // MARK: - Initializers
 
-    internal init() {}
+    init() {}
 
-    internal func start() {
+    func start() {
         presenter?.showLoadingIndicator()
         loadSession { [weak self] response in
             guard let self else { return }
@@ -135,7 +135,7 @@ extension DropInExample: AdyenSessionDelegate {
 }
 
 extension DropInExample: PresentationDelegate {
-    internal func present(component: PresentableComponent) {
+    func present(component: PresentableComponent) {
         // The implementation of this delegate method is not needed when using AdyenSession as the session handles the presentation
     }
 }

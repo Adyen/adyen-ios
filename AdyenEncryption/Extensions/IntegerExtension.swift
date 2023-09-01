@@ -8,7 +8,7 @@ import Foundation
 
 extension NSInteger {
 
-    internal func encodedOctets() -> [CUnsignedChar] {
+    func encodedOctets() -> [CUnsignedChar] {
         // Short form
         guard self >= 128 else { return [CUnsignedChar(self)] }
 

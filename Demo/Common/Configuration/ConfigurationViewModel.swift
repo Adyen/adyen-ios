@@ -9,31 +9,31 @@ import SwiftUI
 
 @available(iOS 13.0.0, *)
 
-internal final class ConfigurationViewModel: ObservableObject {
+final class ConfigurationViewModel: ObservableObject {
     
-    @Published internal var countryCode: String = ""
-    @Published internal var currencyCode: String = ""
-    @Published internal var value: String = ""
-    @Published internal var apiVersion: String = ""
-    @Published internal var merchantAccount: String = ""
-    @Published internal var showsHolderNameField = false
-    @Published internal var showsStorePaymentMethodField = true
-    @Published internal var showsStoredCardSecurityCodeField = true
-    @Published internal var showsSecurityCodeField = true
-    @Published internal var addressMode: CardComponentConfiguration.AddressFormType = .none
-    @Published internal var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
-    @Published internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
-    @Published internal var allowDisablingStoredPaymentMethods: Bool = false
-    @Published internal var allowsSkippingPaymentList: Bool = false
-    @Published internal var allowPreselectedPaymentView: Bool = true
-    @Published internal var applePayMerchantIdentifier: String = ""
-    @Published internal var allowOnboarding: Bool = false
-    @Published internal var analyticsIsEnabled: Bool = true
+    @Published var countryCode: String = ""
+    @Published var currencyCode: String = ""
+    @Published var value: String = ""
+    @Published var apiVersion: String = ""
+    @Published var merchantAccount: String = ""
+    @Published var showsHolderNameField = false
+    @Published var showsStorePaymentMethodField = true
+    @Published var showsStoredCardSecurityCodeField = true
+    @Published var showsSecurityCodeField = true
+    @Published var addressMode: CardComponentConfiguration.AddressFormType = .none
+    @Published var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
+    @Published var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
+    @Published var allowDisablingStoredPaymentMethods: Bool = false
+    @Published var allowsSkippingPaymentList: Bool = false
+    @Published var allowPreselectedPaymentView: Bool = true
+    @Published var applePayMerchantIdentifier: String = ""
+    @Published var allowOnboarding: Bool = false
+    @Published var analyticsIsEnabled: Bool = true
 
     private let onDone: (DemoAppSettings) -> Void
     private let configuration: DemoAppSettings
     
-    internal init(
+    init(
         configuration: DemoAppSettings,
         onDone: @escaping (DemoAppSettings) -> Void
     ) {
@@ -64,11 +64,11 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.analyticsIsEnabled = configuration.analyticsSettings.isEnabled
     }
     
-    internal func doneTapped() {
+    func doneTapped() {
         onDone(currentConfiguration)
     }
     
-    internal func defaultTapped() {
+    func defaultTapped() {
         applyConfiguration(DemoAppSettings.defaultConfiguration)
     }
     
@@ -96,7 +96,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         )
     }
 
-    internal static let currencies: [CurrencyDisplayInfo] = {
+    static let currencies: [CurrencyDisplayInfo] = {
         let currencyCodeKey = NSLocale.Key.currencyCode.rawValue
         let uniqueCurrencies = Set(
             NSLocale.isoCurrencyCodes
@@ -110,7 +110,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         return Array(uniqueCurrencies).sorted()
     }()
     
-    internal static let countries: [CountryDisplayInfo] = {
+    static let countries: [CountryDisplayInfo] = {
         let countryCodeKey = NSLocale.Key.countryCode.rawValue
         return NSLocale.isoCountryCodes.compactMap { code -> CountryDisplayInfo? in
             let identifier = NSLocale.localeIdentifier(fromComponents: [countryCodeKey: code])
@@ -120,16 +120,16 @@ internal final class ConfigurationViewModel: ObservableObject {
     }()
 }
 
-internal struct CountryDisplayInfo: Hashable {
-    internal let code: String
-    internal let name: String
+struct CountryDisplayInfo: Hashable {
+    let code: String
+    let name: String
 }
 
-internal struct CurrencyDisplayInfo: Hashable, Comparable {
-    internal let code: String
-    internal let symbol: String
+struct CurrencyDisplayInfo: Hashable, Comparable {
+    let code: String
+    let symbol: String
     
-    internal static func < (lhs: CurrencyDisplayInfo, rhs: CurrencyDisplayInfo) -> Bool {
+    static func < (lhs: CurrencyDisplayInfo, rhs: CurrencyDisplayInfo) -> Bool {
         lhs.code < rhs.code
     }
 }

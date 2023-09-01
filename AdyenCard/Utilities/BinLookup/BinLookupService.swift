@@ -12,14 +12,14 @@ import AdyenNetworking
 import Foundation
 
 /// Provide cardType detection based on BinLookup API.
-internal protocol AnyBinLookupService {
+protocol AnyBinLookupService {
     
     typealias CompletionHandler = (Result<BinLookupResponse, Error>) -> Void
     
     func requestCardType(for bin: String, supportedCardTypes: [CardType], completion: @escaping CompletionHandler)
 }
 
-internal final class BinLookupService: AnyBinLookupService {
+final class BinLookupService: AnyBinLookupService {
     
     private let publicKey: String
     
@@ -29,13 +29,13 @@ internal final class BinLookupService: AnyBinLookupService {
     
     private let binLookupType: BinLookupRequestType
     
-    internal init(publicKey: String, apiClient: APIClientProtocol, binLookupType: BinLookupRequestType) {
+    init(publicKey: String, apiClient: APIClientProtocol, binLookupType: BinLookupRequestType) {
         self.publicKey = publicKey
         self.apiClient = apiClient
         self.binLookupType = binLookupType
     }
     
-    internal func requestCardType(
+    func requestCardType(
         for bin: String,
         supportedCardTypes: [CardType],
         completion: @escaping CompletionHandler

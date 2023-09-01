@@ -8,12 +8,12 @@ import Foundation
 import UIKit
 
 /// A view representing a button item.
-internal final class FormButtonItemView: FormItemView<FormButtonItem> {
+final class FormButtonItemView: FormItemView<FormButtonItem> {
     
     /// Initializes the footer item view.
     ///
     /// - Parameter item: The item represented by the view.
-    internal required init(item: FormButtonItem) {
+    required init(item: FormButtonItem) {
         super.init(item: item)
         backgroundColor = item.style.backgroundColor
         
@@ -30,7 +30,7 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem> {
     
     // MARK: - Submit Button
     
-    internal lazy var submitButton: SubmitButton = {
+    lazy var submitButton: SubmitButton = {
         let submitButton = SubmitButton(style: item.style.button)
 
         submitButton.addTarget(self, action: #selector(didSelectSubmitButton), for: .touchUpInside)

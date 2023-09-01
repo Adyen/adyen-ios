@@ -15,7 +15,7 @@ extension Bundle {
     private static let cardBundle: Bundle = .init(for: CardComponent.self)
 
     /// The bundle in which the framework's resources are located.
-    internal static var cardInternalResources: Bundle {
+    static var cardInternalResources: Bundle {
         let url = cardBundle.url(forResource: "AdyenCard", withExtension: "bundle")
         let bundle = url.flatMap { Bundle(url: $0) }
         return bundle ?? cardBundle

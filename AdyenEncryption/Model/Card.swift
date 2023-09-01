@@ -39,7 +39,7 @@ public struct Card {
         self.holder = holder
     }
 
-    internal var isEmpty: Bool {
+    var isEmpty: Bool {
         [number, securityCode, expiryYear, expiryMonth].allSatisfy { $0 == nil }
     }
 

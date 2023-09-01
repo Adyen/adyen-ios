@@ -11,11 +11,11 @@
     import Foundation
     import UIKit
 
-    internal enum DelegateAuthenticationError: LocalizedError {
+    enum DelegateAuthenticationError: LocalizedError {
         case registrationFailed(cause: Error?)
         case authenticationFailed(cause: Error?)
     
-        internal var errorDescription: String? {
+        var errorDescription: String? {
             switch self {
             case let .registrationFailed(causeError):
                 if let causeError = causeError {
@@ -35,12 +35,12 @@
 
     /// Handles the 3D Secure 2 fingerprint and challenge actions separately + Delegated Authentication.
     @available(iOS 14.0, *)
-    internal class ThreeDS2PlusDACoreActionHandler: ThreeDS2CoreActionHandler {
+    class ThreeDS2PlusDACoreActionHandler: ThreeDS2CoreActionHandler {
         
-        internal var delegatedAuthenticationState: DelegatedAuthenticationState = .init()
+        var delegatedAuthenticationState: DelegatedAuthenticationState = .init()
         
-        internal struct DelegatedAuthenticationState {
-            internal var isDeviceRegistrationFlow: Bool = false
+        struct DelegatedAuthenticationState {
+            var isDeviceRegistrationFlow: Bool = false
         }
         
         private let delegatedAuthenticationService: AuthenticationServiceProtocol
@@ -50,7 +50,7 @@
         /// - Parameter context: The context object for this component.
         /// - Parameter appearanceConfiguration: The appearance configuration.
         /// - Parameter delegatedAuthenticationConfiguration: The delegated authentication configuration.
-        internal convenience init(
+        convenience init(
             context: AdyenContext,
             appearanceConfiguration: ADYAppearanceConfiguration,
             delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication
@@ -70,10 +70,10 @@
         /// - Parameter service: The 3DS2 Service.
         /// - Parameter appearanceConfiguration: The appearance configuration.
         /// - Parameter delegatedAuthenticationService: The Delegated Authentication service.
-        internal init(context: AdyenContext,
-                      service: AnyADYService = ADYServiceAdapter(),
-                      appearanceConfiguration: ADYAppearanceConfiguration = .init(),
-                      delegatedAuthenticationService: AuthenticationServiceProtocol) {
+        init(context: AdyenContext,
+             service: AnyADYService = ADYServiceAdapter(),
+             appearanceConfiguration: ADYAppearanceConfiguration = .init(),
+             delegatedAuthenticationService: AuthenticationServiceProtocol) {
             self.delegatedAuthenticationService = delegatedAuthenticationService
             super.init(context: context, service: service, appearanceConfiguration: appearanceConfiguration)
         }
@@ -85,9 +85,9 @@
         /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
         /// - Parameter event: The Analytics event.
         /// - Parameter completionHandler: The completion closure.
-        override internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
-                                      event: Analytics.Event,
-                                      completionHandler: @escaping (Result<String, Error>) -> Void) {
+        override func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
+                             event: Analytics.Event,
+                             completionHandler: @escaping (Result<String, Error>) -> Void) {
             super.handle(fingerprintAction, event: event) { [weak self] result in
                 switch result {
                 case let .failure(error):
@@ -118,8 +118,8 @@
             
         }
         
-        internal func performDelegatedAuthentication(_ fingerprintToken: ThreeDS2Component.FingerprintToken,
-                                                     completion: @escaping (Result<String, DelegateAuthenticationError>) -> Void) {
+        func performDelegatedAuthentication(_ fingerprintToken: ThreeDS2Component.FingerprintToken,
+                                            completion: @escaping (Result<String, DelegateAuthenticationError>) -> Void) {
             guard let delegatedAuthenticationInput = fingerprintToken.delegatedAuthenticationSDKInput else {
                 completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
                 return
@@ -156,9 +156,9 @@
         /// - Parameter challengeAction: The challenge action as received from the Checkout API.
         /// - Parameter event: The Analytics event.
         /// - Parameter completionHandler: The completion closure.
-        override internal func handle(_ challengeAction: ThreeDS2ChallengeAction,
-                                      event: Analytics.Event,
-                                      completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
+        override func handle(_ challengeAction: ThreeDS2ChallengeAction,
+                             event: Analytics.Event,
+                             completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
             super.handle(challengeAction, event: event) { [weak self] result in
                 switch result {
                 case let .failure(error):
@@ -190,8 +190,8 @@
             }
         }
         
-        internal func performDelegatedRegistration(_ sdkInput: String?,
-                                                   completion: @escaping (Result<String, Error>) -> Void) {
+        func performDelegatedRegistration(_ sdkInput: String?,
+                                          completion: @escaping (Result<String, Error>) -> Void) {
             guard let sdkInput = sdkInput else {
                 completion(.failure(DelegateAuthenticationError.registrationFailed(cause: nil)))
                 return
@@ -232,7 +232,7 @@
     }
 
     extension Result {
-        internal var successResult: Success? {
+        var successResult: Success? {
             switch self {
             case let .success(successResult):
                 return successResult

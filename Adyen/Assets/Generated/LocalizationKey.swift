@@ -419,7 +419,7 @@ public struct LocalizationKey {
     /// Enter address manually
     public static let addressLookupSearchManualEntryItemTitle = LocalizationKey(key: "adyen.address.lookup.search.manualEntryItem.title")
     
-    internal let key: String
+    let key: String
     
     /// :nodoc:
     public init(key: String) {

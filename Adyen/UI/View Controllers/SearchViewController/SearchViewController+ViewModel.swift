@@ -13,15 +13,15 @@ extension SearchViewController {
 
         public typealias ResultProvider = (_ searchTerm: String, _ handler: @escaping ([ListItem]) -> Void) -> Void
         
-        internal let localizationParameters: LocalizationParameters?
-        internal let style: ViewStyle
-        internal let searchBarPlaceholder: String
-        internal let shouldFocusSearchBarOnAppearance: Bool
+        let localizationParameters: LocalizationParameters?
+        let style: ViewStyle
+        let searchBarPlaceholder: String
+        let shouldFocusSearchBarOnAppearance: Bool
         
         private let resultProvider: ResultProvider
         
         @AdyenObservable(InterfaceState.empty(searchTerm: ""))
-        internal var interfaceState: InterfaceState
+        var interfaceState: InterfaceState
         
         /// Initializes a`SearchViewController.ViewModel`.
         ///
@@ -45,11 +45,11 @@ extension SearchViewController {
             self.resultProvider = resultProvider
         }
         
-        internal func handleViewDidLoad() {
+        func handleViewDidLoad() {
             lookUpAddress(for: "")
         }
         
-        internal func handleSearchTextDidChange(_ searchText: String) {
+        func handleSearchTextDidChange(_ searchText: String) {
             lookUpAddress(for: searchText)
         }
     }

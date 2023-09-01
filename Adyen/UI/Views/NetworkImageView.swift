@@ -13,7 +13,7 @@ open class NetworkImageView: UIImageView {
     private var dataTask: URLSessionDataTask?
 
     private enum Constants {
-        internal static let minutes10: TimeInterval = 600
+        static let minutes10: TimeInterval = 600
     }
 
     private lazy var session: URLSession = {

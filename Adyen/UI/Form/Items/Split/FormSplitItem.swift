@@ -10,9 +10,9 @@ import Foundation
 @_spi(AdyenInternal)
 public final class FormSplitItem: FormItem {
 
-    internal var leftItem: FormItem
+    var leftItem: FormItem
 
-    internal var rightItem: FormItem
+    var rightItem: FormItem
     
     /// Indicates the `FormSplitItemView` UI styling.
     public let style: ViewStyle

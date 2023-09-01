@@ -20,11 +20,11 @@ public protocol SearchResultsEmptyView: UIView {
 @_spi(AdyenInternal)
 public class SearchViewController: UIViewController, AdyenObserver {
     
-    internal lazy var keyboardObserver = KeyboardObserver()
+    lazy var keyboardObserver = KeyboardObserver()
     private var emptyViewBottomConstraint: NSLayoutConstraint?
 
-    internal let viewModel: ViewModel
-    internal let emptyView: SearchResultsEmptyView
+    let viewModel: ViewModel
+    let emptyView: SearchResultsEmptyView
     
     public lazy var resultsListViewController = ListViewController(style: viewModel.style)
     
@@ -44,11 +44,11 @@ public class SearchViewController: UIViewController, AdyenObserver {
     }
 
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    internal lazy var loadingView: UIActivityIndicatorView = {
+    lazy var loadingView: UIActivityIndicatorView = {
         let loadingView = UIActivityIndicatorView(style: .whiteLarge)
         loadingView.color = .Adyen.componentLoadingMessageColor
         loadingView.hidesWhenStopped = true
@@ -56,7 +56,7 @@ public class SearchViewController: UIViewController, AdyenObserver {
         return loadingView
     }()
     
-    internal lazy var searchBar: UISearchBar = {
+    lazy var searchBar: UISearchBar = {
         
         .prominent(
             placeholder: viewModel.searchBarPlaceholder,

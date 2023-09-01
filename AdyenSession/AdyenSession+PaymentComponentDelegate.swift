@@ -18,7 +18,7 @@ extension AdyenSession: PaymentComponentDelegate {
         handler.didSubmit(data, from: component, dropInComponent: nil, session: self)
     }
     
-    internal func finish(with result: AdyenSessionResult, component: Component) {
+    func finish(with result: AdyenSessionResult, component: Component) {
         let success = result.resultCode == .authorised
             || result.resultCode == .received
             || result.resultCode == .pending
@@ -28,7 +28,7 @@ extension AdyenSession: PaymentComponentDelegate {
         }
     }
     
-    internal func finish(with error: Error, component: Component) {
+    func finish(with error: Error, component: Component) {
         failWithError(error, component)
     }
 
@@ -36,11 +36,11 @@ extension AdyenSession: PaymentComponentDelegate {
         failWithError(error, component)
     }
     
-    internal func didFail(with error: Error, currentComponent: Component) {
+    func didFail(with error: Error, currentComponent: Component) {
         failWithError(error, currentComponent)
     }
 
-    internal func failWithError(_ error: Error, _ component: Component) {
+    func failWithError(_ error: Error, _ component: Component) {
         component.finalizeIfNeeded(with: false) { [weak self] in
             guard let self = self else { return }
             self.delegate?.didFail(with: error, from: component, session: self)
@@ -62,9 +62,9 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
         }
     }
     
-    internal func handle(paymentResponseResult: Result<PaymentsResponse, Error>,
-                         for currentComponent: Component,
-                         in dropInComponent: AnyDropInComponent? = nil) {
+    func handle(paymentResponseResult: Result<PaymentsResponse, Error>,
+                for currentComponent: Component,
+                in dropInComponent: AnyDropInComponent? = nil) {
         switch paymentResponseResult {
         case let .success(response):
             handle(paymentResponse: response, for: currentComponent, in: dropInComponent)

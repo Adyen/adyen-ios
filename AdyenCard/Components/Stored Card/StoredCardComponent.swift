@@ -9,34 +9,34 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for stored card payments.
-internal final class StoredCardComponent: PaymentComponent, PaymentAware, PresentableComponent, Localizable {
+final class StoredCardComponent: PaymentComponent, PaymentAware, PresentableComponent, Localizable {
     
     /// The context object for this component.
-    internal let context: AdyenContext
+    let context: AdyenContext
     
     /// The card payment method.
-    internal var paymentMethod: PaymentMethod { storedCardPaymentMethod }
+    var paymentMethod: PaymentMethod { storedCardPaymentMethod }
     
     /// The delegate of the component.
-    internal weak var delegate: PaymentComponentDelegate?
+    weak var delegate: PaymentComponentDelegate?
     
-    internal var localizationParameters: LocalizationParameters?
+    var localizationParameters: LocalizationParameters?
     
-    internal var requiresModalPresentation: Bool = false
+    var requiresModalPresentation: Bool = false
     
     private let storedCardPaymentMethod: StoredCardPaymentMethod
     
-    internal init(storedCardPaymentMethod: StoredCardPaymentMethod,
-                  context: AdyenContext) {
+    init(storedCardPaymentMethod: StoredCardPaymentMethod,
+         context: AdyenContext) {
         self.storedCardPaymentMethod = storedCardPaymentMethod
         self.context = context
     }
     
-    internal var viewController: UIViewController {
+    var viewController: UIViewController {
         storedCardAlertManager.alertController
     }
     
-    internal lazy var storedCardAlertManager: StoredCardAlertManager = {
+    lazy var storedCardAlertManager: StoredCardAlertManager = {
         Analytics.sendEvent(
             component: paymentMethod.type.rawValue,
             flavor: _isDropIn ? .dropin : .components,

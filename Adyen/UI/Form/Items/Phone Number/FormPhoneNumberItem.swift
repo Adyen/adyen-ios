@@ -11,7 +11,7 @@ import Foundation
 public final class FormPhoneNumberItem: FormTextItem {
     
     /// The phone prefix picker item.
-    internal let phonePrefixItem: FormPhoneExtensionPickerItem
+    let phonePrefixItem: FormPhoneExtensionPickerItem
     
     /// The phone prefix value.
     public var prefix: String {

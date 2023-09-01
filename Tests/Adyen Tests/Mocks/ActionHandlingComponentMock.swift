@@ -10,15 +10,15 @@ import Foundation
 @_spi(AdyenInternal) import Adyen
 @_spi(AdyenInternal) import AdyenActions
 
-internal final class ActionHandlingComponentMock: ActionHandlingComponent {
+final class ActionHandlingComponentMock: ActionHandlingComponent {
 
-    internal var context: AdyenContext {
+    var context: AdyenContext {
         Dummy.context
     }
     
-    internal var onAction: ((Action) -> Void)?
+    var onAction: ((Action) -> Void)?
     
-    internal func handle(_ action: Action) {
+    func handle(_ action: Action) {
         onAction?(action)
     }
 }

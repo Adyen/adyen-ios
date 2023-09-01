@@ -9,23 +9,23 @@ import AdyenActions
 import AdyenNetworking
 import Foundation
 
-internal struct PaymentsRequest: APIRequest {
+struct PaymentsRequest: APIRequest {
     
-    internal typealias ResponseType = PaymentsResponse
+    typealias ResponseType = PaymentsResponse
     
-    internal let path = "payments"
+    let path = "payments"
     
-    internal let data: PaymentComponentData
+    let data: PaymentComponentData
     
-    internal var counter: UInt = 0
+    var counter: UInt = 0
     
-    internal var method: HTTPMethod = .post
+    var method: HTTPMethod = .post
     
-    internal var queryParameters: [URLQueryItem] = []
+    var queryParameters: [URLQueryItem] = []
     
-    internal var headers: [String: String] = [:]
+    var headers: [String: String] = [:]
     
-    internal func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         let currentConfiguration = ConfigurationConstants.current
@@ -96,23 +96,23 @@ internal struct PaymentsRequest: APIRequest {
     
 }
 
-internal struct PaymentsResponse: Response {
+struct PaymentsResponse: Response {
 
-    internal static var received: PaymentsResponse = .init()
+    static var received: PaymentsResponse = .init()
     
-    internal let resultCode: ResultCode
+    let resultCode: ResultCode
     
-    internal let action: Action?
+    let action: Action?
 
-    internal let order: PartialPaymentOrder?
+    let order: PartialPaymentOrder?
 
-    internal let refusalReason: String?
+    let refusalReason: String?
 
-    internal let refusalReasonCode: String?
+    let refusalReasonCode: String?
 
-    internal let amount: Amount?
+    let amount: Amount?
     
-    internal init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.resultCode = try container.decode(ResultCode.self, forKey: .resultCode)
         self.action = try container.decodeIfPresent(Action.self, forKey: .action)
@@ -147,7 +147,7 @@ internal struct PaymentsResponse: Response {
     
 }
 
-internal extension PaymentsResponse {
+extension PaymentsResponse {
     
     // swiftlint:disable:next explicit_acl
     enum ResultCode: String, Decodable {

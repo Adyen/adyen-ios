@@ -8,7 +8,7 @@
 import Adyen3DS2
 import Foundation
 
-internal protocol AnyRedirectComponent: ActionComponent {
+protocol AnyRedirectComponent: ActionComponent {
     func handle(_ action: RedirectAction)
 }
 
@@ -106,11 +106,11 @@ public final class ThreeDS2Component: ActionComponent {
     ///   - threeDS2ClassicFlowHandler: The internal `AnyThreeDS2ActionHandler` for the classic flow.
     ///   - redirectComponent: The redirect component.
     ///   - redirectComponentStyle: `RedirectComponent` style.
-    internal convenience init(context: AdyenContext,
-                              threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
-                              threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
-                              redirectComponent: AnyRedirectComponent,
-                              configuration: Configuration = Configuration()) {
+    convenience init(context: AdyenContext,
+                     threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
+                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
+                     redirectComponent: AnyRedirectComponent,
+                     configuration: Configuration = Configuration()) {
         self.init(context: context,
                   configuration: configuration)
         self.threeDS2CompactFlowHandler = threeDS2CompactFlowHandler
@@ -205,7 +205,7 @@ public final class ThreeDS2Component: ActionComponent {
         delegate?.didFail(with: error, from: self)
     }
 
-    internal lazy var threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler = {
+    lazy var threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler = {
         let handler = ThreeDS2CompactActionHandler(context: context,
                                                    appearanceConfiguration: configuration.appearanceConfiguration,
                                                    delegatedAuthenticationConfiguration: configuration.delegateAuthentication)
@@ -216,7 +216,7 @@ public final class ThreeDS2Component: ActionComponent {
         return handler
     }()
 
-    internal lazy var threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler = {
+    lazy var threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler = {
         let handler = ThreeDS2ClassicActionHandler(context: context,
                                                    appearanceConfiguration: configuration.appearanceConfiguration,
                                                    delegatedAuthenticationConfiguration: configuration.delegateAuthentication)

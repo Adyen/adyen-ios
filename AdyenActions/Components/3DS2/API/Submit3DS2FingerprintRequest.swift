@@ -8,33 +8,33 @@
 import AdyenNetworking
 import Foundation
 
-internal struct Submit3DS2FingerprintRequest: APIRequest {
+struct Submit3DS2FingerprintRequest: APIRequest {
 
-    internal typealias ResponseType = Submit3DS2FingerprintResponse
+    typealias ResponseType = Submit3DS2FingerprintResponse
 
-    internal var path: String { "checkoutshopper/v1/submitThreeDS2Fingerprint" }
+    var path: String { "checkoutshopper/v1/submitThreeDS2Fingerprint" }
 
-    internal var counter: UInt = 0
+    var counter: UInt = 0
 
-    internal var headers: [String: String] = [:]
+    var headers: [String: String] = [:]
 
-    internal let queryParameters: [URLQueryItem] = []
+    let queryParameters: [URLQueryItem] = []
 
-    internal let method: HTTPMethod = .post
+    let method: HTTPMethod = .post
 
-    internal let fingerprint: String
+    let fingerprint: String
 
-    internal let paymentData: String?
+    let paymentData: String?
 
-    internal let clientKey: String
+    let clientKey: String
 
-    internal init(clientKey: String, fingerprint: String, paymentData: String?) {
+    init(clientKey: String, fingerprint: String, paymentData: String?) {
         self.fingerprint = fingerprint
         self.paymentData = paymentData
         self.clientKey = clientKey
     }
 
-    internal enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case fingerprint = "fingerprintResult"
         case paymentData
         case clientKey

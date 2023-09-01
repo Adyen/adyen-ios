@@ -7,19 +7,19 @@
 import Foundation
 import UIKit
 
-internal final class FormPhoneNumberItemView: FormTextItemView<FormPhoneNumberItem> {
+final class FormPhoneNumberItemView: FormTextItemView<FormPhoneNumberItem> {
     
     /// Initializes the phone number item view.
     ///
     /// - Parameter item: The item represented by the view.
-    internal required init(item: FormPhoneNumberItem) {
+    required init(item: FormPhoneNumberItem) {
         super.init(item: item)
         showsSeparator = true
         applyTextFieldLeftAccessoryView(textField: textField)
         textField.textContentType = .telephoneNumber
     }
     
-    override internal var childItemViews: [AnyFormItemView] {
+    override var childItemViews: [AnyFormItemView] {
         [phoneExtensionView]
     }
     

@@ -9,51 +9,51 @@ import UIKit
 
 extension VoucherView {
     
-    internal struct Model {
+    struct Model {
         
-        internal let action: VoucherAction
+        let action: VoucherAction
         
-        internal let identifier: String
+        let identifier: String
         
-        internal let amount: String
+        let amount: String
         
-        internal let currency: String
+        let currency: String
         
-        internal let logoUrl: URL
+        let logoUrl: URL
         
-        internal let mainButton: String
+        let mainButton: String
         
-        internal let secondaryButtonTitle: String
+        let secondaryButtonTitle: String
         
-        internal let codeConfirmationTitle: String
+        let codeConfirmationTitle: String
         
-        internal let mainButtonType: Button
+        let mainButtonType: Button
         
-        internal let style: Style
+        let style: Style
         
-        internal struct Style {
+        struct Style {
             
-            internal let editButton: ButtonStyle
+            let editButton: ButtonStyle
             
-            internal let doneButton: ButtonStyle
+            let doneButton: ButtonStyle
             
-            internal let mainButton: ButtonStyle
+            let mainButton: ButtonStyle
             
-            internal let secondaryButton: ButtonStyle
+            let secondaryButton: ButtonStyle
             
-            internal let codeConfirmationColor: UIColor
+            let codeConfirmationColor: UIColor
             
-            internal let amountLabel: TextStyle
+            let amountLabel: TextStyle
             
-            internal let currencyLabel: TextStyle
+            let currencyLabel: TextStyle
             
-            internal let logoCornerRounding: CornerRounding
+            let logoCornerRounding: CornerRounding
             
-            internal let backgroundColor: UIColor
+            let backgroundColor: UIColor
             
         }
         
-        internal enum Button {
+        enum Button {
             case addToAppleWallet
             case save
         }

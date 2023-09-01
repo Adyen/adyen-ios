@@ -13,11 +13,11 @@ public struct ClientKeyResponse: Response {
     /// The card public key
     public let cardPublicKey: String
     
-    internal init(cardPublicKey: String) {
+    init(cardPublicKey: String) {
         self.cardPublicKey = cardPublicKey
     }
     
-    internal enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case cardPublicKey = "publicKey"
     }
 }

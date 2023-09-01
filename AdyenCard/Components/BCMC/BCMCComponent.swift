@@ -34,11 +34,11 @@ public final class BCMCComponent: CardComponent {
                    binProvider: binInfoProvider)
     }
     
-    override internal init(paymentMethod: AnyCardPaymentMethod,
-                           context: AdyenContext,
-                           configuration: Configuration,
-                           publicKeyProvider: AnyPublicKeyProvider,
-                           binProvider: AnyBinInfoProvider) {
+    override init(paymentMethod: AnyCardPaymentMethod,
+                  context: AdyenContext,
+                  configuration: Configuration,
+                  publicKeyProvider: AnyPublicKeyProvider,
+                  binProvider: AnyBinInfoProvider) {
         let configuration = configuration.bcmcConfiguration()
         super.init(paymentMethod: paymentMethod,
                    context: context,

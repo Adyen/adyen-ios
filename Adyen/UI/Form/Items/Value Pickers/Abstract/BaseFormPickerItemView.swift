@@ -15,7 +15,7 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
     UIPickerViewDataSource {
 
     /// The underlying `UIPickerView`.
-    internal lazy var pickerView: UIPickerView = {
+    lazy var pickerView: UIPickerView = {
         let pickerView = UIPickerView()
         pickerView.delegate = self
         pickerView.dataSource = self
@@ -24,7 +24,7 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
     }()
     
     /// Toolbar above the picker view with buttons to dismiss it.
-    internal lazy var pickerViewToolbar: UIToolbar = {
+    lazy var pickerViewToolbar: UIToolbar = {
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: pickerView.frame.width, height: 44))
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleDoneButtonTap))
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
@@ -61,13 +61,13 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
 
     // MARK: - Abstract
 
-    internal func createInputControl() -> PickerTextInputControl {
+    func createInputControl() -> PickerTextInputControl {
         BasePickerInputControl(inputView: pickerView,
                                inputAccessoryView: pickerViewToolbar,
                                style: item.style.text)
     }
 
-    internal func updateSelection() {
+    func updateSelection() {
         inputControl.label = item.value.description
     }
 
@@ -126,7 +126,7 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
 
     // MARK: - Internal
 
-    internal func select(value: BasePickerElement<T>) {
+    func select(value: BasePickerElement<T>) {
         self.item.value = value
         updateSelection()
 

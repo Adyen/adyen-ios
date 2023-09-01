@@ -6,7 +6,7 @@
 
 import UIKit
 
-internal protocol PresenterExampleProtocol: AnyObject {
+protocol PresenterExampleProtocol: AnyObject {
 
     func present(viewController: UIViewController, completion: (() -> Void)?)
 

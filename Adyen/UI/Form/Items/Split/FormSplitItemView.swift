@@ -8,14 +8,14 @@ import Foundation
 import UIKit
 
 /// A view representing a split item.
-internal final class FormSplitItemView: FormItemView<FormSplitItem> {
+final class FormSplitItemView: FormItemView<FormSplitItem> {
 
     private let views: [AnyFormItemView]
     
     /// Initializes the split item view.
     ///
     /// - Parameter item: The item represented by the view.
-    internal required init(item: FormSplitItem) {
+    required init(item: FormSplitItem) {
         views = item.subitems.map(FormSplitItemView.build)
         super.init(item: item)
         
@@ -23,7 +23,7 @@ internal final class FormSplitItemView: FormItemView<FormSplitItem> {
         stackView.adyen.anchor(inside: self)
     }
     
-    override internal var childItemViews: [AnyFormItemView] {
+    override var childItemViews: [AnyFormItemView] {
         views
     }
     

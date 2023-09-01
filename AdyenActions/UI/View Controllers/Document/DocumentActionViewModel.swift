@@ -7,13 +7,13 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
-internal struct DocumentActionViewModel {
+struct DocumentActionViewModel {
     
-    internal let action: DocumentAction
+    let action: DocumentAction
     
-    internal let message: String
+    let message: String
     
-    internal let logoURL: URL
+    let logoURL: URL
     
-    internal let buttonTitle: String
+    let buttonTitle: String
 }

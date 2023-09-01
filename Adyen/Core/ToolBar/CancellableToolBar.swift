@@ -30,7 +30,7 @@ public final class CancellingToolBar: ModalToolbar {
         return button
     }
 
-    override internal var cancelButton: UIButton {
+    override var cancelButton: UIButton {
         get {
             customizeCancelButton()
         }

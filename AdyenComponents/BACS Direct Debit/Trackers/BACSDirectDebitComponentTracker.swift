@@ -7,11 +7,11 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
-internal protocol BACSDirectDebitComponentTrackerProtocol: AnyObject {
+protocol BACSDirectDebitComponentTrackerProtocol: AnyObject {
     func sendTelemetryEvent()
 }
 
-internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerProtocol {
+class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerProtocol {
 
     // MARK: - Properties
 
@@ -22,10 +22,10 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
 
     // MARK: - Initializers
 
-    internal init(paymentMethod: BACSDirectDebitPaymentMethod,
-                  apiContext: APIContext,
-                  telemetryTracker: TelemetryTrackerProtocol,
-                  isDropIn: Bool) {
+    init(paymentMethod: BACSDirectDebitPaymentMethod,
+         apiContext: APIContext,
+         telemetryTracker: TelemetryTrackerProtocol,
+         isDropIn: Bool) {
         self.paymentMethod = paymentMethod
         self.apiContext = apiContext
         self.telemetryTracker = telemetryTracker
@@ -34,7 +34,7 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
 
     // MARK: - BACSDirectDebitComponentTrackerProtocol
 
-    internal func sendTelemetryEvent() {
+    func sendTelemetryEvent() {
         let flavor: TelemetryFlavor = isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
         telemetryTracker.sendTelemetryEvent(flavor: flavor)
     }

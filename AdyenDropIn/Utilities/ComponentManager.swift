@@ -16,29 +16,29 @@
 #endif
 import Foundation
 
-internal final class ComponentManager {
+final class ComponentManager {
 
-    internal let paymentMethods: PaymentMethods
+    let paymentMethods: PaymentMethods
     
-    internal let configuration: DropInComponent.Configuration
+    let configuration: DropInComponent.Configuration
 
-    internal let partialPaymentEnabled: Bool
+    let partialPaymentEnabled: Bool
     
     private let supportsEditingStoredPaymentMethods: Bool
 
-    internal let order: PartialPaymentOrder?
+    let order: PartialPaymentOrder?
     
-    internal let context: AdyenContext
+    let context: AdyenContext
 
-    internal weak var presentationDelegate: PresentationDelegate?
+    weak var presentationDelegate: PresentationDelegate?
     
-    internal init(paymentMethods: PaymentMethods,
-                  context: AdyenContext,
-                  configuration: DropInComponent.Configuration,
-                  partialPaymentEnabled: Bool = true,
-                  order: PartialPaymentOrder?,
-                  supportsEditingStoredPaymentMethods: Bool = false,
-                  presentationDelegate: PresentationDelegate) {
+    init(paymentMethods: PaymentMethods,
+         context: AdyenContext,
+         configuration: DropInComponent.Configuration,
+         partialPaymentEnabled: Bool = true,
+         order: PartialPaymentOrder?,
+         supportsEditingStoredPaymentMethods: Bool = false,
+         presentationDelegate: PresentationDelegate) {
         self.paymentMethods = paymentMethods
         self.configuration = configuration
         self.partialPaymentEnabled = partialPaymentEnabled
@@ -55,7 +55,7 @@ internal final class ComponentManager {
     
     // MARK: - Internal
     
-    internal lazy var sections: [ComponentsSection] = {
+    lazy var sections: [ComponentsSection] = {
 
         // Paid section
         let amountString: String = order?.remainingAmount.map(\.formatted) ??
@@ -99,17 +99,17 @@ internal final class ComponentManager {
     }()
 
     // Filter out payment methods without the Ecommerce shopper interaction.
-    internal lazy var storedComponents: [PaymentComponent] = paymentMethods.stored.filter {
+    lazy var storedComponents: [PaymentComponent] = paymentMethods.stored.filter {
         $0.supportedShopperInteractions.contains(.shopperPresent)
     }.compactMap(component(for:))
 
-    internal lazy var regularComponents = paymentMethods.regular.compactMap(component(for:))
+    lazy var regularComponents = paymentMethods.regular.compactMap(component(for:))
 
-    internal lazy var paidComponents = paymentMethods.paid.compactMap(component(for:))
+    lazy var paidComponents = paymentMethods.paid.compactMap(component(for:))
     
     /// Returns the only regular component that is not an instant payment,
     /// when no other payment method exists.
-    internal var singleRegularComponent: (PaymentComponent & PresentableComponent)? {
+    var singleRegularComponent: (PaymentComponent & PresentableComponent)? {
         guard storedComponents.isEmpty,
               paidComponents.isEmpty,
               regularComponents.count == 1,

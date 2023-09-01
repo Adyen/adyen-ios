@@ -7,17 +7,17 @@
 @_spi(AdyenInternal) import Adyen
 
 /// A payment method wrapper, with custom `DisplayInformation`.
-internal struct PartialConfirmationPaymentMethod: PaymentMethod {
+struct PartialConfirmationPaymentMethod: PaymentMethod {
     
-    internal var type: PaymentMethodType {
+    var type: PaymentMethodType {
         paymentMethod.type
     }
     
-    internal var name: String {
+    var name: String {
         paymentMethod.name
     }
     
-    internal var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? {
+    var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? {
         get { paymentMethod.merchantProvidedDisplayInformation }
         set { paymentMethod.merchantProvidedDisplayInformation = newValue }
     }
@@ -28,11 +28,11 @@ internal struct PartialConfirmationPaymentMethod: PaymentMethod {
     
     private let remainingAmount: Amount
     
-    internal func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+    func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         paymentMethod.buildComponent(using: builder)
     }
     
-    internal func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let footnote = localizedString(.partialPaymentRemainingBalance,
                                        parameters,
                                        remainingAmount.formatted)
@@ -42,15 +42,15 @@ internal struct PartialConfirmationPaymentMethod: PaymentMethod {
                                   footnoteText: footnote)
     }
     
-    internal init(paymentMethod: some PartialPaymentMethod,
-                  lastFour: String,
-                  remainingAmount: Amount) {
+    init(paymentMethod: some PartialPaymentMethod,
+         lastFour: String,
+         remainingAmount: Amount) {
         self.paymentMethod = paymentMethod
         self.lastFour = lastFour
         self.remainingAmount = remainingAmount
     }
     
-    internal init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         fatalError("This class should never be decoded.")
     }
     

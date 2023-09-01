@@ -6,17 +6,17 @@
 
 import Foundation
 
-internal final class EmailFormItemInjector: FormItemInjector, Localizable {
+final class EmailFormItemInjector: FormItemInjector, Localizable {
 
-    internal var localizationParameters: LocalizationParameters?
+    var localizationParameters: LocalizationParameters?
 
-    internal let style: FormTextItemStyle
+    let style: FormTextItemStyle
 
-    internal var value: String?
+    var value: String?
 
-    internal var identifier: String
+    var identifier: String
 
-    internal lazy var item: FormTextInputItem = {
+    lazy var item: FormTextInputItem = {
         let item = FormTextInputItem(style: style)
         item.value = value ?? ""
         item.title = localizedString(.emailItemTitle, localizationParameters)
@@ -29,15 +29,15 @@ internal final class EmailFormItemInjector: FormItemInjector, Localizable {
         return item
     }()
 
-    internal init(value: String?,
-                  identifier: String,
-                  style: FormTextItemStyle) {
+    init(value: String?,
+         identifier: String,
+         style: FormTextItemStyle) {
         self.value = value
         self.identifier = identifier
         self.style = style
     }
 
-    internal func inject(into formViewController: FormViewController) {
+    func inject(into formViewController: FormViewController) {
         formViewController.append(item)
     }
 

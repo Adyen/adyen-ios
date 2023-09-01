@@ -8,24 +8,24 @@ import Adyen
 import Adyen3DS2
 import Foundation
 
-internal extension ThreeDS2Component {
+extension ThreeDS2Component {
     
     struct Fingerprint: Codable, Equatable { // swiftlint:disable:this explicit_acl
-        internal let deviceInformation: String?
-        internal let sdkEphemeralPublicKey: EphemeralPublicKey?
-        internal let sdkReferenceNumber: String?
-        internal let sdkApplicationIdentifier: String?
-        internal let sdkTransactionIdentifier: String?
-        internal let delegatedAuthenticationSDKOutput: String?
-        internal let threeDS2SDKError: String?
+        let deviceInformation: String?
+        let sdkEphemeralPublicKey: EphemeralPublicKey?
+        let sdkReferenceNumber: String?
+        let sdkApplicationIdentifier: String?
+        let sdkTransactionIdentifier: String?
+        let delegatedAuthenticationSDKOutput: String?
+        let threeDS2SDKError: String?
         
-        internal init(deviceInformation: String?,
-                      sdkEphemeralPublicKey: ThreeDS2Component.Fingerprint.EphemeralPublicKey?,
-                      sdkReferenceNumber: String?,
-                      sdkApplicationIdentifier: String?,
-                      sdkTransactionIdentifier: String?,
-                      delegatedAuthenticationSDKOutput: String?,
-                      threeDS2SDKError: String?) {
+        init(deviceInformation: String?,
+             sdkEphemeralPublicKey: ThreeDS2Component.Fingerprint.EphemeralPublicKey?,
+             sdkReferenceNumber: String?,
+             sdkApplicationIdentifier: String?,
+             sdkTransactionIdentifier: String?,
+             delegatedAuthenticationSDKOutput: String?,
+             threeDS2SDKError: String?) {
             self.deviceInformation = deviceInformation
             self.sdkEphemeralPublicKey = sdkEphemeralPublicKey
             self.sdkReferenceNumber = sdkReferenceNumber
@@ -35,7 +35,7 @@ internal extension ThreeDS2Component {
             self.threeDS2SDKError = threeDS2SDKError
         }
         
-        internal init(threeDS2SDKError: String) {
+        init(threeDS2SDKError: String) {
             self.threeDS2SDKError = threeDS2SDKError
             
             self.deviceInformation = nil
@@ -46,8 +46,8 @@ internal extension ThreeDS2Component {
             self.delegatedAuthenticationSDKOutput = nil
         }
         
-        internal init(authenticationRequestParameters: AnyAuthenticationRequestParameters,
-                      delegatedAuthenticationSDKOutput: String?) throws {
+        init(authenticationRequestParameters: AnyAuthenticationRequestParameters,
+             delegatedAuthenticationSDKOutput: String?) throws {
             let sdkEphemeralPublicKeyData = Data(authenticationRequestParameters.sdkEphemeralPublicKey.utf8)
             let sdkEphemeralPublicKey = try JSONDecoder().decode(EphemeralPublicKey.self, from: sdkEphemeralPublicKeyData)
             
@@ -60,7 +60,7 @@ internal extension ThreeDS2Component {
             self.threeDS2SDKError = nil
         }
         
-        internal func withDelegatedAuthenticationSDKOutput(delegatedAuthenticationSDKOutput: String?) -> Fingerprint {
+        func withDelegatedAuthenticationSDKOutput(delegatedAuthenticationSDKOutput: String?) -> Fingerprint {
             .init(deviceInformation: deviceInformation,
                   sdkEphemeralPublicKey: sdkEphemeralPublicKey,
                   sdkReferenceNumber: sdkReferenceNumber,
@@ -86,7 +86,7 @@ internal extension ThreeDS2Component {
 
 extension ThreeDS2Component.Fingerprint {
     
-    internal struct EphemeralPublicKey: Codable, Equatable {
+    struct EphemeralPublicKey: Codable, Equatable {
         
         private let keyType: String
         private let curve: String

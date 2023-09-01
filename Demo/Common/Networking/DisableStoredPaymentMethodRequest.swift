@@ -8,23 +8,23 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-internal struct DisableStoredPaymentMethodRequest: APIRequest {
+struct DisableStoredPaymentMethodRequest: APIRequest {
     
-    internal typealias ResponseType = DisableStoredPaymentMethodResponse
+    typealias ResponseType = DisableStoredPaymentMethodResponse
     
-    internal let recurringDetailReference: String
+    let recurringDetailReference: String
     
-    internal let path = "Recurring/v68/disable"
+    let path = "Recurring/v68/disable"
 
-    internal var counter: UInt = 0
+    var counter: UInt = 0
 
-    internal var method: HTTPMethod = .post
+    var method: HTTPMethod = .post
 
-    internal var headers: [String: String] = [:]
+    var headers: [String: String] = [:]
 
-    internal var queryParameters: [URLQueryItem] = []
+    var queryParameters: [URLQueryItem] = []
 
-    internal func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         let configurations = ConfigurationConstants.current
@@ -41,12 +41,12 @@ internal struct DisableStoredPaymentMethodRequest: APIRequest {
     }
 }
 
-internal struct DisableStoredPaymentMethodResponse: Response {
+struct DisableStoredPaymentMethodResponse: Response {
 
-    internal enum ResultCode: String, Decodable {
+    enum ResultCode: String, Decodable {
         case detailsDisabled = "[detail-successfully-disabled]"
         case allDetailsDisabled = "[all-details-successfully-disabled]"
     }
 
-    internal let response: ResultCode
+    let response: ResultCode
 }

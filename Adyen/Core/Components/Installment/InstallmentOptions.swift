@@ -148,14 +148,14 @@ public struct InstallmentConfiguration: Decodable {
 }
 
 private struct DynamicKey: CodingKey {
-    internal var intValue: Int?
-    internal var stringValue: String
+    var intValue: Int?
+    var stringValue: String
     
-    internal init?(intValue: Int) {
+    init?(intValue: Int) {
         nil
     }
     
-    internal init?(stringValue: String) {
+    init?(stringValue: String) {
         self.stringValue = stringValue
     }
 }

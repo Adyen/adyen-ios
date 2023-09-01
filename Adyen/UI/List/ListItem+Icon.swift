@@ -40,7 +40,7 @@ extension ListItem {
 extension ListItem.Icon {
     
     /// The url of the remote location if applicable
-    internal var url: URL? {
+    var url: URL? {
         switch self.location {
         case .local: return nil
         case let .remote(url): return url

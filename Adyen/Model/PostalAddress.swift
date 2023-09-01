@@ -10,8 +10,8 @@ import Foundation
 /// The model for address data.
 public struct PostalAddress: Equatable, Encodable {
 
-    internal static let invalidCountry = "ZZ"
-    internal static let invalidValue = "null"
+    static let invalidCountry = "ZZ"
+    static let invalidValue = "null"
 
     /// Create new instance of postal address.
     public init(city: String? = nil,

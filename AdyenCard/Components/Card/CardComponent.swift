@@ -19,23 +19,23 @@ public class CardComponent: PresentableComponent,
     PaymentAware,
     LoadingComponent {
 
-    internal enum Constant {
-        internal static let defaultCountryCode = "US"
-        internal static let secondsThrottlingDelay = 0.5
-        internal static let thresholdBINLength = 11
-        internal static let publicPanSuffixLength = 4
+    enum Constant {
+        static let defaultCountryCode = "US"
+        static let secondsThrottlingDelay = 0.5
+        static let thresholdBINLength = 11
+        static let publicPanSuffixLength = 4
     }
     
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext
     
-    internal let cardPaymentMethod: AnyCardPaymentMethod
+    let cardPaymentMethod: AnyCardPaymentMethod
 
     @_spi(AdyenInternal)
     public let publicKeyProvider: AnyPublicKeyProvider
 
-    internal let binInfoProvider: AnyBinInfoProvider
+    let binInfoProvider: AnyBinInfoProvider
     
     /// The card payment method.
     public var paymentMethod: PaymentMethod { cardPaymentMethod }
@@ -102,11 +102,11 @@ public class CardComponent: PresentableComponent,
     ///   - configuration: The Card component configuration.
     ///   - publicKeyProvider: The public key provider
     ///   - binProvider: Any object capable to provide a BinInfo.
-    internal init(paymentMethod: AnyCardPaymentMethod,
-                  context: AdyenContext,
-                  configuration: Configuration,
-                  publicKeyProvider: AnyPublicKeyProvider,
-                  binProvider: AnyBinInfoProvider) {
+    init(paymentMethod: AnyCardPaymentMethod,
+         context: AdyenContext,
+         configuration: Configuration,
+         publicKeyProvider: AnyPublicKeyProvider,
+         binProvider: AnyBinInfoProvider) {
         self.cardPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
@@ -133,7 +133,7 @@ public class CardComponent: PresentableComponent,
     
     // MARK: - Stored Card
     
-    internal lazy var storedCardComponent: (PaymentComponent & PresentableComponent)? = {
+    lazy var storedCardComponent: (PaymentComponent & PresentableComponent)? = {
         guard let paymentMethod = paymentMethod as? StoredCardPaymentMethod else {
             return nil
         }
@@ -168,7 +168,7 @@ public class CardComponent: PresentableComponent,
     
     private lazy var securedViewController = SecuredViewController(child: cardViewController, style: configuration.style)
     
-    internal lazy var cardViewController: CardViewController = {
+    lazy var cardViewController: CardViewController = {
         
         let formViewController = CardViewController(configuration: configuration,
                                                     shopperInformation: configuration.shopperInformation,
@@ -191,13 +191,13 @@ public class CardComponent: PresentableComponent,
 
 extension CardComponent: CardViewControllerDelegate {
     
-    internal func didChange(pan: String) {
+    func didChange(pan: String) {
         panThrottler.throttle { [weak self] in
             self?.updateBrand(with: pan)
         }
     }
     
-    internal func didChange(bin: String) {
+    func didChange(bin: String) {
         binThrottler.throttle { [weak self] in
             guard let self else { return }
             self.cardComponentDelegate?.didChangeBIN(bin, component: self)
@@ -212,7 +212,7 @@ extension CardComponent: CardViewControllerDelegate {
         }
     }
     
-    internal func didSelectAddressPicker(lookupProvider: AddressLookupViewController.LookupProvider?) {
+    func didSelectAddressPicker(lookupProvider: AddressLookupViewController.LookupProvider?) {
         
         let securedViewController = SecuredViewController(
             child: addressPickerViewController(with: lookupProvider),

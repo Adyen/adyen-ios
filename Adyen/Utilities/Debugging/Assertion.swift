@@ -13,7 +13,7 @@ public typealias AssertionListener = (String) -> Void
 @_spi(AdyenInternal)
 public enum AdyenAssertion {
 
-    internal static var listener: AssertionListener?
+    static var listener: AssertionListener?
 
     /// Calls `assertionFailure` when not running Tests.
     public static func assertionFailure(message: @autoclosure () -> String) {

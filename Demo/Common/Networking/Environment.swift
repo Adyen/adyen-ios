@@ -8,28 +8,28 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-internal struct DemoAPIContext: AnyAPIContext {
+struct DemoAPIContext: AnyAPIContext {
     
-    internal init(environment: AnyAPIEnvironment = ConfigurationConstants.demoServerEnvironment) {
+    init(environment: AnyAPIEnvironment = ConfigurationConstants.demoServerEnvironment) {
         self.environment = environment
     }
     
-    internal let environment: AnyAPIEnvironment
+    let environment: AnyAPIEnvironment
     
-    internal let headers: [String: String] = [
+    let headers: [String: String] = [
         "Content-Type": "application/json",
         "X-API-Key": ConfigurationConstants.demoServerAPIKey
     ]
     
-    internal let queryParameters: [URLQueryItem] = []
+    let queryParameters: [URLQueryItem] = []
     
 }
 
-internal enum DemoCheckoutAPIEnvironment: String, AnyAPIEnvironment, CaseIterable {
+enum DemoCheckoutAPIEnvironment: String, AnyAPIEnvironment, CaseIterable {
     
     case beta, test, local
     
-    internal var baseURL: URL {
+    var baseURL: URL {
         switch self {
         case .beta:
             return URL(string: "https://checkout-beta.adyen.com/checkout/v\(version)")!
@@ -40,15 +40,15 @@ internal enum DemoCheckoutAPIEnvironment: String, AnyAPIEnvironment, CaseIterabl
         }
     }
 
-    internal var version: Int { ConfigurationConstants.current.apiVersion }
+    var version: Int { ConfigurationConstants.current.apiVersion }
     
 }
 
-internal enum DemoClassicAPIEnvironment: String, AnyAPIEnvironment, CaseIterable {
+enum DemoClassicAPIEnvironment: String, AnyAPIEnvironment, CaseIterable {
     
     case beta, test, local
     
-    internal var baseURL: URL {
+    var baseURL: URL {
         switch self {
         case .beta:
             return URL(string: "https://pal-beta.adyen.com/pal/servlet/")!

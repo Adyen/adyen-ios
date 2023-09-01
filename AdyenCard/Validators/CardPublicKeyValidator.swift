@@ -8,7 +8,7 @@
 import Foundation
 
 /// Validates a card's public key.
-internal struct CardPublicKeyValidator: Validator {
+struct CardPublicKeyValidator: Validator {
     
     public func isValid(_ string: String) -> Bool {
         guard let range = string.range(of: #"([0-9A-F]){5}\|([A-F]|[0-9]){512}"#, options: .regularExpression) else {

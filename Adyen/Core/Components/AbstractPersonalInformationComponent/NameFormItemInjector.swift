@@ -7,21 +7,21 @@
 import Foundation
 import UIKit
 
-internal final class NameFormItemInjector: FormItemInjector, Localizable {
+final class NameFormItemInjector: FormItemInjector, Localizable {
 
-    internal let contentType: UITextContentType
+    let contentType: UITextContentType
 
-    internal var localizationParameters: LocalizationParameters?
+    var localizationParameters: LocalizationParameters?
 
-    internal let style: FormTextItemStyle
+    let style: FormTextItemStyle
 
-    internal var value: String?
+    var value: String?
 
-    internal var identifier: String
+    var identifier: String
 
-    internal var localizationKey: LocalizationKey
+    var localizationKey: LocalizationKey
 
-    internal lazy var item: FormTextInputItem = {
+    lazy var item: FormTextInputItem = {
         let item = FormTextInputItem(style: style)
         item.value = value ?? ""
         item.title = localizedString(localizationKey, localizationParameters)
@@ -34,11 +34,11 @@ internal final class NameFormItemInjector: FormItemInjector, Localizable {
         return item
     }()
 
-    internal init(value: String?,
-                  identifier: String,
-                  localizationKey: LocalizationKey,
-                  style: FormTextItemStyle,
-                  contentType: UITextContentType = .name) {
+    init(value: String?,
+         identifier: String,
+         localizationKey: LocalizationKey,
+         style: FormTextItemStyle,
+         contentType: UITextContentType = .name) {
         self.value = value
         self.identifier = identifier
         self.localizationKey = localizationKey
@@ -46,7 +46,7 @@ internal final class NameFormItemInjector: FormItemInjector, Localizable {
         self.contentType = contentType
     }
 
-    internal func inject(into formViewController: FormViewController) {
+    func inject(into formViewController: FormViewController) {
         formViewController.append(item)
     }
     

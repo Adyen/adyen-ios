@@ -10,9 +10,9 @@ import UIKit
 @_spi(AdyenInternal)
 extension UIFont {
     
-    internal enum AdyenCore {
+    enum AdyenCore {
         
-        internal static var barTitle: UIFont {
+        static var barTitle: UIFont {
             UIFont.preferredFont(forTextStyle: .title3).adyen.font(with: .semibold)
         }
         

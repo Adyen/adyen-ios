@@ -38,7 +38,7 @@ public protocol TelemetryTrackerProtocol {
 @_spi(AdyenInternal)
 extension AnalyticsProvider: TelemetryTrackerProtocol {
 
-    internal func sendTelemetryEvent(flavor: TelemetryFlavor) {
+    func sendTelemetryEvent(flavor: TelemetryFlavor) {
         guard configuration.isEnabled else { return }
         guard configuration.isTelemetryEnabled else { return }
         if case .dropInComponent = flavor { return }

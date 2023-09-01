@@ -9,14 +9,14 @@ import Adyen3DS2
 import Foundation
 
 /// Handles the 3D Secure 2 fingerprint and challenge in one call using a `fingerprintSubmitter`.
-internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, ComponentWrapper {
+final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, ComponentWrapper {
 
-    internal var wrappedComponent: Component { coreActionHandler }
+    var wrappedComponent: Component { coreActionHandler }
 
-    internal let coreActionHandler: AnyThreeDS2CoreActionHandler
+    let coreActionHandler: AnyThreeDS2CoreActionHandler
     
     /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
-    internal var threeDSRequestorAppURL: URL? {
+    var threeDSRequestorAppURL: URL? {
         get {
             coreActionHandler.threeDSRequestorAppURL
         }
@@ -26,7 +26,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
         }
     }
 
-    internal var transaction: AnyADYTransaction? {
+    var transaction: AnyADYTransaction? {
         get {
             coreActionHandler.transaction
         }
@@ -42,12 +42,12 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     /// - Parameter fingerprintSubmitter: The fingerprint submitter.
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
-    internal init(context: AdyenContext,
-                  fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter? = nil,
-                  service: AnyADYService = ADYServiceAdapter(),
-                  appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
-                  coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
-                  delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil) {
+    init(context: AdyenContext,
+         fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter? = nil,
+         service: AnyADYService = ADYServiceAdapter(),
+         appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
+         coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
+         delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil) {
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,
             appearanceConfiguration: appearanceConfiguration,
@@ -63,8 +63,8 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     ///
     /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
     /// - Parameter completionHandler: The completion closure.
-    internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+    func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
+                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         let event = Analytics.Event(component: "\(threeDS2EventName).fingerprint",
                                     flavor: _isDropIn ? .dropin : .components,
                                     environment: context.apiContext.environment)
@@ -86,8 +86,8 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     ///
     /// - Parameter challengeAction: The challenge action as received from the Checkout API.
     /// - Parameter completionHandler: The completion closure.
-    internal func handle(_ challengeAction: ThreeDS2ChallengeAction,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+    func handle(_ challengeAction: ThreeDS2ChallengeAction,
+                completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         let event = Analytics.Event(component: "\(threeDS2EventName).challenge",
                                     flavor: _isDropIn ? .dropin : .components,
                                     environment: context.apiContext.environment)

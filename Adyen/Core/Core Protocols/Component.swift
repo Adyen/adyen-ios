@@ -65,9 +65,9 @@ public extension Component {
 }
 
 private enum AssociatedKeys {
-    internal static var isDropIn = "isDropInObject"
+    static var isDropIn = "isDropInObject"
 
-    internal static var environment = "environmentObject"
+    static var environment = "environmentObject"
 
-    internal static var clientKey = "clientKeyObject"
+    static var clientKey = "clientKeyObject"
 }

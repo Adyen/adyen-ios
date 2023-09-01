@@ -12,13 +12,13 @@ import AdyenDropIn
 import PassKit
 import UIKit
 
-internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
+final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
 
     // MARK: - Properties
 
-    internal var cardComponent: PresentableComponent?
+    var cardComponent: PresentableComponent?
 
-    internal weak var presenter: PresenterExampleProtocol?
+    weak var presenter: PresenterExampleProtocol?
 
     // MARK: - Action Handling
 
@@ -33,9 +33,9 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     // MARK: - Initializers
 
-    internal init() {}
+    init() {}
 
-    internal func start() {
+    func start() {
         presenter?.showLoadingIndicator()
         requestPaymentMethods(order: nil) { [weak self] result in
             guard let self else { return }
@@ -154,25 +154,25 @@ extension CardComponentAdvancedFlowExample: CardComponentDelegate {
         print("Final BIN: \(finalBIN)")
     }
 
-    internal func didChangeBIN(_ value: String, component: CardComponent) {
+    func didChangeBIN(_ value: String, component: CardComponent) {
         print("Current BIN: \(value)")
     }
 
-    internal func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent) {
+    func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent) {
         print("Current card type: \((value ?? []).reduce("") { "\($0), \($1)" })")
     }
 }
 
 extension CardComponentAdvancedFlowExample: PaymentComponentDelegate {
 
-    internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
+    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         let request = PaymentsRequest(data: data)
         apiClient.perform(request) { [weak self] result in
             self?.paymentResponseHandler(result: result)
         }
     }
 
-    internal func didFail(with error: Error, from component: PaymentComponent) {
+    func didFail(with error: Error, from component: PaymentComponent) {
         finish(with: error)
     }
 
@@ -180,15 +180,15 @@ extension CardComponentAdvancedFlowExample: PaymentComponentDelegate {
 
 extension CardComponentAdvancedFlowExample: ActionComponentDelegate {
 
-    internal func didFail(with error: Error, from component: ActionComponent) {
+    func didFail(with error: Error, from component: ActionComponent) {
         finish(with: error)
     }
 
-    internal func didComplete(from component: ActionComponent) {
+    func didComplete(from component: ActionComponent) {
         finish(with: .received)
     }
 
-    internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
+    func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
         let request = PaymentDetailsRequest(
             details: data.details,
@@ -202,7 +202,7 @@ extension CardComponentAdvancedFlowExample: ActionComponentDelegate {
 }
 
 extension CardComponentAdvancedFlowExample: PresentationDelegate {
-    internal func present(component: PresentableComponent) {
+    func present(component: PresentableComponent) {
         let componentViewController = viewController(for: component)
         presenter?.present(viewController: componentViewController, completion: nil)
     }

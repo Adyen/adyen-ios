@@ -7,14 +7,14 @@
 import CommonCrypto
 import Foundation
 
-internal struct JWAA256CBCHS512Algorithm: JWAEncryptionAlgorithm {
-    internal let keyLength: Int = kCCKeySizeAES256 * 2
+struct JWAA256CBCHS512Algorithm: JWAEncryptionAlgorithm {
+    let keyLength: Int = kCCKeySizeAES256 * 2
     
-    internal let initializationVectorLength: Int = kCCBlockSizeAES128
+    let initializationVectorLength: Int = kCCBlockSizeAES128
     
-    internal let name: String = "A256CBC-HS512"
+    let name: String = "A256CBC-HS512"
     
-    internal func encrypt(input: JWAInput) throws -> JWAOutput {
+    func encrypt(input: JWAInput) throws -> JWAOutput {
         guard input.key.count == keyLength else {
             throw EncryptionError.invalidKey
         }

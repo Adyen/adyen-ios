@@ -10,9 +10,9 @@ import UIKit
 
 /// A view representing a Cash App Pay button view.
 @available(iOS 13.0, *)
-internal final class CashAppPayButtonItemView: FormItemView<CashAppPayButtonItem> {
+final class CashAppPayButtonItemView: FormItemView<CashAppPayButtonItem> {
     
-    internal required init(item: CashAppPayButtonItem) {
+    required init(item: CashAppPayButtonItem) {
         super.init(item: item)
         
         bind(item.$showsActivityIndicator, to: self, at: \.showsActivityIndicator)
@@ -27,7 +27,7 @@ internal final class CashAppPayButtonItemView: FormItemView<CashAppPayButtonItem
         ])
     }
     
-    internal lazy var button: CashAppPayButton = {
+    lazy var button: CashAppPayButton = {
         let button = CashAppPayButton { [weak self] in
             self?.item.selectionHandler()
         }
@@ -50,7 +50,7 @@ internal final class CashAppPayButtonItemView: FormItemView<CashAppPayButtonItem
     }()
     
     /// Boolean value indicating whether an activity indicator should be shown.
-    internal var showsActivityIndicator: Bool {
+    var showsActivityIndicator: Bool {
         get {
             activityIndicatorView.isAnimating
         }

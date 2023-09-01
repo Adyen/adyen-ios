@@ -23,7 +23,7 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
     /// - Parameter type: The payment method type.
     /// - Parameter name: The payment method name.
     /// - Parameter phoneExtensions: The phone extensions supported.
-    internal init(type: PaymentMethodType, name: String, phoneExtensions: [PhoneExtension] = []) {
+    init(type: PaymentMethodType, name: String, phoneExtensions: [PhoneExtension] = []) {
         self.type = type
         self.name = name
         self.phoneExtensions = phoneExtensions

@@ -22,13 +22,13 @@ public class ModalToolbar: UIView, AnyNavigationBar {
     }
 
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - View Elements
 
-    internal lazy var titleLabel: UILabel = {
+    lazy var titleLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.textAlignment = style.barTitle.textAlignment
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -36,7 +36,7 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         return label
     }()
 
-    internal lazy var cancelButton: UIButton = {
+    lazy var cancelButton: UIButton = {
         let button = createCancelButton()
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -44,7 +44,7 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         return button
     }()
 
-    internal lazy var stackView: UIStackView = {
+    lazy var stackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [titleLabel, cancelButton])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.alignment = .center
@@ -69,7 +69,7 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         }
     }
 
-    @objc internal func didCancel() {
+    @objc func didCancel() {
         onCancelHandler?()
     }
 

@@ -20,16 +20,16 @@ public struct Region: Decodable, CustomStringConvertible, Equatable {
         name
     }
 
-    internal enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case identifier = "id"
         case name
     }
 }
 
 /// Fetch localized geographic regions from external.
-internal enum RegionRepository {
+enum RegionRepository {
 
-    internal static func regions(
+    static func regions(
         from locale: NSLocale,
         with countryCodes: [String]? = nil
     ) -> [Region] {
@@ -39,11 +39,11 @@ internal enum RegionRepository {
         }
     }
 
-    internal static func subRegions(for countryCode: String) -> [Region]? {
+    static func subRegions(for countryCode: String) -> [Region]? {
         allRegions[countryCode]
     }
     
-    internal static func region(
+    static func region(
         from locale: NSLocale,
         for countryCode: String
     ) -> Region? {

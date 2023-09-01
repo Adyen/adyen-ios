@@ -8,32 +8,32 @@
 import AdyenNetworking
 import Foundation
 
-internal enum BinLookupRequestType: String, Codable {
-    case card = "card"
-    case bcmc = "bcmc"
+enum BinLookupRequestType: String, Codable {
+    case card
+    case bcmc
 }
 
-internal struct BinLookupRequest: APIRequest {
+struct BinLookupRequest: APIRequest {
     
-    internal typealias ResponseType = BinLookupResponse
+    typealias ResponseType = BinLookupResponse
     
-    internal var path: String = "checkoutshopper/v2/bin/binLookup"
+    var path: String = "checkoutshopper/v2/bin/binLookup"
     
-    internal var counter: UInt = 0
+    var counter: UInt = 0
     
-    internal var headers: [String: String] = [:]
+    var headers: [String: String] = [:]
     
-    internal var queryParameters: [URLQueryItem] = []
+    var queryParameters: [URLQueryItem] = []
     
-    internal var method: HTTPMethod = .post
+    var method: HTTPMethod = .post
     
-    internal var encryptedBin: String
+    var encryptedBin: String
 
-    internal var supportedBrands: [CardType]
+    var supportedBrands: [CardType]
     
-    internal let requestId = UUID().uuidString
+    let requestId = UUID().uuidString
     
-    internal let type: BinLookupRequestType
+    let type: BinLookupRequestType
     
     private enum CodingKeys: String, CodingKey {
         case encryptedBin

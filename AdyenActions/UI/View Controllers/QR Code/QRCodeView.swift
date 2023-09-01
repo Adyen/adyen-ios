@@ -7,23 +7,23 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-internal protocol QRCodeViewDelegate: AnyObject {
+protocol QRCodeViewDelegate: AnyObject {
     
     func saveAsImage(qrCodeImage: UIImage?, sourceView: UIView)
 
     func copyToPasteboard(with action: QRCodeAction)
 }
 
-internal final class QRCodeView: UIView, Localizable, AdyenObserver {
+final class QRCodeView: UIView, Localizable, AdyenObserver {
     
     private let model: Model
     
     /// The delegate of the view
-    internal weak var delegate: QRCodeViewDelegate?
+    weak var delegate: QRCodeViewDelegate?
     
     public var localizationParameters: LocalizationParameters?
     
-    internal init(model: Model) {
+    init(model: Model) {
         self.model = model
         super.init(frame: .zero)
         buildUI()
@@ -33,7 +33,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     }
     
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -52,7 +52,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         }
     }
     
-    override internal func layoutSubviews() {
+    override func layoutSubviews() {
         super.layoutSubviews()
         
         saveAsImageButton.adyen.round(using: model.style.saveAsImageButton.cornerRounding)

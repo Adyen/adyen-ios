@@ -38,7 +38,7 @@ public final class SubmitButton: UIControl {
     
     // MARK: - Background View
     
-    internal lazy var backgroundView: BackgroundView = {
+    lazy var backgroundView: BackgroundView = {
         let backgroundView = BackgroundView(cornerRounding: style.cornerRounding,
                                             borderColor: style.borderColor,
                                             borderWidth: style.borderWidth,
@@ -58,7 +58,7 @@ public final class SubmitButton: UIControl {
         }
     }
     
-    internal lazy var titleLabel: UILabel = {
+    lazy var titleLabel: UILabel = {
         let titleLabel = UILabel(style: style.title)
         titleLabel.isAccessibilityElement = false
         
@@ -152,7 +152,7 @@ public final class SubmitButton: UIControl {
 
 extension SubmitButton {
     
-    internal final class BackgroundView: UIView {
+    final class BackgroundView: UIView {
         
         private let color: UIColor
         private let rounding: CornerRounding
@@ -174,7 +174,7 @@ extension SubmitButton {
         }
         
         @available(*, unavailable)
-        internal required init?(coder aDecoder: NSCoder) {
+        required init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
         
@@ -207,7 +207,7 @@ extension SubmitButton {
             layer.add(transition, forKey: nil)
         }
         
-        override internal func layoutSubviews() {
+        override func layoutSubviews() {
             super.layoutSubviews()
             self.adyen.round(using: rounding)
         }

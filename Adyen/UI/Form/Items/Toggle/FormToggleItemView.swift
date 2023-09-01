@@ -22,7 +22,7 @@ public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemSty
         return stackView
     }()
 
-    internal lazy var switchControl: UISwitch = {
+    lazy var switchControl: UISwitch = {
         let switchControl = UISwitch()
         switchControl.translatesAutoresizingMaskIntoConstraints = false
         switchControl.isOn = item.value

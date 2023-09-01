@@ -7,7 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
-internal protocol BACSItemsFactoryProtocol {
+protocol BACSItemsFactoryProtocol {
     func createHolderNameItem() -> FormTextInputItem
     func createBankAccountNumberItem() -> FormTextInputItem
     func createSortCodeItem() -> FormTextInputItem
@@ -19,7 +19,7 @@ internal protocol BACSItemsFactoryProtocol {
     func createLegalConsentToggle() -> FormToggleItem
 }
 
-internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
+struct BACSItemsFactory: BACSItemsFactoryProtocol {
 
     private enum ViewIdentifier {
         static let holderNameItem = "holderNameItem"
@@ -40,9 +40,9 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
 
     // MARK: - Initializers
 
-    internal init(styleProvider: FormComponentStyle,
-                  localizationParameters: LocalizationParameters?,
-                  scope: String) {
+    init(styleProvider: FormComponentStyle,
+         localizationParameters: LocalizationParameters?,
+         scope: String) {
         self.styleProvider = styleProvider
         self.localizationParameters = localizationParameters
         self.scope = scope
@@ -50,7 +50,7 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
 
     // MARK: - BACSDirectDebitItemsFactoryProtocol
 
-    internal func createHolderNameItem() -> FormTextInputItem {
+    func createHolderNameItem() -> FormTextInputItem {
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
         let localizedTitle = localizedString(.bacsHolderNameFieldTitle, localizationParameters)
@@ -70,7 +70,7 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         return textItem
     }
 
-    internal func createBankAccountNumberItem() -> FormTextInputItem {
+    func createBankAccountNumberItem() -> FormTextInputItem {
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
         let localizedTitle = localizedString(.bacsBankAccountNumberFieldTitle, localizationParameters)
@@ -92,7 +92,7 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         return textItem
     }
 
-    internal func createSortCodeItem() -> FormTextInputItem {
+    func createSortCodeItem() -> FormTextInputItem {
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
         let localizedTitle = localizedString(.bacsBankLocationIdFieldTitle, localizationParameters)
@@ -114,7 +114,7 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         return textItem
     }
 
-    internal func createEmailItem() -> FormTextInputItem {
+    func createEmailItem() -> FormTextInputItem {
         let textItem = FormTextInputItem(style: styleProvider.textField)
 
         let localizedTitle = localizedString(.emailItemTitle, localizationParameters)
@@ -135,7 +135,7 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         return textItem
     }
 
-    internal func createContinueButton() -> FormButtonItem {
+    func createContinueButton() -> FormButtonItem {
         let buttonItem = FormButtonItem(style: styleProvider.mainButtonItem)
 
         let localizedTitle = localizedString(.continueTitle, localizationParameters)
@@ -147,7 +147,7 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         return buttonItem
     }
 
-    internal func createPaymentButton() -> FormButtonItem {
+    func createPaymentButton() -> FormButtonItem {
         let buttonItem = FormButtonItem(style: styleProvider.mainButtonItem)
 
         let localizedTitle = localizedString(.bacsPaymentButtonTitle, localizationParameters)
@@ -159,7 +159,7 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         return buttonItem
     }
 
-    internal func createAmountConsentToggle(amount: Amount?) -> FormToggleItem {
+    func createAmountConsentToggle(amount: Amount?) -> FormToggleItem {
         let toggleItem = FormToggleItem(style: styleProvider.toggle)
         toggleItem.value = false
 
@@ -171,7 +171,7 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         return toggleItem
     }
     
-    internal func createConsentText(with amount: Amount?) -> String {
+    func createConsentText(with amount: Amount?) -> String {
         let localizedTitle: String
         if let amount = amount {
             localizedTitle = localizedString(.bacsSpecifiedAmountConsentToggleTitle, localizationParameters, amount.formatted)
@@ -181,7 +181,7 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         return localizedTitle
     }
 
-    internal func createLegalConsentToggle() -> FormToggleItem {
+    func createLegalConsentToggle() -> FormToggleItem {
         let toggleItem = FormToggleItem(style: styleProvider.toggle)
         toggleItem.value = false
 

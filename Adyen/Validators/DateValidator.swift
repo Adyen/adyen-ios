@@ -21,7 +21,7 @@ public final class DateValidator: Validator {
         formatter.dateFormat = format.rawValue
     }
 
-    internal init(format: String) {
+    init(format: String) {
         formatter = DateFormatter()
         formatter.dateFormat = format
     }

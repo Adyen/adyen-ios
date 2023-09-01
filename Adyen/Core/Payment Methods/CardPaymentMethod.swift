@@ -39,7 +39,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
         DisplayInformation(title: name, subtitle: nil, logoName: "card")
     }
     
-    internal init(type: PaymentMethodType, name: String, fundingSource: CardFundingSource, brands: [CardType]) {
+    init(type: PaymentMethodType, name: String, fundingSource: CardFundingSource, brands: [CardType]) {
         self.type = type
         self.name = name
         self.brands = brands

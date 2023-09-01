@@ -106,9 +106,9 @@ public struct StoredPaymentDetails: PaymentMethodDetails {
     @_spi(AdyenInternal)
     public var checkoutAttemptId: String?
     
-    internal let type: PaymentMethodType
+    let type: PaymentMethodType
     
-    internal let storedPaymentMethodIdentifier: String
+    let storedPaymentMethodIdentifier: String
     
     /// Initializes a new instance of `StoredPaymentDetails`
     ///

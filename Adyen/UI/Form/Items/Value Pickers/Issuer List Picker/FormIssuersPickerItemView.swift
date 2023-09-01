@@ -6,9 +6,9 @@
 
 import UIKit
 
-internal final class FormIssuersPickerItemView: BaseFormPickerItemView<Issuer> {
+final class FormIssuersPickerItemView: BaseFormPickerItemView<Issuer> {
 
-    override internal func initialize() {
+    override func initialize() {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, inputControl])
         stackView.axis = .vertical
         stackView.spacing = 5.5

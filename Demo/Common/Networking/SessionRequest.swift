@@ -9,21 +9,21 @@ import AdyenNetworking
 import Foundation
 import UIKit
 
-internal struct SessionRequest: APIRequest {
+struct SessionRequest: APIRequest {
     
-    internal typealias ResponseType = SessionResponse
+    typealias ResponseType = SessionResponse
     
-    internal let path = "sessions"
+    let path = "sessions"
     
-    internal var counter: UInt = 0
+    var counter: UInt = 0
     
-    internal var method: HTTPMethod = .post
+    var method: HTTPMethod = .post
     
-    internal var headers: [String: String] = [:]
+    var headers: [String: String] = [:]
     
-    internal var queryParameters: [URLQueryItem] = []
+    var queryParameters: [URLQueryItem] = []
     
-    internal func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         let currentConfiguration = ConfigurationConstants.current
@@ -54,7 +54,7 @@ internal struct SessionRequest: APIRequest {
         }
     }
     
-    internal enum CodingKeys: CodingKey {
+    enum CodingKeys: CodingKey {
         case countryCode
         case merchantAccount
         case amount
@@ -74,13 +74,13 @@ internal struct SessionRequest: APIRequest {
     
 }
 
-internal struct SessionResponse: Response {
+struct SessionResponse: Response {
     
-    internal let sessionData: String
+    let sessionData: String
     
-    internal let sessionId: String
+    let sessionId: String
     
-    internal enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case sessionData
         case sessionId = "id"
     }

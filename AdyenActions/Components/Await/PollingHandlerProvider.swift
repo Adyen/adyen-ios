@@ -9,29 +9,29 @@ import AdyenNetworking
 import Foundation
 
 /// Any action that has payment data
-internal protocol PaymentDataAware {
+protocol PaymentDataAware {
     var paymentData: String { get }
 }
 
 /// A component that handles Await action's.
-internal protocol AnyPollingHandler: ActionComponent, Cancellable {
+protocol AnyPollingHandler: ActionComponent, Cancellable {
     func handle(_ action: PaymentDataAware)
 }
 
-internal protocol AnyPollingHandlerProvider {
+protocol AnyPollingHandlerProvider {
 
     func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler
     
     func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler
 }
 
-internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
+struct PollingHandlerProvider: AnyPollingHandlerProvider {
 
     private let context: AdyenContext
 
     private let apiClient: AnyRetryAPIClient
 
-    internal init(context: AdyenContext) {
+    init(context: AdyenContext) {
         self.context = context
         self.apiClient = RetryAPIClient(
             apiClient: APIClient(apiContext: context.apiContext),
@@ -39,14 +39,14 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
         )
     }
 
-    internal func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler {
+    func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler {
         switch paymentMethodType {
         case .mbway, .blik, .upicollect:
             return createPollingComponent()
         }
     }
     
-    internal func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler {
+    func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler {
         switch qrPaymentMethodType {
         case .pix, .promptPay, .duitNow, .payNow, .upiQRCode:
             return createPollingComponent()

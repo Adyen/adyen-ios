@@ -8,16 +8,16 @@ import Adyen
 import Adyen3DS2
 import Foundation
 
-internal extension ThreeDS2Component {
+extension ThreeDS2Component {
     
     struct ChallengeToken: Decodable { // swiftlint:disable:this explicit_acl
         
-        internal let acsReferenceNumber: String
-        internal let acsSignedContent: String
-        internal let acsTransactionIdentifier: String
-        internal let serverTransactionIdentifier: String
-        internal let threeDSRequestorAppURL: URL?
-        internal let delegatedAuthenticationSDKInput: String?
+        let acsReferenceNumber: String
+        let acsSignedContent: String
+        let acsTransactionIdentifier: String
+        let serverTransactionIdentifier: String
+        let threeDSRequestorAppURL: URL?
+        let delegatedAuthenticationSDKInput: String?
         
         // MARK: - Decoding
         
@@ -34,7 +34,7 @@ internal extension ThreeDS2Component {
     
 }
 
-internal extension ADYChallengeParameters {
+extension ADYChallengeParameters {
     
     // swiftlint:disable:next explicit_acl
     convenience init(challengeToken: ThreeDS2Component.ChallengeToken,

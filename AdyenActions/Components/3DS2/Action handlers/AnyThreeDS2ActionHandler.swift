@@ -8,7 +8,7 @@
 import Adyen3DS2
 import Foundation
 
-internal protocol AnyThreeDS2ActionHandler {
+protocol AnyThreeDS2ActionHandler {
 
     func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
                 completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void)
@@ -19,7 +19,7 @@ internal protocol AnyThreeDS2ActionHandler {
     var threeDSRequestorAppURL: URL? { get set }
 }
 
-internal protocol ComponentWrapper: Component {
+protocol ComponentWrapper: Component {
 
     var wrappedComponent: Component { get }
     
@@ -27,11 +27,11 @@ internal protocol ComponentWrapper: Component {
 
 extension ComponentWrapper {
 
-    internal var apiContext: APIContext { wrappedComponent.context.apiContext }
+    var apiContext: APIContext { wrappedComponent.context.apiContext }
 
-    internal var context: AdyenContext { wrappedComponent.context }
+    var context: AdyenContext { wrappedComponent.context }
 
-    internal var _isDropIn: Bool { // swiftlint:disable:this identifier_name
+    var _isDropIn: Bool { // swiftlint:disable:this identifier_name
         get {
             wrappedComponent._isDropIn
         }
@@ -42,7 +42,7 @@ extension ComponentWrapper {
     }
 }
 
-internal func createDefaultThreeDS2CoreActionHandler(
+func createDefaultThreeDS2CoreActionHandler(
     context: AdyenContext,
     appearanceConfiguration: ADYAppearanceConfiguration,
     delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?

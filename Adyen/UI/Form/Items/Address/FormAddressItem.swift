@@ -30,7 +30,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         }
     }
     
-    internal let configuration: Configuration
+    let configuration: Configuration
     
     private var observers: [AddressField: Observation] = [:]
     
@@ -42,11 +42,11 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     private lazy var optionalMessage = localizedString(.fieldTitleOptional, configuration.localizationParameters)
     
-    internal weak var delegate: SelfRenderingFormItemDelegate?
+    weak var delegate: SelfRenderingFormItemDelegate?
     
     override public var subitems: [FormItem] { items }
     
-    internal let addressViewModelBuilder: AddressViewModelBuilder
+    let addressViewModelBuilder: AddressViewModelBuilder
     
     private weak var presenter: ViewControllerPresenter?
     
@@ -87,14 +87,14 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         })
     }
     
-    internal lazy var headerItem: FormLabelItem = {
+    lazy var headerItem: FormLabelItem = {
         let item = FormLabelItem(text: localizedString(.billingAddressSectionTitle, configuration.localizationParameters),
                                  style: style.title)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
         return item
     }()
     
-    internal lazy var countryPickerItem: FormRegionPickerItem = {
+    lazy var countryPickerItem: FormRegionPickerItem = {
         let locale = Locale(identifier: self.configuration.localizationParameters?.locale ?? Locale.current.identifier)
         
         let countries = RegionRepository.regions(

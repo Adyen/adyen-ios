@@ -6,22 +6,22 @@
 
 import UIKit
 
-internal final class FormPhoneExtensionPickerItemView: BaseFormPickerItemView<PhoneExtension> {
+final class FormPhoneExtensionPickerItemView: BaseFormPickerItemView<PhoneExtension> {
 
     private lazy var phoneExtensionInputControl = PhoneExtensionInputControl(inputView: pickerView,
                                                                              inputAccessoryView: pickerViewToolbar,
                                                                              style: item.style.text)
 
-    override internal func createInputControl() -> PickerTextInputControl {
+    override func createInputControl() -> PickerTextInputControl {
         phoneExtensionInputControl
     }
 
-    override internal func updateSelection() {
+    override func updateSelection() {
         phoneExtensionInputControl.label = item.value.element.value
         phoneExtensionInputControl.flagView.text = item.value.identifier.adyen.countryFlag
     }
 
-    override internal func initialize() {
+    override func initialize() {
         super.initialize()
         showsSeparator = false
     }

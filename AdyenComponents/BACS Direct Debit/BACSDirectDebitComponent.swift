@@ -7,7 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-internal protocol BACSDirectDebitRouterProtocol: AnyObject {
+protocol BACSDirectDebitRouterProtocol: AnyObject {
     func presentConfirmation(with data: BACSDirectDebitData)
     func confirmPayment(with data: BACSDirectDebitData)
 }
@@ -42,14 +42,14 @@ public final class BACSDirectDebitComponent: PaymentComponent, PaymentAware, Pre
 
     // MARK: - Properties
 
-    internal let bacsPaymentMethod: BACSDirectDebitPaymentMethod
+    let bacsPaymentMethod: BACSDirectDebitPaymentMethod
     
-    internal var confirmationPresenter: BACSConfirmationPresenterProtocol?
+    var confirmationPresenter: BACSConfirmationPresenterProtocol?
     private var confirmationViewPresented = false
     
-    internal let inputFormViewController: BACSInputFormViewController
+    let inputFormViewController: BACSInputFormViewController
     
-    internal private(set) var inputPresenter: BACSInputPresenterProtocol?
+    private(set) var inputPresenter: BACSInputPresenterProtocol?
     
     // MARK: - Initializers
 
@@ -91,7 +91,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PaymentAware, Pre
 /// :nodoc:
 extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 
-    internal func presentConfirmation(with data: BACSDirectDebitData) {
+    func presentConfirmation(with data: BACSDirectDebitData) {
         confirmationViewPresented = true
         let confirmationView = assembleConfirmationView(with: data)
 
@@ -100,7 +100,7 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
         presentationDelegate?.present(component: wrappedComponent)
     }
 
-    internal func confirmPayment(with data: BACSDirectDebitData) {
+    func confirmPayment(with data: BACSDirectDebitData) {
         guard let bacsDirectDebitPaymentMethod = paymentMethod as? BACSDirectDebitPaymentMethod else {
             return
         }

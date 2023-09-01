@@ -7,7 +7,7 @@
 import Foundation
 
 /// Contains the information of a card that is yet to be encrypted.
-internal class CardPayload: Payload {
+class CardPayload: Payload {
 
     private var number: String?
     private var securityCode: String?
@@ -27,32 +27,32 @@ internal class CardPayload: Payload {
         case password
     }
 
-    internal func add(number: String?) -> Self {
+    func add(number: String?) -> Self {
         self.number = number
         return self
     }
 
-    internal func add(securityCode: String?) -> Self {
+    func add(securityCode: String?) -> Self {
         self.securityCode = securityCode
         return self
     }
 
-    internal func add(expiryMonth: String?) -> Self {
+    func add(expiryMonth: String?) -> Self {
         self.expiryMonth = expiryMonth
         return self
     }
 
-    internal func add(expiryYear: String?) -> Self {
+    func add(expiryYear: String?) -> Self {
         self.expiryYear = expiryYear
         return self
     }
 
-    internal func add(holder: String?) -> Self {
+    func add(holder: String?) -> Self {
         self.holder = holder
         return self
     }
 
-    internal func add(password: String?) -> Self {
+    func add(password: String?) -> Self {
         self.password = password
         return self
     }

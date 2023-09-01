@@ -8,7 +8,7 @@
 import UIKit
 
 /// An error that occurred during the use of QRCodeComponent
-internal enum QRCodeComponentError: LocalizedError {
+enum QRCodeComponentError: LocalizedError {
     /// Indicates the QR code is not longer valid
     case qrCodeExpired
 
@@ -29,7 +29,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
 
     public weak var delegate: ActionComponentDelegate?
 
-    internal let presenterViewController = UIViewController()
+    let presenterViewController = UIViewController()
 
     /// The QR code component configurations.
     public struct Configuration {
@@ -80,9 +80,9 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component configurations
     /// - Parameter pollingComponentBuilder: The payment method specific await action handler provider.
-    internal init(context: AdyenContext,
-                  configuration: Configuration = .init(),
-                  pollingComponentBuilder: AnyPollingHandlerProvider? = nil) {
+    init(context: AdyenContext,
+         configuration: Configuration = .init(),
+         pollingComponentBuilder: AnyPollingHandlerProvider? = nil) {
         self.context = context
         self.configuration = configuration
         self.pollingComponentBuilder = pollingComponentBuilder
@@ -132,7 +132,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
         presentationDelegate.present(component: presentableComponent)
     }
     
-    internal func timeoutDuration(for action: QRCodeAction) -> TimeInterval {
+    func timeoutDuration(for action: QRCodeAction) -> TimeInterval {
         switch action.paymentMethodType {
         case .promptPay, .duitNow:
             return 90
@@ -258,11 +258,11 @@ extension QRCodeActionComponent: ActionComponentDelegate {
 @_spi(AdyenInternal)
 extension QRCodeActionComponent: QRCodeViewDelegate {
     
-    internal func copyToPasteboard(with action: QRCodeAction) {
+    func copyToPasteboard(with action: QRCodeAction) {
         UIPasteboard.general.string = action.qrCodeData
     }
 
-    internal func saveAsImage(qrCodeImage: UIImage?, sourceView: UIView) {
+    func saveAsImage(qrCodeImage: UIImage?, sourceView: UIView) {
         presentSharePopover(with: qrCodeImage as Any, sourceView: sourceView)
     }
 }

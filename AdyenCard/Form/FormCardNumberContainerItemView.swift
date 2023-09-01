@@ -7,13 +7,13 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
-internal final class FormCardNumberContainerItemView: FormVerticalStackItemView<FormCardNumberContainerItem> {
+final class FormCardNumberContainerItemView: FormVerticalStackItemView<FormCardNumberContainerItem> {
     
-    override internal var canBecomeFirstResponder: Bool {
+    override var canBecomeFirstResponder: Bool {
         views.first { $0.canBecomeFirstResponder } != nil
     }
 
-    override internal func becomeFirstResponder() -> Bool {
+    override func becomeFirstResponder() -> Bool {
         views.first { $0.canBecomeFirstResponder }?.becomeFirstResponder() ?? super.becomeFirstResponder()
     }
     

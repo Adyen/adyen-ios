@@ -14,9 +14,9 @@ import Foundation
 extension ThreeDS2CompactActionHandler {
     
     /// Initializes the 3D Secure 2 action handler.
-    internal convenience init(context: AdyenContext,
-                              appearanceConfiguration: ADYAppearanceConfiguration,
-                              delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?) {
+    convenience init(context: AdyenContext,
+                     appearanceConfiguration: ADYAppearanceConfiguration,
+                     delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?) {
         
         let fingerprintSubmitter = ThreeDS2FingerprintSubmitter(apiContext: context.apiContext)
         self.init(

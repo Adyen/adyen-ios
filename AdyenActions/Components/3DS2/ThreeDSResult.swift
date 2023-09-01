@@ -14,15 +14,15 @@ public struct ThreeDSResult: Decodable {
     public let payload: String
     
     private struct Payload: Codable {
-        internal let authorisationToken: String?
-        internal let delegatedAuthenticationSDKOutput: String?
-        internal let threeDS2SDKError: String?
-        internal let transStatus: String?
+        let authorisationToken: String?
+        let delegatedAuthenticationSDKOutput: String?
+        let threeDS2SDKError: String?
+        let transStatus: String?
     }
 
-    internal init(authorizationToken: String?,
-                  threeDS2SDKError: String?,
-                  transStatus: String) throws {
+    init(authorizationToken: String?,
+         threeDS2SDKError: String?,
+         transStatus: String) throws {
         let payload = Payload(authorisationToken: authorizationToken,
                               delegatedAuthenticationSDKOutput: nil,
                               threeDS2SDKError: threeDS2SDKError,
@@ -31,10 +31,10 @@ public struct ThreeDSResult: Decodable {
         self.payload = payloadData.base64EncodedString()
     }
     
-    internal init(from challengeResult: AnyChallengeResult,
-                  delegatedAuthenticationSDKOutput: String?,
-                  authorizationToken: String?,
-                  threeDS2SDKError: String?) throws {
+    init(from challengeResult: AnyChallengeResult,
+         delegatedAuthenticationSDKOutput: String?,
+         authorizationToken: String?,
+         threeDS2SDKError: String?) throws {
         let payload = Payload(authorisationToken: authorizationToken,
                               delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
                               threeDS2SDKError: threeDS2SDKError,
@@ -50,7 +50,7 @@ public struct ThreeDSResult: Decodable {
         self.payload = try container.decode(String.self, forKey: .payload)
     }
     
-    internal func withDelegatedAuthenticationSDKOutput(delegatedAuthenticationSDKOutput: String?) throws -> ThreeDSResult {
+    func withDelegatedAuthenticationSDKOutput(delegatedAuthenticationSDKOutput: String?) throws -> ThreeDSResult {
         let oldPayload: Payload = try Coder.decodeBase64(payload)
         let newPayload = Payload(authorisationToken: oldPayload.authorisationToken,
                                  delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
@@ -60,7 +60,7 @@ public struct ThreeDSResult: Decodable {
         return .init(payload: newPayloadData.base64EncodedString())
     }
 
-    internal init(authenticated: Bool, authorizationToken: String?) throws {
+    init(authenticated: Bool, authorizationToken: String?) throws {
         var payloadJson = ["transStatus": authenticated ? "Y" : "N"]
 
         if let authorizationToken = authorizationToken {
@@ -73,7 +73,7 @@ public struct ThreeDSResult: Decodable {
         self.payload = payloadData.base64EncodedString()
     }
 
-    internal init(payload: String) {
+    init(payload: String) {
         self.payload = payload
     }
 

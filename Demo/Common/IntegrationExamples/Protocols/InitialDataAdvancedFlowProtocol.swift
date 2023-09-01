@@ -8,7 +8,7 @@
 import AdyenNetworking
 import AdyenSession
 
-internal protocol InitialDataAdvancedFlowProtocol: AnyObject, APIClientAware {
+protocol InitialDataAdvancedFlowProtocol: AnyObject, APIClientAware {
     var context: AdyenContext { get }
     var palApiClient: APIClientProtocol { get }
     func requestPaymentMethods(order: PartialPaymentOrder?,
@@ -17,7 +17,7 @@ internal protocol InitialDataAdvancedFlowProtocol: AnyObject, APIClientAware {
 
 extension InitialDataAdvancedFlowProtocol {
 
-    internal var context: AdyenContext {
+    var context: AdyenContext {
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
         return AdyenContext(apiContext: ConfigurationConstants.apiContext,
@@ -25,13 +25,13 @@ extension InitialDataAdvancedFlowProtocol {
                             analyticsConfiguration: analyticsConfiguration)
     }
 
-    internal var palApiClient: APIClientProtocol {
+    var palApiClient: APIClientProtocol {
         let context = DemoAPIContext(environment: ConfigurationConstants.classicAPIEnvironment)
         return DefaultAPIClient(apiContext: context)
     }
 
-    internal func requestPaymentMethods(order: PartialPaymentOrder?,
-                                        completion: @escaping (Result<PaymentMethods, Error>) -> Void) {
+    func requestPaymentMethods(order: PartialPaymentOrder?,
+                               completion: @escaping (Result<PaymentMethods, Error>) -> Void) {
         let request = PaymentMethodsRequest(order: order)
         apiClient.perform(request) { result in
             switch result {

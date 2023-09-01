@@ -7,21 +7,21 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-internal protocol BACSConfirmationViewProtocol: FormViewProtocol {
+protocol BACSConfirmationViewProtocol: FormViewProtocol {
     func setUserInteraction(enabled: Bool)
 }
 
-internal class BACSConfirmationViewController: FormViewController, BACSConfirmationViewProtocol {
+class BACSConfirmationViewController: FormViewController, BACSConfirmationViewProtocol {
 
     // MARK: - Properties
 
-    internal weak var presenter: BACSConfirmationPresenterProtocol?
+    weak var presenter: BACSConfirmationPresenterProtocol?
 
     // MARK: - Initializers
 
-    internal init(title: String,
-                  styleProvider: FormComponentStyle,
-                  localizationParameters: LocalizationParameters? = nil) {
+    init(title: String,
+         styleProvider: FormComponentStyle,
+         localizationParameters: LocalizationParameters? = nil) {
         super.init(
             style: styleProvider,
             localizationParameters: localizationParameters
@@ -31,14 +31,14 @@ internal class BACSConfirmationViewController: FormViewController, BACSConfirmat
 
     // MARK: - View life cycle
 
-    override internal func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.viewDidLoad()
     }
 
     // MARK: - BACSConfirmationViewProtocol
 
-    internal func setUserInteraction(enabled: Bool) {
+    func setUserInteraction(enabled: Bool) {
         view.isUserInteractionEnabled = enabled
     }
 }

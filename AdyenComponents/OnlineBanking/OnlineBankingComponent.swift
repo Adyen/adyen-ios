@@ -52,7 +52,7 @@ public final class OnlineBankingComponent: PaymentComponent,
     }
 
     /// The terms and condition message item.
-    internal lazy var termsAndConditionsLabelItem: FormAttributedLabelItem = .init(
+    lazy var termsAndConditionsLabelItem: FormAttributedLabelItem = .init(
         originalText:
         localizedString(.onlineBankingTermsAndConditions,
                         configuration.localizationParameters),
@@ -64,7 +64,7 @@ public final class OnlineBankingComponent: PaymentComponent,
     )
 
     /// The continue button item.
-    internal lazy var continueButton: FormButtonItem = {
+    lazy var continueButton: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                       postfix: ViewIdentifier.continueButtonItem)
@@ -76,7 +76,7 @@ public final class OnlineBankingComponent: PaymentComponent,
     }()
 
     /// The Issuer List item.
-    internal lazy var issuerListPickerItem: FormIssuersPickerItem = {
+    lazy var issuerListPickerItem: FormIssuersPickerItem = {
         let issuerListPickerItems: [IssuerPickerItem] = onlineBankingPaymentMethod.issuers.map {
             IssuerPickerItem(identifier: $0.identifier, element: $0)
         }

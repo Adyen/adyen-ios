@@ -34,8 +34,8 @@ public enum AddressFormScheme {
 @_spi(AdyenInternal)
 public struct AddressViewModel {
 
-    internal var labels: [AddressField: LocalizationKey]
-    internal var placeholder: [AddressField: LocalizationKey]
+    var labels: [AddressField: LocalizationKey]
+    var placeholder: [AddressField: LocalizationKey]
 
     @_spi(AdyenInternal)
     public var optionalFields: [AddressField]
@@ -68,7 +68,7 @@ public extension AddressViewModel {
 
 extension AddressField {
 
-    internal var contentType: UITextContentType? {
+    var contentType: UITextContentType? {
         switch self {
         case .street:
             return .streetAddressLine1

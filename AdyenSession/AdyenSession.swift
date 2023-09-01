@@ -20,13 +20,13 @@ public final class AdyenSession {
     /// Session configuration.
     public struct Configuration {
         
-        internal let sessionIdentifier: String
+        let sessionIdentifier: String
         
-        internal let initialSessionData: String
+        let initialSessionData: String
         
-        internal let context: AdyenContext
+        let context: AdyenContext
         
-        internal let actionComponent: AdyenActionComponent.Configuration
+        let actionComponent: AdyenActionComponent.Configuration
         
         /// Initializes a new Configuration object
         ///
@@ -69,13 +69,13 @@ public final class AdyenSession {
         public let paymentMethods: PaymentMethods
         
         /// Result code from the latest API call
-        internal var resultCode: PaymentsResponse.ResultCode?
+        var resultCode: PaymentsResponse.ResultCode?
         
         /// Encoded result string from the latest API call
-        internal var sessionResult: String?
+        var sessionResult: String?
         
         /// Component related configuration object
-        internal let configuration: SessionSetupResponse.Configuration
+        let configuration: SessionSetupResponse.Configuration
     }
     
     /// The session context information.
@@ -106,11 +106,11 @@ public final class AdyenSession {
                    completion: completion)
     }
     
-    internal static func initialize(with configuration: Configuration,
-                                    delegate: AdyenSessionDelegate,
-                                    presentationDelegate: PresentationDelegate,
-                                    baseAPIClient: APIClientProtocol,
-                                    completion: @escaping ((Result<AdyenSession, Error>) -> Void)) {
+    static func initialize(with configuration: Configuration,
+                           delegate: AdyenSessionDelegate,
+                           presentationDelegate: PresentationDelegate,
+                           baseAPIClient: APIClientProtocol,
+                           completion: @escaping ((Result<AdyenSession, Error>) -> Void)) {
         makeSetupCall(with: configuration,
                       baseAPIClient: baseAPIClient) { result in
             switch result {
@@ -126,10 +126,10 @@ public final class AdyenSession {
         }
     }
     
-    internal static func makeSetupCall(with configuration: Configuration,
-                                       baseAPIClient: APIClientProtocol,
-                                       order: PartialPaymentOrder? = nil,
-                                       completion: @escaping ((Result<Context, Error>) -> Void)) {
+    static func makeSetupCall(with configuration: Configuration,
+                              baseAPIClient: APIClientProtocol,
+                              order: PartialPaymentOrder? = nil,
+                              completion: @escaping ((Result<Context, Error>) -> Void)) {
         let sessionId = configuration.sessionIdentifier
         let sessionData = configuration.initialSessionData
         let request = SessionSetupRequest(sessionId: sessionId,
@@ -155,7 +155,7 @@ public final class AdyenSession {
     
     // MARK: - Action Handling for Components
 
-    internal lazy var actionComponent: ActionHandlingComponent = {
+    lazy var actionComponent: ActionHandlingComponent = {
         let handler = AdyenActionComponent(context: configuration.context,
                                            configuration: configuration.actionComponent)
         handler.delegate = self
@@ -165,9 +165,9 @@ public final class AdyenSession {
     
     // MARK: - Private
     
-    internal let configuration: Configuration
+    let configuration: Configuration
     
-    internal lazy var apiClient: APIClientProtocol = {
+    lazy var apiClient: APIClientProtocol = {
         let apiClient = SessionAPIClient(apiClient: APIClient(apiContext: configuration.context.apiContext), session: self)
         return apiClient
             .retryAPIClient(with: SimpleScheduler(maximumCount: 2))

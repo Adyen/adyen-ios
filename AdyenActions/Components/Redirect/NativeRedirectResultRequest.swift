@@ -8,26 +8,26 @@ import AdyenNetworking
 import Foundation
 @_spi(AdyenInternal) import Adyen
 
-internal struct NativeRedirectResultRequest: Request {
-    internal typealias ResponseType = RedirectDetails
+struct NativeRedirectResultRequest: Request {
+    typealias ResponseType = RedirectDetails
 
-    internal typealias ErrorResponseType = APIError
+    typealias ErrorResponseType = APIError
 
-    internal let path: String = "checkoutshopper/v1/nativeRedirect/redirectResult"
+    let path: String = "checkoutshopper/v1/nativeRedirect/redirectResult"
 
-    internal var counter: UInt = 0
+    var counter: UInt = 0
 
-    internal let headers: [String: String] = [:]
+    let headers: [String: String] = [:]
 
-    internal let queryParameters: [URLQueryItem] = []
+    let queryParameters: [URLQueryItem] = []
 
-    internal let method: HTTPMethod = .post
+    let method: HTTPMethod = .post
 
-    internal let redirectData: String?
+    let redirectData: String?
 
-    internal let returnQueryString: String
+    let returnQueryString: String
 
-    internal init(redirectData: String?, returnQueryString: String) {
+    init(redirectData: String?, returnQueryString: String) {
         self.redirectData = redirectData
         self.returnQueryString = returnQueryString
     }

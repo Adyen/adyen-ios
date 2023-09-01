@@ -7,14 +7,14 @@
 @_spi(AdyenInternal) import Adyen
 
 /// A form item into which a card's security code (CVC/CVV) is entered.
-internal final class FormCardSecurityCodeItem: FormTextItem {
+final class FormCardSecurityCodeItem: FormTextItem {
 
-    internal enum DisplayMode {
+    enum DisplayMode {
         case required
         case optional
         case hidden
         
-        internal var isVisible: Bool {
+        var isVisible: Bool {
             switch self {
             case .required, .optional: return true
             case .hidden: return false
@@ -22,18 +22,18 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
         }
     }
     
-    internal var localizationParameters: LocalizationParameters?
+    var localizationParameters: LocalizationParameters?
     
-    @AdyenObservable(nil) internal var selectedCard: CardType?
+    @AdyenObservable(nil) var selectedCard: CardType?
 
-    @AdyenObservable(.required) internal var displayMode: DisplayMode {
+    @AdyenObservable(.required) var displayMode: DisplayMode {
         didSet {
             updateFormState()
         }
     }
 
     /// Initializes the form security code item.
-    internal init(
+    init(
         style: FormTextItemStyle = FormTextItemStyle(),
         localizationParameters: LocalizationParameters? = nil
     ) {
@@ -48,7 +48,7 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
         keyboardType = .numberPad
     }
     
-    internal func updateFormState() {
+    func updateFormState() {
         switch displayMode {
         case .required:
             title = localizedString(.cardCvcItemTitle, localizationParameters)
@@ -63,7 +63,7 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
         }
     }
     
-    override internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    override func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
     
@@ -72,7 +72,7 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
 }
 
 extension FormItemViewBuilder {
-    internal func build(with item: FormCardSecurityCodeItem) -> FormItemView<FormCardSecurityCodeItem> {
+    func build(with item: FormCardSecurityCodeItem) -> FormItemView<FormCardSecurityCodeItem> {
         FormCardSecurityCodeItemView(item: item)
     }
 }

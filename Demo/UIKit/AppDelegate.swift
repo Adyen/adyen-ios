@@ -12,11 +12,11 @@ import AdyenActions
 import UIKit
 
 @UIApplicationMain
-internal final class AppDelegate: UIResponder, UIApplicationDelegate {
+final class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    internal var window: UIWindow?
+    var window: UIWindow?
     
-    internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let componentsViewController = ComponentsViewController()
         
         let navigationController = UINavigationController(rootViewController: componentsViewController)
@@ -34,7 +34,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    internal func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         RedirectComponent.applicationDidOpen(from: url)
         #if canImport(PayKit)
             NotificationCenter.default.post(

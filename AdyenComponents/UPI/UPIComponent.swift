@@ -14,7 +14,7 @@ public final class UPIComponent: PaymentComponent,
     LoadingComponent {
 
     /// The flow types for UPI component.
-    internal enum UPIFlowType: Int {
+    enum UPIFlowType: Int {
         case vpa = 0
         case qrCode = 1
     }
@@ -60,7 +60,7 @@ public final class UPIComponent: PaymentComponent,
 
     private let upiPaymentMethod: UPIPaymentMethod
 
-    internal var currentSelectedIndex: Int = 0
+    var currentSelectedIndex: Int = 0
 
     /// Initializes the UPI  component.
     ///
@@ -83,7 +83,7 @@ public final class UPIComponent: PaymentComponent,
     // MARK: - Items
 
     /// The upi based payment instructions label item.
-    internal lazy var instructionsLabelItem: FormLabelItem = {
+    lazy var instructionsLabelItem: FormLabelItem = {
         let item = FormLabelItem(text: localizedString(.upiModeSelection, configuration.localizationParameters),
                                  style: configuration.style.footnoteLabel)
         item.style.textAlignment = .left
@@ -93,7 +93,7 @@ public final class UPIComponent: PaymentComponent,
     }()
 
     /// The upi selection segment control item to choose the upi flow.
-    internal lazy var upiFlowSelectionItem: FormSegmentedControlItem = {
+    lazy var upiFlowSelectionItem: FormSegmentedControlItem = {
         let item = FormSegmentedControlItem(items: ["VPA", "QR code"], style: configuration.style.segmentedControlStyle,
                                             identifier: ViewIdentifierBuilder.build(
                                                 scopeInstance: self,
@@ -108,7 +108,7 @@ public final class UPIComponent: PaymentComponent,
     }()
 
     /// The  virtual payment address text input item.
-    internal lazy var virtualPaymentAddressItem: FormTextInputItem = {
+    lazy var virtualPaymentAddressItem: FormTextInputItem = {
         let item = FormTextInputItem(style: configuration.style.textField)
         item.title = Constants.virtualPaymentAddress
         item.validator = LengthValidator(minimumLength: 1)
@@ -119,7 +119,7 @@ public final class UPIComponent: PaymentComponent,
     }()
 
     /// The QRCode generation message item.
-    internal lazy var qrCodeGenerationLabelContainerItem: FormContainerItem = {
+    lazy var qrCodeGenerationLabelContainerItem: FormContainerItem = {
         let item = FormLabelItem(text: localizedString(.UPIQrcodeGenerationMessage, configuration.localizationParameters),
                                  style: configuration.style.footnoteLabel)
         item.style.textAlignment = .center
@@ -129,7 +129,7 @@ public final class UPIComponent: PaymentComponent,
     }()
 
     /// The QRCode generation message view.
-    internal lazy var qrCodeGenerationImageItem: FormImageItem = {
+    lazy var qrCodeGenerationImageItem: FormImageItem = {
         let imageView = FormImageItem(name: "qrcode")
         imageView.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                            postfix: ViewIdentifier.qrCodeGenerationImageItem)
@@ -138,7 +138,7 @@ public final class UPIComponent: PaymentComponent,
     }()
 
     /// The continue button item.
-    internal lazy var continueButton: FormButtonItem = {
+    lazy var continueButton: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                       postfix: ViewIdentifier.continueButtonItem)
@@ -172,7 +172,7 @@ public final class UPIComponent: PaymentComponent,
         return formViewController
     }()
 
-    internal func didSelectContinueButton() {
+    func didSelectContinueButton() {
         guard formViewController.validate() else { return }
 
         continueButton.showsActivityIndicator = true
@@ -191,7 +191,7 @@ public final class UPIComponent: PaymentComponent,
         }
     }
 
-    internal func didChangeSegmentedControlIndex(_ changedIndex: Int) {
+    func didChangeSegmentedControlIndex(_ changedIndex: Int) {
         currentSelectedIndex = changedIndex
 
         switch UPIFlowType(rawValue: currentSelectedIndex) {

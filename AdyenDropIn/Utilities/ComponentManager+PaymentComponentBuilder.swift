@@ -21,66 +21,66 @@ import Foundation
 
 extension ComponentManager: PaymentComponentBuilder {
 
-    internal func build(paymentMethod: StoredCardPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: StoredCardPaymentMethod) -> PaymentComponent? {
         createCardComponent(with: paymentMethod)
     }
 
-    internal func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod,
                                      context: context,
                                      configuration: .init(localizationParameters: configuration.localizationParameters))
     }
 
-    internal func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod,
                                      context: context,
                                      configuration: .init(localizationParameters: configuration.localizationParameters))
     }
     
-    internal func build(paymentMethod: StoredACHDirectDebitPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: StoredACHDirectDebitPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod,
                                      context: context,
                                      configuration: .init(localizationParameters: configuration.localizationParameters))
     }
     
-    internal func build(paymentMethod: StoredCashAppPayPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: StoredCashAppPayPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod,
                                      context: context,
                                      configuration: .init(localizationParameters: configuration.localizationParameters))
     }
 
-    internal func build(paymentMethod: CardPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: CardPaymentMethod) -> PaymentComponent? {
         createCardComponent(with: paymentMethod)
     }
 
-    internal func build(paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
         createBancontactComponent(with: paymentMethod)
     }
 
-    internal func build(paymentMethod: IssuerListPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: IssuerListPaymentMethod) -> PaymentComponent? {
         IssuerListComponent(paymentMethod: paymentMethod,
                             context: context,
                             configuration: .init(style: configuration.style.listComponent,
                                                  localizationParameters: configuration.localizationParameters))
     }
 
-    internal func build(paymentMethod: SEPADirectDebitPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: SEPADirectDebitPaymentMethod) -> PaymentComponent? {
         createSEPAComponent(paymentMethod)
     }
 
-    internal func build(paymentMethod: BACSDirectDebitPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: BACSDirectDebitPaymentMethod) -> PaymentComponent? {
         createBACSDirectDebit(paymentMethod)
     }
 
-    internal func build(paymentMethod: ACHDirectDebitPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: ACHDirectDebitPaymentMethod) -> PaymentComponent? {
         createACHDirectDebitComponent(paymentMethod)
     }
 
-    internal func build(paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
         createPreApplePayComponent(with: paymentMethod)
     }
 
-    internal func build(paymentMethod: WeChatPayPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: WeChatPayPaymentMethod) -> PaymentComponent? {
         guard let classObject = loadTheConcreteWeChatPaySDKActionComponentClass() else { return nil }
         guard classObject.isDeviceSupported() else { return nil }
         return InstantPaymentComponent(paymentMethod: paymentMethod,
@@ -88,19 +88,19 @@ extension ComponentManager: PaymentComponentBuilder {
                                        order: order)
     }
 
-    internal func build(paymentMethod: QiwiWalletPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: QiwiWalletPaymentMethod) -> PaymentComponent? {
         createQiwiWalletComponent(paymentMethod)
     }
 
-    internal func build(paymentMethod: MBWayPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: MBWayPaymentMethod) -> PaymentComponent? {
         createMBWayComponent(paymentMethod)
     }
 
-    internal func build(paymentMethod: BLIKPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: BLIKPaymentMethod) -> PaymentComponent? {
         createBLIKComponent(paymentMethod)
     }
 
-    internal func build(paymentMethod: EContextPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: EContextPaymentMethod) -> PaymentComponent? {
         let config = BasicPersonalInfoFormComponent.Configuration(style: configuration.style.formComponent,
                                                                   shopperInformation: configuration.shopperInformation,
                                                                   localizationParameters: configuration.localizationParameters)
@@ -109,7 +109,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                               configuration: config)
     }
 
-    internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
         let config = DokuComponent.Configuration(style: configuration.style.formComponent,
                                                  shopperInformation: configuration.shopperInformation,
                                                  localizationParameters: configuration.localizationParameters)
@@ -118,7 +118,7 @@ extension ComponentManager: PaymentComponentBuilder {
                              configuration: config)
     }
 
-    internal func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {
         guard let amount = context.payment?.amount, partialPaymentEnabled else { return nil }
         return GiftCardComponent(paymentMethod: paymentMethod,
                                  context: context,
@@ -127,7 +127,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                  showsSecurityCodeField: configuration.giftCard.showsSecurityCodeField)
     }
     
-    internal func build(paymentMethod: MealVoucherPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: MealVoucherPaymentMethod) -> PaymentComponent? {
         guard let amount = context.payment?.amount, partialPaymentEnabled else { return nil }
         return GiftCardComponent(paymentMethod: paymentMethod,
                                  context: context,
@@ -136,11 +136,11 @@ extension ComponentManager: PaymentComponentBuilder {
                                  showsSecurityCodeField: configuration.giftCard.showsSecurityCodeField)
     }
 
-    internal func build(paymentMethod: BoletoPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: BoletoPaymentMethod) -> PaymentComponent? {
         createBoletoComponent(paymentMethod)
     }
 
-    internal func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent? {
         let config = AffirmComponent.Configuration(style: configuration.style.formComponent,
                                                    shopperInformation: configuration.shopperInformation,
                                                    localizationParameters: configuration.localizationParameters)
@@ -149,13 +149,13 @@ extension ComponentManager: PaymentComponentBuilder {
                                configuration: config)
     }
 
-    internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
         InstantPaymentComponent(paymentMethod: paymentMethod,
                                 context: context,
                                 order: order)
     }
 
-    internal func build(paymentMethod: AtomePaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: AtomePaymentMethod) -> PaymentComponent? {
         let config = AtomeComponent.Configuration(style: configuration.style.formComponent,
                                                   shopperInformation: configuration.shopperInformation,
                                                   localizationParameters: configuration.localizationParameters)
@@ -164,19 +164,19 @@ extension ComponentManager: PaymentComponentBuilder {
                               configuration: config)
     }
 
-    internal func build(paymentMethod: OnlineBankingPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: OnlineBankingPaymentMethod) -> PaymentComponent? {
         OnlineBankingComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: .init(style: configuration.style.formComponent))
     }
 
-    internal func build(paymentMethod: UPIPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: UPIPaymentMethod) -> PaymentComponent? {
         UPIComponent(paymentMethod: paymentMethod,
                      context: context,
                      configuration: .init(style: configuration.style.formComponent))
     }
     
-    internal func build(paymentMethod: CashAppPayPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: CashAppPayPaymentMethod) -> PaymentComponent? {
         #if canImport(PayKit)
             guard let cashAppPayDropInConfig = configuration.cashAppPay else {
                 AdyenAssertion.assertionFailure(

@@ -20,7 +20,7 @@ extension AdyenSession: ActionComponentDelegate {
         didComplete(currentComponent: component)
     }
     
-    internal func didComplete(currentComponent: Component) {
+    func didComplete(currentComponent: Component) {
         guard let resultCode = sessionContext.resultCode else {
             AdyenAssertion.assertionFailure(message: "Missing resultCode.")
             return
@@ -39,7 +39,7 @@ extension AdyenSession: ActionComponentDelegate {
         didOpenExternalApplication(actionComponent: component)
     }
     
-    internal func didOpenExternalApplication(actionComponent: ActionComponent) {
+    func didOpenExternalApplication(actionComponent: ActionComponent) {
         delegate?.didOpenExternalApplication(component: actionComponent, session: self)
     }
 }

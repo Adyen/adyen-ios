@@ -8,12 +8,12 @@ import Foundation
 import UIKit
 
 /// A control to select a phone extension from a list.
-internal final class PhoneExtensionInputControl: BasePickerInputControl {
+final class PhoneExtensionInputControl: BasePickerInputControl {
 
     /// The country flag view.
-    internal lazy var flagView = UILabel()
+    lazy var flagView = UILabel()
 
-    override internal func setupView() {
+    override func setupView() {
         let stackView = UIStackView(arrangedSubviews: [flagView, chevronView, valueLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center

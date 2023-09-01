@@ -11,15 +11,15 @@ import PassKit
 /// A component that handles Apple Pay payments.
 public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, FinalizableComponent {
 
-    internal let paymentRequest: PKPaymentRequest
+    let paymentRequest: PKPaymentRequest
 
-    internal var applePayPayment: ApplePayPayment
+    var applePayPayment: ApplePayPayment
 
-    internal var state: State = .initial
+    var state: State = .initial
 
-    internal var viewControllerDidFinish: Bool = false
+    var viewControllerDidFinish: Bool = false
 
-    internal let applePayPaymentMethod: ApplePayPaymentMethod
+    let applePayPaymentMethod: ApplePayPaymentMethod
 
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -28,9 +28,9 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// The Apple Pay payment method.
     public var paymentMethod: PaymentMethod { applePayPaymentMethod }
 
-    internal let configuration: Configuration
+    let configuration: Configuration
 
-    internal var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
+    var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
 
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -92,7 +92,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         }
     }
 
-    internal func update(payment: Payment?) throws {
+    func update(payment: Payment?) throws {
         guard let payment = payment else {
             throw ApplePayComponent.Error.negativeGrandTotal
         }
@@ -118,7 +118,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
 extension ApplePayComponent {
 
-    internal enum State {
+    enum State {
         case initial
         case paid((PKPaymentAuthorizationStatus) -> Void)
         case finalized((() -> Void)?)

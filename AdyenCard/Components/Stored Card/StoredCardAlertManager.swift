@@ -10,19 +10,19 @@
 #endif
 import UIKit
 
-internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, AdyenContextAware, Localizable {
+final class StoredCardAlertManager: NSObject, UITextFieldDelegate, AdyenContextAware, Localizable {
     
-    internal let context: AdyenContext
+    let context: AdyenContext
     private let paymentMethod: StoredCardPaymentMethod
     private let amount: Amount?
 
-    internal var publicKeyProvider: AnyPublicKeyProvider
-    internal var completionHandler: Completion<Result<CardDetails, Error>>?
-    internal var localizationParameters: LocalizationParameters?
+    var publicKeyProvider: AnyPublicKeyProvider
+    var completionHandler: Completion<Result<CardDetails, Error>>?
+    var localizationParameters: LocalizationParameters?
     
-    internal init(paymentMethod: StoredCardPaymentMethod,
-                  context: AdyenContext,
-                  amount: Amount?) {
+    init(paymentMethod: StoredCardPaymentMethod,
+         context: AdyenContext,
+         amount: Amount?) {
         self.context = context
         self.paymentMethod = paymentMethod
         self.amount = amount
@@ -43,7 +43,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
 
     // MARK: - Alert Controller
     
-    internal private(set) lazy var alertController: UIAlertController = {
+    private(set) lazy var alertController: UIAlertController = {
         let title = localizedString(.cardStoredTitle, localizationParameters)
         let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
         let message = localizedString(.cardStoredMessage, localizationParameters, displayInformation.title)
@@ -126,7 +126,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
     
     // MARK: - UITextFieldDelegate
     
-    internal func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let textFieldText = textField.text else {
             return false
         }

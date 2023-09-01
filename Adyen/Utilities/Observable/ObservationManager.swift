@@ -7,7 +7,7 @@
 import Foundation
 
 /// Manages all the observations of an observer.
-internal class ObservationManager {
+class ObservationManager {
     
     deinit {
         observations.forEach {
@@ -17,7 +17,7 @@ internal class ObservationManager {
     
     // MARK: - Adding and Removing Observations
     
-    internal func observe<T: EventPublisher>(_ eventPublisher: T, eventHandler: @escaping EventHandler<T.Event>) -> Observation {
+    func observe<T: EventPublisher>(_ eventPublisher: T, eventHandler: @escaping EventHandler<T.Event>) -> Observation {
         let eventHandlerToken = eventPublisher.addEventHandler(eventHandler)
         
         let observation = Observation(unobserveHandler: { [weak eventPublisher] in
@@ -28,7 +28,7 @@ internal class ObservationManager {
         return observation
     }
     
-    internal func remove(_ observation: Observation) {
+    func remove(_ observation: Observation) {
         guard let index = observations.firstIndex(of: observation) else {
             return
         }

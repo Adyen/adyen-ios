@@ -7,13 +7,13 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
-internal protocol BACSConfirmationPresenterProtocol: AnyObject {
+protocol BACSConfirmationPresenterProtocol: AnyObject {
     func viewDidLoad()
     func startLoading()
     func stopLoading()
 }
 
-internal class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
+class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
 
     // MARK: - Properties
 
@@ -24,18 +24,18 @@ internal class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
 
     // MARK: - Items
 
-    internal var holderNameItem: FormTextInputItem?
-    internal var bankAccountNumberItem: FormTextInputItem?
-    internal var sortCodeItem: FormTextInputItem?
-    internal var emailItem: FormTextInputItem?
-    internal var paymentButtonItem: FormButtonItem?
+    var holderNameItem: FormTextInputItem?
+    var bankAccountNumberItem: FormTextInputItem?
+    var sortCodeItem: FormTextInputItem?
+    var emailItem: FormTextInputItem?
+    var paymentButtonItem: FormButtonItem?
 
     // MARK: - Initializers
 
-    internal init(data: BACSDirectDebitData,
-                  view: BACSConfirmationViewProtocol,
-                  router: BACSDirectDebitRouterProtocol,
-                  itemsFactory: BACSItemsFactoryProtocol) {
+    init(data: BACSDirectDebitData,
+         view: BACSConfirmationViewProtocol,
+         router: BACSDirectDebitRouterProtocol,
+         itemsFactory: BACSItemsFactoryProtocol) {
         self.data = data
         self.router = router
         self.view = view
@@ -44,17 +44,17 @@ internal class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
 
     // MARK: - BACSDirectDebitConfirmationPresenterProtocol
 
-    internal func viewDidLoad() {
+    func viewDidLoad() {
         createItems()
         setupView()
     }
 
-    internal func startLoading() {
+    func startLoading() {
         paymentButtonItem?.showsActivityIndicator = true
         view.setUserInteraction(enabled: false)
     }
 
-    internal func stopLoading() {
+    func stopLoading() {
         paymentButtonItem?.showsActivityIndicator = false
         view.setUserInteraction(enabled: true)
     }

@@ -9,14 +9,14 @@ import Foundation
     import AdyenAuthentication
 
     @available(iOS 14.0, *)
-    internal final class AuthenticationServiceMock: AuthenticationServiceProtocol {
-        internal var isDeviceSupported: Bool = true
+    final class AuthenticationServiceMock: AuthenticationServiceProtocol {
+        var isDeviceSupported: Bool = true
         
-        internal var isRegistration: Bool = true
+        var isRegistration: Bool = true
         
-        internal var onRegister: ((_: RegistrationInput) async throws -> RegistrationOutput)?
+        var onRegister: ((_: RegistrationInput) async throws -> RegistrationOutput)?
         
-        internal func register(with input: RegistrationInput) async throws -> RegistrationOutput {
+        func register(with input: RegistrationInput) async throws -> RegistrationOutput {
             if let onRegister = onRegister {
                 return try await onRegister(input)
             } else {
@@ -25,9 +25,9 @@ import Foundation
             }
         }
         
-        internal var onAuthenticate: ((_: AuthenticationInput) async throws -> AuthenticationOutput)?
+        var onAuthenticate: ((_: AuthenticationInput) async throws -> AuthenticationOutput)?
     
-        internal func authenticate(with input: AuthenticationInput) async throws -> AuthenticationOutput {
+        func authenticate(with input: AuthenticationInput) async throws -> AuthenticationOutput {
             if let onAuthenticate = onAuthenticate {
                 return try await onAuthenticate(input)
             } else if isRegistration {
@@ -38,9 +38,9 @@ import Foundation
             }
         }
     
-        internal func reset() throws {}
+        func reset() throws {}
     
-        internal func checkSupport() throws -> CheckSupportOutput {
+        func checkSupport() throws -> CheckSupportOutput {
             try JSONDecoder().decode(CheckSupportOutput.self, from: Data(base64Encoded: "eyJkZXZpY2UiOiJpT1MifQ")!)
         }
     
@@ -48,7 +48,7 @@ import Foundation
 
     extension String {
     
-        internal func dataFromBase64URL() throws -> Data {
+        func dataFromBase64URL() throws -> Data {
             var base64 = self
             base64 = base64.replacingOccurrences(of: "-", with: "+")
             base64 = base64.replacingOccurrences(of: "_", with: "/")
@@ -61,7 +61,7 @@ import Foundation
             return data
         }
         
-        internal func toBase64URL() -> String {
+        func toBase64URL() -> String {
             var result = self
             result = result.replacingOccurrences(of: "+", with: "-")
             result = result.replacingOccurrences(of: "/", with: "_")

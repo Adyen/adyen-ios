@@ -8,23 +8,23 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-internal struct CancelOrderRequest: APIRequest {
+struct CancelOrderRequest: APIRequest {
 
-    internal typealias ResponseType = CancelOrderResponse
+    typealias ResponseType = CancelOrderResponse
 
-    internal let order: PartialPaymentOrder
+    let order: PartialPaymentOrder
 
-    internal let path = "orders/cancel"
+    let path = "orders/cancel"
 
-    internal var counter: UInt = 0
+    var counter: UInt = 0
 
-    internal var method: HTTPMethod = .post
+    var method: HTTPMethod = .post
 
-    internal var headers: [String: String] = [:]
+    var headers: [String: String] = [:]
 
-    internal var queryParameters: [URLQueryItem] = []
+    var queryParameters: [URLQueryItem] = []
 
-    internal func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         let configurations = ConfigurationConstants.current
@@ -39,13 +39,13 @@ internal struct CancelOrderRequest: APIRequest {
     }
 }
 
-internal struct CancelOrderResponse: Response {
+struct CancelOrderResponse: Response {
 
-    internal enum ResultCode: String, Decodable {
+    enum ResultCode: String, Decodable {
         case received = "Received"
     }
 
-    internal let resultCode: ResultCode
+    let resultCode: ResultCode
 
-    internal let pspReference: String
+    let pspReference: String
 }

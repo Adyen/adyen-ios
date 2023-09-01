@@ -23,7 +23,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent {
     
     private let personalDetailsHeaderItem: FormLabelItem
     
-    internal let deliveryAddressToggleItem: FormToggleItem
+    let deliveryAddressToggleItem: FormToggleItem
 
     // MARK: - Initializers
     

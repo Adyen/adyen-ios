@@ -80,7 +80,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         }
     }
 
-    internal var currentActionComponent: Component?
+    var currentActionComponent: Component?
     
     /// Initializes a new instance of `AdyenActionComponent`
     ///

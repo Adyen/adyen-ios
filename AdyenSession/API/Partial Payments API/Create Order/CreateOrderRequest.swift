@@ -8,29 +8,29 @@
 @_spi(AdyenInternal) import AdyenNetworking
 import Foundation
 
-internal struct CreateOrderRequest: APIRequest {
+struct CreateOrderRequest: APIRequest {
 
-    internal typealias ResponseType = CreateOrderResponse
+    typealias ResponseType = CreateOrderResponse
 
-    internal let path: String
+    let path: String
 
-    internal var counter: UInt = 0
+    var counter: UInt = 0
 
-    internal let method: HTTPMethod = .post
+    let method: HTTPMethod = .post
 
-    internal let headers: [String: String] = [:]
+    let headers: [String: String] = [:]
 
-    internal let queryParameters: [URLQueryItem] = []
+    let queryParameters: [URLQueryItem] = []
 
-    internal let sessionData: String
+    let sessionData: String
     
-    internal init(sessionId: String,
-                  sessionData: String) {
+    init(sessionId: String,
+         sessionData: String) {
         self.path = "checkoutshopper/v1/sessions/\(sessionId)/orders"
         self.sessionData = sessionData
     }
     
-    internal func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(sessionData, forKey: .sessionData)
     }
@@ -40,15 +40,15 @@ internal struct CreateOrderRequest: APIRequest {
     }
 }
 
-internal struct CreateOrderResponse: SessionResponse {
+struct CreateOrderResponse: SessionResponse {
 
-    internal let pspReference: String
+    let pspReference: String
 
-    internal let orderData: String
+    let orderData: String
 
-    internal let sessionData: String
+    let sessionData: String
 
-    internal var order: PartialPaymentOrder {
+    var order: PartialPaymentOrder {
         PartialPaymentOrder(pspReference: pspReference, orderData: orderData)
     }
     

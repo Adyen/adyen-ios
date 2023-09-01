@@ -6,17 +6,17 @@
 
 import Foundation
 
-internal struct BinPayload: Payload {
+struct BinPayload: Payload {
 
     private var bin: String?
 
-    internal func add(bin: String) -> Payload {
+    func add(bin: String) -> Payload {
         var payloadCopy = self
         payloadCopy.bin = bin
         return payloadCopy
     }
 
-    internal func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(bin, forKey: .value)
 

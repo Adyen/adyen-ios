@@ -7,14 +7,14 @@
 import SwiftUI
 
 @available(iOS 13.0.0, *)
-internal struct ApplePaySettingsView: View {
-    @ObservedObject internal var viewModel: ConfigurationViewModel
+struct ApplePaySettingsView: View {
+    @ObservedObject var viewModel: ConfigurationViewModel
 
     private enum ConfigurationSection {
         static let merchantIdentifier = "merchant.com.domainname.appname"
     }
 
-    internal var body: some View {
+    var body: some View {
         NavigationView {
             List {
                 Section {

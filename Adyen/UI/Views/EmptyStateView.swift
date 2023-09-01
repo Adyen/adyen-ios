@@ -24,12 +24,12 @@ public struct EmptyStateViewStyle: ViewStyle {
 @_spi(AdyenInternal)
 public class EmptyStateView<SubtitleLabel: UIView>: UIView, SearchResultsEmptyView {
     
-    internal let style: EmptyStateViewStyle
-    internal let localizationParameters: LocalizationParameters?
+    let style: EmptyStateViewStyle
+    let localizationParameters: LocalizationParameters?
     
     public var searchTerm: String
     
-    internal lazy var titleLabel: UILabel = {
+    lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.numberOfLines = 0
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -37,7 +37,7 @@ public class EmptyStateView<SubtitleLabel: UIView>: UIView, SearchResultsEmptyVi
         return titleLabel
     }()
     
-    internal let subtitleLabel: SubtitleLabel
+    let subtitleLabel: SubtitleLabel
     
     /// Initializes the `EmptyView` for the ``FormPickerSearchViewController``
     ///
@@ -46,7 +46,7 @@ public class EmptyStateView<SubtitleLabel: UIView>: UIView, SearchResultsEmptyVi
     ///   - subtitleLabel: The view to be used as a subtitle
     ///   - style: The style of the view.
     ///   - localizationParameters: The localization parameters.
-    internal init(
+    init(
         searchTerm: String = "",
         subtitleLabel: SubtitleLabel,
         style: EmptyStateViewStyle = .init(),
@@ -65,7 +65,7 @@ public class EmptyStateView<SubtitleLabel: UIView>: UIView, SearchResultsEmptyVi
     }
     
     @available(*, unavailable)
-    internal required init(coder: NSCoder) {
+    required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

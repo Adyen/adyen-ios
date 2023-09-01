@@ -6,19 +6,19 @@
 
 import Foundation
 
-internal final class PhoneFormItemInjector: FormItemInjector, Localizable {
+final class PhoneFormItemInjector: FormItemInjector, Localizable {
 
-    internal var localizationParameters: LocalizationParameters?
+    var localizationParameters: LocalizationParameters?
 
-    internal let style: FormTextItemStyle
+    let style: FormTextItemStyle
 
-    internal let phoneExtensions: [PhoneExtensionPickerItem]
+    let phoneExtensions: [PhoneExtensionPickerItem]
 
-    internal var value: String?
+    var value: String?
 
-    internal var identifier: String
+    var identifier: String
 
-    internal lazy var item: FormPhoneNumberItem = {
+    lazy var item: FormPhoneNumberItem = {
         let item = FormPhoneNumberItem(selectableValues: phoneExtensions,
                                        style: style,
                                        localizationParameters: localizationParameters)
@@ -27,17 +27,17 @@ internal final class PhoneFormItemInjector: FormItemInjector, Localizable {
         return item
     }()
 
-    internal init(value: String?,
-                  identifier: String,
-                  phoneExtensions: [PhoneExtensionPickerItem],
-                  style: FormTextItemStyle) {
+    init(value: String?,
+         identifier: String,
+         phoneExtensions: [PhoneExtensionPickerItem],
+         style: FormTextItemStyle) {
         self.value = value
         self.identifier = identifier
         self.phoneExtensions = phoneExtensions
         self.style = style
     }
 
-    internal func inject(into formViewController: FormViewController) {
+    func inject(into formViewController: FormViewController) {
         formViewController.append(item)
     }
 

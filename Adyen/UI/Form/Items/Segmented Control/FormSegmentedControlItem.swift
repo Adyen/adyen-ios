@@ -45,7 +45,7 @@ public final class FormSegmentedControlItem: FormItem {
     }
 }
 
-internal class ADYSegmentedControl: UISegmentedControl, AnyFormItemView {
+class ADYSegmentedControl: UISegmentedControl, AnyFormItemView {
 
     public var childItemViews: [AnyFormItemView] { [] }
 

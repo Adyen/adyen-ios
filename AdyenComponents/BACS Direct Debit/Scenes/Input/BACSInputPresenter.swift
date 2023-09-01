@@ -7,14 +7,14 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
-internal protocol BACSInputPresenterProtocol: AnyObject {
+protocol BACSInputPresenterProtocol: AnyObject {
     var amount: Amount? { get set }
     func viewDidLoad()
     func viewWillAppear()
     func resetForm()
 }
 
-internal class BACSInputPresenter: BACSInputPresenterProtocol {
+class BACSInputPresenter: BACSInputPresenterProtocol {
 
     // MARK: - Properties
 
@@ -25,17 +25,17 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
 
     // MARK: - Items
 
-    internal var holderNameItem: FormTextInputItem?
-    internal var bankAccountNumberItem: FormTextInputItem?
-    internal var sortCodeItem: FormTextInputItem?
-    internal var emailItem: FormTextInputItem?
-    internal var amountConsentToggleItem: FormToggleItem?
-    internal var legalConsentToggleItem: FormToggleItem?
-    internal var continueButtonItem: FormButtonItem?
+    var holderNameItem: FormTextInputItem?
+    var bankAccountNumberItem: FormTextInputItem?
+    var sortCodeItem: FormTextInputItem?
+    var emailItem: FormTextInputItem?
+    var amountConsentToggleItem: FormToggleItem?
+    var legalConsentToggleItem: FormToggleItem?
+    var continueButtonItem: FormButtonItem?
     
-    internal let itemsFactory: BACSItemsFactoryProtocol
+    let itemsFactory: BACSItemsFactoryProtocol
     
-    internal var amount: Amount? {
+    var amount: Amount? {
         didSet {
             amountConsentToggleItem?.title = itemsFactory.createConsentText(with: amount)
         }
@@ -43,10 +43,10 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
 
     // MARK: - Initializers
 
-    internal init(view: BACSInputFormViewProtocol,
-                  router: BACSDirectDebitRouterProtocol,
-                  tracker: BACSDirectDebitComponentTrackerProtocol,
-                  itemsFactory: BACSItemsFactoryProtocol) {
+    init(view: BACSInputFormViewProtocol,
+         router: BACSDirectDebitRouterProtocol,
+         tracker: BACSDirectDebitComponentTrackerProtocol,
+         itemsFactory: BACSItemsFactoryProtocol) {
         self.view = view
         self.router = router
         self.tracker = tracker
@@ -55,17 +55,17 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
 
     // MARK: - BACSInputPresenterProtocol
 
-    internal func viewDidLoad() {
+    func viewDidLoad() {
         tracker.sendTelemetryEvent()
         createItems()
         setupView()
     }
 
-    internal func viewWillAppear() {
+    func viewWillAppear() {
         restoreFields()
     }
 
-    internal func resetForm() {
+    func resetForm() {
         holderNameItem?.value = ""
         bankAccountNumberItem?.value = ""
         sortCodeItem?.value = ""

@@ -6,7 +6,7 @@
 
 import Foundation
 
-internal enum LocalizationMode: Equatable {
+enum LocalizationMode: Equatable {
     case natural(bundle: Bundle?, tableName: String?, keySeparator: String?, locale: String?)
     case enforced(locale: String)
 }
@@ -19,7 +19,7 @@ public struct LocalizationParameters: Equatable {
         lhs.mode == rhs.mode
     }
 
-    internal let mode: LocalizationMode
+    let mode: LocalizationMode
 
     /// The locale identifier for external resources and numeric formats.
     /// By default current locale is used.

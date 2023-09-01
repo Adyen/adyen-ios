@@ -7,7 +7,7 @@
 import UIKit
 
 /// The delegate protocol of the ``AddressLookupViewController``
-internal protocol AddressLookupSearchDelegate: AnyObject {
+protocol AddressLookupSearchDelegate: AnyObject {
     
     /// Switch to manual address entry was requested
     func addressLookupSearchSwitchToManualEntry()
@@ -20,7 +20,7 @@ internal protocol AddressLookupSearchDelegate: AnyObject {
 /// The search view controller to be used for address lookup
 ///
 /// See: ``AddressLookupViewController``
-internal class AddressLookupSearchViewController: SearchViewController {
+class AddressLookupSearchViewController: SearchViewController {
     
     private weak var delegate: AddressLookupSearchDelegate?
     
@@ -30,7 +30,7 @@ internal class AddressLookupSearchViewController: SearchViewController {
     ///   - style: The style of the view.
     ///   - localizationParameters: The localization parameters
     ///   - delegate: The delegate conforming to ``AddressLookupSearchDelegate``
-    internal init(
+    init(
         style: AddressLookupSearchStyle = .init(),
         localizationParameters: LocalizationParameters?,
         delegate: AddressLookupSearchDelegate

@@ -8,7 +8,7 @@
 import UIKit
 
 /// A form item into which a card number is entered.
-internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
+final class FormCardNumberItem: FormTextItem, AdyenObserver {
     
     private enum Constants {
         static let smallBinLength = 6
@@ -22,41 +22,41 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     private let supportedCardTypes: [CardType]
     
     /// Supported card type logos.
-    internal let cardTypeLogos: [FormCardLogosItem.CardTypeLogo]
+    let cardTypeLogos: [FormCardLogosItem.CardTypeLogo]
     
     /// The card's BIN value up to 8 digits.
     /// Reported with every entered digit.
-    @AdyenObservable("") internal var binValue: String
+    @AdyenObservable("") var binValue: String
     
     /// Initial brand set after detection before any user interaction
-    @AdyenObservable(nil) internal private(set) var initialBrand: CardBrand?
+    @AdyenObservable(nil) private(set) var initialBrand: CardBrand?
     
     /// Brand selected in dual branded cards, set after user selection.
-    @AdyenObservable(nil) internal private(set) var selectedDualBrand: CardBrand?
+    @AdyenObservable(nil) private(set) var selectedDualBrand: CardBrand?
     
     /// Detected brand logo(s) for the entered bin.
-    @AdyenObservable([]) internal private(set) var detectedBrandLogos: [FormCardLogosItem.CardTypeLogo]
+    @AdyenObservable([]) private(set) var detectedBrandLogos: [FormCardLogosItem.CardTypeLogo]
     
     /// Determines whether the item is currently the focused one (first responder).
-    @AdyenObservable(false) internal var isActive
+    @AdyenObservable(false) var isActive
     
     /// Current detected brands, mainly used for dual-branded cards.
-    internal private(set) var detectedBrands: [CardBrand] = []
+    private(set) var detectedBrands: [CardBrand] = []
     
     private let localizationParameters: LocalizationParameters?
     
     /// Returns the initial brand for single brand cases
     /// or `selectedDualBrand` for dual brand cases
-    internal var currentBrand: CardBrand? {
+    var currentBrand: CardBrand? {
         isDualBranded ? selectedDualBrand : initialBrand
     }
     
-    internal var isDualBranded: Bool = false
+    var isDualBranded: Bool = false
     
     /// Initializes the form card number item.
-    internal init(cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
-                  style: FormTextItemStyle = FormTextItemStyle(),
-                  localizationParameters: LocalizationParameters? = nil) {
+    init(cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
+         style: FormTextItemStyle = FormTextItemStyle(),
+         localizationParameters: LocalizationParameters? = nil) {
         // these 4 US debit brands are not to be displayed
         // but should be supported so it's done here for now
         self.cardTypeLogos = cardTypeLogos.filter { logo in
@@ -99,13 +99,13 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     
     // MARK: - BuildableFormItem
     
-    override internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    override func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
     
     /// Updates the item with the detected brands.
     /// and sets the first supported one as the `initialBrand`.
-    internal func update(brands: [CardBrand]) {
+    func update(brands: [CardBrand]) {
         detectedBrands = brands
         
         switch (brands.count, brands.first(where: \.isSupported)) {
@@ -131,7 +131,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     
     /// Changes the selected dual brand with the given index to trigger updates
     /// for the observing objects.
-    internal func selectBrand(at index: Int) {
+    func selectBrand(at index: Int) {
         let newBrand = detectedBrands.adyen[safeIndex: index]
         updateValidation(for: newBrand)
         self.selectedDualBrand = newBrand
@@ -164,7 +164,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
 }
 
 extension FormItemViewBuilder {
-    internal func build(with item: FormCardNumberItem) -> FormItemView<FormCardNumberItem> {
+    func build(with item: FormCardNumberItem) -> FormItemView<FormCardNumberItem> {
         FormCardNumberItemView(item: item)
     }
 }

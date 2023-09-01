@@ -24,7 +24,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     /// Delegate to handle different viewController events.
     public weak var delegate: ViewControllerDelegate?
     
-    internal lazy var keyboardObserver = KeyboardObserver()
+    lazy var keyboardObserver = KeyboardObserver()
 
     // MARK: - Public
 

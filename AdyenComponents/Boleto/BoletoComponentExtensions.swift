@@ -21,7 +21,7 @@ extension BoletoComponent {
         public let shopperInformation: PrefilledShopperInformation?
         
         /// Indicates whether to show `sendCopyByEmail` checkbox and email text field
-        internal let showEmailAddress: Bool
+        let showEmailAddress: Bool
         
         /// Initializes the configuration for Boleto Component.
         /// - Parameters:

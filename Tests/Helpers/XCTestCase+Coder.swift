@@ -8,7 +8,7 @@
 import AdyenComponents
 import XCTest
 
-internal extension Coder {
+extension Coder {
 
     static func decode<T: Decodable>(_ dictionary: [String: Any]) throws -> T {
         let data = try! JSONSerialization.data(withJSONObject: dictionary, options: [])

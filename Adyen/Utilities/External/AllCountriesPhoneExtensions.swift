@@ -7,7 +7,7 @@
 import Foundation
 
 // swiftlint:disable file_length
-internal let allCountriesPhoneExtensions: [String: String] = [
+let allCountriesPhoneExtensions: [String: String] = [
 
     "AF": "+93",
     

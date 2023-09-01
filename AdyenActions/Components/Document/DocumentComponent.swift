@@ -43,7 +43,7 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     /// The document component configurations.
     public var configuration: Configuration = .init()
     
-    internal let presenterViewController = UIViewController()
+    let presenterViewController = UIViewController()
     
     private let componentName = "documentAction"
     
@@ -104,11 +104,11 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
 
 extension DocumentComponent: DocumentActionViewDelegate {
     
-    internal func didComplete() {
+    func didComplete() {
         delegate?.didComplete(from: self)
     }
     
-    internal func mainButtonTap(sourceView: UIView, downloadable: Downloadable) {
+    func mainButtonTap(sourceView: UIView, downloadable: Downloadable) {
         presentSharePopover(with: downloadable.downloadUrl, sourceView: sourceView)
     }
 }

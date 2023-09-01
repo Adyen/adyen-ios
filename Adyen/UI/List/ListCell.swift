@@ -39,7 +39,7 @@ public final class ListCell: UITableViewCell {
     // MARK: - Internal
     
     /// Indicates if the cell is in an enabled state.
-    internal var isEnabled = true {
+    var isEnabled = true {
         didSet {
             let opacity: Float = isEnabled ? 1.0 : 0.3
             UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseInOut], animations: { [weak self] in
@@ -62,7 +62,7 @@ public final class ListCell: UITableViewCell {
     ]
     
     /// Indicates whether an activity indicator should be shown as an accessory.
-    internal var showsActivityIndicator: Bool = false {
+    var showsActivityIndicator: Bool = false {
         didSet {
             if showsActivityIndicator {
                 showActivityIndicatorView()

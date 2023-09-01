@@ -9,13 +9,13 @@ import UIKit
 
 extension IssuerListEmptyView {
     
-    internal struct Style: ViewStyle {
+    struct Style: ViewStyle {
         
-        internal var title: TextStyle
-        internal var subtitle: TextStyle
-        internal var backgroundColor: UIColor
+        var title: TextStyle
+        var subtitle: TextStyle
+        var backgroundColor: UIColor
         
-        internal init(
+        init(
             title: TextStyle = .init(
                 font: .preferredFont(forTextStyle: .title2).adyen.font(with: .bold),
                 color: .Adyen.componentLabel
@@ -34,7 +34,7 @@ extension IssuerListEmptyView {
 }
 
 /// The empty view to be used in the IssuerListComponent SearchViewController
-internal class IssuerListEmptyView: UIView, SearchResultsEmptyView {
+class IssuerListEmptyView: UIView, SearchResultsEmptyView {
     
     private let style: Style
     private let localizationParameters: LocalizationParameters?
@@ -76,7 +76,7 @@ internal class IssuerListEmptyView: UIView, SearchResultsEmptyView {
     
     // MARK: - Stack View
     
-    internal init(
+    init(
         style: Style = .init(),
         localizationParameters: LocalizationParameters? = nil
     ) {
@@ -112,7 +112,7 @@ internal class IssuerListEmptyView: UIView, SearchResultsEmptyView {
     }
     
     @available(*, unavailable)
-    internal required init(coder: NSCoder) {
+    required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

@@ -43,7 +43,7 @@ public struct Amount: Codable, Equatable {
         self.init(value: minorUnit, currencyCode: currencyCode, localeIdentifier: localeIdentifier)
     }
 
-    internal init(value: Int, unsafeCurrencyCode: String) {
+    init(value: Int, unsafeCurrencyCode: String) {
         self.value = value
         self.currencyCode = unsafeCurrencyCode
     }
@@ -102,7 +102,7 @@ extension Amount: Comparable {
         return lhs.value > rhs.value
     }
 
-    internal static func - (lhs: Amount, rhs: Amount) -> Amount {
+    static func - (lhs: Amount, rhs: Amount) -> Amount {
         assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to subtract")
         return Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode, localeIdentifier: lhs.localeIdentifier)
     }

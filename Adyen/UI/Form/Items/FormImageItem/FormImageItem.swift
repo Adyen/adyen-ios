@@ -40,14 +40,14 @@ public class FormImageItem: FormItem, Hidable {
     }
 }
 
-internal class FormImageView: FormItemView<FormImageItem> {
+class FormImageView: FormItemView<FormImageItem> {
 
-    internal required init(item: FormImageItem) {
+    required init(item: FormImageItem) {
         super.init(item: item)
         renderImage()
     }
 
-    internal func renderImage() {
+    func renderImage() {
         let style = item.style ?? ImageStyle(borderColor: nil,
                                              borderWidth: 0,
                                              cornerRadius: 0,

@@ -9,20 +9,20 @@ import AdyenCard
 import AdyenComponents
 import AdyenSession
 
-internal final class CardComponentExample: InitialDataFlowProtocol {
+final class CardComponentExample: InitialDataFlowProtocol {
 
     // MARK: - Properties
     
-    internal weak var presenter: PresenterExampleProtocol?
+    weak var presenter: PresenterExampleProtocol?
 
     private var session: AdyenSession?
     private var cardComponent: PresentableComponent?
 
     // MARK: - Initializers
 
-    internal init() {}
+    init() {}
 
-    internal func start() {
+    func start() {
         presenter?.showLoadingIndicator()
         loadSession { [weak self] response in
             guard let self else { return }
@@ -126,11 +126,11 @@ extension CardComponentExample: CardComponentDelegate {
         print("Final BIN: \(finalBIN)")
     }
 
-    internal func didChangeBIN(_ value: String, component: CardComponent) {
+    func didChangeBIN(_ value: String, component: CardComponent) {
         print("Current BIN: \(value)")
     }
 
-    internal func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent) {
+    func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent) {
         print("Current card type: \((value ?? []).reduce("") { "\($0), \($1)" })")
     }
 }
@@ -150,7 +150,7 @@ extension CardComponentExample: AdyenSessionDelegate {
 }
 
 extension CardComponentExample: PresentationDelegate {
-    internal func present(component: PresentableComponent) {
+    func present(component: PresentableComponent) {
         let componentViewController = viewController(for: component)
         presenter?.present(viewController: componentViewController, completion: nil)
     }

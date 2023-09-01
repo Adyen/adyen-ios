@@ -9,7 +9,7 @@ import CoreGraphics
 import QuartzCore
 import UIKit
 
-internal class VoucherCardView: UIView {
+class VoucherCardView: UIView {
 
     private lazy var containerLayer = VoucherCardLayer()
 
@@ -38,9 +38,9 @@ internal class VoucherCardView: UIView {
 
     private let model: VoucherSeparatorView.Model
 
-    internal init(model: VoucherSeparatorView.Model,
-                  topView: UIView,
-                  bottomView: UIView) {
+    init(model: VoucherSeparatorView.Model,
+         topView: UIView,
+         bottomView: UIView) {
         self.model = model
         self.topView = topView
         self.bottomView = bottomView
@@ -49,16 +49,16 @@ internal class VoucherCardView: UIView {
     }
 
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override internal func layoutSublayers(of layer: CALayer) {
+    override func layoutSublayers(of layer: CALayer) {
         super.layoutSublayers(of: layer)
         updateLayout()
     }
 
-    override internal func layoutSubviews() {
+    override func layoutSubviews() {
         super.layoutSubviews()
         updateLayout()
     }

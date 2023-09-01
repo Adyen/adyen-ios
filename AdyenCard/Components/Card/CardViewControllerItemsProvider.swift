@@ -9,7 +9,7 @@ import UIKit
 
 extension CardViewController {
 
-    internal struct ItemsProvider {
+    struct ItemsProvider {
 
         private let formStyle: FormComponentStyle
 
@@ -29,15 +29,15 @@ extension CardViewController {
         
         private let addressViewModelBuilder: AddressViewModelBuilder
 
-        internal init(formStyle: FormComponentStyle,
-                      payment: Payment?,
-                      configuration: CardComponent.Configuration,
-                      shopperInformation: PrefilledShopperInformation?,
-                      cardLogos: [FormCardLogosItem.CardTypeLogo],
-                      scope: String,
-                      initialCountryCode: String,
-                      localizationParameters: LocalizationParameters?,
-                      addressViewModelBuilder: AddressViewModelBuilder) {
+        init(formStyle: FormComponentStyle,
+             payment: Payment?,
+             configuration: CardComponent.Configuration,
+             shopperInformation: PrefilledShopperInformation?,
+             cardLogos: [FormCardLogosItem.CardTypeLogo],
+             scope: String,
+             initialCountryCode: String,
+             localizationParameters: LocalizationParameters?,
+             addressViewModelBuilder: AddressViewModelBuilder) {
             self.formStyle = formStyle
             self.amount = payment?.amount
             self.configuration = configuration
@@ -49,7 +49,7 @@ extension CardViewController {
             self.addressViewModelBuilder = addressViewModelBuilder
         }
         
-        internal lazy var billingAddressPickerItem: FormAddressPickerItem = {
+        lazy var billingAddressPickerItem: FormAddressPickerItem = {
             let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "billingAddress")
             let prefillAddress = shopperInformation?.billingAddress
             
@@ -64,13 +64,13 @@ extension CardViewController {
             return item
         }()
 
-        internal lazy var postalCodeItem: FormPostalCodeItem = {
+        lazy var postalCodeItem: FormPostalCodeItem = {
             let zipCodeItem = FormPostalCodeItem(style: formStyle.textField, localizationParameters: localizationParameters)
             zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "postalCodeItem")
             return zipCodeItem
         }()
 
-        internal lazy var numberContainerItem: FormCardNumberContainerItem = {
+        lazy var numberContainerItem: FormCardNumberContainerItem = {
             let item = FormCardNumberContainerItem(cardTypeLogos: cardLogos,
                                                    showsSupportedCardLogos: configuration.showsSupportedCardLogos,
                                                    style: formStyle.textField,
@@ -79,7 +79,7 @@ extension CardViewController {
             return item
         }()
 
-        internal lazy var expiryDateItem: FormCardExpiryDateItem = {
+        lazy var expiryDateItem: FormCardExpiryDateItem = {
             let expiryDateItem = FormCardExpiryDateItem(style: formStyle.textField,
                                                         localizationParameters: localizationParameters)
             expiryDateItem.localizationParameters = localizationParameters
@@ -88,7 +88,7 @@ extension CardViewController {
             return expiryDateItem
         }()
 
-        internal lazy var securityCodeItem: FormCardSecurityCodeItem = {
+        lazy var securityCodeItem: FormCardSecurityCodeItem = {
             let securityCodeItem = FormCardSecurityCodeItem(style: formStyle.textField,
                                                             localizationParameters: localizationParameters)
             securityCodeItem.localizationParameters = localizationParameters
@@ -96,7 +96,7 @@ extension CardViewController {
             return securityCodeItem
         }()
 
-        internal lazy var holderNameItem: FormTextInputItem = {
+        lazy var holderNameItem: FormTextInputItem = {
             let holderNameItem = FormTextInputItem(style: formStyle.textField)
             holderNameItem.title = localizedString(.cardNameItemTitle, localizationParameters)
             holderNameItem.placeholder = localizedString(.cardNameItemPlaceholder, localizationParameters)
@@ -108,7 +108,7 @@ extension CardViewController {
             return holderNameItem
         }()
 
-        internal lazy var additionalAuthCodeItem: FormTextInputItem = {
+        lazy var additionalAuthCodeItem: FormTextInputItem = {
             // Validates birthdate (YYMMDD) or the Corporate registration number (10 digits)
             let kcpValidator = NumericStringValidator(exactLength: 10) || DateValidator(format: DateValidator.Format.kcpFormat)
 
@@ -125,7 +125,7 @@ extension CardViewController {
             return additionalItem
         }()
 
-        internal lazy var additionalAuthPasswordItem: FormTextInputItem = {
+        lazy var additionalAuthPasswordItem: FormTextInputItem = {
             var additionalItem = FormTextInputItem(style: formStyle.textField)
             additionalItem.title = localizedString(.cardEncryptedPasswordLabel, localizationParameters)
             additionalItem.placeholder = localizedString(.cardEncryptedPasswordPlaceholder, localizationParameters)
@@ -139,7 +139,7 @@ extension CardViewController {
             return additionalItem
         }()
 
-        internal lazy var socialSecurityNumberItem: FormTextInputItem = {
+        lazy var socialSecurityNumberItem: FormTextInputItem = {
             var securityNumberItem = FormTextInputItem(style: formStyle.textField)
             securityNumberItem.title = localizedString(.boletoSocialSecurityNumber, localizationParameters)
             securityNumberItem.placeholder = localizedString(.cardBrazilSSNPlaceholder, localizationParameters)
@@ -153,7 +153,7 @@ extension CardViewController {
             return securityNumberItem
         }()
 
-        internal lazy var storeDetailsItem: FormToggleItem = {
+        lazy var storeDetailsItem: FormToggleItem = {
             let storeDetailsItem = FormToggleItem(style: formStyle.toggle)
             storeDetailsItem.title = localizedString(.cardStoreDetailsButton, localizationParameters)
             storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "storeDetailsItem")
@@ -162,7 +162,7 @@ extension CardViewController {
         }()
         
         /// If there is a configuration for installments, this item is created. Otherwise it will be nil.
-        internal lazy var installmentsItem: FormCardInstallmentsItem? = {
+        lazy var installmentsItem: FormCardInstallmentsItem? = {
             guard let installmentsConfiguration = configuration.installmentConfiguration else { return nil }
             let installmentsItem = FormCardInstallmentsItem(installmentConfiguration: installmentsConfiguration,
                                                             style: formStyle.textField,
@@ -172,7 +172,7 @@ extension CardViewController {
             return installmentsItem
         }()
 
-        internal lazy var button: FormButtonItem = {
+        lazy var button: FormButtonItem = {
             let item = FormButtonItem(style: formStyle.mainButtonItem)
             item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "payButtonItem")
             item.title = localizedSubmitButtonTitle(with: amount,

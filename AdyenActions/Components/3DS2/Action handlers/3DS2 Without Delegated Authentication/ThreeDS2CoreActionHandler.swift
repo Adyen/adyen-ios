@@ -8,7 +8,7 @@
 import Adyen3DS2
 import Foundation
 
-internal protocol AnyThreeDS2CoreActionHandler: Component {
+protocol AnyThreeDS2CoreActionHandler: Component {
     var threeDSRequestorAppURL: URL? { get set }
     
     var service: AnyADYService { get set }
@@ -25,32 +25,32 @@ internal protocol AnyThreeDS2CoreActionHandler: Component {
 }
 
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
-internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
+class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     
     private enum Constant {
         static let transStatusWhenError = "U"
     }
     
-    internal let context: AdyenContext
+    let context: AdyenContext
 
     /// The appearance configuration of the 3D Secure 2 challenge UI.
-    internal let appearanceConfiguration: ADYAppearanceConfiguration
+    let appearanceConfiguration: ADYAppearanceConfiguration
 
-    internal lazy var service: AnyADYService = ADYServiceAdapter()
+    lazy var service: AnyADYService = ADYServiceAdapter()
 
-    internal var transaction: AnyADYTransaction?
+    var transaction: AnyADYTransaction?
     
     /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
-    internal var threeDSRequestorAppURL: URL?
+    var threeDSRequestorAppURL: URL?
 
     /// Initializes the 3D Secure 2 action handler.
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
-    internal init(context: AdyenContext,
-                  service: AnyADYService = ADYServiceAdapter(),
-                  appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
+    init(context: AdyenContext,
+         service: AnyADYService = ADYServiceAdapter(),
+         appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
         self.context = context
         self.appearanceConfiguration = appearanceConfiguration
         self.service = service
@@ -63,9 +63,9 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
     /// - Parameter event: The Analytics event.
     /// - Parameter completionHandler: The completion closure.
-    internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
-                         event: Analytics.Event,
-                         completionHandler: @escaping (Result<String, Error>) -> Void) {
+    func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
+                event: Analytics.Event,
+                completionHandler: @escaping (Result<String, Error>) -> Void) {
         Analytics.sendEvent(event)
 
         createFingerprint(fingerprintAction) { [weak self] result in
@@ -133,9 +133,9 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     /// - Parameter challengeAction: The challenge action as received from the Checkout API.
     /// - Parameter event: The Analytics event.
     /// - Parameter completionHandler: The completion closure.
-    internal func handle(_ challengeAction: ThreeDS2ChallengeAction,
-                         event: Analytics.Event,
-                         completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
+    func handle(_ challengeAction: ThreeDS2ChallengeAction,
+                event: Analytics.Event,
+                completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
         guard let transaction = transaction else {
             return didFail(with: ThreeDS2Component.Error.missingTransaction, completionHandler: completionHandler)
         }

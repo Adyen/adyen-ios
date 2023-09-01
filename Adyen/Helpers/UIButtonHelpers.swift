@@ -27,7 +27,7 @@ public extension AdyenScope where Base: UIButton {
     /// Sets `translatesAutoresizingMaskIntoConstraints` to `false`
     /// Sets `adjustsFontForContentSizeCategory` to the `titleLabel` to `true`
     /// - Parameter style: `ButtonStyle` to be applied
-    internal func apply(_ style: ButtonStyle) {
+    func apply(_ style: ButtonStyle) {
         base.titleLabel?.adyen.apply(style.title)
         base.setTitleColor(style.title.color, for: .normal)
         round(using: style.cornerRounding)

@@ -7,12 +7,12 @@
 import UIKit
 
 /// A view representing a button item.
-internal final class FormSearchButtonItemView: FormItemView<FormSearchButtonItem> {
+final class FormSearchButtonItemView: FormItemView<FormSearchButtonItem> {
     
     /// Initializes the footer item view.
     ///
     /// - Parameter item: The item represented by the view.
-    internal required init(
+    required init(
         item: FormSearchButtonItem
     ) {
         super.init(item: item)
@@ -37,14 +37,14 @@ internal final class FormSearchButtonItemView: FormItemView<FormSearchButtonItem
         )
     }()
     
-    internal override func becomeFirstResponder() -> Bool {
+    override func becomeFirstResponder() -> Bool {
         searchBar.becomeFirstResponder()
     }
 }
 
 extension FormSearchButtonItemView: UISearchBarDelegate {
     
-    internal func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         item.selectionHandler()
         return false
     }

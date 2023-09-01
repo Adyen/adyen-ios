@@ -7,11 +7,11 @@
 import Foundation
 @_spi(AdyenInternal) import Adyen
 
-internal struct AtomeAddressViewModelBuilder: AddressViewModelBuilder {
+struct AtomeAddressViewModelBuilder: AddressViewModelBuilder {
 
-    internal init() {}
+    init() {}
 
-    internal func build(context: AddressViewModelBuilderContext) -> AddressViewModel {
+    func build(context: AddressViewModelBuilderContext) -> AddressViewModel {
         AddressViewModel(labels: [.street: .streetFieldTitle,
                                   .apartment: .apartmentSuiteFieldTitle,
                                   .houseNumberOrName: .houseNumberFieldTitle,

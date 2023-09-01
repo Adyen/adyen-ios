@@ -8,45 +8,45 @@
 import AdyenNetworking
 import Foundation
 
-internal protocol SessionResponse: Response {
+protocol SessionResponse: Response {
     var sessionData: String { get }
 }
 
 /// A protocol that contains payment result values for session calls.
-internal protocol SessionPaymentResultAware {
+protocol SessionPaymentResultAware {
     var resultCode: PaymentsResponse.ResultCode { get }
     
     var sessionResult: String? { get }
 }
 
-internal struct SessionSetupRequest: Request {
-    internal let path: String
+struct SessionSetupRequest: Request {
+    let path: String
     
-    internal var counter: UInt = 0
+    var counter: UInt = 0
     
-    internal let headers: [String: String] = [:]
+    let headers: [String: String] = [:]
     
-    internal let queryParameters: [URLQueryItem] = []
+    let queryParameters: [URLQueryItem] = []
     
-    internal let method: HTTPMethod = .post
+    let method: HTTPMethod = .post
     
-    internal let sessionData: String
+    let sessionData: String
     
-    internal let order: PartialPaymentOrder?
+    let order: PartialPaymentOrder?
     
-    internal typealias ResponseType = SessionSetupResponse
+    typealias ResponseType = SessionSetupResponse
     
-    internal typealias ErrorResponseType = APIError
+    typealias ErrorResponseType = APIError
     
-    internal init(sessionId: String,
-                  sessionData: String,
-                  order: PartialPaymentOrder?) {
+    init(sessionId: String,
+         sessionData: String,
+         order: PartialPaymentOrder?) {
         self.path = "checkoutshopper/v1/sessions/\(sessionId)/setup"
         self.sessionData = sessionData
         self.order = order
     }
     
-    internal func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(sessionData, forKey: .sessionData)
         try container.encodeIfPresent(order?.compactOrder, forKey: .order)
@@ -58,19 +58,19 @@ internal struct SessionSetupRequest: Request {
     }
 }
 
-internal struct SessionSetupResponse: SessionResponse {
+struct SessionSetupResponse: SessionResponse {
     
-    internal let countryCode: String?
+    let countryCode: String?
     
-    internal let shopperLocale: String?
+    let shopperLocale: String?
     
-    internal let paymentMethods: PaymentMethods
+    let paymentMethods: PaymentMethods
     
-    internal let amount: Amount
+    let amount: Amount
     
-    internal let sessionData: String
+    let sessionData: String
     
-    internal let configuration: Configuration
+    let configuration: Configuration
     
     private enum CodingKeys: String, CodingKey {
         case countryCode
@@ -84,10 +84,10 @@ internal struct SessionSetupResponse: SessionResponse {
 
 extension SessionSetupResponse {
     
-    internal struct Configuration: Decodable {
+    struct Configuration: Decodable {
         
-        internal let installmentOptions: InstallmentConfiguration?
+        let installmentOptions: InstallmentConfiguration?
         
-        internal let enableStoreDetails: Bool
+        let enableStoreDetails: Bool
     }
 }

@@ -15,7 +15,7 @@ public enum PhoneNumberPaymentMethod {
 
     case generic
 
-    internal var codes: [String] {
+    var codes: [String] {
         switch self {
         case .qiwiWallet:
             return ["RU",

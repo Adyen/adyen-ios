@@ -21,7 +21,7 @@ extension FormPickerSearchViewController {
         ///   - searchTerm: The search term that caused an empty state.
         ///   - style: The style of the view.
         ///   - localizationParameters: The localization parameters.
-        internal init(
+        init(
             searchTerm: String = "",
             style: EmptyStateViewStyle = .init(),
             localizationParameters: LocalizationParameters? = nil
@@ -37,7 +37,7 @@ extension FormPickerSearchViewController {
         }
         
         @available(*, unavailable)
-        internal required init(coder: NSCoder) {
+        required init(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
         

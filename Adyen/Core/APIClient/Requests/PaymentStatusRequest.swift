@@ -30,7 +30,7 @@ public struct PaymentStatusRequest: APIRequest {
         self.paymentData = paymentData
     }
     
-    internal enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case paymentData
     }
 }

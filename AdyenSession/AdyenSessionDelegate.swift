@@ -121,7 +121,7 @@ public enum SessionPaymentResultCode: String {
     case presentToShopper = "PresentToShopper"
     
     // Internal init to map payment response to only the final codes.
-    internal init(paymentResultCode: PaymentsResponse.ResultCode) {
+    init(paymentResultCode: PaymentsResponse.ResultCode) {
         switch paymentResultCode {
         case .authenticationFinished,
              .authenticationNotRequired,

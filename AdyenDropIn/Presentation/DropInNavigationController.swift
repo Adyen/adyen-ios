@@ -7,17 +7,17 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-internal final class DropInNavigationController: UINavigationController, PreferredContentSizeConsumer, AdyenObserver {
+final class DropInNavigationController: UINavigationController, PreferredContentSizeConsumer, AdyenObserver {
     
-    internal typealias CancelHandler = (Bool, PresentableComponent) -> Void
+    typealias CancelHandler = (Bool, PresentableComponent) -> Void
     
     private let cancelHandler: CancelHandler?
     
-    internal let style: NavigationStyle
+    let style: NavigationStyle
     
-    internal lazy var keyboardObserver = KeyboardObserver()
+    lazy var keyboardObserver = KeyboardObserver()
     
-    internal init(rootComponent: PresentableComponent, style: NavigationStyle, cancelHandler: @escaping CancelHandler) {
+    init(rootComponent: PresentableComponent, style: NavigationStyle, cancelHandler: @escaping CancelHandler) {
         self.style = style
         self.cancelHandler = cancelHandler
         super.init(nibName: nil, bundle: Bundle(for: DropInNavigationController.self))
@@ -25,11 +25,11 @@ internal final class DropInNavigationController: UINavigationController, Preferr
     }
     
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override internal func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         observe(keyboardObserver.$keyboardRect) { [weak self] _ in
@@ -37,13 +37,13 @@ internal final class DropInNavigationController: UINavigationController, Preferr
         }
     }
 
-    internal func willUpdatePreferredContentSize() { /* Empty implementation */ }
+    func willUpdatePreferredContentSize() { /* Empty implementation */ }
 
-    internal func didUpdatePreferredContentSize() {
+    func didUpdatePreferredContentSize() {
         updateTopViewControllerIfNeeded()
     }
     
-    internal func present(asModal component: PresentableComponent) {
+    func present(asModal component: PresentableComponent) {
         if component.requiresModalPresentation {
             pushViewController(wrapInModalController(component: component,
                                                      isRoot: false),
@@ -53,13 +53,13 @@ internal final class DropInNavigationController: UINavigationController, Preferr
         }
     }
     
-    internal func present(root component: PresentableComponent) {
+    func present(root component: PresentableComponent) {
         pushViewController(wrapInModalController(component: component, isRoot: true), animated: true)
     }
 
     // MARK: - Private
 
-    internal func updateTopViewControllerIfNeeded(animated: Bool = true) {
+    func updateTopViewControllerIfNeeded(animated: Bool = true) {
         guard let topViewController = topViewController as? WrapperViewController else { return }
 
         let frame = topViewController.requiresKeyboardInput ? keyboardObserver.keyboardRect : .zero
@@ -92,10 +92,10 @@ internal final class DropInNavigationController: UINavigationController, Preferr
 
 extension DropInNavigationController: UINavigationControllerDelegate {
     
-    internal func navigationController(_ navigationController: UINavigationController,
-                                       animationControllerFor operation: UINavigationController.Operation,
-                                       from fromVC: UIViewController,
-                                       to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func navigationController(_ navigationController: UINavigationController,
+                              animationControllerFor operation: UINavigationController.Operation,
+                              from fromVC: UIViewController,
+                              to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         SlideInPresentationAnimator(duration: 0.6)
     }
     
@@ -103,9 +103,9 @@ extension DropInNavigationController: UINavigationControllerDelegate {
 
 extension DropInNavigationController: UIViewControllerTransitioningDelegate {
 
-    internal func presentationController(forPresented presented: UIViewController,
-                                         presenting: UIViewController?,
-                                         source: UIViewController) -> UIPresentationController? {
+    func presentationController(forPresented presented: UIViewController,
+                                presenting: UIViewController?,
+                                source: UIViewController) -> UIPresentationController? {
         DimmingPresentationController(presented: presented,
                                       presenting: presenting,
                                       layoutDidChanged: { [weak self] in

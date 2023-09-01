@@ -9,16 +9,16 @@ import UIKit
 
 extension QRCodeView {
 
-    internal class Model {
+    class Model {
 
-        internal enum ActionButton {
+        enum ActionButton {
             case copyCode
             case saveAsImage
         }
 
-        internal let action: QRCodeAction
+        let action: QRCodeAction
         
-        internal var actionButtonType: ActionButton {
+        var actionButtonType: ActionButton {
             switch action.paymentMethodType {
             case .promptPay, .duitNow, .payNow, .upiQRCode:
                 return .saveAsImage
@@ -27,44 +27,44 @@ extension QRCodeView {
             }
         }
 
-        internal let instruction: String
+        let instruction: String
         
-        internal var payment: Payment?
+        var payment: Payment?
         
-        internal let logoUrl: URL
+        let logoUrl: URL
         
-        internal let observedProgress: Progress?
+        let observedProgress: Progress?
         
-        internal let expiration: AdyenObservable<String?>
+        let expiration: AdyenObservable<String?>
         
-        internal let style: Style
+        let style: Style
         
-        internal struct Style {
+        struct Style {
             
-            internal let copyCodeButton: ButtonStyle
+            let copyCodeButton: ButtonStyle
 
-            internal let saveAsImageButton: ButtonStyle
+            let saveAsImageButton: ButtonStyle
             
-            internal let instructionLabel: TextStyle
+            let instructionLabel: TextStyle
             
-            internal let amountToPayLabel: TextStyle
+            let amountToPayLabel: TextStyle
             
-            internal let progressView: ProgressViewStyle
+            let progressView: ProgressViewStyle
             
-            internal let expirationLabel: TextStyle
+            let expirationLabel: TextStyle
             
-            internal let logoCornerRounding: CornerRounding
+            let logoCornerRounding: CornerRounding
             
-            internal let backgroundColor: UIColor
+            let backgroundColor: UIColor
         }
         
-        internal init(action: QRCodeAction,
-                      instruction: String,
-                      payment: Payment?,
-                      logoUrl: URL,
-                      observedProgress: Progress?,
-                      expiration: AdyenObservable<String?>,
-                      style: QRCodeView.Model.Style) {
+        init(action: QRCodeAction,
+             instruction: String,
+             payment: Payment?,
+             logoUrl: URL,
+             observedProgress: Progress?,
+             expiration: AdyenObservable<String?>,
+             style: QRCodeView.Model.Style) {
             self.action = action
             self.instruction = instruction
             self.payment = payment

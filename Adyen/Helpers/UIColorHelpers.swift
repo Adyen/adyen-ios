@@ -6,7 +6,7 @@
 
 import UIKit
 
-internal extension UIColor {
+extension UIColor {
     
     // swiftlint:disable:next explicit_acl
     func withBrightnessMultiple(_ brightnessMultiple: Float) -> UIColor {

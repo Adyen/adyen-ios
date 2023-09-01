@@ -28,7 +28,7 @@ public final class BoletoComponent: PaymentComponent,
     /// The Component's configuration.
     public var configuration: Configuration
     
-    internal let boletoPaymentMethod: BoletoPaymentMethod
+    let boletoPaymentMethod: BoletoPaymentMethod
     
     /// Initializes the Boleto Component
     /// - Parameters:
@@ -58,7 +58,7 @@ public final class BoletoComponent: PaymentComponent,
         return socialSecurityNumberItem
     }()
     
-    internal lazy var sendCopyByEmailItem: FormToggleItem = {
+    lazy var sendCopyByEmailItem: FormToggleItem = {
         let sendCopyToEmailItem = FormToggleItem(style: configuration.style.toggle)
         sendCopyToEmailItem.value = false
         sendCopyToEmailItem.title = localizedString(.boletoSendCopyToEmail, configuration.localizationParameters)

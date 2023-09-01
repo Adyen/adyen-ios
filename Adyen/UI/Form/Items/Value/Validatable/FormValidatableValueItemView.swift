@@ -14,7 +14,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     private var itemObserver: Observation?
     
     /// The view to set the `accessibilityLabel` on when invalid
-    internal var accessibilityLabelView: UIView? {
+    var accessibilityLabelView: UIView? {
         AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
         return nil
     }
@@ -31,7 +31,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     /// The alert label to be used to indicate an issue with the value
     ///
     /// The intended use is to put it inside of a UIStackView as it will be hidden based on the validity of the item
-    internal lazy var alertLabel: UILabel = {
+    lazy var alertLabel: UILabel = {
         let alertLabel = UILabel(style: item.style.title)
         alertLabel.textColor = item.style.errorColor
         alertLabel.isAccessibilityElement = false
@@ -106,7 +106,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         alertLabel.adyen.hide(animationKey: "hide_alertLabel", hidden: hidden, animated: animated)
     }
     
-    internal func resetValidationStatus() {
+    func resetValidationStatus() {
         hideAlertLabel(true, animated: false)
         unhighlightSeparatorView()
         titleLabel.textColor = defaultTitleColor

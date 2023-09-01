@@ -35,7 +35,7 @@ open class FormPickerItem: FormSelectableValueItem<FormPickerElement?> {
     
     public let localizationParameters: LocalizationParameters?
     public private(set) var isOptional: Bool = false
-    internal private(set) weak var presenter: ViewControllerPresenter?
+    private(set) weak var presenter: ViewControllerPresenter?
     
     override public var value: FormPickerElement? {
         didSet {

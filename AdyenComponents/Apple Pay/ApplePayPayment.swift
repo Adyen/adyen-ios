@@ -25,9 +25,9 @@ public struct ApplePayPayment {
     /// The code of the currency in which the amount's value is specified.
     public private(set) var currencyCode: String
 
-    internal var brand: String
+    var brand: String
 
-    internal let localeIdentifier: String?
+    let localeIdentifier: String?
 
     /// Create a new instance of ApplePayPayment.
     /// - Parameters:
@@ -109,7 +109,7 @@ public struct ApplePayPayment {
     /// - Parameters:
     ///   - amount: The new amount value
     ///   - localeIdentifier: The localization parameters to control how monetary amount are localized.
-    internal mutating func update(amount: Amount) {
+    mutating func update(amount: Amount) {
         var newItems = summaryItems
         guard let lastItem = newItems.last else { return }
 
@@ -145,7 +145,7 @@ extension ApplePayPayment {
         Amount(value: amountMinorUnits, currencyCode: currencyCode)
     }
 
-    internal func replacing(summaryItems: [PKPaymentSummaryItem]) throws -> ApplePayPayment {
+    func replacing(summaryItems: [PKPaymentSummaryItem]) throws -> ApplePayPayment {
         try ApplePayPayment(countryCode: self.countryCode,
                             currencyCode: currencyCode,
                             summaryItems: summaryItems,

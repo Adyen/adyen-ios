@@ -58,9 +58,9 @@ public final class RedirectComponent: ActionComponent {
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
     
-    internal var appLauncher: AnyAppLauncher = AppLauncher()
+    var appLauncher: AnyAppLauncher = AppLauncher()
     
-    internal lazy var apiClient: AnyRetryAPIClient = {
+    lazy var apiClient: AnyRetryAPIClient = {
         APIClient(apiContext: context.apiContext).retryAPIClient(with: SimpleScheduler(maximumCount: 2))
     }()
     
@@ -79,9 +79,9 @@ public final class RedirectComponent: ActionComponent {
         self.configuration = configuration
     }
     
-    internal convenience init(context: AdyenContext,
-                              configuration: Configuration = Configuration(),
-                              apiClient: AnyRetryAPIClient) {
+    convenience init(context: AdyenContext,
+                     configuration: Configuration = Configuration(),
+                     apiClient: AnyRetryAPIClient) {
         self.init(context: context, configuration: configuration)
         self.apiClient = apiClient
     }
@@ -197,14 +197,14 @@ public final class RedirectComponent: ActionComponent {
 
 extension RedirectComponent: BrowserComponentDelegate {
 
-    internal func didCancel() {
+    func didCancel() {
         if browserComponent != nil {
             browserComponent = nil
             delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
     }
 
-    internal func didOpenExternalApplication() {
+    func didOpenExternalApplication() {
         delegate?.didOpenExternalApplication(component: self)
     }
     

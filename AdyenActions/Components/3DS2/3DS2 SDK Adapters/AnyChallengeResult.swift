@@ -7,7 +7,7 @@
 import Adyen3DS2
 import Foundation
 
-internal protocol AnyChallengeResult {
+protocol AnyChallengeResult {
 
     var transactionStatus: String { get }
 }

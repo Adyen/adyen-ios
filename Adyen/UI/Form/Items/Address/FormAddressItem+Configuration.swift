@@ -13,13 +13,13 @@ public extension FormAddressItem {
     struct Configuration {
         
         /// The form style.
-        internal let style: AddressStyle
+        let style: AddressStyle
         /// The localization parameters.
-        internal let localizationParameters: LocalizationParameters?
+        let localizationParameters: LocalizationParameters?
         /// Supported country codes. If `nil`, all country codes are listed.
-        internal let supportedCountryCodes: [String]?
+        let supportedCountryCodes: [String]?
         /// Whether to show a title header.
-        internal let showsHeader: Bool
+        let showsHeader: Bool
         
         /// Initializes the form address item configuration.
         /// - Parameters:

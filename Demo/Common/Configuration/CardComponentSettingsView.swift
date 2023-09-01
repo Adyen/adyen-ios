@@ -9,10 +9,10 @@ import AdyenCard
 import SwiftUI
 
 @available(iOS 13.0.0, *)
-internal struct CardComponentSettingsView: View {
-    @ObservedObject internal var viewModel: ConfigurationViewModel
+struct CardComponentSettingsView: View {
+    @ObservedObject var viewModel: ConfigurationViewModel
     
-    internal var body: some View {
+    var body: some View {
 
         NavigationView {
             List {

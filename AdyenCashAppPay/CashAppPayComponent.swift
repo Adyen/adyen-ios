@@ -68,7 +68,7 @@ public final class CashAppPayComponent: PaymentComponent,
         return environment.isLive ? .production : .sandbox
     }
 
-    internal lazy var storeDetailsItem: FormToggleItem = {
+    lazy var storeDetailsItem: FormToggleItem = {
         let storeDetailsItem = FormToggleItem(style: configuration.style.toggle)
         storeDetailsItem.title = localizedString(.cardStoreDetailsButton, configuration.localizationParameters)
         storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.storeDetailsItem)
@@ -76,7 +76,7 @@ public final class CashAppPayComponent: PaymentComponent,
         return storeDetailsItem
     }()
 
-    internal lazy var cashAppPayButton: CashAppPayButtonItem = {
+    lazy var cashAppPayButton: CashAppPayButtonItem = {
         let item = CashAppPayButtonItem { [weak self] in
             self?.didSelectSubmitButton()
         }
@@ -182,7 +182,7 @@ public final class CashAppPayComponent: PaymentComponent,
                                  cashtag: cashtag)
     }
     
-    internal func submitApprovedRequest(with grants: [CustomerRequest.Grant], profile: CustomerRequest.CustomerProfile?) {
+    func submitApprovedRequest(with grants: [CustomerRequest.Grant], profile: CustomerRequest.CustomerProfile?) {
         do {
             let details = try cashAppPayDetails(from: grants, customerProfile: profile)
             submit(data: PaymentComponentData(paymentMethodDetails: details,

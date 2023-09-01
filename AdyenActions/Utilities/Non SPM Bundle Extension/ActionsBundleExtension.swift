@@ -12,10 +12,10 @@ import Foundation
 extension Bundle {
 
     /// The main bundle of the framework.
-    internal static let actions: Bundle = .init(for: RedirectComponent.self)
+    static let actions: Bundle = .init(for: RedirectComponent.self)
 
     /// The bundle in which the framework's resources are located.
-    internal static let actionsInternalResources: Bundle = {
+    static let actionsInternalResources: Bundle = {
         let url = actions.url(forResource: "AdyenActions", withExtension: "bundle")
         let bundle = url.flatMap { Bundle(url: $0) }
         return bundle ?? actions

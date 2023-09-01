@@ -10,7 +10,7 @@
 @testable import AdyenActions
 import Foundation
 
-internal final class VoucherViewDelegateMock: VoucherViewDelegate {
+final class VoucherViewDelegateMock: VoucherViewDelegate {
     
     var onDidComplete: (() -> Void)?
     

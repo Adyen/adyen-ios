@@ -20,7 +20,7 @@ public final class CardExpiryDateValidator: Validator {
         self.referenceDate = Date()
     }
     
-    internal init(referenceDate: Date = Date()) {
+    init(referenceDate: Date = Date()) {
         self.referenceDate = referenceDate
     }
     

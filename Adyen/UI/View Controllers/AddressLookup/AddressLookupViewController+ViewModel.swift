@@ -19,27 +19,27 @@ public extension AddressLookupViewController {
     /// The view model for the ``AddressLookupViewController``
     struct ViewModel {
         
-        internal let style: AddressLookupStyle
-        internal let localizationParameters: LocalizationParameters?
-        internal let supportedCountryCodes: [String]?
-        internal let initialCountry: String
+        let style: AddressLookupStyle
+        let localizationParameters: LocalizationParameters?
+        let supportedCountryCodes: [String]?
+        let initialCountry: String
         
         private let lookupProvider: LookupProvider
         private let completionHandler: (PostalAddress?) -> Void
         
         @AdyenObservable(nil)
-        internal private(set) var prefillAddress: PostalAddress?
+        private(set) var prefillAddress: PostalAddress?
         
         /// The interface state defines the currently active screen.
         @AdyenObservable(InterfaceState.form(prefillAddress: nil))
-        internal var interfaceState: InterfaceState
+        var interfaceState: InterfaceState
         
         /// Flag to indicate if the address lookup should be dismissed when search is cancelled
         ///
         /// Context: We show the search immediately when no address to prefill is provided
         /// and cancelling from this state should dismiss the whole flow.
         @AdyenObservable(false)
-        internal var shouldDismissOnSearchDismissal: Bool
+        var shouldDismissOnSearchDismissal: Bool
         
         /// Initializes a ``AddressLookupViewController``
         ///
@@ -88,16 +88,16 @@ extension AddressLookupViewController.ViewModel {
         }
     }
     
-    internal func handleShowSearchTapped(currentInput: PostalAddress) {
+    func handleShowSearchTapped(currentInput: PostalAddress) {
         prefillAddress = currentInput
         interfaceState = .search
     }
     
-    internal func handleSwitchToManualEntryTapped() {
+    func handleSwitchToManualEntryTapped() {
         handleShowForm(with: prefillAddress)
     }
     
-    internal func handleDismissSearchTapped() {
+    func handleDismissSearchTapped() {
         if shouldDismissOnSearchDismissal {
             handleDismissAddressLookup()
         } else {
@@ -105,11 +105,11 @@ extension AddressLookupViewController.ViewModel {
         }
     }
     
-    internal func lookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
+    func lookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
         lookupProvider(searchTerm) { resultHandler($0.compactMap(listItem(for:))) }
     }
     
-    internal func handleAddressInputFormCompletion(validAddress: PostalAddress?) {
+    func handleAddressInputFormCompletion(validAddress: PostalAddress?) {
         completionHandler(validAddress)
     }
     

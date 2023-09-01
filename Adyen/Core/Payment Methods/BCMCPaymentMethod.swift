@@ -27,7 +27,7 @@ public struct BCMCPaymentMethod: AnyCardPaymentMethod {
     
     public var fundingSource: CardFundingSource? { cardPaymentMethod.fundingSource }
     
-    internal init(cardPaymentMethod: CardPaymentMethod) {
+    init(cardPaymentMethod: CardPaymentMethod) {
         self.cardPaymentMethod = cardPaymentMethod
     }
     

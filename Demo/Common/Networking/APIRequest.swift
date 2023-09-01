@@ -9,9 +9,9 @@ import AdyenActions
 import AdyenNetworking
 import Foundation
 
-internal protocol APIRequest: Request where ErrorResponseType == APIError {}
+protocol APIRequest: Request where ErrorResponseType == APIError {}
 
-internal struct APIError: ErrorResponse, LocalizedError {
+struct APIError: ErrorResponse, LocalizedError {
     
     /// The status.
     public let status: Int?
@@ -36,7 +36,7 @@ internal struct APIError: ErrorResponse, LocalizedError {
     
 }
 
-internal enum APIErrorType: String, Decodable {
+enum APIErrorType: String, Decodable {
     case `internal`
     case validation
     case security

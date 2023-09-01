@@ -154,7 +154,7 @@ extension CardComponent {
         public var allowedCardTypes: [CardType]?
         
         /// Indicates whether or not to show the supported card logos under the card number item
-        internal var showsSupportedCardLogos: Bool = true
+        var showsSupportedCardLogos: Bool = true
 
         /// Installments options to present to the user.
         public var installmentConfiguration: InstallmentConfiguration?
@@ -163,7 +163,7 @@ extension CardComponent {
         public var billingAddress: BillingAddressConfiguration
         
         /// The type used for the bin lookup
-        internal var binLookupType: BinLookupRequestType = .card
+        var binLookupType: BinLookupRequestType = .card
 
         /// Configuration of Card component.
         /// - Parameters:
@@ -209,7 +209,7 @@ extension CardComponent {
             self.billingAddress = billingAddress
         }
 
-        internal func showAdditionalAuthenticationFields(for issuingCountryCode: String?) -> Bool {
+        func showAdditionalAuthenticationFields(for issuingCountryCode: String?) -> Bool {
             koreanAuthenticationMode != .hide && issuingCountryCode == "KR"
         }
     }

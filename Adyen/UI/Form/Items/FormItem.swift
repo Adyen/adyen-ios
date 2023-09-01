@@ -56,14 +56,14 @@ public protocol ValidatableFormItem: FormItem {
 public protocol InputViewRequiringFormItem: FormItem {}
 
 /// Delegate to the view all events that requires change in corespondent FormView changes.
-internal protocol SelfRenderingFormItemDelegate: AnyObject {
+protocol SelfRenderingFormItemDelegate: AnyObject {
 
     /// Notify delegate that items have changed.
     func didUpdateItems(_ items: [FormItem])
 
 }
 
-internal protocol CompoundFormItem {
+protocol CompoundFormItem {
     var delegate: SelfRenderingFormItemDelegate? { get set }
 }
 

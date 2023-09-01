@@ -8,20 +8,20 @@
 import AdyenNetworking
 import Foundation
 
-internal struct BinLookupResponse: Response {
+struct BinLookupResponse: Response {
 
-    internal var brands: [CardBrand]?
+    var brands: [CardBrand]?
 
-    internal let requestId: String
+    let requestId: String
 
-    internal let issuingCountryCode: String?
+    let issuingCountryCode: String?
 
-    internal var isCreatedLocally: Bool = false
+    var isCreatedLocally: Bool = false
     
-    internal init(brands: [CardBrand]? = nil,
-                  requestId: String = UUID().uuidString,
-                  issuingCountryCode: String? = "NL",
-                  isCreatedLocally: Bool = true) {
+    init(brands: [CardBrand]? = nil,
+         requestId: String = UUID().uuidString,
+         issuingCountryCode: String? = "NL",
+         isCreatedLocally: Bool = true) {
         self.brands = brands
         self.requestId = requestId
         self.issuingCountryCode = issuingCountryCode

@@ -25,7 +25,7 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
 
     private let retryApiClient: AnyRetryAPIClient
     
-    internal static var publicKeysCache = [String: String]()
+    static var publicKeysCache = [String: String]()
     
     private var cachedPublicKey: String? {
         get {
@@ -44,7 +44,7 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
     }
 
     /// For testing only
-    internal init(apiClient: AnyRetryAPIClient, request: ClientKeyRequest) {
+    init(apiClient: AnyRetryAPIClient, request: ClientKeyRequest) {
         self.retryApiClient = apiClient
         self.request = request
     }

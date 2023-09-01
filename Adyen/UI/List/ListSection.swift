@@ -47,7 +47,7 @@ public struct ListSection: Hashable {
     
     private let identifier: String
     
-    internal mutating func deleteItem(index: Int) {
+    mutating func deleteItem(index: Int) {
         guard items.indices.contains(index) else { return }
         items.remove(at: index)
     }

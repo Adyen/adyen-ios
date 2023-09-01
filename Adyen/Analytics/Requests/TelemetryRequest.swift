@@ -7,21 +7,21 @@
 import AdyenNetworking
 import Foundation
 
-internal struct TelemetryResponse: Response { /* Empty response */ }
+struct TelemetryResponse: Response { /* Empty response */ }
 
-internal struct TelemetryRequest: APIRequest {
+struct TelemetryRequest: APIRequest {
 
-    internal typealias ResponseType = TelemetryResponse
+    typealias ResponseType = TelemetryResponse
 
-    internal let path: String = "checkoutshopper/v2/analytics/log"
+    let path: String = "checkoutshopper/v2/analytics/log"
 
-    internal var counter: UInt = 0
+    var counter: UInt = 0
 
-    internal let headers: [String: String] = [:]
+    let headers: [String: String] = [:]
 
-    internal let queryParameters: [URLQueryItem] = []
+    let queryParameters: [URLQueryItem] = []
 
-    internal let method: HTTPMethod = .post
+    let method: HTTPMethod = .post
 
     private var version: String
     private let channel: String
@@ -35,12 +35,12 @@ internal struct TelemetryRequest: APIRequest {
     private let containerWidth: Int?
     private let paymentMethods: [String]
     private let component: String
-    internal let amount: Amount?
-    internal let checkoutAttemptId: String?
+    let amount: Amount?
+    let checkoutAttemptId: String?
 
     // MARK: - Initializers
 
-    internal init(data: TelemetryData, checkoutAttemptId: String?) {
+    init(data: TelemetryData, checkoutAttemptId: String?) {
         self.version = data.version
         self.channel = data.channel
         self.locale = data.locale
@@ -57,7 +57,7 @@ internal struct TelemetryRequest: APIRequest {
         self.checkoutAttemptId = checkoutAttemptId
     }
 
-    internal enum CodingKeys: CodingKey {
+    enum CodingKeys: CodingKey {
         case version
         case channel
         case locale

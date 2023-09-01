@@ -7,7 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-internal protocol AnyActionNavigationBar: AnyNavigationBar {
+protocol AnyActionNavigationBar: AnyNavigationBar {
     
     var model: AnyActionNavigationBarModel { get }
     
@@ -18,14 +18,14 @@ internal protocol AnyActionNavigationBar: AnyNavigationBar {
     var trailingButtonHandler: (() -> Void)? { get }
 }
 
-internal protocol AnyActionNavigationBarModel {
+protocol AnyActionNavigationBarModel {
     
     var leadingButtonTitle: String? { get }
     
     var trailingButtonTitle: String? { get }
 }
 
-internal protocol AnyActionNavigationBarStyle {
+protocol AnyActionNavigationBarStyle {
     
     var leadingButton: ButtonStyle? { get }
     
@@ -34,19 +34,19 @@ internal protocol AnyActionNavigationBarStyle {
     var backgroundColor: UIColor { get }
 }
 
-internal class ActionNavigationBar: UIView, AnyActionNavigationBar {
+class ActionNavigationBar: UIView, AnyActionNavigationBar {
     
-    internal let model: AnyActionNavigationBarModel
+    let model: AnyActionNavigationBarModel
     
-    internal let style: AnyActionNavigationBarStyle
+    let style: AnyActionNavigationBarStyle
     
-    internal var leadingButtonHandler: (() -> Void)?
+    var leadingButtonHandler: (() -> Void)?
     
-    internal var trailingButtonHandler: (() -> Void)?
+    var trailingButtonHandler: (() -> Void)?
     
-    internal var onCancelHandler: (() -> Void)?
+    var onCancelHandler: (() -> Void)?
     
-    internal init(model: AnyActionNavigationBarModel, style: AnyActionNavigationBarStyle) {
+    init(model: AnyActionNavigationBarModel, style: AnyActionNavigationBarStyle) {
         self.model = model
         self.style = style
         
@@ -56,7 +56,7 @@ internal class ActionNavigationBar: UIView, AnyActionNavigationBar {
     }
     
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -103,19 +103,19 @@ internal class ActionNavigationBar: UIView, AnyActionNavigationBar {
 }
 
 extension ActionNavigationBar {
-    internal struct Model: AnyActionNavigationBarModel {
+    struct Model: AnyActionNavigationBarModel {
         
-        internal let leadingButtonTitle: String?
+        let leadingButtonTitle: String?
         
-        internal let trailingButtonTitle: String?
+        let trailingButtonTitle: String?
     }
     
-    internal struct Style: AnyActionNavigationBarStyle {
+    struct Style: AnyActionNavigationBarStyle {
         
-        internal let leadingButton: ButtonStyle?
+        let leadingButton: ButtonStyle?
         
-        internal let trailingButton: ButtonStyle?
+        let trailingButton: ButtonStyle?
         
-        internal let backgroundColor: UIColor
+        let backgroundColor: UIColor
     }
 }

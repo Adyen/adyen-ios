@@ -7,7 +7,7 @@
 import Adyen3DS2
 import Foundation
 
-internal protocol AnyAuthenticationRequestParameters {
+protocol AnyAuthenticationRequestParameters {
 
     var deviceInformation: String { get }
 

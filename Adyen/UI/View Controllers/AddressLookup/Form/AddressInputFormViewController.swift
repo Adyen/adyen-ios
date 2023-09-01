@@ -49,7 +49,7 @@ public class AddressInputFormViewController: FormViewController {
         })
     }
     
-    internal lazy var searchButtonItem: FormSearchButtonItem = {
+    lazy var searchButtonItem: FormSearchButtonItem = {
         let identifier = ViewIdentifierBuilder.build(
             scopeInstance: Self.self,
             postfix: "searchBar"
@@ -65,7 +65,7 @@ public class AddressInputFormViewController: FormViewController {
         }
     }()
     
-    internal lazy var billingAddressItem: FormAddressItem = {
+    lazy var billingAddressItem: FormAddressItem = {
         let identifier = ViewIdentifierBuilder.build(
             scopeInstance: Self.self,
             postfix: "billingAddress"

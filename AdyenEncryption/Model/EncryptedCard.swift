@@ -9,7 +9,7 @@ import Foundation
 /// Contains encrypted card information.
 public struct EncryptedCard {
 
-    internal init(number: String?, securityCode: String?, expiryMonth: String?, expiryYear: String?) {
+    init(number: String?, securityCode: String?, expiryMonth: String?, expiryYear: String?) {
         self.number = number
         self.securityCode = securityCode
         self.expiryMonth = expiryMonth

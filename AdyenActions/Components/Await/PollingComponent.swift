@@ -9,7 +9,7 @@ import AdyenNetworking
 import Foundation
 
 /// A specific await component thats keeps polling the `/status` endpoint to check the payment status.
-internal final class PollingComponent: AnyPollingHandler {
+final class PollingComponent: AnyPollingHandler {
     
     private let maxErrorNumber = 1
 
@@ -17,20 +17,20 @@ internal final class PollingComponent: AnyPollingHandler {
 
     private var errorCount = 0
 
-    internal let context: AdyenContext
+    let context: AdyenContext
     
-    internal weak var presentationDelegate: PresentationDelegate?
+    weak var presentationDelegate: PresentationDelegate?
     
-    internal weak var delegate: ActionComponentDelegate?
+    weak var delegate: ActionComponentDelegate?
     
-    internal let componentName = "mbWayAwait"
+    let componentName = "mbWayAwait"
     
     /// Initializes the Polling Await component.
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter apiClient: The API client.
-    internal init(context: AdyenContext,
-                  apiClient: AnyRetryAPIClient) {
+    init(context: AdyenContext,
+         apiClient: AnyRetryAPIClient) {
         self.context = context
         self.apiClient = apiClient
     }
@@ -38,14 +38,14 @@ internal final class PollingComponent: AnyPollingHandler {
     /// Handles await action.
     ///
     /// - Parameter action: The await action object.
-    internal func handle(_ action: PaymentDataAware) {
+    func handle(_ action: PaymentDataAware) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         startPolling(action)
     }
     
     private var isCancelled: Bool = false
     
-    internal func didCancel() {
+    func didCancel() {
         isCancelled = true
     }
     

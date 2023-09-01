@@ -11,13 +11,13 @@ import UIKit
 open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueItem<ValueType?>>:
     FormValidatableValueItemView<ValueType?, ItemType> {
     
-    internal var numberOfLines: Int = 1 {
+    var numberOfLines: Int = 1 {
         didSet {
             valueLabel.numberOfLines = numberOfLines
         }
     }
     
-    override internal var accessibilityLabelView: UIView? { selectionButton }
+    override var accessibilityLabelView: UIView? { selectionButton }
     
     public required init(item: ItemType) {
         super.init(item: item)
@@ -76,7 +76,7 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
         return stackView
     }()
     
-    internal lazy var chevronView: UIImageView = {
+    lazy var chevronView: UIImageView = {
         let chevron = UIImage(named: "chevron", in: Bundle.coreInternalResources, compatibleWith: nil)
         let imageView = UIImageView(image: chevron)
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -88,7 +88,7 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
     }()
     
     /// The value label view.
-    internal lazy var valueLabel: UILabel = {
+    lazy var valueLabel: UILabel = {
         let valueLabel = ValueLabel(style: item.style.text)
         valueLabel.numberOfLines = numberOfLines
         valueLabel.isAccessibilityElement = false
@@ -100,7 +100,7 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
     // MARK: - Selection
     
     @objc
-    internal func selectionButtonTapped() {
+    func selectionButtonTapped() {
         item.selectionHandler()
     }
     

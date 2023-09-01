@@ -31,7 +31,7 @@ final class AnyADYServiceMock: AnyADYService {
     }
 }
 
-internal struct AuthenticationRequestParametersMock: AnyAuthenticationRequestParameters {
+struct AuthenticationRequestParametersMock: AnyAuthenticationRequestParameters {
 
     var deviceInformation: String
 
@@ -46,7 +46,7 @@ internal struct AuthenticationRequestParametersMock: AnyAuthenticationRequestPar
     var messageVersion: String
 }
 
-internal struct AnyChallengeResultMock: AnyChallengeResult {
+struct AnyChallengeResultMock: AnyChallengeResult {
 
     var sdkTransactionIdentifier: String
 

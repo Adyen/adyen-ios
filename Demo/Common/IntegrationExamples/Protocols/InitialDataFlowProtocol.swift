@@ -8,14 +8,14 @@
 import AdyenNetworking
 import AdyenSession
 
-internal protocol InitialDataFlowProtocol: AnyObject, APIClientAware {
+protocol InitialDataFlowProtocol: AnyObject, APIClientAware {
     var context: AdyenContext { get }
     func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void)
 }
 
 extension InitialDataFlowProtocol {
 
-    internal var context: AdyenContext {
+    var context: AdyenContext {
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
         return AdyenContext(apiContext: ConfigurationConstants.apiContext,
@@ -23,7 +23,7 @@ extension InitialDataFlowProtocol {
                             analyticsConfiguration: analyticsConfiguration)
     }
 
-    internal func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void) {
+    func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void) {
         let request = SessionRequest()
         apiClient.perform(request) { [weak self] result in
             guard let self else { return }

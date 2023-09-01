@@ -7,12 +7,12 @@
 import Foundation
 import UIKit
 
-internal final class ListFooterView: UIView {
+final class ListFooterView: UIView {
 
     /// The list section header style.
-    internal let style: ListSectionFooterStyle
+    let style: ListSectionFooterStyle
 
-    internal init(title: String, style: ListSectionFooterStyle) {
+    init(title: String, style: ListSectionFooterStyle) {
         self.title = title
         self.style = style
 
@@ -25,7 +25,7 @@ internal final class ListFooterView: UIView {
     }
 
     @available(*, unavailable)
-    internal required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 

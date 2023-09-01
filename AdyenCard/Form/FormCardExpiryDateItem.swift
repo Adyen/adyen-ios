@@ -7,14 +7,14 @@
 @_spi(AdyenInternal) import Adyen
 
 /// A form item into which card expiry date is entered, formatted and validated.
-internal final class FormCardExpiryDateItem: FormTextItem, Hidable {
+final class FormCardExpiryDateItem: FormTextItem, Hidable {
     
-    internal var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
-    internal var localizationParameters: LocalizationParameters?
+    var localizationParameters: LocalizationParameters?
     
     /// Flag determining this forms state. Validation changes based on this.
-    internal var isOptional: Bool = false {
+    var isOptional: Bool = false {
         didSet {
             updateFormState()
         }
@@ -23,21 +23,21 @@ internal final class FormCardExpiryDateItem: FormTextItem, Hidable {
     private let expiryDateValidator = CardExpiryDateValidator()
     
     /// Returns the month part of the expiry date item
-    internal var expiryMonth: String? {
+    var expiryMonth: String? {
         guard let nonEmptyValue else { return nil }
         return nonEmptyValue.adyen[0...1]
     }
     
     /// Returns the year part of the expiry date item by prefixing it with `"20"`
-    internal var expiryYear: String? {
+    var expiryYear: String? {
         guard let nonEmptyValue else { return nil }
         return "20" + nonEmptyValue.adyen[2...3]
     }
     
     /// Initiate new instance of `FormTextInputItem`
     /// - Parameter style: The `FormTextItemStyle` UI style.
-    internal init(style: FormTextItemStyle = FormTextItemStyle(),
-                  localizationParameters: LocalizationParameters? = nil) {
+    init(style: FormTextItemStyle = FormTextItemStyle(),
+         localizationParameters: LocalizationParameters? = nil) {
         super.init(style: style)
         title = localizedString(.cardExpiryItemTitle, localizationParameters)
         placeholder = localizedString(.cardExpiryItemPlaceholder, localizationParameters)
@@ -47,7 +47,7 @@ internal final class FormCardExpiryDateItem: FormTextItem, Hidable {
         keyboardType = .numberPad
     }
     
-    override internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    override func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
     
@@ -65,7 +65,7 @@ internal final class FormCardExpiryDateItem: FormTextItem, Hidable {
 }
 
 extension FormItemViewBuilder {
-    internal func build(with item: FormCardExpiryDateItem) -> FormItemView<FormCardExpiryDateItem> {
+    func build(with item: FormCardExpiryDateItem) -> FormItemView<FormCardExpiryDateItem> {
         FormTextItemView<FormCardExpiryDateItem>(item: item)
     }
 }

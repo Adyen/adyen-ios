@@ -10,7 +10,7 @@ import PassKit
 import UIKit
 
 /// A component that handles voucher action.
-internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
+protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
     func handle(_ action: VoucherAction)
 }
 
@@ -51,7 +51,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     /// The voucher component configurations.
     public var configuration: Configuration
 
-    internal var voucherShareableViewProvider: AnyVoucherShareableViewProvider
+    var voucherShareableViewProvider: AnyVoucherShareableViewProvider
 
     private lazy var apiClient: APIClientProtocol = {
         let scheduler = SimpleScheduler(maximumCount: 3)
@@ -60,15 +60,15 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
             .retryOnErrorAPIClient()
     }()
     
-    internal func canAddPasses(action: AnyVoucherAction) -> Bool {
+    func canAddPasses(action: AnyVoucherAction) -> Bool {
         PKAddPassesViewController.canAddPasses() && action.passCreationToken != nil
     }
 
     private let componentName = "voucher"
 
-    internal let passProvider: AnyAppleWalletPassProvider
+    let passProvider: AnyAppleWalletPassProvider
     
-    internal var view: VoucherView?
+    var view: VoucherView?
 
     /// Initializes the `VoucherComponent`.
     ///
@@ -86,10 +86,10 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     /// - Parameter context: The context object for this component.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
-    internal init(context: AdyenContext,
-                  voucherShareableViewProvider: AnyVoucherShareableViewProvider?,
-                  configuration: Configuration = Configuration(),
-                  passProvider: AnyAppleWalletPassProvider?) {
+    init(context: AdyenContext,
+         voucherShareableViewProvider: AnyVoucherShareableViewProvider?,
+         configuration: Configuration = Configuration(),
+         passProvider: AnyAppleWalletPassProvider?) {
         self.context = context
         self.configuration = configuration
         self.voucherShareableViewProvider = voucherShareableViewProvider ??
@@ -129,7 +129,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
         }
     }
     
-    internal let presenterViewController = UIViewController()
+    let presenterViewController = UIViewController()
         
     private func navBarType() -> NavigationBarType {
         let model = ActionNavigationBar.Model(leadingButtonTitle: Bundle.Adyen.localizedEditCopy,

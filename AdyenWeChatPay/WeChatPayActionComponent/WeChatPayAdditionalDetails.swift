@@ -7,11 +7,11 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
-internal final class WeChatPayAdditionalDetails: AdditionalDetails {
+final class WeChatPayAdditionalDetails: AdditionalDetails {
     
-    internal let resultCode: String
+    let resultCode: String
     
-    internal init(resultCode: String) {
+    init(resultCode: String) {
         self.resultCode = resultCode
     }
     

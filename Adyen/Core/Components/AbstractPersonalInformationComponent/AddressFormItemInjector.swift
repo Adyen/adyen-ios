@@ -6,23 +6,23 @@
 
 import Foundation
 
-internal final class AddressFormItemInjector: FormItemInjector, Localizable {
+final class AddressFormItemInjector: FormItemInjector, Localizable {
     
-    internal var localizationParameters: LocalizationParameters?
+    var localizationParameters: LocalizationParameters?
 
-    internal var value: PostalAddress?
+    var value: PostalAddress?
 
     private let initialCountry: String
 
-    internal var identifier: String
+    var identifier: String
 
-    internal let style: AddressStyle
+    let style: AddressStyle
 
-    internal let addressViewModelBuilder: AddressViewModelBuilder
+    let addressViewModelBuilder: AddressViewModelBuilder
     
     private weak var presenter: ViewControllerPresenter?
 
-    internal lazy var item: FormAddressItem = {
+    lazy var item: FormAddressItem = {
         let addressItem = FormAddressItem(initialCountry: initialCountry,
                                           configuration: .init(
                                               style: style,
@@ -35,12 +35,12 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
         return addressItem
     }()
     
-    internal init(value: PostalAddress?,
-                  initialCountry: String,
-                  identifier: String,
-                  style: AddressStyle,
-                  presenter: ViewControllerPresenter?,
-                  addressViewModelBuilder: AddressViewModelBuilder) {
+    init(value: PostalAddress?,
+         initialCountry: String,
+         identifier: String,
+         style: AddressStyle,
+         presenter: ViewControllerPresenter?,
+         addressViewModelBuilder: AddressViewModelBuilder) {
         self.value = value
         self.initialCountry = initialCountry
         self.identifier = identifier
@@ -49,7 +49,7 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
         self.addressViewModelBuilder = addressViewModelBuilder
     }
 
-    internal func inject(into formViewController: FormViewController) {
+    func inject(into formViewController: FormViewController) {
         formViewController.append(item)
     }
     

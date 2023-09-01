@@ -11,10 +11,10 @@ import UIKit
 // MARK: - DimmingPresentationController
 
 /// Presentation Controller that performs dimming view alongside presentation animation.
-internal final class DimmingPresentationController: UIPresentationController {
-    internal var layoutDidChanged: () -> Void
+final class DimmingPresentationController: UIPresentationController {
+    var layoutDidChanged: () -> Void
     
-    internal init(presented: UIViewController, presenting: UIViewController?, layoutDidChanged: @escaping () -> Void) {
+    init(presented: UIViewController, presenting: UIViewController?, layoutDidChanged: @escaping () -> Void) {
         self.layoutDidChanged = layoutDidChanged
         super.init(presentedViewController: presented, presenting: presenting)
     }
@@ -32,17 +32,17 @@ internal final class DimmingPresentationController: UIPresentationController {
         dimmingView.adyen.anchor(inside: view)
     }
     
-    override internal func containerViewWillLayoutSubviews() {
+    override func containerViewWillLayoutSubviews() {
         super.containerViewWillLayoutSubviews()
         layoutDidChanged()
     }
     
-    override internal var frameOfPresentedViewInContainerView: CGRect {
+    override var frameOfPresentedViewInContainerView: CGRect {
         guard let containerView = containerView else { return super.frameOfPresentedViewInContainerView }
         return containerView.frame
     }
     
-    override internal func presentationTransitionWillBegin() {
+    override func presentationTransitionWillBegin() {
         super.presentationTransitionWillBegin()
         
         guard let containerView = containerView else { return }
@@ -53,11 +53,11 @@ internal final class DimmingPresentationController: UIPresentationController {
         })
     }
     
-    override internal func presentationTransitionDidEnd(_ completed: Bool) {
+    override func presentationTransitionDidEnd(_ completed: Bool) {
         super.presentationTransitionDidEnd(completed)
     }
     
-    override internal func dismissalTransitionWillBegin() {
+    override func dismissalTransitionWillBegin() {
         super.dismissalTransitionWillBegin()
         
         presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in

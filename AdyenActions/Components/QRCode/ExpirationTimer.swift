@@ -7,7 +7,7 @@
 import Foundation
 
 /// A class for handling expiration timers
-internal final class ExpirationTimer {
+final class ExpirationTimer {
     
     private let expirationTimeout: TimeInterval
     
@@ -27,7 +27,7 @@ internal final class ExpirationTimer {
     ///   - tickInterval: The interval with which the timer ticks.
     ///   - onTick: The closure called on every timer tick.
     ///   - onExpiration: The closure called on timer expiration.
-    internal init(
+    init(
         expirationTimeout: TimeInterval,
         tickInterval: TimeInterval = 1.0,
         onTick: @escaping (TimeInterval) -> Void,
@@ -40,13 +40,13 @@ internal final class ExpirationTimer {
         self.onExpiration = onExpiration
     }
     
-    internal func startTimer() {
+    func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: tickInterval, repeats: true) { [weak self] _ in
             self?.onTimerTick()
         }
     }
     
-    internal func stopTimer() {
+    func stopTimer() {
         timer?.invalidate()
         timer = nil
     }

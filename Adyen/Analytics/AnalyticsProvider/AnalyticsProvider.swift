@@ -40,19 +40,19 @@ public protocol AnalyticsProviderProtocol: TelemetryTrackerProtocol {
     var additionalFields: (() -> AdditionalAnalyticsFields)? { get }
 }
 
-internal final class AnalyticsProvider: AnalyticsProviderProtocol {
+final class AnalyticsProvider: AnalyticsProviderProtocol {
 
     // MARK: - Properties
 
-    internal let apiClient: APIClientProtocol
-    internal let configuration: AnalyticsConfiguration
-    internal private(set) var checkoutAttemptId: String?
-    internal var additionalFields: (() -> AdditionalAnalyticsFields)?
+    let apiClient: APIClientProtocol
+    let configuration: AnalyticsConfiguration
+    private(set) var checkoutAttemptId: String?
+    var additionalFields: (() -> AdditionalAnalyticsFields)?
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<CheckoutAttemptIdResponse>
 
     // MARK: - Initializers
 
-    internal init(
+    init(
         apiClient: APIClientProtocol,
         configuration: AnalyticsConfiguration
     ) {
@@ -63,11 +63,11 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
 
     // MARK: - Internal
     
-    internal func fetchAndCacheCheckoutAttemptIdIfNeeded() {
+    func fetchAndCacheCheckoutAttemptIdIfNeeded() {
         fetchCheckoutAttemptId { _ in /* Do nothing, the point is to trigger the fetching and cache the value  */ }
     }
 
-    internal func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
+    func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
         guard configuration.isEnabled else {
             checkoutAttemptId = "do-not-track"
             completion(checkoutAttemptId)

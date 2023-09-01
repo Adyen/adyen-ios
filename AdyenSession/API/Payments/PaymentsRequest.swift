@@ -12,32 +12,32 @@ import AdyenNetworking
 import CloudKit
 import Foundation
 
-internal struct PaymentsRequest: APIRequest {
-    internal let path: String
+struct PaymentsRequest: APIRequest {
+    let path: String
     
-    internal var counter: UInt = 0
+    var counter: UInt = 0
     
-    internal let headers: [String: String] = [:]
+    let headers: [String: String] = [:]
     
-    internal let queryParameters: [URLQueryItem] = []
+    let queryParameters: [URLQueryItem] = []
     
-    internal let method: HTTPMethod = .post
+    let method: HTTPMethod = .post
     
-    internal let sessionData: String
+    let sessionData: String
     
-    internal let data: PaymentComponentData
+    let data: PaymentComponentData
     
-    internal typealias ResponseType = PaymentsResponse
+    typealias ResponseType = PaymentsResponse
     
-    internal init(sessionId: String,
-                  sessionData: String,
-                  data: PaymentComponentData) {
+    init(sessionId: String,
+         sessionData: String,
+         data: PaymentComponentData) {
         self.path = "checkoutshopper/v1/sessions/\(sessionId)/payments"
         self.sessionData = sessionData
         self.data = data
     }
     
-    internal func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try container.encode(data.paymentMethod.encodable, forKey: .paymentMethod)
@@ -75,17 +75,17 @@ internal struct PaymentsRequest: APIRequest {
     }
 }
 
-internal struct PaymentsResponse: SessionResponse, SessionPaymentResultAware {
+struct PaymentsResponse: SessionResponse, SessionPaymentResultAware {
     
-    internal let resultCode: ResultCode
+    let resultCode: ResultCode
     
-    internal let action: Action?
+    let action: Action?
 
-    internal let order: PartialPaymentOrder?
+    let order: PartialPaymentOrder?
     
-    internal let sessionData: String
+    let sessionData: String
     
-    internal let sessionResult: String?
+    let sessionResult: String?
     
     private enum CodingKeys: String, CodingKey {
         case action
@@ -96,7 +96,7 @@ internal struct PaymentsResponse: SessionResponse, SessionPaymentResultAware {
     }
 }
 
-internal extension PaymentsResponse {
+extension PaymentsResponse {
     
     // swiftlint:disable:next explicit_acl
     enum ResultCode: String, Decodable {

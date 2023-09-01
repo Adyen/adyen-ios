@@ -7,25 +7,25 @@
 import Foundation
 import UIKit
 
-internal struct TelemetryData: Encodable {
+struct TelemetryData: Encodable {
 
     // MARK: - Properties
 
-    internal let version: String = {
+    let version: String = {
         adyenSdkVersion
     }()
 
-    internal let channel: String = "iOS"
+    let channel: String = "iOS"
 
-    internal var locale: String {
+    var locale: String {
         let languageCode = Locale.current.languageCode ?? ""
         let regionCode = Locale.current.regionCode ?? ""
         return "\(languageCode)_\(regionCode)"
     }
 
-    internal let userAgent: String? = nil
+    let userAgent: String? = nil
 
-    internal let deviceBrand: String = {
+    let deviceBrand: String = {
         var systemInfo = utsname()
         uname(&systemInfo)
         let machineMirror = Mirror(reflecting: systemInfo.machine)
@@ -35,27 +35,27 @@ internal struct TelemetryData: Encodable {
         }
     }()
 
-    internal let systemVersion = UIDevice.current.systemVersion
+    let systemVersion = UIDevice.current.systemVersion
 
-    internal let referrer: String = Bundle.main.bundleIdentifier ?? ""
+    let referrer: String = Bundle.main.bundleIdentifier ?? ""
 
-    internal var screenWidth: Int {
+    var screenWidth: Int {
         Int(UIScreen.main.nativeBounds.width)
     }
 
-    internal let containerWidth: Int? = nil
+    let containerWidth: Int? = nil
 
-    internal let flavor: String
+    let flavor: String
 
-    internal var amount: Amount?
+    var amount: Amount?
     
-    internal var paymentMethods: [String] = []
+    var paymentMethods: [String] = []
 
-    internal let component: String
+    let component: String
 
     // MARK: - Initializers
 
-    internal init(flavor: TelemetryFlavor, amount: Amount?) {
+    init(flavor: TelemetryFlavor, amount: Amount?) {
         self.flavor = flavor.value
         self.amount = amount
 

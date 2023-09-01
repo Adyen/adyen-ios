@@ -7,34 +7,34 @@
 import AdyenNetworking
 import Foundation
 
-internal struct CheckoutAttemptIdResponse: Response {
+struct CheckoutAttemptIdResponse: Response {
 
     // MARK: - Properties
 
-    internal let identifier: String
+    let identifier: String
 
-    internal enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case identifier = "id"
     }
 }
 
-internal struct CheckoutAttemptIdRequest: APIRequest {
+struct CheckoutAttemptIdRequest: APIRequest {
 
-    internal typealias ResponseType = CheckoutAttemptIdResponse
+    typealias ResponseType = CheckoutAttemptIdResponse
 
-    internal let path: String = "checkoutshopper/v2/analytics/id"
+    let path: String = "checkoutshopper/v2/analytics/id"
 
-    internal var counter: UInt = 0
+    var counter: UInt = 0
 
-    internal let headers: [String: String] = [:]
+    let headers: [String: String] = [:]
 
-    internal let queryParameters: [URLQueryItem] = []
+    let queryParameters: [URLQueryItem] = []
 
-    internal let method: HTTPMethod = .post
+    let method: HTTPMethod = .post
 
-    internal let experiments: [String] = []
+    let experiments: [String] = []
 
-    internal enum CodingKeys: CodingKey {
+    enum CodingKeys: CodingKey {
         case experiments
     }
 }

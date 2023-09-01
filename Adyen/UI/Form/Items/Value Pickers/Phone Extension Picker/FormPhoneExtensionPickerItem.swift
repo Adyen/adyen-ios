@@ -25,7 +25,7 @@ public final class FormPhoneExtensionPickerItem: BaseFormPickerItem<PhoneExtensi
     ///
     /// - Parameter selectableValues: The list of values to select from.
     /// - Parameter style: The `FormPhoneExtensionPickerItem` UI style.
-    internal init(selectableValues: [PhoneExtensionPickerItem], style: FormTextItemStyle) {
+    init(selectableValues: [PhoneExtensionPickerItem], style: FormTextItemStyle) {
         assert(selectableValues.count > 0)
         let preselectedValue = selectableValues.first(where: { $0.identifier == Locale.current.regionCode }) ?? selectableValues[0]
         super.init(preselectedValue: preselectedValue, selectableValues: selectableValues, style: style)

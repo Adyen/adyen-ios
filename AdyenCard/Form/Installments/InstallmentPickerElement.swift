@@ -8,12 +8,12 @@
 
 /// Type that combines month values and plan selections
 /// to be able to show in a picker item.
-internal struct InstallmentElement: CustomStringConvertible, Equatable {
+struct InstallmentElement: CustomStringConvertible, Equatable {
     
-    internal let kind: Kind
-    internal let localizationParameters: LocalizationParameters?
+    let kind: Kind
+    let localizationParameters: LocalizationParameters?
     
-    internal var description: String {
+    var description: String {
         switch kind {
         case let .plan(plan):
             return plan.title(with: localizationParameters)
@@ -26,7 +26,7 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
     /// Returns nil if the resulting installment does not fit the requirements.
     /// These rules are: month values > 1 for regular plan
     /// and month value = 1 for revolving plan
-    internal var installmentValue: Installments? {
+    var installmentValue: Installments? {
         switch kind {
         case let .plan(plan):
             if plan.installmentPlan == .revolving {
@@ -40,7 +40,7 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
     }
     
     /// Value to be represented in a BaseFormPickerItem
-    internal var pickerElement: InstallmentPickerElement {
+    var pickerElement: InstallmentPickerElement {
         switch kind {
         case let .plan(plan):
             return InstallmentPickerElement(identifier: plan.installmentPlan.rawValue, element: self)
@@ -49,18 +49,18 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
         }
     }
     
-    internal enum Kind {
+    enum Kind {
         case plan(PaymentPlan)
         case month(InstallmentMonth)
     }
     
     /// Custom type to represent plans in the picker
     /// Provides a conversion mechanism to the Installments model.
-    internal enum PaymentPlan: String {
+    enum PaymentPlan: String {
         case oneTime
         case revolving
         
-        internal func title(with localizationParameters: LocalizationParameters?) -> String {
+        func title(with localizationParameters: LocalizationParameters?) -> String {
             switch self {
             case .oneTime:
                 return localizedString(.cardInstallmentsOneTime, localizationParameters)
@@ -70,7 +70,7 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
         }
         
         /// Converts the picker representable plan to `Installments.Plan` model.
-        internal var installmentPlan: Installments.Plan {
+        var installmentPlan: Installments.Plan {
             switch self {
             case .oneTime:
                 return .regular
@@ -81,12 +81,12 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
     }
 
     /// Custom type to represent installment month values in a picker.
-    internal struct InstallmentMonth {
-        internal let monthValue: Int
-        internal let amount: Amount?
-        internal let showAmount: Bool
+    struct InstallmentMonth {
+        let monthValue: Int
+        let amount: Amount?
+        let showAmount: Bool
         
-        internal func title(with localizationParameters: LocalizationParameters?) -> String {
+        func title(with localizationParameters: LocalizationParameters?) -> String {
             var localizedText: String
             if showAmount,
                let amount = amount,
@@ -100,7 +100,7 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
         }
     }
     
-    internal static func == (lhs: InstallmentElement, rhs: InstallmentElement) -> Bool {
+    static func == (lhs: InstallmentElement, rhs: InstallmentElement) -> Bool {
         switch (lhs.kind, rhs.kind) {
         case let (.plan(lPlan), .plan(rPLan)):
             return lPlan == rPLan

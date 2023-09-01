@@ -6,9 +6,9 @@
 
 import UIKit
 
-internal class FormPickerItemView: FormSelectableValueItemView<FormPickerElement, FormPickerItem> {
+class FormPickerItemView: FormSelectableValueItemView<FormPickerElement, FormPickerItem> {
     
-    internal required init(item: FormPickerItem) {
+    required init(item: FormPickerItem) {
         super.init(item: item)
         item.selectionHandler = { [weak self] in
             
@@ -27,7 +27,7 @@ internal class FormPickerItemView: FormSelectableValueItemView<FormPickerElement
         }
     }
     
-    override internal func showValidation() {
+    override func showValidation() {
         if item.isValid() {
             updateValidationStatus(forced: false)
         } else {
@@ -35,7 +35,7 @@ internal class FormPickerItemView: FormSelectableValueItemView<FormPickerElement
         }
     }
     
-    override internal func reset() {
+    override func reset() {
         item.resetValue()
         resetValidationStatus()
     }

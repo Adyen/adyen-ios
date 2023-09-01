@@ -156,14 +156,14 @@ public struct PaymentMethods: Decodable {
         }
     }
     
-    internal enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case regular = "paymentMethods"
         case stored = "storedPaymentMethods"
     }
     
 }
 
-internal enum AnyPaymentMethod: Decodable {
+enum AnyPaymentMethod: Decodable {
     case storedInstant(StoredInstantPaymentMethod)
     case storedCard(StoredCardPaymentMethod)
     case storedPayPal(StoredPayPalPaymentMethod)
@@ -199,7 +199,7 @@ internal enum AnyPaymentMethod: Decodable {
     
     case none
     
-    internal var value: PaymentMethod? {
+    var value: PaymentMethod? {
         switch self {
         case let .storedCard(paymentMethod):
             return paymentMethod
@@ -270,11 +270,11 @@ internal enum AnyPaymentMethod: Decodable {
     
     // MARK: - Decoding
     
-    internal init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         self = AnyPaymentMethodDecoder.decode(from: decoder)
     }
     
-    internal enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case type
         case details
         case brand

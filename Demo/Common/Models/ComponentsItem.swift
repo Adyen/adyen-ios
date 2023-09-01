@@ -6,24 +6,24 @@
 
 import Foundation
 
-internal struct ComponentsItem: Hashable {
+struct ComponentsItem: Hashable {
 
-    internal let title: String
+    let title: String
     
-    internal var isApplePay: Bool { title == "Apple Pay" }
+    var isApplePay: Bool { title == "Apple Pay" }
     
-    internal let selectionHandler: () -> Void
+    let selectionHandler: () -> Void
     
-    internal init(title: String, selectionHandler: @escaping (() -> Void)) {
+    init(title: String, selectionHandler: @escaping (() -> Void)) {
         self.title = title
         self.selectionHandler = selectionHandler
     }
 
-    internal static func == (lhs: ComponentsItem, rhs: ComponentsItem) -> Bool {
+    static func == (lhs: ComponentsItem, rhs: ComponentsItem) -> Bool {
         lhs.title == rhs.title
     }
 
-    internal func hash(into hasher: inout Hasher) {
+    func hash(into hasher: inout Hasher) {
         hasher.combine(title)
     }
     

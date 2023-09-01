@@ -295,7 +295,7 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
 
 extension CardType {
     
-    internal var pattern: String? {
+    var pattern: String? {
         switch self { // NOSONAR
         case .alphaBankBonusMasterCard:
             return "^(510099)[0-9]{0,10}$"

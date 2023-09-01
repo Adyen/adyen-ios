@@ -202,7 +202,7 @@ public extension DropInComponent {
             self.billingAddress = billingAddress
         }
         
-        internal var cardComponentConfiguration: CardComponent.Configuration {
+        var cardComponentConfiguration: CardComponent.Configuration {
             CardComponent.Configuration(showsHolderNameField: showsHolderNameField,
                                         showsStorePaymentMethodField: showsStorePaymentMethodField,
                                         showsSecurityCodeField: showsSecurityCodeField,

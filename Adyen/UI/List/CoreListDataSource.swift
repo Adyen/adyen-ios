@@ -7,7 +7,7 @@
 import UIKit
 
 /// A `ListViewController` data source.
-internal protocol ListViewControllerDataSource: UITableViewDataSource {
+protocol ListViewControllerDataSource: UITableViewDataSource {
     
     /// All sections data.
     var sections: [ListSection] { get }
@@ -31,32 +31,32 @@ internal protocol ListViewControllerDataSource: UITableViewDataSource {
     func stopLoading(_ tableView: UITableView)
 }
 
-internal final class CoreListDataSource: NSObject, ListViewControllerDataSource {
+final class CoreListDataSource: NSObject, ListViewControllerDataSource {
     
-    internal var sections: [ListSection] = []
+    var sections: [ListSection] = []
     
-    internal let cellReuseIdentifier = "Cell"
+    let cellReuseIdentifier = "Cell"
     
     // MARK: - UITableViewDataSource
     
-    internal func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         sections.count
     }
     
-    internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         sections[section].items.count
     }
     
-    internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         cell(for: tableView, at: indexPath)
     }
     
-    internal func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         guard let header = sections[indexPath.section].header else { return false }
         return header.editingStyle != .none
     }
     
-    internal func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
         
         let item = sections[indexPath.section].items[indexPath.item]
@@ -73,7 +73,7 @@ internal final class CoreListDataSource: NSObject, ListViewControllerDataSource 
     
     // MARK: - ListViewControllerDataSource
     
-    internal func cell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
+    func cell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? ListCell else {
             return UITableViewCell()
         }
@@ -83,23 +83,23 @@ internal final class CoreListDataSource: NSObject, ListViewControllerDataSource 
         return cell
     }
     
-    internal func reload(newSections: [ListSection],
-                         tableView: UITableView,
-                         animated: Bool = false) {
+    func reload(newSections: [ListSection],
+                tableView: UITableView,
+                animated: Bool = false) {
         sections = newSections.filter { $0.items.isEmpty == false }
         tableView.reloadData()
     }
     
-    internal func deleteItem(at indexPath: IndexPath,
-                             tableView: UITableView,
-                             animated: Bool = true) {
+    func deleteItem(at indexPath: IndexPath,
+                    tableView: UITableView,
+                    animated: Bool = true) {
         sections.deleteItem(at: indexPath)
         tableView.reloadData()
     }
     
     // MARK: - Item Loading state
     
-    internal func startLoading(for item: ListItem, _ tableView: UITableView) {
+    func startLoading(for item: ListItem, _ tableView: UITableView) {
         if let cell = cell(for: item, tableView: tableView) {
             cell.showsActivityIndicator = true
         }
@@ -119,7 +119,7 @@ internal final class CoreListDataSource: NSObject, ListViewControllerDataSource 
         return nil
     }
     
-    internal func stopLoading(_ tableView: UITableView) {
+    func stopLoading(_ tableView: UITableView) {
         tableView.isUserInteractionEnabled = true
         
         for case let visibleCell as ListCell in tableView.visibleCells {

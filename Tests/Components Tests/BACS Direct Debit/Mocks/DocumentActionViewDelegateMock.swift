@@ -10,7 +10,7 @@
 @_spi(AdyenInternal) @testable import AdyenActions
 import Foundation
 
-internal final class DocumentActionViewDelegateMock: DocumentActionViewDelegate {
+final class DocumentActionViewDelegateMock: DocumentActionViewDelegate {
     var onDidComplete: (() -> Void)?
     
     func didComplete() {

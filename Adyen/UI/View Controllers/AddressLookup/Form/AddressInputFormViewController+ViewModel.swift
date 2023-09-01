@@ -13,12 +13,12 @@ extension AddressInputFormViewController {
     /// The view model for ``AddressInputFormViewController``
     public struct ViewModel {
         
-        internal let supportedCountryCodes: [String]?
-        internal let prefillAddress: PostalAddress?
-        internal let initialCountry: String
-        internal let style: FormComponentStyle
-        internal let addressViewModelBuilder: AddressViewModelBuilder
-        internal let localizationParameters: LocalizationParameters?
+        let supportedCountryCodes: [String]?
+        let prefillAddress: PostalAddress?
+        let initialCountry: String
+        let style: FormComponentStyle
+        let addressViewModelBuilder: AddressViewModelBuilder
+        let localizationParameters: LocalizationParameters?
         
         private let showSearchHandler: ShowSearchHandler?
         private let completionHandler: (PostalAddress?) -> Void
@@ -55,19 +55,19 @@ extension AddressInputFormViewController {
             self.completionHandler = completionHandler
         }
         
-        internal var shouldShowSearch: Bool {
+        var shouldShowSearch: Bool {
             showSearchHandler != nil
         }
         
-        internal func handleShowSearch(currentInput: PostalAddress) {
+        func handleShowSearch(currentInput: PostalAddress) {
             showSearchHandler?(currentInput)
         }
         
-        internal func handleSubmit(validAddress: PostalAddress) {
+        func handleSubmit(validAddress: PostalAddress) {
             completionHandler(validAddress)
         }
         
-        internal func handleDismiss() {
+        func handleDismiss() {
             completionHandler(nil)
         }
     }

@@ -9,29 +9,29 @@ import AdyenNetworking
 import Foundation
 import UIKit
 
-internal protocol AnyVoucherShareableViewProvider: Localizable {
+protocol AnyVoucherShareableViewProvider: Localizable {
 
     var style: VoucherComponentStyle { get }
     
     func provideView(with action: VoucherAction, logo: UIImage?) -> UIView
 }
 
-internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvider {
+final class VoucherShareableViewProvider: AnyVoucherShareableViewProvider {
 
-    internal let style: VoucherComponentStyle
+    let style: VoucherComponentStyle
 
-    internal var localizationParameters: LocalizationParameters?
+    var localizationParameters: LocalizationParameters?
     
     private var logo: UIImage?
     
     private let environment: AnyAPIEnvironment
 
-    internal init(style: VoucherComponentStyle, environment: AnyAPIEnvironment) {
+    init(style: VoucherComponentStyle, environment: AnyAPIEnvironment) {
         self.style = style
         self.environment = environment
     }
     
-    internal func provideView(with action: VoucherAction, logo: UIImage?) -> UIView {
+    func provideView(with action: VoucherAction, logo: UIImage?) -> UIView {
         self.logo = logo
         
         let view: ShareableVoucherView

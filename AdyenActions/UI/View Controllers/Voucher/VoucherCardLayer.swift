@@ -6,12 +6,12 @@
 
 import UIKit
 
-internal final class VoucherCardLayer: CAShapeLayer {
+final class VoucherCardLayer: CAShapeLayer {
 
     private var cardCornerRadius: CGFloat = 12
     private var cutoutRadius: CGFloat = 6
 
-    internal func drawCardCutOut(cutoutCenterY: CGFloat) {
+    func drawCardCutOut(cutoutCenterY: CGFloat) {
         let path = UIBezierPath()
         path.move(to: CGPoint(x: lineWidth, y: cardCornerRadius + lineWidth))
 

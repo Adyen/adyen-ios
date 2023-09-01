@@ -11,25 +11,25 @@ import AdyenNetworking
 #endif
 import Foundation
 
-internal struct CreateOrderRequest: APIRequest {
+struct CreateOrderRequest: APIRequest {
 
-    internal typealias ResponseType = CreateOrderResponse
+    typealias ResponseType = CreateOrderResponse
 
-    internal let amount: Amount
+    let amount: Amount
 
-    internal let reference: String
+    let reference: String
 
-    internal let path = "orders"
+    let path = "orders"
 
-    internal var counter: UInt = 0
+    var counter: UInt = 0
 
-    internal var method: HTTPMethod = .post
+    var method: HTTPMethod = .post
 
-    internal var headers: [String: String] = [:]
+    var headers: [String: String] = [:]
 
-    internal var queryParameters: [URLQueryItem] = []
+    var queryParameters: [URLQueryItem] = []
 
-    internal func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         let configurations = ConfigurationConstants.current
@@ -46,26 +46,26 @@ internal struct CreateOrderRequest: APIRequest {
     }
 }
 
-internal struct CreateOrderResponse: Response {
+struct CreateOrderResponse: Response {
 
-    internal enum ResultCode: String, Decodable {
+    enum ResultCode: String, Decodable {
         case failed = "Failed"
         case success = "Success"
     }
 
-    internal let resultCode: ResultCode
+    let resultCode: ResultCode
 
-    internal let pspReference: String
+    let pspReference: String
 
-    internal let reference: String
+    let reference: String
 
-    internal let remainingAmount: Amount
+    let remainingAmount: Amount
 
-    internal let expiresAt: String
+    let expiresAt: String
 
-    internal let orderData: String
+    let orderData: String
 
-    internal var order: PartialPaymentOrder {
+    var order: PartialPaymentOrder {
         PartialPaymentOrder(pspReference: pspReference, orderData: orderData, remainingAmount: remainingAmount)
     }
 }

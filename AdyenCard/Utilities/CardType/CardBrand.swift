@@ -11,7 +11,7 @@ import Foundation
 public struct CardBrand: Decodable {
     
     /// Indicates the requirement level of a field.
-    internal enum RequirementPolicy: String, Decodable {
+    enum RequirementPolicy: String, Decodable {
 
         /// Field is required.
         case required
@@ -30,19 +30,19 @@ public struct CardBrand: Decodable {
     public let isSupported: Bool
 
     /// Indicates the cvc policy of the brand.
-    internal let cvcPolicy: RequirementPolicy
+    let cvcPolicy: RequirementPolicy
     
     /// Indicates the expiry date policy of the brand.
-    internal let expiryDatePolicy: RequirementPolicy
+    let expiryDatePolicy: RequirementPolicy
 
     /// Indicates whether Luhn check applies to card numbers of this brand.
-    internal let isLuhnCheckEnabled: Bool
+    let isLuhnCheckEnabled: Bool
     
     /// Indicates whether to show social security number field or not.
-    internal let showsSocialSecurityNumber: Bool
+    let showsSocialSecurityNumber: Bool
     
     /// The length of the PAN of the card brand.
-    internal let panLength: Int?
+    let panLength: Int?
     
     private enum Constants {
         static let plccText = "plcc"
@@ -58,13 +58,13 @@ public struct CardBrand: Decodable {
     ///   - expiryDatePolicy: Indicates the expiry date policy of the brand.
     ///   - isLuhnCheckEnabled: Indicates whether Luhn check applies to card numbers of this brand.
     ///   - showsSocialSecurityNumber: Indicates whether to show social security number field or not.
-    internal init(type: CardType,
-                  isSupported: Bool = true,
-                  cvcPolicy: RequirementPolicy = .required,
-                  expiryDatePolicy: RequirementPolicy = .required,
-                  isLuhnCheckEnabled: Bool = true,
-                  showSocialSecurityNumber: Bool = false,
-                  panLength: Int? = nil) {
+    init(type: CardType,
+         isSupported: Bool = true,
+         cvcPolicy: RequirementPolicy = .required,
+         expiryDatePolicy: RequirementPolicy = .required,
+         isLuhnCheckEnabled: Bool = true,
+         showSocialSecurityNumber: Bool = false,
+         panLength: Int? = nil) {
         self.type = type
         self.isSupported = isSupported
         self.cvcPolicy = cvcPolicy
@@ -84,7 +84,7 @@ public struct CardBrand: Decodable {
         case panLength
     }
     
-    internal var isCVCOptional: Bool {
+    var isCVCOptional: Bool {
         switch cvcPolicy {
         case .optional, .hidden:
             return true
@@ -93,7 +93,7 @@ public struct CardBrand: Decodable {
         }
     }
     
-    internal var isExpiryDateOptional: Bool {
+    var isExpiryDateOptional: Bool {
         switch expiryDatePolicy {
         case .optional, .hidden:
             return true
@@ -103,7 +103,7 @@ public struct CardBrand: Decodable {
     }
     
     /// Determines if the brand is a private labeled card.
-    internal var isPrivateLabeled: Bool {
+    var isPrivateLabeled: Bool {
         type.rawValue.contains(Constants.plccText) || type.rawValue.contains(Constants.cbccText)
     }
 }

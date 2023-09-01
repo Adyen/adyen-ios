@@ -17,11 +17,11 @@ extension VoucherComponent: VoucherViewDelegate, DocumentActionViewDelegate {
         action.anyAction.reference.count < Self.maximumDisplayedCodeLength
     }
     
-    internal func didComplete() {
+    func didComplete() {
         delegate?.didComplete(from: self)
     }
     
-    internal func mainButtonTap(sourceView: UIView, action: VoucherAction) {
+    func mainButtonTap(sourceView: UIView, action: VoucherAction) {
         if let downloadable = action.anyAction as? Downloadable {
             mainButtonTap(sourceView: sourceView, downloadable: downloadable)
         } else {
@@ -29,11 +29,11 @@ extension VoucherComponent: VoucherViewDelegate, DocumentActionViewDelegate {
         }
     }
     
-    internal func mainButtonTap(sourceView: UIView, downloadable: Downloadable) {
+    func mainButtonTap(sourceView: UIView, downloadable: Downloadable) {
         presentSharePopover(with: downloadable.downloadUrl, sourceView: sourceView)
     }
     
-    internal func addToAppleWallet(action: VoucherAction, completion: @escaping () -> Void) {
+    func addToAppleWallet(action: VoucherAction, completion: @escaping () -> Void) {
         guard let passToken = action.anyAction.passCreationToken else { return }
         
         passProvider.provide(with: passToken) { [weak self] result in
@@ -41,7 +41,7 @@ extension VoucherComponent: VoucherViewDelegate, DocumentActionViewDelegate {
         }
     }
     
-    internal func secondaryButtonTap(sourceView: UIView, action: VoucherAction) {
+    func secondaryButtonTap(sourceView: UIView, action: VoucherAction) {
         presentOptionsAlert(sourceView: sourceView, action: action)
     }
     

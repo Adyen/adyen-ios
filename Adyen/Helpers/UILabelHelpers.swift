@@ -27,7 +27,7 @@ public extension AdyenScope where Base: UILabel {
     /// Applies given `TextStyle` to the UILabel
     /// Sets `adjustsFontForContentSizeCategory` to `true`
     /// - Parameter style: `TextStyle` to be applied
-    internal func apply(_ style: TextStyle) {
+    func apply(_ style: TextStyle) {
         base.font = style.font
         base.textColor = style.color
         base.textAlignment = style.textAlignment
