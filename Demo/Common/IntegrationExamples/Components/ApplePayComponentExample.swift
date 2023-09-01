@@ -76,8 +76,9 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         let applePayPayment = try ApplePayPayment(payment: ConfigurationConstants.current.payment,
                                                   brand: ConfigurationConstants.appName)
         var config = ApplePayComponent.Configuration(payment: applePayPayment,
-                                                     merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
-        config.allowOnboarding = true
+                                                     merchantIdentifier:
+                                                        ConfigurationConstants.current.applePayConfiguration.merchantIdentifier)
+        config.allowOnboarding = ConfigurationConstants.current.applePayConfiguration.allowOnboarding
         config.shippingType = .delivery
         config.requiredShippingContactFields = [.postalAddress]
         config.requiredBillingContactFields = [.postalAddress]
