@@ -18,13 +18,13 @@
         internal var errorDescription: String? {
             switch self {
             case let .registrationFailed(causeError):
-                if let causeError = causeError {
+                if let causeError {
                     return "Registration failure caused by error: { \(causeError.localizedDescription) }"
                 } else {
                     return "Registration failure."
                 }
             case let .authenticationFailed(causeError):
-                if let causeError = causeError {
+                if let causeError {
                     return "Authentication failure caused by error: { \(causeError.localizedDescription) }"
                 } else {
                     return "Authentication failure."
@@ -105,7 +105,7 @@
                 let token = try Coder.decodeBase64(fingerprintAction.fingerprintToken) as ThreeDS2Component.FingerprintToken
                 let fingerprintResult: ThreeDS2Component.Fingerprint = try Coder.decodeBase64(fingerprintResult)
                 performDelegatedAuthentication(token) { [weak self] result in
-                    guard let self = self else { return }
+                    guard let self else { return }
                     self.delegatedAuthenticationState.isDeviceRegistrationFlow = result.successResult == nil
                     guard let fingerprintResult = self.createFingerPrintResult(authenticationSDKOutput: result.successResult,
                                                                                fingerprintResult: fingerprintResult,
@@ -192,7 +192,7 @@
         
         internal func performDelegatedRegistration(_ sdkInput: String?,
                                                    completion: @escaping (Result<String, Error>) -> Void) {
-            guard let sdkInput = sdkInput else {
+            guard let sdkInput else {
                 completion(.failure(DelegateAuthenticationError.registrationFailed(cause: nil)))
                 return
             }

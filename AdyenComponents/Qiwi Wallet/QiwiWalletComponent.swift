@@ -42,7 +42,7 @@ public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
 
     @_spi(AdyenInternal)
     override public func createPaymentDetails() throws -> PaymentMethodDetails {
-        guard let phoneItem = phoneItem else {
+        guard let phoneItem else {
             throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
         return QiwiWalletDetails(paymentMethod: paymentMethod,

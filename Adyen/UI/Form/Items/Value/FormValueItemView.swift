@@ -118,14 +118,14 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
                                        delay: 0.0,
                                        options: [.curveEaseInOut],
                                        animations: { [weak self] in
-            guard let self = self else { return }
-            transitionView.frame = self.separatorView.frame
-        },
+                                           guard let self else { return }
+                                           transitionView.frame = self.separatorView.frame
+                                       },
                                        completion: { [weak self] _ in
-            guard let self = self else { return }
-            self.separatorView.backgroundColor = color
-            transitionView.removeFromSuperview()
-        })
+                                           guard let self else { return }
+                                           self.separatorView.backgroundColor = color
+                                           transitionView.removeFromSuperview()
+                                       })
         
         adyen.animate(context: context)
     }

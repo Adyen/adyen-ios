@@ -54,7 +54,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
         
         if showsSupportedCardLogos {
             observe(numberItem.$isActive) { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
                 // logo item should be visible when field is invalid after active state changes
                 self.supportedCardLogosItem.isHidden.wrappedValue = self.numberItem.isValid()
             }
