@@ -124,7 +124,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     /// - Parameters:
     ///   - item: The item to append.
     @_spi(AdyenInternal)
-    public func append<T: FormItem>(_ item: T) {
+    public func append(_ item: some FormItem) {
         let itemView = itemManager.append(item)
         observerVisibility(of: item, and: itemView)
         itemView.applyTextDelegateIfNeeded(delegate: self)
@@ -136,7 +136,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
         formView.appendItemView(itemView)
     }
 
-    private func observerVisibility<T: FormItem>(of item: T, and itemView: UIView) {
+    private func observerVisibility(of item: some FormItem, and itemView: UIView) {
         guard let item = item as? Hidable else { return }
         itemView.adyen.hide(animationKey: String(describing: itemView),
                             hidden: item.isHidden.wrappedValue, animated: false)
@@ -240,15 +240,15 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
 @_spi(AdyenInternal)
 extension FormViewController: FormTextItemViewDelegate {
 
-    public func didReachMaximumLength<T: FormTextItem>(in itemView: FormTextItemView<T>) {
+    public func didReachMaximumLength(in itemView: FormTextItemView<some FormTextItem>) {
         handleReturnKey(from: itemView)
     }
 
-    public func didSelectReturnKey<T: FormTextItem>(in itemView: FormTextItemView<T>) {
+    public func didSelectReturnKey(in itemView: FormTextItemView<some FormTextItem>) {
         handleReturnKey(from: itemView)
     }
 
-    private func handleReturnKey<T: FormTextItem>(from itemView: FormTextItemView<T>) {
+    private func handleReturnKey(from itemView: FormTextItemView<some FormTextItem>) {
         let itemViews = itemManager.flatItemViews
 
         // Determine the index of the current item view.
@@ -263,7 +263,7 @@ extension FormViewController: FormTextItemViewDelegate {
         let nextItemView = remainingItemViews.first { $0.canBecomeFirstResponder && $0.isHidden == false }
 
         // Assign the first responder, or resign the current one if there is none remaining.
-        if let nextItemView = nextItemView {
+        if let nextItemView {
             nextItemView.becomeFirstResponder()
         } else {
             itemView.resignFirstResponder()

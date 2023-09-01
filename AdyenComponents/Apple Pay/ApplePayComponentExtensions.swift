@@ -44,13 +44,13 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
                                                    didSelectShippingContact contact: PKContact,
                                                    handler completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void) {
-        guard let applePayDelegate = applePayDelegate else {
+        guard let applePayDelegate else {
             return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
         }
 
         applePayDelegate.didUpdate(contact: contact,
                                    for: applePayPayment) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             self.updateApplePayPayment(result)
             completion(result)
         }
@@ -59,13 +59,13 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
                                                    didSelect shippingMethod: PKShippingMethod,
                                                    handler completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void) {
-        guard let applePayDelegate = applePayDelegate else {
+        guard let applePayDelegate else {
             return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
         }
 
         applePayDelegate.didUpdate(shippingMethod: shippingMethod,
                                    for: applePayPayment) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             self.updateApplePayPayment(result)
             completion(result)
         }
@@ -75,19 +75,19 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
                                                    didChangeCouponCode couponCode: String,
                                                    handler completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void) {
-        guard let applePayDelegate = applePayDelegate else {
+        guard let applePayDelegate else {
             return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
         }
 
         applePayDelegate.didUpdate(couponCode: couponCode,
                                    for: applePayPayment) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             self.updateApplePayPayment(result)
             completion(result)
         }
     }
 
-    private func updateApplePayPayment<T: PKPaymentRequestUpdate>(_ result: T) {
+    private func updateApplePayPayment(_ result: some PKPaymentRequestUpdate) {
         if result.status == .success, result.paymentSummaryItems.count > 0 {
             do {
                 applePayPayment = try applePayPayment.replacing(summaryItems: result.paymentSummaryItems)

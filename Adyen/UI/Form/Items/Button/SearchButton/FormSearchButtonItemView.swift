@@ -37,7 +37,7 @@ internal final class FormSearchButtonItemView: FormItemView<FormSearchButtonItem
         )
     }()
     
-    internal override func becomeFirstResponder() -> Bool {
+    override internal func becomeFirstResponder() -> Bool {
         searchBar.becomeFirstResponder()
     }
 }

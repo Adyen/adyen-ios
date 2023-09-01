@@ -57,7 +57,7 @@ import SwiftUI
         }
 
         internal func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<FullScreenView>) {
-            if let viewController = viewController, viewController !== context.coordinator.currentlyPresentedViewController {
+            if let viewController, viewController !== context.coordinator.currentlyPresentedViewController {
                 dismissIfNeededThenPresent(viewController: viewController, presenter: uiViewController, context: context)
             } else if context.coordinator.currentlyPresentedViewController != nil, viewController == nil {
                 dismiss(presenter: uiViewController, context: context, completion: nil)

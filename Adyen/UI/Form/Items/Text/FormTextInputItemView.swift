@@ -18,7 +18,7 @@ public final class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
         super.init(item: item)
 
         observe(item.$isEnabled) { [weak self] isEnabled in
-            guard let self = self else { return }
+            guard let self else { return }
             self.textField.isEnabled = isEnabled
             if isEnabled {
                 self.updateValidationStatus()

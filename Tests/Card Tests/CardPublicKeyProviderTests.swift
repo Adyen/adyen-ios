@@ -1,5 +1,5 @@
 //
-//  PublicKeyProviderTests.swift
+//  CardPublicKeyProviderTests.swift
 //  AdyenTests
 //
 //  Created by Mohamed Eldoheiri on 8/17/20.

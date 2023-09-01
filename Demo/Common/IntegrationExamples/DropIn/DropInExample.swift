@@ -48,7 +48,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
 
     private func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
         requestAdyenSessionConfiguration { [weak self] response in
-            guard let self = self else { return }
+            guard let self else { return }
             
             switch response {
             case let .success(config):

@@ -17,7 +17,7 @@ import Foundation
         internal var onRegister: ((_: RegistrationInput) async throws -> RegistrationOutput)?
         
         internal func register(with input: RegistrationInput) async throws -> RegistrationOutput {
-            if let onRegister = onRegister {
+            if let onRegister {
                 return try await onRegister(input)
             } else {
                 // swiftlint:disable:next line_length
@@ -28,7 +28,7 @@ import Foundation
         internal var onAuthenticate: ((_: AuthenticationInput) async throws -> AuthenticationOutput)?
     
         internal func authenticate(with input: AuthenticationInput) async throws -> AuthenticationOutput {
-            if let onAuthenticate = onAuthenticate {
+            if let onAuthenticate {
                 return try await onAuthenticate(input)
             } else if isRegistration {
                 throw AdyenAuthenticationError.noStoredCredentialsMatch(nil)

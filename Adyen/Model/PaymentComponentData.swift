@@ -135,7 +135,7 @@ public struct PaymentComponentData {
 
     @_spi(AdyenInternal)
     public func replacing(checkoutAttemptId: String?) -> PaymentComponentData {
-        guard let checkoutAttemptId = checkoutAttemptId else { return self }
+        guard let checkoutAttemptId else { return self }
         var paymentMethod = paymentMethod
         paymentMethod.checkoutAttemptId = checkoutAttemptId
         return PaymentComponentData(paymentMethodDetails: paymentMethod,
