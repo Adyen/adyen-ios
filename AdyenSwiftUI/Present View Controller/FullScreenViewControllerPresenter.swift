@@ -69,6 +69,7 @@ import SwiftUI
                                                 context: UIViewControllerRepresentableContext<FullScreenView>) {
             if let presented = context.coordinator.currentlyPresentedViewController {
                 presented.dismiss(animated: true) {
+                    context.coordinator.currentlyPresentedViewController = nil
                     Self.present(viewController: viewController, presenter: presenter, context: context)
                 }
             } else {
