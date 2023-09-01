@@ -114,7 +114,7 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
                 postfix: listItem.title
             )
             listItem.selectionHandler = { [weak self, weak listItem] in
-                guard let self = self, let listItem = listItem else { return }
+                guard let self, let listItem else { return }
                 let details = IssuerListDetails(paymentMethod: self.issuerListPaymentMethod,
                                                 issuer: issuer.identifier)
                 self.submit(data: PaymentComponentData(paymentMethodDetails: details,

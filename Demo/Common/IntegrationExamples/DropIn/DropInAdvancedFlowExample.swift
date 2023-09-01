@@ -137,7 +137,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
 
     private func finalize(_ success: Bool, _ message: String) {
         dropInComponent?.finalizeIfNeeded(with: success) { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.dismissAndShowAlert(success, message)
         }
     }

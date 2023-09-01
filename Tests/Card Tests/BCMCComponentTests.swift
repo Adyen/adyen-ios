@@ -347,10 +347,11 @@ class BCMCComponentTests: XCTestCase {
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
         let delegateMock = CardComponentDelegateMock(
             onBINDidChange: { _ in },
-             onCardBrandChange: { _ in },
-             onSubmitLastFour: { _, finalBin in
-                 expectationBin.fulfill()
-             })
+            onCardBrandChange: { _ in },
+            onSubmitLastFour: { _, finalBin in
+                expectationBin.fulfill()
+            }
+        )
         
         sut.cardComponentDelegate = delegateMock
 
@@ -396,12 +397,13 @@ class BCMCComponentTests: XCTestCase {
                 if value == "67034444" {
                     expectationBin.fulfill()
                 }
-             },
-             onCardBrandChange: { _ in },
-             onSubmitLastFour: { _, finalBin in
-                 XCTAssertEqual(finalBin, "67034444")
-                 expectationBin.fulfill()
-             })
+            },
+            onCardBrandChange: { _ in },
+            onSubmitLastFour: { _, finalBin in
+                XCTAssertEqual(finalBin, "67034444")
+                expectationBin.fulfill()
+            }
+        )
         
         sut.cardComponentDelegate = delegateMock
 

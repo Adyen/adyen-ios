@@ -9,8 +9,8 @@ import AdyenNetworking
 import Foundation
 
 internal enum BinLookupRequestType: String, Codable {
-    case card = "card"
-    case bcmc = "bcmc"
+    case card
+    case bcmc
 }
 
 internal struct BinLookupRequest: APIRequest {

@@ -173,7 +173,7 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
     
     internal func createConsentText(with amount: Amount?) -> String {
         let localizedTitle: String
-        if let amount = amount {
+        if let amount {
             localizedTitle = localizedString(.bacsSpecifiedAmountConsentToggleTitle, localizationParameters, amount.formatted)
         } else {
             localizedTitle = localizedString(.bacsAmountConsentToggleTitle, localizationParameters)

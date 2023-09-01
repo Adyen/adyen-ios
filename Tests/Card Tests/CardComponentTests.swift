@@ -2136,7 +2136,7 @@ class CardComponentTests: XCTestCase {
 
     // MARK: - Private
 
-    private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {
+    private func focus(textItemView: some FormTextItemView<some FormTextItem>) {
         textItemView.textField.becomeFirstResponder()
     }
 

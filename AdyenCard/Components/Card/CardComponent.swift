@@ -119,7 +119,7 @@ public class CardComponent: PresentableComponent,
     // MARK: - Presentable Component Protocol
     
     public var viewController: UIViewController {
-        if let storedCardComponent = storedCardComponent {
+        if let storedCardComponent {
             return storedCardComponent.viewController
         }
         return securedViewController

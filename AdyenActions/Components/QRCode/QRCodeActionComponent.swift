@@ -97,7 +97,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
         let viewController = createViewController(with: action)
         setUpPresenterViewController(parentViewController: viewController)
         
-        if let presentationDelegate = presentationDelegate {
+        if let presentationDelegate {
             renderExpirationLabelAndStartTimer(action)
             
             startPolling(action)

@@ -38,7 +38,7 @@ public extension PaymentMethod {
     
     func displayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let defaultDisplayInformation = defaultDisplayInformation(using: parameters)
-        if let merchantProvidedDisplayInformation = merchantProvidedDisplayInformation {
+        if let merchantProvidedDisplayInformation {
             let subtitle = merchantProvidedDisplayInformation.subtitle ?? defaultDisplayInformation.subtitle
             return DisplayInformation(title: merchantProvidedDisplayInformation.title,
                                       subtitle: subtitle,

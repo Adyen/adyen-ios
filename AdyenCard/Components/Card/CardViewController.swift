@@ -299,7 +299,7 @@ internal class CardViewController: FormViewController {
     }
 
     private func prefill() {
-        guard let shopperInformation = shopperInformation else { return }
+        guard let shopperInformation else { return }
 
         shopperInformation.billingAddress.map { billingAddress in
             items.billingAddressPickerItem.value = billingAddress
@@ -339,7 +339,7 @@ internal class CardViewController: FormViewController {
     }
     
     private func shouldHideSocialSecurityItem(with brand: CardBrand?) -> Bool {
-        guard let brand = brand else { return true }
+        guard let brand else { return true }
         switch configuration.socialSecurityNumberMode {
         case .show:
             return false
