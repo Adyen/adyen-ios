@@ -54,7 +54,7 @@ public final class CopyLabelView: UIView, Localizable {
     }
 
     @objc private func handleTap() {
-        guard let superview = superview else { return }
+        guard let superview else { return }
         becomeFirstResponder()
         let menuController = UIMenuController.shared
         let copyItem = UIMenuItem(title: localizedString(.buttonCopy, localizationParameters), action: #selector(handleCopy))

@@ -149,7 +149,7 @@ extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
     /// :nodoc:
     public func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?) {
         let newRoot = preselectedPaymentMethodComponent(for: component, onCancel: { [weak self] in
-            guard let order = order else { return }
+            guard let order else { return }
             self?.partialPaymentDelegate?.cancelOrder(order)
         })
         navigationController.present(root: newRoot)

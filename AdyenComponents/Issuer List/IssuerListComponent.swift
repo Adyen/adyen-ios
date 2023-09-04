@@ -66,7 +66,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
                                                         paymentMethod: issuerListPaymentMethod,
                                                         environment: apiContext.environment)
             listItem.selectionHandler = { [weak self] in
-                guard let self = self else { return }
+                guard let self else { return }
                 
                 let details = IssuerListDetails(paymentMethod: self.issuerListPaymentMethod,
                                                 issuer: issuer.identifier)

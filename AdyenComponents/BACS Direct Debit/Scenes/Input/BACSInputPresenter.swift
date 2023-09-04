@@ -116,7 +116,7 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
     }
 
     private func restoreFields() {
-        guard let data = data else { return }
+        guard let data else { return }
         holderNameItem?.value = data.holderName
         bankAccountNumberItem?.value = data.bankAccountNumber
         sortCodeItem?.value = data.bankLocationId

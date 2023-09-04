@@ -22,12 +22,12 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
     private let localizationParameters: LocalizationParameters?
    
     internal lazy var subitems: [FormItem] = {
-            var subItems: [FormItem] = [numberItem]
-            if showsSupportedCardLogos {
-                subItems.append(supportedCardLogosItem)
-            }
-            return subItems
-        }()
+        var subItems: [FormItem] = [numberItem]
+        if showsSupportedCardLogos {
+            subItems.append(supportedCardLogosItem)
+        }
+        return subItems
+    }()
     
     internal lazy var numberItem: FormCardNumberItem = {
         let item = FormCardNumberItem(cardTypeLogos: cardTypeLogos,
@@ -54,7 +54,7 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
         
         if showsSupportedCardLogos {
             observe(numberItem.$isActive) { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
                 // logo item should be visible when field is invalid after active state changes
                 self.supportedCardLogosItem.isHidden.wrappedValue = self.numberItem.isValid()
             }

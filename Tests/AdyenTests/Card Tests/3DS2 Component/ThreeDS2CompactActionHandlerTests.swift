@@ -146,11 +146,11 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         sut.handle(challengeAction) { result in
             switch result {
-            case .success(let actionHandlerResult):
+            case let .success(actionHandlerResult):
                 switch actionHandlerResult {
-                case .details(let additionalDetails as ThreeDS2Details):
+                case let .details(additionalDetails as ThreeDS2Details):
                     switch additionalDetails {
-                    case .completed(let threeDSResult):
+                    case let .completed(threeDSResult):
                         struct Payload: Codable {
                             let threeDS2SDKError: String
                             let transStatus: String?

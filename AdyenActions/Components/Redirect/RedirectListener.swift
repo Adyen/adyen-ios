@@ -33,7 +33,7 @@ public enum RedirectListener {
     /// - Parameter url: The URL through which the application was opened.
     /// - Returns: A boolean value indicating whether the URL was handled by the RedirectListener.
     internal static func applicationDidOpen(from url: URL) -> Bool {
-        guard let urlHandler = urlHandler else {
+        guard let urlHandler else {
             return false
         }
         

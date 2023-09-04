@@ -31,7 +31,7 @@ public extension AdyenScope where Base == String? {
     
     /// Returns nil string is empty or actual value.
     var nilIfEmpty: String? {
-        guard let base = base else { return nil }
+        guard let base else { return nil }
         return base.isEmpty ? nil : base
     }
 

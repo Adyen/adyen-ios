@@ -17,7 +17,7 @@ open class NetworkImageView: UIImageView {
             image = placeholderImage
             
             // Only load an image when we're in a window.
-            if let imageURL = imageURL, window != nil {
+            if let imageURL, window != nil {
                 loadImage(from: imageURL)
             }
         }
@@ -31,7 +31,7 @@ open class NetworkImageView: UIImageView {
         super.didMoveToWindow()
         
         // If we have an image URL and are embedded in a window, load the image if we aren't already.
-        if let imageURL = imageURL, window != nil, dataTask == nil {
+        if let imageURL, window != nil, dataTask == nil {
             loadImage(from: imageURL)
         }
     }
@@ -45,7 +45,7 @@ open class NetworkImageView: UIImageView {
         let task = session.dataTask(with: url) { data, response, error in
             guard
                 let response = response as? HTTPURLResponse, response.statusCode == 200,
-                let data = data, error == nil,
+                let data, error == nil,
                 let image = UIImage(data: data, scale: 1.0)
             else {
                 return
