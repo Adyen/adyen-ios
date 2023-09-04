@@ -82,7 +82,7 @@ import Foundation
 
         /// :nodoc:
         public func onResp(_ resp: BaseResp) {
-            guard let currentlyHandledAction = currentlyHandledAction else {
+            guard let currentlyHandledAction else {
                 return AdyenAssertion.assertionFailure(message: "no WeChatPaySDKAction were handled")
             }
             let additionalData = WeChatPayAdditionalDetails(resultCode: String(resp.errCode))

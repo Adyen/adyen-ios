@@ -38,11 +38,11 @@ open class LengthValidator: Validator {
     open func isValid(_ value: String) -> Bool {
         let length = value.count
         
-        if let minimumLength = minimumLength, length < minimumLength {
+        if let minimumLength, length < minimumLength {
             return false
         }
         
-        if let maximumLength = maximumLength, length > maximumLength {
+        if let maximumLength, length > maximumLength {
             return false
         }
         

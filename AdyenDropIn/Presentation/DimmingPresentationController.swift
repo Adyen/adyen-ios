@@ -37,7 +37,7 @@ internal final class DimmingPresentationController: UIPresentationController {
     }
     
     override internal var frameOfPresentedViewInContainerView: CGRect {
-        guard let containerView = containerView else { return super.frameOfPresentedViewInContainerView }
+        guard let containerView else { return super.frameOfPresentedViewInContainerView }
         return containerView.frame
     }
     
@@ -45,7 +45,7 @@ internal final class DimmingPresentationController: UIPresentationController {
     override internal func presentationTransitionWillBegin() {
         super.presentationTransitionWillBegin()
         
-        guard let containerView = containerView else { return }
+        guard let containerView else { return }
         attachDimmigView(to: containerView)
         
         presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in

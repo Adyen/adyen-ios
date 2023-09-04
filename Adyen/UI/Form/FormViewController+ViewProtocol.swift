@@ -17,8 +17,8 @@ public protocol FormViewProtocol {
 /// :nodoc:
 extension FormViewController: FormViewProtocol {
     /// :nodoc:
-    public func add<T: FormItem>(item: T?) {
-        guard let item = item else { return }
+    public func add(item: (some FormItem)?) {
+        guard let item else { return }
         append(item)
     }
 

@@ -21,7 +21,7 @@ final class AnyADYServiceMock: AnyADYService {
     var mockedTransaction: AnyADYTransaction?
 
     func transaction(withMessageVersion: String) throws -> AnyADYTransaction {
-        if let mockedTransaction = mockedTransaction {
+        if let mockedTransaction {
             return mockedTransaction
         } else if let parameters = authenticationRequestParameters {
             return AnyADYTransactionMock(parameters: parameters)

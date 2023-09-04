@@ -38,9 +38,9 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
     }
 
     override public func createPaymentDetails() -> PaymentMethodDetails {
-        guard let firstNameItem = firstNameItem,
-              let lastNameItem = lastNameItem,
-              let emailItem = emailItem else {
+        guard let firstNameItem,
+              let lastNameItem,
+              let emailItem else {
             fatalError("There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
         return DokuDetails(paymentMethod: paymentMethod,

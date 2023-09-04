@@ -61,7 +61,7 @@ public extension AnyFormItemView {
     
     /// The embedding item view of the current item view.
     var parentItemView: AnyFormItemView? {
-        guard let superview = superview else { return nil }
+        guard let superview else { return nil }
         let superviews = sequence(first: superview, next: { $0.superview })
         
         return superviews.first { $0 is AnyFormItemView } as? AnyFormItemView

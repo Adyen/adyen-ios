@@ -69,11 +69,11 @@ internal struct JSONWebEncryption {
         self.encryptedPayload = encryptedPayload
         self.initializationVector = initializationVector
         self.authenticationTag = authenticationTag
-        self.compactRepresentation = [try JSONEncoder().encode(header).base64URLString(),
-                                      encryptedKey.base64URLString(),
-                                      initializationVector.base64URLString(),
-                                      encryptedPayload.base64URLString(),
-                                      authenticationTag.base64URLString()].joined(separator: ".")
+        self.compactRepresentation = try [JSONEncoder().encode(header).base64URLString(),
+                                          encryptedKey.base64URLString(),
+                                          initializationVector.base64URLString(),
+                                          encryptedPayload.base64URLString(),
+                                          authenticationTag.base64URLString()].joined(separator: ".")
     }
 
 }

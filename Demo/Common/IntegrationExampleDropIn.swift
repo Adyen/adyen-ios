@@ -16,7 +16,7 @@ extension IntegrationExample {
     // MARK: - DropIn Component
 
     internal func presentDropInComponent() {
-        guard let paymentMethods = paymentMethods else { return }
+        guard let paymentMethods else { return }
         let configuration = DropInComponent.Configuration(apiContext: apiContext)
         configuration.applePay = .init(summaryItems: ConfigurationConstants.applePaySummaryItems,
                                        merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)

@@ -26,7 +26,7 @@ public enum Action: Decodable {
     case threeDS2(ThreeDS2Action)
     
     /// Indicate that the SDK should wait for user action.
-    case await(AwaitAction)
+    case await (AwaitAction)
 
     /// Indicates that a voucher is presented to the shopper.
     case voucher(VoucherAction)

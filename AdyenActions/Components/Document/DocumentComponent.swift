@@ -63,7 +63,7 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
         
         setUpPresenterViewController(parentViewController: viewController)
 
-        if let presentationDelegate = presentationDelegate {
+        if let presentationDelegate {
             let presentableComponent = PresentableComponentWrapper(component: self,
                                                                    viewController: viewController, navBarType: navBarType())
             presentationDelegate.present(component: presentableComponent)
@@ -96,7 +96,7 @@ extension DocumentComponent: ActionViewDelegate {
     }
     
     internal func mainButtonTap(sourceView: UIView) {
-        guard let action = action else { return }
+        guard let action else { return }
         presentSharePopover(with: action.downloadUrl, sourceView: sourceView)
     }
 }

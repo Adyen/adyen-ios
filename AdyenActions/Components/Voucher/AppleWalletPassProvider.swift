@@ -32,7 +32,7 @@ internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
     /// :nodoc:
     internal init(apiContext: APIContext, apiClient: AnyRetryAPIClient? = nil) {
         self.apiContext = apiContext
-        if let apiClient = apiClient {
+        if let apiClient {
             self.retryApiClient = apiClient
         } else {
             let scheduler = SimpleScheduler(maximumCount: 2)

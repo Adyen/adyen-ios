@@ -70,7 +70,7 @@ internal func createSecKey(fromModulus modulus: String, exponent: String) throws
                                              kSecAttrKeyClass: kSecAttrKeyClassPublic
                                          ] as NSDictionary,
                                          &error)
-    if let error = error {
+    if let error {
         throw EncryptionError.other(error.takeRetainedValue())
     }
     
