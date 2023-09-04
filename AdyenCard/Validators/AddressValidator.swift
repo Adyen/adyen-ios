@@ -7,9 +7,9 @@
 import Foundation
 
 /// Validates a card's address field.
-internal class AddressValidator {
+class AddressValidator {
 
-    internal func isValid(address: PostalAddress?, addressMode: CardComponent.AddressFormType, addressViewModel: AddressViewModel) -> Bool {
+    func isValid(address: PostalAddress?, addressMode: CardComponent.AddressFormType, addressViewModel: AddressViewModel) -> Bool {
 
         let fieldsValues: [String: String?]
         let allAddressFieldsInScheme: [AddressField] = addressViewModel.schema.flatMap(\.children)

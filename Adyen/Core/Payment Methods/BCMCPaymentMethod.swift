@@ -26,7 +26,7 @@ public struct BCMCPaymentMethod: AnyCardPaymentMethod {
     private let cardPaymentMethod: CardPaymentMethod
     
     /// :nodoc:
-    internal init(cardPaymentMethod: CardPaymentMethod) {
+    init(cardPaymentMethod: CardPaymentMethod) {
         self.cardPaymentMethod = cardPaymentMethod
     }
     

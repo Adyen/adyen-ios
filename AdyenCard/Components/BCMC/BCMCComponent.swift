@@ -32,20 +32,20 @@ public final class BCMCComponent: CardComponent {
                    binProvider: binInfoProvider)
     }
     
-    override internal init(paymentMethod: AnyCardPaymentMethod,
-                           apiContext: APIContext,
-                           configuration: CardComponent.Configuration = CardComponent.Configuration(),
-                           shopperInformation: PrefilledShopperInformation? = nil,
-                           style: FormComponentStyle = .init(),
-                           publicKeyProvider: AnyPublicKeyProvider,
-                           binProvider: AnyBinInfoProvider) {
-           let configuration = configuration.bcmcConfiguration()
-           super.init(paymentMethod: paymentMethod,
-                      apiContext: apiContext,
-                      configuration: configuration,
-                      shopperInformation: shopperInformation,
-                      style: style,
-                      publicKeyProvider: publicKeyProvider,
-                      binProvider: binProvider)
-       }
+    override init(paymentMethod: AnyCardPaymentMethod,
+                  apiContext: APIContext,
+                  configuration: CardComponent.Configuration = CardComponent.Configuration(),
+                  shopperInformation: PrefilledShopperInformation? = nil,
+                  style: FormComponentStyle = .init(),
+                  publicKeyProvider: AnyPublicKeyProvider,
+                  binProvider: AnyBinInfoProvider) {
+        let configuration = configuration.bcmcConfiguration()
+        super.init(paymentMethod: paymentMethod,
+                   apiContext: apiContext,
+                   configuration: configuration,
+                   shopperInformation: shopperInformation,
+                   style: style,
+                   publicKeyProvider: publicKeyProvider,
+                   binProvider: binProvider)
+    }
 }

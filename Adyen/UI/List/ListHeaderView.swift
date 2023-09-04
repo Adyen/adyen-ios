@@ -6,13 +6,13 @@
 
 import UIKit
 
-internal final class ListHeaderView: UITableViewHeaderFooterView {
+final class ListHeaderView: UITableViewHeaderFooterView {
     
-    internal static let reuseIdentifier = String(describing: ListHeaderView.self)
+    static let reuseIdentifier = String(describing: ListHeaderView.self)
     
-    internal var onTrailingButtonTap: (() -> Void)?
+    var onTrailingButtonTap: (() -> Void)?
     
-    override internal init(reuseIdentifier: String?) {
+    override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
 
         contentView.addSubview(stackView)
@@ -24,11 +24,11 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
     }
     
     @available(*, unavailable)
-    internal required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    internal var headerItem: ListSectionHeader? {
+    var headerItem: ListSectionHeader? {
         didSet {
             updateItem()
         }
@@ -48,7 +48,7 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
         updateTrailingButtonTitle(with: item)
     }
     
-    internal var isEditing: Bool = false {
+    var isEditing: Bool = false {
         didSet {
             updateTrailingButtonTitle(with: headerItem)
         }
@@ -88,7 +88,7 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
     
     // MARK: - Trailing Button
     
-    internal lazy var trailingButton: UIButton = {
+    lazy var trailingButton: UIButton = {
         let button = UIButton()
         button.addTarget(self, action: #selector(didTapTrailingButton), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "trailingButton")

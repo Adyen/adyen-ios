@@ -34,23 +34,23 @@ public enum FormScheme {
     case split(AddressField, AddressField)
 }
 
-internal struct AddressViewModelBuilderContext {
-    internal var countryCode: String
-    internal var isOptional: Bool
+struct AddressViewModelBuilderContext {
+    var countryCode: String
+    var isOptional: Bool
 }
 
 /// :nodoc:
 public struct AddressViewModel {
 
-    internal var labels: [AddressField: LocalizationKey]
-    internal var placeholder: [AddressField: LocalizationKey]
+    var labels: [AddressField: LocalizationKey]
+    var placeholder: [AddressField: LocalizationKey]
     /// :nodoc:
     public private(set) var optionalFields: [AddressField]
     /// :nodoc:
     public private(set) var schema: [FormScheme]
 
     // swiftlint:disable function_body_length explicit_acl
-    internal static subscript(context: AddressViewModelBuilderContext) -> AddressViewModel {
+    static subscript(context: AddressViewModelBuilderContext) -> AddressViewModel {
         var viewModel = AddressViewModel(labels: [.city: .cityFieldTitle,
                                                   .houseNumberOrName: .houseNumberFieldTitle,
                                                   .street: .streetFieldTitle,
@@ -107,7 +107,7 @@ public struct AddressViewModel {
 
 extension AddressField {
 
-    internal var contentType: UITextContentType? {
+    var contentType: UITextContentType? {
         switch self {
         case .street:
             return .streetAddressLine1

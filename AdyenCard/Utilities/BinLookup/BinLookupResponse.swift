@@ -9,25 +9,25 @@ import AdyenNetworking
 import Foundation
 
 /// :nodoc:
-internal struct BinLookupResponse: Response {
+struct BinLookupResponse: Response {
 
     /// :nodoc:
-    internal var brands: [CardBrand]?
+    var brands: [CardBrand]?
 
     /// :nodoc:
-    internal let requestId: String
+    let requestId: String
 
     /// :nodoc:
-    internal let issuingCountryCode: String?
+    let issuingCountryCode: String?
 
     /// :nodoc:
-    internal var isCreatedLocally: Bool = false
+    var isCreatedLocally: Bool = false
     
     /// :nodoc:
-    internal init(brands: [CardBrand]? = nil,
-                  requestId: String = UUID().uuidString,
-                  issuingCountryCode: String? = "NL",
-                  isCreatedLocally: Bool = true) {
+    init(brands: [CardBrand]? = nil,
+         requestId: String = UUID().uuidString,
+         issuingCountryCode: String? = "NL",
+         isCreatedLocally: Bool = true) {
         self.brands = brands
         self.requestId = requestId
         self.issuingCountryCode = issuingCountryCode

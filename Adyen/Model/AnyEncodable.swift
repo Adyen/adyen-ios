@@ -39,7 +39,7 @@ public struct AnyEncodable: Encodable {
     
     private let value: Encodable
 
-    internal init(value: Encodable) {
+    init(value: Encodable) {
         self.value = value
     }
     

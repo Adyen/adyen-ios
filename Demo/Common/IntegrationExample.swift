@@ -12,7 +12,7 @@ import AdyenDropIn
 import AdyenNetworking
 import UIKit
 
-internal protocol Presenter: AnyObject {
+protocol Presenter: AnyObject {
 
     func present(viewController: UIViewController, completion: (() -> Void)?)
 
@@ -23,35 +23,35 @@ internal protocol Presenter: AnyObject {
     func presentAlert(with error: Error, retryHandler: (() -> Void)?)
 }
 
-internal final class IntegrationExample: APIClientAware {
+final class IntegrationExample: APIClientAware {
     
-    internal var payment: Payment { ConfigurationConstants.current.payment }
+    var payment: Payment { ConfigurationConstants.current.payment }
 
-    internal var paymentMethods: PaymentMethods?
-    internal var currentComponent: PresentableComponent?
+    var paymentMethods: PaymentMethods?
+    var currentComponent: PresentableComponent?
 
-    internal weak var presenter: Presenter?
+    weak var presenter: Presenter?
     
-    internal lazy var palApiClient: APIClientProtocol = {
+    lazy var palApiClient: APIClientProtocol = {
         let context = DemoAPIContext(environment: ConfigurationConstants.classicAPIEnvironment)
         return DefaultAPIClient(apiContext: context)
     }()
 
-    internal var clientKey: String {
+    var clientKey: String {
         if CommandLine.arguments.contains("-UITests") {
             return "local_DUMMYKEYFORTESTING"
         }
         return ConfigurationConstants.clientKey
     }
     
-    internal lazy var apiContext = APIContext(
+    lazy var apiContext = APIContext(
         environment: ConfigurationConstants.componentsEnvironment,
         clientKey: clientKey
     )
 
     // MARK: - Action Handling for Components
 
-    internal lazy var actionComponent: AdyenActionComponent = {
+    lazy var actionComponent: AdyenActionComponent = {
         let handler = AdyenActionComponent(apiContext: apiContext)
         handler.delegate = self
         handler.presentationDelegate = self
@@ -60,8 +60,8 @@ internal final class IntegrationExample: APIClientAware {
 
     // MARK: - Networking
 
-    internal func requestPaymentMethods(order: PartialPaymentOrder? = nil,
-                                        completion: ((PaymentMethods) -> Void)? = nil) {
+    func requestPaymentMethods(order: PartialPaymentOrder? = nil,
+                               completion: ((PaymentMethods) -> Void)? = nil) {
         let request = PaymentMethodsRequest(order: order)
         apiClient.perform(request) { [weak self] result in
             guard let self = self else { return }
@@ -77,7 +77,7 @@ internal final class IntegrationExample: APIClientAware {
         }
     }
 
-    internal func finish(with resultCode: PaymentsResponse.ResultCode) {
+    func finish(with resultCode: PaymentsResponse.ResultCode) {
         let success = resultCode == .authorised || resultCode == .received || resultCode == .pending
         currentComponent?.finalizeIfNeeded(with: success) { [weak self] in
             self?.presenter?.dismiss { [weak self] in
@@ -87,7 +87,7 @@ internal final class IntegrationExample: APIClientAware {
         }
     }
 
-    internal func finish(with error: Error) {
+    func finish(with error: Error) {
         currentComponent?.finalizeIfNeeded(with: false, completion: { [weak self] in
             self?.presenter?.dismiss { [weak self] in
                 // Payment is unsuccessful. Add your code here.
@@ -100,15 +100,15 @@ internal final class IntegrationExample: APIClientAware {
         })
     }
 
-    internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
+    func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         presenter?.presentAlert(with: error, retryHandler: retryHandler)
     }
 
-    internal func presentAlert(withTitle title: String) {
+    func presentAlert(withTitle title: String) {
         presenter?.presentAlert(withTitle: title)
     }
 
     // MARK: - BACS Direct Debit Component
 
-    internal var bacsDirectDebitPresenter: BACSDirectDebitPresentationDelegate?
+    var bacsDirectDebitPresenter: BACSDirectDebitPresentationDelegate?
 }

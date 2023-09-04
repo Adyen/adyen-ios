@@ -76,10 +76,10 @@ extension CardComponent {
         public var billingAddressRequirementPolicy: RequirementPolicy = .required
         
         /// Indicates whether or not to show the supported card logos under the card number item
-        internal var showsSupportedCardLogos: Bool = true
+        var showsSupportedCardLogos: Bool = true
         
         /// The type used for the bin lookup
-        internal var binLookupType: BinLookupRequestType = .card
+        var binLookupType: BinLookupRequestType = .card
         
         /// Indicates the requirement level of a field.
         public enum RequirementPolicy {
@@ -95,7 +95,7 @@ extension CardComponent {
         }
         
         /// :nodoc:
-        internal func isBillingAddressOptional(for cardTypes: [CardType]) -> Bool {
+        func isBillingAddressOptional(for cardTypes: [CardType]) -> Bool {
             switch billingAddressRequirementPolicy {
             case .required:
                 return false
@@ -148,7 +148,7 @@ extension CardComponent {
             self.billingAddressRequirementPolicy = billingAddressRequirementPolicy
         }
 
-        internal func bcmcConfiguration() -> Configuration {
+        func bcmcConfiguration() -> Configuration {
             var configuration = Configuration(showsHolderNameField: showsHolderNameField,
                                               showsStorePaymentMethodField: showsStorePaymentMethodField,
                                               billingAddressMode: .none,
@@ -158,7 +158,7 @@ extension CardComponent {
             return configuration
         }
 
-        internal func showAdditionalAuthenticationFields(for issuingCountryCode: String?) -> Bool {
+        func showAdditionalAuthenticationFields(for issuingCountryCode: String?) -> Bool {
             koreanAuthenticationMode != .hide && issuingCountryCode == "KR"
         }
     }

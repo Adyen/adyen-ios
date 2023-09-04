@@ -7,7 +7,7 @@
 import Adyen3DS2
 import Foundation
 
-internal extension ThreeDS2Component {
+extension ThreeDS2Component {
     
     struct Fingerprint: Encodable { // swiftlint:disable:this explicit_acl
         
@@ -16,9 +16,9 @@ internal extension ThreeDS2Component {
         private let sdkReferenceNumber: String?
         private let sdkApplicationIdentifier: String?
         private let sdkTransactionIdentifier: String?
-        internal let threeDS2SDKError: String?
+        let threeDS2SDKError: String?
 
-        internal init(authenticationRequestParameters: AnyAuthenticationRequestParameters) throws {
+        init(authenticationRequestParameters: AnyAuthenticationRequestParameters) throws {
             let sdkEphemeralPublicKeyData = Data(authenticationRequestParameters.sdkEphemeralPublicKey.utf8)
             let sdkEphemeralPublicKey = try JSONDecoder().decode(EphemeralPublicKey.self, from: sdkEphemeralPublicKeyData)
             
@@ -30,7 +30,7 @@ internal extension ThreeDS2Component {
             self.threeDS2SDKError = nil
         }
         
-        internal init(threeDS2SDKError: String) {
+        init(threeDS2SDKError: String) {
             self.threeDS2SDKError = threeDS2SDKError
             
             self.deviceInformation = nil
@@ -55,7 +55,7 @@ internal extension ThreeDS2Component {
 
 extension ThreeDS2Component.Fingerprint {
     
-    internal struct EphemeralPublicKey: Codable {
+    struct EphemeralPublicKey: Codable {
         
         private let keyType: String
         private let curve: String

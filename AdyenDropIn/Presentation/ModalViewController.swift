@@ -9,13 +9,13 @@ import UIKit
 
 /// View controller with a custom navigation bar for DropIn.
 
-internal final class ModalViewController: UIViewController {
+final class ModalViewController: UIViewController {
     
-    internal let style: NavigationStyle
+    let style: NavigationStyle
 
     private let innerController: UIViewController
 
-    internal weak var delegate: ViewControllerDelegate?
+    weak var delegate: ViewControllerDelegate?
 
     private let navigationBarHeight: CGFloat = 63.0
     
@@ -29,10 +29,10 @@ internal final class ModalViewController: UIViewController {
     /// - Parameter style: The navigation level UI style.
     /// - Parameter navBarType: The type of the navigation bar.
     /// - Parameter cancelButtonHandler: An optional callback for the cancel button.
-    internal init(rootViewController: UIViewController,
-                  style: NavigationStyle = NavigationStyle(),
-                  navBarType: NavigationBarType,
-                  cancelButtonHandler: ((Bool) -> Void)? = nil) {
+    init(rootViewController: UIViewController,
+         style: NavigationStyle = NavigationStyle(),
+         navBarType: NavigationBarType,
+         cancelButtonHandler: ((Bool) -> Void)? = nil) {
         self.innerController = rootViewController
         self.navBarType = navBarType
         self.style = style
@@ -48,10 +48,10 @@ internal final class ModalViewController: UIViewController {
     }
     
     /// :nodoc:
-    internal var isRoot: Bool = false
+    var isRoot: Bool = false
     
     /// :nodoc:
-    internal var cancelButtonHandler: ((Bool) -> Void)?
+    var cancelButtonHandler: ((Bool) -> Void)?
     
     // MARK: - UIViewController
     
@@ -70,7 +70,7 @@ internal final class ModalViewController: UIViewController {
         arrangeConstraints()
     }
     
-    override internal var preferredContentSize: CGSize {
+    override var preferredContentSize: CGSize {
         get {
             guard innerController.isViewLoaded else { return .zero }
             let innerSize = innerController.preferredContentSize
@@ -95,7 +95,7 @@ internal final class ModalViewController: UIViewController {
     
     // MARK: - View elements
     
-    internal lazy var separator: UIView = {
+    lazy var separator: UIView = {
         let separator = UIView(frame: .zero)
         separator.backgroundColor = getSeparatorColor()
         return separator
@@ -110,7 +110,7 @@ internal final class ModalViewController: UIViewController {
         }
     }
     
-    internal lazy var navBar: UIView = {
+    lazy var navBar: UIView = {
         let navBar: AnyNavigationBar
         
         switch navBarType {
@@ -129,7 +129,7 @@ internal final class ModalViewController: UIViewController {
         ModalToolbar(title: self.innerController.title, style: style)
     }
     
-    internal lazy var stackView: UIStackView = {
+    lazy var stackView: UIStackView = {
         let views = [navBar, separator, innerController.view]
         let stackView = UIStackView(arrangedSubviews: views.compactMap { $0 })
         stackView.axis = .vertical

@@ -286,7 +286,7 @@ class DropInTests: XCTestCase {
 
 extension UIViewController {
 
-    internal func findChild<T: UIViewController>(of type: T.Type) -> T? {
+    func findChild<T: UIViewController>(of type: T.Type) -> T? {
         if self is T { return self as? T }
         var result: T?
         for child in self.children {

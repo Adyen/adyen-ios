@@ -7,7 +7,7 @@
 import SwiftUI
 import UIKit
 
-internal final class ComponentsViewController: UIViewController, Presenter {
+final class ComponentsViewController: UIViewController, Presenter {
     
     private lazy var componentsView = ComponentsView()
 
@@ -19,11 +19,11 @@ internal final class ComponentsViewController: UIViewController, Presenter {
     
     // MARK: - View
     
-    override internal func loadView() {
+    override func loadView() {
         view = componentsView
     }
     
-    override internal func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Components"
         
@@ -53,45 +53,45 @@ internal final class ComponentsViewController: UIViewController, Presenter {
     
     // MARK: - DropIn Component
 
-    internal func presentDropInComponent() {
+    func presentDropInComponent() {
         integrationExample.presentDropInComponent()
     }
 
-    internal func presentCardComponent() {
+    func presentCardComponent() {
         integrationExample.presentCardComponent()
     }
 
-    internal func presentIdealComponent() {
+    func presentIdealComponent() {
         integrationExample.presentIdealComponent()
     }
 
-    internal func presentSEPADirectDebitComponent() {
+    func presentSEPADirectDebitComponent() {
         integrationExample.presentSEPADirectDebitComponent()
     }
 
-    internal func presentBACSDirectDebitComponent() {
+    func presentBACSDirectDebitComponent() {
         integrationExample.presentBACSDirectDebitComponent()
     }
 
-    internal func presentMBWayComponent() {
+    func presentMBWayComponent() {
         integrationExample.presentMBWayComponent()
     }
 
-    internal func presentApplePayComponent() {
+    func presentApplePayComponent() {
         integrationExample.presentApplePayComponent()
     }
 
-    internal func requestPaymentMethods() {
+    func requestPaymentMethods() {
         integrationExample.requestPaymentMethods()
     }
 
-    internal func presentConvenienceStore() {
+    func presentConvenienceStore() {
         integrationExample.presentConvenienceStore()
     }
 
     // MARK: - Presenter
 
-    internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
+    func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
 
@@ -104,18 +104,18 @@ internal final class ComponentsViewController: UIViewController, Presenter {
         present(viewController: alertController, completion: nil)
     }
 
-    internal func presentAlert(withTitle title: String) {
+    func presentAlert(withTitle title: String) {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default))
 
         present(viewController: alertController, completion: nil)
     }
 
-    internal func present(viewController: UIViewController, completion: (() -> Void)?) {
+    func present(viewController: UIViewController, completion: (() -> Void)?) {
         adyen.topPresenter.present(viewController, animated: true, completion: completion)
     }
 
-    internal func dismiss(completion: (() -> Void)?) {
+    func dismiss(completion: (() -> Void)?) {
         dismiss(animated: true, completion: completion)
     }
 }

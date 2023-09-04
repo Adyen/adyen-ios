@@ -8,12 +8,12 @@ import Adyen
 import Foundation
 
 /// :nodoc:
-internal protocol BACSDirectDebitComponentTrackerProtocol: AnyObject {
+protocol BACSDirectDebitComponentTrackerProtocol: AnyObject {
     func sendEvent()
 }
 
 /// :nodoc:
-internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerProtocol {
+class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerProtocol {
 
     // MARK: - Properties
 
@@ -23,9 +23,9 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
 
     // MARK: - Initializers
 
-    internal init(paymentMethod: BACSDirectDebitPaymentMethod,
-                  apiContext: APIContext,
-                  isDropIn: Bool) {
+    init(paymentMethod: BACSDirectDebitPaymentMethod,
+         apiContext: APIContext,
+         isDropIn: Bool) {
         self.paymentMethod = paymentMethod
         self.apiContext = apiContext
         self.isDropIn = isDropIn
@@ -33,7 +33,7 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
 
     // MARK: - BACSDirectDebitComponentTrackerProtocol
 
-    internal func sendEvent() {
+    func sendEvent() {
         Analytics.sendEvent(component: paymentMethod.type,
                             flavor: isDropIn ? .dropin : .components,
                             context: apiContext)

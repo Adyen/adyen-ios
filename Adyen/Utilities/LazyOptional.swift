@@ -9,7 +9,7 @@ import Foundation
 /// A property wrapper to enable a property to be lazily initialized when its first called,
 /// with the added ability to nullify it and gets reinitialized when called again.
 @propertyWrapper
-internal final class LazyOptional<ValueType> {
+final class LazyOptional<ValueType> {
     
     /// :nodoc:
     private var _wrappedValue: ValueType?
@@ -20,12 +20,12 @@ internal final class LazyOptional<ValueType> {
     /// Initializes the property wrapper.
     ///
     /// - Parameter initialize: A closure that builds the wrapped object when needed.
-    internal init(initialize: @autoclosure @escaping () -> ValueType) {
+    init(initialize: @autoclosure @escaping () -> ValueType) {
         self.initialize = initialize
     }
     
     /// :nodoc:
-    internal var wrappedValue: ValueType {
+    var wrappedValue: ValueType {
         
         get {
             if _wrappedValue == nil {
@@ -41,10 +41,10 @@ internal final class LazyOptional<ValueType> {
     }
     
     /// :nodoc:
-    internal var projectedValue: LazyOptional { self }
+    var projectedValue: LazyOptional { self }
     
     /// Dealloc the property, and it will get initialized when called again.
-    internal func reset() {
+    func reset() {
         _wrappedValue = nil
     }
 }

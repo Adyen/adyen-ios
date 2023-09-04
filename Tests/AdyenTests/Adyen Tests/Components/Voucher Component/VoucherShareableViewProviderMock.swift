@@ -1,5 +1,5 @@
 //
-//  VoucherViewControllerProviderMock.swift
+//  VoucherShareableViewProviderMock.swift
 //  AdyenUIKitTests
 //
 //  Created by Mohamed Eldoheiri on 2/3/21.
@@ -10,17 +10,17 @@ import Adyen
 @testable import AdyenActions
 import UIKit
 
-internal final class VoucherShareableViewProviderMock: AnyVoucherShareableViewProvider {
+final class VoucherShareableViewProviderMock: AnyVoucherShareableViewProvider {
 
-    internal var style = VoucherComponentStyle()
+    var style = VoucherComponentStyle()
 
-    internal var delegate: VoucherViewDelegate?
+    var delegate: VoucherViewDelegate?
 
-    internal var localizationParameters: LocalizationParameters?
+    var localizationParameters: LocalizationParameters?
 
-    internal var onProvide: ((_ action: VoucherAction) -> UIView)?
+    var onProvide: ((_ action: VoucherAction) -> UIView)?
 
-    internal func provideView(with action: VoucherAction, logo image: UIImage?) -> UIView {
+    func provideView(with action: VoucherAction, logo image: UIImage?) -> UIView {
         onProvide?(action) ?? UIView()
     }
 }

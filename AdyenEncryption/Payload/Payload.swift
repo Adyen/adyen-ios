@@ -6,12 +6,12 @@
 
 import Foundation
 
-internal protocol Payload: Encodable {
+protocol Payload: Encodable {
     func jsonData() throws -> Data
 }
 
 extension Payload {
-    internal func jsonData() throws -> Data {
+    func jsonData() throws -> Data {
         try JSONEncoder().encode(self)
     }
 }

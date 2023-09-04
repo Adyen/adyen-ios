@@ -8,7 +8,7 @@ import Adyen
 import SwiftUI
 
 @available(iOS 13.0.0, *)
-internal struct ConfigurationView: View {
+struct ConfigurationView: View {
     
     private enum ConfigurationSection: String, CaseIterable {
         case apiVersion = "Api Version"
@@ -17,7 +17,7 @@ internal struct ConfigurationView: View {
         case payment = "Payment"
     }
     
-    @ObservedObject internal var viewModel: ConfigurationViewModel
+    @ObservedObject var viewModel: ConfigurationViewModel
     @State private var countrySearchSting: String = ""
     private var filteredCountries: [CountryDisplayInfo] {
         if countrySearchSting.isEmpty {
@@ -36,11 +36,11 @@ internal struct ConfigurationView: View {
         }
     }
     
-    internal init(viewModel: ConfigurationViewModel) {
+    init(viewModel: ConfigurationViewModel) {
         self.viewModel = viewModel
     }
     
-    internal var body: some View {
+    var body: some View {
         NavigationView {
             Form {
                 wrapInSection(view: apiVersionSection, section: .apiVersion)
@@ -169,7 +169,7 @@ extension CountryDisplayInfo {
         )
     }
     
-    internal func matches(_ predicate: String) -> Bool {
+    func matches(_ predicate: String) -> Bool {
         code.range(of: predicate, options: [.anchored, .caseInsensitive]) != nil ||
             name.range(of: predicate, options: [.anchored, .caseInsensitive]) != nil
     }
@@ -188,7 +188,7 @@ extension CurrencyDisplayInfo {
         ListItemView.ViewModel(title: code, subtitle: symbol, tag: code)
     }
     
-    internal func matches(_ predicate: String) -> Bool {
+    func matches(_ predicate: String) -> Bool {
         code.range(of: predicate, options: [.anchored, .caseInsensitive]) != nil ||
             symbol.range(of: predicate, options: [.anchored, .caseInsensitive]) != nil
     }

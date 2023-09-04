@@ -27,9 +27,9 @@ public final class DropInComponent: NSObject, PresentableComponent, LoadingCompo
 
     private var configuration: Configuration
 
-    internal var paymentInProgress: Bool = false
+    var paymentInProgress: Bool = false
 
-    internal var selectedPaymentComponent: PaymentComponent?
+    var selectedPaymentComponent: PaymentComponent?
 
     /// The payment methods to display.
     public internal(set) var paymentMethods: PaymentMethods
@@ -100,7 +100,7 @@ public final class DropInComponent: NSObject, PresentableComponent, LoadingCompo
             .retryOnErrorAPIClient()
     }()
     
-    internal func reloadComponentManager() {
+    func reloadComponentManager() {
         componentManager = createComponentManager(componentManager.order,
                                                   componentManager.remainingAmount)
     }
@@ -157,7 +157,7 @@ public final class DropInComponent: NSObject, PresentableComponent, LoadingCompo
                          presentationDelegate: self)
     }
     
-    internal lazy var rootComponent: PresentableComponent = {
+    lazy var rootComponent: PresentableComponent = {
         if configuration.allowPreselectedPaymentView,
            let preselectedComponents = componentManager.storedComponents.first {
             return preselectedPaymentMethodComponent(for: preselectedComponents, onCancel: nil)
@@ -170,7 +170,7 @@ public final class DropInComponent: NSObject, PresentableComponent, LoadingCompo
         }
     }()
     
-    internal lazy var navigationController = DropInNavigationController(
+    lazy var navigationController = DropInNavigationController(
         rootComponent: rootComponent,
         style: style.navigation,
         cancelHandler: { [weak self] isRoot, component in
@@ -187,7 +187,7 @@ public final class DropInComponent: NSObject, PresentableComponent, LoadingCompo
         return handler
     }()
     
-    internal func paymentMethodListComponent(onCancel: (() -> Void)?) -> PaymentMethodListComponent {
+    func paymentMethodListComponent(onCancel: (() -> Void)?) -> PaymentMethodListComponent {
         let paymentComponents = componentManager.sections
         let component = PaymentMethodListComponent(apiContext: apiContext,
                                                    components: paymentComponents,
@@ -199,8 +199,8 @@ public final class DropInComponent: NSObject, PresentableComponent, LoadingCompo
         return component
     }
     
-    internal func preselectedPaymentMethodComponent(for paymentComponent: PaymentComponent,
-                                                    onCancel: (() -> Void)?) -> PreselectedPaymentMethodComponent {
+    func preselectedPaymentMethodComponent(for paymentComponent: PaymentComponent,
+                                           onCancel: (() -> Void)?) -> PreselectedPaymentMethodComponent {
         let component = PreselectedPaymentMethodComponent(component: paymentComponent,
                                                           title: title,
                                                           style: style.formComponent,
@@ -213,7 +213,7 @@ public final class DropInComponent: NSObject, PresentableComponent, LoadingCompo
         return component
     }
     
-    internal func didSelect(_ component: PaymentComponent) {
+    func didSelect(_ component: PaymentComponent) {
         setNecessaryDelegates(on: component)
         
         switch component {
@@ -244,7 +244,7 @@ public final class DropInComponent: NSObject, PresentableComponent, LoadingCompo
         }
     }
 
-    internal func userDidCancel(_ component: Component) {
+    func userDidCancel(_ component: Component) {
         stopLoading()
         component.cancelIfNeeded()
 

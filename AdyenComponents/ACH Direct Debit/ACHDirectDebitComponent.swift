@@ -87,13 +87,13 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     }
     
     /// :nodoc:
-    internal init(configuration: Configuration,
-                  paymentMethod: ACHDirectDebitPaymentMethod,
-                  apiContext: APIContext,
-                  publicKeyProvider: AnyPublicKeyProvider,
-                  shopperInformation: PrefilledShopperInformation? = nil,
-                  localizationParameters: LocalizationParameters? = nil,
-                  style: FormComponentStyle) {
+    init(configuration: Configuration,
+         paymentMethod: ACHDirectDebitPaymentMethod,
+         apiContext: APIContext,
+         publicKeyProvider: AnyPublicKeyProvider,
+         shopperInformation: PrefilledShopperInformation? = nil,
+         localizationParameters: LocalizationParameters? = nil,
+         style: FormComponentStyle) {
         self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
         self.apiContext = apiContext
@@ -145,7 +145,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     
     // MARK: - Form Items
     
-    internal lazy var headerItem: FormLabelItem = {
+    lazy var headerItem: FormLabelItem = {
         let item = FormLabelItem(text: localizedString(.achBankAccountTitle, localizationParameters),
                                  style: style.sectionHeader)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
@@ -153,7 +153,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         return item
     }()
     
-    internal lazy var holderNameItem: FormTextInputItem = {
+    lazy var holderNameItem: FormTextInputItem = {
         let textItem = FormTextInputItem(style: style.textField)
 
         let localizedTitle = localizedString(.achAccountHolderNameFieldTitle, localizationParameters)
@@ -171,7 +171,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         return textItem
     }()
     
-    internal lazy var bankAccountNumberItem: FormTextInputItem = {
+    lazy var bankAccountNumberItem: FormTextInputItem = {
         let textItem = FormTextInputItem(style: style.textField)
 
         let localizedTitle = localizedString(.achAccountNumberFieldTitle, localizationParameters)
@@ -191,7 +191,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         return textItem
     }()
     
-    internal lazy var bankRoutingNumberItem: FormTextInputItem = {
+    lazy var bankRoutingNumberItem: FormTextInputItem = {
         let textItem = FormTextInputItem(style: style.textField)
 
         let localizedTitle = localizedString(.achAccountLocationFieldTitle, localizationParameters)
@@ -211,7 +211,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         return textItem
     }()
     
-    internal lazy var billingAddressItem: FormAddressItem = {
+    lazy var billingAddressItem: FormAddressItem = {
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                      postfix: ViewIdentifier.billingAddressItem)
 
@@ -230,7 +230,7 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         return item
     }()
     
-    internal lazy var payButton: FormButtonItem = {
+    lazy var payButton: FormButtonItem = {
         let item = FormButtonItem(style: style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                       postfix: ViewIdentifier.payButtonItem)

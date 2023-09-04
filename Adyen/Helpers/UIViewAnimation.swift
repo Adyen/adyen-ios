@@ -7,7 +7,7 @@
 import UIKit
 
 private enum AssociatedKeys {
-    internal static var animations = "animations"
+    static var animations = "animations"
 }
 
 /// :nodoc:

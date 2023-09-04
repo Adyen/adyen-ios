@@ -48,14 +48,14 @@ public class FormContainerItem: FormItem {
     private class FormContainerView: UIView, AnyFormItemView {
         var childItemViews: [AnyFormItemView] = []
 
-        internal func fill(with contentView: UIView, padding: UIEdgeInsets) {
+        func fill(with contentView: UIView, padding: UIEdgeInsets) {
             preservesSuperviewLayoutMargins = true
             addSubview(contentView)
             contentView.adyen.anchor(inside: self.layoutMarginsGuide, with: padding)
         }
         
         /// :nodoc:
-        internal func reset() { /* Do nothing */ }
+        func reset() { /* Do nothing */ }
     }
 }
 

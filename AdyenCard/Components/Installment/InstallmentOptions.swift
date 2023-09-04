@@ -13,10 +13,10 @@ import Foundation
 public struct InstallmentOptions: Equatable {
     
     /// Month options for regular installments.
-    internal let regularInstallmentMonths: [UInt]
+    let regularInstallmentMonths: [UInt]
     
     /// Determines if revolving installment is an option.
-    internal let includesRevolving: Bool
+    let includesRevolving: Bool
     
     /// Creates a new instance of installment options.
     /// - Parameters:
@@ -46,15 +46,15 @@ public struct InstallmentOptions: Equatable {
 public struct InstallmentConfiguration {
     
     /// The option that apply to all card types, unless included `cardTypeBased` options.
-    internal let defaultOptions: InstallmentOptions?
+    let defaultOptions: InstallmentOptions?
     
     /// Options that are specific to given card types
-    internal let cardBasedOptions: [CardType: InstallmentOptions]?
+    let cardBasedOptions: [CardType: InstallmentOptions]?
     
     /// Determines whether to show the money amount in the installment selection.
     /// For example, `3 months X 500 USD` or `3 months`.
     /// For now it is disabled due to making the dividing calculations in the client.
-    internal let showInstallmentPrice: Bool
+    let showInstallmentPrice: Bool
     
     /// Creates a new installment configuration by providing both the card type based options
     ///  and default options for the rest of the card types.

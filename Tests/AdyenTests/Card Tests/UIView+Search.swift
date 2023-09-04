@@ -6,7 +6,7 @@
 
 import UIKit
 
-internal extension UIView {
+extension UIView {
     func findView<T: UIView>(with accessibilityIdentifier: String) -> T? {
         if self.accessibilityIdentifier == accessibilityIdentifier {
             return self as? T

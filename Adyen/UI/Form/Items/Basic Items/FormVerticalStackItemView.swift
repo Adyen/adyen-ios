@@ -103,7 +103,7 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
 
 extension FormVerticalStackItemView: SelfRenderingFormItemDelegate {
 
-    internal func didUpdateItems(_ items: [FormItem]) {
+    func didUpdateItems(_ items: [FormItem]) {
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         removeObservers()
         prepareSubItems()

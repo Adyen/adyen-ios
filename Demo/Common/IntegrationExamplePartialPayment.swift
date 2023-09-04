@@ -14,10 +14,10 @@ import UIKit
 
 extension IntegrationExample: PartialPaymentDelegate {
 
-    internal enum GiftCardError: Error, LocalizedError {
+    enum GiftCardError: Error, LocalizedError {
         case noBalance
 
-        internal var errorDescription: String? {
+        var errorDescription: String? {
             switch self {
             case .noBalance:
                 return "No Balance"
@@ -25,8 +25,8 @@ extension IntegrationExample: PartialPaymentDelegate {
         }
     }
 
-    internal func checkBalance(with data: PaymentComponentData,
-                               completion: @escaping (Result<Balance, Error>) -> Void) {
+    func checkBalance(with data: PaymentComponentData,
+                      completion: @escaping (Result<Balance, Error>) -> Void) {
         let request = BalanceCheckRequest(data: data)
         apiClient.perform(request) { [weak self] result in
             self?.handle(result: result, completion: completion)
@@ -58,7 +58,7 @@ extension IntegrationExample: PartialPaymentDelegate {
         completion(.failure(error))
     }
 
-    internal func requestOrder(_ completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
+    func requestOrder(_ completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
         let request = CreateOrderRequest(amount: payment.amount, reference: UUID().uuidString)
         apiClient.perform(request) { [weak self] result in
             self?.handle(result: result, completion: completion)
@@ -76,7 +76,7 @@ extension IntegrationExample: PartialPaymentDelegate {
         }
     }
 
-    internal func cancelOrder(_ order: PartialPaymentOrder) {
+    func cancelOrder(_ order: PartialPaymentOrder) {
         let request = CancelOrderRequest(order: order)
         apiClient.perform(request) { [weak self] result in
             self?.handle(result: result)

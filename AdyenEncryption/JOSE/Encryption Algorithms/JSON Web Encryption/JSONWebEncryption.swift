@@ -6,22 +6,22 @@
 
 import Foundation
 
-internal struct JSONWebEncryption {
-    internal struct Header: Encodable {
+struct JSONWebEncryption {
+    struct Header: Encodable {
         
-        internal static let defaultHeader: Header = .init(contentEncryptionAlgorithm: .AESCBC,
-                                                          keyEncryptionAlgorithm: .rsaOAEP256)
+        static let defaultHeader: Header = .init(contentEncryptionAlgorithm: .AESCBC,
+                                                 keyEncryptionAlgorithm: .rsaOAEP256)
         
-        internal let contentEncryptionAlgorithm: ContentEncryptionAlgorithm
+        let contentEncryptionAlgorithm: ContentEncryptionAlgorithm
         
-        internal let keyEncryptionAlgorithm: KeyEncryptionAlgorithm
+        let keyEncryptionAlgorithm: KeyEncryptionAlgorithm
         
-        internal let version: String = "1"
+        let version: String = "1"
         
-        internal enum KeyEncryptionAlgorithm: String, Encodable {
+        enum KeyEncryptionAlgorithm: String, Encodable {
             case rsaOAEP256 = "RSA-OAEP-256"
             
-            internal var algorithm: RSAAlgorithm {
+            var algorithm: RSAAlgorithm {
                 switch self {
                 case .rsaOAEP256:
                     return RSAOAEP256Algorithm()
@@ -29,10 +29,10 @@ internal struct JSONWebEncryption {
             }
         }
         
-        internal enum ContentEncryptionAlgorithm: String, Encodable {
+        enum ContentEncryptionAlgorithm: String, Encodable {
             case AESCBC = "A256CBC-HS512"
             
-            internal var algorithm: JWAEncryptionAlgorithm {
+            var algorithm: JWAEncryptionAlgorithm {
                 switch self {
                 case .AESCBC:
                     return JWAA256CBCHS512Algorithm()
@@ -47,33 +47,33 @@ internal struct JSONWebEncryption {
         }
     }
     
-    internal let header: Header
+    let header: Header
     
-    internal let encryptedKey: Data
+    let encryptedKey: Data
     
-    internal let encryptedPayload: Data
+    let encryptedPayload: Data
     
-    internal let initializationVector: Data
+    let initializationVector: Data
     
-    internal let authenticationTag: Data
+    let authenticationTag: Data
     
-    internal let compactRepresentation: String
+    let compactRepresentation: String
     
-    internal init(header: Header,
-                  encryptedKey: Data,
-                  encryptedPayload: Data,
-                  initializationVector: Data,
-                  authenticationTag: Data) throws {
+    init(header: Header,
+         encryptedKey: Data,
+         encryptedPayload: Data,
+         initializationVector: Data,
+         authenticationTag: Data) throws {
         self.header = header
         self.encryptedKey = encryptedKey
         self.encryptedPayload = encryptedPayload
         self.initializationVector = initializationVector
         self.authenticationTag = authenticationTag
-        self.compactRepresentation = [try JSONEncoder().encode(header).base64URLString(),
-                                      encryptedKey.base64URLString(),
-                                      initializationVector.base64URLString(),
-                                      encryptedPayload.base64URLString(),
-                                      authenticationTag.base64URLString()].joined(separator: ".")
+        self.compactRepresentation = try [JSONEncoder().encode(header).base64URLString(),
+                                          encryptedKey.base64URLString(),
+                                          initializationVector.base64URLString(),
+                                          encryptedPayload.base64URLString(),
+                                          authenticationTag.base64URLString()].joined(separator: ".")
     }
 
 }

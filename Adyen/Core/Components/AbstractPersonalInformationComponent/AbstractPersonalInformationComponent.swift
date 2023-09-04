@@ -59,7 +59,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     }
 
     /// :nodoc:
-    internal lazy var formViewController: FormViewController = {
+    lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(style: style)
         formViewController.localizationParameters = localizationParameters
 
@@ -102,7 +102,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     }
 
     /// :nodoc:
-    internal lazy var firstNameItemInjector: NameFormItemInjector? = {
+    lazy var firstNameItemInjector: NameFormItemInjector? = {
         guard configuration.fields.contains(.firstName) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "firstNameItem")
         let injector = NameFormItemInjector(value: shopperInformation?.shopperName?.firstName,
@@ -118,7 +118,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     public var firstNameItem: FormTextInputItem? { firstNameItemInjector?.item }
 
     /// :nodoc:
-    internal lazy var lastNameItemInjector: NameFormItemInjector? = {
+    lazy var lastNameItemInjector: NameFormItemInjector? = {
         guard configuration.fields.contains(.lastName) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "lastNameItem")
         let injector = NameFormItemInjector(value: shopperInformation?.shopperName?.lastName,
@@ -134,7 +134,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     public var lastNameItem: FormTextInputItem? { lastNameItemInjector?.item }
 
     /// :nodoc:
-    internal lazy var emailItemInjector: EmailFormItemInjector? = {
+    lazy var emailItemInjector: EmailFormItemInjector? = {
         guard configuration.fields.contains(.email) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "emailItem")
         let injector = EmailFormItemInjector(value: shopperInformation?.emailAddress,
@@ -148,7 +148,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     public var emailItem: FormTextInputItem? { emailItemInjector?.item }
     
     /// :nodoc:
-    internal lazy var addressItemInjector: AddressFormItemInjector? = {
+    lazy var addressItemInjector: AddressFormItemInjector? = {
         guard configuration.fields.contains(.address) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "addressItem")
         let initialCountry = shopperInformation?.billingAddress?.country ?? defaultCountryCode
@@ -162,7 +162,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     public var addressItem: FormAddressItem? { addressItemInjector?.item }
     
     /// :nodoc:
-    internal lazy var deliveryAddressItemInjector: AddressFormItemInjector? = {
+    lazy var deliveryAddressItemInjector: AddressFormItemInjector? = {
         guard configuration.fields.contains(.deliveryAddress) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "deliveryAddressItem")
         let initialCountry = shopperInformation?.deliveryAddress?.country ?? defaultCountryCode
@@ -176,7 +176,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     public var deliveryAddressItem: FormAddressItem? { deliveryAddressItemInjector?.item }
 
     /// :nodoc:
-    internal lazy var phoneItemInjector: PhoneFormItemInjector? = {
+    lazy var phoneItemInjector: PhoneFormItemInjector? = {
         guard configuration.fields.contains(.phone) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneNumberItem")
         let injector = PhoneFormItemInjector(value: shopperInformation?.telephoneNumber,
@@ -195,7 +195,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     }
 
     /// The button item.
-    internal lazy var button: FormButtonItem = {
+    lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = submitButtonTitle()
@@ -231,7 +231,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     }
 
     /// :nodoc:
-    internal func populateFields() {
+    func populateFields() {
         guard let shopperInformation = shopperInformation else { return }
 
         shopperInformation.shopperName.map {

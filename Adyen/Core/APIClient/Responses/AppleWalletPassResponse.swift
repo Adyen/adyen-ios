@@ -33,7 +33,7 @@ public struct AppleWalletPassResponse: Response {
     }
 
     /// :nodoc:
-    internal enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case passBase64String = "passData"
     }
 }

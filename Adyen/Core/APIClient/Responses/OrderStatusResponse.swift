@@ -26,7 +26,7 @@ public struct OrderStatusResponse: Response {
     }
 
     /// :nodoc:
-    internal enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case remainingAmount
         case paymentMethods
     }

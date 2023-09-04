@@ -22,7 +22,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent, Observ
     private let personalDetailsHeaderItem: FormLabelItem
     
     /// :nodoc:
-    internal let deliveryAddressToggleItem: FormToggleItem
+    let deliveryAddressToggleItem: FormToggleItem
 
     // MARK: - Initializers
     

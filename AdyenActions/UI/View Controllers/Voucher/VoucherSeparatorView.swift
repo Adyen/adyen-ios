@@ -10,16 +10,16 @@ import QuartzCore
 import UIKit
 
 extension VoucherSeparatorView {
-    internal struct Model {
-        internal var separatorTitle: String
+    struct Model {
+        var separatorTitle: String
 
-        internal var separatorStyle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
-                                                color: UIColor.Adyen.componentLabel,
-                                                textAlignment: .center)
+        var separatorStyle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
+                                       color: UIColor.Adyen.componentLabel,
+                                       textAlignment: .center)
     }
 }
 
-internal final class VoucherSeparatorView: UIView {
+final class VoucherSeparatorView: UIView {
 
     private lazy var leftSeparatorLayer = CALayer()
 
@@ -29,18 +29,18 @@ internal final class VoucherSeparatorView: UIView {
 
     private let model: Model
 
-    internal init(model: Model) {
+    init(model: Model) {
         self.model = model
         super.init(frame: .zero)
         buildUI()
     }
 
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    internal var rightCutoutFrame: CGRect {
+    var rightCutoutFrame: CGRect {
         CGRect(origin: CGPoint(x: bounds.size.width - arcLayerSize.width,
                                y: bounds.height / 2 - arcLayerSize.height / 2),
                size: arcLayerSize)
@@ -75,12 +75,12 @@ internal final class VoucherSeparatorView: UIView {
         CGSize(width: 6, height: 12)
     }
 
-    override internal func layoutSublayers(of layer: CALayer) {
+    override func layoutSublayers(of layer: CALayer) {
         super.layoutSublayers(of: layer)
         updateLayout()
     }
 
-    override internal func layoutSubviews() {
+    override func layoutSubviews() {
         super.layoutSubviews()
         updateLayout()
     }

@@ -9,7 +9,7 @@
 @testable import AdyenDropIn
 import Foundation
 
-internal final class PaymentMethodListComponentDelegateMock: PaymentMethodListComponentDelegate {
+final class PaymentMethodListComponentDelegateMock: PaymentMethodListComponentDelegate {
     
     var onDidSelect: ((_ component: PaymentComponent, _ paymentMethodListComponent: PaymentMethodListComponent) -> Void)?
     

@@ -34,44 +34,44 @@ public func && (lhs: Validator, rhs: Validator) -> Validator {
 }
 
 /// Interface to allow for two validators.
-internal protocol CombinedValidator: Validator {
+protocol CombinedValidator: Validator {
     var lhs: Validator { get }
     var rhs: Validator { get }
 }
 
 extension CombinedValidator {
     
-    internal func maximumLength(for value: String) -> Int {
+    func maximumLength(for value: String) -> Int {
         max(lhs.maximumLength(for: value), rhs.maximumLength(for: value))
     }
 }
 
 /// A validator that is the logical `OR` combination of two `Validator` instances.
-internal final class ORValidator: CombinedValidator {
-    internal let lhs: Validator
-    internal let rhs: Validator
+final class ORValidator: CombinedValidator {
+    let lhs: Validator
+    let rhs: Validator
     
-    internal init(lhs: Validator, rhs: Validator) {
+    init(lhs: Validator, rhs: Validator) {
         self.lhs = lhs
         self.rhs = rhs
     }
     
-    internal func isValid(_ value: String) -> Bool {
+    func isValid(_ value: String) -> Bool {
         lhs.isValid(value) || rhs.isValid(value)
     }
 }
 
 /// A validator that is the logical `AND` combination of two `Validator` instances.
-internal final class ANDValidator: CombinedValidator {
-    internal let lhs: Validator
-    internal let rhs: Validator
+final class ANDValidator: CombinedValidator {
+    let lhs: Validator
+    let rhs: Validator
     
-    internal init(lhs: Validator, rhs: Validator) {
+    init(lhs: Validator, rhs: Validator) {
         self.lhs = lhs
         self.rhs = rhs
     }
     
-    internal func isValid(_ value: String) -> Bool {
+    func isValid(_ value: String) -> Bool {
         lhs.isValid(value) && rhs.isValid(value)
     }
 }

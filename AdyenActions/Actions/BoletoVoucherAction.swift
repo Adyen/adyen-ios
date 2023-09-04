@@ -9,7 +9,7 @@ import Foundation
 
 /// :nodoc:
 /// Describes a voucher that can be downloaded.
-internal protocol DownloadableVoucher {
+protocol DownloadableVoucher {
     
     /// :nodoc:
     /// Download URL.
@@ -64,12 +64,12 @@ public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadabl
     }
     
     /// :nodoc:
-    internal init(paymentMethodType: VoucherPaymentMethod,
-                  totalAmount: Amount,
-                  reference: String,
-                  expiresAt: Date,
-                  downloadUrl: URL,
-                  passCreationToken: String? = nil) {
+    init(paymentMethodType: VoucherPaymentMethod,
+         totalAmount: Amount,
+         reference: String,
+         expiresAt: Date,
+         downloadUrl: URL,
+         passCreationToken: String? = nil) {
         self.paymentMethodType = paymentMethodType
         self.totalAmount = totalAmount
         self.reference = reference

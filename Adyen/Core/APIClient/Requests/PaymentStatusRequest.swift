@@ -39,7 +39,7 @@ public struct PaymentStatusRequest: APIRequest {
     }
     
     /// :nodoc:
-    internal enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case paymentData
     }
 }

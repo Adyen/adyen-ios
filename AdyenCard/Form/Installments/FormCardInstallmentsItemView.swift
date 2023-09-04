@@ -7,10 +7,10 @@
 import Adyen
 import UIKit
 
-internal typealias InstallmentPickerElement = BasePickerElement<InstallmentElement>
+typealias InstallmentPickerElement = BasePickerElement<InstallmentElement>
 
-internal final class FormCardInstallmentsItemView: BaseFormPickerItemView<InstallmentElement> {
-    override internal func initialize() {
+final class FormCardInstallmentsItemView: BaseFormPickerItemView<InstallmentElement> {
+    override func initialize() {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, inputControl])
         stackView.axis = .vertical
         stackView.spacing = 8

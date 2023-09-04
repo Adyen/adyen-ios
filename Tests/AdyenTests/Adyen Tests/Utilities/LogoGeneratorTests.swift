@@ -1,5 +1,5 @@
 //
-//  LogoGenerator.swift
+//  LogoGeneratorTests.swift
 //  Adyen
 //
 //  Created by Vladimir Abramichev on 17/02/2021.

@@ -30,7 +30,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     private let configuration: Configuration
 
     /// :nodoc:
-    internal var shopperInformation: PrefilledShopperInformation {
+    var shopperInformation: PrefilledShopperInformation {
         configuration.shopperInformation
     }
     
@@ -68,7 +68,7 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
     }()
     
     /// :nodoc:
-    internal lazy var sendCopyByEmailItem: FormToggleItem = {
+    lazy var sendCopyByEmailItem: FormToggleItem = {
         let sendCopyToEmailItem = FormToggleItem(style: style.toggle)
         sendCopyToEmailItem.value = false
         sendCopyToEmailItem.title = localizedString(.boletoSendCopyToEmail, localizationParameters)

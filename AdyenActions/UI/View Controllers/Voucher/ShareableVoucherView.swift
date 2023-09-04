@@ -8,13 +8,13 @@ import Adyen
 import PassKit
 import UIKit
 
-internal class ShareableVoucherView: UIView, Localizable {
+class ShareableVoucherView: UIView, Localizable {
 
-    internal var localizationParameters: LocalizationParameters?
+    var localizationParameters: LocalizationParameters?
 
     private let model: Model
 
-    internal init(model: Model) {
+    init(model: Model) {
         self.model = model
         super.init(frame: .zero)
         buildUI()
@@ -22,7 +22,7 @@ internal class ShareableVoucherView: UIView, Localizable {
     }
 
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -67,7 +67,7 @@ internal class ShareableVoucherView: UIView, Localizable {
         return imageView
     }()
     
-    internal func createTopView() -> UIView {
+    func createTopView() -> UIView {
         logoView.image = model.logo
         let textLabelWrapper = textLabel.adyen.wrapped(
             with: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: -16)
@@ -83,7 +83,7 @@ internal class ShareableVoucherView: UIView, Localizable {
         return stackView
     }
     
-    internal func createBottomView() -> UIView {
+    func createBottomView() -> UIView {
         let codeLabel = UILabel(style: model.style.codeText)
         codeLabel.text = model.code
         let views = [codeLabel] + model.fields.flatMap {
@@ -150,61 +150,61 @@ internal class ShareableVoucherView: UIView, Localizable {
 
 extension ShareableVoucherView {
     
-    internal struct VoucherField {
+    struct VoucherField {
         
-        internal var identifier: String
+        var identifier: String
         
-        internal var title: String
+        var title: String
         
-        internal var value: String
+        var value: String
         
     }
     
-    internal struct Model {
+    struct Model {
         
-        internal let separatorModel: VoucherSeparatorView.Model
+        let separatorModel: VoucherSeparatorView.Model
         
-        internal let text: String
+        let text: String
         
-        internal let amount: String?
+        let amount: String?
         
-        internal let code: String
+        let code: String
         
-        internal let fields: [VoucherField]
+        let fields: [VoucherField]
         
-        internal let logo: UIImage?
+        let logo: UIImage?
         
-        internal var style: Style
+        var style: Style
         
-        internal struct Style {
+        struct Style {
             
-            internal var text = TextStyle(
+            var text = TextStyle(
                 font: .preferredFont(forTextStyle: .footnote),
                 color: UIColor.Adyen.componentLabel,
                 textAlignment: .center
             )
             
-            internal var amount = TextStyle(
+            var amount = TextStyle(
                 font: UIFont.preferredFont(forTextStyle: .callout).adyen.font(with: .bold),
                 color: UIColor.Adyen.componentLabel,
                 textAlignment: .center
             )
             
-            internal var codeText = TextStyle(
+            var codeText = TextStyle(
                 font: UIFont.preferredFont(forTextStyle: .title1).adyen.font(with: .bold),
                 color: UIColor.Adyen.componentLabel,
                 textAlignment: .center
             )
             
-            internal var fieldValueText = TextStyle(
+            var fieldValueText = TextStyle(
                 font: UIFont.preferredFont(forTextStyle: .footnote).adyen.font(with: .semibold),
                 color: UIColor.Adyen.componentLabel,
                 textAlignment: .center
             )
             
-            internal var logoCornerRounding = CornerRounding.fixed(5)
+            var logoCornerRounding = CornerRounding.fixed(5)
             
-            internal var backgroundColor: UIColor
+            var backgroundColor: UIColor
         }
         
     }

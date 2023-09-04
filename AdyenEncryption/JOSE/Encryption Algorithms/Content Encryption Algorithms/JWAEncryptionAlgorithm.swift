@@ -6,7 +6,7 @@
 
 import Foundation
 
-internal protocol JWAEncryptionAlgorithm {
+protocol JWAEncryptionAlgorithm {
     
     var keyLength: Int { get }
     
@@ -17,22 +17,22 @@ internal protocol JWAEncryptionAlgorithm {
     func encrypt(input: JWAInput) throws -> JWAOutput
 }
 
-internal struct JWAOutput {
+struct JWAOutput {
     
-    internal let encryptedPayload: Data
+    let encryptedPayload: Data
     
-    internal let authenticationTag: Data
+    let authenticationTag: Data
 }
 
-internal struct JWAInput {
+struct JWAInput {
     
-    internal let payload: Data
+    let payload: Data
     
-    internal let key: Data
+    let key: Data
     
-    internal let initializationVector: Data
+    let initializationVector: Data
     
-    internal let additionalAuthenticationData: Data
+    let additionalAuthenticationData: Data
 }
 
 /// Indicates an error during encryption.

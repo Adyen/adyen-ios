@@ -22,7 +22,7 @@ public struct Region: Decodable, CustomStringConvertible, Equatable {
     }
 
     /// :nodoc:
-    internal enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case identifier = "id"
         case name
     }
@@ -45,14 +45,14 @@ public class RegionRepository {
         self.environment = environment
     }
 
-    internal static func regions(from locale: NSLocale, countryCodes: [String]? = nil) -> [Region] {
+    static func regions(from locale: NSLocale, countryCodes: [String]? = nil) -> [Region] {
         (countryCodes ?? NSLocale.isoCountryCodes).map { countryCode in
             Region(identifier: countryCode,
                    name: locale.displayName(forKey: .countryCode, value: countryCode) ?? countryCode)
         }
     }
 
-    internal static func subRegions(for countryCode: String) -> [Region]? {
+    static func subRegions(for countryCode: String) -> [Region]? {
         allRegions[countryCode]
     }
 

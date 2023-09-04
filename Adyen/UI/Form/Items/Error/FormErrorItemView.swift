@@ -8,12 +8,12 @@ import Foundation
 import UIKit
 
 /// A view representing an error item.
-internal final class FormErrorItemView: FormItemView<FormErrorItem> {
+final class FormErrorItemView: FormItemView<FormErrorItem> {
 
     /// Initializes the error item view.
     ///
     /// - Parameter item: The item represented by the view.
-    internal required init(item: FormErrorItem) {
+    required init(item: FormErrorItem) {
         super.init(item: item)
         bind(item.$message, to: messageLabel, at: \.text)
         bind(item.$message, to: self, at: \.accessibilityLabel)

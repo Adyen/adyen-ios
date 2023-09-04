@@ -7,7 +7,7 @@
 import Adyen
 import Foundation
 
-internal final class FormCardNumberContainerItemView: FormVerticalStackItemView<FormCardNumberContainerItem> {
+final class FormCardNumberContainerItemView: FormVerticalStackItemView<FormCardNumberContainerItem> {
     
     /// :nodoc:
     override public var canBecomeFirstResponder: Bool {

@@ -271,10 +271,11 @@ class BCMCComponentTests: XCTestCase {
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
         let delegateMock = CardComponentDelegateMock(
             onBINDidChange: { _ in },
-             onCardBrandChange: { _ in },
-             onSubmitLastFour: { _ in
-                 expectationBin.fulfill()
-             })
+            onCardBrandChange: { _ in },
+            onSubmitLastFour: { _ in
+                expectationBin.fulfill()
+            }
+        )
 
         sut.cardComponentDelegate = delegateMock
 

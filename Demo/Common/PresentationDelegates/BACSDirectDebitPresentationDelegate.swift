@@ -9,7 +9,7 @@ import AdyenComponents
 import Foundation
 
 /// :nodoc:
-internal class BACSDirectDebitPresentationDelegate: PresentationDelegate {
+class BACSDirectDebitPresentationDelegate: PresentationDelegate {
 
     // MARK: - Properties
 
@@ -22,12 +22,12 @@ internal class BACSDirectDebitPresentationDelegate: PresentationDelegate {
     // MARK: - Initializers
 
     /// :nodoc:
-    internal init(bacsComponent: BACSDirectDebitComponent) {
+    init(bacsComponent: BACSDirectDebitComponent) {
         self.bacsComponent = bacsComponent
     }
 
     /// :nodoc:
-    internal func present(component: PresentableComponent) {
+    func present(component: PresentableComponent) {
         let navigationItem = component.viewController.navigationItem
         navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss))
         navigationController?.pushViewController(component.viewController, animated: true)

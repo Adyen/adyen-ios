@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// A view representing a form card number item.
-internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem> {
+final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem> {
     
     private static let cardSpacing: CGFloat = 4.0
     private static let cardSize = CGSize(width: 24.0, height: 16.0)
@@ -16,7 +16,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     /// Initializes the form card number item view.
     ///
     /// - Parameter item: The item represented by the view.
-    internal required init(item: FormCardNumberItem) {
+    required init(item: FormCardNumberItem) {
         super.init(item: item)
         accessory = .customView(detectedBrandsView)
         textField.textContentType = .creditCardNumber
@@ -34,7 +34,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         }
     }
     
-    override internal func textFieldDidBeginEditing(_ text: UITextField) {
+    override func textFieldDidBeginEditing(_ text: UITextField) {
         super.textFieldDidBeginEditing(text)
         // change accessory back only if brand is supported or empty
         if item.initialBrand?.isSupported ?? true {
@@ -43,7 +43,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         item.isActive = true
     }
     
-    override internal func textFieldDidEndEditing(_ text: UITextField) {
+    override func textFieldDidEndEditing(_ text: UITextField) {
         super.textFieldDidEndEditing(text)
         if accessory == .valid {
             accessory = .customView(detectedBrandsView)
@@ -54,7 +54,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     // MARK: - Card Type Logos View
     
     /// Logo view for the brand(s) icons and selection for dual-branded cards.
-    internal lazy var detectedBrandsView: DualBrandView = {
+    lazy var detectedBrandsView: DualBrandView = {
         let cardTypeLogosView = DualBrandView(style: item.style.icon, onBrandSelection: { [weak self] index in
             self?.item.selectBrand(at: index)
         })
@@ -67,7 +67,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
 extension FormCardNumberItemView {
     
     /// Custom view housing up to 2 sub views for brand logos.
-    internal class DualBrandView: UIView {
+    class DualBrandView: UIView {
         
         private enum Constant {
             static let iconSize = CGSize(width: 24, height: 16)
@@ -87,10 +87,10 @@ extension FormCardNumberItemView {
         }()
         
         /// First view to display the current brand or the placeholder image.
-        internal private(set) lazy var primaryLogoView: NetworkImageView = createEmptyImageView()
+        private(set) lazy var primaryLogoView: NetworkImageView = createEmptyImageView()
         
         /// View to display the second brand for dual-branded cards. Hidden otherwise.
-        internal private(set) lazy var secondaryLogoView: NetworkImageView = {
+        private(set) lazy var secondaryLogoView: NetworkImageView = {
             let imageView = createEmptyImageView()
             imageView.isHidden = true
             return imageView
@@ -104,7 +104,7 @@ extension FormCardNumberItemView {
         
         private let unselectedViewAlpha: CGFloat = 0.3
         
-        internal init(style: ImageStyle, onBrandSelection: @escaping ((Int) -> Void)) {
+        init(style: ImageStyle, onBrandSelection: @escaping ((Int) -> Void)) {
             self.style = style
             self.onBrandSelection = onBrandSelection
             super.init(frame: .zero)
@@ -114,7 +114,7 @@ extension FormCardNumberItemView {
         }
         
         @available(*, unavailable)
-        internal required init?(coder: NSCoder) {
+        required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
         

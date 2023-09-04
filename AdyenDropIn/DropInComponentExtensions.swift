@@ -20,15 +20,15 @@ import UIKit
 /// :nodoc:
 extension DropInComponent: PaymentMethodListComponentDelegate {
     
-    internal func didSelect(_ component: PaymentComponent,
-                            in paymentMethodListComponent: PaymentMethodListComponent) {
+    func didSelect(_ component: PaymentComponent,
+                   in paymentMethodListComponent: PaymentMethodListComponent) {
         (rootComponent as? ComponentLoader)?.startLoading(for: component)
         didSelect(component)
     }
     
-    internal func didDelete(_ paymentMethod: StoredPaymentMethod,
-                            in paymentMethodListComponent: PaymentMethodListComponent,
-                            completion: @escaping (Bool) -> Void) {
+    func didDelete(_ paymentMethod: StoredPaymentMethod,
+                   in paymentMethodListComponent: PaymentMethodListComponent,
+                   completion: @escaping (Bool) -> Void) {
         let deletionCompletion = { [weak self] (success: Bool) in
             defer {
                 completion(success)
@@ -94,16 +94,16 @@ extension DropInComponent: ActionComponentDelegate {
 
 extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
 
-    internal func didProceed(with component: PaymentComponent) {
+    func didProceed(with component: PaymentComponent) {
         (rootComponent as? ComponentLoader)?.startLoading(for: component)
         didSelect(component)
     }
     
-    internal func didRequestAllPaymentMethods() {
+    func didRequestAllPaymentMethods() {
         showPaymentMethodsList(onCancel: nil)
     }
 
-    internal func showPaymentMethodsList(onCancel: (() -> Void)?) {
+    func showPaymentMethodsList(onCancel: (() -> Void)?) {
         let newList = paymentMethodListComponent(onCancel: onCancel)
         navigationController.present(root: newList)
         rootComponent = newList

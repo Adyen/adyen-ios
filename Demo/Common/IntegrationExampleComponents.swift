@@ -14,7 +14,7 @@ extension IntegrationExample {
 
     // MARK: - Standalone Components
 
-    internal func presentCardComponent() {
+    func presentCardComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: CardPaymentMethod.self) else { return }
         let component = CardComponent(paymentMethod: paymentMethod,
                                       apiContext: apiContext)
@@ -22,21 +22,21 @@ extension IntegrationExample {
         present(component)
     }
 
-    internal func presentIdealComponent() {
+    func presentIdealComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: IssuerListPaymentMethod.self) else { return }
         let component = IdealComponent(paymentMethod: paymentMethod,
                                        apiContext: apiContext)
         present(component)
     }
 
-    internal func presentSEPADirectDebitComponent() {
+    func presentSEPADirectDebitComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: SEPADirectDebitPaymentMethod.self) else { return }
         let component = SEPADirectDebitComponent(paymentMethod: paymentMethod,
                                                  apiContext: apiContext)
         present(component)
     }
 
-    internal func presentBACSDirectDebitComponent() {
+    func presentBACSDirectDebitComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: BACSDirectDebitPaymentMethod.self) else { return }
         let component = BACSDirectDebitComponent(paymentMethod: paymentMethod,
                                                  apiContext: apiContext)
@@ -45,7 +45,7 @@ extension IntegrationExample {
         present(component)
     }
 
-    internal func presentMBWayComponent() {
+    func presentMBWayComponent() {
         let style = FormComponentStyle()
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: MBWayPaymentMethod.self) else { return }
         let component = MBWayComponent(paymentMethod: paymentMethod,
@@ -54,7 +54,7 @@ extension IntegrationExample {
         present(component)
     }
 
-    internal func presentApplePayComponent() {
+    func presentApplePayComponent() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self) else { return }
         let config = ApplePayComponent.Configuration(summaryItems: ConfigurationConstants.applePaySummaryItems,
                                                      merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
@@ -67,7 +67,7 @@ extension IntegrationExample {
         present(presentableComponent)
     }
 
-    internal func presentConvenienceStore() {
+    func presentConvenienceStore() {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: EContextPaymentMethod.self) else { return }
         let component = EContextStoreComponent(paymentMethod: paymentMethod, apiContext: apiContext)
         present(component)
@@ -133,12 +133,12 @@ extension IntegrationExample {
 
 extension IntegrationExample: PaymentComponentDelegate {
 
-    internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
+    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         let request = PaymentsRequest(data: data)
         apiClient.perform(request, completionHandler: paymentResponseHandler)
     }
 
-    internal func didFail(with error: Error, from component: PaymentComponent) {
+    func didFail(with error: Error, from component: PaymentComponent) {
         finish(with: error)
     }
 
@@ -146,15 +146,15 @@ extension IntegrationExample: PaymentComponentDelegate {
 
 extension IntegrationExample: ActionComponentDelegate {
 
-    internal func didFail(with error: Error, from component: ActionComponent) {
+    func didFail(with error: Error, from component: ActionComponent) {
         finish(with: error)
     }
 
-    internal func didComplete(from component: ActionComponent) {
+    func didComplete(from component: ActionComponent) {
         finish(with: .authorised)
     }
 
-    internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
+    func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
         let request = PaymentDetailsRequest(
             details: data.details,
@@ -170,17 +170,17 @@ extension IntegrationExample: CardComponentDelegate {
         print("Card used: **** **** **** \(value)")
     }
 
-    internal func didChangeBIN(_ value: String, component: CardComponent) {
+    func didChangeBIN(_ value: String, component: CardComponent) {
         print("Current BIN: \(value)")
     }
 
-    internal func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent) {
+    func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent) {
         print("Current card type: \((value ?? []).reduce("") { "\($0), \($1)" })")
     }
 }
 
 extension IntegrationExample: PresentationDelegate {
-    internal func present(component: PresentableComponent) {
+    func present(component: PresentableComponent) {
         present(component)
     }
 }

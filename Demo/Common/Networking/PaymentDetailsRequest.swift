@@ -8,27 +8,27 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-internal struct PaymentDetailsRequest: APIRequest {
+struct PaymentDetailsRequest: APIRequest {
     
-    internal typealias ResponseType = PaymentsResponse
+    typealias ResponseType = PaymentsResponse
     
-    internal let path = "payments/details"
+    let path = "payments/details"
     
-    internal let details: AdditionalDetails
+    let details: AdditionalDetails
     
-    internal let paymentData: String?
+    let paymentData: String?
 
-    internal let merchantAccount: String?
+    let merchantAccount: String?
     
-    internal var counter: UInt = 0
+    var counter: UInt = 0
     
-    internal var method: HTTPMethod = .post
+    var method: HTTPMethod = .post
     
-    internal var queryParameters: [URLQueryItem] = []
+    var queryParameters: [URLQueryItem] = []
     
-    internal var headers: [String: String] = [:]
+    var headers: [String: String] = [:]
     
-    internal func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(details.encodable, forKey: .details)
         try container.encode(paymentData, forKey: .paymentData)

@@ -7,9 +7,9 @@
 import PassKit
 import UIKit
 
-internal final class ComponentsView: UIView {
+final class ComponentsView: UIView {
     
-    internal init() {
+    init() {
         super.init(frame: .zero)
         
         addSubview(tableView)
@@ -18,13 +18,13 @@ internal final class ComponentsView: UIView {
     }
     
     @available(*, unavailable)
-    internal required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Items
     
-    internal var items = [[ComponentsItem]]()
+    var items = [[ComponentsItem]]()
     
     // MARK: - Table View
     
@@ -82,15 +82,15 @@ internal final class ComponentsView: UIView {
 
 extension ComponentsView: UITableViewDataSource {
     
-    internal func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         items.count
     }
     
-    internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         items[section].count
     }
     
-    internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let item = items[indexPath.section][indexPath.row]
         if item.isApplePay == false {
@@ -108,7 +108,7 @@ extension ComponentsView: UITableViewDataSource {
 
 extension ComponentsView: UITableViewDelegate {
     
-    internal func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         items[indexPath.section][indexPath.item].selectionHandler()
         
         tableView.deselectRow(at: indexPath, animated: true)

@@ -27,7 +27,7 @@ public struct Payment {
     }
 
     /// :nodoc:
-    internal init(amount: Amount, unsafeCountryCode: String) {
+    init(amount: Amount, unsafeCountryCode: String) {
         self.amount = amount
         self.countryCode = unsafeCountryCode
     }

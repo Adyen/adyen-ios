@@ -10,7 +10,7 @@
 @testable import AdyenNetworking
 import Foundation
 
-internal struct IntervalCalculatorMock: IntervalCalculator {
+struct IntervalCalculatorMock: IntervalCalculator {
 
     var getInterval: (_ counter: UInt) -> DispatchTimeInterval
 

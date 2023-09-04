@@ -6,7 +6,7 @@
 
 import Foundation
 
-internal struct BankPayload: Payload {
+struct BankPayload: Payload {
     
     private var accountNumber: String?
     private var routingNumber: String?
@@ -18,13 +18,13 @@ internal struct BankPayload: Payload {
         case timestamp = "generationtime"
     }
     
-    internal func add(accountNumber: String) -> BankPayload {
+    func add(accountNumber: String) -> BankPayload {
         var payloadCopy = self
         payloadCopy.accountNumber = accountNumber
         return payloadCopy
     }
     
-    internal func add(routingNumber: String) -> BankPayload {
+    func add(routingNumber: String) -> BankPayload {
         var payloadCopy = self
         payloadCopy.routingNumber = routingNumber
         return payloadCopy

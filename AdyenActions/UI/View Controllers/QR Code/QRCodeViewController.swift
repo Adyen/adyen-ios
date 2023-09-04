@@ -9,13 +9,13 @@ import Foundation
 import UIKit
 
 /// A `UIViewController` that shows the QR code action UI.
-internal final class QRCodeViewController: UIViewController {
+final class QRCodeViewController: UIViewController {
     
     /// The view model.
     private let viewModel: QRCodeView.Model
     
     /// :nodoc:
-    internal lazy var qrCodeView = QRCodeView(model: viewModel)
+    lazy var qrCodeView = QRCodeView(model: viewModel)
     
     /// :nodoc:
     private lazy var containerView = UIView(frame: .zero)
@@ -24,19 +24,19 @@ internal final class QRCodeViewController: UIViewController {
     ///
     /// - Parameter viewModel: The view model.
     /// - Parameter style: The UI style.
-    internal init(viewModel: QRCodeView.Model) {
+    init(viewModel: QRCodeView.Model) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: Bundle(for: QRCodeViewController.self))
     }
     
     /// :nodoc:
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     /// :nodoc:
-    override internal func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         containerView.addSubview(qrCodeView)
         view.addSubview(containerView)
@@ -64,7 +64,7 @@ internal final class QRCodeViewController: UIViewController {
     }
     
     /// :nodoc:
-    override internal var preferredContentSize: CGSize {
+    override var preferredContentSize: CGSize {
         get {
             containerView.adyen.minimalSize
         }

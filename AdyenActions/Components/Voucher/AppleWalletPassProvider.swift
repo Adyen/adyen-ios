@@ -9,7 +9,7 @@ import AdyenNetworking
 import Foundation
 
 /// :nodoc:
-internal protocol AnyAppleWalletPassProvider {
+protocol AnyAppleWalletPassProvider {
     /// :nodoc:
     typealias CompletionHandler = (Result<Data, Error>) -> Void
 
@@ -18,19 +18,19 @@ internal protocol AnyAppleWalletPassProvider {
 }
 
 /// :nodoc:
-internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
+final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
     APIContextAware {
     
     /// :nodoc:
-    internal let apiContext: APIContext
+    let apiContext: APIContext
     
     /// :nodoc:
-    internal convenience init(apiContext: APIContext) {
+    convenience init(apiContext: APIContext) {
         self.init(apiContext: apiContext, apiClient: nil)
     }
     
     /// :nodoc:
-    internal init(apiContext: APIContext, apiClient: AnyRetryAPIClient? = nil) {
+    init(apiContext: APIContext, apiClient: AnyRetryAPIClient? = nil) {
         self.apiContext = apiContext
         if let apiClient = apiClient {
             self.retryApiClient = apiClient
@@ -42,7 +42,7 @@ internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
     }
 
     /// :nodoc:
-    internal func provide(with passToken: String, completion: @escaping CompletionHandler) {
+    func provide(with passToken: String, completion: @escaping CompletionHandler) {
         let request = AppleWalletPassRequest(passToken: passToken)
         apiClient.perform(request) { [weak self] result in
             self?.handle(result, completion: completion)

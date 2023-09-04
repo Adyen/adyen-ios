@@ -12,13 +12,13 @@ import PassKit
 public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, Localizable, FinalizableComponent {
 
     /// :nodoc:
-    internal var state: State = .initial
+    var state: State = .initial
     
     /// :nodoc:
-    internal let internalPayment: Payment
+    let internalPayment: Payment
 
     /// :nodoc:
-    internal let applePayPaymentMethod: ApplePayPaymentMethod
+    let applePayPaymentMethod: ApplePayPaymentMethod
 
     /// :nodoc:
     public let apiContext: APIContext
@@ -27,10 +27,10 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     public var paymentMethod: PaymentMethod { applePayPaymentMethod }
 
     /// Apple Pay component configuration.
-    internal let configuration: Configuration
+    let configuration: Configuration
 
     /// :nodoc:
-    internal var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
+    var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
 
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -212,7 +212,7 @@ extension ApplePayComponent {
 
 extension ApplePayComponent {
 
-    internal enum State {
+    enum State {
         case initial
         case paid((PKPaymentAuthorizationStatus) -> Void)
         case finalized((() -> Void)?)

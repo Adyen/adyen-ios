@@ -127,7 +127,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     
     // MARK: - Alert Label
     
-    internal lazy var alertLabel: UILabel = {
+    lazy var alertLabel: UILabel = {
         let alertLabel = UILabel(style: item.style.title)
         alertLabel.textColor = item.style.errorColor
         alertLabel.isAccessibilityElement = false
@@ -186,7 +186,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     
     // MARK: - Editing
     
-    override internal func didChangeEditingStatus() {
+    override func didChangeEditingStatus() {
         updateValidationStatus()
     }
     
@@ -294,7 +294,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValueItemView<String, F
     }
 
     /// :nodoc:
-    internal func resetValidationStatus() {
+    func resetValidationStatus() {
         removeAccessoryIfNeeded()
         hideAlertLabel(true, animated: false)
         unhighlightSeparatorView()

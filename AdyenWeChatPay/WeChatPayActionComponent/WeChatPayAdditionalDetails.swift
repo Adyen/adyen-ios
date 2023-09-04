@@ -8,13 +8,13 @@ import Adyen
 import Foundation
 
 /// :nodoc:
-internal final class WeChatPayAdditionalDetails: AdditionalDetails {
+final class WeChatPayAdditionalDetails: AdditionalDetails {
     
     /// :nodoc:
-    internal let resultCode: String
+    let resultCode: String
     
     /// :nodoc:
-    internal init(resultCode: String) {
+    init(resultCode: String) {
         self.resultCode = resultCode
     }
     

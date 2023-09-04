@@ -6,7 +6,7 @@
 
 import Foundation
 
-internal extension KeyedDecodingContainer {
+extension KeyedDecodingContainer {
     
     // MARK: - Dictionary
     
@@ -133,19 +133,19 @@ private extension UnkeyedDecodingContainer {
 }
 
 private struct JSONCodingKeys: CodingKey {
-    internal var stringValue: String
+    var stringValue: String
     
-    internal var intValue: Int?
+    var intValue: Int?
     
-    internal init(value: String) {
+    init(value: String) {
         self.stringValue = value
     }
     
-    internal init?(stringValue: String) {
+    init?(stringValue: String) {
         self.stringValue = stringValue
     }
     
-    internal init?(intValue: Int) {
+    init?(intValue: Int) {
         self.init(stringValue: "\(intValue)")
         self.intValue = intValue
     }

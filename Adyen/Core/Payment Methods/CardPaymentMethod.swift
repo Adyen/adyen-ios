@@ -42,7 +42,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
         builder.build(paymentMethod: self)
     }
     
-    internal init(type: String, name: String, fundingSource: CardFundingSource, brands: [String]) {
+    init(type: String, name: String, fundingSource: CardFundingSource, brands: [String]) {
         self.type = type
         self.name = name
         self.brands = brands

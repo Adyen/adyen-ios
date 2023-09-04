@@ -8,22 +8,22 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-internal final class DefaultAPIClient: AnyRetryAPIClient {
+final class DefaultAPIClient: AnyRetryAPIClient {
     
-    internal init(apiContext: AnyAPIContext = DemoAPIContext()) {
+    init(apiContext: AnyAPIContext = DemoAPIContext()) {
         self.apiClient = RetryAPIClient(
             apiClient: APIClient(apiContext: apiContext),
             scheduler: SimpleScheduler(maximumCount: 2)
         )
     }
     
-    internal let apiClient: RetryAPIClient
+    let apiClient: RetryAPIClient
     
-    internal func perform<R>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) where R: Request {
+    func perform<R>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) where R: Request {
         perform(request, shouldRetry: nil, completionHandler: completionHandler)
     }
     
-    internal func perform<R>(
+    func perform<R>(
         _ request: R, shouldRetry: ((Result<R.ResponseType, Error>) -> Bool)?,
         completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void
     ) where R: Request {

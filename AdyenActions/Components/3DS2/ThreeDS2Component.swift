@@ -8,7 +8,7 @@ import Adyen
 import Adyen3DS2
 import Foundation
 
-internal protocol AnyRedirectComponent: ActionComponent {
+protocol AnyRedirectComponent: ActionComponent {
     func handle(_ action: RedirectAction)
 }
 
@@ -46,11 +46,11 @@ public final class ThreeDS2Component: ActionComponent {
     /// - Parameter redirectComponent: The redirect component.
     /// - Parameter redirectComponentStyle: `RedirectComponent` style.
     /// :nodoc:
-    internal convenience init(apiContext: APIContext,
-                              threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
-                              threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
-                              redirectComponent: AnyRedirectComponent,
-                              redirectComponentStyle: RedirectComponentStyle? = nil) {
+    convenience init(apiContext: APIContext,
+                     threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
+                     threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
+                     redirectComponent: AnyRedirectComponent,
+                     redirectComponentStyle: RedirectComponentStyle? = nil) {
         self.init(apiContext: redirectComponent.apiContext, redirectComponentStyle: redirectComponentStyle)
         self.threeDS2CompactFlowHandler = threeDS2CompactFlowHandler
         self.threeDS2ClassicFlowHandler = threeDS2ClassicFlowHandler

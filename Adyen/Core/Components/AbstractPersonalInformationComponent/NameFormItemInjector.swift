@@ -7,27 +7,27 @@
 import Foundation
 import UIKit
 
-internal final class NameFormItemInjector: FormItemInjector, Localizable {
+final class NameFormItemInjector: FormItemInjector, Localizable {
 
-    internal let contentType: UITextContentType
-
-    /// :nodoc:
-    internal var localizationParameters: LocalizationParameters?
+    let contentType: UITextContentType
 
     /// :nodoc:
-    internal let style: FormTextItemStyle
+    var localizationParameters: LocalizationParameters?
 
     /// :nodoc:
-    internal var value: String?
+    let style: FormTextItemStyle
 
     /// :nodoc:
-    internal var identifier: String
+    var value: String?
 
     /// :nodoc:
-    internal var localizationKey: LocalizationKey
+    var identifier: String
 
     /// :nodoc:
-    internal lazy var item: FormTextInputItem = {
+    var localizationKey: LocalizationKey
+
+    /// :nodoc:
+    lazy var item: FormTextInputItem = {
         let item = FormTextInputItem(style: style)
         item.value = value ?? ""
         item.title = localizedString(localizationKey, localizationParameters)
@@ -40,11 +40,11 @@ internal final class NameFormItemInjector: FormItemInjector, Localizable {
         return item
     }()
 
-    internal init(value: String?,
-                  identifier: String,
-                  localizationKey: LocalizationKey,
-                  style: FormTextItemStyle,
-                  contentType: UITextContentType = .name) {
+    init(value: String?,
+         identifier: String,
+         localizationKey: LocalizationKey,
+         style: FormTextItemStyle,
+         contentType: UITextContentType = .name) {
         self.value = value
         self.identifier = identifier
         self.localizationKey = localizationKey
@@ -53,7 +53,7 @@ internal final class NameFormItemInjector: FormItemInjector, Localizable {
     }
 
     /// :nodoc:
-    internal func inject(into formViewController: FormViewController) {
+    func inject(into formViewController: FormViewController) {
         formViewController.append(item)
     }
     

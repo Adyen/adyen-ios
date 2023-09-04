@@ -29,15 +29,15 @@ public final class DokuVoucherAction: GenericVoucherAction, InstructionAwareVouc
     }
 
     /// :nodoc:
-    internal init(paymentMethodType: VoucherPaymentMethod,
-                  initialAmount: Amount,
-                  totalAmount: Amount,
-                  reference: String,
-                  shopperEmail: String,
-                  expiresAt: Date,
-                  merchantName: String,
-                  shopperName: String,
-                  instructionsUrl: URL) {
+    init(paymentMethodType: VoucherPaymentMethod,
+         initialAmount: Amount,
+         totalAmount: Amount,
+         reference: String,
+         shopperEmail: String,
+         expiresAt: Date,
+         merchantName: String,
+         shopperName: String,
+         instructionsUrl: URL) {
         self.shopperEmail = shopperEmail
         self.shopperName = shopperName
         self.instructionsURL = instructionsUrl

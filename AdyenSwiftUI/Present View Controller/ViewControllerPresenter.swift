@@ -24,11 +24,11 @@ import SwiftUI
 
     /// :nodoc:
     @available(iOS 13.0, *)
-    internal struct ViewControllerPresenter: ViewModifier {
+    struct ViewControllerPresenter: ViewModifier {
 
-        @Binding internal var viewController: UIViewController?
+        @Binding var viewController: UIViewController?
 
-        internal func body(content: Content) -> some View {
+        func body(content: Content) -> some View {
             ZStack {
                 FullScreenView(viewController: $viewController)
                 content
@@ -38,28 +38,28 @@ import SwiftUI
 
     /// :nodoc:
     @available(iOS 13.0, *)
-    internal struct FullScreenView: UIViewControllerRepresentable {
+    struct FullScreenView: UIViewControllerRepresentable {
 
-        @Binding internal var viewController: UIViewController?
+        @Binding var viewController: UIViewController?
 
-        internal init(viewController: Binding<UIViewController?>) {
+        init(viewController: Binding<UIViewController?>) {
             self._viewController = viewController
         }
 
-        internal final class Coordinator {
+        final class Coordinator {
 
             fileprivate var currentlyPresentedViewController: UIViewController?
         }
 
-        internal func makeUIViewController(context: UIViewControllerRepresentableContext<FullScreenView>) -> UIViewController {
+        func makeUIViewController(context: UIViewControllerRepresentableContext<FullScreenView>) -> UIViewController {
             UIViewController()
         }
 
-        internal func makeCoordinator() -> Coordinator {
+        func makeCoordinator() -> Coordinator {
             Coordinator()
         }
 
-        internal func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<FullScreenView>) {
+        func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<FullScreenView>) {
             if let viewController = viewController, viewController !== context.coordinator.currentlyPresentedViewController {
 
                 dismissIfNeededThenPresent(viewController: viewController, presenter: uiViewController, context: context)

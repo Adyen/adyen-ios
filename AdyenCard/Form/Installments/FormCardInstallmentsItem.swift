@@ -7,7 +7,7 @@
 import Adyen
 
 /// A form element that handles the display and selection of installment options based on the configuration.
-internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentElement>, Observer {
+final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentElement>, Observer {
     
     /// Configurations  to prepare the picker form items.
     private let installmentConfiguration: InstallmentConfiguration
@@ -18,7 +18,7 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
     private let localizationParameters: LocalizationParameters?
     
     /// Current card type for which to determine the installments.
-    internal private(set) var cardType: CardType? {
+    private(set) var cardType: CardType? {
         didSet {
             updatePickerContent()
         }
@@ -58,10 +58,10 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
 
     /// Initializes the installments element.
     /// There will be one element in the picker at initialization.
-    internal init(installmentConfiguration: InstallmentConfiguration,
-                  style: FormTextItemStyle,
-                  amount: Amount?,
-                  localizationParameters: LocalizationParameters? = nil) {
+    init(installmentConfiguration: InstallmentConfiguration,
+         style: FormTextItemStyle,
+         amount: Amount?,
+         localizationParameters: LocalizationParameters? = nil) {
         self.installmentConfiguration = installmentConfiguration
         self.amount = amount
         self.localizationParameters = localizationParameters
@@ -75,7 +75,7 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
     }
 
     /// Updates the card type to the given type and triggers a reload on the element.
-    internal func update(cardType: CardType?) {
+    func update(cardType: CardType?) {
         self.cardType = cardType
     }
 
@@ -94,13 +94,13 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
     }
     
     /// :nodoc:
-    override internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    override func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
 }
 
 extension FormItemViewBuilder {
-    internal func build(with item: FormCardInstallmentsItem) -> BaseFormPickerItemView<InstallmentElement> {
+    func build(with item: FormCardInstallmentsItem) -> BaseFormPickerItemView<InstallmentElement> {
         FormCardInstallmentsItemView(item: item)
     }
 }

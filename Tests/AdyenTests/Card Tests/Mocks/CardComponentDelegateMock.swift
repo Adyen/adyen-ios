@@ -6,15 +6,15 @@
 
 import AdyenCard
 
-internal class CardComponentDelegateMock: CardComponentDelegate {
+class CardComponentDelegateMock: CardComponentDelegate {
     
     private let onBINDidChange: (String) -> Void
     private let onCardBrandChange: ([CardBrand]?) -> Void
     private let onSubmitLastFour: (String) -> Void
     
-    internal init(onBINDidChange: @escaping (String) -> Void,
-                  onCardBrandChange: @escaping ([CardBrand]?) -> Void,
-                  onSubmitLastFour: @escaping ((String) -> Void)) {
+    init(onBINDidChange: @escaping (String) -> Void,
+         onCardBrandChange: @escaping ([CardBrand]?) -> Void,
+         onSubmitLastFour: @escaping ((String) -> Void)) {
         self.onBINDidChange = onBINDidChange
         self.onCardBrandChange = onCardBrandChange
         self.onSubmitLastFour = onSubmitLastFour

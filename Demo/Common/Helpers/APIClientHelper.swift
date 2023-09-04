@@ -7,7 +7,7 @@
 import Adyen
 import AdyenNetworking
 
-internal protocol APIClientAware {
+protocol APIClientAware {
     var apiClient: APIClientProtocol { get }
 }
 
@@ -48,5 +48,5 @@ extension APIClientAware {
 }
 
 private enum AssociatedKeys {
-    internal static var apiClient = "apiClient"
+    static var apiClient = "apiClient"
 }

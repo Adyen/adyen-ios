@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// Defines an interface for components to support share activity controller.
-internal protocol ShareableComponent: AnyObject {
+protocol ShareableComponent: AnyObject {
     var presenterViewController: UIViewController { get }
     
     func setUpPresenterViewController(parentViewController: UIViewController)
@@ -18,7 +18,7 @@ internal protocol ShareableComponent: AnyObject {
 
 extension ShareableComponent {
     
-    internal func setUpPresenterViewController(parentViewController: UIViewController) {
+    func setUpPresenterViewController(parentViewController: UIViewController) {
         // Ugly hack to work around the following bug
         // https://stackoverflow.com/questions/59413850/uiactivityviewcontroller-dismissing-current-view-controller-after-sharing-file
         
@@ -28,7 +28,7 @@ extension ShareableComponent {
         presenterViewController.didMove(toParent: parentViewController)
     }
     
-    internal func presentSharePopover(with item: Any, sourceView: UIView) {
+    func presentSharePopover(with item: Any, sourceView: UIView) {
         let activityViewController = UIActivityViewController(
             activityItems: [item],
             applicationActivities: nil

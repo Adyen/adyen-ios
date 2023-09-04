@@ -60,7 +60,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         }
     }
     
-    internal func didChangeEditingStatus() {
+    func didChangeEditingStatus() {
         guard showsSeparator else { return }
         isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
     }
@@ -80,7 +80,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         }
     }
     
-    internal lazy var separatorView: UIView = {
+    lazy var separatorView: UIView = {
         let separatorView = UIView()
         separatorView.backgroundColor = defaultSeparatorColor
         separatorView.isUserInteractionEnabled = false
@@ -89,7 +89,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         return separatorView
     }()
     
-    internal var defaultSeparatorColor: UIColor {
+    var defaultSeparatorColor: UIColor {
         if isEditing {
             return tintColor
         } else {
@@ -97,7 +97,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         }
     }
     
-    internal var defaultTitleColor: UIColor {
+    var defaultTitleColor: UIColor {
         if isEditing {
             return tintColor
         } else {
@@ -105,7 +105,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         }
     }
     
-    internal func highlightSeparatorView(color: UIColor) {
+    func highlightSeparatorView(color: UIColor) {
         let transitionView = UIView()
         transitionView.backgroundColor = color
         transitionView.frame = separatorView.frame
@@ -131,7 +131,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         case separatorHighlighting = "separator_highlighting"
     }
     
-    internal func unhighlightSeparatorView() {
+    func unhighlightSeparatorView() {
         let context = AnimationContext(animationKey: Animation.separatorHighlighting.rawValue,
                                        duration: 0.0,
                                        delay: 0.0,

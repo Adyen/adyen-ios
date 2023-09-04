@@ -104,8 +104,8 @@ extension ApplePayComponent {
             self.allowOnboarding = allowOnboarding
         }
 
-        internal func createPaymentRequest(payment: Payment,
-                                           supportedNetworks: [PKPaymentNetwork]) -> PKPaymentRequest {
+        func createPaymentRequest(payment: Payment,
+                                  supportedNetworks: [PKPaymentNetwork]) -> PKPaymentRequest {
             let paymentRequest = PKPaymentRequest()
             paymentRequest.countryCode = payment.countryCode
             paymentRequest.merchantIdentifier = merchantIdentifier
@@ -137,13 +137,13 @@ extension ApplePayComponent {
 
 extension ApplePayPaymentMethod {
 
-    internal static var systemSupportedNetworks: [PKPaymentNetwork] {
+    static var systemSupportedNetworks: [PKPaymentNetwork] {
         let request = PKPaymentRequest()
         request.supportedNetworks = PKPaymentRequest.availableNetworks()
         return request.supportedNetworks
     }
 
-    internal var supportedNetworks: [PKPaymentNetwork] {
+    var supportedNetworks: [PKPaymentNetwork] {
         var networks = ApplePayPaymentMethod.systemSupportedNetworks
         if let brands = brands {
             let brandsSet = Set(brands)
@@ -156,7 +156,7 @@ extension ApplePayPaymentMethod {
 
 extension PKPaymentNetwork {
 
-    internal var adyenName: String {
+    var adyenName: String {
         if self == .masterCard { return "mc" }
         if #available(iOS 11.2, *), self == .cartesBancaires { return "cartebancaire" }
         return self.rawValue.lowercased()

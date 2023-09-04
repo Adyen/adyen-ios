@@ -54,7 +54,7 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
     }
     
     /// The formatted text value.
-    @Observable("") internal var formattedValue: String
+    @Observable("") var formattedValue: String
 
     // MARK: - Private
 
@@ -64,7 +64,7 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
 
     /// :nodoc:
     @discardableResult
-    internal func textDidChange(value: String) -> String {
+    func textDidChange(value: String) -> String {
         let sanitizedValue = formatter?.sanitizedValue(for: value) ?? value
         
         publisher.wrappedValue = sanitizedValue
@@ -78,7 +78,7 @@ open class FormTextItem: FormValueItem<String, FormTextItemStyle>, ValidatableFo
 extension AnyFormItemView {
 
     /// :nodoc:
-    internal func applyTextDelegateIfNeeded(delegate: FormTextItemViewDelegate) {
+    func applyTextDelegateIfNeeded(delegate: FormTextItemViewDelegate) {
         if let formTextItemView = self as? AnyFormTextItemView {
             formTextItemView.delegate = delegate
         }

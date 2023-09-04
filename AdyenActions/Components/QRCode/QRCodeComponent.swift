@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// An error that occurred during the use of QRCodeComponent
-internal enum QRCodeComponentError: LocalizedError {
+enum QRCodeComponentError: LocalizedError {
     /// Indicates the QR code is not longer valid
     case qrCodeExpired
     
@@ -73,10 +73,10 @@ public final class QRCodeComponent: ActionComponent, Localizable, Cancellable {
     /// - Parameter style: The component UI style.
     /// - Parameter pollingComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter timeoutInterval: QR Code expiration timeout
-    internal init(apiContext: APIContext,
-                  style: QRCodeComponentStyle = QRCodeComponentStyle(),
-                  pollingComponentBuilder: AnyPollingHandlerProvider,
-                  timeoutInterval: TimeInterval) {
+    init(apiContext: APIContext,
+         style: QRCodeComponentStyle = QRCodeComponentStyle(),
+         pollingComponentBuilder: AnyPollingHandlerProvider,
+         timeoutInterval: TimeInterval) {
         self.apiContext = apiContext
         self.style = style
         self.pollingComponentBuilder = pollingComponentBuilder

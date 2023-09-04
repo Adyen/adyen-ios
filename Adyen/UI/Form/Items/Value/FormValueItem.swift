@@ -45,7 +45,7 @@ open class FormValueItem<ValueType: Equatable, StyleType: FormValueItemStyle>: F
     @Observable(nil) public var title: String?
 
     /// Create new instance of FormValueItem
-    internal init(value: ValueType, style: StyleType) {
+    init(value: ValueType, style: StyleType) {
         self.publisher = Observable(value)
         self.style = style
         self.subitems = []

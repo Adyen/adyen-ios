@@ -6,31 +6,31 @@
 
 import Foundation
 
-internal struct RedirectPaymentMethod: PaymentMethod {
+struct RedirectPaymentMethod: PaymentMethod {
     
-    internal let type: String
+    let type: String
     
-    internal let name: String
+    let name: String
     
     /// :nodoc:
-    internal func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+    func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
     
 }
 
-internal struct StoredRedirectPaymentMethod: StoredPaymentMethod {
+struct StoredRedirectPaymentMethod: StoredPaymentMethod {
     
-    internal let type: String
+    let type: String
     
-    internal let name: String
+    let name: String
     
-    internal let identifier: String
+    let identifier: String
     
-    internal let supportedShopperInteractions: [ShopperInteraction]
+    let supportedShopperInteractions: [ShopperInteraction]
     
     /// :nodoc:
-    internal func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+    func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
     

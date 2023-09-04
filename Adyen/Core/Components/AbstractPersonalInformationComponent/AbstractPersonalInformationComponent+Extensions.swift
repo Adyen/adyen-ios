@@ -16,7 +16,7 @@ extension AbstractPersonalInformationComponent: LoadingComponent {
     }
 
     /// :nodoc:
-    internal func didSelectSubmitButton() {
+    func didSelectSubmitButton() {
         guard formViewController.validate() else { return }
 
         button.showsActivityIndicator = true

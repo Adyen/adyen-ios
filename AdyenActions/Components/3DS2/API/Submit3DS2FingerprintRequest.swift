@@ -9,44 +9,44 @@ import AdyenNetworking
 import Foundation
 
 /// :nodoc:
-internal struct Submit3DS2FingerprintRequest: APIRequest {
+struct Submit3DS2FingerprintRequest: APIRequest {
 
     /// :nodoc:
-    internal typealias ResponseType = Submit3DS2FingerprintResponse
+    typealias ResponseType = Submit3DS2FingerprintResponse
 
     /// :nodoc:
-    internal var path: String { "checkoutshopper/v1/submitThreeDS2Fingerprint" }
+    var path: String { "checkoutshopper/v1/submitThreeDS2Fingerprint" }
 
     /// :nodoc:
-    internal var counter: UInt = 0
+    var counter: UInt = 0
 
     /// :nodoc:
-    internal var headers: [String: String] = [:]
+    var headers: [String: String] = [:]
 
     /// :nodoc:
-    internal let queryParameters: [URLQueryItem] = []
+    let queryParameters: [URLQueryItem] = []
 
     /// :nodoc:
-    internal let method: HTTPMethod = .post
+    let method: HTTPMethod = .post
 
     /// :nodoc:
-    internal let fingerprint: String
+    let fingerprint: String
 
     /// :nodoc:
-    internal let paymentData: String?
+    let paymentData: String?
 
     /// :nodoc:
-    internal let clientKey: String
+    let clientKey: String
 
     /// :nodoc:
-    internal init(clientKey: String, fingerprint: String, paymentData: String?) {
+    init(clientKey: String, fingerprint: String, paymentData: String?) {
         self.fingerprint = fingerprint
         self.paymentData = paymentData
         self.clientKey = clientKey
     }
 
     /// :nodoc:
-    internal enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case fingerprint = "fingerprintResult"
         case paymentData
         case clientKey

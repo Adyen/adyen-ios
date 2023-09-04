@@ -8,10 +8,10 @@ import Adyen
 import Foundation
 import UIKit
 
-internal final class AwaitView: UIView {
+final class AwaitView: UIView {
     
     /// :nodoc:
-    internal lazy var icon: UIImageView = {
+    lazy var icon: UIImageView = {
         var image = UIImage(named: viewModel.icon)
         if image == nil {
             image = UIImage(named: viewModel.icon, in: Bundle.actionsInternalResources, compatibleWith: nil)
@@ -25,7 +25,7 @@ internal final class AwaitView: UIView {
     }()
     
     /// :nodoc:
-    internal lazy var messageLabel: UILabel = {
+    lazy var messageLabel: UILabel = {
         let label = UILabel(style: style.message)
         label.text = viewModel.message
         label.numberOfLines = 0
@@ -36,7 +36,7 @@ internal final class AwaitView: UIView {
     }()
     
     /// :nodoc:
-    internal lazy var spinnerView: UIView = {
+    lazy var spinnerView: UIView = {
         let stackView = UIStackView(arrangedSubviews: [activityIndicatorView, spinnerTitleLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center
@@ -49,7 +49,7 @@ internal final class AwaitView: UIView {
     }()
     
     /// :nodoc:
-    internal lazy var activityIndicatorView: UIActivityIndicatorView = {
+    lazy var activityIndicatorView: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView(style: .gray)
         activityIndicatorView.color = style.spinnerTitle.color
         activityIndicatorView.backgroundColor = .clear
@@ -61,7 +61,7 @@ internal final class AwaitView: UIView {
     }()
     
     /// :nodoc:
-    internal lazy var spinnerTitleLabel: UILabel = {
+    lazy var spinnerTitleLabel: UILabel = {
         let label = UILabel(style: style.spinnerTitle)
         label.text = viewModel.spinnerTitle
         label.numberOfLines = 1
@@ -80,8 +80,8 @@ internal final class AwaitView: UIView {
     ///
     /// - Parameter viewModel: The view model.
     /// - Parameter style: The UI style.
-    internal init(viewModel: AwaitComponentViewModel,
-                  style: AwaitComponentStyle = AwaitComponentStyle()) {
+    init(viewModel: AwaitComponentViewModel,
+         style: AwaitComponentStyle = AwaitComponentStyle()) {
         self.viewModel = viewModel
         self.style = style
         super.init(frame: .zero)
@@ -93,7 +93,7 @@ internal final class AwaitView: UIView {
     }
     
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

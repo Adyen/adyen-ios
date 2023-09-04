@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 
-internal final class VoucherViewController: UIViewController {
+final class VoucherViewController: UIViewController {
 
     private lazy var scrollView = UIScrollView()
 
@@ -15,18 +15,18 @@ internal final class VoucherViewController: UIViewController {
 
     private let style: ViewStyle
 
-    internal init(voucherView: UIView, style: ViewStyle) {
+    init(voucherView: UIView, style: ViewStyle) {
         self.voucherView = voucherView
         self.style = style
         super.init(nibName: nil, bundle: Bundle(for: VoucherViewController.self))
     }
 
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override internal func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         buildUI()
         view.backgroundColor = style.backgroundColor
@@ -44,7 +44,7 @@ internal final class VoucherViewController: UIViewController {
     }
 
     /// :nodoc:
-    override internal var preferredContentSize: CGSize {
+    override var preferredContentSize: CGSize {
         get {
             voucherView.adyen.minimalSize
         }

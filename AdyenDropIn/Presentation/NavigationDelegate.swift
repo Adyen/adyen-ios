@@ -8,10 +8,10 @@ import Adyen
 import Foundation
 
 /// Delegates `ViewController`'s dismissal.
-internal protocol DismissalDelegate: AnyObject {
+protocol DismissalDelegate: AnyObject {
 
     /// Asks the `delegate` to dismiss top view controller or itself as the `delegate` sees fit.
     func dismiss(completion: (() -> Void)?)
 }
 
-internal typealias NavigationDelegate = PresentationDelegate & DismissalDelegate
+typealias NavigationDelegate = DismissalDelegate & PresentationDelegate

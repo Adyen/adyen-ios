@@ -15,7 +15,7 @@ public typealias RegionPickerItem = BasePickerElement<Region>
 /// :nodoc:
 public final class FormRegionPickerItem: BaseFormPickerItem<Region> {
 
-    internal init(preselectedValue: Region, selectableValues: [Region], style: FormTextItemStyle) {
+    init(preselectedValue: Region, selectableValues: [Region], style: FormTextItemStyle) {
         super.init(preselectedValue: Self.pickerElement(from: preselectedValue),
                    selectableValues: selectableValues.map(Self.pickerElement),
                    style: style)
@@ -32,9 +32,9 @@ public final class FormRegionPickerItem: BaseFormPickerItem<Region> {
 
 }
 
-internal final class FormRegionPickerItemView: BaseFormPickerItemView<Region> {
+final class FormRegionPickerItemView: BaseFormPickerItemView<Region> {
 
-    override internal func initialize() {
+    override func initialize() {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, inputControl])
         stackView.axis = .vertical
         stackView.spacing = 5.5

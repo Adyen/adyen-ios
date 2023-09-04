@@ -96,7 +96,7 @@ extension PaymentAwareComponent {
 
 private enum AssociatedKeys {
 
-    internal static var payment = "paymentObject"
+    static var payment = "paymentObject"
 
-    internal static var order = "orderObject"
+    static var order = "orderObject"
 }

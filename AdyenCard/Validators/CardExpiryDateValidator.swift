@@ -22,7 +22,7 @@ public final class CardExpiryDateValidator: Validator {
     }
     
     /// :nodoc:
-    internal init(referenceDate: Date = Date()) {
+    init(referenceDate: Date = Date()) {
         self.referenceDate = referenceDate
     }
     

@@ -60,7 +60,7 @@ public struct RedirectDetails: AdditionalDetails, Decodable {
     
     // MARK: - Internal
     
-    internal enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case payload
         case redirectResult
         case paymentResponse = "PaRes"

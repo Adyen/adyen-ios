@@ -25,7 +25,7 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
     /// - Parameter name: The payment method name.
     /// - Parameter phoneExtensions: The phone extensions supported.
     /// :nodoc:
-    internal init(type: String, name: String, phoneExtensions: [PhoneExtension] = []) {
+    init(type: String, name: String, phoneExtensions: [PhoneExtension] = []) {
         self.type = type
         self.name = name
         self.phoneExtensions = phoneExtensions

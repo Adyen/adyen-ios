@@ -10,7 +10,7 @@ import Foundation
 
 /// :nodoc:
 /// A specific await component thats keeps polling the `/status` endpoint to check the payment status.
-internal final class PollingComponent: AnyPollingHandler {
+final class PollingComponent: AnyPollingHandler {
     
     private let maxErrorNumber = 1
 
@@ -19,24 +19,24 @@ internal final class PollingComponent: AnyPollingHandler {
     private var errorCount = 0
 
     /// :nodoc:
-    internal let apiContext: APIContext
+    let apiContext: APIContext
     
     /// :nodoc:
-    internal weak var presentationDelegate: PresentationDelegate?
+    weak var presentationDelegate: PresentationDelegate?
     
     /// :nodoc:
-    internal weak var delegate: ActionComponentDelegate?
+    weak var delegate: ActionComponentDelegate?
     
     /// :nodoc:
-    internal let componentName = "mbWayAwait"
+    let componentName = "mbWayAwait"
     
     /// :nodoc:
     /// Initializes the Polling Await component.
     ///
     /// - Parameter apiContext: The API context.
     /// - Parameter apiClient: The API client.
-    internal init(apiContext: APIContext,
-                  apiClient: AnyRetryAPIClient) {
+    init(apiContext: APIContext,
+         apiClient: AnyRetryAPIClient) {
         self.apiContext = apiContext
         self.apiClient = apiClient
     }
@@ -45,7 +45,7 @@ internal final class PollingComponent: AnyPollingHandler {
     /// Handles await action.
     ///
     /// - Parameter action: The await action object.
-    internal func handle(_ action: PaymentDataAware) {
+    func handle(_ action: PaymentDataAware) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
         startPolling(action)
     }
@@ -54,7 +54,7 @@ internal final class PollingComponent: AnyPollingHandler {
     private var isCancelled: Bool = false
     
     /// :nodoc:
-    internal func didCancel() {
+    func didCancel() {
         isCancelled = true
     }
     

@@ -58,10 +58,10 @@ public final class GiftCardComponent: PartialPaymentComponent,
                   publicKeyProvider: PublicKeyProvider(apiContext: apiContext))
     }
     
-    internal init(paymentMethod: GiftCardPaymentMethod,
-                  apiContext: APIContext,
-                  style: FormComponentStyle = FormComponentStyle(),
-                  publicKeyProvider: AnyPublicKeyProvider) {
+    init(paymentMethod: GiftCardPaymentMethod,
+         apiContext: APIContext,
+         style: FormComponentStyle = FormComponentStyle(),
+         publicKeyProvider: AnyPublicKeyProvider) {
         self.giftCardPaymentMethod = paymentMethod
         self.style = style
         self.apiContext = apiContext
@@ -92,14 +92,14 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
     // MARK: Items
 
-    internal lazy var errorItem: FormErrorItem = {
+    lazy var errorItem: FormErrorItem = {
         let item = FormErrorItem(iconName: "error",
                                  style: style.errorStyle)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "errorItem")
         return item
     }()
 
-    internal lazy var numberItem: FormTextInputItem = {
+    lazy var numberItem: FormTextInputItem = {
         let item = FormTextInputItem(style: style.textField)
 
         item.title = localizedString(.cardNumberItemTitle, localizationParameters)
@@ -112,7 +112,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         return item
     }()
 
-    internal lazy var securityCodeItem: FormTextInputItem = {
+    lazy var securityCodeItem: FormTextInputItem = {
         let item = FormTextInputItem(style: style.textField)
         item.title = localizedString(.cardPinTitle, localizationParameters)
         item.validator = NumericStringValidator(minimumLength: 3, maximumLength: 10)
@@ -125,7 +125,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         return item
     }()
 
-    internal lazy var button: FormButtonItem = {
+    lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedString(.cardApplyGiftcard, localizationParameters)
@@ -149,7 +149,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     }
 
     /// :nodoc:
-    internal func startLoading() {
+    func startLoading() {
         button.showsActivityIndicator = true
         viewController.view.isUserInteractionEnabled = false
     }
@@ -166,7 +166,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
     // MARK: - Submitting the form
 
-    internal func didSelectSubmitButton() {
+    func didSelectSubmitButton() {
         hideError()
         guard formViewController.validate() else {
             return

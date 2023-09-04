@@ -44,7 +44,7 @@ public struct Amount: Codable, Equatable {
     }
 
     /// :nodoc:
-    internal init(value: Int, unsafeCurrencyCode: String) {
+    init(value: Int, unsafeCurrencyCode: String) {
         self.value = value
         self.currencyCode = unsafeCurrencyCode
     }
@@ -109,7 +109,7 @@ extension Amount: Comparable {
         return lhs.value > rhs.value
     }
 
-    internal static func - (lhs: Amount, rhs: Amount) -> Amount {
+    static func - (lhs: Amount, rhs: Amount) -> Amount {
         assert(lhs.currencyCode == rhs.currencyCode, "Currencies should match to subtract")
         return Amount(value: lhs.value - rhs.value, currencyCode: lhs.currencyCode, localeIdentifier: lhs.localeIdentifier)
     }
@@ -121,7 +121,7 @@ public struct AmountComponents {
     
     /// :nodoc:
     fileprivate init(amount: Amount) {
-        if let comps = Self.extractAmountComponents(from: amount.formatted) {
+        if let comps = extractAmountComponents(from: amount.formatted) {
             (self.formattedCurrencySymbol, self.formattedValue) = comps
         } else {
             self.formattedValue = String(amount.value)

@@ -7,19 +7,19 @@
 import Adyen
 import UIKit
 
-internal protocol BACSInputFormViewProtocol: FormViewProtocol {}
+protocol BACSInputFormViewProtocol: FormViewProtocol {}
 
-internal class BACSInputFormViewController: FormViewController, BACSInputFormViewProtocol {
+class BACSInputFormViewController: FormViewController, BACSInputFormViewProtocol {
 
     // MARK: - Properties
 
-    internal weak var presenter: BACSInputPresenterProtocol?
+    weak var presenter: BACSInputPresenterProtocol?
 
     // MARK: - Initializers
 
-    internal init(title: String,
-                  styleProvider: FormComponentStyle,
-                  localizationParameters: LocalizationParameters? = nil) {
+    init(title: String,
+         styleProvider: FormComponentStyle,
+         localizationParameters: LocalizationParameters? = nil) {
         super.init(style: styleProvider)
         self.title = title
         self.localizationParameters = localizationParameters
@@ -27,12 +27,12 @@ internal class BACSInputFormViewController: FormViewController, BACSInputFormVie
 
     // MARK: - View life cycle
 
-    override internal func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.viewDidLoad()
     }
 
-    override internal func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         presenter?.viewWillAppear()
     }

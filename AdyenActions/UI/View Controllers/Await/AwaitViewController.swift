@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// A `UIViewController` that shows the await action UI.
-internal final class AwaitViewController: UIViewController {
+final class AwaitViewController: UIViewController {
     
     /// The view model.
     private let viewModel: AwaitComponentViewModel
@@ -18,7 +18,7 @@ internal final class AwaitViewController: UIViewController {
     private let style: AwaitComponentStyle
     
     /// :nodoc:
-    internal lazy var awaitView = AwaitView(viewModel: viewModel, style: style)
+    lazy var awaitView = AwaitView(viewModel: viewModel, style: style)
     
     /// :nodoc:
     private lazy var containerView = UIView(frame: .zero)
@@ -27,8 +27,8 @@ internal final class AwaitViewController: UIViewController {
     ///
     /// - Parameter viewModel: The view model.
     /// - Parameter style: The UI style.
-    internal init(viewModel: AwaitComponentViewModel,
-                  style: AwaitComponentStyle = AwaitComponentStyle()) {
+    init(viewModel: AwaitComponentViewModel,
+         style: AwaitComponentStyle = AwaitComponentStyle()) {
         self.viewModel = viewModel
         self.style = style
         super.init(nibName: nil, bundle: Bundle(for: AwaitViewController.self))
@@ -36,12 +36,12 @@ internal final class AwaitViewController: UIViewController {
     
     /// :nodoc:
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     /// :nodoc:
-    override internal func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         containerView.addSubview(awaitView)
         view.addSubview(containerView)
@@ -69,7 +69,7 @@ internal final class AwaitViewController: UIViewController {
     }
     
     /// :nodoc:
-    override internal var preferredContentSize: CGSize {
+    override var preferredContentSize: CGSize {
         get {
             containerView.adyen.minimalSize
         }

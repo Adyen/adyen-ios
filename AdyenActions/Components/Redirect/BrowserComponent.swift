@@ -8,20 +8,20 @@ import Adyen
 import SafariServices
 import UIKit
 
-internal protocol BrowserComponentDelegate: AnyObject {
+protocol BrowserComponentDelegate: AnyObject {
     func didCancel()
     func didOpenExternalApplication()
 }
 
 /// A component that opens a URL in web browsed and presents it.
-internal final class BrowserComponent: NSObject, PresentableComponent {
+final class BrowserComponent: NSObject, PresentableComponent {
 
-    internal let apiContext: APIContext
+    let apiContext: APIContext
     private let url: URL
     private let style: RedirectComponentStyle?
     private let componentName = "browser"
 
-    internal lazy var viewController: UIViewController = {
+    lazy var viewController: UIViewController = {
         let safariViewController = SFSafariViewController(url: url)
         safariViewController.delegate = self
         safariViewController.modalPresentationStyle = style?.modalPresentationStyle ?? .formSheet
@@ -37,14 +37,14 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     }()
     
     /// :nodoc:
-    internal weak var delegate: BrowserComponentDelegate?
+    weak var delegate: BrowserComponentDelegate?
     
     /// Initializes the component.
     ///
     /// - Parameter url: The URL to where the user should be redirected
     /// - Parameter apiContext: The API context.
     /// - Parameter style: The component's UI style.
-    internal init(url: URL, apiContext: APIContext, style: RedirectComponentStyle? = nil) {
+    init(url: URL, apiContext: APIContext, style: RedirectComponentStyle? = nil) {
         self.url = url
         self.apiContext = apiContext
         self.style = style
@@ -72,13 +72,13 @@ extension BrowserComponent: SFSafariViewControllerDelegate, UIAdaptivePresentati
     
     /// Called when user clicks "Cancel" button or Safari redirects to other app.
     /// :nodoc:
-    internal func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         finish()
     }
 
     /// Called when user drag VC down to dismiss.
     /// :nodoc:
-    internal func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         self.delegate?.didCancel()
     }
 

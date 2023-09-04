@@ -133,7 +133,7 @@ extension UIColor {
 
         /// Create new UIColor from hex value.
         /// - Parameter hex: The hex value of color. Should be between 0 and 0xFFFFFF.
-        internal static func color(hex: UInt) -> UIColor {
+        static func color(hex: UInt) -> UIColor {
             assert(hex >= 0x000000 && hex <= 0xFFFFFF,
                    "Invalid Hexadecimal color, Hexadecimal number should be between 0x0 and 0xFFFFFF")
             return UIColor(

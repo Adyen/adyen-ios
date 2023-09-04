@@ -316,7 +316,7 @@ public struct LocalizationKey {
     /// Invalid ABA routing number
     public static let achAccountLocationFieldInvalid = LocalizationKey(key: "adyen.ach.accountLocationField.invalid")
     
-    internal let key: String
+    let key: String
     
     /// :nodoc:
     public init(key: String) {

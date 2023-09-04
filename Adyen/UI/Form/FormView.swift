@@ -8,10 +8,10 @@ import UIKit
 
 /// Displays a form for the user to enter details.
 /// :nodoc:
-internal final class FormView: UIScrollView {
+final class FormView: UIScrollView {
 
     /// Initializes the form view.
-    internal init() {
+    init() {
         super.init(frame: .zero)
         
         preservesSuperviewLayoutMargins = true
@@ -22,11 +22,11 @@ internal final class FormView: UIScrollView {
     
     /// :nodoc:
     @available(*, unavailable)
-    internal required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override internal var intrinsicContentSize: CGSize {
+    override var intrinsicContentSize: CGSize {
         stackView.adyen.minimalSize
     }
     
@@ -35,7 +35,7 @@ internal final class FormView: UIScrollView {
     /// Appends an item view to the stack of item views.
     ///
     /// - Parameter itemView: The item view to append.
-    internal func appendItemView(_ itemView: UIView) {
+    func appendItemView(_ itemView: UIView) {
         stackView.addArrangedSubview(itemView)
     }
 

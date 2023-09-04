@@ -7,12 +7,12 @@
 import UIKit
 
 @available(iOS 13.0, *)
-internal final class DiffableListDataSource: UITableViewDiffableDataSource<ListSection, ListItem>, ListViewControllerDataSource {
-    internal var cellReuseIdentifier: String { coreDataSource.cellReuseIdentifier }
+final class DiffableListDataSource: UITableViewDiffableDataSource<ListSection, ListItem>, ListViewControllerDataSource {
+    var cellReuseIdentifier: String { coreDataSource.cellReuseIdentifier }
     
     private typealias DataSnapshot = NSDiffableDataSourceSnapshot<ListSection, ListItem>
     
-    internal var sections: [ListSection] {
+    var sections: [ListSection] {
         get { coreDataSource.sections }
         set { coreDataSource.sections = newValue }
     }
@@ -21,32 +21,32 @@ internal final class DiffableListDataSource: UITableViewDiffableDataSource<ListS
     
     // MARK: - UITableViewDataSource
     
-    override internal func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         coreDataSource.numberOfSections(in: tableView)
     }
     
-    override internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         coreDataSource.tableView(tableView, numberOfRowsInSection: section)
     }
     
-    override internal func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         coreDataSource.tableView(tableView, canEditRowAt: indexPath)
     }
     
-    override internal func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         coreDataSource.tableView(tableView, commit: editingStyle, forRowAt: indexPath)
     }
     
     // MARK: - ListViewControllerDataSource
     
-    internal func cell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
+    func cell(for tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
         coreDataSource.cell(for: tableView, at: indexPath)
     }
 
     // first reload must be NOT animated, since its crashes on iOS 14.
-    internal func reload(newSections: [ListSection],
-                         tableView: UITableView,
-                         animated: Bool = false) {
+    func reload(newSections: [ListSection],
+                tableView: UITableView,
+                animated: Bool = false) {
         sections = newSections.filter { $0.items.isEmpty == false }
         var snapShot = NSDiffableDataSourceSnapshot<ListSection, ListItem>()
         snapShot.appendSections(sections)
@@ -58,9 +58,9 @@ internal final class DiffableListDataSource: UITableViewDiffableDataSource<ListS
         }
     }
     
-    internal func deleteItem(at indexPath: IndexPath,
-                             tableView: UITableView,
-                             animated: Bool = true) {
+    func deleteItem(at indexPath: IndexPath,
+                    tableView: UITableView,
+                    animated: Bool = true) {
         var currentSnapshot = snapshot()
         
         deleteItem(at: indexPath, &currentSnapshot)
@@ -96,22 +96,22 @@ internal final class DiffableListDataSource: UITableViewDiffableDataSource<ListS
     
     // MARK: - Item Loading state
     
-    internal func startLoading(for item: ListItem, _ tableView: UITableView) {
+    func startLoading(for item: ListItem, _ tableView: UITableView) {
         coreDataSource.startLoading(for: item, tableView)
     }
     
-    internal func stopLoading(_ tableView: UITableView) {
+    func stopLoading(_ tableView: UITableView) {
         coreDataSource.stopLoading(tableView)
     }
     
 }
 
 extension Array where Element == ListSection {
-    internal var isEditable: Bool {
+    var isEditable: Bool {
         contains(where: \.isEditable)
     }
     
-    internal mutating func deleteItem(at indexPath: IndexPath) {
+    mutating func deleteItem(at indexPath: IndexPath) {
         self[indexPath.section].deleteItem(index: indexPath.item)
         self = self.filter { $0.items.isEmpty == false }
     }

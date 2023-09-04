@@ -9,7 +9,7 @@ import XCTest
 
 extension XCTestCase {
             
-    internal func fill(addressView: FormVerticalStackItemView<FormAddressItem>, with address: PostalAddress) {
+    func fill(addressView: FormVerticalStackItemView<FormAddressItem>, with address: PostalAddress) {
         let addressViewIdentifier = addressView.item.identifier?.components(separatedBy: ".").last ?? ""
         
         let cityItemView = addressView.findView(by: identifier(for: .city, addressView: addressViewIdentifier)) as? FormTextInputItemView

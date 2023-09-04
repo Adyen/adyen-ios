@@ -13,7 +13,7 @@ public typealias AssertionListener = (String) -> Void
 /// :nodoc:
 public enum AdyenAssertion {
 
-    internal static var listener: AssertionListener?
+    static var listener: AssertionListener?
 
     /// :nodoc:
     /// Calls `assertionFailure` when not running Tests.

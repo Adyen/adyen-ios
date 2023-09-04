@@ -107,7 +107,7 @@ public enum VoucherAction: Decodable {
 
 /// :nodoc:
 /// Describes a voucher that has an instructions url.
-internal protocol InstructionAwareVoucherAction {
+protocol InstructionAwareVoucherAction {
     
     /// :nodoc:
     /// The instruction url.
@@ -165,13 +165,13 @@ public class GenericVoucherAction: Decodable, AnyVoucherAction {
     }
 
     /// :nodoc:
-    internal init(paymentMethodType: VoucherPaymentMethod,
-                  initialAmount: Amount,
-                  totalAmount: Amount,
-                  reference: String,
-                  expiresAt: Date,
-                  merchantName: String,
-                  passCreationToken: String? = nil) {
+    init(paymentMethodType: VoucherPaymentMethod,
+         initialAmount: Amount,
+         totalAmount: Amount,
+         reference: String,
+         expiresAt: Date,
+         merchantName: String,
+         passCreationToken: String? = nil) {
         self.paymentMethodType = paymentMethodType
         self.initialAmount = initialAmount
         self.totalAmount = totalAmount

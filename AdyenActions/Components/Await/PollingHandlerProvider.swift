@@ -9,17 +9,17 @@ import AdyenNetworking
 import Foundation
 
 /// Any action that has payment data
-internal protocol PaymentDataAware {
+protocol PaymentDataAware {
     var paymentData: String { get }
 }
 
 /// A component that handles Await action's.
-internal protocol AnyPollingHandler: ActionComponent, Cancellable {
+protocol AnyPollingHandler: ActionComponent, Cancellable {
     func handle(_ action: PaymentDataAware)
 }
 
 /// :nodoc:
-internal protocol AnyPollingHandlerProvider {
+protocol AnyPollingHandlerProvider {
 
     /// :nodoc:
     func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler
@@ -29,7 +29,7 @@ internal protocol AnyPollingHandlerProvider {
 }
 
 /// :nodoc:
-internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
+struct PollingHandlerProvider: AnyPollingHandlerProvider {
 
     /// :nodoc:
     private let apiContext: APIContext
@@ -38,7 +38,7 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
     private let apiClient: AnyRetryAPIClient
 
     /// :nodoc:
-    internal init(apiContext: APIContext) {
+    init(apiContext: APIContext) {
         self.apiContext = apiContext
         self.apiClient = RetryAPIClient(
             apiClient: APIClient(apiContext: apiContext),
@@ -47,7 +47,7 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
     }
 
     /// :nodoc:
-    internal func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler {
+    func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler {
         switch paymentMethodType {
         case .mbway, .blik:
             return createPollingComponent()
@@ -55,7 +55,7 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
     }
     
     /// :nodoc:
-    internal func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler {
+    func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler {
         switch qrPaymentMethodType {
         case .pix:
             return createPollingComponent()

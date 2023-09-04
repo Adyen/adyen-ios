@@ -8,24 +8,24 @@ import Adyen
 import PassKit
 import UIKit
 
-internal protocol VoucherViewDelegate: ActionViewDelegate {
+protocol VoucherViewDelegate: ActionViewDelegate {
     
     func addToAppleWallet(completion: @escaping () -> Void)
     
     func secondaryButtonTap(sourceView: UIView)
 }
 
-internal final class VoucherView: UIView, Localizable {
+final class VoucherView: UIView, Localizable {
     
-    internal let model: Model
+    let model: Model
     
-    internal weak var delegate: VoucherViewDelegate?
+    weak var delegate: VoucherViewDelegate?
     
     private lazy var containerView = UIView()
     
     private lazy var loadingView = LoadingView(contentView: containerView)
     
-    internal init(model: Model) {
+    init(model: Model) {
         self.model = model
 
         super.init(frame: .zero)
@@ -36,7 +36,7 @@ internal final class VoucherView: UIView, Localizable {
     }
     
     /// :nodoc:
-    internal var localizationParameters: LocalizationParameters?
+    var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
     @available(*, unavailable)
@@ -44,8 +44,8 @@ internal final class VoucherView: UIView, Localizable {
         fatalError("init(coder:) has not been implemented")
     }
     
-    internal var spacerPortraitConstraint: NSLayoutConstraint?
-    internal var spacerLandscapeConstraint: NSLayoutConstraint?
+    var spacerPortraitConstraint: NSLayoutConstraint?
+    var spacerLandscapeConstraint: NSLayoutConstraint?
 
     private func buildUI() {
         loadingView.translatesAutoresizingMaskIntoConstraints = false
@@ -90,7 +90,7 @@ internal final class VoucherView: UIView, Localizable {
         updateSpacerConstraints()
     }
     
-    override internal func layoutSubviews() {
+    override func layoutSubviews() {
         super.layoutSubviews()
         
         updateSpacerConstraints()
@@ -120,7 +120,7 @@ internal final class VoucherView: UIView, Localizable {
         return stackView
     }()
     
-    internal lazy var logo: NetworkImageView = {
+    lazy var logo: NetworkImageView = {
         let logo = NetworkImageView()
         let logoSize = CGSize(width: 77.0, height: 50.0)
         logo.contentMode = .scaleAspectFit
@@ -207,7 +207,7 @@ internal final class VoucherView: UIView, Localizable {
         }
     }
     
-    internal func showCopyCodeConfirmation() {
+    func showCopyCodeConfirmation() {
         UIView.transition(
             with: secondaryButton,
             duration: 0.5,

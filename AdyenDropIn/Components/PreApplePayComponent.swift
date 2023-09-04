@@ -11,7 +11,7 @@ import UIKit
 #endif
 
 // :nodoc:
-internal final class PreApplePayComponent: PresentableComponent,
+final class PreApplePayComponent: PresentableComponent,
     FinalizableComponent,
     PaymentComponent,
     Localizable,
@@ -19,23 +19,23 @@ internal final class PreApplePayComponent: PresentableComponent,
 
     private var isPresenting: Bool = false
     
-    internal let apiContext: APIContext
+    let apiContext: APIContext
     
-    internal let paymentMethod: PaymentMethod
+    let paymentMethod: PaymentMethod
     
-    internal let amount: Amount
+    let amount: Amount
     
-    internal weak var delegate: PaymentComponentDelegate?
+    weak var delegate: PaymentComponentDelegate?
     
-    internal var localizationParameters: LocalizationParameters?
+    var localizationParameters: LocalizationParameters?
     
-    internal weak var presentationDelegate: NavigationDelegate?
+    weak var presentationDelegate: NavigationDelegate?
     
     fileprivate let applePayComponent: ApplePayComponent
     
-    internal let style: ApplePayStyle
+    let style: ApplePayStyle
     
-    internal lazy var viewController: UIViewController = {
+    lazy var viewController: UIViewController = {
         let view = PreApplePayView(model: createModel(with: amount))
         let viewController = ADYViewController(view: view, title: "Apple Pay")
         view.delegate = self
@@ -44,14 +44,14 @@ internal final class PreApplePayComponent: PresentableComponent,
     }()
     
     /// :nodoc:
-    internal let requiresModalPresentation: Bool = true
+    let requiresModalPresentation: Bool = true
     
     /// :nodoc:
-    internal init(paymentMethod: ApplePayPaymentMethod,
-                  apiContext: APIContext,
-                  payment: Payment,
-                  configuration: ApplePayComponent.Configuration,
-                  style: ApplePayStyle) throws {
+    init(paymentMethod: ApplePayPaymentMethod,
+         apiContext: APIContext,
+         payment: Payment,
+         configuration: ApplePayComponent.Configuration,
+         style: ApplePayStyle) throws {
         self.apiContext = apiContext
         self.amount = payment.amount
         self.paymentMethod = paymentMethod
@@ -65,11 +65,11 @@ internal final class PreApplePayComponent: PresentableComponent,
     }
     
     /// :nodoc
-    internal func didFinalize(with success: Bool) {
+    func didFinalize(with success: Bool) {
         assertionFailure("Do not call this method. Use didFinalize(with success:completion:) ")
     }
 
-    internal func didFinalize(with success: Bool, completion: (() -> Void)?) {
+    func didFinalize(with success: Bool, completion: (() -> Void)?) {
         applePayComponent.didFinalize(with: success, completion: completion)
     }
     
@@ -78,7 +78,7 @@ internal final class PreApplePayComponent: PresentableComponent,
         PreApplePayView.Model(hint: amount.formatted, style: style)
     }
 
-    internal func didCancel() {
+    func didCancel() {
         if let presenter = presentationDelegate, isPresenting {
             isPresenting = false
             presenter.dismiss(completion: nil)
@@ -89,11 +89,11 @@ internal final class PreApplePayComponent: PresentableComponent,
 
 extension PreApplePayComponent: PaymentComponentDelegate {
     
-    internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
+    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         delegate?.didSubmit(data, from: self)
     }
     
-    internal func didFail(with error: Error, from component: PaymentComponent) {
+    func didFail(with error: Error, from component: PaymentComponent) {
         delegate?.didFail(with: error, from: self)
     }
     
@@ -102,7 +102,7 @@ extension PreApplePayComponent: PaymentComponentDelegate {
 extension PreApplePayComponent: PreApplePayViewDelegate {
     
     /// :nodoc:
-    internal func pay() {
+    func pay() {
         isPresenting = true
         presentationDelegate?.present(component: applePayComponent)
     }

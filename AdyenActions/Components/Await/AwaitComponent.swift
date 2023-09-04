@@ -46,9 +46,9 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     /// - Parameter apiContext: The API context.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
-    internal init(apiContext: APIContext,
-                  awaitComponentBuilder: AnyPollingHandlerProvider,
-                  style: AwaitComponentStyle?) {
+    init(apiContext: APIContext,
+         awaitComponentBuilder: AnyPollingHandlerProvider,
+         style: AwaitComponentStyle?) {
         self.apiContext = apiContext
         self.style = style ?? AwaitComponentStyle()
         self.awaitComponentBuilder = awaitComponentBuilder

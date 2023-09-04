@@ -21,11 +21,11 @@ extension VoucherComponent: VoucherViewDelegate {
             ?? false
     }
     
-    internal func didComplete() {
+    func didComplete() {
         delegate?.didComplete(from: self)
     }
     
-    internal func mainButtonTap(sourceView: UIView) {
+    func mainButtonTap(sourceView: UIView) {
         guard let action = action else { return }
         if let downloadable = action.anyAction as? DownloadableVoucher {
             presentSharePopover(with: downloadable.downloadUrl, sourceView: sourceView)
@@ -34,7 +34,7 @@ extension VoucherComponent: VoucherViewDelegate {
         }
     }
     
-    internal func addToAppleWallet(completion: @escaping () -> Void) {
+    func addToAppleWallet(completion: @escaping () -> Void) {
         guard let passToken = action.flatMap(\.anyAction.passCreationToken) else { return }
         
         passProvider.provide(with: passToken) { [weak self] result in
@@ -42,7 +42,7 @@ extension VoucherComponent: VoucherViewDelegate {
         }
     }
     
-    internal func secondaryButtonTap(sourceView: UIView) {
+    func secondaryButtonTap(sourceView: UIView) {
         presentOptionsAlert(sourceView: sourceView)
     }
     

@@ -8,23 +8,23 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-internal struct BalanceCheckRequest: APIRequest {
+struct BalanceCheckRequest: APIRequest {
 
-    internal typealias ResponseType = BalanceCheckResponse
+    typealias ResponseType = BalanceCheckResponse
 
-    internal let data: PaymentComponentData
+    let data: PaymentComponentData
 
-    internal let path = "paymentMethods/balance"
+    let path = "paymentMethods/balance"
 
-    internal var counter: UInt = 0
+    var counter: UInt = 0
 
-    internal var method: HTTPMethod = .post
+    var method: HTTPMethod = .post
 
-    internal var headers: [String: String] = [:]
+    var headers: [String: String] = [:]
 
-    internal var queryParameters: [URLQueryItem] = []
+    var queryParameters: [URLQueryItem] = []
     
-    internal func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         let configurations = ConfigurationConstants.current
@@ -39,9 +39,9 @@ internal struct BalanceCheckRequest: APIRequest {
     }
 }
 
-internal struct BalanceCheckResponse: Response {
+struct BalanceCheckResponse: Response {
 
-    internal enum ResultCode: String, Decodable {
+    enum ResultCode: String, Decodable {
         case failed = "Failed"
         case notEnoughBalance = "NotEnoughBalance"
         case cancelled = "Cancelled"
@@ -62,11 +62,11 @@ internal struct BalanceCheckResponse: Response {
         case success = "Success"
     }
 
-    internal let resultCode: ResultCode
+    let resultCode: ResultCode
 
-    internal let pspReference: String
+    let pspReference: String
 
-    internal let balance: Amount?
+    let balance: Amount?
 
-    internal let transactionLimit: Amount?
+    let transactionLimit: Amount?
 }

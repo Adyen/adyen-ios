@@ -6,7 +6,7 @@
 
 import Foundation
 
-internal extension KeyedDecodingContainer {
+extension KeyedDecodingContainer {
     
     /// Decodes a value of the given type for the given key.
     ///

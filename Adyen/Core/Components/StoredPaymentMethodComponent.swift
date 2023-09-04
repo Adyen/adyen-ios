@@ -71,9 +71,9 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
 /// :nodoc:
 public struct StoredPaymentDetails: PaymentMethodDetails {
     
-    internal let type: String
+    let type: String
     
-    internal let storedPaymentMethodIdentifier: String
+    let storedPaymentMethodIdentifier: String
 
     /// :nodoc:
     public init(paymentMethod: StoredPaymentMethod) {

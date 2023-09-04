@@ -26,11 +26,11 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     private lazy var optionalMessage = localizedString(.fieldTitleOptional, localizationParameters)
     
-    internal weak var delegate: SelfRenderingFormItemDelegate?
+    weak var delegate: SelfRenderingFormItemDelegate?
     
     override public var subitems: [FormItem] { items }
     
-    internal let supportedCountryCodes: [String]?
+    let supportedCountryCodes: [String]?
 
     /// :nodoc:
     public private(set) var addressViewModel: AddressViewModel
@@ -76,14 +76,14 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         })
     }
     
-    internal lazy var headerItem: FormLabelItem = {
+    lazy var headerItem: FormLabelItem = {
         let item = FormLabelItem(text: localizedString(.billingAddressSectionTitle, localizationParameters),
                                  style: style.title)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
         return item
     }()
     
-    internal lazy var countrySelectItem: FormRegionPickerItem = {
+    lazy var countrySelectItem: FormRegionPickerItem = {
         let locale = Locale(identifier: localizationParameters?.locale ?? Locale.current.identifier)
         let countries = RegionRepository.regions(from: locale as NSLocale,
                                                  countryCodes: supportedCountryCodes).sorted { $0.name < $1.name }

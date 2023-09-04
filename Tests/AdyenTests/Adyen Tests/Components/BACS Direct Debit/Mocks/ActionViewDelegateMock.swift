@@ -10,7 +10,7 @@
 @testable import AdyenActions
 import Foundation
 
-internal final class ActionViewDelegateMock: ActionViewDelegate {
+final class ActionViewDelegateMock: ActionViewDelegate {
     var onDidComplete: (() -> Void)?
     
     func didComplete() {

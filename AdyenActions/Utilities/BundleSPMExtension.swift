@@ -11,7 +11,7 @@ import Foundation
 /// since swift packages has different code to access internal resources,
 /// that doesn't compile in a normal xcode project.
 /// The Bundle extension in `BundleExtension.swift` is used instead.
-internal extension Bundle {
+extension Bundle {
     // swiftlint:disable explicit_acl
 
     /// The main bundle of the framework.

@@ -6,11 +6,11 @@
 
 import Adyen
 
-internal struct ComponentsSection {
+struct ComponentsSection {
 
-    internal var header: ListSectionHeader?
+    var header: ListSectionHeader?
 
-    internal var components: [PaymentComponent]
+    var components: [PaymentComponent]
 
-    internal var footer: ListSectionFooter?
+    var footer: ListSectionFooter?
 }

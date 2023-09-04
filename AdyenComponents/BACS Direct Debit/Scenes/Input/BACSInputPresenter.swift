@@ -7,13 +7,13 @@
 import Adyen
 import Foundation
 
-internal protocol BACSInputPresenterProtocol: AnyObject {
+protocol BACSInputPresenterProtocol: AnyObject {
     func viewDidLoad()
     func viewWillAppear()
     func resetForm()
 }
 
-internal class BACSInputPresenter: BACSInputPresenterProtocol {
+class BACSInputPresenter: BACSInputPresenterProtocol {
 
     // MARK: - Properties
 
@@ -26,21 +26,21 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
 
     // MARK: - Items
 
-    internal var holderNameItem: FormTextInputItem?
-    internal var bankAccountNumberItem: FormTextInputItem?
-    internal var sortCodeItem: FormTextInputItem?
-    internal var emailItem: FormTextInputItem?
-    internal var amountConsentToggleItem: FormToggleItem?
-    internal var legalConsentToggleItem: FormToggleItem?
-    internal var continueButtonItem: FormButtonItem?
+    var holderNameItem: FormTextInputItem?
+    var bankAccountNumberItem: FormTextInputItem?
+    var sortCodeItem: FormTextInputItem?
+    var emailItem: FormTextInputItem?
+    var amountConsentToggleItem: FormToggleItem?
+    var legalConsentToggleItem: FormToggleItem?
+    var continueButtonItem: FormButtonItem?
 
     // MARK: - Initializers
 
-    internal init(view: BACSInputFormViewProtocol,
-                  router: BACSDirectDebitRouterProtocol,
-                  tracker: BACSDirectDebitComponentTrackerProtocol,
-                  itemsFactory: BACSItemsFactoryProtocol,
-                  amount: Amount?) {
+    init(view: BACSInputFormViewProtocol,
+         router: BACSDirectDebitRouterProtocol,
+         tracker: BACSDirectDebitComponentTrackerProtocol,
+         itemsFactory: BACSItemsFactoryProtocol,
+         amount: Amount?) {
         self.view = view
         self.router = router
         self.tracker = tracker
@@ -50,17 +50,17 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
 
     // MARK: - BACSInputPresenterProtocol
 
-    internal func viewDidLoad() {
+    func viewDidLoad() {
         tracker.sendEvent()
         createItems()
         setupView()
     }
 
-    internal func viewWillAppear() {
+    func viewWillAppear() {
         restoreFields()
     }
 
-    internal func resetForm() {
+    func resetForm() {
         holderNameItem?.value = ""
         bankAccountNumberItem?.value = ""
         sortCodeItem?.value = ""

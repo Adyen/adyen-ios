@@ -7,11 +7,11 @@
 import CommonCrypto
 import Foundation
 
-internal func aesCrypt(operation: CCOperation,
-                       options: CCOptions,
-                       keyData: Data,
-                       initializationVector: Data?,
-                       dataIn: Data) throws -> Data {
+func aesCrypt(operation: CCOperation,
+              options: CCOptions,
+              keyData: Data,
+              initializationVector: Data?,
+              dataIn: Data) throws -> Data {
     let dataOutLength = dataIn.count + kCCBlockSizeAES128
     guard let dataOut = NSMutableData(length: dataOutLength) else {
         throw EncryptionError.encryptionFailed
@@ -37,7 +37,7 @@ internal func aesCrypt(operation: CCOperation,
     return (dataOut as Data).subdata(in: 0..<endIndex)
 }
 
-internal func hmac(data: Data, withKey: Data) throws -> Data {
+func hmac(data: Data, withKey: Data) throws -> Data {
     guard let dataOut = NSMutableData(length: Int(CC_SHA512_DIGEST_LENGTH)) else {
         throw EncryptionError.unknownError
     }
@@ -52,14 +52,14 @@ internal func hmac(data: Data, withKey: Data) throws -> Data {
     return dataOut as Data
 }
 
-internal func generateRandomData(length: Int) throws -> Data {
+func generateRandomData(length: Int) throws -> Data {
     var bytes = [Int8](repeating: 0, count: length)
     let status = SecRandomCopyBytes(kSecRandomDefault, length, &bytes)
     guard status == errSecSuccess else { throw EncryptionError.failedToGenerateRandomData }
     return Data(bytes: bytes, count: length)
 }
 
-internal func createSecKey(fromModulus modulus: String, exponent: String) throws -> SecKey {
+func createSecKey(fromModulus modulus: String, exponent: String) throws -> SecKey {
     guard let modulusHex = modulus.hexadecimal,
           let exponentHex = exponent.hexadecimal else { throw EncryptionError.invalidKey }
     let keyData = generateRSAPublicKey(with: modulusHex, exponent: exponentHex)
@@ -79,7 +79,7 @@ internal func createSecKey(fromModulus modulus: String, exponent: String) throws
 }
 
 /// https://github.com/henrinormak/Heimdall/blob/master/Heimdall/Heimdall.swift
-internal func generateRSAPublicKey(with modulus: Data, exponent: Data) -> Data {
+func generateRSAPublicKey(with modulus: Data, exponent: Data) -> Data {
     var modulusBytes = modulus.asBytes
     let exponentBytes = exponent.asBytes
 

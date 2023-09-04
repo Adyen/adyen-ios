@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// :nodoc:
-internal protocol BACSDirectDebitRouterProtocol: AnyObject {
+protocol BACSDirectDebitRouterProtocol: AnyObject {
     func presentConfirmation(with data: BACSDirectDebitData)
     func confirmPayment(with data: BACSDirectDebitData)
 }
@@ -44,8 +44,8 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
     // MARK: - Properties
 
-    internal var inputPresenter: BACSInputPresenterProtocol?
-    internal var confirmationPresenter: BACSConfirmationPresenterProtocol?
+    var inputPresenter: BACSInputPresenterProtocol?
+    var confirmationPresenter: BACSConfirmationPresenterProtocol?
     private var confirmationViewPresented = false
 
     // MARK: - Initializers
@@ -89,7 +89,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
 
 extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 
-    internal func presentConfirmation(with data: BACSDirectDebitData) {
+    func presentConfirmation(with data: BACSDirectDebitData) {
         confirmationViewPresented = true
         let confirmationView = assembleConfirmationView(with: data)
 
@@ -98,7 +98,7 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
         presentationDelegate?.present(component: wrappedComponent)
     }
 
-    internal func confirmPayment(with data: BACSDirectDebitData) {
+    func confirmPayment(with data: BACSDirectDebitData) {
         guard let bacsDirectDebitPaymentMethod = paymentMethod as? BACSDirectDebitPaymentMethod else {
             return
         }
@@ -165,7 +165,7 @@ extension BACSDirectDebitComponent {
         // MARK: - Properties
 
         /// :nodoc:
-        internal let payment: Payment
+        let payment: Payment
 
         // MARK: - Initializers
 

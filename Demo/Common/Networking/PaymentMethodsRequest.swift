@@ -8,25 +8,25 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-internal struct PaymentMethodsRequest: APIRequest {
+struct PaymentMethodsRequest: APIRequest {
     
-    internal typealias ResponseType = PaymentMethodsResponse
+    typealias ResponseType = PaymentMethodsResponse
     
-    internal let path = "paymentMethods"
+    let path = "paymentMethods"
     
-    internal var counter: UInt = 0
+    var counter: UInt = 0
     
-    internal var method: HTTPMethod = .post
+    var method: HTTPMethod = .post
     
-    internal var headers: [String: String] = [:]
+    var headers: [String: String] = [:]
     
-    internal var queryParameters: [URLQueryItem] = []
+    var queryParameters: [URLQueryItem] = []
 
-    internal var order: PartialPaymentOrder?
+    var order: PartialPaymentOrder?
     
     // MARK: - Encoding
     
-    internal func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         let currentConfiguration = ConfigurationConstants.current
@@ -38,7 +38,7 @@ internal struct PaymentMethodsRequest: APIRequest {
         try container.encodeIfPresent(order?.compactOrder, forKey: .order)
     }
     
-    internal enum CodingKeys: CodingKey {
+    enum CodingKeys: CodingKey {
         case countryCode
         case shopperReference
         case merchantAccount
@@ -48,11 +48,11 @@ internal struct PaymentMethodsRequest: APIRequest {
     
 }
 
-internal struct PaymentMethodsResponse: Response {
+struct PaymentMethodsResponse: Response {
     
-    internal let paymentMethods: PaymentMethods
+    let paymentMethods: PaymentMethods
     
-    internal init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         self.paymentMethods = try PaymentMethods(from: decoder)
     }
     

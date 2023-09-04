@@ -20,23 +20,23 @@ public class CardComponent: PublicKeyConsumer,
     Localizable,
     LoadingComponent {
 
-    internal enum Constant {
-        internal static let defaultCountryCode = "US"
-        internal static let secondsThrottlingDelay = 0.5
-        internal static let publicBinLength = 6
-        internal static let privateBinLength = 11
-        internal static let publicPanSuffixLength = 4
+    enum Constant {
+        static let defaultCountryCode = "US"
+        static let secondsThrottlingDelay = 0.5
+        static let publicBinLength = 6
+        static let privateBinLength = 11
+        static let publicPanSuffixLength = 4
     }
     
     /// :nodoc:
     public let apiContext: APIContext
 
-    internal let cardPaymentMethod: AnyCardPaymentMethod
+    let cardPaymentMethod: AnyCardPaymentMethod
 
     /// :nodoc:
     public let publicKeyProvider: AnyPublicKeyProvider
 
-    internal let binInfoProvider: AnyBinInfoProvider
+    let binInfoProvider: AnyBinInfoProvider
     
     /// Describes the component's UI style.
     public let style: FormComponentStyle
@@ -115,13 +115,13 @@ public class CardComponent: PublicKeyConsumer,
     ///   - style: The Component's UI style.
     ///   - publicKeyProvider: The public key provider
     ///   - binProvider: Any object capable to provide a BinInfo.
-    internal init(paymentMethod: AnyCardPaymentMethod,
-                  apiContext: APIContext,
-                  configuration: Configuration,
-                  shopperInformation: PrefilledShopperInformation? = nil,
-                  style: FormComponentStyle,
-                  publicKeyProvider: AnyPublicKeyProvider,
-                  binProvider: AnyBinInfoProvider) {
+    init(paymentMethod: AnyCardPaymentMethod,
+         apiContext: APIContext,
+         configuration: Configuration,
+         shopperInformation: PrefilledShopperInformation? = nil,
+         style: FormComponentStyle,
+         publicKeyProvider: AnyPublicKeyProvider,
+         binProvider: AnyBinInfoProvider) {
         self.cardPaymentMethod = paymentMethod
         self.apiContext = apiContext
         self.configuration = configuration
@@ -157,7 +157,7 @@ public class CardComponent: PublicKeyConsumer,
     
     // MARK: - Stored Card
     
-    internal lazy var storedCardComponent: (PaymentComponent & PresentableComponent)? = {
+    lazy var storedCardComponent: (PaymentComponent & PresentableComponent)? = {
         guard let paymentMethod = paymentMethod as? StoredCardPaymentMethod else {
             return nil
         }
@@ -179,7 +179,7 @@ public class CardComponent: PublicKeyConsumer,
     
     private lazy var securedViewController = SecuredViewController(child: cardViewController, style: style)
     
-    internal lazy var cardViewController: CardViewController = {
+    lazy var cardViewController: CardViewController = {
         let formViewController = CardViewController(configuration: configuration,
                                                     shopperInformation: shopperInformation,
                                                     formStyle: style,

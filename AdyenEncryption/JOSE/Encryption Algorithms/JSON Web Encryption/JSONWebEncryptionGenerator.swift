@@ -6,16 +6,16 @@
 
 import Foundation
 
-internal protocol AnyJSONWebEncryptionGenerator {
+protocol AnyJSONWebEncryptionGenerator {
     func generate(withPayload: Data,
                   publicRSAKey: SecKey,
                   header: JSONWebEncryption.Header) throws -> JSONWebEncryption
 }
 
-internal struct JSONWebEncryptionGenerator: AnyJSONWebEncryptionGenerator {
-    internal func generate(withPayload: Data,
-                           publicRSAKey: SecKey,
-                           header: JSONWebEncryption.Header) throws -> JSONWebEncryption {
+struct JSONWebEncryptionGenerator: AnyJSONWebEncryptionGenerator {
+    func generate(withPayload: Data,
+                  publicRSAKey: SecKey,
+                  header: JSONWebEncryption.Header) throws -> JSONWebEncryption {
         let keyEncryptionAlgorithm = header.keyEncryptionAlgorithm.algorithm
         let contentEncryptionAlgorithm = header.contentEncryptionAlgorithm.algorithm
         

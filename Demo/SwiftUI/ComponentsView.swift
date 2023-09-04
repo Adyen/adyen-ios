@@ -8,11 +8,11 @@ import Adyen
 import AdyenSwiftUI
 import SwiftUI
 
-internal struct ComponentsView: View {
+struct ComponentsView: View {
 
-    @ObservedObject internal var viewModel = PaymentsViewModel()
+    @ObservedObject var viewModel = PaymentsViewModel()
 
-    internal var body: some View {
+    var body: some View {
         NavigationView {
             List {
                 ForEach(viewModel.items, id: \.self) { section in
@@ -47,8 +47,8 @@ internal struct ComponentsView: View {
 }
 
 // swiftlint:disable:next type_name
-internal struct ContentView_Previews: PreviewProvider {
-    internal static var previews: some View {
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
         ComponentsView()
     }
 }

@@ -7,22 +7,22 @@
 import Adyen
 import UIKit
 
-internal protocol QRCodeViewDelegate: AnyObject {
+protocol QRCodeViewDelegate: AnyObject {
 
     func copyToPasteboard()
 }
 
-internal final class QRCodeView: UIView, Localizable, Observer {
+final class QRCodeView: UIView, Localizable, Observer {
     
     private let model: Model
     
     /// The delegate of the view
-    internal weak var delegate: QRCodeViewDelegate?
+    weak var delegate: QRCodeViewDelegate?
     
     /// :nodoc:
     public var localizationParameters: LocalizationParameters?
     
-    internal init(model: Model) {
+    init(model: Model) {
         self.model = model
         super.init(frame: .zero)
         buildUI()
@@ -32,7 +32,7 @@ internal final class QRCodeView: UIView, Localizable, Observer {
     }
     
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -44,7 +44,7 @@ internal final class QRCodeView: UIView, Localizable, Observer {
         addCopyButton()
     }
     
-    override internal func layoutSubviews() {
+    override func layoutSubviews() {
         super.layoutSubviews()
         
         copyButton.adyen.round(using: model.style.copyButton.cornerRounding)

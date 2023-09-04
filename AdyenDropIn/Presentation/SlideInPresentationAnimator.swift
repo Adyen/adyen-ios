@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// Animate sequential slid in and out movement for transitioning controllers.
-internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+final class SlideInPresentationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 
     private enum Animation: String {
         case dropinTransitionPresentation = "transition_presentation"
@@ -16,15 +16,15 @@ internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnim
     
     private let duration: TimeInterval
     
-    internal init(duration: TimeInterval) {
+    init(duration: TimeInterval) {
         self.duration = duration
     }
     
-    internal func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         duration
     }
     
-    internal func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard let toShow = transitionContext.viewController(forKey: .to) as? WrapperViewController,
               let toHide = transitionContext.viewController(forKey: .from) as? WrapperViewController else { return }
 

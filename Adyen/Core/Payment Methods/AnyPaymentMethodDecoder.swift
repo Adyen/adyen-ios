@@ -12,7 +12,7 @@ private extension Array where Element == PaymentMethodField {
     }
 }
 
-internal enum PaymentMethodType: String {
+enum PaymentMethodType: String {
     case card
     case scheme
     case ideal
@@ -76,7 +76,7 @@ private struct PaymentMethodField: Decodable {
     
 }
 
-internal enum AnyPaymentMethodDecoder {
+enum AnyPaymentMethodDecoder {
     private static var decoders: [PaymentMethodType: PaymentMethodDecoder] = [
 
         // Unsupported payment methods
@@ -127,7 +127,7 @@ internal enum AnyPaymentMethodDecoder {
     
     private static var defaultDecoder: PaymentMethodDecoder = RedirectPaymentMethodDecoder()
     
-    internal static func decode(from decoder: Decoder) -> AnyPaymentMethod {
+    static func decode(from decoder: Decoder) -> AnyPaymentMethod {
         do {
             let container = try decoder.container(keyedBy: AnyPaymentMethod.CodingKeys.self)
             let type = try container.decode(String.self, forKey: .type)

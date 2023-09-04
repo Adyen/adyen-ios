@@ -7,7 +7,7 @@
 import Adyen
 import Foundation
 
-internal enum ThreeDSActionHandlerResult: Decodable {
+enum ThreeDSActionHandlerResult: Decodable {
 
     case action(Action)
 
@@ -16,7 +16,7 @@ internal enum ThreeDSActionHandlerResult: Decodable {
     // MARK: - Coding
 
     /// :nodoc:
-    internal init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(ActionType.self, forKey: .type)
 

@@ -12,7 +12,7 @@ import UIKit
 
 extension CardComponent {
     
-    internal func didSelectSubmitButton() {
+    func didSelectSubmitButton() {
         guard cardViewController.validate() else {
             return
         }
@@ -75,10 +75,10 @@ extension KCPDetails {
 
 }
 
-internal enum CardBrandSorter {
+enum CardBrandSorter {
     
     /// Sorts the brands by the rules below for dual branded cards.
-    internal static func sortBrands(_ brands: [CardBrand]) -> [CardBrand] {
+    static func sortBrands(_ brands: [CardBrand]) -> [CardBrand] {
         // only try to sort if both brands are available.
         guard brands.count == 2,
               let firstBrand = brands.first,

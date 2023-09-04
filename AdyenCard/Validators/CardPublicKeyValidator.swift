@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// Validates a card's public key.
-internal struct CardPublicKeyValidator: Validator {
+struct CardPublicKeyValidator: Validator {
     
     /// :nodoc:
     public func isValid(_ string: String) -> Bool {

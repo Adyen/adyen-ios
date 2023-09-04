@@ -16,41 +16,41 @@ public struct PaymentMethodListConfiguration {
 }
 
 /// A component that presents a list of items for each payment method with a component.
-internal final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable, Cancellable {
+final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable, Cancellable {
     
     /// :nodoc:
-    internal let apiContext: APIContext
+    let apiContext: APIContext
     
     /// The components that are displayed in the list.
-    internal private(set) var componentSections: [ComponentsSection]
+    private(set) var componentSections: [ComponentsSection]
     
     /// The delegate of the payment method list component.
-    internal weak var delegate: PaymentMethodListComponentDelegate?
+    weak var delegate: PaymentMethodListComponentDelegate?
 
     /// Call back when the list is dismissed.
-    internal var onCancel: (() -> Void)?
+    var onCancel: (() -> Void)?
     
     /// Describes the component's UI style.
-    internal let style: ListComponentStyle
+    let style: ListComponentStyle
     
     /// Initializes the list component.
     ///
     /// - Parameter components: The components to display in the list.
     /// - Parameter style: The component's UI style.
-    internal init(apiContext: APIContext,
-                  components: [ComponentsSection],
-                  style: ListComponentStyle = ListComponentStyle()) {
+    init(apiContext: APIContext,
+         components: [ComponentsSection],
+         style: ListComponentStyle = ListComponentStyle()) {
         self.apiContext = apiContext
         self.componentSections = components
         self.style = style
     }
     
-    internal func reload(with components: [ComponentsSection]) {
+    func reload(with components: [ComponentsSection]) {
         componentSections = components
         listViewController.reload(newSections: createListSections())
     }
     
-    internal func deleteComponent(at indexPath: IndexPath) {
+    func deleteComponent(at indexPath: IndexPath) {
         componentSections.deleteItem(at: indexPath)
         listViewController.deleteItem(at: indexPath)
     }
@@ -58,11 +58,11 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     // MARK: - View Controller
     
     /// :nodoc:
-    internal var viewController: UIViewController { listViewController }
+    var viewController: UIViewController { listViewController }
 
     private let brandProtectedComponents: Set = ["applepay"]
     
-    internal lazy var listViewController: ListViewController = createListViewController()
+    lazy var listViewController: ListViewController = createListViewController()
     
     private func createListViewController() -> ListViewController {
         let listViewController = ListViewController(style: style)
@@ -123,7 +123,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
 
     // MARK: - Cancellable
 
-    internal func didCancel() {
+    func didCancel() {
         onCancel?()
     }
     
@@ -137,7 +137,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     /// Starts a loading animation next to the list item of the provided component.
     ///
     /// - Parameter component: The component for which to start a loading animation.
-    internal func startLoading(for component: PaymentComponent) {
+    func startLoading(for component: PaymentComponent) {
         let allListItems = listViewController.sections.flatMap(\.items)
         let allComponents = componentSections.map(\.components).flatMap { $0 }
         
@@ -149,14 +149,14 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     }
     
     /// :nodoc:
-    internal func stopLoading() {
+    func stopLoading() {
         listViewController.stopLoading()
     }
     
 }
 
 /// Defines the methods a delegate of the payment method list component should implement.
-internal protocol PaymentMethodListComponentDelegate: AnyObject {
+protocol PaymentMethodListComponentDelegate: AnyObject {
     
     /// Invoked when a component was selected in the payment method list.
     ///

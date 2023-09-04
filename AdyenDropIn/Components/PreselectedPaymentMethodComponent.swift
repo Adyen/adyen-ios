@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// Defines the methods a delegate of the preselected payment method component should implement.
-internal protocol PreselectedPaymentMethodComponentDelegate: AnyObject {
+protocol PreselectedPaymentMethodComponentDelegate: AnyObject {
     
     /// Invoked when user decided to change payment method.
     func didRequestAllPaymentMethods()
@@ -19,7 +19,7 @@ internal protocol PreselectedPaymentMethodComponentDelegate: AnyObject {
 }
 
 /// A component that presents a single preselected payment method and option to open more payment methods.
-internal final class PreselectedPaymentMethodComponent: ComponentLoader,
+final class PreselectedPaymentMethodComponent: ComponentLoader,
     PresentableComponent,
     PaymentAwareComponent,
     Localizable,
@@ -29,22 +29,22 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     private let defaultComponent: PaymentComponent
     
     /// :nodoc:
-    internal var apiContext: APIContext { defaultComponent.apiContext }
+    var apiContext: APIContext { defaultComponent.apiContext }
 
     /// :nodoc:
-    internal var paymentMethod: PaymentMethod { defaultComponent.paymentMethod }
+    var paymentMethod: PaymentMethod { defaultComponent.paymentMethod }
     
     /// Delegate actions.
-    internal weak var delegate: PreselectedPaymentMethodComponentDelegate?
+    weak var delegate: PreselectedPaymentMethodComponentDelegate?
     
     /// Describes the component's UI style.
-    internal var style: FormComponentStyle
+    var style: FormComponentStyle
     
     /// Describes the list item's UI style.
-    internal let listItemStyle: ListItemStyle
+    let listItemStyle: ListItemStyle
 
     /// Call back when the list is dismissed.
-    internal var onCancel: (() -> Void)?
+    var onCancel: (() -> Void)?
     
     /// Initializes the list component.
     ///
@@ -53,10 +53,10 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     /// - Parameter component: The pre-selected component.
     /// - Parameter title: The title.
     /// - Parameter listItemStyle: The list item UI style.
-    internal init(component: PaymentComponent,
-                  title: String,
-                  style: FormComponentStyle,
-                  listItemStyle: ListItemStyle) {
+    init(component: PaymentComponent,
+         title: String,
+         style: FormComponentStyle,
+         listItemStyle: ListItemStyle) {
         self.title = title
         self.style = style
         self.listItemStyle = listItemStyle
@@ -65,7 +65,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
 
     // MARK: - Cancellable
 
-    internal func didCancel() {
+    func didCancel() {
         onCancel?()
     }
     
@@ -142,7 +142,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         openAllButtonItem.enabled = false
     }
     
-    internal func stopLoading() {
+    func stopLoading() {
         submitButtonItem.showsActivityIndicator = false
         openAllButtonItem.enabled = true
     }

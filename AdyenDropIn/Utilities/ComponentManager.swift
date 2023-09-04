@@ -16,7 +16,7 @@ import Adyen
 #endif
 import Foundation
 
-internal final class ComponentManager {
+final class ComponentManager {
 
     /// Indicates the UI configuration of the drop in component.
     private var style: DropInComponent.Style
@@ -25,22 +25,22 @@ internal final class ComponentManager {
     
     private let supportsEditingStoredPaymentMethods: Bool
 
-    internal let remainingAmount: Amount?
+    let remainingAmount: Amount?
 
-    internal let order: PartialPaymentOrder?
+    let order: PartialPaymentOrder?
     
-    internal let apiContext: APIContext
+    let apiContext: APIContext
 
-    internal weak var presentationDelegate: PresentationDelegate?
+    weak var presentationDelegate: PresentationDelegate?
     
-    internal init(paymentMethods: PaymentMethods,
-                  configuration: DropInComponent.Configuration,
-                  style: DropInComponent.Style,
-                  partialPaymentEnabled: Bool = true,
-                  remainingAmount: Amount? = nil,
-                  order: PartialPaymentOrder?,
-                  supportsEditingStoredPaymentMethods: Bool = false,
-                  presentationDelegate: PresentationDelegate) {
+    init(paymentMethods: PaymentMethods,
+         configuration: DropInComponent.Configuration,
+         style: DropInComponent.Style,
+         partialPaymentEnabled: Bool = true,
+         remainingAmount: Amount? = nil,
+         order: PartialPaymentOrder?,
+         supportsEditingStoredPaymentMethods: Bool = false,
+         presentationDelegate: PresentationDelegate) {
         self.paymentMethods = paymentMethods
         self.configuration = configuration
         self.apiContext = configuration.apiContext
@@ -54,7 +54,7 @@ internal final class ComponentManager {
     
     // MARK: - Internal
     
-    internal lazy var sections: [ComponentsSection] = {
+    lazy var sections: [ComponentsSection] = {
 
         // Paid section
         let amountString: String = remainingAmount.map(\.formatted) ??
@@ -97,17 +97,17 @@ internal final class ComponentManager {
     }()
 
     // Filter out payment methods without the Ecommerce shopper interaction.
-    internal lazy var storedComponents: [PaymentComponent] = paymentMethods.stored.filter {
+    lazy var storedComponents: [PaymentComponent] = paymentMethods.stored.filter {
         $0.supportedShopperInteractions.contains(.shopperPresent)
     }.compactMap(component(for:))
 
-    internal lazy var regularComponents = paymentMethods.regular.compactMap(component(for:))
+    lazy var regularComponents = paymentMethods.regular.compactMap(component(for:))
 
-    internal lazy var paidComponents = paymentMethods.paid.compactMap(component(for:))
+    lazy var paidComponents = paymentMethods.paid.compactMap(component(for:))
     
     /// Returns the only regular component that is not an instant payment,
     /// when no other payment method exists.
-    internal var singleRegularComponent: (PaymentComponent & PresentableComponent)? {
+    var singleRegularComponent: (PaymentComponent & PresentableComponent)? {
         guard storedComponents.isEmpty,
               paidComponents.isEmpty,
               regularComponents.count == 1,
@@ -266,49 +266,49 @@ internal final class ComponentManager {
 
 extension ComponentManager: PaymentComponentBuilder {
     
-    internal func build(paymentMethod: StoredCardPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: StoredCardPaymentMethod) -> PaymentComponent? {
         createCardComponent(with: paymentMethod)
     }
 
-    internal func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext)
     }
 
-    internal func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext)
     }
 
-    internal func build(paymentMethod: CardPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: CardPaymentMethod) -> PaymentComponent? {
         createCardComponent(with: paymentMethod)
     }
 
-    internal func build(paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
         createBancontactComponent(with: paymentMethod)
     }
 
-    internal func build(paymentMethod: IssuerListPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: IssuerListPaymentMethod) -> PaymentComponent? {
         IssuerListComponent(paymentMethod: paymentMethod,
                             apiContext: apiContext,
                             style: style.listComponent)
     }
 
-    internal func build(paymentMethod: SEPADirectDebitPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: SEPADirectDebitPaymentMethod) -> PaymentComponent? {
         createSEPAComponent(paymentMethod)
     }
 
-    internal func build(paymentMethod: BACSDirectDebitPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: BACSDirectDebitPaymentMethod) -> PaymentComponent? {
         createBACSDirectDebit(paymentMethod)
     }
 
-    internal func build(paymentMethod: ACHDirectDebitPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: ACHDirectDebitPaymentMethod) -> PaymentComponent? {
         createACHDirectDebitComponent(paymentMethod)
     }
 
-    internal func build(paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
         createPreApplePayComponent(with: paymentMethod)
     }
 
-    internal func build(paymentMethod: WeChatPayPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: WeChatPayPaymentMethod) -> PaymentComponent? {
         guard let classObject = loadTheConcreteWeChatPaySDKActionComponentClass() else { return nil }
         guard classObject.isDeviceSupported() else { return nil }
         return InstantPaymentComponent(paymentMethod: paymentMethod,
@@ -316,63 +316,63 @@ extension ComponentManager: PaymentComponentBuilder {
                                        apiContext: apiContext)
     }
 
-    internal func build(paymentMethod: QiwiWalletPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: QiwiWalletPaymentMethod) -> PaymentComponent? {
         createQiwiWalletComponent(paymentMethod)
     }
 
-    internal func build(paymentMethod: MBWayPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: MBWayPaymentMethod) -> PaymentComponent? {
         createMBWayComponent(paymentMethod)
     }
 
-    internal func build(paymentMethod: BLIKPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: BLIKPaymentMethod) -> PaymentComponent? {
         createBLIKComponent(paymentMethod)
     }
 
-    internal func build(paymentMethod: EContextPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: EContextPaymentMethod) -> PaymentComponent? {
         BasicPersonalInfoFormComponent(paymentMethod: paymentMethod,
                                        apiContext: apiContext,
                                        shopperInformation: configuration.shopper,
                                        style: style.formComponent)
     }
 
-    internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
         DokuComponent(paymentMethod: paymentMethod,
                       apiContext: apiContext,
                       shopperInformation: configuration.shopper,
                       style: style.formComponent)
     }
 
-    internal func build(paymentMethod: OXXOPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: OXXOPaymentMethod) -> PaymentComponent? {
         InstantPaymentComponent(paymentMethod: paymentMethod,
                                 paymentData: nil,
                                 apiContext: apiContext)
     }
 
-    internal func build(paymentMethod: MultibancoPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: MultibancoPaymentMethod) -> PaymentComponent? {
         InstantPaymentComponent(paymentMethod: paymentMethod,
                                 paymentData: nil,
                                 apiContext: apiContext)
     }
 
-    internal func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {
         guard partialPaymentEnabled else { return nil }
         return GiftCardComponent(paymentMethod: paymentMethod,
                                  apiContext: apiContext,
                                  style: style.formComponent)
     }
 
-    internal func build(paymentMethod: BoletoPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: BoletoPaymentMethod) -> PaymentComponent? {
         createBoletoComponent(paymentMethod)
     }
 
-    internal func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent? {
         AffirmComponent(paymentMethod: paymentMethod,
                         apiContext: apiContext,
                         shopperInformation: configuration.shopper,
                         style: style.formComponent)
     }
 
-    internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
+    func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
         InstantPaymentComponent(paymentMethod: paymentMethod,
                                 paymentData: nil,
                                 apiContext: apiContext)

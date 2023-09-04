@@ -6,25 +6,25 @@
 
 import Foundation
 
-internal final class AddressFormItemInjector: FormItemInjector, Localizable {
+final class AddressFormItemInjector: FormItemInjector, Localizable {
     
     /// :nodoc:
-    internal var localizationParameters: LocalizationParameters?
+    var localizationParameters: LocalizationParameters?
 
     /// :nodoc:
-    internal var value: PostalAddress?
+    var value: PostalAddress?
 
     /// :nodoc:
     private let initialCountry: String
 
     /// :nodoc:
-    internal var identifier: String
+    var identifier: String
 
     /// :nodoc:
-    internal let style: AddressStyle
+    let style: AddressStyle
 
     /// :nodoc:
-    internal lazy var item: FormAddressItem = {
+    lazy var item: FormAddressItem = {
         let addressItem = FormAddressItem(initialCountry: initialCountry,
                                           style: style,
                                           localizationParameters: localizationParameters,
@@ -33,10 +33,10 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
         return addressItem
     }()
     
-    internal init(value: PostalAddress?,
-                  initialCountry: String,
-                  identifier: String,
-                  style: AddressStyle) {
+    init(value: PostalAddress?,
+         initialCountry: String,
+         identifier: String,
+         style: AddressStyle) {
         self.value = value
         self.initialCountry = initialCountry
         self.identifier = identifier
@@ -44,7 +44,7 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
     }
 
     /// :nodoc:
-    internal func inject(into formViewController: FormViewController) {
+    func inject(into formViewController: FormViewController) {
         formViewController.append(item)
     }
     

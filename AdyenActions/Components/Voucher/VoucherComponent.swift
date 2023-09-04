@@ -10,7 +10,7 @@ import PassKit
 import UIKit
 
 /// A component that handles voucher action.
-internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
+protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
     func handle(_ action: VoucherAction)
 }
 
@@ -36,10 +36,10 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     public var localizationParameters: LocalizationParameters?
 
     /// :nodoc:
-    internal var voucherShareableViewProvider: AnyVoucherShareableViewProvider
+    var voucherShareableViewProvider: AnyVoucherShareableViewProvider
     
     /// :nodoc:
-    internal var action: VoucherAction?
+    var action: VoucherAction?
 
     /// :nodoc:
     private lazy var apiClient: APIClientProtocol = {
@@ -50,7 +50,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     }()
     
     /// :nodoc:
-    internal var canAddPasses: Bool {
+    var canAddPasses: Bool {
         PKAddPassesViewController.canAddPasses() && action.flatMap(\.anyAction.passCreationToken) != nil
     }
 
@@ -58,10 +58,10 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     private let componentName = "voucher"
 
     /// :nodoc:
-    internal let passProvider: AnyAppleWalletPassProvider
+    let passProvider: AnyAppleWalletPassProvider
     
     /// :nodoc:
-    internal var view: VoucherView?
+    var view: VoucherView?
 
     /// Initializes the `VoucherComponent`.
     ///
@@ -80,7 +80,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     /// - Parameter apiContext: The API context.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
-    internal init(
+    init(
         apiContext: APIContext,
         voucherShareableViewProvider: AnyVoucherShareableViewProvider?,
         style: VoucherComponentStyle,
@@ -128,7 +128,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
         }
     }
     
-    internal let presenterViewController = UIViewController()
+    let presenterViewController = UIViewController()
         
     private func navBarType() -> NavigationBarType {
         let model = ActionNavigationBar.Model(leadingButtonTitle: Bundle.Adyen.localizedEditCopy,

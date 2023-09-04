@@ -14,15 +14,15 @@ public struct Observation: Hashable {
     private let uuid = UUID()
     
     /// Alias for the unobserve handler.
-    internal typealias UnobserveHandler = () -> Void
+    typealias UnobserveHandler = () -> Void
     
     /// The handler to invoke to remove the observation.
-    internal let unobserveHandler: UnobserveHandler
+    let unobserveHandler: UnobserveHandler
     
     /// Initializes the observation.
     ///
     /// - Parameter unobserveHandler: The handler to invoke to remove the observation.
-    internal init(unobserveHandler: @escaping UnobserveHandler) {
+    init(unobserveHandler: @escaping UnobserveHandler) {
         self.unobserveHandler = unobserveHandler
     }
     

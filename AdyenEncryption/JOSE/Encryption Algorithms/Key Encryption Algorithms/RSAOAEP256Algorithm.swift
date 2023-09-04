@@ -6,12 +6,12 @@
 
 import Foundation
 
-internal protocol RSAAlgorithm {
+protocol RSAAlgorithm {
     func encrypt(_ payload: Data, withKey key: SecKey) throws -> Data
 }
 
-internal struct RSAOAEP256Algorithm: RSAAlgorithm {
-    internal func encrypt(_ payload: Data, withKey key: SecKey) throws -> Data {
+struct RSAOAEP256Algorithm: RSAAlgorithm {
+    func encrypt(_ payload: Data, withKey key: SecKey) throws -> Data {
         var error: Unmanaged<CFError>?
         
         let cipherText = SecKeyCreateEncryptedData(key,

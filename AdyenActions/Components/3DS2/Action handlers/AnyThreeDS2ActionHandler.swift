@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// :nodoc:
-internal protocol AnyThreeDS2ActionHandler {
+protocol AnyThreeDS2ActionHandler {
 
     /// :nodoc:
     func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
@@ -20,7 +20,7 @@ internal protocol AnyThreeDS2ActionHandler {
 }
 
 /// :nodoc:
-internal protocol ComponentWrapper: Component {
+protocol ComponentWrapper: Component {
 
     var wrappedComponent: Component { get }
     
@@ -30,10 +30,10 @@ internal protocol ComponentWrapper: Component {
 extension ComponentWrapper {
 
     /// :nodoc:
-    internal var apiContext: APIContext { wrappedComponent.apiContext }
+    var apiContext: APIContext { wrappedComponent.apiContext }
 
     /// :nodoc:
-    internal var _isDropIn: Bool { // swiftlint:disable:this identifier_name
+    var _isDropIn: Bool { // swiftlint:disable:this identifier_name
         get {
             wrappedComponent._isDropIn
         }

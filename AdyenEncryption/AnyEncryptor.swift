@@ -6,7 +6,7 @@
 
 import Foundation
 
-internal protocol AnyEncryptor {}
+protocol AnyEncryptor {}
 
 extension AnyEncryptor {
     

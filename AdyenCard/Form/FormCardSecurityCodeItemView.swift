@@ -8,9 +8,9 @@ import Adyen
 import UIKit
 
 /// A view representing a form card security code item.
-internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> {
+final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> {
     
-    internal required init(item: FormCardSecurityCodeItem) {
+    required init(item: FormCardSecurityCodeItem) {
         super.init(item: item)
         accessory = .customView(cardHintView)
         textField.allowsEditingActions = false
@@ -31,13 +31,13 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         item.$selectedCard.publish(nil)
     }
     
-    internal lazy var cardHintView: HintView = {
+    lazy var cardHintView: HintView = {
         let view = HintView(item: self.item)
         view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cvvHintIcon")
         return view
     }()
 
-    override internal func updateValidationStatus(forced: Bool = false) {
+    override func updateValidationStatus(forced: Bool = false) {
         super.updateValidationStatus(forced: forced)
 
         alpha = item.displayMode.isVisible ? 1.0 : 0.0
@@ -51,13 +51,13 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         }
     }
     
-    override internal func textFieldDidBeginEditing(_ text: UITextField) {
+    override func textFieldDidBeginEditing(_ text: UITextField) {
         super.textFieldDidBeginEditing(text)
         accessory = .customView(cardHintView)
         cardHintView.isHighlighted = true
     }
     
-    override internal func textFieldDidEndEditing(_ text: UITextField) {
+    override func textFieldDidEndEditing(_ text: UITextField) {
         super.textFieldDidEndEditing(text)
         cardHintView.isHighlighted = false
     }
@@ -66,13 +66,13 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
 
 extension FormCardSecurityCodeItemView {
     
-    internal class HintView: UIImageView, Observer {
+    class HintView: UIImageView, Observer {
         
         private lazy var bundle = Bundle.cardInternalResources
         private let minimumAlpha: CGFloat = 0.3
         private let blinkDuration = 1.0
         
-        internal var showFront: Bool = false
+        var showFront: Bool = false
         
         private var logoResource: String {
             showFront ? "ic_card_front" : "ic_card_back"
@@ -82,7 +82,7 @@ extension FormCardSecurityCodeItemView {
             showFront ? "ic_card_front_cvv_focus" : "ic_card_back_cvv_focus"
         }
         
-        internal init(item: FormCardSecurityCodeItem) {
+        init(item: FormCardSecurityCodeItem) {
             super.init(frame: .zero)
             image = UIImage(named: logoResource, in: self.bundle, compatibleWith: nil)
             translatesAutoresizingMaskIntoConstraints = false
@@ -91,12 +91,12 @@ extension FormCardSecurityCodeItemView {
         }
         
         @available(*, unavailable)
-        internal required init?(coder: NSCoder) {
+        required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
         
         /// Indicate when user focused on security code field
-        override internal var isHighlighted: Bool {
+        override var isHighlighted: Bool {
             didSet {
                 if isHighlighted {
                     animateHint()

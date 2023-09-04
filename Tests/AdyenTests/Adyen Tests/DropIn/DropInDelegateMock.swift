@@ -1,5 +1,5 @@
 //
-//  MockDropInDelegate.swift
+//  DropInDelegateMock.swift
 //  AdyenUIKitTests
 //
 //  Created by Vladimir Abramichev on 10/06/2021.

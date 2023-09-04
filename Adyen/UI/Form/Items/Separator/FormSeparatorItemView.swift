@@ -8,12 +8,12 @@ import Foundation
 import UIKit
 
 /// A view representing a separator line item.
-internal final class FormSeparatorItemView: FormItemView<FormSeparatorItem> {
+final class FormSeparatorItemView: FormItemView<FormSeparatorItem> {
     
     /// Initializes the separator line item view.
     ///
     /// - Parameter item: The item represented by the view.
-    internal required init(item: FormSeparatorItem) {
+    required init(item: FormSeparatorItem) {
         super.init(item: item)
         
         addSubview(separator)

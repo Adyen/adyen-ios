@@ -135,7 +135,7 @@ public extension AdyenScope where Base == String {
     /// Returns an open range from the given range that is within the `base`'s bounds, to prevent out of bounds access.
     /// - Parameter range: The desired range to access in the `base`.
     /// - Returns: A new open range that is within the `base`'s bounds, or nil when there is no overlap.
-    internal func safeRange(from range: Range<Int>) -> Range<String.Index>? {
+    func safeRange(from range: Range<Int>) -> Range<String.Index>? {
         guard !base.isEmpty else { return nil }
         let baseRange = 0..<base.count
         guard baseRange.overlaps(range) else { return nil }
@@ -150,7 +150,7 @@ public extension AdyenScope where Base == String {
     /// Returns a closed range from the given range that is within the `base`'s bounds, to prevent out of bounds access.
     /// - Parameter range: The desired range to access in the `base`.
     /// - Returns: A new closed range that is within the `base'`s bounds, or nil when there is no overlap.
-    internal func safeClosedRange(from range: ClosedRange<Int>) -> ClosedRange<String.Index>? {
+    func safeClosedRange(from range: ClosedRange<Int>) -> ClosedRange<String.Index>? {
         guard !base.isEmpty else { return nil }
         let baseRange = 0...base.count - 1
         guard baseRange.overlaps(range) else { return nil }

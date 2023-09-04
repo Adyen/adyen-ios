@@ -71,7 +71,7 @@ public final class LoadingView: UIControl {
         }
     }
     
-    internal var workItem: DispatchWorkItem?
+    var workItem: DispatchWorkItem?
     
     private func startAnimating(after delay: DispatchTimeInterval) {
         guard !activityIndicatorView.isAnimating else { return }

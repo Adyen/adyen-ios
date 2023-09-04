@@ -17,7 +17,7 @@ public final class TextField: UITextField {
     
     private var heightConstraint: NSLayoutConstraint?
     
-    internal var disablePlaceHolderAccessibility: Bool = true
+    var disablePlaceHolderAccessibility: Bool = true
     
     /// A boolean value to determine whether editing actions such as
     /// cut, copy, share are allowed for the text field. Default is `true`

@@ -26,10 +26,10 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     public var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
-    internal let presenterViewController = UIViewController()
+    let presenterViewController = UIViewController()
     
     /// :nodoc:
-    internal var action: DocumentAction?
+    var action: DocumentAction?
     
     /// :nodoc:
     private let componentName = "documentAction"
@@ -91,11 +91,11 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
 
 extension DocumentComponent: ActionViewDelegate {
     
-    internal func didComplete() {
+    func didComplete() {
         delegate?.didComplete(from: self)
     }
     
-    internal func mainButtonTap(sourceView: UIView) {
+    func mainButtonTap(sourceView: UIView) {
         guard let action = action else { return }
         presentSharePopover(with: action.downloadUrl, sourceView: sourceView)
     }

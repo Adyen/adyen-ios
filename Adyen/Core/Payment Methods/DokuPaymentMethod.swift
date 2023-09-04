@@ -19,7 +19,7 @@ public struct DokuPaymentMethod: PaymentMethod {
     ///
     /// - Parameter type: The payment method type.
     /// - Parameter name: The payment method name.
-    internal init(type: String, name: String) {
+    init(type: String, name: String) {
         self.type = type
         self.name = name
     }

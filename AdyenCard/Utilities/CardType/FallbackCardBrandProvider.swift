@@ -8,10 +8,10 @@ import Foundation
 
 /// Fall back to local regex-based detector if API not available or BIN too short.
 /// :nodoc:
-internal final class FallbackBinInfoProvider: AnyBinInfoProvider {
+final class FallbackBinInfoProvider: AnyBinInfoProvider {
 
     /// :nodoc:
-    internal func provide(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void) {
+    func provide(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void) {
         // only return result out of the given supported types.
         let result: [CardBrand] = supportedTypes.adyen.types(forCardNumber: bin).map { type in
 

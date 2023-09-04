@@ -89,7 +89,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     
     // MARK: - Form Items
     
-    internal lazy var nameItem: FormTextInputItem = {
+    lazy var nameItem: FormTextInputItem = {
         let nameItem = FormTextInputItem(style: style.textField)
         nameItem.title = localizedString(.sepaNameItemTitle, localizationParameters)
         nameItem.placeholder = localizedString(.sepaNameItemPlaceholder, localizationParameters)
@@ -100,7 +100,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         return nameItem
     }()
     
-    internal lazy var ibanItem: FormTextInputItem = {
+    lazy var ibanItem: FormTextInputItem = {
         func localizedPlaceholder() -> String {
             let countryCode = Locale.current.regionCode
             let specification = countryCode.flatMap(IBANSpecification.init(forCountryCode:))
@@ -120,7 +120,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         return ibanItem
     }()
 
-    internal lazy var button: FormButtonItem = {
+    lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(with: payment?.amount,

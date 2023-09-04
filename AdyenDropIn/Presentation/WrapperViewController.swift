@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 
-internal final class WrapperViewController: UIViewController {
+final class WrapperViewController: UIViewController {
 
     // MARK: - Properties
 
@@ -16,13 +16,13 @@ internal final class WrapperViewController: UIViewController {
     private var rightConstraint: NSLayoutConstraint?
     private var leftConstraint: NSLayoutConstraint?
 
-    internal lazy var requiresKeyboardInput: Bool = hierarchyRequiresKeyboardInput(viewController: child)
+    lazy var requiresKeyboardInput: Bool = hierarchyRequiresKeyboardInput(viewController: child)
 
-    internal let child: ModalViewController
+    let child: ModalViewController
 
     // MARK: - Initializers
 
-    internal init(child: ModalViewController) {
+    init(child: ModalViewController) {
         self.child = child
         super.init(nibName: nil, bundle: Bundle(for: WrapperViewController.self))
 
@@ -30,11 +30,11 @@ internal final class WrapperViewController: UIViewController {
     }
 
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    internal func updateFrame(keyboardRect: CGRect, animated: Bool = true) {
+    func updateFrame(keyboardRect: CGRect, animated: Bool = true) {
         guard let view = child.viewIfLoaded else { return }
         let finalFrame = child.finalPresentationFrame(with: keyboardRect)
 
@@ -100,7 +100,7 @@ extension ModalViewController {
     /// Enables any `UIViewController` to recalculate it's content's size form modal presentation ,
     /// e.g `viewController.adyen.finalPresentationFrame(in:keyboardRect:)`.
     /// :nodoc:
-    internal func finalPresentationFrame(with keyboardRect: CGRect = .zero) -> CGRect {
+    func finalPresentationFrame(with keyboardRect: CGRect = .zero) -> CGRect {
         view.layer.layoutIfNeeded()
         let expectedWidth = Dimensions.greatestPresentableWidth
         var frame = UIScreen.main.bounds

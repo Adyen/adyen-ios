@@ -19,7 +19,7 @@ public struct ACHDirectDebitPaymentMethod: PaymentMethod {
     /// - Parameters:
     ///   - type: The payment method type.
     ///   - name: The payment method name.
-    internal init(type: String, name: String) {
+    init(type: String, name: String) {
         self.type = type
         self.name = name
     }
