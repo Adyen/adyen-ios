@@ -10,7 +10,7 @@ on:
 jobs:
 
   tests:
-    runs-on: macos-11
+    runs-on: macos-12
     continue-on-error: true
     strategy:
       fail-fast: false
@@ -65,7 +65,7 @@ jobs:
         destination: ${{ matrix.destination }}
 
   sonar:
-    runs-on: macos-11
+    runs-on: macos-12
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-java@v1
