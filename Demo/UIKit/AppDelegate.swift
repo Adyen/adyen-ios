@@ -8,7 +8,7 @@ import Adyen
 import AdyenActions
 import UIKit
 
-@main
+@UIApplicationMain
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     
     internal var window: UIWindow?

@@ -6,7 +6,7 @@
 
 import Foundation
 
-private extension [PaymentMethodField] {
+private extension Array where Element == PaymentMethodField {
     var isAnyFieldRequired: Bool {
         contains { $0.isRequired }
     }

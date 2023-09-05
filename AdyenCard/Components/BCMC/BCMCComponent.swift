@@ -39,13 +39,13 @@ public final class BCMCComponent: CardComponent {
                            style: FormComponentStyle = .init(),
                            publicKeyProvider: AnyPublicKeyProvider,
                            binProvider: AnyBinInfoProvider) {
-        let configuration = configuration.bcmcConfiguration()
-        super.init(paymentMethod: paymentMethod,
-                   apiContext: apiContext,
-                   configuration: configuration,
-                   shopperInformation: shopperInformation,
-                   style: style,
-                   publicKeyProvider: publicKeyProvider,
-                   binProvider: binProvider)
-    }
+           let configuration = configuration.bcmcConfiguration()
+           super.init(paymentMethod: paymentMethod,
+                      apiContext: apiContext,
+                      configuration: configuration,
+                      shopperInformation: shopperInformation,
+                      style: style,
+                      publicKeyProvider: publicKeyProvider,
+                      binProvider: binProvider)
+       }
 }

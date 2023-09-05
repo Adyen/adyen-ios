@@ -1,5 +1,5 @@
 //
-//  VoucherShareableViewProviderMock.swift
+//  VoucherViewControllerProviderMock.swift
 //  AdyenUIKitTests
 //
 //  Created by Mohamed Eldoheiri on 2/3/21.

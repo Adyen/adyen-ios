@@ -145,7 +145,7 @@ extension ApplePayPaymentMethod {
 
     internal var supportedNetworks: [PKPaymentNetwork] {
         var networks = ApplePayPaymentMethod.systemSupportedNetworks
-        if let brands {
+        if let brands = brands {
             let brandsSet = Set(brands)
             networks = networks.filter { brandsSet.contains($0.adyenName) }
         }

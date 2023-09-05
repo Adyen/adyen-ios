@@ -74,7 +74,7 @@ public final class AmountFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.currencyCode = currencyCode
-        if let localeIdentifier {
+        if let localeIdentifier = localeIdentifier {
             formatter.locale = Locale(identifier: localeIdentifier)
         }
         if let maxDigits = maximumFractionDigits(for: currencyCode, localeIdentifier: localeIdentifier) {

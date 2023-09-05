@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 
-@main
+@UIApplicationMain
 internal class AppDelegate: UIResponder, UIApplicationDelegate {
 
     internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

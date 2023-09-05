@@ -163,7 +163,7 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         toggleItem.value = false
 
         let localizedTitle: String?
-        if let amount {
+        if let amount = amount {
             localizedTitle = localizedString(.bacsSpecifiedAmountConsentToggleTitle, localizationParameters, amount)
         } else {
             localizedTitle = localizedString(.bacsAmountConsentToggleTitle, localizationParameters)

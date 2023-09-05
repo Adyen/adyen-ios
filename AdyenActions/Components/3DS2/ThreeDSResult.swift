@@ -49,7 +49,7 @@ public struct ThreeDSResult: Decodable {
     internal init(authenticated: Bool, authorizationToken: String?) throws {
         var payloadJson = ["transStatus": authenticated ? "Y" : "N"]
 
-        if let authorizationToken {
+        if let authorizationToken = authorizationToken {
             payloadJson["authorisationToken"] = authorizationToken
         }
 

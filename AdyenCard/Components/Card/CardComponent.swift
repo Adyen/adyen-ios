@@ -138,7 +138,7 @@ public class CardComponent: PublicKeyConsumer,
     
     /// :nodoc:
     public var viewController: UIViewController {
-        if let storedCardComponent {
+        if let storedCardComponent = storedCardComponent {
             return storedCardComponent.viewController
         }
         return securedViewController
@@ -200,7 +200,7 @@ extension CardComponent: CardViewControllerDelegate {
     func didChangeBIN(_ value: String) {
         self.cardComponentDelegate?.didChangeBIN(String(value.prefix(Constant.publicBinLength)), component: self)
         binInfoProvider.provide(for: value, supportedTypes: supportedCardTypes) { [weak self] binInfo in
-            guard let self else { return }
+            guard let self = self else { return }
             // update response with sorted brands
             var binInfo = binInfo
             binInfo.brands = CardBrandSorter.sortBrands(binInfo.brands ?? [])

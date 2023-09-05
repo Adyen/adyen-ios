@@ -14,4 +14,4 @@ internal protocol DismissalDelegate: AnyObject {
     func dismiss(completion: (() -> Void)?)
 }
 
-internal typealias NavigationDelegate = DismissalDelegate & PresentationDelegate
+internal typealias NavigationDelegate = PresentationDelegate & DismissalDelegate

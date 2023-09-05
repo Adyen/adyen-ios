@@ -41,7 +41,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
                               service: AnyADYService,
                               appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
         self.init(apiContext: apiContext, appearanceConfiguration: appearanceConfiguration)
-        if let fingerprintSubmitter {
+        if let fingerprintSubmitter = fingerprintSubmitter {
             self.fingerprintSubmitter = fingerprintSubmitter
         }
         self.coreActionHandler.service = service
@@ -65,7 +65,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
                                     flavor: _isDropIn ? .dropin : .components,
                                     environment: apiContext.environment)
         coreActionHandler.handle(fingerprintAction, event: event) { [weak self] result in
-            guard let self else { return }
+            guard let self = self else { return }
             switch result {
             case let .success(encodedFingerprint):
                 self.fingerprintSubmitter.submit(fingerprint: encodedFingerprint,
@@ -90,7 +90,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
                                     flavor: _isDropIn ? .dropin : .components,
                                     environment: apiContext.environment)
         coreActionHandler.handle(challengeAction, event: event) { [weak self] result in
-            guard let self else { return }
+            guard let self = self else { return }
             switch result {
             case let .success(result):
                 self.handle(result, completionHandler: completionHandler)

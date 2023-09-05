@@ -30,7 +30,7 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { [weak redirectComponent] action in
-            guard let redirectComponent else { return }
+            guard let redirectComponent = redirectComponent else { return }
 
             XCTAssertEqual(action, mockedAction)
 
@@ -68,7 +68,7 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { [weak redirectComponent] action in
-            guard let redirectComponent else { return }
+            guard let redirectComponent = redirectComponent else { return }
 
             XCTAssertEqual(action, mockedAction)
 

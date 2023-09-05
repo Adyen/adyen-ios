@@ -10,12 +10,12 @@ import Foundation
 final class FormTextItemViewDelegateMock: FormTextItemViewDelegate {
     
     var handleDidReachMaximumLength: ((_ itemView: FormTextItemView<FormTextInputItem>) -> Void)?
-    func didReachMaximumLength(in itemView: FormTextItemView<some FormTextItem>) {
+    func didReachMaximumLength<T: FormTextItem>(in itemView: FormTextItemView<T>) {
         handleDidReachMaximumLength?(itemView as! FormTextItemView<FormTextInputItem>)
     }
     
     var handleDidSelectReturnKey: ((_ itemView: FormTextItemView<FormTextInputItem>) -> Void)?
-    func didSelectReturnKey(in itemView: FormTextItemView<some FormTextItem>) {
+    func didSelectReturnKey<T: FormTextItem>(in itemView: FormTextItemView<T>) {
         handleDidSelectReturnKey?(itemView as! FormTextItemView<FormTextInputItem>)
     }
     

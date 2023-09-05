@@ -1,5 +1,5 @@
 //
-//  BACSRouterProtocolMock.swift
+//  BACSDirectDebitRouterProtocolMock.swift
 //  AdyenUIKitTests
 //
 //  Created by Naufal Aros on 12/2/21.

@@ -78,7 +78,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         
         formViewController.append(listItem)
         formViewController.append(submitButtonItem)
-        if let footnoteItem {
+        if let footnoteItem = footnoteItem {
             formViewController.append(footnoteItem.addingDefaultMargins())
         }
         formViewController.append(FormSpacerItem())

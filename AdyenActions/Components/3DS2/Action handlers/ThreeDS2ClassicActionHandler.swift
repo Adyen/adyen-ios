@@ -92,7 +92,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
             environment: apiContext.environment
         )
         coreActionHandler.handle(challengeAction, event: event) { [weak self] result in
-            guard let self else { return }
+            guard let self = self else { return }
             switch result {
             case let .success(result):
                 self.handle(result, completionHandler: completionHandler)

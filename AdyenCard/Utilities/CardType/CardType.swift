@@ -336,7 +336,7 @@ extension CardType {
 extension CardType {
     
     internal func matches(cardNumber: String) -> Bool {
-        guard let pattern else {
+        guard let pattern = pattern else {
             return false
         }
         

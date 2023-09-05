@@ -55,7 +55,7 @@ internal final class StoredCardComponent: PaymentComponent, PresentableComponent
         
         manager.localizationParameters = localizationParameters
         manager.completionHandler = { [weak self] result in
-            guard let self else { return }
+            guard let self = self else { return }
             
             switch result {
             case let .success(details):

@@ -58,8 +58,8 @@ internal struct ConfigurationView: View {
         }
     }
     
-    private func wrapInSection(
-        view: some View,
+    private func wrapInSection<T: View>(
+        view: T,
         section: ConfigurationSection
     ) -> some View {
         Section(header: Text(section.rawValue.uppercased())) { view }
@@ -115,12 +115,12 @@ internal struct ConfigurationView: View {
         }
     }
     
-    private func pickerWithSearchBar<T: Hashable>(
+    private func pickerWithSearchBar<T: Hashable, P: Hashable>(
         with selectionBinding: Binding<String>,
         title: String,
         searchString: Binding<String>,
         rows: [T],
-        transform: @escaping (T) -> ListItemView<some Hashable>
+        transform: @escaping (T) -> ListItemView<P>
     ) -> some View {
         Picker(title, selection: selectionBinding) {
             SearchBar(searchString: searchString, placeholder: "Search...")

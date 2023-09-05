@@ -52,17 +52,17 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
     internal func updateFormState() {
  
         switch displayMode {
-        case .required:
-            title = localizedString(.cardCvcItemTitle, localizationParameters)
-            validator = securityCodeValidator
-        case .hidden:
-            validator = nil
-            value = ""
-        case .optional:
-            // when optional, if user enters anything it should be validated as regular entry.
-            title = localizedString(.cardCvcItemTitleOptional, localizationParameters)
-            validator = NumericStringValidator(exactLength: 0) || securityCodeValidator
-        }
+            case .required:
+                title = localizedString(.cardCvcItemTitle, localizationParameters)
+                validator = securityCodeValidator
+            case .hidden:
+                validator = nil
+                value = ""
+            case .optional:
+                // when optional, if user enters anything it should be validated as regular entry.
+                title = localizedString(.cardCvcItemTitleOptional, localizationParameters)
+                validator = NumericStringValidator(exactLength: 0) || securityCodeValidator
+            }
     }
     
     override internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {

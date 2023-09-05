@@ -63,7 +63,7 @@ extension TextField {
 
     /// :nodoc:
     public func apply(placeholderText: String?, with style: TextStyle?) {
-        if let text = placeholderText, let style {
+        if let text = placeholderText, let style = style {
             attributedPlaceholder = NSAttributedString(string: text, attributes: style.stringAttributes)
         } else {
             placeholder = placeholderText
