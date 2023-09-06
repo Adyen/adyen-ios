@@ -96,7 +96,7 @@ private func buildPossibleInputs(for bundle: Bundle,
 }
 
 private func updated(_ key: String, withSeparator separator: String?) -> String? {
-    guard let separator = separator else { return nil }
+    guard let separator else { return nil }
     return key.replacingOccurrences(of: ".", with: separator)
 }
 
@@ -131,7 +131,7 @@ public enum PaymentStyle {
 public func localizedSubmitButtonTitle(with amount: Amount?,
                                        style: PaymentStyle,
                                        _ parameters: LocalizationParameters?) -> String {
-    guard let amount = amount else {
+    guard let amount else {
         return localizedString(.submitButton, parameters)
     }
 

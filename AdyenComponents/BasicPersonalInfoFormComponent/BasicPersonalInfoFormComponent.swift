@@ -41,10 +41,10 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
 
     @_spi(AdyenInternal)
     override public func createPaymentDetails() throws -> PaymentMethodDetails {
-        guard let firstNameItem = firstNameItem,
-              let lastNameItem = lastNameItem,
-              let emailItem = emailItem,
-              let phoneItem = phoneItem else {
+        guard let firstNameItem,
+              let lastNameItem,
+              let emailItem,
+              let phoneItem else {
             throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
         return BasicPersonalInfoFormDetails(paymentMethod: paymentMethod,

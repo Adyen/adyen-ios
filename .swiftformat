@@ -1,5 +1,5 @@
---disable blankLinesAtStartOfScope,blankLinesAtEndOfScope,unusedArguments,redundantSelf,wrapMultilineStatementBraces,extensionAccessControl,redundantClosure
---swiftversion "5.2"
+--disable blankLinesAtStartOfScope,blankLinesAtEndOfScope,unusedArguments,redundantSelf,wrapMultilineStatementBraces,extensionAccessControl,redundantClosure,redundantInternal
+--swiftversion "5.7"
 --commas inline
 --ranges nospace
 --trimwhitespace nonblank-lines

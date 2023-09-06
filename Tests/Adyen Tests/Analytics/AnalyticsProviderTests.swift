@@ -73,7 +73,7 @@ class AnalyticsProviderTests: XCTestCase {
 
         // When
         sut.fetchCheckoutAttemptId { receivedCheckoutAttemptId in
-            XCTAssertNil(receivedCheckoutAttemptId)
+            XCTAssertEqual(self.sut.checkoutAttemptId, "do-not-track")
             fetchCheckoutAttemptIdExpection.fulfill()
         }
 
@@ -163,7 +163,7 @@ class AnalyticsProviderTests: XCTestCase {
         sut.fetchCheckoutAttemptId { _ in
 
             // Then
-            XCTAssertNil(self.sut.checkoutAttemptId)
+            XCTAssertEqual(self.sut.checkoutAttemptId, "do-not-track")
         }
     }
     

@@ -48,7 +48,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
 
     private func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
         requestAdyenSessionConfiguration { [weak self] response in
-            guard let self = self else { return }
+            guard let self else { return }
             
             switch response {
             case let .success(config):
@@ -91,7 +91,8 @@ internal final class DropInExample: InitialDataFlowProtocol {
         if let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
                                                       brand: ConfigurationConstants.appName) {
             configuration.applePay = .init(payment: applePayPayment,
-                                           merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
+                                           merchantIdentifier: ConfigurationConstants.current.applePaySettings?.merchantIdentifier ?? "")
+            configuration.applePay?.allowOnboarding = ConfigurationConstants.current.applePaySettings?.allowOnboarding ?? false
         }
 
         configuration.actionComponent.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations

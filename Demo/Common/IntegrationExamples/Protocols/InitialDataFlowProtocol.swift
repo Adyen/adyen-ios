@@ -17,7 +17,7 @@ extension InitialDataFlowProtocol {
 
     internal var context: AdyenContext {
         var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isEnabled = true
+        analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
         return AdyenContext(apiContext: ConfigurationConstants.apiContext,
                             payment: ConfigurationConstants.current.payment,
                             analyticsConfiguration: analyticsConfiguration)

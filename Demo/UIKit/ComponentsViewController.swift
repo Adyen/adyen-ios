@@ -112,7 +112,7 @@ extension ComponentsViewController: PresenterExampleProtocol {
         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
 
-        if let retryHandler = retryHandler {
+        if let retryHandler {
             alertController.addAction(UIAlertAction(title: "Retry", style: .default, handler: { _ in
                 retryHandler()
             }))

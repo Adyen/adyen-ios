@@ -1,5 +1,5 @@
 //
-//  PollingAwaitComponentTests.swift
+//  PollingComponentTests.swift
 //  AdyenTests
 //
 //  Created by Mohamed Eldoheiri on 8/12/20.

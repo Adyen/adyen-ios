@@ -42,7 +42,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
     internal func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
         requestAdyenSessionConfiguration { [weak self] response in
-            guard let self = self else { return }
+            guard let self else { return }
             switch response {
             case let .success(configuration):
                 AdyenSession.initialize(with: configuration,
@@ -76,8 +76,9 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         let applePayPayment = try ApplePayPayment(payment: ConfigurationConstants.current.payment,
                                                   brand: ConfigurationConstants.appName)
         var config = ApplePayComponent.Configuration(payment: applePayPayment,
-                                                     merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
-        config.allowOnboarding = true
+                                                     merchantIdentifier:
+                                                     ConfigurationConstants.current.applePayConfiguration.merchantIdentifier)
+        config.allowOnboarding = ConfigurationConstants.current.applePayConfiguration.allowOnboarding
         config.shippingType = .delivery
         config.requiredShippingContactFields = [.postalAddress]
         config.requiredBillingContactFields = [.postalAddress]

@@ -23,7 +23,7 @@ internal final class FormViewItemManager {
     /// - Parameters:
     ///   - item: The item to append.
     /// - Returns: The view instance correspondent to a selected item.
-    @discardableResult internal func append<ItemType: FormItem>(_ item: ItemType) -> AnyFormItemView {
+    @discardableResult internal func append(_ item: some FormItem) -> AnyFormItemView {
         topLevelItem.append(item)
         
         let itemView = newItemView(for: item)
@@ -43,7 +43,7 @@ internal final class FormViewItemManager {
         topLevelItemViews.flatMap(\.flatSubitemViews)
     }
 
-    private func newItemView<ItemType: FormItem>(for item: ItemType) -> AnyFormItemView {
+    private func newItemView(for item: some FormItem) -> AnyFormItemView {
         item.build(with: FormItemViewBuilder())
     }
     
