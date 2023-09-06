@@ -49,7 +49,7 @@ internal func createDefaultThreeDS2CoreActionHandler(
     presentationDelegate: PresentationDelegate?
 ) -> AnyThreeDS2CoreActionHandler {
     #if canImport(AdyenAuthentication)
-        if #available(iOS 14.0, *), let delegatedAuthenticationConfiguration = delegatedAuthenticationConfiguration {
+        if #available(iOS 14.0, *), let delegatedAuthenticationConfiguration {
             return ThreeDS2PlusDACoreActionHandler(context: context,
                                                    appearanceConfiguration: appearanceConfiguration,
                                                    delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration,

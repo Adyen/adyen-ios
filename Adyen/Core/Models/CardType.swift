@@ -386,7 +386,7 @@ extension CardType {
     
     @_spi(AdyenInternal)
     public func matches(cardNumber: String) -> Bool {
-        guard let pattern = pattern else {
+        guard let pattern else {
             return false
         }
         

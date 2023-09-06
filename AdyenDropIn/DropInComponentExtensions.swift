@@ -61,7 +61,7 @@ extension DropInComponent: PaymentComponentDelegate {
             return
         }
         updatedData.dataByAddingBrowserInfo { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.delegate?.didSubmit($0, from: component, in: self)
         }
         
@@ -151,7 +151,7 @@ extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
     @_spi(AdyenInternal)
     public func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?) {
         let newRoot = preselectedPaymentMethodComponent(for: component, onCancel: { [weak self] in
-            guard let self = self, let order = order else { return }
+            guard let self, let order else { return }
             self.partialPaymentDelegate?.cancelOrder(order, component: self)
         })
         navigationController.present(root: newRoot)

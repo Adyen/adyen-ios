@@ -27,7 +27,7 @@ public struct IssuerListPaymentMethod: PaymentMethod {
 
         let detailsContainer = try? container.nestedUnkeyedContainer(forKey: .details)
 
-        if var detailsContainer = detailsContainer {
+        if var detailsContainer {
             var issuers = [Issuer]()
 
             while !detailsContainer.isAtEnd {

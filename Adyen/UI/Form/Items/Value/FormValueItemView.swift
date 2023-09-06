@@ -117,10 +117,12 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
                                        duration: 0.25,
                                        delay: 0.0,
                                        options: [.curveEaseInOut],
-                                       animations: {
+                                       animations: { [weak self] in
+                                           guard let self else { return }
                                            transitionView.frame = self.separatorView.frame
                                        },
-                                       completion: { _ in
+                                       completion: { [weak self] _ in
+                                           guard let self else { return }
                                            self.separatorView.backgroundColor = color
                                            transitionView.removeFromSuperview()
                                        })

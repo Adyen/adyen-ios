@@ -63,7 +63,8 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
         if let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
                                                       brand: ConfigurationConstants.appName) {
             configuration.applePay = .init(payment: applePayPayment,
-                                           merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
+                                           merchantIdentifier: ConfigurationConstants.current.applePayConfiguration.merchantIdentifier)
+            configuration.applePay?.allowOnboarding = ConfigurationConstants.current.applePayConfiguration.allowOnboarding
         }
 
         configuration.actionComponent.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
@@ -136,7 +137,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
 
     private func finalize(_ success: Bool, _ message: String) {
         dropInComponent?.finalizeIfNeeded(with: success) { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.dismissAndShowAlert(success, message)
         }
     }

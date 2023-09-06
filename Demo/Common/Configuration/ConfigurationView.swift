@@ -15,7 +15,7 @@ internal struct ConfigurationView: View {
         case merchantAccount = "Merchant Account"
         case region = "Region"
         case payment = "Payment"
-        case cardComponent = "Card Component"
+        case components = "Components"
         case dropIn = "DropIn"
     }
     
@@ -49,8 +49,8 @@ internal struct ConfigurationView: View {
                 merchantAccountSection
                 regionSection
                 wrapInSection(view: paymentSection, section: .payment)
-                wrapInSection(view: cardComponentSection, section: .cardComponent)
                 wrapInSection(view: dropInSection, section: .dropIn)
+                wrapInSection(view: componentsSection, section: .components)
             }.navigationBarTitle("Configuration", displayMode: .inline)
                 .navigationBarItems(
                     leading: Button("Default", action: viewModel.defaultTapped),
@@ -64,8 +64,8 @@ internal struct ConfigurationView: View {
         }
     }
     
-    private func wrapInSection<T: View>(
-        view: T,
+    private func wrapInSection(
+        view: some View,
         section: ConfigurationSection
     ) -> some View {
         Section(header: Text(section.rawValue.uppercased())) { view }
@@ -74,13 +74,15 @@ internal struct ConfigurationView: View {
     private var apiVersionSection: some View {
         TextFieldItemView(title: "API Version",
                           value: $viewModel.apiVersion,
-                          placeholder: ConfigurationSection.apiVersion.rawValue)
+                          placeholder: ConfigurationSection.apiVersion.rawValue,
+                          keyboardType: .numberPad)
     }
     
     private var merchantAccountSection: some View {
         TextFieldItemView(title: "Merchant Account",
                           value: $viewModel.merchantAccount,
-                          placeholder: ConfigurationSection.merchantAccount.rawValue)
+                          placeholder: ConfigurationSection.merchantAccount.rawValue,
+                          keyboardType: .default)
     }
     
     private var regionSection: some View {
@@ -121,17 +123,10 @@ internal struct ConfigurationView: View {
             )
             TextFieldItemView(title: "Amount ",
                               value: $viewModel.value,
-                              placeholder: "Amount")
+                              placeholder: "Amount",
+                              keyboardType: .numberPad)
         }
 
-    }
-
-    private var cardComponentSection: some View {
-        NavigationLink(destination: CardComponentSettingsView(viewModel: viewModel)) {
-            HStack {
-                Text("Card Component")
-            }
-        }
     }
 
     private var dropInSection: some View {
@@ -141,13 +136,45 @@ internal struct ConfigurationView: View {
             }
         }
     }
-    
-    private func pickerWithSearchBar<T: Hashable, P: Hashable>(
+
+    private var componentsSection: some View {
+        Group {
+            cardComponentSection
+            applePaySection
+            analyticsSection
+        }
+    }
+
+    internal var cardComponentSection: some View {
+        NavigationLink(destination: CardComponentSettingsView(viewModel: viewModel)) {
+            HStack {
+                Text("Card Component")
+            }
+        }
+    }
+
+    private var applePaySection: some View {
+        NavigationLink(destination: ApplePaySettingsView(viewModel: viewModel)) {
+            HStack {
+                Text("Apple Pay")
+            }
+        }
+    }
+
+    private var analyticsSection: some View {
+        NavigationLink(destination: AnalyticsSettingsView(viewModel: viewModel)) {
+            HStack {
+                Text("Analytics")
+            }
+        }
+    }
+
+    private func pickerWithSearchBar<T: Hashable>(
         with selectionBinding: Binding<String>,
         title: String,
         searchString: Binding<String>,
         rows: [T],
-        transform: @escaping (T) -> ListItemView<P>
+        transform: @escaping (T) -> ListItemView<some Hashable>
     ) -> some View {
         Picker(title, selection: selectionBinding) {
             SearchBar(searchString: searchString, placeholder: "Search...")
@@ -176,7 +203,7 @@ internal struct TextFieldItemView: View {
     internal let keyboardType: UIKeyboardType
     internal let value: Binding<String>
 
-    internal init(title: String, value: Binding<String>, placeholder: String, keyboardType: UIKeyboardType = .numberPad) {
+    internal init(title: String, value: Binding<String>, placeholder: String, keyboardType: UIKeyboardType) {
         self.title = title
         self.placeholder = placeholder
         self.keyboardType = keyboardType

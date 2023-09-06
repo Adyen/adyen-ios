@@ -85,7 +85,8 @@ public class CardComponent: PresentableComponent,
         let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: context.apiContext),
                                               publicKeyProvider: publicKeyProvider,
-                                              minBinLength: Constant.thresholdBINLength)
+                                              minBinLength: Constant.thresholdBINLength,
+                                              binLookupType: configuration.binLookupType)
         self.init(paymentMethod: paymentMethod,
                   context: context,
                   configuration: configuration,
@@ -112,15 +113,13 @@ public class CardComponent: PresentableComponent,
         self.publicKeyProvider = publicKeyProvider
         self.binInfoProvider = binProvider
 
-        let excludedCardTypes = configuration.excludedCardTypes
-        let allowedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
-        self.supportedCardTypes = allowedCardTypes.minus(excludedCardTypes)
+        self.supportedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
     }
     
     // MARK: - Presentable Component Protocol
     
     public var viewController: UIViewController {
-        if let storedCardComponent = storedCardComponent {
+        if let storedCardComponent {
             return storedCardComponent.viewController
         }
         return securedViewController
