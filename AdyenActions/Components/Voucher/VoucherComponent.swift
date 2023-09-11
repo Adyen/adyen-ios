@@ -115,7 +115,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
         
         setUpPresenterViewController(parentViewController: viewController)
 
-        if let presentationDelegate = presentationDelegate {
+        if let presentationDelegate {
             let presentableComponent = PresentableComponentWrapper(
                 component: self,
                 viewController: viewController,

@@ -9,7 +9,7 @@ import UIKit
 /// Displays a form for the user to enter details.
 @objc(ADYFormViewController)
 @_spi(AdyenInternal)
-open class FormViewController: UIViewController, Localizable, AdyenObserver, PreferredContentSizeConsumer {
+open class FormViewController: UIViewController, AdyenObserver, PreferredContentSizeConsumer {
 
     fileprivate enum Animations {
         fileprivate static let keyboardBottomInset = "keyboardBottomInset"
@@ -30,9 +30,15 @@ open class FormViewController: UIViewController, Localizable, AdyenObserver, Pre
 
     /// Initializes the FormViewController.
     ///
-    /// - Parameter style: The `FormViewController` UI style.
-    public init(style: ViewStyle) {
+    /// - Parameters:
+    ///   - style: The `FormViewController` UI style.
+    ///   - localizationParameters: The localization parameters.
+    public init(
+        style: ViewStyle,
+        localizationParameters: LocalizationParameters?
+    ) {
         self.style = style
+        self.localizationParameters = localizationParameters
         super.init(nibName: nil, bundle: Bundle(for: FormViewController.self))
     }
 
@@ -118,7 +124,7 @@ open class FormViewController: UIViewController, Localizable, AdyenObserver, Pre
     /// - Parameters:
     ///   - item: The item to append.
     @_spi(AdyenInternal)
-    public func append<T: FormItem>(_ item: T) {
+    public func append(_ item: some FormItem) {
         let itemView = itemManager.append(item)
         observerVisibility(of: item, and: itemView)
         itemView.applyTextDelegateIfNeeded(delegate: self)
@@ -130,7 +136,7 @@ open class FormViewController: UIViewController, Localizable, AdyenObserver, Pre
         formView.appendItemView(itemView)
     }
 
-    private func observerVisibility<T: FormItem>(of item: T, and itemView: UIView) {
+    private func observerVisibility(of item: some FormItem, and itemView: UIView) {
         guard let item = item as? Hidable else { return }
         itemView.adyen.hide(animationKey: String(describing: itemView),
                             hidden: item.isHidden.wrappedValue, animated: false)
@@ -143,7 +149,7 @@ open class FormViewController: UIViewController, Localizable, AdyenObserver, Pre
 
     // MARK: - Localizable
 
-    public var localizationParameters: LocalizationParameters?
+    public let localizationParameters: LocalizationParameters?
 
     // MARK: - Validity
 
@@ -166,9 +172,16 @@ open class FormViewController: UIViewController, Localizable, AdyenObserver, Pre
 
     @_spi(AdyenInternal)
     public func showValidation() {
-        itemManager.flatItemViews
-            .compactMap { $0 as? AnyFormValueItemView }
-            .forEach { $0.validate() }
+        let validatableItemViews = itemManager.flatItemViews
+            .compactMap { $0 as? AnyFormValidatableValueItemView }
+        
+        validatableItemViews.forEach { $0.showValidation() }
+        
+        let firstInvalidItemView = validatableItemViews.first { !$0.isValid }
+        
+        if let firstInvalidItemView {
+            UIAccessibility.post(notification: .screenChanged, argument: firstInvalidItemView)
+        }
     }
 
     private func getAllValidatableItems() -> [ValidatableFormItem] {
@@ -227,15 +240,15 @@ open class FormViewController: UIViewController, Localizable, AdyenObserver, Pre
 @_spi(AdyenInternal)
 extension FormViewController: FormTextItemViewDelegate {
 
-    public func didReachMaximumLength<T: FormTextItem>(in itemView: FormTextItemView<T>) {
+    public func didReachMaximumLength(in itemView: FormTextItemView<some FormTextItem>) {
         handleReturnKey(from: itemView)
     }
 
-    public func didSelectReturnKey<T: FormTextItem>(in itemView: FormTextItemView<T>) {
+    public func didSelectReturnKey(in itemView: FormTextItemView<some FormTextItem>) {
         handleReturnKey(from: itemView)
     }
 
-    private func handleReturnKey<T: FormTextItem>(from itemView: FormTextItemView<T>) {
+    private func handleReturnKey(from itemView: FormTextItemView<some FormTextItem>) {
         let itemViews = itemManager.flatItemViews
 
         // Determine the index of the current item view.
@@ -250,7 +263,7 @@ extension FormViewController: FormTextItemViewDelegate {
         let nextItemView = remainingItemViews.first { $0.canBecomeFirstResponder && $0.isHidden == false }
 
         // Assign the first responder, or resign the current one if there is none remaining.
-        if let nextItemView = nextItemView {
+        if let nextItemView {
             nextItemView.becomeFirstResponder()
         } else {
             itemView.resignFirstResponder()

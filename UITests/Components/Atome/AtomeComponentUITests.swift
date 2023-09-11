@@ -57,6 +57,9 @@ class AtomeComponentUITests: XCTestCase {
         let sut = AtomeComponent(paymentMethod: paymentMethod,
                                  context: context,
                                  configuration: config)
+        
+        XCTAssertNotNil(sut.viewController.view.findView(by: "AdyenComponents.AtomeComponent.addressItem.title"))
+        
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
@@ -69,7 +72,7 @@ class AtomeComponentUITests: XCTestCase {
         assertViewControllerImage(matching: sut.viewController, named: "all_required_fields_exist")
     }
 
-    func testSubmitForm_shouldCallDelegateWithProperParameters() {
+    func testSubmitForm_shouldCallDelegateWithProperParameters() throws {
         let config = AtomeComponent.Configuration(shopperInformation: shopperInformation)
         let sut = AtomeComponent(paymentMethod: paymentMethod,
                                  context: context,
@@ -95,13 +98,12 @@ class AtomeComponentUITests: XCTestCase {
             didSubmitExpectation.fulfill()
         }
 
+        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
         let view: UIView = sut.viewController.view
-        do {
-            let submitButton: UIControl = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.payButton))
-            submitButton.sendActions(for: .touchUpInside)
-        } catch {
-            print(error)
-        }
+        
+        let submitButton: UIControl = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.payButton))
+        submitButton.sendActions(for: .touchUpInside)
+        
         waitForExpectations(timeout: 10, handler: nil)
     }
 

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -63,12 +63,6 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
     }
     
-    // MARK: - Validation
-    
-    /// Subclasses can override this method to stay notified
-    /// when form value item view should performe UI mutations based on a validation status.
-    open func validate() {}
-    
     // MARK: - Separator View
     
     /// Indicates if the separator should be shown.
@@ -104,6 +98,15 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     }
     
     internal func highlightSeparatorView(color: UIColor) {
+        
+        if window == nil {
+            // We don't want to animate the separator if the view is not visible yet
+            // as this can cause glitches on first appearance with a prefilled value
+            self.separatorView.backgroundColor = color
+            adyen.cancelAnimations(with: Animation.separatorHighlighting.rawValue)
+            return
+        }
+        
         let transitionView = UIView()
         transitionView.backgroundColor = color
         transitionView.frame = separatorView.frame
@@ -114,10 +117,12 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
                                        duration: 0.25,
                                        delay: 0.0,
                                        options: [.curveEaseInOut],
-                                       animations: {
+                                       animations: { [weak self] in
+                                           guard let self else { return }
                                            transitionView.frame = self.separatorView.frame
                                        },
-                                       completion: { _ in
+                                       completion: { [weak self] _ in
+                                           guard let self else { return }
                                            self.separatorView.backgroundColor = color
                                            transitionView.removeFromSuperview()
                                        })
@@ -130,6 +135,15 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     }
     
     internal func unhighlightSeparatorView() {
+        
+        if window == nil {
+            // We don't want to animate the separator if the view is not visible yet
+            // as this can cause glitches on first appearance with a prefilled value
+            self.separatorView.backgroundColor = self.item.style.separatorColor
+            adyen.cancelAnimations(with: Animation.separatorHighlighting.rawValue)
+            return
+        }
+        
         let context = AnimationContext(animationKey: Animation.separatorHighlighting.rawValue,
                                        duration: 0.0,
                                        delay: 0.0,
@@ -167,8 +181,4 @@ public protocol AnyFormValueItemView: AnyFormItemView {
     
     /// Indicates if the item is currently being edited.
     var isEditing: Bool { get set }
-    
-    /// Invoke validation check. Performs all necessary UI transformations based on a validation result.
-    func validate()
-    
 }

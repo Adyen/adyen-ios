@@ -83,8 +83,11 @@
 "adyen.pix.copyButton" = "Copy code";
 "adyen.pix.instructions.copiedMessage" = "Code copied to clipboard";
 "adyen.billingAddressSection.title" = "Billing address";
+"adyen.billingAddress.placeholder" = "Your billing address";
 "adyen.deliveryAddressSection.title" = "Delivery Address";
 "adyen.countryField.title" = "Country";
+"adyen.countryField.placeholder" = "Country";
+"adyen.countryField.invalid" = "Invalid country";
 "adyen.addressField.title" = "Address";
 "adyen.addressField.placeholder" = "Address";
 "adyen.streetField.title" = "Street";
@@ -190,3 +193,13 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "Are you sure you want to remove your credentials?";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "Remove";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Cancel";
+"adyen.picker.search.empty.title" = "No results found";
+"adyen.picker.search.empty.subtitle" = "'%@' did not match with anything";
+"adyen.address.lookup.search.placeholder" = "Search your address";
+"adyen.address.lookup.search.empty.title" = "Can't search your address?";
+"adyen.address.lookup.search.empty.subtitle" = "You can always #enter your address manually#";
+"adyen.address.lookup.search.empty.title.noResults" = "No results found";
+"adyen.address.lookup.search.empty.subtitle.noResults" = "'%@' did not match with anything, try again or use #manual address entry#";
+"adyen.address.lookup.item.validationFailureMessage.empty" = "Address required";
+"adyen.address.lookup.item.validationFailureMessage.invalid" = "Invalid Address";
+"adyen.address.lookup.search.manualEntryItem.title" = "Enter address manually";

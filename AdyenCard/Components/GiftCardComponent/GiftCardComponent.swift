@@ -126,8 +126,10 @@ public final class GiftCardComponent: PresentableComponent,
 
     private lazy var formViewController: FormViewController = {
 
-        let formViewController = FormViewController(style: style)
-        formViewController.localizationParameters = localizationParameters
+        let formViewController = FormViewController(
+            style: style,
+            localizationParameters: localizationParameters
+        )
         formViewController.delegate = self
         formViewController.title = partialPaymentMethodType.partialPaymentMethod.displayInformation(using: localizationParameters).title
         formViewController.append(errorItem)
@@ -249,7 +251,7 @@ extension GiftCardComponent {
         startLoading()
 
         fetchCardPublicKey(notifyingDelegateOnFailure: true) { [weak self] cardPublicKey in
-            guard let self = self else { return }
+            guard let self else { return }
             self.createPaymentData(order: self.order,
                                    cardPublicKey: cardPublicKey)
                 .mapError(Error.otherError)
@@ -259,7 +261,7 @@ extension GiftCardComponent {
 
     private func startFlow(with paymentData: PaymentComponentData) {
         partialPaymentDelegate?.checkBalance(with: paymentData, component: self) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             result
                 .mapError { error in
                     if error is BalanceChecker.Error {
@@ -321,7 +323,7 @@ extension GiftCardComponent {
         AdyenAssertion.assert(message: "readyToSubmitComponentDelegate is nil",
                               condition: _isDropIn && readyToSubmitComponentDelegate == nil)
         stopLoading()
-        if let readyToSubmitComponentDelegate = readyToSubmitComponentDelegate {
+        if let readyToSubmitComponentDelegate {
             showConfirmation(delegate: readyToSubmitComponentDelegate,
                              remainingAmount: remainingAmount,
                              paymentData: paymentData)
@@ -349,11 +351,11 @@ extension GiftCardComponent {
     // MARK: - Partial Payment flow
 
     private func startPartialPaymentFlow(paymentData: PaymentComponentData) -> Result<Void, Swift.Error> {
-        if let order = order {
+        if let order {
             submit(order: order, paymentData: paymentData)
             return .success(())
         }
-        guard let partialPaymentDelegate = partialPaymentDelegate else {
+        guard let partialPaymentDelegate else {
             AdyenAssertion.assertionFailure(message: Error.missingPartialPaymentDelegate.localizedDescription)
             return .failure(Error.missingPartialPaymentDelegate)
         }

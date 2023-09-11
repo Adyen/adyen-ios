@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -61,7 +61,7 @@ public final class TextField: UITextField {
 extension TextField {
 
     public func apply(placeholderText: String?, with style: TextStyle?) {
-        if let text = placeholderText, let style = style {
+        if let text = placeholderText, let style {
             attributedPlaceholder = NSAttributedString(string: text, attributes: style.stringAttributes)
         } else {
             placeholder = placeholderText

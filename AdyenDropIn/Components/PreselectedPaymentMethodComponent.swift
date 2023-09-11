@@ -71,13 +71,15 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     // MARK: - View Controller
     
     public lazy var viewController: UIViewController = {
-        let formViewController = FormViewController(style: style)
-        formViewController.localizationParameters = localizationParameters
+        let formViewController = FormViewController(
+            style: style,
+            localizationParameters: localizationParameters
+        )
         formViewController.delegate = self
         
         formViewController.append(listItem)
         formViewController.append(submitButtonItem)
-        if let footnoteItem = footnoteItem {
+        if let footnoteItem {
             formViewController.append(footnoteItem.addingDefaultMargins())
         }
         formViewController.append(FormSpacerItem())

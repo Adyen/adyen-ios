@@ -85,7 +85,8 @@ public class CardComponent: PresentableComponent,
         let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: context.apiContext),
                                               publicKeyProvider: publicKeyProvider,
-                                              minBinLength: Constant.thresholdBINLength)
+                                              minBinLength: Constant.thresholdBINLength,
+                                              binLookupType: configuration.binLookupType)
         self.init(paymentMethod: paymentMethod,
                   context: context,
                   configuration: configuration,
@@ -112,15 +113,13 @@ public class CardComponent: PresentableComponent,
         self.publicKeyProvider = publicKeyProvider
         self.binInfoProvider = binProvider
 
-        let excludedCardTypes = configuration.excludedCardTypes
-        let allowedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
-        self.supportedCardTypes = allowedCardTypes.minus(excludedCardTypes)
+        self.supportedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
     }
     
     // MARK: - Presentable Component Protocol
     
     public var viewController: UIViewController {
-        if let storedCardComponent = storedCardComponent {
+        if let storedCardComponent {
             return storedCardComponent.viewController
         }
         return securedViewController
@@ -170,12 +169,14 @@ public class CardComponent: PresentableComponent,
     private lazy var securedViewController = SecuredViewController(child: cardViewController, style: configuration.style)
     
     internal lazy var cardViewController: CardViewController = {
+        
         let formViewController = CardViewController(configuration: configuration,
                                                     shopperInformation: configuration.shopperInformation,
                                                     formStyle: configuration.style,
                                                     payment: payment,
                                                     logoProvider: LogoURLProvider(environment: context.apiContext.environment),
                                                     supportedCardTypes: supportedCardTypes,
+                                                    initialCountryCode: initialCountryCode,
                                                     scope: String(describing: self),
                                                     localizationParameters: configuration.localizationParameters)
         formViewController.delegate = self
@@ -211,7 +212,108 @@ extension CardComponent: CardViewControllerDelegate {
         }
     }
     
+    internal func didSelectAddressPicker(lookupProvider: AddressLookupViewController.LookupProvider?) {
+        
+        let securedViewController = SecuredViewController(
+            child: addressPickerViewController(with: lookupProvider),
+            style: configuration.style
+        )
+        
+        viewController.present(securedViewController, animated: true)
+    }
+    
+    private func addressPickerViewController(
+        with lookupProvider: AddressLookupViewController.LookupProvider?
+    ) -> UIViewController {
+        
+        let prefillAddress = cardViewController.items.billingAddressPickerItem.value
+        let initialCountry = initialCountryCode
+        let completionHandler: (PostalAddress?) -> Void = { [weak self] address in
+            guard let self else { return }
+            address.map { self.cardViewController.items.billingAddressPickerItem.value = $0 }
+            self.viewController.dismiss(animated: true)
+        }
+        
+        guard let lookupProvider else {
+            
+            let viewModel = configuration.addressInputFormViewModel(
+                with: initialCountry,
+                prefillAddress: prefillAddress,
+                completionHandler: completionHandler
+            )
+            
+            let addressInputForm = AddressInputFormViewController(viewModel: viewModel)
+            
+            return UINavigationController(rootViewController: addressInputForm)
+        }
+        
+        let viewModel = configuration.addressLookupViewModel(
+            with: initialCountry,
+            prefillAddress: prefillAddress,
+            lookupProvider: lookupProvider,
+            completionHandler: completionHandler
+        )
+        
+        return AddressLookupViewController(viewModel: viewModel)
+    }
 }
 
 @_spi(AdyenInternal)
 extension CardComponent: PublicKeyConsumer {}
+
+private extension CardComponent {
+    
+    private var initialCountryCode: String {
+        
+        if
+            let preferredCountry = configuration.shopperInformation?.billingAddress?.country,
+            let supportedCountryCodes = configuration.billingAddress.countryCodes,
+            supportedCountryCodes.isEmpty || supportedCountryCodes.contains(preferredCountry) {
+            return preferredCountry
+        }
+        
+        return
+            configuration.billingAddress.countryCodes?.first ??
+            payment?.countryCode ??
+            Locale.current.regionCode ??
+            CardComponent.Constant.defaultCountryCode
+    }
+}
+
+private extension CardComponent.Configuration {
+    
+    func addressLookupViewModel(
+        with initialCountry: String,
+        prefillAddress: PostalAddress?,
+        lookupProvider: @escaping AddressLookupViewController.LookupProvider,
+        completionHandler: @escaping (PostalAddress?) -> Void
+    ) -> AddressLookupViewController.ViewModel {
+        
+        .init(
+            localizationParameters: localizationParameters,
+            supportedCountryCodes: billingAddress.countryCodes,
+            initialCountry: initialCountry,
+            prefillAddress: prefillAddress,
+            lookupProvider: lookupProvider,
+            completionHandler: completionHandler
+        )
+    }
+    
+    func addressInputFormViewModel(
+        with initialCountry: String,
+        prefillAddress: PostalAddress?,
+        completionHandler: @escaping (PostalAddress?) -> Void
+    ) -> AddressInputFormViewController.ViewModel {
+        
+        .init(
+            style: style,
+            localizationParameters: localizationParameters,
+            initialCountry: initialCountry,
+            prefillAddress: prefillAddress,
+            supportedCountryCodes: billingAddress.countryCodes,
+            addressViewModelBuilder: DefaultAddressViewModelBuilder(),
+            handleShowSearch: nil,
+            completionHandler: completionHandler
+        )
+    }
+}

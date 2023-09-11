@@ -47,14 +47,17 @@ internal struct TelemetryData: Encodable {
 
     internal let flavor: String
 
+    internal var amount: Amount?
+    
     internal var paymentMethods: [String] = []
 
     internal let component: String
 
     // MARK: - Initializers
 
-    internal init(flavor: TelemetryFlavor) {
+    internal init(flavor: TelemetryFlavor, amount: Amount?) {
         self.flavor = flavor.value
+        self.amount = amount
 
         switch flavor {
         case let .dropIn(type, paymentMethods):

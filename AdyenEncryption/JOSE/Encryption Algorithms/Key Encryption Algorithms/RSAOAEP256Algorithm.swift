@@ -19,7 +19,7 @@ internal struct RSAOAEP256Algorithm: RSAAlgorithm {
                                                    payload as CFData,
                                                    &error)
         
-        if let error = error {
+        if let error {
             throw EncryptionError.other(error.takeRetainedValue())
         }
         

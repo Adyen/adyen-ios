@@ -33,7 +33,7 @@ internal struct CardComponentSettingsView: View {
                         Text("Security Code")
                     }
                     Picker("Select address mode", selection: $viewModel.addressMode) {
-                        ForEach(CardComponent.AddressFormType.allCases, id: \.self) {
+                        ForEach(CardComponentConfiguration.AddressFormType.allCases, id: \.self) {
                             Text($0.displayName)
                         }
                     }
@@ -55,21 +55,22 @@ internal struct CardComponentSettingsView: View {
                 }
 
             }
+            .navigationBarTitle("")
+            .navigationBarHidden(true)
         }
-        .navigationViewStyle(.stack)
     }
 }
 
-extension CardComponent.AddressFormType {
+extension CardComponentConfiguration.AddressFormType {
 
     public var displayName: String {
-        return self.rawValue.capitalized
+        self.rawValue.capitalized
     }
 }
 
 extension CardComponent.FieldVisibility {
 
     public var displayName: String {
-        return self.rawValue.capitalized
+        self.rawValue.capitalized
     }
 }

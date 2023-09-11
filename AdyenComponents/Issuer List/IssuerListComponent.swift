@@ -79,7 +79,7 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     public var requiresModalPresentation: Bool = true
 
     // MARK: - Private
-    
+
     private func listItems(for searchText: String) -> [ListItem] {
         let issuers = filteredIssuers(for: searchText)
         return listItems(from: issuers)
@@ -113,8 +113,8 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
                 scopeInstance: self,
                 postfix: listItem.title
             )
-            listItem.selectionHandler = { [weak self] in
-                guard let self = self else { return }
+            listItem.selectionHandler = { [weak self, weak listItem] in
+                guard let self, let listItem else { return }
                 let details = IssuerListDetails(paymentMethod: self.issuerListPaymentMethod,
                                                 issuer: issuer.identifier)
                 self.submit(data: PaymentComponentData(paymentMethodDetails: details,

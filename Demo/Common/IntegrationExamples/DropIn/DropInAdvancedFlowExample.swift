@@ -22,13 +22,13 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
         presenter?.showLoadingIndicator()
         requestPaymentMethods(order: nil) { [weak self] result in
             guard let self else { return }
-            
+
             self.presenter?.hideLoadingIndicator()
-                
+
             switch result {
             case let .success(paymentMethods):
                 self.presentComponent(with: paymentMethods)
-                
+
             case let .failure(error):
                 self.presenter?.presentAlert(with: error, retryHandler: nil)
             }
@@ -63,13 +63,17 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
         if let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
                                                       brand: ConfigurationConstants.appName) {
             configuration.applePay = .init(payment: applePayPayment,
-                                           merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier)
+                                           merchantIdentifier: ConfigurationConstants.current.applePayConfiguration.merchantIdentifier)
+            configuration.applePay?.allowOnboarding = ConfigurationConstants.current.applePayConfiguration.allowOnboarding
         }
 
         configuration.actionComponent.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
         configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         configuration.card = ConfigurationConstants.current.cardDropInConfiguration
-        configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = true
+        configuration.allowsSkippingPaymentList = ConfigurationConstants.current.dropInSettings.allowsSkippingPaymentList
+        configuration.allowPreselectedPaymentView = ConfigurationConstants.current.dropInSettings.allowPreselectedPaymentView
+        // swiftlint:disable:next line_length
+        configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = ConfigurationConstants.current.dropInSettings.paymentMethodsList.allowDisablingStoredPaymentMethods
         return configuration
     }
 
@@ -133,7 +137,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
 
     private func finalize(_ success: Bool, _ message: String) {
         dropInComponent?.finalizeIfNeeded(with: success) { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.dismissAndShowAlert(success, message)
         }
     }

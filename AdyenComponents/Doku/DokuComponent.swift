@@ -38,9 +38,9 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
 
     @_spi(AdyenInternal)
     override public func createPaymentDetails() throws -> PaymentMethodDetails {
-        guard let firstNameItem = firstNameItem,
-              let lastNameItem = lastNameItem,
-              let emailItem = emailItem else {
+        guard let firstNameItem,
+              let lastNameItem,
+              let emailItem else {
             throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
         return DokuDetails(paymentMethod: paymentMethod,

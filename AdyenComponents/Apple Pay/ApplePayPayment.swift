@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,7 +16,7 @@ public struct ApplePayPayment {
     /// The amount for this payment in minor units.
     public private(set) var amountMinorUnits: Int
 
-    /// The public key used for encrypting card details.
+    /// The summary items in a payment request—for example, total, tax, discount, or grand total.
     public private(set) var summaryItems: [PKPaymentSummaryItem]
 
     /// The code of the country in which the payment is made.

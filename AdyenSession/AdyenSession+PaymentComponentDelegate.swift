@@ -23,9 +23,7 @@ extension AdyenSession: PaymentComponentDelegate {
             || result.resultCode == .received
             || result.resultCode == .pending
         component.finalizeIfNeeded(with: success) { [weak self] in
-            guard let self = self else { return }
-            // keeping deprecated one until v6
-            self.delegate?.didComplete(with: result.resultCode, component: component, session: self)
+            guard let self else { return }
             self.delegate?.didComplete(with: result, component: component, session: self)
         }
     }
@@ -44,7 +42,7 @@ extension AdyenSession: PaymentComponentDelegate {
 
     internal func failWithError(_ error: Error, _ component: Component) {
         component.finalizeIfNeeded(with: false) { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.delegate?.didFail(with: error, from: component, session: self)
         }
     }
@@ -100,7 +98,7 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
     }
     
     private func showPaymentFailedAlert(on dropInComponent: AnyDropInComponent?, completion: @escaping (() -> Void)) {
-        guard let dropInComponent = dropInComponent else {
+        guard let dropInComponent else {
             completion()
             return
         }
@@ -133,7 +131,7 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
     private func handle(order: PartialPaymentOrder,
                         for currentComponent: Component,
                         in dropInComponent: AnyDropInComponent?) {
-        guard let dropInComponent = dropInComponent else {
+        guard let dropInComponent else {
             finish(with: PartialPaymentError.notSupportedForComponent,
                    component: currentComponent)
             return

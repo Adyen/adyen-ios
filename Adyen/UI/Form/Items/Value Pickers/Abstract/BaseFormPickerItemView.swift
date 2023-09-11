@@ -40,7 +40,7 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
         initialize()
         select(value: item.value)
         observe(item.$selectableValues) { [weak self] change in
-            guard let self = self else { return }
+            guard let self else { return }
             self.inputControl.showChevron = change.count > 1
             self.pickerView.reloadAllComponents()
             change.first.map(self.select)
@@ -95,7 +95,7 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
         }
 
         view.onDidTap = { [weak self] in
-            guard let self = self, self.item.selectableValues.count > 1 else { return }
+            guard let self, self.item.selectableValues.count > 1 else { return }
             self.becomeFirstResponder()
         }
 

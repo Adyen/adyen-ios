@@ -84,9 +84,9 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         }
 
         let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel,
-                                                                           target: self,
-                                                                           action: #selector(cancelPressed))
+        component.viewController.navigationItem.leftBarButtonItem = .init(barButtonSystemItem: .cancel,
+                                                                          target: self,
+                                                                          action: #selector(cancelPressed))
         return navigation
     }
 
@@ -128,7 +128,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     private func finalize(_ success: Bool, _ message: String) {
         cardComponent?.finalizeIfNeeded(with: success) { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.dismissAndShowAlert(success, message)
         }
     }

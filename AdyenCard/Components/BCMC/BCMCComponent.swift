@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -25,7 +25,8 @@ public final class BCMCComponent: CardComponent {
         let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: context.apiContext),
                                               publicKeyProvider: publicKeyProvider,
-                                              minBinLength: Constant.thresholdBINLength)
+                                              minBinLength: Constant.thresholdBINLength,
+                                              binLookupType: configuration.binLookupType)
         super.init(paymentMethod: paymentMethod,
                    context: context,
                    configuration: configuration,
@@ -46,4 +47,19 @@ public final class BCMCComponent: CardComponent {
                    binProvider: binProvider)
     }
 
+}
+
+private extension CardComponent.Configuration {
+    
+    func bcmcConfiguration() -> CardComponent.Configuration {
+        var configuration = CardComponent.Configuration(
+            style: style,
+            showsHolderNameField: showsHolderNameField,
+            showsStorePaymentMethodField: showsStorePaymentMethodField,
+            storedCardConfiguration: stored
+        )
+        configuration.showsSupportedCardLogos = false
+        configuration.binLookupType = .bcmc
+        return configuration
+    }
 }

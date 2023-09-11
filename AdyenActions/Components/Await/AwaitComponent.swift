@@ -83,7 +83,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
                                                           localizationParameters: configuration.localizationParameters)
         let viewController = AwaitViewController(viewModel: viewModel, style: configuration.style)
         
-        if let presentationDelegate = presentationDelegate {
+        if let presentationDelegate {
             let presentableComponent = PresentableComponentWrapper(component: self, viewController: viewController)
             presentationDelegate.present(component: presentableComponent)
         } else {

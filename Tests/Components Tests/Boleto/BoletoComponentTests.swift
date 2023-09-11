@@ -42,6 +42,8 @@ class BoletoComponentTests: XCTestCase {
         let cityField = viewController.view.findView(by: "addressItem.city.textField") as? UITextField
         let postalCodeField = viewController.view.findView(by: "addressItem.postalCode.textField") as? UITextField
 
+        XCTAssertNotNil(viewController.view.findView(by: "addressItem.title"))
+        
         XCTAssertNotNil(firstNameField)
         XCTAssertEqual(firstNameField?.text, prefilledInformation.shopperName?.firstName)
         
@@ -50,7 +52,7 @@ class BoletoComponentTests: XCTestCase {
 
         XCTAssertNotNil(socialSecurityNumberField)
         let formattedSocialSecurityNumber = brazilSocialSecurityNumberFormatter.formattedValue(for: prefilledInformation.socialSecurityNumber!)
-        XCTAssertEqual(formattedSocialSecurityNumber, socialSecurityNumberField?.text)
+        XCTAssertEqual(socialSecurityNumberField?.text, formattedSocialSecurityNumber)
         
         XCTAssertNotNil(emailField)
         XCTAssertEqual(emailField?.text, prefilledInformation.emailAddress)

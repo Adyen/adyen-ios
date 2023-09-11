@@ -18,16 +18,6 @@ public protocol AdyenSessionDelegate: AnyObject {
     /// The application only needs to dismiss the component.
     ///
     /// - Parameters:
-    ///   - resultCode: The result code of the completed payment.
-    ///   - component: The component object.
-    ///   - session: The session object.
-    @available(*, deprecated, message: "Use the new `didComplete(with result:, component:, session:` method instead.")
-    func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession)
-    
-    /// Invoked when the component finishes without any further steps needed by the application.
-    /// The application only needs to dismiss the component.
-    ///
-    /// - Parameters:
     ///   - result: The result object of the completed payment.
     ///   - component: The component object.
     ///   - session: The session object.
@@ -77,9 +67,6 @@ public extension AdyenSessionDelegate {
     func handlerForAdditionalDetails(in component: ActionComponent, session: AdyenSession) -> AdyenSessionPaymentDetailsHandler? { nil }
     
     func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {}
-    
-    // Providing default implementation on the deprecated one to prevent forced conformance.
-    func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession) {}
 }
 
 /// Describes the interface to take over the step where data is provided for the payments call.

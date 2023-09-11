@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -68,6 +68,10 @@ extension ApplePayComponent {
 
         /// A funding source supported by the merchant. If `nil`, the transaction allows both credit and debit cards.
         public var merchantCapability: CardFundingSource?
+        
+        /// The payment request object needed for Apple Pay. Must contain all the required fileds
+        /// such as `merchantIdentifier`, `summaryItems`, `currencyCode`, and `countryCode`.
+        internal var paymentRequest: PKPaymentRequest?
 
         /// Initializes the configuration.
         ///
@@ -78,13 +82,35 @@ extension ApplePayComponent {
             self.applePayPayment = payment
             self.merchantIdentifier = merchantIdentifier
         }
-
-        internal func createPaymentRequest(supportedNetworks: [PKPaymentNetwork]) -> PKPaymentRequest {
+        
+        /// Initializes the Apple Pay configuration with a Payment Request.
+        /// - Parameters:
+        ///   - paymentRequest: The payment request object needed for Apple Pay. Must contain all the required fileds
+        ///   such as `merchantIdentifier`, `summaryItems`, `currencyCode`, and `countryCode`.
+        ///   - allowOnboarding: Flag to allow shoppers to add new cards for Apple Pay  if there is none. Default is `false`.
+        /// - Important: When created via this init, rest of the properties of this configuration
+        /// are ignored since the request should already be populated.
+        ///  - Use this initializer to support any new additions to the `PKPaymentRequest` object,
+        ///  such as recurring payments via its `recurringPaymentRequest` property.
+        /// - Throws: An error object describing whether any required field in the request is missing.
+        public init(paymentRequest: PKPaymentRequest,
+                    allowOnboarding: Bool = false) throws {
+            guard !paymentRequest.merchantIdentifier.isEmpty else {
+                throw ApplePayComponent.Error.emptyMerchantIdentifier
+            }
+            self.paymentRequest = paymentRequest
+            
+            self.merchantIdentifier = paymentRequest.merchantIdentifier
+            self.applePayPayment = try ApplePayPayment(countryCode: paymentRequest.countryCode,
+                                                       currencyCode: paymentRequest.currencyCode,
+                                                       summaryItems: paymentRequest.paymentSummaryItems)
+        }
+        
+        private func createPaymentRequest() -> PKPaymentRequest {
             let paymentRequest = PKPaymentRequest()
             paymentRequest.countryCode = applePayPayment.countryCode
             paymentRequest.merchantIdentifier = merchantIdentifier
             paymentRequest.currencyCode = applePayPayment.currencyCode
-            paymentRequest.supportedNetworks = supportedNetworks
             paymentRequest.merchantCapabilities = merchantCapabilities
             paymentRequest.paymentSummaryItems = applePayPayment.summaryItems
             paymentRequest.requiredBillingContactFields = requiredBillingContactFields
@@ -100,7 +126,15 @@ extension ApplePayComponent {
                 paymentRequest.supportsCouponCode = supportsCouponCode
                 paymentRequest.shippingContactEditingMode = allowShippingContactEditing ? .enabled : .storePickup
             }
+            
+            return paymentRequest
+        }
 
+        internal mutating func paymentRequest(with supportedNetworks: [PKPaymentNetwork]) -> PKPaymentRequest {
+            // create the request from config properties if using old init
+            let paymentRequest = paymentRequest ?? createPaymentRequest()
+            paymentRequest.supportedNetworks = supportedNetworks
+            self.paymentRequest = paymentRequest
             return paymentRequest
         }
 
@@ -130,7 +164,7 @@ extension ApplePayPaymentMethod {
 
     internal var supportedNetworks: [PKPaymentNetwork] {
         var networks = PKPaymentRequest.availableNetworks()
-        if let brands = brands {
+        if let brands {
             let brandsSet = Set(brands)
             networks = networks.filter { brandsSet.contains($0.txVariantName) }
         }

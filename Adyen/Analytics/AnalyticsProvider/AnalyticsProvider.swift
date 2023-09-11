@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -25,11 +25,19 @@ public struct AnalyticsConfiguration {
 }
 
 @_spi(AdyenInternal)
+/// Additional fields to be provided with a ``TelemetryRequest``
+public struct AdditionalAnalyticsFields {
+    /// The amount of the payment
+    public let amount: Amount?
+}
+
+@_spi(AdyenInternal)
 public protocol AnalyticsProviderProtocol: TelemetryTrackerProtocol {
     
     var checkoutAttemptId: String? { get }
-    
     func fetchAndCacheCheckoutAttemptIdIfNeeded()
+    
+    var additionalFields: (() -> AdditionalAnalyticsFields)? { get }
 }
 
 internal final class AnalyticsProvider: AnalyticsProviderProtocol {
@@ -39,12 +47,15 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     internal let apiClient: APIClientProtocol
     internal let configuration: AnalyticsConfiguration
     internal private(set) var checkoutAttemptId: String?
+    internal var additionalFields: (() -> AdditionalAnalyticsFields)?
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<CheckoutAttemptIdResponse>
 
     // MARK: - Initializers
 
-    internal init(apiClient: APIClientProtocol,
-                  configuration: AnalyticsConfiguration) {
+    internal init(
+        apiClient: APIClientProtocol,
+        configuration: AnalyticsConfiguration
+    ) {
         self.apiClient = apiClient
         self.configuration = configuration
         self.uniqueAssetAPIClient = UniqueAssetAPIClient<CheckoutAttemptIdResponse>(apiClient: apiClient)
@@ -58,7 +69,8 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
 
     internal func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
         guard configuration.isEnabled else {
-            completion(nil)
+            checkoutAttemptId = "do-not-track"
+            completion(checkoutAttemptId)
             return
         }
 

@@ -185,3 +185,5 @@ whiteList:
   - cashtag
   - referer
   - uid
+  - domainname
+  - appname

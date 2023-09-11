@@ -14,6 +14,33 @@ class FormAddressItemTests: XCTestCase {
         AdyenAssertion.listener = nil
     }
     
+    func testHeader() throws {
+        
+        let formAddressItem = FormAddressItem(
+            initialCountry: "NL",
+            configuration: .init(
+                supportedCountryCodes: ["NL", "US"],
+                showsHeader: true
+            ),
+            presenter: nil,
+            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+        )
+        
+        XCTAssertTrue(formAddressItem.flatSubitems.contains { $0.identifier == "Adyen.FormAddressItem.title" })
+        
+        let formAddressItemWithoutHeader = FormAddressItem(
+            initialCountry: "NL",
+            configuration: .init(
+                supportedCountryCodes: ["NL", "US"],
+                showsHeader: false
+            ),
+            presenter: nil,
+            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+        )
+
+        XCTAssertFalse(formAddressItemWithoutHeader.flatSubitems.contains { $0.identifier == "Adyen.FormAddressItem.title" })
+    }
+    
     func testCountryPickerItemUpdate() throws {
         
         let formAddressItem = FormAddressItem(
@@ -21,13 +48,14 @@ class FormAddressItemTests: XCTestCase {
             configuration: .init(
                 supportedCountryCodes: ["NL", "US"]
             ),
+            presenter: nil,
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
-        XCTAssertEqual(formAddressItem.countryPickerItem.value.identifier, "NL")
+        XCTAssertEqual(formAddressItem.countryPickerItem.value!.identifier, "NL")
         
         formAddressItem.value = .init(country: "US")
-        XCTAssertEqual(formAddressItem.countryPickerItem.value.identifier, "US")
+        XCTAssertEqual(formAddressItem.countryPickerItem.value!.identifier, "US")
     }
     
     func testCountryPickerItemUpdateUnsupportedCountry() throws {
@@ -37,6 +65,7 @@ class FormAddressItemTests: XCTestCase {
             configuration: .init(
                 supportedCountryCodes: ["NL", "US"]
             ),
+            presenter: nil,
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
@@ -52,25 +81,6 @@ class FormAddressItemTests: XCTestCase {
         wait(for: [expectation], timeout: 0)
     }
     
-    func testShowsHeader() throws {
-        
-        let formAddressItemWithHeader = FormAddressItem(
-            initialCountry: "NL",
-            configuration: .init(),
-            addressViewModelBuilder: DefaultAddressViewModelBuilder()
-        )
-        
-        XCTAssertTrue(formAddressItemWithHeader.flatSubitems.contains { $0 === formAddressItemWithHeader.headerItem })
-        
-        let formAddressItemWithOutHeader = FormAddressItem(
-            initialCountry: "NL",
-            configuration: .init(showsHeader: false),
-            addressViewModelBuilder: DefaultAddressViewModelBuilder()
-        )
-        
-        XCTAssertFalse(formAddressItemWithHeader.flatSubitems.contains { $0 === formAddressItemWithOutHeader.headerItem })
-    }
-    
     func testUpdateContext() {
         
         let expectation = expectation(description: "Should call delegate.didUpdateItems")
@@ -82,6 +92,7 @@ class FormAddressItemTests: XCTestCase {
         let formAddressItem = FormAddressItem(
             initialCountry: "NL",
             configuration: .init(),
+            presenter: nil,
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
@@ -89,13 +100,13 @@ class FormAddressItemTests: XCTestCase {
         
         formAddressItem.updateOptionalStatus(isOptional: true)
         
-        wait(for: [expectation], timeout: 300)
+        wait(for: [expectation], timeout: 2)
     }
 }
 
 // MARK: - Helpers
 
-fileprivate class AddressDelegateDummy: SelfRenderingFormItemDelegate {
+private class AddressDelegateDummy: SelfRenderingFormItemDelegate {
     let didUpdateItemsHandler: (_ items: [FormItem]) -> Void
     
     init(didUpdateItemsHandler: @escaping (_ items: [FormItem]) -> Void) {

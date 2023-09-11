@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -24,7 +24,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         textField.allowsEditingActions = false
         
         observe(item.$initialBrand) { [weak self] _ in
-            guard let self = self else { return }
+            guard let self else { return }
             self.updateValidationStatus(forced: true)
             self.notifyDelegateOfMaxLengthIfNeeded()
         }
@@ -136,17 +136,24 @@ extension FormCardNumberItemView {
             
             primaryLogoView.imageURL = firstLogo.url
             primaryLogoView.alpha = selectedViewAlpha
+            primaryLogoView.accessibilityValue = firstLogo.type.name
+            primaryLogoView.isAccessibilityElement = true
             
             // dual branded. allow selection but initially neither is selected
             if let secondLogo = logos.adyen[safeIndex: 1] {
                 primaryLogoView.alpha = unselectedViewAlpha
                 secondaryLogoView.imageURL = secondLogo.url
                 secondaryLogoView.alpha = unselectedViewAlpha
+                secondaryLogoView.accessibilityValue = secondLogo.type.name
                 secondaryLogoView.isHidden = false
                 
                 primaryLogoView.addGestureRecognizer(primaryGestureRecognizer)
                 secondaryLogoView.addGestureRecognizer(secondaryGestureRecognizer)
             }
+            
+            secondaryLogoView.isAccessibilityElement = !secondaryLogoView.isHidden
+            
+            updateAccessibilityValues()
         }
         
         @objc private func primaryLogoTapped() {
@@ -154,6 +161,7 @@ extension FormCardNumberItemView {
             primaryLogoView.alpha = selectedViewAlpha
             secondaryLogoView.alpha = unselectedViewAlpha
             onBrandSelection(0)
+            updateAccessibilityValues()
         }
         
         @objc private func secondaryLogoTapped() {
@@ -161,6 +169,7 @@ extension FormCardNumberItemView {
             secondaryLogoView.alpha = selectedViewAlpha
             primaryLogoView.alpha = unselectedViewAlpha
             onBrandSelection(1)
+            updateAccessibilityValues()
         }
         
         private func resetLogos() {
@@ -185,6 +194,19 @@ extension FormCardNumberItemView {
             imageView.widthAnchor.constraint(equalToConstant: Constant.iconSize.width).isActive = true
             imageView.heightAnchor.constraint(equalToConstant: Constant.iconSize.height).isActive = true
             return imageView
+        }
+        
+        private func updateAccessibilityValues() {
+            if secondaryLogoView.isHidden {
+                primaryLogoView.accessibilityTraits = .image
+                return
+            }
+            
+            primaryLogoView.accessibilityTraits = .button
+            secondaryLogoView.accessibilityTraits = .button
+            
+            primaryLogoView.accessibilityMarkAsSelected(primaryLogoView.alpha == selectedViewAlpha)
+            secondaryLogoView.accessibilityMarkAsSelected(secondaryLogoView.alpha == selectedViewAlpha)
         }
     }
 }

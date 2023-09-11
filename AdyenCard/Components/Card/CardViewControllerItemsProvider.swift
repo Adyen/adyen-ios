@@ -25,7 +25,7 @@ extension CardViewController {
 
         private let scope: String
 
-        private let defaultCountryCode: String
+        private let initialCountry: String
         
         private let addressViewModelBuilder: AddressViewModelBuilder
 
@@ -35,7 +35,7 @@ extension CardViewController {
                       shopperInformation: PrefilledShopperInformation?,
                       cardLogos: [FormCardLogosItem.CardTypeLogo],
                       scope: String,
-                      defaultCountryCode: String,
+                      initialCountryCode: String,
                       localizationParameters: LocalizationParameters?,
                       addressViewModelBuilder: AddressViewModelBuilder) {
             self.formStyle = formStyle
@@ -44,38 +44,23 @@ extension CardViewController {
             self.shopperInformation = shopperInformation
             self.cardLogos = cardLogos
             self.scope = scope
-            self.defaultCountryCode = defaultCountryCode
+            self.initialCountry = initialCountryCode
             self.localizationParameters = localizationParameters
             self.addressViewModelBuilder = addressViewModelBuilder
         }
-
-        internal lazy var billingAddressItem: FormAddressItem = {
+        
+        internal lazy var billingAddressPickerItem: FormAddressPickerItem = {
             let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "billingAddress")
-
-            // check and match the initial country from shopper prefill info
-            // with the supported countries
-            let initialCountry: String?
-            if let countryCodes = configuration.billingAddress.countryCodes, !countryCodes.isEmpty {
-                if let prefillCountryCode = shopperInformation?.billingAddress?.country,
-                   countryCodes.contains(prefillCountryCode) {
-                    initialCountry = prefillCountryCode
-                } else {
-                    initialCountry = countryCodes.first
-                }
-            } else {
-                initialCountry = shopperInformation?.billingAddress?.country
-            }
+            let prefillAddress = shopperInformation?.billingAddress
             
-            let item = FormAddressItem(initialCountry: initialCountry ?? defaultCountryCode,
-                                       configuration: .init(
-                                           style: formStyle.addressStyle,
-                                           localizationParameters: localizationParameters,
-                                           supportedCountryCodes: configuration.billingAddress.countryCodes
-                                       ),
-                                       identifier: identifier,
-                                       addressViewModelBuilder: addressViewModelBuilder)
-            shopperInformation?.billingAddress.map { item.value = $0 }
-            item.style.backgroundColor = UIColor.Adyen.lightGray
+            let item = FormAddressPickerItem(
+                initialCountry: initialCountry,
+                prefillAddress: prefillAddress,
+                style: formStyle.addressStyle,
+                localizationParameters: localizationParameters,
+                identifier: identifier,
+                addressViewModelBuilder: addressViewModelBuilder
+            )
             return item
         }()
 
@@ -87,6 +72,7 @@ extension CardViewController {
 
         internal lazy var numberContainerItem: FormCardNumberContainerItem = {
             let item = FormCardNumberContainerItem(cardTypeLogos: cardLogos,
+                                                   showsSupportedCardLogos: configuration.showsSupportedCardLogos,
                                                    style: formStyle.textField,
                                                    localizationParameters: localizationParameters)
             item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "numberContainerItem")
