@@ -26,7 +26,7 @@ class BACSConfirmationViewProtocolMock: BACSConfirmationViewProtocol {
         addItemCallsCount > 0
     }
 
-    func add<T>(item: T?) where T: FormItem {
+    func add(item: (some FormItem)?) {
         addItemCallsCount += 1
     }
 

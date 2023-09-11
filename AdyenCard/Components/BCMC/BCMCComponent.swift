@@ -22,7 +22,8 @@ public final class BCMCComponent: CardComponent {
         let publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: apiContext),
                                               publicKeyProvider: publicKeyProvider,
-                                              minBinLength: Constant.privateBinLength)
+                                              minBinLength: Constant.privateBinLength,
+                                              binLookupType: configuration.binLookupType)
         super.init(paymentMethod: paymentMethod,
                    apiContext: apiContext,
                    configuration: configuration,
@@ -30,5 +31,21 @@ public final class BCMCComponent: CardComponent {
                    publicKeyProvider: publicKeyProvider,
                    binProvider: binInfoProvider)
     }
-
+    
+    override internal init(paymentMethod: AnyCardPaymentMethod,
+                           apiContext: APIContext,
+                           configuration: CardComponent.Configuration = CardComponent.Configuration(),
+                           shopperInformation: PrefilledShopperInformation? = nil,
+                           style: FormComponentStyle = .init(),
+                           publicKeyProvider: AnyPublicKeyProvider,
+                           binProvider: AnyBinInfoProvider) {
+        let configuration = configuration.bcmcConfiguration()
+        super.init(paymentMethod: paymentMethod,
+                   apiContext: apiContext,
+                   configuration: configuration,
+                   shopperInformation: shopperInformation,
+                   style: style,
+                   publicKeyProvider: publicKeyProvider,
+                   binProvider: binProvider)
+    }
 }

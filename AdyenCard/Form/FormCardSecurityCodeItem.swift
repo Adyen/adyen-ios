@@ -9,6 +9,19 @@ import Adyen
 /// A form item into which a card's security code (CVC/CVV) is entered.
 internal final class FormCardSecurityCodeItem: FormTextItem {
 
+    internal enum DisplayMode {
+        case required
+        case optional
+        case hidden
+
+        internal var isVisible: Bool {
+            switch self {
+            case .required, .optional: return true
+            case .hidden: return false
+            }
+        }
+    }
+    
     /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
     
@@ -16,7 +29,7 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
     @AdyenObservable(nil) internal var selectedCard: CardType?
 
     /// :nodoc:
-    @AdyenObservable(false) internal var isOptional: Bool {
+    @AdyenObservable(.required) internal var displayMode: DisplayMode {
         didSet {
             updateFormState()
         }
@@ -37,13 +50,18 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
     }
 
     internal func updateFormState() {
-        // when optional, if user enters anything it should be validated as regular entry.
-        if isOptional {
-            title = localizedString(.cardCvcItemTitleOptional, localizationParameters)
-            validator = NumericStringValidator(exactLength: 0) || securityCodeValidator
-        } else {
+ 
+        switch displayMode {
+        case .required:
             title = localizedString(.cardCvcItemTitle, localizationParameters)
             validator = securityCodeValidator
+        case .hidden:
+            validator = nil
+            value = ""
+        case .optional:
+            // when optional, if user enters anything it should be validated as regular entry.
+            title = localizedString(.cardCvcItemTitleOptional, localizationParameters)
+            validator = NumericStringValidator(exactLength: 0) || securityCodeValidator
         }
     }
     

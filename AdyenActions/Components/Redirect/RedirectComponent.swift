@@ -101,7 +101,7 @@ public final class RedirectComponent: ActionComponent {
     private func openHttpSchemeUrl(_ action: RedirectAction) {
         // Try to open as a universal app link, if it fails open the in-app browser.
         appLauncher.openUniversalAppUrl(action.url) { [weak self] success in
-            guard let self = self else { return }
+            guard let self else { return }
             self.registerRedirectBounceBackListener(action)
             if success {
                 self.delegate?.didOpenExternalApplication(self)
@@ -122,7 +122,7 @@ public final class RedirectComponent: ActionComponent {
     
     private func openCustomSchemeUrl(_ action: RedirectAction) {
         appLauncher.openCustomSchemeUrl(action.url) { [weak self] success in
-            guard let self = self else { return }
+            guard let self else { return }
             if success {
                 self.registerRedirectBounceBackListener(action)
                 self.delegate?.didOpenExternalApplication(self)
@@ -136,7 +136,7 @@ public final class RedirectComponent: ActionComponent {
     
     private func registerRedirectBounceBackListener(_ action: RedirectAction) {
         RedirectListener.registerForURL { [weak self] returnURL in
-            guard let self = self else { return }
+            guard let self else { return }
             
             self.didOpen(url: returnURL, action)
         }
@@ -162,7 +162,7 @@ public final class RedirectComponent: ActionComponent {
         let request = NativeRedirectResultRequest(redirectData: redirectStateData,
                                                   returnQueryString: queryString)
         apiClient.perform(request) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
             case let .failure(error):
                 self.delegate?.didFail(with: error, from: self)

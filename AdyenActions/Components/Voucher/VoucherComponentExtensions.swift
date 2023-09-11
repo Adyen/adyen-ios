@@ -26,7 +26,7 @@ extension VoucherComponent: VoucherViewDelegate {
     }
     
     internal func mainButtonTap(sourceView: UIView) {
-        guard let action = action else { return }
+        guard let action else { return }
         if let downloadable = action.anyAction as? DownloadableVoucher {
             presentSharePopover(with: downloadable.downloadUrl, sourceView: sourceView)
         } else {
@@ -47,7 +47,7 @@ extension VoucherComponent: VoucherViewDelegate {
     }
     
     private func saveAsImage(sourceView: UIView) {
-        guard let action = action else { return }
+        guard let action else { return }
         
         let shareableView = voucherShareableViewProvider.provideView(
             with: action,
@@ -65,7 +65,7 @@ extension VoucherComponent: VoucherViewDelegate {
     }
     
     private func presentOptionsAlert(sourceView: UIView) {
-        guard let action = action else { return }
+        guard let action else { return }
         
         let alert = UIAlertController(
             title: isCodeShortEnoughToBeRead ? action.anyAction.reference : nil,

@@ -25,7 +25,7 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
     }
     
     private var currentInstallmentOptions: InstallmentOptions? {
-        guard let cardType = cardType else { return installmentConfiguration.defaultOptions }
+        guard let cardType else { return installmentConfiguration.defaultOptions }
         
         return installmentConfiguration.cardBasedOptions?[cardType] ?? installmentConfiguration.defaultOptions
     }
@@ -37,7 +37,7 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
 
     /// Creates the picker values to display in addition to `oneTimePaymentElement`
     private var additionalPickerElements: [InstallmentElement] {
-        guard let currentInstallmentOptions = currentInstallmentOptions else { return [] }
+        guard let currentInstallmentOptions else { return [] }
         var values: [InstallmentElement] = []
         if currentInstallmentOptions.includesRevolving {
             values.append(InstallmentElement(kind: .plan(.revolving), localizationParameters: localizationParameters))

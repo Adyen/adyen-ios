@@ -17,9 +17,17 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
     
     internal let style: FormTextItemStyle
     
+    internal let showsSupportedCardLogos: Bool
+    
     private let localizationParameters: LocalizationParameters?
    
-    internal lazy var subitems: [FormItem] = [numberItem, supportedCardLogosItem]
+    internal lazy var subitems: [FormItem] = {
+        var subItems: [FormItem] = [numberItem]
+        if showsSupportedCardLogos {
+            subItems.append(supportedCardLogosItem)
+        }
+        return subItems
+    }()
     
     internal lazy var numberItem: FormCardNumberItem = {
         let item = FormCardNumberItem(cardTypeLogos: cardTypeLogos,
@@ -36,17 +44,20 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
     }()
     
     internal init(cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
+                  showsSupportedCardLogos: Bool = true,
                   style: FormTextItemStyle,
                   localizationParameters: LocalizationParameters?) {
         self.cardTypeLogos = cardTypeLogos
+        self.showsSupportedCardLogos = showsSupportedCardLogos
         self.localizationParameters = localizationParameters
         self.style = style
         
-        observe(numberItem.$isActive) { [weak self] isActive in
-            guard let self = self else { return }
-            // logo item only visible when number item is active or when it's invalid
-            let hidden = !isActive && self.numberItem.isValid()
-            self.supportedCardLogosItem.isHidden.wrappedValue = hidden
+        if showsSupportedCardLogos {
+            observe(numberItem.$isActive) { [weak self] _ in
+                guard let self else { return }
+                // logo item should be visible when field is invalid after active state changes
+                self.supportedCardLogosItem.isHidden.wrappedValue = self.numberItem.isValid()
+            }
         }
     }
     
@@ -55,10 +66,11 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
     }
     
     internal func update(brands: [CardBrand]) {
-        // reduce alpha of supported card icons if brand is detected
-        let supportedBrands = brands.filter(\.isSupported)
-        supportedCardLogosItem.alpha = supportedBrands.isEmpty ? 1 : 0.3
         numberItem.update(brands: brands)
+        
+        if showsSupportedCardLogos {
+            supportedCardLogosItem.isHidden.wrappedValue = brands.contains(where: \.isSupported)
+        }
     }
 }
 

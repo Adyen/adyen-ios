@@ -8,6 +8,11 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
+internal enum BinLookupRequestType: String, Codable {
+    case card
+    case bcmc
+}
+
 internal struct BinLookupRequest: APIRequest {
     
     internal typealias ResponseType = BinLookupResponse
@@ -28,9 +33,12 @@ internal struct BinLookupRequest: APIRequest {
     
     internal let requestId = UUID().uuidString
     
+    internal let type: BinLookupRequestType
+    
     private enum CodingKeys: String, CodingKey {
         case encryptedBin
         case supportedBrands
         case requestId
+        case type
     }
 }

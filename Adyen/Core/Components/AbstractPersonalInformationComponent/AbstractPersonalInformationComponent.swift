@@ -232,7 +232,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
 
     /// :nodoc:
     internal func populateFields() {
-        guard let shopperInformation = shopperInformation else { return }
+        guard let shopperInformation else { return }
 
         shopperInformation.shopperName.map {
             firstNameItem?.value = $0.firstName

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Adyen'
-  s.version = '4.10.4'
+  s.version = '4.10.5'
   s.summary = "Adyen Components for iOS"
   s.description = <<-DESC
     Adyen Components for iOS allows you to accept in-app payments by providing you with the building blocks you need to create a checkout experience.
@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.source = { :git => 'https://github.com/Adyen/adyen-ios.git', :tag => "#{s.version}" }
   s.platform = :ios
   s.ios.deployment_target = '12.0'
-  s.swift_version = '5.1'
+  s.swift_version = '5.7'
   s.frameworks = 'Foundation'
   s.default_subspecs = 'Core', 'Components', 'Actions', 'Card', 'Encryption', 'DropIn'
   s.pod_target_xcconfig = {'SWIFT_SUPPRESS_WARNINGS' => 'YES' }

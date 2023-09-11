@@ -200,7 +200,7 @@ internal class CardViewController: FormViewController {
     
     /// Updates relevant other fields after number field changes
     private func updateFields(from brand: CardBrand?) {
-        items.securityCodeItem.isOptional = brand?.isCVCOptional ?? false
+        items.securityCodeItem.displayMode = brand?.securityCodeItemDisplayMode ?? .required
         items.expiryDateItem.isOptional = brand?.isExpiryDateOptional ?? false
         
         let kcpItemsHidden = shouldHideKcpItems(with: issuingCountryCode)
@@ -258,7 +258,7 @@ internal class CardViewController: FormViewController {
     }
 
     private func prefill() {
-        guard let shopperInformation = shopperInformation else { return }
+        guard let shopperInformation else { return }
 
         shopperInformation.billingAddress.map { billingAddress in
             items.billingAddressItem.value = billingAddress
@@ -295,7 +295,7 @@ internal class CardViewController: FormViewController {
     }
     
     private func shouldHideSocialSecurityItem(with brand: CardBrand?) -> Bool {
-        guard let brand = brand else { return true }
+        guard let brand else { return true }
         switch configuration.socialSecurityNumberMode {
         case .show:
             return false
@@ -319,5 +319,16 @@ internal protocol CardViewControllerDelegate: AnyObject {
 extension FormValueItem where ValueType == String {
     internal var nonEmptyValue: String? {
         self.value.isEmpty ? nil : self.value
+    }
+}
+
+extension CardBrand {
+
+    internal var securityCodeItemDisplayMode: FormCardSecurityCodeItem.DisplayMode {
+        switch self.cvcPolicy {
+        case .hidden: return .hidden
+        case .optional: return .optional
+        case .required: return .required
+        }
     }
 }

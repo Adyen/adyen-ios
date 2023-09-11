@@ -30,7 +30,7 @@ extension PaymentComponent {
             return
         }
         data.dataByAddingBrowserInfo { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.delegate?.didSubmit($0, from: component ?? self)
         }
     }

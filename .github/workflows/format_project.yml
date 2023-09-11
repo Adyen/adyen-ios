@@ -3,7 +3,7 @@ on: [workflow_dispatch]
 jobs:
 
   Update:
-    runs-on: macos-11
+    runs-on: macos-12
     steps:
     - uses: actions/checkout@v3
       with:
@@ -29,4 +29,4 @@ jobs:
         commit-message: "chore: format project"
         title: Format project
         body: Format project.
-        token: ${{ secrets.MANUAL_ACTION_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}

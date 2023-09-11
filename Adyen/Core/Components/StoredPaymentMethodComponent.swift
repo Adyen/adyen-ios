@@ -45,7 +45,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
                                                 preferredStyle: .alert)
 
         let cancelAction = UIAlertAction(title: localizedString(.cancelButton, localizationParameters), style: .cancel) { [weak self] _ in
-            guard let self = self else { return }
+            guard let self else { return }
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
         alertController.addAction(cancelAction)
@@ -54,7 +54,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent, PresentableCo
                                                            style: .immediate,
                                                            localizationParameters)
         let submitAction = UIAlertAction(title: submitActionTitle, style: .default) { [weak self] _ in
-            guard let self = self else { return }
+            guard let self else { return }
             let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
             self.submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.payment?.amount, order: self.order))
         }

@@ -128,7 +128,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     private func create(for field: AddressField, from viewModel: AddressViewModel, subRegions: [Region]?) -> FormItem {
         let item: FormItem
-        if let subRegions = subRegions, field == .stateOrProvince {
+        if let subRegions, field == .stateOrProvince {
             item = createPickerItem(from: viewModel, subRegions: subRegions)
         } else {
             item = createTextItem(for: field, from: viewModel)
@@ -176,7 +176,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             let region = subRegions.first { subRegion in
                 subRegion.identifier == address.stateOrProvince
             }
-            if let region = region {
+            if let region {
                 item.value = RegionPickerItem(identifier: region.identifier, element: region)
             }
         }

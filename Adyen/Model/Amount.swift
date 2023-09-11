@@ -121,7 +121,7 @@ public struct AmountComponents {
     
     /// :nodoc:
     fileprivate init(amount: Amount) {
-        if let comps = Self.extractAmountComponents(from: amount.formatted) {
+        if let comps = AmountComponents.extractAmountComponents(from: amount.formatted) {
             (self.formattedCurrencySymbol, self.formattedValue) = comps
         } else {
             self.formattedValue = String(amount.value)

@@ -93,7 +93,8 @@ public class CardComponent: PublicKeyConsumer,
         let publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
         let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: apiContext),
                                               publicKeyProvider: publicKeyProvider,
-                                              minBinLength: Constant.privateBinLength)
+                                              minBinLength: Constant.privateBinLength,
+                                              binLookupType: configuration.binLookupType)
         self.init(paymentMethod: paymentMethod,
                   apiContext: apiContext,
                   configuration: configuration,
@@ -130,16 +131,14 @@ public class CardComponent: PublicKeyConsumer,
         self.binInfoProvider = binProvider
 
         let paymentMethodCardTypes = paymentMethod.brands.compactMap(CardType.init)
-        let excludedCardTypes = configuration.excludedCardTypes
-        let allowedCardTypes = configuration.allowedCardTypes ?? paymentMethodCardTypes
-        self.supportedCardTypes = allowedCardTypes.minus(excludedCardTypes)
+        self.supportedCardTypes = configuration.allowedCardTypes ?? paymentMethodCardTypes
     }
     
     // MARK: - Presentable Component Protocol
     
     /// :nodoc:
     public var viewController: UIViewController {
-        if let storedCardComponent = storedCardComponent {
+        if let storedCardComponent {
             return storedCardComponent.viewController
         }
         return securedViewController
@@ -201,7 +200,7 @@ extension CardComponent: CardViewControllerDelegate {
     func didChangeBIN(_ value: String) {
         self.cardComponentDelegate?.didChangeBIN(String(value.prefix(Constant.publicBinLength)), component: self)
         binInfoProvider.provide(for: value, supportedTypes: supportedCardTypes) { [weak self] binInfo in
-            guard let self = self else { return }
+            guard let self else { return }
             // update response with sorted brands
             var binInfo = binInfo
             binInfo.brands = CardBrandSorter.sortBrands(binInfo.brands ?? [])

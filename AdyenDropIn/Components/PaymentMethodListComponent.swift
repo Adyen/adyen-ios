@@ -91,7 +91,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
         listItem.trailingText = displayInformation.disclosureText
         listItem.subtitle = displayInformation.subtitle
         listItem.selectionHandler = { [weak self, weak component] in
-            guard let self = self, let component = component else { return }
+            guard let self, let component else { return }
             guard !(component is AlreadyPaidPaymentComponent) else { return }
             self.delegate?.didSelect(component, in: self)
         }
@@ -104,7 +104,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     }
     
     private func delete(component: PaymentComponent?, at indexPath: IndexPath, completion: @escaping Completion<Bool>) {
-        guard let component = component else { return }
+        guard let component else { return }
         guard let paymentMethod = component.paymentMethod as? StoredPaymentMethod else { return }
         let completion: (Bool) -> Void = { [weak self] success in
             defer {
@@ -112,7 +112,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
             }
             guard success else { return }
             // This is to prevent the merchant calling completion closure multiple times
-            guard let self = self else { return }
+            guard let self else { return }
             guard self.componentSections[indexPath.section]
                 .components[indexPath.item]
                 .paymentMethod == paymentMethod else { return }
@@ -178,7 +178,7 @@ internal protocol PaymentMethodListComponentDelegate: AnyObject {
     
 }
 
-private extension Array where Element == ComponentsSection {
+private extension [ComponentsSection] {
     mutating func deleteItem(at indexPath: IndexPath) {
         self[indexPath.section].components.remove(at: indexPath.item)
         self = self.filter { $0.components.isEmpty == false }

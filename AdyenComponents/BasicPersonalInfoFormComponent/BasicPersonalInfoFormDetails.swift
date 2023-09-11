@@ -16,8 +16,8 @@ public struct BasicPersonalInfoFormDetails: PaymentMethodDetails, ShopperInforma
 
     /// The shopper Name.
     public var shopperName: ShopperName? {
-        guard let firstName = firstName else { return nil }
-        guard let lastName = lastName else { return nil }
+        guard let firstName else { return nil }
+        guard let lastName else { return nil }
         return ShopperName(firstName: firstName, lastName: lastName)
     }
 

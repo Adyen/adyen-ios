@@ -175,7 +175,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         startLoading()
 
         fetchCardPublicKey(notifyingDelegateOnFailure: true) { [weak self] cardPublicKey in
-            guard let self = self else { return }
+            guard let self else { return }
             self.createPaymentData(order: self.order,
                                    cardPublicKey: cardPublicKey)
                 .mapError(Error.otherError)
@@ -185,7 +185,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
 
     private func startFlow(with paymentData: PaymentComponentData) {
         partialPaymentDelegate?.checkBalance(with: paymentData) { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             result
                 .mapError(Error.otherError)
                 .flatMap {
@@ -228,7 +228,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
     // MARK: - Balance check
 
     private func check(balance: Balance, toPay amount: Amount?) -> Result<BalanceChecker.Result, Swift.Error> {
-        guard let amount = amount else {
+        guard let amount else {
             AdyenAssertion.assertionFailure(message: Error.invalidPayment.localizedDescription)
             return .failure(Error.invalidPayment)
         }
@@ -245,7 +245,7 @@ public final class GiftCardComponent: PartialPaymentComponent,
         AdyenAssertion.assert(message: "readyToSubmitComponentDelegate is nil",
                               condition: _isDropIn && readyToSubmitComponentDelegate == nil)
         stopLoading()
-        if let readyToSubmitComponentDelegate = readyToSubmitComponentDelegate {
+        if let readyToSubmitComponentDelegate {
             showConfirmation(delegate: readyToSubmitComponentDelegate,
                              remainingAmount: remainingAmount,
                              paymentData: paymentData)
@@ -276,11 +276,11 @@ public final class GiftCardComponent: PartialPaymentComponent,
     // MARK: - Partial Payment flow
 
     private func startPartialPaymentFlow(paymentData: PaymentComponentData) -> Result<Void, Swift.Error> {
-        if let order = order {
+        if let order {
             submit(order: order, paymentData: paymentData)
             return .success(())
         }
-        guard let partialPaymentDelegate = partialPaymentDelegate else {
+        guard let partialPaymentDelegate else {
             AdyenAssertion.assertionFailure(message: Error.missingPartialPaymentDelegate.localizedDescription)
             return .failure(Error.missingPartialPaymentDelegate)
         }
