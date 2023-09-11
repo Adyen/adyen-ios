@@ -87,7 +87,9 @@ let package = Package(
         ),
         .target(
             name: "AdyenEncryption",
-            dependencies: [],
+            dependencies: [
+                .target(name: "Adyen")
+	    ],
             path: "AdyenEncryption",
             exclude: [
                 "Info.plist"
