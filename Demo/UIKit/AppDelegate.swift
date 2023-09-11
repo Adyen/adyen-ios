@@ -11,7 +11,7 @@ import AdyenActions
 #endif
 import UIKit
 
-@UIApplicationMain
+@main
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     
     internal var window: UIWindow?

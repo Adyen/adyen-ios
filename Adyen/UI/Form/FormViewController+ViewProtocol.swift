@@ -17,8 +17,8 @@ public protocol FormViewProtocol {
 @_spi(AdyenInternal)
 extension FormViewController: FormViewProtocol {
 
-    public func add<T: FormItem>(item: T?) {
-        guard let item = item else { return }
+    public func add(item: (some FormItem)?) {
+        guard let item else { return }
         append(item)
     }
 

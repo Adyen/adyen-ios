@@ -26,6 +26,9 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var allowDisablingStoredPaymentMethods: Bool = false
     @Published internal var allowsSkippingPaymentList: Bool = false
     @Published internal var allowPreselectedPaymentView: Bool = true
+    @Published internal var applePayMerchantIdentifier: String = ""
+    @Published internal var allowOnboarding: Bool = false
+    @Published internal var analyticsIsEnabled: Bool = true
 
     private let onDone: (DemoAppSettings) -> Void
     private let configuration: DemoAppSettings
@@ -56,6 +59,9 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.allowDisablingStoredPaymentMethods = configuration.dropInConfiguration.allowDisablingStoredPaymentMethods
         self.allowsSkippingPaymentList = configuration.dropInConfiguration.allowsSkippingPaymentList
         self.allowPreselectedPaymentView = configuration.dropInConfiguration.allowPreselectedPaymentView
+        self.applePayMerchantIdentifier = configuration.applePayConfiguration.merchantIdentifier
+        self.allowOnboarding = configuration.applePayConfiguration.allowOnboarding
+        self.analyticsIsEnabled = configuration.analyticsSettings.isEnabled
     }
     
     internal func doneTapped() {
@@ -79,10 +85,14 @@ internal final class ConfigurationViewModel: ObservableObject {
                 showsSecurityCodeField: showsSecurityCodeField,
                 addressMode: addressMode,
                 socialSecurityNumberMode: socialSecurityNumberMode,
-                koreanAuthenticationMode: koreanAuthenticationMode),
+                koreanAuthenticationMode: koreanAuthenticationMode
+            ),
             dropInConfiguration: DropInConfiguration(allowDisablingStoredPaymentMethods: allowDisablingStoredPaymentMethods,
                                                      allowsSkippingPaymentList: allowsSkippingPaymentList,
-                                                     allowPreselectedPaymentView: allowPreselectedPaymentView)
+                                                     allowPreselectedPaymentView: allowPreselectedPaymentView),
+            applePayConfiguration: ApplePayConfiguration(merchantIdentifier: applePayMerchantIdentifier,
+                                                         allowOnboarding: allowOnboarding),
+            analyticsConfiguration: AnalyticConfiguration(isEnabled: analyticsIsEnabled)
         )
     }
 

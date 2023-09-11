@@ -76,7 +76,8 @@ public class AddressInputFormViewController: FormViewController {
             configuration: .init(
                 style: viewModel.style.addressStyle,
                 localizationParameters: viewModel.localizationParameters,
-                supportedCountryCodes: viewModel.supportedCountryCodes
+                supportedCountryCodes: viewModel.supportedCountryCodes,
+                showsHeader: false
             ),
             identifier: identifier,
             presenter: self,

@@ -83,4 +83,9 @@ extension BrowserComponent: SFSafariViewControllerDelegate, UIAdaptivePresentati
         self.delegate?.didCancel()
     }
 
+    /// Called when the user opens the current page in the default browser by tapping the toolbar button.
+    internal func safariViewControllerWillOpenInBrowser(_ controller: SFSafariViewController) {
+        self.delegate?.didOpenExternalApplication()
+    }
+
 }

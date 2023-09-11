@@ -80,10 +80,10 @@ public struct LocalizationParameters: Equatable {
         mode = .natural(bundle: bundle, tableName: tableName, keySeparator: keySeparator, locale: locale)
     }
 
-        /// Initializes LocalizationParameters with enforced locale.
-        ///
-        /// - Parameters:
-        ///   - enforcedLocale: The locale to be enforced.
+    /// Initializes LocalizationParameters with enforced locale.
+    ///
+    /// - Parameters:
+    ///   - enforcedLocale: The locale to be enforced.
     public init(enforcedLocale: String) {
         mode = .enforced(locale: enforcedLocale)
     }

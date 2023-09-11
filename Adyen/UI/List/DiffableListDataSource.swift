@@ -106,7 +106,7 @@ internal final class DiffableListDataSource: UITableViewDiffableDataSource<ListS
     
 }
 
-extension Array where Element == ListSection {
+extension [ListSection] {
     internal var isEditable: Bool {
         contains(where: \.isEditable)
     }
