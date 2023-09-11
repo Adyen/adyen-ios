@@ -43,7 +43,7 @@ class CoderTests: XCTestCase {
     
     // MARK: - Private
     
-    private let sampleObjectRawString = "{\"nested\":{\"nestedValue\":\"value\"},\"string\":\"someString\",\"some_integer\":99,\"date\":\"2015-02-28T21:30:00Z\"}"
+    private let sampleObjectRawString = "{\"date\":\"2015-02-28T21:30:00Z\",\"nested\":{\"nestedValue\":\"value\"},\"some_integer\":99,\"string\":\"someString\"}"
     
     private lazy var sampleObject: SampleObject = {
         let nestedObject = NestedObject(nestedValue: "value")
