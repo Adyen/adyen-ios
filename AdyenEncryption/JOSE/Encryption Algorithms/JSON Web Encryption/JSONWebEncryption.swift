@@ -5,6 +5,7 @@
 //
 
 import Foundation
+@_spi(AdyenInternal) import Adyen
 
 internal struct JSONWebEncryption {
     internal struct Header: Encodable {
@@ -69,7 +70,7 @@ internal struct JSONWebEncryption {
         self.encryptedPayload = encryptedPayload
         self.initializationVector = initializationVector
         self.authenticationTag = authenticationTag
-        self.compactRepresentation = try [JSONEncoder().encode(header).base64URLString(),
+        self.compactRepresentation = try [Coder.encode(header).base64URLString(),
                                           encryptedKey.base64URLString(),
                                           initializationVector.base64URLString(),
                                           encryptedPayload.base64URLString(),

@@ -27,8 +27,7 @@ public struct ThreeDSResult: Decodable {
                               delegatedAuthenticationSDKOutput: nil,
                               threeDS2SDKError: threeDS2SDKError,
                               transStatus: transStatus)
-        let payloadData = try JSONEncoder().encode(payload)
-        self.payload = payloadData.base64EncodedString()
+        self.payload = try Coder.encode(payload).base64EncodedString()
     }
     
     internal init(from challengeResult: AnyChallengeResult,
@@ -39,10 +38,8 @@ public struct ThreeDSResult: Decodable {
                               delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
                               threeDS2SDKError: threeDS2SDKError,
                               transStatus: challengeResult.transactionStatus)
-        
-        let payloadData = try JSONEncoder().encode(payload)
 
-        self.payload = payloadData.base64EncodedString()
+        self.payload = try Coder.encode(payload).base64EncodedString()
     }
 
     public init(from decoder: Decoder) throws {
@@ -56,8 +53,7 @@ public struct ThreeDSResult: Decodable {
                                  delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
                                  threeDS2SDKError: oldPayload.threeDS2SDKError,
                                  transStatus: oldPayload.transStatus)
-        let newPayloadData = try JSONEncoder().encode(newPayload)
-        return .init(payload: newPayloadData.base64EncodedString())
+        return .init(payload: try Coder.encode(newPayload).base64EncodedString())
     }
 
     internal init(authenticated: Bool, authorizationToken: String?) throws {
