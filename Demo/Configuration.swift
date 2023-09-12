@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 import PassKit
 
-enum ConfigurationConstants {
+internal enum ConfigurationConstants {
     // swiftlint:disable explicit_acl
     // swiftlint:disable line_length
 
@@ -61,19 +61,19 @@ enum ConfigurationConstants {
     // swiftlint:enable line_length
 }
 
-struct Configuration: Codable {
+internal struct Configuration: Codable {
     private static let defaultsKey = "ConfigurationKey"
     
-    let countryCode: String
-    let value: Int
-    let currencyCode: String
-    let apiVersion: Int
-    let merchantAccount: String
+    internal let countryCode: String
+    internal let value: Int
+    internal let currencyCode: String
+    internal let apiVersion: Int
+    internal let merchantAccount: String
     
-    var amount: Amount { Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil) }
-    var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
+    internal var amount: Amount { Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil) }
+    internal var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
     
-    static let defaultConfiguration = Configuration(
+    internal static let defaultConfiguration = Configuration(
         countryCode: "NL",
         value: 17408,
         currencyCode: "EUR",
