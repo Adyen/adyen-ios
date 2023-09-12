@@ -4,7 +4,7 @@ Adyen Components for iOS are available through either CocoaPods, Carthage or Swi
 
 ### Requirements
 
-- iOS 11.0+
+- iOS 12.0+
 - Xcode 11.0+
 - Swift 5.1
 
