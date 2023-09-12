@@ -68,7 +68,7 @@ internal extension ThreeDS2Component {
         }
         
         internal func withDelegatedAuthenticationSDKOutput(delegatedAuthenticationSDKOutput: String?,
-                                                           deleteDelegatedAuthenticationCredentials: Bool?) -> Fingerprint {
+                                                           deleteDelegatedAuthenticationCredential: Bool?) -> Fingerprint {
             .init(deviceInformation: deviceInformation,
                   sdkEphemeralPublicKey: sdkEphemeralPublicKey,
                   sdkReferenceNumber: sdkReferenceNumber,
