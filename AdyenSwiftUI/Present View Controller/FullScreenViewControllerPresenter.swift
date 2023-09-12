@@ -49,7 +49,7 @@ import SwiftUI
         }
 
         internal func makeUIViewController(context: UIViewControllerRepresentableContext<FullScreenView>) -> UIViewController {
-            UIViewController()
+            SelfNonDismissionViewController()
         }
 
         internal func makeCoordinator() -> Coordinator {
@@ -67,9 +67,8 @@ import SwiftUI
         private func dismissIfNeededThenPresent(viewController: UIViewController,
                                                 presenter: UIViewController,
                                                 context: UIViewControllerRepresentableContext<FullScreenView>) {
-            if let presented = context.coordinator.currentlyPresentedViewController {
-                presented.dismiss(animated: true) {
-                    context.coordinator.currentlyPresentedViewController = nil
+            if context.coordinator.currentlyPresentedViewController != nil {
+                dismiss(presenter: presenter, context: context) {
                     Self.present(viewController: viewController, presenter: presenter, context: context)
                 }
             } else {
@@ -98,4 +97,29 @@ import SwiftUI
             }
         }
     }
+
+    /// This view controller only dismisses the view controller that is presented by this view controller.
+    /// It resists being dismissed if the `dismiss` method is called on the view controller itself with no presented controllers.
+    /// It could still be dismissed by a parent view controller
+    private class SelfNonDismissionViewController: UIViewController, UIViewControllerTransitioningDelegate {
+
+        init() {
+            super.init(nibName: nil, bundle: Bundle(for: SelfNonDismissionViewController.self))
+        }
+
+        @available(*, unavailable)
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+            if presentedViewController != nil {
+                super.dismiss(animated: flag, completion: completion)
+            } else {
+                completion?()
+            }
+        }
+
+    }
+
 #endif
