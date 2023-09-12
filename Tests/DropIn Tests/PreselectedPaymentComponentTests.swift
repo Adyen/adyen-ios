@@ -214,11 +214,11 @@ class PreselectedPaymentComponentTests: XCTestCase {
     }
     
     func getStoredCard() -> StoredCardPaymentMethod {
-        try! Coder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
+        try! AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
     }
     
     func getStoredPaypal() -> StoredPayPalPaymentMethod {
-        try! Coder.decode(storedPayPalDictionary) as StoredPayPalPaymentMethod
+        try! AdyenCoder.decode(storedPayPalDictionary) as StoredPayPalPaymentMethod
     }
     
 }
