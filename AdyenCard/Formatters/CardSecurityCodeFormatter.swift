@@ -21,7 +21,7 @@ public final class CardSecurityCodeFormatter: NumericFormatter, Observer {
     
     /// Initiate new instance of CardSecurityCodeValidator
     /// - Parameter publisher: observer of a card type.
-    public init(publisher: Observable<CardType?>) {
+    public init(publisher: AdyenObservable<CardType?>) {
         super.init()
         bind(publisher, to: self, at: \.cardType)
     }

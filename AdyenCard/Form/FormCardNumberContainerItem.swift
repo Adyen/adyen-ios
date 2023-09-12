@@ -77,7 +77,7 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
 /// Form item to display multiple card logos.
 internal final class FormCardLogosItem: FormItem, Hidable {
     
-    internal var isHidden: Observable<Bool> = Observable(false)
+    internal var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
     internal var identifier: String?
     
@@ -88,7 +88,7 @@ internal final class FormCardLogosItem: FormItem, Hidable {
     internal let style: FormTextItemStyle
     
     /// Observable property to update the owner view's alpha.
-    @Observable(1) internal var alpha: CGFloat
+    @AdyenObservable(1) internal var alpha: CGFloat
     
     internal init(cardLogos: [CardTypeLogo], style: FormTextItemStyle) {
         self.cardLogos = cardLogos

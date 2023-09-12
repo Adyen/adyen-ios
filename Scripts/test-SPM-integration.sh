@@ -30,7 +30,7 @@ let package = Package(
     name: \"$PROJECT_NAME\",
     defaultLocalization: \"en-US\",
     platforms: [
-        .iOS(.v11)
+        .iOS(.v12)
     ],
     products: [
         .library(
