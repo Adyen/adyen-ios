@@ -105,7 +105,7 @@ import XCTest
             sut.handle(fingerprintAction, event: analyticsEvent) { fingerprintResult in
                 switch fingerprintResult {
                 case let .success(fingerprintString):
-                    let fingerprint: ThreeDS2Component.Fingerprint = try! Coder.decodeBase64(fingerprintString)
+                    let fingerprint: ThreeDS2Component.Fingerprint = try! AdyenCoder.decodeBase64(fingerprintString)
                     XCTAssertEqual(fingerprint, expectedFingerprint)
                 case .failure:
                     XCTFail()
@@ -225,7 +225,7 @@ import XCTest
                         let threeDS2SDKError: String?
                     }
 
-                    let payload: Payload? = try? Coder.decodeBase64(result.payload)
+                    let payload: Payload? = try? AdyenCoder.decodeBase64(result.payload)
                     XCTAssertNotNil(payload?.threeDS2SDKError)
                 case .failure:
                     XCTFail()

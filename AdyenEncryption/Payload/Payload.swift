@@ -13,6 +13,6 @@ internal protocol Payload: Encodable {
 
 extension Payload {
     internal func jsonData() throws -> Data {
-        return try Coder.encode(self)
+        return try AdyenCoder.encode(self)
     }
 }

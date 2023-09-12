@@ -23,7 +23,7 @@ internal struct JSONWebEncryptionGenerator: AnyJSONWebEncryptionGenerator {
         let contentEncryptionKey = try generateRandomData(length: contentEncryptionAlgorithm.keyLength)
         let encryptedKey = try keyEncryptionAlgorithm.encrypt(contentEncryptionKey, withKey: publicRSAKey)
         
-        let encodedHeader = try Coder.encode(header) as Data
+        let encodedHeader = try AdyenCoder.encode(header) as Data
         
         let initializationVector = try generateRandomData(length: contentEncryptionAlgorithm.initializationVectorLength)
         guard let additionalAuthenticationData = encodedHeader.base64URLString().data(using: .ascii) else {

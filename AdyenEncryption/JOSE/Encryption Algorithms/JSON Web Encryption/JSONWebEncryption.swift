@@ -70,7 +70,7 @@ internal struct JSONWebEncryption {
         self.encryptedPayload = encryptedPayload
         self.initializationVector = initializationVector
         self.authenticationTag = authenticationTag
-        self.compactRepresentation = try [Coder.encode(header).base64URLString(),
+        self.compactRepresentation = try [AdyenCoder.encode(header).base64URLString(),
                                           encryptedKey.base64URLString(),
                                           initializationVector.base64URLString(),
                                           encryptedPayload.base64URLString(),
