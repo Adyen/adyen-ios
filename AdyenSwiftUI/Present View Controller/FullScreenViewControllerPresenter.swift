@@ -49,7 +49,7 @@ import SwiftUI
         }
 
         internal func makeUIViewController(context: UIViewControllerRepresentableContext<FullScreenView>) -> UIViewController {
-            SelfNonDismissionViewController()
+            StickyViewController()
         }
 
         internal func makeCoordinator() -> Coordinator {
@@ -101,10 +101,10 @@ import SwiftUI
     /// This view controller only dismisses the view controller that is presented by this view controller.
     /// It resists being dismissed if the `dismiss` method is called on the view controller itself with no presented controllers.
     /// It could still be dismissed by a parent view controller
-    private class SelfNonDismissionViewController: UIViewController, UIViewControllerTransitioningDelegate {
+    private class StickyViewController: UIViewController, UIViewControllerTransitioningDelegate {
 
         init() {
-            super.init(nibName: nil, bundle: Bundle(for: SelfNonDismissionViewController.self))
+            super.init(nibName: nil, bundle: Bundle(for: StickyViewController.self))
         }
 
         @available(*, unavailable)
