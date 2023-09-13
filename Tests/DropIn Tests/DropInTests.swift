@@ -131,7 +131,7 @@ class DropInTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testCancelDropInDelegate() {
+    func testCancelDropInDelegate() throws {
         let config = DropInComponent.Configuration()
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
@@ -155,15 +155,16 @@ class DropInTests: XCTestCase {
         root.present(sut.viewController, animated: true, completion: nil)
 
         wait(for: .seconds(2))
-        let topVC = self.sut.viewController.findChild(of: ListViewController.self)
-        topVC?.tableView(topVC!.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
+        let topVC = try XCTUnwrap(self.sut.viewController.findChild(of: ListViewController.self))
+        topVC.tableView(topVC.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
 
         wait(for: .seconds(2))
-        let newtopVC = sut.viewController.adyen.topPresenter as? SFSafariViewController
+        let newtopVC = try XCTUnwrap(sut.viewController.adyen.topPresenter as? SFSafariViewController)
         XCTAssertNotNil(newtopVC)
 
         wait(for: .seconds(2))
-        newtopVC?.delegate?.safariViewControllerDidFinish?(newtopVC!)
+        let delegate = try XCTUnwrap(newtopVC.delegate)
+        delegate.safariViewControllerDidFinish?(newtopVC)
 
         waitForExpectations(timeout: 30, handler: nil)
     }
