@@ -135,12 +135,12 @@ class DropInTests: XCTestCase {
         let config = DropInComponent.Configuration()
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymentMethods,
+        let sut = DropInComponent(paymentMethods: paymentMethods,
                               context: context,
                               configuration: config)
         let delegateMock = DropInDelegateMock()
         delegateMock.didSubmitHandler = { paymentData, component in
-            self.sut.handle(Dummy.redirectAction)
+            sut.handle(Dummy.redirectAction)
         }
 
         let waitExpectation = expectation(description: "Expect Drop-In to call didCancel")
@@ -155,7 +155,7 @@ class DropInTests: XCTestCase {
         root.present(sut.viewController, animated: true, completion: nil)
 
         wait(for: .seconds(2))
-        let topVC = try XCTUnwrap(self.sut.viewController.findChild(of: ListViewController.self))
+        let topVC = try XCTUnwrap(sut.viewController.findChild(of: ListViewController.self))
         topVC.tableView(topVC.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
 
         wait(for: .seconds(2))
