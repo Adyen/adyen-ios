@@ -167,7 +167,7 @@
     
         // MARK: - Delegated Authentication
 
-        private typealias DAPayload = (sdkOutput: String, deleteDelegatedAuthenticationCredential: Bool?) // TODO: Robert: Maybe better replace the tuple with a type for easier reading.
+        private typealias DAPayload = (sdkOutput: String, deleteDelegatedAuthenticationCredential: Bool?)
         
         /// This method checks;
         /// 1. if DA has been registered on the device
@@ -220,7 +220,7 @@
                 removeCredentialsHandler: { [weak self] in
                     guard let self else { return }
                     self.executeDAAuthenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
-                                               authenticatedHandler: { [weak self] sdkOutput in
+                                               authenticatedHandler: { sdkOutput in
                                                    completion(.success((sdkOutput, true)))
                                                },
                                                failedAuthenticationHandler: { error in
