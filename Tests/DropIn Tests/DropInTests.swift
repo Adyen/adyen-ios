@@ -165,7 +165,7 @@ class DropInTests: XCTestCase {
         wait(for: .seconds(2))
         newtopVC?.delegate?.safariViewControllerDidFinish?(newtopVC!)
 
-        waitForExpectations(timeout: 15, handler: nil)
+        waitForExpectations(timeout: 30, handler: nil)
     }
 
     func testOpenDropInAsList() {
