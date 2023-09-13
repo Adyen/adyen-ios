@@ -128,6 +128,7 @@ cp "../Tests/Card Tests/3DS2 Component/AnyADYServiceMock.swift" Tests/AnyADYServ
 cp "../Tests/Card Tests/3DS2 Component/AuthenticationServiceMock.swift" Tests/AuthenticationServiceMock.swift
 cp "../Tests/Card Tests/3DS2 Component/ThreeDSResultExtension.swift" Tests/ThreeDSResultExtension.swift
 cp "../Tests/Helpers/XCTestCase+Wait.swift" Tests/XCTestCase+Wait.swift
+cp "../Tests/Helpers/UIViewController+Search.swift" Tests/UIViewController+Search.swift
 cp "../Tests/DummyData/Dummy.swift" Tests/Dummy.swift
 cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/
