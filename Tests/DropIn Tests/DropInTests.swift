@@ -134,31 +134,31 @@ class DropInTests: XCTestCase {
     func testCancelDropInDelegate() throws {
         let config = DropInComponent.Configuration()
 
-        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymentMethods,
-                              context: context,
-                              configuration: config)
+        let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: paymentMethodsData)
+        
+        let sut = DropInComponent(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: config
+        )
+        
         let delegateMock = DropInDelegateMock()
-        delegateMock.didSubmitHandler = { paymentData, component in
-            self.sut.handle(Dummy.redirectAction)
-        }
+        delegateMock.didSubmitHandler = { _, _ in sut.handle(Dummy.redirectAction) }
 
         let waitExpectation = expectation(description: "Expect Drop-In to call didCancel")
-        delegateMock.didCancelHandler = { _,_ in
-            waitExpectation.fulfill()
-        }
+        delegateMock.didCancelHandler = { _,_ in waitExpectation.fulfill() }
 
         sut.delegate = delegateMock
 
         presentOnRoot(sut.viewController)
         
         let topVC = try waitForViewController(ofType: ListViewController.self, toBecomeChildOf: sut.viewController)
-        
         topVC.tableView(topVC.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
 
         let safari = try waitUntilTopPresenter(isOfType: SFSafariViewController.self)
-        let delegate = try XCTUnwrap(safari.delegate)
-        delegate.safariViewControllerDidFinish?(safari)
+        let delegateDidFinish = try XCTUnwrap(safari.delegate?.safariViewControllerDidFinish)
+        delegateDidFinish(safari)
 
         wait(for: [waitExpectation], timeout: 30)
     }
