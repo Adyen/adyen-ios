@@ -150,23 +150,17 @@ class DropInTests: XCTestCase {
 
         sut.delegate = delegateMock
 
-        let root = UIViewController()
-        UIApplication.shared.keyWindow?.rootViewController = root
-        root.present(sut.viewController, animated: true, completion: nil)
-
-        wait(for: .seconds(2))
-        let topVC = try XCTUnwrap(self.sut.viewController.findChild(of: ListViewController.self))
+        presentOnRoot(sut.viewController)
+        
+        let topVC = try waitForViewController(ofType: ListViewController.self, toBecomeChildOf: sut.viewController)
+        
         topVC.tableView(topVC.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
 
-        wait(for: .seconds(2))
-        let newtopVC = try XCTUnwrap(sut.viewController.adyen.topPresenter as? SFSafariViewController)
-        XCTAssertNotNil(newtopVC)
+        let safari = try waitUntilTopPresenter(isOfType: SFSafariViewController.self)
+        let delegate = try XCTUnwrap(safari.delegate)
+        delegate.safariViewControllerDidFinish?(safari)
 
-        wait(for: .seconds(2))
-        let delegate = try XCTUnwrap(newtopVC.delegate)
-        delegate.safariViewControllerDidFinish?(newtopVC)
-
-        waitForExpectations(timeout: 30, handler: nil)
+        wait(for: [waitExpectation], timeout: 30)
     }
 
     func testOpenDropInAsList() {
