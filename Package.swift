@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.7
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -7,7 +7,7 @@ let package = Package(
     name: "Adyen",
     defaultLocalization: "en-us",
     platforms: [
-        .iOS(.v11)
+        .iOS(.v12)
     ],
     products: [
         .library(
@@ -87,7 +87,9 @@ let package = Package(
         ),
         .target(
             name: "AdyenEncryption",
-            dependencies: [],
+            dependencies: [
+                .target(name: "Adyen")
+	    ],
             path: "AdyenEncryption",
             exclude: [
                 "Info.plist"

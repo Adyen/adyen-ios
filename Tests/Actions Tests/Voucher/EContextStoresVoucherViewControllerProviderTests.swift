@@ -12,7 +12,7 @@ import XCTest
 class EContextStoresVoucherViewControllerProviderTests: XCTestCase {
 
     func testCustomLocalization() throws {
-        let econtextAction = try Coder.decode(econtextStoresAction) as EContextStoresVoucherAction
+        let econtextAction = try AdyenCoder.decode(econtextStoresAction) as EContextStoresVoucherAction
         let action: VoucherAction = .econtextStores(econtextAction)
 
         let viewProvider = VoucherShareableViewProvider(

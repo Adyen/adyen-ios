@@ -187,7 +187,6 @@ class CardEncryptorCardTests: XCTestCase {
 
     func testEncryptBIN() {
         let encrypted = try! CardEncryptor.encrypt(bin: "55000000", with: Dummy.publicKey)
-        XCTAssertNotNil(encrypted)
-        XCTAssertTrue(encrypted.hasPrefix("eyJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiYWxnIjoiUlNBLU9BRVAtMjU2IiwidmVyc2lvbiI6IjEifQ"))
+        XCTAssertTrue(encrypted.hasPrefix("eyJhbGciOiJSU0EtT0FFUC0yNTYiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwidmVyc2lvbiI6IjEifQ"))
     }
 }

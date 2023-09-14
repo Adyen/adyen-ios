@@ -162,7 +162,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
                             let threeDS2SDKError: String?
                         }
                         // Check if there is a threeDS2SDKError in the payload.
-                        let payload: Payload? = try? Coder.decodeBase64(threeDSResult.payload)
+                        let payload: Payload? = try? AdyenCoder.decodeBase64(threeDSResult.payload)
                         XCTAssertNotNil(payload?.threeDS2SDKError)
                     default:
                         XCTFail()

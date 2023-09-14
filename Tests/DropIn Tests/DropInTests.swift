@@ -144,7 +144,9 @@ class DropInTests: XCTestCase {
         )
         
         let delegateMock = DropInDelegateMock()
-        delegateMock.didSubmitHandler = { _, _ in sut.handle(Dummy.redirectAction) }
+        delegateMock.didSubmitHandler = { paymentData, component in
+            sut.handle(Dummy.redirectAction)
+        }
 
         let waitExpectation = expectation(description: "Expect Drop-In to call didCancel")
         delegateMock.didCancelHandler = { _,_ in waitExpectation.fulfill() }
