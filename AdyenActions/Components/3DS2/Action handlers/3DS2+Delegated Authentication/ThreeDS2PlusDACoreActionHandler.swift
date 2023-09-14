@@ -102,8 +102,8 @@
         
         private func addSDKOutputIfNeeded(toFingerprintResult fingerprintResult: String, _ fingerprintAction: ThreeDS2FingerprintAction, completionHandler: @escaping (Result<String, Error>) -> Void) {
             do {
-                let token = try Coder.decodeBase64(fingerprintAction.fingerprintToken) as ThreeDS2Component.FingerprintToken
-                let fingerprintResult: ThreeDS2Component.Fingerprint = try Coder.decodeBase64(fingerprintResult)
+                let token = try AdyenCoder.decodeBase64(fingerprintAction.fingerprintToken) as ThreeDS2Component.FingerprintToken
+                let fingerprintResult: ThreeDS2Component.Fingerprint = try AdyenCoder.decodeBase64(fingerprintResult)
                 performDelegatedAuthentication(token) { [weak self] result in
                     guard let self else { return }
                     self.delegatedAuthenticationState.isDeviceRegistrationFlow = result.successResult == nil
@@ -141,7 +141,7 @@
                 let fingerprintResult = fingerprintResult.withDelegatedAuthenticationSDKOutput(
                     delegatedAuthenticationSDKOutput: authenticationSDKOutput
                 )
-                let encodedFingerprintResult = try Coder.encodeBase64(fingerprintResult)
+                let encodedFingerprintResult = try AdyenCoder.encodeBase64(fingerprintResult)
                 return encodedFingerprintResult
             } catch {
                 didFail(with: error, completionHandler: completionHandler)
@@ -174,7 +174,7 @@
                                           completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
             let token: ThreeDS2Component.ChallengeToken
             do {
-                token = try Coder.decodeBase64(challengeAction.challengeToken) as ThreeDS2Component.ChallengeToken
+                token = try AdyenCoder.decodeBase64(challengeAction.challengeToken) as ThreeDS2Component.ChallengeToken
             } catch {
                 return didFail(with: error, completionHandler: completionHandler)
             }

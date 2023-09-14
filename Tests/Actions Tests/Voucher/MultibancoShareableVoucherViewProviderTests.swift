@@ -18,7 +18,7 @@ class MultibancoShareableVoucherViewProviderTests: XCTestCase {
             environment: Dummy.apiContext.environment
         )
 
-        let multibancoDecoded = try Coder.decode(multibancoVoucher) as MultibancoVoucherAction
+        let multibancoDecoded = try AdyenCoder.decode(multibancoVoucher) as MultibancoVoucherAction
         let action: VoucherAction = .multibanco(multibancoDecoded)
 
         let sut = viewProvider.provideView(with: action, logo: nil)

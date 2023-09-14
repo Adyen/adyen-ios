@@ -69,7 +69,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
             authenticationRequestParameters: authenticationRequestParameters,
             delegatedAuthenticationSDKOutput: nil
         )
-        let expectedFingerprint = try Coder.encodeBase64(fingerprint)
+        let expectedFingerprint = try AdyenCoder.encodeBase64(fingerprint)
         
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, service: service)
@@ -202,7 +202,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
                             let threeDS2SDKError: String?
                         }
                         // Check if there is a threeDS2SDKError in the payload.
-                        let payload: Payload? = try? Coder.decodeBase64(threeDSResult.payload)
+                        let payload: Payload? = try? AdyenCoder.decodeBase64(threeDSResult.payload)
                         XCTAssertNotNil(payload?.threeDS2SDKError)
                     default:
                         XCTFail()
