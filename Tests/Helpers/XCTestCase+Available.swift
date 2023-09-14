@@ -40,5 +40,13 @@ extension XCTestCase {
                 return false
             }
         }
+        
+        static var iOS17: Bool {
+            if #available(iOS 17.0, *) {
+                return true
+            } else {
+                return false
+            }
+        }
     }
 }
