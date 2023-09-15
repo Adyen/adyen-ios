@@ -129,6 +129,7 @@ cp "../Tests/Card Tests/3DS2 Component/AuthenticationServiceMock.swift" Tests/Au
 cp "../Tests/Card Tests/3DS2 Component/ThreeDSResultExtension.swift" Tests/ThreeDSResultExtension.swift
 cp "../Tests/Helpers/XCTestCase+Wait.swift" Tests/XCTestCase+Wait.swift
 cp "../Tests/Helpers/UIViewController+Search.swift" Tests/UIViewController+Search.swift
+cp "../Tests/Helpers/XCTestCase+RootViewController.swift" Tests/XCTestCase+RootViewController.swift
 cp "../Tests/DummyData/Dummy.swift" Tests/Dummy.swift
 cp "../Tests/DropIn Tests/DropInTests.swift" Tests/DropInTests.swift
 cp "../Tests/DropIn Tests/DropInDelegateMock.swift" Tests/DropInDelegateMock.swift
