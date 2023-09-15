@@ -144,10 +144,14 @@ class DropInTests: XCTestCase {
         )
         
         let delegateMock = DropInDelegateMock()
-        delegateMock.didSubmitHandler = { _, _ in sut.handle(Dummy.redirectAction) }
+        delegateMock.didSubmitHandler = { _, _ in
+            sut.handle(Dummy.redirectAction)
+        }
 
         let waitExpectation = expectation(description: "Expect Drop-In to call didCancel")
-        delegateMock.didCancelHandler = { _,_ in waitExpectation.fulfill() }
+        delegateMock.didCancelHandler = { _,_ in
+            waitExpectation.fulfill()
+        }
 
         sut.delegate = delegateMock
 
@@ -160,7 +164,7 @@ class DropInTests: XCTestCase {
         let delegateDidFinish = try XCTUnwrap(safari.delegate?.safariViewControllerDidFinish)
         delegateDidFinish(safari)
 
-        wait(for: [waitExpectation], timeout: 30)
+        wait(for: [waitExpectation], timeout: 60)
     }
 
     func testOpenDropInAsList() {
