@@ -127,7 +127,8 @@ cp "../Tests/Card Tests/3DS2 Component/ThreeDS2PlusDACoreActionHandlerTests.swif
 cp "../Tests/Card Tests/3DS2 Component/AnyADYServiceMock.swift" Tests/AnyADYServiceMock.swift
 cp "../Tests/Card Tests/3DS2 Component/AuthenticationServiceMock.swift" Tests/AuthenticationServiceMock.swift
 cp "../Tests/Card Tests/3DS2 Component/ThreeDSResultExtension.swift" Tests/ThreeDSResultExtension.swift
-cp "../Tests/Helpers/XCTestCaseExtensions.swift" Tests/XCTestCaseExtensions.swift
+cp "../Tests/Helpers/XCTestCase+Wait.swift" Tests/XCTestCase+Wait.swift
+cp "../Tests/Helpers/UIViewController+Search.swift" Tests/UIViewController+Search.swift
 cp "../Tests/DummyData/Dummy.swift" Tests/Dummy.swift
 cp "../Tests/DropIn Tests/DropInTests.swift" Tests/DropInTests.swift
 cp "../Tests/DropIn Tests/DropInDelegateMock.swift" Tests/DropInDelegateMock.swift
