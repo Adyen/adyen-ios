@@ -5,6 +5,7 @@
 //
 
 import Foundation
+@_spi(AdyenInternal) import Adyen
 
 internal protocol Payload: Encodable {
     func jsonData() throws -> Data
@@ -12,6 +13,6 @@ internal protocol Payload: Encodable {
 
 extension Payload {
     internal func jsonData() throws -> Data {
-        try JSONEncoder().encode(self)
+        try AdyenCoder.encode(self)
     }
 }

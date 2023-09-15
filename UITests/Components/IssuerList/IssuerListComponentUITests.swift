@@ -27,7 +27,7 @@ final class IssuerListComponentUITests: XCTestCase {
     
     private func initializeComponent() {
         context = Dummy.context
-        paymentMethod = try! Coder.decode(issuerListDictionary) as IssuerListPaymentMethod
+        paymentMethod = try! AdyenCoder.decode(issuerListDictionary) as IssuerListPaymentMethod
         sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
         searchViewController = sut.viewController as? SearchViewController
         listViewController = searchViewController.resultsListViewController

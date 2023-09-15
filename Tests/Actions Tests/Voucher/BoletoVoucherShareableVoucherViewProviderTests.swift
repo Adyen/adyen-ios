@@ -16,7 +16,7 @@ class BoletoVoucherShareableVoucherViewProviderTests: XCTestCase {
             environment: Dummy.apiContext.environment
         )
 
-        let boletoDecoded = try Coder.decode(boletoAction) as BoletoVoucherAction
+        let boletoDecoded = try AdyenCoder.decode(boletoAction) as BoletoVoucherAction
         let action: VoucherAction = .boletoBancairoSantander(boletoDecoded)
 
         let sut = viewProvider.provideView(with: action, logo: nil)

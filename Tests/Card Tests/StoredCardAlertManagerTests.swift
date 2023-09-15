@@ -26,7 +26,7 @@ class StoredCardAlertManagerTests: XCTestCase {
     ] as [String: Any]
     
     func testLocalizationWithCustomTableName() throws {
-        let method = try Coder.decode(storedCardDictionary) as StoredCardPaymentMethod
+        let method = try AdyenCoder.decode(storedCardDictionary) as StoredCardPaymentMethod
         let amount = Amount(value: 3, currencyCode: "EUR")
         let sut = StoredCardAlertManager(paymentMethod: method,
                                          context: Dummy.context,
@@ -50,7 +50,7 @@ class StoredCardAlertManagerTests: XCTestCase {
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
-        let method = try Coder.decode(storedCardDictionary) as StoredCardPaymentMethod
+        let method = try AdyenCoder.decode(storedCardDictionary) as StoredCardPaymentMethod
         let amount = Amount(value: 3, currencyCode: "EUR")
         let sut = StoredCardAlertManager(paymentMethod: method,
                                          context: Dummy.context,
@@ -74,7 +74,7 @@ class StoredCardAlertManagerTests: XCTestCase {
     }
     
     func testResetFieldsAfterCancel() {
-        let method = try! Coder.decode(storedCardDictionary) as StoredCardPaymentMethod
+        let method = try! AdyenCoder.decode(storedCardDictionary) as StoredCardPaymentMethod
         let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
         let sut = StoredCardAlertManager(paymentMethod: method,
                                          context: Dummy.context,
