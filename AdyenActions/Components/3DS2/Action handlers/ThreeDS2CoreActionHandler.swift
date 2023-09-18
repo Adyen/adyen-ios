@@ -12,17 +12,6 @@ import Foundation
 /// :nodoc:
 internal class ThreeDS2CoreActionHandler: Component {
     
-    private enum ThreeDS2CoreActionHandlerError: LocalizedError {
-        case rootCertificatesUnavailable
-        
-        var errorDescription: String? {
-            switch self {
-            case .rootCertificatesUnavailable:
-                return "Root Certificates Are Not Available In FingerPrintToken."
-            }
-        }
-    }
-
     private enum Constant {
         static let transStatusWhenError = "U"
     }
