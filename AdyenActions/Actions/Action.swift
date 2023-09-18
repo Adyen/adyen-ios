@@ -88,9 +88,9 @@ public enum Action: Decodable {
         case redirect
         case nativeRedirect
         case threeDS2Fingerprint
-                case threeDS2Challenge
+        case threeDS2Challenge
         case threeDS2
-                case sdk
+        case sdk
         case qrCode
         case `await`
         case voucher
