@@ -132,8 +132,8 @@ internal struct DemoAppSettings: Codable {
     internal let dropInConfiguration: DropInConfiguration
     internal let applePayConfiguration: ApplePayConfiguration
     internal let analyticsConfiguration: AnalyticConfiguration
-
-    internal var amount: Amount { Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil) }
+    
+    internal var amount: Amount { Amount(value: value, currencyCode: "INR", localeIdentifier: "ms_MY") }
     internal var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
     
     internal static let defaultConfiguration = DemoAppSettings(
