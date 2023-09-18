@@ -89,14 +89,9 @@ internal class ThreeDS2CoreActionHandler: Component {
             
             let token = try Coder.decodeBase64(action.fingerprintToken) as ThreeDS2Component.FingerprintToken
 
-            guard let rootCertificates = token.directoryServerRootCertificates else {
-                didFail(with: ThreeDS2CoreActionHandlerError.rootCertificatesUnavailable, completionHandler: completionHandler)
-                return
-            }
-
             let serviceParameters = ADYServiceParameters(directoryServerIdentifier: token.directoryServerIdentifier,
                                                          directoryServerPublicKey: token.directoryServerPublicKey,
-                                                         directoryServerRootCertificates: rootCertificates)
+                                                         directoryServerRootCertificates: token.directoryServerRootCertificates)
 
             service.service(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { [weak self] _ in
                 self?.getFingerprint(messageVersion: token.threeDSMessageVersion,
