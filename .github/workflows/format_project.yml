@@ -5,7 +5,7 @@ jobs:
   Update:
     runs-on: macos-12
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
     - uses: n1hility/cancel-previous-runs@v3
@@ -22,7 +22,7 @@ jobs:
         brew install swiftformat
         swiftformat .
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v3
+      uses: peter-evans/create-pull-request@v5
       with:
         delete-branch: true
         branch: format-project-github-action
