@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -12,6 +12,17 @@ import Foundation
 /// :nodoc:
 internal class ThreeDS2CoreActionHandler: Component {
     
+    private enum ThreeDS2CoreActionHandlerError: LocalizedError {
+        case rootCertificatesUnavailable
+        
+        var errorDescription: String? {
+            switch self {
+            case .rootCertificatesUnavailable:
+                return "Root Certificates Are Not Available In FingerPrintToken."
+            }
+        }
+    }
+
     private enum Constant {
         static let transStatusWhenError = "U"
     }
@@ -75,11 +86,17 @@ internal class ThreeDS2CoreActionHandler: Component {
     private func createFingerprint(_ action: ThreeDS2FingerprintAction,
                                    completionHandler: @escaping (Result<String, Error>) -> Void) {
         do {
+            
             let token = try Coder.decodeBase64(action.fingerprintToken) as ThreeDS2Component.FingerprintToken
 
-            let serviceParameters = ADYServiceParameters()
-            serviceParameters.directoryServerIdentifier = token.directoryServerIdentifier
-            serviceParameters.directoryServerPublicKey = token.directoryServerPublicKey
+            guard let rootCertificates = token.directoryServerRootCertificates else {
+                didFail(with: ThreeDS2CoreActionHandlerError.rootCertificatesUnavailable, completionHandler: completionHandler)
+                return
+            }
+
+            let serviceParameters = ADYServiceParameters(directoryServerIdentifier: token.directoryServerIdentifier,
+                                                         directoryServerPublicKey: token.directoryServerPublicKey,
+                                                         directoryServerRootCertificates: rootCertificates)
 
             service.service(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { [weak self] _ in
                 self?.getFingerprint(messageVersion: token.threeDSMessageVersion,
