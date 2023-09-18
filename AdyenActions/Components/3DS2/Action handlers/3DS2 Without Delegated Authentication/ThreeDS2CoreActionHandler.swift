@@ -26,17 +26,6 @@ internal protocol AnyThreeDS2CoreActionHandler: Component {
 
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
 internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
-    private enum ThreeDS2CoreActionHandlerError: LocalizedError {
-        case rootCertificatesUnavailable
-        
-        var errorDescription: String? {
-            switch self {
-            case .rootCertificatesUnavailable:
-                return "Root Certificates Are Not Available In FingerPrintToken."
-            }
-        }
-    }
-
     private enum Constant {
         static let transStatusWhenError = "U"
     }
@@ -92,15 +81,10 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                                    completionHandler: @escaping (Result<String, Error>) -> Void) {
         do {
             let token = try AdyenCoder.decodeBase64(action.fingerprintToken) as ThreeDS2Component.FingerprintToken
-
-            guard let rootCertificates = token.directoryServerRootCertificates else {
-                didFail(with: ThreeDS2CoreActionHandlerError.rootCertificatesUnavailable, completionHandler: completionHandler)
-                return
-            }
             
             let serviceParameters = ADYServiceParameters(directoryServerIdentifier: token.directoryServerIdentifier,
                                                          directoryServerPublicKey: token.directoryServerPublicKey,
-                                                         directoryServerRootCertificates: rootCertificates)
+                                                         directoryServerRootCertificates: token.directoryServerRootCertificates)
 
             service.service(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { [weak self] _ in
                 self?.getFingerprint(messageVersion: token.threeDSMessageVersion,
