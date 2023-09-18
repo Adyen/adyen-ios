@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -75,11 +75,12 @@ internal class ThreeDS2CoreActionHandler: Component {
     private func createFingerprint(_ action: ThreeDS2FingerprintAction,
                                    completionHandler: @escaping (Result<String, Error>) -> Void) {
         do {
+            
             let token = try Coder.decodeBase64(action.fingerprintToken) as ThreeDS2Component.FingerprintToken
 
-            let serviceParameters = ADYServiceParameters()
-            serviceParameters.directoryServerIdentifier = token.directoryServerIdentifier
-            serviceParameters.directoryServerPublicKey = token.directoryServerPublicKey
+            let serviceParameters = ADYServiceParameters(directoryServerIdentifier: token.directoryServerIdentifier,
+                                                         directoryServerPublicKey: token.directoryServerPublicKey,
+                                                         directoryServerRootCertificates: token.directoryServerRootCertificates)
 
             service.service(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { [weak self] _ in
                 self?.getFingerprint(messageVersion: token.threeDSMessageVersion,
