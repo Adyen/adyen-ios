@@ -146,8 +146,11 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         let subRegions = RegionRepository.subRegions(for: context.countryCode)
         addressViewModel = addressViewModelBuilder.build(context: context)
         
-        var formItems: [FormItem] = [
+        let header: FormItem? = configuration.showsHeader ? headerItem.addingDefaultMargins() : nil
+        
+        var formItems: [FormItem?] = [
             FormSpacerItem(),
+            header,
             countryPickerItem
         ]
         
@@ -164,12 +167,12 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
             }
         }
         
-        self.items = formItems
+        self.items = formItems.compactMap { $0 }
     }
     
     private func create(for field: AddressField, from viewModel: AddressViewModel, subRegions: [Region]?) -> FormItem {
         let item: FormItem
-        if let subRegions = subRegions, field == .stateOrProvince {
+        if let subRegions, field == .stateOrProvince {
             item = createPickerItem(from: viewModel, subRegions: subRegions)
         } else {
             item = createTextItem(for: field, from: viewModel)

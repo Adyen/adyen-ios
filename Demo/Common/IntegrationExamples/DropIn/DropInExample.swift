@@ -48,7 +48,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
 
     private func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
         requestAdyenSessionConfiguration { [weak self] response in
-            guard let self = self else { return }
+            guard let self else { return }
             
             switch response {
             case let .success(config):
@@ -80,6 +80,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
                                         title: ConfigurationConstants.appName)
         
         component.delegate = session
+        component.storedPaymentMethodsDelegate = self
         component.partialPaymentDelegate = session
 
         return component
@@ -137,5 +138,24 @@ extension DropInExample: AdyenSessionDelegate {
 extension DropInExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {
         // The implementation of this delegate method is not needed when using AdyenSession as the session handles the presentation
+    }
+}
+
+extension DropInExample: StoredPaymentMethodsDelegate {
+    internal func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping (Bool) -> Void) {
+        let request = DisableStoredPaymentMethodRequest(recurringDetailReference: storedPaymentMethod.identifier)
+        palApiClient.perform(request) { [weak self] result in
+            self?.handleDisableResult(result, completion: completion)
+        }
+    }
+
+    private func handleDisableResult(_ result: Result<DisableStoredPaymentMethodRequest.ResponseType, Error>, completion: (Bool) -> Void) {
+        switch result {
+        case let .failure(error):
+            self.presenter?.presentAlert(with: error, retryHandler: nil)
+            completion(false)
+        case let .success(response):
+            completion(response.response == .detailsDisabled)
+        }
     }
 }

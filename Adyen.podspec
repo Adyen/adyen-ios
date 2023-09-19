@@ -11,8 +11,8 @@ Pod::Spec.new do |s|
   s.author = { 'Adyen' => 'support@adyen.com' }
   s.source = { :git => 'https://github.com/Adyen/adyen-ios.git', :tag => "#{s.version}" }
   s.platform = :ios
-  s.ios.deployment_target = '11.0'
-  s.swift_version = '5.1'
+  s.ios.deployment_target = '12.0'
+  s.swift_version = '5.7'
   s.frameworks = 'Foundation'
   s.default_subspecs = 'Core', 'Components', 'Actions', 'Card', 'Encryption', 'DropIn', 'Session'
   s.pod_target_xcconfig = {'SWIFT_SUPPRESS_WARNINGS' => 'YES' }
@@ -79,6 +79,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Encryption' do |plugin|
+    plugin.dependency 'Adyen/Core'
     plugin.source_files = 'AdyenEncryption/**/*.swift'
   end
 

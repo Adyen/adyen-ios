@@ -1,5 +1,5 @@
 //
-//  XCTestCaseExtensions.swift
+//  XCTestCase+SnapshotTesting.swift
 //  AdyenUIHostUITests
 //
 //  Created by Mohamed Eldoheiri on 11/01/2023.

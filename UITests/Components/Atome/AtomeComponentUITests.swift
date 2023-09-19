@@ -57,6 +57,9 @@ class AtomeComponentUITests: XCTestCase {
         let sut = AtomeComponent(paymentMethod: paymentMethod,
                                  context: context,
                                  configuration: config)
+        
+        XCTAssertNotNil(sut.viewController.view.findView(by: "AdyenComponents.AtomeComponent.addressItem.title"))
+        
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 

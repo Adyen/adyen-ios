@@ -67,10 +67,13 @@ class AffirmComponentUITests: XCTestCase {
         }
 
         assertViewControllerImage(matching: sut.viewController, named: "shopper-info-prefilled")
-
+        
         let view: UIView = sut.viewController.view
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.payButton))
         submitButton.sendActions(for: .touchUpInside)
+        
+        XCTAssertNotNil(view.findView(by: "AdyenComponents.AffirmComponent.addressItem"))
+        XCTAssertNotNil(view.findView(by: "AdyenComponents.AffirmComponent.addressItem.title"))
 
         waitForExpectations(timeout: 10, handler: nil)
     }

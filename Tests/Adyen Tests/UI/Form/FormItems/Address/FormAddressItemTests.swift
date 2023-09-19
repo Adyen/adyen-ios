@@ -14,6 +14,33 @@ class FormAddressItemTests: XCTestCase {
         AdyenAssertion.listener = nil
     }
     
+    func testHeader() throws {
+        
+        let formAddressItem = FormAddressItem(
+            initialCountry: "NL",
+            configuration: .init(
+                supportedCountryCodes: ["NL", "US"],
+                showsHeader: true
+            ),
+            presenter: nil,
+            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+        )
+        
+        XCTAssertTrue(formAddressItem.flatSubitems.contains { $0.identifier == "Adyen.FormAddressItem.title" })
+        
+        let formAddressItemWithoutHeader = FormAddressItem(
+            initialCountry: "NL",
+            configuration: .init(
+                supportedCountryCodes: ["NL", "US"],
+                showsHeader: false
+            ),
+            presenter: nil,
+            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+        )
+
+        XCTAssertFalse(formAddressItemWithoutHeader.flatSubitems.contains { $0.identifier == "Adyen.FormAddressItem.title" })
+    }
+    
     func testCountryPickerItemUpdate() throws {
         
         let formAddressItem = FormAddressItem(

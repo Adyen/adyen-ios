@@ -8,7 +8,7 @@ import Foundation
 
 /// An object that provides helper functions for coding and decoding responses.
 @_spi(AdyenInternal)
-public enum Coder {
+public enum AdyenCoder {
     
     // MARK: - Decoding
     
@@ -32,11 +32,11 @@ public enum Coder {
     
     // MARK: - Encoding
     
-    public static func encode<T: Encodable>(_ value: T) throws -> Data {
+    public static func encode(_ value: some Encodable) throws -> Data {
         try encoder.encode(value)
     }
     
-    public static func encode<T: Encodable>(_ value: T) throws -> String {
+    public static func encode(_ value: some Encodable) throws -> String {
         let data: Data = try encode(value)
         
         guard let string = String(data: data, encoding: .utf8) else {
@@ -46,7 +46,7 @@ public enum Coder {
         return string
     }
     
-    public static func encodeBase64<T: Encodable>(_ value: T) throws -> String {
+    public static func encodeBase64(_ value: some Encodable) throws -> String {
         let encodedValue = try encode(value) as Data
         
         return encodedValue.base64EncodedString()
@@ -64,6 +64,7 @@ public enum Coder {
     private static let encoder: JSONEncoder = {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
+        encoder.outputFormatting = .sortedKeys
         
         return encoder
     }()

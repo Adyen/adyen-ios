@@ -24,7 +24,7 @@ class VoucherComponentTests: XCTestCase {
     }
 
     func testDokuVoucherComponent() throws {
-        let action = try Coder.decode(dokuIndomaretAction) as VoucherAction
+        let action = try AdyenCoder.decode(dokuIndomaretAction) as VoucherAction
 
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
         presentationDelegate.doPresent = { [self] component in
@@ -43,7 +43,7 @@ class VoucherComponentTests: XCTestCase {
     }
     
     func testEContextATMVoucherComponent() throws {
-        let action = try Coder.decode(econtextATMAction) as VoucherAction
+        let action = try AdyenCoder.decode(econtextATMAction) as VoucherAction
         
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
         presentationDelegate.doPresent = { [self] component in
@@ -62,7 +62,7 @@ class VoucherComponentTests: XCTestCase {
     }
     
     func testBoletoVoucherComponent() throws {
-        let action = try Coder.decode(boletoAction) as VoucherAction
+        let action = try AdyenCoder.decode(boletoAction) as VoucherAction
         
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
         presentationDelegate.doPresent = { [self] component in
@@ -81,7 +81,7 @@ class VoucherComponentTests: XCTestCase {
     }
     
     func testOXXOVoucherComponent() throws {
-        let action = try Coder.decode(oxxoAction) as VoucherAction
+        let action = try AdyenCoder.decode(oxxoAction) as VoucherAction
         
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
         presentationDelegate.doPresent = { [self] component in
@@ -115,7 +115,7 @@ class VoucherComponentTests: XCTestCase {
     }
     
     func testMultibancoVoucherComponent() throws {
-        let action = try Coder.decode(multibancoVoucher) as VoucherAction
+        let action = try AdyenCoder.decode(multibancoVoucher) as VoucherAction
         
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
         presentationDelegate.doPresent = { [self] component in
@@ -147,7 +147,7 @@ class VoucherComponentTests: XCTestCase {
     }
     
     func testEContextStoresVoucherComponent() throws {
-        let action = try Coder.decode(econtextStoresAction) as VoucherAction
+        let action = try AdyenCoder.decode(econtextStoresAction) as VoucherAction
         
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
         presentationDelegate.doPresent = { [self] component in

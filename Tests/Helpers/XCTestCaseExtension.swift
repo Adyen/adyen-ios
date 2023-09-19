@@ -11,13 +11,13 @@ import XCTest
 
 extension XCTestCase {
     
-    internal func populate<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U, with text: String) {
+    internal func populate(textItemView: some FormTextItemView<some FormTextItem>, with text: String) {
         let textView = textItemView.textField
         textView.text = text
         textView.sendActions(for: .editingChanged)
     }
     
-    internal func populateSimulatingKeystrokes<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U, with text: String, betweenStrokesInterval: DispatchTimeInterval = .milliseconds(5)) {
+    internal func populateSimulatingKeystrokes(textItemView: some FormTextItemView<some FormTextItem>, with text: String, betweenStrokesInterval: DispatchTimeInterval = .milliseconds(5)) {
         let textView = textItemView.textField
         for char in text {
             textView.text?.append(char)
@@ -26,12 +26,12 @@ extension XCTestCase {
         }
     }
     
-    internal func populate<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U?, with text: String) {
-        guard let textItemView = textItemView else { return }
+    internal func populate(textItemView: (some FormTextItemView<some FormTextItem>)?, with text: String) {
+        guard let textItemView else { return }
         populate(textItemView: textItemView, with: text)
     }
 
-    internal func append<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U, with text: String) {
+    internal func append(textItemView: some FormTextItemView<some FormTextItem>, with text: String) {
         let textView = textItemView.textField
         textView.text = (textView.text ?? "") + text
         textView.sendActions(for: .editingChanged)

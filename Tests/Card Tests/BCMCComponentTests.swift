@@ -189,8 +189,7 @@ class BCMCComponentTests: XCTestCase {
         let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called")
         delegate.onDidSubmit = { paymentData, component in
             
-            let encoder = JSONEncoder()
-            let data = try! encoder.encode(paymentData.paymentMethod.encodable)
+            let data = try! AdyenCoder.encode(paymentData.paymentMethod.encodable) as Data
             
             let resultJson = try! JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)) as! [String: Any]
             
@@ -344,10 +343,11 @@ class BCMCComponentTests: XCTestCase {
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
         let delegateMock = CardComponentDelegateMock(
             onBINDidChange: { _ in },
-             onCardBrandChange: { _ in },
-             onSubmitLastFour: { _, finalBin in
-                 expectationBin.fulfill()
-             })
+            onCardBrandChange: { _ in },
+            onSubmitLastFour: { _, finalBin in
+                expectationBin.fulfill()
+            }
+        )
         
         sut.cardComponentDelegate = delegateMock
         
@@ -391,12 +391,13 @@ class BCMCComponentTests: XCTestCase {
                 if value == "67034444" {
                     expectationBin.fulfill()
                 }
-             },
-             onCardBrandChange: { _ in },
-             onSubmitLastFour: { _, finalBin in
-                 XCTAssertEqual(finalBin, "67034444")
-                 expectationBin.fulfill()
-             })
+            },
+            onCardBrandChange: { _ in },
+            onSubmitLastFour: { _, finalBin in
+                XCTAssertEqual(finalBin, "67034444")
+                expectationBin.fulfill()
+            }
+        )
         
         sut.cardComponentDelegate = delegateMock
         

@@ -17,7 +17,7 @@ import XCTest
 class ComponentManagerTests: XCTestCase {
 
     var paymentMethods: PaymentMethods {
-        try! Coder.decode(dictionary) as PaymentMethods
+        try! AdyenCoder.decode(dictionary) as PaymentMethods
     }
     
     let dictionary = [

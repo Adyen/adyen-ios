@@ -841,7 +841,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertNotNil(paymentDetails)
 
             XCTAssertNotEqual(paymentDetails?.password, "12")
-            XCTAssertTrue(paymentDetails!.password!.starts(with: "eyJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiYWxnIjoiUlNBLU9BRVAtMjU2IiwidmVyc2lvbiI6IjEifQ"))
+            XCTAssertTrue(paymentDetails!.password!.starts(with: "eyJhbGciOiJSU0EtT0FFUC0yNTYiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwidmVyc2lvbiI6IjEifQ"))
             XCTAssertEqual(paymentDetails?.taxNumber, "121212")
 
             sut.stopLoadingIfNeeded()
@@ -2111,7 +2111,7 @@ class CardComponentTests: XCTestCase {
 
     // MARK: - Private
 
-    private func focus<T: FormTextItem, U: FormTextItemView<T>>(textItemView: U) {
+    private func focus(textItemView: some FormTextItemView<some FormTextItem>) {
         textItemView.textField.becomeFirstResponder()
     }
 

@@ -18,7 +18,7 @@ class IssuerListComponentTests: XCTestCase {
         try super.setUpWithError()
         context = Dummy.context
 
-        paymentMethod = try! Coder.decode(issuerListDictionary) as IssuerListPaymentMethod
+        paymentMethod = try! AdyenCoder.decode(issuerListDictionary) as IssuerListPaymentMethod
         sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
     }
 

@@ -35,6 +35,8 @@ class AddressInputFormViewControllerTests: XCTestCase {
         let provinceOrTerritoryItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.stateOrProvince"))
         let postalCodeItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.postalCode"))
 
+        XCTAssertNil(view.findView(by: "AddressInputFormViewController.billingAddressItem.title"))
+        
         XCTAssertEqual(countryItemView.titleLabel.text, "Country")
         XCTAssertEqual(countryItemView.item.value!.title, "Netherlands")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "House number")

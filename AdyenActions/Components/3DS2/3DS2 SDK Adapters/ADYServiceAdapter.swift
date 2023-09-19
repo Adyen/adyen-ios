@@ -24,14 +24,14 @@ internal final class ADYServiceAdapter: AnyADYService {
                           appearanceConfiguration: ADYAppearanceConfiguration,
                           completionHandler: @escaping (AnyADYService) -> Void) {
         ADYService.service(with: parameters, appearanceConfiguration: appearanceConfiguration) { [weak self] service in
-            guard let self = self else { return }
+            guard let self else { return }
             self.service = service
             completionHandler(self)
         }
     }
 
     internal func transaction(withMessageVersion: String) throws -> AnyADYTransaction {
-        guard let service = service else {
+        guard let service else {
             throw UnknownError(errorDescription: "ADYService is nil.")
         }
         return try service.transaction(withMessageVersion: withMessageVersion)

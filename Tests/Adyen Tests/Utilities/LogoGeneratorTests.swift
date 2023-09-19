@@ -1,5 +1,5 @@
 //
-//  LogoGenerator.swift
+//  LogoGeneratorTests.swift
 //  Adyen
 //
 //  Created by Vladimir Abramichev on 17/02/2021.
@@ -14,7 +14,7 @@ class LogoURLProviderTests: XCTestCase {
     let scale = Int(UIScreen.main.scale)
 
     func testCardLogo() {
-        let paymentMethod = try! Coder.decode(creditCardDictionary) as CardPaymentMethod
+        let paymentMethod = try! AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
         let logo = LogoURLProvider.logoURL(
             withName: paymentMethod.displayInformation(using: nil).logoName,
             environment: Dummy.apiContext.environment
@@ -23,7 +23,7 @@ class LogoURLProviderTests: XCTestCase {
     }
 
     func testSize() {
-        let paymentMethod = try! Coder.decode(creditCardDictionary) as CardPaymentMethod
+        let paymentMethod = try! AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
         let logo = LogoURLProvider.logoURL(
             withName: paymentMethod.displayInformation(using: nil).logoName,
             environment: Dummy.apiContext.environment,
@@ -47,7 +47,7 @@ class LogoURLProviderTests: XCTestCase {
     }
 
     func testGiftCardLogo() {
-        let paymentMethod = try! Coder.decode(giftCard) as GiftCardPaymentMethod
+        let paymentMethod = try! AdyenCoder.decode(giftCard) as GiftCardPaymentMethod
         let logo = LogoURLProvider.logoURL(
             withName: paymentMethod.displayInformation(using: nil).logoName,
             environment: Dummy.apiContext.environment

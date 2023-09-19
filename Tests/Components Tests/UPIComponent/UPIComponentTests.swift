@@ -17,7 +17,7 @@ class UPIComponentTests: XCTestCase {
     private var analyticsProviderMock: AnalyticsProviderMock!
 
     override func setUpWithError() throws {
-        paymentMethod = try! Coder.decode(upi) as UPIPaymentMethod
+        paymentMethod = try! AdyenCoder.decode(upi) as UPIPaymentMethod
         analyticsProviderMock = AnalyticsProviderMock()
         context = AdyenContext(apiContext: Dummy.apiContext, payment: nil, analyticsProvider: analyticsProviderMock)
         style = FormComponentStyle()
