@@ -64,12 +64,13 @@ extension XCTestCase {
         until target: Target,
         at keyPath: KeyPath<Target, Value>,
         is expectedValue: Value,
-        timeout: TimeInterval = 2
+        timeout: TimeInterval = 2,
+        line: Int = #line
     ) {
         wait(
             until: { target[keyPath: keyPath] == expectedValue },
             timeout: timeout,
-            message: "Value of \(String(describing: Target.self)) (\(target[keyPath: keyPath])) should become \(String(describing: expectedValue)) within \(timeout)s"
+            message: "Value of \(keyPath) (\(target[keyPath: keyPath])) should become \(String(describing: expectedValue)) within \(timeout)s [line:\(line)]"
         )
     }
     

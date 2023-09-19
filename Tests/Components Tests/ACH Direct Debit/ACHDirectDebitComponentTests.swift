@@ -264,16 +264,16 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
         setupRootViewController(sut.viewController)
         
-        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.payButtonItem.button")
-        let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem")
-        let accountNumberItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.bankAccountNumberItem")
-        let routingNumberItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.bankRoutingNumberItem")
+        let payButtonItemViewButton: UIControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.payButtonItem.button"))
+        let nameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem"))
+        let accountNumberItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.bankAccountNumberItem"))
+        let routingNumberItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.bankRoutingNumberItem"))
 
-        self.populate(textItemView: nameItemView!, with: "test")
-        self.populate(textItemView: accountNumberItemView!, with: "123456789")
-        self.populate(textItemView: routingNumberItemView!, with: "121000358")
+        self.populate(textItemView: nameItemView, with: "test")
+        self.populate(textItemView: accountNumberItemView, with: "123456789")
+        self.populate(textItemView: routingNumberItemView, with: "121000358")
 
-        payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        payButtonItemViewButton.sendActions(for: .touchUpInside)
         
         wait(for: [expectation], timeout: 5)
     }
