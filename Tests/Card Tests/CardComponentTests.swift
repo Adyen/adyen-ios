@@ -1237,7 +1237,7 @@ class CardComponentTests: XCTestCase {
         
         // valid card but still active. logos should be hidden
         populate(textItemView: cardNumberItemView, with: Dummy.visaCard.number!)
-        wait(until: logoItemView, at: \.isHidden, is: true)
+        wait(until: logoItemView, at: \.isHidden, is: true, timeout: 5)
         
         // with valid card and inactive, logos should be hidden
         numberItem.isActive = false

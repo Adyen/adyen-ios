@@ -119,7 +119,7 @@ class AwaitComponentTests: XCTestCase {
         presentationDelegate.doPresent = { [weak self] component in
             let viewController = try XCTUnwrap(component.viewController as? AwaitViewController)
 
-            try self?.setupRootViewController(viewController)
+            self?.setupRootViewController(viewController)
             let view = viewController.awaitView
 
             XCTAssertEqual(view.messageLabel.textColor, UIColor.red)

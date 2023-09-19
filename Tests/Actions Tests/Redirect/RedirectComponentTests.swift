@@ -14,7 +14,7 @@ class RedirectComponentTests: XCTestCase {
     
     override func tearDown() {
         super.tearDown()
-        try? setupRootViewController(UIViewController())
+        setupRootViewController(UIViewController())
     }
 
     func testUIConfiguration() throws {

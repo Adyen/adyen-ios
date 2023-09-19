@@ -273,6 +273,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
         self.populate(textItemView: accountNumberItemView, with: "123456789")
         self.populate(textItemView: routingNumberItemView, with: "121000358")
 
+        wait(until: routingNumberItemView, at: \.textField.text, is: "121000358")
+        
         payButtonItemViewButton.sendActions(for: .touchUpInside)
         
         wait(for: [expectation], timeout: 5)
