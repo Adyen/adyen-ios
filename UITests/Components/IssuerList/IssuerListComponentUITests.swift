@@ -16,7 +16,7 @@ final class IssuerListComponentUITests: XCTestCase {
     func testStartStopLoading() throws {
         
         let context = Dummy.context
-        let paymentMethod = try Coder.decode(issuerListDictionary) as IssuerListPaymentMethod
+        let paymentMethod = try AdyenCoder.decode(issuerListDictionary) as IssuerListPaymentMethod
         
         let sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
         let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
