@@ -7,10 +7,10 @@
 @_spi(AdyenInternal) @testable import Adyen
 import XCTest
 
-class CoderTests: XCTestCase {
+class AdyenCoderTests: XCTestCase {
     
-    func testDecodeWithString() {
-        let sampleObject = try! Coder.decode(sampleObjectRawString) as SampleObject
+    func testDecodeWithString() throws {
+        let sampleObject = try AdyenCoder.decode(sampleObjectRawString) as SampleObject
         
         XCTAssertEqual(sampleObject.string, "someString")
         XCTAssertEqual(sampleObject.integer, 99)
@@ -18,9 +18,9 @@ class CoderTests: XCTestCase {
         XCTAssertEqual(sampleObject.nestedObject.nestedValue, "value")
     }
     
-    func testDecodeWithData() {
+    func testDecodeWithData() throws {
         let data = sampleObjectRawString.data(using: .utf8)!
-        let sampleObject = try! Coder.decode(data) as SampleObject
+        let sampleObject = try AdyenCoder.decode(data) as SampleObject
         
         XCTAssertEqual(sampleObject.string, "someString")
         XCTAssertEqual(sampleObject.integer, 99)
@@ -28,14 +28,14 @@ class CoderTests: XCTestCase {
         XCTAssertEqual(sampleObject.nestedObject.nestedValue, "value")
     }
     
-    func testEncodeToString() {
-        let encodedString = try! Coder.encode(sampleObject) as String
+    func testEncodeToString() throws {
+        let encodedString = try AdyenCoder.encode(sampleObject) as String
         
         XCTAssertEqual(encodedString, sampleObjectRawString)
     }
     
-    func testEncodeToData() {
-        let encodedData = try! Coder.encode(sampleObject) as Data
+    func testEncodeToData() throws {
+        let encodedData = try AdyenCoder.encode(sampleObject) as Data
         let expectedData = sampleObjectRawString.data(using: .utf8)
         
         XCTAssertEqual(encodedData, expectedData)
@@ -43,7 +43,7 @@ class CoderTests: XCTestCase {
     
     // MARK: - Private
     
-    private let sampleObjectRawString = "{\"nested\":{\"nestedValue\":\"value\"},\"string\":\"someString\",\"some_integer\":99,\"date\":\"2015-02-28T21:30:00Z\"}"
+    private let sampleObjectRawString = "{\"date\":\"2015-02-28T21:30:00Z\",\"nested\":{\"nestedValue\":\"value\"},\"some_integer\":99,\"string\":\"someString\"}"
     
     private lazy var sampleObject: SampleObject = {
         let nestedObject = NestedObject(nestedValue: "value")

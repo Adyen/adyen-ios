@@ -18,7 +18,7 @@ class OXXOShareableVoucherViewProviderTests: XCTestCase {
             environment: Dummy.apiContext.environment
         )
 
-        let oxxoDecoded = try Coder.decode(oxxoAction) as OXXOVoucherAction
+        let oxxoDecoded = try AdyenCoder.decode(oxxoAction) as OXXOVoucherAction
         let action: VoucherAction = .oxxo(oxxoDecoded)
 
         let sut = viewProvider.provideView(with: action, logo: nil)

@@ -181,6 +181,8 @@
 		81E031942A0A75F200EA965E /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67461F264262F000E9184D /* ConfigurationView.swift */; };
 		81E031952A0A75F800EA965E /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54600E264433CD00724A87 /* SearchBar.swift */; };
 		81EA6C122A44836E0071A141 /* FormAddressItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EA6C112A44836E0071A141 /* FormAddressItemTests.swift */; };
+		81FAFB442AAF715F00828999 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
+		81FAFB452AAF715F00828999 /* Adyen.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A009837D279859DC007E68C4 /* ACHDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */; };
 		A009837F27986B50007E68C4 /* BankDetailsEncryptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */; };
 		A0113D9B2763887800AD395C /* ActionNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0113D9A2763887800AD395C /* ActionNavigationBar.swift */; };
@@ -513,8 +515,8 @@
 		E9E3DAD1221EEE2100697074 /* CardExpiryDateValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAD0221EEE2100697074 /* CardExpiryDateValidator.swift */; };
 		E9E3DAD3221EEFF700697074 /* CardExpiryDateValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAD2221EEFF700697074 /* CardExpiryDateValidatorTests.swift */; };
 		E9E3DAFF2225488900697074 /* Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAFE2225488900697074 /* Completion.swift */; };
-		E9E3DB03222548E100697074 /* Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DB02222548E100697074 /* Coder.swift */; };
-		E9E3DB062226B3B200697074 /* CoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DB052226B3B200697074 /* CoderTests.swift */; };
+		E9E3DB03222548E100697074 /* AdyenCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DB02222548E100697074 /* AdyenCoder.swift */; };
+		E9E3DB062226B3B200697074 /* AdyenCoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DB052226B3B200697074 /* AdyenCoderTests.swift */; };
 		F90E95F02726B625007E382B /* DropInComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90E95EF2726B625007E382B /* DropInComponentExtensions.swift */; };
 		F90E95F227280BD5007E382B /* CoreListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90E95F127280BD5007E382B /* CoreListDataSource.swift */; };
 		F90E95F62728106D007E382B /* DiffableListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90E95F52728106D007E382B /* DiffableListDataSource.swift */; };
@@ -862,7 +864,7 @@
 		F9CCA3D1296ECCEE00AD643D /* XCTestCase+FormAddressItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */; };
 		F9CCA3D2296ECCFA00AD643D /* XCTestCaseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96AE51A26038602009F82BD /* XCTestCaseExtension.swift */; };
 		F9CCA3D3296ECD0700AD643D /* PostalAddressMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */; };
-		F9CCA3D5296ECD3000AD643D /* Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DB02222548E100697074 /* Coder.swift */; };
+		F9CCA3D5296ECD3000AD643D /* AdyenCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DB02222548E100697074 /* AdyenCoder.swift */; };
 		F9CCA3D6296ECD3C00AD643D /* PresentationDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5124E29E340073F38A /* PresentationDelegateMock.swift */; };
 		F9CCA3D7296ECDB200AD643D /* XCTestCase+Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBC5288013990082B360 /* XCTestCase+Coder.swift */; };
 		F9CCA3DA296ECDF900AD643D /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = F9CCA3D9296ECDF900AD643D /* SnapshotTesting */; };
@@ -931,6 +933,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		81FAFB462AAF715F00828999 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E2C0E03222097917008616F6;
+			remoteInfo = Adyen;
+		};
 		A020EC4A29E6EC4C0050B2FE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
@@ -1179,6 +1188,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		81FAFB482AAF715F00828999 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				81FAFB452AAF715F00828999 /* Adyen.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E2C0E0A8220B0827008616F6 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1735,8 +1755,8 @@
 		E9E3DAF822241D6000697074 /* CardPayload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardPayload.swift; sourceTree = "<group>"; };
 		E9E3DAF922241D6000697074 /* CardEncryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardEncryptor.swift; sourceTree = "<group>"; };
 		E9E3DAFE2225488900697074 /* Completion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Completion.swift; sourceTree = "<group>"; };
-		E9E3DB02222548E100697074 /* Coder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coder.swift; sourceTree = "<group>"; };
-		E9E3DB052226B3B200697074 /* CoderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoderTests.swift; sourceTree = "<group>"; };
+		E9E3DB02222548E100697074 /* AdyenCoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenCoder.swift; sourceTree = "<group>"; };
+		E9E3DB052226B3B200697074 /* AdyenCoderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenCoderTests.swift; sourceTree = "<group>"; };
 		F90E95EF2726B625007E382B /* DropInComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInComponentExtensions.swift; sourceTree = "<group>"; };
 		F90E95F127280BD5007E382B /* CoreListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreListDataSource.swift; sourceTree = "<group>"; };
 		F90E95F52728106D007E382B /* DiffableListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableListDataSource.swift; sourceTree = "<group>"; };
@@ -2173,6 +2193,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81FAFB442AAF715F00828999 /* Adyen.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3077,7 +3098,7 @@
 				E270FDE7225CC4A7006C2CD0 /* Observable */,
 				F96286BC256BDEB000043FE3 /* CoreBundleExtension.swift */,
 				E97B972222B238C400505476 /* Analytics.swift */,
-				E9E3DB02222548E100697074 /* Coder.swift */,
+				E9E3DB02222548E100697074 /* AdyenCoder.swift */,
 				E9E3DAFE2225488900697074 /* Completion.swift */,
 				E9021DA9225789B1009CF7F4 /* Localization.swift */,
 				F96F44DC23BE487500871C1F /* LocalizationParameters.swift */,
@@ -4178,7 +4199,7 @@
 				F9BA21C52474113500D36A63 /* AmountFormatterTests.swift */,
 				E702BE182602525E00280682 /* AssertsTests.swift */,
 				F9838D22263193E000963483 /* BalanceCheckerTests.swift */,
-				E9E3DB052226B3B200697074 /* CoderTests.swift */,
+				E9E3DB052226B3B200697074 /* AdyenCoderTests.swift */,
 				81D8E2E82A5C06AC00BC12FD /* KeyboardObserverTests.swift */,
 				E7768BDB26B416C3000851B3 /* DateValidationTests.swift */,
 				F9BA21BE246D36AC00D36A63 /* LazyOptionalTests.swift */,
@@ -5432,10 +5453,12 @@
 				F92326A925A3669E002C5BC4 /* Frameworks */,
 				F92326AA25A3669E002C5BC4 /* Resources */,
 				E7388FC1260B68C400291DE7 /* Format and lint */,
+				81FAFB482AAF715F00828999 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				81FAFB472AAF715F00828999 /* PBXTargetDependency */,
 			);
 			name = AdyenEncryption;
 			productName = AdyenEncryption;
@@ -6415,7 +6438,7 @@
 				F9354BEF23A7C87600A6760B /* ImageStyle.swift in Sources */,
 				F9FE253B2625AED6001874BB /* PartialPaymentComponent.swift in Sources */,
 				81C4006D2A41A2BC007EC51C /* FormAddressPickerItemView.swift in Sources */,
-				E9E3DB03222548E100697074 /* Coder.swift in Sources */,
+				E9E3DB03222548E100697074 /* AdyenCoder.swift in Sources */,
 				A0C9B59B288AE34600D6BDAB /* InstallmentOptions.swift in Sources */,
 				81BA08412A4AD97400308160 /* FormValidatableValueItemView.swift in Sources */,
 				E9093401228C54CD00C9F04B /* LogoURLProvider.swift in Sources */,
@@ -6546,7 +6569,7 @@
 				E74D918325AF3FE600743B0C /* CardBrandProviderTests.swift in Sources */,
 				E773EA3C2523432B00119499 /* CardTypeProviderMock.swift in Sources */,
 				C97C16AC280702B200534419 /* TelemetryFlavorTests.swift in Sources */,
-				E9E3DB062226B3B200697074 /* CoderTests.swift in Sources */,
+				E9E3DB062226B3B200697074 /* AdyenCoderTests.swift in Sources */,
 				F99D4603262D647400880D72 /* AddressViewModelTests.swift in Sources */,
 				E9E3DABE221EA47800697074 /* StringExtensionsTests.swift in Sources */,
 				F95B6D9025231880002C9062 /* PhoneNumberValidatorTests.swift in Sources */,
@@ -7048,7 +7071,7 @@
 				F9CCA3C4296ECB9900AD643D /* AtomeComponentUITests.swift in Sources */,
 				F9CCA3C9296ECB9900AD643D /* OnlineBankingComponentUITests.swift in Sources */,
 				0022095D29A4C67700B2BACD /* AnalyticsProviderMock.swift in Sources */,
-				F9CCA3D5296ECD3000AD643D /* Coder.swift in Sources */,
+				F9CCA3D5296ECD3000AD643D /* AdyenCoder.swift in Sources */,
 				F9CCA3D6296ECD3C00AD643D /* PresentationDelegateMock.swift in Sources */,
 				F9CCA3DF296ED20D00AD643D /* XCTestCaseExtensions.swift in Sources */,
 				F9CCA3CD296ECC8800AD643D /* Dummy.swift in Sources */,
@@ -7075,6 +7098,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		81FAFB472AAF715F00828999 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E2C0E03222097917008616F6 /* Adyen */;
+			targetProxy = 81FAFB462AAF715F00828999 /* PBXContainerItemProxy */;
+		};
 		A020EC4B29E6EC4C0050B2FE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A04F8C1D29E5950100F3F62B /* AdyenCashAppPay */;
@@ -7326,7 +7354,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Adyen. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7365,7 +7393,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Adyen. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7550,7 +7578,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Adyen/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7582,7 +7610,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Adyen/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7607,7 +7635,7 @@
 				CURRENT_PROJECT_VERSION = 6;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7628,7 +7656,7 @@
 				CURRENT_PROJECT_VERSION = 6;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7652,7 +7680,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenCard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7679,7 +7707,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenCard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7707,7 +7735,7 @@
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Demo/UIKit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7734,7 +7762,7 @@
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Demo/UIKit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7761,7 +7789,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenDropIn/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7790,7 +7818,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenDropIn/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7819,7 +7847,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenComponents/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7851,7 +7879,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenComponents/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7883,7 +7911,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenActions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7915,7 +7943,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenActions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7947,7 +7975,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenEncryption/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7979,7 +8007,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenEncryption/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8011,7 +8039,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Adyen. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8045,7 +8073,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Adyen. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8250,7 +8278,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = AdyenWeChatPay/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8293,7 +8321,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = AdyenWeChatPay/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8551,7 +8579,7 @@
 			repositoryURL = "https://github.com/Adyen/adyen-3ds2-ios";
 			requirement = {
 				kind = exactVersion;
-				version = 2.3.2;
+				version = 2.3.3;
 			};
 		};
 		F9B66F4228B8E0370090FABC /* XCRemoteSwiftPackageReference "adyen-authentication-ios" */ = {

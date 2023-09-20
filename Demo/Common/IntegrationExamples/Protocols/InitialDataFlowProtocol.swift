@@ -10,6 +10,7 @@ import AdyenSession
 
 internal protocol InitialDataFlowProtocol: AnyObject, APIClientAware {
     var context: AdyenContext { get }
+    var palApiClient: APIClientProtocol { get }
     func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void)
 }
 
@@ -21,6 +22,11 @@ extension InitialDataFlowProtocol {
         return AdyenContext(apiContext: ConfigurationConstants.apiContext,
                             payment: ConfigurationConstants.current.payment,
                             analyticsConfiguration: analyticsConfiguration)
+    }
+
+    internal var palApiClient: APIClientProtocol {
+        let context = DemoAPIContext(environment: ConfigurationConstants.classicAPIEnvironment)
+        return DefaultAPIClient(apiContext: context)
     }
 
     internal func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void) {
