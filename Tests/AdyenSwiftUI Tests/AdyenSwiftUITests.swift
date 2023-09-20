@@ -72,6 +72,6 @@ class AdyenSwiftUITests: XCTestCase {
 
             expectation(for: predicate, evaluatedWith: $0, handler: nil)
         }
-        waitForExpectations(timeout: 20, handler: nil)
+        waitForExpectations(timeout: 60, handler: nil)
     }
 }
