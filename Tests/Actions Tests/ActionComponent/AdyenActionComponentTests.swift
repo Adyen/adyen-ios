@@ -58,6 +58,10 @@ class AdyenActionComponentTests: XCTestCase {
       "type" : "voucher"
     }
     """
+    
+    override class func tearDown() {
+        AdyenAssertion.listener = nil
+    }
 
     func testRedirectToHttpWebLink() throws {
         let sut = AdyenActionComponent(context: Dummy.context)
