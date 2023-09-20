@@ -39,11 +39,13 @@ jobs:
     - name: Build and test
       run: |
         xcodebuild -version
-        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" -skipPackagePluginValidation -parallel-testing-enabled NO | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild clean build test -project "${project}" -scheme "AdyenUIKitTests" ${params} -destination "${destination}" -skipPackagePluginValidation -parallel-testing-enabled NO | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild test -project "${project}" -scheme "AdyenUIHostUITests" ${params} -destination "${destination}" -skipPackagePluginValidation -parallel-testing-enabled NO | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild test -project "${project}" -scheme "AdyenSwiftUITests" ${params} -destination "${destination}" -skipPackagePluginValidation -parallel-testing-enabled NO | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
-        scheme: 'AdyenUIHost'
+        scheme: ''
         destination: 'name=iPhone 14,OS=16.4'
 
     - name: Code Coverage

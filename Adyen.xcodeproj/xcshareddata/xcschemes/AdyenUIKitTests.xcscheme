@@ -28,17 +28,6 @@
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F9CCA3B4296ECB3E00AD643D"
-               BuildableName = "AdyenUIHostUITests.xctest"
-               BlueprintName = "AdyenUIHostUITests"
-               ReferencedContainer = "container:Adyen.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -68,6 +57,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "E2C0E07C220B0399008616F6"
+            BuildableName = "AdyenUIHost.app"
+            BlueprintName = "AdyenUIHost"
+            ReferencedContainer = "container:Adyen.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
