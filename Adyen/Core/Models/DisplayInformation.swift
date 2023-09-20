@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -30,6 +30,9 @@ public struct DisplayInformation: Equatable {
     /// The footnote if any.
     @_spi(AdyenInternal)
     public let footnoteText: String?
+    
+    @_spi(AdyenInternal)
+    public let accessibilityLabel: String?
 
     /// Initializes a`DisplayInformation`.
     ///
@@ -42,12 +45,14 @@ public struct DisplayInformation: Equatable {
                 subtitle: String?,
                 logoName: String,
                 disclosureText: String? = nil,
-                footnoteText: String? = nil) {
+                footnoteText: String? = nil,
+                accessibilityLabel: String? = nil) {
         self.title = title
         self.subtitle = subtitle
         self.logoName = logoName
         self.disclosureText = disclosureText
         self.footnoteText = footnoteText
+        self.accessibilityLabel = accessibilityLabel
     }
 }
 

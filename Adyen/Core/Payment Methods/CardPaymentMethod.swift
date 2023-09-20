@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -75,7 +75,8 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
         
         return DisplayInformation(title: String.Adyen.securedString + lastFour,
                                   subtitle: localizedString(.cardStoredExpires, parameters, expireDate),
-                                  logoName: brand.rawValue)
+                                  logoName: brand.rawValue,
+                                  accessibilityLabel: "\(brand.name), Last four digits \(lastFour), \(localizedString(.cardStoredExpires, parameters, expireDate))")
     }
     
     @_spi(AdyenInternal)
