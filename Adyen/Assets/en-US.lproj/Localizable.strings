@@ -203,3 +203,5 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "Address required";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Invalid Address";
 "adyen.address.lookup.search.manualEntryItem.title" = "Enter address manually";
+"adyen.accessibility.lastFourDigits" = "Last 4 digits";
+"adyen.cashAppPay.cashtag" = "Cashtag";

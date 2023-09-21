@@ -56,11 +56,16 @@ public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod {
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let bankAccountLastFour = String(bankAccountNumber.suffix(4))
         let lastFourSeparated = bankAccountLastFour.map { String($0) }.joined(separator: ", ")
+        let accessibilityLabel = [
+            name,
+            localizedString(.achBankAccountTitle, parameters),
+            "\(localizedString(.accessibilityLastFourDigits, parameters))): \(lastFourSeparated)"
+        ].joined(separator: ",")
         
         return DisplayInformation(title: String.Adyen.securedString + bankAccountLastFour,
                                   subtitle: localizedString(.achBankAccountTitle, parameters),
                                   logoName: type.rawValue,
-                                  accessibilityLabel: "\(name), \(localizedString(.achBankAccountTitle, parameters)), Last four digits: \(lastFourSeparated)")
+                                  accessibilityLabel: accessibilityLabel)
     }
     
     /// Number of the stored account

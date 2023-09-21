@@ -418,6 +418,10 @@ public struct LocalizationKey {
     public static let addressLookupItemValidationFailureMessageInvalid = LocalizationKey(key: "adyen.address.lookup.item.validationFailureMessage.invalid")
     /// Enter address manually
     public static let addressLookupSearchManualEntryItemTitle = LocalizationKey(key: "adyen.address.lookup.search.manualEntryItem.title")
+    /// Last 4 digits
+    public static let accessibilityLastFourDigits = LocalizationKey(key: "adyen.accessibility.lastFourDigits")
+    /// Cashtag
+    public static let cashAppPayCashtag = LocalizationKey(key: "adyen.cashAppPay.cashtag")
     
     internal let key: String
     
