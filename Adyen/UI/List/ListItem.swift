@@ -36,6 +36,7 @@ public class ListItem: FormItem {
     /// The `accessibilityIdentifier` to be used on the `ListItem`
     public var identifier: String?
     
+    /// The `accessibilityLabel` to be used on the `ListItem` or ``ListCell``
     public let accessibilityLabel: String
     
     /// Initializes the list item.
@@ -48,6 +49,7 @@ public class ListItem: FormItem {
     ///   - style: The list item style.
     ///   - identifier: The `accessibilityIdentifier` to be used on the `ListItem`
     ///   - selectionHandler: The closure to execute when an item is selected.
+    ///   - accessibilityLabel: An optional custom `accessibilityLabel` to use. Defaults to title + subtitle + trailingText joined by a `,`
     public init(
         title: String,
         subtitle: String? = nil,
