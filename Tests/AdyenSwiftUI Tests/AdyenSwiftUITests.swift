@@ -20,9 +20,8 @@ class AdyenSwiftUITests: XCTestCase {
         
         let app = buildTestableApp()
         app.launch()
-        let sessionSwitch = sessionSwitch(in: app)
         
-        XCTAssertTrue(sessionSwitch.waitForExistence(timeout: 1))
+        let sessionSwitch = sessionSwitch(in: app)
         XCTAssertEqual(sessionSwitch.value as! String, "1", "Session switch should be on by default")
         
         // Enabling Advanced Flow
@@ -41,9 +40,8 @@ class AdyenSwiftUITests: XCTestCase {
         
         let app = buildTestableApp()
         app.launch()
-        let sessionSwitch = sessionSwitch(in: app)
         
-        XCTAssertTrue(sessionSwitch.waitForExistence(timeout: 1))
+        let sessionSwitch = sessionSwitch(in: app)
         XCTAssertEqual(sessionSwitch.value as! String, "1", "Session switch should be on by default")
         
         // Enabling Advanced Flow
@@ -61,17 +59,18 @@ class AdyenSwiftUITests: XCTestCase {
     
     private func sessionSwitch(in app: XCUIApplication) -> XCUIElement {
         
-        app.switches["sessionSwitch"]
+        let sessionSwitch = app.switches["sessionSwitch"]
             .children(matching: .switch)
             .firstMatch
+        
+        XCTAssertTrue(sessionSwitch.waitForExistence(timeout: 10))
+        
+        return sessionSwitch
     }
 
     private func wait(for elements: [XCUIElement]) {
         elements.forEach {
-            let predicate = NSPredicate(format: "exists == 1")
-
-            expectation(for: predicate, evaluatedWith: $0, handler: nil)
+            XCTAssertTrue($0.waitForExistence(timeout: 10))
         }
-        waitForExpectations(timeout: 60, handler: nil)
     }
 }
