@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 import AdyenComponents
 import AdyenEncryption
 import Foundation
@@ -21,11 +21,12 @@ enum Dummy: Error {
     internal static let apiContext = try! APIContext(environment: Environment.test, clientKey: "local_DUMMYKEYFORTESTING")
 
     internal static var context: AdyenContext {
-        AdyenContext(apiContext: apiContext, payment: payment)
+        context(with: payment)
     }
 
     internal static func context(with payment: Payment?) -> AdyenContext {
-        AdyenContext(apiContext: apiContext, payment: payment)
+        let analyticsProvider = AnalyticsProviderMock()
+        return AdyenContext(apiContext: apiContext, payment: payment, analyticsProvider: analyticsProvider)
     }
 
     internal static let visaCard = Card(number: "4917 6100 0000 0000",
