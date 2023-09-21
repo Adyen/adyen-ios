@@ -29,7 +29,8 @@ public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod {
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: cashtag,
                            subtitle: name,
-                           logoName: type.rawValue)
+                           logoName: type.rawValue,
+                           accessibilityLabel: "\(name), Cashtag: \(cashtag)")
     }
     
     private enum CodingKeys: String, CodingKey {

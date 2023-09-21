@@ -72,11 +72,12 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
 
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let expireDate = expiryMonth + "/" + String(expiryYear.suffix(2))
+        let lastFourSeparated = lastFour.map { String($0) }.joined(separator: ", ")
         
         return DisplayInformation(title: String.Adyen.securedString + lastFour,
                                   subtitle: localizedString(.cardStoredExpires, parameters, expireDate),
                                   logoName: brand.rawValue,
-                                  accessibilityLabel: "\(brand.name), Last four digits \(lastFour), \(localizedString(.cardStoredExpires, parameters, expireDate))")
+                                  accessibilityLabel: "\(brand.name), Last four digits: \(lastFourSeparated), \(localizedString(.cardStoredExpires, parameters, expireDate))")
     }
     
     @_spi(AdyenInternal)

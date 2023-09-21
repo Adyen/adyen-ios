@@ -113,7 +113,8 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
             subtitle: displayInformation.subtitle,
             icon: .init(url: imageURL),
             style: self.listItemStyle,
-            identifier: identifier
+            identifier: identifier,
+            accessibilityLabel: displayInformation.accessibilityLabel
         )
     }()
     
