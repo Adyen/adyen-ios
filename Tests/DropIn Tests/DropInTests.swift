@@ -152,7 +152,7 @@ class DropInTests: XCTestCase {
         let delegate = try XCTUnwrap(safari.delegate)
         delegate.safariViewControllerDidFinish?(safari)
         
-        wait(for: [waitExpectation], timeout: 30)
+        wait(for: .seconds(2))
     }
 
     func testOpenDropInAsList() throws {
