@@ -49,7 +49,7 @@ public class ListItem: FormItem {
     ///   - style: The list item style.
     ///   - identifier: The `accessibilityIdentifier` to be used on the `ListItem`
     ///   - selectionHandler: The closure to execute when an item is selected.
-    ///   - accessibilityLabel: An optional custom `accessibilityLabel` to use. Defaults to title + subtitle + trailingText joined by a `,`
+    ///   - accessibilityLabel: An optional custom `accessibilityLabel` to use. Defaults to title + subtitle + trailingText joined by a `, `
     public init(
         title: String,
         subtitle: String? = nil,
@@ -57,8 +57,8 @@ public class ListItem: FormItem {
         trailingText: String? = nil,
         style: ListItemStyle = ListItemStyle(),
         identifier: String? = nil,
-        selectionHandler: (() -> Void)? = nil,
-        accessibilityLabel: String? = nil
+        accessibilityLabel: String? = nil,
+        selectionHandler: (() -> Void)? = nil
     ) {
         self.title = title
         self.subtitle = subtitle
@@ -66,9 +66,8 @@ public class ListItem: FormItem {
         self.trailingText = trailingText
         self.style = style
         self.identifier = identifier
+        self.accessibilityLabel = accessibilityLabel ?? [title, subtitle, trailingText].compactMap { $0 }.joined(separator: ", ")
         self.selectionHandler = selectionHandler
-        
-        self.accessibilityLabel = accessibilityLabel ?? [title, subtitle, trailingText].compactMap { $0 }.joined(separator: ",")
     }
     
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
