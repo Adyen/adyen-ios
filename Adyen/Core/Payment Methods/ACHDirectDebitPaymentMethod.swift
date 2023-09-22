@@ -59,8 +59,8 @@ public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod {
         let accessibilityLabel = [
             name,
             localizedString(.achBankAccountTitle, parameters),
-            "\(localizedString(.accessibilityLastFourDigits, parameters))): \(lastFourSeparated)"
-        ].joined(separator: ",")
+            "\(localizedString(.accessibilityLastFourDigits, parameters)): \(lastFourSeparated)"
+        ].joined(separator: ", ")
         
         return DisplayInformation(title: String.Adyen.securedString + bankAccountLastFour,
                                   subtitle: localizedString(.achBankAccountTitle, parameters),

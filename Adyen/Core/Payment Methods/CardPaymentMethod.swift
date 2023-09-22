@@ -77,9 +77,9 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
         let lastFourSeparated = lastFour.map { String($0) }.joined(separator: ", ")
         let accessibilityLabel = [
             brand.name,
-            "\(localizedString(.accessibilityLastFourDigits, parameters))): \(lastFourSeparated)",
+            "\(localizedString(.accessibilityLastFourDigits, parameters)): \(lastFourSeparated)",
             localizedExpiryDate
-        ].joined(separator: ",")
+        ].joined(separator: ", ")
         
         return DisplayInformation(
             title: String.Adyen.securedString + lastFour,
