@@ -75,6 +75,7 @@ public extension DropInComponent {
             self.style = style
             self.allowsSkippingPaymentList = allowsSkippingPaymentList
             self.allowPreselectedPaymentView = allowPreselectedPaymentView
+            self.cashAppPay = .init(redirectURL: .init(string: "ui-host://cash-app")!)
         }
     }
     
