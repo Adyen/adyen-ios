@@ -178,6 +178,7 @@
 "adyen.QRCode.generateQRCode" = "Generați codul QR";
 "adyen.UPI.QRCodeInstructions" = "Faceți o captură de ecran pentru a o încărca în aplicația UPI sau scanați codul QR folosind aplicația UPI preferată pentru a finaliza plata.";
 "adyen.cashAppPay.title" = "";
+"adyen.cashAppPay.cashtag" = "";
 "adyen.threeds2.DA.registration.title" = "Proces de validare sigur și rapid!";
 "adyen.threeds2.DA.registration.description" = "Data viitoare, puteți efectua mai repede validarea de pe acest dispozitiv, utilizând datele biometrice.";
 "adyen.threeds2.DA.registration.positiveButton" = "Activați validarea rapidă";
@@ -203,3 +204,4 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "Adresa este necesară";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Adresă incorectă";
 "adyen.address.lookup.search.manualEntryItem.title" = "Introduceți adresa manual";
+"adyen.accessibility.lastFourDigits" = "Ultimele 4 cifre";
