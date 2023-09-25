@@ -13,6 +13,9 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
     internal weak var presenter: PresenterExampleProtocol?
 
     private var dropInComponent: DropInComponent?
+    
+    internal lazy var apiClient = ApiClientHelper.generateApiClient()
+    private lazy var palApiClient = ApiClientHelper.generatePalApiClient()
 
     // MARK: - Initializers
 
