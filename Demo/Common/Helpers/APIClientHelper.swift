@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,10 @@ import AdyenNetworking
 
 internal protocol APIClientAware {
     var apiClient: APIClientProtocol { get }
+    var palApiClient: APIClientProtocol { get }
 }
+
+// MARK: - Api Client
 
 extension APIClientAware {
 
@@ -22,7 +25,7 @@ extension APIClientAware {
         setApiClient(apiClient)
         return apiClient
     }
-
+    
     private func getApiClient() -> APIClientProtocol? {
         objc_getAssociatedObject(self, &AssociatedKeys.apiClient) as? APIClientProtocol
     }
@@ -47,6 +50,37 @@ extension APIClientAware {
     }
 }
 
+// MARK: - Pal Api Client
+
+extension APIClientAware {
+    
+    var palApiClient: APIClientProtocol {
+        if let apiClient = getPalApiClient() {
+            return apiClient
+        }
+
+        let apiClient = generatePalApiClient()
+        setPalApiClient(apiClient)
+        return apiClient
+    }
+    
+    private func getPalApiClient() -> APIClientProtocol? {
+        objc_getAssociatedObject(self, &AssociatedKeys.palApiClient) as? APIClientProtocol
+    }
+
+    private func setPalApiClient(_ newValue: APIClientProtocol) {
+        objc_setAssociatedObject(self, &AssociatedKeys.palApiClient, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    }
+    
+    private func generatePalApiClient() -> APIClientProtocol {
+        let context = DemoAPIContext(environment: ConfigurationConstants.classicAPIEnvironment)
+        return DefaultAPIClient(apiContext: context)
+    }
+}
+
+// MARK: - AssociatedKeys
+
 private enum AssociatedKeys {
     internal static var apiClient = "apiClient"
+    internal static var palApiClient = "palApiClient"
 }
