@@ -42,7 +42,8 @@ public struct DisplayInformation: Equatable {
     /// - Parameter logoName: The logo name.
     /// - Parameter disclosureText: The trailing disclosure text.
     /// - Parameter footnoteText: The footnote text if any.
-    /// - Parameter accessibilityLabel: An optional custom `accessibilityLabel` to use. Set this if the title / subtitle might not be sufficient enough to provide a good accessibility
+    /// - Parameter accessibilityLabel: An optional custom `accessibilityLabel` to use.
+    /// Set this if the title / subtitle might not be sufficient enough to provide a good accessibility
     public init(title: String,
                 subtitle: String?,
                 logoName: String,
