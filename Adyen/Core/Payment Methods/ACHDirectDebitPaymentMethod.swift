@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -55,10 +55,17 @@ public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod {
     @_spi(AdyenInternal)
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let bankAccountLastFour = String(bankAccountNumber.suffix(4))
+        let lastFourSeparated = bankAccountLastFour.map { String($0) }.joined(separator: ", ")
+        let accessibilityLabel = [
+            name,
+            localizedString(.achBankAccountTitle, parameters),
+            "\(localizedString(.accessibilityLastFourDigits, parameters)): \(lastFourSeparated)"
+        ].joined(separator: ", ")
         
         return DisplayInformation(title: String.Adyen.securedString + bankAccountLastFour,
                                   subtitle: localizedString(.achBankAccountTitle, parameters),
-                                  logoName: type.rawValue)
+                                  logoName: type.rawValue,
+                                  accessibilityLabel: accessibilityLabel)
     }
     
     /// Number of the stored account

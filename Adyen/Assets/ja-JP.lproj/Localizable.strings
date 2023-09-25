@@ -178,6 +178,7 @@
 "adyen.QRCode.generateQRCode" = "QRコードを生成する";
 "adyen.UPI.QRCodeInstructions" = "スクリーンショットを撮影してUPIアプリにアップロードするか、お好みのUPIアプリを使用してQRコードをスキャンし、支払を完了してください。";
 "adyen.cashAppPay.title" = "";
+"adyen.cashAppPay.cashtag" = "";
 "adyen.threeds2.DA.registration.title" = "安全で迅速なチェックアウト！";
 "adyen.threeds2.DA.registration.description" = "この端末では次回から生体認証を使用することでより迅速にチェックアウトすることができます。";
 "adyen.threeds2.DA.registration.positiveButton" = "迅速なチェックアウトを有効にする";
@@ -203,3 +204,4 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "住所が必要です";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "住所が無効です";
 "adyen.address.lookup.search.manualEntryItem.title" = "住所を手動で入力してください";
+"adyen.accessibility.lastFourDigits" = "末尾4桁";

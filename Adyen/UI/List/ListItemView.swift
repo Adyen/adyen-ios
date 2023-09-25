@@ -49,6 +49,9 @@ public final class ListItemView: UIView, AnyFormItemView {
     private func updateItemData(item: ListItem?) {
         accessibilityIdentifier = item?.identifier
         
+        accessibilityLabel = item?.accessibilityLabel
+        isAccessibilityElement = item != nil
+        
         titleLabel.text = item?.title
         titleLabel.accessibilityIdentifier = item?.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
         

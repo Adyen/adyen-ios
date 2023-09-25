@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -33,6 +33,9 @@ public final class ListCell: UITableViewCell {
             itemView.accessibilityIdentifier = item?.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "itemView") }
             backgroundColor = item?.style.backgroundColor
             resetAccessoryView()
+            
+            accessibilityLabel = item?.accessibilityLabel
+            isAccessibilityElement = item != nil
         }
     }
     

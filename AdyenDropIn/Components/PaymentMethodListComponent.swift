@@ -97,7 +97,8 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
                 canBeModified: !isProtected
             ),
             trailingText: displayInformation.disclosureText,
-            style: style.listItem
+            style: style.listItem,
+            accessibilityLabel: displayInformation.accessibilityLabel
         )
         listItem.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
@@ -111,6 +112,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
         listItem.deletionHandler = { [weak self, weak component] indexPath, completion in
             self?.delete(component: component, at: indexPath, completion: completion)
         }
+        
         return listItem
     }
     

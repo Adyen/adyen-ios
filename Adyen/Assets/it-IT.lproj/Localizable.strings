@@ -178,6 +178,7 @@
 "adyen.QRCode.generateQRCode" = "Genera codice QR";
 "adyen.UPI.QRCodeInstructions" = "Per completare il pagamento, acquisisci uno screenshot da caricare nell'app UPI o scansiona il codice QR utilizzando l'app UPI che preferisci.";
 "adyen.cashAppPay.title" = "";
+"adyen.cashAppPay.cashtag" = "";
 "adyen.threeds2.DA.registration.title" = "Check-out sicuro e veloce!";
 "adyen.threeds2.DA.registration.description" = "Puoi effettuare il check-out più velocemente la prossima volta su questo dispositivo utilizzando i tuoi dati biometrici.";
 "adyen.threeds2.DA.registration.positiveButton" = "Abilita il checkout rapido";
@@ -203,3 +204,4 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "Indirizzo richiesto";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Indirizzo non valido";
 "adyen.address.lookup.search.manualEntryItem.title" = "Inserisci l'indirizzo manualmente";
+"adyen.accessibility.lastFourDigits" = "Ultime 4 cifre";
