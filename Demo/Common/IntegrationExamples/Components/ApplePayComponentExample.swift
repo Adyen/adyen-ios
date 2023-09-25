@@ -71,7 +71,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     internal func applePayComponent(from session: AdyenSession) throws -> ApplePayComponent {
         let paymentMethods = session.sessionContext.paymentMethods
         guard let paymentMethod = paymentMethods.paymentMethod(ofType: ApplePayPaymentMethod.self) else {
-            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
+            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self)
         }
         let applePayPayment = try ApplePayPayment(payment: ConfigurationConstants.current.payment,
                                                   brand: ConfigurationConstants.appName)
