@@ -8595,7 +8595,7 @@
 			repositoryURL = "https://github.com/Adyen/adyen-3ds2-ios";
 			requirement = {
 				kind = exactVersion;
-				version = 2.3.2;
+				version = 2.3.3;
 			};
 		};
 		F9B66F4228B8E0370090FABC /* XCRemoteSwiftPackageReference "adyen-authentication-ios" */ = {

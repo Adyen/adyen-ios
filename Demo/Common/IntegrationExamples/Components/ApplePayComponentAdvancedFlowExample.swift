@@ -17,6 +17,8 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
     internal var applePayComponent: ApplePayComponent?
     internal weak var presenter: PresenterExampleProtocol?
 
+    internal lazy var apiClient = ApiClientHelper.generateApiClient()
+    
     // MARK: - Initializers
 
     internal init() {}
