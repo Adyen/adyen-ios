@@ -15,6 +15,8 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     internal var session: AdyenSession?
     internal weak var presenter: PresenterExampleProtocol?
     internal var applePayComponent: ApplePayComponent?
+    
+    internal lazy var apiClient = ApiClientHelper.generateApiClient()
 
     // MARK: - Initializers
 

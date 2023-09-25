@@ -8,8 +8,9 @@
 import AdyenNetworking
 import AdyenSession
 
-internal protocol InitialDataAdvancedFlowProtocol: AnyObject, APIClientAware {
+internal protocol InitialDataAdvancedFlowProtocol: AnyObject {
     var context: AdyenContext { get }
+    var apiClient: APIClientProtocol { get }
     func requestPaymentMethods(order: PartialPaymentOrder?,
                                completion: @escaping (Result<PaymentMethods, Error>) -> Void)
 }
