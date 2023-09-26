@@ -198,3 +198,4 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "必須填寫地址";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "地址無效";
 "adyen.address.lookup.search.manualEntryItem.title" = "手動輸入地址";
+"adyen.accessibility.lastFourDigits" = "最後 4 位數字";
