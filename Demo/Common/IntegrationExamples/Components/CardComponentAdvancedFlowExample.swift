@@ -19,6 +19,8 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     internal var cardComponent: PresentableComponent?
 
     internal weak var presenter: PresenterExampleProtocol?
+    
+    internal lazy var apiClient = ApiClientHelper.generateApiClient()
 
     // MARK: - Action Handling
 

@@ -22,6 +22,9 @@ internal final class DropInExample: InitialDataFlowProtocol {
     private var session: AdyenSession?
     private var dropInComponent: DropInComponent?
     
+    internal lazy var apiClient = ApiClientHelper.generateApiClient()
+    private lazy var palApiClient = ApiClientHelper.generatePalApiClient()
+    
     // MARK: - Initializers
 
     internal init() {}

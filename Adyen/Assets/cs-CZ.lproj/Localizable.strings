@@ -178,6 +178,7 @@
 "adyen.QRCode.generateQRCode" = "Vygenerovat QR kód";
 "adyen.UPI.QRCodeInstructions" = "Pořiďte snímek obrazovky a nahrajte ho v aplikaci UPI nebo naskenujte QR kód ve své oblíbené aplikaci UPI a dokončete platbu.";
 "adyen.cashAppPay.title" = "";
+"adyen.cashAppPay.cashtag" = "";
 "adyen.threeds2.DA.registration.title" = "Bezpečné a rychlé odbavení!";
 "adyen.threeds2.DA.registration.description" = "Příště se na tomto zařízení můžete odbavit rychleji pomocí biometrických údajů.";
 "adyen.threeds2.DA.registration.positiveButton" = "Povolení rychlého odbavení";
@@ -203,3 +204,4 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "Požadovaná adresa";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Neplatná adresa";
 "adyen.address.lookup.search.manualEntryItem.title" = "Zadejte adresu ručně";
+"adyen.accessibility.lastFourDigits" = "Poslední 4 číslice";

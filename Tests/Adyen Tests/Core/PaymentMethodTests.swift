@@ -663,9 +663,12 @@ class PaymentMethodTests: XCTestCase {
             )
         }
         
+        let accessibilityLabel = "\(method.brand.name), Last 4 digits: \(method.lastFour.map { String($0) }.joined(separator: ", ")), \(localizedString(.cardStoredExpires, localizationParameters, expireDate))"
+        
         return DisplayInformation(title: String.Adyen.securedString + method.lastFour,
                                   subtitle: localizedString(.cardStoredExpires, localizationParameters, expireDate),
-                                  logoName: method.brand.rawValue)
+                                  logoName: method.brand.rawValue,
+                                  accessibilityLabel: accessibilityLabel)
     }
     
     // MARK: - Issuer List
@@ -833,9 +836,12 @@ class PaymentMethodTests: XCTestCase {
             )
         }
         
+        let accessibilityLabel = "BCMC, Last 4 digits: \(method.lastFour.map { String($0) }.joined(separator: ", ")), \(localizedString(.cardStoredExpires, localizationParameters, expireDate))"
+        
         return DisplayInformation(title: String.Adyen.securedString + method.lastFour,
                                   subtitle: localizedString(.cardStoredExpires, localizationParameters, expireDate),
-                                  logoName: method.brand)
+                                  logoName: method.brand,
+                                  accessibilityLabel: accessibilityLabel)
     }
 
     // MARK: - GiftCard

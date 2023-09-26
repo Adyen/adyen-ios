@@ -178,6 +178,7 @@
 "adyen.QRCode.generateQRCode" = "Wygeneruj kod QR";
 "adyen.UPI.QRCodeInstructions" = "Zrób zrzut ekranu, aby przesłać go w aplikacji UPI lub zeskanuj kod QR za pomocą preferowanej aplikacji UPI, aby zakończyć płatność.";
 "adyen.cashAppPay.title" = "";
+"adyen.cashAppPay.cashtag" = "";
 "adyen.threeds2.DA.registration.title" = "Bezpieczna i szybka kasa!";
 "adyen.threeds2.DA.registration.description" = "Następnym razem na tym urządzeniu możesz dokończyć transakcję szybciej, korzystając ze swoich danych biometrycznych.";
 "adyen.threeds2.DA.registration.positiveButton" = "Włączenie szybkiej kasy";
@@ -203,3 +204,4 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "Wymagane jest podanie adresu";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Nieprawidłowy adres";
 "adyen.address.lookup.search.manualEntryItem.title" = "Wprowadź adres ręcznie";
+"adyen.accessibility.lastFourDigits" = "Ostatnie 4 cyfry";
