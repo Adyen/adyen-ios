@@ -173,7 +173,7 @@ public final class CashAppPayComponent: PaymentComponent,
         let onFileGrant = grants.first { $0.type == .EXTENDED }
         let oneTimeGrant = grants.first { $0.type == .ONE_TIME }
         let cashtag = onFileGrant != nil ? customerProfile?.cashtag : nil
-        let customerId = onFileGrant?.customerID
+        let customerId = customerProfile?.id
     
         return CashAppPayDetails(paymentMethod: cashAppPayPaymentMethod,
                                  grantId: oneTimeGrant?.id,
