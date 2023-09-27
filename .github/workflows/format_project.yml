@@ -21,6 +21,7 @@ jobs:
       run: |
         brew install swiftformat
         swiftformat .
+        
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v5
       with:
@@ -30,3 +31,6 @@ jobs:
         title: Format project
         body: Format project.
         token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Run PR Scan
+      uses: Adyen/adyen-ios/.github/workflows/pr_scan.yml@format-project-github-action
