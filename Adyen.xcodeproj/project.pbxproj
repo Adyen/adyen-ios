@@ -186,9 +186,9 @@
 		81EA6C122A44836E0071A141 /* FormAddressItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EA6C112A44836E0071A141 /* FormAddressItemTests.swift */; };
 		81F3DDCC2A6FCCF400635ED7 /* XCTestCase+RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F3DDCB2A6FCCF400635ED7 /* XCTestCase+RootViewController.swift */; };
 		81F3DDCD2A6FCCF400635ED7 /* XCTestCase+RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F3DDCB2A6FCCF400635ED7 /* XCTestCase+RootViewController.swift */; };
-		81FEACD22A8FA2440051E1D6 /* UIViewController+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B2A18E2A84EE1E00FF8427 /* UIViewController+Search.swift */; };
 		81FAFB442AAF715F00828999 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
 		81FAFB452AAF715F00828999 /* Adyen.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		81FEACD22A8FA2440051E1D6 /* UIViewController+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B2A18E2A84EE1E00FF8427 /* UIViewController+Search.swift */; };
 		A009837D279859DC007E68C4 /* ACHDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */; };
 		A009837F27986B50007E68C4 /* BankDetailsEncryptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */; };
 		A0113D9B2763887800AD395C /* ActionNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0113D9A2763887800AD395C /* ActionNavigationBar.swift */; };
@@ -8611,7 +8611,7 @@
 			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
 			requirement = {
 				kind = exactVersion;
-				version = 1.11.1;
+				version = 1.13.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

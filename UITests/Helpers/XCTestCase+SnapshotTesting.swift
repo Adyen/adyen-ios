@@ -18,15 +18,15 @@ extension XCTestCase {
                              file: StaticString = #file,
                              testName: String = #function,
                              line: UInt = #line) {
-        return // TODO: Enable again
-        
         for device in devices {
-            try SnapshotTesting.assertSnapshot(matching: viewController(),
-                                               as: .recursiveDescription(on: device),
-                                               named: name,
-                                               file: file,
-                                               testName: "\(testName)-\(device.description)",
-                                               line: line)
+            assertSnapshot(
+                matching: try viewController(),
+                as: .recursiveDescription(on: device),
+                named: name,
+                file: file,
+                testName: "\(testName)-\(device.description)",
+                line: line
+            )
         }
     }
     
@@ -36,17 +36,34 @@ extension XCTestCase {
                                    file: StaticString = #file,
                                    testName: String = #function,
                                    line: UInt = #line) {
-        return // TODO: Enable again
-        
         for device in devices {
-            try SnapshotTesting.assertSnapshot(matching: viewController(),
-                                               as: .image(on: device, perceptualPrecision: 0.98),
-                                               named: name,
-                                               file: file,
-                                               testName: "\(testName)-\(device.description)",
-                                               line: line)
-
+            assertSnapshot(
+                matching: try viewController(),
+                as: .image(on: device, precision: 0.99),
+                named: name,
+                file: file,
+                testName: "\(testName)-\(device.description)",
+                line: line
+            )
         }
+    }
+    
+    private func assertSnapshot<UIViewController, Format>(
+        matching viewController: @autoclosure () throws -> UIViewController,
+        as snapshotting: Snapshotting<UIViewController, Format>,
+        named name: String,
+        file: StaticString,
+        testName: String,
+        line: UInt
+    ) {
+        try SnapshotTesting.assertSnapshot(
+            of: viewController(),
+            as: snapshotting,
+            named: name,
+            file: file,
+            testName: testName,
+            line: line
+        )
     }
 }
 

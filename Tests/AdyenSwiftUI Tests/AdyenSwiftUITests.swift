@@ -26,7 +26,7 @@ class AdyenSwiftUITests: XCTestCase {
         
         // Enabling Advanced Flow
         sessionSwitch.tap()
-        wait { (sessionSwitch.value as! String) == "0" }
+        wait(until: { (sessionSwitch.value as! String) == "0" }, timeout: 10)
         
         app.buttons["Drop In"].tap()
 
@@ -46,7 +46,7 @@ class AdyenSwiftUITests: XCTestCase {
         
         // Enabling Advanced Flow
         sessionSwitch.tap()
-        wait { (sessionSwitch.value as! String) == "0" }
+        wait(until: { (sessionSwitch.value as! String) == "0" }, timeout: 10)
         app.buttons["Card"].tap()
 
         wait(for: [app.buttons["Pay €174.08"],
