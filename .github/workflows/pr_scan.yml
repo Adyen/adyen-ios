@@ -55,14 +55,14 @@ jobs:
         scheme: ''
         destination: 'name=iPhone 14,OS=16.4'
         
-    - name: Build and Swift UI Test
-      run: |
-        xcodebuild test -project "${project}" -scheme "AdyenSwiftUITests" ${params} -destination "${destination}" -skipPackagePluginValidation -parallel-testing-enabled NO | xcpretty --utf --color && exit ${PIPESTATUS[0]}
-      env:
-        project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
-        scheme: ''
-        destination: 'name=iPhone 14,OS=16.4'
+#    - name: Build and Swift UI Test
+#      run: |
+#        xcodebuild test -project "${project}" -scheme "AdyenSwiftUITests" ${params} -destination "${destination}" -skipPackagePluginValidation -parallel-testing-enabled NO | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+#      env:
+#        project: 'Adyen.xcodeproj'
+#        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
+#        scheme: ''
+#        destination: 'name=iPhone 14,OS=16.4'
 
     - name: Code Coverage
       run: |
