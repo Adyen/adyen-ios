@@ -36,15 +36,15 @@ internal final class ComponentsViewController: UIViewController {
     }()
     
     private lazy var issuerListComponentExample: IssuerListComponentExample = {
-        let idealComponent = IssuerListComponentExample()
-        idealComponent.presenter = self
-        return idealComponent
+        let issuerListComponent = IssuerListComponentExample()
+        issuerListComponent.presenter = self
+        return issuerListComponent
     }()
     
     private lazy var issuerListComponentAdvancedFlowExample: IssuerListComponentAdvancedFlowExample = {
-        let idealComponent = IssuerListComponentAdvancedFlowExample()
-        idealComponent.presenter = self
-        return idealComponent
+        let issuerListComponent = IssuerListComponentAdvancedFlowExample()
+        issuerListComponent.presenter = self
+        return issuerListComponent
     }()
 
     private lazy var applePayComponentAdvancedFlowExample: ApplePayComponentAdvancedFlowExample = {

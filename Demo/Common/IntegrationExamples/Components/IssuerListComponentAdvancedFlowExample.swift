@@ -6,11 +6,7 @@
 
 import Adyen
 import AdyenActions
-import AdyenCard
 import AdyenComponents
-import AdyenDropIn
-import PassKit
-import UIKit
 
 internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
 
