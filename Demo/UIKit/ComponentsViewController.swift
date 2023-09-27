@@ -76,7 +76,7 @@ internal final class ComponentsViewController: UIViewController {
             [
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
                 ComponentsItem(
-                    title: "IssuerList",
+                    title: "Issuer List",
                     subtitle: "e.g. Ideal, Open Banking, ...",
                     selectionHandler: presentIssuerListComponent
                 )
