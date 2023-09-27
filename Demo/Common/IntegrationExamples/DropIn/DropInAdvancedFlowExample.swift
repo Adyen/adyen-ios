@@ -123,7 +123,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
     }
 
     private func finish(with result: PaymentsResponse) {
-        let success = result.resultCode == .authorised || result.resultCode == .received || result.resultCode == .pending
+        let success = result.isSuccessful
         let message = "\(result.resultCode.rawValue) \(result.amount?.formatted ?? "")"
         finalize(success, message)
     }

@@ -12,11 +12,11 @@ import AdyenDropIn
 import PassKit
 import UIKit
 
-internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
+internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
 
     // MARK: - Properties
 
-    internal var cardComponent: PresentableComponent?
+    internal var issuerListComponent: PresentableComponent?
 
     internal weak var presenter: PresenterExampleProtocol?
     
@@ -26,8 +26,6 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     private lazy var adyenActionComponent: AdyenActionComponent = {
         let handler = AdyenActionComponent(context: context)
-        handler.configuration.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
-        handler.configuration.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         handler.delegate = self
         handler.presentationDelegate = self
         return handler
@@ -58,43 +56,23 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     
     private func presentComponent(with paymentMethods: PaymentMethods) {
         do {
-            let component = try cardComponent(from: paymentMethods)
+            let component = try issuerListComponent(from: paymentMethods)
             let componentViewController = viewController(for: component)
             presenter?.present(viewController: componentViewController, completion: nil)
-            cardComponent = component
+            issuerListComponent = component
         } catch {
             self.presentAlert(with: error)
         }
     }
-
-    private func cardComponent(from paymentMethods: PaymentMethods) throws -> CardComponent {
-        guard let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else {
-            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
+    
+    private func issuerListComponent(from paymentMethods: PaymentMethods) throws -> IssuerListComponent {
+        guard let paymentMethod = paymentMethods.paymentMethod(ofType: IssuerListPaymentMethod.self) else {
+            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: IssuerListPaymentMethod.self)
         }
-
-        let component = CardComponent(paymentMethod: paymentMethod,
-                                      context: context,
-                                      configuration: ConfigurationConstants.current.cardConfiguration)
-        component.cardComponentDelegate = self
+        
+        let component = IssuerListComponent(paymentMethod: paymentMethod, context: context)
         component.delegate = self
         return component
-    }
-
-    private func viewController(for component: PresentableComponent) -> UIViewController {
-        guard component.requiresModalPresentation else {
-            return component.viewController
-        }
-
-        let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.leftBarButtonItem = .init(barButtonSystemItem: .cancel,
-                                                                          target: self,
-                                                                          action: #selector(cancelPressed))
-        return navigation
-    }
-
-    @objc private func cancelPressed() {
-        cardComponent?.cancelIfNeeded()
-        presenter?.dismiss(completion: nil)
     }
 
     // MARK: - Payment response handling
@@ -129,7 +107,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     }
 
     private func finalize(_ success: Bool, _ message: String) {
-        cardComponent?.finalizeIfNeeded(with: success) { [weak self] in
+        issuerListComponent?.finalizeIfNeeded(with: success) { [weak self] in
             guard let self else { return }
             self.dismissAndShowAlert(success, message)
         }
@@ -149,23 +127,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
 }
 
-extension CardComponentAdvancedFlowExample: CardComponentDelegate {
-
-    func didSubmit(lastFour: String, finalBIN: String, component: CardComponent) {
-        print("Card used: **** **** **** \(lastFour)")
-        print("Final BIN: \(finalBIN)")
-    }
-
-    internal func didChangeBIN(_ value: String, component: CardComponent) {
-        print("Current BIN: \(value)")
-    }
-
-    internal func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent) {
-        print("Current card type: \((value ?? []).reduce("") { "\($0), \($1)" })")
-    }
-}
-
-extension CardComponentAdvancedFlowExample: PaymentComponentDelegate {
+extension IssuerListComponentAdvancedFlowExample: PaymentComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         let request = PaymentsRequest(data: data)
@@ -180,7 +142,7 @@ extension CardComponentAdvancedFlowExample: PaymentComponentDelegate {
 
 }
 
-extension CardComponentAdvancedFlowExample: ActionComponentDelegate {
+extension IssuerListComponentAdvancedFlowExample: ActionComponentDelegate {
 
     internal func didFail(with error: Error, from component: ActionComponent) {
         finish(with: error)
@@ -203,9 +165,29 @@ extension CardComponentAdvancedFlowExample: ActionComponentDelegate {
     }
 }
 
-extension CardComponentAdvancedFlowExample: PresentationDelegate {
+extension IssuerListComponentAdvancedFlowExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {
         let componentViewController = viewController(for: component)
         presenter?.present(viewController: componentViewController, completion: nil)
+    }
+}
+
+private extension IssuerListComponentAdvancedFlowExample {
+    
+    private func viewController(for component: PresentableComponent) -> UIViewController {
+        guard component.requiresModalPresentation else {
+            return component.viewController
+        }
+
+        let navigation = UINavigationController(rootViewController: component.viewController)
+        component.viewController.navigationItem.leftBarButtonItem = .init(barButtonSystemItem: .cancel,
+                                                                          target: self,
+                                                                          action: #selector(cancelPressed))
+        return navigation
+    }
+
+    @objc private func cancelPressed() {
+        issuerListComponent?.cancelIfNeeded()
+        presenter?.dismiss(completion: nil)
     }
 }

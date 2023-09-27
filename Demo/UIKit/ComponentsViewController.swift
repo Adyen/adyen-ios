@@ -34,6 +34,18 @@ internal final class ComponentsViewController: UIViewController {
         cardComponentExample.presenter = self
         return cardComponentExample
     }()
+    
+    private lazy var issuerListComponentExample: IssuerListComponentExample = {
+        let idealComponent = IssuerListComponentExample()
+        idealComponent.presenter = self
+        return idealComponent
+    }()
+    
+    private lazy var issuerListComponentAdvancedFlowExample: IssuerListComponentAdvancedFlowExample = {
+        let idealComponent = IssuerListComponentAdvancedFlowExample()
+        idealComponent.presenter = self
+        return idealComponent
+    }()
 
     private lazy var applePayComponentAdvancedFlowExample: ApplePayComponentAdvancedFlowExample = {
         let applePayComponentAdvancedFlow = ApplePayComponentAdvancedFlowExample()
@@ -62,7 +74,12 @@ internal final class ComponentsViewController: UIViewController {
                 ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
             ],
             [
-                ComponentsItem(title: "Card", selectionHandler: presentCardComponent)
+                ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
+                ComponentsItem(
+                    title: "IssuerList",
+                    subtitle: "e.g. Ideal, Open Banking, ...",
+                    selectionHandler: presentIssuerListComponent
+                )
             ],
             [
                 ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)
@@ -91,6 +108,14 @@ internal final class ComponentsViewController: UIViewController {
             cardComponentExample.start()
         } else {
             cardComponentAdvancedFlowExample.start()
+        }
+    }
+    
+    internal func presentIssuerListComponent() {
+        if componentsView.isUsingSession {
+            issuerListComponentExample.start()
+        } else {
+            issuerListComponentAdvancedFlowExample.start()
         }
     }
 
