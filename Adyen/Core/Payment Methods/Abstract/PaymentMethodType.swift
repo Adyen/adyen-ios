@@ -177,6 +177,66 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case let .other(value): return value
         }
     }
+    
+    /// The brand name of the card type
+    @_spi(AdyenInternal)
+    public var name: String {
+        switch self {
+        case .card: return "card payment"
+        case .scheme: return "scheme"
+        case .ideal: return "ideal"
+        case .entercash: return "entercash"
+        case .eps: return "EPS"
+        case .dotpay: return "dotpay"
+        case .onlineBankingPoland: return "online-banking PL"
+        case .openBankingUK: return "open-banking UK"
+        case .molPayEBankingFPXMY: return "molpay ebanking fpx MY"
+        case .molPayEBankingTH: return "molpay ebanking TH"
+        case .molPayEBankingVN: return "molpay ebanking VN"
+        case .sepaDirectDebit: return "sepa direct-debit"
+        case .applePay: return "applepay"
+        case .payPal: return "paypal"
+        case .bcmc: return "bcmc"
+        case .bcmcMobileQR: return "bcmc mobile qr"
+        case .bcmcMobile: return "bcmc mobile"
+        case .weChatMiniProgram: return "wechatpay"
+        case .weChatQR: return "wechat pay"
+        case .qiwiWallet: return "qiwi wallet"
+        case .weChatPayWeb: return "wechat pay"
+        case .weChatPaySDK: return "wechat pay"
+        case .mbWay: return "mbway"
+        case .blik: return "blik"
+        case .googlePay: return "google pay"
+        case .afterpay: return "afterpay"
+        case .androidPay: return "android pay"
+        case .amazonPay: return "amazon pay"
+        case .dokuWallet: return "doku wallet"
+        case .dokuAlfamart: return "doku alfamart"
+        case .dokuIndomaret: return "doku indomaret"
+        case .giftcard: return "giftcard"
+        case .doku: return "doku"
+        case .econtextSevenEleven: return "econtext seven-eleven"
+        case .econtextStores: return "econtext Stores"
+        case .econtextATM: return "econtext ATM"
+        case .econtextOnline: return "econtext Online"
+        case .boleto: return "boleto"
+        case .affirm: return "affirm"
+        case .oxxo: return "OXXO"
+        case .bacsDirectDebit: return "BACS direct debit"
+        case .achDirectDebit: return "ACH direct debit"
+        case .multibanco: return "multibanco"
+        case .atome: return "atome"
+        case .onlineBankingCZ: return "online banking CZ"
+        case .onlineBankingSK: return "online banking SK"
+        case .mealVoucherGroupeUp: return "meal voucher groupe-up"
+        case .mealVoucherNatixis: return "meal voucher natixis"
+        case .mealVoucherSodexo: return "meal voucher sodexo"
+        case .upi: return "UPI"
+        case .cashAppPay: return "cash-app"
+        case let .other(name): return name.replacingOccurrences(of: "_", with: " ")
+        }
+    }
+    // swiftlint:enable cyclomatic_complexity
 
     // swiftlint:enable cyclomatic_complexity function_body_length
 }

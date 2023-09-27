@@ -36,6 +36,7 @@ internal struct PartialConfirmationPaymentMethod: PaymentMethod {
         let footnote = localizedString(.partialPaymentRemainingBalance,
                                        parameters,
                                        remainingAmount.formatted)
+        // TODO: AccessibilityLabel
         return DisplayInformation(title: String.Adyen.securedString + lastFour,
                                   subtitle: nil,
                                   logoName: paymentMethod.displayInformation(using: parameters).logoName,
