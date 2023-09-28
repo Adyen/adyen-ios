@@ -66,16 +66,14 @@ class DocumentComponentTests: XCTestCase {
         let sut = DocumentActionView(viewModel: viewModel, style: style)
         sut.delegate = delegateMock
         
-        asyncAfterDelay {
-            let mainButton: UIButton? = sut.findView(by: "mainButton")
-            let messageLabel: UILabel? = sut.findView(by: "messageLabel")
-            XCTAssertNotNil(mainButton)
-            
-            XCTAssertEqual(mainButton?.titleLabel?.text, viewModel.buttonTitle)
-            XCTAssertEqual(messageLabel?.text, viewModel.message)
-            
-            mainButton?.sendActions(for: .touchUpInside)
-        }
+        let mainButton: UIButton? = sut.findView(by: "mainButton")
+        let messageLabel: UILabel? = sut.findView(by: "messageLabel")
+        XCTAssertNotNil(mainButton)
+        
+        XCTAssertEqual(mainButton?.titleLabel?.text, viewModel.buttonTitle)
+        XCTAssertEqual(messageLabel?.text, viewModel.message)
+        
+        mainButton?.sendActions(for: .touchUpInside)
         
         waitForExpectations(timeout: 5, handler: nil)
     }
