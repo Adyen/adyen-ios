@@ -3,7 +3,8 @@ on: [workflow_dispatch]
 jobs:
 
   code_format:
-    runs-on: macos-12
+    name: Format project
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
       with:
@@ -33,5 +34,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
 
   pr_scan:
-    needs: code_format
-    uses: Adyen/adyen-ios/.github/workflows/pr_scan.yml@format-project-github-action
+    name: Run PR Scan
+    runs-on: macos-latest
+    steps:
+    - uses: ./.github/workflows/pr_scan.yml
