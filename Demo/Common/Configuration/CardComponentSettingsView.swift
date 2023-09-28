@@ -18,22 +18,22 @@ internal struct CardComponentSettingsView: View {
             List {
                 Section {
                     Toggle(isOn: $viewModel.showsHolderNameField) {
-                        Text("Holder Name")
+                        Text("Show Holder Name")
                     }
                     
                     Toggle(isOn: $viewModel.showsStorePaymentMethodField) {
                         VStack(alignment: .leading) {
-                            Text("Stored Payment Method")
+                            Text("Store Payment Method")
                             Text("(Requires API version 70 or higher)")
                                 .foregroundColor(.gray)
                                 .font(.footnote)
                         }
                     }
                     Toggle(isOn: $viewModel.showsSecurityCodeField) {
-                        Text("Security Code")
+                        Text("Show Security Code")
                     }
-                    Picker("Select address mode", selection: $viewModel.addressMode) {
-                        ForEach(CardComponentConfiguration.AddressFormType.allCases, id: \.self) {
+                    Picker("Address mode", selection: $viewModel.addressMode) {
+                        ForEach(CardComponentSettings.AddressFormType.allCases, id: \.self) {
                             Text($0.displayName)
                         }
                     }
@@ -50,7 +50,7 @@ internal struct CardComponentSettingsView: View {
                 }
                 Section(header: Text("Stored Card")) {
                     Toggle(isOn: $viewModel.showsStoredCardSecurityCodeField) {
-                        Text("Security Code")
+                        Text("Show Security Code")
                     }
                 }
 
@@ -61,7 +61,7 @@ internal struct CardComponentSettingsView: View {
     }
 }
 
-extension CardComponentConfiguration.AddressFormType {
+extension CardComponentSettings.AddressFormType {
 
     public var displayName: String {
         self.rawValue.capitalized

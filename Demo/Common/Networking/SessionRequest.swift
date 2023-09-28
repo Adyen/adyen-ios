@@ -46,7 +46,7 @@ internal struct SessionRequest: APIRequest {
         //
         //        try container.encode(installmentOptions, forKey: .installmentOptions)
 
-        if ConfigurationConstants.current.cardComponentConfiguration.showsStorePaymentMethodField {
+        if ConfigurationConstants.current.cardComponentSettings.showsStorePaymentMethodField {
             AdyenAssertion.assert(message: "API version should be v70 or above to apply card component's store payment method field",
                                   condition: ConfigurationConstants.current.apiVersion < 70)
             try container.encode("askForConsent", forKey: .storePaymentMethodMode)
