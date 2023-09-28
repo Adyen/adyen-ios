@@ -133,7 +133,7 @@ class QRCodeActionComponentUITests: XCTestCase {
             UIApplication.shared.adyen.mainKeyWindow?.rootViewController = component.viewController
             
             // wait until the expiration label is rendered
-            self.wait(for: .seconds(1))
+            self.wait(for: .seconds(2))
             
             self.assertViewControllerImage(matching: component.viewController, named: "pix")
 
