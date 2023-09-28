@@ -36,24 +36,24 @@ jobs:
       run: |
         Scripts/validate-Adyen-SDK-version.sh
 
-    - name: Clean Build and Unit Test
+    - name: Clean Build and Test
       run: |
         xcodebuild -version
         xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
-        scheme: 'AdyenUIKitTests'
+        scheme: 'AdyenUIHost'
         destination: 'name=iPhone 14,OS=16.4'
         
-    - name: Host UI Test
-      run: |
-        xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
-      env:
-        project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
-        scheme: 'AdyenUIHostUITests'
-        destination: 'name=iPhone 14,OS=16.4'
+#    - name: Host UI Test
+#      run: |
+#        xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+#      env:
+#        project: 'Adyen.xcodeproj'
+#        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
+#        scheme: 'AdyenUIHostUITests'
+#        destination: 'name=iPhone 14,OS=16.4'
         
 #    - name: Swift UI Test
 #      run: |
