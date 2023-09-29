@@ -14,7 +14,6 @@ final class BLIKComponentUITests: XCTestCase {
     private var paymentMethod: BLIKPaymentMethod!
     private var context: AdyenContext!
     private var style: FormComponentStyle!
-    private var sut: BLIKComponent!
 
     override func setUpWithError() throws {
         paymentMethod = BLIKPaymentMethod(type: .blik, name: "test_name")
@@ -25,7 +24,6 @@ final class BLIKComponentUITests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        sut = nil
         paymentMethod = nil
         context = nil
         style = nil
@@ -62,8 +60,10 @@ final class BLIKComponentUITests: XCTestCase {
         style.textField.backgroundColor = .red
 
         let config = BLIKComponent.Configuration(style: style)
-        sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+        let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
+        setupRootViewController(sut.viewController)
+        
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
@@ -73,6 +73,8 @@ final class BLIKComponentUITests: XCTestCase {
 
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
+        
+        setupRootViewController(sut.viewController)
 
         let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
 
@@ -101,19 +103,21 @@ final class BLIKComponentUITests: XCTestCase {
 
     func testSubmitButtonLoading() {
         let config = BLIKComponent.Configuration(style: style)
-        sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+        let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
-        UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         let submitButton: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
 
         // start loading
         submitButton.showsActivityIndicator = true
+        wait(for: .aMoment)
         assertViewControllerImage(matching: sut.viewController, named: "initial_state")
 
         // stop loading
         sut.stopLoading()
         submitButton.showsActivityIndicator = false
+        wait(for: .aMoment)
         assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
     }
 }
