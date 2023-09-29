@@ -71,7 +71,8 @@ class QRCodeActionComponentUITests: XCTestCase {
             XCTAssertNotNil(qrCodeViewController)
             
             self.setupRootViewController(component.viewController)
-            self.wait { qrCodeViewController?.qrCodeView.expirationLabel.text?.starts(with: "You have") == true }
+            self.wait { qrCodeViewController?.qrCodeView.expirationLabel.text?.starts(with: "This QR code is valid for") == true }
+            self.wait { qrCodeViewController?.qrCodeView.logo.image != nil }
             
             self.assertViewControllerImage(matching: component.viewController, named: "promptPay")
 
@@ -193,6 +194,7 @@ class QRCodeActionComponentUITests: XCTestCase {
 
             self.setupRootViewController(component.viewController)
             self.wait { qrCodeViewController?.qrCodeView.expirationLabel.text?.starts(with: "You have") == true }
+            self.wait { qrCodeViewController?.qrCodeView.logo.image != nil }
             
             self.assertViewControllerImage(matching: component.viewController, named: "upi")
 
