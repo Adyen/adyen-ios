@@ -113,7 +113,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     }
 
     private func finish(with result: PaymentsResponse) {
-        let success = result.isSuccessful
+        let success = result.isAccepted
         let message = "\(result.resultCode.rawValue) \(result.amount?.formatted ?? "")"
         finalize(success, message)
     }
