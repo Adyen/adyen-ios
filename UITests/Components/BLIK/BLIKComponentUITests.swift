@@ -98,6 +98,7 @@ final class BLIKComponentUITests: XCTestCase {
         }
         
         wait { sut.button.showsActivityIndicator == false }
+        wait(for: .aMoment)
         assertViewControllerImage(matching: sut.viewController, named: "blik_flow")
     }
 

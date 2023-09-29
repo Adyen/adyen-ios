@@ -253,7 +253,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           configuration: .init(showsBillingAddress: false),
                                           publicKeyProvider: PublicKeyProviderMock())
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
@@ -269,8 +269,6 @@ class ACHDirectDebitComponentTests: XCTestCase {
             XCTAssertNotNil(data.billingAddress)
             expectation.fulfill()
         }
-
-        wait(for: .milliseconds(300))
         
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.payButtonItem.button")
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem")
@@ -281,6 +279,9 @@ class ACHDirectDebitComponentTests: XCTestCase {
         self.populate(textItemView: accountNumberItemView!, with: "123456789")
         self.populate(textItemView: routingNumberItemView!, with: "121000358")
 
+        wait(until: routingNumberItemView!, at: \.textField.text, is: "121000358")
+        wait(for: .aMoment)
+        
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
         
         wait(for: [expectation], timeout: 5)
