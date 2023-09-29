@@ -69,7 +69,7 @@ final class BLIKComponentUITests: XCTestCase {
 
     func testSubmitForm() {
         let config = BLIKComponent.Configuration(style: style)
-        sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+        let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -84,15 +84,15 @@ final class BLIKComponentUITests: XCTestCase {
         let delegateExpectation = XCTestExpectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
 
         delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === self.sut)
+            XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is BLIKDetails)
             let data = data.paymentMethod as! BLIKDetails
             XCTAssertEqual(data.blikCode, "123456")
 
-            self.sut.stopLoadingIfNeeded()
+            sut.stopLoadingIfNeeded()
             delegateExpectation.fulfill()
-            XCTAssertEqual(self.sut.viewController.view.isUserInteractionEnabled, true)
-            XCTAssertEqual(self.sut.button.showsActivityIndicator, false)
+            XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
+            XCTAssertEqual(sut.button.showsActivityIndicator, false)
         }
         
         wait { sut.button.showsActivityIndicator == false }
