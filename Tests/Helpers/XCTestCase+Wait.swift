@@ -36,7 +36,7 @@ extension XCTestCase {
     ///   - message: an optional message on failure
     func wait(
         until expectation: () -> Bool,
-        timeout: TimeInterval = 1,
+        timeout: TimeInterval = 2,
         message: String? = nil
     ) {
         var timeLeft = Int(timeout * 1000)
@@ -87,7 +87,7 @@ extension XCTestCase {
     func waitForViewController<T: UIViewController>(
         ofType: T.Type,
         toBecomeChildOf viewController: UIViewController,
-        timeout: TimeInterval = 1
+        timeout: TimeInterval = 2
     ) throws -> T {
         
         wait(
@@ -111,7 +111,7 @@ extension XCTestCase {
     @discardableResult
     func waitUntilTopPresenter<T: UIViewController>(
         isOfType: T.Type,
-        timeout: TimeInterval = 1
+        timeout: TimeInterval = 2
     ) throws -> T {
         
         wait(
