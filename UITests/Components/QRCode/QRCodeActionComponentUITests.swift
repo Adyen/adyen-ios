@@ -67,12 +67,11 @@ class QRCodeActionComponentUITests: XCTestCase {
         sut.presentationDelegate = presentationDelegate
 
         presentationDelegate.doPresent = { component in
-            XCTAssertNotNil(component.viewController as? QRCodeViewController)
+            let qrCodeViewController = component.viewController as? QRCodeViewController
+            XCTAssertNotNil(qrCodeViewController)
             
-            UIApplication.shared.adyen.mainKeyWindow?.rootViewController = component.viewController
-            
-            // wait until the expiration label is rendered
-            self.wait(for: .seconds(1))
+            self.setupRootViewController(component.viewController)
+            self.wait { qrCodeViewController?.qrCodeView.expirationLabel.text?.starts(with: "You have") == true }
             
             self.assertViewControllerImage(matching: component.viewController, named: "promptPay")
 
@@ -128,12 +127,12 @@ class QRCodeActionComponentUITests: XCTestCase {
         sut.presentationDelegate = presentationDelegate
 
         presentationDelegate.doPresent = { component in
-            XCTAssertNotNil(component.viewController as? QRCodeViewController)
+            let qrCodeViewController = component.viewController as? QRCodeViewController
+            XCTAssertNotNil(qrCodeViewController)
             
-            UIApplication.shared.adyen.mainKeyWindow?.rootViewController = component.viewController
-            
-            // wait until the expiration label is rendered
-            self.wait(for: .seconds(2))
+            self.setupRootViewController(component.viewController)
+            self.wait { qrCodeViewController?.qrCodeView.expirationLabel.text?.starts(with: "You have") == true }
+            self.wait { qrCodeViewController?.qrCodeView.logo.image != nil }
             
             self.assertViewControllerImage(matching: component.viewController, named: "pix")
 
@@ -189,13 +188,12 @@ class QRCodeActionComponentUITests: XCTestCase {
         sut.presentationDelegate = presentationDelegate
 
         presentationDelegate.doPresent = { component in
-            XCTAssertNotNil(component.viewController as? QRCodeViewController)
+            let qrCodeViewController = component.viewController as? QRCodeViewController
+            XCTAssertNotNil(qrCodeViewController)
 
-            UIApplication.shared.adyen.mainKeyWindow?.rootViewController = component.viewController
-
-            // wait until the expiration label is rendered
-            self.wait(for: .seconds(1))
-
+            self.setupRootViewController(component.viewController)
+            self.wait { qrCodeViewController?.qrCodeView.expirationLabel.text?.starts(with: "You have") == true }
+            
             self.assertViewControllerImage(matching: component.viewController, named: "upi")
 
             dummyExpectation.fulfill()
@@ -251,15 +249,17 @@ class QRCodeActionComponentUITests: XCTestCase {
         sut.presentationDelegate = presentationDelegate
 
         presentationDelegate.doPresent = { component in
-            let qrCodeViewController = component.viewController as! QRCodeViewController
+            let qrCodeViewController = component.viewController as? QRCodeViewController
             XCTAssertNotNil(qrCodeViewController)
-            let pollingComponentToolBar = CancellingToolBar(title: qrCodeViewController.title, style: NavigationStyle())
+            
+            let pollingComponentToolBar = CancellingToolBar(title: qrCodeViewController!.title, style: NavigationStyle())
             let wrapperVC = WrapperViewController(
-                child: ModalViewController(rootViewController: qrCodeViewController, navBarType: .custom(pollingComponentToolBar)))
+                child: ModalViewController(rootViewController: qrCodeViewController!, navBarType: .custom(pollingComponentToolBar)))
 
             // wait until the expiration label is rendered
-            self.wait(for: .seconds(1))
             XCTAssertNotNil(wrapperVC)
+            
+            self.wait { qrCodeViewController?.qrCodeView.expirationLabel.text?.starts(with: "You have") == true }
             self.assertViewControllerImage(matching: component.viewController, named: "upi_cancel_button")
 
             dummyExpectation.fulfill()

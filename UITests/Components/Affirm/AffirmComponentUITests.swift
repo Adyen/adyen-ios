@@ -47,7 +47,8 @@ class AffirmComponentUITests: XCTestCase {
                                                                                )))
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
-        UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
+        
+        setupRootViewController(sut.viewController)
 
         // Then
         let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
@@ -64,8 +65,6 @@ class AffirmComponentUITests: XCTestCase {
             sut.stopLoadingIfNeeded()
             didSubmitExpectation.fulfill()
         }
-
-        wait(for: .milliseconds(300))
 
         assertViewControllerImage(matching: sut.viewController, named: "shopper-info-prefilled")
         
@@ -86,9 +85,8 @@ class AffirmComponentUITests: XCTestCase {
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          context: context,
                                          configuration: config)
-        UIApplication.shared.adyen.mainKeyWindow?.rootViewController = prefillSut.viewController
-
-        wait(for: .milliseconds(300))
+        
+        setupRootViewController(prefillSut.viewController)
 
         // Then
 
@@ -128,9 +126,8 @@ class AffirmComponentUITests: XCTestCase {
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          context: Dummy.context(with: nil),
                                          configuration: config)
-        UIApplication.shared.adyen.mainKeyWindow?.rootViewController = prefillSut.viewController
-
-        wait(for: .milliseconds(300))
+        
+        setupRootViewController(prefillSut.viewController)
 
         // Then
         let expectedFirstName = try XCTUnwrap(shopperInformation.shopperName?.firstName)
@@ -168,9 +165,8 @@ class AffirmComponentUITests: XCTestCase {
                                                   countryCode: "US"))
         let sut = AffirmComponent(paymentMethod: paymentMethod,
                                   context: context)
-        UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
-
-        wait(for: .milliseconds(300))
+        
+        setupRootViewController(sut.viewController)
 
         // Then
         let firstName = try XCTUnwrap(sut.firstNameItem?.value)
