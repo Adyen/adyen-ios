@@ -123,7 +123,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
     }
 
     private func finish(with result: PaymentsResponse) {
-        let success = result.resultCode == .authorised || result.resultCode == .received || result.resultCode == .pending
+        let success = result.isAccepted
         let message = "\(result.resultCode.rawValue) \(result.amount?.formatted ?? "")"
         finalize(success, message)
     }
@@ -169,15 +169,23 @@ extension DropInAdvancedFlowExample: DropInComponentDelegate {
     }
 
     func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
-        didProvide(data, from: component)
+        (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
+        let request = PaymentDetailsRequest(
+            details: data.details,
+            paymentData: data.paymentData,
+            merchantAccount: ConfigurationConstants.current.merchantAccount
+        )
+        apiClient.perform(request) { [weak self] result in
+            self?.paymentResponseHandler(result: result)
+        }
     }
 
     func didComplete(from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
-        didComplete(from: component)
+        finish(with: .received)
     }
 
     func didFail(with error: Error, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
-        didFail(with: error, from: component)
+        finish(with: error)
     }
 
     internal func didCancel(component: PaymentComponent, from dropInComponent: AnyDropInComponent) {
@@ -288,29 +296,6 @@ extension DropInAdvancedFlowExample: StoredPaymentMethodsDelegate {
             completion(false)
         case let .success(response):
             completion(response.response == .detailsDisabled)
-        }
-    }
-}
-
-extension DropInAdvancedFlowExample: ActionComponentDelegate {
-
-    internal func didFail(with error: Error, from component: ActionComponent) {
-        finish(with: error)
-    }
-
-    internal func didComplete(from component: ActionComponent) {
-        finish(with: .received)
-    }
-
-    internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
-        let request = PaymentDetailsRequest(
-            details: data.details,
-            paymentData: data.paymentData,
-            merchantAccount: ConfigurationConstants.current.merchantAccount
-        )
-        apiClient.perform(request) { [weak self] result in
-            self?.paymentResponseHandler(result: result)
         }
     }
 }

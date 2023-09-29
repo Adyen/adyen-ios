@@ -27,9 +27,17 @@ public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod {
     
     @_spi(AdyenInternal)
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: cashtag,
-                           subtitle: name,
-                           logoName: type.rawValue)
+        let accessibilityLabel = [
+            name,
+            "\(localizedString(.cashAppPayCashtag, parameters)): \(cashtag)"
+        ].joined(separator: ", ")
+        
+        return DisplayInformation(
+            title: cashtag,
+            subtitle: name,
+            logoName: type.rawValue,
+            accessibilityLabel: accessibilityLabel
+        )
     }
     
     private enum CodingKeys: String, CodingKey {

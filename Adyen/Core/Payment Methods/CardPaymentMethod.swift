@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -72,10 +72,21 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
 
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let expireDate = expiryMonth + "/" + String(expiryYear.suffix(2))
+        let localizedExpiryDate = localizedString(.cardStoredExpires, parameters, expireDate)
         
-        return DisplayInformation(title: String.Adyen.securedString + lastFour,
-                                  subtitle: localizedString(.cardStoredExpires, parameters, expireDate),
-                                  logoName: brand.rawValue)
+        let lastFourSeparated = lastFour.map { String($0) }.joined(separator: ", ")
+        let accessibilityLabel = [
+            brand.name,
+            "\(localizedString(.accessibilityLastFourDigits, parameters)): \(lastFourSeparated)",
+            localizedExpiryDate
+        ].joined(separator: ", ")
+        
+        return DisplayInformation(
+            title: String.Adyen.securedString + lastFour,
+            subtitle: localizedExpiryDate,
+            logoName: brand.rawValue,
+            accessibilityLabel: accessibilityLabel
+        )
     }
     
     @_spi(AdyenInternal)
