@@ -86,7 +86,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
     }
 
     internal func finish(with result: PaymentsResponse) {
-        let success = result.resultCode == .authorised || result.resultCode == .received || result.resultCode == .pending
+        let success = result.isAccepted
         let message = "\(result.resultCode.rawValue) \(result.amount?.formatted ?? "")"
         finalize(success, message)
     }
