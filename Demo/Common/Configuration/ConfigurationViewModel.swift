@@ -20,7 +20,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var showsStorePaymentMethodField = true
     @Published internal var showsStoredCardSecurityCodeField = true
     @Published internal var showsSecurityCodeField = true
-    @Published internal var addressMode: CardComponentSettings.AddressFormType = .none
+    @Published internal var addressMode: CardSettings.AddressFormType = .none
     @Published internal var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
     @Published internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
     @Published internal var allowDisablingStoredPaymentMethods: Bool = false
@@ -50,13 +50,13 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.value = configuration.value.description
         self.apiVersion = configuration.apiVersion.description
         self.merchantAccount = configuration.merchantAccount
-        self.showsHolderNameField = configuration.cardComponentSettings.showsHolderNameField
-        self.showsStorePaymentMethodField = configuration.cardComponentSettings.showsStorePaymentMethodField
-        self.showsStoredCardSecurityCodeField = configuration.cardComponentSettings.showsStoredCardSecurityCodeField
-        self.showsSecurityCodeField = configuration.cardComponentSettings.showsSecurityCodeField
-        self.addressMode = configuration.cardComponentSettings.addressMode
-        self.socialSecurityNumberMode = configuration.cardComponentSettings.socialSecurityNumberMode
-        self.koreanAuthenticationMode = configuration.cardComponentSettings.koreanAuthenticationMode
+        self.showsHolderNameField = configuration.cardSettings.showsHolderNameField
+        self.showsStorePaymentMethodField = configuration.cardSettings.showsStorePaymentMethodField
+        self.showsStoredCardSecurityCodeField = configuration.cardSettings.showsStoredCardSecurityCodeField
+        self.showsSecurityCodeField = configuration.cardSettings.showsSecurityCodeField
+        self.addressMode = configuration.cardSettings.addressMode
+        self.socialSecurityNumberMode = configuration.cardSettings.socialSecurityNumberMode
+        self.koreanAuthenticationMode = configuration.cardSettings.koreanAuthenticationMode
         self.allowDisablingStoredPaymentMethods = configuration.dropInSettings.allowDisablingStoredPaymentMethods
         self.allowsSkippingPaymentList = configuration.dropInSettings.allowsSkippingPaymentList
         self.allowPreselectedPaymentView = configuration.dropInSettings.allowPreselectedPaymentView
@@ -80,7 +80,7 @@ internal final class ConfigurationViewModel: ObservableObject {
             value: Int(value) ?? configuration.value,
             currencyCode: currencyCode,
             apiVersion: Int(apiVersion) ?? configuration.apiVersion,
-            merchantAccount: merchantAccount, cardComponentSettings: CardComponentSettings(
+            merchantAccount: merchantAccount, cardSettings: CardSettings(
                 showsHolderNameField: showsHolderNameField,
                 showsStorePaymentMethodField: showsStorePaymentMethodField,
                 showsStoredCardSecurityCodeField: showsStoredCardSecurityCodeField,

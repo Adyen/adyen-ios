@@ -146,7 +146,7 @@ internal struct ConfigurationView: View {
     }
 
     internal var cardComponentSection: some View {
-        NavigationLink(destination: CardComponentSettingsView(viewModel: viewModel)) {
+        NavigationLink(destination: CardSettingsView(viewModel: viewModel)) {
             HStack {
                 Text("Card Component")
             }

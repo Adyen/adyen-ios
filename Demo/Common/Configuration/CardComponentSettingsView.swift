@@ -9,31 +9,33 @@ import AdyenCard
 import SwiftUI
 
 @available(iOS 13.0.0, *)
-internal struct CardComponentSettingsView: View {
+internal struct CardSettingsView: View {
     @ObservedObject internal var viewModel: ConfigurationViewModel
     
     internal var body: some View {
 
         NavigationView {
             List {
-                Section {
+                Section(header: Text("Visibility")) {
                     Toggle(isOn: $viewModel.showsHolderNameField) {
-                        Text("Show Holder Name")
+                        Text("Holder Name")
                     }
                     
                     Toggle(isOn: $viewModel.showsStorePaymentMethodField) {
                         VStack(alignment: .leading) {
-                            Text("Store Payment Method")
+                            Text("Store Payment Method Toggle")
                             Text("(Requires API version 70 or higher)")
                                 .foregroundColor(.gray)
                                 .font(.footnote)
                         }
                     }
                     Toggle(isOn: $viewModel.showsSecurityCodeField) {
-                        Text("Show Security Code")
+                        Text("Security Code")
                     }
-                    Picker("Address mode", selection: $viewModel.addressMode) {
-                        ForEach(CardComponentSettings.AddressFormType.allCases, id: \.self) {
+                }
+                Section(header: Text("Input Modes")) {
+                    Picker("Billing Address mode", selection: $viewModel.addressMode) {
+                        ForEach(CardSettings.AddressFormType.allCases, id: \.self) {
                             Text($0.displayName)
                         }
                     }
@@ -50,10 +52,9 @@ internal struct CardComponentSettingsView: View {
                 }
                 Section(header: Text("Stored Card")) {
                     Toggle(isOn: $viewModel.showsStoredCardSecurityCodeField) {
-                        Text("Show Security Code")
+                        Text("Security Code")
                     }
                 }
-
             }
             .navigationBarTitle("")
             .navigationBarHidden(true)
@@ -61,7 +62,7 @@ internal struct CardComponentSettingsView: View {
     }
 }
 
-extension CardComponentSettings.AddressFormType {
+extension CardSettings.AddressFormType {
 
     public var displayName: String {
         self.rawValue.capitalized
