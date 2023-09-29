@@ -191,7 +191,7 @@ import XCTest
                 
                 XCTAssertEqual(details.grantId, "grantId1")
                 XCTAssertNil(details.cashtag)
-                XCTAssertNil(details.customerId)
+                XCTAssertEqual(details.customerId, "testId")
                 XCTAssertNil(details.onFileGrantId)
 
                 sut.finalizeIfNeeded(with: true, completion: {

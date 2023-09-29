@@ -70,7 +70,7 @@ let package = Package(
         .package(
             name: "PayKit",
             url: "https://github.com/cashapp/cash-app-pay-ios-sdk",
-            .exact(Version(0, 3, 3))
+            .exact(Version(0, 5, 1))
         )
     ],
     targets: [
@@ -89,7 +89,7 @@ let package = Package(
             name: "AdyenEncryption",
             dependencies: [
                 .target(name: "Adyen")
-	    ],
+            ],
             path: "AdyenEncryption",
             exclude: [
                 "Info.plist"
