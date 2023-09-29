@@ -5,18 +5,16 @@
 //
 
 import Adyen
-import AdyenCard
 import AdyenComponents
 import AdyenSession
 
-internal final class CardComponentExample: InitialDataFlowProtocol {
+internal final class IssuerListComponentExample: InitialDataFlowProtocol {
 
     // MARK: - Properties
-    
-    internal weak var presenter: PresenterExampleProtocol?
 
-    private var session: AdyenSession?
-    private var cardComponent: PresentableComponent?
+    internal var session: AdyenSession?
+    internal weak var presenter: PresenterExampleProtocol?
+    internal var issuerListComponent: IssuerListComponent?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
 
@@ -28,98 +26,82 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         presenter?.showLoadingIndicator()
         loadSession { [weak self] response in
             guard let self else { return }
-            
+
             self.presenter?.hideLoadingIndicator()
-                
+
             switch response {
             case let .success(session):
                 self.session = session
                 self.presentComponent(with: session)
-                
+
             case let .failure(error):
                 self.presentAlert(with: error)
             }
         }
     }
-    
+
     // MARK: - Networking
 
-    private func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
+    internal func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
         requestAdyenSessionConfiguration { [weak self] response in
             guard let self else { return }
-            
             switch response {
             case let .success(configuration):
                 AdyenSession.initialize(with: configuration,
                                         delegate: self,
                                         presentationDelegate: self,
                                         completion: completion)
-                
             case let .failure(error):
                 completion(.failure(error))
             }
         }
     }
-    
-    // MARK: - Presentation
-    
-    private func presentComponent(with session: AdyenSession) {
+
+    // MARK: Presentation
+
+    internal func presentComponent(with session: AdyenSession) {
         do {
-            let component = try cardComponent(from: session)
+            let component = try issuerListComponent(from: session)
             let componentViewController = viewController(for: component)
             presenter?.present(viewController: componentViewController, completion: nil)
-            cardComponent = component
+            issuerListComponent = component
         } catch {
             self.presentAlert(with: error)
         }
     }
-    
-    private func cardComponent(from session: AdyenSession) throws -> CardComponent {
-        let paymentMethods = session.sessionContext.paymentMethods
-        
-        guard let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else {
-            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
-        }
 
-        let component = CardComponent(paymentMethod: paymentMethod,
-                                      context: context,
-                                      configuration: ConfigurationConstants.current.cardConfiguration)
+    private func issuerListComponent(from session: AdyenSession) throws -> IssuerListComponent {
+        let paymentMethods = session.sessionContext.paymentMethods
+        guard let paymentMethod = paymentMethods.paymentMethod(ofType: IssuerListPaymentMethod.self) else {
+            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: IssuerListPaymentMethod.self)
+        }
+        
+        let component = IssuerListComponent(paymentMethod: paymentMethod, context: context)
         component.delegate = session
         return component
     }
 
+    private func present(_ component: PresentableComponent) {
+        presenter?.present(viewController: component.viewController, completion: nil)
+    }
+
     // MARK: - Alert handling
 
-    private func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
+    internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         presenter?.presentAlert(with: error, retryHandler: retryHandler)
     }
 
-    private func dismissAndShowAlert(_ success: Bool, _ message: String) {
+    internal func dismissAndShowAlert(_ success: Bool, _ message: String) {
         presenter?.dismiss {
             // Payment is processed. Add your code here.
             let title = success ? "Success" : "Error"
             self.presenter?.presentAlert(withTitle: title, message: message)
         }
     }
+
 }
 
-extension CardComponentExample: CardComponentDelegate {
-
-    func didSubmit(lastFour: String, finalBIN: String, component: CardComponent) {
-        print("Card used: **** **** **** \(lastFour)")
-        print("Final BIN: \(finalBIN)")
-    }
-
-    internal func didChangeBIN(_ value: String, component: CardComponent) {
-        print("Current BIN: \(value)")
-    }
-
-    internal func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent) {
-        print("Current card type: \((value ?? []).reduce("") { "\($0), \($1)" })")
-    }
-}
-
-extension CardComponentExample: AdyenSessionDelegate {
+extension IssuerListComponentExample: AdyenSessionDelegate {
     
     func didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession) {
         dismissAndShowAlert(result.resultCode.isSuccess, result.resultCode.rawValue)
@@ -129,18 +111,20 @@ extension CardComponentExample: AdyenSessionDelegate {
         dismissAndShowAlert(false, error.localizedDescription)
     }
 
-    func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {}
-
+    func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {
+        print(#function)
+    }
 }
 
-extension CardComponentExample: PresentationDelegate {
+extension IssuerListComponentExample: PresentationDelegate {
+    // The implementation of this delegate method is not needed when using AdyenSession
     internal func present(component: PresentableComponent) {
         let componentViewController = viewController(for: component)
         presenter?.present(viewController: componentViewController, completion: nil)
     }
 }
 
-private extension CardComponentExample {
+private extension IssuerListComponentExample {
     
     func viewController(for component: PresentableComponent) -> UIViewController {
         guard component.requiresModalPresentation else {
@@ -155,7 +139,7 @@ private extension CardComponentExample {
     }
     
     @objc private func cancelPressed() {
-        cardComponent?.cancelIfNeeded()
+        issuerListComponent?.cancelIfNeeded()
         presenter?.dismiss(completion: nil)
     }
 }
