@@ -22,8 +22,6 @@ class AddressInputFormViewControllerTests: XCTestCase {
         )
         
         setupRootViewController(viewController)
-        
-        // When
 
         let view: UIView = viewController.view
 
@@ -57,6 +55,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         try doneButton.tap()
         
         wait(until: houseNumberItemView.alertLabel, at: \.isHidden, is: false)
+
         XCTAssertFalse(addressItemView.alertLabel.isHidden)
         XCTAssertTrue(apartmentSuiteItemView.alertLabel.isHidden)
         XCTAssertFalse(cityItemView.alertLabel.isHidden)

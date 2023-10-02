@@ -209,7 +209,7 @@ internal final class VoucherView: UIView, Localizable {
         }
     }
     
-    internal func showCopyCodeConfirmation(resetAfter: DispatchTimeInterval = .seconds(4)) {
+    internal func showCopyCodeConfirmation(resetAfter resetDelay: DispatchTimeInterval = .seconds(4)) {
         UIView.transition(
             with: secondaryButton,
             duration: 0.5,
@@ -222,7 +222,7 @@ internal final class VoucherView: UIView, Localizable {
                 )
             }, completion: { _ in
                 DispatchQueue.main.asyncAfter(
-                    deadline: .now() + resetAfter
+                    deadline: .now() + resetDelay
                 ) {
                     self.returnSecondaryButtonToNormalState()
                 }

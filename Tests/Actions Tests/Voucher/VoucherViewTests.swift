@@ -52,11 +52,9 @@ class VoucherViewTests: XCTestCase {
         )
         sut.delegate = delegateMock
         
-        let mainButton = sut.findView(by: "mainButton")
+        XCTAssertNil(sut.findView(by: "mainButton"))
+        
         let addToAppleWalletButton: PKAddPassButton = try XCTUnwrap(sut.findView(by: "appleWalletButton"))
-        
-        XCTAssertNil(mainButton)
-        
         addToAppleWalletButton.sendActions(for: .touchUpInside)
         
         waitForExpectations(timeout: 5, handler: nil)
@@ -85,9 +83,7 @@ class VoucherViewTests: XCTestCase {
         
         let mainButton: SubmitButton = try XCTUnwrap(sut.findView(by: "mainButton"))
         let secondaryButton: UIButton = try XCTUnwrap(sut.findView(by: "secondaryButton"))
-        let addToAppleWalletButton: PKAddPassButton? = sut.findView(by: "appleWalletButton")
-        
-        XCTAssertNil(addToAppleWalletButton)
+        XCTAssertNil(sut.findView(by: "appleWalletButton"))
         
         XCTAssertEqual(mainButton.title, mockModel.mainButton)
         XCTAssertEqual(secondaryButton.title(for: .normal), mockModel.secondaryButtonTitle)
@@ -137,17 +133,18 @@ class VoucherViewTests: XCTestCase {
     
     func getSut(model: VoucherView.Model) throws -> VoucherView {
         let sut = VoucherView(model: model)
-        
+
         let viewController = UIViewController()
         viewController.view = sut
         sut.frame = UIScreen.main.bounds
         
         setupRootViewController(viewController)
-        
+
         return sut
     }
     
     func getMockModel(
+        action: VoucherAction,
         action: VoucherAction,
         mainButtonType: VoucherView.Model.Button,
         style: VoucherView.Model.Style
