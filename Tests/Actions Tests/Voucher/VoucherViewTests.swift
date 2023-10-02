@@ -145,7 +145,6 @@ class VoucherViewTests: XCTestCase {
     
     func getMockModel(
         action: VoucherAction,
-        action: VoucherAction,
         mainButtonType: VoucherView.Model.Button,
         style: VoucherView.Model.Style
     ) -> VoucherView.Model {

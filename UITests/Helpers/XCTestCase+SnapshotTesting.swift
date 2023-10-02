@@ -39,7 +39,7 @@ extension XCTestCase {
         for device in devices {
             assertSnapshot(
                 matching: try viewController(),
-                as: .image(on: device, precision: 0.99),
+                as: .image(on: device, perceptualPrecision: 0.99),
                 named: name,
                 file: file,
                 testName: "\(testName)-\(device.description)",
@@ -60,6 +60,7 @@ extension XCTestCase {
             of: viewController(),
             as: snapshotting,
             named: name,
+            record: false,
             file: file,
             testName: testName,
             line: line
