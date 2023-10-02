@@ -67,7 +67,7 @@ final class BLIKComponentUITests: XCTestCase {
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
-    func testSubmitForm() {
+    func testSubmitForm() throws {
         let config = BLIKComponent.Configuration(style: style)
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
@@ -76,12 +76,14 @@ final class BLIKComponentUITests: XCTestCase {
         
         setupRootViewController(sut.viewController)
 
-        let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
+        let submitButton: UIControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button"))
 
-        let blikCodeView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
-        self.populate(textItemView: blikCodeView, with: "123456")
-
-        submitButton?.sendActions(for: .touchUpInside)
+        let blikCodeView: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem"))
+        
+        populate(textItemView: blikCodeView, with: "123456")
+        wait(until: blikCodeView, at: \.textField.text, is: "123456")
+        
+        submitButton.sendActions(for: .touchUpInside)
 
         let delegateExpectation = XCTestExpectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
 
@@ -97,8 +99,10 @@ final class BLIKComponentUITests: XCTestCase {
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
         }
         
-        wait { sut.button.showsActivityIndicator == false }
+        wait(for: [delegateExpectation], timeout: 10)
+        
         wait(for: .aMoment)
+        
         assertViewControllerImage(matching: sut.viewController, named: "blik_flow")
     }
 

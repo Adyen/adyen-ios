@@ -149,7 +149,8 @@ class UPIComponentUITests: XCTestCase {
         setupRootViewController(sut.viewController)
 
         let virtualPaymentAddressItem: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem")
-        self.populate(textItemView: virtualPaymentAddressItem, with: "testvpa@icici")
+        populate(textItemView: virtualPaymentAddressItem, with: "testvpa@icici")
+        wait(for: .aMoment)
 
         assertViewControllerImage(matching: sut.viewController, named: "prefilled_vpa")
 

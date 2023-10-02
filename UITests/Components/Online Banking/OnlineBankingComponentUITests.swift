@@ -86,14 +86,14 @@ class OnlineBankingComponentUITests: XCTestCase {
 
         setupRootViewController(sut.viewController)
         
+        assertViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
+        
         // Then
         let button: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button"))
         
         button.sendActions(for: .touchUpInside)
         
         wait(for: [didContinueExpectation], timeout: 10)
-        
-        assertViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
     }
 
     func testContinueButtonLoading() throws {
