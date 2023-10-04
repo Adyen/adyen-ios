@@ -136,22 +136,25 @@ class UPIComponentUITests: XCTestCase {
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
 
+        let expectedPaymentAddress = "testvpa@icici"
+        
         delegateMock.onDidSubmit = { data, component in
             // Assert
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is UPIComponentDetails)
             let data = data.paymentMethod as! UPIComponentDetails
-            XCTAssertEqual(data.virtualPaymentAddress, "testvpa@icici")
+            XCTAssertEqual(data.virtualPaymentAddress, expectedPaymentAddress)
             XCTAssertNotNil(data.type)
             didSubmitExpectation.fulfill()
         }
         
         setupRootViewController(sut.viewController)
 
-        let virtualPaymentAddressItem: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem")
-        populate(textItemView: virtualPaymentAddressItem, with: "testvpa@icici")
+        let virtualPaymentAddressItem: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem"))
+        populate(textItemView: virtualPaymentAddressItem, with: expectedPaymentAddress)
+        wait(until: virtualPaymentAddressItem, at: \.textField.text, is: expectedPaymentAddress)
         wait(for: .aMoment)
-
+        
         assertViewControllerImage(matching: sut.viewController, named: "prefilled_vpa")
 
         let continueButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button")
