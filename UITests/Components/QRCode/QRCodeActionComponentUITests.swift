@@ -11,18 +11,6 @@ import XCTest
 
 class QRCodeActionComponentUITests: XCTestCase {
 
-    var context: AdyenContext!
-
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        context = Dummy.context
-    }
-
-    override func tearDownWithError() throws {
-        context = nil
-        try super.tearDownWithError()
-    }
-
     func testUIConfigurationForPromptPay() {
         lazy var method = InstantPaymentMethod(type: .other("promptpay"), name: "promptpay")
         let action = QRCodeAction(paymentMethodType: .promptPay, qrCodeData: "DummyData", paymentData: "DummyData")
@@ -61,7 +49,7 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         style.backgroundColor = UIColor.Adyen.componentSeparator
 
-        let sut = QRCodeActionComponent(context: context)
+        let sut = QRCodeActionComponent(context: Dummy.context)
         sut.configuration.style = style
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
@@ -74,6 +62,7 @@ class QRCodeActionComponentUITests: XCTestCase {
             self.wait { qrCodeViewController?.qrCodeView.expirationLabel.text?.starts(with: "This QR code is valid for") == true }
             self.wait { qrCodeViewController?.qrCodeView.logo.image != nil }
             
+            // TODO: This is a flaky test as the timer and logo image might not match
             self.assertViewControllerImage(matching: component.viewController, named: "promptPay")
 
             dummyExpectation.fulfill()
@@ -122,7 +111,7 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         style.backgroundColor = UIColor.Adyen.componentSeparator
 
-        let sut = QRCodeActionComponent(context: context)
+        let sut = QRCodeActionComponent(context: Dummy.context)
         sut.configuration.style = style
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
@@ -184,7 +173,7 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         style.backgroundColor = UIColor.Adyen.componentSeparator
 
-        let sut = QRCodeActionComponent(context: context)
+        let sut = QRCodeActionComponent(context: Dummy.context)
         sut.configuration.style = style
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
@@ -247,7 +236,7 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         style.backgroundColor = UIColor.Adyen.componentSeparator
 
-        let sut = QRCodeActionComponent(context: context)
+        let sut = QRCodeActionComponent(context: Dummy.context)
         sut.configuration.style = style
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate

@@ -74,6 +74,7 @@ class OnlineBankingComponentUITests: XCTestCase {
         sut.delegate = delegate
 
         setupRootViewController(sut.viewController)
+        wait(for: .aMoment)
         
         assertViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
         
