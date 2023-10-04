@@ -54,6 +54,7 @@ final class BLIKComponentUITests: XCTestCase {
         let sut = createBLIKComponent(with: .init(style: style))
 
         setupRootViewController(sut.viewController)
+        wait(for: .aMoment)
         
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
