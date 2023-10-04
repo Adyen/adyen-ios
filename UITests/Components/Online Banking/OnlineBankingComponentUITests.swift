@@ -10,26 +10,20 @@ import AdyenDropIn
 import XCTest
 
 class OnlineBankingComponentUITests: XCTestCase {
-
-    private var paymentMethod: OnlineBankingPaymentMethod!
-    private var context: AdyenContext!
-    private var style: FormComponentStyle!
-
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        paymentMethod = try! AdyenCoder.decode(onlineBankingDictionary) as OnlineBankingPaymentMethod
-        context = AdyenContext(apiContext: Dummy.apiContext, payment: nil)
-        style = FormComponentStyle()
+    
+    private func createOnlineBankingComponent(with config: OnlineBankingComponent.Configuration = .init()) throws -> OnlineBankingComponent {
+        let paymentMethod = try AdyenCoder.decode(onlineBankingDictionary) as OnlineBankingPaymentMethod
+        let context = AdyenContext(apiContext: Dummy.apiContext, payment: nil)
+        
+        return OnlineBankingComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
     }
 
-    override func tearDownWithError() throws {
-        paymentMethod = nil
-        context = nil
-        style = nil
-        try super.tearDownWithError()
-    }
-
-    func testUIElements() {
+    func testUIElements() throws {
+        var style = FormComponentStyle()
         style.backgroundColor = .green
 
         /// Footer
@@ -55,19 +49,14 @@ class OnlineBankingComponentUITests: XCTestCase {
         style.textField.backgroundColor = .blue
 
         let config = OnlineBankingComponent.Configuration(style: style)
-        let sut = OnlineBankingComponent(paymentMethod: paymentMethod,
-                                         context: context,
-                                         configuration: config)
+        let sut = try createOnlineBankingComponent(with: config)
         
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
     func testPressContinueButton() throws {
         // Given
-        let config = OnlineBankingComponent.Configuration(style: style)
-        let sut = OnlineBankingComponent(paymentMethod: paymentMethod,
-                                         context: context,
-                                         configuration: config)
+        let sut = try createOnlineBankingComponent()
         
         let didContinueExpectation = XCTestExpectation(description: "Dummy Expectation")
         
@@ -98,10 +87,7 @@ class OnlineBankingComponentUITests: XCTestCase {
 
     func testContinueButtonLoading() throws {
         // Given
-        let config = OnlineBankingComponent.Configuration(style: style)
-        let sut = OnlineBankingComponent(paymentMethod: paymentMethod,
-                                         context: context,
-                                         configuration: config)
+        let sut = try createOnlineBankingComponent()
 
         setupRootViewController(sut.viewController)
        
@@ -109,11 +95,13 @@ class OnlineBankingComponentUITests: XCTestCase {
 
         // start loading
         button.showsActivityIndicator = true
+        wait(for: .aMoment)
         assertViewControllerImage(matching: sut.viewController, named: "initial_state")
 
         // stop loading
         sut.stopLoading()
         button.showsActivityIndicator = false
+        wait(for: .aMoment)
         assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
     }
 

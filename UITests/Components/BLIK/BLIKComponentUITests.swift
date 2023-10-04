@@ -10,27 +10,19 @@ import AdyenDropIn
 import XCTest
 
 final class BLIKComponentUITests: XCTestCase {
-
-    private var paymentMethod: BLIKPaymentMethod!
-    private var context: AdyenContext!
-    private var style: FormComponentStyle!
-
-    override func setUpWithError() throws {
-        paymentMethod = BLIKPaymentMethod(type: .blik, name: "test_name")
-        let payment = Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
-        context = AdyenContext(apiContext: Dummy.apiContext, payment: payment)
-        style = FormComponentStyle()
-        try super.setUpWithError()
-    }
-
-    override func tearDownWithError() throws {
-        paymentMethod = nil
-        context = nil
-        style = nil
+    
+    private func createBLIKComponent(with config: BLIKComponent.Configuration = .init()) -> BLIKComponent {
+        let paymentMethod = BLIKPaymentMethod(type: .blik, name: "test_name")
+        let context = AdyenContext(
+            apiContext: Dummy.apiContext,
+            payment: Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
+        )
+        
+        return BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
     }
 
     func testUIConfiguration() {
-        style = FormComponentStyle()
+        var style = FormComponentStyle()
 
         style.hintLabel.backgroundColor = .brown
         style.hintLabel.font = .systemFont(ofSize: 10)
@@ -59,8 +51,7 @@ final class BLIKComponentUITests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        let config = BLIKComponent.Configuration(style: style)
-        let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+        let sut = createBLIKComponent(with: .init(style: style))
 
         setupRootViewController(sut.viewController)
         
@@ -68,8 +59,7 @@ final class BLIKComponentUITests: XCTestCase {
     }
 
     func testSubmitForm() throws {
-        let config = BLIKComponent.Configuration(style: style)
-        let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+        let sut = createBLIKComponent()
 
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -107,8 +97,7 @@ final class BLIKComponentUITests: XCTestCase {
     }
 
     func testSubmitButtonLoading() {
-        let config = BLIKComponent.Configuration(style: style)
-        let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+        let sut = createBLIKComponent()
 
         setupRootViewController(sut.viewController)
 
