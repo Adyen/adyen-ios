@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -158,7 +158,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         return button
     }()
 
-    private lazy var logo: NetworkImageView = {
+    internal lazy var logo: NetworkImageView = {
         let logo = NetworkImageView()
         let logoSize = CGSize(width: 74.0, height: 48.0)
         logo.adyen.round(using: model.style.logoCornerRounding)
@@ -218,7 +218,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         return progressView
     }()
     
-    private lazy var expirationLabel: UILabel = {
+    internal lazy var expirationLabel: UILabel = {
         let expirationLabel = UILabel(style: model.style.expirationLabel)
         expirationLabel.numberOfLines = 0
         expirationLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "expirationLabel")

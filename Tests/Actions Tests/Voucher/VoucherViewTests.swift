@@ -22,29 +22,21 @@ class VoucherViewTests: XCTestCase {
         )
     )
 
-    func testCustomUI() {
+    func testCustomUI() throws {
         
         let style = getMockStyle()
         
-        let sut = getSut(model: getMockModel(action: action, mainButtonType: .save, style: style))
+        let sut = try getSut(model: getMockModel(action: action, mainButtonType: .save, style: style))
         
-        let dummyExpectation = expectation(description: "Dummy expectation")
-        
-        asyncAfterDelay { [self] in
-            check(layer: sut.findView(by: "logo")!.layer, forCornerRounding: style.logoCornerRounding)
-            check(label: sut.findView(by: "amountLabel")!, forStyle: style.amountLabel)
-            check(label: sut.findView(by: "currencyLabel")!, forStyle: style.currencyLabel)
-            check(submitButton: sut.findView(by: "mainButton")! as! SubmitButton, forStyle: style.mainButton)
-            check(button: sut.findView(by: "secondaryButton")!, forStyle: style.secondaryButton)
-            
-            dummyExpectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 5, handler: nil)
+        check(layer: sut.findView(by: "logo")!.layer, forCornerRounding: style.logoCornerRounding)
+        check(label: sut.findView(by: "amountLabel")!, forStyle: style.amountLabel)
+        check(label: sut.findView(by: "currencyLabel")!, forStyle: style.currencyLabel)
+        check(submitButton: sut.findView(by: "mainButton")! as! SubmitButton, forStyle: style.mainButton)
+        check(button: sut.findView(by: "secondaryButton")!, forStyle: style.secondaryButton)
         
     }
     
-    func testApplePayButton() {
+    func testApplePayButton() throws {
         let appleWalletButtonExpectation = expectation(description: "Apple wallet button tapped")
         
         let delegateMock = VoucherViewDelegateMock()
@@ -52,7 +44,7 @@ class VoucherViewTests: XCTestCase {
             appleWalletButtonExpectation.fulfill()
         }
         
-        let sut = getSut(
+        let sut = try getSut(
             model: getMockModel(
                 action: action,
                 mainButtonType: .addToAppleWallet,
@@ -61,20 +53,18 @@ class VoucherViewTests: XCTestCase {
         )
         sut.delegate = delegateMock
         
-        asyncAfterDelay {
-            let mainButton = sut.findView(by: "mainButton")
-            let addToAppleWalletButton: PKAddPassButton? = sut.findView(by: "appleWalletButton")
-            
-            XCTAssertNil(mainButton)
-            XCTAssertNotNil(addToAppleWalletButton)
-            
-            addToAppleWalletButton!.sendActions(for: .touchUpInside)
-        }
+        let mainButton = sut.findView(by: "mainButton")
+        let addToAppleWalletButton: PKAddPassButton? = sut.findView(by: "appleWalletButton")
+        
+        XCTAssertNil(mainButton)
+        XCTAssertNotNil(addToAppleWalletButton)
+        
+        addToAppleWalletButton!.sendActions(for: .touchUpInside)
         
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func testMainSecondaryButtons() {
+    func testMainSecondaryButtons() throws {
         let mainButtonExpectation = expectation(description: "Main button tapped")
         let secondaryButtonExpectation = expectation(description: "Secondary button tapped")
         
@@ -92,91 +82,70 @@ class VoucherViewTests: XCTestCase {
             style: getMockStyle()
         )
         
-        let sut = getSut(model: mockModel)
+        let sut = try getSut(model: mockModel)
         sut.delegate = delegateMock
         
-        asyncAfterDelay {
-            let mainButton: SubmitButton? = sut.findView(by: "mainButton")
-            let secondaryButton: UIButton? = sut.findView(by: "secondaryButton")
-            let addToAppleWalletButton: PKAddPassButton? = sut.findView(by: "appleWalletButton")
-            
-            XCTAssertNil(addToAppleWalletButton)
-            
-            XCTAssertEqual(mainButton?.title, mockModel.mainButton)
-            XCTAssertEqual(secondaryButton?.title(for: .normal), mockModel.secondaryButtonTitle)
-            
-            mainButton?.sendActions(for: .touchUpInside)
-            secondaryButton?.sendActions(for: .touchUpInside)
-        }
+        let mainButton: SubmitButton? = sut.findView(by: "mainButton")
+        let secondaryButton: UIButton? = sut.findView(by: "secondaryButton")
+        let addToAppleWalletButton: PKAddPassButton? = sut.findView(by: "appleWalletButton")
+        
+        XCTAssertNil(addToAppleWalletButton)
+        
+        XCTAssertEqual(mainButton?.title, mockModel.mainButton)
+        XCTAssertEqual(secondaryButton?.title(for: .normal), mockModel.secondaryButtonTitle)
+        
+        mainButton?.sendActions(for: .touchUpInside)
+        secondaryButton?.sendActions(for: .touchUpInside)
         
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func testModel() {
+    func testModel() throws {
         let mockModel = getMockModel(
             action: action,
             mainButtonType: .save,
             style: getMockStyle()
         )
         
-        let sut = getSut(model: mockModel)
-        let dummyExpectation = expectation(description: "Dummy expectation")
+        let sut = try getSut(model: mockModel)
         
-        asyncAfterDelay {
-            let amountLabel: UILabel? = sut.findView(by: "amountLabel")
-            let currencyLabel: UILabel? = sut.findView(by: "currencyLabel")
-            let logo: NetworkImageView? = sut.findView(by: "logo")
-            
-            XCTAssertEqual(amountLabel?.text, mockModel.amount)
-            XCTAssertEqual(currencyLabel?.text, mockModel.currency)
-            XCTAssertEqual(logo?.imageURL, mockModel.logoUrl)
-            
-            dummyExpectation.fulfill()
-        }
+        let amountLabel: UILabel? = sut.findView(by: "amountLabel")
+        let currencyLabel: UILabel? = sut.findView(by: "currencyLabel")
+        let logo: NetworkImageView? = sut.findView(by: "logo")
         
-        waitForExpectations(timeout: 5, handler: nil)
-        
+        XCTAssertEqual(amountLabel?.text, mockModel.amount)
+        XCTAssertEqual(currencyLabel?.text, mockModel.currency)
+        XCTAssertEqual(logo?.imageURL, mockModel.logoUrl)
     }
     
-    func testCopyCodeAnimation() {
+    func testCopyCodeAnimation() throws {
         let mockModel = getMockModel(
             action: action,
             mainButtonType: .save,
             style: getMockStyle()
         )
         
-        let sut = getSut(model: mockModel)
-        let dummyExpectation = expectation(description: "Dummy expectation")
+        let sut = try getSut(model: mockModel)
         
-        asyncAfterDelay {
-            sut.showCopyCodeConfirmation()
-            
-            self.asyncAfterDelay {
-                let secondaryButton: UIButton? = sut.findView(by: "secondaryButton")
-                XCTAssertEqual(secondaryButton?.title(for: .normal), mockModel.codeConfirmationTitle)
-                XCTAssertEqual(secondaryButton?.titleColor(for: .normal), mockModel.style.codeConfirmationColor)
-                
-                self.asyncAfterDelay(seconds: 5) {
-                    XCTAssertEqual(secondaryButton?.title(for: .normal), mockModel.secondaryButtonTitle)
-                    XCTAssertEqual(secondaryButton?.titleColor(for: .normal), mockModel.style.secondaryButton.title.color)
-                    
-                    dummyExpectation.fulfill()
-                }
-            }
-        }
+        sut.showCopyCodeConfirmation(resetAfter: .milliseconds(5))
         
-        waitForExpectations(timeout: 10, handler: nil)
+        let secondaryButton: UIButton = try XCTUnwrap(sut.findView(by: "secondaryButton"))
+        XCTAssertEqual(secondaryButton.title(for: .normal), mockModel.codeConfirmationTitle)
+        XCTAssertEqual(secondaryButton.titleColor(for: .normal), mockModel.style.codeConfirmationColor)
+        
+        wait { secondaryButton.title(for: .normal) == mockModel.secondaryButtonTitle }
+        XCTAssertEqual(secondaryButton.titleColor(for: .normal), mockModel.style.secondaryButton.title.color)
     }
     
-    func getSut(model: VoucherView.Model) -> VoucherView {
+    func getSut(model: VoucherView.Model) throws -> VoucherView {
         let sut = VoucherView(model: model)
-        
+
         let viewController = UIViewController()
         viewController.view = sut
         sut.frame = UIScreen.main.bounds
-        
-        UIApplication.shared.keyWindow?.rootViewController = viewController
-        
+
+        setupRootViewController(viewController)
+
         return sut
     }
     

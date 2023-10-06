@@ -1210,37 +1210,40 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
     }
     
-    func testSupportedCardLogoVisibility() {
+    func testSupportedCardLogoVisibility() throws {
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
 
-        wait(for: .milliseconds(300))
-
+        setupRootViewController(sut.viewController)
+        
         let numberItem = sut.cardViewController.items.numberContainerItem.numberItem
         
-        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
-        let logoItemView: FormCardLogosItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberContainerItem.supportedCardLogosItem")
-        
-        XCTAssertFalse(logoItemView!.isHidden)
-        
-        // valid card but still active. logos still should be hidden
+        let cardNumberItemView: FormCardNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
+        let logoItemView: FormCardLogosItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.CardComponent.numberContainerItem.supportedCardLogosItem"))
+
+        XCTAssertFalse(logoItemView.isHidden)
+
+        // valid card but still active. logos should be hidden
         populate(textItemView: cardNumberItemView, with: Dummy.visaCard.number!)
-        wait(for: .seconds(2))
-        XCTAssertTrue(logoItemView!.isHidden)
-        
+        wait(for: .seconds(5))
+        XCTAssertTrue(logoItemView.isHidden)
+
         // with valid card and inactive, logos should hide
         numberItem.isActive = false
-        wait(for: .milliseconds(300))
-        XCTAssertTrue(logoItemView!.isHidden)
-        
+        wait(for: .aMoment)
+        XCTAssertTrue(logoItemView.isHidden)
+
         // invalid card and active/inactive numberitem, logos should be visible
         populate(textItemView: cardNumberItemView, with: "1234")
         numberItem.isActive = true
-        wait(for: .milliseconds(300))
-        XCTAssertFalse(logoItemView!.isHidden)
+        wait(until: logoItemView, at: \.isHidden, is: false)
         numberItem.isActive = false
-        wait(for: .milliseconds(300))
-        XCTAssertFalse(logoItemView!.isHidden)
+        wait(for: .aMoment)
+        XCTAssertFalse(logoItemView.isHidden)
     }
 
     func testClearShouldResetPostalCodeItemToEmptyValue() throws {
