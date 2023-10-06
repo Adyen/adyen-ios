@@ -199,8 +199,8 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         let amountToPayLabel = UILabel(style: model.style.amountToPayLabel)
         amountToPayLabel.numberOfLines = 0
         amountToPayLabel.font = UIFont.preferredFont(forTextStyle: .callout).adyen.font(with: .bold)
-        if let currencyCode = model.payment?.amount.currencyCode {
-            amountToPayLabel.text = model.payment?.amount.formatted
+        if let amount = model.payment?.amount {
+            amountToPayLabel.text = amount.formatted
         }
         amountToPayLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "amountToPayLabel")
         
