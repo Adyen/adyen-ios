@@ -8,13 +8,14 @@ import Adyen
 import Contacts
 
 /// Example implementation of an address lookup provider with debouncing and cancelling previous calls
-public class DemoAddressLookupProvider {
+public class DemoAddressLookupProvider: AddressLookupProvider {
     
     private let minDebounceDelay: TimeInterval = 0.3
     private let artificialNetworkCallDelay: TimeInterval = 0.5
     
     private var searchTask: DispatchWorkItem? {
         willSet {
+            completionTask?.cancel()
             searchTask?.cancel()
         }
         didSet {
@@ -27,7 +28,18 @@ public class DemoAddressLookupProvider {
         }
     }
     
-    public func lookUp(searchTerm: String, resultHandler: @escaping ([PostalAddress]) -> Void) {
+    private var completionTask: DispatchWorkItem? {
+        willSet {
+            completionTask?.cancel()
+            searchTask?.cancel()
+        }
+        didSet {
+            guard let completionTask else { return }
+            DispatchQueue.main.async(execute: completionTask)
+        }
+    }
+    
+    public func lookUp(searchTerm: String, resultHandler: @escaping ([LookupAddressModel]) -> Void) {
         
         // Nil-ing out the last search task which also cancels the previous task if applicable
         searchTask = nil
@@ -47,6 +59,38 @@ public class DemoAddressLookupProvider {
         
         searchTask = searchTask(for: searchTerm, completion: resultHandler)
     }
+    
+    // Optional implementation to fetch the full address for an incomplete version
+    public func complete(incompleteAddress: LookupAddressModel, resultHandler: @escaping (Result<PostalAddress, Error>) -> Void) {
+        
+        var dispatchWorkItem: DispatchWorkItem?
+        
+        dispatchWorkItem = DispatchWorkItem { [weak self] in
+            
+            guard let self else { return }
+            
+            /*
+             Perform network request /
+             Hook into address completion SDKs
+             */
+            
+            let dummyAddress = self.addressCompletion(for: incompleteAddress.identifier)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + self.artificialNetworkCallDelay) {
+                guard let dispatchWorkItem, !dispatchWorkItem.isCancelled else {
+                    return // Bailing out if the task was cancelled
+                }
+                
+                if let address = dummyAddress {
+                    resultHandler(.success(address))
+                } else {
+                    resultHandler(.failure(URLError(.fileDoesNotExist)))
+                }
+            }
+        }
+        
+        completionTask = dispatchWorkItem!
+    }
 }
 
 // MARK: - Convenience
@@ -55,7 +99,7 @@ private extension DemoAddressLookupProvider {
     
     func searchTask(
         for searchTerm: String,
-        completion: @escaping ([PostalAddress]) -> Void
+        completion: @escaping ([LookupAddressModel]) -> Void
     ) -> DispatchWorkItem {
         
         var dispatchWorkItem: DispatchWorkItem?
@@ -76,7 +120,7 @@ private extension DemoAddressLookupProvider {
                     return // Bailing out if the task was cancelled
                 }
                 
-                completion(dummyAddresses)
+                completion(dummyAddresses.map { .init(identifier: $0.postalCode ?? "", postalAddress: $0) })
             }
         }
         
@@ -122,6 +166,11 @@ private extension DemoAddressLookupProvider {
                 street: "Incomplete Address"
             )
         ].filter { $0.formatted.range(of: searchTerm, options: .caseInsensitive) != nil }
+    }
+    
+    func addressCompletion(for identifier: String) -> PostalAddress? {
+        // TODO: Actually implement something useful
+        dummyAddresses(for: identifier).first
     }
 }
 

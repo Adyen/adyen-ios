@@ -6,59 +6,35 @@
 
 import UIKit
 
-/// The delegate protocol of the ``AddressLookupViewController``
-internal protocol AddressLookupSearchDelegate: AnyObject {
-    
-    /// Switch to manual address entry was requested
-    func addressLookupSearchSwitchToManualEntry()
-    /// Provide list items for addresses matching the searchTerm
-    func addressLookupSearchLookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void)
-    /// Cancelling the search was requested
-    func addressLookupSearchCancel()
-}
-
 /// The search view controller to be used for address lookup
 ///
 /// See: ``AddressLookupViewController``
 internal class AddressLookupSearchViewController: SearchViewController {
     
-    private weak var delegate: AddressLookupSearchDelegate?
-    
+    private let lookupSearchViewModel: ViewModel
+
     /// Initializes the address lookup search
     ///
-    /// - Parameters:
-    ///   - style: The style of the view.
-    ///   - localizationParameters: The localization parameters
-    ///   - delegate: The delegate conforming to ``AddressLookupSearchDelegate``
+    
     internal init(
-        style: AddressLookupSearchStyle = .init(),
-        localizationParameters: LocalizationParameters?,
-        delegate: AddressLookupSearchDelegate
+        viewModel lookupSearchViewModel: ViewModel
     ) {
+        self.lookupSearchViewModel = lookupSearchViewModel
+        
         let emptyView = EmptyView(
-            localizationParameters: localizationParameters
-        ) { [weak delegate] in
-            delegate?.addressLookupSearchSwitchToManualEntry()
+            localizationParameters: lookupSearchViewModel.localizationParameters
+        ) {
+            lookupSearchViewModel.handleSwitchToManualEntry()
         }
         
         let viewModel = SearchViewController.ViewModel(
-            localizationParameters: localizationParameters,
-            style: style,
-            searchBarPlaceholder: localizedString(.addressLookupSearchPlaceholder, localizationParameters),
+            localizationParameters: lookupSearchViewModel.localizationParameters,
+            style: lookupSearchViewModel.style,
+            searchBarPlaceholder: localizedString(.addressLookupSearchPlaceholder, lookupSearchViewModel.localizationParameters),
             shouldFocusSearchBarOnAppearance: true
-        ) { [weak delegate] searchTerm, resultHandler in
-            delegate?.addressLookupSearchLookUp(searchTerm: searchTerm) {
-                guard let delegate else { return }
-                resultHandler(Self.listItems(
-                    from: $0,
-                    with: delegate,
-                    style: style.manualEntryListItem,
-                    localizationParameters: localizationParameters
-                ))
-            }
+        ) { searchTerm, resultHandler in
+            lookupSearchViewModel.handleLookUp(searchTerm: searchTerm, resultHandler: resultHandler)
         }
-        
-        self.delegate = delegate
         
         super.init(
             viewModel: viewModel,
@@ -89,27 +65,6 @@ internal class AddressLookupSearchViewController: SearchViewController {
     
     @objc
     private func cancelSearch() {
-        delegate?.addressLookupSearchCancel()
-    }
-    
-    private static func listItems(
-        from results: [ListItem],
-        with delegate: AddressLookupSearchDelegate,
-        style: ListItemStyle,
-        localizationParameters: LocalizationParameters?
-    ) -> [ListItem] {
-        
-        if results.isEmpty {
-            return results
-        }
-        
-        let manualEntryListItem = ListItem(
-            title: localizedString(.addressLookupSearchManualEntryItemTitle, localizationParameters),
-            style: style
-        ) {
-            delegate.addressLookupSearchSwitchToManualEntry()
-        }
-        
-        return [manualEntryListItem] + results
+        lookupSearchViewModel.handleCancel()
     }
 }
