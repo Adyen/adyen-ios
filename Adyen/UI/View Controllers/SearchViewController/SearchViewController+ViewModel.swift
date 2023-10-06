@@ -46,18 +46,18 @@ extension SearchViewController {
         }
         
         internal func handleViewDidLoad() {
-            lookUpAddress(for: "")
+            lookUpItem(for: "")
         }
         
         internal func handleSearchTextDidChange(_ searchText: String) {
-            lookUpAddress(for: searchText)
+            lookUpItem(for: searchText)
         }
     }
 }
 
 private extension SearchViewController.ViewModel {
     
-    func lookUpAddress(for searchText: String) {
+    func lookUpItem(for searchText: String) {
         interfaceState = .loading
         
         resultProvider(searchText) { results in

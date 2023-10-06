@@ -98,6 +98,7 @@ internal struct CardSettings: Codable {
     internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
     
     internal enum AddressFormType: String, Codable, CaseIterable {
+        case lookupMapKit = "Lookup (MapKit)"
         case lookup
         case full
         case postalCode
@@ -150,19 +151,19 @@ internal struct DemoAppSettings: Codable {
     )
 
     internal static let defaultCardSettings = CardSettings(showsHolderNameField: false,
-                                                                                       showsStorePaymentMethodField: true,
-                                                                                       showsStoredCardSecurityCodeField: true,
-                                                                                       showsSecurityCodeField: true,
-                                                                                       addressMode: .none,
-                                                                                       socialSecurityNumberMode: .auto,
-                                                                                       koreanAuthenticationMode: .auto)
+                                                           showsStorePaymentMethodField: true,
+                                                           showsStoredCardSecurityCodeField: true,
+                                                           showsSecurityCodeField: true,
+                                                           addressMode: .none,
+                                                           socialSecurityNumberMode: .auto,
+                                                           koreanAuthenticationMode: .auto)
 
     internal static let defaultDropInSettings = DropInSettings(allowDisablingStoredPaymentMethods: false,
-                                                                         allowsSkippingPaymentList: false,
-                                                                         allowPreselectedPaymentView: true)
+                                                               allowsSkippingPaymentList: false,
+                                                               allowPreselectedPaymentView: true)
 
     internal static let defaultApplePaySettings = ApplePaySettings(merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
-                                                                             allowOnboarding: false)
+                                                                   allowOnboarding: false)
 
     internal static let defaultAnalyticsSettings = AnalyticsSettings(isEnabled: true)
     
@@ -253,11 +254,10 @@ private extension DemoAppSettings {
     
     private func cardComponentAddressFormType(from addressFormType: CardSettings.AddressFormType) -> CardComponent.AddressFormType {
         switch addressFormType {
+        case .lookupMapKit:
+            return .lookup(provider: MapkitAddressLookupProvider())
         case .lookup:
-            let addressLookupProvider = DemoAddressLookupProvider()
-            return .lookup { searchTerm, completionHandler in
-                addressLookupProvider.lookUp(searchTerm: searchTerm, resultHandler: completionHandler)
-            }
+            return .lookup(provider: DemoAddressLookupProvider())
         case .full:
             return .full
         case .postalCode:

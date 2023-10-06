@@ -39,6 +39,9 @@ public class ListItem: FormItem {
     /// The `accessibilityLabel` to be used on the `ListItem` or ``ListCell``
     public let accessibilityLabel: String
     
+    /// The handler to invoke when an item changes its loading state
+    internal var loadingHandler: ((Bool) -> Void)?
+    
     /// Initializes the list item.
     ///
     /// - Parameters:
@@ -72,6 +75,23 @@ public class ListItem: FormItem {
     
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
+    }
+    
+    public func startLoading() {
+        setLoading(true)
+    }
+    
+    public func stopLoading() {
+        setLoading(false)
+    }
+    
+    private func setLoading(_ isLoading: Bool) {
+        guard let loadingHandler else {
+            assertionFailure("No loadingHandler provided")
+            return
+        }
+        
+        loadingHandler(isLoading)
     }
 }
 
