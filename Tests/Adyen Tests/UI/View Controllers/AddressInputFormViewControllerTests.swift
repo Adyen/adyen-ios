@@ -29,10 +29,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow!.rootViewController = viewController
-        
-        // When
-        wait(for: .milliseconds(5))
+        setupRootViewController(viewController)
 
         let view: UIView = viewController.view
 
@@ -65,9 +62,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         let doneButton = try XCTUnwrap(viewController.navigationItem.rightBarButtonItem)
         try doneButton.tap()
         
-        wait(for: .milliseconds(50))
-        
-        XCTAssertFalse(houseNumberItemView.alertLabel.isHidden)
+        wait { !houseNumberItemView.alertLabel.isHidden }
         XCTAssertFalse(addressItemView.alertLabel.isHidden)
         XCTAssertTrue(apartmentSuiteItemView.alertLabel.isHidden)
         XCTAssertFalse(cityItemView.alertLabel.isHidden)
