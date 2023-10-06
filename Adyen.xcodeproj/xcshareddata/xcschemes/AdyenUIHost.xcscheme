@@ -48,9 +48,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E2C0E03B22097917008616F6"
-               BuildableName = "AdyenUIKitTests.xctest"
-               BlueprintName = "AdyenUIKitTests"
+               BlueprintIdentifier = "F9CCA3B4296ECB3E00AD643D"
+               BuildableName = "AdyenUIHostUITests.xctest"
+               BlueprintName = "AdyenUIHostUITests"
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -58,9 +58,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F9CCA3B4296ECB3E00AD643D"
-               BuildableName = "AdyenUIHostUITests.xctest"
-               BlueprintName = "AdyenUIHostUITests"
+               BlueprintIdentifier = "E2C0E03B22097917008616F6"
+               BuildableName = "AdyenUIKitTests.xctest"
+               BlueprintName = "AdyenUIKitTests"
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
          </TestableReference>
