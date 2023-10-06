@@ -56,7 +56,7 @@ final class IssuerListComponentUITests: XCTestCase {
         assertViewControllerImage(matching: sut.viewController, named: "initial_state")
     
         // start loading
-        listViewController?.startLoading(for: item)
+        item.startLoading()
         cell = getCell(for: item, tableView: listViewController!.tableView)!
         XCTAssertTrue(cell.showsActivityIndicator)
         assertViewControllerImage(matching: sut.viewController, named: "loading_first_cell")

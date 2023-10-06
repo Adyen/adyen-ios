@@ -98,7 +98,6 @@ internal struct CardSettings: Codable {
     internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
     
     internal enum AddressFormType: String, Codable, CaseIterable {
-        case lookupMapKit = "Lookup (MapKit)"
         case lookup
         case full
         case postalCode
@@ -254,10 +253,11 @@ private extension DemoAppSettings {
     
     private func cardComponentAddressFormType(from addressFormType: CardSettings.AddressFormType) -> CardComponent.AddressFormType {
         switch addressFormType {
-        case .lookupMapKit:
-            return .lookup(provider: MapkitAddressLookupProvider())
         case .lookup:
-            return .lookup(provider: DemoAddressLookupProvider())
+            let addressLookupProvider = DemoAddressLookupProvider()
+            return .lookup { searchTerm, completionHandler in
+                addressLookupProvider.lookUp(searchTerm: searchTerm, resultHandler: completionHandler)
+            }
         case .full:
             return .full
         case .postalCode:
