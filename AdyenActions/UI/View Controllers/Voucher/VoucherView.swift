@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -209,7 +209,7 @@ internal final class VoucherView: UIView, Localizable {
         }
     }
     
-    internal func showCopyCodeConfirmation() {
+    internal func showCopyCodeConfirmation(resetAfter resetDelay: DispatchTimeInterval = .seconds(4)) {
         UIView.transition(
             with: secondaryButton,
             duration: 0.5,
@@ -222,7 +222,7 @@ internal final class VoucherView: UIView, Localizable {
                 )
             }, completion: { _ in
                 DispatchQueue.main.asyncAfter(
-                    deadline: .now() + .seconds(4)
+                    deadline: .now() + resetDelay
                 ) {
                     self.returnSecondaryButtonToNormalState()
                 }
