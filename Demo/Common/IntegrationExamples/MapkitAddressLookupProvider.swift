@@ -17,7 +17,6 @@ public class MapkitAddressLookupProvider: AddressLookupProvider {
     
     private var searchTask: DispatchWorkItem? {
         willSet {
-            completionTask?.cancel()
             searchTask?.cancel()
         }
         didSet {
@@ -27,17 +26,6 @@ public class MapkitAddressLookupProvider: AddressLookupProvider {
                 deadline: DispatchTime.now() + minDebounceDelay,
                 execute: searchTask
             )
-        }
-    }
-    
-    private var completionTask: DispatchWorkItem? {
-        willSet {
-            completionTask?.cancel()
-            searchTask?.cancel()
-        }
-        didSet {
-            guard let completionTask else { return }
-            DispatchQueue.main.async(execute: completionTask)
         }
     }
     
@@ -85,7 +73,7 @@ private extension MapkitAddressLookupProvider {
             searchRequest.naturalLanguageQuery = searchTerm
 
             let search = MKLocalSearch(request: searchRequest)
-            search.start { response, error in
+            search.start { response, _ in
                 
                 guard let dispatchWorkItem, !dispatchWorkItem.isCancelled else {
                     return // Bailing out if the task was cancelled

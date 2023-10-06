@@ -101,8 +101,8 @@ private extension AddressLookupViewController.ViewModel {
     ) -> AddressLookupSearchViewController.ViewModel {
         
         .init(
-            localizationParameters: localizationParameters,
             style: style.search,
+            localizationParameters: localizationParameters,
             lookupProvider: lookupProvider,
             presentationHandler: presentationHandler,
             showFormHandler: handleShowForm(with:),

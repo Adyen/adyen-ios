@@ -65,6 +65,6 @@ internal class AddressLookupSearchViewController: SearchViewController {
     
     @objc
     private func cancelSearch() {
-        lookupSearchViewModel.handleCancel()
+        lookupSearchViewModel.handleCancelTapped()
     }
 }

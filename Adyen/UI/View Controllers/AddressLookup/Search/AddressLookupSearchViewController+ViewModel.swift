@@ -13,7 +13,7 @@ extension AddressLookupSearchViewController {
         internal let localizationParameters: LocalizationParameters?
         internal let style: AddressLookupSearchStyle
         
-        private let lookupProvider: AddressLookupProvider
+        private weak var lookupProvider: AddressLookupProvider?
         
         private let presentationHandler: (UIViewController) -> Void
         private let showFormHandler: (PostalAddress?) -> Void
@@ -25,12 +25,14 @@ extension AddressLookupSearchViewController {
         /// - Parameters:
         ///   - style: The style of the view.
         ///   - localizationParameters: The localization parameters
-        ///   - delegate: The delegate conforming to ``AddressLookupSearchDelegate``
-        ///
-        ///
+        ///   - lookupProvider: The ``AddressLookupProvider`` to be used to lookup the addresses
+        ///   - presentationHandler: A closure that allows presenting a ``UIViewController``
+        ///   - showFormHandler: A closure that shows the address form with a provided (optional) ``PostalAddress``
+        ///   - switchToManualEntryHandler: A closure that switches to manual entry
+        ///   - cancellationHandler: A closure that is triggered when the user taps cancel
         internal init(
-            localizationParameters: LocalizationParameters?,
             style: AddressLookupSearchStyle,
+            localizationParameters: LocalizationParameters?,
             lookupProvider: AddressLookupProvider,
             presentationHandler: @escaping (UIViewController) -> Void,
             showFormHandler: @escaping (PostalAddress?) -> Void,
@@ -47,7 +49,7 @@ extension AddressLookupSearchViewController {
             self.cancellationHandler = cancellationHandler
         }
         
-        internal func handleCancel() {
+        internal func handleCancelTapped() {
             cancellationHandler()
         }
         
@@ -57,7 +59,7 @@ extension AddressLookupSearchViewController {
         
         internal func handleLookUp(searchTerm: String, resultHandler: @escaping (([ListItem]) -> Void)) {
             
-            lookupProvider.lookUp(searchTerm: searchTerm) { result in
+            lookupProvider?.lookUp(searchTerm: searchTerm) { result in
                 
                 let listItems = result.compactMap(listItem(for:))
                 guard !listItems.isEmpty else { return resultHandler([]) }
@@ -66,6 +68,8 @@ extension AddressLookupSearchViewController {
         }
         
         internal func handleDidSelect(item: ListItem, addressModel: LookupAddressModel) {
+            guard let lookupProvider else { return }
+            
             item.startLoading()
             
             lookupProvider.complete(incompleteAddress: addressModel) { [weak item] result in
