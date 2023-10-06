@@ -6,12 +6,13 @@
 
 import Foundation
 
+/// A wrapper around ``PostalAddress`` that allows specifying an identifier
 public struct LookupAddressModel {
     
+    /// The specified identifier to identify a lookup address
     public let identifier: String
+    /// The underlying postal address
     public let postalAddress: PostalAddress
-    
-    // TODO: Allow a way for the merchant to specify their own way of formatting the address
     
     public init(
         identifier: String,
@@ -24,11 +25,21 @@ public struct LookupAddressModel {
 
 public protocol AddressLookupProvider: AnyObject {
     
+    /// Provides a list of ``LookupAddressModel`` based on a `searchTerm`
+    ///
+    /// - Parameters:
+    ///   - searchTerm: The entered search term to find addresses for
+    ///   - resultHandler: A closure that provides a list of ``LookupAddressModel``
     func lookUp(
         searchTerm: String,
         resultHandler: @escaping (_ result: [LookupAddressModel]) -> Void
     )
     
+    /// Provides a complete ``PostalAddress`` for an incomplete ``LookupAddressModel``
+    ///
+    /// - Parameters:
+    ///   - incompleteAddress: An (potentially) incomplete ``LookupAddressModel`` to complete
+    ///   - resultHandler: A closure providing a complete ``PostalAddress``
     func complete(
         incompleteAddress: LookupAddressModel,
         resultHandler: @escaping (_ result: Result<PostalAddress, Error>) -> Void
@@ -37,7 +48,9 @@ public protocol AddressLookupProvider: AnyObject {
 
 extension AddressLookupProvider {
     
-    // Default implementation
+    /// Default implementation that makes the protocol function optional
+    ///
+    /// Immediately calls the `resultHandler` with the `incompleteAddress`
     public func complete(
         incompleteAddress: LookupAddressModel,
         resultHandler: @escaping (_ result: Result<PostalAddress, Error>) -> Void
