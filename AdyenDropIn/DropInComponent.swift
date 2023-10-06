@@ -246,8 +246,8 @@ public final class DropInComponent: NSObject,
 
     public func stopLoading() {
         paymentInProgress = false
-        (rootComponent as? ComponentLoader)?.stopLoading()
-        selectedPaymentComponent?.stopLoadingIfNeeded()
+        rootComponent.stopLoadingIfNeeded()
+        selectedPaymentComponent?.cancelIfNeeded()
     }
     
     private func setNecessaryDelegates(on component: PaymentComponent) {
