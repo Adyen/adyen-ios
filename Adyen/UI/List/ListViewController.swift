@@ -66,9 +66,9 @@ public final class ListViewController: UITableViewController {
             item.loadingHandler = { [weak self] isLoading in
                 guard let self else { return }
                 if isLoading {
-                    startLoading(for: item)
+                    self.startLoading(for: item)
                 } else {
-                    stopLoading()
+                    self.stopLoading()
                 }
             }
         }
