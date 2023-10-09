@@ -59,7 +59,7 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     /// - SFSafariViewController finished due to a successful redirect to an external app and current app no longer in foreground.
     private func finish() {
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-            if UIApplication.shared.applicationState.isForeground {
+            if UIApplication.shared.applicationState.isInForeground {
                 self.delegate?.didCancel()
             } else {
                 self.delegate?.didOpenExternalApplication()
@@ -91,7 +91,8 @@ extension BrowserComponent: SFSafariViewControllerDelegate, UIAdaptivePresentati
 
 private extension UIApplication.State {
     
-    var isForeground: Bool {
+    /// Whether or not the application is currently in foreground (`.active` or `.inactive`)
+    var isInForeground: Bool {
         switch self {
         case .active, .inactive: return true
         case .background: return false
