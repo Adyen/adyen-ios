@@ -237,11 +237,12 @@ public final class DropInComponent: NSObject,
     }
 
     internal func userDidCancel(_ component: Component) {
+        stopLoading()
+        component.cancelIfNeeded()
+
         if let component = (component as? PaymentComponent) ?? selectedPaymentComponent, paymentInProgress {
             delegate?.didCancel(component: component, from: self)
         }
-
-        stopLoading()
     }
 
     public func stopLoading() {
