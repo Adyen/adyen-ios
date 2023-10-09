@@ -135,7 +135,7 @@ class DropInTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testCancelDropInDelegate() throws {
+    func testDidCancelOnRedirect() throws {
         let config = DropInComponent.Configuration()
 
         let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
@@ -155,6 +155,10 @@ class DropInTests: XCTestCase {
         let waitExpectation = expectation(description: "Expect Drop-In to call didCancel")
         delegateMock.didCancelHandler = { _,_ in
             waitExpectation.fulfill()
+        }
+        
+        delegateMock.didOpenExternalApplicationHandler = { component in
+            XCTFail("Did open external application handler should not be called (\(String(describing: component)))")
         }
 
         sut.delegate = delegateMock
