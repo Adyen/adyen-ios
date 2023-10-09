@@ -206,6 +206,8 @@ class DropInTests: XCTestCase {
         wait(for: .seconds(2))
         let newtopVC = self.sut.viewController.findChild(of: ADYViewController.self)
         XCTAssertEqual(newtopVC?.title, "Apple Pay")
+        
+        XCTFail("\(UIApplication.shared.applicationState.name)")
     }
 
     func testGiftCard() {
@@ -237,6 +239,8 @@ class DropInTests: XCTestCase {
         XCTAssertEqual(topVC!.sections.count, 2)
         XCTAssertEqual(topVC!.sections[0].items.count, 2)
         XCTAssertTrue(topVC!.sections[0].footer!.title.contains("Select payment method for the remaining"))
+        
+        XCTFail("\(UIApplication.shared.applicationState.name)")
     }
 
     func testSinglePaymentMethodSkippingPaymentList() {
@@ -257,6 +261,8 @@ class DropInTests: XCTestCase {
         let topVC = sut.viewController.findChild(of: SecuredViewController<FormViewController>.self)
         XCTAssertNotNil(topVC)
         XCTAssertEqual(topVC?.title, "SEPA Direct Debit")
+        
+        XCTFail("\(UIApplication.shared.applicationState.name)")
     }
     
     func testSinglePaymentMethodNotSkippingPaymentList() {
@@ -278,6 +284,8 @@ class DropInTests: XCTestCase {
         XCTAssertNotNil(topVC)
         XCTAssertEqual(topVC!.sections.count, 1)
         XCTAssertEqual(topVC!.sections[0].items.count, 1)
+        
+        XCTFail("\(UIApplication.shared.applicationState.name)")
     }
 
     func testFinaliseIfNeededEmptyList() {
@@ -298,9 +306,11 @@ class DropInTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 5, handler: nil)
+        
+        XCTFail("\(UIApplication.shared.applicationState.name)")
     }
     
-    func testDidCancelOnRedirect() throws {
+    func testXDidCancelOnRedirect() throws {
         let config = DropInComponent.Configuration()
 
         let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
@@ -323,16 +333,7 @@ class DropInTests: XCTestCase {
         }
         
         delegateMock.didOpenExternalApplicationHandler = { component in
-            
-            let applicationState: String
-            switch UIApplication.shared.applicationState {
-            case .active: applicationState = "ACTIVE"
-            case .background: applicationState = "BACKGROUND"
-            case .inactive: applicationState = "INACTIVE"
-            @unknown default: applicationState = "UNKNOWN DEFAULT"
-            }
-            
-            XCTFail("Did open external application handler should not be called (\(String(describing: component))) - \(applicationState)")
+            XCTFail("Did open external application handler should not be called (\(String(describing: component))) - \(UIApplication.shared.applicationState.name)")
         }
 
         sut.delegate = delegateMock
@@ -363,4 +364,20 @@ extension UIViewController {
         return result
     }
 
+}
+
+extension UIApplication.State {
+    
+    var name: String {
+        let applicationState: String
+        
+        switch self {
+        case .active: applicationState = "ACTIVE"
+        case .background: applicationState = "BACKGROUND"
+        case .inactive: applicationState = "INACTIVE"
+        @unknown default: applicationState = "UNKNOWN DEFAULT"
+        }
+        
+        return applicationState
+    }
 }
