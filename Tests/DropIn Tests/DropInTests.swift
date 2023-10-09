@@ -206,8 +206,6 @@ class DropInTests: XCTestCase {
         wait(for: .seconds(2))
         let newtopVC = self.sut.viewController.findChild(of: ADYViewController.self)
         XCTAssertEqual(newtopVC?.title, "Apple Pay")
-        
-        XCTFail("\(UIApplication.shared.applicationState.name)")
     }
 
     func testGiftCard() {
@@ -239,8 +237,6 @@ class DropInTests: XCTestCase {
         XCTAssertEqual(topVC!.sections.count, 2)
         XCTAssertEqual(topVC!.sections[0].items.count, 2)
         XCTAssertTrue(topVC!.sections[0].footer!.title.contains("Select payment method for the remaining"))
-        
-        XCTFail("\(UIApplication.shared.applicationState.name)")
     }
 
     func testSinglePaymentMethodSkippingPaymentList() {
@@ -261,8 +257,6 @@ class DropInTests: XCTestCase {
         let topVC = sut.viewController.findChild(of: SecuredViewController<FormViewController>.self)
         XCTAssertNotNil(topVC)
         XCTAssertEqual(topVC?.title, "SEPA Direct Debit")
-        
-        XCTFail("\(UIApplication.shared.applicationState.name)")
     }
     
     func testSinglePaymentMethodNotSkippingPaymentList() {
@@ -284,8 +278,6 @@ class DropInTests: XCTestCase {
         XCTAssertNotNil(topVC)
         XCTAssertEqual(topVC!.sections.count, 1)
         XCTAssertEqual(topVC!.sections[0].items.count, 1)
-        
-        XCTFail("\(UIApplication.shared.applicationState.name)")
     }
 
     func testFinaliseIfNeededEmptyList() {
@@ -306,13 +298,15 @@ class DropInTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 5, handler: nil)
-        
-        XCTFail("\(UIApplication.shared.applicationState.name)")
     }
     
-    func testXDidCancelOnRedirect() throws {
+    func testDidCancelOnRedirect() throws {
         let config = DropInComponent.Configuration()
-
+        
+        XCTAssertEqual("\(UIApplication.shared.applicationState.name)", "")
+        UIApplication.shared.open(.init(string: "random-app://")!) { _ in }
+        XCTAssertEqual("\(UIApplication.shared.applicationState.name)", "")
+        
         let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
         let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: paymentMethodsData)
 
