@@ -43,9 +43,7 @@ final class IssuerListComponentUITests: XCTestCase {
     func testStartStopLoading() {
         XCTAssertNotNil(listViewController)
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
-        
-        wait(for: .milliseconds(300))
+        setupRootViewController(sut.viewController)
         
         let items = listViewController!.sections[0].items
         
@@ -59,13 +57,27 @@ final class IssuerListComponentUITests: XCTestCase {
         item.startLoading()
         cell = getCell(for: item, tableView: listViewController!.tableView)!
         XCTAssertTrue(cell.showsActivityIndicator)
+        XCTAssertFalse(listViewController!.tableView.isUserInteractionEnabled)
         assertViewControllerImage(matching: sut.viewController, named: "loading_first_cell")
         
         // stop loading
         sut.stopLoadingIfNeeded()
         cell = getCell(for: item, tableView: listViewController!.tableView)!
         XCTAssertFalse(cell.showsActivityIndicator)
+        XCTAssertTrue(listViewController!.tableView.isUserInteractionEnabled)
         assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
+        
+        // start loading again
+        item.startLoading()
+        cell = getCell(for: item, tableView: listViewController!.tableView)!
+        XCTAssertFalse(listViewController!.tableView.isUserInteractionEnabled)
+        XCTAssertTrue(cell.showsActivityIndicator)
+        
+        // stop loading on item -> should stop loading on list
+        item.stopLoading()
+        cell = getCell(for: item, tableView: listViewController!.tableView)!
+        XCTAssertTrue(listViewController!.tableView.isUserInteractionEnabled)
+        XCTAssertFalse(cell.showsActivityIndicator)
         
     }
     
