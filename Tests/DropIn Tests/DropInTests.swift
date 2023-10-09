@@ -300,7 +300,7 @@ class DropInTests: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func testDidCancelOnRedirect() throws {
+    func testDidCancelOnRedirectAction() throws {
         let config = DropInComponent.Configuration()
         
         let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
@@ -323,7 +323,7 @@ class DropInTests: XCTestCase {
         }
         
         delegateMock.didOpenExternalApplicationHandler = { component in
-            XCTFail("Did open external application handler should not be called (\(String(describing: component)))")
+            XCTFail("didOpenExternalApplication() should not have been called")
         }
 
         sut.delegate = delegateMock
@@ -334,7 +334,7 @@ class DropInTests: XCTestCase {
         topVC.tableView(topVC.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
 
         let safari = try waitUntilTopPresenter(isOfType: SFSafariViewController.self)
-        wait(for: .seconds(2))
+        wait(for: .aMoment)
 
         let delegate = try XCTUnwrap(safari.delegate)
         delegate.safariViewControllerDidFinish?(safari)
