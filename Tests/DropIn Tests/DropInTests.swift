@@ -134,57 +134,6 @@ class DropInTests: XCTestCase {
         context = nil
         try super.tearDownWithError()
     }
-
-    func testDidCancelOnRedirect() throws {
-        let config = DropInComponent.Configuration()
-
-        let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
-        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: paymentMethodsData)
-
-        let sut = DropInComponent(
-            paymentMethods: paymentMethods,
-            context: Dummy.context,
-            configuration: config
-        )
-
-        let delegateMock = DropInDelegateMock()
-        delegateMock.didSubmitHandler = { _, _ in
-            sut.handle(Dummy.redirectAction)
-        }
-
-        let waitExpectation = expectation(description: "Expect Drop-In to call didCancel")
-        delegateMock.didCancelHandler = { _,_ in
-            waitExpectation.fulfill()
-        }
-        
-        delegateMock.didOpenExternalApplicationHandler = { component in
-            
-            let applicationState: String
-            switch UIApplication.shared.applicationState {
-            case .active: applicationState = "ACTIVE"
-            case .background: applicationState = "BACKGROUND"
-            case .inactive: applicationState = "INACTIVE"
-            @unknown default: applicationState = "UNKNOWN DEFAULT"
-            }
-            
-            XCTFail("Did open external application handler should not be called (\(String(describing: component))) - \(applicationState)")
-        }
-
-        sut.delegate = delegateMock
-
-        presentOnRoot(sut.viewController)
-
-        let topVC = try waitForViewController(ofType: ListViewController.self, toBecomeChildOf: sut.viewController)
-        topVC.tableView(topVC.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
-
-        let safari = try waitUntilTopPresenter(isOfType: SFSafariViewController.self)
-        wait(for: .seconds(2))
-
-        let delegate = try XCTUnwrap(safari.delegate)
-        delegate.safariViewControllerDidFinish?(safari)
-
-        wait(for: [waitExpectation], timeout: 30)
-    }
     
     func testOpenDropInAsList() {
         let config = DropInComponent.Configuration()
@@ -349,6 +298,57 @@ class DropInTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    func testDidCancelOnRedirect() throws {
+        let config = DropInComponent.Configuration()
+
+        let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: paymentMethodsData)
+
+        let sut = DropInComponent(
+            paymentMethods: paymentMethods,
+            context: Dummy.context,
+            configuration: config
+        )
+
+        let delegateMock = DropInDelegateMock()
+        delegateMock.didSubmitHandler = { _, _ in
+            sut.handle(Dummy.redirectAction)
+        }
+
+        let waitExpectation = expectation(description: "Expect Drop-In to call didCancel")
+        delegateMock.didCancelHandler = { _,_ in
+            waitExpectation.fulfill()
+        }
+        
+        delegateMock.didOpenExternalApplicationHandler = { component in
+            
+            let applicationState: String
+            switch UIApplication.shared.applicationState {
+            case .active: applicationState = "ACTIVE"
+            case .background: applicationState = "BACKGROUND"
+            case .inactive: applicationState = "INACTIVE"
+            @unknown default: applicationState = "UNKNOWN DEFAULT"
+            }
+            
+            XCTFail("Did open external application handler should not be called (\(String(describing: component))) - \(applicationState)")
+        }
+
+        sut.delegate = delegateMock
+
+        presentOnRoot(sut.viewController)
+
+        let topVC = try waitForViewController(ofType: ListViewController.self, toBecomeChildOf: sut.viewController)
+        topVC.tableView(topVC.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
+
+        let safari = try waitUntilTopPresenter(isOfType: SFSafariViewController.self)
+        wait(for: .seconds(2))
+
+        let delegate = try XCTUnwrap(safari.delegate)
+        delegate.safariViewControllerDidFinish?(safari)
+
+        wait(for: [waitExpectation], timeout: 30)
     }
 }
 
