@@ -150,19 +150,19 @@ internal struct DemoAppSettings: Codable {
     )
 
     internal static let defaultCardSettings = CardSettings(showsHolderNameField: false,
-                                                           showsStorePaymentMethodField: true,
-                                                           showsStoredCardSecurityCodeField: true,
-                                                           showsSecurityCodeField: true,
-                                                           addressMode: .none,
-                                                           socialSecurityNumberMode: .auto,
-                                                           koreanAuthenticationMode: .auto)
+                                                                                       showsStorePaymentMethodField: true,
+                                                                                       showsStoredCardSecurityCodeField: true,
+                                                                                       showsSecurityCodeField: true,
+                                                                                       addressMode: .none,
+                                                                                       socialSecurityNumberMode: .auto,
+                                                                                       koreanAuthenticationMode: .auto)
 
     internal static let defaultDropInSettings = DropInSettings(allowDisablingStoredPaymentMethods: false,
-                                                               allowsSkippingPaymentList: false,
-                                                               allowPreselectedPaymentView: true)
+                                                                         allowsSkippingPaymentList: false,
+                                                                         allowPreselectedPaymentView: true)
 
     internal static let defaultApplePaySettings = ApplePaySettings(merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
-                                                                   allowOnboarding: false)
+                                                                             allowOnboarding: false)
 
     internal static let defaultAnalyticsSettings = AnalyticsSettings(isEnabled: true)
     
