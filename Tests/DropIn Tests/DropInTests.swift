@@ -123,7 +123,7 @@ class DropInTests: XCTestCase {
 
     var sut: DropInComponent!
     var context: AdyenContext!
-
+    
     override func setUpWithError() throws {
         try super.setUpWithError()
         context = Dummy.context
@@ -158,7 +158,16 @@ class DropInTests: XCTestCase {
         }
         
         delegateMock.didOpenExternalApplicationHandler = { component in
-            XCTFail("Did open external application handler should not be called (\(String(describing: component)))")
+            
+            let applicationState: String
+            switch UIApplication.shared.applicationState {
+            case .active: applicationState = "ACTIVE"
+            case .background: applicationState = "BACKGROUND"
+            case .inactive: applicationState = "INACTIVE"
+            @unknown default: applicationState = "UNKNOWN DEFAULT"
+            }
+            
+            XCTFail("Did open external application handler should not be called (\(String(describing: component))) - \(applicationState)")
         }
 
         sut.delegate = delegateMock
