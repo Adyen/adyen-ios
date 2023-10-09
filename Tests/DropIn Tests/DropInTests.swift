@@ -303,10 +303,6 @@ class DropInTests: XCTestCase {
     func testDidCancelOnRedirect() throws {
         let config = DropInComponent.Configuration()
         
-        XCTAssertEqual("\(UIApplication.shared.applicationState.name)", "")
-        UIApplication.shared.open(.init(string: "random-app://")!) { _ in }
-        XCTAssertEqual("\(UIApplication.shared.applicationState.name)", "")
-        
         let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
         let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: paymentMethodsData)
 
@@ -327,7 +323,7 @@ class DropInTests: XCTestCase {
         }
         
         delegateMock.didOpenExternalApplicationHandler = { component in
-            XCTFail("Did open external application handler should not be called (\(String(describing: component))) - \(UIApplication.shared.applicationState.name)")
+            XCTFail("Did open external application handler should not be called (\(String(describing: component)))")
         }
 
         sut.delegate = delegateMock
@@ -358,20 +354,4 @@ extension UIViewController {
         return result
     }
 
-}
-
-extension UIApplication.State {
-    
-    var name: String {
-        let applicationState: String
-        
-        switch self {
-        case .active: applicationState = "ACTIVE"
-        case .background: applicationState = "BACKGROUND"
-        case .inactive: applicationState = "INACTIVE"
-        @unknown default: applicationState = "UNKNOWN DEFAULT"
-        }
-        
-        return applicationState
-    }
 }
