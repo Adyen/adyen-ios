@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import AdyenDropIn
 import XCTest
+import SafariServices
 
 class DropInTests: XCTestCase {
 
@@ -134,6 +135,44 @@ class DropInTests: XCTestCase {
         try super.tearDownWithError()
     }
 
+    func testCancelDropInDelegate() throws {
+        let config = DropInComponent.Configuration()
+
+        let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: paymentMethodsData)
+
+        let sut = DropInComponent(
+            paymentMethods: paymentMethods,
+            context: Dummy.context,
+            configuration: config
+        )
+
+        let delegateMock = DropInDelegateMock()
+        delegateMock.didSubmitHandler = { _, _ in
+            sut.handle(Dummy.redirectAction)
+        }
+
+        let waitExpectation = expectation(description: "Expect Drop-In to call didCancel")
+        delegateMock.didCancelHandler = { _,_ in
+            waitExpectation.fulfill()
+        }
+
+        sut.delegate = delegateMock
+
+        presentOnRoot(sut.viewController)
+
+        let topVC = try waitForViewController(ofType: ListViewController.self, toBecomeChildOf: sut.viewController)
+        topVC.tableView(topVC.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
+
+        let safari = try waitUntilTopPresenter(isOfType: SFSafariViewController.self)
+        wait(for: .seconds(2))
+
+        let delegate = try XCTUnwrap(safari.delegate)
+        delegate.safariViewControllerDidFinish?(safari)
+
+        wait(for: [waitExpectation], timeout: 30)
+    }
+    
     func testOpenDropInAsList() {
         let config = DropInComponent.Configuration()
 
