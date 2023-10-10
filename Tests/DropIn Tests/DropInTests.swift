@@ -305,6 +305,8 @@ class DropInTests: XCTestCase {
     }
     
     func testDidCancelOnRedirectAction() throws {
+        AdyenDependencyValues.current.openAppDetector = .mock(didOpenExternalApp: false)
+        
         let config = DropInComponent.Configuration()
         
         let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
@@ -315,8 +317,6 @@ class DropInTests: XCTestCase {
             context: Dummy.context,
             configuration: config
         )
-        
-        AdyenDependencyValues.current.openAppDetector = .mock(didOpenExternalApp: false)
 
         let delegateMock = DropInDelegateMock()
         delegateMock.didSubmitHandler = { _, _ in

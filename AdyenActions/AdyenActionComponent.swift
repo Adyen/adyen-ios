@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -23,7 +23,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
 
     /// The object that acts as the delegate of the action component.
     public weak var delegate: ActionComponentDelegate?
-    
+
     /// The object that acts as the presentation delegate of the action component.
     public weak var presentationDelegate: PresentationDelegate?
     
