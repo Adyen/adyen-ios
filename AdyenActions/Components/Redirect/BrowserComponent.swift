@@ -40,6 +40,8 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     
     internal weak var delegate: BrowserComponentDelegate?
     
+    internal var openAppDetector: OpenExternalAppDetector = .live
+    
     /// Initializes the component.
     ///
     /// - Parameter url: The URL to where the user should be redirected
@@ -58,11 +60,11 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     /// - SFSafariViewController deliberately closed by user and current app still in foreground;
     /// - SFSafariViewController finished due to a successful redirect to an external app and current app no longer in foreground.
     private func finish() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-            if UIApplication.shared.applicationState.isInForeground {
-                self.delegate?.didCancel()
-            } else {
+        openAppDetector.didOpenExternalApp { didOpenExternalApp in
+            if didOpenExternalApp {
                 self.delegate?.didOpenExternalApplication()
+            } else {
+                self.delegate?.didCancel()
             }
         }
     }
@@ -86,17 +88,5 @@ extension BrowserComponent: SFSafariViewControllerDelegate, UIAdaptivePresentati
     /// Called when the user opens the current page in the default browser by tapping the toolbar button.
     internal func safariViewControllerWillOpenInBrowser(_ controller: SFSafariViewController) {
         self.delegate?.didOpenExternalApplication()
-    }
-}
-
-private extension UIApplication.State {
-    
-    /// Whether or not the application is currently in foreground (`.active` or `.inactive`)
-    var isInForeground: Bool {
-        switch self {
-        case .active, .inactive: return true
-        case .background: return false
-        @unknown default: return false
-        }
     }
 }

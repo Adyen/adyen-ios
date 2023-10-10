@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -57,6 +57,8 @@ public final class RedirectComponent: ActionComponent {
 
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
+    
+    internal var openAppDetector: OpenExternalAppDetector = .live
     
     internal var appLauncher: AnyAppLauncher = AppLauncher()
     
@@ -136,6 +138,7 @@ public final class RedirectComponent: ActionComponent {
                                          context: context,
                                          style: configuration.style)
         component.delegate = self
+        component.openAppDetector = openAppDetector
         browserComponent = component
         presentationDelegate?.present(component: component)
     }

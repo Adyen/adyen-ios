@@ -25,7 +25,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     // MARK: - Action Handling
 
     private lazy var adyenActionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(context: context)
+        let handler = AdyenActionComponent(context: context, openAppDetector: .live)
         handler.configuration.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
         handler.configuration.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         handler.delegate = self

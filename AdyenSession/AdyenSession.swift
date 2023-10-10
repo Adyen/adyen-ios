@@ -81,6 +81,8 @@ public final class AdyenSession {
     /// The session context information.
     public internal(set) var sessionContext: Context
     
+    public private(set) var openAppDetector: OpenExternalAppDetector
+    
     /// The presentation delegate.
     public private(set) weak var presentationDelegate: PresentationDelegate?
     
@@ -103,6 +105,7 @@ public final class AdyenSession {
                    delegate: delegate,
                    presentationDelegate: presentationDelegate,
                    baseAPIClient: baseAPIClient,
+                   openAppDetector: .live,
                    completion: completion)
     }
     
@@ -110,13 +113,15 @@ public final class AdyenSession {
                                     delegate: AdyenSessionDelegate,
                                     presentationDelegate: PresentationDelegate,
                                     baseAPIClient: APIClientProtocol,
+                                    openAppDetector: OpenExternalAppDetector,
                                     completion: @escaping ((Result<AdyenSession, Error>) -> Void)) {
         makeSetupCall(with: configuration,
                       baseAPIClient: baseAPIClient) { result in
             switch result {
             case let .success(sessionContext):
                 let session = AdyenSession(configuration: configuration,
-                                           sessionContext: sessionContext)
+                                           sessionContext: sessionContext,
+                                           openAppDetector: openAppDetector)
                 session.delegate = delegate
                 session.presentationDelegate = presentationDelegate
                 completion(.success(session))
@@ -157,9 +162,11 @@ public final class AdyenSession {
 
     internal lazy var actionComponent: ActionHandlingComponent = {
         let handler = AdyenActionComponent(context: configuration.context,
-                                           configuration: configuration.actionComponent)
+                                           configuration: configuration.actionComponent,
+                                           openAppDetector: openAppDetector)
         handler.delegate = self
         handler.presentationDelegate = presentationDelegate
+        handler.openAppDetector = openAppDetector
         return handler
     }()
     
@@ -174,9 +181,10 @@ public final class AdyenSession {
             .retryOnErrorAPIClient()
     }()
     
-    private init(configuration: Configuration, sessionContext: Context) {
+    private init(configuration: Configuration, sessionContext: Context, openAppDetector: OpenExternalAppDetector) {
         self.sessionContext = sessionContext
         self.configuration = configuration
+        self.openAppDetector = openAppDetector
     }
 }
 

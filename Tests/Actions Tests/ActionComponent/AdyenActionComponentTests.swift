@@ -60,7 +60,7 @@ class AdyenActionComponentTests: XCTestCase {
     """
 
     func testRedirectToHttpWebLink() {
-        let sut = AdyenActionComponent(context: Dummy.context)
+        let sut = AdyenActionComponent(context: Dummy.context, openAppDetector: .mock(didOpenExternalApp: false))
         let delegate = ActionComponentDelegateMock()
         sut.presentationDelegate = UIViewController.findTopPresenter()
         sut.delegate = delegate
@@ -79,7 +79,7 @@ class AdyenActionComponentTests: XCTestCase {
     }
 
     func testAwaitAction() {
-        let sut = AdyenActionComponent(context: Dummy.context)
+        let sut = AdyenActionComponent(context: Dummy.context, openAppDetector: .mock(didOpenExternalApp: false))
         sut.presentationDelegate = UIViewController.findTopPresenter()
 
         let action = Action.await(AwaitAction(paymentData: "SOME_DATA", paymentMethodType: .blik))
@@ -103,7 +103,7 @@ class AdyenActionComponentTests: XCTestCase {
     }
 
     func testWeChatAction() {
-        let sut = AdyenActionComponent(context: Dummy.context)
+        let sut = AdyenActionComponent(context: Dummy.context, openAppDetector: .mock(didOpenExternalApp: false))
 
         let expectation = expectation(description: "Assertion Expectation")
 
@@ -120,7 +120,7 @@ class AdyenActionComponentTests: XCTestCase {
     }
 
     func test3DSAction() {
-        let sut = AdyenActionComponent(context: Dummy.context)
+        let sut = AdyenActionComponent(context: Dummy.context, openAppDetector: .mock(didOpenExternalApp: false))
         let action = try! JSONDecoder().decode(ThreeDS2Action.self, from: threeDSFingerprintAction.data(using: .utf8)!)
         sut.handle(Action.threeDS2(action))
 
@@ -134,7 +134,7 @@ class AdyenActionComponentTests: XCTestCase {
     }
 
     func testVoucherAction() {
-        let sut = AdyenActionComponent(context: Dummy.context)
+        let sut = AdyenActionComponent(context: Dummy.context, openAppDetector: .mock(didOpenExternalApp: false))
         sut.presentationDelegate = UIViewController.findTopPresenter()
         
         let action = try! JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)

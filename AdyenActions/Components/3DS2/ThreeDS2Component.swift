@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,6 +21,8 @@ public final class ThreeDS2Component: ActionComponent {
     
     /// The delegate of the component.
     public weak var delegate: ActionComponentDelegate?
+    
+    public var openAppDetector: OpenExternalAppDetector = .live
 
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
@@ -233,6 +235,7 @@ public final class ThreeDS2Component: ActionComponent {
         component.delegate = self
         component._isDropIn = _isDropIn
         component.presentationDelegate = presentationDelegate
+        component.openAppDetector = openAppDetector
 
         return component
     }()

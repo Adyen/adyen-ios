@@ -71,6 +71,8 @@ public final class DropInComponent: NSObject,
     /// The partial payment flow delegate.
     public weak var partialPaymentDelegate: PartialPaymentDelegate?
     
+    public var openAppDetector: OpenExternalAppDetector = .live
+    
     /// The stored payment methods delegate.
     public weak var storedPaymentMethodsDelegate: StoredPaymentMethodsDelegate?
 
@@ -176,7 +178,10 @@ public final class DropInComponent: NSObject,
     )
 
     private lazy var actionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(context: context)
+        let handler = AdyenActionComponent(
+            context: context,
+            openAppDetector: openAppDetector
+        )
         handler.configuration.style = configuration.style.actionComponent
         handler._isDropIn = true
         handler.delegate = self
