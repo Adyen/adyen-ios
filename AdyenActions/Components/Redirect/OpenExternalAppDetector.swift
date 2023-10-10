@@ -4,20 +4,20 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 /// Detects if an external app was opened
-public struct OpenExternalAppDetector {
+public protocol OpenExternalAppDetector {
     /// Calls a completion handler indicating whether or not an external app was opened
-    internal var didOpenExternalApp: (_ completion: @escaping (_ didOpenExternalApp: Bool) -> Void) -> Void
+    func checkIfExternalAppDidOpen(_ completion: @escaping (_ didOpenExternalApp: Bool) -> Void)
 }
 
-public extension OpenExternalAppDetector {
-    static var live: Self {
-        .init { completion in
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-                completion(!UIApplication.shared.applicationState.isInForeground)
-            }
+extension UIApplication: OpenExternalAppDetector {
+    public func checkIfExternalAppDidOpen(_ completion: @escaping (Bool) -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [weak self] in
+            guard let self else { return }
+            completion(!self.applicationState.isInForeground)
         }
     }
 }
@@ -34,4 +34,17 @@ private extension UIApplication.State {
         @unknown default: return false
         }
     }
+}
+
+// MARK: - Register AdyenDependency
+
+extension AdyenDependencyValues {
+    var openAppDetector: OpenExternalAppDetector {
+        get { self[OpenExternalAppDetectorKey.self] }
+        set { self[OpenExternalAppDetectorKey.self] = newValue }
+    }
+}
+
+internal enum OpenExternalAppDetectorKey: AdyenDependencyKey {
+    internal static let liveValue: OpenExternalAppDetector = UIApplication.shared
 }

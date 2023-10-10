@@ -60,7 +60,7 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     /// - SFSafariViewController deliberately closed by user and current app still in foreground;
     /// - SFSafariViewController finished due to a successful redirect to an external app and current app no longer in foreground.
     private func finish() {
-        openAppDetector.didOpenExternalApp { didOpenExternalApp in
+        openAppDetector.checkIfExternalAppDidOpen { didOpenExternalApp in
             if didOpenExternalApp {
                 self.delegate?.didOpenExternalApplication()
             } else {

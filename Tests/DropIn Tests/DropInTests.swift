@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@testable import AdyenActions
+@_spi(AdyenInternal) @testable import AdyenActions
 import AdyenDropIn
 import XCTest
 import SafariServices
@@ -125,6 +125,14 @@ class DropInTests: XCTestCase {
     var sut: DropInComponent!
     var context: AdyenContext!
     
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.openAppDetector = MockOpenExternalAppDetector(didOpenExternalApp: false)
+        } perform: {
+            super.run()
+        }
+    }
+    
     override func setUpWithError() throws {
         try super.setUpWithError()
         context = Dummy.context
@@ -134,9 +142,6 @@ class DropInTests: XCTestCase {
         sut = nil
         context = nil
         try super.tearDownWithError()
-        
-        // Resetting the values to the default ones
-        AdyenDependencyValues.current.openAppDetector = .live
     }
     
     func testOpenDropInAsList() {
@@ -305,8 +310,6 @@ class DropInTests: XCTestCase {
     }
     
     func testDidCancelOnRedirectAction() throws {
-        AdyenDependencyValues.current.openAppDetector = .mock(didOpenExternalApp: false)
-        
         let config = DropInComponent.Configuration()
         
         let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))

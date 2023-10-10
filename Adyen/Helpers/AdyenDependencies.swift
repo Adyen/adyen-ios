@@ -7,39 +7,72 @@
 import Foundation
 
 /// Provides access to injected dependencies.
+@_spi(AdyenInternal)
 public struct AdyenDependencyValues {
     
-    internal static var current = AdyenDependencyValues()
+    /// The currently injected values
+    fileprivate static var current = AdyenDependencyValues()
     
-    /// A static subscript for updating the `currentValue` of `InjectionKey` instances.
-    public static subscript<K>(key: K.Type) -> K.Value where K: AdyenDependencyKey {
-        get { key.currentValue }
-        set { key.currentValue = newValue }
+    /// Stores the testValues during ``runTestWithValues``
+    private var storage: [ObjectIdentifier: Any] = [:]
+    
+    /// A private subscript for updating the `currentValue` of `AdyenDependencyKey` instances.
+    public subscript<K>(key: K.Type) -> K.Value where K: AdyenDependencyKey {
+        get {
+            (storage[ObjectIdentifier(key)] as? K.Value) ?? key.liveValue
+        }
+        set {
+            storage[ObjectIdentifier(key)] = newValue
+        }
     }
     
     /// A static subscript accessor for updating and references dependencies directly.
-    public static subscript<T>(_ keyPath: WritableKeyPath<AdyenDependencyValues, T>) -> T {
-        get { current[keyPath: keyPath] }
-        set { current[keyPath: keyPath] = newValue }
+    fileprivate subscript<T>(_ keyPath: KeyPath<AdyenDependencyValues, T>) -> T { self[keyPath: keyPath] }
+    
+    /// Supply custom test values for specific dependencies
+    ///
+    /// To supply test values for a whole class you can override the `run` function of `XCTestCase` like:
+    /// ```swift
+    /// override func run() {
+    ///     AdyenDependencyValues.runTestWithValues {
+    ///         $0.dependencyToOverride = TestDependency()
+    ///     } perform: {
+    ///         super.run()
+    ///    }
+    /// }
+    /// ```
+    internal static func runTestWithValues(
+        _ setup: (inout AdyenDependencyValues) -> Void,
+        perform: () -> Void
+    ) {
+        let currentValues = current
+        
+        var testValues = AdyenDependencyValues()
+        setup(&testValues)
+        
+        current = testValues
+        perform()
+        current = currentValues
     }
 }
 
+// MARK: - Property wrapper
+
+@_spi(AdyenInternal)
 @propertyWrapper
 public struct AdyenDependency<T> {
-    private let keyPath: WritableKeyPath<AdyenDependencyValues, T>
-    public var wrappedValue: T {
-        get { AdyenDependencyValues[keyPath] }
-        set { AdyenDependencyValues[keyPath] = newValue }
-    }
+    private let keyPath: KeyPath<AdyenDependencyValues, T>
+    public var wrappedValue: T { AdyenDependencyValues.current[keyPath] }
     
-    public init(_ keyPath: WritableKeyPath<AdyenDependencyValues, T>) {
+    public init(_ keyPath: KeyPath<AdyenDependencyValues, T>) {
         self.keyPath = keyPath
     }
 }
 
+// MARK: - DependencyKey Protocol
+
+@_spi(AdyenInternal)
 public protocol AdyenDependencyKey {
-
     associatedtype Value
-
-    static var currentValue: Self.Value { get set }
+    static var liveValue: Self.Value { get }
 }
