@@ -160,6 +160,8 @@
 		81A48DC62A5800EA00242341 /* AddressLookupViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A48DC32A58004A00242341 /* AddressLookupViewControllerTests.swift */; };
 		81A6B4E32AD53E3300A089A1 /* OpenExternalAppDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A6B4E22AD53E3300A089A1 /* OpenExternalAppDetector.swift */; };
 		81A6B4E72AD54F6C00A089A1 /* OpenExternalAppDetector+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A6B4E52AD54F4F00A089A1 /* OpenExternalAppDetector+Mock.swift */; };
+		81A6B4EB2AD5546500A089A1 /* AdyenDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A6B4EA2AD5546500A089A1 /* AdyenDependencies.swift */; };
+		81A6B4EE2AD554BE00A089A1 /* AdyenDependencies+OpenExternalAppDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A6B4EC2AD554B900A089A1 /* AdyenDependencies+OpenExternalAppDetector.swift */; };
 		81B001B12A543CFD0015BFA3 /* SearchViewController+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001B02A543CFD0015BFA3 /* SearchViewController+ViewModel.swift */; };
 		81B001B62A5470950015BFA3 /* AddressLookupViewController+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001B52A5470950015BFA3 /* AddressLookupViewController+ViewModel.swift */; };
 		81B001B72A5470EA0015BFA3 /* AddressLookupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001B22A5468220015BFA3 /* AddressLookupViewController.swift */; };
@@ -1354,6 +1356,8 @@
 		81A48DC32A58004A00242341 /* AddressLookupViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupViewControllerTests.swift; sourceTree = "<group>"; };
 		81A6B4E22AD53E3300A089A1 /* OpenExternalAppDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenExternalAppDetector.swift; sourceTree = "<group>"; };
 		81A6B4E52AD54F4F00A089A1 /* OpenExternalAppDetector+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenExternalAppDetector+Mock.swift"; sourceTree = "<group>"; };
+		81A6B4EA2AD5546500A089A1 /* AdyenDependencies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdyenDependencies.swift; sourceTree = "<group>"; };
+		81A6B4EC2AD554B900A089A1 /* AdyenDependencies+OpenExternalAppDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AdyenDependencies+OpenExternalAppDetector.swift"; sourceTree = "<group>"; };
 		81B001B02A543CFD0015BFA3 /* SearchViewController+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchViewController+ViewModel.swift"; sourceTree = "<group>"; };
 		81B001B22A5468220015BFA3 /* AddressLookupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupViewController.swift; sourceTree = "<group>"; };
 		81B001B52A5470950015BFA3 /* AddressLookupViewController+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressLookupViewController+ViewModel.swift"; sourceTree = "<group>"; };
@@ -3482,6 +3486,7 @@
 			isa = PBXGroup;
 			children = (
 				E2D12BFF221D91ED00EF682F /* StringHelpers.swift */,
+				81A6B4EA2AD5546500A089A1 /* AdyenDependencies.swift */,
 				E9021DED225CC46D009CF7F4 /* URLHelpers.swift */,
 				E9021E012264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift */,
 				E2B3C215233507030067891D /* UIColorHelpers.swift */,
@@ -4993,6 +4998,7 @@
 		F9B8AF5827DA48BB00DC0894 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				81A6B4EC2AD554B900A089A1 /* AdyenDependencies+OpenExternalAppDetector.swift */,
 				F9B8AF5527DA483300DC0894 /* ActionHandlingComponent.swift */,
 			);
 			path = Protocols;
@@ -6396,6 +6402,7 @@
 				F939CD7725EE56BA00018DEC /* LoadingComponent.swift in Sources */,
 				E7806EBD26147AB700101DBB /* ViewControllerDelegate.swift in Sources */,
 				E749FD1E23CF4998000D18BA /* NavigationStyle.swift in Sources */,
+				81A6B4EB2AD5546500A089A1 /* AdyenDependencies.swift in Sources */,
 				F9354BED23A7C34D00A6760B /* ButtonStyle.swift in Sources */,
 				F9B8C50C23FE962D00C4D0FB /* FormPhoneNumberItem.swift in Sources */,
 				E2C0E0BC220B2976008616F6 /* FormItemView.swift in Sources */,
@@ -6903,6 +6910,7 @@
 				5A4633AA265FBAEB005FE0D8 /* VoucherView.swift in Sources */,
 				5A64573F2626D2E2001824F0 /* QRCodeComponentStyle.swift in Sources */,
 				E73C54E425EBD2DC00B57758 /* BrowserComponent.swift in Sources */,
+				81A6B4EE2AD554BE00A089A1 /* AdyenDependencies+OpenExternalAppDetector.swift in Sources */,
 				F9B8AF5927DA48C900DC0894 /* ActionHandlingComponent.swift in Sources */,
 				A03EE735276133A500470561 /* ShareableComponent.swift in Sources */,
 				0058691728B6450900B65A19 /* QRCodeViewController.swift in Sources */,

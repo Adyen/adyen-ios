@@ -23,8 +23,6 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
 
     /// The object that acts as the delegate of the action component.
     public weak var delegate: ActionComponentDelegate?
-
-    public var openAppDetector: OpenExternalAppDetector
     
     /// The object that acts as the presentation delegate of the action component.
     public weak var presentationDelegate: PresentationDelegate?
@@ -90,11 +88,9 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     ///   - context: The context object.
     ///   - configuration: The configuration.
     public init(context: AdyenContext,
-                configuration: Configuration = Configuration(),
-                openAppDetector: OpenExternalAppDetector) {
+                configuration: Configuration = Configuration()) {
         self.context = context
         self.configuration = configuration
-        self.openAppDetector = openAppDetector
     }
     
     // MARK: - Performing Actions
@@ -133,7 +129,6 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         component.delegate = delegate
         component._isDropIn = _isDropIn
         component.presentationDelegate = presentationDelegate
-        component.openAppDetector = openAppDetector
         currentActionComponent = component
         
         component.handle(action)
@@ -162,7 +157,6 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
-        component.openAppDetector = openAppDetector
 
         return component
     }

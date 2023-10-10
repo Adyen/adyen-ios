@@ -58,8 +58,6 @@ public final class RedirectComponent: ActionComponent {
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
     
-    internal var openAppDetector: OpenExternalAppDetector = .live
-    
     internal var appLauncher: AnyAppLauncher = AppLauncher()
     
     internal lazy var apiClient: AnyRetryAPIClient = {
@@ -138,7 +136,6 @@ public final class RedirectComponent: ActionComponent {
                                          context: context,
                                          style: configuration.style)
         component.delegate = self
-        component.openAppDetector = openAppDetector
         browserComponent = component
         presentationDelegate?.present(component: component)
     }

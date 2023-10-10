@@ -40,7 +40,7 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     
     internal weak var delegate: BrowserComponentDelegate?
     
-    internal var openAppDetector: OpenExternalAppDetector = .live
+    @AdyenDependency(\.openAppDetector) private var openAppDetector
     
     /// Initializes the component.
     ///

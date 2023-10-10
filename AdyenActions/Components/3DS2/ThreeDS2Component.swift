@@ -21,8 +21,6 @@ public final class ThreeDS2Component: ActionComponent {
     
     /// The delegate of the component.
     public weak var delegate: ActionComponentDelegate?
-    
-    public var openAppDetector: OpenExternalAppDetector = .live
 
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
@@ -235,7 +233,6 @@ public final class ThreeDS2Component: ActionComponent {
         component.delegate = self
         component._isDropIn = _isDropIn
         component.presentationDelegate = presentationDelegate
-        component.openAppDetector = openAppDetector
 
         return component
     }()

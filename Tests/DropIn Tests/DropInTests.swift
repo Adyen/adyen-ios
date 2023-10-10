@@ -4,7 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import Adyen
+@testable import AdyenActions
 import AdyenDropIn
 import XCTest
 import SafariServices
@@ -133,6 +134,9 @@ class DropInTests: XCTestCase {
         sut = nil
         context = nil
         try super.tearDownWithError()
+        
+        // Resetting the values to the default ones
+        AdyenDependencyValues.current.openAppDetector = .live
     }
     
     func testOpenDropInAsList() {
@@ -312,7 +316,7 @@ class DropInTests: XCTestCase {
             configuration: config
         )
         
-        sut.openAppDetector = .mock(didOpenExternalApp: false)
+        AdyenDependencyValues.current.openAppDetector = .mock(didOpenExternalApp: false)
 
         let delegateMock = DropInDelegateMock()
         delegateMock.didSubmitHandler = { _, _ in
