@@ -301,6 +301,13 @@ class DropInTests: XCTestCase {
     }
     
     func testDidCancelOnRedirectAction() throws {
+        if CommandLine.arguments.contains("-CarthageIntegrationTests") {
+            // Because the carthage integration tests do not spin up a valid UIApplication
+            // a check that is happening in the BrowserComponent (UIApplication.shared.applicationState)
+            // is not behaving like it would in a production app
+            return
+        }
+        
         let config = DropInComponent.Configuration()
         
         let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))

@@ -115,7 +115,9 @@ schemes:
         $PROJECT_NAME: all
         Tests: [tests]
     test:
-      commandLineArguments: "-UITests"
+      commandLineArguments:
+        - "-UITests"
+        - "-CarthageIntegrationTests"
       targets:
         - Tests
 " > project.yml
