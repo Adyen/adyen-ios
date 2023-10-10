@@ -3,7 +3,10 @@ name: Scan PR
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-
+  push:
+    branches:
+      - develop
+      
 jobs:
 
   build:
@@ -25,7 +28,6 @@ jobs:
     - name: Install Tools
       run: |
         brew install sonar-scanner
-        brew install chargepoint/xcparse/xcparse
         gem install slather
 
     - name: Validate 3DS2 SDK version
