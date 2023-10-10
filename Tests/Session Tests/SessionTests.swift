@@ -58,7 +58,8 @@ class SessionTests: XCTestCase {
                                             context: context),
                                 delegate: SessionDelegateMock(),
                                 presentationDelegate: PresentationDelegateMock(),
-                                baseAPIClient: apiClient) { result in
+                                baseAPIClient: apiClient,
+                                openAppDetector: .live) { result in
             switch result {
             case .failure:
                 XCTFail()
@@ -1056,7 +1057,8 @@ class SessionTests: XCTestCase {
                                             context: context),
                                 delegate: delegate,
                                 presentationDelegate: PresentationDelegateMock(),
-                                baseAPIClient: apiClient) { result in
+                                baseAPIClient: apiClient,
+                                openAppDetector: .live) { result in
             switch result {
             case let .success(session):
                 sut = session
