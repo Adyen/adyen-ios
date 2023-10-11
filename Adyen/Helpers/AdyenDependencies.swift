@@ -16,7 +16,7 @@ public struct AdyenDependencyValues {
     /// Stores the testValues during ``runTestWithValues``
     private var storage: [ObjectIdentifier: Any] = [:]
     
-    /// A private subscript for updating the `currentValue` of `AdyenDependencyKey` instances.
+    /// A subscript for updating the `currentValue` of `AdyenDependencyKey` instances.
     public subscript<K>(key: K.Type) -> K.Value where K: AdyenDependencyKey {
         get {
             (storage[ObjectIdentifier(key)] as? K.Value) ?? key.liveValue
@@ -27,6 +27,8 @@ public struct AdyenDependencyValues {
     }
     
     /// A static subscript accessor for updating and references dependencies directly.
+    ///
+    /// Used only by ``AdyenDependency`` to get the current value for a dependency
     fileprivate subscript<T>(_ keyPath: KeyPath<AdyenDependencyValues, T>) -> T { self[keyPath: keyPath] }
     
     /// Supply custom test values for specific dependencies

@@ -129,6 +129,7 @@
 		8100F2BD2A4C3407008C09E7 /* FormValidatableItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8100F2BC2A4C3407008C09E7 /* FormValidatableItemViewTests.swift */; };
 		8100F2C02A4C37E4008C09E7 /* FormSelectableItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8100F2BF2A4C37E3008C09E7 /* FormSelectableItemViewTests.swift */; };
 		8108315D2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8108315C2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift */; };
+		8109FF4C2AD5AD0C000748C8 /* OpenExternalAppDetector+DependencyKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8109FF4B2AD5AD0C000748C8 /* OpenExternalAppDetector+DependencyKey.swift */; };
 		81129AE62A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81129AE52A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift */; };
 		813EF9DE2A5DA0BC00C65D15 /* FormPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813EF9DD2A5DA0BC00C65D15 /* FormPickerItem.swift */; };
 		813EF9E22A5DA2D400C65D15 /* FormPickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813EF9E12A5DA2D400C65D15 /* FormPickerItemView.swift */; };
@@ -1331,6 +1332,7 @@
 		8100F2BC2A4C3407008C09E7 /* FormValidatableItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableItemViewTests.swift; sourceTree = "<group>"; };
 		8100F2BF2A4C37E3008C09E7 /* FormSelectableItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableItemViewTests.swift; sourceTree = "<group>"; };
 		8108315C2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerListEmptyView.swift; sourceTree = "<group>"; };
+		8109FF4B2AD5AD0C000748C8 /* OpenExternalAppDetector+DependencyKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenExternalAppDetector+DependencyKey.swift"; sourceTree = "<group>"; };
 		81129AE52A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchViewController+InterfaceState.swift"; sourceTree = "<group>"; };
 		813EF9DD2A5DA0BC00C65D15 /* FormPickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItem.swift; sourceTree = "<group>"; };
 		813EF9E12A5DA2D400C65D15 /* FormPickerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItemView.swift; sourceTree = "<group>"; };
@@ -4057,6 +4059,7 @@
 			children = (
 				E73C54E325EBD2DC00B57758 /* BrowserComponent.swift */,
 				81A6B4E22AD53E3300A089A1 /* OpenExternalAppDetector.swift */,
+				8109FF4B2AD5AD0C000748C8 /* OpenExternalAppDetector+DependencyKey.swift */,
 				F9780B6424338DFE00CC6C73 /* RedirectComponent.swift */,
 				E9AFF882224CF959005A0D8D /* RedirectListener.swift */,
 				E9AFF884224D0D3B005A0D8D /* RedirectDetails.swift */,
@@ -6927,6 +6930,7 @@
 				F97C850125C17CCD00D7F85C /* VoucherShareableViewProvider.swift in Sources */,
 				F9175FB42594996000D653BE /* ThreeDS2FingerprintAction.swift in Sources */,
 				5A22C2AD262EF99C00F12D97 /* ExpirationTimer.swift in Sources */,
+				8109FF4C2AD5AD0C000748C8 /* OpenExternalAppDetector+DependencyKey.swift in Sources */,
 				F91760822594B1F400D653BE /* AwaitComponentStyle.swift in Sources */,
 				F9175FCF2594999600D653BE /* RedirectListener.swift in Sources */,
 				F917618425A30B8500D653BE /* Submit3DS2FingerprintResponse.swift in Sources */,

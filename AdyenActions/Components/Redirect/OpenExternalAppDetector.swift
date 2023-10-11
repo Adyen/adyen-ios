@@ -8,7 +8,7 @@
 import UIKit
 
 /// Detects if an external app was opened
-public protocol OpenExternalAppDetector {
+internal protocol OpenExternalAppDetector {
     /// Calls a completion handler indicating whether or not an external app was opened
     func checkIfExternalAppDidOpen(_ completion: @escaping (_ didOpenExternalApp: Bool) -> Void)
 }
@@ -34,17 +34,4 @@ private extension UIApplication.State {
         @unknown default: return false
         }
     }
-}
-
-// MARK: - Register AdyenDependency
-
-extension AdyenDependencyValues {
-    var openAppDetector: OpenExternalAppDetector {
-        get { self[OpenExternalAppDetectorKey.self] }
-        set { self[OpenExternalAppDetectorKey.self] = newValue }
-    }
-}
-
-internal enum OpenExternalAppDetectorKey: AdyenDependencyKey {
-    internal static let liveValue: OpenExternalAppDetector = UIApplication.shared
 }
