@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import UIKit
 
 extension AdyenDependencyValues {
     internal var openAppDetector: OpenExternalAppDetector {
