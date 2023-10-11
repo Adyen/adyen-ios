@@ -6,10 +6,10 @@
 
 import Foundation
 
-/// A wrapper around ``PostalAddress`` that allows specifying an identifier
+/// A wrapper around ``PostalAddress`` that allows attaching an identifier
 public struct LookupAddressModel {
     
-    /// The specified identifier to identify a lookup address
+    /// The specified identifier to (later) identify a specific address for a (optional) completion call
     public let identifier: String
     /// The underlying postal address
     public let postalAddress: PostalAddress

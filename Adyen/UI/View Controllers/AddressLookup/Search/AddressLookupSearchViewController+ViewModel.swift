@@ -8,6 +8,7 @@ import Foundation
 
 extension AddressLookupSearchViewController {
     
+    /// The model for ``AddressLookupSearchViewController``
     struct ViewModel {
         
         internal let localizationParameters: LocalizationParameters?
@@ -20,7 +21,7 @@ extension AddressLookupSearchViewController {
         private let switchToManualEntryHandler: () -> Void
         private let cancellationHandler: () -> Void
         
-        /// Initializes the address lookup search
+        /// Initializes the view model for address lookup search
         ///
         /// - Parameters:
         ///   - style: The style of the view.
@@ -41,6 +42,7 @@ extension AddressLookupSearchViewController {
         ) {
             self.localizationParameters = localizationParameters
             self.style = style
+            
             self.lookupProvider = lookupProvider
             
             self.presentationHandler = presentationHandler
@@ -89,8 +91,16 @@ extension AddressLookupSearchViewController {
         }
         
         internal func handleShowError(_ error: Error) {
-            let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-            alert.addAction(.init(title: "Retry", style: .default))
+            let alert = UIAlertController(
+                title: localizedString(.errorTitle, localizationParameters),
+                message: error.localizedDescription,
+                preferredStyle: .alert
+            )
+            alert.addAction(.init(
+                title: localizedString(.dismissButton, localizationParameters),
+                style: .default
+            )
+            )
             presentationHandler(alert)
         }
     }

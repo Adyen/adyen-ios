@@ -10,6 +10,10 @@ import Contacts
 /// Example implementation of an address lookup provider with debouncing and cancelling previous calls
 public class DemoAddressLookupProvider: AddressLookupProvider {
     
+    struct AddressCompletionError: LocalizedError {
+        var errorDescription: String? { "Could not complete address" }
+    }
+    
     private let minDebounceDelay: TimeInterval = 0.3
     private let artificialNetworkCallDelay: TimeInterval = 0.5
     
@@ -84,7 +88,7 @@ public class DemoAddressLookupProvider: AddressLookupProvider {
                 if let address = dummyAddress {
                     resultHandler(.success(address))
                 } else {
-                    resultHandler(.failure(URLError(.fileDoesNotExist)))
+                    resultHandler(.failure(AddressCompletionError()))
                 }
             }
         }
@@ -113,14 +117,14 @@ private extension DemoAddressLookupProvider {
              Hook into address completion SDKs
              */
             
-            let dummyAddresses = self.dummyAddresses(for: searchTerm)
+            let dummyAddresses = self.addresses(for: searchTerm)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + self.artificialNetworkCallDelay) {
                 guard let dispatchWorkItem, !dispatchWorkItem.isCancelled else {
                     return // Bailing out if the task was cancelled
                 }
                 
-                completion(dummyAddresses.map { .init(identifier: $0.postalCode ?? "", postalAddress: $0) })
+                completion(dummyAddresses)
             }
         }
         
@@ -132,9 +136,12 @@ private extension DemoAddressLookupProvider {
 
 private extension DemoAddressLookupProvider {
     
-    func dummyAddresses(for searchTerm: String) -> [PostalAddress] {
-        [
-            PostalAddress(
+    static let failingDummyAddressIdentifier = "failingDummyAddressIdentifier"
+    
+    static let dummyAddresses: [LookupAddressModel] = [
+        .init(
+            identifier: "1",
+            postalAddress: .init(
                 city: "New York",
                 country: "US",
                 houseNumberOrName: nil,
@@ -142,8 +149,11 @@ private extension DemoAddressLookupProvider {
                 stateOrProvince: "NY",
                 street: "8th Ave",
                 apartment: nil
-            ),
-            PostalAddress(
+            )
+        ),
+        .init(
+            identifier: "2",
+            postalAddress: .init(
                 city: "Cheyenne",
                 country: "US",
                 houseNumberOrName: nil,
@@ -151,8 +161,11 @@ private extension DemoAddressLookupProvider {
                 stateOrProvince: "WY",
                 street: "1280 Thorn Street",
                 apartment: nil
-            ),
-            PostalAddress(
+            )
+        ),
+        .init(
+            identifier: "3",
+            postalAddress: .init(
                 city: "Amsterdam",
                 country: "NL",
                 houseNumberOrName: "123",
@@ -160,17 +173,31 @@ private extension DemoAddressLookupProvider {
                 stateOrProvince: "Noord Holland",
                 street: "Singel",
                 apartment: "4"
-            ),
-            PostalAddress(
+            )
+        ),
+        .init(
+            identifier: "4",
+            postalAddress: .init(
                 city: "Random City",
                 street: "Incomplete Address"
             )
-        ].filter { $0.formatted.range(of: searchTerm, options: .caseInsensitive) != nil }
+        ),
+        .init(
+            identifier: failingDummyAddressIdentifier,
+            postalAddress: .init(
+                city: "(Tapping this causes an error alert)",
+                street: "Error Causing Address"
+            )
+        )
+    ]
+    
+    func addresses(for searchTerm: String) -> [LookupAddressModel] {
+        Self.dummyAddresses.filter { $0.postalAddress.formatted.range(of: searchTerm, options: .caseInsensitive) != nil }
     }
     
     func addressCompletion(for identifier: String) -> PostalAddress? {
-        // TODO: Actually implement something useful
-        dummyAddresses(for: identifier).first
+        if identifier == Self.failingDummyAddressIdentifier { return nil }
+        return Self.dummyAddresses.first { $0.identifier == identifier }?.postalAddress
     }
 }
 
