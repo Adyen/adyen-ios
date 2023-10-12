@@ -221,10 +221,11 @@ class AddressLookupViewControllerTests: XCTestCase {
         
         let addressSearchViewModel = viewModel.addressSearchViewModel { _ in }
         addressSearchViewModel.handleLookUp(searchTerm: "") {
-            $0[1].loadingHandler = { isLoading in
-                loadingExpectation.fulfill()
-            }
-            $0[1].selectionHandler?() // Selecting the 2nd item in the list as the first one is the manual input cell
+            // We don't have a ListViewController that provides the loadingHandler
+            // so we provide one here which also allows us to test if it's called correctly
+            $0[1].loadingHandler = { _ in loadingExpectation.fulfill() }
+            // Selecting the 2nd item in the list as the first one is the manual input cell
+            $0[1].selectionHandler?()
         }
 
         // Then
