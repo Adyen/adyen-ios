@@ -170,7 +170,7 @@ class AddressLookupViewControllerTests: XCTestCase {
     func testViewModelInteraction() {
 
         // Given
-
+        let expectedSearchTerm: String = "Test"
         let results: [LookupAddressModel] = PostalAddressMocks.all.map {
             .init(identifier: UUID().uuidString, postalAddress: $0)
         }
@@ -181,7 +181,8 @@ class AddressLookupViewControllerTests: XCTestCase {
         let completionHandlerExpectation = expectation(description: "Completion handler was called on submit")
         completionHandlerExpectation.expectedFulfillmentCount = 2
 
-        let mockLookupProvider = MockAddressLookupProvider { _ in
+        let mockLookupProvider = MockAddressLookupProvider { searchTerm in
+            XCTAssertEqual(searchTerm, expectedSearchTerm)
             return results
         }
         
@@ -219,8 +220,11 @@ class AddressLookupViewControllerTests: XCTestCase {
         let loadingExpectation = expectation(description: "Loading handler was called")
         loadingExpectation.expectedFulfillmentCount = 2
         
-        let addressSearchViewModel = viewModel.addressSearchViewModel { _ in }
-        addressSearchViewModel.handleLookUp(searchTerm: "") {
+        let addressSearchViewModel = viewModel.addressSearchViewModel { _ in
+            XCTFail("Presentation handler should not have been called")
+        }
+        
+        addressSearchViewModel.handleLookUp(searchTerm: expectedSearchTerm) {
             // We don't have a ListViewController that provides the loadingHandler
             // so we provide one here which also allows us to test if it's called correctly
             $0[1].loadingHandler = { _ in loadingExpectation.fulfill() }
