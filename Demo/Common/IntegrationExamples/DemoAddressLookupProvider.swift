@@ -10,7 +10,7 @@ import Contacts
 /// Example implementation of an address lookup provider with debouncing and cancelling previous calls
 public class DemoAddressLookupProvider: AddressLookupProvider {
     
-    struct AddressCompletionError: LocalizedError {
+    private struct AddressCompletionError: LocalizedError {
         var errorDescription: String? { "Could not complete address" }
     }
     
