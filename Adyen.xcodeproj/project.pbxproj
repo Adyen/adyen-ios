@@ -129,6 +129,7 @@
 		8100F2BD2A4C3407008C09E7 /* FormValidatableItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8100F2BC2A4C3407008C09E7 /* FormValidatableItemViewTests.swift */; };
 		8100F2C02A4C37E4008C09E7 /* FormSelectableItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8100F2BF2A4C37E3008C09E7 /* FormSelectableItemViewTests.swift */; };
 		8108315D2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8108315C2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift */; };
+		8109FF4E2AD6D8A9000748C8 /* MockAddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8109FF4D2AD6D8A9000748C8 /* MockAddressLookupProvider.swift */; };
 		81129AE62A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81129AE52A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift */; };
 		813EF9DE2A5DA0BC00C65D15 /* FormPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813EF9DD2A5DA0BC00C65D15 /* FormPickerItem.swift */; };
 		813EF9E22A5DA2D400C65D15 /* FormPickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813EF9E12A5DA2D400C65D15 /* FormPickerItemView.swift */; };
@@ -1331,6 +1332,7 @@
 		8100F2BC2A4C3407008C09E7 /* FormValidatableItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableItemViewTests.swift; sourceTree = "<group>"; };
 		8100F2BF2A4C37E3008C09E7 /* FormSelectableItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableItemViewTests.swift; sourceTree = "<group>"; };
 		8108315C2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerListEmptyView.swift; sourceTree = "<group>"; };
+		8109FF4D2AD6D8A9000748C8 /* MockAddressLookupProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAddressLookupProvider.swift; sourceTree = "<group>"; };
 		81129AE52A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchViewController+InterfaceState.swift"; sourceTree = "<group>"; };
 		813EF9DD2A5DA0BC00C65D15 /* FormPickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItem.swift; sourceTree = "<group>"; };
 		813EF9E12A5DA2D400C65D15 /* FormPickerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItemView.swift; sourceTree = "<group>"; };
@@ -3869,6 +3871,7 @@
 			isa = PBXGroup;
 			children = (
 				F9B8AF5F27DB4E8700DC0894 /* ActionHandlingComponentMock.swift */,
+				8109FF4D2AD6D8A9000748C8 /* MockAddressLookupProvider.swift */,
 				F9AC61BF243750D80062A00D /* AppLauncherMock.swift */,
 				F9EDB7972396643A00CFB3C9 /* CardPaymentMethodMock.swift */,
 				F99F08592383EAC800EBB948 /* FormatterMock.swift */,
@@ -6514,6 +6517,7 @@
 				A009837D279859DC007E68C4 /* ACHDirectDebitComponentTests.swift in Sources */,
 				F9838D23263193E000963483 /* BalanceCheckerTests.swift in Sources */,
 				81BBB34B2A692F6500AF1F9E /* FormPickerSearchViewControllerTests.swift in Sources */,
+				8109FF4E2AD6D8A9000748C8 /* MockAddressLookupProvider.swift in Sources */,
 				E72521EE25517EB100533E35 /* BLIKComponentTests.swift in Sources */,
 				E2B317A22265BC9400C1BB30 /* LengthValidatorTests.swift in Sources */,
 				F9B019442611E965001F23FC /* EContextATMShareableVoucherViewProviderTests.swift in Sources */,

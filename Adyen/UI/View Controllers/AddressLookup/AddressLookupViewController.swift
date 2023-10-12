@@ -79,7 +79,7 @@ private extension AddressLookupViewController {
     }
 }
 
-private extension AddressLookupViewController.ViewModel {
+internal extension AddressLookupViewController.ViewModel {
     
     func addressInputFormViewModel(
         with prefillAddress: PostalAddress?

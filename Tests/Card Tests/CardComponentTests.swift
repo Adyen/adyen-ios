@@ -332,8 +332,9 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
-        configuration.billingAddress.mode = .lookup(handler: { searchTerm, completionHandler in
+        configuration.billingAddress.mode = .lookup(provider: MockAddressLookupProvider { searchTerm in
             XCTFail("Lookup handler should not be called")
+            return []
         })
         configuration.shopperInformation = shopperInformation
 
@@ -1390,8 +1391,8 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
-        configuration.billingAddress.mode = .lookup(handler: { searchTerm, completionHandler in
-            completionHandler([.init(city: searchTerm)])
+        configuration.billingAddress.mode = .lookup(provider: MockAddressLookupProvider { searchTerm in
+            return [.init(identifier: searchTerm, postalAddress: .init(city: searchTerm))]
         })
         configuration.shopperInformation = shopperInformation
 
@@ -1403,8 +1404,7 @@ class CardComponentTests: XCTestCase {
 
         // When
         
-        UIApplication.shared.keyWindow?.rootViewController = component.cardViewController
-        wait(for: .milliseconds(50))
+        setupRootViewController(component.cardViewController)
 
         // Then
         let view: UIView = component.cardViewController.view
@@ -1563,18 +1563,15 @@ class CardComponentTests: XCTestCase {
             configuration: configuration
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = component.viewController
-        wait(for: .milliseconds(50))
+        setupRootViewController(component.viewController)
         
         // Then
         let view: UIView = component.cardViewController.view
         
         let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
-        let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
-        let billingAddress = billingAddressView.item.value
         
         billingAddressView.item.selectionHandler()
-        wait(for: .milliseconds(50))
+        wait(for: .aMoment)
         
         let presentedViewController = try XCTUnwrap(UIViewController.findTopPresenter()?.children.first as? UINavigationController)
         XCTAssertTrue(presentedViewController.viewControllers.first is AddressInputFormViewController)
