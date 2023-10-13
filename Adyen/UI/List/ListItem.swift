@@ -40,7 +40,7 @@ public class ListItem: FormItem {
     public let accessibilityLabel: String
     
     /// The handler to invoke when an item changes its loading state
-    public var loadingHandler: ((Bool) -> Void)?
+    public var loadingHandler: ((Bool, ListItem) -> Void)?
     
     /// Initializes the list item.
     ///
@@ -77,10 +77,14 @@ public class ListItem: FormItem {
         builder.build(with: self)
     }
     
+    /// Indicates to the ``ListViewController`` that the specific item is currently loading
+    ///
+    /// To stop the loading for the whole list either  ``stopLoading()`` on the ``ListViewController`` or on the ``ListItem``
     public func startLoading() {
         setLoading(true)
     }
     
+    /// Indicates that the ``ListViewController`` should stop loading
     public func stopLoading() {
         setLoading(false)
     }
@@ -91,7 +95,7 @@ public class ListItem: FormItem {
             return
         }
         
-        loadingHandler(isLoading)
+        loadingHandler(isLoading, self)
     }
 }
 

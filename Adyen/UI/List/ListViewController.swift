@@ -63,14 +63,15 @@ public final class ListViewController: UITableViewController {
         stopLoading()
 
         newSections.flatMap(\.items).forEach { item in
-            item.loadingHandler = { [weak self] isLoading in
-                guard let self else { return }
-                if isLoading {
-                    self.startLoading(for: item)
-                } else {
-                    self.stopLoading()
-                }
-            }
+            item.loadingHandler = { [weak self] in self?.handleItem($1, isLoading: $0) }
+        }
+    }
+    
+    private func handleItem(_ item: ListItem, isLoading: Bool) {
+        if isLoading {
+            startLoading(for: item)
+        } else {
+            stopLoading()
         }
     }
     
