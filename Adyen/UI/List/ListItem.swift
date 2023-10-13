@@ -40,7 +40,7 @@ public class ListItem: FormItem {
     public let accessibilityLabel: String
     
     /// The handler to invoke when an item changes its loading state
-    public var loadingHandler: ((Bool, ListItem) -> Void)?
+    internal var loadingHandler: ((Bool, ListItem) -> Void)?
     
     /// Initializes the list item.
     ///
