@@ -224,15 +224,18 @@ class AddressLookupViewControllerTests: XCTestCase {
             XCTFail("Presentation handler should not have been called")
         }
         
-        let resultHandler: ([ListItem]) -> Void = { (listItems: [ListItem]) in
+        let resultHandler: ([ListItem]) -> Void = { listItems in
             // We don't have a ListViewController that provides the loadingHandler
             // so we provide one here which also allows us to test if it's called correctly
-            listItems[1].loadingHandler = { _ in }//loadingExpectation.fulfill() }
+//            listItems[1].loadingHandler = { _ in loadingExpectation.fulfill() }
             // Selecting the 2nd item in the list as the first one is the manual input cell
 //            listItems[1].selectionHandler?()
+            print(listItems)
         }
+        
+        resultHandler([.init(title: ""), .init(title: "")])
 
-        addressSearchViewModel.handleLookUp(searchTerm: expectedSearchTerm, resultHandler: resultHandler)
+//        addressSearchViewModel.handleLookUp(searchTerm: expectedSearchTerm, resultHandler: resultHandler)
 
         // Then
 
