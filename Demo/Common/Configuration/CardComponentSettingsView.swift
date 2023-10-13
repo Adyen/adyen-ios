@@ -68,8 +68,8 @@ extension CardSettings.AddressFormType {
         switch self {
         case .full: return "Full"
         case .lookup: return "Lookup (Dummy Data)"
-        case .lookupMapKit: return "Lookup (Mapkit)"
-        case .postalCode: return "Postalcode"
+        case .lookupMapKit: return "Lookup (MapKit)"
+        case .postalCode: return "Postal code"
         case .none: return "None"
         }
     }
