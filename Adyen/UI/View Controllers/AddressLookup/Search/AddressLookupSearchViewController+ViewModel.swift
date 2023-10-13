@@ -59,7 +59,7 @@ extension AddressLookupSearchViewController {
             switchToManualEntryHandler()
         }
         
-        internal func handleLookUp(searchTerm: String, resultHandler: @escaping (([ListItem]) -> Void)) {
+        internal func handleLookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
             
             lookupProvider?.lookUp(searchTerm: searchTerm) { result in
                 
