@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,6 +13,26 @@ public protocol AdyenContextAware: AnyObject {
     /// The context object for this component.
     @_spi(AdyenInternal)
     var context: AdyenContext { get }
+}
+
+public extension AdyenContextAware {
+
+    @_spi(AdyenInternal)
+    var context: AdyenContext {
+        get {
+            guard let value = objc_getAssociatedObject(self, &AssociatedKeys.context) as? AdyenContext else {
+                preconditionFailure("AdyenContext could not be nil")
+            }
+            return value
+        }
+        set {
+            objc_setAssociatedObject(self, &AssociatedKeys.context, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+}
+
+private enum AssociatedKeys {
+    internal static var context = "context"
 }
 
 /// Struct that defines API context for retrieving internal resources.
