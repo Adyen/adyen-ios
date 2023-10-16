@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -40,6 +40,8 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     
     internal weak var delegate: BrowserComponentDelegate?
     
+    @AdyenDependency(\.openAppDetector) private var openAppDetector
+    
     /// Initializes the component.
     ///
     /// - Parameter url: The URL to where the user should be redirected
@@ -58,11 +60,11 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     /// - SFSafariViewController deliberately closed by user and current app still in foreground;
     /// - SFSafariViewController finished due to a successful redirect to an external app and current app no longer in foreground.
     private func finish() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-            if UIApplication.shared.applicationState == .active {
-                self.delegate?.didCancel()
-            } else {
+        openAppDetector.checkIfExternalAppDidOpen { didOpenExternalApp in
+            if didOpenExternalApp {
                 self.delegate?.didOpenExternalApplication()
+            } else {
+                self.delegate?.didCancel()
             }
         }
     }
@@ -87,5 +89,4 @@ extension BrowserComponent: SFSafariViewControllerDelegate, UIAdaptivePresentati
     internal func safariViewControllerWillOpenInBrowser(_ controller: SFSafariViewController) {
         self.delegate?.didOpenExternalApplication()
     }
-
 }
