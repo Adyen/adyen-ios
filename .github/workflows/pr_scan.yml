@@ -3,13 +3,16 @@ name: Scan PR
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-
+  push:
+    branches:
+      - develop
+      
 jobs:
 
   build:
     env:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
-    runs-on: macos-12
+    runs-on: macos-13-xl
 
     steps:
     - uses: actions/checkout@v4
@@ -20,12 +23,11 @@ jobs:
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: latest-stable
+        xcode-version: '14.3'
 
     - name: Install Tools
       run: |
         brew install sonar-scanner
-        brew install chargepoint/xcparse/xcparse
         gem install slather
 
     - name: Validate 3DS2 SDK version
@@ -36,15 +38,15 @@ jobs:
       run: |
         Scripts/validate-Adyen-SDK-version.sh
 
-    - name: Build and test
+    - name: Clean Build and Test
       run: |
         xcodebuild -version
-        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" -skipPackagePluginValidation | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES'
+        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
         scheme: 'AdyenUIHost'
-        destination: 'name=iPhone 14'
+        destination: 'name=iPhone 14,OS=16.4'
 
     - name: Code Coverage
       run: |

@@ -53,7 +53,7 @@ public struct ThreeDSResult: Decodable {
                                  delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
                                  threeDS2SDKError: oldPayload.threeDS2SDKError,
                                  transStatus: oldPayload.transStatus)
-        return .init(payload: try AdyenCoder.encode(newPayload).base64EncodedString())
+        return try .init(payload: AdyenCoder.encode(newPayload).base64EncodedString())
     }
 
     internal init(authenticated: Bool, authorizationToken: String?) throws {

@@ -31,6 +31,18 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable {
         cardComponentExample.presenter = self
         return cardComponentExample
     }()
+    
+    private lazy var issuerListComponentAdvancedFlowExample: IssuerListComponentAdvancedFlowExample = {
+        let cardComponentAdvancedFlow = IssuerListComponentAdvancedFlowExample()
+        cardComponentAdvancedFlow.presenter = self
+        return cardComponentAdvancedFlow
+    }()
+
+    private lazy var issuerListComponentExample: IssuerListComponentExample = {
+        let cardComponentExample = IssuerListComponentExample()
+        cardComponentExample.presenter = self
+        return cardComponentExample
+    }()
 
     @Published internal var viewControllerToPresent: UIViewController?
 
@@ -57,6 +69,14 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable {
             cardComponentAdvancedFlowExample.start()
         }
     }
+    
+    internal func presentIssuerListComponent() {
+        if isUsingSession {
+            issuerListComponentExample.start()
+        } else {
+            issuerListComponentAdvancedFlowExample.start()
+        }
+    }
 
     // TODO: add for other PM
 
@@ -66,7 +86,12 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable {
                 ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
             ],
             [
-                ComponentsItem(title: "Card", selectionHandler: presentCardComponent)
+                ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
+                ComponentsItem(
+                    title: "Issuer List",
+                    subtitle: "e.g. Ideal, Open Banking, ...",
+                    selectionHandler: presentIssuerListComponent
+                )
             ]
         ]
     }

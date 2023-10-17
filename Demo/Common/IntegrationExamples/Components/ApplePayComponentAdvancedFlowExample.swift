@@ -58,11 +58,8 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
             let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self)
         else { throw IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self)
         }
-        let applePayPayment = try ApplePayPayment(payment: ConfigurationConstants.current.payment,
-                                                  brand: ConfigurationConstants.appName)
-        var config = ApplePayComponent.Configuration(payment: applePayPayment,
-                                                     merchantIdentifier: ConfigurationConstants.current.applePayConfiguration.merchantIdentifier)
-        config.allowOnboarding = ConfigurationConstants.current.applePayConfiguration.allowOnboarding
+        
+        var config = try ConfigurationConstants.current.applePayConfiguration()
         config.supportsCouponCode = true
         config.shippingType = .delivery
         config.requiredShippingContactFields = [.postalAddress]
@@ -89,7 +86,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
     }
 
     internal func finish(with result: PaymentsResponse) {
-        let success = result.resultCode == .authorised || result.resultCode == .received || result.resultCode == .pending
+        let success = result.isAccepted
         let message = "\(result.resultCode.rawValue) \(result.amount?.formatted ?? "")"
         finalize(success, message)
     }

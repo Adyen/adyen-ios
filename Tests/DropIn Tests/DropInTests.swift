@@ -4,9 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import Adyen
+@_spi(AdyenInternal) @testable import AdyenActions
 import AdyenDropIn
 import XCTest
+import SafariServices
 
 class DropInTests: XCTestCase {
 
@@ -122,7 +124,15 @@ class DropInTests: XCTestCase {
 
     var sut: DropInComponent!
     var context: AdyenContext!
-
+    
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.openAppDetector = MockOpenExternalAppDetector(didOpenExternalApp: false)
+        } perform: {
+            super.run()
+        }
+    }
+    
     override func setUpWithError() throws {
         try super.setUpWithError()
         context = Dummy.context
@@ -133,7 +143,7 @@ class DropInTests: XCTestCase {
         context = nil
         try super.tearDownWithError()
     }
-
+    
     func testOpenDropInAsList() {
         let config = DropInComponent.Configuration()
 
@@ -297,6 +307,48 @@ class DropInTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    func testDidCancelOnRedirectAction() throws {
+        let config = DropInComponent.Configuration()
+        
+        let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: paymentMethodsData)
+
+        let sut = DropInComponent(
+            paymentMethods: paymentMethods,
+            context: Dummy.context,
+            configuration: config
+        )
+
+        let delegateMock = DropInDelegateMock()
+        delegateMock.didSubmitHandler = { _, _ in
+            sut.handle(Dummy.redirectAction)
+        }
+
+        let waitExpectation = expectation(description: "Expect Drop-In to call didCancel")
+        delegateMock.didCancelHandler = { _,_ in
+            waitExpectation.fulfill()
+        }
+        
+        delegateMock.didOpenExternalApplicationHandler = { component in
+            XCTFail("didOpenExternalApplication() should not have been called")
+        }
+
+        sut.delegate = delegateMock
+
+        presentOnRoot(sut.viewController)
+
+        let topVC = try waitForViewController(ofType: ListViewController.self, toBecomeChildOf: sut.viewController)
+        topVC.tableView(topVC.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
+
+        let safari = try waitUntilTopPresenter(isOfType: SFSafariViewController.self)
+        wait(for: .aMoment)
+
+        let delegate = try XCTUnwrap(safari.delegate)
+        delegate.safariViewControllerDidFinish?(safari)
+
+        wait(for: [waitExpectation], timeout: 30)
     }
 }
 
