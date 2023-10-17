@@ -55,8 +55,24 @@ public final class ListViewController: UITableViewController {
     }()
     
     public func reload(newSections: [ListSection], animated: Bool = false) {
+        dataSource.sections.flatMap(\.items).forEach { $0.loadingHandler = nil }
+        
         dataSource.reload(newSections: newSections, tableView: tableView, animated: animated)
         adyen.updatePreferredContentSize()
+        
+        stopLoading()
+
+        newSections.flatMap(\.items).forEach { item in
+            item.loadingHandler = { [weak self] in self?.handleItem($1, isLoading: $0) }
+        }
+    }
+    
+    private func handleItem(_ item: ListItem, isLoading: Bool) {
+        if isLoading {
+            startLoading(for: item)
+        } else {
+            stopLoading()
+        }
     }
     
     public func deleteItem(at indexPath: IndexPath, animated: Bool = true) {
@@ -163,7 +179,7 @@ public final class ListViewController: UITableViewController {
     /// Starts a loading animation for a given ListItem.
     ///
     /// - Parameter item: The item to be shown as loading.
-    public func startLoading(for item: ListItem) {
+    private func startLoading(for item: ListItem) {
         dataSource.startLoading(for: item, tableView)
     }
     
@@ -171,7 +187,6 @@ public final class ListViewController: UITableViewController {
     public func stopLoading() {
         dataSource.stopLoading(tableView)
     }
-    
 }
 
 extension EditingStyle {
