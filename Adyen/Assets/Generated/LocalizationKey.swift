@@ -28,6 +28,8 @@ public struct LocalizationKey {
     public static let paymentMethodsOtherMethods = LocalizationKey(key: "adyen.paymentMethods.otherMethods")
     /// Stored
     public static let paymentMethodsStoredMethods = LocalizationKey(key: "adyen.paymentMethods.storedMethods")
+    /// Applied
+    public static let paymentMethodsPaidMethods = LocalizationKey(key: "adyen.paymentMethods.paidMethods")
     /// Payment Methods
     public static let paymentMethodsTitle = LocalizationKey(key: "adyen.paymentMethods.title")
     /// Yes, remove
