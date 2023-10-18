@@ -190,11 +190,11 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .entercash: return "enter-cash"
         case .eps: return "EPS"
         case .dotpay: return "dotpay"
-        case .onlineBankingPoland: return "online banking poland"
+        case .onlineBankingPoland: return "online banking \(localized(country: "PL"))"
         case .openBankingUK: return "open banking UK"
-        case .molPayEBankingFPXMY: return "molpay ebanking fpx myanmar"
-        case .molPayEBankingTH: return "molpay ebanking thailand"
-        case .molPayEBankingVN: return "molpay ebanking vietnam"
+        case .molPayEBankingFPXMY: return "FPX online banking \(localized(country: "MY"))"
+        case .molPayEBankingTH: return "online banking \(localized(country: "TH"))"
+        case .molPayEBankingVN: return "online banking \(localized(country: "VN"))"
         case .sepaDirectDebit: return "sepa direct-debit"
         case .applePay: return "applepay"
         case .payPal: return "paypal"
@@ -213,8 +213,8 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .androidPay: return "android pay"
         case .amazonPay: return "amazon pay"
         case .dokuWallet: return "doku wallet"
-        case .dokuAlfamart: return "doku alfamart"
-        case .dokuIndomaret: return "doku indomaret"
+        case .dokuAlfamart: return "alfamart"
+        case .dokuIndomaret: return "indomaret"
         case .giftcard: return "giftcard"
         case .doku: return "doku"
         case .econtextSevenEleven: return "econtext seven-eleven"
@@ -228,8 +228,8 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .achDirectDebit: return "ACH direct debit"
         case .multibanco: return "multibanco"
         case .atome: return "atome"
-        case .onlineBankingCZ: return "online banking czech"
-        case .onlineBankingSK: return "online banking slovakia"
+        case .onlineBankingCZ: return "online banking \(localized(country: "CZ"))"
+        case .onlineBankingSK: return "online banking \(localized(country: "SK"))"
         case .mealVoucherGroupeUp: return "meal voucher groupe-up"
         case .mealVoucherNatixis: return "meal voucher natixis"
         case .mealVoucherSodexo: return "meal voucher sodexo"
@@ -241,4 +241,10 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     // swiftlint:enable cyclomatic_complexity
 
     // swiftlint:enable cyclomatic_complexity function_body_length
+}
+
+private extension PaymentMethodType {
+    func localized(country: String) -> String {
+        Locale.current.localizedString(forRegionCode: country) ?? country
+    }
 }
