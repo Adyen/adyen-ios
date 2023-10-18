@@ -36,11 +36,19 @@ internal struct PartialConfirmationPaymentMethod: PaymentMethod {
         let footnote = localizedString(.partialPaymentRemainingBalance,
                                        parameters,
                                        remainingAmount.formatted)
-        // TODO: AccessibilityLabel
+        let lastFourSeparated = lastFour.map { String($0) }.joined(separator: ", ")
+        
+        let accessibilityLabel = [
+            name,
+            "\(localizedString(.accessibilityLastFourDigits, parameters)): \(lastFourSeparated)",
+            footnote
+        ].joined(separator: ", ")
+        
         return DisplayInformation(title: String.Adyen.securedString + lastFour,
                                   subtitle: nil,
                                   logoName: paymentMethod.displayInformation(using: parameters).logoName,
-                                  footnoteText: footnote)
+                                  footnoteText: footnote,
+                                  accessibilityLabel: accessibilityLabel)
     }
     
     internal init(paymentMethod: some PartialPaymentMethod,
