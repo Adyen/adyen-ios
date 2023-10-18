@@ -179,27 +179,29 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     }
     
     /// The brand name of the card type
+    ///
+    /// - Warning: Currently only intended to be used as `accessibilityLabel` as it's not localized
     @_spi(AdyenInternal)
     public var name: String {
         switch self {
         case .card: return "card payment"
         case .scheme: return "scheme"
         case .ideal: return "ideal"
-        case .entercash: return "entercash"
+        case .entercash: return "enter-cash"
         case .eps: return "EPS"
         case .dotpay: return "dotpay"
-        case .onlineBankingPoland: return "online-banking PL"
-        case .openBankingUK: return "open-banking UK"
-        case .molPayEBankingFPXMY: return "molpay ebanking fpx MY"
-        case .molPayEBankingTH: return "molpay ebanking TH"
-        case .molPayEBankingVN: return "molpay ebanking VN"
+        case .onlineBankingPoland: return "online banking poland"
+        case .openBankingUK: return "open banking UK"
+        case .molPayEBankingFPXMY: return "molpay ebanking fpx myanmar"
+        case .molPayEBankingTH: return "molpay ebanking thailand"
+        case .molPayEBankingVN: return "molpay ebanking vietnam"
         case .sepaDirectDebit: return "sepa direct-debit"
         case .applePay: return "applepay"
         case .payPal: return "paypal"
         case .bcmc: return "bcmc"
         case .bcmcMobileQR: return "bcmc mobile qr"
         case .bcmcMobile: return "bcmc mobile"
-        case .weChatMiniProgram: return "wechatpay"
+        case .weChatMiniProgram: return "wechat pay"
         case .weChatQR: return "wechat pay"
         case .qiwiWallet: return "qiwi wallet"
         case .weChatPayWeb: return "wechat pay"
@@ -216,9 +218,9 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .giftcard: return "giftcard"
         case .doku: return "doku"
         case .econtextSevenEleven: return "econtext seven-eleven"
-        case .econtextStores: return "econtext Stores"
+        case .econtextStores: return "econtext stores"
         case .econtextATM: return "econtext ATM"
-        case .econtextOnline: return "econtext Online"
+        case .econtextOnline: return "econtext online"
         case .boleto: return "boleto"
         case .affirm: return "affirm"
         case .oxxo: return "OXXO"
@@ -226,13 +228,13 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .achDirectDebit: return "ACH direct debit"
         case .multibanco: return "multibanco"
         case .atome: return "atome"
-        case .onlineBankingCZ: return "online banking CZ"
-        case .onlineBankingSK: return "online banking SK"
+        case .onlineBankingCZ: return "online banking czech"
+        case .onlineBankingSK: return "online banking slovakia"
         case .mealVoucherGroupeUp: return "meal voucher groupe-up"
         case .mealVoucherNatixis: return "meal voucher natixis"
         case .mealVoucherSodexo: return "meal voucher sodexo"
         case .upi: return "UPI"
-        case .cashAppPay: return "cash-app"
+        case .cashAppPay: return "cash app"
         case let .other(name): return name.replacingOccurrences(of: "_", with: " ")
         }
     }
