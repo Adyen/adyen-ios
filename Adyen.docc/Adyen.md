@@ -1,4 +1,4 @@
-# ``Adyen``
+# Adyen
 
 Adyen Components for iOS allows you to accept in-app payments by providing you with the building blocks you need to create a checkout experience.
 
