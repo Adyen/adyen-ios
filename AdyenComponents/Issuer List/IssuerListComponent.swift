@@ -120,7 +120,8 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
                 self.submit(data: PaymentComponentData(paymentMethodDetails: details,
                                                        amount: self.payment?.amount,
                                                        order: self.order))
-                self.searchViewController.resultsListViewController.startLoading(for: listItem)
+                
+                listItem.startLoading()
             }
             return listItem
         }
