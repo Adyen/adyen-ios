@@ -89,5 +89,28 @@ extension SessionSetupResponse {
         internal let installmentOptions: InstallmentConfiguration?
         
         internal let enableStoreDetails: Bool
+        
+        internal init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            self.enableStoreDetails = try container.decodeIfPresent(Bool.self, forKey: .enableStoreDetails) ?? false
+            
+            var installmentOptions = try container.decodeIfPresent(InstallmentConfiguration.self, forKey: .installmentOptions)
+            let showInstallmentAmount = try container.decodeIfPresent(Bool.self, forKey: .showInstallmentAmount) ?? false
+            // this flag doesn't come under the installments object, so we decode it here and put it under installments
+            installmentOptions?.showInstallmentAmount = showInstallmentAmount
+            self.installmentOptions = installmentOptions
+        }
+        
+        internal init(installmentOptions: InstallmentConfiguration? = nil, enableStoreDetails: Bool) {
+            self.installmentOptions = installmentOptions
+            self.enableStoreDetails = enableStoreDetails
+        }
+        
+        private enum CodingKeys: String, CodingKey {
+            case installmentOptions
+            case enableStoreDetails
+            case showInstallmentAmount
+        }
     }
 }
