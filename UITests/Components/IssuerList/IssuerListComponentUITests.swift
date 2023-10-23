@@ -33,16 +33,31 @@ final class IssuerListComponentUITests: XCTestCase {
         assertViewControllerImage(matching: sut.viewController, named: "initial_state")
     
         // start loading
-        listViewController.startLoading(for: item)
+        item.startLoading()
         cell = try XCTUnwrap(getCell(for: item, tableView: listViewController.tableView))
+        
         XCTAssertTrue(cell.showsActivityIndicator)
+        XCTAssertFalse(listViewController.tableView.isUserInteractionEnabled)
         assertViewControllerImage(matching: sut.viewController, named: "loading_first_cell")
         
         // stop loading
         sut.stopLoadingIfNeeded()
         cell = try XCTUnwrap(getCell(for: item, tableView: listViewController.tableView))
         XCTAssertFalse(cell.showsActivityIndicator)
+        XCTAssertTrue(listViewController.tableView.isUserInteractionEnabled)
         assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
+        
+        // start loading again
+        item.startLoading()
+        cell = try XCTUnwrap(getCell(for: item, tableView: listViewController.tableView))
+        XCTAssertFalse(listViewController.tableView.isUserInteractionEnabled)
+        XCTAssertTrue(cell.showsActivityIndicator)
+        
+        // stop loading on item -> should stop loading on list
+        item.stopLoading()
+        cell = try XCTUnwrap(getCell(for: item, tableView: listViewController.tableView))
+        XCTAssertTrue(listViewController.tableView.isUserInteractionEnabled)
+        XCTAssertFalse(cell.showsActivityIndicator)
     }
     
     private func getCell(for item: ListItem, tableView: UITableView) -> ListCell? {

@@ -36,8 +36,13 @@ public class ListItem: FormItem {
     /// The `accessibilityIdentifier` to be used on the `ListItem`
     public var identifier: String?
     
-    /// The `accessibilityLabel` to be used on the `ListItem` or ``ListCell``
+    /// The `accessibilityLabel` to be used on the ``ListItem`` or ``ListCell``
     public let accessibilityLabel: String
+    
+    /// The closure for the ``ListViewController`` to assign, to listen to updates for its loading state
+    ///
+    /// See: ``ListItem/startLoading()`` & ``ListItem/stopLoading()``
+    internal var loadingHandler: ((Bool, ListItem) -> Void)?
     
     /// Initializes the list item.
     ///
@@ -72,6 +77,27 @@ public class ListItem: FormItem {
     
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
+    }
+    
+    /// Indicate to the ``ListViewController`` to start loading / show the loading indicator for this specific item
+    ///
+    /// To stop the loading for the whole list either  call  ListViewController.``ListViewController/stopLoading()`` or ListItem.``ListItem/stopLoading()``
+    public func startLoading() {
+        setLoading(true)
+    }
+    
+    /// Indicate to the ``ListViewController`` to stop loading
+    public func stopLoading() {
+        setLoading(false)
+    }
+    
+    private func setLoading(_ isLoading: Bool) {
+        guard let loadingHandler else {
+            assertionFailure("No loadingHandler provided")
+            return
+        }
+        
+        loadingHandler(isLoading, self)
     }
 }
 

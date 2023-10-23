@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 import AdyenComponents
 import AdyenEncryption
+import AdyenActions
 import Foundation
 import PassKit
 
@@ -109,6 +110,19 @@ enum Dummy: Error {
         return amounts.enumerated().map {
             PKPaymentSummaryItem(label: "summary_\($0)", amount: $1)
         }
+    }
+    
+    internal static var redirectAction: Action {
+        let json =
+            """
+            {
+                "type": "redirect",
+                "url": "https://example.org/",
+                "paymentData": "example_data"
+            }
+            """
+
+        return try! JSONDecoder().decode(Action.self, from: json.data(using: .utf8)!)
     }
 
 }

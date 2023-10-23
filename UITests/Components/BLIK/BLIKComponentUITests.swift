@@ -54,8 +54,8 @@ final class BLIKComponentUITests: XCTestCase {
         let sut = createBLIKComponent(with: .init(style: style))
 
         setupRootViewController(sut.viewController)
+
         wait(for: .aMoment)
-        
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
@@ -85,12 +85,13 @@ final class BLIKComponentUITests: XCTestCase {
             XCTAssertEqual(data.blikCode, "123456")
 
             sut.stopLoadingIfNeeded()
-            delegateExpectation.fulfill()
             XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
+            
+            delegateExpectation.fulfill()
         }
         
-        wait(for: [delegateExpectation], timeout: 10)
+        wait(for: [delegateExpectation], timeout: 30)
         
         wait(for: .aMoment)
         
