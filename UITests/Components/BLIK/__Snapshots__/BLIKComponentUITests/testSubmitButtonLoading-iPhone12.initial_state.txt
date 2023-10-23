@@ -1,0 +1,45 @@
+<UIView; frame = (0 0; 390 844); autoresize = W+H; backgroundColor = <UIDynamicSystemColor; name = systemBackgroundColor>; layer = <CALayer>>
+   | <UIView; frame = (0 47; 390 763); autoresize = W+H; backgroundColor = <UIDynamicSystemColor; name = systemBackgroundColor>; layer = <CALayer>>
+   |    | <Adyen.FormView; baseClass = UIScrollView; frame = (0 0; 390 763); clipsToBounds = YES; gestureRecognizers = <NSArray>; backgroundColor = <UIDynamicSystemColor; name = systemBackgroundColor>; layer = <CALayer>; contentOffset: {0, 0}; contentSize: {390, 203.66666666666666}; adjustedContentInset: {0, 0, 0, 0}>
+   |    |    | <UIStackView; frame = (0 0; 390 203.667); layer = <CALayer>>
+   |    |    |    | <Adyen.FormSpacerItemView; frame = (0 0; 390 8); layer = <CALayer>>
+   |    |    |    |    | <UIStackView; frame = (16 0; 358 8); userInteractionEnabled = NO; layer = <CALayer>>
+   |    |    |    |    |    | <UIView; frame = (179 0; 0 8); layer = <CALayer>>
+   |    |    |    |    |    |    | <UIView; frame = (0 8; 0 0); layer = <CALayer>>
+   |    |    |    | <_TtCC5Adyen17FormContainerItemP33_6CC626EA3D8ECC5BCCC946E678B5BDA817FormContainerView; frame = (0 8; 390 36.3333); layer = <CALayer>>
+   |    |    |    |    | <Adyen.ADYLabel; baseClass = UILabel; frame = (16 8; 358 20.3333); text = 'Get the code from your ba...'; userInteractionEnabled = NO; backgroundColor = UIExtendedGrayColorSpace 0 0; layer = <_UILabelLayer>>
+   |    |    |    | <Adyen.FormSpacerItemView; frame = (0 44.3333; 390 8); layer = <CALayer>>
+   |    |    |    |    | <UIStackView; frame = (16 0; 358 8); userInteractionEnabled = NO; layer = <CALayer>>
+   |    |    |    |    |    | <UIView; frame = (179 0; 0 8); layer = <CALayer>>
+   |    |    |    |    |    |    | <UIView; frame = (0 8; 0 0); layer = <CALayer>>
+   |    |    |    | <Adyen.FormTextInputItemView; frame = (0 52.3333; 390 61.3333); gestureRecognizers = <NSArray>; backgroundColor = UIExtendedGrayColorSpace 0 0; layer = <CALayer>>
+   |    |    |    |    | <UIStackView; frame = (0 0; 390 61.3333); layer = <CALayer>>
+   |    |    |    |    |    | <UILabel; frame = (16 8; 358 14.3333); text = '6-digit code'; userInteractionEnabled = NO; backgroundColor = UIExtendedGrayColorSpace 0 0; layer = <_UILabelLayer>>
+   |    |    |    |    |    | <UIStackView; frame = (16 30.3333; 358 23); layer = <CALayer>>
+   |    |    |    |    |    |    | <AdyTextField; baseClass = UITextField; frame = (0 0; 358 23); opaque = NO; gestureRecognizers = <NSArray>; backgroundColor = UIExtendedGrayColorSpace 0 0; placeholder = 123–456; borderStyle = None; background = <_UITextFieldNoBackgroundProvider: textfield=<AdyTextField>>; layer = <CALayer>>
+   |    |    |    |    |    |    |    | <UITextFieldLabel; frame = (0 2; 358 19.3333); text = '123–456'; opaque = NO; userInteractionEnabled = NO; layer = <_UILabelLayer>>
+   |    |    |    |    |    |    |    | <_UITextLayoutCanvasView; frame = (0 0; 358 23); userInteractionEnabled = NO; layer = <CALayer>>
+   |    |    |    |    |    |    |    |    | <_UITextLayoutFragmentView; frame = (0 2; 0 20); opaque = NO; layer = <CALayer>>
+   |    |    |    |    |    |    | <UIStackView; frame = (358 23; 0 0); hidden = YES; layer = <CALayer>>
+   |    |    |    |    |    | <UILabel; frame = (16 53.3333; 358 0); text = 'Enter 6 numbers'; alpha = 0; hidden = YES; userInteractionEnabled = NO; backgroundColor = UIExtendedGrayColorSpace 0 0; layer = <_UILabelLayer>>
+   |    |    |    |    | <UIView; frame = (16 56.3333; 374 1); userInteractionEnabled = NO; animations = { backgroundColor=<CABasicAnimation>; }; backgroundColor = <UIDynamicSystemColor; name = separatorColor>; layer = <CALayer>>
+   |    |    |    | <Adyen.FormSpacerItemView; frame = (0 113.667; 390 8); layer = <CALayer>>
+   |    |    |    |    | <UIStackView; frame = (16 0; 358 8); userInteractionEnabled = NO; layer = <CALayer>>
+   |    |    |    |    |    | <UIView; frame = (179 0; 0 8); layer = <CALayer>>
+   |    |    |    |    |    |    | <UIView; frame = (0 8; 0 0); layer = <CALayer>>
+   |    |    |    | <Adyen.FormButtonItemView; frame = (0 121.667; 390 66); backgroundColor = UIExtendedGrayColorSpace 0 0; layer = <CALayer>>
+   |    |    |    |    | <Adyen.SubmitButton; baseClass = UIControl; frame = (16 8; 358 50); backgroundColor = UIExtendedSRGBColorSpace 0 0.478431 1 1; layer = <CALayer>>
+   |    |    |    |    |    | <_TtCC5Adyen12SubmitButton14BackgroundView; frame = (0 0; 358 50); clipsToBounds = YES; userInteractionEnabled = NO; backgroundColor = UIExtendedSRGBColorSpace 0 0.478431 1 1; layer = <CALayer>>
+   |    |    |    |    |    | <UIActivityIndicatorView; frame = (169 15; 20 20); backgroundColor = UIExtendedGrayColorSpace 0 0; layer = <CALayer>>
+   |    |    |    |    |    |    | <UIImageView; frame = (0 0; 20 20); opaque = NO; userInteractionEnabled = NO; animations = { contents=<CAKeyframeAnimation>; contentsMultiplyColor=<CAKeyframeAnimation>; }; layer = <CALayer>>
+   |    |    |    |    |    | <UILabel; frame = (0 0; 358 50); text = 'Pay PLN 0.02'; alpha = 0; userInteractionEnabled = NO; backgroundColor = UIExtendedGrayColorSpace 0 0; layer = <_UILabelLayer>>
+   |    |    |    | <Adyen.FormSpacerItemView; frame = (0 187.667; 390 16); layer = <CALayer>>
+   |    |    |    |    | <UIStackView; frame = (16 0; 358 16); userInteractionEnabled = NO; layer = <CALayer>>
+   |    |    |    |    |    | <UIView; frame = (179 0; 0 8); layer = <CALayer>>
+   |    |    |    |    |    |    | <UIView; frame = (0 8; 0 0); layer = <CALayer>>
+   |    |    |    |    |    | <UIView; frame = (179 8; 0 8); layer = <CALayer>>
+   |    |    |    |    |    |    | <UIView; frame = (0 8; 0 0); layer = <CALayer>>
+   |    |    | <_UIScrollViewScrollIndicator; frame = (384 -39; 3 36); alpha = 0; autoresize = LM; layer = <CALayer>>
+   |    |    |    | <UIView; frame = (0 0; 3 36); backgroundColor = UIExtendedGrayColorSpace 0 0.35; layer = <CALayer>>
+   |    |    | <_UIScrollViewScrollIndicator; frame = (-39 757; 36 3); alpha = 0; autoresize = TM; layer = <CALayer>>
+   |    |    |    | <UIView; frame = (0 0; 36 3); backgroundColor = UIExtendedGrayColorSpace 0 0.35; layer = <CALayer>>

@@ -108,7 +108,8 @@ final class BLIKComponentUITests: XCTestCase {
         // start loading
         submitButton.showsActivityIndicator = true
         wait(for: .aMoment)
-        assertViewControllerImage(matching: sut.viewController, named: "initial_state")
+        // Comparing the view hierarchy as we're testing a snapshot that contains animated elements
+        assertViewHeirarchy(matching: sut.viewController, named: "initial_state")
 
         // stop loading
         sut.stopLoading()
