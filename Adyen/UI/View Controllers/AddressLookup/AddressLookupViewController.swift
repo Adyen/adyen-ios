@@ -40,7 +40,7 @@ private extension AddressLookupViewController {
     private func buildSearchViewController() -> SearchViewController {
         
         AddressLookupSearchViewController(
-            viewModel: viewModel.addressSearchViewModel { [weak self] viewController in
+            viewModel: viewModel.buildAddressSearchViewModel { [weak self] viewController in
                 self?.presentViewController(viewController, animated: true)
             }
         )
@@ -49,7 +49,7 @@ private extension AddressLookupViewController {
     private func buildFormViewController(prefillAddress: PostalAddress?) -> AddressInputFormViewController {
         
         AddressInputFormViewController(
-            viewModel: viewModel.addressInputFormViewModel(with: prefillAddress)
+            viewModel: viewModel.buildAddressInputFormViewModel(with: prefillAddress)
         )
     }
 }
@@ -81,7 +81,7 @@ private extension AddressLookupViewController {
 
 internal extension AddressLookupViewController.ViewModel {
     
-    func addressInputFormViewModel(
+    func buildAddressInputFormViewModel(
         with prefillAddress: PostalAddress?
     ) -> AddressInputFormViewController.ViewModel {
         
@@ -96,7 +96,7 @@ internal extension AddressLookupViewController.ViewModel {
         )
     }
     
-    func addressSearchViewModel(
+    func buildAddressSearchViewModel(
         presentationHandler: @escaping (UIViewController) -> Void
     ) -> AddressLookupSearchViewController.ViewModel {
         
