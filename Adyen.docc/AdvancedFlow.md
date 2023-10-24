@@ -18,7 +18,9 @@ let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: respons
 
 All Components need an ``APIContext``. An instance of `APIContext` wraps your client key and an environment.
 Please read more [here](https://docs.adyen.com/development-resources/client-side-authentication) about the client key and how to get.
-Use **Environment.test** for environment. When you're ready to accept live payments, change the value to one of our [live environments](https://adyen.github.io/adyen-ios/Docs/Structs/Environment.html)
+
+Use ``Environment.test`` during testing. When you're ready to accept live payments, change the value to one of our [live environments](<doc:Environment>).
+
 We recommend creating a new context for each payment attempt.
 
 ```swift

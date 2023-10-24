@@ -45,7 +45,10 @@ The following examples provide custom information to show for a specific payment
 
 @TabNavigator {
     @Tab(Drop-in) {  
+        
+        
         ```swift
+        // Override the (regular) payment method of type `.scheme` with custom display information
         paymentMethods.overrideDisplayInformation(
             ofRegularPaymentMethod: .scheme,
             with: .init(
@@ -56,6 +59,7 @@ The following examples provide custom information to show for a specific payment
         ```
         
         ```swift
+        // Override the (regular) `.giftcard` payment method if the brand is "genericgiftcard"
         paymentMethods.overrideDisplayInformation(
             ofRegularPaymentMethod: .giftcard,
             with: .init(
@@ -93,4 +97,4 @@ The following examples provide custom information to show for a specific payment
     }
 }
 
-For a full list of customization options can be found in the API Reference.
+For a full list of customization options can be found in the <doc:API-Reference>.

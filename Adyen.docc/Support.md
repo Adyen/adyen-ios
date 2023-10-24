@@ -8,4 +8,4 @@ For other questions, contact our [support team](https://support.adyen.com/hc/en-
 
 - [Complete Documentation](https://docs.adyen.com/developers/checkout/ios)
 
-- [Components API Reference](https://adyen.github.io/adyen-ios/Docs/index.html)
+- [SDK Documentation](<doc:Adyen>)
