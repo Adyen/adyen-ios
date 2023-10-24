@@ -118,29 +118,31 @@ This optional method is invoked after a redirect to an external application has 
 
 When `/payments` or `/payments/details` responds with a non-final result and an `action`, you can use one of the following techniques.
 
-### Using Drop-in
+@TabNavigator {
+    @Tab(Drop-in) {  
+        In case of Drop-in integration you must use build-in action handler on the current instance of ``DropInComponent``:
 
-In case of Drop-in integration you must use build-in action handler on the current instance of ``DropInComponent``:
+        ```swift
+        let action = try JSONDecoder().decode(Action.self, from: actionData)
+        dropInComponent.handle(action)
+        ```
+    }
+    
+    @Tab(Components) {  
+        In case of using individual components, create and persist an instance of ``AdyenActionComponent``:
 
-```swift
-let action = try JSONDecoder().decode(Action.self, from: actionData)
-dropInComponent.handle(action)
-```
+        ```swift
+        lazy var actionComponent: AdyenActionComponent = {
+            let handler = AdyenActionComponent(context: context)
+            handler.delegate = self
+            handler.presentationDelegate = self
+            return handler
+        }()
+        ```
+    }
+}
 
-### Using components
-
-In case of using individual components, create and persist an instance of ``AdyenActionComponent``:
-
-```swift
-lazy var actionComponent: AdyenActionComponent = {
-    let handler = AdyenActionComponent(context: context)
-    handler.delegate = self
-    handler.presentationDelegate = self
-    return handler
-}()
-```
-
-Than use it to handle the action:
+Then use it to handle the action:
 
 ```swift
 let action = try JSONDecoder().decode(Action.self, from: actionData)
