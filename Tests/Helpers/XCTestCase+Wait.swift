@@ -16,13 +16,18 @@ extension XCTestCase {
     /// - Parameters:
     ///   - interval: the dispach time interval to wait for
     func wait(for interval: DispatchTimeInterval) {
+        guard let waitTimeout = interval.waitTimeout else {
+            XCTFail("Invalid interval specified \(interval)")
+            return
+        }
+        
         let dummyExpectation = XCTestExpectation(description: "wait for some time.")
 
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + interval) {
             dummyExpectation.fulfill()
         }
 
-        wait(for: [dummyExpectation], timeout: 100)
+        wait(for: [dummyExpectation], timeout: waitTimeout)
     }
     
     /// Waits until  a certain condition is met
@@ -121,5 +126,19 @@ extension XCTestCase {
         )
         
         return try XCTUnwrap(UIViewController.topPresenter() as? T)
+    }
+}
+
+private extension DispatchTimeInterval {
+    
+    var waitTimeout: TimeInterval? {
+        switch self {
+        case let .seconds(seconds): return TimeInterval(seconds) + 1
+        case .never: return nil
+        case .milliseconds: return 1
+        case .nanoseconds: return 1
+        case .microseconds: return 1
+        @unknown default: return 1
+        }
     }
 }
