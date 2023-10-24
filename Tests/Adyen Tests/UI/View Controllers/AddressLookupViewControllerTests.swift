@@ -220,7 +220,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         let loadingExpectation = expectation(description: "Loading handler was called")
         loadingExpectation.expectedFulfillmentCount = 2
         
-        let addressSearchViewModel = viewModel.addressSearchViewModel { _ in
+        let addressSearchViewModel = viewModel.buildAddressSearchViewModel { _ in
             XCTFail("Presentation handler should not have been called")
         }
 
