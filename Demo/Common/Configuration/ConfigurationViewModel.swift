@@ -30,6 +30,8 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var allowOnboarding: Bool = false
     @Published internal var analyticsIsEnabled: Bool = true
     @Published internal var cashAppPayEnabled: Bool = false
+    @Published internal var installmentsEnabled: Bool = false
+    @Published internal var showInstallmentAmount: Bool = false
 
     private let onDone: (DemoAppSettings) -> Void
     private let configuration: DemoAppSettings
@@ -64,6 +66,8 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.allowOnboarding = configuration.applePaySettings.allowOnboarding
         self.analyticsIsEnabled = configuration.analyticsSettings.isEnabled
         self.cashAppPayEnabled = configuration.dropInSettings.cashAppPayEnabled
+        self.installmentsEnabled = configuration.cardSettings.enableInstallments
+        self.showInstallmentAmount = configuration.cardSettings.showsIntallmentAmount
     }
     
     internal func doneTapped() {
@@ -87,7 +91,9 @@ internal final class ConfigurationViewModel: ObservableObject {
                 showsSecurityCodeField: showsSecurityCodeField,
                 addressMode: addressMode,
                 socialSecurityNumberMode: socialSecurityNumberMode,
-                koreanAuthenticationMode: koreanAuthenticationMode
+                koreanAuthenticationMode: koreanAuthenticationMode,
+                enableInstallments: installmentsEnabled,
+                showsIntallmentAmount: showInstallmentAmount
             ),
             dropInSettings: DropInSettings(allowDisablingStoredPaymentMethods: allowDisablingStoredPaymentMethods,
                                                      allowsSkippingPaymentList: allowsSkippingPaymentList,
