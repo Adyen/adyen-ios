@@ -45,7 +45,7 @@ internal struct SessionRequest: APIRequest {
                                       "visa": InstallmentOptions(monthValues: [3, 6, 9], includesRevolving: true)]
     
             try container.encode(installmentOptions, forKey: .installmentOptions)
-            try container.encode(ConfigurationConstants.current.cardSettings.showsIntallmentAmount,
+            try container.encode(ConfigurationConstants.current.cardSettings.showsInstallmentAmount,
                                  forKey: .showInstallmentAmount)
         }
 

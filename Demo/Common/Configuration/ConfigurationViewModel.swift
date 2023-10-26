@@ -67,7 +67,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.analyticsIsEnabled = configuration.analyticsSettings.isEnabled
         self.cashAppPayEnabled = configuration.dropInSettings.cashAppPayEnabled
         self.installmentsEnabled = configuration.cardSettings.enableInstallments
-        self.showInstallmentAmount = configuration.cardSettings.showsIntallmentAmount
+        self.showInstallmentAmount = configuration.cardSettings.showsInstallmentAmount
     }
     
     internal func doneTapped() {
@@ -93,7 +93,7 @@ internal final class ConfigurationViewModel: ObservableObject {
                 socialSecurityNumberMode: socialSecurityNumberMode,
                 koreanAuthenticationMode: koreanAuthenticationMode,
                 enableInstallments: installmentsEnabled,
-                showsIntallmentAmount: showInstallmentAmount
+                showsInstallmentAmount: showInstallmentAmount
             ),
             dropInSettings: DropInSettings(allowDisablingStoredPaymentMethods: allowDisablingStoredPaymentMethods,
                                                      allowsSkippingPaymentList: allowsSkippingPaymentList,

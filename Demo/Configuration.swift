@@ -97,7 +97,7 @@ internal struct CardSettings: Codable {
     internal var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
     internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
     internal var enableInstallments = false
-    internal var showsIntallmentAmount = false
+    internal var showsInstallmentAmount = false
     
     internal enum AddressFormType: String, Codable, CaseIterable {
         case lookup
@@ -147,7 +147,7 @@ internal struct DemoAppSettings: Codable {
         let visaInstallmentOptions = InstallmentOptions(monthValues: [3, 4, 6], includesRevolving: false)
         return InstallmentConfiguration(cardBasedOptions: [.visa: visaInstallmentOptions],
                                                             defaultOptions: defaultInstallmentOptions,
-                                                            showInstallmentAmount: cardSettings.showsIntallmentAmount)
+                                                            showInstallmentAmount: cardSettings.showsInstallmentAmount)
     }
     
     internal static let defaultConfiguration = DemoAppSettings(
@@ -170,7 +170,7 @@ internal struct DemoAppSettings: Codable {
                                                            socialSecurityNumberMode: .auto,
                                                            koreanAuthenticationMode: .auto,
                                                            enableInstallments: false,
-                                                           showsIntallmentAmount: false)
+                                                           showsInstallmentAmount: false)
 
     internal static let defaultDropInSettings = DropInSettings(allowDisablingStoredPaymentMethods: false,
                                                                allowsSkippingPaymentList: false,
