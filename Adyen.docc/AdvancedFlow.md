@@ -122,7 +122,7 @@ When `/payments` or `/payments/details` responds with a non-final result and an 
 
 @TabNavigator {
     @Tab(Drop-in) {  
-        In case of Drop-in integration you must use build-in action handler on the current instance of ``DropInComponent``:
+        In case of Drop-in integration you must use built-in action handler on the current instance of ``DropInComponent``:
 
         ```swift
         let action = try JSONDecoder().decode(Action.self, from: actionData)
@@ -141,15 +141,15 @@ When `/payments` or `/payments/details` responds with a non-final result and an 
             return handler
         }()
         ```
+        
+        Then use it to handle the action:
+
+        ```swift
+        let action = try JSONDecoder().decode(Action.self, from: actionData)
+        actionComponent.handle(action)
+        ```
     }
 }
-
-Then use it to handle the action:
-
-```swift
-let action = try JSONDecoder().decode(Action.self, from: actionData)
-actionComponent.handle(action)
-```
 
 ## Receiving redirect
 
