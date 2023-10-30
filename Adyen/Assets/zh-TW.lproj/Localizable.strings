@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "輸入無效";
 "adyen.paymentMethods.otherMethods" = "其他";
 "adyen.paymentMethods.storedMethods" = "已儲存";
+"adyen.paymentMethods.paidMethods" = "已套用";
 "adyen.paymentMethods.title" = "付款方式";
 "adyen.paymentMethod.removeButton" = "是，請移除";
 "adyen.payment.refused.message" = "付款被拒絕。請再試一次。";
