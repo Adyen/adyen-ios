@@ -18,7 +18,9 @@ let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: respons
 
 All Components need an ``APIContext``. An instance of `APIContext` wraps your client key and an environment.
 Please read more [here](https://docs.adyen.com/development-resources/client-side-authentication) about the client key and how to get.
-Use **Environment.test** for environment. When you're ready to accept live payments, change the value to one of our [live environments](https://adyen.github.io/adyen-ios/Docs/Structs/Environment.html)
+
+Use ``Environment.test`` during testing. When you're ready to accept live payments, change the value to one of our [live environments](<doc:Environment>).
+
 We recommend creating a new context for each payment attempt.
 
 ```swift
@@ -118,34 +120,36 @@ This optional method is invoked after a redirect to an external application has 
 
 When `/payments` or `/payments/details` responds with a non-final result and an `action`, you can use one of the following techniques.
 
-### Using Drop-in
+@TabNavigator {
+    @Tab(Drop-in) {  
+        In case of Drop-in integration you must use built-in action handler on the current instance of ``DropInComponent``:
 
-In case of Drop-in integration you must use build-in action handler on the current instance of ``DropInComponent``:
+        ```swift
+        let action = try JSONDecoder().decode(Action.self, from: actionData)
+        dropInComponent.handle(action)
+        ```
+    }
+    
+    @Tab(Components) {  
+        In case of using individual components, create and persist an instance of ``AdyenActionComponent``:
 
-```swift
-let action = try JSONDecoder().decode(Action.self, from: actionData)
-dropInComponent.handle(action)
-```
+        ```swift
+        lazy var actionComponent: AdyenActionComponent = {
+            let handler = AdyenActionComponent(context: context)
+            handler.delegate = self
+            handler.presentationDelegate = self
+            return handler
+        }()
+        ```
+        
+        Then use it to handle the action:
 
-### Using components
-
-In case of using individual components, create and persist an instance of ``AdyenActionComponent``:
-
-```swift
-lazy var actionComponent: AdyenActionComponent = {
-    let handler = AdyenActionComponent(context: context)
-    handler.delegate = self
-    handler.presentationDelegate = self
-    return handler
-}()
-```
-
-Than use it to handle the action:
-
-```swift
-let action = try JSONDecoder().decode(Action.self, from: actionData)
-actionComponent.handle(action)
-```
+        ```swift
+        let action = try JSONDecoder().decode(Action.self, from: actionData)
+        actionComponent.handle(action)
+        ```
+    }
+}
 
 ## Receiving redirect
 
