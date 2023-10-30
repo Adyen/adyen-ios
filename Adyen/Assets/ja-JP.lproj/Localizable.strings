@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "無効な入力";
 "adyen.paymentMethods.otherMethods" = "その他";
 "adyen.paymentMethods.storedMethods" = "保存済み";
+"adyen.paymentMethods.paidMethods" = "適用済み";
 "adyen.paymentMethods.title" = "お支払い方法";
 "adyen.paymentMethod.removeButton" = "はい、削除します";
 "adyen.payment.refused.message" = "支払が拒否されました。再度お試し下さい。";

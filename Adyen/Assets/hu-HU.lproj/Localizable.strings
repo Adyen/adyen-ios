@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Érvénytelen bevitel";
 "adyen.paymentMethods.otherMethods" = "egyéb";
 "adyen.paymentMethods.storedMethods" = "Tárolt";
+"adyen.paymentMethods.paidMethods" = "Alkalmazott";
 "adyen.paymentMethods.title" = "Fizetési módok";
 "adyen.paymentMethod.removeButton" = "Igen, eltávolítom";
 "adyen.payment.refused.message" = "A fizetés elutasítva. Próbálkozzon újra.";

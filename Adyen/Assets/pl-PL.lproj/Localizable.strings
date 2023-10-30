@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Nieprawidłowe dane wejściowe";
 "adyen.paymentMethods.otherMethods" = "Inne";
 "adyen.paymentMethods.storedMethods" = "Przechowywane";
+"adyen.paymentMethods.paidMethods" = "Stosowane";
 "adyen.paymentMethods.title" = "Metody płatności";
 "adyen.paymentMethod.removeButton" = "Tak, usuń";
 "adyen.payment.refused.message" = "Płatność została odrzucona. Prosimy spróbować ponownie.";

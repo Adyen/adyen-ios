@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Neplatný vstup";
 "adyen.paymentMethods.otherMethods" = "Ostatní";
 "adyen.paymentMethods.storedMethods" = "Uložené";
+"adyen.paymentMethods.paidMethods" = "Aplikováno";
 "adyen.paymentMethods.title" = "Způsoby platby";
 "adyen.paymentMethod.removeButton" = "Ano, odebrat";
 "adyen.payment.refused.message" = "Platba byla zamítnuta. Zkuste to znovu.";

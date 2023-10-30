@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Informațiile sunt incorecte";
 "adyen.paymentMethods.otherMethods" = "altele";
 "adyen.paymentMethods.storedMethods" = "Salvat";
+"adyen.paymentMethods.paidMethods" = "Aplicate";
 "adyen.paymentMethods.title" = "Metode de plată";
 "adyen.paymentMethod.removeButton" = "Da, șterge";
 "adyen.payment.refused.message" = "Plata a fost refuzată. Vă rugăm să încercați din nou.";
