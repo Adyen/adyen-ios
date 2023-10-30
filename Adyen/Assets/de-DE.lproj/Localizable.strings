@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Ungültige Eingabe";
 "adyen.paymentMethods.otherMethods" = "andere";
 "adyen.paymentMethods.storedMethods" = "Gespeichert";
+"adyen.paymentMethods.paidMethods" = "Angewandt";
 "adyen.paymentMethods.title" = "Zahlungsmethoden";
 "adyen.paymentMethod.removeButton" = "Ja, entfernen";
 "adyen.payment.refused.message" = "Die Zahlung wurde abgelehnt. Bitte versuchen Sie es erneut.";

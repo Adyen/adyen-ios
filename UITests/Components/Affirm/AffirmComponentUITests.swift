@@ -66,6 +66,7 @@ class AffirmComponentUITests: XCTestCase {
             didSubmitExpectation.fulfill()
         }
 
+        wait(for: .aMoment)
         assertViewControllerImage(matching: sut.viewController, named: "shopper-info-prefilled")
         
         let view: UIView = sut.viewController.view
