@@ -43,11 +43,11 @@ The Adyen DropIn/Components SDK API Reference.
 - ``ApplePayStyle``
 
 ## Payment Methods
+``PaymentMethods``
 
 ### Basic Payment Methods
 
 - ``PaymentMethod``
-- ``PaymentMethods``
 - ``StoredPaymentMethod``
 - ``IssuerListPaymentMethod``
 - ``AwaitPaymentMethod``
