@@ -178,6 +178,7 @@
 "adyen.QRCode.generateQRCode" = "Ustvari kodo QR";
 "adyen.UPI.QRCodeInstructions" = "Za dokončanje plačila naredite posnetek zaslona, ki ga naložite v aplikacijo UPI, ali poskenirajte kodo QR z želeno aplikacijo UPI.";
 "adyen.cashAppPay.title" = "";
+"adyen.cashAppPay.cashtag" = "";
 "adyen.threeds2.DA.registration.title" = "Varno in hitro dokončanje nakupov!";
 "adyen.threeds2.DA.registration.description" = "Naslednjič lahko v tej napravi hitreje dokončate nakup z uporabo biometričnih podatkov.";
 "adyen.threeds2.DA.registration.positiveButton" = "Omogoči hitro dokončanje nakupov";
@@ -203,3 +204,4 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "Naslov je obvezen";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Neveljaven naslov";
 "adyen.address.lookup.search.manualEntryItem.title" = "Naslov vnesite ročno";
+"adyen.accessibility.lastFourDigits" = "Zadnje 4 številke";

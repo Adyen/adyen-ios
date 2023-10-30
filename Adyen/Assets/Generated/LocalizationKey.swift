@@ -368,6 +368,8 @@ public struct LocalizationKey {
     public static let UPIQRCodeInstructions = LocalizationKey(key: "adyen.UPI.QRCodeInstructions")
     /// Cash App Pay
     public static let cashAppPayTitle = LocalizationKey(key: "adyen.cashAppPay.title")
+    /// Cashtag
+    public static let cashAppPayCashtag = LocalizationKey(key: "adyen.cashAppPay.cashtag")
     /// Safe and swift checkout!
     public static let threeds2DARegistrationTitle = LocalizationKey(key: "adyen.threeds2.DA.registration.title")
     /// You can check out faster next time on this device using your biometrics.
@@ -418,6 +420,8 @@ public struct LocalizationKey {
     public static let addressLookupItemValidationFailureMessageInvalid = LocalizationKey(key: "adyen.address.lookup.item.validationFailureMessage.invalid")
     /// Enter address manually
     public static let addressLookupSearchManualEntryItemTitle = LocalizationKey(key: "adyen.address.lookup.search.manualEntryItem.title")
+    /// Last 4 digits
+    public static let accessibilityLastFourDigits = LocalizationKey(key: "adyen.accessibility.lastFourDigits")
     
     internal let key: String
     

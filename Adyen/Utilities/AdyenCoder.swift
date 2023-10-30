@@ -8,7 +8,7 @@ import Foundation
 
 /// An object that provides helper functions for coding and decoding responses.
 @_spi(AdyenInternal)
-public enum Coder {
+public enum AdyenCoder {
     
     // MARK: - Decoding
     
@@ -64,6 +64,7 @@ public enum Coder {
     private static let encoder: JSONEncoder = {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
+        encoder.outputFormatting = .sortedKeys
         
         return encoder
     }()

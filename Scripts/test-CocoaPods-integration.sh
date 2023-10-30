@@ -95,13 +95,11 @@ cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/
 cp "../Demo/Configuration.swift" Source/Configuration.swift
 
-xcodegen generate
-
 # Create a Podfile with our pod as dependency.
 echo_group "Pod Install"
 if [ "$INCLUDE_WECHAT" == false ]
 then
-  echo "platform :ios, '11.0'
+  echo "platform :ios, '12.0'
 
   target '$PROJECT_NAME' do
     use_frameworks!
@@ -112,10 +110,9 @@ then
     pod 'AdyenAuthentication'
     pod 'Adyen/CashAppPay', :path => '../'
   end
-
   " >> Podfile
 else
-  echo "platform :ios, '11.0'
+  echo "platform :ios, '12.0'
 
   target '$PROJECT_NAME' do
     use_frameworks!

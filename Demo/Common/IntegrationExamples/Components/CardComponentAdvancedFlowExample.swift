@@ -19,6 +19,8 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     internal var cardComponent: PresentableComponent?
 
     internal weak var presenter: PresenterExampleProtocol?
+    
+    internal lazy var apiClient = ApiClientHelper.generateApiClient()
 
     // MARK: - Action Handling
 
@@ -111,7 +113,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     }
 
     private func finish(with result: PaymentsResponse) {
-        let success = result.resultCode == .authorised || result.resultCode == .received || result.resultCode == .pending
+        let success = result.isAccepted
         let message = "\(result.resultCode.rawValue) \(result.amount?.formatted ?? "")"
         finalize(success, message)
     }

@@ -19,8 +19,7 @@ class ApplePayDetailsTest: XCTestCase {
                                   shippingContact: nil,
                                   shippingMethod: nil)
         
-        let encoder = JSONEncoder()
-        let data = try encoder.encode(sut.encodable)
+        let data = try AdyenCoder.encode(sut.encodable) as Data
         
         let resultJson = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)) as? [String: Any]
         

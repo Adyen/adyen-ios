@@ -22,6 +22,9 @@ internal final class DropInExample: InitialDataFlowProtocol {
     private var session: AdyenSession?
     private var dropInComponent: DropInComponent?
     
+    internal lazy var apiClient = ApiClientHelper.generateApiClient()
+    private lazy var palApiClient = ApiClientHelper.generatePalApiClient()
+    
     // MARK: - Initializers
 
     internal init() {}
@@ -87,21 +90,11 @@ internal final class DropInExample: InitialDataFlowProtocol {
     }
     
     private func dropInConfiguration(from paymentMethods: PaymentMethods) -> DropInComponent.Configuration {
-        let configuration = DropInComponent.Configuration()
+        let configuration = ConfigurationConstants.current.dropInConfiguration
 
-        if let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
-                                                      brand: ConfigurationConstants.appName) {
-            configuration.applePay = .init(payment: applePayPayment,
-                                           merchantIdentifier: ConfigurationConstants.current.applePaySettings?.merchantIdentifier ?? "")
-            configuration.applePay?.allowOnboarding = ConfigurationConstants.current.applePaySettings?.allowOnboarding ?? false
-        }
-
+        configuration.applePay = try? ConfigurationConstants.current.applePayConfiguration()
         configuration.actionComponent.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
         configuration.card = ConfigurationConstants.current.cardDropInConfiguration
-        configuration.allowsSkippingPaymentList = ConfigurationConstants.current.dropInSettings.allowsSkippingPaymentList
-        configuration.allowPreselectedPaymentView = ConfigurationConstants.current.dropInSettings.allowPreselectedPaymentView
-        // swiftlint:disable:next line_length
-        configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = ConfigurationConstants.current.dropInSettings.paymentMethodsList.allowDisablingStoredPaymentMethods
         return configuration
     }
 

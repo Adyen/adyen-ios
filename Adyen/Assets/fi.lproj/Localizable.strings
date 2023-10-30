@@ -178,6 +178,7 @@
 "adyen.QRCode.generateQRCode" = "Tuota QR-koodi";
 "adyen.UPI.QRCodeInstructions" = "Suorita maksu ottamalla kuvakaappaus, jonka voit ladata UPI-sovellukseen, tai skannaamalla QR-koodi haluamallasi UPI-sovelluksella.";
 "adyen.cashAppPay.title" = "";
+"adyen.cashAppPay.cashtag" = "";
 "adyen.threeds2.DA.registration.title" = "Turvallinen ja nopea kassa!";
 "adyen.threeds2.DA.registration.description" = "Voit maksaa tällä laitteella nopeammin ensi kerralla käyttämällä biometrisiä tietojasi.";
 "adyen.threeds2.DA.registration.positiveButton" = "Ota käyttöön nopea kassa";
@@ -203,3 +204,4 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "Osoite vaaditaan";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Virheellinen osoite";
 "adyen.address.lookup.search.manualEntryItem.title" = "Syötä osoite manuaalisesti";
+"adyen.accessibility.lastFourDigits" = "4 viimeistä numeroa";

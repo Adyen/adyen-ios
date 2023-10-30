@@ -129,6 +129,7 @@
 		8100F2BD2A4C3407008C09E7 /* FormValidatableItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8100F2BC2A4C3407008C09E7 /* FormValidatableItemViewTests.swift */; };
 		8100F2C02A4C37E4008C09E7 /* FormSelectableItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8100F2BF2A4C37E3008C09E7 /* FormSelectableItemViewTests.swift */; };
 		8108315D2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8108315C2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift */; };
+		8109FF4C2AD5AD0C000748C8 /* OpenExternalAppDetector+DependencyKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8109FF4B2AD5AD0C000748C8 /* OpenExternalAppDetector+DependencyKey.swift */; };
 		81129AE62A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81129AE52A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift */; };
 		813EF9DE2A5DA0BC00C65D15 /* FormPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813EF9DD2A5DA0BC00C65D15 /* FormPickerItem.swift */; };
 		813EF9E22A5DA2D400C65D15 /* FormPickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813EF9E12A5DA2D400C65D15 /* FormPickerItemView.swift */; };
@@ -142,12 +143,25 @@
 		8140A3762A3327B500896403 /* AdyenComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9175E55259393E800D653BE /* AdyenComponents.framework */; };
 		814276622A7145F50081E896 /* AddressInputFormViewController+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814276612A7145F50081E896 /* AddressInputFormViewController+ViewModel.swift */; };
 		8169B9EC2A0506CC00AAC9F8 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
+		81825CB82AC59C3300F91912 /* UIView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CB72AC59C3300F91912 /* UIView+Search.swift */; };
+		81825CB92AC59C3300F91912 /* UIView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CB72AC59C3300F91912 /* UIView+Search.swift */; };
+		81825CBB2AC59C4000F91912 /* UIViewController+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CBA2AC59C4000F91912 /* UIViewController+Search.swift */; };
+		81825CBC2AC59C4000F91912 /* UIViewController+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CBA2AC59C4000F91912 /* UIViewController+Search.swift */; };
+		81825CBE2AC59C4B00F91912 /* XCTestCase+Available.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CBD2AC59C4B00F91912 /* XCTestCase+Available.swift */; };
+		81825CBF2AC59C4B00F91912 /* XCTestCase+Available.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CBD2AC59C4B00F91912 /* XCTestCase+Available.swift */; };
+		81825CC12AC59C6400F91912 /* XCTestCase+RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CC02AC59C6400F91912 /* XCTestCase+RootViewController.swift */; };
+		81825CC22AC59C6400F91912 /* XCTestCase+RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CC02AC59C6400F91912 /* XCTestCase+RootViewController.swift */; };
+		81825CC42AC59C6C00F91912 /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CC32AC59C6C00F91912 /* XCTestCase+Wait.swift */; };
+		81825CC52AC59C6C00F91912 /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CC32AC59C6C00F91912 /* XCTestCase+Wait.swift */; };
 		81896E852A4DB5F300C532CA /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81896E842A4DB5F300C532CA /* SearchViewControllerTests.swift */; };
 		8191838E2A53062F008EB61A /* FormAddressItem+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8191838D2A53062F008EB61A /* FormAddressItem+Configuration.swift */; };
 		81A2E3BE2A5C453200CF5F9C /* LinkTextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A2E3BD2A5C453200CF5F9C /* LinkTextViewTests.swift */; };
 		81A48DBB2A5709F600242341 /* AddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A48DBA2A5709F600242341 /* AddressLookupProvider.swift */; };
 		81A48DBC2A5709F600242341 /* AddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A48DBA2A5709F600242341 /* AddressLookupProvider.swift */; };
 		81A48DC62A5800EA00242341 /* AddressLookupViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A48DC32A58004A00242341 /* AddressLookupViewControllerTests.swift */; };
+		81A6B4E32AD53E3300A089A1 /* OpenExternalAppDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A6B4E22AD53E3300A089A1 /* OpenExternalAppDetector.swift */; };
+		81A6B4E72AD54F6C00A089A1 /* OpenExternalAppDetector+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A6B4E52AD54F4F00A089A1 /* OpenExternalAppDetector+Mock.swift */; };
+		81A6B4EB2AD5546500A089A1 /* AdyenDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A6B4EA2AD5546500A089A1 /* AdyenDependencies.swift */; };
 		81B001B12A543CFD0015BFA3 /* SearchViewController+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001B02A543CFD0015BFA3 /* SearchViewController+ViewModel.swift */; };
 		81B001B62A5470950015BFA3 /* AddressLookupViewController+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001B52A5470950015BFA3 /* AddressLookupViewController+ViewModel.swift */; };
 		81B001B72A5470EA0015BFA3 /* AddressLookupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001B22A5468220015BFA3 /* AddressLookupViewController.swift */; };
@@ -172,6 +186,10 @@
 		81C400672A3B0D8F007EC51C /* FormSearchButtonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C400662A3B0D8F007EC51C /* FormSearchButtonItemView.swift */; };
 		81C4006B2A40A526007EC51C /* FormAddressPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C4006A2A40A526007EC51C /* FormAddressPickerItem.swift */; };
 		81C4006D2A41A2BC007EC51C /* FormAddressPickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C4006C2A41A2BC007EC51C /* FormAddressPickerItemView.swift */; };
+		81C5D0CD2AC4170A002E918F /* IssuerListComponentExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C5D0CC2AC4170A002E918F /* IssuerListComponentExample.swift */; };
+		81C5D0CE2AC4170A002E918F /* IssuerListComponentExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C5D0CC2AC4170A002E918F /* IssuerListComponentExample.swift */; };
+		81C5D0D02AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C5D0CF2AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift */; };
+		81C5D0D12AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C5D0CF2AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift */; };
 		81D8E2E92A5C06AC00BC12FD /* KeyboardObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D8E2E82A5C06AC00BC12FD /* KeyboardObserverTests.swift */; };
 		81DC5A512A73C52500DBF2D1 /* AdyenContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DC5A502A73C52500DBF2D1 /* AdyenContextTests.swift */; };
 		81DC5A552A77ED0400DBF2D1 /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = 81DC5A542A77ED0400DBF2D1 /* Adyen3DS2 */; };
@@ -181,6 +199,7 @@
 		81E031942A0A75F200EA965E /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67461F264262F000E9184D /* ConfigurationView.swift */; };
 		81E031952A0A75F800EA965E /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54600E264433CD00724A87 /* SearchBar.swift */; };
 		81EA6C122A44836E0071A141 /* FormAddressItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EA6C112A44836E0071A141 /* FormAddressItemTests.swift */; };
+		81FAFB442AAF715F00828999 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
 		A009837D279859DC007E68C4 /* ACHDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */; };
 		A009837F27986B50007E68C4 /* BankDetailsEncryptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */; };
 		A0113D9B2763887800AD395C /* ActionNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0113D9A2763887800AD395C /* ActionNavigationBar.swift */; };
@@ -513,8 +532,8 @@
 		E9E3DAD1221EEE2100697074 /* CardExpiryDateValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAD0221EEE2100697074 /* CardExpiryDateValidator.swift */; };
 		E9E3DAD3221EEFF700697074 /* CardExpiryDateValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAD2221EEFF700697074 /* CardExpiryDateValidatorTests.swift */; };
 		E9E3DAFF2225488900697074 /* Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAFE2225488900697074 /* Completion.swift */; };
-		E9E3DB03222548E100697074 /* Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DB02222548E100697074 /* Coder.swift */; };
-		E9E3DB062226B3B200697074 /* CoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DB052226B3B200697074 /* CoderTests.swift */; };
+		E9E3DB03222548E100697074 /* AdyenCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DB02222548E100697074 /* AdyenCoder.swift */; };
+		E9E3DB062226B3B200697074 /* AdyenCoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DB052226B3B200697074 /* AdyenCoderTests.swift */; };
 		F90E95F02726B625007E382B /* DropInComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90E95EF2726B625007E382B /* DropInComponentExtensions.swift */; };
 		F90E95F227280BD5007E382B /* CoreListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90E95F127280BD5007E382B /* CoreListDataSource.swift */; };
 		F90E95F62728106D007E382B /* DiffableListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90E95F52728106D007E382B /* DiffableListDataSource.swift */; };
@@ -619,7 +638,6 @@
 		F9237D3828CA1EB7004F9929 /* AdyenAuthentication in Frameworks */ = {isa = PBXBuildFile; productRef = F9237D3728CA1EB7004F9929 /* AdyenAuthentication */; };
 		F9237D3B28CB467D004F9929 /* ThreeDS2CompactActionHandler+Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9237D3A28CB467D004F9929 /* ThreeDS2CompactActionHandler+Initializers.swift */; };
 		F9237D3D28CB470E004F9929 /* ThreeDS2ClassicActionHandler+Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9237D3C28CB470E004F9929 /* ThreeDS2ClassicActionHandler+Initializers.swift */; };
-		F92385B72757AE8B0082F7B7 /* XCTestCaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92385B62757AE8B0082F7B7 /* XCTestCaseExtensions.swift */; };
 		F924C072246BEEF0006DDAB8 /* CardDetailsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */; };
 		F924C074246C2E0B006DDAB8 /* LazyOptional.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C073246C2E0B006DDAB8 /* LazyOptional.swift */; };
 		F924C079246C38E0006DDAB8 /* SecuredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924C078246C38E0006DDAB8 /* SecuredViewController.swift */; };
@@ -643,7 +661,6 @@
 		F92980D127CF6580000CA5CA /* ActionComponentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97B972022B0F3F500505476 /* ActionComponentData.swift */; };
 		F92CBA072811754400367820 /* GiftCardConfirmationPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9FE25B32625ECE7001874BB /* GiftCardConfirmationPaymentMethod.swift */; };
 		F92CBA092812CB0D00367820 /* CardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAAE221D5C5E00697074 /* CardType.swift */; };
-		F931DDC5270B0874004B012C /* XCTestCase+Available.swift in Sources */ = {isa = PBXBuildFile; fileRef = F931DDC4270B0874004B012C /* XCTestCase+Available.swift */; };
 		F9354BE723A7B4E200A6760B /* TextStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9354BE623A7B4E200A6760B /* TextStyle.swift */; };
 		F9354BE923A7B5AC00A6760B /* ViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9354BE823A7B5AC00A6760B /* ViewStyle.swift */; };
 		F9354BED23A7C34D00A6760B /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9354BEC23A7C34D00A6760B /* ButtonStyle.swift */; };
@@ -858,16 +875,14 @@
 		F9CCA3CD296ECC8800AD643D /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF8CD4C26691D3A00102339 /* Dummy.swift */; };
 		F9CCA3CE296ECC9C00AD643D /* DummyPaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79F2397BD8500CFB3C9 /* DummyPaymentMethods.swift */; };
 		F9CCA3CF296ECCA900AD643D /* PaymentComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */; };
-		F9CCA3D0296ECCC700AD643D /* UIView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D57527237C3EE3009C18B5 /* UIView+Search.swift */; };
 		F9CCA3D1296ECCEE00AD643D /* XCTestCase+FormAddressItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */; };
 		F9CCA3D2296ECCFA00AD643D /* XCTestCaseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96AE51A26038602009F82BD /* XCTestCaseExtension.swift */; };
 		F9CCA3D3296ECD0700AD643D /* PostalAddressMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */; };
-		F9CCA3D5296ECD3000AD643D /* Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DB02222548E100697074 /* Coder.swift */; };
+		F9CCA3D5296ECD3000AD643D /* AdyenCoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DB02222548E100697074 /* AdyenCoder.swift */; };
 		F9CCA3D6296ECD3C00AD643D /* PresentationDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B5124E29E340073F38A /* PresentationDelegateMock.swift */; };
 		F9CCA3D7296ECDB200AD643D /* XCTestCase+Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBC5288013990082B360 /* XCTestCase+Coder.swift */; };
 		F9CCA3DA296ECDF900AD643D /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = F9CCA3D9296ECDF900AD643D /* SnapshotTesting */; };
 		F9CCA3DE296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CCA3DD296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift */; };
-		F9CCA3DF296ED20D00AD643D /* XCTestCaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92385B62757AE8B0082F7B7 /* XCTestCaseExtensions.swift */; };
 		F9CFB05A28351709002F3B72 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CFB05928351709002F3B72 /* APIRequest.swift */; };
 		F9CFB05B28351709002F3B72 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CFB05928351709002F3B72 /* APIRequest.swift */; };
 		F9CFB05D283541DC002F3B72 /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CFB05C283541DC002F3B72 /* UIView+Helpers.swift */; };
@@ -880,7 +895,6 @@
 		F9D5751C237C0EA0009C18B5 /* BCMCPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D5751B237C0EA0009C18B5 /* BCMCPaymentMethod.swift */; };
 		F9D5751E237C106A009C18B5 /* BCMCComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D5751D237C106A009C18B5 /* BCMCComponent.swift */; };
 		F9D57526237C3576009C18B5 /* RandomStringGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D57525237C3576009C18B5 /* RandomStringGenerator.swift */; };
-		F9D57528237C3EE3009C18B5 /* UIView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D57527237C3EE3009C18B5 /* UIView+Search.swift */; };
 		F9D5752A237C6084009C18B5 /* StoredBCMCPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D57529237C6084009C18B5 /* StoredBCMCPaymentMethod.swift */; };
 		F9D5753123828EBB009C18B5 /* AnyCardPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D5753023828EBB009C18B5 /* AnyCardPaymentMethod.swift */; };
 		F9D57535238291A1009C18B5 /* BCMCComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D57534238291A1009C18B5 /* BCMCComponentTests.swift */; };
@@ -931,6 +945,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		81FAFB462AAF715F00828999 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E2C0E03222097917008616F6;
+			remoteInfo = Adyen;
+		};
 		A020EC4A29E6EC4C0050B2FE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
@@ -1311,6 +1332,7 @@
 		8100F2BC2A4C3407008C09E7 /* FormValidatableItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableItemViewTests.swift; sourceTree = "<group>"; };
 		8100F2BF2A4C37E3008C09E7 /* FormSelectableItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableItemViewTests.swift; sourceTree = "<group>"; };
 		8108315C2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerListEmptyView.swift; sourceTree = "<group>"; };
+		8109FF4B2AD5AD0C000748C8 /* OpenExternalAppDetector+DependencyKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenExternalAppDetector+DependencyKey.swift"; sourceTree = "<group>"; };
 		81129AE52A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchViewController+InterfaceState.swift"; sourceTree = "<group>"; };
 		813EF9DD2A5DA0BC00C65D15 /* FormPickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItem.swift; sourceTree = "<group>"; };
 		813EF9E12A5DA2D400C65D15 /* FormPickerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItemView.swift; sourceTree = "<group>"; };
@@ -1322,12 +1344,20 @@
 		813EF9ED2A5FE8D900C65D15 /* FormPickerSearchViewController+Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormPickerSearchViewController+Style.swift"; sourceTree = "<group>"; };
 		813EF9EF2A6551C300C65D15 /* ViewControllerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerPresenter.swift; sourceTree = "<group>"; };
 		814276612A7145F50081E896 /* AddressInputFormViewController+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressInputFormViewController+ViewModel.swift"; sourceTree = "<group>"; };
+		81825CB72AC59C3300F91912 /* UIView+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Search.swift"; sourceTree = "<group>"; };
+		81825CBA2AC59C4000F91912 /* UIViewController+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Search.swift"; sourceTree = "<group>"; };
+		81825CBD2AC59C4B00F91912 /* XCTestCase+Available.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Available.swift"; sourceTree = "<group>"; };
+		81825CC02AC59C6400F91912 /* XCTestCase+RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+RootViewController.swift"; sourceTree = "<group>"; };
+		81825CC32AC59C6C00F91912 /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
 		81896E842A4DB5F300C532CA /* SearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerTests.swift; sourceTree = "<group>"; };
 		8191838D2A53062F008EB61A /* FormAddressItem+Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormAddressItem+Configuration.swift"; sourceTree = "<group>"; };
 		81A2E3BD2A5C453200CF5F9C /* LinkTextViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkTextViewTests.swift; sourceTree = "<group>"; };
 		81A2E3BF2A5C453F00CF5F9C /* LinkTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
 		81A48DBA2A5709F600242341 /* AddressLookupProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupProvider.swift; sourceTree = "<group>"; };
 		81A48DC32A58004A00242341 /* AddressLookupViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupViewControllerTests.swift; sourceTree = "<group>"; };
+		81A6B4E22AD53E3300A089A1 /* OpenExternalAppDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenExternalAppDetector.swift; sourceTree = "<group>"; };
+		81A6B4E52AD54F4F00A089A1 /* OpenExternalAppDetector+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenExternalAppDetector+Mock.swift"; sourceTree = "<group>"; };
+		81A6B4EA2AD5546500A089A1 /* AdyenDependencies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdyenDependencies.swift; sourceTree = "<group>"; };
 		81B001B02A543CFD0015BFA3 /* SearchViewController+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchViewController+ViewModel.swift"; sourceTree = "<group>"; };
 		81B001B22A5468220015BFA3 /* AddressLookupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupViewController.swift; sourceTree = "<group>"; };
 		81B001B52A5470950015BFA3 /* AddressLookupViewController+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressLookupViewController+ViewModel.swift"; sourceTree = "<group>"; };
@@ -1352,6 +1382,8 @@
 		81C4006A2A40A526007EC51C /* FormAddressPickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAddressPickerItem.swift; sourceTree = "<group>"; };
 		81C4006C2A41A2BC007EC51C /* FormAddressPickerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAddressPickerItemView.swift; sourceTree = "<group>"; };
 		81C4006F2A4347FD007EC51C /* FormErrorItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormErrorItemTests.swift; sourceTree = "<group>"; };
+		81C5D0CC2AC4170A002E918F /* IssuerListComponentExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerListComponentExample.swift; sourceTree = "<group>"; };
+		81C5D0CF2AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerListComponentAdvancedFlowExample.swift; sourceTree = "<group>"; };
 		81D8E2E82A5C06AC00BC12FD /* KeyboardObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardObserverTests.swift; sourceTree = "<group>"; };
 		81DC5A502A73C52500DBF2D1 /* AdyenContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenContextTests.swift; sourceTree = "<group>"; };
 		81DC5A582A79287400DBF2D1 /* AddressInputFormViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInputFormViewControllerTests.swift; sourceTree = "<group>"; };
@@ -1735,8 +1767,8 @@
 		E9E3DAF822241D6000697074 /* CardPayload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardPayload.swift; sourceTree = "<group>"; };
 		E9E3DAF922241D6000697074 /* CardEncryptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardEncryptor.swift; sourceTree = "<group>"; };
 		E9E3DAFE2225488900697074 /* Completion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Completion.swift; sourceTree = "<group>"; };
-		E9E3DB02222548E100697074 /* Coder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coder.swift; sourceTree = "<group>"; };
-		E9E3DB052226B3B200697074 /* CoderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoderTests.swift; sourceTree = "<group>"; };
+		E9E3DB02222548E100697074 /* AdyenCoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenCoder.swift; sourceTree = "<group>"; };
+		E9E3DB052226B3B200697074 /* AdyenCoderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenCoderTests.swift; sourceTree = "<group>"; };
 		F90E95EF2726B625007E382B /* DropInComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInComponentExtensions.swift; sourceTree = "<group>"; };
 		F90E95F127280BD5007E382B /* CoreListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreListDataSource.swift; sourceTree = "<group>"; };
 		F90E95F52728106D007E382B /* DiffableListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableListDataSource.swift; sourceTree = "<group>"; };
@@ -1775,7 +1807,6 @@
 		F92329DC25AD049E002C5BC4 /* FallbackCardBrandProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FallbackCardBrandProvider.swift; sourceTree = "<group>"; };
 		F9237D3A28CB467D004F9929 /* ThreeDS2CompactActionHandler+Initializers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreeDS2CompactActionHandler+Initializers.swift"; sourceTree = "<group>"; };
 		F9237D3C28CB470E004F9929 /* ThreeDS2ClassicActionHandler+Initializers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreeDS2ClassicActionHandler+Initializers.swift"; sourceTree = "<group>"; };
-		F92385B62757AE8B0082F7B7 /* XCTestCaseExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestCaseExtensions.swift; sourceTree = "<group>"; };
 		F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsTests.swift; sourceTree = "<group>"; };
 		F924C073246C2E0B006DDAB8 /* LazyOptional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyOptional.swift; sourceTree = "<group>"; };
 		F924C078246C38E0006DDAB8 /* SecuredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuredViewController.swift; sourceTree = "<group>"; };
@@ -1792,7 +1823,6 @@
 		F92980C327CF558E000CA5CA /* AdyenSession+ActionComponentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AdyenSession+ActionComponentDelegate.swift"; sourceTree = "<group>"; };
 		F92980C527CF563C000CA5CA /* AdyenSession+PartialPaymentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AdyenSession+PartialPaymentDelegate.swift"; sourceTree = "<group>"; };
 		F92980CD27CF650F000CA5CA /* ActionComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionComponent.swift; sourceTree = "<group>"; };
-		F931DDC4270B0874004B012C /* XCTestCase+Available.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "XCTestCase+Available.swift"; path = "Tests/Helpers/XCTestCase+Available.swift"; sourceTree = SOURCE_ROOT; };
 		F9354BE623A7B4E200A6760B /* TextStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyle.swift; sourceTree = "<group>"; };
 		F9354BE823A7B5AC00A6760B /* ViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStyle.swift; sourceTree = "<group>"; };
 		F9354BEC23A7C34D00A6760B /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
@@ -2034,7 +2064,6 @@
 		F9D5751B237C0EA0009C18B5 /* BCMCPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BCMCPaymentMethod.swift; sourceTree = "<group>"; };
 		F9D5751D237C106A009C18B5 /* BCMCComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BCMCComponent.swift; sourceTree = "<group>"; };
 		F9D57525237C3576009C18B5 /* RandomStringGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomStringGenerator.swift; sourceTree = "<group>"; };
-		F9D57527237C3EE3009C18B5 /* UIView+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Search.swift"; sourceTree = "<group>"; };
 		F9D57529237C6084009C18B5 /* StoredBCMCPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredBCMCPaymentMethod.swift; sourceTree = "<group>"; };
 		F9D5753023828EBB009C18B5 /* AnyCardPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCardPaymentMethod.swift; sourceTree = "<group>"; };
 		F9D57534238291A1009C18B5 /* BCMCComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BCMCComponentTests.swift; sourceTree = "<group>"; };
@@ -2173,6 +2202,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81FAFB442AAF715F00828999 /* Adyen.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2429,6 +2459,8 @@
 				002A767B2A050140000684D2 /* ApplePayComponentAdvancedFlowExample.swift */,
 				00ED81C229F68C0F00A6B52C /* CardComponentExample.swift */,
 				00ED81BC29EEC50B00A6B52C /* CardComponentAdvancedFlowExample.swift */,
+				81C5D0CC2AC4170A002E918F /* IssuerListComponentExample.swift */,
+				81C5D0CF2AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2832,13 +2864,16 @@
 		C92F6DBF26B0297A004BD516 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				F931DDC4270B0874004B012C /* XCTestCase+Available.swift */,
+				81825CB72AC59C3300F91912 /* UIView+Search.swift */,
+				81825CBA2AC59C4000F91912 /* UIViewController+Search.swift */,
+				81825CBD2AC59C4B00F91912 /* XCTestCase+Available.swift */,
+				81825CC32AC59C6C00F91912 /* XCTestCase+Wait.swift */,
 				F96AE51A26038602009F82BD /* XCTestCaseExtension.swift */,
+				81825CC02AC59C6400F91912 /* XCTestCase+RootViewController.swift */,
 				C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */,
 				5A56E15426B6DEF800744CA0 /* XCTestCase+Style.swift */,
 				A04E60D227E0E6280051C72C /* XCTestCase+Result.swift */,
 				00EACBC5288013990082B360 /* XCTestCase+Coder.swift */,
-				F92385B62757AE8B0082F7B7 /* XCTestCaseExtensions.swift */,
 				81B505782A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift */,
 			);
 			path = Helpers;
@@ -3077,7 +3112,7 @@
 				E270FDE7225CC4A7006C2CD0 /* Observable */,
 				F96286BC256BDEB000043FE3 /* CoreBundleExtension.swift */,
 				E97B972222B238C400505476 /* Analytics.swift */,
-				E9E3DB02222548E100697074 /* Coder.swift */,
+				E9E3DB02222548E100697074 /* AdyenCoder.swift */,
 				E9E3DAFE2225488900697074 /* Completion.swift */,
 				E9021DA9225789B1009CF7F4 /* Localization.swift */,
 				F96F44DC23BE487500871C1F /* LocalizationParameters.swift */,
@@ -3451,6 +3486,7 @@
 			isa = PBXGroup;
 			children = (
 				E2D12BFF221D91ED00EF682F /* StringHelpers.swift */,
+				81A6B4EA2AD5546500A089A1 /* AdyenDependencies.swift */,
 				E9021DED225CC46D009CF7F4 /* URLHelpers.swift */,
 				E9021E012264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift */,
 				E2B3C215233507030067891D /* UIColorHelpers.swift */,
@@ -3910,6 +3946,7 @@
 		E7E8343A24F3C7ED00EC3844 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				81A6B4E52AD54F4F00A089A1 /* OpenExternalAppDetector+Mock.swift */,
 				E7E8343B24F3C81700EC3844 /* PublicKeyProviderMock.swift */,
 				E79A64802490D98F00368E9F /* CardComponentDelegateMock.swift */,
 				E773EA3B2523432B00119499 /* CardTypeProviderMock.swift */,
@@ -4021,6 +4058,8 @@
 			isa = PBXGroup;
 			children = (
 				E73C54E325EBD2DC00B57758 /* BrowserComponent.swift */,
+				81A6B4E22AD53E3300A089A1 /* OpenExternalAppDetector.swift */,
+				8109FF4B2AD5AD0C000748C8 /* OpenExternalAppDetector+DependencyKey.swift */,
 				F9780B6424338DFE00CC6C73 /* RedirectComponent.swift */,
 				E9AFF882224CF959005A0D8D /* RedirectListener.swift */,
 				E9AFF884224D0D3B005A0D8D /* RedirectDetails.swift */,
@@ -4116,7 +4155,6 @@
 				F9EDB78E23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift */,
 				F919DF9F24EABCC10027976E /* StoredCardComponentTests.swift */,
 				F9EDB799239664B500CFB3C9 /* StoredPaymentMethodComponentTests.swift */,
-				F9D57527237C3EE3009C18B5 /* UIView+Search.swift */,
 				F919DF9824EA64680027976E /* CardPublicKeyProviderTests.swift */,
 			);
 			path = "Card Tests";
@@ -4178,7 +4216,7 @@
 				F9BA21C52474113500D36A63 /* AmountFormatterTests.swift */,
 				E702BE182602525E00280682 /* AssertsTests.swift */,
 				F9838D22263193E000963483 /* BalanceCheckerTests.swift */,
-				E9E3DB052226B3B200697074 /* CoderTests.swift */,
+				E9E3DB052226B3B200697074 /* AdyenCoderTests.swift */,
 				81D8E2E82A5C06AC00BC12FD /* KeyboardObserverTests.swift */,
 				E7768BDB26B416C3000851B3 /* DateValidationTests.swift */,
 				F9BA21BE246D36AC00D36A63 /* LazyOptionalTests.swift */,
@@ -5436,6 +5474,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				81FAFB472AAF715F00828999 /* PBXTargetDependency */,
 			);
 			name = AdyenEncryption;
 			productName = AdyenEncryption;
@@ -6363,6 +6402,7 @@
 				F939CD7725EE56BA00018DEC /* LoadingComponent.swift in Sources */,
 				E7806EBD26147AB700101DBB /* ViewControllerDelegate.swift in Sources */,
 				E749FD1E23CF4998000D18BA /* NavigationStyle.swift in Sources */,
+				81A6B4EB2AD5546500A089A1 /* AdyenDependencies.swift in Sources */,
 				F9354BED23A7C34D00A6760B /* ButtonStyle.swift in Sources */,
 				F9B8C50C23FE962D00C4D0FB /* FormPhoneNumberItem.swift in Sources */,
 				E2C0E0BC220B2976008616F6 /* FormItemView.swift in Sources */,
@@ -6415,7 +6455,7 @@
 				F9354BEF23A7C87600A6760B /* ImageStyle.swift in Sources */,
 				F9FE253B2625AED6001874BB /* PartialPaymentComponent.swift in Sources */,
 				81C4006D2A41A2BC007EC51C /* FormAddressPickerItemView.swift in Sources */,
-				E9E3DB03222548E100697074 /* Coder.swift in Sources */,
+				E9E3DB03222548E100697074 /* AdyenCoder.swift in Sources */,
 				A0C9B59B288AE34600D6BDAB /* InstallmentOptions.swift in Sources */,
 				81BA08412A4AD97400308160 /* FormValidatableValueItemView.swift in Sources */,
 				E9093401228C54CD00C9F04B /* LogoURLProvider.swift in Sources */,
@@ -6484,6 +6524,7 @@
 				C97C16AA28059A5A00534419 /* TelemetryTrackerTests.swift in Sources */,
 				E7D189B025D31936006AD3B7 /* DropInActionTests.swift in Sources */,
 				C95903DE275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift in Sources */,
+				81825CBB2AC59C4000F91912 /* UIViewController+Search.swift in Sources */,
 				F9A781B02403ED4000E12487 /* NumericStringValidatorTests.swift in Sources */,
 				F960FB092371823A00AEF74B /* ApplePayComponentTests.swift in Sources */,
 				F9BA21C62474113500D36A63 /* AmountFormatterTests.swift in Sources */,
@@ -6532,7 +6573,7 @@
 				5A56E15326B6DB9C00744CA0 /* VoucherViewTests.swift in Sources */,
 				81DC5A592A79287400DBF2D1 /* AddressInputFormViewControllerTests.swift in Sources */,
 				81A2E3BE2A5C453200CF5F9C /* LinkTextViewTests.swift in Sources */,
-				F9D57528237C3EE3009C18B5 /* UIView+Search.swift in Sources */,
+				81825CC42AC59C6C00F91912 /* XCTestCase+Wait.swift in Sources */,
 				E9E3DAC2221ECE1000697074 /* CardSecurityCodeFormatterTests.swift in Sources */,
 				F9A6C453265640E000D8CD3E /* InstantPaymentComponentTests.swift in Sources */,
 				81D8E2E92A5C06AC00BC12FD /* KeyboardObserverTests.swift in Sources */,
@@ -6546,7 +6587,7 @@
 				E74D918325AF3FE600743B0C /* CardBrandProviderTests.swift in Sources */,
 				E773EA3C2523432B00119499 /* CardTypeProviderMock.swift in Sources */,
 				C97C16AC280702B200534419 /* TelemetryFlavorTests.swift in Sources */,
-				E9E3DB062226B3B200697074 /* CoderTests.swift in Sources */,
+				E9E3DB062226B3B200697074 /* AdyenCoderTests.swift in Sources */,
 				F99D4603262D647400880D72 /* AddressViewModelTests.swift in Sources */,
 				E9E3DABE221EA47800697074 /* StringExtensionsTests.swift in Sources */,
 				F95B6D9025231880002C9062 /* PhoneNumberValidatorTests.swift in Sources */,
@@ -6555,7 +6596,6 @@
 				E9021E042264C55E009CF7F4 /* KeyedDecodingContainerExtensionsTests.swift in Sources */,
 				F9EDB79E2397AEF400CFB3C9 /* ComponentManagerTests.swift in Sources */,
 				F9EDB7922396603F00CFB3C9 /* PaymentMethodListComponentTests.swift in Sources */,
-				F92385B72757AE8B0082F7B7 /* XCTestCaseExtensions.swift in Sources */,
 				F919DFA224ED599D0027976E /* AdyenActionComponentTests.swift in Sources */,
 				C927083927590B7900D15EA0 /* BACSInputPresenterProtocolMock.swift in Sources */,
 				E702BE192602525E00280682 /* AssertsTests.swift in Sources */,
@@ -6566,6 +6606,7 @@
 				5A988B652653D9370007F4C0 /* BoletoComponentTests.swift in Sources */,
 				F919DFA024EABCC10027976E /* StoredCardComponentTests.swift in Sources */,
 				81BBB34D2A6938A400AF1F9E /* FormAddressPickerItemTests.swift in Sources */,
+				81825CC12AC59C6400F91912 /* XCTestCase+RootViewController.swift in Sources */,
 				F9838CAB26315B6100963483 /* GiftCardComponentTests.swift in Sources */,
 				E773EA3A25221C4600119499 /* ThrottlerTests.swift in Sources */,
 				F97842D926C3D55200677458 /* OXXOShareableVoucherViewProviderTests.swift in Sources */,
@@ -6593,6 +6634,7 @@
 				F924C072246BEEF0006DDAB8 /* CardDetailsTests.swift in Sources */,
 				F9FE39E32679E09200F02A9B /* LoadingViewTests.swift in Sources */,
 				F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */,
+				81825CBE2AC59C4B00F91912 /* XCTestCase+Available.swift in Sources */,
 				A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */,
 				A04E60DB27F30D900051C72C /* SessionDelegateMock.swift in Sources */,
 				F9AC61C424375F510062A00D /* PresentingViewControllerMock.swift in Sources */,
@@ -6601,6 +6643,7 @@
 				F9BA21BF246D36AC00D36A63 /* LazyOptionalTests.swift in Sources */,
 				8100F2C02A4C37E4008C09E7 /* FormSelectableItemViewTests.swift in Sources */,
 				E9021DF2225CC6D0009CF7F4 /* RedirectDetailsTests.swift in Sources */,
+				81825CB82AC59C3300F91912 /* UIView+Search.swift in Sources */,
 				C981254E2851E9AF006D1374 /* PaymentComponentSubject.swift in Sources */,
 				81A48DC62A5800EA00242341 /* AddressLookupViewControllerTests.swift in Sources */,
 				F96F44E123BF5C2000871C1F /* LocalizationTests.swift in Sources */,
@@ -6617,7 +6660,6 @@
 				A020EC5A29ED33F90050B2FE /* CashAppPayComponentTests.swift in Sources */,
 				F967581527D25B1600A16FB6 /* SelfRetainingAPIClientTests.swift in Sources */,
 				E262128D22A8FE6700F2B133 /* PaymentMethodTests.swift in Sources */,
-				F931DDC5270B0874004B012C /* XCTestCase+Available.swift in Sources */,
 				F9F1A99426CD39740005CB1D /* RSAOAEP256AlgorithmTests.swift in Sources */,
 				F9EDB7A02397BD8500CFB3C9 /* DummyPaymentMethods.swift in Sources */,
 				F9AC61BE243750BB0062A00D /* RedirectComponentTests.swift in Sources */,
@@ -6647,6 +6689,7 @@
 				E9E3DAD3221EEFF700697074 /* CardExpiryDateValidatorTests.swift in Sources */,
 				E7D5311C2447065B000046B4 /* PreselectedPaymentComponentTests.swift in Sources */,
 				81DC5A512A73C52500DBF2D1 /* AdyenContextTests.swift in Sources */,
+				81A6B4E72AD54F6C00A089A1 /* OpenExternalAppDetector+Mock.swift in Sources */,
 				81BBB34F2A694C9300AF1F9E /* FormPickerItemTests.swift in Sources */,
 				F99F08662383F2D300EBB948 /* FormTextItemViewDelegateMock.swift in Sources */,
 				F926D55523FBF1A800D058D3 /* QiwiWalletComponentTests.swift in Sources */,
@@ -6723,6 +6766,7 @@
 				004BA67F29D45A2E00A8C69B /* InitialDataFlowProtocol.swift in Sources */,
 				00C3DB0E2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */,
 				002A767C2A050140000684D2 /* ApplePayComponentAdvancedFlowExample.swift in Sources */,
+				81C5D0CD2AC4170A002E918F /* IssuerListComponentExample.swift in Sources */,
 				00ED81B829E550E500A6B52C /* InitialDataAdvancedFlowProtocol.swift in Sources */,
 				F9885430272C078E00F34557 /* DisableStoredPaymentMethodRequest.swift in Sources */,
 				E24FECFC226EFD3C00A65122 /* ComponentsItem.swift in Sources */,
@@ -6736,6 +6780,7 @@
 				E757F03925D2ED57007C813D /* APIClientMock.swift in Sources */,
 				E73C560625EE8C8D00B57758 /* APIClientHelper.swift in Sources */,
 				F9A53C4A2549887F009000A7 /* Environment.swift in Sources */,
+				81C5D0D02AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift in Sources */,
 				002A76792A039C96000684D2 /* ApplePayComponentExample.swift in Sources */,
 				F99E73C02624846F00EA5B78 /* BalanceCheckRequest.swift in Sources */,
 				00ED81B529E54A5D00A6B52C /* DropInAdvancedFlowExample.swift in Sources */,
@@ -6835,6 +6880,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9175FD02594999600D653BE /* RedirectDetails.swift in Sources */,
+				81A6B4E32AD53E3300A089A1 /* OpenExternalAppDetector.swift in Sources */,
 				F9B018B8260A2DB2001F23FC /* EContextATMVoucherAction.swift in Sources */,
 				F97842D526C2746500677458 /* OXXOVoucherAction.swift in Sources */,
 				F917613625A30B5700D653BE /* ThreeDS2ComponentChallengeToken.swift in Sources */,
@@ -6884,6 +6930,7 @@
 				F97C850125C17CCD00D7F85C /* VoucherShareableViewProvider.swift in Sources */,
 				F9175FB42594996000D653BE /* ThreeDS2FingerprintAction.swift in Sources */,
 				5A22C2AD262EF99C00F12D97 /* ExpirationTimer.swift in Sources */,
+				8109FF4C2AD5AD0C000748C8 /* OpenExternalAppDetector+DependencyKey.swift in Sources */,
 				F91760822594B1F400D653BE /* AwaitComponentStyle.swift in Sources */,
 				F9175FCF2594999600D653BE /* RedirectListener.swift in Sources */,
 				F917618425A30B8500D653BE /* Submit3DS2FingerprintResponse.swift in Sources */,
@@ -6999,8 +7046,10 @@
 				F95B6D9A2527454E002C9062 /* SceneDelegate.swift in Sources */,
 				00ED81BE29EEC50B00A6B52C /* CardComponentAdvancedFlowExample.swift in Sources */,
 				F95B6DD6252B4654002C9062 /* ComponentsItem.swift in Sources */,
+				81C5D0CE2AC4170A002E918F /* IssuerListComponentExample.swift in Sources */,
 				E73C560725EE8C8D00B57758 /* APIClientHelper.swift in Sources */,
 				E757F03A25D2ED58007C813D /* APIClientMock.swift in Sources */,
+				81C5D0D12AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift in Sources */,
 				001BFF432A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */,
 				5A545FDC2643CF2400724A87 /* ConfigurationViewModel.swift in Sources */,
 				00ED81B929E550E500A6B52C /* InitialDataAdvancedFlowProtocol.swift in Sources */,
@@ -7048,13 +7097,13 @@
 				F9CCA3C4296ECB9900AD643D /* AtomeComponentUITests.swift in Sources */,
 				F9CCA3C9296ECB9900AD643D /* OnlineBankingComponentUITests.swift in Sources */,
 				0022095D29A4C67700B2BACD /* AnalyticsProviderMock.swift in Sources */,
-				F9CCA3D5296ECD3000AD643D /* Coder.swift in Sources */,
+				F9CCA3D5296ECD3000AD643D /* AdyenCoder.swift in Sources */,
 				F9CCA3D6296ECD3C00AD643D /* PresentationDelegateMock.swift in Sources */,
-				F9CCA3DF296ED20D00AD643D /* XCTestCaseExtensions.swift in Sources */,
 				F9CCA3CD296ECC8800AD643D /* Dummy.swift in Sources */,
 				F9CCA3CF296ECCA900AD643D /* PaymentComponentDelegateMock.swift in Sources */,
 				003C03B0297AFFA30022269A /* UPIComponentUITests.swift in Sources */,
 				81B5057A2A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift in Sources */,
+				81825CC52AC59C6C00F91912 /* XCTestCase+Wait.swift in Sources */,
 				F9CCA3CE296ECC9C00AD643D /* DummyPaymentMethods.swift in Sources */,
 				0022096429A8C39100B2BACD /* DokuComponentUITests.swift in Sources */,
 				F9CCA3C8296ECB9900AD643D /* IssuerListComponentUITests.swift in Sources */,
@@ -7063,11 +7112,14 @@
 				0022095C29A4C65E00B2BACD /* BoletoComponentUITests.swift in Sources */,
 				F9CCA3D2296ECCFA00AD643D /* XCTestCaseExtension.swift in Sources */,
 				F9CCA3DE296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift in Sources */,
+				81825CBC2AC59C4000F91912 /* UIViewController+Search.swift in Sources */,
 				F9CCA3C6296ECB9900AD643D /* QRCodeActionComponentUITests.swift in Sources */,
+				81825CB92AC59C3300F91912 /* UIView+Search.swift in Sources */,
 				00220955299B8B1C00B2BACD /* BLIKComponentUITests.swift in Sources */,
+				81825CC22AC59C6400F91912 /* XCTestCase+RootViewController.swift in Sources */,
 				F9CCA3D7296ECDB200AD643D /* XCTestCase+Coder.swift in Sources */,
+				81825CBF2AC59C4B00F91912 /* XCTestCase+Available.swift in Sources */,
 				F9CCA3C5296ECB9900AD643D /* ListViewControllerUITests.swift in Sources */,
-				F9CCA3D0296ECCC700AD643D /* UIView+Search.swift in Sources */,
 				F9CCA3D3296ECD0700AD643D /* PostalAddressMocks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7075,6 +7127,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		81FAFB472AAF715F00828999 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E2C0E03222097917008616F6 /* Adyen */;
+			targetProxy = 81FAFB462AAF715F00828999 /* PBXContainerItemProxy */;
+		};
 		A020EC4B29E6EC4C0050B2FE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A04F8C1D29E5950100F3F62B /* AdyenCashAppPay */;
@@ -7316,17 +7373,17 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Adyen. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7355,17 +7412,17 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Adyen. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7392,7 +7449,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				MARKETING_VERSION = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 6;
@@ -7403,7 +7460,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				MARKETING_VERSION = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 6;
@@ -7445,7 +7502,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -7511,7 +7568,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -7542,15 +7599,15 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Adyen/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7574,15 +7631,15 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Adyen/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7604,10 +7661,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7625,10 +7682,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7644,15 +7701,15 @@
 		E2C0E065220982AE008616F6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenCard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7671,15 +7728,15 @@
 		E2C0E066220982AE008616F6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenCard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7703,11 +7760,11 @@
 				CODE_SIGN_ENTITLEMENTS = Demo/Shared.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Demo/UIKit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7730,11 +7787,11 @@
 				CODE_SIGN_ENTITLEMENTS = Demo/Shared.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Demo/UIKit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7753,15 +7810,15 @@
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenDropIn/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7782,15 +7839,15 @@
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenDropIn/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7810,16 +7867,16 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenComponents/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7842,16 +7899,16 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenComponents/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7874,16 +7931,16 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenActions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7906,16 +7963,16 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenActions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7938,16 +7995,16 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenEncryption/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7970,16 +8027,16 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenEncryption/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8002,16 +8059,16 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Adyen. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8036,16 +8093,16 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Adyen. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8069,11 +8126,11 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenSwiftUI/Info.plist;
@@ -8100,11 +8157,11 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenSwiftUI/Info.plist;
@@ -8134,7 +8191,7 @@
 				CODE_SIGN_ENTITLEMENTS = Demo/Shared.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"Demo/SwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				ENABLE_PREVIEWS = YES;
@@ -8163,7 +8220,7 @@
 				CODE_SIGN_ENTITLEMENTS = Demo/Shared.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"Demo/SwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				ENABLE_PREVIEWS = YES;
@@ -8188,7 +8245,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tests/AdyenSwiftUI Tests/Info.plist";
@@ -8213,7 +8270,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tests/AdyenSwiftUI Tests/Info.plist";
@@ -8240,17 +8297,17 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = AdyenWeChatPay/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8283,17 +8340,17 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 7;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = AdyenWeChatPay/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -8325,7 +8382,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
@@ -8347,7 +8404,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
@@ -8527,7 +8584,7 @@
 			repositoryURL = "https://github.com/cashapp/cash-app-pay-ios-sdk";
 			requirement = {
 				kind = exactVersion;
-				version = 0.3.0;
+				version = 0.5.1;
 			};
 		};
 		E72375CC27AAB7760020DCF9 /* XCRemoteSwiftPackageReference "adyen-wechatpay-ios" */ = {
@@ -8551,7 +8608,7 @@
 			repositoryURL = "https://github.com/Adyen/adyen-3ds2-ios";
 			requirement = {
 				kind = exactVersion;
-				version = 2.3.2;
+				version = 2.3.3;
 			};
 		};
 		F9B66F4228B8E0370090FABC /* XCRemoteSwiftPackageReference "adyen-authentication-ios" */ = {
@@ -8567,7 +8624,7 @@
 			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
 			requirement = {
 				kind = exactVersion;
-				version = 1.11.1;
+				version = 1.13.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
