@@ -72,6 +72,12 @@ jobs:
       run: |
         fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
 
+    - name: Archive Coverage report
+      uses: actions/upload-artifact@v3
+      with:
+        name: swift-coverage-report
+        path: reports
+
     - name: Run Sonar
       if: ${{ env.sonarToken != 0 }}
       run: |
