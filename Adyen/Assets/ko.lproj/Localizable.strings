@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "유효하지 않은 입력";
 "adyen.paymentMethods.otherMethods" = "기타";
 "adyen.paymentMethods.storedMethods" = "저장됨";
+"adyen.paymentMethods.paidMethods" = "적용된";
 "adyen.paymentMethods.title" = "결제 수단";
 "adyen.paymentMethod.removeButton" = "예, 삭제합니다";
 "adyen.payment.refused.message" = "결제 거부되었습니다. 다시 시도해 주세요.";

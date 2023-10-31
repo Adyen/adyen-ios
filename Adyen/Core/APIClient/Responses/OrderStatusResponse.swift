@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -65,10 +65,18 @@ public struct OrderPaymentMethod: PaymentMethod {
         let disclosureText = AmountFormatter.formatted(amount: -amount.value,
                                                        currencyCode: amount.currencyCode,
                                                        localeIdentifier: parameters?.locale)
+        let lastFourSeparated = lastFour.map { String($0) }.joined(separator: ", ")
+        let accessibilityLabel = [
+            self.type.name,
+            AmountFormatter.formatted(amount: amount.value, currencyCode: amount.currencyCode),
+            "\(localizedString(.accessibilityLastFourDigits, parameters)): \(lastFourSeparated)"
+        ].compactMap { $0 }.joined(separator: ", ")
+        
         return DisplayInformation(title: name,
                                   subtitle: nil,
                                   logoName: type.rawValue,
-                                  disclosureText: disclosureText)
+                                  disclosureText: disclosureText,
+                                  accessibilityLabel: accessibilityLabel)
     }
 
     @_spi(AdyenInternal)

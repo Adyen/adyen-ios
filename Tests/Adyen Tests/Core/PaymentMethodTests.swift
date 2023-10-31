@@ -894,4 +894,19 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.name, "ACH Direct Debit")
         XCTAssertEqual(paymentMethod.bankAccountNumber, "123456789")
     }
+    
+    // MARK: - Accessibility
+    
+    func testPaymentMethodTypeName() throws {
+      
+        [
+            PaymentMethodType.openBankingUK: "open banking UK",
+            PaymentMethodType.ideal: "ideal",
+            PaymentMethodType.onlineBankingPoland: "online banking Poland",
+            PaymentMethodType.onlineBankingCZ: "online banking Czechia",
+            PaymentMethodType.onlineBankingSK: "online banking Slovakia",
+        ].forEach {
+            XCTAssertEqual($0.key.name, $0.value)
+        }
+    }
 }

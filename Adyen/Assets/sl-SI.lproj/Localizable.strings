@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Neveljaven vnos";
 "adyen.paymentMethods.otherMethods" = "drugo";
 "adyen.paymentMethods.storedMethods" = "Shranjeno";
+"adyen.paymentMethods.paidMethods" = "Uporabljeno";
 "adyen.paymentMethods.title" = "Načini plačila";
 "adyen.paymentMethod.removeButton" = "Da, odstrani";
 "adyen.payment.refused.message" = "Plačilo je bilo zavrnjeno. Poskusite znova.";

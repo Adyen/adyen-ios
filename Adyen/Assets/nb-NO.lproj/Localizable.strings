@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Ugyldige inndata";
 "adyen.paymentMethods.otherMethods" = "andre";
 "adyen.paymentMethods.storedMethods" = "Lagret";
+"adyen.paymentMethods.paidMethods" = "Anvendt";
 "adyen.paymentMethods.title" = "Betalingsmetoder";
 "adyen.paymentMethod.removeButton" = "Ja, fjern";
 "adyen.payment.refused.message" = "Betalingen ble avvist. Vennligst prøv igjen.";

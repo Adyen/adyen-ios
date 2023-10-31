@@ -32,6 +32,17 @@ internal struct CardSettingsView: View {
                     Toggle(isOn: $viewModel.showsSecurityCodeField) {
                         Text("Security Code")
                     }
+                    Toggle(isOn: $viewModel.installmentsEnabled) {
+                        Text("Installments")
+                        Text("(Example values for installments)")
+                            .foregroundColor(.gray)
+                            .font(.footnote)
+                    }
+                    if viewModel.installmentsEnabled {
+                        Toggle(isOn: $viewModel.showInstallmentAmount) {
+                            Text("Installment Amount")
+                        }
+                    }
                 }
                 Section(header: Text("Input Modes")) {
                     Picker("Billing Address mode", selection: $viewModel.addressMode) {
