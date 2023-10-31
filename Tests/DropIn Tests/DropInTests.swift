@@ -7,8 +7,8 @@
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenActions
 import AdyenDropIn
-import XCTest
 import SafariServices
+import XCTest
 
 class DropInTests: XCTestCase {
 
@@ -327,7 +327,7 @@ class DropInTests: XCTestCase {
         }
 
         let waitExpectation = expectation(description: "Expect Drop-In to call didCancel")
-        delegateMock.didCancelHandler = { _,_ in
+        delegateMock.didCancelHandler = { _, _ in
             waitExpectation.fulfill()
         }
         

@@ -1,5 +1,5 @@
 //
-//  XCTestCaseExtensions.swift
+//  XCTestCase+Wait.swift
 //  AdyenUIKitTests
 //
 //  Created by Mohamed Eldoheiri on 12/1/21.
@@ -42,7 +42,7 @@ extension XCTestCase {
         var timeLeft = Int(timeout * 1000)
         let incrementInterval = 10
         
-        while timeLeft > 0 && expectation() == false {
+        while timeLeft > 0, expectation() == false {
             wait(for: .milliseconds(incrementInterval))
             timeLeft -= incrementInterval
         }
