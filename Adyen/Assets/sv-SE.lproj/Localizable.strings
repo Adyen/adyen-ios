@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Ogiltig inmatning";
 "adyen.paymentMethods.otherMethods" = "andra";
 "adyen.paymentMethods.storedMethods" = "Lagrat";
+"adyen.paymentMethods.paidMethods" = "Tillämpade";
 "adyen.paymentMethods.title" = "Betalningsmetoder";
 "adyen.paymentMethod.removeButton" = "Ja, ta bort";
 "adyen.payment.refused.message" = "Betalningen avvisades. Försök igen.";

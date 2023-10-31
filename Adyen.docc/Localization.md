@@ -24,14 +24,14 @@ For example, if your app uses English and Spanish, your project folder should ha
 For example, if you want to override the payment button text to **Subscribe for [AMOUNT]**.
 
 - English, in the `en-US.lproj/Localizable.string` file:
-~~~
+```
 "adyen.submitButton.formatted" = "Subscribe for %@";
-~~~
+```
 
 - Spanish, in the `es-ES.lproj/Localizable.string` file:
-~~~
+```
 "adyen.submitButton.formatted" = "Suscríbete por %@";
-~~~
+```
 
 ### Custom localization file name
 
@@ -45,12 +45,12 @@ To use a custom localization file name, key format, or bundle, you must configur
 
 In the following example, the SDK looks for the key `adyen_submitButton_formatted` in the `YOUR_LOCALIZATION_FILE.strings` file in **CommonLibrary** bundle. 
 
-~~~~swift
+```swift
 let parameters = LocalizationParameters(bundle: Bundle(for: MyCommonLibraryClass.type),
                                         tableName: "YOUR_LOCALIZATION_FILE",
                                         keySeparator: "_")
 configuration.localizationParameters = parameters // Any Component.
-~~~~
+```
 
 ## Enforcing locale
 

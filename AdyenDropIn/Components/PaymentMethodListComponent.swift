@@ -157,7 +157,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
             return
         }
         
-        listViewController.startLoading(for: allListItems[index])
+        allListItems[index].startLoading()
     }
     
     internal func stopLoading() {

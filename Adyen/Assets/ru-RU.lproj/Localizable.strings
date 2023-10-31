@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Неверные данные";
 "adyen.paymentMethods.otherMethods" = "Прочие";
 "adyen.paymentMethods.storedMethods" = "Сохраненные";
+"adyen.paymentMethods.paidMethods" = "Применяется";
 "adyen.paymentMethods.title" = "Способы оплаты";
 "adyen.paymentMethod.removeButton" = "Да, удалить";
 "adyen.payment.refused.message" = "Платеж отклонен. Повторите попытку.";

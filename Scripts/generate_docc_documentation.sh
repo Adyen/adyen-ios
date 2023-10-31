@@ -53,7 +53,7 @@ $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/Adyen/Utilities/CoreBundleSPMExtensio
 # Go back to Temp project root
 cd $TEMP_PROJECT_PATH
 
-echo "// swift-tools-version: 5.6
+echo "// swift-tools-version: 5.8
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription

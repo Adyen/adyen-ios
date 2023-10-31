@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "إدخال غير صحيح";
 "adyen.paymentMethods.otherMethods" = "أخرى";
 "adyen.paymentMethods.storedMethods" = "مُخزَّنة";
+"adyen.paymentMethods.paidMethods" = "مُطبَّق";
 "adyen.paymentMethods.title" = "طرق الدفع";
 "adyen.paymentMethod.removeButton" = "نعم، أرغب في إزالتها";
 "adyen.payment.refused.message" = "تم رفض الدفع. يُرجى المحاولة مرة أخرى.";
