@@ -31,7 +31,7 @@ jobs:
 
     - name: "Run, Build Application using script"
       run: |
-        xcodebuild -project Adyen.xcodeproj -scheme Adyen -destination 'generic/platform=iOS' SKIP_INSTALL=NO build
+        xcodebuild -project Adyen.xcodeproj -scheme Adyen -destination 'generic/platform=iOS' SKIP_INSTALL=NO build | xcpretty --utf --color
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
