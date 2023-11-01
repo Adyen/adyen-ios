@@ -5,9 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenActions
 import AdyenComponents
 import AdyenEncryption
-import AdyenActions
 import Foundation
 import PassKit
 
