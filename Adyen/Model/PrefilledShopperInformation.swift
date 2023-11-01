@@ -6,6 +6,20 @@
 
 import Foundation
 
+public struct PhoneNumber {
+
+    /// The phone number.
+    public let value: String
+
+    /// The phone extension.
+    public let phoneExtension: String?
+
+    public init(value: String, phoneExtension: String?) {
+        self.value = value
+        self.phoneExtension = phoneExtension
+    }
+}
+
 /// A structure that contains information about the shopper
 public struct PrefilledShopperInformation: ShopperInformation {
 
@@ -14,9 +28,19 @@ public struct PrefilledShopperInformation: ShopperInformation {
     
     /// The email address.
     public var emailAddress: String?
-    
+
     /// The telephone number.
+
+    /// The telephone number.
+    @available(*, deprecated, message:
+        """
+        This property is no longer supported.
+        Please use phone Number instead.
+        """)
     public var telephoneNumber: String?
+
+    /// The phone number.
+    public var phoneNumber: PhoneNumber?
     
     /// The billing address information.
     public var billingAddress: PostalAddress?
@@ -41,14 +65,14 @@ public struct PrefilledShopperInformation: ShopperInformation {
     ///   - card: Shopper's card basic information, optional.
     public init(shopperName: ShopperName? = nil,
                 emailAddress: String? = nil,
-                telephoneNumber: String? = nil,
+                phoneNumber: PhoneNumber? = nil,
                 billingAddress: PostalAddress? = nil,
                 deliveryAddress: PostalAddress? = nil,
                 socialSecurityNumber: String? = nil,
                 card: CardInformation? = nil) {
         self.shopperName = shopperName
         self.emailAddress = emailAddress
-        self.telephoneNumber = telephoneNumber
+        self.phoneNumber = phoneNumber
         self.billingAddress = billingAddress
         self.deliveryAddress = deliveryAddress
         self.socialSecurityNumber = socialSecurityNumber
