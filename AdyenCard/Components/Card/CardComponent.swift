@@ -212,7 +212,7 @@ extension CardComponent: CardViewControllerDelegate {
         }
     }
     
-    internal func didSelectAddressPicker(lookupProvider: AddressLookupViewController.LookupProvider?) {
+    internal func didSelectAddressPicker(lookupProvider: AddressLookupProvider?) {
         
         let securedViewController = SecuredViewController(
             child: addressPickerViewController(with: lookupProvider),
@@ -223,7 +223,7 @@ extension CardComponent: CardViewControllerDelegate {
     }
     
     private func addressPickerViewController(
-        with lookupProvider: AddressLookupViewController.LookupProvider?
+        with lookupProvider: AddressLookupProvider?
     ) -> UIViewController {
         
         let prefillAddress = cardViewController.items.billingAddressPickerItem.value
@@ -285,7 +285,7 @@ private extension CardComponent.Configuration {
     func addressLookupViewModel(
         with initialCountry: String,
         prefillAddress: PostalAddress?,
-        lookupProvider: @escaping AddressLookupViewController.LookupProvider,
+        lookupProvider: AddressLookupProvider,
         completionHandler: @escaping (PostalAddress?) -> Void
     ) -> AddressLookupViewController.ViewModel {
         

@@ -76,7 +76,13 @@ internal struct CardSettingsView: View {
 extension CardSettings.AddressFormType {
 
     public var displayName: String {
-        self.rawValue.capitalized
+        switch self {
+        case .full: return "Full"
+        case .lookup: return "Lookup (Dummy Data)"
+        case .lookupMapKit: return "Lookup (MapKit)"
+        case .postalCode: return "Postal code"
+        case .none: return "None"
+        }
     }
 }
 

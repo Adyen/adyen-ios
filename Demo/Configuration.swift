@@ -101,6 +101,7 @@ internal struct CardSettings: Codable {
     
     internal enum AddressFormType: String, Codable, CaseIterable {
         case lookup
+        case lookupMapKit
         case full
         case postalCode
         case none
@@ -271,10 +272,9 @@ private extension DemoAppSettings {
     private func cardComponentAddressFormType(from addressFormType: CardSettings.AddressFormType) -> CardComponent.AddressFormType {
         switch addressFormType {
         case .lookup:
-            let addressLookupProvider = DemoAddressLookupProvider()
-            return .lookup { searchTerm, completionHandler in
-                addressLookupProvider.lookUp(searchTerm: searchTerm, resultHandler: completionHandler)
-            }
+            return .lookup(provider: DemoAddressLookupProvider())
+        case .lookupMapKit:
+            return .lookup(provider: MapkitAddressLookupProvider())
         case .full:
             return .full
         case .postalCode:

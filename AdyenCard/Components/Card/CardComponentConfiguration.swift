@@ -89,10 +89,8 @@ extension CardComponent {
     /// The mode of the address form of the card component
     public enum AddressFormType {
         
-        public typealias LookupHandler = (_ searchTerm: String, _ completionHandler: @escaping (_ result: [PostalAddress]) -> Void) -> Void
-        
         /// Display a form item that allows address lookup and entering the address on a separate screen
-        case lookup(handler: LookupHandler)
+        case lookup(provider: AddressLookupProvider)
 
         /// Display full address form
         case full
