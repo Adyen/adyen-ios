@@ -1,2 +1,3 @@
-github "adyen/adyen-3ds2-ios" "2.2.4"
-github "adyen/adyen-networking-ios" "1.0.0"
+github "adyen/adyen-3ds2-ios" "2.3.3"
+github "adyen/adyen-networking-ios" "2.0.0"
+github "adyen/adyen-wechatpay-ios" "2.1.0"

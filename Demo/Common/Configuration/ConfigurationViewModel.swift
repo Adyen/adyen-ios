@@ -96,9 +96,9 @@ internal final class ConfigurationViewModel: ObservableObject {
                 showsInstallmentAmount: showInstallmentAmount
             ),
             dropInSettings: DropInSettings(allowDisablingStoredPaymentMethods: allowDisablingStoredPaymentMethods,
-                                                     allowsSkippingPaymentList: allowsSkippingPaymentList,
-                                                     allowPreselectedPaymentView: allowPreselectedPaymentView,
-                                                     cashAppPayEnabled: cashAppPayEnabled),
+                                           allowsSkippingPaymentList: allowsSkippingPaymentList,
+                                           allowPreselectedPaymentView: allowPreselectedPaymentView,
+                                           cashAppPayEnabled: cashAppPayEnabled),
             applePaySettings: ApplePaySettings(merchantIdentifier: applePayMerchantIdentifier,
                                                allowOnboarding: allowOnboarding),
             analyticsSettings: AnalyticsSettings(isEnabled: analyticsIsEnabled)
