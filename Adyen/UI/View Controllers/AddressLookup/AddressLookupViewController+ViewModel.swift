@@ -8,8 +8,6 @@ import UIKit
 
 public extension AddressLookupViewController {
     
-    typealias LookupProvider = (_ searchTerm: String, _ resultProvider: @escaping ([PostalAddress]) -> Void) -> Void
-    
     /// Defining the currently active screen
     internal enum InterfaceState: Equatable {
         case form(prefillAddress: PostalAddress?)
@@ -24,7 +22,7 @@ public extension AddressLookupViewController {
         internal let supportedCountryCodes: [String]?
         internal let initialCountry: String
         
-        private let lookupProvider: LookupProvider
+        internal let lookupProvider: AddressLookupProvider
         private let completionHandler: (PostalAddress?) -> Void
         
         @AdyenObservable(nil)
@@ -58,7 +56,7 @@ public extension AddressLookupViewController {
             supportedCountryCodes: [String]?,
             initialCountry: String,
             prefillAddress: PostalAddress? = nil,
-            lookupProvider: @escaping LookupProvider,
+            lookupProvider: AddressLookupProvider,
             completionHandler: @escaping (PostalAddress?) -> Void
         ) {
             self.style = style
@@ -77,6 +75,11 @@ public extension AddressLookupViewController {
 // MARK: - Internal Interface
 
 extension AddressLookupViewController.ViewModel {
+    
+    internal func handleShowForm(with address: PostalAddress?) {
+        interfaceState = .form(prefillAddress: address)
+        shouldDismissOnSearchDismissal = false
+    }
     
     private func setInitialInterfaceState() {
         shouldDismissOnSearchDismissal = (prefillAddress == nil)
@@ -105,39 +108,11 @@ extension AddressLookupViewController.ViewModel {
         }
     }
     
-    internal func lookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
-        lookupProvider(searchTerm) { resultHandler($0.compactMap(listItem(for:))) }
-    }
-    
     internal func handleAddressInputFormCompletion(validAddress: PostalAddress?) {
         completionHandler(validAddress)
     }
     
     private func handleDismissAddressLookup() {
         completionHandler(nil)
-    }
-}
-
-// MARK: - Convenience
-
-private extension AddressLookupViewController.ViewModel {
-    
-    func handleShowForm(with address: PostalAddress?) {
-        interfaceState = .form(prefillAddress: address)
-        shouldDismissOnSearchDismissal = false
-    }
-    
-    func listItem(for address: PostalAddress) -> ListItem? {
-        guard !address.isEmpty else { return nil }
-        
-        let formattedStreet = address.formattedStreet
-        let formattedLocation = address.formattedLocation(using: localizationParameters)
-        
-        let title = !formattedStreet.isEmpty ? formattedStreet : formattedLocation
-        let subtitle = !formattedStreet.isEmpty ? formattedLocation : nil
-        
-        return .init(title: title, subtitle: subtitle) {
-            self.handleShowForm(with: address)
-        }
     }
 }
