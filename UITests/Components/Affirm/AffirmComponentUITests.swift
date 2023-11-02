@@ -41,7 +41,7 @@ class AffirmComponentUITests: XCTestCase {
                                                                                        lastName: "Del Mar"
                                                                                    ),
                                                                                    emailAddress: "katrina@mail.com",
-                                                                                   phoneNumber: PhoneNumber(value: "2025550146", phoneExtension: "+1"),
+                                                                                   phoneNumber: PhoneNumber(value: "2025550146", callingCode: "+1"),
                                                                                    billingAddress: expectedBillingAddress,
                                                                                    deliveryAddress: expectedDeliveryAddress
                                                                                )))
@@ -213,7 +213,7 @@ class AffirmComponentUITests: XCTestCase {
         let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
         let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
                                                              emailAddress: "katrina@mail.com",
-                                                             phoneNumber: PhoneNumber(value: "123456677", phoneExtension: "+1"),
+                                                             phoneNumber: PhoneNumber(value: "123456677", callingCode: "+1"),
                                                              billingAddress: billingAddress,
                                                              deliveryAddress: deliveryAddress,
                                                              socialSecurityNumber: "78542134370")
@@ -224,7 +224,7 @@ class AffirmComponentUITests: XCTestCase {
         let billingAddress = PostalAddressMocks.newYorkPostalAddress
         let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
                                                              emailAddress: "katrina@mail.com",
-                                                             phoneNumber: PhoneNumber(value: "123456677", phoneExtension: "+1"),
+                                                             phoneNumber: PhoneNumber(value: "123456677", callingCode: "+1"),
                                                              billingAddress: billingAddress,
                                                              deliveryAddress: nil,
                                                              socialSecurityNumber: "78542134370")

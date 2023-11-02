@@ -137,7 +137,7 @@ class AtomeComponentUITests: XCTestCase {
         let billingAddress = PostalAddressMocks.singaporePostalAddress
         let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina",
                                                                                       lastName: "Del Mar"),
-                                                             phoneNumber: PhoneNumber(value: "1234567", phoneExtension: "+1") ,
+                                                             phoneNumber: PhoneNumber(value: "1234567", callingCode: "+1") ,
                                                              billingAddress: billingAddress)
         return shopperInformation
     }
