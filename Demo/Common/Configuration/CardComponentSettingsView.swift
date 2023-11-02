@@ -32,7 +32,7 @@ internal struct CardSettingsView: View {
                     Toggle(isOn: $viewModel.showsSecurityCodeField) {
                         Text("Security Code")
                     }
-                    Toggle(isOn: $viewModel.installmentsEnabled) {
+                    Toggle(isOn: $viewModel.installmentsEnabled.animation()) {
                         Text("Installments")
                         Text("(Example values for installments)")
                             .foregroundColor(.gray)
