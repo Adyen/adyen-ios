@@ -55,12 +55,15 @@ internal enum ConfigurationConstants {
 
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
 
-    static let lineItems = [["description": "Socks",
-                             "quantity": "2",
-                             "amountIncludingTax": "300",
-                             "amountExcludingTax": "248",
-                             "taxAmount": "52",
-                             "id": "Item #2"]]
+    static let lineItems = [[
+        "description": "Socks",
+        "quantity": "2",
+        "amountIncludingTax": "300",
+        "amountExcludingTax": "248",
+        "taxAmount": "52",
+        "id": "Item #2"
+    ]]
+    
     static var delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication {
         .init(localizedRegistrationReason: "Authenticate your card!",
               localizedAuthenticationReason: "Register this device!",
@@ -155,7 +158,7 @@ internal struct DemoAppSettings: Codable {
         countryCode: "NL",
         value: 17408,
         currencyCode: "EUR",
-        apiVersion: 70,
+        apiVersion: 71,
         merchantAccount: ConfigurationConstants.merchantAccount,
         cardSettings: defaultCardSettings,
         dropInSettings: defaultDropInSettings,
