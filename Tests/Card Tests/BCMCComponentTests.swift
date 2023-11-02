@@ -192,8 +192,7 @@ class BCMCComponentTests: XCTestCase {
         let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called")
         delegate.onDidSubmit = { paymentData, component in
             
-            let encoder = JSONEncoder()
-            let data = try! encoder.encode(paymentData.paymentMethod.encodable)
+            let data = try! AdyenCoder.encode(paymentData.paymentMethod.encodable) as Data
             
             let resultJson = try! JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)) as! [String: Any]
             

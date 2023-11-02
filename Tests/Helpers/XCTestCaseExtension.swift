@@ -17,7 +17,7 @@ extension XCTestCase {
         textView.sendActions(for: .editingChanged)
     }
     
-    internal func populateSimulatingKeystrokes(textItemView: some FormTextItemView<some FormTextItem>, with text: String, betweenStrokesInterval: DispatchTimeInterval = .milliseconds(20)) {
+    internal func populateSimulatingKeystrokes(textItemView: some FormTextItemView<some FormTextItem>, with text: String, betweenStrokesInterval: DispatchTimeInterval = .milliseconds(5)) {
         let textView = textItemView.textField
         for char in text {
             textView.text?.append(char)
@@ -44,9 +44,4 @@ extension XCTestCase {
     internal func getRandomCountryCode() -> String {
         NSLocale.isoCountryCodes.randomElement() ?? "DE"
     }
-    
-    internal func asyncAfterDelay(seconds: Int = 1, execute work: @escaping () -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(seconds), execute: work)
-    }
-
 }

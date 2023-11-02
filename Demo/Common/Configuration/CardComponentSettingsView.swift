@@ -9,21 +9,21 @@ import AdyenCard
 import SwiftUI
 
 @available(iOS 13.0.0, *)
-internal struct CardComponentSettingsView: View {
+internal struct CardSettingsView: View {
     @ObservedObject internal var viewModel: ConfigurationViewModel
     
     internal var body: some View {
 
         NavigationView {
             List {
-                Section {
+                Section(header: Text("Visibility")) {
                     Toggle(isOn: $viewModel.showsHolderNameField) {
                         Text("Holder Name")
                     }
                     
                     Toggle(isOn: $viewModel.showsStorePaymentMethodField) {
                         VStack(alignment: .leading) {
-                            Text("Stored Payment Method")
+                            Text("Store Payment Method Toggle")
                             Text("(Requires API version 70 or higher)")
                                 .foregroundColor(.gray)
                                 .font(.footnote)
@@ -32,8 +32,21 @@ internal struct CardComponentSettingsView: View {
                     Toggle(isOn: $viewModel.showsSecurityCodeField) {
                         Text("Security Code")
                     }
-                    Picker("Select address mode", selection: $viewModel.addressMode) {
-                        ForEach(CardComponentConfiguration.AddressFormType.allCases, id: \.self) {
+                    Toggle(isOn: $viewModel.installmentsEnabled) {
+                        Text("Installments")
+                        Text("(Example values for installments)")
+                            .foregroundColor(.gray)
+                            .font(.footnote)
+                    }
+                    if viewModel.installmentsEnabled {
+                        Toggle(isOn: $viewModel.showInstallmentAmount) {
+                            Text("Installment Amount")
+                        }
+                    }
+                }
+                Section(header: Text("Input Modes")) {
+                    Picker("Billing Address mode", selection: $viewModel.addressMode) {
+                        ForEach(CardSettings.AddressFormType.allCases, id: \.self) {
                             Text($0.displayName)
                         }
                     }
@@ -53,7 +66,6 @@ internal struct CardComponentSettingsView: View {
                         Text("Security Code")
                     }
                 }
-
             }
             .navigationBarTitle("")
             .navigationBarHidden(true)
@@ -61,10 +73,16 @@ internal struct CardComponentSettingsView: View {
     }
 }
 
-extension CardComponentConfiguration.AddressFormType {
+extension CardSettings.AddressFormType {
 
     public var displayName: String {
-        self.rawValue.capitalized
+        switch self {
+        case .full: return "Full"
+        case .lookup: return "Lookup (Dummy Data)"
+        case .lookupMapKit: return "Lookup (MapKit)"
+        case .postalCode: return "Postal code"
+        case .none: return "None"
+        }
     }
 }
 

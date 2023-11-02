@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Ongeldige invoer";
 "adyen.paymentMethods.otherMethods" = "overige";
 "adyen.paymentMethods.storedMethods" = "Opgeslagen";
+"adyen.paymentMethods.paidMethods" = "Toegepast";
 "adyen.paymentMethods.title" = "Betaalmethodes";
 "adyen.paymentMethod.removeButton" = "Ja, verwijderen";
 "adyen.payment.refused.message" = "De betaling is geweigerd. Probeer het opnieuw.";
@@ -178,6 +179,7 @@
 "adyen.QRCode.generateQRCode" = "Genereer QR-code";
 "adyen.UPI.QRCodeInstructions" = "Maak een schermafbeelding en upload deze in de UPI-app of scan de QR-code met je favoriete UPI-app om de betaling te voltooien.";
 "adyen.cashAppPay.title" = "";
+"adyen.cashAppPay.cashtag" = "";
 "adyen.threeds2.DA.registration.title" = "Veilig en snel afrekenen!";
 "adyen.threeds2.DA.registration.description" = "U kunt de volgende keer sneller afrekenen op dit apparaat met behulp van uw biometrische gegevens.";
 "adyen.threeds2.DA.registration.positiveButton" = "Snel afrekenen inschakelen";
@@ -203,3 +205,4 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "Adres verplicht";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Ongeldig adres";
 "adyen.address.lookup.search.manualEntryItem.title" = "Voer het adres handmatig in";
+"adyen.accessibility.lastFourDigits" = "Laatste 4 cijfers";

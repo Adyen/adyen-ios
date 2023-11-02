@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Ugyldig indtastning";
 "adyen.paymentMethods.otherMethods" = "andre";
 "adyen.paymentMethods.storedMethods" = "Gemt";
+"adyen.paymentMethods.paidMethods" = "Anvendt";
 "adyen.paymentMethods.title" = "Betalingsmåder";
 "adyen.paymentMethod.removeButton" = "Ja, fjern";
 "adyen.payment.refused.message" = "Betalingen blev afvist. Prøv igen.";
@@ -178,6 +179,7 @@
 "adyen.QRCode.generateQRCode" = "Generér QR-kode";
 "adyen.UPI.QRCodeInstructions" = "Tag et skærmbillede, som du kan uploade i UPI-appen, eller scan QR-koden med din foretrukne UPI-app for at gennemføre betalingen.";
 "adyen.cashAppPay.title" = "";
+"adyen.cashAppPay.cashtag" = "";
 "adyen.threeds2.DA.registration.title" = "Sikker og hurtig betaling!";
 "adyen.threeds2.DA.registration.description" = "Du kan betale hurtigere næste gang på denne enhed med dine biometriske data.";
 "adyen.threeds2.DA.registration.positiveButton" = "Aktivér hurtig betaling";
@@ -203,3 +205,4 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "Adresse er påkrævet";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Ugyldig adresse";
 "adyen.address.lookup.search.manualEntryItem.title" = "Indtast adresse manuelt";
+"adyen.accessibility.lastFourDigits" = "Sidste 4 cifre";

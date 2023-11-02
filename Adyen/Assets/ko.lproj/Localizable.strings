@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "유효하지 않은 입력";
 "adyen.paymentMethods.otherMethods" = "기타";
 "adyen.paymentMethods.storedMethods" = "저장됨";
+"adyen.paymentMethods.paidMethods" = "적용된";
 "adyen.paymentMethods.title" = "결제 수단";
 "adyen.paymentMethod.removeButton" = "예, 삭제합니다";
 "adyen.payment.refused.message" = "결제 거부되었습니다. 다시 시도해 주세요.";
@@ -178,6 +179,7 @@
 "adyen.QRCode.generateQRCode" = "QR 코드 생성";
 "adyen.UPI.QRCodeInstructions" = "스크린샷을 찍어서 UPI 앱에 업로드하거나 즐겨 쓰는 UPI 앱에서 QR 코드를 스캔하여 결제하세요.";
 "adyen.cashAppPay.title" = "";
+"adyen.cashAppPay.cashtag" = "";
 "adyen.threeds2.DA.registration.title" = "안전하고 신속한 결제!";
 "adyen.threeds2.DA.registration.description" = "다음 번에 이 장치에서 생체 인식을 사용하여 결제 속도를 높일 수 있습니다.";
 "adyen.threeds2.DA.registration.positiveButton" = "빠른 결제 활성화";
@@ -203,3 +205,4 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "주소 필수";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "잘못된 주소";
 "adyen.address.lookup.search.manualEntryItem.title" = "수동으로 주소 입력";
+"adyen.accessibility.lastFourDigits" = "마지막 4자리";

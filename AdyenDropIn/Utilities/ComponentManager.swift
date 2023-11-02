@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -65,7 +65,9 @@ internal final class ComponentManager {
                                           amountString)
         let paidFooter = ListSectionFooter(title: footerTitle,
                                            style: configuration.style.listComponent.partialPaymentSectionFooter)
-        let paidSection = ComponentsSection(header: nil,
+        let paidSection = ComponentsSection(header: .init(title: localizedString(.paymentMethodsPaidMethods,
+                                                                                 configuration.localizationParameters),
+                                                          style: configuration.style.listComponent.sectionHeader),
                                             components: paidComponents,
                                             footer: paidFooter)
 
@@ -87,7 +89,7 @@ internal final class ComponentManager {
         
         // Regular section
         let localizedTitle = localizedString(.paymentMethodsOtherMethods, configuration.localizationParameters)
-        let regularSectionTitle = storedSection.components.isEmpty ? nil : localizedTitle
+        let regularSectionTitle = (storedSection.components.isEmpty && paidSection.components.isEmpty) ? nil : localizedTitle
         let regularHeader: ListSectionHeader? = regularSectionTitle.map {
             ListSectionHeader(title: $0, style: configuration.style.listComponent.sectionHeader)
         }

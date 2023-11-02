@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -49,7 +49,7 @@ import SwiftUI
         }
 
         internal func makeUIViewController(context: UIViewControllerRepresentableContext<FullScreenView>) -> UIViewController {
-            UIViewController()
+            StickyViewController()
         }
 
         internal func makeCoordinator() -> Coordinator {
@@ -58,11 +58,8 @@ import SwiftUI
 
         internal func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<FullScreenView>) {
             if let viewController, viewController !== context.coordinator.currentlyPresentedViewController {
-
                 dismissIfNeededThenPresent(viewController: viewController, presenter: uiViewController, context: context)
-
             } else if context.coordinator.currentlyPresentedViewController != nil, viewController == nil {
-
                 dismiss(presenter: uiViewController, context: context, completion: nil)
             }
         }
@@ -71,7 +68,6 @@ import SwiftUI
                                                 presenter: UIViewController,
                                                 context: UIViewControllerRepresentableContext<FullScreenView>) {
             if context.coordinator.currentlyPresentedViewController != nil {
-
                 dismiss(presenter: presenter, context: context) {
                     Self.present(viewController: viewController, presenter: presenter, context: context)
                 }
@@ -101,4 +97,29 @@ import SwiftUI
             }
         }
     }
+
+    /// This view controller only dismisses the view controller that is presented by this view controller.
+    /// It resists being dismissed if the `dismiss` method is called on the view controller itself with no presented controllers.
+    /// It could still be dismissed by a parent view controller
+    private class StickyViewController: UIViewController, UIViewControllerTransitioningDelegate {
+
+        init() {
+            super.init(nibName: nil, bundle: Bundle(for: StickyViewController.self))
+        }
+
+        @available(*, unavailable)
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+            if presentedViewController != nil {
+                super.dismiss(animated: flag, completion: completion)
+            } else {
+                completion?()
+            }
+        }
+
+    }
+
 #endif

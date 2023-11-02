@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "إدخال غير صحيح";
 "adyen.paymentMethods.otherMethods" = "أخرى";
 "adyen.paymentMethods.storedMethods" = "مُخزَّنة";
+"adyen.paymentMethods.paidMethods" = "مُطبَّق";
 "adyen.paymentMethods.title" = "طرق الدفع";
 "adyen.paymentMethod.removeButton" = "نعم، أرغب في إزالتها";
 "adyen.payment.refused.message" = "تم رفض الدفع. يُرجى المحاولة مرة أخرى.";
@@ -178,6 +179,7 @@
 "adyen.QRCode.generateQRCode" = "إنشاء رمز استجابة سريعة";
 "adyen.UPI.QRCodeInstructions" = "التقط لقطة شاشة لتحميلها في تطبيق UPI أو امسح رمز الاستجابة السريعة باستخدام تطبيق UPI الذي تُفضله لإتمام الدفع.";
 "adyen.cashAppPay.title" = "";
+"adyen.cashAppPay.cashtag" = "";
 "adyen.threeds2.DA.registration.title" = "الدفع الآمن والسريع";
 "adyen.threeds2.DA.registration.description" = "يمكنك الدفع بشكل أسرع في المرة القادمة على هذا الجهاز باستخدام مقاييسك الحيوية.";
 "adyen.threeds2.DA.registration.positiveButton" = "تمكين الدفع السريع";
@@ -203,3 +205,4 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "العنوان مطلوب";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "عنوان غير صحيح";
 "adyen.address.lookup.search.manualEntryItem.title" = "أدخل العنوان يدويًا";
+"adyen.accessibility.lastFourDigits" = "آخر 4 أرقام";
