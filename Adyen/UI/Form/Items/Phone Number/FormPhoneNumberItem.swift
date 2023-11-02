@@ -32,7 +32,7 @@ public final class FormPhoneNumberItem: FormTextItem {
                 style: FormTextItemStyle,
                 localizationParameters: LocalizationParameters? = nil) {
         // swiftlint:disable:next line_length
-        let preselectedValue = selectableValues.first(where: { $0.element.value == phoneNumber?.phoneExtension }) ?? selectableValues.first(where: { $0.identifier == Locale.current.regionCode }) ?? selectableValues[0]
+        let preselectedValue = selectableValues.first(where: { $0.element.value == phoneNumber?.callingCode }) ?? selectableValues.first(where: { $0.identifier == Locale.current.regionCode }) ?? selectableValues[0]
 
         phonePrefixItem = FormPhoneExtensionPickerItem(preselectedValue: preselectedValue, selectableValues: selectableValues, style: style)
         super.init(style: style)
