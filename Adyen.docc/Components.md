@@ -36,7 +36,9 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 
 All Components need an ``AdyenContext``. An instance of ``AdyenContext`` wraps your client key, environment, payment, analytics configuration and so on.
 Please read more [here](https://docs.adyen.com/development-resources/client-side-authentication) about the client key and how to get one.
-Use **Environment.test** for environment. When you're ready to accept live payments, change the value to one of our [live environments](https://adyen.github.io/adyen-ios/Docs/Structs/Environment.html).
+
+Use ``Environment.test`` during testing. When you're ready to accept live payments, change the value to one of our [live environments](<doc:Environment>).
+
 We recommend creating a new context for each payment attempt.
 
 ```swift
@@ -146,7 +148,7 @@ private func present(component: PresentableComponent) {
 ---
 
 ```swift
-func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession)
+func didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession)
 ```
 
 This method will be invoked when the component finishes without any further steps needed by the application. The application just needs to dismiss the current component, ideally after calling `finalizeIfNeeded` on the component.

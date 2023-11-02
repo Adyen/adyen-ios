@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "无效的输入";
 "adyen.paymentMethods.otherMethods" = "其他";
 "adyen.paymentMethods.storedMethods" = "已存储";
+"adyen.paymentMethods.paidMethods" = "已应用";
 "adyen.paymentMethods.title" = "支付方式";
 "adyen.paymentMethod.removeButton" = "是，删除";
 "adyen.payment.refused.message" = "付款已被拒。请重试。";
@@ -199,3 +200,4 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "地址为必填项";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "无效地址";
 "adyen.address.lookup.search.manualEntryItem.title" = "手动输入地址";
+"adyen.accessibility.lastFourDigits" = "最后 4 位数字";

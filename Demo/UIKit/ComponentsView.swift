@@ -83,8 +83,6 @@ internal final class ComponentsView: UIView {
         tableView.rowHeight = 56.0
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        
         return tableView
     }()
     
@@ -165,12 +163,24 @@ extension ComponentsView: UITableViewDataSource {
     }
     
     internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell: UITableViewCell = {
+            let identifier = "Cell"
+            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier) { return cell }
+            return UITableViewCell(style: .subtitle, reuseIdentifier: identifier)
+        }()
+        
         let item = items[indexPath.section][indexPath.row]
         if item.isApplePay == false {
             cell.textLabel?.font = .preferredFont(forTextStyle: .headline)
             cell.textLabel?.adjustsFontForContentSizeCategory = true
-            cell.textLabel?.text = items[indexPath.section][indexPath.item].title
+            cell.textLabel?.text = item.title
+            
+            cell.detailTextLabel?.font = .preferredFont(forTextStyle: .caption1)
+            if #available(iOS 13.0, *) {
+                cell.detailTextLabel?.textColor = .secondaryLabel
+            }
+            cell.detailTextLabel?.adjustsFontForContentSizeCategory = true
+            cell.detailTextLabel?.text = item.subtitle
         } else {
             setUpApplePayCell(cell)
         }

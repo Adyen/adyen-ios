@@ -8,8 +8,9 @@
 import AdyenNetworking
 import AdyenSession
 
-internal protocol InitialDataFlowProtocol: AnyObject, APIClientAware {
+internal protocol InitialDataFlowProtocol: AnyObject {
     var context: AdyenContext { get }
+    var apiClient: APIClientProtocol { get }
     func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void)
 }
 

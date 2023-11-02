@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Entrada inválida";
 "adyen.paymentMethods.otherMethods" = "outros";
 "adyen.paymentMethods.storedMethods" = "Guardado";
+"adyen.paymentMethods.paidMethods" = "Aplicado";
 "adyen.paymentMethods.title" = "forma de pagamento";
 "adyen.paymentMethod.removeButton" = "Sim, remover";
 "adyen.payment.refused.message" = "O pagamento foi recusado. Tente novamente";
@@ -178,6 +179,7 @@
 "adyen.QRCode.generateQRCode" = "Gerar código QR";
 "adyen.UPI.QRCodeInstructions" = "Faça uma captura de ecrã para carregar na aplicação UPI ou verificar o código QR usando a sua aplicação UPI preferida para concluir o pagamento.";
 "adyen.cashAppPay.title" = "";
+"adyen.cashAppPay.cashtag" = "";
 "adyen.threeds2.DA.registration.title" = "Finalização da compra rápida e segura!";
 "adyen.threeds2.DA.registration.description" = "Pode finalizar a compra mais rapidamente da próxima vez neste dispositivo usando a sua biometria.";
 "adyen.threeds2.DA.registration.positiveButton" = "Ativar finalização da compra rápida";
@@ -203,3 +205,4 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "Endereço necessário";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Endereço inválido";
 "adyen.address.lookup.search.manualEntryItem.title" = "Introduza o endereço manualmente";
+"adyen.accessibility.lastFourDigits" = "Últimos 4 dígitos";

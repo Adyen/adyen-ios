@@ -20,7 +20,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var showsStorePaymentMethodField = true
     @Published internal var showsStoredCardSecurityCodeField = true
     @Published internal var showsSecurityCodeField = true
-    @Published internal var addressMode: CardComponentConfiguration.AddressFormType = .none
+    @Published internal var addressMode: CardSettings.AddressFormType = .none
     @Published internal var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
     @Published internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
     @Published internal var allowDisablingStoredPaymentMethods: Bool = false
@@ -29,6 +29,9 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var applePayMerchantIdentifier: String = ""
     @Published internal var allowOnboarding: Bool = false
     @Published internal var analyticsIsEnabled: Bool = true
+    @Published internal var cashAppPayEnabled: Bool = false
+    @Published internal var installmentsEnabled: Bool = false
+    @Published internal var showInstallmentAmount: Bool = false
 
     private let onDone: (DemoAppSettings) -> Void
     private let configuration: DemoAppSettings
@@ -49,19 +52,22 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.value = configuration.value.description
         self.apiVersion = configuration.apiVersion.description
         self.merchantAccount = configuration.merchantAccount
-        self.showsHolderNameField = configuration.cardComponentConfiguration.showsHolderNameField
-        self.showsStorePaymentMethodField = configuration.cardComponentConfiguration.showsStorePaymentMethodField
-        self.showsStoredCardSecurityCodeField = configuration.cardComponentConfiguration.showsStoredCardSecurityCodeField
-        self.showsSecurityCodeField = configuration.cardComponentConfiguration.showsSecurityCodeField
-        self.addressMode = configuration.cardComponentConfiguration.addressMode
-        self.socialSecurityNumberMode = configuration.cardComponentConfiguration.socialSecurityNumberMode
-        self.koreanAuthenticationMode = configuration.cardComponentConfiguration.koreanAuthenticationMode
-        self.allowDisablingStoredPaymentMethods = configuration.dropInConfiguration.allowDisablingStoredPaymentMethods
-        self.allowsSkippingPaymentList = configuration.dropInConfiguration.allowsSkippingPaymentList
-        self.allowPreselectedPaymentView = configuration.dropInConfiguration.allowPreselectedPaymentView
-        self.applePayMerchantIdentifier = configuration.applePayConfiguration.merchantIdentifier
-        self.allowOnboarding = configuration.applePayConfiguration.allowOnboarding
+        self.showsHolderNameField = configuration.cardSettings.showsHolderNameField
+        self.showsStorePaymentMethodField = configuration.cardSettings.showsStorePaymentMethodField
+        self.showsStoredCardSecurityCodeField = configuration.cardSettings.showsStoredCardSecurityCodeField
+        self.showsSecurityCodeField = configuration.cardSettings.showsSecurityCodeField
+        self.addressMode = configuration.cardSettings.addressMode
+        self.socialSecurityNumberMode = configuration.cardSettings.socialSecurityNumberMode
+        self.koreanAuthenticationMode = configuration.cardSettings.koreanAuthenticationMode
+        self.allowDisablingStoredPaymentMethods = configuration.dropInSettings.allowDisablingStoredPaymentMethods
+        self.allowsSkippingPaymentList = configuration.dropInSettings.allowsSkippingPaymentList
+        self.allowPreselectedPaymentView = configuration.dropInSettings.allowPreselectedPaymentView
+        self.applePayMerchantIdentifier = configuration.applePaySettings.merchantIdentifier
+        self.allowOnboarding = configuration.applePaySettings.allowOnboarding
         self.analyticsIsEnabled = configuration.analyticsSettings.isEnabled
+        self.cashAppPayEnabled = configuration.dropInSettings.cashAppPayEnabled
+        self.installmentsEnabled = configuration.cardSettings.enableInstallments
+        self.showInstallmentAmount = configuration.cardSettings.showsInstallmentAmount
     }
     
     internal func doneTapped() {
@@ -78,21 +84,24 @@ internal final class ConfigurationViewModel: ObservableObject {
             value: Int(value) ?? configuration.value,
             currencyCode: currencyCode,
             apiVersion: Int(apiVersion) ?? configuration.apiVersion,
-            merchantAccount: merchantAccount, cardComponentConfiguration: CardComponentConfiguration(
+            merchantAccount: merchantAccount, cardSettings: CardSettings(
                 showsHolderNameField: showsHolderNameField,
                 showsStorePaymentMethodField: showsStorePaymentMethodField,
                 showsStoredCardSecurityCodeField: showsStoredCardSecurityCodeField,
                 showsSecurityCodeField: showsSecurityCodeField,
                 addressMode: addressMode,
                 socialSecurityNumberMode: socialSecurityNumberMode,
-                koreanAuthenticationMode: koreanAuthenticationMode
+                koreanAuthenticationMode: koreanAuthenticationMode,
+                enableInstallments: installmentsEnabled,
+                showsInstallmentAmount: showInstallmentAmount
             ),
-            dropInConfiguration: DropInConfiguration(allowDisablingStoredPaymentMethods: allowDisablingStoredPaymentMethods,
-                                                     allowsSkippingPaymentList: allowsSkippingPaymentList,
-                                                     allowPreselectedPaymentView: allowPreselectedPaymentView),
-            applePayConfiguration: ApplePayConfiguration(merchantIdentifier: applePayMerchantIdentifier,
-                                                         allowOnboarding: allowOnboarding),
-            analyticsConfiguration: AnalyticConfiguration(isEnabled: analyticsIsEnabled)
+            dropInSettings: DropInSettings(allowDisablingStoredPaymentMethods: allowDisablingStoredPaymentMethods,
+                                           allowsSkippingPaymentList: allowsSkippingPaymentList,
+                                           allowPreselectedPaymentView: allowPreselectedPaymentView,
+                                           cashAppPayEnabled: cashAppPayEnabled),
+            applePaySettings: ApplePaySettings(merchantIdentifier: applePayMerchantIdentifier,
+                                               allowOnboarding: allowOnboarding),
+            analyticsSettings: AnalyticsSettings(isEnabled: analyticsIsEnabled)
         )
     }
 

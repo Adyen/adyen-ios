@@ -27,8 +27,17 @@ internal struct ComponentsView: View {
                                 Button(action: {
                                     item.selectionHandler()
                                 }, label: {
-                                    Text(item.title)
-                                        .frame(maxWidth: .infinity)
+                                    VStack(alignment: .leading) {
+                                        Text(item.title)
+                                            .foregroundColor(.primary)
+                                            .font(.headline)
+                                        if let subtitle = item.subtitle {
+                                            Text(subtitle)
+                                                .foregroundColor(.secondary)
+                                                .font(.caption)
+                                        }
+                                    }
+                                    .padding(.vertical, 1)
                                 })
                             }
                         }

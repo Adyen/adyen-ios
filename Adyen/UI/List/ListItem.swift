@@ -36,6 +36,14 @@ public class ListItem: FormItem {
     /// The `accessibilityIdentifier` to be used on the `ListItem`
     public var identifier: String?
     
+    /// The `accessibilityLabel` to be used on the ``ListItem`` or ``ListCell``
+    public let accessibilityLabel: String
+    
+    /// The closure for the ``ListViewController`` to assign, to listen to updates for its loading state
+    ///
+    /// See: ``ListItem/startLoading()`` & ``ListItem/stopLoading()``
+    internal var loadingHandler: ((Bool, ListItem) -> Void)?
+    
     /// Initializes the list item.
     ///
     /// - Parameters:
@@ -46,6 +54,7 @@ public class ListItem: FormItem {
     ///   - style: The list item style.
     ///   - identifier: The `accessibilityIdentifier` to be used on the `ListItem`
     ///   - selectionHandler: The closure to execute when an item is selected.
+    ///   - accessibilityLabel: An optional custom `accessibilityLabel` to use. Defaults to title + subtitle + trailingText joined by a `, `
     public init(
         title: String,
         subtitle: String? = nil,
@@ -53,6 +62,7 @@ public class ListItem: FormItem {
         trailingText: String? = nil,
         style: ListItemStyle = ListItemStyle(),
         identifier: String? = nil,
+        accessibilityLabel: String? = nil,
         selectionHandler: (() -> Void)? = nil
     ) {
         self.title = title
@@ -61,11 +71,33 @@ public class ListItem: FormItem {
         self.trailingText = trailingText
         self.style = style
         self.identifier = identifier
+        self.accessibilityLabel = accessibilityLabel ?? [title, subtitle, trailingText].compactMap { $0 }.joined(separator: ", ")
         self.selectionHandler = selectionHandler
     }
     
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
+    }
+    
+    /// Indicate to the ``ListViewController`` to start loading / show the loading indicator for this specific item
+    ///
+    /// To stop the loading for the whole list either  call  ListViewController.``ListViewController/stopLoading()`` or ListItem.``ListItem/stopLoading()``
+    public func startLoading() {
+        setLoading(true)
+    }
+    
+    /// Indicate to the ``ListViewController`` to stop loading
+    public func stopLoading() {
+        setLoading(false)
+    }
+    
+    private func setLoading(_ isLoading: Bool) {
+        guard let loadingHandler else {
+            assertionFailure("No loadingHandler provided")
+            return
+        }
+        
+        loadingHandler(isLoading, self)
     }
 }
 

@@ -55,12 +55,15 @@ internal enum ConfigurationConstants {
 
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
 
-    static let lineItems = [["description": "Socks",
-                             "quantity": "2",
-                             "amountIncludingTax": "300",
-                             "amountExcludingTax": "248",
-                             "taxAmount": "52",
-                             "id": "Item #2"]]
+    static let lineItems = [[
+        "description": "Socks",
+        "quantity": "2",
+        "amountIncludingTax": "300",
+        "amountExcludingTax": "248",
+        "taxAmount": "52",
+        "id": "Item #2"
+    ]]
+    
     static var delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication {
         .init(localizedRegistrationReason: "Register this device!",
               localizedAuthenticationReason: "Authenticate your card!",
@@ -87,7 +90,7 @@ internal enum ConfigurationConstants {
     // swiftlint:enable line_length
 }
 
-internal struct CardComponentConfiguration: Codable {
+internal struct CardSettings: Codable {
     internal var showsHolderNameField = false
     internal var showsStorePaymentMethodField = true
     internal var showsStoredCardSecurityCodeField = true
@@ -95,27 +98,31 @@ internal struct CardComponentConfiguration: Codable {
     internal var addressMode: AddressFormType = .none
     internal var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
     internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
+    internal var enableInstallments = false
+    internal var showsInstallmentAmount = false
     
     internal enum AddressFormType: String, Codable, CaseIterable {
         case lookup
+        case lookupMapKit
         case full
         case postalCode
         case none
     }
 }
 
-internal struct DropInConfiguration: Codable {
+internal struct DropInSettings: Codable {
     internal var allowDisablingStoredPaymentMethods: Bool = false
     internal var allowsSkippingPaymentList: Bool = false
     internal var allowPreselectedPaymentView: Bool = true
+    internal var cashAppPayEnabled: Bool = false
 }
 
-internal struct ApplePayConfiguration: Codable {
+internal struct ApplePaySettings: Codable {
     internal var merchantIdentifier: String
     internal var allowOnboarding: Bool = false
 }
 
-internal struct AnalyticConfiguration: Codable {
+internal struct AnalyticsSettings: Codable {
     internal var isEnabled: Bool = true
 }
 
@@ -127,42 +134,55 @@ internal struct DemoAppSettings: Codable {
     internal var currencyCode: String
     internal let apiVersion: Int
     internal let merchantAccount: String
-    internal let cardComponentConfiguration: CardComponentConfiguration
-    internal let dropInConfiguration: DropInConfiguration
-    internal let applePayConfiguration: ApplePayConfiguration
-    internal let analyticsConfiguration: AnalyticConfiguration
+    internal let cardSettings: CardSettings
+    internal let dropInSettings: DropInSettings
+    internal let applePaySettings: ApplePaySettings
+    internal let analyticsSettings: AnalyticsSettings
 
     internal var amount: Amount { Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil) }
     internal var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
+    
+    private var installmentConfiguration: InstallmentConfiguration? {
+        guard cardSettings.enableInstallments else {
+            return nil
+        }
+        let defaultInstallmentOptions = InstallmentOptions(monthValues: [2, 3, 4], includesRevolving: true)
+        let visaInstallmentOptions = InstallmentOptions(monthValues: [3, 4, 6], includesRevolving: false)
+        return InstallmentConfiguration(cardBasedOptions: [.visa: visaInstallmentOptions],
+                                        defaultOptions: defaultInstallmentOptions,
+                                        showInstallmentAmount: cardSettings.showsInstallmentAmount)
+    }
     
     internal static let defaultConfiguration = DemoAppSettings(
         countryCode: "NL",
         value: 17408,
         currencyCode: "EUR",
-        apiVersion: 70,
+        apiVersion: 71,
         merchantAccount: ConfigurationConstants.merchantAccount,
-        cardComponentConfiguration: defaultCardComponentConfiguration,
-        dropInConfiguration: defaultDropInConfiguration,
-        applePayConfiguration: defaultApplePayConfiguration,
-        analyticsConfiguration: defaultAnalyticsConfiguration
+        cardSettings: defaultCardSettings,
+        dropInSettings: defaultDropInSettings,
+        applePaySettings: defaultApplePaySettings,
+        analyticsSettings: defaultAnalyticsSettings
     )
 
-    internal static let defaultCardComponentConfiguration = CardComponentConfiguration(showsHolderNameField: false,
-                                                                                       showsStorePaymentMethodField: true,
-                                                                                       showsStoredCardSecurityCodeField: true,
-                                                                                       showsSecurityCodeField: true,
-                                                                                       addressMode: .none,
-                                                                                       socialSecurityNumberMode: .auto,
-                                                                                       koreanAuthenticationMode: .auto)
+    internal static let defaultCardSettings = CardSettings(showsHolderNameField: false,
+                                                           showsStorePaymentMethodField: true,
+                                                           showsStoredCardSecurityCodeField: true,
+                                                           showsSecurityCodeField: true,
+                                                           addressMode: .none,
+                                                           socialSecurityNumberMode: .auto,
+                                                           koreanAuthenticationMode: .auto,
+                                                           enableInstallments: false,
+                                                           showsInstallmentAmount: false)
 
-    internal static let defaultDropInConfiguration = DropInConfiguration(allowDisablingStoredPaymentMethods: false,
-                                                                         allowsSkippingPaymentList: false,
-                                                                         allowPreselectedPaymentView: true)
+    internal static let defaultDropInSettings = DropInSettings(allowDisablingStoredPaymentMethods: false,
+                                                               allowsSkippingPaymentList: false,
+                                                               allowPreselectedPaymentView: true)
 
-    internal static let defaultApplePayConfiguration = ApplePayConfiguration(merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
-                                                                             allowOnboarding: false)
+    internal static let defaultApplePaySettings = ApplePaySettings(merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
+                                                                   allowOnboarding: false)
 
-    internal static let defaultAnalyticsConfiguration = AnalyticConfiguration(isEnabled: true)
+    internal static let defaultAnalyticsSettings = AnalyticsSettings(isEnabled: true)
     
     fileprivate static func loadConfiguration() -> DemoAppSettings {
         var config = UserDefaults.standard.data(forKey: defaultsKey)
@@ -186,64 +206,64 @@ internal struct DemoAppSettings: Codable {
 
     internal var cardConfiguration: CardComponent.Configuration {
         var storedCardConfig = StoredCardConfiguration()
-        storedCardConfig.showsSecurityCodeField = cardComponentConfiguration.showsStoredCardSecurityCodeField
+        storedCardConfig.showsSecurityCodeField = cardSettings.showsStoredCardSecurityCodeField
 
         var billingAddressConfig = BillingAddressConfiguration()
-        billingAddressConfig.mode = cardComponentAddressFormType(from: cardComponentConfiguration.addressMode)
+        billingAddressConfig.mode = cardComponentAddressFormType(from: cardSettings.addressMode)
 
-        return .init(showsHolderNameField: cardComponentConfiguration.showsHolderNameField,
-                     showsStorePaymentMethodField: cardComponentConfiguration.showsStorePaymentMethodField,
-                     showsSecurityCodeField: cardComponentConfiguration.showsSecurityCodeField,
-                     koreanAuthenticationMode: cardComponentConfiguration.koreanAuthenticationMode,
-                     socialSecurityNumberMode: cardComponentConfiguration.socialSecurityNumberMode,
+        return .init(showsHolderNameField: cardSettings.showsHolderNameField,
+                     showsStorePaymentMethodField: cardSettings.showsStorePaymentMethodField,
+                     showsSecurityCodeField: cardSettings.showsSecurityCodeField,
+                     koreanAuthenticationMode: cardSettings.koreanAuthenticationMode,
+                     socialSecurityNumberMode: cardSettings.socialSecurityNumberMode,
                      storedCardConfiguration: storedCardConfig,
+                     installmentConfiguration: installmentConfiguration,
                      billingAddress: billingAddressConfig)
     }
 
     internal var cardDropInConfiguration: DropInComponent.Card {
         var storedCardConfig = StoredCardConfiguration()
-        storedCardConfig.showsSecurityCodeField = cardComponentConfiguration.showsStoredCardSecurityCodeField
+        storedCardConfig.showsSecurityCodeField = cardSettings.showsStoredCardSecurityCodeField
 
         var billingAddressConfig = BillingAddressConfiguration()
-        billingAddressConfig.mode = cardComponentAddressFormType(from: cardComponentConfiguration.addressMode)
+        billingAddressConfig.mode = cardComponentAddressFormType(from: cardSettings.addressMode)
 
-        return .init(showsHolderNameField: cardComponentConfiguration.showsHolderNameField,
-                     showsStorePaymentMethodField: cardComponentConfiguration.showsStorePaymentMethodField,
-                     showsSecurityCodeField: cardComponentConfiguration.showsSecurityCodeField,
-                     koreanAuthenticationMode: cardComponentConfiguration.koreanAuthenticationMode,
-                     socialSecurityNumberMode: cardComponentConfiguration.socialSecurityNumberMode,
+        return .init(showsHolderNameField: cardSettings.showsHolderNameField,
+                     showsStorePaymentMethodField: cardSettings.showsStorePaymentMethodField,
+                     showsSecurityCodeField: cardSettings.showsSecurityCodeField,
+                     koreanAuthenticationMode: cardSettings.koreanAuthenticationMode,
+                     socialSecurityNumberMode: cardSettings.socialSecurityNumberMode,
                      storedCardConfiguration: storedCardConfig,
+                     installmentConfiguration: installmentConfiguration,
                      billingAddress: billingAddressConfig)
 
     }
 
-    internal var dropInSettings: DropInComponent.Configuration {
-        let dropInConfig = DropInComponent.Configuration(allowsSkippingPaymentList: dropInConfiguration.allowsSkippingPaymentList,
-                                                         allowPreselectedPaymentView: dropInConfiguration.allowPreselectedPaymentView)
+    internal var dropInConfiguration: DropInComponent.Configuration {
+        let dropInConfig = DropInComponent.Configuration(allowsSkippingPaymentList: dropInSettings.allowsSkippingPaymentList,
+                                                         allowPreselectedPaymentView: dropInSettings.allowPreselectedPaymentView)
 
-        dropInConfig.paymentMethodsList.allowDisablingStoredPaymentMethods = dropInConfiguration.allowDisablingStoredPaymentMethods
+        dropInConfig.paymentMethodsList.allowDisablingStoredPaymentMethods = dropInSettings.allowDisablingStoredPaymentMethods
+        if dropInSettings.cashAppPayEnabled {
+            dropInConfig.cashAppPay = .init(redirectURL: URL(string: ConfigurationConstants.returnUrl)!)
+        }
 
         return dropInConfig
     }
 
-    internal var applePaySettings: ApplePayComponent.Configuration? {
-        do {
-            let applePayPayment = try ApplePayPayment(payment: ConfigurationConstants.current.payment,
-                                                      brand: ConfigurationConstants.appName)
-            var config = ApplePayComponent.Configuration(payment: applePayPayment,
-                                                         merchantIdentifier:
-                                                         ConfigurationConstants.current.applePayConfiguration.merchantIdentifier)
-            config.allowOnboarding = applePayConfiguration.allowOnboarding
-            return config
-        } catch {
-            AdyenAssertion.assertionFailure(message: error.localizedDescription)
-        }
-        return nil
+    internal func applePayConfiguration() throws -> ApplePayComponent.Configuration {
+        let applePayPayment = try ApplePayPayment(payment: ConfigurationConstants.current.payment,
+                                                  brand: ConfigurationConstants.appName)
+        var config = ApplePayComponent.Configuration(payment: applePayPayment,
+                                                     merchantIdentifier:
+                                                     ConfigurationConstants.current.applePaySettings.merchantIdentifier)
+        config.allowOnboarding = applePaySettings.allowOnboarding
+        return config
     }
 
-    internal var analyticsSettings: AnalyticsConfiguration {
+    internal var analyticsConfiguration: AnalyticsConfiguration {
         var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsConfiguration.isEnabled
+        analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
         return analyticsConfiguration
     }
 
@@ -251,13 +271,12 @@ internal struct DemoAppSettings: Codable {
 
 private extension DemoAppSettings {
     
-    private func cardComponentAddressFormType(from addressFormType: CardComponentConfiguration.AddressFormType) -> CardComponent.AddressFormType {
+    private func cardComponentAddressFormType(from addressFormType: CardSettings.AddressFormType) -> CardComponent.AddressFormType {
         switch addressFormType {
         case .lookup:
-            let addressLookupProvider = DemoAddressLookupProvider()
-            return .lookup { searchTerm, completionHandler in
-                addressLookupProvider.lookUp(searchTerm: searchTerm, resultHandler: completionHandler)
-            }
+            return .lookup(provider: DemoAddressLookupProvider())
+        case .lookupMapKit:
+            return .lookup(provider: MapkitAddressLookupProvider())
         case .full:
             return .full
         case .postalCode:

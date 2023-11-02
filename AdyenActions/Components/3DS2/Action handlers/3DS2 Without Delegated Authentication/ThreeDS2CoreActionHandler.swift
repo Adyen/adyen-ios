@@ -26,7 +26,6 @@ internal protocol AnyThreeDS2CoreActionHandler: Component {
 
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
 internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
-    
     private enum Constant {
         static let transStatusWhenError = "U"
     }
@@ -81,12 +80,11 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     private func createFingerprint(_ action: ThreeDS2FingerprintAction,
                                    completionHandler: @escaping (Result<String, Error>) -> Void) {
         do {
-            let token = try Coder.decodeBase64(action.fingerprintToken) as ThreeDS2Component.FingerprintToken
-
-            let serviceParameters = ADYServiceParameters()
-            serviceParameters.directoryServerIdentifier = token.directoryServerIdentifier
-            serviceParameters.directoryServerPublicKey = token.directoryServerPublicKey
-            serviceParameters.directoryServerRootCertificates = token.directoryServerRootCertificates
+            let token = try AdyenCoder.decodeBase64(action.fingerprintToken) as ThreeDS2Component.FingerprintToken
+            
+            let serviceParameters = ADYServiceParameters(directoryServerIdentifier: token.directoryServerIdentifier,
+                                                         directoryServerPublicKey: token.directoryServerPublicKey,
+                                                         directoryServerRootCertificates: token.directoryServerRootCertificates)
 
             service.service(with: serviceParameters, appearanceConfiguration: appearanceConfiguration) { [weak self] _ in
                 self?.getFingerprint(messageVersion: token.threeDSMessageVersion,
@@ -101,7 +99,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         do {
             switch transaction(messageVersion: messageVersion) {
             case let .success(transaction):
-                let encodedFingerprint = try Coder.encodeBase64(ThreeDS2Component.Fingerprint(
+                let encodedFingerprint = try AdyenCoder.encodeBase64(ThreeDS2Component.Fingerprint(
                     authenticationRequestParameters: transaction.authenticationParameters,
                     delegatedAuthenticationSDKOutput: nil,
                     deleteDelegatedAuthenticationCredential: nil
@@ -110,7 +108,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                 completionHandler(.success(encodedFingerprint))
 
             case let .failure(error):
-                let encodedError = try Coder.encodeBase64(ThreeDS2Component.Fingerprint(threeDS2SDKError: error.base64Representation()))
+                let encodedError = try AdyenCoder.encodeBase64(ThreeDS2Component.Fingerprint(threeDS2SDKError: error.base64Representation()))
                 completionHandler(.success(encodedError))
             }
         } catch {
@@ -145,7 +143,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
 
         let token: ThreeDS2Component.ChallengeToken
         do {
-            token = try Coder.decodeBase64(challengeAction.challengeToken) as ThreeDS2Component.ChallengeToken
+            token = try AdyenCoder.decodeBase64(challengeAction.challengeToken) as ThreeDS2Component.ChallengeToken
         } catch {
             return didFail(with: error, completionHandler: completionHandler)
         }

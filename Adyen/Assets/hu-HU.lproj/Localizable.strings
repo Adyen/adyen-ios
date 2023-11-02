@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Érvénytelen bevitel";
 "adyen.paymentMethods.otherMethods" = "egyéb";
 "adyen.paymentMethods.storedMethods" = "Tárolt";
+"adyen.paymentMethods.paidMethods" = "Alkalmazott";
 "adyen.paymentMethods.title" = "Fizetési módok";
 "adyen.paymentMethod.removeButton" = "Igen, eltávolítom";
 "adyen.payment.refused.message" = "A fizetés elutasítva. Próbálkozzon újra.";
@@ -178,6 +179,7 @@
 "adyen.QRCode.generateQRCode" = "QR-kód létrehozása";
 "adyen.UPI.QRCodeInstructions" = "A fizetés befejezéséhez készítsen képernyőképet és töltse fel az UPI-alkalmazásban, vagy a kívánt UPI-alkalmazással olvassa be a QR-kódot.";
 "adyen.cashAppPay.title" = "";
+"adyen.cashAppPay.cashtag" = "";
 "adyen.threeds2.DA.registration.title" = "Biztonságos és gyors fizetés!";
 "adyen.threeds2.DA.registration.description" = "Biometrikus adataival legközelebb gyorsabban fizethet ezen az eszközön.";
 "adyen.threeds2.DA.registration.positiveButton" = "Gyors fizetés engedélyezése";
@@ -203,3 +205,4 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "A cím megadása kötelező";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Érvénytelen cím";
 "adyen.address.lookup.search.manualEntryItem.title" = "Manuálisan írjon be egy címet";
+"adyen.accessibility.lastFourDigits" = "Utolsó négy számjegy";

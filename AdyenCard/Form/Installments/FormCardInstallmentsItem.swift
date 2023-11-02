@@ -43,7 +43,7 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
             values.append(InstallmentElement(kind: .plan(.revolving), localizationParameters: localizationParameters))
         }
         
-        let showAmount = installmentConfiguration.showInstallmentPrice
+        let showAmount = installmentConfiguration.showInstallmentAmount
         let monthValues = currentInstallmentOptions.regularInstallmentMonths.map {
             InstallmentElement(
                 kind: .month(InstallmentElement.InstallmentMonth(monthValue: Int($0),

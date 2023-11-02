@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Ogiltig inmatning";
 "adyen.paymentMethods.otherMethods" = "andra";
 "adyen.paymentMethods.storedMethods" = "Lagrat";
+"adyen.paymentMethods.paidMethods" = "Tillämpade";
 "adyen.paymentMethods.title" = "Betalningsmetoder";
 "adyen.paymentMethod.removeButton" = "Ja, ta bort";
 "adyen.payment.refused.message" = "Betalningen avvisades. Försök igen.";
@@ -178,6 +179,7 @@
 "adyen.QRCode.generateQRCode" = "Generera QR-kod";
 "adyen.UPI.QRCodeInstructions" = "Ta en skärmdump att ladda upp i UPI-appen eller skanna QR-koden med din UPI-app för att slutföra betalningen.";
 "adyen.cashAppPay.title" = "";
+"adyen.cashAppPay.cashtag" = "";
 "adyen.threeds2.DA.registration.title" = "Säker och snabb betalning!";
 "adyen.threeds2.DA.registration.description" = "Du kan betala snabbare nästa gång på den här enheten med hjälp av biometri.";
 "adyen.threeds2.DA.registration.positiveButton" = "Aktivera snabb betalning";
@@ -203,3 +205,4 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "Adress krävs";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Ogiltig adress";
 "adyen.address.lookup.search.manualEntryItem.title" = "Ange adress manuellt";
+"adyen.accessibility.lastFourDigits" = "De sista 4 siffrorna";

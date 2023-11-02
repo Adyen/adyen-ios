@@ -14,7 +14,6 @@ final class BLIKComponentUITests: XCTestCase {
     private var paymentMethod: BLIKPaymentMethod!
     private var context: AdyenContext!
     private var style: FormComponentStyle!
-    private var sut: BLIKComponent!
 
     override func setUpWithError() throws {
         paymentMethod = BLIKPaymentMethod(type: .blik, name: "test_name")
@@ -25,7 +24,6 @@ final class BLIKComponentUITests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        sut = nil
         paymentMethod = nil
         context = nil
         style = nil
@@ -62,57 +60,68 @@ final class BLIKComponentUITests: XCTestCase {
         style.textField.backgroundColor = .red
 
         let config = BLIKComponent.Configuration(style: style)
-        sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+        let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
+        setupRootViewController(sut.viewController)
+        wait(for: .seconds(1))
+        
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
-    func testSubmitForm() {
+    func testSubmitForm() throws {
         let config = BLIKComponent.Configuration(style: style)
-        sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+        let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
+        
+        setupRootViewController(sut.viewController)
 
-        let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
+        let submitButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button"))
 
         let blikCodeView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
         self.populate(textItemView: blikCodeView, with: "123456")
 
-        submitButton?.sendActions(for: .touchUpInside)
+        submitButton.sendActions(for: .touchUpInside)
 
         let delegateExpectation = XCTestExpectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
 
         delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === self.sut)
+            XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is BLIKDetails)
             let data = data.paymentMethod as! BLIKDetails
             XCTAssertEqual(data.blikCode, "123456")
 
-            self.sut.stopLoadingIfNeeded()
+            sut.stopLoadingIfNeeded()
+            XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
+            XCTAssertEqual(sut.button.showsActivityIndicator, false)
+            
+            self.wait(for: .aMoment)
+            self.assertViewControllerImage(matching: sut.viewController, named: "blik_flow")
+            
             delegateExpectation.fulfill()
-            XCTAssertEqual(self.sut.viewController.view.isUserInteractionEnabled, true)
-            XCTAssertEqual(self.sut.button.showsActivityIndicator, false)
         }
-        wait(for: .milliseconds(300))
-        assertViewControllerImage(matching: sut.viewController, named: "blik_flow")
+        
+        wait(for: [delegateExpectation], timeout: 30)
     }
 
     func testSubmitButtonLoading() {
         let config = BLIKComponent.Configuration(style: style)
-        sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+        let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
-        UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         let submitButton: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
 
         // start loading
         submitButton.showsActivityIndicator = true
+        wait(for: .aMoment)
         assertViewControllerImage(matching: sut.viewController, named: "initial_state")
 
         // stop loading
         sut.stopLoading()
         submitButton.showsActivityIndicator = false
+        wait(for: .aMoment)
         assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
     }
 }

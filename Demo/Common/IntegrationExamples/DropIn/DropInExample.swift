@@ -22,6 +22,9 @@ internal final class DropInExample: InitialDataFlowProtocol {
     private var session: AdyenSession?
     private var dropInComponent: DropInComponent?
     
+    internal lazy var apiClient = ApiClientHelper.generateApiClient()
+    private lazy var palApiClient = ApiClientHelper.generatePalApiClient()
+    
     // MARK: - Initializers
 
     internal init() {}
@@ -80,27 +83,18 @@ internal final class DropInExample: InitialDataFlowProtocol {
                                         title: ConfigurationConstants.appName)
         
         component.delegate = session
+        component.storedPaymentMethodsDelegate = self
         component.partialPaymentDelegate = session
 
         return component
     }
     
     private func dropInConfiguration(from paymentMethods: PaymentMethods) -> DropInComponent.Configuration {
-        let configuration = DropInComponent.Configuration()
+        let configuration = ConfigurationConstants.current.dropInConfiguration
 
-        if let applePayPayment = try? ApplePayPayment(payment: ConfigurationConstants.current.payment,
-                                                      brand: ConfigurationConstants.appName) {
-            configuration.applePay = .init(payment: applePayPayment,
-                                           merchantIdentifier: ConfigurationConstants.current.applePaySettings?.merchantIdentifier ?? "")
-            configuration.applePay?.allowOnboarding = ConfigurationConstants.current.applePaySettings?.allowOnboarding ?? false
-        }
-
+        configuration.applePay = try? ConfigurationConstants.current.applePayConfiguration()
         configuration.actionComponent.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
         configuration.card = ConfigurationConstants.current.cardDropInConfiguration
-        configuration.allowsSkippingPaymentList = ConfigurationConstants.current.dropInSettings.allowsSkippingPaymentList
-        configuration.allowPreselectedPaymentView = ConfigurationConstants.current.dropInSettings.allowPreselectedPaymentView
-        // swiftlint:disable:next line_length
-        configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = ConfigurationConstants.current.dropInSettings.paymentMethodsList.allowDisablingStoredPaymentMethods
         return configuration
     }
 
@@ -137,5 +131,24 @@ extension DropInExample: AdyenSessionDelegate {
 extension DropInExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {
         // The implementation of this delegate method is not needed when using AdyenSession as the session handles the presentation
+    }
+}
+
+extension DropInExample: StoredPaymentMethodsDelegate {
+    internal func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping (Bool) -> Void) {
+        let request = DisableStoredPaymentMethodRequest(recurringDetailReference: storedPaymentMethod.identifier)
+        palApiClient.perform(request) { [weak self] result in
+            self?.handleDisableResult(result, completion: completion)
+        }
+    }
+
+    private func handleDisableResult(_ result: Result<DisableStoredPaymentMethodRequest.ResponseType, Error>, completion: (Bool) -> Void) {
+        switch result {
+        case let .failure(error):
+            self.presenter?.presentAlert(with: error, retryHandler: nil)
+            completion(false)
+        case let .success(response):
+            completion(response.response == .detailsDisabled)
+        }
     }
 }

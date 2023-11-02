@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Μη έγκυρη είσοδος";
 "adyen.paymentMethods.otherMethods" = "άλλοι";
 "adyen.paymentMethods.storedMethods" = "Αποθηκευμένοι";
+"adyen.paymentMethods.paidMethods" = "Εφαρμοσμένες";
 "adyen.paymentMethods.title" = "Τρόποι πληρωμής";
 "adyen.paymentMethod.removeButton" = "Ναι, αφαίρεση";
 "adyen.payment.refused.message" = "Η πληρωμή απορρίφθηκε. Προσπαθήστε ξανά.";
@@ -178,6 +179,7 @@
 "adyen.QRCode.generateQRCode" = "Δημιουργία κωδικού QR";
 "adyen.UPI.QRCodeInstructions" = "Τραβήξτε ένα στιγμιότυπο οθόνης για να το ανεβάσετε στην εφαρμογή UPI ή σαρώστε τον κωδικό QR χρησιμοποιώντας την εφαρμογή UPI που προτιμάτε για να ολοκληρώσετε την πληρωμή.";
 "adyen.cashAppPay.title" = "";
+"adyen.cashAppPay.cashtag" = "";
 "adyen.threeds2.DA.registration.title" = "Ασφαλής και γρήγορη πληρωμή!";
 "adyen.threeds2.DA.registration.description" = "Μπορείτε να πραγματοποιήσετε πληρωμή ταχύτερα την επόμενη φορά σε αυτήν τη συσκευή χρησιμοποιώντας τα βιομετρικά στοιχεία σας.";
 "adyen.threeds2.DA.registration.positiveButton" = "Ενεργοποίηση γρήγορης πληρωμής";
@@ -203,3 +205,4 @@
 "adyen.address.lookup.item.validationFailureMessage.empty" = "Απαιτείται διεύθυνση";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Μη έγκυρη διεύθυνση";
 "adyen.address.lookup.search.manualEntryItem.title" = "Εισαγάγετε τη διεύθυνση μη αυτόματα";
+"adyen.accessibility.lastFourDigits" = "Τελευταία 4 ψηφία";

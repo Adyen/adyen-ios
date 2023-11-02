@@ -241,6 +241,8 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
     }
 
     /// The brand name of the card type
+    ///
+    /// - Warning: Currently only intended to be used as `accessibilityLabel` as it's not localized
     @_spi(AdyenInternal)
     public var name: String {
         switch self {

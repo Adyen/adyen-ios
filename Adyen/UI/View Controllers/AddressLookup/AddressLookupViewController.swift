@@ -40,34 +40,17 @@ private extension AddressLookupViewController {
     private func buildSearchViewController() -> SearchViewController {
         
         AddressLookupSearchViewController(
-            style: viewModel.style.search,
-            localizationParameters: viewModel.localizationParameters,
-            delegate: self
+            viewModel: viewModel.buildAddressSearchViewModel { [weak self] viewController in
+                self?.presentViewController(viewController, animated: true)
+            }
         )
     }
     
     private func buildFormViewController(prefillAddress: PostalAddress?) -> AddressInputFormViewController {
         
         AddressInputFormViewController(
-            viewModel: viewModel.addressInputFormViewModel(with: prefillAddress)
+            viewModel: viewModel.buildAddressInputFormViewModel(with: prefillAddress)
         )
-    }
-}
-
-// MARK: - Delegate Conformances
-
-extension AddressLookupViewController: AddressLookupSearchDelegate {
-    
-    internal func addressLookupSearchSwitchToManualEntry() {
-        viewModel.handleSwitchToManualEntryTapped()
-    }
-    
-    internal func addressLookupSearchLookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
-        viewModel.lookUp(searchTerm: searchTerm, resultHandler: resultHandler)
-    }
-    
-    internal func addressLookupSearchCancel() {
-        viewModel.handleDismissSearchTapped()
     }
 }
 
@@ -96,9 +79,9 @@ private extension AddressLookupViewController {
     }
 }
 
-private extension AddressLookupViewController.ViewModel {
+internal extension AddressLookupViewController.ViewModel {
     
-    func addressInputFormViewModel(
+    func buildAddressInputFormViewModel(
         with prefillAddress: PostalAddress?
     ) -> AddressInputFormViewController.ViewModel {
         
@@ -110,6 +93,21 @@ private extension AddressLookupViewController.ViewModel {
             supportedCountryCodes: supportedCountryCodes,
             handleShowSearch: handleShowSearchTapped(currentInput:),
             completionHandler: handleAddressInputFormCompletion(validAddress:)
+        )
+    }
+    
+    func buildAddressSearchViewModel(
+        presentationHandler: @escaping (UIViewController) -> Void
+    ) -> AddressLookupSearchViewController.ViewModel {
+        
+        .init(
+            style: style.search,
+            localizationParameters: localizationParameters,
+            lookupProvider: lookupProvider,
+            presentationHandler: presentationHandler,
+            showFormHandler: handleShowForm(with:),
+            switchToManualEntryHandler: handleSwitchToManualEntryTapped,
+            cancellationHandler: handleDismissSearchTapped
         )
     }
 }
