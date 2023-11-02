@@ -14,7 +14,7 @@ internal final class InstantPaymentComponentAdvancedFlowExample: InitialDataAdva
 
     // MARK: - Properties
 
-    internal var instantPaymentComonent: InstantPaymentComponent?
+    internal var instantPaymentComponent: InstantPaymentComponent?
 
     internal weak var presenter: PresenterExampleProtocol?
     
@@ -55,7 +55,7 @@ internal final class InstantPaymentComponentAdvancedFlowExample: InitialDataAdva
     private func presentComponent(with paymentMethods: PaymentMethods) {
         do {
             let component = try instantPaymentComponent(from: paymentMethods)
-            instantPaymentComonent = component
+            instantPaymentComponent = component
             component.initiatePayment()
         } catch {
             self.presentAlert(with: error)
@@ -107,7 +107,7 @@ internal final class InstantPaymentComponentAdvancedFlowExample: InitialDataAdva
     }
 
     private func finalize(_ success: Bool, _ message: String) {
-        instantPaymentComonent?.finalizeIfNeeded(with: success) { [weak self] in
+        instantPaymentComponent?.finalizeIfNeeded(with: success) { [weak self] in
             guard let self else { return }
             self.dismissAndShowAlert(success, message)
         }
@@ -189,7 +189,7 @@ private extension InstantPaymentComponentAdvancedFlowExample {
     }
 
     @objc private func cancelPressed() {
-        instantPaymentComonent?.cancelIfNeeded()
+        instantPaymentComponent?.cancelIfNeeded()
         presenter?.dismiss(completion: nil)
     }
 }
