@@ -10,7 +10,7 @@ import SwiftUI
 
 internal struct ComponentsView: View {
 
-    @ObservedObject internal var viewModel = PaymentsViewModel()
+    @ObservedObject internal var viewModel = ComponentsViewModel()
 
     internal var body: some View {
         ZStack {
@@ -23,22 +23,8 @@ internal struct ComponentsView: View {
                     
                     ForEach(viewModel.items, id: \.self) { section in
                         Section {
-                            ForEach(section, id: \.self) { item in
-                                Button(action: {
-                                    item.selectionHandler()
-                                }, label: {
-                                    VStack(alignment: .leading) {
-                                        Text(item.title)
-                                            .foregroundColor(.primary)
-                                            .font(.headline)
-                                        if let subtitle = item.subtitle {
-                                            Text(subtitle)
-                                                .foregroundColor(.secondary)
-                                                .font(.caption)
-                                        }
-                                    }
-                                    .padding(.vertical, 1)
-                                })
+                            ForEach(section, id: \.self) {
+                                listItem(for: $0)
                             }
                         }
                     }
@@ -56,8 +42,26 @@ internal struct ComponentsView: View {
         .ignoresSafeArea()
         .present(viewController: $viewModel.viewControllerToPresent)
         .onAppear {
-            self.viewModel.viewDidAppear()
+            self.viewModel.handleOnAppear()
         }
+    }
+    
+    private func listItem(for item: ComponentsItem) -> some View {
+        Button(action: {
+            item.selectionHandler()
+        }, label: {
+            VStack(alignment: .leading) {
+                Text(item.title)
+                    .foregroundColor(.primary)
+                    .font(.headline)
+                if let subtitle = item.subtitle {
+                    Text(subtitle)
+                        .foregroundColor(.secondary)
+                        .font(.caption)
+                }
+            }
+            .padding(.vertical, 1)
+        })
     }
     
     private var loadingIndicator: some View {
