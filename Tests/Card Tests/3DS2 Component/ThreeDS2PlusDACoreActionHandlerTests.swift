@@ -315,7 +315,7 @@ import XCTest
             enum TestData {
                 static let fingerprintToken = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES0lucHV0IjoiIyNTb21lZGVsZWdhdGVkQXV0aGVudGljYXRpb25TREtJbnB1dCMjIiwiZGlyZWN0b3J5U2VydmVySWQiOiJGMDEzMzcxMzM3IiwiZGlyZWN0b3J5U2VydmVyUHVibGljS2V5IjoiI0RpcmVjdG9yeVNlcnZlclB1YmxpY0tleSMiLCJkaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIjoiIyNEaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIyMiLCJ0aHJlZURTTWVzc2FnZVZlcnNpb24iOiIyLjIuMCIsInRocmVlRFNTZXJ2ZXJUcmFuc0lEIjoiMTUwZmEzYjgtZTZjOC00N2ExLTk2ZTAtOTEwNzYzYmVlYzU3In0="
                             
-                static let expectedFingerprintResult = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES091dHB1dCI6Ik9uQXV0aGVudGljYXRlIiwic2RrRW5jRGF0YSI6ImRldmljZV9pbmZvIiwic2RrUmVmZXJlbmNlTnVtYmVyIjoic2RrUmVmZXJlbmNlTnVtYmVyIiwic2RrQXBwSUQiOiJzZGtBcHBsaWNhdGlvbklkZW50aWZpZXIiLCJzZGtFcGhlbVB1YktleSI6eyJ5IjoienYwa3oxU0tmTnZUM3FsNzVMMjE3ZGU2WnN6eGZMQThMVUtPSUtlNVpmNCIsIngiOiIzYjNtUGZXaHVPeHdPV3lkTGVqUzNESkVVUGlNVkZ4dHpHQ1Y2OTA2cmZjIiwia3R5IjoiRUMiLCJjcnYiOiJQLTI1NiJ9LCJzZGtUcmFuc0lEIjoic2RrVHJhbnNhY3Rpb25JZGVudGlmaWVyIn0="
+                static let expectedFingerprintResult = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES091dHB1dCI6Ik9uQXV0aGVudGljYXRlIiwic2RrQXBwSUQiOiJzZGtBcHBsaWNhdGlvbklkZW50aWZpZXIiLCJzZGtFbmNEYXRhIjoiZGV2aWNlX2luZm8iLCJzZGtFcGhlbVB1YktleSI6eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6IjNiM21QZldodU94d09XeWRMZWpTM0RKRVVQaU1WRnh0ekdDVjY5MDZyZmMiLCJ5IjoienYwa3oxU0tmTnZUM3FsNzVMMjE3ZGU2WnN6eGZMQThMVUtPSUtlNVpmNCJ9LCJzZGtSZWZlcmVuY2VOdW1iZXIiOiJzZGtSZWZlcmVuY2VOdW1iZXIiLCJzZGtUcmFuc0lEIjoic2RrVHJhbnNhY3Rpb25JZGVudGlmaWVyIn0="
             }
 
             let service = AnyADYServiceMock()
@@ -353,7 +353,7 @@ import XCTest
             enum TestData {
                 static let fingerprintToken = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES0lucHV0IjoiIyNTb21lZGVsZWdhdGVkQXV0aGVudGljYXRpb25TREtJbnB1dCMjIiwiZGlyZWN0b3J5U2VydmVySWQiOiJGMDEzMzcxMzM3IiwiZGlyZWN0b3J5U2VydmVyUHVibGljS2V5IjoiI0RpcmVjdG9yeVNlcnZlclB1YmxpY0tleSMiLCJkaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIjoiIyNEaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIyMiLCJ0aHJlZURTTWVzc2FnZVZlcnNpb24iOiIyLjIuMCIsInRocmVlRFNTZXJ2ZXJUcmFuc0lEIjoiMTUwZmEzYjgtZTZjOC00N2ExLTk2ZTAtOTEwNzYzYmVlYzU3In0="
                 // Result without delegatedAuthenticationSDKOutput
-                static let expectedFingerprintResult = "eyJzZGtFbmNEYXRhIjoiZGV2aWNlX2luZm8iLCJzZGtSZWZlcmVuY2VOdW1iZXIiOiJzZGtSZWZlcmVuY2VOdW1iZXIiLCJzZGtBcHBJRCI6InNka0FwcGxpY2F0aW9uSWRlbnRpZmllciIsInNka0VwaGVtUHViS2V5Ijp7InkiOiJ6djBrejFTS2ZOdlQzcWw3NUwyMTdkZTZac3p4ZkxBOExVS09JS2U1WmY0IiwieCI6IjNiM21QZldodU94d09XeWRMZWpTM0RKRVVQaU1WRnh0ekdDVjY5MDZyZmMiLCJrdHkiOiJFQyIsImNydiI6IlAtMjU2In0sInNka1RyYW5zSUQiOiJzZGtUcmFuc2FjdGlvbklkZW50aWZpZXIifQ=="
+                static let expectedFingerprintResult = "eyJzZGtBcHBJRCI6InNka0FwcGxpY2F0aW9uSWRlbnRpZmllciIsInNka0VuY0RhdGEiOiJkZXZpY2VfaW5mbyIsInNka0VwaGVtUHViS2V5Ijp7ImNydiI6IlAtMjU2Iiwia3R5IjoiRUMiLCJ4IjoiM2IzbVBmV2h1T3h3T1d5ZExlalMzREpFVVBpTVZGeHR6R0NWNjkwNnJmYyIsInkiOiJ6djBrejFTS2ZOdlQzcWw3NUwyMTdkZTZac3p4ZkxBOExVS09JS2U1WmY0In0sInNka1JlZmVyZW5jZU51bWJlciI6InNka1JlZmVyZW5jZU51bWJlciIsInNka1RyYW5zSUQiOiJzZGtUcmFuc2FjdGlvbklkZW50aWZpZXIifQ=="
             }
 
             let service = AnyADYServiceMock()
@@ -394,7 +394,7 @@ import XCTest
                 static let fingerprintToken = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES0lucHV0IjoiIyNTb21lZGVsZWdhdGVkQXV0aGVudGljYXRpb25TREtJbnB1dCMjIiwiZGlyZWN0b3J5U2VydmVySWQiOiJGMDEzMzcxMzM3IiwiZGlyZWN0b3J5U2VydmVyUHVibGljS2V5IjoiI0RpcmVjdG9yeVNlcnZlclB1YmxpY0tleSMiLCJkaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIjoiIyNEaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIyMiLCJ0aHJlZURTTWVzc2FnZVZlcnNpb24iOiIyLjIuMCIsInRocmVlRFNTZXJ2ZXJUcmFuc0lEIjoiMTUwZmEzYjgtZTZjOC00N2ExLTk2ZTAtOTEwNzYzYmVlYzU3In0="
                             
                 // Result without delegatedAuthenticationSDKOutput
-                static let expectedFingerprintResult = "eyJzZGtFbmNEYXRhIjoiZGV2aWNlX2luZm8iLCJzZGtSZWZlcmVuY2VOdW1iZXIiOiJzZGtSZWZlcmVuY2VOdW1iZXIiLCJzZGtBcHBJRCI6InNka0FwcGxpY2F0aW9uSWRlbnRpZmllciIsInNka0VwaGVtUHViS2V5Ijp7InkiOiJ6djBrejFTS2ZOdlQzcWw3NUwyMTdkZTZac3p4ZkxBOExVS09JS2U1WmY0IiwieCI6IjNiM21QZldodU94d09XeWRMZWpTM0RKRVVQaU1WRnh0ekdDVjY5MDZyZmMiLCJrdHkiOiJFQyIsImNydiI6IlAtMjU2In0sInNka1RyYW5zSUQiOiJzZGtUcmFuc2FjdGlvbklkZW50aWZpZXIifQ=="
+                static let expectedFingerprintResult = "eyJzZGtBcHBJRCI6InNka0FwcGxpY2F0aW9uSWRlbnRpZmllciIsInNka0VuY0RhdGEiOiJkZXZpY2VfaW5mbyIsInNka0VwaGVtUHViS2V5Ijp7ImNydiI6IlAtMjU2Iiwia3R5IjoiRUMiLCJ4IjoiM2IzbVBmV2h1T3h3T1d5ZExlalMzREpFVVBpTVZGeHR6R0NWNjkwNnJmYyIsInkiOiJ6djBrejFTS2ZOdlQzcWw3NUwyMTdkZTZac3p4ZkxBOExVS09JS2U1WmY0In0sInNka1JlZmVyZW5jZU51bWJlciI6InNka1JlZmVyZW5jZU51bWJlciIsInNka1RyYW5zSUQiOiJzZGtUcmFuc2FjdGlvbklkZW50aWZpZXIifQ=="
             }
 
             let service = AnyADYServiceMock()
@@ -434,7 +434,7 @@ import XCTest
                 static let fingerprintToken = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES0lucHV0IjoiIyNTb21lZGVsZWdhdGVkQXV0aGVudGljYXRpb25TREtJbnB1dCMjIiwiZGlyZWN0b3J5U2VydmVySWQiOiJGMDEzMzcxMzM3IiwiZGlyZWN0b3J5U2VydmVyUHVibGljS2V5IjoiI0RpcmVjdG9yeVNlcnZlclB1YmxpY0tleSMiLCJkaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIjoiIyNEaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIyMiLCJ0aHJlZURTTWVzc2FnZVZlcnNpb24iOiIyLjIuMCIsInRocmVlRFNTZXJ2ZXJUcmFuc0lEIjoiMTUwZmEzYjgtZTZjOC00N2ExLTk2ZTAtOTEwNzYzYmVlYzU3In0="
                             
                 // Result with delegatedAuthenticationSDKOutput & the deleteCredentials flag
-                static let expectedFingerprintResult = "eyJzZGtSZWZlcmVuY2VOdW1iZXIiOiJzZGtSZWZlcmVuY2VOdW1iZXIiLCJkZWxldGVEZWxlZ2F0ZWRBdXRoZW50aWNhdGlvbkNyZWRlbnRpYWxzIjp0cnVlLCJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES091dHB1dCI6Im9uQXV0aGVudGljYXRlLXNka091dHB1dCIsInNka0VuY0RhdGEiOiJkZXZpY2VfaW5mbyIsInNka0FwcElEIjoic2RrQXBwbGljYXRpb25JZGVudGlmaWVyIiwic2RrRXBoZW1QdWJLZXkiOnsieSI6Inp2MGt6MVNLZk52VDNxbDc1TDIxN2RlNlpzenhmTEE4TFVLT0lLZTVaZjQiLCJ4IjoiM2IzbVBmV2h1T3h3T1d5ZExlalMzREpFVVBpTVZGeHR6R0NWNjkwNnJmYyIsImt0eSI6IkVDIiwiY3J2IjoiUC0yNTYifSwic2RrVHJhbnNJRCI6InNka1RyYW5zYWN0aW9uSWRlbnRpZmllciJ9"
+                static let expectedFingerprintResult = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES091dHB1dCI6Im9uQXV0aGVudGljYXRlLXNka091dHB1dCIsImRlbGV0ZURlbGVnYXRlZEF1dGhlbnRpY2F0aW9uQ3JlZGVudGlhbCI6dHJ1ZSwic2RrQXBwSUQiOiJzZGtBcHBsaWNhdGlvbklkZW50aWZpZXIiLCJzZGtFbmNEYXRhIjoiZGV2aWNlX2luZm8iLCJzZGtFcGhlbVB1YktleSI6eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6IjNiM21QZldodU94d09XeWRMZWpTM0RKRVVQaU1WRnh0ekdDVjY5MDZyZmMiLCJ5IjoienYwa3oxU0tmTnZUM3FsNzVMMjE3ZGU2WnN6eGZMQThMVUtPSUtlNVpmNCJ9LCJzZGtSZWZlcmVuY2VOdW1iZXIiOiJzZGtSZWZlcmVuY2VOdW1iZXIiLCJzZGtUcmFuc0lEIjoic2RrVHJhbnNhY3Rpb25JZGVudGlmaWVyIn0="
             }
 
             let service = AnyADYServiceMock()
@@ -447,7 +447,8 @@ import XCTest
                 return "onAuthenticate-sdkOutput"
             }
             
-            let onResetExpectation = expectation(description: "Expect onReset to be called")
+            let onResetExpectation = expectation(description: "Expect onReset to not be called")
+            onResetExpectation.isInverted = true
             authenticationServiceMock.onReset = {
                 onResetExpectation.fulfill()
             }
