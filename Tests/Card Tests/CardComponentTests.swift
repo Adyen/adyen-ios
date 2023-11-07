@@ -1435,7 +1435,7 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .lookup(provider: MockAddressLookupProvider { searchTerm in
-            return [.init(identifier: searchTerm, postalAddress: .init(city: searchTerm))]
+            [.init(identifier: searchTerm, postalAddress: .init(city: searchTerm))]
         })
         configuration.shopperInformation = shopperInformation
 

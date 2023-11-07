@@ -22,7 +22,7 @@ class MockAddressLookupProvider: AddressLookupProvider {
 extension MockAddressLookupProvider {
     
     static var alwaysFailing: Self {
-        return .init { _ in
+        .init { _ in
             XCTFail("Lookup provider should not have been called")
             return []
         }
