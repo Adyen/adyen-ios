@@ -272,10 +272,11 @@ internal class CardViewController: FormViewController {
         }
 
         switch configuration.billingAddress.mode {
-        case let .lookup(handler):
+        case let .lookup(provider):
             let item = items.billingAddressPickerItem
-            item.selectionHandler = { [weak cardDelegate] in
-                cardDelegate?.didSelectAddressPicker(lookupProvider: handler)
+            item.selectionHandler = { [weak cardDelegate, weak provider] in
+                guard let provider else { return }
+                cardDelegate?.didSelectAddressPicker(lookupProvider: provider)
             }
             append(item)
             
@@ -354,7 +355,7 @@ internal class CardViewController: FormViewController {
 
 internal protocol CardViewControllerDelegate: AnyObject {
     
-    func didSelectAddressPicker(lookupProvider: AddressLookupViewController.LookupProvider?)
+    func didSelectAddressPicker(lookupProvider: AddressLookupProvider?)
     
     func didSelectSubmitButton()
 

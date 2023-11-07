@@ -55,12 +55,15 @@ internal enum ConfigurationConstants {
 
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
 
-    static let lineItems = [["description": "Socks",
-                             "quantity": "2",
-                             "amountIncludingTax": "300",
-                             "amountExcludingTax": "248",
-                             "taxAmount": "52",
-                             "id": "Item #2"]]
+    static let lineItems = [[
+        "description": "Socks",
+        "quantity": "2",
+        "amountIncludingTax": "300",
+        "amountExcludingTax": "248",
+        "taxAmount": "52",
+        "id": "Item #2"
+    ]]
+    
     static var delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication {
         .init(localizedRegistrationReason: "Authenticate your card!",
               localizedAuthenticationReason: "Register this device!",
@@ -101,6 +104,7 @@ internal struct CardSettings: Codable {
     
     internal enum AddressFormType: String, Codable, CaseIterable {
         case lookup
+        case lookupMapKit
         case full
         case postalCode
         case none
@@ -154,7 +158,7 @@ internal struct DemoAppSettings: Codable {
         countryCode: "NL",
         value: 17408,
         currencyCode: "EUR",
-        apiVersion: 70,
+        apiVersion: 71,
         merchantAccount: ConfigurationConstants.merchantAccount,
         cardSettings: defaultCardSettings,
         dropInSettings: defaultDropInSettings,
@@ -271,10 +275,9 @@ private extension DemoAppSettings {
     private func cardComponentAddressFormType(from addressFormType: CardSettings.AddressFormType) -> CardComponent.AddressFormType {
         switch addressFormType {
         case .lookup:
-            let addressLookupProvider = DemoAddressLookupProvider()
-            return .lookup { searchTerm, completionHandler in
-                addressLookupProvider.lookUp(searchTerm: searchTerm, resultHandler: completionHandler)
-            }
+            return .lookup(provider: DemoAddressLookupProvider())
+        case .lookupMapKit:
+            return .lookup(provider: MapkitAddressLookupProvider())
         case .full:
             return .full
         case .postalCode:

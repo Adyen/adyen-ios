@@ -46,6 +46,18 @@ internal final class ComponentsViewController: UIViewController {
         issuerListComponent.presenter = self
         return issuerListComponent
     }()
+    
+    private lazy var instantPaymentComponentExample: InstantPaymentComponentExample = {
+        let instantPaymentComponentExample = InstantPaymentComponentExample()
+        instantPaymentComponentExample.presenter = self
+        return instantPaymentComponentExample
+    }()
+    
+    private lazy var instantPaymentComponentAdvancedFlowExample: InstantPaymentComponentAdvancedFlowExample = {
+        let instantPaymentComponentExample = InstantPaymentComponentAdvancedFlowExample()
+        instantPaymentComponentExample.presenter = self
+        return instantPaymentComponentExample
+    }()
 
     private lazy var applePayComponentAdvancedFlowExample: ApplePayComponentAdvancedFlowExample = {
         let applePayComponentAdvancedFlow = ApplePayComponentAdvancedFlowExample()
@@ -79,6 +91,11 @@ internal final class ComponentsViewController: UIViewController {
                     title: "Issuer List",
                     subtitle: "e.g. Ideal, Open Banking, ...",
                     selectionHandler: presentIssuerListComponent
+                ),
+                ComponentsItem(
+                    title: "Instant/Redirect Payment",
+                    subtitle: "e.g. PayPal, Alipay, ...",
+                    selectionHandler: presentInstantPaymentComponent
                 )
             ],
             [
@@ -116,6 +133,14 @@ internal final class ComponentsViewController: UIViewController {
             issuerListComponentExample.start()
         } else {
             issuerListComponentAdvancedFlowExample.start()
+        }
+    }
+    
+    internal func presentInstantPaymentComponent() {
+        if componentsView.isUsingSession {
+            instantPaymentComponentExample.start()
+        } else {
+            instantPaymentComponentAdvancedFlowExample.start()
         }
     }
 

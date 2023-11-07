@@ -188,3 +188,5 @@ whiteList:
   - domainname
   - appname
   - holdername
+  - mapkit
+  - alipay

@@ -101,7 +101,7 @@ present(dropInComponent.viewController, animated: true)
 ---
 
 ```swift
-func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession)
+func didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession)
 ```
 
 This method will be invoked when the component finishes without any further steps needed by the application. The application just needs to dismiss the current component, ideally after calling `finalizeIfNeeded` on the component.
