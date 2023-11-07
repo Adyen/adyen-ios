@@ -18,14 +18,14 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     internal var cardComponent: PresentableComponent?
 
-    internal weak var presenter: PresenterExampleProtocol?
+    private weak var presenter: PresenterExampleProtocol?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
 
     // MARK: - Action Handling
 
     private lazy var adyenActionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(context: context)
+        let handler = AdyenActionComponent(context: Self.context)
         handler.configuration.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
         handler.configuration.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
         handler.delegate = self
@@ -35,7 +35,9 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     // MARK: - Initializers
 
-    internal init() {}
+    internal init(presenter: PresenterExampleProtocol) {
+        self.presenter = presenter
+    }
 
     internal func start() {
         presenter?.showLoadingIndicator()
@@ -73,7 +75,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         }
 
         let component = CardComponent(paymentMethod: paymentMethod,
-                                      context: context,
+                                      context: Self.context,
                                       configuration: ConfigurationConstants.current.cardConfiguration)
         component.cardComponentDelegate = self
         component.delegate = self

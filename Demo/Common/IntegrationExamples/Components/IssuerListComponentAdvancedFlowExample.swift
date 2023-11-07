@@ -14,14 +14,14 @@ internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvanced
 
     internal var issuerListComponent: PresentableComponent?
 
-    internal weak var presenter: PresenterExampleProtocol?
+    private weak var presenter: PresenterExampleProtocol?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
 
     // MARK: - Action Handling
 
     private lazy var adyenActionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(context: context)
+        let handler = AdyenActionComponent(context: Self.context)
         handler.delegate = self
         handler.presentationDelegate = self
         return handler
@@ -29,7 +29,9 @@ internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvanced
 
     // MARK: - Initializers
 
-    internal init() {}
+    internal init(presenter: PresenterExampleProtocol) {
+        self.presenter = presenter
+    }
 
     internal func start() {
         presenter?.showLoadingIndicator()
@@ -66,7 +68,7 @@ internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvanced
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: IssuerListPaymentMethod.self)
         }
         
-        let component = IssuerListComponent(paymentMethod: paymentMethod, context: context)
+        let component = IssuerListComponent(paymentMethod: paymentMethod, context: Self.context)
         component.delegate = self
         return component
     }

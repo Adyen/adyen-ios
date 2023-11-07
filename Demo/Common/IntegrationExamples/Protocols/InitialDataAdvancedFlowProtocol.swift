@@ -8,22 +8,12 @@
 import AdyenNetworking
 import AdyenSession
 
-internal protocol InitialDataAdvancedFlowProtocol: AnyObject {
-    var context: AdyenContext { get }
-    var apiClient: APIClientProtocol { get }
+internal protocol InitialDataAdvancedFlowProtocol: ExampleComponentProtocol {
     func requestPaymentMethods(order: PartialPaymentOrder?,
                                completion: @escaping (Result<PaymentMethods, Error>) -> Void)
 }
 
 extension InitialDataAdvancedFlowProtocol {
-
-    internal var context: AdyenContext {
-        var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
-        return AdyenContext(apiContext: ConfigurationConstants.apiContext,
-                            payment: ConfigurationConstants.current.payment,
-                            analyticsConfiguration: analyticsConfiguration)
-    }
 
     internal func requestPaymentMethods(order: PartialPaymentOrder?,
                                         completion: @escaping (Result<PaymentMethods, Error>) -> Void) {
@@ -37,5 +27,4 @@ extension InitialDataAdvancedFlowProtocol {
             }
         }
     }
-
 }

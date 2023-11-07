@@ -13,14 +13,16 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     // MARK: - Properties
 
     internal var session: AdyenSession?
-    internal weak var presenter: PresenterExampleProtocol?
+    private weak var presenter: PresenterExampleProtocol?
     internal var applePayComponent: ApplePayComponent?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
 
     // MARK: - Initializers
 
-    internal init() {}
+    internal init(presenter: PresenterExampleProtocol) {
+        self.presenter = presenter
+    }
 
     internal func start() {
         presenter?.showLoadingIndicator()
@@ -81,7 +83,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         config.requiredBillingContactFields = [.postalAddress]
 
         let component = try ApplePayComponent(paymentMethod: paymentMethod,
-                                              context: context,
+                                              context: Self.context,
                                               configuration: config)
         component.delegate = session
         return component

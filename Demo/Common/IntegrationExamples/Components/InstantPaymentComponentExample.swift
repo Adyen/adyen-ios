@@ -15,14 +15,16 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
     // MARK: - Properties
 
     internal var session: AdyenSession?
-    internal weak var presenter: PresenterExampleProtocol?
+    private weak var presenter: PresenterExampleProtocol?
     internal var instantPaymentComponent: InstantPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
 
     // MARK: - Initializers
 
-    internal init() {}
+    internal init(presenter: PresenterExampleProtocol) {
+        self.presenter = presenter
+    }
 
     internal func start() {
         presenter?.showLoadingIndicator()
@@ -81,7 +83,7 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: InstantPaymentMethod.self)
         }
         
-        let component = InstantPaymentComponent(paymentMethod: paymentMethod, context: context, order: nil)
+        let component = InstantPaymentComponent(paymentMethod: paymentMethod, context: Self.context, order: nil)
         component.delegate = session
         return component
     }

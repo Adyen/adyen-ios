@@ -15,13 +15,15 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
     internal var paymentMethods: PaymentMethods?
     internal var applePayComponent: ApplePayComponent?
-    internal weak var presenter: PresenterExampleProtocol?
+    private weak var presenter: PresenterExampleProtocol?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
     // MARK: - Initializers
 
-    internal init() {}
+    internal init(presenter: PresenterExampleProtocol) {
+        self.presenter = presenter
+    }
 
     internal func start() {
         presenter?.showLoadingIndicator()
@@ -67,7 +69,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         config.shippingMethods = ConfigurationConstants.shippingMethods
 
         let component = try ApplePayComponent(paymentMethod: paymentMethod,
-                                              context: context,
+                                              context: Self.context,
                                               configuration: config)
         component.delegate = self
         component.applePayDelegate = self

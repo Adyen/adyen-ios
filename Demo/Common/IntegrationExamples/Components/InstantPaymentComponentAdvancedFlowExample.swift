@@ -15,15 +15,13 @@ internal final class InstantPaymentComponentAdvancedFlowExample: InitialDataAdva
     // MARK: - Properties
 
     internal var instantPaymentComponent: InstantPaymentComponent?
-
-    internal weak var presenter: PresenterExampleProtocol?
-    
+    private weak var presenter: PresenterExampleProtocol?
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
 
     // MARK: - Action Handling
 
     private lazy var adyenActionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(context: context)
+        let handler = AdyenActionComponent(context: Self.context)
         handler.delegate = self
         handler.presentationDelegate = self
         return handler
@@ -31,7 +29,9 @@ internal final class InstantPaymentComponentAdvancedFlowExample: InitialDataAdva
 
     // MARK: - Initializers
 
-    internal init() {}
+    internal init(presenter: PresenterExampleProtocol) {
+        self.presenter = presenter
+    }
 
     internal func start() {
         presenter?.showLoadingIndicator()
@@ -70,7 +70,7 @@ internal final class InstantPaymentComponentAdvancedFlowExample: InitialDataAdva
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: InstantPaymentMethod.self)
         }
         
-        let component = InstantPaymentComponent(paymentMethod: paymentMethod, context: context, order: nil)
+        let component = InstantPaymentComponent(paymentMethod: paymentMethod, context: Self.context, order: nil)
         component.delegate = self
         return component
     }

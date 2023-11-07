@@ -13,14 +13,16 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
     // MARK: - Properties
 
     internal var session: AdyenSession?
-    internal weak var presenter: PresenterExampleProtocol?
+    private weak var presenter: PresenterExampleProtocol?
     internal var issuerListComponent: IssuerListComponent?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
 
     // MARK: - Initializers
 
-    internal init() {}
+    internal init(presenter: PresenterExampleProtocol) {
+        self.presenter = presenter
+    }
 
     internal func start() {
         presenter?.showLoadingIndicator()
@@ -76,7 +78,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: IssuerListPaymentMethod.self)
         }
         
-        let component = IssuerListComponent(paymentMethod: paymentMethod, context: context)
+        let component = IssuerListComponent(paymentMethod: paymentMethod, context: Self.context)
         component.delegate = session
         return component
     }

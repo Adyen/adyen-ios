@@ -10,7 +10,7 @@ import AdyenDropIn
 
 internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
     
-    internal weak var presenter: PresenterExampleProtocol?
+    private weak var presenter: PresenterExampleProtocol?
 
     private var dropInComponent: DropInComponent?
     
@@ -19,7 +19,9 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
 
     // MARK: - Initializers
 
-    internal init() {}
+    internal init(presenter: PresenterExampleProtocol) {
+        self.presenter = presenter
+    }
     
     internal func start() {
         presenter?.showLoadingIndicator()
@@ -49,7 +51,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
     private func dropInComponent(from paymentMethods: PaymentMethods) -> DropInComponent {
         let configuration = dropInConfiguration(from: paymentMethods)
         let component = DropInComponent(paymentMethods: paymentMethods,
-                                        context: context,
+                                        context: Self.context,
                                         configuration: configuration,
                                         title: ConfigurationConstants.appName)
         

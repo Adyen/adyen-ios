@@ -8,54 +8,6 @@ import SwiftUI
 
 internal final class ComponentsViewModel: ObservableObject, Identifiable {
 
-    private lazy var dropInExample: DropInExample = {
-        let dropIn = DropInExample()
-        dropIn.presenter = self
-        return dropIn
-    }()
-
-    private lazy var dropInAdvancedFlowExample: DropInAdvancedFlowExample = {
-        let dropInAdvancedFlow = DropInAdvancedFlowExample()
-        dropInAdvancedFlow.presenter = self
-        return dropInAdvancedFlow
-    }()
-
-    private lazy var cardComponentAdvancedFlowExample: CardComponentAdvancedFlowExample = {
-        let cardComponentAdvancedFlow = CardComponentAdvancedFlowExample()
-        cardComponentAdvancedFlow.presenter = self
-        return cardComponentAdvancedFlow
-    }()
-
-    private lazy var cardComponentExample: CardComponentExample = {
-        let cardComponentExample = CardComponentExample()
-        cardComponentExample.presenter = self
-        return cardComponentExample
-    }()
-    
-    private lazy var issuerListComponentAdvancedFlowExample: IssuerListComponentAdvancedFlowExample = {
-        let cardComponentAdvancedFlow = IssuerListComponentAdvancedFlowExample()
-        cardComponentAdvancedFlow.presenter = self
-        return cardComponentAdvancedFlow
-    }()
-
-    private lazy var issuerListComponentExample: IssuerListComponentExample = {
-        let cardComponentExample = IssuerListComponentExample()
-        cardComponentExample.presenter = self
-        return cardComponentExample
-    }()
-    
-    private lazy var instantPaymentComponentExample: InstantPaymentComponentExample = {
-        let instantPaymentComponentExample = InstantPaymentComponentExample()
-        instantPaymentComponentExample.presenter = self
-        return instantPaymentComponentExample
-    }()
-    
-    private lazy var instantPaymentComponentAdvancedFlowExample: InstantPaymentComponentAdvancedFlowExample = {
-        let instantPaymentComponentExample = InstantPaymentComponentAdvancedFlowExample()
-        instantPaymentComponentExample.presenter = self
-        return instantPaymentComponentExample
-    }()
-
     @Published internal var viewControllerToPresent: UIViewController?
 
     @Published internal var items = [[ComponentsItem]]()
@@ -63,39 +15,58 @@ internal final class ComponentsViewModel: ObservableObject, Identifiable {
     @Published internal private(set) var isLoading: Bool = false
     
     @Published internal var isUsingSession: Bool = true
+    
+    private var currentExampleComponent: ExampleComponentProtocol?
+
+    // MARK: - DropIn Component
 
     // MARK: - DropIn Component
 
     internal func presentDropInComponent() {
-        if isUsingSession {
-            dropInExample.start()
-        } else {
-            dropInAdvancedFlowExample.start()
-        }
+        currentExampleComponent = ExampleComponentFactory.dropIn(
+            forSession: isUsingSession,
+            presenter: self
+        )
+        
+        currentExampleComponent?.start()
     }
 
+    // MARK: - Components
+
     internal func presentCardComponent() {
-        if isUsingSession {
-            cardComponentExample.start()
-        } else {
-            cardComponentAdvancedFlowExample.start()
-        }
+        currentExampleComponent = ExampleComponentFactory.cardComponent(
+            forSession: isUsingSession,
+            presenter: self
+        )
+        
+        currentExampleComponent?.start()
     }
     
     internal func presentIssuerListComponent() {
-        if isUsingSession {
-            issuerListComponentExample.start()
-        } else {
-            issuerListComponentAdvancedFlowExample.start()
-        }
+        currentExampleComponent = ExampleComponentFactory.issuerListComponent(
+            forSession: isUsingSession,
+            presenter: self
+        )
+        
+        currentExampleComponent?.start()
     }
     
     internal func presentInstantPaymentComponent() {
-        if isUsingSession {
-            instantPaymentComponentExample.start()
-        } else {
-            instantPaymentComponentAdvancedFlowExample.start()
-        }
+        currentExampleComponent = ExampleComponentFactory.instantPaymentComponent(
+            forSession: isUsingSession,
+            presenter: self
+        )
+        
+        currentExampleComponent?.start()
+    }
+
+    internal func presentApplePayComponent() {
+        currentExampleComponent = ExampleComponentFactory.applePayComponent(
+            forSession: isUsingSession,
+            presenter: self
+        )
+        
+        currentExampleComponent?.start()
     }
 
     internal func handleOnAppear() {
@@ -177,5 +148,6 @@ extension ComponentsViewModel: PresenterExampleProtocol {
     internal func dismiss(completion: (() -> Void)?) {
         viewControllerToPresent = nil
         completion?()
+        currentExampleComponent = nil
     }
 }

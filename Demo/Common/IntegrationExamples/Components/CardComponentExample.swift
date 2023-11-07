@@ -13,7 +13,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
 
     // MARK: - Properties
     
-    internal weak var presenter: PresenterExampleProtocol?
+    private weak var presenter: PresenterExampleProtocol?
 
     private var session: AdyenSession?
     private var cardComponent: PresentableComponent?
@@ -22,7 +22,9 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
 
     // MARK: - Initializers
 
-    internal init() {}
+    internal init(presenter: PresenterExampleProtocol) {
+        self.presenter = presenter
+    }
 
     internal func start() {
         presenter?.showLoadingIndicator()
@@ -82,7 +84,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         }
 
         let component = CardComponent(paymentMethod: paymentMethod,
-                                      context: context,
+                                      context: Self.context,
                                       configuration: ConfigurationConstants.current.cardConfiguration)
         component.delegate = session
         return component
