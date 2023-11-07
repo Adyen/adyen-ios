@@ -904,7 +904,7 @@ class PaymentMethodTests: XCTestCase {
             PaymentMethodType.ideal: "ideal",
             PaymentMethodType.onlineBankingPoland: "online banking Poland",
             PaymentMethodType.onlineBankingCZ: "online banking Czechia",
-            PaymentMethodType.onlineBankingSK: "online banking Slovakia",
+            PaymentMethodType.onlineBankingSK: "online banking Slovakia"
         ].forEach {
             XCTAssertEqual($0.key.name, $0.value)
         }

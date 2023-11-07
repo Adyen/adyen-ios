@@ -116,7 +116,7 @@ let issuerListDictionary = [
             ],
             "key": "issuer",
             "type": "select"
-        ]  as [String: Any]
+        ] as [String: Any]
     ]
 ] as [String: Any]
 
