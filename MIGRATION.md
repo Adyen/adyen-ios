@@ -44,3 +44,6 @@
 
 ## 5.3.0
 - The `didComplete` method signature of `AdyenSessionDelegate` has changed. You must replace `didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession)` with `didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession)`. Use the `resultCode` inside of the `AdyenSessionResult` if needed.
+
+## 5.5.0
+- The `CardComponent.AddressFormType.lookup` signature has changed. You must replace `.lookup(LookupProvider)` with `.lookup(AddressLookupProvider)`
