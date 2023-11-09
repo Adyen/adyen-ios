@@ -188,4 +188,5 @@ whiteList:
   - domainname
   - appname
   - mapkit
+  - bizum
   - alipay

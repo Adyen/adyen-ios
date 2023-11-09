@@ -549,3 +549,8 @@ let cashAppPay: [String: Any] = [
         "clientId": "testClient"
     ]
 ]
+
+let bizum: [String: Any] = [
+    "type": "bizum",
+    "name": "Bizum",
+]
