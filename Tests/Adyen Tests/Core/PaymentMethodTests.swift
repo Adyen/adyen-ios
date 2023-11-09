@@ -74,7 +74,8 @@ class PaymentMethodTests: XCTestCase {
                 bacsDirectDebit,
                 giftCard1,
                 givexGiftCard,
-                mealVoucherSodexo
+                mealVoucherSodexo,
+                bizum
             ]
         ]
         return try AdyenCoder.decode(dictionary) as PaymentMethods
