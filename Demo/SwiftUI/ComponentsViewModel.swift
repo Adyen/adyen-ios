@@ -6,7 +6,7 @@
 
 import SwiftUI
 
-internal final class PaymentsViewModel: ObservableObject, Identifiable {
+internal final class ComponentsViewModel: ObservableObject, Identifiable {
 
     private lazy var dropInExample: DropInExample = {
         let dropIn = DropInExample()
@@ -43,6 +43,18 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable {
         cardComponentExample.presenter = self
         return cardComponentExample
     }()
+    
+    private lazy var instantPaymentComponentExample: InstantPaymentComponentExample = {
+        let instantPaymentComponentExample = InstantPaymentComponentExample()
+        instantPaymentComponentExample.presenter = self
+        return instantPaymentComponentExample
+    }()
+    
+    private lazy var instantPaymentComponentAdvancedFlowExample: InstantPaymentComponentAdvancedFlowExample = {
+        let instantPaymentComponentExample = InstantPaymentComponentAdvancedFlowExample()
+        instantPaymentComponentExample.presenter = self
+        return instantPaymentComponentExample
+    }()
 
     @Published internal var viewControllerToPresent: UIViewController?
 
@@ -77,10 +89,16 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable {
             issuerListComponentAdvancedFlowExample.start()
         }
     }
+    
+    internal func presentInstantPaymentComponent() {
+        if isUsingSession {
+            instantPaymentComponentExample.start()
+        } else {
+            instantPaymentComponentAdvancedFlowExample.start()
+        }
+    }
 
-    // TODO: add for other PM
-
-    internal func viewDidAppear() {
+    internal func handleOnAppear() {
         items = [
             [
                 ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
@@ -91,6 +109,11 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable {
                     title: "Issuer List",
                     subtitle: "e.g. Ideal, Open Banking, ...",
                     selectionHandler: presentIssuerListComponent
+                ),
+                ComponentsItem(
+                    title: "Instant/Redirect Payment",
+                    subtitle: "e.g. PayPal, Alipay, ...",
+                    selectionHandler: presentInstantPaymentComponent
                 )
             ]
         ]
@@ -117,7 +140,7 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable {
     }
 }
 
-extension PaymentsViewModel: PresenterExampleProtocol {
+extension ComponentsViewModel: PresenterExampleProtocol {
     
     internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)

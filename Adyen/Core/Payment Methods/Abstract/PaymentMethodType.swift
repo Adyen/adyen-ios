@@ -242,8 +242,6 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case let .other(name): return name.replacingOccurrences(of: "_", with: " ")
         }
     }
-    // swiftlint:enable cyclomatic_complexity
-
     // swiftlint:enable cyclomatic_complexity function_body_length
 }
 
