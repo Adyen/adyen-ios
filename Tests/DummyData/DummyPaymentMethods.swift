@@ -552,5 +552,5 @@ let cashAppPay: [String: Any] = [
 
 let bizum: [String: Any] = [
     "type": "bizum",
-    "name": "Bizum",
+    "name": "Bizum"
 ]
