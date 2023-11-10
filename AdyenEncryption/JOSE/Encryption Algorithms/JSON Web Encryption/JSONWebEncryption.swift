@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -47,8 +47,6 @@ internal struct JSONWebEncryption {
         }
     }
     
-    internal let header: Header
-    
     internal let encryptedKey: Data
     
     internal let encryptedPayload: Data
@@ -59,21 +57,20 @@ internal struct JSONWebEncryption {
     
     internal let compactRepresentation: String
     
-    internal init(header: Header,
+    internal init(encodedHeader: Data,
                   encryptedKey: Data,
                   encryptedPayload: Data,
                   initializationVector: Data,
-                  authenticationTag: Data) throws {
-        self.header = header
+                  authenticationTag: Data) {
         self.encryptedKey = encryptedKey
         self.encryptedPayload = encryptedPayload
         self.initializationVector = initializationVector
         self.authenticationTag = authenticationTag
-        self.compactRepresentation = try [JSONEncoder().encode(header).base64URLString(),
-                                          encryptedKey.base64URLString(),
-                                          initializationVector.base64URLString(),
-                                          encryptedPayload.base64URLString(),
-                                          authenticationTag.base64URLString()].joined(separator: ".")
+        self.compactRepresentation = [encodedHeader.base64URLString(),
+                                      encryptedKey.base64URLString(),
+                                      initializationVector.base64URLString(),
+                                      encryptedPayload.base64URLString(),
+                                      authenticationTag.base64URLString()].joined(separator: ".")
     }
 
 }
