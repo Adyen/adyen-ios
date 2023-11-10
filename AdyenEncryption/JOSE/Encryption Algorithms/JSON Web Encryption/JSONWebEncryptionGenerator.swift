@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -35,10 +35,10 @@ internal struct JSONWebEncryptionGenerator: AnyJSONWebEncryptionGenerator {
                                               additionalAuthenticationData: additionalAuthenticationData)
         let contentEncryptionOutput = try contentEncryptionAlgorithm.encrypt(input: contentEncryptionInput)
         
-        return try JSONWebEncryption(header: header,
-                                     encryptedKey: encryptedKey,
-                                     encryptedPayload: contentEncryptionOutput.encryptedPayload,
-                                     initializationVector: initializationVector,
-                                     authenticationTag: contentEncryptionOutput.authenticationTag)
+        return JSONWebEncryption(encodedHeader: encodedHeader,
+                                 encryptedKey: encryptedKey,
+                                 encryptedPayload: contentEncryptionOutput.encryptedPayload,
+                                 initializationVector: initializationVector,
+                                 authenticationTag: contentEncryptionOutput.authenticationTag)
     }
 }
