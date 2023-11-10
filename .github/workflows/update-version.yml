@@ -33,4 +33,4 @@ jobs:
         commit-message: "chore: updated version"
         title: Update version
         body: Update version.
-        token: ${{ secrets.MANUAL_ACTION_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
