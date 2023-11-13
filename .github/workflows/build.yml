@@ -64,7 +64,7 @@ jobs:
 
     - name: Prepare ${{ matrix.destination }}
       run: |
-        xcversion simulators --install='iOS ${version}'
+        xcversion simulators --install="iOS ${version}"
         xcrun simctl create ${displayname} "${device}" "com.apple.CoreSimulator.SimRuntime.${runtime}"
         xcrun simctl list devices ${version}
       env:
