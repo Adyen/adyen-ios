@@ -14,15 +14,44 @@ jobs:
     continue-on-error: false
     strategy:
       max-parallel: 1 # For some reason when ran in parallel UITests become very flaky
-      fail-fast: true
+      fail-fast: false
       matrix:
         include:
-        - destination: 'name=iPhone 11 Pro'
-          scheme: 'AdyenUIHost'
-        - destination: 'OS=12.4,name=iPhone-X'
-          scheme: 'AdyenUIHost'
+        - destination: 'OS=16.4,name=iPhone-14'
+          scheme: 'AdyenUIHost' # Unit + UITests
+          version: '16.4'
+          displayname: 'iPhone-14'
+          device: 'iPhone 14'
+          runtime: 'iOS-16-4'
+          
+        - destination: 'OS=15.0,name=iPhone-13'
+          scheme: 'AdyenUIKitTests' # Only UnitTests as UI could differ from the latest
+          version: '15.0'
+          displayname: 'iPhone-13'
+          device: 'iPhone 13'
+          runtime: 'iOS-15-0'
+          
+        - destination: 'OS=14.0,name=iPhone-12'
+          scheme: 'AdyenUIKitTests' # Only UnitTests as UI could differ from the latest
+          version: '14.0'
+          displayname: 'iPhone-12'
+          device: 'iPhone 12'
+          runtime: 'iOS-14-0'
+          
         - destination: 'OS=13.7,name=iPhone-11'
-          scheme: 'AdyenUIHost'
+          scheme: 'AdyenUIKitTests' # Only UnitTests as UI could differ from the latest
+          version: '13.7'
+          displayname: 'iPhone-11'
+          device: 'iPhone 11'
+          runtime: 'iOS-13-7'
+          
+        - destination: 'OS=12.4,name=iPhone-X'
+          scheme: 'AdyenUIKitTests' # Only UnitTests as UI could differ from the latest
+          version: 'iOS 12.4'
+          displayname: 'iPhone-X'
+          device: 'iPhone X'
+          runtime: 'iOS-12-4'
+          
     steps:
     - uses: actions/checkout@v4
     - uses: n1hility/cancel-previous-runs@v3
@@ -33,19 +62,16 @@ jobs:
       run: |
         sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
 
-    - name: Prepare iOS 12.4 simulator
-      if: contains(matrix.destination, 'OS=12.4')
+    - name: Prepare ${{ matrix.destination }}
       run: |
-        xcversion simulators --install='iOS 12.4'
-        xcrun simctl create iPhone-X "iPhone X" "com.apple.CoreSimulator.SimRuntime.iOS-12-4"
-        xcrun simctl list devices 12.4
-
-    - name: Prepare iOS 13.7 simulator
-      if: contains(matrix.destination, 'OS=13.7')
-      run: |
-        xcversion simulators --install='iOS 13.7'
-        xcrun simctl create iPhone-11 "iPhone 11" "com.apple.CoreSimulator.SimRuntime.iOS-13-7"
-        xcrun simctl list devices 13.7
+        xcversion simulators --install='iOS ${version}'
+        xcrun simctl create ${displayname} "${device}" "com.apple.CoreSimulator.SimRuntime.${runtime}"
+        xcrun simctl list devices ${version}
+      env:
+        version: ${{ matrix.version }}
+        displayname: ${{ matrix.displayname }}
+        device: ${{ matrix.device }}
+        runtime: ${{ matrix.runtime }}
 
     - name: Build and test
       run: |
