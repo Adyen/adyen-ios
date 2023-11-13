@@ -1,15 +1,14 @@
 name: Compatibility Test
 
 on:
+  workflow_dispatch:
   push:
     branches:
-    - master
     - develop
-    - release-*
     
 jobs:
   tests:
-    runs-on: macos-12
+    runs-on: macos-13-xl
     continue-on-error: true
     strategy:
       fail-fast: false
