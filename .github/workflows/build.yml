@@ -13,44 +13,33 @@ jobs:
     runs-on: macos-12
     continue-on-error: false
     strategy:
-      max-parallel: 1 # For some reason when ran in parallel UITests become very flaky
       fail-fast: false
       matrix:
         include:
-#        - destination: 'OS=16.4,name=iPhone-14'
-#          scheme: 'AdyenUIHost'
-#          version: '16.4'
-#          displayname: 'iPhone-14'
-#          device: 'iPhone 14'
-#          runtime: 'iOS-16-4'
-          
-        - destination: 'OS=15.0,name=iPhone-13'
-          scheme: 'AdyenUIKitTests' # Only UnitTests as UI could differ from the latest
-          version: '15.0'
-          displayname: 'iPhone-13'
+        
+        - version: '15.0'
           device: 'iPhone 13'
           runtime: 'iOS-15-0'
-          
-        - destination: 'OS=14.0,name=iPhone-12'
+          displayname: 'iPhone-13'
           scheme: 'AdyenUIKitTests' # Only UnitTests as UI could differ from the latest
-          version: '14.0'
-          displayname: 'iPhone-12'
+        
+        - version: '14.2'
           device: 'iPhone 12'
-          runtime: 'iOS-14-0'
-          
-        - destination: 'OS=13.7,name=iPhone-11'
+          displayname: 'iPhone-12'
+          runtime: 'iOS-14-2'
           scheme: 'AdyenUIKitTests' # Only UnitTests as UI could differ from the latest
-          version: '13.7'
-          displayname: 'iPhone-11'
+          
+        - version: '13.7'
           device: 'iPhone 11'
           runtime: 'iOS-13-7'
-          
-        - destination: 'OS=12.4,name=iPhone-X'
+          displayname: 'iPhone-11'
           scheme: 'AdyenUIKitTests' # Only UnitTests as UI could differ from the latest
-          version: 'iOS 12.4'
-          displayname: 'iPhone-X'
+          
+        - version: '12.4'
           device: 'iPhone X'
           runtime: 'iOS-12-4'
+          displayname: 'iPhone-X'
+          scheme: 'AdyenUIKitTests' # Only UnitTests as UI could differ from the latest
           
     steps:
     - uses: actions/checkout@v4
@@ -65,8 +54,8 @@ jobs:
     - name: Prepare ${{ matrix.destination }}
       run: |
         xcversion simulators --install="iOS ${version}"
-        xcrun simctl create ${displayname} "${device}" "com.apple.CoreSimulator.SimRuntime.${runtime}"
         xcrun simctl list devices ${version}
+        xcrun simctl create ${displayname} "${device}" "com.apple.CoreSimulator.SimRuntime.${runtime}"
       env:
         version: ${{ matrix.version }}
         displayname: ${{ matrix.displayname }}
@@ -75,9 +64,9 @@ jobs:
 
     - name: Build and test
       run: |
-        xcodebuild build test -project ${project} -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild build test -project ${project} -scheme "${scheme}" ${params} -destination ${destination} | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
         params: "-skipPackagePluginValidation"
         scheme: ${{ matrix.scheme }}
-        destination: ${{ matrix.destination }}
+        destination: "OS${{ matrix.version }},name=${{ matrix.displayname }}"
