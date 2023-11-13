@@ -50,7 +50,7 @@ let package = Package(
             name: "AdyenCashAppPay",
             targets: ["AdyenCashAppPay"]
         ),
-	.library(
+	    .library(
             name: "AdyenTwintSDK",
             targets: ["AdyenTwintSDK"]
         )
@@ -75,6 +75,9 @@ let package = Package(
             name: "PayKit",
             url: "https://github.com/cashapp/cash-app-pay-ios-sdk",
             .exact(Version(0, 5, 1))
+        ),
+        .package(
+            name: "AdyenTwintSDK",
         )
     ],
     targets: [
@@ -175,12 +178,12 @@ let package = Package(
             ],
             path: "AdyenCashAppPay"
         ),
-        .target(
+        .binaryTarget(
             name: "AdyenTwintSDK",
  	        dependencies: [
 		        .target(name: "Adyen")
 	        ],
             path: "XCFramework/Dynamic/TwintSDK.xcframework"
-	)
+	    )
     ]
 )
