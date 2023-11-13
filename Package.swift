@@ -75,9 +75,6 @@ let package = Package(
             name: "PayKit",
             url: "https://github.com/cashapp/cash-app-pay-ios-sdk",
             .exact(Version(0, 5, 1))
-        ),
-        .package(
-            name: "AdyenTwintSDK",
         )
     ],
     targets: [
