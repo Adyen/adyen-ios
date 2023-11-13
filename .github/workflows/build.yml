@@ -16,11 +16,11 @@ jobs:
       matrix:
         include:
         - destination: 'name=iPhone 11 Pro'
-          scheme: AdyenUIHost
+          scheme: 'AdyenUIHost'
         - destination: 'OS=12.4,name=iPhone-X'
-          scheme: AdyenUIKitTests
-        - destination: 'OS=13.7,name=iPhone 8'
-          scheme: AdyenUIHost
+          scheme: 'AdyenUIHost'
+        - destination: 'OS=13.7,name=iPhone-11'
+          scheme: 'AdyenUIHost'
     steps:
     - uses: actions/checkout@v4
     - uses: n1hility/cancel-previous-runs@v3
@@ -42,7 +42,7 @@ jobs:
       if: contains(matrix.destination, 'OS=13.7')
       run: |
         xcversion simulators --install='iOS 13.7'
-        xcrun simctl create iPhone-6 "iPhone X" "com.apple.CoreSimulator.SimRuntime.iOS-13-7"
+        xcrun simctl create iPhone-11 "iPhone 11" "com.apple.CoreSimulator.SimRuntime.iOS-13-7"
         xcrun simctl list devices 13.7
 
     - name: Build and test
