@@ -175,11 +175,9 @@ let package = Package(
             ],
             path: "AdyenCashAppPay"
         ),
-	targets: [
         .binaryTarget(
             name: "AdyenTwintSDK",
             path: "XCFramework/Dynamic/TwintSDK.xcframework"
-		)
-	]
+	)
     ]
 )
