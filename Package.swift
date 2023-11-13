@@ -181,6 +181,6 @@ let package = Package(
 		.target(name: "Adyen")
 	    ],
             path: "XCFramework/Dynamic/TwintSDK.xcframework"
-	 )
+	)
     ]
 )
