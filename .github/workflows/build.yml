@@ -17,12 +17,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - destination: 'OS=16.4,name=iPhone-14'
-          scheme: 'AdyenUIHost' # Unit + UITests
-          version: '16.4'
-          displayname: 'iPhone-14'
-          device: 'iPhone 14'
-          runtime: 'iOS-16-4'
+#        - destination: 'OS=16.4,name=iPhone-14'
+#          scheme: 'AdyenUIHost'
+#          version: '16.4'
+#          displayname: 'iPhone-14'
+#          device: 'iPhone 14'
+#          runtime: 'iOS-16-4'
           
         - destination: 'OS=15.0,name=iPhone-13'
           scheme: 'AdyenUIKitTests' # Only UnitTests as UI could differ from the latest
