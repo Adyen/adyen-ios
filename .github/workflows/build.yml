@@ -12,8 +12,8 @@ jobs:
   tests:
     runs-on: macos-12
     continue-on-error: false
-    max-parallel: 1 # For some reason when ran in parallel UITests become very flaky
     strategy:
+      max-parallel: 1 # For some reason when ran in parallel UITests become very flaky
       fail-fast: true
       matrix:
         include:
