@@ -11,9 +11,10 @@ on:
 jobs:
   tests:
     runs-on: macos-12
-    continue-on-error: true
+    continue-on-error: false
+    max-parallel: 1 # For some reason when ran in parallel UITests become very flaky
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         include:
         - destination: 'name=iPhone 11 Pro'
