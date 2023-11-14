@@ -130,11 +130,6 @@ class ComponentManagerTests: XCTestCase {
     }
     
     func testCashAppShouldSucceedWithConfig() throws {
-        guard #available(iOS 13.0, *) else {
-            // XCTestCase does not respect @available so we have skip all tests here
-            throw XCTSkip("Unsupported iOS version")
-        }
-        
         configuration.cashAppPay = .init(redirectURL: URL(string: "test")!)
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    context: context,

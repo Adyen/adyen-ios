@@ -52,11 +52,6 @@ import XCTest
         }
         
         override func setUpWithError() throws {
-            guard #available(iOS 13.0, *) else {
-                // XCTestCase does not respect @available so we have skip all tests here
-                throw XCTSkip("Unsupported iOS version")
-            }
-            
             try super.setUpWithError()
             context = Dummy.context
         }
