@@ -84,11 +84,10 @@ class AmountFormatterTests: XCTestCase {
             
             XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "ISK"), "ISK 1,234.56")
         } else {
-            // pre iOS 13 formatting seems to add a character that looks exactly like a space but is not a space.
             XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "USD", localeIdentifier: "fr_FR"), "1 234,56 $US")
             
-            XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "CVE", localeIdentifier: "ko_KR"), "CVE123,456.00")
-            XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "CVE", localeIdentifier: "fr_FR"), "123 456,00 CVE")
+            XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "CVE", localeIdentifier: "ko_KR"), "CVE123,456")
+            XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "CVE", localeIdentifier: "fr_FR"), "123 456 CVE")
         }
         
         XCTAssertEqual(AmountFormatter.minorUnitAmount(from: 1234.56, currencyCode: "USD", localeIdentifier: "ko_KR"), 123456)
@@ -108,15 +107,15 @@ class AmountFormatterTests: XCTestCase {
         XCTAssertEqual(amountEUR.formatted, "123,45 €")
         
         var amountCVE = Amount(value: 12345, currencyCode: "CVE", localeIdentifier: "ko_KR")
+        
         if Available.iOS13 {
             XCTAssertEqual(amountCVE.formatted, "CVE 12,345")
             amountCVE.localeIdentifier = "fr_FR"
             XCTAssertEqual(amountCVE.formatted, "12 345 CVE")
         } else {
-            // pre iOS 13 formatting seems to add a character that looks exactly like a space but is not a space.
-            XCTAssertEqual(amountCVE.formatted, "CVE12,345.00")
+            XCTAssertEqual(amountCVE.formatted, "CVE12,345")
             amountCVE.localeIdentifier = "fr_FR"
-            XCTAssertEqual(amountCVE.formatted, "12 345,00 CVE")
+            XCTAssertEqual(amountCVE.formatted, "12 345 CVE")
         }
     }
     
