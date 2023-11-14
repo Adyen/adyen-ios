@@ -69,4 +69,4 @@ jobs:
         project: 'Adyen.xcodeproj'
         params: "-skipPackagePluginValidation"
         scheme: ${{ matrix.scheme }}
-        destination: "OS${{ matrix.version }},name=${{ matrix.displayname }}"
+        destination: "OS=${{ matrix.version }},name=${{ matrix.displayname }}"
