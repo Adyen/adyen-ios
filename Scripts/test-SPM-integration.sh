@@ -31,8 +31,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(name: \"Adyen\", path: \"../\"),
-        .package(name: \"AdyenDelegatedAuthentication\", path: \"../\")
+        .package(name: \"Adyen\", path: \"../\")
     ],
     targets: [
         .target(
