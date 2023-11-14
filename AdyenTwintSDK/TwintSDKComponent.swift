@@ -9,4 +9,12 @@ import TwintSDK
 
 public final class TwintSDKComponent {
 
+    private lazy var formViewController: FormViewController = {
+        
+        return formViewController
+    }()
+
+    public var requiresModalPresentation: Bool = true
+
+    /// Initializes th
 }
