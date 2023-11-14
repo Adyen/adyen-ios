@@ -1,9 +1,7 @@
 name: Compatibility Test
 
 on:
-  workflow_dispatch:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_dispatch
   push:
     branches:
     - develop
