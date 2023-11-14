@@ -200,7 +200,6 @@ class RedirectComponentTests: XCTestCase {
         XCTAssertNotNil(topPresentedViewController as? SFSafariViewController)
     }
 
-    @available(iOS 13.0, *)
     func testOpenHttpWebLinkAndDragedDown() {
         let sut = RedirectComponent(context: Dummy.context)
         sut.presentationDelegate = UIViewController.findTopPresenter()
