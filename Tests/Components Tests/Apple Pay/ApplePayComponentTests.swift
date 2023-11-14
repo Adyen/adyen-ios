@@ -308,8 +308,11 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(paymentRequest.requiredShippingContactFields, expectedRequiredShippingFields)
     }
     
-    @available(iOS 16.0, *)
-    func testNewInitSuccess() {
+    func testNewInitSuccess() throws {
+        guard #available(iOS 16.0, *) else {
+           throw XCTSkip("Unsupported iOS version")
+        }
+        
         let request = PKPaymentRequest()
         request.merchantIdentifier = "test_id"
         request.countryCode = getRandomCountryCode()
