@@ -310,6 +310,7 @@ class ApplePayComponentTest: XCTestCase {
     
     func testNewInitSuccess() throws {
         guard #available(iOS 16.0, *) else {
+            // XCTestCase does not respect @available so we have skip all tests here
            throw XCTSkip("Unsupported iOS version")
         }
         

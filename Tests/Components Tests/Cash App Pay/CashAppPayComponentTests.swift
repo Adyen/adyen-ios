@@ -13,7 +13,6 @@ import XCTest
     @testable import PayKit
     import UIKit
 
-    @available(iOS 13.0, *)
     final class CashAppPayComponentTests: XCTestCase {
         
         var paymentMethodString = """
@@ -53,6 +52,11 @@ import XCTest
         }
         
         override func setUpWithError() throws {
+            guard #available(iOS 13.0, *) else {
+                // XCTestCase does not respect @available so we have skip all tests here
+                throw XCTSkip("Unsupported iOS version")
+            }
+            
             try super.setUpWithError()
             context = Dummy.context
         }
@@ -62,6 +66,7 @@ import XCTest
             try super.tearDownWithError()
         }
         
+        @available(iOS 13.0, *)
         func testUIConfiguration() {
             var componentStyle = FormComponentStyle()
             
@@ -93,6 +98,7 @@ import XCTest
             XCTAssertEqual(sut.viewController.view.backgroundColor, .green)
         }
 
+        @available(iOS 13.0, *)
         func testSwitchVisible() {
             
             let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: true)
@@ -106,6 +112,7 @@ import XCTest
             XCTAssertNotNil(storeDetailsToggleView)
         }
         
+        @available(iOS 13.0, *)
         func testSwitchHidden() {
             
             let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: false)
@@ -119,6 +126,7 @@ import XCTest
             XCTAssertNil(storeDetailsToggleView)
         }
         
+        @available(iOS 13.0, *)
         func testStopLoading() {
             let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: true)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
@@ -135,6 +143,7 @@ import XCTest
             XCTAssertFalse(sut.cashAppPayButton.showsActivityIndicator)
         }
         
+        @available(iOS 13.0, *)
         func testViewWillAppearShouldSendTelemetryEvent() throws {
             
             // Given
@@ -152,6 +161,7 @@ import XCTest
             XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
         }
         
+        @available(iOS 13.0, *)
         func testComponent_ShouldPaymentMethodTypeBeCashAppPay() throws {
             // Given
             let expectedPaymentMethodType: PaymentMethodType = .cashAppPay
@@ -165,6 +175,7 @@ import XCTest
             XCTAssertEqual(paymentMethodType, expectedPaymentMethodType)
         }
         
+        @available(iOS 13.0, *)
         func testComponent_ShouldRequireModalPresentation() throws {
             // Given
             let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
@@ -174,6 +185,7 @@ import XCTest
             XCTAssertTrue(sut.requiresModalPresentation)
         }
         
+        @available(iOS 13.0, *)
         func testOneTimeSubmitDetails() {
             let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
@@ -207,6 +219,7 @@ import XCTest
             waitForExpectations(timeout: 10, handler: nil)
         }
         
+        @available(iOS 13.0, *)
         func testOneTimeAndOnFileSubmitDetails() {
             let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
