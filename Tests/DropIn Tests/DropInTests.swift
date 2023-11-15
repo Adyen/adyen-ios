@@ -200,7 +200,7 @@ class DropInTests: XCTestCase {
         let topVC = self.sut.viewController.findChild(of: ListViewController.self)
         topVC?.tableView(topVC!.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
 
-        wait(for: .seconds(2))
+        wait(for: .seconds(1))
         let newtopVC = self.sut.viewController.findChild(of: ADYViewController.self)
         XCTAssertEqual(newtopVC?.title, "Apple Pay")
     }
@@ -275,7 +275,6 @@ class DropInTests: XCTestCase {
         
         let waitExpectation = expectation(description: "Expect Drop-In to finalize")
 
-        wait(for: .seconds(1))
         sut.finalizeIfNeeded(with: true) {
             waitExpectation.fulfill()
         }

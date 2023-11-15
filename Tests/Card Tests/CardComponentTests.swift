@@ -392,11 +392,9 @@ class CardComponentTests: XCTestCase {
         
         self.focus(textItemView: securityCodeItemView!)
         
-        wait(for: .milliseconds(300))
-        
-        XCTAssertEqual(switchView.onTintColor, .systemYellow)
-        XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .systemYellow)
-        XCTAssertEqual(securityCodeItemView!.separatorView.backgroundColor!.cgColor, UIColor.systemYellow.cgColor)
+        wait(until: switchView, at: \.onTintColor, is: .systemYellow)
+        wait(until: securityCodeItemView!.titleLabel, at: \.textColor, is: .systemYellow)
+        wait(until: securityCodeItemView!.separatorView, at: \.backgroundColor!.cgColor, is: UIColor.systemYellow.cgColor)
     }
 
     func testSuccessTintColorCustomization() throws {
@@ -414,14 +412,13 @@ class CardComponentTests: XCTestCase {
         // Then
         let view: UIView = sut.viewController.view
 
-        let securityCodeItemView: FormCardSecurityCodeItemView? = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
-        XCTAssertEqual(securityCodeItemView?.titleLabel.textColor, .gray)
+        let securityCodeItemView: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
+        XCTAssertEqual(securityCodeItemView.titleLabel.textColor, .gray)
 
-        populate(textItemView: securityCodeItemView!, with: "123")
-        wait(for: .milliseconds(300))
-
-        let successIcon: UIImageView? = try XCTUnwrap(securityCodeItemView?.cardHintView)
-        XCTAssertEqual(successIcon?.tintColor, .systemYellow)
+        populate(textItemView: securityCodeItemView, with: "123")
+        
+        let successIcon: UIImageView = try XCTUnwrap(securityCodeItemView.cardHintView)
+        wait(until: successIcon, at: \.tintColor, is: .systemYellow)
     }
 
     func testFormViewControllerDelegate() {
@@ -1243,8 +1240,7 @@ class CardComponentTests: XCTestCase {
 
         // valid card but still active. logos should be hidden
         populate(textItemView: cardNumberItemView, with: Dummy.visaCard.number!)
-        wait(for: .seconds(5))
-        XCTAssertTrue(logoItemView.isHidden)
+        wait(until: logoItemView, at: \.isHidden, is: true)
 
         // with valid card and inactive, logos should hide
         numberItem.isActive = false

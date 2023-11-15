@@ -77,8 +77,6 @@ class PaymentMethodListComponentTests: XCTestCase {
         let sectionHeader = try XCTUnwrap(sut.listViewController.tableView.headerView(forSection: 0) as? ListHeaderView)
         sectionHeader.trailingButton.sendActions(for: .touchUpInside)
         
-        wait(for: .seconds(1))
-        
         let allCells = sut.listViewController.tableView.visibleCells
         
         XCTAssertTrue(allCells[0].isEditing)

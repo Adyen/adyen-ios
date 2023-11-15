@@ -102,7 +102,6 @@ class ApplePayComponentTest: XCTestCase {
             ])
         }
 
-        wait(for: .seconds(1))
         let onShippingSelected = expectation(description: "Wait for didFinalize call")
         let selectedShippingMethod: PKShippingMethod? = shippingMethods.first
 
@@ -131,7 +130,6 @@ class ApplePayComponentTest: XCTestCase {
             ])
         }
 
-        wait(for: .seconds(1))
         let onContactSelected = expectation(description: "Wait for didFinalize call")
         let contact = PKContact()
         contact.name = PersonNameComponents()
@@ -154,9 +152,11 @@ class ApplePayComponentTest: XCTestCase {
         waitForExpectations(timeout: 4)
     }
 
-    @available(iOS 15.0, *)
-    func testApplePayCoupon() {
-        guard Available.iOS15 else { return }
+    func testApplePayCoupon() throws {
+        guard #available(iOS 15.0, *) else {
+            // XCTestCase does not respect @available so we have skip all tests here
+            throw XCTSkip("Unsupported iOS version")
+        }
 
         sut.applePayDelegate = mockApplePayDelegate
         (mockApplePayDelegate as! ApplePayDelegateMockiOS15).onCouponChange = { coupon, payment in
@@ -166,7 +166,6 @@ class ApplePayComponentTest: XCTestCase {
             ])
         }
 
-        wait(for: .seconds(1))
         let onContactSelected = expectation(description: "Wait for didFinalize call")
 
         XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 20000)

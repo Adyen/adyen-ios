@@ -24,14 +24,10 @@ class DropInInternalTests: XCTestCase {
 
         let waitExpectation = expectation(description: "Expect Drop-In to finalize")
 
-        wait(for: .seconds(1))
-
         let topVC = sut.viewController.findChild(of: ListViewController.self)
         topVC?.tableView(topVC!.tableView, didSelectRowAt: .init(item: 0, section: 0))
         let cell = topVC?.tableView.cellForRow(at: .init(item: 0, section: 0)) as! ListCell
         XCTAssertTrue(cell.showsActivityIndicator)
-
-        wait(for: .seconds(1))
 
         sut.finalizeIfNeeded(with: true) {
             XCTAssertFalse(cell.showsActivityIndicator)

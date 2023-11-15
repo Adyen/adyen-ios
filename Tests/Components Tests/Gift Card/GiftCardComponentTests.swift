@@ -543,18 +543,14 @@ class GiftCardComponentTests: XCTestCase {
 
         setupRootViewController(sut.viewController)
 
-        wait(for: .milliseconds(300))
-
         XCTAssertTrue(errorView!.isHidden)
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
-
-        wait(for: .seconds(1))
-
-        XCTAssertFalse(errorView!.isHidden)
-        XCTAssertEqual(sut.errorItem.message, "An unknown error occurred")
+        
+        wait(until: errorView!, at: \.isHidden, is: false)
+        wait(until: sut.errorItem, at: \.message, is: "An unknown error occurred")
 
         waitForExpectations(timeout: 10, handler: nil)
     }

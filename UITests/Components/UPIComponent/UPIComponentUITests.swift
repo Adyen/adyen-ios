@@ -190,7 +190,7 @@ class UPIComponentUITests: XCTestCase {
             dummyExpectation.fulfill()
         }
         
-        continueButton?.sendActions(for: .touchUpInside)
+        continueButton.sendActions(for: .touchUpInside)
         
         wait(for: [dummyExpectation], timeout: 5)
     }

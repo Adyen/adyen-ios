@@ -63,7 +63,6 @@ final class BLIKComponentUITests: XCTestCase {
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
         setupRootViewController(sut.viewController)
-        wait(for: .seconds(1))
         
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }

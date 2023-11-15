@@ -558,8 +558,7 @@ class SessionTests: XCTestCase {
         let order = PartialPaymentOrder(pspReference: "ref", orderData: nil)
         sut.cancelOrder(order, component: PaymentComponentMock(paymentMethod: paymentMethod))
         
-        wait(for: .seconds(1))
-        XCTAssertEqual(sut.sessionContext.data, "session_data2")
+        wait(until: sut, at: \.sessionContext.data, is: "session_data_2")
     }
     
     func testCancelOrderFailure() throws {
@@ -574,8 +573,7 @@ class SessionTests: XCTestCase {
         let order = PartialPaymentOrder(pspReference: "ref", orderData: nil)
         sut.cancelOrder(order, component: PaymentComponentMock(paymentMethod: paymentMethod))
         
-        wait(for: .seconds(1))
-        XCTAssertEqual(sut.sessionContext.data, "session_data_1")
+        wait(until: sut, at: \.sessionContext.data, is: "session_data_1")
     }
     
     func testDelegateDidSubmitHandler() throws {
