@@ -110,7 +110,10 @@ final class BLIKComponentUITests: XCTestCase {
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
         setupRootViewController(sut.viewController)
-
+        
+        // Disabling animation to assure the spinner is always in the same state when taking the snapshot
+        UIApplication.shared.adyen.mainKeyWindow?.layer.speed = 0
+        
         let submitButton: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
 
         // start loading

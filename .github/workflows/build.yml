@@ -1,7 +1,7 @@
 name: Compatibility Test
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
   push:
     branches:
     - develop
