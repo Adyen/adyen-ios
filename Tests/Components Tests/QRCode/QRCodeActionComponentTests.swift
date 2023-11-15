@@ -63,7 +63,7 @@ class QRCodeActionComponentTests: XCTestCase {
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
             let viewController = component.viewController as! QRCodeViewController
             
-            UIApplication.shared.keyWindow?.rootViewController = viewController
+            self.setupRootViewController(viewController)
         }
         
         sut.presentationDelegate = presentationDelegate
@@ -108,8 +108,7 @@ class QRCodeActionComponentTests: XCTestCase {
         presentationDelegate.doPresent = { component in
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
             let viewController = component.viewController as! QRCodeViewController
-            
-            UIApplication.shared.keyWindow?.rootViewController = viewController
+            self.setupRootViewController(viewController)
         }
         
         sut.presentationDelegate = presentationDelegate
@@ -131,9 +130,7 @@ class QRCodeActionComponentTests: XCTestCase {
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
             let viewController = component.viewController as! QRCodeViewController
 
-            UIApplication.shared.keyWindow?.rootViewController = viewController
-
-            wait(for: .milliseconds(300))
+            setupRootViewController(viewController)
 
             let copyButton: SubmitButton? = viewController.view.findView(by: "copyCodeButton")
             XCTAssertNotNil(copyButton)
@@ -162,9 +159,10 @@ class QRCodeActionComponentTests: XCTestCase {
         presentationDelegate.doPresent = { [self] component in
             XCTAssertNotNil(component.viewController as? QRCodeViewController)
             let viewController = component.viewController as! QRCodeViewController
-            UIApplication.shared.keyWindow?.rootViewController = viewController
+            
+            setupRootViewController(viewController)
             viewController.qrCodeView.delegate = delgate
-            wait(for: .milliseconds(300))
+            
             let saveAsImageButton: SubmitButton? = viewController.view.findView(by: "saveAsImageButton")
             XCTAssertNotNil(saveAsImageButton)
             saveAsImageButton?.sendActions(for: .touchUpInside)

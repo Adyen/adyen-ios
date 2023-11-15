@@ -84,8 +84,8 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        UIApplication.shared.keyWindow?.rootViewController?.present(sut.viewController, animated: false, completion: nil)
-
+        presentOnRoot(sut.viewController)
+        
         let uiExpectation = expectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             let alertController = sut.viewController as! UIAlertController

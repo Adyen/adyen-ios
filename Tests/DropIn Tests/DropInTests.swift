@@ -152,11 +152,8 @@ class DropInTests: XCTestCase {
                               context: context,
                               configuration: config)
 
-        let root = UIViewController()
-        UIApplication.shared.keyWindow?.rootViewController = root
-        root.present(sut.viewController, animated: true, completion: nil)
+        presentOnRoot(sut.viewController)
 
-        wait(for: .seconds(2))
         let topVC = self.sut.viewController.findChild(of: ListViewController.self)
         XCTAssertNotNil(topVC)
         XCTAssertEqual(topVC!.sections.count, 1)
@@ -171,11 +168,8 @@ class DropInTests: XCTestCase {
                               context: context,
                               configuration: config)
 
-        let root = UIViewController()
-        UIApplication.shared.keyWindow?.rootViewController = root
-        root.present(sut.viewController, animated: true, completion: nil)
-
-        wait(for: .seconds(2))
+        presentOnRoot(sut.viewController)
+        
         XCTAssertNil(self.sut.viewController.findChild(of: ListViewController.self))
     }
 
@@ -187,11 +181,8 @@ class DropInTests: XCTestCase {
                               context: context,
                               configuration: config)
 
-        let root = UIViewController()
-        UIApplication.shared.keyWindow?.rootViewController = root
-        root.present(sut.viewController, animated: true, completion: nil)
-
-        wait(for: .seconds(2))
+        presentOnRoot(sut.viewController)
+        
         XCTAssertNotNil(self.sut.viewController.findChild(of: ListViewController.self))
     }
 
@@ -204,11 +195,8 @@ class DropInTests: XCTestCase {
                               context: context,
                               configuration: config)
 
-        let root = UIViewController()
-        UIApplication.shared.keyWindow?.rootViewController = root
-        root.present(sut.viewController, animated: true, completion: nil)
-
-        wait(for: .seconds(2))
+        presentOnRoot(sut.viewController)
+        
         let topVC = self.sut.viewController.findChild(of: ListViewController.self)
         topVC?.tableView(topVC!.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
 
@@ -235,11 +223,7 @@ class DropInTests: XCTestCase {
                               context: context,
                               configuration: config)
 
-        let root = UIViewController()
-        UIApplication.shared.keyWindow?.rootViewController = root
-        root.present(sut.viewController, animated: true, completion: nil)
-
-        wait(for: .seconds(2))
+        presentOnRoot(sut.viewController)
 
         let topVC = self.sut.viewController.findChild(of: ListViewController.self)
         XCTAssertNotNil(topVC)
@@ -256,11 +240,7 @@ class DropInTests: XCTestCase {
                               context: context,
                               configuration: config)
         
-        let root = UIViewController()
-        UIApplication.shared.keyWindow?.rootViewController = root
-        root.present(sut.viewController, animated: true, completion: nil)
-        
-        wait(for: .seconds(2))
+        presentOnRoot(sut.viewController)
         
         // presented screen is SEPA (payment list is skipped)
         let topVC = sut.viewController.findChild(of: SecuredViewController<FormViewController>.self)
@@ -276,11 +256,7 @@ class DropInTests: XCTestCase {
                               context: context,
                               configuration: config)
         
-        let root = UIViewController()
-        UIApplication.shared.keyWindow?.rootViewController = root
-        root.present(sut.viewController, animated: true, completion: nil)
-        
-        wait(for: .seconds(2))
+        presentOnRoot(sut.viewController)
         
         // presented screen should be payment list with 1 instant payment element
         let topVC = sut.viewController.findChild(of: ListViewController.self)
@@ -295,10 +271,8 @@ class DropInTests: XCTestCase {
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
         sut = DropInComponent(paymentMethods: paymentMethods, context: Dummy.context, configuration: config)
 
-        let root = UIViewController()
-        UIApplication.shared.keyWindow?.rootViewController = root
-        root.present(sut.viewController, animated: true, completion: nil)
-
+        presentOnRoot(sut.viewController)
+        
         let waitExpectation = expectation(description: "Expect Drop-In to finalize")
 
         wait(for: .seconds(1))

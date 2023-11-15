@@ -11,14 +11,6 @@ import XCTest
 
 class AddressInputFormViewControllerTests: XCTestCase {
     
-    override class func setUp() {
-        UIApplication.shared.keyWindow?.layer.speed = 10
-    }
-    
-    override class func tearDown() {
-        UIApplication.shared.keyWindow?.layer.speed = 1
-    }
-    
     func testAddressNL() throws {
         // Given
         let viewController = AddressInputFormViewController(
@@ -81,11 +73,9 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = viewController
-
+        setupRootViewController(viewController)
+        
         // When
-        wait(for: .milliseconds(5))
-
         let view: UIView = viewController.view
 
         let houseNumberItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.houseNumberOrName"))
@@ -136,9 +126,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: viewController)
-
-        wait(for: .milliseconds(5))
+        setupRootViewController(UINavigationController(rootViewController: viewController))
         
         let view: UIView = viewController.view
 
@@ -171,9 +159,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: viewController)
-
-        wait(for: .milliseconds(5))
+        setupRootViewController(UINavigationController(rootViewController: viewController))
 
         let view: UIView = viewController.view
 
@@ -231,9 +217,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: viewController)
-
-        wait(for: .milliseconds(5))
+        setupRootViewController(UINavigationController(rootViewController: viewController))
         
         let view: UIView = viewController.view
         let searchItemView: FormSearchButtonItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.searchBar"))
@@ -253,8 +237,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: viewController)
-        self.wait(for: .milliseconds(5))
+        setupRootViewController(UINavigationController(rootViewController: viewController))
         
         XCTAssertEqual(
             viewController.navigationItem.rightBarButtonItem?.isEnabled,
@@ -272,8 +255,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
 
-        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: viewController)
-        self.wait(for: .milliseconds(5))
+        setupRootViewController(UINavigationController(rootViewController: viewController))
         
         XCTAssertEqual(
             viewController.navigationItem.rightBarButtonItem?.isEnabled,
@@ -301,8 +283,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: viewController)
-        self.wait(for: .milliseconds(5))
+        setupRootViewController(UINavigationController(rootViewController: viewController))
         
         XCTAssertEqual(
             viewController.navigationItem.rightBarButtonItem?.isEnabled,
@@ -320,11 +301,8 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        UIApplication.shared.keyWindow?.rootViewController = viewController
-        wait(for: .milliseconds(5))
-        
-        UIApplication.shared.keyWindow?.rootViewController = UIViewController()
-        wait(for: .milliseconds(5))
+        setupRootViewController(viewController)
+        setupRootViewController(UIViewController())
 
         XCTAssertEqual(
             viewController.billingAddressItem.value.street,
