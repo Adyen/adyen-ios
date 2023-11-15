@@ -107,12 +107,10 @@ class AddressInputFormViewControllerTests: XCTestCase {
         let doneButton = try XCTUnwrap(viewController.navigationItem.rightBarButtonItem)
         try doneButton.tap()
         
-        wait(for: .milliseconds(50))
-        
-        XCTAssertTrue(houseNumberItemView.alertLabel.isHidden)
-        XCTAssertFalse(addressItemView.alertLabel.isHidden)
-        XCTAssertFalse(cityItemView.alertLabel.isHidden)
-        XCTAssertFalse(postalCodeItemView.alertLabel.isHidden)
+        wait(until: houseNumberItemView.alertLabel, at: \.isHidden, is: true)
+        wait(until: addressItemView.alertLabel, at: \.isHidden, is: false)
+        wait(until: cityItemView.alertLabel, at: \.isHidden, is: false)
+        wait(until: postalCodeItemView.alertLabel, at: \.isHidden, is: false)
     }
 
     func testAddressUK() throws {
