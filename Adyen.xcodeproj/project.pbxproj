@@ -5823,11 +5823,11 @@
 				F95899C525FA524100E4113F /* AdyenSwiftUI */,
 				F9620D8123C73B0D005209FC /* AdyenWeChatPay */,
 				A04F8C1D29E5950100F3F62B /* AdyenCashAppPay */,
+				F94D65D82B0364AF0095D61E /* AdyenDelegatedAuthentication */,
 				C96A8E2826CA800A000BB8C6 /* Localization */,
 				E2C0E03B22097917008616F6 /* AdyenUIKitTests */,
 				F9615FAE252DDA4800FA8EDD /* AdyenSwiftUITests */,
 				F9CCA3B4296ECB3E00AD643D /* AdyenUIHostUITests */,
-				F94D65D82B0364AF0095D61E /* AdyenDelegatedAuthentication */,
 			);
 		};
 /* End PBXProject section */
