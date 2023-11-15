@@ -82,7 +82,7 @@ class BCMCComponentTests: XCTestCase {
         
         fillCard(on: sut.viewController.view, with: Dummy.bancontactCard)
         
-        var binResponse = BinLookupResponse(brands: [CardBrand(type: .bcmc, isSupported: true)])
+        let binResponse = BinLookupResponse(brands: [CardBrand(type: .bcmc, isSupported: true)])
         sut.cardViewController.update(binInfo: binResponse)
 
         wait(for: .milliseconds(30))
