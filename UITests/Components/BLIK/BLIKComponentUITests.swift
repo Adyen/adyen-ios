@@ -20,7 +20,6 @@ final class BLIKComponentUITests: XCTestCase {
         let payment = Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
         context = AdyenContext(apiContext: Dummy.apiContext, payment: payment)
         style = FormComponentStyle()
-        UIApplication.shared.adyen.mainKeyWindow?.layer.speed = 1
         try super.setUpWithError()
     }
 
@@ -98,34 +97,34 @@ final class BLIKComponentUITests: XCTestCase {
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
             
             self.wait(for: .aMoment)
+            
             self.assertViewControllerImage(matching: sut.viewController, named: "blik_flow")
             
             delegateExpectation.fulfill()
         }
         
-        wait(for: [delegateExpectation], timeout: 30)
+        wait(for: [delegateExpectation], timeout: 2)
     }
 
-    func testSubmitButtonLoading() {
+    func testSubmitButtonLoading() throws {
         let config = BLIKComponent.Configuration(style: style)
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
         setupRootViewController(sut.viewController)
         
-        // Disabling animation to assure the spinner is always in the same state when taking the snapshot
-        UIApplication.shared.adyen.mainKeyWindow?.layer.speed = 0
-        
         let submitButton: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
-
-        // start loading
-        submitButton.showsActivityIndicator = true
-        wait(for: .aMoment)
-        assertViewControllerImage(matching: sut.viewController, named: "initial_state")
-
-        // stop loading
-        sut.stopLoading()
-        submitButton.showsActivityIndicator = false
-        wait(for: .aMoment)
-        assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
+        
+        try withAnimation(.paused) {
+            // start loading
+            submitButton.showsActivityIndicator = true
+            wait(for: .aMoment)
+            assertViewControllerImage(matching: sut.viewController, named: "initial_state")
+            
+            // stop loading
+            sut.stopLoading()
+            submitButton.showsActivityIndicator = false
+            wait(for: .aMoment)
+            assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
+        }
     }
 }

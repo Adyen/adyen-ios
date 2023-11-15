@@ -83,12 +83,17 @@ final class MBWayComponentUITests: XCTestCase {
             XCTAssertEqual(data.telephoneNumber, "+3511233456789")
 
             sut.stopLoadingIfNeeded()
-            delegateExpectation.fulfill()
+            
             XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
+            
+            self.wait(for: .aMoment)
+            self.assertViewControllerImage(matching: sut.viewController, named: "mbway_flow")
+            
+            delegateExpectation.fulfill()
         }
-        wait(for: .milliseconds(300))
-        assertViewControllerImage(matching: sut.viewController, named: "mbway_flow")
+        
+        wait(for: [delegateExpectation], timeout: 5)
     }
 
     // MARK: - Private

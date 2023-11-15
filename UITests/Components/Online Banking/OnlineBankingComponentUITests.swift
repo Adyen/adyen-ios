@@ -71,11 +71,7 @@ class OnlineBankingComponentUITests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
-        // Then
-        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
-        button.sendActions(for: .touchUpInside)
-
-        let didContnueExpectation = XCTestExpectation(description: "Dummy Expectation")
+        let didContinueExpectation = XCTestExpectation(description: "Dummy Expectation")
 
         delegate.onDidSubmit = { data, component in
             // Assert
@@ -84,31 +80,44 @@ class OnlineBankingComponentUITests: XCTestCase {
             XCTAssertEqual(details.type, .onlineBankingCZ)
             XCTAssertEqual(details.issuer, "jp")
             sut.stopLoadingIfNeeded()
-            didContnueExpectation.fulfill()
+            
+            self.wait(for: .aMoment)
+            self.assertViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
+            
+            didContinueExpectation.fulfill()
         }
-        wait(for: .milliseconds(300))
-        assertViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
+        
+        setupRootViewController(sut.viewController)
+        
+        // Then
+        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
+        button.sendActions(for: .touchUpInside)
+        
+        wait(for: [didContinueExpectation], timeout: 5)
     }
 
-    func testContinueButtonLoading() {
+    func testContinueButtonLoading() throws {
         // Given
         let config = OnlineBankingComponent.Configuration(style: style)
         let sut = OnlineBankingComponent(paymentMethod: paymentMethod,
                                          context: context,
                                          configuration: config)
 
-        UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
        
         let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
+        
+        try withAnimation(.paused) {
+            // start loading
+            button.showsActivityIndicator = true
+            assertViewControllerImage(matching: sut.viewController, named: "initial_state")
 
-        // start loading
-        button.showsActivityIndicator = true
-        assertViewControllerImage(matching: sut.viewController, named: "initial_state")
-
-        // stop loading
-        sut.stopLoading()
-        button.showsActivityIndicator = false
-        assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
+            // stop loading
+            sut.stopLoading()
+            button.showsActivityIndicator = false
+            assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
+        }
+        
     }
 
 }

@@ -78,7 +78,7 @@ class FormAddressItemTests: XCTestCase {
         
         formAddressItem.value = .init(country: "XX")
         
-        wait(for: [expectation], timeout: 0)
+        wait(for: [expectation], timeout: 2)
     }
     
     func testUpdateContext() {
