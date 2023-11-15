@@ -20,6 +20,7 @@ final class BLIKComponentUITests: XCTestCase {
         let payment = Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
         context = AdyenContext(apiContext: Dummy.apiContext, payment: payment)
         style = FormComponentStyle()
+        UIApplication.shared.adyen.mainKeyWindow?.layer.speed = 1
         try super.setUpWithError()
     }
 
