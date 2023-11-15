@@ -686,52 +686,49 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func testCardNumberShouldPassFocusToDate() {
+    func testCardNumberShouldPassFocusToDate() throws {
         // Given
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
-        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
-        let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+        let cardNumberItemView: FormCardNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
+        let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem"))
         
         // no focus change without panglength till max (19)
         
         var newResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress)])
         sut.cardViewController.update(binInfo: newResponse)
-        cardNumberItemView?.becomeFirstResponder()
+        cardNumberItemView.becomeFirstResponder()
         
-        XCTAssertTrue(cardNumberItemView!.isFirstResponder)
+        XCTAssertTrue(cardNumberItemView.isFirstResponder)
         
         populate(textItemView: cardNumberItemView, with: Dummy.amexCard.number!)
-        wait(for: .milliseconds(300))
         
-        XCTAssertTrue(cardNumberItemView!.isFirstResponder)
-        XCTAssertFalse(expiryDateItemView!.isFirstResponder)
+        wait(until: expiryDateItemView, at: \.isFirstResponder, is: false)
+        wait(until: cardNumberItemView, at: \.isFirstResponder, is: true)
         
         // focus should change with pan length set
         newResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress, panLength: 15)])
         sut.cardViewController.update(binInfo: newResponse)
-        cardNumberItemView?.becomeFirstResponder()
+        cardNumberItemView.becomeFirstResponder()
         
-        XCTAssertTrue(cardNumberItemView!.isFirstResponder)
+        wait(until: cardNumberItemView, at: \.isFirstResponder, is: true)
         
         populate(textItemView: cardNumberItemView, with: Dummy.amexCard.number!)
-        wait(for: .milliseconds(300))
         
-        XCTAssertFalse(cardNumberItemView!.isFirstResponder)
-        XCTAssertTrue(expiryDateItemView!.isFirstResponder)
+        wait(until: cardNumberItemView, at: \.isFirstResponder, is: false)
+        wait(until: expiryDateItemView, at: \.isFirstResponder, is: true)
 
         // focus should also change when reaching default max length 19
         newResponse = BinLookupResponse(brands: [CardBrand(type: .maestro)])
         sut.cardViewController.update(binInfo: newResponse)
-        cardNumberItemView?.becomeFirstResponder()
+        cardNumberItemView.becomeFirstResponder()
         
-        XCTAssertTrue(cardNumberItemView!.isFirstResponder)
+        wait(until: cardNumberItemView, at: \.isFirstResponder, is: true)
         
         populate(textItemView: cardNumberItemView, with: "6771830000000000006")
-        wait(for: .milliseconds(300))
         
-        XCTAssertFalse(cardNumberItemView!.isFirstResponder)
-        XCTAssertTrue(expiryDateItemView!.isFirstResponder)
+        wait(until: cardNumberItemView, at: \.isFirstResponder, is: false)
+        wait(until: expiryDateItemView, at: \.isFirstResponder, is: true)
     }
 
     func testDateShouldPassFocusToCVC() throws {

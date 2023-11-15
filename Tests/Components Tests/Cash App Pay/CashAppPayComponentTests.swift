@@ -13,7 +13,6 @@ import XCTest
     @testable import PayKit
     import UIKit
 
-    @available(iOS 13.0, *)
     final class CashAppPayComponentTests: XCTestCase {
         
         var paymentMethodString = """

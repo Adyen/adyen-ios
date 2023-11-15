@@ -73,15 +73,13 @@ class PreApplePayComponentTests: XCTestCase {
         XCTAssertEqual(viewController.view.backgroundColor, model.style.backgroundColor)
         
         let style = view.model.style
-        if #available(iOS 12.0, *) {
-            XCTAssertEqual(style.cornerRadius, 10)
-        }
+        
+        XCTAssertEqual(style.cornerRadius, 10)
         XCTAssertEqual(style.paymentButtonStyle, .whiteOutline)
         XCTAssertEqual(style.paymentButtonType, .donate)
     }
     
     func testApplePayPresented() {
-        guard Available.iOS12 else { return }
         let dismissExpectation = expectation(description: "Dismiss Expectation")
         
         UIApplication.shared.keyWindow?.rootViewController = sut.viewController
