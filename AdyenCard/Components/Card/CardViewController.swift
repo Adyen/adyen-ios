@@ -198,6 +198,11 @@ internal class CardViewController: FormViewController {
         
         updateBillingAddressOptionalStatus(brands: brands)
     }
+}
+
+// MARK: - Private methods
+
+extension CardViewController {
     
     private func updateBillingAddressOptionalStatus(brands: [CardBrand]) {
         let isOptional = configuration.billingAddress.isOptional(for: brands.map(\.type))
@@ -237,8 +242,6 @@ internal class CardViewController: FormViewController {
         items.installmentsItem?.update(cardType: brand?.type)
     }
 
-    // MARK: Private methods
-
     private func setupView() {
         append(items.numberContainerItem)
 
@@ -271,32 +274,38 @@ internal class CardViewController: FormViewController {
             append(FormSpacerItem())
         }
 
-        switch configuration.billingAddress.mode {
+        if let billingAddressItem = billingAddressItem(for: configuration.billingAddress.mode) {
+            append(billingAddressItem)
+        }
+
+        append(FormSpacerItem())
+        append(items.button)
+        append(FormSpacerItem(numberOfSpaces: 2))
+    }
+    
+    private func billingAddressItem(for billingAddressMode: CardComponent.AddressFormType) -> FormItem? {
+        switch billingAddressMode {
         case let .lookup(provider):
             let item = items.billingAddressPickerItem
             item.selectionHandler = { [weak cardDelegate, weak provider] in
                 guard let provider else { return }
                 cardDelegate?.didSelectAddressPicker(lookupProvider: provider)
             }
-            append(item)
+            return item
             
         case .full:
             let item = items.billingAddressPickerItem
             item.selectionHandler = { [weak cardDelegate] in
                 cardDelegate?.didSelectAddressPicker(lookupProvider: nil)
             }
-            append(item)
+            return item
             
         case .postalCode:
-            append(items.postalCodeItem)
+            return items.postalCodeItem
             
         case .none:
-            break
+            return nil
         }
-
-        append(FormSpacerItem())
-        append(items.button)
-        append(FormSpacerItem(numberOfSpaces: 2))
     }
 
     private func prefill() {
@@ -350,19 +359,6 @@ internal class CardViewController: FormViewController {
             return !brand.showsSocialSecurityNumber
         }
     }
-
-}
-
-internal protocol CardViewControllerDelegate: AnyObject {
-    
-    func didSelectAddressPicker(lookupProvider: AddressLookupProvider?)
-    
-    func didSelectSubmitButton()
-
-    func didChange(bin: String)
-    
-    func didChange(pan: String)
-
 }
 
 extension FormValueItem where ValueType == String {

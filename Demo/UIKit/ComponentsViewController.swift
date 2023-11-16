@@ -53,8 +53,8 @@ internal final class ComponentsViewController: UIViewController {
         return instantPaymentComponentExample
     }()
     
-    private lazy var instantPaymentComponentAdvancedFlowExample: InstantPaymentComponentAdvancedFlowExample = {
-        let instantPaymentComponentExample = InstantPaymentComponentAdvancedFlowExample()
+    private lazy var instantPaymentComponentAdvancedFlow: InstantPaymentComponentAdvancedFlow = {
+        let instantPaymentComponentExample = InstantPaymentComponentAdvancedFlow()
         instantPaymentComponentExample.presenter = self
         return instantPaymentComponentExample
     }()
@@ -140,7 +140,7 @@ internal final class ComponentsViewController: UIViewController {
         if componentsView.isUsingSession {
             instantPaymentComponentExample.start()
         } else {
-            instantPaymentComponentAdvancedFlowExample.start()
+            instantPaymentComponentAdvancedFlow.start()
         }
     }
 

@@ -141,7 +141,7 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
     /// Fallback option for any other scheme name
     case other(named: String)
     
-    // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable cyclomatic_complexity function_body_length
     public init(rawValue: String) {
         switch rawValue {
         case "accel": self = .accel
@@ -292,113 +292,5 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
         case let .other(name): return name.replacingOccurrences(of: "_", with: " ")
         }
     }
-    // swiftlint:enable cyclomatic_complexity
-}
-
-extension CardType {
-    
-    internal var pattern: String? {
-        switch self { // NOSONAR
-        case .alphaBankBonusMasterCard:
-            return "^(510099)[0-9]{0,10}$"
-        case .alphaBankBonusVISA:
-            return "^(450903)[0-9]{0,10}$"
-        case .americanExpress:
-            return "^3[47][0-9]{0,13}$"
-        case .argencard:
-            return "^(50)(1)\\d*$"
-        case .bcmc:
-            return "^((6703)[0-9]{0,15}|(479658|606005)[0-9]{0,13})$"
-        case .bijenkorfCard:
-            return "^(5100081)[0-9]{0,9}$"
-        case .cabal:
-            return "^(58|6[03])([03469])\\d*$"
-        case .carteBancaire:
-            return "^[4-6][0-9]{0,15}$"
-        case .codensa:
-            return "^(590712)[0-9]{0,10}$"
-        case .chinaUnionPay:
-            return "^(62|81)[0-9]{0,17}$"
-        case .dankort:
-            return "^(5019)[0-9]{0,12}$"
-        case .dankortVISA:
-            return "^(4571)[0-9]{0,12}$"
-        case .diners:
-            return "^(3[60])[0-9]{0,12}$"
-        case .discover:
-            return "^(6011[0-9]{0,12}|(644|645|646|647|648|649)[0-9]{0,13}|65[0-9]{0,14})$"
-        case .elo:
-            return "^((((506699)|(506770)|(506771)|(506772)|(506773)|(506774)|(506775)|(506776)|(506777)|(506778)"
-                + "|(401178)|(438935)|(451416)|(457631)|(457632)|(504175)|(627780)|(636368)|(636297))[0-9]"
-                + "{0,10})|((50676)|(50675)|(50674)|(50673)|(50672)|(50671)|(50670))[0-9]{0,11})$"
-        case .forbrugsforeningen:
-            return "^(60)(0)\\d*$"
-        case .hiper:
-            return "^(637095|637599|637609|637612)[0-9]{0,10}$"
-        case .hipercard:
-            return "^(606282)[0-9]{0,10}$"
-        case .jcb:
-            return "^(352[8,9]{1}[0-9]{0,15}|35[4-8]{1}[0-9]{0,16})$"
-        case .karenMillen:
-            return "^(98261465)[0-9]{0,8}$"
-        case .laser:
-            return "^(6304|6706|6709|6771)[0-9]{0,15}$"
-        case .maestro:
-            return "^(5[0|6-8][0-9]{0,17}|6[0-9]{0,18})$"
-        case .maestroUK:
-            return "^(6759)[0-9]{0,15}$"
-        case .masterCard:
-            return "^(5[1-5][0-9]{0,14}|2[2-7][0-9]{0,14})$"
-        case .mir:
-            return "^(220)[0-9]{0,16}$"
-        case .naranja:
-            return "^(37|40|5[28])([279])\\d*$"
-        case .oasis:
-            return "^(982616)[0-9]{0,10}$"
-        case .shopping:
-            return "^(27|58|60)([39])\\d*$"
-        case .solo:
-            return "^(6767)[0-9]{0,15}$"
-        case .troy:
-            return "^(97)(9)\\d*$"
-        case .uatp:
-            return "^1[0-9]{0,14}$"
-        case .visa:
-            return "^4[0-9]{0,19}$"
-        case .warehouse:
-            return "^(982633)[0-9]{0,10}$"
-        case .koreanLocalCard:
-            return "^94[0-9]{0,18}$"
-        case .accel,
-             .cencosud,
-             .chequeDejeneur,
-             .creditUnion24,
-             .kcp,
-             .netplus,
-             .nyce,
-             .pulse,
-             .star,
-             .other:
-            return nil
-        }
-    }
-}
-
-extension CardType {
-    
-    @_spi(AdyenInternal)
-    public func matches(cardNumber: String) -> Bool {
-        guard let pattern else {
-            return false
-        }
-        
-        do {
-            let regularExpression = try NSRegularExpression(pattern: pattern, options: [])
-            let range = NSRange(location: 0, length: cardNumber.count)
-            
-            return regularExpression.firstMatch(in: cardNumber, options: [], range: range) != nil
-        } catch {
-            return false
-        }
-    }
+    // swiftlint:enable cyclomatic_complexity function_body_length
 }

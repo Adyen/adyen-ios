@@ -180,6 +180,9 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case let .other(value): return value
         }
     }
+}
+
+extension PaymentMethodType {
     
     /// The brand name of the card type
     ///
