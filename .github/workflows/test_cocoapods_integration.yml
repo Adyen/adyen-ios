@@ -12,7 +12,7 @@ on:
 jobs:
 
   pods:
-    runs-on: macos-12
+    runs-on: macos-13-large
     steps:
     - uses: actions/checkout@v4
     - uses: n1hility/cancel-previous-runs@v3
@@ -26,7 +26,7 @@ jobs:
 
     - name: Lint Cocoapods
       run: |
-        gem install cocoapods -v 1.10.2
+        gem install cocoapods -v 1.14.2
         pod repo update
         pod lib lint Adyen.podspec --allow-warnings --verbose
 
