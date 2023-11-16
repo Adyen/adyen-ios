@@ -36,3 +36,9 @@ public extension UIViewController {
         return rootViewController.adyen.topPresenter
     }
 }
+
+extension UIViewController: PresentationDelegate {
+    public func present(component: PresentableComponent) {
+        self.present(component.viewController, animated: false, completion: nil)
+    }
+}

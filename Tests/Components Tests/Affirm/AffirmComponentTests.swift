@@ -115,7 +115,7 @@ class AffirmComponentTests: XCTestCase {
         sut.delegate = delegate
         let expectedBillingAddress = PostalAddressMocks.newYorkPostalAddress
         let expectedDeliveryAddress = PostalAddressMocks.losAngelesPostalAddress
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         
         // Then
         let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
@@ -180,9 +180,8 @@ class AffirmComponentTests: XCTestCase {
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          context: context,
                                          configuration: config)
-        UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
-
-        wait(for: .seconds(1))
+        
+        setupRootViewController(prefillSut.viewController)
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -228,9 +227,8 @@ class AffirmComponentTests: XCTestCase {
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          context: context,
                                          configuration: config)
-        UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
-
-        wait(for: .seconds(1))
+        
+        setupRootViewController(prefillSut.viewController)
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -271,7 +269,7 @@ class AffirmComponentTests: XCTestCase {
 
     func testAffirm_givenNoShopperInformation_shouldNotPrefill() throws {
         // Given
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         wait(for: .seconds(1))
 
