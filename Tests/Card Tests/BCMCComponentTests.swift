@@ -137,7 +137,7 @@ class BCMCComponentTests: XCTestCase {
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.storeDetailsItem"))
     }
     
-    func testValidCardTypeDetection() {
+    func testValidCardTypeDetection() throws {
         let brands: [CardType] = [.bcmc]
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
@@ -146,16 +146,17 @@ class BCMCComponentTests: XCTestCase {
         
         setupRootViewController(sut.viewController)
         
-        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
-        XCTAssertNotNil(cardNumberItemView)
-        let textItemView: FormCardNumberItemView? = cardNumberItemView!.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
-        XCTAssertNotNil(textItemView)
-        self.populate(textItemView: textItemView!, with: Dummy.bancontactCard.number!)
+        let cardNumberItemView: FormCardNumberItemView = try XCTUnwrap( sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
         
-        let cardNumberItem = cardNumberItemView!.item
+        self.populate(textItemView: cardNumberItemView, with: Dummy.bancontactCard.number!)
+        
+        let cardNumberItem = cardNumberItemView.item
         XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 1)
         XCTAssertEqual(cardNumberItem.cardTypeLogos.first?.url, LogoURLProvider.logoURL(withName: brands.first!.rawValue, environment: context.apiContext.environment))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem.cardTypeLogos"))
+        
+        wait {
+            cardNumberItemView.findView(by: "cardTypeLogos") != nil
+        }
     }
     
     func testInvalidCardTypeDetection() {
