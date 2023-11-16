@@ -121,9 +121,6 @@ class DropInTests: XCTestCase {
           "groups" : []
         }
         """
-
-    var sut: DropInComponent!
-    var context: AdyenContext!
     
     override func run() {
         AdyenDependencyValues.runTestWithValues {
@@ -133,82 +130,70 @@ class DropInTests: XCTestCase {
         }
     }
     
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        context = Dummy.context
-    }
-
-    override func tearDownWithError() throws {
-        sut = nil
-        context = nil
-        try super.tearDownWithError()
-    }
-    
-    func testOpenDropInAsList() {
+    func testOpenDropInAsList() throws {
         let config = DropInComponent.Configuration()
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymentMethods,
-                              context: context,
-                              configuration: config)
+        let sut = DropInComponent(paymentMethods: paymentMethods,
+                                  context: Dummy.context,
+                                  configuration: config)
 
         presentOnRoot(sut.viewController)
 
-        let topVC = self.sut.viewController.findChild(of: ListViewController.self)
-        XCTAssertNotNil(topVC)
-        XCTAssertEqual(topVC!.sections.count, 1)
-        XCTAssertEqual(topVC!.sections[0].items.count, 2)
+        let topVC = try XCTUnwrap(sut.viewController.findChild(of: ListViewController.self))
+        XCTAssertEqual(topVC.sections.count, 1)
+        XCTAssertEqual(topVC.sections[0].items.count, 2)
     }
 
-    func testOpenDropInAsOneClickPayment() {
+    func testOpenDropInAsOneClickPayment() throws {
         let config = DropInComponent.Configuration()
 
-        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymentMethods,
-                              context: context,
-                              configuration: config)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
+        let sut = DropInComponent(paymentMethods: paymentMethods,
+                                  context: Dummy.context,
+                                  configuration: config)
 
         presentOnRoot(sut.viewController)
         
-        XCTAssertNil(self.sut.viewController.findChild(of: ListViewController.self))
+        XCTAssertNil(sut.viewController.findChild(of: ListViewController.self))
     }
 
-    func testOpenDropInWithNoOneClickPayment() {
+    func testOpenDropInWithNoOneClickPayment() throws {
         let config = DropInComponent.Configuration(allowPreselectedPaymentView: false)
 
-        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymentMethods,
-                              context: context,
-                              configuration: config)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
+        let sut = DropInComponent(paymentMethods: paymentMethods,
+                                  context: Dummy.context,
+                                  configuration: config)
 
         presentOnRoot(sut.viewController)
         
-        XCTAssertNotNil(self.sut.viewController.findChild(of: ListViewController.self))
+        XCTAssertNotNil(sut.viewController.findChild(of: ListViewController.self))
     }
 
-    func testOpenApplePay() {
+    func testOpenApplePay() throws {
         let config = DropInComponent.Configuration()
         config.applePay = .init(payment: Dummy.createTestApplePayPayment(), merchantIdentifier: "")
 
-        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymentMethods,
-                              context: context,
-                              configuration: config)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        let sut = DropInComponent(paymentMethods: paymentMethods,
+                                  context: Dummy.context,
+                                  configuration: config)
 
         presentOnRoot(sut.viewController)
         
-        let topVC = self.sut.viewController.findChild(of: ListViewController.self)
-        topVC?.tableView(topVC!.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
+        let topVC = try XCTUnwrap(sut.viewController.findChild(of: ListViewController.self))
+        topVC.tableView(topVC.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
 
         wait(for: .seconds(1))
-        let newtopVC = self.sut.viewController.findChild(of: ADYViewController.self)
-        XCTAssertEqual(newtopVC?.title, "Apple Pay")
+        let newtopVC = try XCTUnwrap(sut.viewController.findChild(of: ADYViewController.self))
+        XCTAssertEqual(newtopVC.title, "Apple Pay")
     }
 
-    func testGiftCard() {
+    func testGiftCard() throws {
         let config = DropInComponent.Configuration()
 
-        var paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         paymentMethods.paid = [
             OrderPaymentMethod(lastFour: "1234",
                                type: .card,
@@ -219,57 +204,56 @@ class DropInTests: XCTestCase {
                                transactionLimit: Amount(value: 3000, currencyCode: "CNY"),
                                amount: Amount(value: 3000, currencyCode: "CNY"))
         ]
-        sut = DropInComponent(paymentMethods: paymentMethods,
-                              context: context,
-                              configuration: config)
+        let sut = DropInComponent(paymentMethods: paymentMethods,
+                                  context: Dummy.context,
+                                  configuration: config)
 
         presentOnRoot(sut.viewController)
 
-        let topVC = self.sut.viewController.findChild(of: ListViewController.self)
-        XCTAssertNotNil(topVC)
-        XCTAssertEqual(topVC!.sections.count, 2)
-        XCTAssertEqual(topVC!.sections[0].items.count, 2)
-        XCTAssertTrue(topVC!.sections[0].footer!.title.contains("Select payment method for the remaining"))
+        let topVC = try XCTUnwrap(sut.viewController.findChild(of: ListViewController.self))
+        XCTAssertEqual(topVC.sections.count, 2)
+        XCTAssertEqual(topVC.sections[0].items.count, 2)
+        XCTAssertTrue(topVC.sections[0].footer!.title.contains("Select payment method for the remaining"))
     }
 
-    func testSinglePaymentMethodSkippingPaymentList() {
+    func testSinglePaymentMethodSkippingPaymentList() throws {
         let config = DropInComponent.Configuration(allowsSkippingPaymentList: true)
 
-        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleNonInstant.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymentMethods,
-                              context: context,
-                              configuration: config)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleNonInstant.data(using: .utf8)!)
+        let sut = DropInComponent(paymentMethods: paymentMethods,
+                                  context: Dummy.context,
+                                  configuration: config)
         
         presentOnRoot(sut.viewController)
         
         // presented screen is SEPA (payment list is skipped)
-        let topVC = sut.viewController.findChild(of: SecuredViewController<FormViewController>.self)
-        XCTAssertNotNil(topVC)
-        XCTAssertEqual(topVC?.title, "SEPA Direct Debit")
+        let topVC = try XCTUnwrap(sut.viewController.findChild(of: SecuredViewController<FormViewController>.self))
+        XCTAssertEqual(topVC.title, "SEPA Direct Debit")
     }
     
-    func testSinglePaymentMethodNotSkippingPaymentList() {
+    func testSinglePaymentMethodNotSkippingPaymentList() throws {
         let config = DropInComponent.Configuration(allowsSkippingPaymentList: true)
 
-        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymentMethods,
-                              context: context,
-                              configuration: config)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
+        let sut = DropInComponent(paymentMethods: paymentMethods,
+                                  context: Dummy.context,
+                                  configuration: config)
         
         presentOnRoot(sut.viewController)
         
         // presented screen should be payment list with 1 instant payment element
-        let topVC = sut.viewController.findChild(of: ListViewController.self)
-        XCTAssertNotNil(topVC)
-        XCTAssertEqual(topVC!.sections.count, 1)
-        XCTAssertEqual(topVC!.sections[0].items.count, 1)
+        let topVC = try XCTUnwrap(sut.viewController.findChild(of: ListViewController.self))
+        XCTAssertEqual(topVC.sections.count, 1)
+        XCTAssertEqual(topVC.sections[0].items.count, 1)
     }
 
-    func testFinaliseIfNeededEmptyList() {
+    func testFinaliseIfNeededEmptyList() throws {
         let config = DropInComponent.Configuration()
 
-        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymentMethods, context: Dummy.context, configuration: config)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
+        let sut = DropInComponent(paymentMethods: paymentMethods,
+                                  context: Dummy.context,
+                                  configuration: config)
 
         presentOnRoot(sut.viewController)
         
