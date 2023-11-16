@@ -558,7 +558,7 @@ class SessionTests: XCTestCase {
         let order = PartialPaymentOrder(pspReference: "ref", orderData: nil)
         sut.cancelOrder(order, component: PaymentComponentMock(paymentMethod: paymentMethod))
         
-        wait(until: sut, at: \.sessionContext.data, is: "session_data_2", timeout: 5)
+        wait(until: sut, at: \.sessionContext.data, is: "session_data2")
     }
     
     func testCancelOrderFailure() throws {
