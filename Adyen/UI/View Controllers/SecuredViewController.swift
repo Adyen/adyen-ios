@@ -82,16 +82,12 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
     private var blurEffectView: UIVisualEffectView
 
     private lazy var blurEffect: UIBlurEffect = {
-        if #available(iOS 12.0, *) {
-            switch traitCollection.userInterfaceStyle {
-            case .dark:
-                return UIBlurEffect(style: .dark)
-            case .light, .unspecified:
-                return UIBlurEffect(style: .light)
-            @unknown default:
-                return UIBlurEffect(style: .light)
-            }
-        } else {
+        switch traitCollection.userInterfaceStyle {
+        case .dark:
+            return UIBlurEffect(style: .dark)
+        case .light, .unspecified:
+            return UIBlurEffect(style: .light)
+        @unknown default:
             return UIBlurEffect(style: .light)
         }
     }()
