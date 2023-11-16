@@ -299,7 +299,7 @@ class DropInTests: XCTestCase {
         let topVC = try waitForViewController(ofType: ListViewController.self, toBecomeChildOf: sut.viewController)
         topVC.tableView(topVC.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
 
-        let safari = try waitUntilTopPresenter(isOfType: SFSafariViewController.self)
+        let safari = try waitUntilTopPresenter(isOfType: SFSafariViewController.self, timeout: 5)
         wait(for: .aMoment)
 
         let delegate = try XCTUnwrap(safari.delegate)
