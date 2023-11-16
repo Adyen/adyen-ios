@@ -46,7 +46,7 @@ jobs:
         project: 'Adyen.xcodeproj'
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
         scheme: 'AdyenUIHost'
-        destination: 'name=iPhone 14,OS=17.0'
+        destination: 'name=iPhone 14,OS=17.0.1'
 
     - name: Code Coverage
       run: |
