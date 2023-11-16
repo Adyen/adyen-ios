@@ -5,6 +5,7 @@
 //
 
 import Foundation
+@_spi(AdyenInternal) import Adyen
 
 internal protocol CardViewControllerDelegate: AnyObject {
     
