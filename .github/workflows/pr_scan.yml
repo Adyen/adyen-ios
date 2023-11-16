@@ -12,7 +12,7 @@ jobs:
   build:
     env:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
-    runs-on: macos-14-xl
+    runs-on: macos-13-xl
 
     steps:
     - uses: actions/checkout@v4
