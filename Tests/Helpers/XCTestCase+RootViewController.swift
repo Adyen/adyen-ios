@@ -53,15 +53,6 @@ extension XCTestCase {
         }
         wait(for: [presentationExpectation], timeout: 1)
     }
-    
-    /// Returns the current rootViewController
-    ///
-    /// - Throws: If the key window can't be found
-    var rootViewController: UIViewController {
-        get throws {
-            try XCTUnwrap(UIApplication.shared.adyen.mainKeyWindow?.rootViewController)
-        }
-    }
 }
 
 extension DispatchTimeInterval {

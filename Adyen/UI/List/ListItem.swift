@@ -81,7 +81,8 @@ public class ListItem: FormItem {
     
     /// Indicate to the ``ListViewController`` to start loading / show the loading indicator for this specific item
     ///
-    /// To stop the loading for the whole list either  call  ListViewController.``ListViewController/stopLoading()`` or ListItem.``ListItem/stopLoading()``
+    /// To stop the loading for the whole list either  call  ListViewController.``ListViewController/stopLoading()``
+    /// or ListItem.``ListItem/stopLoading()``
     public func startLoading() {
         setLoading(true)
     }
