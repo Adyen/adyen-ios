@@ -1,6 +1,11 @@
 name: Scan PR
 
 on:
+  workflow_dispatch:
+    inputs:
+      shouldUpdateSnapshots:
+        description: 'Should the Snapshots be updated?'
+        type: boolean
   pull_request:
     types: [opened, synchronize, reopened]
   push:
@@ -44,7 +49,7 @@ jobs:
         xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
+        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation UPDATE_SNAPSHOTS=${{ github.event.inputs.shouldUpdateSnapshots ? "TRUE" : "FALSE" }}'
         scheme: 'AdyenUIHost'
         destination: 'name=iPhone 14,OS=17.0.1'
 
