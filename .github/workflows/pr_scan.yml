@@ -52,12 +52,7 @@ jobs:
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
         scheme: 'AdyenUIHost'
         destination: 'name=iPhone 14,OS=17.0.1'
-        shouldUpdateSnapshots: |
-            if [ ${{ github.event.inputs.shouldUpdateSnapshots }} == "true" ]; then
-                "UPDATE_SNAPSHOTS=TRUE"
-            else
-                "UPDATE_SNAPSHOTS=FALSE"
-            fi
+        shouldUpdateSnapshots: ${{ github.event.inputs.shouldUpdateSnapshots }}
 
     - name: Code Coverage
       run: |
