@@ -124,7 +124,7 @@ class AffirmComponentTests: XCTestCase {
             let details = data.paymentMethod as! AffirmDetails
             XCTAssertEqual(details.shopperName?.firstName, "Katrina")
             XCTAssertEqual(details.shopperName?.lastName, "Del Mar")
-            XCTAssertEqual(details.telephoneNumber, "+12025550146")
+            XCTAssertEqual(details.telephoneNumber, "+312025550146")
             XCTAssertEqual(details.emailAddress, "katrina@mail.com")
             XCTAssertEqual(details.billingAddress, expectedBillingAddress)
             XCTAssertEqual(details.deliveryAddress, expectedDeliveryAddress)
@@ -246,7 +246,7 @@ class AffirmComponentTests: XCTestCase {
         XCTAssertEqual(expectedLastName, lastName)
 
         let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
-        let expectedPhoneNumber = try XCTUnwrap(shopperInformation.phoneNumber?.value)
+        let expectedPhoneNumber = try XCTUnwrap(config.shopperInformation?.phoneNumber?.value)
         let phoneNumber = phoneNumberView.item.value
         XCTAssertEqual(expectedPhoneNumber, phoneNumber)
 
@@ -264,7 +264,7 @@ class AffirmComponentTests: XCTestCase {
         XCTAssertFalse(deliveryAddressToggleView.item.value)
 
         let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddress))
-        let expectedDeliveryAddress = PostalAddressMocks.emptyUSPostalAddress
+        let expectedDeliveryAddress = PostalAddressMocks.defaultPostalAddress
         let deliveryAddress = deliveryAddressView.item.value
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
     }
@@ -295,7 +295,7 @@ class AffirmComponentTests: XCTestCase {
         XCTAssertTrue(email.isEmpty)
 
         let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.billingAddress))
-        let expectedBillingAddress = PostalAddressMocks.emptyUSPostalAddress
+        let expectedBillingAddress = PostalAddressMocks.defaultPostalAddress
         let billingAddress = billingAddressView.item.value
         XCTAssertEqual(expectedBillingAddress, billingAddress)
 
@@ -303,7 +303,7 @@ class AffirmComponentTests: XCTestCase {
         XCTAssertFalse(deliveryAddressToggleView.item.value)
 
         let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddress))
-        let expectedDeliveryAddress = PostalAddressMocks.emptyUSPostalAddress
+        let expectedDeliveryAddress = PostalAddressMocks.defaultPostalAddress
         let deliveryAddress = deliveryAddressView.item.value
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
     }
@@ -351,7 +351,7 @@ class AffirmComponentTests: XCTestCase {
         let billingAddress = PostalAddressMocks.newYorkPostalAddress
         let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
                                                              emailAddress: "katrina@mail.com",
-                                                             phoneNumber: nil,
+                                                             phoneNumber: PhoneNumber(value: "", callingCode: ""),
                                                              billingAddress: billingAddress,
                                                              deliveryAddress: nil,
                                                              socialSecurityNumber: "78542134370")
