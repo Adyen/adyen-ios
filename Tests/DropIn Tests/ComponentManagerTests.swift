@@ -129,8 +129,7 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertNil(paymentComponent)
     }
     
-    @available(iOS 13.0, *)
-    func testCashAppShouldSucceedWithConfig() {
+    func testCashAppShouldSucceedWithConfig() throws {
         configuration.cashAppPay = .init(redirectURL: URL(string: "test")!)
         let sut = ComponentManager(paymentMethods: paymentMethods,
                                    context: context,

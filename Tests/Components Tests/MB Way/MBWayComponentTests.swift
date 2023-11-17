@@ -65,7 +65,7 @@ class MBWayComponentTests: XCTestCase {
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                  context: context)
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))
         
@@ -85,9 +85,8 @@ class MBWayComponentTests: XCTestCase {
         let prefillSut = MBWayComponent(paymentMethod: paymentMethod,
                                         context: context,
                                         configuration: config)
-        UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
-
-        wait(for: .milliseconds(300))
+        
+        setupRootViewController(prefillSut.viewController)
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -103,7 +102,7 @@ class MBWayComponentTests: XCTestCase {
         let sut = MBWayComponent(paymentMethod: paymentMethod,
                                  context: context,
                                  configuration: MBWayComponent.Configuration())
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))
 

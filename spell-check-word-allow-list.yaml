@@ -189,4 +189,5 @@ whiteList:
   - appname
   - holdername
   - mapkit
+  - bizum
   - alipay

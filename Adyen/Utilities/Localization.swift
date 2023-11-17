@@ -34,10 +34,8 @@ public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationPa
     switch parameters?.mode {
     case let .enforced(locale: enforcedLocale):
         translationAttempt = enforceLocalizedString(key: key.key, locale: enforcedLocale)
-    case .natural:
+    case .natural, .none:
         translationAttempt = attempt(buildPossibleInputs(key.key, parameters))
-    case .none:
-        break
     }
 
     // Use fallback in case attempt result is nil or empty

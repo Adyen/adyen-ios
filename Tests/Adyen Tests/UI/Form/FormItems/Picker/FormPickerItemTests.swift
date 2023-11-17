@@ -61,8 +61,7 @@ class FormPickerItemTests: XCTestCase {
         
         wait(for: [presentViewControllerExpectation], timeout: 1)
         
-        UIApplication.shared.keyWindow?.rootViewController? = presentedViewController!
-        self.wait(for: .milliseconds(300))
+        setupRootViewController(presentedViewController!)
         
         let searchViewController = presentedViewController!.viewControllers.first as! SearchViewController
         searchViewController.viewModel.interfaceState.results?.first?.selectionHandler?()

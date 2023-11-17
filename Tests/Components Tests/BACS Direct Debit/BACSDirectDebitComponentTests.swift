@@ -57,7 +57,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
 
         let presenter: BACSInputPresenter = sut.inputPresenter as! BACSInputPresenter
         let expectedConsentTitle1 = presenter.itemsFactory.createConsentText(with: payment.amount)
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         wait(for: .milliseconds(200))
         
         XCTAssertEqual(presenter.amountConsentToggleItem?.title, expectedConsentTitle1)
