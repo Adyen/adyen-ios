@@ -124,7 +124,7 @@ class AffirmComponentTests: XCTestCase {
             let details = data.paymentMethod as! AffirmDetails
             XCTAssertEqual(details.shopperName?.firstName, "Katrina")
             XCTAssertEqual(details.shopperName?.lastName, "Del Mar")
-            XCTAssertEqual(details.telephoneNumber, "+12025550146")
+            XCTAssertEqual(details.telephoneNumber, "+312025550146")
             XCTAssertEqual(details.emailAddress, "katrina@mail.com")
             XCTAssertEqual(details.billingAddress, expectedBillingAddress)
             XCTAssertEqual(details.deliveryAddress, expectedDeliveryAddress)
@@ -145,7 +145,7 @@ class AffirmComponentTests: XCTestCase {
         
         let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
         populate(textItemView: phoneNumberView, with: "2025550146")
-        
+
         let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.email))
         populate(textItemView: emailView, with: "katrina@mail.com")
 
@@ -227,7 +227,8 @@ class AffirmComponentTests: XCTestCase {
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          context: context,
                                          configuration: config)
-        
+        prefillSut.phoneItem?.value = "+1223434545"
+
         setupRootViewController(prefillSut.viewController)
 
         // Then
@@ -244,7 +245,7 @@ class AffirmComponentTests: XCTestCase {
         XCTAssertEqual(expectedLastName, lastName)
 
         let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
-        let expectedPhoneNumber = try XCTUnwrap(shopperInformation.phoneNumber?.value)
+        let expectedPhoneNumber = prefillSut.phoneItem?.value
         let phoneNumber = phoneNumberView.item.value
         XCTAssertEqual(expectedPhoneNumber, phoneNumber)
 
