@@ -145,7 +145,7 @@ internal struct PaymentsResponse: Response {
         case amount
     }
     
-    var isAccepted: Bool {
+    internal var isAccepted: Bool {
         switch resultCode {
         case .authorised, .received, .pending:
             return true

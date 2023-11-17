@@ -89,7 +89,7 @@ class QiwiWalletComponentTests: XCTestCase {
         let config = QiwiWalletComponent.Configuration(style: style)
         let sut = QiwiWalletComponent(paymentMethod: method, context: context, configuration: config)
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         
         wait(for: .milliseconds(300))
         
@@ -131,7 +131,7 @@ class QiwiWalletComponentTests: XCTestCase {
     func testBigTitle() {
         let sut = QiwiWalletComponent(paymentMethod: method, context: context, configuration: QiwiWalletComponent.Configuration())
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         
         wait(for: .milliseconds(300))
         
@@ -166,7 +166,7 @@ class QiwiWalletComponentTests: XCTestCase {
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
         }
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))
         

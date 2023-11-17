@@ -35,9 +35,8 @@ class DropInActionsTests: XCTestCase {
                               configuration: config)
 
         let waitExpectation = expectation(description: "Expect SafariViewController to open")
-        let root = UIViewController()
-        UIApplication.shared.keyWindow?.rootViewController = root
-        root.present(sut.viewController, animated: true, completion: {
+        
+        presentOnRoot(sut.viewController) {
             let action = Action.redirect(RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data"))
             self.sut.handle(action)
 
@@ -45,7 +44,7 @@ class DropInActionsTests: XCTestCase {
                 XCTAssertNotNil(self.sut.viewController.adyen.topPresenter as? SFSafariViewController)
                 waitExpectation.fulfill()
             }
-        })
+        }
 
         waitForExpectations(timeout: 15, handler: nil)
     }
@@ -66,10 +65,7 @@ class DropInActionsTests: XCTestCase {
             waitExpectation.fulfill()
         }
 
-        let root = UIViewController()
-        UIApplication.shared.keyWindow?.rootViewController = root
-
-        root.present(sut.viewController, animated: true) {
+        presentOnRoot(sut.viewController) {
             self.sut.didOpenExternalApplication(component: RedirectComponent(context: Dummy.context))
         }
 

@@ -9,22 +9,6 @@ import XCTest
 extension XCTestCase {
 
     enum Available {
-        static var iOS12: Bool {
-            if #available(iOS 12.0, *) {
-                return true
-            } else {
-                return false
-            }
-        }
-
-        static var iOS13: Bool {
-            if #available(iOS 13.0, *) {
-                return true
-            } else {
-                return false
-            }
-        }
-
         static var iOS15: Bool {
             if #available(iOS 15.0, *) {
                 return true

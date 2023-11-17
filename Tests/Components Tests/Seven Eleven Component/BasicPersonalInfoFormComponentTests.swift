@@ -91,7 +91,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
                                        context: Dummy.context,
                                        configuration: config)
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         
         wait(for: .milliseconds(300))
         
@@ -182,7 +182,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
         }
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         
         wait(for: .milliseconds(300))
         
@@ -210,7 +210,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
                                        context: Dummy.context,
                                        configuration: BasicPersonalInfoFormComponent.Configuration())
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))
         
@@ -232,9 +232,8 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         let prefillSut = SevenElevenComponent(paymentMethod: paymentMethod,
                                               context: Dummy.context,
                                               configuration: config)
-        UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
-
-        wait(for: .milliseconds(300))
+        
+        setupRootViewController(prefillSut.viewController)
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -265,7 +264,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         let sut = SevenElevenComponent(paymentMethod: paymentMethod,
                                        context: Dummy.context,
                                        configuration: BasicPersonalInfoFormComponent.Configuration())
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))
 
