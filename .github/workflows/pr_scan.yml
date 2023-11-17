@@ -54,8 +54,6 @@ jobs:
         destination: 'name=iPhone 14,OS=17.0.1'
         should_update_snapshots: (if [ ${{ github.event.inputs.shouldUpdateSnapshots }} == "true" ]; then "UPDATE_SNAPSHOTS=TRUE"; else "");
 
-if [ "$flag" == "true" ]; then kubectl apply -f demo1 --record=true; else kubectl apply -f demo2 --record=true);
-
     - name: Code Coverage
       run: |
         slather coverage --sonarqube-xml ${params} ${project}
