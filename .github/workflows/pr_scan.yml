@@ -46,10 +46,10 @@ jobs:
     - name: Clean Build and Test
       run: |
         xcodebuild -version
-        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} ${shouldUpdateSnapshots} -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation ${shouldUpdateSnapshots}'
+        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
         scheme: 'AdyenUIHost'
         destination: 'name=iPhone 14,OS=17.0.1'
         shouldUpdateSnapshots: (if [ ${{ github.event.inputs.shouldUpdateSnapshots }} == "true" ]; then "UPDATE_SNAPSHOTS=TRUE"; else "");
