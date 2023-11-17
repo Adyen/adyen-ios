@@ -49,9 +49,12 @@ jobs:
         xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation UPDATE_SNAPSHOTS=${{ github.event.inputs.shouldUpdateSnapshots ? "TRUE" : "FALSE" }}'
+        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation ${should_update_snapshots}'
         scheme: 'AdyenUIHost'
         destination: 'name=iPhone 14,OS=17.0.1'
+        should_update_snapshots: (if [ ${{ github.event.inputs.shouldUpdateSnapshots }} == "true" ]; then "UPDATE_SNAPSHOTS=TRUE"; else "");
+
+if [ "$flag" == "true" ]; then kubectl apply -f demo1 --record=true; else kubectl apply -f demo2 --record=true);
 
     - name: Code Coverage
       run: |
