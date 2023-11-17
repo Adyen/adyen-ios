@@ -50,7 +50,7 @@ jobs:
     - name: Clean Build and Test
       run: |
         xcodebuild -version
-        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} ${shouldUpdateSnapshots} -destination "${destination}" | xcpretty --utf --color
+        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color
       env:
         project: 'Adyen.xcodeproj'
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation UPDATE_SNAPSHOTS=TRUE' #${{ github.event.inputs.shouldUpdateSnapshots }}
