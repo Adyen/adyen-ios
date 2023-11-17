@@ -2,11 +2,11 @@ name: Test Cocoapods Integration
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    # types: [opened, synchronize, reopened]
 
   push:
     branches:
-    - master
+    - main
     - develop
 
 jobs:

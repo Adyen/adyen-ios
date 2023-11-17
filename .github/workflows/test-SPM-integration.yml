@@ -2,11 +2,11 @@ name: Test Swift Package Manager Integration
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    # types: [opened, synchronize, reopened]
 
   push:
     branches:
-    - master
+    - main
     - develop
 
 jobs:
