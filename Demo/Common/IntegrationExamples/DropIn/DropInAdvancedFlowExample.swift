@@ -80,6 +80,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
             } else if let order = response.order,
                       let remainingAmount = order.remainingAmount,
                       remainingAmount.value > 0 {
+                ConfigurationConstants.current.value = remainingAmount.value
                 handle(order)
             } else {
                 finish(with: response)
