@@ -7,9 +7,9 @@
 import Adyen
 import AdyenNetworking
 
-enum ApiClientHelper {
+internal enum ApiClientHelper {
     
-    static func generateApiClient() -> APIClientProtocol {
+    internal static func generateApiClient() -> APIClientProtocol {
         guard CommandLine.arguments.contains("-UITests"),
               let paymentMethodsUrl = Bundle.main.url(forResource: "payment_methods_response", withExtension: "json"),
               let sessionsUrl = Bundle.main.url(forResource: "session_response", withExtension: "json"),
@@ -24,7 +24,7 @@ enum ApiClientHelper {
         return apiClient
     }
     
-    static func generatePalApiClient() -> APIClientProtocol {
+    internal static func generatePalApiClient() -> APIClientProtocol {
         let context = DemoAPIContext(environment: ConfigurationConstants.classicAPIEnvironment)
         return DefaultAPIClient(apiContext: context)
     }
