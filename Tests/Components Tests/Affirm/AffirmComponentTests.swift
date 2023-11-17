@@ -124,7 +124,7 @@ class AffirmComponentTests: XCTestCase {
             let details = data.paymentMethod as! AffirmDetails
             XCTAssertEqual(details.shopperName?.firstName, "Katrina")
             XCTAssertEqual(details.shopperName?.lastName, "Del Mar")
-            XCTAssertEqual(details.telephoneNumber, "+312025550146")
+            XCTAssertEqual(details.telephoneNumber, "+12025550146")
             XCTAssertEqual(details.emailAddress, "katrina@mail.com")
             XCTAssertEqual(details.billingAddress, expectedBillingAddress)
             XCTAssertEqual(details.deliveryAddress, expectedDeliveryAddress)
