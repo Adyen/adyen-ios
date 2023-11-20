@@ -118,7 +118,7 @@ class AffirmComponentUITests: XCTestCase {
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
         
         wait(for: .aMoment)
-        assertViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled")
+        assertViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled-address-set")
     }
 
     func testAffirmPrefilling_givenDeliveryAddressIsNotSet() throws {
@@ -159,7 +159,7 @@ class AffirmComponentUITests: XCTestCase {
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
         
         wait(for: .aMoment)
-        assertViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled")
+        assertViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled-address-not-set")
     }
 
     func testAffirm_givenNoShopperInformation_shouldNotPrefill() throws {
