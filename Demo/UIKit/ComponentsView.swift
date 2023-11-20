@@ -142,10 +142,10 @@ internal final class ComponentsView: UIView {
         contentView.addSubview(payButton)
         payButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            payButton.heightAnchor.constraint(equalToConstant: 48.0),
-            payButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16.0),
-            payButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16.0),
-            payButton.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor)
+            payButton.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+            payButton.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor),
+            payButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            payButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
         
         payButton.addTarget(self, action: #selector(onApplePayButtonTap), for: .touchUpInside)

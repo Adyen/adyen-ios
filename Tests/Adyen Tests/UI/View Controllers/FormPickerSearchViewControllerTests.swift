@@ -47,8 +47,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         }
         
         // Allow setup in viewDidLoad
-        UIApplication.shared.keyWindow?.rootViewController = pickerSearchViewController
-        wait(for: .milliseconds(300))
+        setupRootViewController(pickerSearchViewController)
         
         let searchViewController = pickerSearchViewController.viewControllers.first as! SearchViewController
         guard case let .showingResults(results) = searchViewController.viewModel.interfaceState else {
@@ -73,8 +72,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         ) { _ in }
         
         // Allow setup in viewDidLoad
-        UIApplication.shared.keyWindow?.rootViewController = pickerSearchViewController
-        wait(for: .milliseconds(300))
+        setupRootViewController(pickerSearchViewController)
         
         let searchViewController = pickerSearchViewController.viewControllers.first as! SearchViewController
         
@@ -112,8 +110,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         ) { _ in }
         
         // Allow setup in viewDidLoad
-        UIApplication.shared.keyWindow?.rootViewController = pickerSearchViewController
-        wait(for: .milliseconds(300))
+        setupRootViewController(pickerSearchViewController)
         
         let searchViewController = pickerSearchViewController.viewControllers.first as! SearchViewController
         

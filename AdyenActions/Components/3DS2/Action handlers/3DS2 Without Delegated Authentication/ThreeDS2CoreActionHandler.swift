@@ -108,7 +108,9 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                 completionHandler(.success(encodedFingerprint))
 
             case let .failure(error):
-                let encodedError = try AdyenCoder.encodeBase64(ThreeDS2Component.Fingerprint(threeDS2SDKError: error.base64Representation()))
+                let encodedError = try AdyenCoder.encodeBase64(ThreeDS2Component.Fingerprint(
+                    threeDS2SDKError: error.base64Representation())
+                )
                 completionHandler(.success(encodedError))
             }
         } catch {
