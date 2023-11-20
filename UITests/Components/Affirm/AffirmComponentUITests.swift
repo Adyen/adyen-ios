@@ -117,6 +117,7 @@ class AffirmComponentUITests: XCTestCase {
         let deliveryAddress = try XCTUnwrap(prefillSut.deliveryAddressItem?.value)
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
         
+        wait(for: .aMoment)
         assertViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled")
     }
 
@@ -157,6 +158,7 @@ class AffirmComponentUITests: XCTestCase {
         let deliveryAddress = try XCTUnwrap(prefillSut.deliveryAddressItem?.value)
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
         
+        wait(for: .aMoment)
         assertViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled")
     }
 
