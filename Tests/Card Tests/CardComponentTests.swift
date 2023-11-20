@@ -1242,9 +1242,9 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(logoItemView.isHidden)
 
         // valid card but still active. logos should be hidden
+        numberItem.isActive = true
         populate(textItemView: cardNumberItemView, with: Dummy.visaCard.number!)
-        wait(for: .seconds(5))
-        XCTAssertTrue(logoItemView.isHidden)
+        wait(until: logoItemView, at: \.isHidden, is: true)
 
         // with valid card and inactive, logos should hide
         numberItem.isActive = false
@@ -1252,9 +1252,10 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(logoItemView.isHidden)
 
         // invalid card and active/inactive numberitem, logos should be visible
-        populate(textItemView: cardNumberItemView, with: "1234")
         numberItem.isActive = true
+        populate(textItemView: cardNumberItemView, with: "1234")
         wait(until: logoItemView, at: \.isHidden, is: false)
+        
         numberItem.isActive = false
         wait(for: .aMoment)
         XCTAssertFalse(logoItemView.isHidden)
