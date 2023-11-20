@@ -12,10 +12,6 @@ import XCTest
 
 extension XCTestCase {
     
-    private var shouldUpdateSnapshots: Bool {
-        return ProcessInfo.processInfo.environment["UPDATE_SNAPSHOTS"] == "TRUE"
-    }
-    
     func assertViewHeirarchy(matching viewController: @autoclosure () throws -> UIViewController,
                              named name: String,
                              devices: [ViewImageConfig] = [.iPhone12],
@@ -27,7 +23,7 @@ extension XCTestCase {
             try SnapshotTesting.assertSnapshot(matching: viewController(),
                                                as: .recursiveDescription(on: device),
                                                named: name,
-                                               record: shouldUpdateSnapshots,
+                                               record: false,
                                                file: file,
                                                testName: "\(testName)-\(device.description)",
                                                line: line)
@@ -45,7 +41,7 @@ extension XCTestCase {
             try SnapshotTesting.assertSnapshot(matching: viewController(),
                                                as: .image(on: device, perceptualPrecision: 0.98),
                                                named: name,
-                                               record: shouldUpdateSnapshots,
+                                               record: false,
                                                file: file,
                                                testName: "\(testName)-\(device.description)",
                                                line: line)

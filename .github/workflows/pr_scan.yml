@@ -2,14 +2,6 @@ name: Scan PR
 
 on:
   workflow_dispatch:
-    inputs:
-      shouldUpdateSnapshots:
-        type: choice
-        description: 'Should the Snapshots be updated?'
-        required: true
-        options:
-        - "TRUE"
-        - "FALSE"
   pull_request:
     types: [opened, synchronize, reopened]
   push:
@@ -50,10 +42,10 @@ jobs:
     - name: Clean Build and Test
       run: |
         xcodebuild -version
-        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color
+        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation UPDATE_SNAPSHOTS=TRUE' #${{ github.event.inputs.shouldUpdateSnapshots }}
+        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
         scheme: 'AdyenUIHost'
         destination: 'name=iPhone 14,OS=17.0.1'
 
@@ -88,13 +80,3 @@ jobs:
         sonar-scanner -Dsonar.token=${{ secrets.SONAR_TOKEN }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v5
-      with:
-        delete-branch: true
-        branch: update-snapshots
-        commit-message: "`chore` Update Snapshots"
-        title: "Update Snapshots"
-        body: "Updating Snapshots to match the build settings"
-        token: ${{ secrets.GITHUB_TOKEN }}
