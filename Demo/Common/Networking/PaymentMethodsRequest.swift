@@ -24,6 +24,8 @@ internal struct PaymentMethodsRequest: APIRequest {
 
     internal var order: PartialPaymentOrder?
     
+    internal var amount: Amount
+    
     // MARK: - Encoding
     
     internal func encode(to encoder: Encoder) throws {
@@ -34,7 +36,7 @@ internal struct PaymentMethodsRequest: APIRequest {
         try container.encode(currentConfiguration.countryCode, forKey: .countryCode)
         try container.encode(ConfigurationConstants.shopperReference, forKey: .shopperReference)
         try container.encode(currentConfiguration.merchantAccount, forKey: .merchantAccount)
-        try container.encode(currentConfiguration.amount, forKey: .amount)
+        try container.encode(amount, forKey: .amount)
         try container.encodeIfPresent(order?.compactOrder, forKey: .order)
     }
     
