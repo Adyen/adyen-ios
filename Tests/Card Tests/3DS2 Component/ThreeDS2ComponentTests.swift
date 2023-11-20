@@ -577,7 +577,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             switch threeDS2Details {
             case let .challengeResult(result):
                 // Check if the result has transStatus Y, and delegatedAuthenticationSDKOutput":"onRegister-Return"
-                XCTAssertEqual(result.payload, "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES091dHB1dCI6Im9uUmVnaXN0ZXItUmV0dXJuIiwidHJhbnNTdGF0dXMiOiJZIiwiYXV0aG9yaXNhdGlvblRva2VuIjoiYXV0aFRva2VuIn0=")
+                XCTAssertEqual(result.payload, "eyJhdXRob3Jpc2F0aW9uVG9rZW4iOiJhdXRoVG9rZW4iLCJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES091dHB1dCI6Im9uUmVnaXN0ZXItUmV0dXJuIiwidHJhbnNTdGF0dXMiOiJZIn0=")
             default:
                 XCTFail()
             }

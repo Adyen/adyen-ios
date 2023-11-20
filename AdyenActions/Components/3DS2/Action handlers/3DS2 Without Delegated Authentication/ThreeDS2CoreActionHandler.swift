@@ -101,7 +101,8 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
             case let .success(transaction):
                 let encodedFingerprint = try AdyenCoder.encodeBase64(ThreeDS2Component.Fingerprint(
                     authenticationRequestParameters: transaction.authenticationParameters,
-                    delegatedAuthenticationSDKOutput: nil
+                    delegatedAuthenticationSDKOutput: nil,
+                    deleteDelegatedAuthenticationCredential: nil
                 ))
                 self.transaction = transaction
                 completionHandler(.success(encodedFingerprint))
@@ -203,7 +204,6 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         do {
             let threeDSResult = try ThreeDSResult(from: challengeResult,
                                                   delegatedAuthenticationSDKOutput: nil,
-                                                  deleteDelegatedAuthenticationCredentials: nil,
                                                   authorizationToken: authorizationToken,
                                                   threeDS2SDKError: nil)
 

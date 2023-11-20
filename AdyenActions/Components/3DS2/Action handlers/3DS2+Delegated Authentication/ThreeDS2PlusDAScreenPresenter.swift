@@ -21,15 +21,6 @@ internal enum ThreeDS2PlusDAScreenUserInput {
             return true
         }
     }
-    
-    internal var consentedToDeleteCredentials: Bool {
-        switch self {
-        case .approveDifferently, .noInput, .biometric:
-            return false
-        case .deleteDA:
-            return true
-        }
-    }
 }
 
 internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
