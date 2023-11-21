@@ -131,7 +131,7 @@ internal struct DemoAppSettings: Codable {
     private static let defaultsKey = "ConfigurationKey"
     
     internal var countryCode: String
-    internal var value: Int
+    internal let value: Int
     internal var currencyCode: String
     internal let apiVersion: Int
     internal let merchantAccount: String
