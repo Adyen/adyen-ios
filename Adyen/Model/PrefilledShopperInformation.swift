@@ -6,13 +6,13 @@
 
 import Foundation
 
-/// Describes a country phone extension.
+/// The telephone number in E.123 international notation.
 public struct PhoneNumber {
 
-    /// The phone number.
+    /// The phone number excluding calling code
     public let value: String
 
-    /// The phone extension.
+    /// The country calling code in E.123 international notation (ex. +22).
     public let callingCode: String?
 
     public init(value: String, callingCode: String?) {
