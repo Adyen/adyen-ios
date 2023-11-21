@@ -59,12 +59,12 @@ class AffirmComponentUITests: XCTestCase {
             XCTAssertEqual(details.deliveryAddress, expectedDeliveryAddress)
             
             sut.stopLoadingIfNeeded()
+            
+            self.wait(for: .aMoment)
+            self.assertViewControllerImage(matching: sut.viewController, named: "shopper-info-prefilled")
+            
             didSubmitExpectation.fulfill()
         }
-
-        sut.viewController.view.endEditing(true)
-        wait(for: .seconds(2))
-        assertViewControllerImage(matching: sut.viewController, named: "shopper-info-prefilled")
         
         let view: UIView = sut.viewController.view
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.payButton))
