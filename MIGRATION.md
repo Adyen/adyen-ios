@@ -1,7 +1,7 @@
 #  Migration Notes
 
 ## Upcoming release
-- `telephoneNumber` property of `PrefilledShopperInformation` has been deprecated. Use to `phoneNumber` property if needed. 
+- `telephoneNumber` property of `PrefilledShopperInformation` has been deprecated. Use to `phoneNumber` property if needed.
 
 ## 5.0.0
 - `AffirmComponent.style`, `AffirmComponent.shopperInformation` and `AffirmComponent.localizationParameters` moved into new `configuration` property `AffirmComponent.Configuration`;
