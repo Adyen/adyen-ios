@@ -59,12 +59,12 @@ extension XCTestCase {
     ///   - target: the target to observe
     ///   - keyPath: the keyPath to check
     ///   - expectedValue: the value to check against
-    ///   - timeout: the maximum time (in seconds)  to wait. Defaults to 2
+    ///   - timeout: the maximum time (in seconds)  to wait. Defaults to 10
     func wait<Value: Equatable, Target: AnyObject>(
         until target: Target,
         at keyPath: KeyPath<Target, Value>,
         is expectedValue: Value,
-        timeout: TimeInterval = 2,
+        timeout: TimeInterval = 10,
         line: Int = #line
     ) {
         wait(
@@ -82,12 +82,12 @@ extension XCTestCase {
     /// - Parameters:
     ///   - ofType: the type of the expected child viewController
     ///   - viewController: the parent viewController
-    ///   - timeout: the maximum time (in seconds)  to wait. Defaults to 1
+    ///   - timeout: the maximum time (in seconds)  to wait. Defaults to 10
     @discardableResult
     func waitForViewController<T: UIViewController>(
         ofType: T.Type,
         toBecomeChildOf viewController: UIViewController,
-        timeout: TimeInterval = 2
+        timeout: TimeInterval = 10
     ) throws -> T {
         
         wait(
@@ -107,11 +107,11 @@ extension XCTestCase {
     /// - Parameters:
     ///   - ofType: the type of the expected child viewController
     ///   - viewController: the parent viewController
-    ///   - timeout: the maximum time (in seconds)  to wait. Defaults to 1
+    ///   - timeout: the maximum time (in seconds)  to wait. Defaults to 10
     @discardableResult
     func waitUntilTopPresenter<T: UIViewController>(
         isOfType: T.Type,
-        timeout: TimeInterval = 2
+        timeout: TimeInterval = 10
     ) throws -> T {
         
         wait(

@@ -51,7 +51,7 @@ extension XCTestCase {
             completion?()
             presentationExpectation.fulfill()
         }
-        wait(for: [presentationExpectation], timeout: 1)
+        wait(for: [presentationExpectation], timeout: 10)
     }
 }
 

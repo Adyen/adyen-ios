@@ -41,7 +41,7 @@ extension XCTestCase {
             try SnapshotTesting.assertSnapshot(matching: viewController(),
                                                as: .image(on: device, perceptualPrecision: 0.98),
                                                named: name,
-                                               record: true,
+                                               record: false,
                                                file: file,
                                                testName: "\(testName)-\(device.description)",
                                                line: line)
