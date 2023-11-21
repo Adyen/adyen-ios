@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// The phone extension in E.123 international notation (ex. +22).
+/// Describes a country phone extension.
 public struct PhoneNumber {
 
     /// The phone number.
