@@ -166,7 +166,7 @@ class CardComponentTests: XCTestCase {
         let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button.titleLabel")
 
         /// Test card number field
-        XCTAssertEqual(cardNumberItemView?.backgroundColor, .blue)
+        wait(until: cardNumberItemView!, at: \.backgroundColor, is: .blue)
         XCTAssertEqual(cardNumberItemTitleLabel?.textColor, sut.viewController.view.tintColor)
         XCTAssertEqual(cardNumberItemTitleLabel?.backgroundColor, .blue)
         XCTAssertEqual(cardNumberItemTitleLabel?.textAlignment, .left)
