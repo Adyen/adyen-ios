@@ -120,13 +120,13 @@ final class BLIKComponentUITests: XCTestCase {
         try withAnimation(.paused) {
             // start loading
             submitButton.showsActivityIndicator = true
-            wait(for: .aMoment)
+            wait(until: submitButton, at: \.showsActivityIndicator, is: true)
             assertViewControllerImage(matching: sut.viewController, named: "initial_state")
 
             // stop loading
             sut.stopLoading()
             submitButton.showsActivityIndicator = false
-            wait(for: .aMoment)
+            wait(until: submitButton, at: \.showsActivityIndicator, is: false)
             assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
         }
     }

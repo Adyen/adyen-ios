@@ -9,21 +9,17 @@ import XCTest
 @testable import AdyenComponents
 
 class AffirmComponentUITests: XCTestCase {
-
-    private var paymentMethod: PaymentMethod!
+    
+    private var paymentMethod: PaymentMethod { AtomePaymentMethod(type: .atome, name: "Affirm") }
     private var context = Dummy.context
-    private var style: FormComponentStyle!
+    private var style: FormComponentStyle { FormComponentStyle() }
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        paymentMethod = AtomePaymentMethod(type: .atome, name: "Affirm")
-        style = FormComponentStyle()
         BrowserInfo.cachedUserAgent = "some_value"
     }
 
     override func tearDownWithError() throws {
-        paymentMethod = nil
-        style = nil
         BrowserInfo.cachedUserAgent = nil
         try super.tearDownWithError()
     }
@@ -67,7 +63,7 @@ class AffirmComponentUITests: XCTestCase {
         }
 
         sut.viewController.view.endEditing(true)
-        wait(for: .seconds(1))
+        wait(for: .seconds(2))
         assertViewControllerImage(matching: sut.viewController, named: "shopper-info-prefilled")
         
         let view: UIView = sut.viewController.view
@@ -119,7 +115,7 @@ class AffirmComponentUITests: XCTestCase {
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
         
         prefillSut.viewController.view.endEditing(true)
-        wait(for: .seconds(1))
+        wait(for: .seconds(2))
         assertViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled-address-set")
     }
 
@@ -161,7 +157,7 @@ class AffirmComponentUITests: XCTestCase {
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
         
         prefillSut.viewController.view.endEditing(true)
-        wait(for: .seconds(1))
+        wait(for: .seconds(2))
         assertViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled-address-not-set")
     }
 
@@ -198,7 +194,7 @@ class AffirmComponentUITests: XCTestCase {
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
         
         sut.viewController.view.endEditing(true)
-        wait(for: .seconds(1))
+        wait(for: .seconds(2))
         assertViewControllerImage(matching: sut.viewController, named: "shopper-info-not-filled")
     }
 

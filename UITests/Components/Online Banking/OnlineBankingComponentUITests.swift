@@ -106,11 +106,13 @@ class OnlineBankingComponentUITests: XCTestCase {
         try withAnimation(.paused) {
             // start loading
             button.showsActivityIndicator = true
+            wait(until: button, at: \.showsActivityIndicator, is: true)
             assertViewControllerImage(matching: sut.viewController, named: "initial_state")
 
             // stop loading
             sut.stopLoading()
             button.showsActivityIndicator = false
+            wait(until: button, at: \.showsActivityIndicator, is: false)
             assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
         }
     }
