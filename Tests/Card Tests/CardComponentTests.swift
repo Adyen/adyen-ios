@@ -157,8 +157,8 @@ class CardComponentTests: XCTestCase {
 
         /// Test card number field
         wait(until: cardNumberItemView!, at: \.backgroundColor, is: UIColor.blue)
-        XCTAssertEqual(cardNumberItemTitleLabel?.textColor, sut.viewController.view.tintColor)
-        XCTAssertEqual(cardNumberItemTitleLabel?.backgroundColor, .blue)
+        wait(until: cardNumberItemTitleLabel!, at: \.textColor, is: sut.viewController.view.tintColor)
+        wait(until: cardNumberItemTitleLabel!, at: \.backgroundColor, is: UIColor.blue)
         XCTAssertEqual(cardNumberItemTitleLabel?.textAlignment, .left)
         XCTAssertEqual(cardNumberItemTitleLabel?.font, .systemFont(ofSize: 18))
         XCTAssertEqual(cardNumberItemTextField?.backgroundColor, .blue)
