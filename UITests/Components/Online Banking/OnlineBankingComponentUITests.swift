@@ -86,11 +86,11 @@ class OnlineBankingComponentUITests: XCTestCase {
             sut.stopLoadingIfNeeded()
             didContnueExpectation.fulfill()
         }
-        wait(for: .milliseconds(300))
+        wait(for: .aMoment)
         assertViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
     }
 
-    func testContinueButtonLoading() {
+    func testContinueButtonLoading() throws {
         // Given
         let config = OnlineBankingComponent.Configuration(style: style)
         let sut = OnlineBankingComponent(paymentMethod: paymentMethod,
@@ -99,16 +99,20 @@ class OnlineBankingComponentUITests: XCTestCase {
 
         UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
        
-        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
+        let button: SubmitButton = try XCTUnwrap(
+            sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
+        )
 
-        // start loading
-        button.showsActivityIndicator = true
-        assertViewControllerImage(matching: sut.viewController, named: "initial_state")
+        try withAnimation(.paused) {
+            // start loading
+            button.showsActivityIndicator = true
+            assertViewControllerImage(matching: sut.viewController, named: "initial_state")
 
-        // stop loading
-        sut.stopLoading()
-        button.showsActivityIndicator = false
-        assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
+            // stop loading
+            sut.stopLoading()
+            button.showsActivityIndicator = false
+            assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
+        }
     }
 
 }

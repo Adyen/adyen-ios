@@ -126,6 +126,7 @@ cp "../Tests/DropIn Tests/DropInTests.swift" Tests/DropInTests.swift
 cp "../Tests/DropIn Tests/DropInDelegateMock.swift" Tests/DropInDelegateMock.swift
 cp "../Tests/Card Tests/Mocks/OpenExternalAppDetector+Mock.swift" Tests/OpenExternalAppDetector+Mock.swift
 cp "../Tests/Card Tests/3DS2 Component/ThreeDS2PlusDACoreActionHandlerTests.swift" Tests/ThreeDS2PlusDACoreActionHandlerTests.swift
+cp "../Tests/Card Tests/3DS2 Component/ThreeDS2PlusDACoreActionHandlerTests+Constants.swift" Tests/ThreeDS2PlusDACoreActionHandlerTests+Constants.swift
 cp "../Tests/Card Tests/3DS2 Component/AnyADYServiceMock.swift" Tests/AnyADYServiceMock.swift
 cp "../Tests/Card Tests/3DS2 Component/AuthenticationServiceMock.swift" Tests/AuthenticationServiceMock.swift
 cp "../Tests/Card Tests/3DS2 Component/ThreeDSResultExtension.swift" Tests/ThreeDSResultExtension.swift

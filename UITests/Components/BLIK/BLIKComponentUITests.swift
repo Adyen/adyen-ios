@@ -106,7 +106,7 @@ final class BLIKComponentUITests: XCTestCase {
         wait(for: [delegateExpectation], timeout: 30)
     }
 
-    func testSubmitButtonLoading() {
+    func testSubmitButtonLoading() throws {
         let config = BLIKComponent.Configuration(style: style)
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
@@ -117,15 +117,17 @@ final class BLIKComponentUITests: XCTestCase {
         
         let submitButton: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
 
-        // start loading
-        submitButton.showsActivityIndicator = true
-        wait(for: .aMoment)
-        assertViewControllerImage(matching: sut.viewController, named: "initial_state")
+        try withAnimation(.paused) {
+            // start loading
+            submitButton.showsActivityIndicator = true
+            wait(for: .aMoment)
+            assertViewControllerImage(matching: sut.viewController, named: "initial_state")
 
-        // stop loading
-        sut.stopLoading()
-        submitButton.showsActivityIndicator = false
-        wait(for: .aMoment)
-        assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
+            // stop loading
+            sut.stopLoading()
+            submitButton.showsActivityIndicator = false
+            wait(for: .aMoment)
+            assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
+        }
     }
 }
