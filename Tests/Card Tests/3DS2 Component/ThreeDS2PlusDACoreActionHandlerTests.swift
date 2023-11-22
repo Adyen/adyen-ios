@@ -215,17 +215,20 @@ import XCTest
                         XCTAssertEqual(json["transStatus"] as? String, expectedJson["transStatus"] as? String)
                         XCTAssertEqual(json["authorisationToken"] as? String, expectedJson["authorisationToken"] as? String)
                         
-                        let registrationOutput = try JSONDecoder().decode(
-                            RegistrationOutput.self,
-                            from: XCTUnwrap(json["delegatedAuthenticationSDKOutput"] as? String).dataFromBase64URL()
+                        let delegatedAuthenticationSDKOutput = try XCTUnwrap(JSONSerialization.jsonObject(
+                            with: XCTUnwrap(json["delegatedAuthenticationSDKOutput"] as? String).dataFromBase64URL(),
+                            options: []) as? [String: Any]
                         )
-                        
-                        let expectedRegistrationOutput = try JSONDecoder().decode(
-                            RegistrationOutput.self,
-                            from: XCTUnwrap(expectedJson["delegatedAuthenticationSDKOutput"] as? String).dataFromBase64URL()
+
+                        let expectedDelegatedAuthenticationSDKOutput = try XCTUnwrap(JSONSerialization.jsonObject(
+                            with: XCTUnwrap(expectedJson["delegatedAuthenticationSDKOutput"] as? String).dataFromBase64URL(),
+                            options: []) as? [String: Any]
                         )
-                        
-                        XCTAssertEqual(registrationOutput, expectedRegistrationOutput)
+
+                        XCTAssertEqual(
+                            NSDictionary(dictionary: delegatedAuthenticationSDKOutput),
+                            NSDictionary(dictionary: expectedDelegatedAuthenticationSDKOutput)
+                        )
                     } catch {
                         XCTFail(error.localizedDescription)
                     }
@@ -357,15 +360,6 @@ import XCTest
             waitForExpectations(timeout: 2, handler: nil)
         }
 
-    }
-
-    extension RegistrationOutput: Equatable {
-        public static func == (lhs: RegistrationOutput, rhs: RegistrationOutput) -> Bool {
-            lhs.attestationObject == rhs.attestationObject &&
-            lhs.device == rhs.device &&
-            lhs.relyingPartyIdentifier == rhs.relyingPartyIdentifier &&
-            lhs.version == rhs.version
-        }
     }
 
 #endif
