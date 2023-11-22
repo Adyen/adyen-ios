@@ -28,6 +28,7 @@ DerivedData
 
 # Carthage
 Carthage/
+Cartfile.resolved
 
 #Internal
 Internal/
