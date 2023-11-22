@@ -374,7 +374,7 @@ class CardComponentTests: XCTestCase {
 
     }
 
-    func testTintColorCustomization() {
+    func testTintColorCustomization() throws {
         
         var configuration = cardConfiguration
         
@@ -392,15 +392,20 @@ class CardComponentTests: XCTestCase {
 
         setupRootViewController(component.viewController)
 
-        let switchView: UISwitch! = component.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch")
-        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
-        XCTAssertEqual(securityCodeItemView!.titleLabel.textColor!, .gray)
+        let switchView: UISwitch = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch"))
+        let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
         
-        self.focus(textItemView: securityCodeItemView!)
+        XCTAssertEqual(securityCodeItemView.titleLabel.textColor, .gray)
         
-        wait(until: switchView, at: \.onTintColor, is: .systemYellow)
-        wait(until: securityCodeItemView!.titleLabel, at: \.textColor, is: .systemYellow)
-        wait(until: securityCodeItemView!.separatorView, at: \.backgroundColor, is: .systemYellow)
+        UIView.performWithoutAnimation {
+            focus(textItemView: securityCodeItemView)
+        }
+        
+        try withAnimation(.paused) {
+            self.wait(until: switchView, at: \.onTintColor, is: .systemYellow)
+            self.wait(until: securityCodeItemView.titleLabel, at: \.textColor, is: .systemYellow)
+            self.wait(until: securityCodeItemView.separatorView, at: \.backgroundColor, is: .systemYellow)
+        }
     }
 
     func testSuccessTintColorCustomization() throws {

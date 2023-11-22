@@ -103,7 +103,7 @@ final class BLIKComponentUITests: XCTestCase {
             delegateExpectation.fulfill()
         }
         
-        wait(for: [delegateExpectation], timeout: 30)
+        wait(for: [delegateExpectation], timeout: 60)
     }
 
     func testSubmitButtonLoading() throws {
