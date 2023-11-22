@@ -113,8 +113,6 @@ final class BoletoComponentUITests: XCTestCase {
             
             dummyExpectation.fulfill()
         }
-        
-        wait(for: .aMoment)
 
         submitButton.sendActions(for: .touchUpInside)
         
@@ -130,7 +128,6 @@ final class BoletoComponentUITests: XCTestCase {
                                   context: context,
                                   configuration: mockConfiguration)
         sut.delegate = mockDelegate
-        let dummyExpectation = XCTestExpectation(description: "Dummy Expectation")
 
         let submitButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(by: "payButtonItem.button"))
         submitButton.sendActions(for: .touchUpInside)

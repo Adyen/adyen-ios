@@ -73,9 +73,8 @@ class OnlineBankingComponentUITests: XCTestCase {
 
         // Then
         let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
-        button.sendActions(for: .touchUpInside)
 
-        let didContnueExpectation = XCTestExpectation(description: "Dummy Expectation")
+        let didContinueExpectation = XCTestExpectation(description: "Dummy Expectation")
 
         delegate.onDidSubmit = { data, component in
             // Assert
@@ -84,10 +83,15 @@ class OnlineBankingComponentUITests: XCTestCase {
             XCTAssertEqual(details.type, .onlineBankingCZ)
             XCTAssertEqual(details.issuer, "jp")
             sut.stopLoadingIfNeeded()
-            didContnueExpectation.fulfill()
+            
+            self.wait(for: .aMoment)
+            self.assertViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
+            didContinueExpectation.fulfill()
         }
-        wait(for: .aMoment)
-        assertViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
+        
+        button.sendActions(for: .touchUpInside)
+        
+        wait(for: [didContinueExpectation], timeout: 5)
     }
 
     func testContinueButtonLoading() throws {

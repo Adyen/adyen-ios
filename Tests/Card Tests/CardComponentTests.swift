@@ -299,22 +299,22 @@ class CardComponentTests: XCTestCase {
         let expectationCardType = XCTestExpectation(description: "CardType Expectation")
         let expectationLastFour = XCTestExpectation(description: "LastFour Expectation")
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
-            XCTAssertEqual(value, "67034444")
+            XCTAssertEqual(value, "371449")
             expectationBin.fulfill()
         }, onCardBrandChange: { value in
             XCTAssertEqual(value, [CardBrand(type: .americanExpress)])
             expectationCardType.fulfill()
         }, onSubmitLastFour: { lastFour, finalBin in
-            XCTAssertEqual(lastFour, "4449")
-            XCTAssertEqual(finalBin, "670344")
+            XCTAssertEqual(lastFour, "8431")
+            XCTAssertEqual(finalBin, "371449")
             expectationLastFour.fulfill()
         })
         sut.cardComponentDelegate = delegateMock
         
-        self.fillCard(on: sut.viewController.view, with: Dummy.bancontactCard)
+        self.fillCard(on: sut.viewController.view, with: Dummy.amexCard)
         self.tapSubmitButton(on: sut.viewController.view)
 
-        wait(for: [expectationBin, expectationCardType], timeout: 10)
+        wait(for: [expectationBin, expectationCardType, expectationLastFour], timeout: 10)
     }
     
     func testAddressLookupPrefill() throws {
