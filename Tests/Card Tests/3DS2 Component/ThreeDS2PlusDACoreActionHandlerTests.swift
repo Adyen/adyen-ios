@@ -177,7 +177,7 @@ import XCTest
             let authenticationServiceMock = AuthenticationServiceMock()
         
             authenticationServiceMock.onRegister = { _ in
-                try JSONDecoder().decode(RegistrationOutput.self, from: self.expectedSDKRegistrationOutput.dataFromBase64URL())
+                self.expectedSDKRegistrationOutput
             }
         
             let expectedResult = try! ThreeDSResult(
