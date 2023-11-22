@@ -376,7 +376,7 @@ class CardComponentTests: XCTestCase {
 
     func testTintColorCustomization() {
         
-        var configuration = CardComponent.Configuration()
+        var configuration = cardConfiguration
         
         configuration.style = {
             var style = FormComponentStyle(tintColor: .systemYellow)
