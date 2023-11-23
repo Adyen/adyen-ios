@@ -27,12 +27,17 @@ public final class FormPhoneNumberItem: FormTextItem {
     /// - Parameter selectableValues: The list of values to select from.
     /// - Parameter style: The `FormTextItemStyle` UI style.
     /// - Parameter localizationParameters: Parameters for custom localization, leave it nil to use the default parameters.
-    public init(selectableValues: [PhoneExtensionPickerItem],
+    public init(phoneNumber: PhoneNumber?,
+                selectableValues: [PhoneExtensionPickerItem],
                 style: FormTextItemStyle,
                 localizationParameters: LocalizationParameters? = nil) {
-        phonePrefixItem = FormPhoneExtensionPickerItem(selectableValues: selectableValues, style: style)
+        // swiftlint:disable:next line_length
+        let preselectedValue = selectableValues.first(where: { $0.element.value == phoneNumber?.callingCode }) ?? selectableValues.first(where: { $0.identifier == Locale.current.regionCode }) ?? selectableValues[0]
+
+        phonePrefixItem = FormPhoneExtensionPickerItem(preselectedValue: preselectedValue, selectableValues: selectableValues, style: style)
         super.init(style: style)
         phonePrefixItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneExtensionPickerItem")
+        value = phoneNumber?.value ?? ""
 
         title = localizedString(.phoneNumberTitle, localizationParameters)
         placeholder = localizedString(.phoneNumberPlaceholder, localizationParameters)

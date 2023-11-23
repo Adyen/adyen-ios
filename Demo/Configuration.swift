@@ -45,13 +45,13 @@ internal enum ConfigurationConstants {
         return try! APIContext(environment: componentsEnvironment, clientKey: "local_DUMMYKEYFORTESTING")
     }
 
-    static let clientKey = "{YOUR_CLIENT_KEY}"
+    static let clientKey = "test_L6HTEOAXQBCZJHKNU4NLN6EI7IE6VRRW"
 
-    static let demoServerAPIKey = "{YOUR_DEMO_SERVER_API_KEY}"
+    static let demoServerAPIKey = "AQEthmfxKo7MbhFLw0m/n3Q5qf3VfI5eGbBFVXVXyGHNhisxSHQZLQhnJZKhUXeVEMFdWw2+5HzctViMSCJMYAc=-oIzzffq7wjRWqcRFe1bsItPks2i1MSog34dGaknhoUE=-VzDtyMSa2eBX72_k"
 
-    static let merchantAccount = "{YOUR_MERCHANT_ACCOUNT}"
+    static let merchantAccount = "TestMerchantCheckout"
 
-    static let appleTeamIdentifier = "{YOUR_APPLE_DEVELOPMENT_TEAM_ID}"
+    static let appleTeamIdentifier = "B2NYSS5932"
 
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
 
@@ -150,8 +150,8 @@ internal struct DemoAppSettings: Codable {
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [2, 3, 4], includesRevolving: true)
         let visaInstallmentOptions = InstallmentOptions(monthValues: [3, 4, 6], includesRevolving: false)
         return InstallmentConfiguration(cardBasedOptions: [.visa: visaInstallmentOptions],
-                                                            defaultOptions: defaultInstallmentOptions,
-                                                            showInstallmentAmount: cardSettings.showsInstallmentAmount)
+                                        defaultOptions: defaultInstallmentOptions,
+                                        showInstallmentAmount: cardSettings.showsInstallmentAmount)
     }
     
     internal static let defaultConfiguration = DemoAppSettings(

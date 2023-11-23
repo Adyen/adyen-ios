@@ -37,7 +37,7 @@ class AffirmComponentUITests: XCTestCase {
                                                                                        lastName: "Del Mar"
                                                                                    ),
                                                                                    emailAddress: "katrina@mail.com",
-                                                                                   telephoneNumber: "2025550146",
+                                                                                   phoneNumber: PhoneNumber(value: "2025550146", callingCode: "+1"),
                                                                                    billingAddress: expectedBillingAddress,
                                                                                    deliveryAddress: expectedDeliveryAddress
                                                                                )))
@@ -53,11 +53,11 @@ class AffirmComponentUITests: XCTestCase {
             let details = data.paymentMethod as! AffirmDetails
             XCTAssertEqual(details.shopperName?.firstName, "Katrina")
             XCTAssertEqual(details.shopperName?.lastName, "Del Mar")
-            XCTAssertEqual(details.telephoneNumber, "2025550146")
+            XCTAssertEqual(details.telephoneNumber, "+12025550146")
             XCTAssertEqual(details.emailAddress, "katrina@mail.com")
             XCTAssertEqual(details.billingAddress, expectedBillingAddress)
             XCTAssertEqual(details.deliveryAddress, expectedDeliveryAddress)
-            
+
             sut.stopLoadingIfNeeded()
             
             self.wait(for: .aMoment)
@@ -65,11 +65,11 @@ class AffirmComponentUITests: XCTestCase {
             
             didSubmitExpectation.fulfill()
         }
-        
+
         let view: UIView = sut.viewController.view
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.payButton))
         submitButton.sendActions(for: .touchUpInside)
-        
+
         XCTAssertNotNil(view.findView(by: "AdyenComponents.AffirmComponent.addressItem"))
         XCTAssertNotNil(view.findView(by: "AdyenComponents.AffirmComponent.addressItem.title"))
 
@@ -96,7 +96,7 @@ class AffirmComponentUITests: XCTestCase {
         let lastName = try XCTUnwrap(prefillSut.lastNameItem?.value)
         XCTAssertEqual(expectedLastName, lastName)
 
-        let expectedPhoneNumber = try XCTUnwrap(shopperInformation.telephoneNumber)
+        let expectedPhoneNumber = try XCTUnwrap(shopperInformation.phoneNumber?.value)
         let phoneNumber = try XCTUnwrap(prefillSut.phoneItem?.value)
         XCTAssertEqual(expectedPhoneNumber, phoneNumber)
 
@@ -117,6 +117,7 @@ class AffirmComponentUITests: XCTestCase {
         prefillSut.viewController.view.endEditing(true)
         wait(for: .seconds(2))
         assertViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled-address-set")
+
     }
 
     func testAffirmPrefilling_givenDeliveryAddressIsNotSet() throws {
@@ -138,7 +139,7 @@ class AffirmComponentUITests: XCTestCase {
         let lastName = try XCTUnwrap(prefillSut.lastNameItem?.value)
         XCTAssertEqual(expectedLastName, lastName)
 
-        let expectedPhoneNumber = try XCTUnwrap(shopperInformation.telephoneNumber)
+        let expectedPhoneNumber = try XCTUnwrap(shopperInformation.phoneNumber?.value)
         let phoneNumber = try XCTUnwrap(prefillSut.phoneItem?.value)
         XCTAssertEqual(expectedPhoneNumber, phoneNumber)
 
@@ -195,6 +196,7 @@ class AffirmComponentUITests: XCTestCase {
         
         sut.viewController.view.endEditing(true)
         wait(for: .seconds(2))
+
         assertViewControllerImage(matching: sut.viewController, named: "shopper-info-not-filled")
     }
 
@@ -216,7 +218,7 @@ class AffirmComponentUITests: XCTestCase {
         let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
         let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
                                                              emailAddress: "katrina@mail.com",
-                                                             telephoneNumber: "1234567890",
+                                                             phoneNumber: PhoneNumber(value: "123456677", callingCode: "+1"),
                                                              billingAddress: billingAddress,
                                                              deliveryAddress: deliveryAddress,
                                                              socialSecurityNumber: "78542134370")
@@ -227,7 +229,7 @@ class AffirmComponentUITests: XCTestCase {
         let billingAddress = PostalAddressMocks.newYorkPostalAddress
         let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
                                                              emailAddress: "katrina@mail.com",
-                                                             telephoneNumber: "1234567890",
+                                                             phoneNumber: PhoneNumber(value: "123456677", callingCode: "+1"),
                                                              billingAddress: billingAddress,
                                                              deliveryAddress: nil,
                                                              socialSecurityNumber: "78542134370")
