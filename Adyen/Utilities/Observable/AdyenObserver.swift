@@ -160,8 +160,6 @@ public extension AdyenObserver {
 private enum AssociatedKeys {
     
     /// The observation manager associated with the object.
-    ///
-    /// Using `Void?` as described [here](https://github.com/atrick/swift-evolution/blob/diagnose-implicit-raw-bitwise/proposals/nnnn-implicit-raw-bitwise-conversion.md#workarounds-for-common-cases)
     public static var observationManager: Void?
     
 }
