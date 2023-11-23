@@ -397,9 +397,9 @@ class CardComponentTests: XCTestCase {
         
         XCTAssertEqual(securityCodeItemView.titleLabel.textColor, .gray)
         
-        UIView.performWithoutAnimation {
-            focus(textItemView: securityCodeItemView)
-        }
+        focus(textItemView: securityCodeItemView)
+        
+        self.wait(until: securityCodeItemView, at: \.animations.count, is: 0)
         
         try withAnimation(.paused) {
             self.wait(until: switchView, at: \.onTintColor, is: .systemYellow)
