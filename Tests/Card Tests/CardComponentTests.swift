@@ -397,15 +397,13 @@ class CardComponentTests: XCTestCase {
         
         XCTAssertEqual(securityCodeItemView.titleLabel.textColor, .gray)
         
-        focus(textItemView: securityCodeItemView)
+        wait(for: .milliseconds(300))
+        self.focus(textItemView: securityCodeItemView)
+        wait(for: .milliseconds(300))
         
-        self.wait(until: securityCodeItemView, at: \.animations.count, is: 0)
-        
-        try withAnimation(.paused) {
-            self.wait(until: switchView, at: \.onTintColor, is: .systemYellow)
-            self.wait(until: securityCodeItemView.titleLabel, at: \.textColor, is: .systemYellow)
-            self.wait(until: securityCodeItemView.separatorView, at: \.backgroundColor, is: .systemYellow)
-        }
+        self.wait(until: switchView, at: \.onTintColor, is: .systemYellow)
+        self.wait(until: securityCodeItemView.titleLabel, at: \.textColor, is: .systemYellow)
+        self.wait(until: securityCodeItemView.separatorView, at: \.backgroundColor, is: .systemYellow)
     }
 
     func testSuccessTintColorCustomization() throws {

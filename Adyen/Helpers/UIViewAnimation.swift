@@ -134,7 +134,7 @@ extension AdyenScope where Base: UIView {
 }
 
 @_spi(AdyenInternal)
-internal extension UIView {
+private extension UIView {
 
     var animations: [AnimationContext] {
         get {
