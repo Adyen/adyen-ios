@@ -92,7 +92,7 @@ class AtomeComponentUITests: XCTestCase {
             let details = data.paymentMethod as! AtomeDetails
             XCTAssertEqual(details.shopperName?.firstName, "Katrina")
             XCTAssertEqual(details.shopperName?.lastName, "Del Mar")
-            XCTAssertEqual(details.telephoneNumber, "80002018")
+            XCTAssertEqual(details.telephoneNumber, "+11234567")
             XCTAssertEqual(details.billingAddress, expectedBillingAddress)
             sut.stopLoadingIfNeeded()
             didSubmitExpectation.fulfill()
@@ -137,7 +137,7 @@ class AtomeComponentUITests: XCTestCase {
         let billingAddress = PostalAddressMocks.singaporePostalAddress
         let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina",
                                                                                       lastName: "Del Mar"),
-                                                             telephoneNumber: "80002018",
+                                                             phoneNumber: PhoneNumber(value: "1234567", callingCode: "+1") ,
                                                              billingAddress: billingAddress)
         return shopperInformation
     }

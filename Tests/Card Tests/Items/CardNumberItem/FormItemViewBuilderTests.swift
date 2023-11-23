@@ -12,7 +12,7 @@ class FormItemViewBuilderTests: XCTestCase {
     func testFormPhoneExtensionPickerItemView() {
         let selectableValues = [PhoneExtensionPickerItem(identifier: "test_id",
                                                          element: .init(value: "test title", countryCode: "test extension"))]
-        let item = FormPhoneExtensionPickerItem(selectableValues: selectableValues, style: FormTextItemStyle())
+        let item = FormPhoneExtensionPickerItem(preselectedValue: selectableValues[0], selectableValues: selectableValues, style: FormTextItemStyle())
         let view = item.build(with: FormItemViewBuilder())
         
         XCTAssertNotNil(view as? FormPhoneExtensionPickerItemView)
@@ -42,7 +42,7 @@ class FormItemViewBuilderTests: XCTestCase {
     
     func testFormPhoneNumberItemView() {
         let selectableValues = [PhoneExtensionPickerItem(identifier: "test_id", element: .init(value: "test title", countryCode: "test extension"))]
-        let item = FormPhoneNumberItem(selectableValues: selectableValues, style: FormTextItemStyle())
+        let item = FormPhoneNumberItem(phoneNumber: nil, selectableValues: selectableValues, style: FormTextItemStyle())
         let view = item.build(with: FormItemViewBuilder())
         
         XCTAssertNotNil(view as? FormPhoneNumberItemView)

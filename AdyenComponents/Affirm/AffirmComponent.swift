@@ -101,7 +101,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent {
         guard let firstName = firstNameItem?.value,
               let lastName = lastNameItem?.value,
               let emailAddress = emailItem?.value,
-              let telephoneNumber = phoneItem?.value,
+              let telephoneNumber = phoneItem?.phoneNumber,
               let billingAddress = addressItem?.value,
               let deliveryAddress = deliveryAddressItem?.value else {
             throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
