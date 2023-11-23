@@ -403,7 +403,7 @@ class CardComponentTests: XCTestCase {
         
         self.wait(until: switchView, at: \.onTintColor, is: .systemYellow)
         self.wait(until: securityCodeItemView.titleLabel, at: \.textColor, is: .systemYellow)
-        self.wait(until: securityCodeItemView.separatorView, at: \.backgroundColor!.cgColor, is: .systemYellow.cgColor)
+        self.wait(until: securityCodeItemView.separatorView, at: \.backgroundColor!.cgColor, is: UIColor.systemYellow.cgColor)
     }
 
     func testSuccessTintColorCustomization() throws {
