@@ -113,17 +113,16 @@ public final class DropInComponent: NSObject,
         guard let orderData = order.orderData else { throw PartialPaymentError.missingOrderData }
         let request = OrderStatusRequest(orderData: orderData)
         apiClient.perform(request) { [weak self] result in
-            self?.handle(result, order)
+            guard let self else { return }
+            
+            switch result {
+            case let .success(orderResponse):
+                self.paymentMethods = paymentMethods
+                self.handle(orderResponse, order)
+            case let .failure(error):
+                self.delegate?.didFail(with: error, from: self)
+            }
         }
-    }
-
-    private func handle(_ result: Result<OrderStatusResponse, Error>,
-                        _ order: PartialPaymentOrder) {
-        result.handle(success: {
-            self.handle($0, order)
-        }, failure: {
-            self.delegate?.didFail(with: $0, from: self)
-        })
     }
 
     private func handle(_ response: OrderStatusResponse, _ order: PartialPaymentOrder) {
