@@ -62,10 +62,6 @@ final class BLIKComponentUITests: XCTestCase {
 
         let config = BLIKComponent.Configuration(style: style)
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
-
-        setupRootViewController(sut.viewController)
-        wait(for: .seconds(1))
-        
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
@@ -82,8 +78,6 @@ final class BLIKComponentUITests: XCTestCase {
 
         let blikCodeView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
         self.populate(textItemView: blikCodeView, with: "123456")
-
-        submitButton.sendActions(for: .touchUpInside)
 
         let delegateExpectation = XCTestExpectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
 
@@ -102,6 +96,8 @@ final class BLIKComponentUITests: XCTestCase {
             
             delegateExpectation.fulfill()
         }
+        
+        submitButton.sendActions(for: .touchUpInside)
         
         wait(for: [delegateExpectation], timeout: 60)
     }
