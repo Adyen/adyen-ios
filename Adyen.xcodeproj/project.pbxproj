@@ -150,8 +150,6 @@
 		81825CB92AC59C3300F91912 /* UIView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CB72AC59C3300F91912 /* UIView+Search.swift */; };
 		81825CBB2AC59C4000F91912 /* UIViewController+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CBA2AC59C4000F91912 /* UIViewController+Search.swift */; };
 		81825CBC2AC59C4000F91912 /* UIViewController+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CBA2AC59C4000F91912 /* UIViewController+Search.swift */; };
-		81825CBE2AC59C4B00F91912 /* XCTestCase+Available.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CBD2AC59C4B00F91912 /* XCTestCase+Available.swift */; };
-		81825CBF2AC59C4B00F91912 /* XCTestCase+Available.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CBD2AC59C4B00F91912 /* XCTestCase+Available.swift */; };
 		81825CC12AC59C6400F91912 /* XCTestCase+RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CC02AC59C6400F91912 /* XCTestCase+RootViewController.swift */; };
 		81825CC22AC59C6400F91912 /* XCTestCase+RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CC02AC59C6400F91912 /* XCTestCase+RootViewController.swift */; };
 		81825CC42AC59C6C00F91912 /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CC32AC59C6C00F91912 /* XCTestCase+Wait.swift */; };
@@ -1366,7 +1364,6 @@
 		814276612A7145F50081E896 /* AddressInputFormViewController+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressInputFormViewController+ViewModel.swift"; sourceTree = "<group>"; };
 		81825CB72AC59C3300F91912 /* UIView+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Search.swift"; sourceTree = "<group>"; };
 		81825CBA2AC59C4000F91912 /* UIViewController+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Search.swift"; sourceTree = "<group>"; };
-		81825CBD2AC59C4B00F91912 /* XCTestCase+Available.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Available.swift"; sourceTree = "<group>"; };
 		81825CC02AC59C6400F91912 /* XCTestCase+RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+RootViewController.swift"; sourceTree = "<group>"; };
 		81825CC32AC59C6C00F91912 /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
 		81896E842A4DB5F300C532CA /* SearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerTests.swift; sourceTree = "<group>"; };
@@ -2905,7 +2902,6 @@
 			children = (
 				81825CB72AC59C3300F91912 /* UIView+Search.swift */,
 				81825CBA2AC59C4000F91912 /* UIViewController+Search.swift */,
-				81825CBD2AC59C4B00F91912 /* XCTestCase+Available.swift */,
 				81825CC32AC59C6C00F91912 /* XCTestCase+Wait.swift */,
 				F96AE51A26038602009F82BD /* XCTestCaseExtension.swift */,
 				81825CC02AC59C6400F91912 /* XCTestCase+RootViewController.swift */,
@@ -6726,7 +6722,6 @@
 				F924C072246BEEF0006DDAB8 /* CardDetailsTests.swift in Sources */,
 				F9FE39E32679E09200F02A9B /* LoadingViewTests.swift in Sources */,
 				F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */,
-				81825CBE2AC59C4B00F91912 /* XCTestCase+Available.swift in Sources */,
 				A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */,
 				A04E60DB27F30D900051C72C /* SessionDelegateMock.swift in Sources */,
 				F9AC61C424375F510062A00D /* PresentingViewControllerMock.swift in Sources */,
@@ -7223,7 +7218,6 @@
 				00220955299B8B1C00B2BACD /* BLIKComponentUITests.swift in Sources */,
 				81825CC22AC59C6400F91912 /* XCTestCase+RootViewController.swift in Sources */,
 				F9CCA3D7296ECDB200AD643D /* XCTestCase+Coder.swift in Sources */,
-				81825CBF2AC59C4B00F91912 /* XCTestCase+Available.swift in Sources */,
 				F9CCA3C5296ECB9900AD643D /* ListViewControllerUITests.swift in Sources */,
 				F9CCA3D3296ECD0700AD643D /* PostalAddressMocks.swift in Sources */,
 			);

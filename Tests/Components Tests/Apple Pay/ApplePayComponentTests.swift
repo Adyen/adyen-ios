@@ -154,9 +154,8 @@ class ApplePayComponentTest: XCTestCase {
         waitForExpectations(timeout: 4)
     }
 
-    @available(iOS 15.0, *)
     func testApplePayCoupon() {
-        guard Available.iOS15 else { return }
+        guard #available(iOS 15.0, *) else { return }
 
         sut.applePayDelegate = mockApplePayDelegate
         (mockApplePayDelegate as! ApplePayDelegateMockiOS15).onCouponChange = { coupon, payment in
