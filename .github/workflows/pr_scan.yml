@@ -71,6 +71,7 @@ jobs:
 
     - name: SwiftLint
       run: |
+        brew install swiftlint
         fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
 
     - name: Run Sonar
