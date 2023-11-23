@@ -31,8 +31,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(name: \"Adyen\", path: \"../\"),
-        .package(name: \"AdyenAuthentication\", url: \"https://github.com/Adyen/adyen-authentication-ios\", .exact(Version(1, 1, 1)))
+        .package(name: \"Adyen\", path: \"../\")
     ],
     targets: [
         .target(
@@ -47,7 +46,7 @@ let package = Package(
                 .product(name: \"AdyenWeChatPay\", package: \"Adyen\"),
                 .product(name: \"AdyenSwiftUI\", package: \"Adyen\"),
                 .product(name: \"AdyenCashAppPay\", package: \"Adyen\"),
-                .product(name: \"AdyenAuthentication\", package: \"AdyenAuthentication\")
+                .product(name: \"AdyenDelegatedAuthentication\", package: \"Adyen\")
             ]
         )
     ]

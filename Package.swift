@@ -49,6 +49,10 @@ let package = Package(
         .library(
             name: "AdyenCashAppPay",
             targets: ["AdyenCashAppPay"]
+        ),
+        .library(
+            name: "AdyenDelegatedAuthentication",
+            targets: ["AdyenDelegatedAuthentication"]
         )
     ],
     dependencies: [
@@ -56,6 +60,11 @@ let package = Package(
             name: "Adyen3DS2",
             url: "https://github.com/Adyen/adyen-3ds2-ios",
             .exact(Version(2, 3, 3))
+        ),
+        .package(
+            name: "AdyenAuthentication",
+            url: "https://github.com/Adyen/adyen-authentication-ios",
+            .exact(Version(2, 0, 0))
         ),
         .package(
             name: "AdyenNetworking",
@@ -170,6 +179,13 @@ let package = Package(
                 .product(name: "PayKitUI", package: "PayKit")
             ],
             path: "AdyenCashAppPay"
+        ),
+        .target(
+            name: "AdyenDelegatedAuthentication",
+            dependencies: [
+                .product(name: "AdyenAuthentication", package: "AdyenAuthentication")
+            ],
+            path: "AdyenDelegatedAuthentication"
         )
     ]
 )
