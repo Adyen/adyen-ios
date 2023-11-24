@@ -162,7 +162,6 @@
 		81A48DBB2A5709F600242341 /* DemoAddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A48DBA2A5709F600242341 /* DemoAddressLookupProvider.swift */; };
 		81A48DBC2A5709F600242341 /* DemoAddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A48DBA2A5709F600242341 /* DemoAddressLookupProvider.swift */; };
 		81A48DC62A5800EA00242341 /* AddressLookupViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A48DC32A58004A00242341 /* AddressLookupViewControllerTests.swift */; };
-		81A589FF2B10D94E00E51B52 /* DropInComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A589FE2B10D94E00E51B52 /* DropInComponentDelegateMock.swift */; };
 		81A6B4E32AD53E3300A089A1 /* OpenExternalAppDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A6B4E22AD53E3300A089A1 /* OpenExternalAppDetector.swift */; };
 		81A6B4E72AD54F6C00A089A1 /* OpenExternalAppDetector+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A6B4E52AD54F4F00A089A1 /* OpenExternalAppDetector+Mock.swift */; };
 		81A6B4EB2AD5546500A089A1 /* AdyenDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A6B4EA2AD5546500A089A1 /* AdyenDependencies.swift */; };
@@ -1376,7 +1375,6 @@
 		81A2E3BF2A5C453F00CF5F9C /* LinkTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
 		81A48DBA2A5709F600242341 /* DemoAddressLookupProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAddressLookupProvider.swift; sourceTree = "<group>"; };
 		81A48DC32A58004A00242341 /* AddressLookupViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupViewControllerTests.swift; sourceTree = "<group>"; };
-		81A589FE2B10D94E00E51B52 /* DropInComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInComponentDelegateMock.swift; sourceTree = "<group>"; };
 		81A6B4E22AD53E3300A089A1 /* OpenExternalAppDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenExternalAppDetector.swift; sourceTree = "<group>"; };
 		81A6B4E52AD54F4F00A089A1 /* OpenExternalAppDetector+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenExternalAppDetector+Mock.swift"; sourceTree = "<group>"; };
 		81A6B4EA2AD5546500A089A1 /* AdyenDependencies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdyenDependencies.swift; sourceTree = "<group>"; };
@@ -3773,8 +3771,8 @@
 				F9EDB79023965FFC00CFB3C9 /* Payment Method List */,
 				E759E1F425CB373F00B1F8DC /* DropInTests.swift */,
 				F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */,
-				E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */,
 				E74CE3DE26727EB1008231D2 /* DropInDelegateMock.swift */,
+				E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */,
 				E767F4DB25A603A50077029E /* ModalToolbarTests.swift */,
 				E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */,
 				E7D5311B2447065B000046B4 /* PreselectedPaymentComponentTests.swift */,
@@ -3919,7 +3917,6 @@
 				F9639B4824E28DC80073F38A /* IntervalCalculatorMock.swift */,
 				F9EDB795239663F800CFB3C9 /* PaymentComponentMock.swift */,
 				F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */,
-				81A589FE2B10D94E00E51B52 /* DropInComponentDelegateMock.swift */,
 				F9EDB793239663C200CFB3C9 /* PaymentMethodMock.swift */,
 				F9639B5124E29E340073F38A /* PresentationDelegateMock.swift */,
 				F9AC61C324375F510062A00D /* PresentingViewControllerMock.swift */,
@@ -6722,7 +6719,6 @@
 				C9BB460627622E9600E6730B /* BACSConfirmationPresenterProtocolMock.swift in Sources */,
 				E759E24C25CB3BB700B1F8DC /* DropInTests.swift in Sources */,
 				F957AA462552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift in Sources */,
-				81A589FF2B10D94E00E51B52 /* DropInComponentDelegateMock.swift in Sources */,
 				5AD40F43263150F90090E01C /* UILabelHelpersTests.swift in Sources */,
 				E216D3C7221AF5650013CBCF /* IBANFormatterTests.swift in Sources */,
 				F9639B5024E29D2D0073F38A /* AwaitComponentTests.swift in Sources */,

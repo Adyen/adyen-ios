@@ -420,8 +420,8 @@ class DropInTests: XCTestCase {
             apiClient: apiClient
         )
         
-        let delegateMock = DropInComponentDelegateMock(
-            onDidFail: { error, component in
+        let delegateMock = DropInDelegateMock(
+            didFailHandler: { _, _ in
                 failExpectation.fulfill()
             })
         
