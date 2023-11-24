@@ -6,7 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenActions
-import AdyenDropIn
+@testable import AdyenDropIn
 import SafariServices
 import XCTest
 
@@ -306,6 +306,96 @@ class DropInTests: XCTestCase {
         delegate.safariViewControllerDidFinish?(safari)
 
         wait(for: [waitExpectation], timeout: 30)
+    }
+    
+    func testReload() throws {
+        
+        let config = DropInComponent.Configuration()
+        
+        let paymentMethods = try JSONDecoder().decode(
+            PaymentMethods.self,
+            from: XCTUnwrap(DropInTests.paymentMethods.data(using: .utf8))
+        )
+        
+        let updatedPaymentMethods = try JSONDecoder().decode(
+            PaymentMethods.self,
+            from: XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
+        )
+        
+        let expectation = expectation(description: "Api Client Called")
+        
+        let apiClient = APIClientMock()
+        apiClient.mockedResults = [
+            .success(OrderStatusResponse(
+                remainingAmount: .init(value: 100, currencyCode: "EUR"),
+                paymentMethods: nil
+            ))
+        ]
+        apiClient.onExecute = {
+            XCTAssertTrue($0 is OrderStatusRequest)
+            expectation.fulfill()
+        }
+        
+        let sut = DropInComponent(
+            paymentMethods: paymentMethods,
+            context: Dummy.context,
+            configuration: config,
+            apiClient: apiClient
+        )
+        
+        try sut.reload(with: .init(pspReference: "", orderData: ""), updatedPaymentMethods)
+        
+        wait(for: [expectation], timeout: 10)
+        
+        XCTAssertEqual(sut.paymentMethods, updatedPaymentMethods)
+    }
+    
+    func testReloadFailure() throws {
+        
+        let config = DropInComponent.Configuration()
+        
+        let paymentMethods = try JSONDecoder().decode(
+            PaymentMethods.self,
+            from: XCTUnwrap(DropInTests.paymentMethods.data(using: .utf8))
+        )
+        
+        let updatedPaymentMethods = try JSONDecoder().decode(
+            PaymentMethods.self,
+            from: XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
+        )
+        
+        let apiClientExpectation = expectation(description: "Api Client Called")
+        let failExpectation = expectation(description: "Delegate didFail Called")
+        
+        let apiClient = APIClientMock()
+        apiClient.mockedResults = [
+            // Returning a random error so the reload fails
+            .failure(APIError(status: nil, errorCode: "", errorMessage: "", type: .internal))
+        ]
+        apiClient.onExecute = {
+            XCTAssertTrue($0 is OrderStatusRequest)
+            apiClientExpectation.fulfill()
+        }
+        
+        let sut = DropInComponent(
+            paymentMethods: paymentMethods,
+            context: Dummy.context,
+            configuration: config,
+            apiClient: apiClient
+        )
+        
+        let delegateMock = DropInComponentDelegateMock(
+            onDidFail: { error, component in
+                failExpectation.fulfill()
+            })
+        
+        sut.delegate = delegateMock
+        
+        try sut.reload(with: .init(pspReference: "", orderData: ""), updatedPaymentMethods)
+        
+        wait(for: [apiClientExpectation, failExpectation], timeout: 10)
+        
+        XCTAssertEqual(sut.paymentMethods, paymentMethods) // Should still be the old paymentMethods
     }
 }
 
