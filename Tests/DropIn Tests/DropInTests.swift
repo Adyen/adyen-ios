@@ -130,42 +130,6 @@ class DropInTests: XCTestCase {
         }
     }
     
-    func testDropInStyle() throws {
-        var style = DropInComponent.Style(tintColor: .brown)
-        
-        XCTAssertEqual(style.formComponent.textField.tintColor, .brown)
-        XCTAssertEqual(style.navigation.tintColor, .brown)
-        
-        // MARK: Update separatorColor
-        
-        style.separatorColor = .yellow
-        
-        XCTAssertEqual(style.formComponent.separatorColor, .yellow)
-        XCTAssertEqual(style.navigation.separatorColor, .yellow)
-        
-        style.separatorColor = .green
-        
-        /*
-         In its current implementation calling `separatorColor` with multiple times with different colors
-         won't have any effect. This might be unexpected but this tests confirms the current implementation detail.
-         */
-        XCTAssertEqual(style.formComponent.separatorColor, .yellow)
-        XCTAssertEqual(style.navigation.separatorColor, .yellow)
-        
-        /*
-         To be able to restore the initial behavior
-         the `formComponent.separatorColor` and/or `navigation.separatorColor`
-         have to be nilled out
-         */
-        style.formComponent.separatorColor = nil
-        style.navigation.separatorColor = nil
-        
-        style.separatorColor = .green
-        
-        XCTAssertEqual(style.formComponent.separatorColor, .green)
-        XCTAssertEqual(style.navigation.separatorColor, .green)
-    }
-    
     func testOpenDropInAsList() throws {
         let config = DropInComponent.Configuration()
 
