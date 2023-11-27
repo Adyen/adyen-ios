@@ -44,12 +44,9 @@ Pod::Spec.new do |s|
    s.subspec 'Twint' do |plugin|
     plugin.source_files = 'AdyenTwintSDK/**/*.swift'
     plugin.dependency 'Adyen/Core'
-    plugin.dependency 'TwintSDK'
-  end
-
-    s.subspec 'TwintSDK' do |plugin|
     plugin.vendored_frameworks = 'XCFramework/Dynamic/TwintSDK.xcframework'
   end
+
 
   s.subspec 'Card' do |plugin|
     plugin.dependency 'Adyen/Core'
