@@ -76,7 +76,7 @@ class AmountFormatterTests: XCTestCase {
         XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "CVE", localeIdentifier: "ko_KR"), "CVE 123,456")
         XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "CVE", localeIdentifier: "fr_FR"), "123 456 CVE")
         
-        if Available.iOS17 {
+        if #available(iOS 17.0, *) {
             XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "ISK", localeIdentifier: "is_IS"), "1.234,56 kr.")
         } else {
             XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "ISK", localeIdentifier: "is_IS"), "1.234,56 ISK")
