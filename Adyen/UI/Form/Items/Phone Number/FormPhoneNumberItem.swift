@@ -54,27 +54,6 @@ public final class FormPhoneNumberItem: FormTextItem {
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
-    
-    private static func preselectedPhoneNumberPrefix(
-        for phoneNumber: PhoneNumber?,
-        in selectableValues: [PhoneExtensionPickerItem]
-    ) -> PhoneExtensionPickerItem {
-        
-        if let matchingCallingCode = selectableValues.first(where: { $0.element.value == phoneNumber?.callingCode }) {
-            return matchingCallingCode
-        }
-        
-        if let matchingLocaleRegion = selectableValues.first(where: { $0.identifier == Locale.current.regionCode }) {
-            return matchingLocaleRegion
-        }
-        
-        if let firstSelectableValue = selectableValues.first {
-            return firstSelectableValue
-        }
-        
-        AdyenAssertion.assertionFailure(message: "Empty list of selectableValues provided")
-        return .init(identifier: "", element: .init(value: "+1", countryCode: "US"))
-    }
 }
 
 private extension [PhoneExtensionPickerItem] {
