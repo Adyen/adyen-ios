@@ -24,7 +24,10 @@ internal final class APIClientMock: APIClientProtocol {
             switch nextResult {
             case let .success(response):
                 guard let response = response as? R.ResponseType else {
-                    fatalError("The provided Response '\(response.self)' does not match the ResponseType of the Request '\(R.ResponseType.self)'")
+                    fatalError("""
+                    The provided Response "\(response.self)" does not match \
+                    the ResponseType of the Request "\(R.ResponseType.self)"
+                    """)
                 }
                 completionHandler(.success(response))
             case let .failure(error):
