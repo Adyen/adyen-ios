@@ -127,14 +127,18 @@ internal final class ComponentsView: UIView {
     }
     
     private func setUpApplePayCell(_ cell: UITableViewCell) {
-        let style: PKPaymentButtonStyle
-        if #available(iOS 14.0, *) {
-            style = .automatic
-        } else if #available(iOS 12.0, *), traitCollection.userInterfaceStyle == .dark {
-            style = .white
-        } else {
-            style = .black
-        }
+        let style: PKPaymentButtonStyle = {
+            if #available(iOS 14.0, *) {
+                return .automatic
+            }
+            
+            switch traitCollection.userInterfaceStyle {
+            case .dark:
+                return .white
+            default:
+                return .black
+            }
+        }()
         
         let contentView = cell.contentView
         

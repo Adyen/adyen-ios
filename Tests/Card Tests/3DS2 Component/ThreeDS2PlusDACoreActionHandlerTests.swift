@@ -41,7 +41,7 @@ import XCTest
         
         override func setUpWithError() throws {
             guard #available(iOS 14.0, *) else {
-                // XCTestCase does not respect @available so we have skip all tests here
+                // XCTestCase does not respect @available so we have to skip the test like this
                 throw XCTSkip("Unsupported iOS version")
             }
             
