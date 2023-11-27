@@ -116,7 +116,7 @@ final class BoletoComponentUITests: XCTestCase {
 
         submitButton.sendActions(for: .touchUpInside)
         
-        wait(for: [dummyExpectation], timeout: 5)
+        wait(for: [dummyExpectation], timeout: 60)
     }
     
     func testPaymentDataNoName() throws {

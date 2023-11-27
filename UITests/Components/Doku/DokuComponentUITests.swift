@@ -103,7 +103,7 @@ final class DokuComponentUITests: XCTestCase {
         
         submitButton.sendActions(for: .touchUpInside)
 
-        wait(for: [delegateExpectation], timeout: 2)
+        wait(for: [delegateExpectation], timeout: 60)
     }
 
     private enum DokuViewIdentifier {

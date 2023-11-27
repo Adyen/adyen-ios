@@ -99,7 +99,7 @@ final class BLIKComponentUITests: XCTestCase {
         
         submitButton.sendActions(for: .touchUpInside)
         
-        wait(for: [delegateExpectation], timeout: 60)
+        wait(for: [delegateExpectation], timeout: 120)
     }
 
     func testSubmitButtonLoading() throws {

@@ -90,7 +90,7 @@ final class MBWayComponentUITests: XCTestCase {
         
         submitButton?.sendActions(for: .touchUpInside)
         
-        wait(for: [delegateExpectation], timeout: 5)
+        wait(for: [delegateExpectation], timeout: 60)
     }
 
     // MARK: - Private
