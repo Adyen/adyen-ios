@@ -177,7 +177,7 @@ extension PKPaymentNetwork {
 
     internal var txVariantName: String {
         if self == .masterCard { return "mc" }
-        if #available(iOS 11.2, *), self == .cartesBancaires { return "cartebancaire" }
+        if self == .cartesBancaires { return "cartebancaire" }
         return self.rawValue.lowercased()
     }
 
