@@ -94,7 +94,7 @@ public class ListItem: FormItem {
     
     private func setLoading(_ isLoading: Bool) {
         guard let loadingHandler else {
-            assertionFailure("No loadingHandler provided")
+            AdyenAssertion.assertionFailure(message: "No loadingHandler provided")
             return
         }
         
