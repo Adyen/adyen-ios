@@ -158,6 +158,7 @@
 		81825CC52AC59C6C00F91912 /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CC32AC59C6C00F91912 /* XCTestCase+Wait.swift */; };
 		81896E852A4DB5F300C532CA /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81896E842A4DB5F300C532CA /* SearchViewControllerTests.swift */; };
 		8191838E2A53062F008EB61A /* FormAddressItem+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8191838D2A53062F008EB61A /* FormAddressItem+Configuration.swift */; };
+		819CC3342B14C53200D2EEE9 /* PaymentMethods+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819CC3332B14C53200D2EEE9 /* PaymentMethods+Equatable.swift */; };
 		81A2E3BE2A5C453200CF5F9C /* LinkTextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A2E3BD2A5C453200CF5F9C /* LinkTextViewTests.swift */; };
 		81A48DBB2A5709F600242341 /* DemoAddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A48DBA2A5709F600242341 /* DemoAddressLookupProvider.swift */; };
 		81A48DBC2A5709F600242341 /* DemoAddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A48DBA2A5709F600242341 /* DemoAddressLookupProvider.swift */; };
@@ -1371,6 +1372,7 @@
 		81825CC32AC59C6C00F91912 /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
 		81896E842A4DB5F300C532CA /* SearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerTests.swift; sourceTree = "<group>"; };
 		8191838D2A53062F008EB61A /* FormAddressItem+Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormAddressItem+Configuration.swift"; sourceTree = "<group>"; };
+		819CC3332B14C53200D2EEE9 /* PaymentMethods+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaymentMethods+Equatable.swift"; sourceTree = "<group>"; };
 		81A2E3BD2A5C453200CF5F9C /* LinkTextViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkTextViewTests.swift; sourceTree = "<group>"; };
 		81A2E3BF2A5C453F00CF5F9C /* LinkTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
 		81A48DBA2A5709F600242341 /* DemoAddressLookupProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAddressLookupProvider.swift; sourceTree = "<group>"; };
@@ -2914,6 +2916,7 @@
 				A04E60D227E0E6280051C72C /* XCTestCase+Result.swift */,
 				00EACBC5288013990082B360 /* XCTestCase+Coder.swift */,
 				81B505782A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift */,
+				819CC3332B14C53200D2EEE9 /* PaymentMethods+Equatable.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -6608,6 +6611,7 @@
 				81BBB34B2A692F6500AF1F9E /* FormPickerSearchViewControllerTests.swift in Sources */,
 				8109FF4E2AD6D8A9000748C8 /* MockAddressLookupProvider.swift in Sources */,
 				E72521EE25517EB100533E35 /* BLIKComponentTests.swift in Sources */,
+				819CC3342B14C53200D2EEE9 /* PaymentMethods+Equatable.swift in Sources */,
 				E2B317A22265BC9400C1BB30 /* LengthValidatorTests.swift in Sources */,
 				F9B019442611E965001F23FC /* EContextATMShareableVoucherViewProviderTests.swift in Sources */,
 				E9E3DAB2221D79C800697074 /* CardNumberFormatterTests.swift in Sources */,
