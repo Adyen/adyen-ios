@@ -26,15 +26,16 @@ internal final class PreApplePayView: UIView, Localizable {
     
     /// Creates PKPaymentButtonStyle based on Dark or Light Mode.
     private var paymentButtonStyleAuto: PKPaymentButtonStyle {
-        let buttonStyle: PKPaymentButtonStyle
         if #available(iOS 14.0, *) {
-            buttonStyle = .automatic
-        } else if #available(iOS 12.0, *), traitCollection.userInterfaceStyle == .dark {
-            buttonStyle = .white
-        } else {
-            buttonStyle = .black
+            return .automatic
         }
-        return buttonStyle
+        
+        switch traitCollection.userInterfaceStyle {
+        case .dark:
+            return .white
+        default:
+            return .black
+        }
     }
     
     internal init(model: Model) {
@@ -66,9 +67,7 @@ internal final class PreApplePayView: UIView, Localizable {
         ])
         payButton.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "applePayButton")
         
-        if #available(iOS 12.0, *) {
-            payButton.cornerRadius = model.style.cornerRadius
-        }
+        payButton.cornerRadius = model.style.cornerRadius
     }
     
     private func addHintLabel() {
