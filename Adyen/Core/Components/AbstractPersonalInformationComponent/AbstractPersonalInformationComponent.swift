@@ -235,7 +235,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
             lastNameItem?.value = $0.lastName
         }
         shopperInformation.emailAddress.map { emailItem?.value = $0 }
-        shopperInformation.telephoneNumber.map { phoneItem?.value = $0 }
+        shopperInformation.phoneNumber.map { phoneItem?.value = $0.value }
         shopperInformation.billingAddress.map { addressItem?.value = $0 }
         shopperInformation.deliveryAddress.map { deliveryAddressItem?.value = $0 }
     }

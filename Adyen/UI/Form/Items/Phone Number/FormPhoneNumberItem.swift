@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -31,11 +31,15 @@ public final class FormPhoneNumberItem: FormTextItem {
                 selectableValues: [PhoneExtensionPickerItem],
                 style: FormTextItemStyle,
                 localizationParameters: LocalizationParameters? = nil) {
-        // swiftlint:disable:next line_length
-        let preselectedValue = selectableValues.first(where: { $0.element.value == phoneNumber?.callingCode }) ?? selectableValues.first(where: { $0.identifier == Locale.current.regionCode }) ?? selectableValues[0]
-
-        phonePrefixItem = FormPhoneExtensionPickerItem(preselectedValue: preselectedValue, selectableValues: selectableValues, style: style)
+        
+        phonePrefixItem = FormPhoneExtensionPickerItem(
+            preselectedValue: selectableValues.preselectedPhoneNumberPrefix(for: phoneNumber),
+            selectableValues: selectableValues,
+            style: style
+        )
+        
         super.init(style: style)
+        
         phonePrefixItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneExtensionPickerItem")
         value = phoneNumber?.value ?? ""
 
@@ -50,5 +54,25 @@ public final class FormPhoneNumberItem: FormTextItem {
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
+}
+
+private extension [PhoneExtensionPickerItem] {
     
+    func preselectedPhoneNumberPrefix(for phoneNumber: PhoneNumber?) -> PhoneExtensionPickerItem {
+        
+        if let matchingCallingCode = first(where: { $0.element.value == phoneNumber?.callingCode }) {
+            return matchingCallingCode
+        }
+        
+        if let matchingLocaleRegion = first(where: { $0.identifier == Locale.current.regionCode }) {
+            return matchingLocaleRegion
+        }
+        
+        if let firstSelectableValue = first {
+            return firstSelectableValue
+        }
+        
+        AdyenAssertion.assertionFailure(message: "Empty list of selectableValues provided")
+        return .init(identifier: "", element: .init(value: "+1", countryCode: "US"))
+    }
 }

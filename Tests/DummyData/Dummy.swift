@@ -85,7 +85,7 @@ enum Dummy: Error {
         PrefilledShopperInformation(
             shopperName: dummyName,
             emailAddress: dummyEmail,
-            telephoneNumber: nil,
+            phoneNumber: nil,
             billingAddress: dummyAddress,
             socialSecurityNumber: dummySocialSecurityNumber
         )
