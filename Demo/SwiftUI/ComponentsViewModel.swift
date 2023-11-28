@@ -50,8 +50,8 @@ internal final class ComponentsViewModel: ObservableObject, Identifiable {
         return instantPaymentComponentExample
     }()
     
-    private lazy var instantPaymentComponentAdvancedFlowExample: InstantPaymentComponentAdvancedFlowExample = {
-        let instantPaymentComponentExample = InstantPaymentComponentAdvancedFlowExample()
+    private lazy var instantPaymentComponentAdvancedFlow: InstantPaymentComponentAdvancedFlow = {
+        let instantPaymentComponentExample = InstantPaymentComponentAdvancedFlow()
         instantPaymentComponentExample.presenter = self
         return instantPaymentComponentExample
     }()
@@ -94,7 +94,7 @@ internal final class ComponentsViewModel: ObservableObject, Identifiable {
         if isUsingSession {
             instantPaymentComponentExample.start()
         } else {
-            instantPaymentComponentAdvancedFlowExample.start()
+            instantPaymentComponentAdvancedFlow.start()
         }
     }
 
