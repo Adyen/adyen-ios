@@ -19,10 +19,7 @@ public final class AdyenContext: PaymentAware {
     public private(set) var payment: Payment?
 
     @_spi(AdyenInternal)
-    public let analyticsProvider: AnalyticsProviderProtocol
-
-    @_spi(AdyenInternal)
-    public var telemetryContext: TelemetryContext = .init()
+    public var analyticsProvider: AnalyticsProviderProtocol
     
     // MARK: - Initializers
 
@@ -31,7 +28,11 @@ public final class AdyenContext: PaymentAware {
     ///   - apiContext: The API context used to retrieve internal resources.
     ///   - analyticsConfiguration: A configuration object that specifies the behavior for the analytics.
     ///   - payment: The payment information.
-    public convenience init(apiContext: APIContext, payment: Payment?, analyticsConfiguration: AnalyticsConfiguration = .init()) {
+    public convenience init(
+        apiContext: APIContext,
+        payment: Payment?,
+        analyticsConfiguration: AnalyticsConfiguration = .init()
+    ) {
         
         let analyticsProvider = AnalyticsProvider(
             apiClient: APIClient(apiContext: apiContext),
@@ -46,10 +47,31 @@ public final class AdyenContext: PaymentAware {
         
         analyticsProvider.additionalFields = { [weak self] in
             .init(
-                amount: self?.payment?.amount,
-                telemetryContext: self?.telemetryContext
+                amount: self?.payment?.amount
             )
         }
+    }
+    
+    /// Creates an Adyen context with the provided API context and analytics configuration.
+    /// - Parameters:
+    ///   - apiContext: The API context used to retrieve internal resources.
+    ///   - analyticsConfiguration: A configuration object that specifies the behavior for the analytics.
+    ///   - payment: The payment information.
+    ///   - telemetryContext: The telemetry context to be used
+    @_spi(AdyenInternal)
+    public convenience init(
+        apiContext: APIContext,
+        payment: Payment?,
+        analyticsConfiguration: AnalyticsConfiguration = .init(),
+        telemetryContext: TelemetryContext
+    ) {
+        self.init(
+            apiContext: apiContext,
+            payment: payment,
+            analyticsConfiguration: analyticsConfiguration
+        )
+        
+        analyticsProvider.context = telemetryContext
     }
 
     /// Internal init for testing only

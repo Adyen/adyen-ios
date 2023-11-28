@@ -29,15 +29,11 @@ public struct AnalyticsConfiguration {
 public struct AdditionalAnalyticsFields {
     /// The amount of the payment
     public let amount: Amount?
-    /// Allows specifying the sdk context (e.g. used for the Flutter SDK)
-    public let telemetryContext: TelemetryContext?
     
     public init(
-        amount: Amount?,
-        telemetryContext: TelemetryContext?
+        amount: Amount?
     ) {
         self.amount = amount
-        self.telemetryContext = telemetryContext
     }
 }
 
@@ -45,6 +41,8 @@ public struct AdditionalAnalyticsFields {
 public protocol AnalyticsProviderProtocol: TelemetryTrackerProtocol {
     
     var checkoutAttemptId: String? { get }
+    var context: TelemetryContext { get set }
+    
     func fetchAndCacheCheckoutAttemptIdIfNeeded()
     
     var additionalFields: (() -> AdditionalAnalyticsFields)? { get }
@@ -56,6 +54,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
 
     internal let apiClient: APIClientProtocol
     internal let configuration: AnalyticsConfiguration
+    internal var context: TelemetryContext = .init()
     internal private(set) var checkoutAttemptId: String?
     internal var additionalFields: (() -> AdditionalAnalyticsFields)?
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<CheckoutAttemptIdResponse>
