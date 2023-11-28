@@ -238,15 +238,17 @@ class AnalyticsProviderTests: XCTestCase {
     
     func testTelemetryRequestEncoding() throws {
         
+        let telemetryData = TelemetryData(
+            flavor: .dropInComponent,
+            amount: .init(value: 1, currencyCode: "EUR"),
+            context: .init(
+                version: "version",
+                platform: "platform"
+            )
+        )
+        
         let request = TelemetryRequest(
-            data: .init(
-                flavor: .dropInComponent,
-                amount: .init(value: 1, currencyCode: "EUR"),
-                context: .init(
-                    version: "version",
-                    platform: "platform"
-                )
-            ),
+            data: telemetryData,
             checkoutAttemptId: checkoutAttemptIdMockValue
         )
         
@@ -255,15 +257,15 @@ class AnalyticsProviderTests: XCTestCase {
         
         let expectedDecodedRequest = [
             "locale": "en_US",
-            "paymentMethods": [Any](),
+            "paymentMethods": telemetryData.paymentMethods,
             "platform": "platform",
             "component": "",
             "flavor": "dropInComponent",
             "channel": "iOS",
-            "systemVersion": UIDevice.current.systemVersion,
-            "screenWidth": 1170,
-            "referrer": "com.adyen.CheckoutDemoUIKit",
-            "deviceBrand": "arm64",
+            "systemVersion": telemetryData.systemVersion,
+            "screenWidth": telemetryData.screenWidth,
+            "referrer": telemetryData.referrer,
+            "deviceBrand": telemetryData.deviceBrand,
             "amount": [
                 "currency": "EUR",
                 "value": 1
