@@ -251,23 +251,23 @@ class AnalyticsProviderTests: XCTestCase {
         )
         
         let encodedRequest = try JSONEncoder().encode(request)
-        let decodedRequest = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedRequest) as? [String: Any])
+        var decodedRequest = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedRequest) as? [String: Any])
         
         let expectedDecodedRequest = [
             "locale": "en_US",
-            "paymentMethods": [],
+            "paymentMethods": [Any](),
             "platform": "platform",
             "component": "",
             "flavor": "dropInComponent",
             "channel": "iOS",
-            "systemVersion": "17.0.1",
+            "systemVersion": UIDevice.current.systemVersion,
             "screenWidth": 1170,
             "referrer": "com.adyen.CheckoutDemoUIKit",
             "deviceBrand": "arm64",
             "amount": [
                 "currency": "EUR",
                 "value": 1
-            ],
+            ] as [String: Any],
             "checkoutAttemptId": checkoutAttemptIdMockValue,
             "version": "version"
         ] as [String: Any]
