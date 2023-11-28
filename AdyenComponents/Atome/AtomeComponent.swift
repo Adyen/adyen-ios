@@ -69,7 +69,7 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
     override public func createPaymentDetails() throws -> PaymentMethodDetails {
         guard let firstName = firstNameItem?.value,
               let lastName = lastNameItem?.value,
-              let telephoneNumber = phoneItem?.value,
+              let telephoneNumber = phoneItem?.phoneNumber,
               let billingAddress = addressItem?.value else {
             throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration")
         }

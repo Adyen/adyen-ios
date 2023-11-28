@@ -82,7 +82,7 @@ class DokuComponentTests: XCTestCase {
                                 context: context,
                                 configuration: DokuComponent.Configuration())
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))
         
@@ -104,9 +104,8 @@ class DokuComponentTests: XCTestCase {
         let prefillSut = DokuComponent(paymentMethod: paymentMethod,
                                        context: context,
                                        configuration: config)
-        UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
-
-        wait(for: .milliseconds(300))
+        
+        setupRootViewController(prefillSut.viewController)
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -132,7 +131,7 @@ class DokuComponentTests: XCTestCase {
         let sut = DokuComponent(paymentMethod: paymentMethod,
                                 context: context,
                                 configuration: DokuComponent.Configuration())
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))
 

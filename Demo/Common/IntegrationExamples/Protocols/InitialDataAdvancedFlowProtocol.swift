@@ -12,6 +12,7 @@ internal protocol InitialDataAdvancedFlowProtocol: AnyObject {
     var context: AdyenContext { get }
     var apiClient: APIClientProtocol { get }
     func requestPaymentMethods(order: PartialPaymentOrder?,
+                               amount: Amount,
                                completion: @escaping (Result<PaymentMethods, Error>) -> Void)
 }
 
@@ -26,8 +27,9 @@ extension InitialDataAdvancedFlowProtocol {
     }
 
     internal func requestPaymentMethods(order: PartialPaymentOrder?,
+                                        amount: Amount = ConfigurationConstants.current.amount,
                                         completion: @escaping (Result<PaymentMethods, Error>) -> Void) {
-        let request = PaymentMethodsRequest(order: order)
+        let request = PaymentMethodsRequest(order: order, amount: amount)
         apiClient.perform(request) { result in
             switch result {
             case let .success(response):

@@ -68,7 +68,7 @@ class AtomeComponentTests: XCTestCase {
         XCTAssertEqual(firstName, "John")
         XCTAssertEqual(lastName, "smith")
         XCTAssertEqual(billingAddress, expectedBillingAddress)
-        XCTAssertEqual(phoneNumber, "6787860987")
+        XCTAssertEqual(phoneNumber, "+16787860987")
     }
     
     func testGetPhoneExtensions_ShouldReturnNonEmptyPhoneExtensionList() throws {

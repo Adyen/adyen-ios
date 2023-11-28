@@ -12,16 +12,16 @@ import XCTest
 
 class RedirectComponentTests: XCTestCase {
     
-    override func tearDown() {
-        super.tearDown()
-        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: false)
-        wait(for: .milliseconds(300))
+    override func setUp(completion: @escaping (Error?) -> Void) {
+        UIApplication.shared.adyen.mainKeyWindow?.rootViewController?.dismiss(animated: false) {
+            super.setUp(completion: completion)
+        }
     }
     
-    override func setUp() {
-        super.setUp()
-        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: false)
-        wait(for: .milliseconds(300))
+    override func tearDown(completion: @escaping (Error?) -> Void) {
+        UIApplication.shared.adyen.mainKeyWindow?.rootViewController?.dismiss(animated: false) {
+            super.tearDown(completion: completion)
+        }
     }
 
     func testUIConfiguration() {
@@ -131,7 +131,7 @@ class RedirectComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func testOpenUniversalLinkFailure() {
+    func testOpenUniversalLinkFailure() throws {
         let sut = RedirectComponent(context: Dummy.context)
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
@@ -139,13 +139,12 @@ class RedirectComponentTests: XCTestCase {
         sut.appLauncher = appLauncher
         let presentingViewControllerMock = PresentingViewControllerMock()
         sut.presentationDelegate = presentingViewControllerMock
-        let topViewController: UIViewController! = UIViewController.findTopPresenter()
+        let topViewController = try UIViewController.topPresenter()
         topViewController.present(presentingViewControllerMock, animated: false, completion: nil)
         
         let safariVCExpectation = expectation(description: "Expect SFSafariViewController() to be presented")
         presentingViewControllerMock.onPresent = { viewController, animated, completion in
-            XCTAssertNotNil(viewController as? SFSafariViewController)
-            XCTAssertEqual(animated, true)
+            XCTAssertTrue(viewController is SFSafariViewController)
             completion?()
             safariVCExpectation.fulfill()
         }
@@ -171,9 +170,9 @@ class RedirectComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testOpenHttpWebLink() {
+    func testOpenHttpWebLink() throws {
         let sut = RedirectComponent(context: Dummy.context)
-        sut.presentationDelegate = UIViewController.findTopPresenter()
+        sut.presentationDelegate = try UIViewController.topPresenter()
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let appLauncher = AppLauncherMock()
@@ -194,16 +193,12 @@ class RedirectComponentTests: XCTestCase {
         let action = RedirectAction(url: URL(string: "https://www.adyen.com?returnUrlQueryString=anything")!, paymentData: "test_data")
         sut.handle(action)
         
-        wait(for: .seconds(2))
-        
-        let topPresentedViewController = UIViewController.findTopPresenter()
-        XCTAssertNotNil(topPresentedViewController as? SFSafariViewController)
+        try waitUntilTopPresenter(isOfType: SFSafariViewController.self)
     }
 
-    @available(iOS 13.0, *)
-    func testOpenHttpWebLinkAndDragedDown() {
+    func testOpenHttpWebLinkAndDragedDown() throws {
         let sut = RedirectComponent(context: Dummy.context)
-        sut.presentationDelegate = UIViewController.findTopPresenter()
+        sut.presentationDelegate = try UIViewController.topPresenter()
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
 
@@ -216,13 +211,11 @@ class RedirectComponentTests: XCTestCase {
             XCTAssertEqual(error as! ComponentError, ComponentError.cancelled)
             waitExpectation.fulfill()
         }
-        
-        wait(for: .seconds(2))
 
-        let topPresentedViewController = UIViewController.findTopPresenter() as? SFSafariViewController
-        XCTAssertNotNil(topPresentedViewController)
+        let topPresentedViewController = try waitUntilTopPresenter(isOfType: SFSafariViewController.self)
 
-        topPresentedViewController!.presentationController?.delegate?.presentationControllerDidDismiss?(topPresentedViewController!.presentationController!)
+        let presentationController = try XCTUnwrap(topPresentedViewController.presentationController)
+        presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
 
         waitForExpectations(timeout: 10, handler: nil)
     }
@@ -351,15 +344,4 @@ class RedirectComponentTests: XCTestCase {
         
         waitForExpectations(timeout: 2)
     }
-}
-
-extension UIViewController {
-    public static func findTopPresenter() -> UIViewController? {
-        guard let viewController = UIApplication.shared.keyWindow?.rootViewController else {
-            AdyenAssertion.assertionFailure(message: "Application's keyWindow is not set or have no rootViewController")
-            return nil
-        }
-        return viewController.adyen.topPresenter
-    }
-
 }

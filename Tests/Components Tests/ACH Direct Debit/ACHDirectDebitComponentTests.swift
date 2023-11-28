@@ -101,7 +101,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                                                billingAddressCountryCodes: ["US", "UK"]),
                                           publicKeyProvider: PublicKeyProviderMock())
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         wait(for: .milliseconds(300))
         
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem")
@@ -170,7 +170,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))
 
@@ -191,7 +191,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         wait(for: .milliseconds(300))
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.Test name"))
@@ -216,7 +216,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         wait(for: .milliseconds(300))
         
         XCTAssertFalse(sut.payButton.showsActivityIndicator)
@@ -231,7 +231,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           context: context,
                                           publicKeyProvider: PublicKeyProviderMock())
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         wait(for: .milliseconds(300))
         
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.payButtonItem.button")

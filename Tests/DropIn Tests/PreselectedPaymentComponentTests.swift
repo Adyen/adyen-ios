@@ -81,7 +81,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
     }
 
     func testSubmitButtonLoading() {
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton.button")
         XCTAssertFalse(button.showsActivityIndicator)
         sut.startLoading(for: component)
@@ -122,7 +122,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
         component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), context: Dummy.context)
         sut = PreselectedPaymentMethodComponent(component: component, title: "", style: formStyle, listItemStyle: listStyle)
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         
         let view = sut.viewController.view!
         let listView = view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.defaultComponent")
@@ -157,7 +157,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
     }
     
     func testPayButtonTitle() {
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         sut = PreselectedPaymentMethodComponent(component: component, title: "", style: .init(), listItemStyle: .init())
         
         let submitButtonContainer = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton")
@@ -170,7 +170,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
     }
 
     func testPayButtonTitleNoPayment() {
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), context: Dummy.context(with: nil))
         sut = PreselectedPaymentMethodComponent(component: component, title: "", style: .init(), listItemStyle: .init())
 
@@ -187,7 +187,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
         component = StoredPaymentMethodComponent(paymentMethod: getStoredPaypal(), context: Dummy.context)
         sut = PreselectedPaymentMethodComponent(component: component, title: "", style: FormComponentStyle(), listItemStyle: ListItemStyle())
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         
         let listView: ListItemView? = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.defaultComponent")
         let listViewTitle: UILabel! = listView!.findView(by: "titleLabel")
@@ -201,7 +201,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
         component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), context: Dummy.context)
         sut = PreselectedPaymentMethodComponent(component: component, title: "", style: FormComponentStyle(), listItemStyle: ListItemStyle())
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         
         let listView = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.defaultComponent")
         let listViewTitle: UILabel! = listView!.findView(by: "titleLabel")

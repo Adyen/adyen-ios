@@ -20,9 +20,7 @@ class DropInInternalTests: XCTestCase {
                                   context: Dummy.context,
                                   configuration: config)
 
-        let root = UIViewController()
-        UIApplication.shared.keyWindow?.rootViewController = root
-        root.present(sut.viewController, animated: true, completion: nil)
+        presentOnRoot(sut.viewController)
 
         let waitExpectation = expectation(description: "Expect Drop-In to finalize")
 

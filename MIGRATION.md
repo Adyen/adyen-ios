@@ -1,7 +1,18 @@
 #  Migration Notes
 
-## 5.0.0
+## Upcoming release
+- `telephoneNumber` property of `PrefilledShopperInformation` has been deprecated. Use to `phoneNumber` property if needed.
 
+
+## 5.3.0
+- The `didComplete` method signature of `AdyenSessionDelegate` has changed. You must replace `didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession)` with `didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession)`. Use the `resultCode` inside of the `AdyenSessionResult` if needed.
+
+
+## 5.2.0
+- `amountToPay` property of `PaymentComponentData` has been deprecated. Use to `amount` property if needed.
+
+
+## 5.0.0
 - `AffirmComponent.style`, `AffirmComponent.shopperInformation` and `AffirmComponent.localizationParameters` moved into new `configuration` property `AffirmComponent.Configuration`;
 - `DokuComponent.style`, `DokuComponent.shopperInformation` and `DokuComponent.localizationParameters` moved into new `configuration` property `DokuComponent.Configuration`;
 - `MBWayComponent.style`, `MBWayComponent.shopperInformation` and `MBWayComponent.localizationParameters` moved into new `configuration` property `MBWayComponent.Configuration`;
@@ -38,9 +49,3 @@
 - `AnalyticsConfiguration` is the object that defines the behavior of analytics within the SDK. Merchants can enable/disable analytics.
 - `CardComponentDelegate.didChangeBIN(:component:)` provides the 8 digit bin in case the PAN is greater than 16 digits.
 - `CardComponentDelegate.didSubmit(lastFour:finalBIN:component)` now has a new parameter `finalBIN` that provides the final BIN after shopper submits the card details.
-
-## 5.2.0
-- `amountToPay` property of `PaymentComponentData` has been deprecated. Use to `amount` property if needed. 
-
-## 5.3.0
-- The `didComplete` method signature of `AdyenSessionDelegate` has changed. You must replace `didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession)` with `didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession)`. Use the `resultCode` inside of the `AdyenSessionResult` if needed.
