@@ -21,6 +21,9 @@ public final class AdyenContext: PaymentAware {
     @_spi(AdyenInternal)
     public let analyticsProvider: AnalyticsProviderProtocol
 
+    @_spi(AdyenInternal)
+    public var telemetryContext: TelemetryContext = .init()
+    
     // MARK: - Initializers
 
     /// Creates an Adyen context with the provided API context and analytics configuration.
@@ -43,7 +46,8 @@ public final class AdyenContext: PaymentAware {
         
         analyticsProvider.additionalFields = { [weak self] in
             .init(
-                amount: self?.payment?.amount
+                amount: self?.payment?.amount,
+                telemetryContext: self?.telemetryContext
             )
         }
     }

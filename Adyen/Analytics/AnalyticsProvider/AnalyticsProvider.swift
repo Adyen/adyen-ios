@@ -29,6 +29,16 @@ public struct AnalyticsConfiguration {
 public struct AdditionalAnalyticsFields {
     /// The amount of the payment
     public let amount: Amount?
+    /// Allows specifying the sdk context (e.g. used for the Flutter SDK)
+    public let telemetryContext: TelemetryContext?
+    
+    public init(
+        amount: Amount?,
+        telemetryContext: TelemetryContext?
+    ) {
+        self.amount = amount
+        self.telemetryContext = telemetryContext
+    }
 }
 
 @_spi(AdyenInternal)
