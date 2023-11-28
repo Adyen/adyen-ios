@@ -29,12 +29,6 @@ public struct AnalyticsConfiguration {
 public struct AdditionalAnalyticsFields {
     /// The amount of the payment
     public let amount: Amount?
-    
-    public init(
-        amount: Amount?
-    ) {
-        self.amount = amount
-    }
 }
 
 @_spi(AdyenInternal)
