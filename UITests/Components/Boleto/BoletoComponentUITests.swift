@@ -124,13 +124,12 @@ final class BoletoComponentUITests: XCTestCase {
     func testPaymentDataNoName() throws {
         var mockInformation = Dummy.dummyFullPrefilledInformation
         mockInformation.shopperName = nil
+        
         let mockConfiguration = Dummy.getConfiguration(with: mockInformation, showEmailAddress: true)
-        let mockDelegate = PaymentComponentDelegateMock()
+        
         let sut = BoletoComponent(paymentMethod: paymentMethod,
                                   context: context,
                                   configuration: mockConfiguration)
-        sut.delegate = mockDelegate
-        let dummyExpectation = XCTestExpectation(description: "Dummy Expectation")
 
         let submitButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(by: "payButtonItem.button"))
         submitButton.sendActions(for: .touchUpInside)
