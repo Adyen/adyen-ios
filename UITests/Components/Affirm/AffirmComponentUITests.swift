@@ -60,8 +60,7 @@ class AffirmComponentUITests: XCTestCase {
 
             sut.stopLoadingIfNeeded()
             
-            self.wait(for: .aMoment)
-            self.assertViewControllerImage(matching: sut.viewController, named: "shopper-info-prefilled")
+            self.verifyViewControllerImage(matching: sut.viewController, named: "shopper-info-prefilled")
             
             didSubmitExpectation.fulfill()
         }
@@ -115,8 +114,7 @@ class AffirmComponentUITests: XCTestCase {
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
         
         prefillSut.viewController.view.endEditing(true)
-        wait(for: .seconds(2))
-        assertViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled-address-set")
+        verifyViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled-address-set")
 
     }
 
@@ -158,8 +156,7 @@ class AffirmComponentUITests: XCTestCase {
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
         
         prefillSut.viewController.view.endEditing(true)
-        wait(for: .seconds(2))
-        assertViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled-address-not-set")
+        verifyViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled-address-not-set")
     }
 
     func testAffirm_givenNoShopperInformation_shouldNotPrefill() throws {
@@ -195,9 +192,7 @@ class AffirmComponentUITests: XCTestCase {
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
         
         sut.viewController.view.endEditing(true)
-        wait(for: .seconds(2))
-
-        assertViewControllerImage(matching: sut.viewController, named: "shopper-info-not-filled")
+        verifyViewControllerImage(matching: sut.viewController, named: "shopper-info-not-filled")
     }
 
     // MARK: - Private
