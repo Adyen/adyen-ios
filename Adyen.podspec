@@ -44,7 +44,7 @@ Pod::Spec.new do |s|
   s.subspec 'Twint' do |plugin|
     plugin.source_files = 'AdyenTwintSDK/**/*.swift'
     plugin.dependency 'Adyen/Core'
-    plugin.dependency ‘Adyen/TwintSDK'
+    plugin.dependency 'Adyen/TwintSDK'
   end
 
   s.subspec 'TwintSDK' do |plugin|
