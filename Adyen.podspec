@@ -41,7 +41,7 @@ Pod::Spec.new do |s|
     plugin.dependency 'CashAppPayKitUI', '0.5.1'
   end
 
-  s.subspec 'Twint' do |plugin|
+  s.subspec 'AdyenTwint' do |plugin|
     plugin.source_files = 'AdyenTwintSDK/**/*.swift'
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/TwintSDK'
