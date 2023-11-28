@@ -11,7 +11,6 @@ import Foundation
 
 class AnalyticsProviderMock: AnalyticsProviderProtocol {
     
-    var context: TelemetryContext = .init()
     var additionalFields: (() -> AdditionalAnalyticsFields)?
     var checkoutAttemptId: String? { underlyingCheckoutAttemptId }
 
