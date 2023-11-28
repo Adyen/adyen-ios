@@ -219,12 +219,14 @@ class AnalyticsProviderTests: XCTestCase {
             }
         }
         
+        var analyticsConfiguration = AnalyticsConfiguration()
+        analyticsConfiguration.context = .init(version: "version", platform: "platform")
+        
         let analyticsProvider = AnalyticsProvider(
             apiClient: apiClient,
-            configuration: AnalyticsConfiguration()
+            configuration: analyticsConfiguration
         )
         
-        analyticsProvider.context = .init(version: "version", platform: "platform")
         analyticsProvider.additionalFields = {
             .init(amount: amount)
         }
