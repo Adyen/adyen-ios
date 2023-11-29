@@ -11,6 +11,29 @@ import XCTest
 
 extension XCTestCase {
     
+    enum TestPauseInterval {
+        case seconds(Int)
+        case milliseconds(Int)
+        
+        var seconds: TimeInterval {
+            switch self {
+            case let .seconds(seconds):
+                return TimeInterval(seconds)
+            case let .milliseconds(milliseconds):
+                return TimeInterval(milliseconds) / 1_000
+            }
+        }
+        
+        var milliseconds: Int {
+            switch self {
+            case let .seconds(seconds):
+                return seconds * 1_000
+            case let .milliseconds(milliseconds):
+                return milliseconds
+            }
+        }
+    }
+    
     /// Waits for a specified amount of time
     ///
     /// - Parameters:
@@ -37,15 +60,15 @@ extension XCTestCase {
     func wait(
         until expectation: () -> Bool,
         timeout: TimeInterval = 60,
+        pauseInterval: TestPauseInterval = .milliseconds(10),
         message: String? = nil
     ) {
-        var timeLeft = Int(timeout * 1000)
-        let incrementInterval = 10
+        var timeLeft = timeout
         
         var result: Bool = expectation()
         while timeLeft > 0, result == false {
-            wait(for: .milliseconds(incrementInterval))
-            timeLeft -= incrementInterval
+            wait(for: .milliseconds(pauseInterval.milliseconds))
+            timeLeft -= pauseInterval.seconds
             result = expectation()
         }
         
