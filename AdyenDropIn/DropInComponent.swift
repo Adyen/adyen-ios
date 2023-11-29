@@ -60,6 +60,27 @@ public final class DropInComponent: NSObject,
         self.configuration = configuration
         self.context = context
         self.paymentMethods = paymentMethods
+        
+        let scheduler = SimpleScheduler(maximumCount: 3)
+        self.apiClient = APIClient(apiContext: context.apiContext)
+            .retryAPIClient(with: scheduler)
+            .retryOnErrorAPIClient()
+        
+        super.init()
+    }
+    
+    /// For testing only
+    internal init(paymentMethods: PaymentMethods,
+                  context: AdyenContext,
+                  configuration: Configuration = .init(),
+                  title: String? = nil,
+                  apiClient: APIClientProtocol) {
+        self.title = title ?? Bundle.main.displayName
+        self.configuration = configuration
+        self.context = context
+        self.paymentMethods = paymentMethods
+        self.apiClient = apiClient
+        
         super.init()
     }
 
@@ -92,12 +113,7 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Handling Partial Payments
 
-    private lazy var apiClient: APIClientProtocol = {
-        let scheduler = SimpleScheduler(maximumCount: 3)
-        return APIClient(apiContext: context.apiContext)
-            .retryAPIClient(with: scheduler)
-            .retryOnErrorAPIClient()
-    }()
+    private let apiClient: APIClientProtocol
     
     internal func reloadComponentManager() {
         componentManager = createComponentManager(componentManager.order)
