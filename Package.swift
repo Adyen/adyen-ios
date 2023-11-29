@@ -51,8 +51,8 @@ let package = Package(
             targets: ["AdyenCashAppPay"]
         ),
 	.library(
-            name: "AdyenTwintSDK",
-            targets: ["AdyenTwintSDK"]
+            name: "AdyenTwint",
+            targets: ["AdyenTwint"]
         )
     ],
     dependencies: [
@@ -176,12 +176,12 @@ let package = Package(
             path: "AdyenCashAppPay"
         ),
 	 .target(
-            name: "AdyenTwintSDK",
+            name: "AdyenTwint",
             dependencies: [
                 .target(name: "Adyen"),
 		.target(name: "TwintSDK")
             ],
-            path: "AdyenTwintSDK"
+            path: "AdyenTwint"
         ),
         .binaryTarget(
             name: "TwintSDK",

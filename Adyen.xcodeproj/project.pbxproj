@@ -60,11 +60,11 @@
 		00C3DB0F2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */; };
 		00D5B8662A4C63FE003CFCD0 /* CardComponentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */; };
 		00D5B8672A4C63FE003CFCD0 /* CardComponentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */; };
-		00E5D6552AF4E99B00CDE118 /* AdyenTwintSDK.docc in Sources */ = {isa = PBXBuildFile; fileRef = 00E5D6542AF4E99B00CDE118 /* AdyenTwintSDK.docc */; };
-		00E5D6562AF4E99B00CDE118 /* AdyenTwintSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 00E5D6532AF4E99B00CDE118 /* AdyenTwintSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		00E5D6592AF4E99B00CDE118 /* AdyenTwintSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6512AF4E99B00CDE118 /* AdyenTwintSDK.framework */; };
-		00E5D65A2AF4E99B00CDE118 /* AdyenTwintSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6512AF4E99B00CDE118 /* AdyenTwintSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		00E5D65F2AF4EA2D00CDE118 /* TwintSDKComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5D65E2AF4EA2D00CDE118 /* TwintSDKComponent.swift */; };
+		00E5D6552AF4E99B00CDE118 /* AdyenTwint.docc in Sources */ = {isa = PBXBuildFile; fileRef = 00E5D6542AF4E99B00CDE118 /* AdyenTwint.docc */; };
+		00E5D6562AF4E99B00CDE118 /* AdyenTwint.h in Headers */ = {isa = PBXBuildFile; fileRef = 00E5D6532AF4E99B00CDE118 /* AdyenTwint.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		00E5D6592AF4E99B00CDE118 /* AdyenTwint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */; };
+		00E5D65A2AF4E99B00CDE118 /* AdyenTwint.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		00E5D65F2AF4EA2D00CDE118 /* TwintComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5D65E2AF4EA2D00CDE118 /* TwintComponent.swift */; };
 		00E5D6612AF527C200CDE118 /* TwintSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6602AF527C200CDE118 /* TwintSDK.xcframework */; };
 		00EA4ED4280412140053D938 /* DefaultAddressViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */; };
 		00EA4ED7280590050053D938 /* AtomeAddressViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */; };
@@ -1236,7 +1236,7 @@
 				F92327C525A46EF0002C5BC4 /* AdyenEncryption.framework in Embed Frameworks */,
 				E72375D927AABF400020DCF9 /* AdyenWeChatPay.framework in Embed Frameworks */,
 				F973A91A2791C3B0005AA753 /* AdyenActions.framework in Embed Frameworks */,
-				00E5D65A2AF4E99B00CDE118 /* AdyenTwintSDK.framework in Embed Frameworks */,
+				00E5D65A2AF4E99B00CDE118 /* AdyenTwint.framework in Embed Frameworks */,
 				E2C0E099220B0827008616F6 /* Adyen.framework in Embed Frameworks */,
 				E9B36CB32243B2FF00EAA368 /* AdyenDropIn.framework in Embed Frameworks */,
 				E2C0E0AE220B0840008616F6 /* AdyenCard.framework in Embed Frameworks */,
@@ -1298,10 +1298,10 @@
 		00A25E5F2A404342001B32B6 /* AdyenSdkVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdyenSdkVersion.swift; sourceTree = "<group>"; };
 		00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsSettingsView.swift; sourceTree = "<group>"; };
 		00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentSettingsView.swift; sourceTree = "<group>"; };
-		00E5D6512AF4E99B00CDE118 /* AdyenTwintSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenTwintSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		00E5D6532AF4E99B00CDE118 /* AdyenTwintSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenTwintSDK.h; sourceTree = "<group>"; };
-		00E5D6542AF4E99B00CDE118 /* AdyenTwintSDK.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = AdyenTwintSDK.docc; sourceTree = "<group>"; };
-		00E5D65E2AF4EA2D00CDE118 /* TwintSDKComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintSDKComponent.swift; sourceTree = "<group>"; };
+		00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenTwint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E5D6532AF4E99B00CDE118 /* AdyenTwint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenTwint.h; sourceTree = "<group>"; };
+		00E5D6542AF4E99B00CDE118 /* AdyenTwint.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = AdyenTwint.docc; sourceTree = "<group>"; };
+		00E5D65E2AF4EA2D00CDE118 /* TwintComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintComponent.swift; sourceTree = "<group>"; };
 		00E5D6602AF527C200CDE118 /* TwintSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TwintSDK.xcframework; path = XCFramework/Dynamic/TwintSDK.xcframework; sourceTree = "<group>"; };
 		00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAddressViewModelBuilder.swift; sourceTree = "<group>"; };
 		00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeAddressViewModelBuilder.swift; sourceTree = "<group>"; };
@@ -2203,7 +2203,7 @@
 				E72375DD27AABF450020DCF9 /* AdyenWeChatPayInternal in Frameworks */,
 				E72375D827AABF400020DCF9 /* AdyenWeChatPay.framework in Frameworks */,
 				F9237D3428CA1E7C004F9929 /* Adyen3DS2 in Frameworks */,
-				00E5D6592AF4E99B00CDE118 /* AdyenTwintSDK.framework in Frameworks */,
+				00E5D6592AF4E99B00CDE118 /* AdyenTwint.framework in Frameworks */,
 				8169B9EC2A0506CC00AAC9F8 /* Adyen.framework in Frameworks */,
 				F9175EEE2593955C00D653BE /* AdyenComponents.framework in Frameworks */,
 				F92327C425A46EF0002C5BC4 /* AdyenEncryption.framework in Frameworks */,
@@ -2465,14 +2465,14 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		00E5D6522AF4E99B00CDE118 /* AdyenTwintSDK */ = {
+		00E5D6522AF4E99B00CDE118 /* AdyenTwint */ = {
 			isa = PBXGroup;
 			children = (
-				00E5D6532AF4E99B00CDE118 /* AdyenTwintSDK.h */,
-				00E5D65E2AF4EA2D00CDE118 /* TwintSDKComponent.swift */,
-				00E5D6542AF4E99B00CDE118 /* AdyenTwintSDK.docc */,
+				00E5D6532AF4E99B00CDE118 /* AdyenTwint.h */,
+				00E5D65E2AF4EA2D00CDE118 /* TwintComponent.swift */,
+				00E5D6542AF4E99B00CDE118 /* AdyenTwint.docc */,
 			);
-			path = AdyenTwintSDK;
+			path = AdyenTwint;
 			sourceTree = "<group>";
 		};
 		00EACBAA2872E8CA0082B360 /* OnlineBanking */ = {
@@ -3399,7 +3399,7 @@
 				E9B36CAC2243B2FE00EAA368 /* AdyenDropIn */,
 				F9620D8323C73B0D005209FC /* AdyenWeChatPay */,
 				A04F8C1F29E5950100F3F62B /* AdyenCashAppPay */,
-				00E5D6522AF4E99B00CDE118 /* AdyenTwintSDK */,
+				00E5D6522AF4E99B00CDE118 /* AdyenTwint */,
 				E7E58BF725ADDF8400E869F9 /* Demo */,
 				E7E58BF825ADDFA000E869F9 /* Tests */,
 				007D790A2812C81400382D31 /* UITests */,
@@ -3426,7 +3426,7 @@
 				F92980A627CE2B33000CA5CA /* AdyenSession.framework */,
 				F9CCA3B5296ECB3E00AD643D /* AdyenUIHostUITests.xctest */,
 				A04F8C1E29E5950100F3F62B /* AdyenCashAppPay.framework */,
-				00E5D6512AF4E99B00CDE118 /* AdyenTwintSDK.framework */,
+				00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -5256,7 +5256,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E5D6562AF4E99B00CDE118 /* AdyenTwintSDK.h in Headers */,
+				00E5D6562AF4E99B00CDE118 /* AdyenTwint.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5343,9 +5343,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		00E5D6502AF4E99A00CDE118 /* AdyenTwintSDK */ = {
+		00E5D6502AF4E99A00CDE118 /* AdyenTwint */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E5D65B2AF4E99C00CDE118 /* Build configuration list for PBXNativeTarget "AdyenTwintSDK" */;
+			buildConfigurationList = 00E5D65B2AF4E99C00CDE118 /* Build configuration list for PBXNativeTarget "AdyenTwint" */;
 			buildPhases = (
 				00E5D64C2AF4E99A00CDE118 /* Headers */,
 				00E5D64D2AF4E99A00CDE118 /* Sources */,
@@ -5357,9 +5357,9 @@
 			dependencies = (
 				00050F002B0232D600A89EDC /* PBXTargetDependency */,
 			);
-			name = AdyenTwintSDK;
+			name = AdyenTwint;
 			productName = AdyenTwintSDK;
-			productReference = 00E5D6512AF4E99B00CDE118 /* AdyenTwintSDK.framework */;
+			productReference = 00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		A04F8C1D29E5950100F3F62B /* AdyenCashAppPay */ = {
@@ -5836,7 +5836,7 @@
 				F95899C525FA524100E4113F /* AdyenSwiftUI */,
 				F9620D8123C73B0D005209FC /* AdyenWeChatPay */,
 				A04F8C1D29E5950100F3F62B /* AdyenCashAppPay */,
-				00E5D6502AF4E99A00CDE118 /* AdyenTwintSDK */,
+				00E5D6502AF4E99A00CDE118 /* AdyenTwint */,
 				C96A8E2826CA800A000BB8C6 /* Localization */,
 				E2C0E03B22097917008616F6 /* AdyenUIKitTests */,
 				F9615FAE252DDA4800FA8EDD /* AdyenSwiftUITests */,
@@ -6295,8 +6295,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E5D6552AF4E99B00CDE118 /* AdyenTwintSDK.docc in Sources */,
-				00E5D65F2AF4EA2D00CDE118 /* TwintSDKComponent.swift in Sources */,
+				00E5D6552AF4E99B00CDE118 /* AdyenTwint.docc in Sources */,
+				00E5D65F2AF4EA2D00CDE118 /* TwintComponent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7251,7 +7251,7 @@
 		};
 		00E5D6582AF4E99B00CDE118 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 00E5D6502AF4E99A00CDE118 /* AdyenTwintSDK */;
+			target = 00E5D6502AF4E99A00CDE118 /* AdyenTwint */;
 			targetProxy = 00E5D6572AF4E99B00CDE118 /* PBXContainerItemProxy */;
 		};
 		81FAFB472AAF715F00828999 /* PBXTargetDependency */ = {
@@ -7518,7 +7518,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.CheckoutDemoUIKit.AdyenTwintSDK;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenTwint;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -7551,7 +7551,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.CheckoutDemoUIKit.AdyenTwintSDK;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenTwint;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -8616,7 +8616,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E5D65B2AF4E99C00CDE118 /* Build configuration list for PBXNativeTarget "AdyenTwintSDK" */ = {
+		00E5D65B2AF4E99C00CDE118 /* Build configuration list for PBXNativeTarget "AdyenTwint" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E5D65C2AF4E99C00CDE118 /* Debug */,

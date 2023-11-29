@@ -7,10 +7,10 @@
 @_spi(AdyenInternal) import Adyen
 import TwintSDK
 
-public final class TwintSDKComponent {
+public final class TwintComponent {
 
     private lazy var formViewController: FormViewController = {
-        
+
         return formViewController
     }()
 
