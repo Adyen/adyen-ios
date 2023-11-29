@@ -7,6 +7,15 @@
 @_spi(AdyenInternal) @testable import Adyen
 
 final class PaymentComponentDelegateMock: PaymentComponentDelegate {
+    
+    init(
+        onDidSubmit: ((PaymentComponentData, PaymentComponent) -> Void)? = nil,
+        onDidFail: ((Error, PaymentComponent) -> Void)? = nil
+    ) {
+        self.onDidSubmit = onDidSubmit
+        self.onDidFail = onDidFail
+    }
+    
     var onDidSubmit: ((PaymentComponentData, PaymentComponent) -> Void)?
     func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         onDidSubmit?(data, component)
