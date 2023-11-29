@@ -61,7 +61,7 @@ extension XCTestCase {
         
         wait(
             until: {
-                let failure = try? verifySnapshot(
+                let failure = try! verifySnapshot(
                   of: viewController(),
                   as: .image(on: device, perceptualPrecision: 0.98),
                   named: name,

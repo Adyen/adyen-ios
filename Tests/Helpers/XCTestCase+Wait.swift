@@ -42,12 +42,14 @@ extension XCTestCase {
         var timeLeft = Int(timeout * 1000)
         let incrementInterval = 10
         
-        while timeLeft > 0, expectation() == false {
+        var result: Bool = expectation()
+        while timeLeft > 0, result == false {
             wait(for: .milliseconds(incrementInterval))
             timeLeft -= incrementInterval
+            result = expectation()
         }
         
-        XCTAssertTrue(expectation(), message ?? "Expectation should be met before timeout \(timeout)s")
+        XCTAssertTrue(result, message ?? "Expectation should be met before timeout \(timeout)s")
     }
     
     /// Waits until  a keyPath of a target matches an expected value
