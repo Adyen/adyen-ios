@@ -59,10 +59,11 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     case mealVoucherSodexo
     case upi
     case cashAppPay
+    case bizum
     case other(String)
     
     // swiftlint:disable cyclomatic_complexity function_body_length
-
+    
     public init?(rawValue: String) {
         switch rawValue {
         case "card": self = .card
@@ -117,10 +118,11 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case "mealVoucher_FR_sodexo": self = .mealVoucherSodexo
         case "upi": self = .upi
         case "cashapp": self = .cashAppPay
+        case "bizum": self = .bizum
         default: self = .other(rawValue)
         }
     }
-
+    
     public var rawValue: String {
         switch self {
         case .card: return "card"
@@ -174,9 +176,13 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .mealVoucherSodexo: return "mealVoucher_FR_sodexo"
         case .upi: return "upi"
         case .cashAppPay: return "cashapp"
+        case .bizum: return "bizum"
         case let .other(value): return value
         }
     }
+}
+
+extension PaymentMethodType {
     
     /// The brand name of the card type
     ///
@@ -235,11 +241,10 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .mealVoucherSodexo: return "meal voucher sodexo"
         case .upi: return "UPI"
         case .cashAppPay: return "cash app"
+        case .bizum: return "bizum"
         case let .other(name): return name.replacingOccurrences(of: "_", with: " ")
         }
     }
-    // swiftlint:enable cyclomatic_complexity
-
     // swiftlint:enable cyclomatic_complexity function_body_length
 }
 

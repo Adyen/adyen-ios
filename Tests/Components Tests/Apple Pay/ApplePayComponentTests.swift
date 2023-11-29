@@ -41,13 +41,12 @@ class ApplePayComponentTest: XCTestCase {
     override func tearDown() {
         sut = nil
         mockDelegate = nil
-        UIApplication.shared.keyWindow!.rootViewController?.dismiss(animated: false)
-        UIApplication.shared.keyWindow!.rootViewController = emptyVC
+        
+        UIApplication.shared.adyen.mainKeyWindow?.rootViewController?.dismiss(animated: false)
+        setupRootViewController(emptyVC)
     }
 
     func testApplePayViewControllerShouldCallDelegateDidFail() {
-        guard Available.iOS12 else { return }
-
         // This is necessary to give ApplePay time to disappear from screen.
         wait(for: .seconds(2))
 
@@ -60,10 +59,8 @@ class ApplePayComponentTest: XCTestCase {
             self.mockDelegate = nil // to prevent false triggering
         }
 
-        UIApplication.shared.keyWindow!.rootViewController = emptyVC
-        UIApplication.shared.keyWindow!.rootViewController!.present(viewController, animated: false)
+        presentOnRoot(viewController)
         
-        wait(for: .seconds(1))
         self.sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
 
         waitForExpectations(timeout: 10)
@@ -71,18 +68,13 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     func testApplePayViewControllerShouldCallFinalizeCompletion() {
-        guard Available.iOS12 else { return }
-
         // This is necessary to give ApplePay time to disappear from screen.
         wait(for: .seconds(2))
 
         let viewController = sut!.viewController
         let onDidFinalizeExpectation = expectation(description: "Wait for didFinalize call")
 
-        UIApplication.shared.keyWindow!.rootViewController = emptyVC
-        UIApplication.shared.keyWindow!.rootViewController!.present(viewController, animated: false)
-        
-        wait(for: .seconds(1))
+        presentOnRoot(viewController)
 
         sut.finalizeIfNeeded(with: true) {
             onDidFinalizeExpectation.fulfill()
@@ -93,8 +85,6 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     func testApplePayShipping() {
-        guard Available.iOS12 else { return }
-
         var configuration = ApplePayComponent.Configuration(payment: Dummy.createTestApplePayPayment(),
                                                             merchantIdentifier: "test_id")
         let shippingMethods = [PKShippingMethod(label: "Shipping1", amount: 1.0), PKShippingMethod(label: "Shipping2", amount: 2.0)]
@@ -133,8 +123,6 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     func testApplePayShippingContact() {
-        guard Available.iOS12 else { return }
-
         sut.applePayDelegate = mockApplePayDelegate
         mockApplePayDelegate.onShippingContactChange = { contact, payment in
             .init(paymentSummaryItems: [
@@ -166,9 +154,11 @@ class ApplePayComponentTest: XCTestCase {
         waitForExpectations(timeout: 4)
     }
 
-    @available(iOS 15.0, *)
-    func testApplePayCoupon() {
-        guard Available.iOS15 else { return }
+    func testApplePayCoupon() throws {
+        guard #available(iOS 15.0, *) else {
+            // XCTestCase does not respect @available so we have to skip the test like this
+            throw XCTSkip("Unsupported iOS version")
+        }
 
         sut.applePayDelegate = mockApplePayDelegate
         (mockApplePayDelegate as! ApplePayDelegateMockiOS15).onCouponChange = { coupon, payment in
@@ -308,8 +298,12 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(paymentRequest.requiredShippingContactFields, expectedRequiredShippingFields)
     }
     
-    @available(iOS 16.0, *)
-    func testNewInitSuccess() {
+    func testNewInitSuccess() throws {
+        guard #available(iOS 16.0, *) else {
+            // XCTestCase does not respect @available so we have to skip the test like this
+           throw XCTSkip("Unsupported iOS version")
+        }
+        
         let request = PKPaymentRequest()
         request.merchantIdentifier = "test_id"
         request.countryCode = getRandomCountryCode()
@@ -384,11 +378,7 @@ class ApplePayComponentTest: XCTestCase {
         let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: ["mc", "elo", "unknown_network"])
         let supportedNetworks = paymentMethod.supportedNetworks
 
-        if #available(iOS 12.1.1, *) {
-            XCTAssertTrue(compareCollections(supportedNetworks, [.masterCard, .elo]))
-        } else {
-            XCTAssertEqual(supportedNetworks, [.masterCard])
-        }
+        XCTAssertTrue(compareCollections(supportedNetworks, [.masterCard, .elo]))
     }
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {

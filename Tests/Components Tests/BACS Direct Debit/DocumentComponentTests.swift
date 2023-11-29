@@ -26,9 +26,7 @@ class DocumentComponentTests: XCTestCase {
             XCTAssertNotNil(component.viewController as? ADYViewController)
             let viewController = component.viewController as! ADYViewController
             
-            UIApplication.shared.keyWindow?.rootViewController = viewController
-            
-            wait(for: .milliseconds(300))
+            setupRootViewController(viewController)
             
             let pdfButton: UIButton? = viewController.view.findView(by: "mainButton")
             let messageLabel: UILabel? = viewController.view.findView(by: "messageLabel")

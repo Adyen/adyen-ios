@@ -81,7 +81,8 @@ public class ListItem: FormItem {
     
     /// Indicate to the ``ListViewController`` to start loading / show the loading indicator for this specific item
     ///
-    /// To stop the loading for the whole list either  call  ListViewController.``ListViewController/stopLoading()`` or ListItem.``ListItem/stopLoading()``
+    /// To stop the loading for the whole list either  call  ListViewController.``ListViewController/stopLoading()``
+    /// or ListItem.``ListItem/stopLoading()``
     public func startLoading() {
         setLoading(true)
     }
@@ -93,7 +94,7 @@ public class ListItem: FormItem {
     
     private func setLoading(_ isLoading: Bool) {
         guard let loadingHandler else {
-            assertionFailure("No loadingHandler provided")
+            AdyenAssertion.assertionFailure(message: "No loadingHandler provided")
             return
         }
         

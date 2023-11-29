@@ -115,7 +115,7 @@ class AffirmComponentTests: XCTestCase {
         sut.delegate = delegate
         let expectedBillingAddress = PostalAddressMocks.newYorkPostalAddress
         let expectedDeliveryAddress = PostalAddressMocks.losAngelesPostalAddress
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         
         // Then
         let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
@@ -124,7 +124,7 @@ class AffirmComponentTests: XCTestCase {
             let details = data.paymentMethod as! AffirmDetails
             XCTAssertEqual(details.shopperName?.firstName, "Katrina")
             XCTAssertEqual(details.shopperName?.lastName, "Del Mar")
-            XCTAssertEqual(details.telephoneNumber, "2025550146")
+            XCTAssertEqual(details.telephoneNumber, "+12025550146")
             XCTAssertEqual(details.emailAddress, "katrina@mail.com")
             XCTAssertEqual(details.billingAddress, expectedBillingAddress)
             XCTAssertEqual(details.deliveryAddress, expectedDeliveryAddress)
@@ -145,7 +145,7 @@ class AffirmComponentTests: XCTestCase {
         
         let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
         populate(textItemView: phoneNumberView, with: "2025550146")
-        
+
         let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.email))
         populate(textItemView: emailView, with: "katrina@mail.com")
 
@@ -180,9 +180,8 @@ class AffirmComponentTests: XCTestCase {
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          context: context,
                                          configuration: config)
-        UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
-
-        wait(for: .seconds(1))
+        
+        setupRootViewController(prefillSut.viewController)
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -198,7 +197,7 @@ class AffirmComponentTests: XCTestCase {
         XCTAssertEqual(expectedLastName, lastName)
 
         let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
-        let expectedPhoneNumber = try XCTUnwrap(shopperInformation.telephoneNumber)
+        let expectedPhoneNumber = try XCTUnwrap(shopperInformation.phoneNumber?.value)
         let phoneNumber = phoneNumberView.item.value
         XCTAssertEqual(expectedPhoneNumber, phoneNumber)
 
@@ -228,9 +227,9 @@ class AffirmComponentTests: XCTestCase {
         let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
                                          context: context,
                                          configuration: config)
-        UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
+        prefillSut.phoneItem?.value = "+1223434545"
 
-        wait(for: .seconds(1))
+        setupRootViewController(prefillSut.viewController)
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -246,7 +245,7 @@ class AffirmComponentTests: XCTestCase {
         XCTAssertEqual(expectedLastName, lastName)
 
         let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
-        let expectedPhoneNumber = try XCTUnwrap(shopperInformation.telephoneNumber)
+        let expectedPhoneNumber = prefillSut.phoneItem?.value
         let phoneNumber = phoneNumberView.item.value
         XCTAssertEqual(expectedPhoneNumber, phoneNumber)
 
@@ -271,7 +270,7 @@ class AffirmComponentTests: XCTestCase {
 
     func testAffirm_givenNoShopperInformation_shouldNotPrefill() throws {
         // Given
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         wait(for: .seconds(1))
 
@@ -308,7 +307,7 @@ class AffirmComponentTests: XCTestCase {
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
     }
 
-    private func testViewWillAppear_shouldSendTelemetryEvent() throws {
+    func testViewWillAppear_shouldSendTelemetryEvent() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
@@ -340,7 +339,7 @@ class AffirmComponentTests: XCTestCase {
         let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
         let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
                                                              emailAddress: "katrina@mail.com",
-                                                             telephoneNumber: "1234567890",
+                                                             phoneNumber: PhoneNumber(value: "1234567", callingCode: "+1"),
                                                              billingAddress: billingAddress,
                                                              deliveryAddress: deliveryAddress,
                                                              socialSecurityNumber: "78542134370")
@@ -351,7 +350,7 @@ class AffirmComponentTests: XCTestCase {
         let billingAddress = PostalAddressMocks.newYorkPostalAddress
         let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
                                                              emailAddress: "katrina@mail.com",
-                                                             telephoneNumber: "1234567890",
+                                                             phoneNumber: nil,
                                                              billingAddress: billingAddress,
                                                              deliveryAddress: nil,
                                                              socialSecurityNumber: "78542134370")

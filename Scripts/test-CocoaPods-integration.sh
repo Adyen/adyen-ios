@@ -89,7 +89,7 @@ then
     pod 'Adyen', :path => '../'
     pod 'Adyen/Session', :path => '../'
     pod 'Adyen/SwiftUI', :path => '../'
-    pod 'AdyenAuthentication'
+    pod 'Adyen/DelegatedAuthentication', :path => '../'
     pod 'Adyen/CashAppPay', :path => '../'
   end
 

@@ -91,7 +91,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
                                        context: Dummy.context,
                                        configuration: config)
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         
         wait(for: .milliseconds(300))
         
@@ -182,7 +182,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
         }
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         
         wait(for: .milliseconds(300))
         
@@ -210,7 +210,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
                                        context: Dummy.context,
                                        configuration: BasicPersonalInfoFormComponent.Configuration())
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))
         
@@ -232,9 +232,8 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         let prefillSut = SevenElevenComponent(paymentMethod: paymentMethod,
                                               context: Dummy.context,
                                               configuration: config)
-        UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
-
-        wait(for: .milliseconds(300))
+        
+        setupRootViewController(prefillSut.viewController)
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -250,7 +249,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         XCTAssertEqual(expectedLastName, lastName)
 
         let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: ViewIdentifier.phone))
-        let expectedPhoneNumber = try XCTUnwrap(shopperInformation.telephoneNumber)
+        let expectedPhoneNumber = try XCTUnwrap(shopperInformation.phoneNumber?.value)
         let phoneNumber = phoneNumberView.item.value
         XCTAssertEqual(expectedPhoneNumber, phoneNumber)
 
@@ -265,7 +264,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         let sut = SevenElevenComponent(paymentMethod: paymentMethod,
                                        context: Dummy.context,
                                        configuration: BasicPersonalInfoFormComponent.Configuration())
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))
 
@@ -305,12 +304,13 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     private var shopperInformation: PrefilledShopperInformation {
         let billingAddress = PostalAddressMocks.newYorkPostalAddress
         let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
-        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
-                                                             emailAddress: "katrina@mail.com",
-                                                             telephoneNumber: "1234567890",
-                                                             billingAddress: billingAddress,
-                                                             deliveryAddress: deliveryAddress,
-                                                             socialSecurityNumber: "78542134370")
-        return shopperInformation
+        return .init(
+            shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
+            emailAddress: "katrina@mail.com",
+            phoneNumber: .init(value: "1234567890", callingCode: "+1"),
+            billingAddress: billingAddress,
+            deliveryAddress: deliveryAddress,
+            socialSecurityNumber: "78542134370"
+        )
     }
 }

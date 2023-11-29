@@ -97,7 +97,7 @@ class VoucherComponentTests: XCTestCase {
             let component = component as! PresentableComponentWrapper
             XCTAssert(component.component === sut)
             
-            UIApplication.shared.keyWindow?.rootViewController = component.viewController
+            setupRootViewController(component.viewController)
             
             let view = sut.view
             
@@ -113,13 +113,12 @@ class VoucherComponentTests: XCTestCase {
             
             wait(for: .milliseconds(300))
             
-            let alertSheet = UIViewController.findTopPresenter() as? UIAlertController
-            XCTAssertNotNil(alertSheet)
-            XCTAssertEqual(alertSheet?.actions.count, 4)
-            XCTAssertEqual(alertSheet?.actions[0].title, "Copy code")
-            XCTAssertEqual(alertSheet?.actions[1].title, "Download PDF")
-            XCTAssertEqual(alertSheet?.actions[2].title, "Read instructions")
-            XCTAssertEqual(alertSheet?.actions[3].title, "Cancel")
+            let alertSheet = try! XCTUnwrap(UIViewController.topPresenter() as? UIAlertController)
+            XCTAssertEqual(alertSheet.actions.count, 4)
+            XCTAssertEqual(alertSheet.actions[0].title, "Copy code")
+            XCTAssertEqual(alertSheet.actions[1].title, "Download PDF")
+            XCTAssertEqual(alertSheet.actions[2].title, "Read instructions")
+            XCTAssertEqual(alertSheet.actions[3].title, "Cancel")
             
             presentationDelegateExpectation.fulfill()
         }
@@ -137,7 +136,7 @@ class VoucherComponentTests: XCTestCase {
             let component = component as! PresentableComponentWrapper
             XCTAssert(component.component === sut)
             
-            UIApplication.shared.keyWindow?.rootViewController = component.viewController
+            self.setupRootViewController(component.viewController)
             
             let view = sut.view
             
@@ -151,14 +150,12 @@ class VoucherComponentTests: XCTestCase {
             
             optionsButton.sendActions(for: .touchUpInside)
             
-            wait(for: .milliseconds(300))
-            
-            let alertSheet = UIViewController.findTopPresenter() as? UIAlertController
+            let alertSheet = try! waitUntilTopPresenter(isOfType: UIAlertController.self)
             XCTAssertNotNil(alertSheet)
-            XCTAssertEqual(alertSheet?.actions.count, 3)
-            XCTAssertEqual(alertSheet?.actions[0].title, "Copy code")
-            XCTAssertEqual(alertSheet?.actions[1].title, "Save as image")
-            XCTAssertEqual(alertSheet?.actions[2].title, "Cancel")
+            XCTAssertEqual(alertSheet.actions.count, 3)
+            XCTAssertEqual(alertSheet.actions[0].title, "Copy code")
+            XCTAssertEqual(alertSheet.actions[1].title, "Save as image")
+            XCTAssertEqual(alertSheet.actions[2].title, "Cancel")
             
             presentationDelegateExpectation.fulfill()
         }

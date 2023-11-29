@@ -28,13 +28,14 @@ class ACHDirectDebitComponentTests: XCTestCase {
     private var shopperInformation: PrefilledShopperInformation {
         let billingAddress = PostalAddressMocks.newYorkPostalAddress
         let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
-        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
-                                                             emailAddress: "katrina@mail.com",
-                                                             telephoneNumber: "1234567890",
-                                                             billingAddress: billingAddress,
-                                                             deliveryAddress: deliveryAddress,
-                                                             socialSecurityNumber: "78542134370")
-        return shopperInformation
+        return .init(
+            shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
+            emailAddress: "katrina@mail.com",
+            phoneNumber: .init(value: "1234567890", callingCode: "+1"),
+            billingAddress: billingAddress,
+            deliveryAddress: deliveryAddress,
+            socialSecurityNumber: "78542134370"
+        )
     }
 
     func testLocalizationWithCustomTableName() throws {
@@ -101,7 +102,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                                                billingAddressCountryCodes: ["US", "UK"]),
                                           publicKeyProvider: PublicKeyProviderMock())
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         wait(for: .milliseconds(300))
         
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem")
@@ -170,7 +171,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))
 
@@ -191,7 +192,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
         
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         wait(for: .milliseconds(300))
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.Test name"))
@@ -216,7 +217,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           configuration: config,
                                           publicKeyProvider: PublicKeyProviderMock())
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         wait(for: .milliseconds(300))
         
         XCTAssertFalse(sut.payButton.showsActivityIndicator)
@@ -231,7 +232,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           context: context,
                                           publicKeyProvider: PublicKeyProviderMock())
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
         wait(for: .milliseconds(300))
         
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.payButtonItem.button")

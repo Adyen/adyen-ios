@@ -82,7 +82,7 @@ class DokuComponentTests: XCTestCase {
                                 context: context,
                                 configuration: DokuComponent.Configuration())
 
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))
         
@@ -104,9 +104,8 @@ class DokuComponentTests: XCTestCase {
         let prefillSut = DokuComponent(paymentMethod: paymentMethod,
                                        context: context,
                                        configuration: config)
-        UIApplication.shared.keyWindow?.rootViewController = prefillSut.viewController
-
-        wait(for: .milliseconds(300))
+        
+        setupRootViewController(prefillSut.viewController)
 
         // Then
         let view: UIView = prefillSut.viewController.view
@@ -132,7 +131,7 @@ class DokuComponentTests: XCTestCase {
         let sut = DokuComponent(paymentMethod: paymentMethod,
                                 context: context,
                                 configuration: DokuComponent.Configuration())
-        UIApplication.shared.keyWindow?.rootViewController = sut.viewController
+        setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))
 
@@ -179,12 +178,13 @@ class DokuComponentTests: XCTestCase {
     private var shopperInformation: PrefilledShopperInformation {
         let billingAddress = PostalAddressMocks.newYorkPostalAddress
         let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
-        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
-                                                             emailAddress: "katrina@mail.com",
-                                                             telephoneNumber: "1234567890",
-                                                             billingAddress: billingAddress,
-                                                             deliveryAddress: deliveryAddress,
-                                                             socialSecurityNumber: "78542134370")
-        return shopperInformation
+        return .init(
+            shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
+            emailAddress: "katrina@mail.com",
+            phoneNumber: .init(value: "1234567890", callingCode: "+1"),
+            billingAddress: billingAddress,
+            deliveryAddress: deliveryAddress,
+            socialSecurityNumber: "78542134370"
+        )
     }
 }

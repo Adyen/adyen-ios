@@ -11,23 +11,20 @@ import XCTest
 
 final class BoletoComponentUITests: XCTestCase {
 
-    private var paymentMethod: BoletoPaymentMethod!
-    private var context: AdyenContext!
-    private var style: FormComponentStyle!
-
-    override func setUpWithError() throws {
-        paymentMethod = BoletoPaymentMethod(type: .boleto, name: "Boleto Bancario")
-        context = AdyenContext(apiContext: Dummy.apiContext, payment: Dummy.payment, analyticsProvider: AnalyticsProviderMock())
-        try super.setUpWithError()
+    private var context: AdyenContext {
+        .init(
+            apiContext: Dummy.apiContext,
+            payment: Dummy.payment,
+            analyticsProvider: AnalyticsProviderMock()
+        )
     }
-
-    override func tearDownWithError() throws {
-        context = nil
-        try super.tearDownWithError()
+    
+    private var paymentMethod: BoletoPaymentMethod {
+        .init(type: .boleto, name: "Boleto Bancario")
     }
 
     func testUIConfiguration() {
-        style = FormComponentStyle()
+        var style = FormComponentStyle()
 
         let textStyle = TextStyle(
             font: .preferredFont(forTextStyle: .body),
@@ -84,7 +81,7 @@ final class BoletoComponentUITests: XCTestCase {
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
-    func testPaymentDataProvided() {
+    func testPaymentDataProvided() throws {
         let mockInformation = Dummy.dummyFullPrefilledInformation
         let mockConfiguration = Dummy.getConfiguration(with: mockInformation, showEmailAddress: true)
         let mockDelegate = PaymentComponentDelegateMock()
@@ -93,11 +90,12 @@ final class BoletoComponentUITests: XCTestCase {
                                   context: context,
                                   configuration: mockConfiguration)
         sut.delegate = mockDelegate
+        
+        presentOnRoot(sut.viewController)
 
         let dummyExpectation = XCTestExpectation(description: "Dummy Expectation")
 
-        let submitButton: SubmitButton? = sut.viewController.view.findView(by: "payButtonItem.button") as? SubmitButton
-        submitButton?.sendActions(for: .touchUpInside)
+        let submitButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(by: "payButtonItem.button"))
 
         mockDelegate.onDidSubmit = { paymentData, paymentComponent in
             let boletoDetails = paymentData.paymentMethod as? BoletoDetails
@@ -110,40 +108,33 @@ final class BoletoComponentUITests: XCTestCase {
             XCTAssertEqual(boletoDetails?.type, sut.boletoPaymentMethod.type)
             XCTAssertNil(boletoDetails?.telephoneNumber)
 
+            self.wait(for: .aMoment)
+            self.assertViewControllerImage(matching: sut.viewController, named: "boleto_flow")
+            
             dummyExpectation.fulfill()
         }
+        
+        wait(for: .aMoment)
 
-        wait(for: .milliseconds(300))
-        assertViewControllerImage(matching: sut.viewController, named: "boleto_flow")
+        submitButton.sendActions(for: .touchUpInside)
+        
+        wait(for: [dummyExpectation], timeout: 5)
     }
     
-    func testPaymentDataProvidedNoEmail() {
+    func testPaymentDataNoName() throws {
         var mockInformation = Dummy.dummyFullPrefilledInformation
-        mockInformation.emailAddress = nil
+        mockInformation.shopperName = nil
+        
         let mockConfiguration = Dummy.getConfiguration(with: mockInformation, showEmailAddress: true)
-        let mockDelegate = PaymentComponentDelegateMock()
+        
         let sut = BoletoComponent(paymentMethod: paymentMethod,
                                   context: context,
                                   configuration: mockConfiguration)
-        sut.delegate = mockDelegate
-        let dummyExpectation = XCTestExpectation(description: "Dummy Expectation")
 
-        let submitButton: SubmitButton? = sut.viewController.view.findView(by: "payButtonItem.button") as? SubmitButton
+        let submitButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(by: "payButtonItem.button"))
+        submitButton.sendActions(for: .touchUpInside)
 
-        submitButton?.sendActions(for: .touchUpInside)
-
-        mockDelegate.onDidSubmit = { paymentData, paymentComponent in
-            XCTAssertTrue(paymentComponent === sut)
-
-            let boletoDetails = paymentData.paymentMethod as? BoletoDetails
-            XCTAssertNotNil(boletoDetails)
-
-            XCTAssertNil(boletoDetails?.emailAddress)
-
-            dummyExpectation.fulfill()
-        }
-
-        wait(for: .milliseconds(300))
-        assertViewControllerImage(matching: sut.viewController, named: "boleto_flow")
+        wait(for: .aMoment)
+        assertViewControllerImage(matching: sut.viewController, named: "boleto_flow_no_name")
     }
 }
