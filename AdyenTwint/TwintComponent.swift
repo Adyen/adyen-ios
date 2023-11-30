@@ -15,6 +15,4 @@ public final class TwintComponent {
     }()
 
     public var requiresModalPresentation: Bool = true
-
-    /// Initializes th
 }
