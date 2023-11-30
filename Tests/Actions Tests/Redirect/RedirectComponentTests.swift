@@ -114,7 +114,7 @@ class RedirectComponentTests: XCTestCase {
         
         let appLauncherExpectation = expectation(description: "Expect appLauncher.openUniversalAppUrl() to be called")
         appLauncher.onOpenUniversalAppUrl = { url, completion in
-            XCTAssertEqual(url, URL(string: "http://maps.apple.com")!)
+            XCTAssertEqual(url, URL(string: "https://maps.apple.com")!)
             completion?(true)
             appLauncherExpectation.fulfill()
         }
@@ -125,7 +125,7 @@ class RedirectComponentTests: XCTestCase {
             delegateExpectation.fulfill()
         }
         
-        let action = RedirectAction(url: URL(string: "http://maps.apple.com")!, paymentData: "test_data")
+        let action = RedirectAction(url: URL(string: "https://maps.apple.com")!, paymentData: "test_data")
         sut.handle(action)
         
         waitForExpectations(timeout: 10, handler: nil)
@@ -155,7 +155,7 @@ class RedirectComponentTests: XCTestCase {
         
         let appLauncherExpectation = expectation(description: "Expect appLauncher.openUniversalAppUrl() to be called")
         appLauncher.onOpenUniversalAppUrl = { url, completion in
-            XCTAssertEqual(url, URL(string: "http://maps.apple.com")!)
+            XCTAssertEqual(url, URL(string: "https://maps.apple.com")!)
             completion?(false)
             appLauncherExpectation.fulfill()
         }
@@ -164,7 +164,7 @@ class RedirectComponentTests: XCTestCase {
             XCTFail("delegate.didOpenExternalApplication() must not to be called")
         }
         
-        let action = RedirectAction(url: URL(string: "http://maps.apple.com")!, paymentData: "test_data")
+        let action = RedirectAction(url: URL(string: "https://maps.apple.com")!, paymentData: "test_data")
         sut.handle(action)
         
         waitForExpectations(timeout: 10, handler: nil)
@@ -263,7 +263,7 @@ class RedirectComponentTests: XCTestCase {
         sut.appLauncher = appLauncher
         let appLauncherExpectation = expectation(description: "Expect appLauncher.openUniversalAppUrl() to be called")
         appLauncher.onOpenUniversalAppUrl = { url, completion in
-            XCTAssertEqual(url, URL(string: "http://google.com")!)
+            XCTAssertEqual(url, URL(string: "https://google.com")!)
             completion?(true)
             appLauncherExpectation.fulfill()
         }
@@ -278,7 +278,7 @@ class RedirectComponentTests: XCTestCase {
         }
         delegate.onDidFail = { _, _ in XCTFail("Should not call onDidFail") }
         
-        let action = RedirectAction(url: URL(string: "http://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
+        let action = RedirectAction(url: URL(string: "https://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
         sut.handle(action)
         XCTAssertTrue(RedirectComponent.applicationDidOpen(from: URL(string: "url://?queryParam=value")!))
         
@@ -292,7 +292,7 @@ class RedirectComponentTests: XCTestCase {
         sut.appLauncher = appLauncher
         let appLauncherExpectation = expectation(description: "Expect appLauncher.openUniversalAppUrl() to be called")
         appLauncher.onOpenUniversalAppUrl = { url, completion in
-            XCTAssertEqual(url, URL(string: "http://google.com")!)
+            XCTAssertEqual(url, URL(string: "https://google.com")!)
             completion?(true)
             appLauncherExpectation.fulfill()
         }
@@ -306,7 +306,7 @@ class RedirectComponentTests: XCTestCase {
             XCTFail("Should not call onDidProvide")
         }
         
-        let action = RedirectAction(url: URL(string: "http://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
+        let action = RedirectAction(url: URL(string: "https://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
         sut.handle(action)
         XCTAssertFalse(RedirectComponent.applicationDidOpen(from: URL(string: "url://")!))
         
@@ -322,7 +322,7 @@ class RedirectComponentTests: XCTestCase {
         sut.appLauncher = appLauncher
         let appLauncherExpectation = expectation(description: "Expect appLauncher.openUniversalAppUrl() to be called")
         appLauncher.onOpenUniversalAppUrl = { url, completion in
-            XCTAssertEqual(url, URL(string: "http://google.com")!)
+            XCTAssertEqual(url, URL(string: "https://google.com")!)
             completion?(true)
             appLauncherExpectation.fulfill()
         }
@@ -338,7 +338,7 @@ class RedirectComponentTests: XCTestCase {
             redirectExpectation.fulfill()
         }
         
-        let action = RedirectAction(url: URL(string: "http://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
+        let action = RedirectAction(url: URL(string: "https://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
         sut.handle(action)
         XCTAssertTrue(RedirectComponent.applicationDidOpen(from: URL(string: "url://?queryParam=value")!))
         
