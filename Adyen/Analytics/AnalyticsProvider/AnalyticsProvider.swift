@@ -17,6 +17,9 @@ public struct AnalyticsConfiguration {
 
     @_spi(AdyenInternal)
     public var isTelemetryEnabled = true
+    
+    @_spi(AdyenInternal)
+    public var context: TelemetryContext = .init()
 
     // MARK: - Initializers
     
@@ -35,6 +38,7 @@ public struct AdditionalAnalyticsFields {
 public protocol AnalyticsProviderProtocol: TelemetryTrackerProtocol {
     
     var checkoutAttemptId: String? { get }
+    
     func fetchAndCacheCheckoutAttemptIdIfNeeded()
     
     var additionalFields: (() -> AdditionalAnalyticsFields)? { get }
