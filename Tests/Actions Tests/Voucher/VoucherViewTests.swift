@@ -159,7 +159,7 @@ class VoucherViewTests: XCTestCase {
             identifier: "identifier",
             amount: "100",
             currency: "EUR",
-            logoUrl: URL(string: "http://adyen.com")!,
+            logoUrl: URL(string: "https://adyen.com")!,
             mainButton: "Main Button",
             secondaryButtonTitle: "Secondary Button",
             codeConfirmationTitle: "Code Copied!",
