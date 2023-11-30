@@ -126,7 +126,8 @@ public final class AdyenSession {
         }
     }
     
-    internal static func makeSetupCall(with configuration: Configuration,
+    @_spi(AdyenInternal)
+    public static func makeSetupCall(with configuration: Configuration,
                                        baseAPIClient: APIClientProtocol,
                                        order: PartialPaymentOrder? = nil,
                                        completion: @escaping ((Result<Context, Error>) -> Void)) {
