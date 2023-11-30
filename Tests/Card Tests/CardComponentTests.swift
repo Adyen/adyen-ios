@@ -1052,6 +1052,17 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(expDateItem.isValid())
     }
     
+    func testInstallmentEncoding() throws {
+        
+        let installments = Installments(totalMonths: 12, plan: .regular)
+        
+        let installmentsData = try JSONEncoder().encode(installments)
+        let decodedInstallments = try XCTUnwrap(JSONSerialization.jsonObject(with: installmentsData) as? [String: Any])
+        
+        XCTAssertEqual(decodedInstallments["value"] as? Int, installments.totalMonths)
+        XCTAssertEqual(decodedInstallments["plan"] as? String, installments.plan.rawValue)
+    }
+    
     func testInstallmentsWithDefaultAndCardBasedOptions() {
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
             InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
