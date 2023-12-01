@@ -10,14 +10,8 @@ import XCTest
 
 class PaymentMethodTests: XCTestCase {
     
-    var paymentMethods: PaymentMethods!
-    
-    override func setUpWithError() throws {
-        paymentMethods = try getPaymentMethods()
-    }
-    
-    private func getPaymentMethods() throws -> PaymentMethods {
-        let dictionary = [
+    private var paymentMethodsDictionary: [String: Any] {
+        [
             "storedPaymentMethods": [
                 storedCreditCardDictionary,
                 storedCreditCardDictionary,
@@ -78,11 +72,27 @@ class PaymentMethodTests: XCTestCase {
                 bizum
             ]
         ]
-        return try AdyenCoder.decode(dictionary) as PaymentMethods
+    }
+    
+    private func getPaymentMethods() throws -> PaymentMethods {
+        return try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
+    }
+    
+    func testEncodingPaymentMethods() throws {
+        
+        let paymentMethods = try getPaymentMethods()
+        let encodedPaymentMethods = try JSONEncoder().encode(paymentMethods)
+        let decodedPaymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: encodedPaymentMethods)
+        
+        XCTAssertEqual(paymentMethods, decodedPaymentMethods)
+        
+        // TODO: Write more tests
     }
     
     func testDecodingPaymentMethods() throws {
         // Stored payment methods
+        
+        let paymentMethods = try getPaymentMethods()
         
         XCTAssertEqual(paymentMethods.stored.count, 8)
         XCTAssertTrue(paymentMethods.stored[0] is StoredCardPaymentMethod)
@@ -267,6 +277,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationCard() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .scheme,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -276,6 +287,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationBCMC() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .bcmc,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -285,6 +297,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationApplePay() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .applePay,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -294,6 +307,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationPayPal() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .payPal,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -303,6 +317,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationWeChat() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .weChatPaySDK,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -312,6 +327,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationQiwiWallet() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .qiwiWallet,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -321,6 +337,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationBLIK() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .blik,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -330,6 +347,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationStoredBLIK() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofStoredPaymentMethod: .blik,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -339,6 +357,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationStoredCreditCard() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofStoredPaymentMethod: .scheme,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"),
@@ -357,6 +376,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationStoredDebitCard() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofStoredPaymentMethod: .scheme,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"),
@@ -375,6 +395,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationGiro() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .other("giropay"),
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -384,6 +405,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationGenericGiftCard() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(
             ofRegularPaymentMethod: .giftcard,
             with: .init(title: "custom title",
@@ -408,6 +430,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationGivexGiftCard() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(
             ofRegularPaymentMethod: .giftcard,
             with: .init(title: "custom title",
@@ -436,6 +459,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationAnyGivenGiftCard() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(
             ofRegularPaymentMethod: .giftcard,
             with: .init(title: "custom title",
@@ -464,6 +488,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationMealVoucher() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .mealVoucherSodexo,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -474,6 +499,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationDukoWallet() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .dokuWallet,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -483,6 +509,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationIdeal() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .ideal,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))

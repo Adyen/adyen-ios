@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 /// A payment method that is available to use.
-public protocol PaymentMethod: Decodable {
+public protocol PaymentMethod: Codable {
     
     /// A string identifying the type of payment method, such as `"card"`, `"ideal"`, `"applepay"`.
     var type: PaymentMethodType { get }
