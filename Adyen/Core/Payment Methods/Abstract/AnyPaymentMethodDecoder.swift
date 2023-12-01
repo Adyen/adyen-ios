@@ -116,7 +116,10 @@ internal enum AnyPaymentMethodInterpreter {
                 return try interpreters[.bcmc, default: defaultInterpreter].decode(from: decoder, isStored: true)
             }
 
-            let paymentDecoder = PaymentMethodType(rawValue: type).map { interpreters[$0, default: defaultInterpreter] } ?? defaultInterpreter
+            let paymentDecoder = PaymentMethodType(rawValue: type).map {
+                interpreters[$0, default: defaultInterpreter]
+            } ?? defaultInterpreter
+            
             return try paymentDecoder.decode(from: decoder, isStored: isStored)
         } catch {
             return .none
@@ -125,13 +128,13 @@ internal enum AnyPaymentMethodInterpreter {
     
     internal static func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod {
         let paymentDecoder = interpreters[paymentMethod.type] ?? defaultInterpreter
-        return paymentDecoder.toAnyPaymentMethod(paymentMethod) ?? .instant(paymentMethod)
+        return paymentDecoder.anyPaymentMethod(from: paymentMethod) ?? .instant(paymentMethod)
     }
 }
 
 private protocol PaymentMethodInterpreter {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod
-    func toAnyPaymentMethod(_ paymentMethod: any PaymentMethod) -> AnyPaymentMethod?
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod?
 }
 
 private struct CardPaymentMethodInterpreter: PaymentMethodInterpreter {
@@ -143,7 +146,7 @@ private struct CardPaymentMethodInterpreter: PaymentMethodInterpreter {
         }
     }
     
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         if let method = paymentMethod as? StoredCardPaymentMethod {
             return .storedCard(method)
         }
@@ -163,7 +166,7 @@ private struct BCMCCardPaymentMethodInterpreter: PaymentMethodInterpreter {
         }
     }
     
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         if let method = paymentMethod as? StoredBCMCPaymentMethod {
             return .storedBCMC(method)
         }
@@ -179,7 +182,7 @@ private struct IssuerListPaymentMethodInterpreter: PaymentMethodInterpreter {
         try .issuerList(IssuerListPaymentMethod(from: decoder))
     }
     
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? IssuerListPaymentMethod).map { .issuerList($0) }
     }
 }
@@ -189,7 +192,7 @@ private struct SEPADirectDebitPaymentMethodInterpreter: PaymentMethodInterpreter
         try .sepaDirectDebit(SEPADirectDebitPaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? SEPADirectDebitPaymentMethod).map { .sepaDirectDebit($0) }
     }
 }
@@ -199,7 +202,7 @@ private struct BACSDirectDebitPaymentMethodInterpreter: PaymentMethodInterpreter
         try .bacsDirectDebit(BACSDirectDebitPaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? BACSDirectDebitPaymentMethod).map { .bacsDirectDebit($0) }
     }
 }
@@ -213,7 +216,7 @@ private struct ACHDirectDebitPaymentMethodInterpreter: PaymentMethodInterpreter 
         }
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         if let method = paymentMethod as? StoredACHDirectDebitPaymentMethod {
             return .storedAchDirectDebit(method)
         }
@@ -229,7 +232,7 @@ private struct ApplePayPaymentMethodInterpreter: PaymentMethodInterpreter {
         try .applePay(ApplePayPaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? ApplePayPaymentMethod).map { .applePay($0) }
     }
 }
@@ -243,7 +246,7 @@ private struct PayPalPaymentMethodInterpreter: PaymentMethodInterpreter {
         }
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         if let method = paymentMethod as? StoredPayPalPaymentMethod {
             return .storedPayPal(method)
         }
@@ -263,7 +266,7 @@ private struct InstantPaymentMethodInterpreter: PaymentMethodInterpreter {
         }
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         if let method = paymentMethod as? StoredInstantPaymentMethod {
             return .storedInstant(method)
         }
@@ -279,7 +282,7 @@ private struct WeChatPayPaymentMethodInterpreter: PaymentMethodInterpreter {
         try .weChatPay(WeChatPayPaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? WeChatPayPaymentMethod).map { .weChatPay($0) }
     }
 }
@@ -289,7 +292,7 @@ private struct UnsupportedPaymentMethodInterpreter: PaymentMethodInterpreter {
         .none
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         nil
     }
 }
@@ -299,7 +302,7 @@ private struct QiwiWalletPaymentMethodInterpreter: PaymentMethodInterpreter {
         try .qiwiWallet(QiwiWalletPaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? QiwiWalletPaymentMethod).map { .qiwiWallet($0) }
     }
 }
@@ -309,7 +312,7 @@ private struct MBWayPaymentMethodInterpreter: PaymentMethodInterpreter {
         try .mbWay(MBWayPaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? MBWayPaymentMethod).map { .mbWay($0) }
     }
 }
@@ -323,7 +326,7 @@ private struct BLIKPaymentMethodInterpreter: PaymentMethodInterpreter {
         }
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         if let method = paymentMethod as? StoredBLIKPaymentMethod {
             return .storedBlik(method)
         }
@@ -339,7 +342,7 @@ private struct DokuPaymentMethodInterpreter: PaymentMethodInterpreter {
         try .doku(DokuPaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? DokuPaymentMethod).map { .doku($0) }
     }
 }
@@ -349,7 +352,7 @@ private struct GiftCardPaymentMethodInterpreter: PaymentMethodInterpreter {
         try .giftcard(GiftCardPaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? GiftCardPaymentMethod).map { .giftcard($0) }
     }
 }
@@ -359,7 +362,7 @@ private struct MealVoucherPaymentMethodInterpreter: PaymentMethodInterpreter {
         try .mealVoucher(MealVoucherPaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? MealVoucherPaymentMethod).map { .mealVoucher($0) }
     }
 }
@@ -369,7 +372,7 @@ private struct SevenElevenPaymentMethodInterpreter: PaymentMethodInterpreter {
         try .sevenEleven(SevenElevenPaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? SevenElevenPaymentMethod).map { .sevenEleven($0) }
     }
 }
@@ -379,7 +382,7 @@ private struct EContextStoresPaymentMethodInterpreter: PaymentMethodInterpreter 
         try .econtextStores(EContextPaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? EContextPaymentMethod).map { .econtextStores($0) }
     }
 }
@@ -389,7 +392,7 @@ private struct EContextATMPaymentMethodInterpreter: PaymentMethodInterpreter {
         try .econtextATM(EContextPaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? EContextPaymentMethod).map { .econtextATM($0) }
     }
 }
@@ -399,7 +402,7 @@ private struct EContextOnlinePaymentMethodInterpreter: PaymentMethodInterpreter 
         try .econtextOnline(EContextPaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? EContextPaymentMethod).map { .econtextOnline($0) }
     }
 }
@@ -409,7 +412,7 @@ private struct BoletoPaymentMethodInterpreter: PaymentMethodInterpreter {
         try .boleto(BoletoPaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? BoletoPaymentMethod).map { .boleto($0) }
     }
 }
@@ -419,7 +422,7 @@ private struct AffirmPaymentMethodInterpreter: PaymentMethodInterpreter {
         try .affirm(AffirmPaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? AffirmPaymentMethod).map { .affirm($0) }
     }
 }
@@ -429,7 +432,7 @@ private struct AtomePaymentMethodInterpreter: PaymentMethodInterpreter {
         try .atome(AtomePaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? AtomePaymentMethod).map { .atome($0) }
     }
 }
@@ -439,7 +442,7 @@ private struct OnlineBankingPaymentMethodInterpreter: PaymentMethodInterpreter {
         try .onlineBanking(OnlineBankingPaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? OnlineBankingPaymentMethod).map { .onlineBanking($0) }
     }
 }
@@ -449,7 +452,7 @@ private struct UPIPaymentMethodInterpreter: PaymentMethodInterpreter {
         try .upi(UPIPaymentMethod(from: decoder))
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         (paymentMethod as? UPIPaymentMethod).map { .upi($0) }
     }
 }
@@ -467,7 +470,7 @@ private struct CashAppPayPaymentMethodInterpreter: PaymentMethodInterpreter {
         #endif
     }
 
-    func toAnyPaymentMethod(_ paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
+    func anyPaymentMethod(from paymentMethod: PaymentMethod) -> AnyPaymentMethod? {
         #if canImport(PayKit)
             if let method = paymentMethod as? StoredCashAppPayPaymentMethod {
                 return .storedCashAppPay(method)
