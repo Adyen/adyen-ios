@@ -163,7 +163,6 @@ class AnalyticsProviderTests: XCTestCase {
     func testTelemetryRequest() throws {
         // Given
         
-        let amount = Amount(value: 1, currencyCode: "EUR")
         let checkoutAttemptId = self.checkoutAttemptIdMockValue
         
         let telemetryExpectation = expectation(description: "Telemetry request is triggered")
@@ -255,7 +254,7 @@ class AnalyticsProviderTests: XCTestCase {
         )
         
         let encodedRequest = try JSONEncoder().encode(request)
-        var decodedRequest = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedRequest) as? [String: Any])
+        let decodedRequest = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedRequest) as? [String: Any])
         
         let expectedDecodedRequest = [
             "locale": "en_US",
