@@ -12,6 +12,11 @@ class PaymentMethodTests: XCTestCase {
     
     var paymentMethods: PaymentMethods!
     
+    override func tearDown() {
+        super.tearDown()
+        AdyenAssertion.listener = nil
+    }
+    
     override func setUpWithError() throws {
         paymentMethods = try getPaymentMethods()
     }

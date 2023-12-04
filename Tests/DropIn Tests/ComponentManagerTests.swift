@@ -77,6 +77,7 @@ class ComponentManagerTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
+        AdyenAssertion.listener = nil
         presentationDelegate = nil
         context = nil
         configuration = nil
