@@ -905,7 +905,7 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try AdyenCoder.decode(giftCard) as GiftCardPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "giftcard")
         XCTAssertEqual(paymentMethod.name, "Generic GiftCard")
-        XCTAssertEqual(paymentMethod.displayInformation(using: nil).logoName, "genericgiftcard")
+        XCTAssertEqual(paymentMethod.displayInformation(using: nil).title, "Generic GiftCard")
         XCTAssertEqual(paymentMethod.displayInformation(using: nil).logoName, "genericgiftcard")
         testCoding(paymentMethod)
     }
@@ -925,7 +925,7 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try AdyenCoder.decode(boleto) as BoletoPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "boletobancario_santander")
         XCTAssertEqual(paymentMethod.name, "Boleto Bancario")
-        XCTAssertEqual(paymentMethod.displayInformation(using: nil).logoName, "boletobancario_santander")
+        XCTAssertEqual(paymentMethod.displayInformation(using: nil).title, "Boleto Bancario")
         XCTAssertEqual(paymentMethod.displayInformation(using: nil).logoName, "boletobancario_santander")
         testCoding(paymentMethod)
     }
@@ -953,6 +953,24 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.type.rawValue, "ach")
         XCTAssertEqual(paymentMethod.name, "ACH Direct Debit")
         XCTAssertEqual(paymentMethod.bankAccountNumber, "123456789")
+        testCoding(paymentMethod)
+    }
+    
+    // MARK: - Cash App
+    
+    func testDecodingCashAppPayPaymentMethod() throws {
+        let paymentMethod = try AdyenCoder.decode(cashAppPay) as CashAppPayPaymentMethod
+        XCTAssertEqual(paymentMethod.type.rawValue, "cashapp")
+        XCTAssertEqual(paymentMethod.name, "Cash App Pay")
+        testCoding(paymentMethod)
+    }
+    
+    // MARK: - Cash App
+    
+    func testDecodingQiwiPaymentMethod() throws {
+        let paymentMethod = try AdyenCoder.decode(qiwiWallet) as QiwiWalletPaymentMethod
+        XCTAssertEqual(paymentMethod.type.rawValue, "qiwiwallet")
+        XCTAssertEqual(paymentMethod.name, "Qiwi Wallet")
         testCoding(paymentMethod)
     }
     
