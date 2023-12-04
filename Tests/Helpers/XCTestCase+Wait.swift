@@ -11,29 +11,6 @@ import XCTest
 
 extension XCTestCase {
     
-    enum TestPauseInterval {
-        case seconds(Int)
-        case milliseconds(Int)
-        
-        var seconds: TimeInterval {
-            switch self {
-            case let .seconds(seconds):
-                return TimeInterval(seconds)
-            case let .milliseconds(milliseconds):
-                return TimeInterval(milliseconds) / 1_000
-            }
-        }
-        
-        var milliseconds: Int {
-            switch self {
-            case let .seconds(seconds):
-                return seconds * 1_000
-            case let .milliseconds(milliseconds):
-                return milliseconds
-            }
-        }
-    }
-    
     /// Waits for a specified amount of time
     ///
     /// - Parameters:
@@ -45,7 +22,7 @@ extension XCTestCase {
             dummyExpectation.fulfill()
         }
 
-        wait(for: [dummyExpectation], timeout: 1000)
+        wait(for: [dummyExpectation], timeout: 1_000)
     }
     
     /// Waits until  a certain condition is met
@@ -56,23 +33,24 @@ extension XCTestCase {
     /// - Parameters:
     ///   - expectation: the condition that is waited on
     ///   - timeout: the maximum time (in seconds)  to wait.
+    ///   - retryInterval: the waiting time inbetween retries
     ///   - message: an optional message on failure
     func wait(
         until expectation: () -> Bool,
-        timeout: TimeInterval = 60,
-        pauseInterval: TestPauseInterval = .milliseconds(10),
+        timeout: TimeInterval = 120,
+        retryInterval: DispatchTimeInterval = .milliseconds(10),
         message: String? = nil
     ) {
-        var timeLeft = timeout
+        let thresholdDate = Date().addingTimeInterval(timeout)
         
-        var result: Bool = expectation()
-        while timeLeft > 0, result == false {
-            wait(for: .milliseconds(pauseInterval.milliseconds))
-            timeLeft -= pauseInterval.seconds
-            result = expectation()
+        var isMatchingExpectation = expectation()
+        
+        while thresholdDate.timeIntervalSinceNow > 0, !isMatchingExpectation {
+            wait(for: retryInterval)
+            isMatchingExpectation = expectation()
         }
         
-        XCTAssertTrue(result, message ?? "Expectation should be met before timeout \(timeout)s")
+        XCTAssertTrue(isMatchingExpectation, message ?? "Expectation should be met before timeout \(timeout)s")
     }
     
     /// Waits until  a keyPath of a target matches an expected value

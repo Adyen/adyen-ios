@@ -73,7 +73,7 @@ extension XCTestCase {
                 return failure == nil
             },
             timeout: timeout,
-            pauseInterval: .seconds(1),
+            retryInterval: .seconds(1),
             message: "Snapshot did not match reference (Timeout: \(timeout)s)"
         )
     }
