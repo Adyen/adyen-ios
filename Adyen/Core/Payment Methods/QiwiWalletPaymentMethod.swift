@@ -51,8 +51,6 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        // TODO: Write a test for this!
-        
         try container.encode(type, forKey: .type)
         try container.encode(name, forKey: .name)
         
