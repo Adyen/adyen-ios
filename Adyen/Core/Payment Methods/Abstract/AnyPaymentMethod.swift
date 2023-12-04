@@ -82,7 +82,7 @@ internal enum AnyPaymentMethod: Codable {
     // MARK: - Decoding
 
     internal init(from decoder: Decoder) throws {
-        self = AnyPaymentMethodInterpreter.decode(from: decoder)
+        self = AnyPaymentMethodDecoder.decode(from: decoder)
     }
 
     internal func encode(to encoder: Encoder) throws {
@@ -100,7 +100,7 @@ internal enum AnyPaymentMethod: Codable {
 extension AnyPaymentMethod {
     
     init(_ paymentMethod: PaymentMethod) {
-        self = AnyPaymentMethodInterpreter.anyPaymentMethod(from: paymentMethod)
+        self = AnyPaymentMethodDecoder.anyPaymentMethod(from: paymentMethod)
     }
 }
 
