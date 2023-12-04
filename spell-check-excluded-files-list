@@ -1,6 +1,7 @@
 Adyen/Utilities/External/AllRegions.swift
 Adyen/Core/Payment Methods/Abstract/PaymentMethodType.swift
 Adyen/Core/Models/CardType.swift
-Demo/Common/IntegrationExamples/AddressLookupProvider.swift
+Demo/Common/IntegrationExamples/DemoAddressLookupProvider.swift
+Demo/Common/IntegrationExamples/MapkitAddressLookupProvider.swift
 Tests/*
 UITests/*

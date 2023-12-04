@@ -5,9 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenActions
 import AdyenComponents
 import AdyenEncryption
-import AdyenActions
 import Foundation
 import PassKit
 
@@ -85,7 +85,7 @@ enum Dummy: Error {
         PrefilledShopperInformation(
             shopperName: dummyName,
             emailAddress: dummyEmail,
-            telephoneNumber: nil,
+            phoneNumber: nil,
             billingAddress: dummyAddress,
             socialSecurityNumber: dummySocialSecurityNumber
         )

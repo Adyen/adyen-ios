@@ -230,6 +230,7 @@ public final class GiftCardComponent: PresentableComponent,
     private func showError(message: String) {
         errorItem.message = message
         errorItem.isHidden.wrappedValue = false
+        UIAccessibility.post(notification: .announcement, argument: "\(localizedString(.errorTitle, localizationParameters)): \(message)")
     }
 
     private func hideError() {

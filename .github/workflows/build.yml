@@ -1,28 +1,38 @@
 name: Compatibility Test
 
 on:
+  workflow_dispatch:
   push:
     branches:
-    - master
     - develop
-    - release-*
     
 jobs:
   tests:
     runs-on: macos-12
-    continue-on-error: true
+    continue-on-error: false
     strategy:
       fail-fast: false
       matrix:
         include:
-        - destination: 'name=iPhone 11 Pro'
-          scheme: AdyenUIHost
-        - destination: 'OS=11.4,name=iPhone-6'
-          scheme: AdyenUIHost
-        - destination: 'OS=12.4,name=iPhone-X'
-          scheme: AdyenUIKitTests
-        - destination: 'OS=13.7,name=iPhone 8'
-          scheme: AdyenUIHost
+        
+        - version: '15.0'
+          device: 'iPhone 13'
+          runtime: 'iOS-15-0'
+          displayname: 'iPhone-13'
+          scheme: 'AdyenUIKitTests' # Only UnitTests as UI could differ between iOS versions
+        
+        - version: '14.2'
+          device: 'iPhone 12'
+          displayname: 'iPhone-12'
+          runtime: 'iOS-14-2'
+          scheme: 'AdyenUIKitTests' # Only UnitTests as UI could differ between iOS versions
+          
+        - version: '13.7'
+          device: 'iPhone 11'
+          runtime: 'iOS-13-7'
+          displayname: 'iPhone-11'
+          scheme: 'AdyenUIKitTests' # Only UnitTests as UI could differ between iOS versions
+          
     steps:
     - uses: actions/checkout@v4
     - uses: n1hility/cancel-previous-runs@v3
@@ -33,31 +43,22 @@ jobs:
       run: |
         sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
 
-    - name: Prepare iOS 11.4 simulator
-      if: contains(matrix.destination, 'OS=11.4')
+    - name: Prepare ${{ matrix.destination }}
       run: |
-        xcversion simulators --install='iOS 11.4'
-        xcrun simctl create iPhone-6 "iPhone 6" "com.apple.CoreSimulator.SimRuntime.iOS-11-4"
-        xcrun simctl list devices 11.4
-
-    - name: Prepare iOS 12.4 simulator
-      if: contains(matrix.destination, 'OS=12.4')
-      run: |
-        xcversion simulators --install='iOS 12.4'
-        xcrun simctl create iPhone-X "iPhone X" "com.apple.CoreSimulator.SimRuntime.iOS-12-4"
-        xcrun simctl list devices 12.4
-
-    - name: Prepare iOS 13.7 simulator
-      if: contains(matrix.destination, 'OS=13.7')
-      run: |
-        xcversion simulators --install='iOS 13.7'
-        xcrun simctl create iPhone-6 "iPhone X" "com.apple.CoreSimulator.SimRuntime.iOS-13-7"
-        xcrun simctl list devices 13.7
+        xcversion simulators --install="iOS ${version}"
+        xcrun simctl list devices ${version}
+        xcrun simctl create ${displayname} "${device}" "com.apple.CoreSimulator.SimRuntime.${runtime}"
+      env:
+        version: ${{ matrix.version }}
+        displayname: ${{ matrix.displayname }}
+        device: ${{ matrix.device }}
+        runtime: ${{ matrix.runtime }}
 
     - name: Build and test
       run: |
-        xcodebuild build test -project ${project} -scheme "${scheme}" -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild build test -project ${project} -scheme "${scheme}" ${params} -destination ${destination} | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
+        params: "-skipPackagePluginValidation"
         scheme: ${{ matrix.scheme }}
-        destination: ${{ matrix.destination }}
+        destination: "OS=${{ matrix.version }},name=${{ matrix.displayname }}"

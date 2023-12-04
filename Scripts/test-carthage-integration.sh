@@ -48,7 +48,6 @@ then
   CURRENT_COMMIT=$(git rev-parse HEAD)
 
   echo "git \"file://$CWD/../\" \"$CURRENT_COMMIT\"" > Cartfile
-  echo "github \"adyen/adyen-authentication-ios\" == 1.1.2" >> Cartfile
   carthage update --use-xcframeworks --configuration Debug
 else
   cd $PROJECT_NAME
@@ -92,13 +91,16 @@ targets:
       - framework: Carthage/Build/AdyenWeChatPay.xcframework
         embed: true
         codeSign: true
-      - framework: Carthage/Build/AdyenAuthentication.xcframework
+      - framework: Carthage/Build/AdyenDelegatedAuthentication.xcframework
         embed: true
         codeSign: true
       - framework: Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/Adyen3DS2.xcframework
         embed: true
         codeSign: true
       - framework: Carthage/Build/AdyenNetworking.xcframework
+        embed: true
+        codeSign: true
+      - framework: Carthage/Build/AdyenAuthentication.xcframework
         embed: true
         codeSign: true
       - framework: Carthage/Build/AdyenSwiftUI.xcframework
@@ -132,8 +134,10 @@ cp "../Tests/Card Tests/3DS2 Component/ThreeDSResultExtension.swift" Tests/Three
 cp "../Tests/Helpers/XCTestCase+RootViewController.swift" Tests/XCTestCase+RootViewController.swift
 cp "../Tests/Helpers/XCTestCase+Wait.swift" Tests/XCTestCase+Wait.swift
 cp "../Tests/Helpers/UIViewController+Search.swift" Tests/UIViewController+Search.swift
+cp "../Tests/Helpers/PaymentMethods+Equatable.swift" Tests/PaymentMethods+Equatable.swift
 cp "../Tests/Adyen Tests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsProviderMock.swift
 cp "../Tests/DummyData/Dummy.swift" Tests/Dummy.swift
+cp "../Demo/Common/Utils/APIClientMock.swift" Tests/APIClientMock.swift
 cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/
 cp "../Demo/Configuration.swift" Source/Configuration.swift

@@ -20,6 +20,7 @@ final class BLIKComponentUITests: XCTestCase {
         let payment = Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
         context = AdyenContext(apiContext: Dummy.apiContext, payment: payment)
         style = FormComponentStyle()
+        UIApplication.shared.adyen.mainKeyWindow?.layer.speed = 1
         try super.setUpWithError()
     }
 
@@ -63,11 +64,12 @@ final class BLIKComponentUITests: XCTestCase {
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
         setupRootViewController(sut.viewController)
+        wait(for: .seconds(1))
         
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
-    func testSubmitForm() {
+    func testSubmitForm() throws {
         let config = BLIKComponent.Configuration(style: style)
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
@@ -76,12 +78,12 @@ final class BLIKComponentUITests: XCTestCase {
         
         setupRootViewController(sut.viewController)
 
-        let submitButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
+        let submitButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button"))
 
         let blikCodeView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
         self.populate(textItemView: blikCodeView, with: "123456")
 
-        submitButton?.sendActions(for: .touchUpInside)
+        submitButton.sendActions(for: .touchUpInside)
 
         let delegateExpectation = XCTestExpectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
 
@@ -92,14 +94,16 @@ final class BLIKComponentUITests: XCTestCase {
             XCTAssertEqual(data.blikCode, "123456")
 
             sut.stopLoadingIfNeeded()
-            delegateExpectation.fulfill()
             XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
+            
+            self.wait(for: .aMoment)
+            self.assertViewControllerImage(matching: sut.viewController, named: "blik_flow")
+            
+            delegateExpectation.fulfill()
         }
         
-        wait { sut.button.showsActivityIndicator == false }
-        wait(for: .aMoment)
-        assertViewControllerImage(matching: sut.viewController, named: "blik_flow")
+        wait(for: [delegateExpectation], timeout: 30)
     }
 
     func testSubmitButtonLoading() {
@@ -107,7 +111,10 @@ final class BLIKComponentUITests: XCTestCase {
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
         setupRootViewController(sut.viewController)
-
+        
+        // Disabling animation to assure the spinner is always in the same state when taking the snapshot
+        UIApplication.shared.adyen.mainKeyWindow?.layer.speed = 0
+        
         let submitButton: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
 
         // start loading

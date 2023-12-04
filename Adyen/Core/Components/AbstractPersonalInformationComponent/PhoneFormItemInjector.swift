@@ -14,20 +14,20 @@ internal final class PhoneFormItemInjector: FormItemInjector, Localizable {
 
     internal let phoneExtensions: [PhoneExtensionPickerItem]
 
-    internal var value: String?
+    internal var value: PhoneNumber?
 
     internal var identifier: String
 
     internal lazy var item: FormPhoneNumberItem = {
-        let item = FormPhoneNumberItem(selectableValues: phoneExtensions,
+        let item = FormPhoneNumberItem(phoneNumber: value,
+                                       selectableValues: phoneExtensions,
                                        style: style,
                                        localizationParameters: localizationParameters)
-        item.value = value ?? ""
         item.identifier = identifier
         return item
     }()
 
-    internal init(value: String?,
+    internal init(value: PhoneNumber?,
                   identifier: String,
                   phoneExtensions: [PhoneExtensionPickerItem],
                   style: FormTextItemStyle) {

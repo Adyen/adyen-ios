@@ -187,3 +187,7 @@ whiteList:
   - uid
   - domainname
   - appname
+  - holdername
+  - mapkit
+  - bizum
+  - alipay

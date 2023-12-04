@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Entrada inválida";
 "adyen.paymentMethods.otherMethods" = "Outros";
 "adyen.paymentMethods.storedMethods" = "Armazenado";
+"adyen.paymentMethods.paidMethods" = "Aplicado";
 "adyen.paymentMethods.title" = "Meios de pagamento";
 "adyen.paymentMethod.removeButton" = "Sim, remover";
 "adyen.payment.refused.message" = "O pagamento foi recusado. Tente novamente.";

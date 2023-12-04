@@ -117,7 +117,6 @@ extension IssuerListComponentExample: AdyenSessionDelegate {
 }
 
 extension IssuerListComponentExample: PresentationDelegate {
-    // The implementation of this delegate method is not needed when using AdyenSession
     internal func present(component: PresentableComponent) {
         let componentViewController = viewController(for: component)
         presenter?.present(viewController: componentViewController, completion: nil)

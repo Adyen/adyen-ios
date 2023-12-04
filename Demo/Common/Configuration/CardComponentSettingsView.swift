@@ -32,6 +32,17 @@ internal struct CardSettingsView: View {
                     Toggle(isOn: $viewModel.showsSecurityCodeField) {
                         Text("Security Code")
                     }
+                    Toggle(isOn: $viewModel.installmentsEnabled.animation()) {
+                        Text("Installments")
+                        Text("(Example values for installments)")
+                            .foregroundColor(.gray)
+                            .font(.footnote)
+                    }
+                    if viewModel.installmentsEnabled {
+                        Toggle(isOn: $viewModel.showInstallmentAmount) {
+                            Text("Installment Amount")
+                        }
+                    }
                 }
                 Section(header: Text("Input Modes")) {
                     Picker("Billing Address mode", selection: $viewModel.addressMode) {
@@ -65,7 +76,13 @@ internal struct CardSettingsView: View {
 extension CardSettings.AddressFormType {
 
     public var displayName: String {
-        self.rawValue.capitalized
+        switch self {
+        case .full: return "Full"
+        case .lookup: return "Lookup (Dummy Data)"
+        case .lookupMapKit: return "Lookup (MapKit)"
+        case .postalCode: return "Postal code"
+        case .none: return "None"
+        }
     }
 }
 

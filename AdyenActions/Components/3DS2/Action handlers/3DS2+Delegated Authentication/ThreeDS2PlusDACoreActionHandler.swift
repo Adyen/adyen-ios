@@ -124,7 +124,7 @@
                 completion(.failure(DelegateAuthenticationError.authenticationFailed(cause: nil)))
                 return
             }
-            delegatedAuthenticationService.authenticate(withBase64URLString: delegatedAuthenticationInput) { result in
+            delegatedAuthenticationService.authenticate(withAuthenticationInput: delegatedAuthenticationInput) { result in
                 switch result {
                 case let .success(sdkOutput):
                     completion(.success(sdkOutput))
@@ -196,7 +196,7 @@
                 completion(.failure(DelegateAuthenticationError.registrationFailed(cause: nil)))
                 return
             }
-            delegatedAuthenticationService.register(withBase64URLString: sdkInput) { result in
+            delegatedAuthenticationService.register(withRegistrationInput: sdkInput) { result in
                 switch result {
                 case let .success(sdkOutput):
                     completion(.success(sdkOutput))
@@ -247,7 +247,7 @@
         fileprivate func authenticationServiceConfiguration() -> AuthenticationService.Configuration {
             .init(localizedRegistrationReason: localizedRegistrationReason,
                   localizedAuthenticationReason: localizedAuthenticationReason,
-                  appleTeamIdendtifier: appleTeamIdentifier)
+                  appleTeamIdentifier: appleTeamIdentifier)
         }
     }
 

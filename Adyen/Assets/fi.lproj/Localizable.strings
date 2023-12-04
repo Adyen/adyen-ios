@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Ei-kelvollinen syöte";
 "adyen.paymentMethods.otherMethods" = "muut";
 "adyen.paymentMethods.storedMethods" = "Tallennettu";
+"adyen.paymentMethods.paidMethods" = "Käytetyt";
 "adyen.paymentMethods.title" = "Maksutavat";
 "adyen.paymentMethod.removeButton" = "Kyllä, poista";
 "adyen.payment.refused.message" = "Maksu hylättiin. Yritä uudelleen.";

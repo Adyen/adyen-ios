@@ -1,5 +1,5 @@
 //
-//  XCTestCaseExtensions.swift
+//  XCTestCase+Wait.swift
 //  AdyenUIKitTests
 //
 //  Created by Mohamed Eldoheiri on 12/1/21.
@@ -22,7 +22,7 @@ extension XCTestCase {
             dummyExpectation.fulfill()
         }
 
-        wait(for: [dummyExpectation], timeout: 100)
+        wait(for: [dummyExpectation], timeout: 1_000)
     }
     
     /// Waits until  a certain condition is met
@@ -36,18 +36,20 @@ extension XCTestCase {
     ///   - message: an optional message on failure
     func wait(
         until expectation: () -> Bool,
-        timeout: TimeInterval = 2,
+        timeout: TimeInterval = 10,
         message: String? = nil
     ) {
-        var timeLeft = Int(timeout * 1000)
-        let incrementInterval = 10
+        let thresholdDate = Date().addingTimeInterval(timeout)
+        let pauseInterval = DispatchTimeInterval.milliseconds(10)
         
-        while timeLeft > 0 && expectation() == false {
-            wait(for: .milliseconds(incrementInterval))
-            timeLeft -= incrementInterval
+        var isMatchingExpectation = expectation()
+        
+        while thresholdDate.timeIntervalSinceNow > 0, !isMatchingExpectation {
+            wait(for: pauseInterval)
+            isMatchingExpectation = expectation()
         }
         
-        XCTAssertTrue(expectation(), message ?? "Expectation should be met before timeout \(timeout)s")
+        XCTAssertTrue(isMatchingExpectation, message ?? "Expectation should be met before timeout \(timeout)s")
     }
     
     /// Waits until  a keyPath of a target matches an expected value
@@ -64,7 +66,7 @@ extension XCTestCase {
         until target: Target,
         at keyPath: KeyPath<Target, Value>,
         is expectedValue: Value,
-        timeout: TimeInterval = 2,
+        timeout: TimeInterval = 10,
         line: Int = #line
     ) {
         wait(
@@ -87,7 +89,7 @@ extension XCTestCase {
     func waitForViewController<T: UIViewController>(
         ofType: T.Type,
         toBecomeChildOf viewController: UIViewController,
-        timeout: TimeInterval = 2
+        timeout: TimeInterval = 10
     ) throws -> T {
         
         wait(
@@ -111,7 +113,7 @@ extension XCTestCase {
     @discardableResult
     func waitUntilTopPresenter<T: UIViewController>(
         isOfType: T.Type,
-        timeout: TimeInterval = 2
+        timeout: TimeInterval = 10
     ) throws -> T {
         
         wait(

@@ -83,7 +83,7 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
     
     /// Korea Cyber Payment
     case kcp
-
+    
     /// Korean local card
     case koreanLocalCard
     
@@ -141,7 +141,7 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
     /// Fallback option for any other scheme name
     case other(named: String)
     
-    // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable cyclomatic_complexity function_body_length
     public init(rawValue: String) {
         switch rawValue {
         case "accel": self = .accel
@@ -241,6 +241,8 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
     }
 
     /// The brand name of the card type
+    ///
+    /// - Warning: Currently only intended to be used as `accessibilityLabel` as it's not localized
     @_spi(AdyenInternal)
     public var name: String {
         switch self {
@@ -290,7 +292,7 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
         case let .other(name): return name.replacingOccurrences(of: "_", with: " ")
         }
     }
-    // swiftlint:enable cyclomatic_complexity
+    // swiftlint:enable cyclomatic_complexity function_body_length
 }
 
 extension CardType {

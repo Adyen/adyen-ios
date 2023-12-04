@@ -2,13 +2,15 @@
 
 The Drop-in handles the presentation of available payment methods and the subsequent entry of a customer's payment details. It is initialized with the payment methods of the `/sessions` response, and handles the entire checkout flow under the hood for most of use cases.
 
-If the simplified checkout flow with the `/sessions` endpoint does not work for you, or you prefer to have more control over the whole flow, please refer to [**implementation via the three endpoints**](DropInThreeAPIs.md).
+If the simplified checkout flow with the `/sessions` endpoint does not work for you, or you prefer to have more control over the whole flow, please refer to [Advanced Flow](AdvancedFlow.md).
 
 ## Setting up the Drop-in
 
 All Components need an ``AdyenContext``. An instance of ``AdyenContext`` wraps your client key, environment, payment, analytics configuration and so on.
 Please read more [here](https://docs.adyen.com/development-resources/client-side-authentication) about the client key and how to get one.
-Use **Environment.test** for environment. When you're ready to accept live payments, change the value to one of our [live environments](https://adyen.github.io/adyen-ios/Docs/Structs/Environment.html).
+
+Use ``Environment.test`` during testing. When you're ready to accept live payments, change the value to one of our [live environments](<doc:Environment>).
+
 We recommend creating a new context for each payment attempt.
 
 ```swift
@@ -99,7 +101,7 @@ present(dropInComponent.viewController, animated: true)
 ---
 
 ```swift
-func didComplete(with resultCode: SessionPaymentResultCode, component: Component, session: AdyenSession)
+func didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession)
 ```
 
 This method will be invoked when the component finishes without any further steps needed by the application. The application just needs to dismiss the current component, ideally after calling `finalizeIfNeeded` on the component.

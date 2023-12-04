@@ -232,10 +232,10 @@ private struct ListItemView<T: Hashable>: View {
         }.tag(viewModel.tag)
     }
     
-    fileprivate struct ViewModel<T: Hashable> {
+    fileprivate struct ViewModel<Tag: Hashable> {
         let title: String
         let subtitle: String
-        let tag: T
+        let tag: Tag
     }
 }
 

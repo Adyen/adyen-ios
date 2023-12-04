@@ -59,10 +59,10 @@ class AdyenActionComponentTests: XCTestCase {
     }
     """
 
-    func testRedirectToHttpWebLink() {
+    func testRedirectToHttpWebLink() throws {
         let sut = AdyenActionComponent(context: Dummy.context)
         let delegate = ActionComponentDelegateMock()
-        sut.presentationDelegate = UIViewController.findTopPresenter()
+        sut.presentationDelegate = try UIViewController.topPresenter()
         sut.delegate = delegate
 
         delegate.onDidOpenExternalApplication = { _ in
@@ -72,28 +72,22 @@ class AdyenActionComponentTests: XCTestCase {
         let action = Action.redirect(RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data"))
         sut.handle(action)
 
-        wait(for: .seconds(2))
-
-        let topPresentedViewController = UIViewController.findTopPresenter()
-        XCTAssertNotNil(topPresentedViewController as? SFSafariViewController)
+        try waitUntilTopPresenter(isOfType: SFSafariViewController.self)
     }
 
-    func testAwaitAction() {
+    func testAwaitAction() throws {
         let sut = AdyenActionComponent(context: Dummy.context)
-        sut.presentationDelegate = UIViewController.findTopPresenter()
+        sut.presentationDelegate = try UIViewController.topPresenter()
 
         let action = Action.await(AwaitAction(paymentData: "SOME_DATA", paymentMethodType: .blik))
         sut.handle(action)
         
-        wait(for: .seconds(2))
-        
         let waitExpectation = expectation(description: "Expect AwaitViewController to be presented")
         
-        let topPresentedViewController = UIViewController.findTopPresenter()
-        XCTAssertNotNil(topPresentedViewController as? AdyenActions.AwaitViewController)
+        try waitUntilTopPresenter(isOfType: AdyenActions.AwaitViewController.self)
 
         (sut.presentationDelegate as! UIViewController).dismiss(animated: true) {
-            let topPresentedViewController = UIViewController.findTopPresenter()
+            let topPresentedViewController = try? UIViewController.topPresenter()
             XCTAssertNil(topPresentedViewController as? AdyenActions.AwaitViewController)
 
             waitExpectation.fulfill()
@@ -133,32 +127,23 @@ class AdyenActionComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testVoucherAction() {
+    func testVoucherAction() throws {
         let sut = AdyenActionComponent(context: Dummy.context)
-        sut.presentationDelegate = UIViewController.findTopPresenter()
+        sut.presentationDelegate = try UIViewController.topPresenter()
         
         let action = try! JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)
         sut.handle(Action.voucher(action))
         
-        wait(for: .seconds(2))
-        
         let waitExpectation = expectation(description: "Expect VoucherViewController to be presented")
-        let topPresentedViewController = UIViewController.findTopPresenter()
-        XCTAssertNotNil(topPresentedViewController?.view as? VoucherView)
-
-        (sut.presentationDelegate as! UIViewController).dismiss(animated: true) {
-            let topPresentedViewController = UIViewController.findTopPresenter()
-            XCTAssertNil(topPresentedViewController as? VoucherViewController)
-
+        let voucherViewController = try waitUntilTopPresenter(isOfType: ADYViewController.self)
+        XCTAssertNotNil(voucherViewController.view as? VoucherView)
+        
+        let presentationDelegate = try XCTUnwrap(sut.presentationDelegate as? UIViewController)
+        presentationDelegate.dismiss(animated: true) {
+            XCTAssertNotEqual(voucherViewController, try? UIViewController.topPresenter())
             waitExpectation.fulfill()
         }
 
         waitForExpectations(timeout: 10, handler: nil)
-    }
-}
-
-extension UIViewController: PresentationDelegate {
-    public func present(component: PresentableComponent) {
-        self.present(component.viewController, animated: true, completion: nil)
     }
 }

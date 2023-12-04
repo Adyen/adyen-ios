@@ -74,7 +74,8 @@ class PaymentMethodTests: XCTestCase {
                 bacsDirectDebit,
                 giftCard1,
                 givexGiftCard,
-                mealVoucherSodexo
+                mealVoucherSodexo,
+                bizum
             ]
         ]
         return try AdyenCoder.decode(dictionary) as PaymentMethods
@@ -893,5 +894,20 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.type.rawValue, "ach")
         XCTAssertEqual(paymentMethod.name, "ACH Direct Debit")
         XCTAssertEqual(paymentMethod.bankAccountNumber, "123456789")
+    }
+    
+    // MARK: - Accessibility
+    
+    func testPaymentMethodTypeName() throws {
+      
+        [
+            PaymentMethodType.openBankingUK: "open banking UK",
+            PaymentMethodType.ideal: "ideal",
+            PaymentMethodType.onlineBankingPoland: "online banking Poland",
+            PaymentMethodType.onlineBankingCZ: "online banking Czechia",
+            PaymentMethodType.onlineBankingSK: "online banking Slovakia",
+        ].forEach {
+            XCTAssertEqual($0.key.name, $0.value)
+        }
     }
 }

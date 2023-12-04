@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Invalid Input";
 "adyen.paymentMethods.otherMethods" = "others";
 "adyen.paymentMethods.storedMethods" = "Stored";
+"adyen.paymentMethods.paidMethods" = "Applied";
 "adyen.paymentMethods.title" = "Payment Methods";
 "adyen.paymentMethod.removeButton" = "Yes, remove";
 "adyen.payment.refused.message" = "The payment was refused. Please try again.";

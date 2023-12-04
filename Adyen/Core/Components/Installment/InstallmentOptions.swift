@@ -85,41 +85,48 @@ public struct InstallmentConfiguration: Decodable {
     /// Options that are specific to given card types
     public let cardBasedOptions: [CardType: InstallmentOptions]?
     
-    /// Determines whether to show the money amount in the installment selection.
+    /// Determines whether to show the amount next to the installment value.
     /// For example, `3 months X 500 USD` or `3 months`.
-    /// For now it is disabled due to making the dividing calculations in the client.
+    /// Amount is calculated by simple division.
     @_spi(AdyenInternal)
-    public let showInstallmentPrice: Bool
+    public var showInstallmentAmount: Bool
     
     /// Creates a new installment configuration by providing both the card type based options
     ///  and default options for the rest of the card types.
     /// - Parameters:
     ///   - cardBasedOptions: Options based on the card type. Must not be empty.
     ///   - defaultOptions: Default options for cards that are not specified in `cardBasedOptions`.
-    public init(cardBasedOptions: [CardType: InstallmentOptions], defaultOptions: InstallmentOptions) {
+    ///   - showInstallmentAmount: Determines whether to show the amount next to the installment value.
+    public init(cardBasedOptions: [CardType: InstallmentOptions], 
+                defaultOptions: InstallmentOptions,
+                showInstallmentAmount: Bool = false) {
         assert(!cardBasedOptions.isEmpty, "This dictionary must not be empty.")
         self.cardBasedOptions = cardBasedOptions
         self.defaultOptions = defaultOptions
-        self.showInstallmentPrice = false
+        self.showInstallmentAmount = showInstallmentAmount
     }
     
     /// Creates a new installment configuration by providing the card based options.
     /// - Parameters:
     ///   - cardBasedOptions:  Options based on the card type. Must not be empty.
-    public init(cardBasedOptions: [CardType: InstallmentOptions]) {
+    ///   - showInstallmentAmount: Determines whether to show the amount next to the installment value.
+    public init(cardBasedOptions: [CardType: InstallmentOptions], 
+                showInstallmentAmount: Bool = false) {
         assert(!cardBasedOptions.isEmpty, "This dictionary must not be empty.")
         self.defaultOptions = nil
         self.cardBasedOptions = cardBasedOptions
-        self.showInstallmentPrice = false
+        self.showInstallmentAmount = showInstallmentAmount
     }
     
     /// Creates a new installment configuration by providing the default options.
     /// - Parameters:
     ///   - defaultOptions: Default options to apply to all card types.
-    public init(defaultOptions: InstallmentOptions) {
+    ///   - showInstallmentAmount: Determines whether to show the amount next to the installment value.
+    public init(defaultOptions: InstallmentOptions, 
+                showInstallmentAmount: Bool = false) {
         self.defaultOptions = defaultOptions
         self.cardBasedOptions = nil
-        self.showInstallmentPrice = false
+        self.showInstallmentAmount = showInstallmentAmount
     }
     
     @_spi(AdyenInternal)
@@ -139,7 +146,7 @@ public struct InstallmentConfiguration: Decodable {
         }
         self.defaultOptions = defaultOptions
         self.cardBasedOptions = cardBased
-        self.showInstallmentPrice = false
+        self.showInstallmentAmount = false
     }
     
     private enum Constants {

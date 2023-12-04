@@ -60,6 +60,27 @@ public final class DropInComponent: NSObject,
         self.configuration = configuration
         self.context = context
         self.paymentMethods = paymentMethods
+        
+        let scheduler = SimpleScheduler(maximumCount: 3)
+        self.apiClient = APIClient(apiContext: context.apiContext)
+            .retryAPIClient(with: scheduler)
+            .retryOnErrorAPIClient()
+        
+        super.init()
+    }
+    
+    /// For testing only
+    internal init(paymentMethods: PaymentMethods,
+                  context: AdyenContext,
+                  configuration: Configuration = .init(),
+                  title: String? = nil,
+                  apiClient: APIClientProtocol) {
+        self.title = title ?? Bundle.main.displayName
+        self.configuration = configuration
+        self.context = context
+        self.paymentMethods = paymentMethods
+        self.apiClient = apiClient
+        
         super.init()
     }
 
@@ -92,12 +113,7 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Handling Partial Payments
 
-    private lazy var apiClient: APIClientProtocol = {
-        let scheduler = SimpleScheduler(maximumCount: 3)
-        return APIClient(apiContext: context.apiContext)
-            .retryAPIClient(with: scheduler)
-            .retryOnErrorAPIClient()
-    }()
+    private let apiClient: APIClientProtocol
     
     internal func reloadComponentManager() {
         componentManager = createComponentManager(componentManager.order)
@@ -113,17 +129,16 @@ public final class DropInComponent: NSObject,
         guard let orderData = order.orderData else { throw PartialPaymentError.missingOrderData }
         let request = OrderStatusRequest(orderData: orderData)
         apiClient.perform(request) { [weak self] result in
-            self?.handle(result, order)
+            guard let self else { return }
+            
+            switch result {
+            case let .success(orderResponse):
+                self.paymentMethods = paymentMethods
+                self.handle(orderResponse, order)
+            case let .failure(error):
+                self.delegate?.didFail(with: error, from: self)
+            }
         }
-    }
-
-    private func handle(_ result: Result<OrderStatusResponse, Error>,
-                        _ order: PartialPaymentOrder) {
-        result.handle(success: {
-            self.handle($0, order)
-        }, failure: {
-            self.delegate?.didFail(with: $0, from: self)
-        })
     }
 
     private func handle(_ response: OrderStatusResponse, _ order: PartialPaymentOrder) {

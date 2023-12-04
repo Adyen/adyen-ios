@@ -8,6 +8,7 @@
 "adyen.validationAlert.title" = "Μη έγκυρη είσοδος";
 "adyen.paymentMethods.otherMethods" = "άλλοι";
 "adyen.paymentMethods.storedMethods" = "Αποθηκευμένοι";
+"adyen.paymentMethods.paidMethods" = "Εφαρμοσμένες";
 "adyen.paymentMethods.title" = "Τρόποι πληρωμής";
 "adyen.paymentMethod.removeButton" = "Ναι, αφαίρεση";
 "adyen.payment.refused.message" = "Η πληρωμή απορρίφθηκε. Προσπαθήστε ξανά.";

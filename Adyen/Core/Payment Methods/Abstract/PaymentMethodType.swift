@@ -59,10 +59,11 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     case mealVoucherSodexo
     case upi
     case cashAppPay
+    case bizum
     case other(String)
     
     // swiftlint:disable cyclomatic_complexity function_body_length
-
+    
     public init?(rawValue: String) {
         switch rawValue {
         case "card": self = .card
@@ -117,10 +118,11 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case "mealVoucher_FR_sodexo": self = .mealVoucherSodexo
         case "upi": self = .upi
         case "cashapp": self = .cashAppPay
+        case "bizum": self = .bizum
         default: self = .other(rawValue)
         }
     }
-
+    
     public var rawValue: String {
         switch self {
         case .card: return "card"
@@ -174,9 +176,80 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .mealVoucherSodexo: return "mealVoucher_FR_sodexo"
         case .upi: return "upi"
         case .cashAppPay: return "cashapp"
+        case .bizum: return "bizum"
         case let .other(value): return value
         }
     }
+}
 
+extension PaymentMethodType {
+    
+    /// The brand name of the card type
+    ///
+    /// - Warning: Currently only intended to be used as `accessibilityLabel` as it's not localized
+    @_spi(AdyenInternal)
+    public var name: String {
+        switch self {
+        case .card: return "card payment"
+        case .scheme: return "scheme"
+        case .ideal: return "ideal"
+        case .entercash: return "enter-cash"
+        case .eps: return "EPS"
+        case .dotpay: return "dotpay"
+        case .onlineBankingPoland: return "online banking \(localized(country: "PL"))"
+        case .openBankingUK: return "open banking UK"
+        case .molPayEBankingFPXMY: return "FPX online banking \(localized(country: "MY"))"
+        case .molPayEBankingTH: return "online banking \(localized(country: "TH"))"
+        case .molPayEBankingVN: return "online banking \(localized(country: "VN"))"
+        case .sepaDirectDebit: return "sepa direct-debit"
+        case .applePay: return "applepay"
+        case .payPal: return "paypal"
+        case .bcmc: return "bcmc"
+        case .bcmcMobileQR: return "bcmc mobile qr"
+        case .bcmcMobile: return "bcmc mobile"
+        case .weChatMiniProgram: return "wechat pay"
+        case .weChatQR: return "wechat pay"
+        case .qiwiWallet: return "qiwi wallet"
+        case .weChatPayWeb: return "wechat pay"
+        case .weChatPaySDK: return "wechat pay"
+        case .mbWay: return "mbway"
+        case .blik: return "blik"
+        case .googlePay: return "google pay"
+        case .afterpay: return "afterpay"
+        case .androidPay: return "android pay"
+        case .amazonPay: return "amazon pay"
+        case .dokuWallet: return "doku wallet"
+        case .dokuAlfamart: return "alfamart"
+        case .dokuIndomaret: return "indomaret"
+        case .giftcard: return "giftcard"
+        case .doku: return "doku"
+        case .econtextSevenEleven: return "econtext seven-eleven"
+        case .econtextStores: return "econtext stores"
+        case .econtextATM: return "econtext ATM"
+        case .econtextOnline: return "econtext online"
+        case .boleto: return "boleto"
+        case .affirm: return "affirm"
+        case .oxxo: return "OXXO"
+        case .bacsDirectDebit: return "BACS direct debit"
+        case .achDirectDebit: return "ACH direct debit"
+        case .multibanco: return "multibanco"
+        case .atome: return "atome"
+        case .onlineBankingCZ: return "online banking \(localized(country: "CZ"))"
+        case .onlineBankingSK: return "online banking \(localized(country: "SK"))"
+        case .mealVoucherGroupeUp: return "meal voucher groupe-up"
+        case .mealVoucherNatixis: return "meal voucher natixis"
+        case .mealVoucherSodexo: return "meal voucher sodexo"
+        case .upi: return "UPI"
+        case .cashAppPay: return "cash app"
+        case .bizum: return "bizum"
+        case let .other(name): return name.replacingOccurrences(of: "_", with: " ")
+        }
+    }
     // swiftlint:enable cyclomatic_complexity function_body_length
+}
+
+private extension PaymentMethodType {
+    func localized(country: String) -> String {
+        Locale.current.localizedString(forRegionCode: country) ?? country
+    }
 }

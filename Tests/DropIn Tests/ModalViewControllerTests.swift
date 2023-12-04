@@ -39,7 +39,8 @@ class ModalViewControllerTests: XCTestCase {
             style: style,
             navBarType: .regular
         )
-        UIApplication.shared.keyWindow?.rootViewController = sut
+        setupRootViewController(sut)
+        
         sut.loadView()
         sut.viewDidLoad()
         
