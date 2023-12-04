@@ -163,7 +163,6 @@ class AnalyticsProviderTests: XCTestCase {
     func testTelemetryRequest() throws {
         // Given
         
-        let amount = Amount(value: 1, currencyCode: "EUR")
         let checkoutAttemptId = self.checkoutAttemptIdMockValue
         
         let telemetryExpectation = expectation(description: "Telemetry request is triggered")
@@ -214,13 +213,13 @@ class AnalyticsProviderTests: XCTestCase {
                 XCTAssertEqual(telemetryRequest.amount, amount)
                 XCTAssertEqual(telemetryRequest.checkoutAttemptId, checkoutAttemptId)
                 XCTAssertEqual(telemetryRequest.version, "version")
-                XCTAssertEqual(telemetryRequest.platform, "platform")
+                XCTAssertEqual(telemetryRequest.platform, "react-native")
                 telemetryExpectation.fulfill()
             }
         }
         
         var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.context = .init(version: "version", platform: "platform")
+        analyticsConfiguration.context = .init(version: "version", platform: .reactNative)
         
         let analyticsProvider = AnalyticsProvider(
             apiClient: apiClient,
@@ -245,7 +244,7 @@ class AnalyticsProviderTests: XCTestCase {
             amount: .init(value: 1, currencyCode: "EUR"),
             context: .init(
                 version: "version",
-                platform: "platform"
+                platform: .flutter
             )
         )
         
@@ -255,12 +254,12 @@ class AnalyticsProviderTests: XCTestCase {
         )
         
         let encodedRequest = try JSONEncoder().encode(request)
-        var decodedRequest = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedRequest) as? [String: Any])
+        let decodedRequest = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedRequest) as? [String: Any])
         
         let expectedDecodedRequest = [
             "locale": "en_US",
             "paymentMethods": telemetryData.paymentMethods,
-            "platform": "platform",
+            "platform": "flutter",
             "component": "",
             "flavor": "dropInComponent",
             "channel": "iOS",
