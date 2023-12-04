@@ -896,6 +896,30 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.bankAccountNumber, "123456789")
     }
     
+    // MARK: - PaymentMethodDetails
+    
+    func testMissingImplementationPaymentMethodDetails() throws {
+        
+        class DummyPaymentMethodDetails: PaymentMethodDetails {}
+        
+        var dummy = DummyPaymentMethodDetails()
+        
+        let expectation = expectation(description: "Access expectation")
+        expectation.expectedFulfillmentCount = 2
+        
+        AdyenAssertion.listener = { assertion in
+            XCTAssertEqual(assertion, "`@_spi(AdyenInternal) var checkoutAttemptId: String?` needs to be provided on `DummyPaymentMethodDetails`")
+            expectation.fulfill()
+        }
+        
+        // set
+        dummy.checkoutAttemptId = ""
+        // get
+        let _ = dummy.checkoutAttemptId
+        
+        wait(for: [expectation], timeout: 1)
+    }
+    
     // MARK: - Accessibility
     
     func testPaymentMethodTypeName() throws {
