@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -47,4 +47,36 @@ public struct APIContext: AnyAPIContext {
         self.clientKey = clientKey
     }
 
+}
+
+public extension AdyenContextAware {
+    
+    /// This default implementation has to be provided to be able to build with `BUILD_LIBRARY_FOR_DISTRIBUTION` enabled
+    ///
+    /// - Warning: Access will cause an failure in debug mode to assure the correct implementation of the `AdyenContextAware` protocol
+    @_spi(AdyenInternal)
+    var context: AdyenContext {
+        get {
+            AdyenAssertion.assertionFailure(
+                message: "`@_spi(AdyenInternal) var context: AdyenContext` needs to be provided on `\(String(describing: Self.self))`"
+            )
+            
+            guard let value = objc_getAssociatedObject(self, &AssociatedKeys.context) as? AdyenContext else {
+                preconditionFailure("AdyenContext must not be nil")
+            }
+            
+            return value
+        }
+        set {
+            AdyenAssertion.assertionFailure(
+                message: "`@_spi(AdyenInternal) var context: AdyenContext` needs to be provided on `\(String(describing: Self.self))`"
+            )
+            
+            objc_setAssociatedObject(self, &AssociatedKeys.context, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+}
+
+private enum AssociatedKeys {
+    internal static var context: Void?
 }
