@@ -983,7 +983,7 @@ class CardComponentTests: XCTestCase {
         
         let supportedCardLogosItemId = "AdyenCard.CardComponent.numberContainerItem.supportedCardLogosItem"
         
-        var supportedCardLogosItem: FormCardLogosItemView = try XCTUnwrap(sut.viewController.view.findView(with: supportedCardLogosItemId))
+        let supportedCardLogosItem: FormCardLogosItemView = try XCTUnwrap(sut.viewController.view.findView(with: supportedCardLogosItemId))
         XCTAssertFalse(supportedCardLogosItem.isHidden)
         
         // Valid input
