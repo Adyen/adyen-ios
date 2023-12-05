@@ -69,7 +69,12 @@ class PaymentMethodTests: XCTestCase {
                 giftCard1,
                 givexGiftCard,
                 mealVoucherSodexo,
-                bizum
+                bizum,
+                boleto,
+                affirm,
+                atome,
+                upi,
+                cashAppPay
             ]
         ]
     }
@@ -159,9 +164,10 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 26)
-        XCTAssertTrue(paymentMethods.regular[0] is CardPaymentMethod)
-        XCTAssertEqual((paymentMethods.regular[0] as! CardPaymentMethod).fundingSource!, .credit)
+        XCTAssertEqual(paymentMethods.regular.count, 31)
+        
+        let creditCardPaymentMethod = try XCTUnwrap(paymentMethods.regular[0] as? CardPaymentMethod)
+        XCTAssertEqual(creditCardPaymentMethod.fundingSource, .credit)
         
         XCTAssertTrue(paymentMethods.regular[1] is IssuerListPaymentMethod)
         XCTAssertTrue(paymentMethods.regular[2] is SEPADirectDebitPaymentMethod)
@@ -197,8 +203,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethods.regular[8].name, "GiroPay with non optional details")
         
         // Qiwi Wallet
-        XCTAssertTrue(paymentMethods.regular[9] is QiwiWalletPaymentMethod)
-        let qiwiMethod = paymentMethods.regular[9] as! QiwiWalletPaymentMethod
+        let qiwiMethod = try XCTUnwrap(paymentMethods.regular[9] as? QiwiWalletPaymentMethod)
         XCTAssertEqual(qiwiMethod.type.rawValue, "qiwiwallet")
         XCTAssertEqual(qiwiMethod.name, "Qiwi Wallet")
         XCTAssertEqual(qiwiMethod.phoneExtensions.count, 3)
@@ -215,8 +220,8 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethods.regular[10].type.rawValue, "wechatpaySDK")
         XCTAssertEqual(paymentMethods.regular[10].name, "WeChat Pay")
         
-        XCTAssertTrue(paymentMethods.regular[11] is CardPaymentMethod)
-        XCTAssertEqual((paymentMethods.regular[11] as! CardPaymentMethod).fundingSource!, .debit)
+        let debitCardPaymentMethod = try XCTUnwrap(paymentMethods.regular[11] as? CardPaymentMethod)
+        XCTAssertEqual(debitCardPaymentMethod.fundingSource, .debit)
 
         XCTAssertTrue(paymentMethods.regular[12] is MBWayPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[12].name, "MB WAY")
@@ -273,7 +278,28 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[25] is MealVoucherPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[25].name, "Sodexo")
         XCTAssertEqual(paymentMethods.regular[25].type.rawValue, "mealVoucher_FR_sodexo")
-
+        
+        XCTAssertTrue(paymentMethods.regular[26] is BoletoPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[26].name, "Boleto Bancario")
+        XCTAssertEqual(paymentMethods.regular[26].type.rawValue, "boletobancario_santander")
+        
+        XCTAssertTrue(paymentMethods.regular[27] is AffirmPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[27].name, "Affirm")
+        XCTAssertEqual(paymentMethods.regular[27].type.rawValue, "affirm")
+        
+        XCTAssertTrue(paymentMethods.regular[28] is AtomePaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[28].name, "Atome")
+        XCTAssertEqual(paymentMethods.regular[28].type.rawValue, "atome")
+        
+        XCTAssertTrue(paymentMethods.regular[29] is UPIPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[29].name, "UPI")
+        XCTAssertEqual(paymentMethods.regular[29].type.rawValue, "upi")
+        
+        let cashAppPay = try XCTUnwrap(paymentMethods.regular[30] as? CashAppPayPaymentMethod)
+        XCTAssertEqual(cashAppPay.name, "Cash App Pay")
+        XCTAssertEqual(cashAppPay.type.rawValue, "cashapp")
+        XCTAssertEqual(cashAppPay.clientId, "testClient")
+        XCTAssertEqual(cashAppPay.scopeId, "testScope")
     }
     
     // MARK: - Display Information Override
