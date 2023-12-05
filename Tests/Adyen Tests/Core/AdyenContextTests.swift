@@ -10,10 +10,6 @@ import XCTest
 
 class AdyenContextTests: XCTestCase {
     
-    override class func tearDown() {
-        AdyenAssertion.listener = nil
-    }
-    
     func testAdditionalFieldsBinding() {
 
         let oneEUR = Amount(value: 1, currencyCode: "EUR")
@@ -30,27 +26,5 @@ class AdyenContextTests: XCTestCase {
         context.update(payment: Payment(amount: twoEUR, countryCode: "NL"))
         
         XCTAssertEqual(context.analyticsProvider.additionalFields?().amount, twoEUR)
-    }
-    
-    func testMissingImplementationContextAware() throws {
-        
-        class DummyContextAware: AdyenContextAware {}
-        
-        let dummy = DummyContextAware()
-        
-        let expectation = expectation(description: "Access expectation")
-        expectation.expectedFulfillmentCount = 2
-        
-        AdyenAssertion.listener = { assertion in
-            XCTAssertEqual(assertion, "`@_spi(AdyenInternal) var context: AdyenContext` needs to be provided on `DummyContextAware`")
-            expectation.fulfill()
-        }
-        
-        // set
-        dummy.context = .init(apiContext: Dummy.apiContext, payment: nil)
-        // get
-        let _ = dummy.context
-        
-        wait(for: [expectation], timeout: 1)
     }
 }

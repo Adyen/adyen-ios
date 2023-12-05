@@ -28,23 +28,14 @@ public extension PaymentMethodDetails {
                 message: "`@_spi(AdyenInternal) var checkoutAttemptId: String?` needs to be provided on `\(String(describing: Self.self))`"
             )
             
-            return (objc_getAssociatedObject(self, &AssociatedKeys.checkoutAttemptId) as? String) ?? "do-not-track"
+            return "do-not-track"
         }
         set {
             AdyenAssertion.assertionFailure(
                 message: "`@_spi(AdyenInternal) var checkoutAttemptId: String?` needs to be provided on `\(String(describing: Self.self))`"
             )
-            
-            objc_setAssociatedObject(
-                self, &AssociatedKeys.checkoutAttemptId,
-                newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC
-            )
         }
     }
-}
-
-private enum AssociatedKeys {
-    internal static var checkoutAttemptId: Void?
 }
 
 /// Contains additional details that were retrieved to complete a payment.
