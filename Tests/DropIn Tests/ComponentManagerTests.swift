@@ -475,9 +475,11 @@ class ComponentManagerTests: XCTestCase {
             
             init() {}
             init(from decoder: Decoder) throws {}
+            
+            enum CodingKeys: CodingKey {} // Satisfying Encoding requirement
         }
         
-        var dummy = DummyPaymentMethod()
+        let dummy = DummyPaymentMethod()
         
         let expectation = expectation(description: "Access expectation")
         expectation.expectedFulfillmentCount = 1
