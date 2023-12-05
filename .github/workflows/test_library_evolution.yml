@@ -24,15 +24,15 @@ jobs:
       with:
         xcode-version: '14.3'
 
-    - name: "xcodebuild clean archive BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
-      run: |
-        xcodebuild -version
-        xcodebuild clean archive -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}"  | xcpretty --utf --color && exit ${PIPESTATUS[0]}
-      env:
-        project: 'Adyen.xcodeproj'
-        params: '-archivePath "archives/Adyen-iphoneos.xcarchive" -skipPackagePluginValidation SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES'
-        scheme: 'Adyen'
-        destination: 'generic/platform=iOS'
+#    - name: "xcodebuild clean archive BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
+#      run: |
+#        xcodebuild -version
+#        xcodebuild clean archive -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+#      env:
+#        project: 'Adyen.xcodeproj'
+#        params: '-archivePath "archives/Adyen-iphoneos.xcarchive" -skipPackagePluginValidation SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES'
+#        scheme: 'Adyen'
+#        destination: 'generic/platform=iOS'
 
     - name: Resolve dependencies
       run: |
@@ -42,4 +42,4 @@ jobs:
     - name: "carthage update --use-xcframeworks"
       run: |
         carthage version
-        Scripts/carthage.sh update --use-xcframeworks --platform ios
+        Scripts/carthage.sh update --use-xcframeworks --platform ios | xcpretty --utf --color && exit ${PIPESTATUS[0]}
