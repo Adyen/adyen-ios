@@ -213,13 +213,13 @@ class AnalyticsProviderTests: XCTestCase {
                 XCTAssertEqual(telemetryRequest.amount, amount)
                 XCTAssertEqual(telemetryRequest.checkoutAttemptId, checkoutAttemptId)
                 XCTAssertEqual(telemetryRequest.version, "version")
-                XCTAssertEqual(telemetryRequest.platform, "platform")
+                XCTAssertEqual(telemetryRequest.platform, "react-native")
                 telemetryExpectation.fulfill()
             }
         }
         
         var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.context = .init(version: "version", platform: "platform")
+        analyticsConfiguration.context = .init(version: "version", platform: .reactNative)
         
         let analyticsProvider = AnalyticsProvider(
             apiClient: apiClient,
@@ -244,7 +244,7 @@ class AnalyticsProviderTests: XCTestCase {
             amount: .init(value: 1, currencyCode: "EUR"),
             context: .init(
                 version: "version",
-                platform: "platform"
+                platform: .flutter
             )
         )
         
@@ -259,7 +259,7 @@ class AnalyticsProviderTests: XCTestCase {
         let expectedDecodedRequest = [
             "locale": "en_US",
             "paymentMethods": telemetryData.paymentMethods,
-            "platform": "platform",
+            "platform": "flutter",
             "component": "",
             "flavor": "dropInComponent",
             "channel": "iOS",
