@@ -10,8 +10,7 @@ on:
 jobs:
 
   build:
-    env:
-      sonarToken: ${{ secrets.SONAR_TOKEN }}
+    name: Verify
     runs-on: macos-13-xl
 
     steps:
@@ -25,7 +24,7 @@ jobs:
       with:
         xcode-version: '14.3'
 
-    - name: Clean Build and Test
+    - name: "xcodebuild clean archive BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
       run: |
         xcodebuild -version
         xcodebuild clean archive -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}"  | xcpretty --utf --color && exit ${PIPESTATUS[0]}
@@ -34,3 +33,13 @@ jobs:
         params: '-archivePath "archives/Adyen-iphoneos.xcarchive" -skipPackagePluginValidation SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES'
         scheme: 'Adyen'
         destination: 'generic/platform=iOS'
+
+    - name: Resolve dependencies
+      run: |
+        brew update
+        brew upgrade carthage
+        
+    - name: "carthage update --use-xcframeworks"
+      run: |
+        carthage version
+        Scripts/carthage.sh update --use-xcframeworks --platform ios
