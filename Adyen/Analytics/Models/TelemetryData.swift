@@ -14,14 +14,24 @@ import UIKit
 public struct TelemetryContext {
     
     internal let version: String
-    internal let platform: String
+    internal let platform: Platform
     
     public init(
         version: String = adyenSdkVersion,
-        platform: String = "ios"
+        platform: Platform = .iOS
     ) {
         self.version = version
         self.platform = platform
+    }
+}
+
+@_spi(AdyenInternal)
+public extension TelemetryContext {
+
+    enum Platform: String {
+        case iOS = "ios"
+        case reactNative = "react-native"
+        case flutter = "flutter"
     }
 }
 
@@ -84,7 +94,7 @@ internal struct TelemetryData: Encodable {
         self.amount = amount
         
         self.version = context.version
-        self.platform = context.platform
+        self.platform = context.platform.rawValue
 
         switch flavor {
         case let .dropIn(type, paymentMethods):
