@@ -477,7 +477,7 @@ class ComponentManagerTests: XCTestCase {
             init(from decoder: Decoder) throws {}
         }
         
-        var dummy = DummyPaymentMethod()
+        let dummy = DummyPaymentMethod()
         
         let expectation = expectation(description: "Access expectation")
         expectation.expectedFulfillmentCount = 1
