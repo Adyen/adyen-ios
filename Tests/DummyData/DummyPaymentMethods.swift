@@ -116,7 +116,7 @@ let issuerListDictionary = [
             ],
             "key": "issuer",
             "type": "select"
-        ]  as [String: Any]
+        ] as [String: Any]
     ]
 ] as [String: Any]
 
@@ -552,5 +552,5 @@ let cashAppPay: [String: Any] = [
 
 let bizum: [String: Any] = [
     "type": "bizum",
-    "name": "Bizum",
+    "name": "Bizum"
 ]
