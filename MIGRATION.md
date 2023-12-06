@@ -1,6 +1,6 @@
 #  Migration Notes
 
-## Upcoming release
+## 5.5.0
 - `telephoneNumber` property of `PrefilledShopperInformation` has been deprecated. Use to `phoneNumber` property if needed.
 
 
