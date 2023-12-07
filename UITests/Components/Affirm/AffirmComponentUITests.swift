@@ -28,19 +28,27 @@ class AffirmComponentUITests: XCTestCase {
         // Given
         let expectedBillingAddress = PostalAddressMocks.newYorkPostalAddress
         let expectedDeliveryAddress = PostalAddressMocks.losAngelesPostalAddress
-        let sut = AffirmComponent(paymentMethod: paymentMethod,
-                                  context: Dummy.context(with: nil),
-                                  configuration: AffirmComponent.Configuration(style: style,
-                                                                               shopperInformation: PrefilledShopperInformation(
-                                                                                   shopperName: ShopperName(
-                                                                                       firstName: "Katrina",
-                                                                                       lastName: "Del Mar"
-                                                                                   ),
-                                                                                   emailAddress: "katrina@mail.com",
-                                                                                   phoneNumber: PhoneNumber(value: "2025550146", callingCode: "+1"),
-                                                                                   billingAddress: expectedBillingAddress,
-                                                                                   deliveryAddress: expectedDeliveryAddress
-                                                                               )))
+        let sut = AffirmComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context(with: nil),
+            configuration: AffirmComponent.Configuration(
+                style: style,
+                shopperInformation: PrefilledShopperInformation(
+                    shopperName: .init(
+                        firstName: "Katrina",
+                        lastName: "Del Mar"
+                    ),
+                    emailAddress: "katrina@mail.com",
+                    phoneNumber: .init(
+                        value: "2025550146",
+                        callingCode: "+1"
+                    ),
+                    billingAddress: expectedBillingAddress,
+                    deliveryAddress: expectedDeliveryAddress
+                )
+            )
+        )
+        
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         
@@ -66,11 +74,27 @@ class AffirmComponentUITests: XCTestCase {
         }
 
         let view: UIView = sut.viewController.view
+        
+        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.firstName))
+        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.lastName))
+        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
+        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.email))
+        
+        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.billingAddress))
+        let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddress))
+        
+        wait(until: firstNameView, at: \.isValid, is: true)
+        wait(until: lastNameView, at: \.isValid, is: true)
+        wait(until: phoneNumberView, at: \.isValid, is: true)
+        wait(until: emailView, at: \.isValid, is: true)
+        
+        wait { billingAddressView.flatSubitemViews.compactMap { $0 as? AnyFormValidatableValueItemView }.allSatisfy(\.isValid) }
+        wait { deliveryAddressView.flatSubitemViews.compactMap { $0 as? AnyFormValidatableValueItemView }.allSatisfy(\.isValid) }
+        
+        XCTAssertNotNil(view.findView(by: "AdyenComponents.AffirmComponent.addressItem.title"))
+        
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.payButton))
         submitButton.sendActions(for: .touchUpInside)
-
-        XCTAssertNotNil(view.findView(by: "AdyenComponents.AffirmComponent.addressItem"))
-        XCTAssertNotNil(view.findView(by: "AdyenComponents.AffirmComponent.addressItem.title"))
 
         waitForExpectations(timeout: 10, handler: nil)
     }
