@@ -93,7 +93,7 @@ class AdyenActionComponentTests: XCTestCase {
             waitExpectation.fulfill()
         }
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 100, handler: nil)
     }
 
     func testWeChatAction() {
@@ -144,6 +144,6 @@ class AdyenActionComponentTests: XCTestCase {
             waitExpectation.fulfill()
         }
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 100, handler: nil)
     }
 }

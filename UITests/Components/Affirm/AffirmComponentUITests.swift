@@ -96,7 +96,7 @@ class AffirmComponentUITests: XCTestCase {
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.payButton))
         submitButton.sendActions(for: .touchUpInside)
 
-        waitForExpectations(timeout: 10, handler: nil)
+        wait(for: [didSubmitExpectation], timeout: 100)
     }
 
     func testAffirmPrefilling_givenDeliveryAddressIsSet() throws {

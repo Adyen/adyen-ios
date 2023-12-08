@@ -101,6 +101,18 @@ class AtomeComponentUITests: XCTestCase {
         setupRootViewController(sut.viewController)
         let view: UIView = sut.viewController.view
         
+        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.firstName))
+        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.lastName))
+        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.phone))
+        
+        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.billingAddress))
+        
+        wait(until: firstNameView, at: \.isValid, is: true)
+        wait(until: lastNameView, at: \.isValid, is: true)
+        wait(until: phoneNumberView, at: \.isValid, is: true)
+        
+        wait { billingAddressView.flatSubitemViews.compactMap { $0 as? AnyFormValidatableValueItemView }.allSatisfy(\.isValid) }
+        
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.payButton))
         submitButton.sendActions(for: .touchUpInside)
         
