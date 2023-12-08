@@ -94,8 +94,12 @@ final class BoletoComponentUITests: XCTestCase {
         presentOnRoot(sut.viewController)
 
         let dummyExpectation = XCTestExpectation(description: "Dummy Expectation")
-
-        let submitButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(by: "payButtonItem.button"))
+        
+        let view = try XCTUnwrap(sut.viewController.view)
+        let submitButton: SubmitButton = try XCTUnwrap(view.findView(by: "payButtonItem.button"))
+        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "firstNameItem"))
+        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "lastNameItem"))
+        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "addressItem"))
 
         mockDelegate.onDidSubmit = { paymentData, paymentComponent in
             let boletoDetails = paymentData.paymentMethod as? BoletoDetails
@@ -112,6 +116,11 @@ final class BoletoComponentUITests: XCTestCase {
             
             dummyExpectation.fulfill()
         }
+        
+        wait(until: firstNameView, at: \.isValid, is: true)
+        wait(until: lastNameView, at: \.isValid, is: true)
+        
+        wait { billingAddressView.flatSubitemViews.compactMap { $0 as? AnyFormValidatableValueItemView }.allSatisfy(\.isValid) }
 
         submitButton.sendActions(for: .touchUpInside)
         
