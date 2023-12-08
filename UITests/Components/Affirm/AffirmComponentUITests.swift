@@ -137,7 +137,8 @@ class AffirmComponentUITests: XCTestCase {
         let deliveryAddress = try XCTUnwrap(prefillSut.deliveryAddressItem?.value)
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
         
-        prefillSut.viewController.view.endEditing(true)
+        endEditing(for: prefillSut.viewController.view)
+        
         verifyViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled-address-set")
 
     }
@@ -179,7 +180,8 @@ class AffirmComponentUITests: XCTestCase {
         let deliveryAddress = try XCTUnwrap(prefillSut.deliveryAddressItem?.value)
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
         
-        prefillSut.viewController.view.endEditing(true)
+        endEditing(for: prefillSut.viewController.view)
+        
         verifyViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled-address-not-set")
     }
 
@@ -215,7 +217,8 @@ class AffirmComponentUITests: XCTestCase {
         let deliveryAddress = try XCTUnwrap(sut.deliveryAddressItem?.value)
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
         
-        sut.viewController.view.endEditing(true)
+        endEditing(for: sut.viewController.view)
+        
         verifyViewControllerImage(matching: sut.viewController, named: "shopper-info-not-filled")
     }
 
