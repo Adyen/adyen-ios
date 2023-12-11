@@ -9,10 +9,29 @@ import TwintSDK
 
 public final class TwintComponent {
 
-    private lazy var formViewController: FormViewController = {
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public var context: AdyenContext
 
-        return formViewController
-    }()
+    /// The payment method object for this component.
+    public var paymentMethod: PaymentMethod { twintPayPaymentMethod }
+
+    private let twintPayPaymentMethod: TwintPaymentMethod
 
     public var requiresModalPresentation: Bool = true
+
+    /// Initializes the Twint component.
+    ///
+    /// - Parameter paymentMethod: The Twint  payment method.
+    /// - Parameter context: The context object for this component.
+    /// - Parameter configuration: The configuration for the component.
+    public init(paymentMethod: TwintPaymentMethod,
+                context: AdyenContext) {
+        self.twintPayPaymentMethod = paymentMethod
+        self.context = context
+    }
+
+    private func startTwintFlow() {
+        
+    }
 }
