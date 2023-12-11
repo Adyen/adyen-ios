@@ -23,9 +23,7 @@ internal struct TelemetryRequest: APIRequest {
 
     internal let method: HTTPMethod = .post
 
-    internal private(set) var version: String
-    internal private(set) var platform: String
-    
+    private var version: String
     private let channel: String
     private let locale: String
     private let flavor: String
@@ -56,7 +54,6 @@ internal struct TelemetryRequest: APIRequest {
         self.paymentMethods = data.paymentMethods
         self.component = data.component
         self.amount = data.amount
-        self.platform = data.platform
         self.checkoutAttemptId = checkoutAttemptId
     }
 
@@ -75,6 +72,5 @@ internal struct TelemetryRequest: APIRequest {
         case component
         case checkoutAttemptId
         case amount
-        case platform
     }
 }

@@ -43,8 +43,8 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
     
     func testSettingThreeDSRequestorAppURL() {
         let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration())
-        sut.threeDSRequestorAppURL = URL(string: "https://google.com")
-        XCTAssertEqual(sut.coreActionHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
+        sut.threeDSRequestorAppURL = URL(string: "http://google.com")
+        XCTAssertEqual(sut.coreActionHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
     }
 
     func testWrappedComponent() {
@@ -138,14 +138,14 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
 
         let transaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
         transaction.onPerformChallenge = { params, completion in
-            XCTAssertEqual(params.threeDSRequestorAppURL, URL(string: "https://google.com"))
+            XCTAssertEqual(params.threeDSRequestorAppURL, URL(string: "http://google.com"))
             completion(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y"), nil)
         }
         service.mockedTransaction = transaction
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, service: service)
-        sut.threeDSRequestorAppURL = URL(string: "https://google.com")
+        sut.threeDSRequestorAppURL = URL(string: "http://google.com")
         sut.transaction = transaction
         sut.handle(challengeAction) { challengeResult in
             switch challengeResult {

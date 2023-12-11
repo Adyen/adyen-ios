@@ -76,8 +76,8 @@ import XCTest
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
                                                       appearanceConfiguration: ADYAppearanceConfiguration(),
                                                       delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations)
-            sut.threeDSRequestorAppURL = URL(string: "https://google.com")
-            XCTAssertEqual(sut.threeDSRequestorAppURL, URL(string: "https://google.com"))
+            sut.threeDSRequestorAppURL = URL(string: "http://google.com")
+            XCTAssertEqual(sut.threeDSRequestorAppURL, URL(string: "http://google.com"))
         }
         
         @available(iOS 14.0, *)
@@ -169,7 +169,7 @@ import XCTest
 
             let transaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
             transaction.onPerformChallenge = { params, completion in
-                XCTAssertEqual(params.threeDSRequestorAppURL, URL(string: "https://google.com"))
+                XCTAssertEqual(params.threeDSRequestorAppURL, URL(string: "http://google.com"))
                 completion(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y"), nil)
             }
             service.mockedTransaction = transaction
@@ -194,7 +194,7 @@ import XCTest
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
                                                       service: service,
                                                       delegatedAuthenticationService: authenticationServiceMock)
-            sut.threeDSRequestorAppURL = URL(string: "https://google.com")
+            sut.threeDSRequestorAppURL = URL(string: "http://google.com")
             sut.transaction = transaction
             sut.delegatedAuthenticationState.isDeviceRegistrationFlow = true
             sut.handle(challengeAction, event: analyticsEvent) { challengeResult in

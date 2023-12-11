@@ -47,8 +47,7 @@ extension AnalyticsProvider: TelemetryTrackerProtocol {
         
         let telemetryData = TelemetryData(
             flavor: flavor,
-            amount: additionalFields?.amount,
-            context: configuration.context
+            amount: additionalFields?.amount
         )
 
         fetchCheckoutAttemptId { [weak self] checkoutAttemptId in

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -28,21 +28,6 @@ public protocol PaymentMethod: Decodable {
     
     @_spi(AdyenInternal)
     func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent?
-}
-
-public extension PaymentMethod {
-    
-    /// This default implementation has to be provided to be able to build with `BUILD_LIBRARY_FOR_DISTRIBUTION` enabled
-    ///
-    /// - Warning: Access will cause an failure in debug mode to assure the correct implementation of the `PaymentMethod` protocol
-    @_spi(AdyenInternal)
-    func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        AdyenAssertion.assertionFailure(
-            message: "`@_spi(AdyenInternal) \(#function)` needs to be implemented on `\(String(describing: Self.self))`"
-        )
-        
-        return nil
-    }
 }
 
 /// A protocol to define any partial payment method such as gift cards, `MealVoucher` etc.
