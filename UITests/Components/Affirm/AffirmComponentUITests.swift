@@ -75,21 +75,11 @@ class AffirmComponentUITests: XCTestCase {
 
         let view: UIView = sut.viewController.view
         
-        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.firstName))
-        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.lastName))
-        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
-        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.email))
-        
         let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.billingAddress))
         let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddress))
         
-        wait(until: firstNameView, at: \.isValid, is: true)
-        wait(until: lastNameView, at: \.isValid, is: true)
-        wait(until: phoneNumberView, at: \.isValid, is: true)
-        wait(until: emailView, at: \.isValid, is: true)
-        
-        wait { billingAddressView.flatSubitemViews.compactMap { $0 as? AnyFormValidatableValueItemView }.allSatisfy(\.isValid) }
-        wait { deliveryAddressView.flatSubitemViews.compactMap { $0 as? AnyFormValidatableValueItemView }.allSatisfy(\.isValid) }
+        wait(until: billingAddressView, at: \.isValid, is: true)
+        wait(until: deliveryAddressView, at: \.isValid, is: true)
         
         XCTAssertNotNil(view.findView(by: "AdyenComponents.AffirmComponent.addressItem.title"))
         
@@ -137,6 +127,10 @@ class AffirmComponentUITests: XCTestCase {
         let deliveryAddress = try XCTUnwrap(prefillSut.deliveryAddressItem?.value)
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
         
+        let view = try XCTUnwrap(prefillSut.viewController.view)
+        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "addressItem"))
+        wait(until: billingAddressView, at: \.isValid, is: true)
+        
         endEditing(for: prefillSut.viewController.view)
         
         verifyViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled-address-set")
@@ -179,6 +173,10 @@ class AffirmComponentUITests: XCTestCase {
         let expectedDeliveryAddress = PostalAddressMocks.emptyUSPostalAddress
         let deliveryAddress = try XCTUnwrap(prefillSut.deliveryAddressItem?.value)
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
+        
+        let view = try XCTUnwrap(prefillSut.viewController.view)
+        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "addressItem"))
+        wait(until: billingAddressView, at: \.isValid, is: true)
         
         endEditing(for: prefillSut.viewController.view)
         
