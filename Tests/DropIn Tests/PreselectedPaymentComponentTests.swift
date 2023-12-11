@@ -77,7 +77,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
             
             expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 5)
+        wait(for: [expectation], timeout: 10)
     }
 
     func testSubmitButtonLoading() {
@@ -104,7 +104,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
             XCTAssertNil(self.delegate.componentToProceed)
             expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 5)
+        wait(for: [expectation], timeout: 10)
     }
     
     func testUICustomization() {

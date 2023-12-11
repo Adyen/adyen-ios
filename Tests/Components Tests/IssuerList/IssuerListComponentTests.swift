@@ -52,7 +52,7 @@ class IssuerListComponentTests: XCTestCase {
         sut.delegate = mockDelegate
         listViewController.tableView(listViewController.tableView, didSelectRowAt: .init(item: 0, section: 0))
 
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 10)
     }
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {

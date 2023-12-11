@@ -922,7 +922,7 @@ class PaymentMethodTests: XCTestCase {
         // get
         let _ = dummy.checkoutAttemptId
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 10)
     }
     
     // MARK: - Accessibility

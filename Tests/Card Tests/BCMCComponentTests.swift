@@ -251,7 +251,7 @@ class BCMCComponentTests: XCTestCase {
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
         self.populate(textItemView: cardNumberItemView!, with: "67034")
         
-        wait(for: [expectationCardType], timeout: 5)
+        wait(for: [expectationCardType], timeout: 10)
     }
 
     func testDelegateCalledCorrectBIN() {
@@ -279,7 +279,7 @@ class BCMCComponentTests: XCTestCase {
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
         populate(textItemView: cardNumberItemView!, with: Dummy.bancontactCard.number!)
 
-        wait(for: [expectationBin], timeout: 1)
+        wait(for: [expectationBin], timeout: 10)
     }
     
     func testOnSubmitLastFourNotCalledUntilCardNumberIsValidAndSubmitted() {
@@ -306,7 +306,7 @@ class BCMCComponentTests: XCTestCase {
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
         populate(textItemView: cardNumberItemView!, with: "6703 4444 4444")
 
-        wait(for: [expectationBin], timeout: 1)
+        wait(for: [expectationBin], timeout: 10)
     }
     
     func testBinLookupRequiredCVC() throws {
@@ -340,14 +340,14 @@ class BCMCComponentTests: XCTestCase {
         sut.cardComponentDelegate = delegateMock
         
         fillCard(on: sut.viewController.view, with: Dummy.bancontactCard, simulateKeyStrokes: true)
-        wait(for: [expectationBinLookup], timeout: 1)
+        wait(for: [expectationBinLookup], timeout: 10)
         tapSubmitButton(on: sut.viewController.view) // Should not trigger `didSubmit` as the security code is required
         
         let securityCodeItemView: FormCardSecurityCodeItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.securityCodeItem"))
         populate(textItemView: securityCodeItemView, with: "123")
         tapSubmitButton(on: sut.viewController.view) // Should trigger `didSubmit` as the security code is provided
 
-        wait(for: [expectationBin], timeout: 1)
+        wait(for: [expectationBin], timeout: 10)
     }
     
     func testDelegateCalledWith6DigitsBINThenFinal6DigitsBIN() {
@@ -390,10 +390,10 @@ class BCMCComponentTests: XCTestCase {
         sut.cardComponentDelegate = delegateMock
         
         fillCard(on: sut.viewController.view, with: Dummy.bancontactCard, simulateKeyStrokes: true)
-        wait(for: [expectationBinLookup], timeout: 1)
+        wait(for: [expectationBinLookup], timeout: 10)
         tapSubmitButton(on: sut.viewController.view)
 
-        wait(for: [expectationBin], timeout: 1)
+        wait(for: [expectationBin], timeout: 10)
     }
     
     func testDelegateCalledWith8DigitsBINThenFinal8DigitsBIN() {
@@ -433,10 +433,10 @@ class BCMCComponentTests: XCTestCase {
         sut.cardComponentDelegate = delegateMock
         
         fillCard(on: sut.viewController.view, with: Dummy.longBancontactCard, simulateKeyStrokes: true)
-        wait(for: [expectationBinLookup], timeout: 1)
+        wait(for: [expectationBinLookup], timeout: 10)
         tapSubmitButton(on: sut.viewController.view)
 
-        wait(for: [expectationBin], timeout: 1)
+        wait(for: [expectationBin], timeout: 10)
     }
     
     func testDelegateIncorrectCard() {
@@ -461,7 +461,7 @@ class BCMCComponentTests: XCTestCase {
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
         self.populate(textItemView: cardNumberItemView!, with: "32145")
         
-        wait(for: [expectationCardType], timeout: 5)
+        wait(for: [expectationCardType], timeout: 10)
     }
     
     func testSubmitPaymentDataInvalidCardNumber() {

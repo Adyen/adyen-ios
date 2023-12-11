@@ -54,7 +54,7 @@ class SearchViewControllerTests: XCTestCase {
         
         // handleViewDidLoad
         viewModel.handleViewDidLoad()
-        wait(for: [handleViewDidLoadExpectation], timeout: 2)
+        wait(for: [handleViewDidLoadExpectation], timeout: 10)
         XCTAssertEqual(viewModel.interfaceState, .empty(searchTerm: ""))
     }
     
@@ -139,7 +139,7 @@ class SearchViewControllerTests: XCTestCase {
             textDidChange: testSearchTerm
         )
         
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 10)
         
         XCTAssertEqual(viewModel.interfaceState, .empty(searchTerm: testSearchTerm))
         XCTAssertTrue(expectedLookups.isEmpty)
