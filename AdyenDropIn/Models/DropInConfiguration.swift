@@ -63,6 +63,9 @@ public extension DropInComponent {
 
         /// Gift card component configuration
         public var giftCard: GiftCard = .init()
+        
+        /// Configuration for the Twint component
+        public var twint: Twint?
 
         /// Initializes the drop in configuration.
         /// - Parameters:
@@ -248,6 +251,23 @@ public extension DropInComponent {
             self.referenceId = referenceId
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
             self.storePaymentMethod = storePaymentMethod
+        }
+    }
+    
+    /// Twint component configuration.
+    struct Twint: AnyTwintConfiguration {
+        
+        /// The URL for Cash App to call in order to redirect back to your application.
+        public let redirectURL: URL
+        
+        /// Configuration of TwintComponent
+        ///
+        /// - Parameters:
+        ///   - redirectURL: The URL for Cash App to call in order to redirect back to your application.
+        public init(
+            redirectURL: URL
+        ) {
+            self.redirectURL = redirectURL
         }
     }
     

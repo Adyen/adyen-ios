@@ -75,6 +75,11 @@
 	<array>
 		<string>weixinULAPI</string>
 		<string>weixin</string>
+		<string>twint-issuer1</string>
+		<string>twint-issuer2</string>
+		<string>twint-issuer3</string>
+		<string>twint-issuer4</string>
+		<string>twint-issuer5</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

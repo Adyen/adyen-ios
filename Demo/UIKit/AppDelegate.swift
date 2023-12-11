@@ -9,6 +9,10 @@ import AdyenActions
 #if canImport(PayKit)
     import PayKit
 #endif
+#if canImport(TwintSDK)
+    import AdyenTwint
+    import TwintSDK
+#endif
 import UIKit
 
 @main
@@ -35,7 +39,31 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     internal func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        RedirectComponent.applicationDidOpen(from: url)
+        var urlHandled = false
+        
+        #if canImport(TwintSDK)
+            urlHandled = Twint.handleOpen(url) { error in
+                
+                var userInfo = [String: Codable]()
+                
+                // TODO: This is not that nice - maybe better let the TwintComponent generate the UserDefaults?
+                
+                if let error {
+                    userInfo[TwintComponent.RedirectNotificationErrorKey] = error.localizedDescription
+                }
+                
+                NotificationCenter.default.post(
+                    name: TwintComponent.RedirectNotification,
+                    object: nil,
+                    userInfo: userInfo
+                )
+            }
+        #endif
+        
+        if !urlHandled {
+            RedirectComponent.applicationDidOpen(from: url)
+        }
+        
         #if canImport(PayKit)
             NotificationCenter.default.post(
                 name: CashAppPay.RedirectNotification,

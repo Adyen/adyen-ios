@@ -17,20 +17,23 @@
 #if canImport(AdyenCashAppPay)
     import AdyenCashAppPay
 #endif
+#if canImport(AdyenTwint)
+    import AdyenTwint
+#endif
 import Foundation
 
 extension ComponentManager: PaymentComponentBuilder {
-
+    
     internal func build(paymentMethod: StoredCardPaymentMethod) -> PaymentComponent? {
         createCardComponent(with: paymentMethod)
     }
-
+    
     internal func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod,
                                      context: context,
                                      configuration: .init(localizationParameters: configuration.localizationParameters))
     }
-
+    
     internal func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod,
                                      context: context,
@@ -48,38 +51,38 @@ extension ComponentManager: PaymentComponentBuilder {
                                      context: context,
                                      configuration: .init(localizationParameters: configuration.localizationParameters))
     }
-
+    
     internal func build(paymentMethod: CardPaymentMethod) -> PaymentComponent? {
         createCardComponent(with: paymentMethod)
     }
-
+    
     internal func build(paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
         createBancontactComponent(with: paymentMethod)
     }
-
+    
     internal func build(paymentMethod: IssuerListPaymentMethod) -> PaymentComponent? {
         IssuerListComponent(paymentMethod: paymentMethod,
                             context: context,
                             configuration: .init(style: configuration.style.listComponent,
                                                  localizationParameters: configuration.localizationParameters))
     }
-
+    
     internal func build(paymentMethod: SEPADirectDebitPaymentMethod) -> PaymentComponent? {
         createSEPAComponent(paymentMethod)
     }
-
+    
     internal func build(paymentMethod: BACSDirectDebitPaymentMethod) -> PaymentComponent? {
         createBACSDirectDebit(paymentMethod)
     }
-
+    
     internal func build(paymentMethod: ACHDirectDebitPaymentMethod) -> PaymentComponent? {
         createACHDirectDebitComponent(paymentMethod)
     }
-
+    
     internal func build(paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
         createPreApplePayComponent(with: paymentMethod)
     }
-
+    
     internal func build(paymentMethod: WeChatPayPaymentMethod) -> PaymentComponent? {
         guard let classObject = loadTheConcreteWeChatPaySDKActionComponentClass() else { return nil }
         guard classObject.isDeviceSupported() else { return nil }
@@ -87,19 +90,19 @@ extension ComponentManager: PaymentComponentBuilder {
                                        context: context,
                                        order: order)
     }
-
+    
     internal func build(paymentMethod: QiwiWalletPaymentMethod) -> PaymentComponent? {
         createQiwiWalletComponent(paymentMethod)
     }
-
+    
     internal func build(paymentMethod: MBWayPaymentMethod) -> PaymentComponent? {
         createMBWayComponent(paymentMethod)
     }
-
+    
     internal func build(paymentMethod: BLIKPaymentMethod) -> PaymentComponent? {
         createBLIKComponent(paymentMethod)
     }
-
+    
     internal func build(paymentMethod: EContextPaymentMethod) -> PaymentComponent? {
         let config = BasicPersonalInfoFormComponent.Configuration(style: configuration.style.formComponent,
                                                                   shopperInformation: configuration.shopperInformation,
@@ -108,7 +111,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                               context: context,
                                               configuration: config)
     }
-
+    
     internal func build(paymentMethod: DokuPaymentMethod) -> PaymentComponent? {
         let config = DokuComponent.Configuration(style: configuration.style.formComponent,
                                                  shopperInformation: configuration.shopperInformation,
@@ -117,7 +120,7 @@ extension ComponentManager: PaymentComponentBuilder {
                              context: context,
                              configuration: config)
     }
-
+    
     internal func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {
         guard let amount = context.payment?.amount, partialPaymentEnabled else { return nil }
         return GiftCardComponent(paymentMethod: paymentMethod,
@@ -135,11 +138,11 @@ extension ComponentManager: PaymentComponentBuilder {
                                  style: configuration.style.formComponent,
                                  showsSecurityCodeField: configuration.giftCard.showsSecurityCodeField)
     }
-
+    
     internal func build(paymentMethod: BoletoPaymentMethod) -> PaymentComponent? {
         createBoletoComponent(paymentMethod)
     }
-
+    
     internal func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent? {
         let config = AffirmComponent.Configuration(style: configuration.style.formComponent,
                                                    shopperInformation: configuration.shopperInformation,
@@ -148,13 +151,13 @@ extension ComponentManager: PaymentComponentBuilder {
                                context: context,
                                configuration: config)
     }
-
+    
     internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
         InstantPaymentComponent(paymentMethod: paymentMethod,
                                 context: context,
                                 order: order)
     }
-
+    
     internal func build(paymentMethod: AtomePaymentMethod) -> PaymentComponent? {
         let config = AtomeComponent.Configuration(style: configuration.style.formComponent,
                                                   shopperInformation: configuration.shopperInformation,
@@ -163,13 +166,13 @@ extension ComponentManager: PaymentComponentBuilder {
                               context: context,
                               configuration: config)
     }
-
+    
     internal func build(paymentMethod: OnlineBankingPaymentMethod) -> PaymentComponent? {
         OnlineBankingComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: .init(style: configuration.style.formComponent))
     }
-
+    
     internal func build(paymentMethod: UPIPaymentMethod) -> PaymentComponent? {
         UPIComponent(paymentMethod: paymentMethod,
                      context: context,
@@ -189,7 +192,7 @@ extension ComponentManager: PaymentComponentBuilder {
                 cashAppPayConfiguration.showsStorePaymentMethodField = cashAppPayDropInConfig.showsStorePaymentMethodField
                 cashAppPayConfiguration.localizationParameters = configuration.localizationParameters
                 cashAppPayConfiguration.style = configuration.style.formComponent
-        
+            
                 return CashAppPayComponent(paymentMethod: paymentMethod,
                                            context: context,
                                            configuration: cashAppPayConfiguration)
@@ -200,8 +203,17 @@ extension ComponentManager: PaymentComponentBuilder {
             return nil
         #endif
     }
+    
+    internal func build(paymentMethod: TwintPaymentMethod) -> PaymentComponent? {
+        createTwintComponent(paymentMethod)
+    }
+}
 
-    private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
+// MARK: - Convenience
+
+private extension ComponentManager {
+
+    func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
         var cardConfiguration = configuration.card.cardComponentConfiguration
         cardConfiguration.style = configuration.style.formComponent
         cardConfiguration.localizationParameters = configuration.localizationParameters
@@ -211,7 +223,7 @@ extension ComponentManager: PaymentComponentBuilder {
                              configuration: cardConfiguration)
     }
 
-    private func createBancontactComponent(with paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
+    func createBancontactComponent(with paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
         let cardConfiguration = configuration.card
         let configuration = CardComponent.Configuration(style: configuration.style.formComponent,
                                                         shopperInformation: configuration.shopperInformation,
@@ -226,7 +238,7 @@ extension ComponentManager: PaymentComponentBuilder {
                              configuration: configuration)
     }
 
-    private func createPreApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
+    func createPreApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
         guard let applePay = configuration.applePay else {
             adyenPrint("Failed to instantiate ApplePayComponent because ApplePayConfiguration is missing")
             return nil
@@ -256,7 +268,7 @@ extension ComponentManager: PaymentComponentBuilder {
         }
     }
 
-    private func createSEPAComponent(_ paymentMethod: SEPADirectDebitPaymentMethod) -> SEPADirectDebitComponent {
+    func createSEPAComponent(_ paymentMethod: SEPADirectDebitPaymentMethod) -> SEPADirectDebitComponent {
         let config = SEPADirectDebitComponent.Configuration(style: configuration.style.formComponent,
                                                             localizationParameters: configuration.localizationParameters)
         return SEPADirectDebitComponent(paymentMethod: paymentMethod,
@@ -264,7 +276,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                         configuration: config)
     }
 
-    private func createBACSDirectDebit(_ paymentMethod: BACSDirectDebitPaymentMethod) -> BACSDirectDebitComponent {
+    func createBACSDirectDebit(_ paymentMethod: BACSDirectDebitPaymentMethod) -> BACSDirectDebitComponent {
         let bacsConfiguration = BACSDirectDebitComponent.Configuration(style: configuration.style.formComponent,
                                                                        localizationParameters: configuration.localizationParameters)
         let bacsDirectDebitComponent = BACSDirectDebitComponent(paymentMethod: paymentMethod,
@@ -274,7 +286,7 @@ extension ComponentManager: PaymentComponentBuilder {
         return bacsDirectDebitComponent
     }
 
-    private func createACHDirectDebitComponent(_ paymentMethod: ACHDirectDebitPaymentMethod) -> ACHDirectDebitComponent {
+    func createACHDirectDebitComponent(_ paymentMethod: ACHDirectDebitPaymentMethod) -> ACHDirectDebitComponent {
         let config = ACHDirectDebitComponent.Configuration(style: configuration.style.formComponent,
                                                            shopperInformation: configuration.shopperInformation,
                                                            localizationParameters: configuration.localizationParameters,
@@ -286,7 +298,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                        configuration: config)
     }
 
-    private func createQiwiWalletComponent(_ paymentMethod: QiwiWalletPaymentMethod) -> QiwiWalletComponent {
+    func createQiwiWalletComponent(_ paymentMethod: QiwiWalletPaymentMethod) -> QiwiWalletComponent {
         let config = QiwiWalletComponent.Configuration(style: configuration.style.formComponent,
                                                        shopperInformation: configuration.shopperInformation,
                                                        localizationParameters: configuration.localizationParameters)
@@ -295,7 +307,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                    configuration: config)
     }
 
-    private func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
+    func createMBWayComponent(_ paymentMethod: MBWayPaymentMethod) -> MBWayComponent? {
         let config = MBWayComponent.Configuration(style: configuration.style.formComponent,
                                                   shopperInformation: configuration.shopperInformation,
                                                   localizationParameters: configuration.localizationParameters)
@@ -304,7 +316,7 @@ extension ComponentManager: PaymentComponentBuilder {
                               configuration: config)
     }
 
-    private func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {
+    func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {
         let config = BLIKComponent.Configuration(style: configuration.style.formComponent,
                                                  localizationParameters: configuration.localizationParameters)
         return BLIKComponent(paymentMethod: paymentMethod,
@@ -312,7 +324,7 @@ extension ComponentManager: PaymentComponentBuilder {
                              configuration: config)
     }
 
-    private func createBoletoComponent(_ paymentMethod: BoletoPaymentMethod) -> BoletoComponent {
+    func createBoletoComponent(_ paymentMethod: BoletoPaymentMethod) -> BoletoComponent {
         let config = BoletoComponent.Configuration(style: configuration.style.formComponent,
                                                    localizationParameters: configuration.localizationParameters,
                                                    shopperInformation: configuration.shopperInformation,
@@ -320,6 +332,28 @@ extension ComponentManager: PaymentComponentBuilder {
         return BoletoComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)
+    }
+    
+    func createTwintComponent(_ paymentMethod: TwintPaymentMethod) -> TwintComponent? {
+        #if canImport(AdyenTwint)
+            guard let twintConfig = configuration.twint else {
+                AdyenAssertion.assertionFailure(message: "Twint configuration instance must not be nil in order to use TwintComponent")
+                return nil
+            }
+        
+            let config = TwintComponent.Configuration(
+                redirectURL: twintConfig.redirectURL,
+                style: configuration.style.formComponent,
+                localizationParameters: configuration.localizationParameters
+            )
+            return TwintComponent(
+                paymentMethod: paymentMethod,
+                context: context,
+                configuration: config
+            )
+        #else
+            return nil
+        #endif
     }
 
 }

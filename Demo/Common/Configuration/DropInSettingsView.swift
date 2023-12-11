@@ -20,7 +20,6 @@ internal struct DropInSettingsView: View {
                     Toggle(isOn: $viewModel.allowDisablingStoredPaymentMethods) {
                         Text("Disable Stored Payment Methods")
                     }
-
                     Toggle(isOn: $viewModel.allowsSkippingPaymentList) {
                         VStack(alignment: .leading) {
                             Text("Skip Payment List")
@@ -31,6 +30,9 @@ internal struct DropInSettingsView: View {
                     }
                     Toggle(isOn: $viewModel.cashAppPayEnabled) {
                         Text("Enable CashApp Pay")
+                    }
+                    Toggle(isOn: $viewModel.twintEnabled) {
+                        Text("Enable Twint")
                     }
                 }
             }

@@ -32,6 +32,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var cashAppPayEnabled: Bool = false
     @Published internal var installmentsEnabled: Bool = false
     @Published internal var showInstallmentAmount: Bool = false
+    @Published internal var twintEnabled: Bool = false
 
     private let onDone: (DemoAppSettings) -> Void
     private let configuration: DemoAppSettings
@@ -68,6 +69,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.cashAppPayEnabled = configuration.dropInSettings.cashAppPayEnabled
         self.installmentsEnabled = configuration.cardSettings.enableInstallments
         self.showInstallmentAmount = configuration.cardSettings.showsInstallmentAmount
+        self.twintEnabled = configuration.dropInSettings.twintEnabled
     }
     
     internal func doneTapped() {
@@ -98,7 +100,8 @@ internal final class ConfigurationViewModel: ObservableObject {
             dropInSettings: DropInSettings(allowDisablingStoredPaymentMethods: allowDisablingStoredPaymentMethods,
                                            allowsSkippingPaymentList: allowsSkippingPaymentList,
                                            allowPreselectedPaymentView: allowPreselectedPaymentView,
-                                           cashAppPayEnabled: cashAppPayEnabled),
+                                           cashAppPayEnabled: cashAppPayEnabled,
+                                           twintEnabled: twintEnabled),
             applePaySettings: ApplePaySettings(merchantIdentifier: applePayMerchantIdentifier,
                                                allowOnboarding: allowOnboarding),
             analyticsSettings: AnalyticsSettings(isEnabled: analyticsIsEnabled)

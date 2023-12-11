@@ -196,6 +196,7 @@ internal enum AnyPaymentMethod: Decodable {
     case onlineBanking(OnlineBankingPaymentMethod)
     case upi(UPIPaymentMethod)
     case cashAppPay(CashAppPayPaymentMethod)
+    case twint(TwintPaymentMethod)
     
     case none
     
@@ -262,6 +263,8 @@ internal enum AnyPaymentMethod: Decodable {
         case let .upi(paymentMethod):
             return paymentMethod
         case let .cashAppPay(paymentMethod):
+            return paymentMethod
+        case let .twint(paymentMethod):
             return paymentMethod
         case .none:
             return nil

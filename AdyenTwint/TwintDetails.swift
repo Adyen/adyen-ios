@@ -22,8 +22,10 @@ public struct TwintDetails: PaymentMethodDetails {
     /// - Parameters:
     ///   - paymentMethod: Twint payment method.
     ///   - subType: Twint subType.
-    public init(paymentMethod: TwintPaymentMethod,
-                subType: String) {
+    public init(
+        paymentMethod: TwintPaymentMethod,
+        subType: String
+    ) {
         self.type = paymentMethod.type
         self.subType = subType
     }
