@@ -31,7 +31,7 @@ public extension TelemetryContext {
     enum Platform: String {
         case iOS = "ios"
         case reactNative = "react-native"
-        case flutter
+        case flutter = "flutter"
     }
 }
 

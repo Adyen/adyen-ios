@@ -170,7 +170,7 @@ class AddressLookupViewControllerTests: XCTestCase {
     func testViewModelInteraction() {
 
         // Given
-        let expectedSearchTerm = "Test"
+        let expectedSearchTerm: String = "Test"
         let results: [LookupAddressModel] = PostalAddressMocks.all.map {
             .init(identifier: UUID().uuidString, postalAddress: $0)
         }

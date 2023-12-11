@@ -117,7 +117,7 @@ class AwaitComponentTests: XCTestCase {
         let presentationDelegate = PresentationDelegateMock()
         let waitExpectation = expectation(description: "Wait for the presentationDelegate to be called.")
         presentationDelegate.doPresent = { [weak self] component in
-            guard let self else { return }
+            guard let self = self else { return }
             
             XCTAssertNotNil(component.viewController as? AwaitViewController)
             let viewController = component.viewController as! AwaitViewController

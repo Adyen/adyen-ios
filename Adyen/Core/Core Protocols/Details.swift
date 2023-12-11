@@ -30,7 +30,6 @@ public extension PaymentMethodDetails {
             
             return "do-not-track"
         }
-        // swiftlint:disable:next unused_setter_value
         set {
             AdyenAssertion.assertionFailure(
                 message: "`@_spi(AdyenInternal) var checkoutAttemptId: String?` needs to be provided on `\(String(describing: Self.self))`"

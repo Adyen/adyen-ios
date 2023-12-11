@@ -15,7 +15,6 @@ class CardComponentTests: XCTestCase {
     var context: AdyenContext {
         Dummy.context
     }
-
     var payment: Payment {
         Dummy.payment
     }
@@ -1462,7 +1461,7 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .lookup(provider: MockAddressLookupProvider { searchTerm in
-            [.init(identifier: searchTerm, postalAddress: .init(city: searchTerm))]
+            return [.init(identifier: searchTerm, postalAddress: .init(city: searchTerm))]
         })
         configuration.shopperInformation = shopperInformation
 
