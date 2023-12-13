@@ -32,10 +32,7 @@ public final class TwintComponent: PaymentComponent, PresentableComponent, Payme
     /// Component's configuration
     public var configuration: Configuration
     
-    public lazy var viewController: UIViewController = SecuredViewController(
-        child: formViewController,
-        style: configuration.style
-    )
+    public var viewController: UIViewController { formViewController }
     
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
@@ -45,10 +42,6 @@ public final class TwintComponent: PaymentComponent, PresentableComponent, Payme
         formViewController.delegate = self
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
     
-//        if configuration.showsStorePaymentMethodField {
-//            formViewController.append(storeDetailsItem)
-//        }
-    
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         formViewController.append(submitButtonItem)
 
@@ -56,7 +49,6 @@ public final class TwintComponent: PaymentComponent, PresentableComponent, Payme
     }()
     
     private lazy var submitButtonItem: FormButtonItem = {
-//        let component = self.defaultComponent
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.title = localizedSubmitButtonTitle(with: context.payment?.amount,
                                                 style: .immediate,
@@ -102,62 +94,24 @@ public final class TwintComponent: PaymentComponent, PresentableComponent, Payme
     }
     
     private func startTwintFlow() {
+
+        // We check if the user has any Twint app installed before we initiate the payment
         
-        // TODO: We need a code before - How to get it?
-        
-        Twint.fetchInstalledAppConfigurations { [weak self] configurations in
+        Twint.fetchInstalledAppConfigurations { [weak self] in
             guard let self else { return }
+            let configurations = $0 ?? []
             
-            defer { stopLoading() }
-            
-            if (configurations ?? []).isEmpty {
-                // TODO: Show a better error + only dismiss the component, not the whole drop-in!
-                // Can we fallback to web?! Especially if the merchant does not have space for all the url-schemes?
-                self.delegate?.didFail(with: TwintError(errorDescription: "No Twint apps installed"), from: self)
+            guard !configurations.isEmpty else {
+                handleNoAppInstalled()
                 return
             }
             
-            let controller = Twint.controller(for: configurations) { [weak self] appConfiguration in
-                guard let self else { return }
-                
-                startLoading() // Wait for the deeplink
-                Twint.pay(
-                    withCode: "Random code that should have been fetched before",
-                    appConfiguration: appConfiguration,
-                    callback: configuration.redirectURL.absoluteString
-                )
-                
-                NotificationCenter.default.addObserver(
-                    self,
-                    selector: #selector(handleRedirect),
-                    name: TwintComponent.RedirectNotification,
-                    object: nil
-                )
-            } cancelHandler: {
-                self.delegate?.didFail(with: ComponentError.cancelled, from: self)
-            }
-            
-            guard let controller else {
-                return
-            }
-            
-            self.viewController.present(controller, animated: true)
+            initiatePayment()
         }
-    }
-    
-    @objc
-    private func handleRedirect(notification: Notification) {
-        NotificationCenter.default.removeObserver(self)
-        
-        if let error = notification.userInfo?[Self.RedirectNotificationErrorKey] as? String {
-            handleError(TwintError(errorDescription: error))
-            return
-        }
-        
-        initiatePayment()
     }
     
     private func initiatePayment() {
+        
         let details = TwintDetails(
             paymentMethod: twintPayPaymentMethod,
             subType: "sdk"
@@ -171,6 +125,58 @@ public final class TwintComponent: PaymentComponent, PresentableComponent, Payme
         )
         
         submit(data: data)
+    }
+    
+    /// Invokes the pay method of the TwintSDK
+    private func invokeTwintApp(
+        with appConfiguration: TWAppConfiguration?,
+        code: String
+    ) {
+        guard let appConfiguration else { return }
+        
+        startLoading()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleRedirect),
+            name: TwintComponent.RedirectNotification,
+            object: nil
+        )
+        
+        Twint.pay(
+            withCode: code,
+            appConfiguration: appConfiguration,
+            callback: configuration.redirectURL.absoluteString
+        )
+    }
+    
+    private func handleNoAppInstalled() {
+        // TODO: Implement Correctly
+        let localizationParameters = configuration.localizationParameters
+        let alertController = UIAlertController(title: "Error",
+                                                message: "No Twint app installed",
+                                                preferredStyle: .alert)
+
+        let cancelAction = UIAlertAction(title: localizedString(.dismissButton, localizationParameters), style: .cancel) { [weak self] _ in
+            guard let self else { return }
+            // TODO: Use a different error as it might be shown after the component closed
+            self.delegate?.didFail(with: TwintError(errorDescription: "No app installed"), from: self)
+        }
+        alertController.addAction(cancelAction)
+        
+        self.viewController.presentViewController(alertController, animated: true)
+    }
+    
+    @objc
+    private func handleRedirect(notification: Notification) {
+        NotificationCenter.default.removeObserver(self)
+        
+        if let error = notification.userInfo?[Self.RedirectNotificationErrorKey] as? String {
+            handleError(TwintError(errorDescription: error))
+            return
+        }
+        
+        initiatePayment()
     }
     
     private func handleError(_ error: Error) {

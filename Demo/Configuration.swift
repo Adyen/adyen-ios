@@ -116,6 +116,7 @@ internal struct DropInSettings: Codable {
     internal var allowsSkippingPaymentList: Bool = false
     internal var allowPreselectedPaymentView: Bool = true
     internal var cashAppPayEnabled: Bool = false
+    internal var twintEnabled: Bool = false
 }
 
 internal struct ApplePaySettings: Codable {
@@ -249,6 +250,9 @@ internal struct DemoAppSettings: Codable {
         dropInConfig.paymentMethodsList.allowDisablingStoredPaymentMethods = dropInSettings.allowDisablingStoredPaymentMethods
         if dropInSettings.cashAppPayEnabled {
             dropInConfig.cashAppPay = .init(redirectURL: URL(string: ConfigurationConstants.returnUrl)!)
+        }
+        if dropInSettings.twintEnabled {
+            dropInConfig.twint = .init(redirectURL: URL(string: ConfigurationConstants.returnUrl)!)
         }
 
         return dropInConfig

@@ -16,7 +16,7 @@ public struct TwintDetails: PaymentMethodDetails {
     public let type: PaymentMethodType
 
     /// The payment method subType.
-    public let subType: String
+    public let subType: String // TODO: Make this an enum?
 
     /// Initializes the Twint details.
     /// - Parameters:

@@ -42,6 +42,8 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         var urlHandled = false
         
         #if canImport(TwintSDK)
+            // TODO: Move it as a static func to the component
+        
             urlHandled = Twint.handleOpen(url) { error in
                 
                 var userInfo = [String: Codable]()
@@ -61,7 +63,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         #endif
         
         if !urlHandled {
-            RedirectComponent.applicationDidOpen(from: url)
+            if RedirectComponent.applicationDidOpen(from: url) { return true }
         }
         
         #if canImport(PayKit)
