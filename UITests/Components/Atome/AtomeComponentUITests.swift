@@ -111,7 +111,7 @@ class AtomeComponentUITests: XCTestCase {
         wait(until: lastNameView, at: \.isValid, is: true)
         wait(until: phoneNumberView, at: \.isValid, is: true)
         
-        wait { billingAddressView.flatSubitemViews.compactMap { $0 as? AnyFormValidatableValueItemView }.allSatisfy(\.isValid) }
+        wait(until: billingAddressView, at: \.isValid, is: true)
         
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.payButton))
         submitButton.sendActions(for: .touchUpInside)

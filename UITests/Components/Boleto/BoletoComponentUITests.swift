@@ -119,8 +119,7 @@ final class BoletoComponentUITests: XCTestCase {
         
         wait(until: firstNameView, at: \.isValid, is: true)
         wait(until: lastNameView, at: \.isValid, is: true)
-        
-        wait { billingAddressView.flatSubitemViews.compactMap { $0 as? AnyFormValidatableValueItemView }.allSatisfy(\.isValid) }
+        wait(until: billingAddressView, at: \.isValid, is: true)
 
         submitButton.sendActions(for: .touchUpInside)
         
