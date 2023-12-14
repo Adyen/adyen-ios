@@ -14,7 +14,7 @@ internal struct CheckoutAttemptIdResponse: Response {
     internal let identifier: String
 
     internal enum CodingKeys: String, CodingKey {
-        case identifier = "id"
+        case identifier = "checkoutAttemptId"
     }
 }
 
@@ -22,7 +22,7 @@ internal struct CheckoutAttemptIdRequest: APIRequest {
 
     internal typealias ResponseType = CheckoutAttemptIdResponse
 
-    internal let path: String = "checkoutshopper/v2/analytics/id"
+    internal let path: String = "/checkoutanalytics/v3/analytics"
 
     internal var counter: UInt = 0
 
@@ -32,9 +32,57 @@ internal struct CheckoutAttemptIdRequest: APIRequest {
 
     internal let method: HTTPMethod = .post
 
-    internal let experiments: [String] = []
+    private var version: String
+    private let channel: String
+    private let locale: String
+    private let flavor: String
+    private let userAgent: String?
+    private var deviceBrand: String
+    private var deviceModel: String
+    private let systemVersion: String
+    private let referrer: String
+    private let screenWidth: Int
+    private let containerWidth: Int?
+    private let paymentMethods: [String]
+    private let component: String
+    internal let amount: Amount?
+    internal let sessionId: String?
+
+    // MARK: - Initializers
+
+    internal init(data: TelemetryData) {
+        self.version = data.version
+        self.channel = data.channel
+        self.locale = data.locale
+        self.flavor = data.flavor
+        self.userAgent = data.userAgent
+        self.deviceBrand = data.deviceBrand
+        self.deviceModel = data.deviceModel
+        self.systemVersion = data.systemVersion
+        self.referrer = data.referrer
+        self.screenWidth = data.screenWidth
+        self.containerWidth = data.containerWidth
+        self.paymentMethods = data.paymentMethods
+        self.component = data.component
+        self.amount = data.amount
+        self.sessionId = data.sessionId
+    }
 
     internal enum CodingKeys: CodingKey {
-        case experiments
+        case version
+        case channel
+        case locale
+        case flavor
+        case userAgent
+        case deviceBrand
+        case deviceModel
+        case systemVersion
+        case referrer
+        case screenWidth
+        case containerWidth
+        case paymentMethods
+        case component
+        case amount
+        case sessionId
     }
 }

@@ -56,13 +56,10 @@ public final class InstantPaymentComponent: PaymentComponent {
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     public func initiatePayment() {
-        sendTelemetryEvent()
+        // we can attempt to fetch the checkoutAttempId but it won't be ready for the payment
         submit(data: paymentData)
     }
 }
-
-@_spi(AdyenInternal)
-extension InstantPaymentComponent: TrackableComponent {}
 
 /// Describes a payment details that contains nothing but the payment method type name.
 public struct InstantPaymentDetails: PaymentMethodDetails {

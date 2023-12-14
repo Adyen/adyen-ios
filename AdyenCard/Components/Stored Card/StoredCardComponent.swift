@@ -42,7 +42,7 @@ internal final class StoredCardComponent: PaymentComponent, PaymentAware, Presen
             flavor: _isDropIn ? .dropin : .components,
             context: context.apiContext
         )
-        sendTelemetryEvent()
+        fetchCheckoutAttemptId()
         
         let manager = StoredCardAlertManager(paymentMethod: storedCardPaymentMethod,
                                              context: context,

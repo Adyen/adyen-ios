@@ -62,15 +62,26 @@ public extension PresentableComponent {
 
 @_spi(AdyenInternal)
 public protocol TrackableComponent: Component {
-
-    func sendTelemetryEvent()
+    
+    func fetchCheckoutAttemptId()
 }
 
 @_spi(AdyenInternal)
 extension TrackableComponent where Self: PaymentMethodAware {
-
-    public func sendTelemetryEvent() {
+    
+    public func fetchCheckoutAttemptId() {
         let flavor: TelemetryFlavor = _isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
-        context.analyticsProvider.sendTelemetryEvent(flavor: flavor)
+        let amount = context.payment?.amount
+        let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AdyenAnalytics.sessionId)
+        context.analyticsProvider.fetchCheckoutAttemptId(with: flavor,
+                                                         additionalFields: additionalFields)
+    }
+}
+
+@_spi(AdyenInternal)
+extension TrackableComponent where Self: ViewControllerDelegate {
+    
+    public func viewWillAppear(viewController: UIViewController) {
+        fetchCheckoutAttemptId()
     }
 }

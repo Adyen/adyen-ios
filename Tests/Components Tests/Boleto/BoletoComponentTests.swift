@@ -188,6 +188,6 @@ class BoletoComponentTests: XCTestCase {
         component.viewWillAppear(viewController: component.viewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)
     }
 }

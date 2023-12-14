@@ -20,11 +20,6 @@ extension GiftCardComponent: ViewControllerDelegate {
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
     }
-
-    /// :nodoc:
-    public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
-    }
 }
 
 extension GiftCardComponent {

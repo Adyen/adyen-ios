@@ -7,6 +7,8 @@
 import AdyenNetworking
 import Foundation
 
+internal struct AdyenAnalyticsResponse: Response { /* Empty response */ }
+
 internal struct AdyenAnalyticsRequest: APIRequest {
     
     internal typealias ResponseType = AdyenAnalyticsResponse
@@ -29,7 +31,7 @@ internal struct AdyenAnalyticsRequest: APIRequest {
     
     internal var errors: [AdyenAnalytics.Error] = []
     
-    init(checkoutAttemptId: String) {
+    internal init(checkoutAttemptId: String) {
         self.path = "/checkoutanalytics/v3/analytics/\(checkoutAttemptId)"
     }
     
@@ -41,5 +43,3 @@ internal struct AdyenAnalyticsRequest: APIRequest {
         
     }
 }
-
-internal struct AdyenAnalyticsResponse: Response { /* Empty response */ }

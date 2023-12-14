@@ -70,8 +70,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PaymentAware, Pre
                                                     style: configuration.style)
         
         let tracker = BACSDirectDebitComponentTracker(paymentMethod: bacsPaymentMethod,
-                                                      apiContext: context.apiContext,
-                                                      telemetryTracker: context.analyticsProvider,
+                                                      context: context,
                                                       isDropIn: _isDropIn)
         let itemsFactory = BACSItemsFactory(styleProvider: configuration.style,
                                             localizationParameters: configuration.localizationParameters,

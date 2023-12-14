@@ -532,7 +532,7 @@ class BCMCComponentTests: XCTestCase {
         sut.cardViewController.viewWillAppear(true)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)
     }
     
     func fillCard(on view: UIView, with card: Card, simulateKeyStrokes: Bool = false) {

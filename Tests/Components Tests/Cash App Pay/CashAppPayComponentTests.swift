@@ -148,7 +148,7 @@ import XCTest
             sut.viewWillAppear(viewController: sut.viewController)
 
             // Then
-            XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+            XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)
         }
         
         func testComponent_ShouldPaymentMethodTypeBeCashAppPay() throws {

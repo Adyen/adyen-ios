@@ -22,7 +22,10 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
 
     internal func didLoad(_ paymentMethodListComponent: PaymentMethodListComponent) {
         let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
-        context.analyticsProvider.sendTelemetryEvent(flavor: .dropIn(paymentMethods: paymentMethodTypes))
+        let flavor = TelemetryFlavor.dropIn(paymentMethods: paymentMethodTypes)
+        let amount = context.payment?.amount
+        let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AdyenAnalytics.sessionId)
+        context.analyticsProvider.fetchCheckoutAttemptId(with: flavor, additionalFields: additionalFields)
     }
     
     internal func didSelect(_ component: PaymentComponent,
@@ -51,8 +54,6 @@ extension DropInComponent: PaymentComponentDelegate {
     
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         paymentInProgress = true
-        /// try to fetch the fetchCheckoutAttemptId to get cached if its not already cached
-        component.context.analyticsProvider.fetchAndCacheCheckoutAttemptIdIfNeeded()
         
         let updatedData = data.replacing(checkoutAttemptId: component.context.analyticsProvider.checkoutAttemptId)
 

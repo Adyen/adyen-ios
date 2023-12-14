@@ -72,10 +72,6 @@ extension CardComponent: ViewControllerDelegate {
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
     }
-
-    public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
-    }
 }
 
 extension KCPDetails {

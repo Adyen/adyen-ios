@@ -13,11 +13,14 @@ import XCTest
 class TelemetryTrackerTests: XCTestCase {
 
     var apiClient: APIClientMock!
-    var sut: TelemetryTrackerProtocol!
+    var sut: InitialTelemetryProtocol!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         apiClient = APIClientMock()
+        let checkoutAttemptIdResponse = CheckoutAttemptIdResponse(identifier: "checkoutAttempId1")
+        let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
+        apiClient.mockedResults = [checkoutAttemptIdResult]
         sut = AnalyticsProvider(apiClient: apiClient, configuration: .init())
     }
 
@@ -25,6 +28,10 @@ class TelemetryTrackerTests: XCTestCase {
         apiClient = nil
         sut = nil
         try super.tearDownWithError()
+    }
+    
+    private func sendInitialTelemetry(flavor: TelemetryFlavor = .components(type: .achDirectDebit)) {
+        sut.fetchCheckoutAttemptId(with: flavor, additionalFields: nil)
     }
 
     func testSendTelemetryEventGivenAnalyticsIsDisabledAndTelemetryIsEnabledShouldNotSendAnyRequest() throws {
@@ -37,7 +44,7 @@ class TelemetryTrackerTests: XCTestCase {
         let expectedRequestCalls = 0
 
         // When
-        sut.sendTelemetryEvent(flavor: .components(type: .affirm))
+        sendInitialTelemetry()
 
         // Then
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "One or more telemetry requests were sent.")
@@ -52,7 +59,7 @@ class TelemetryTrackerTests: XCTestCase {
         let expectedRequestCalls = 0
 
         // When
-        sut.sendTelemetryEvent(flavor: .components(type: .affirm))
+        sendInitialTelemetry()
 
         // Then
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "One or more telemetry requests were sent.")
@@ -68,7 +75,7 @@ class TelemetryTrackerTests: XCTestCase {
         let expectedRequestCalls = 0
 
         // When
-        sut.sendTelemetryEvent(flavor: flavor)
+        sendInitialTelemetry(flavor: flavor)
 
         // Then
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "One or more telemetry requests were sent.")
@@ -81,14 +88,13 @@ class TelemetryTrackerTests: XCTestCase {
         sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         let flavor: TelemetryFlavor = .components(type: .affirm)
-        let expectedRequestCalls = 2
+        let expectedRequestCalls = 1
 
         let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
-        let telemetryResult: Result<Response, Error> = .success(telemetryResponse)
-        apiClient.mockedResults = [checkoutAttemptIdResult, telemetryResult]
+        apiClient.mockedResults = [checkoutAttemptIdResult]
 
         // When
-        sut.sendTelemetryEvent(flavor: flavor)
+        sendInitialTelemetry(flavor: flavor)
 
         // Then
         wait(for: .milliseconds(1))
@@ -102,14 +108,13 @@ class TelemetryTrackerTests: XCTestCase {
         sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         let flavor: TelemetryFlavor = .dropIn(paymentMethods: ["scheme", "paypal", "affirm"])
-        let expectedRequestCalls = 2
+        let expectedRequestCalls = 1
 
         let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
-        let telemetryResult: Result<Response, Error> = .success(telemetryResponse)
-        apiClient.mockedResults = [checkoutAttemptIdResult, telemetryResult]
+        apiClient.mockedResults = [checkoutAttemptIdResult]
 
         // When
-        sut.sendTelemetryEvent(flavor: flavor)
+        sendInitialTelemetry(flavor: flavor)
 
         // Then
         wait(for: .milliseconds(1))

@@ -6,10 +6,10 @@
 
 import Foundation
 
-internal extension AdyenAnalytics {
+extension AdyenAnalytics {
     
     /// A log in the analytics scheme represents important checkpoints such as the pay button press, 3ds challenge etc.
-    struct Log: AdyenAnalyticsCommonFields {
+    internal struct Log: AdyenAnalyticsCommonFields {
         
         internal var commonFields: AdyenAnalytics.CommonFields
         
@@ -22,12 +22,12 @@ internal extension AdyenAnalytics {
         internal var message: String
     }
     
-    enum LogType: String, Encodable {
+    internal enum LogType: String, Encodable {
         case action = "Action"
         case submit = "Submit"
     }
     
-    enum LogSubType: String, Encodable {
+    internal enum LogSubType: String, Encodable {
         case threeDS2 = "ThreeDS2"
         case redirect = "Redirect"
         case voucher = "Voucher"

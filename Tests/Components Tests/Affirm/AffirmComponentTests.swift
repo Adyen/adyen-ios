@@ -318,7 +318,7 @@ class AffirmComponentTests: XCTestCase {
         sut.viewWillAppear(viewController: mockViewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)
     }
 
     // MARK: - Private

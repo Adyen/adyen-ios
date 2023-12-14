@@ -34,6 +34,8 @@ internal struct TelemetryData: Encodable {
             return identifier + String(UnicodeScalar(UInt8(value)))
         }
     }()
+    
+    internal let deviceModel = UIDevice.current.model
 
     internal let systemVersion = UIDevice.current.systemVersion
 
@@ -49,15 +51,18 @@ internal struct TelemetryData: Encodable {
 
     internal var amount: Amount?
     
+    internal var sessionId: String?
+    
     internal var paymentMethods: [String] = []
 
     internal let component: String
 
     // MARK: - Initializers
 
-    internal init(flavor: TelemetryFlavor, amount: Amount?) {
+    internal init(flavor: TelemetryFlavor, additionalFields: AdditionalAnalyticsFields?) {
         self.flavor = flavor.value
-        self.amount = amount
+        self.amount = additionalFields?.amount
+        self.sessionId = additionalFields?.sessionId
 
         switch flavor {
         case let .dropIn(type, paymentMethods):

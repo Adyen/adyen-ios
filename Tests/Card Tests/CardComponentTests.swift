@@ -1865,7 +1865,7 @@ class CardComponentTests: XCTestCase {
         sut.cardViewController.viewWillAppear(false)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)
 
     }
 

@@ -6,10 +6,10 @@
 
 import Foundation
 
-internal extension AdyenAnalytics {
+extension AdyenAnalytics {
     
     /// Represents an error in the analytics scheme that indicates the flow was interrupted due to an error in the SDK.
-    struct Error: AdyenAnalyticsCommonFields {
+    internal struct Error: AdyenAnalyticsCommonFields {
         
         internal var commonFields: AdyenAnalytics.CommonFields
         
@@ -20,7 +20,7 @@ internal extension AdyenAnalytics {
         internal var message: String
     }
     
-    enum ErrorType: String, Encodable {
+    internal enum ErrorType: String, Encodable {
         case network = "Network"
         case implementation = "Implementation"
         case `internal` = "Internal"

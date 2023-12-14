@@ -29,15 +29,26 @@ public struct AnalyticsConfiguration {
 public struct AdditionalAnalyticsFields {
     /// The amount of the payment
     public let amount: Amount?
+    
+    public let sessionId: String?
+    
+    public init(amount: Amount? = nil, sessionId: String? = nil) {
+        self.amount = amount
+        self.sessionId = sessionId
+    }
 }
 
 @_spi(AdyenInternal)
-public protocol AnalyticsProviderProtocol: TelemetryTrackerProtocol {
+public protocol InitialTelemetryProtocol {
+    
+    /// Sends the initial data and retrieves the checkout attempt id as a response.
+    func fetchCheckoutAttemptId(with flavor: TelemetryFlavor, additionalFields: AdditionalAnalyticsFields?)
+}
+
+@_spi(AdyenInternal)
+public protocol AnalyticsProviderProtocol: InitialTelemetryProtocol {
     
     var checkoutAttemptId: String? { get }
-    func fetchAndCacheCheckoutAttemptIdIfNeeded()
-    
-    var additionalFields: (() -> AdditionalAnalyticsFields)? { get }
 }
 
 internal final class AnalyticsProvider: AnalyticsProviderProtocol {
@@ -47,8 +58,13 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     internal let apiClient: APIClientProtocol
     internal let configuration: AnalyticsConfiguration
     internal private(set) var checkoutAttemptId: String?
-    internal var additionalFields: (() -> AdditionalAnalyticsFields)?
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<CheckoutAttemptIdResponse>
+    
+    private var batchTimer: Timer?
+    
+    private var events: [AdyenAnalytics.Event] = []
+    private var logs: [AdyenAnalytics.Log] = []
+    private var errors: [AdyenAnalytics.Error] = []
 
     // MARK: - Initializers
 
@@ -62,28 +78,66 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     }
 
     // MARK: - Internal
-    
-    internal func fetchAndCacheCheckoutAttemptIdIfNeeded() {
-        fetchCheckoutAttemptId { _ in /* Do nothing, the point is to trigger the fetching and cache the value  */ }
-    }
 
-    internal func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
-        guard configuration.isEnabled else {
+    internal func fetchCheckoutAttemptId(with flavor: TelemetryFlavor, additionalFields: AdditionalAnalyticsFields?) {
+        guard configuration.isEnabled, configuration.isTelemetryEnabled else {
             checkoutAttemptId = "do-not-track"
-            completion(checkoutAttemptId)
             return
         }
+        if case .dropInComponent = flavor { return }
+        
+        let telemetryData = TelemetryData(flavor: flavor,
+                                          additionalFields: additionalFields)
 
-        let checkoutAttemptIdRequest = CheckoutAttemptIdRequest()
+        let checkoutAttemptIdRequest = CheckoutAttemptIdRequest(data: telemetryData)
 
         uniqueAssetAPIClient.perform(checkoutAttemptIdRequest) { [weak self] result in
             switch result {
             case let .success(response):
                 self?.checkoutAttemptId = response.identifier
-                completion(response.identifier)
             case .failure:
-                completion(nil)
+                self?.checkoutAttemptId = nil
             }
         }
+    }
+    
+    internal func send(event: AdyenAnalytics.Event) {
+        events.append(event)
+    }
+    
+    internal func send(log: AdyenAnalytics.Log) {
+        logs.append(log)
+    }
+    
+    internal func send(error: AdyenAnalytics.Error) {
+        errors.append(error)
+        sendAll()
+    }
+    
+    private func setupTimer() {
+        let timer = Timer(timeInterval: 10, target: self, selector: #selector(sendAll), userInfo: nil, repeats: true)
+        timer.tolerance = 1
+        RunLoop.current.add(timer, forMode: .common)
+    }
+    
+    @objc private func sendAll() {
+        guard configuration.isEnabled,
+              let checkoutAttemptId else { return }
+        var request = AdyenAnalyticsRequest(checkoutAttemptId: checkoutAttemptId)
+        
+        request.events = events
+        request.logs = logs
+        request.errors = errors
+        
+        apiClient.perform(request) { [weak self] _ in
+            guard let self else { return }
+            self.clearAll()
+        }
+    }
+    
+    private func clearAll() {
+        events = []
+        logs = []
+        errors = []
     }
 }

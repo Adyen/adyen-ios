@@ -251,6 +251,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
         sut.viewWillAppear(viewController: mockViewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)
     }
 }

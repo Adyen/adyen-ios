@@ -130,12 +130,4 @@ extension ApplePayComponent {
 extension ApplePayComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
-extension ApplePayComponent: ViewControllerDelegate {
-    public func viewDidLoad(viewController: UIViewController) { /* Empty implementation */ }
-
-    public func viewDidAppear(viewController: UIViewController) { /* Empty implementation */ }
-
-    public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
-    }
-}
+extension ApplePayComponent: ViewControllerDelegate {}

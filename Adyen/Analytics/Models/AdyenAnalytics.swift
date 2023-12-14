@@ -6,7 +6,12 @@
 
 import Foundation
 
-internal struct AdyenAnalytics {
+@_spi(AdyenInternal)
+public final class AdyenAnalytics {
+    
+    @_spi(AdyenInternal)
+    /// Needed to be able to determine if using session
+    public static var sessionId: String?
   
     internal struct CommonFields: Encodable {
         
@@ -22,4 +27,3 @@ internal struct AdyenAnalytics {
 internal protocol AdyenAnalyticsCommonFields: Encodable {
     var commonFields: AdyenAnalytics.CommonFields { get }
 }
-

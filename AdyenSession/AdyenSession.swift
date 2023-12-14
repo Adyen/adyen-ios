@@ -119,6 +119,8 @@ public final class AdyenSession {
                                            sessionContext: sessionContext)
                 session.delegate = delegate
                 session.presentationDelegate = presentationDelegate
+                // Unfortunately needed by telemetry and this is the only way atm.
+                AdyenAnalytics.sessionId = sessionContext.identifier
                 completion(.success(session))
             case let .failure(error):
                 completion(.failure(error))

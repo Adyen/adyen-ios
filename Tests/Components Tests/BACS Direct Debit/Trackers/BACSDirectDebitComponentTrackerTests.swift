@@ -18,9 +18,9 @@ class BACSDirectDebitComponentTrackerTests: XCTestCase {
 
         apiContext = Dummy.apiContext
         analyticsProvider = AnalyticsProviderMock()
+        let adyenContext = AdyenContext(apiContext: apiContext, payment: Dummy.payment, analyticsProvider: analyticsProvider)
         sut = BACSDirectDebitComponentTracker(paymentMethod: paymentMethod,
-                                              apiContext: apiContext,
-                                              telemetryTracker: analyticsProvider,
+                                              context: adyenContext,
                                               isDropIn: false)
     }
 
@@ -33,9 +33,9 @@ class BACSDirectDebitComponentTrackerTests: XCTestCase {
 
     func testSendTelemetryEventShouldCallAnalyticsProviderSendTelemetryEvent() throws {
         // When
-        sut.sendTelemetryEvent()
+        sut.fetchCheckoutAttemptId()
 
         // Then
-        XCTAssertEqual(analyticsProvider.sendTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProvider.initialTelemetryEventCallsCount, 1)
     }
 }

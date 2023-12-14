@@ -147,6 +147,6 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         sut.viewController.viewDidLoad()
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)
     }
 }

@@ -188,7 +188,7 @@ extension BoletoComponent: ViewControllerDelegate {
     public func viewDidAppear(viewController: UIViewController) {}
 
     public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
+        fetchCheckoutAttemptId()
         prefillFields(for: formComponent)
     }
 }

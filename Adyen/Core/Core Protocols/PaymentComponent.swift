@@ -31,8 +31,6 @@ extension PaymentComponent {
     ///   - component: The component from which the payment originates.
     public func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
         let component = component ?? self
-        /// try to fetch the fetchCheckoutAttemptId to get cached if its not already cached
-        component.context.analyticsProvider.fetchAndCacheCheckoutAttemptIdIfNeeded()
         
         let updatedData = data.replacing(checkoutAttemptId: component.context.analyticsProvider.checkoutAttemptId)
 

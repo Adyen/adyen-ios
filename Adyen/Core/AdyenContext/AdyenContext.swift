@@ -40,12 +40,6 @@ public final class AdyenContext: PaymentAware {
             payment: payment,
             analyticsProvider: analyticsProvider
         )
-        
-        analyticsProvider.additionalFields = { [weak self] in
-            .init(
-                amount: self?.payment?.amount
-            )
-        }
     }
 
     /// Internal init for testing only

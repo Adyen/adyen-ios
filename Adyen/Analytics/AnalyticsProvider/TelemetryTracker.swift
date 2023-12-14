@@ -27,33 +27,3 @@ public enum TelemetryFlavor {
         }
     }
 }
-
-@_spi(AdyenInternal)
-public protocol TelemetryTrackerProtocol {
-    func sendTelemetryEvent(flavor: TelemetryFlavor)
-}
-
-// MARK: - TelemetryTrackerProtocol
-
-@_spi(AdyenInternal)
-extension AnalyticsProvider: TelemetryTrackerProtocol {
-
-    internal func sendTelemetryEvent(flavor: TelemetryFlavor) {
-        guard configuration.isEnabled else { return }
-        guard configuration.isTelemetryEnabled else { return }
-        if case .dropInComponent = flavor { return }
-
-        let additionalFields = additionalFields?()
-        
-        let telemetryData = TelemetryData(
-            flavor: flavor,
-            amount: additionalFields?.amount
-        )
-
-        fetchCheckoutAttemptId { [weak self] checkoutAttemptId in
-            let telemetryRequest = TelemetryRequest(data: telemetryData,
-                                                    checkoutAttemptId: checkoutAttemptId)
-            self?.apiClient.perform(telemetryRequest) { _ in }
-        }
-    }
-}

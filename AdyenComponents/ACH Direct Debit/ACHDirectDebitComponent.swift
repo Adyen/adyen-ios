@@ -291,11 +291,6 @@ extension ACHDirectDebitComponent: ViewControllerDelegate {
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
     }
-
-    /// :nodoc:
-    public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
-    }
 }
 
 /// Describes any configuration for the ACH Direct Debit component.

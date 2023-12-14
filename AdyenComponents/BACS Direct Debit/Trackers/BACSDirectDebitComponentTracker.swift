@@ -8,7 +8,7 @@
 import Foundation
 
 internal protocol BACSDirectDebitComponentTrackerProtocol: AnyObject {
-    func sendTelemetryEvent()
+    func fetchCheckoutAttemptId()
 }
 
 internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerProtocol {
@@ -16,27 +16,27 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
     // MARK: - Properties
 
     private let paymentMethod: BACSDirectDebitPaymentMethod
-    private let apiContext: APIContext
-    private let telemetryTracker: TelemetryTrackerProtocol
+    private let context: AdyenContext
     private let isDropIn: Bool
 
     // MARK: - Initializers
 
     internal init(paymentMethod: BACSDirectDebitPaymentMethod,
-                  apiContext: APIContext,
-                  telemetryTracker: TelemetryTrackerProtocol,
+                  context: AdyenContext,
                   isDropIn: Bool) {
         self.paymentMethod = paymentMethod
-        self.apiContext = apiContext
-        self.telemetryTracker = telemetryTracker
+        self.context = context
         self.isDropIn = isDropIn
     }
 
     // MARK: - BACSDirectDebitComponentTrackerProtocol
 
-    internal func sendTelemetryEvent() {
+    internal func fetchCheckoutAttemptId() {
         let flavor: TelemetryFlavor = isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
-        telemetryTracker.sendTelemetryEvent(flavor: flavor)
+        let amount = context.payment?.amount
+        let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AdyenAnalytics.sessionId)
+        context.analyticsProvider.fetchCheckoutAttemptId(with: flavor,
+                                                         additionalFields: additionalFields)
     }
 
 }

@@ -397,7 +397,7 @@ class ApplePayComponentTest: XCTestCase {
         sut.viewWillAppear(viewController: mockViewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)
     }
     
     private func getRandomContactFieldSet() -> Set<PKContactField> {

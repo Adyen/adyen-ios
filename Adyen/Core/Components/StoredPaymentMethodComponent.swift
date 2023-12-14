@@ -47,7 +47,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
             flavor: _isDropIn ? .dropin : .components,
             context: context.apiContext
         )
-        sendTelemetryEvent()
+        fetchCheckoutAttemptId()
 
         let localizationParameters = configuration.localizationParameters
         let displayInformation = storedPaymentMethod.displayInformation(using: localizationParameters)
