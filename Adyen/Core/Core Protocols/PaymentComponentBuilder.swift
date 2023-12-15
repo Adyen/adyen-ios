@@ -88,8 +88,10 @@ public protocol PaymentComponentBuilder: AdyenContextAware {
     /// Builds a certain `PaymentComponent` based on a `StoredCashAppPayPaymentMethod`.
     func build(paymentMethod: StoredCashAppPayPaymentMethod) -> PaymentComponent?
     
-    /// Builds a certain `PaymentComponent` based on a `TwintPaymentMethod`.
-    func build(paymentMethod: TwintPaymentMethod) -> PaymentComponent?
+    #if canImport(AdyenTwint)
+        /// Builds a certain `PaymentComponent` based on a `TwintPaymentMethod`.
+        func build(paymentMethod: TwintPaymentMethod) -> PaymentComponent?
+    #endif
     
     // TODO: BUILD STORED TWINT
 

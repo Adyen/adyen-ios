@@ -9,7 +9,6 @@ import TwintSDK
 
 public final class TwintComponent: PaymentComponent, PresentableComponent, PaymentAware {
     
-    public static let RedirectNotification: Notification.Name = Notification.Name("TwintRedirect")
     public static let RedirectNotificationErrorKey: String = "Error"
     
     struct TwintError: LocalizedError {
@@ -135,13 +134,6 @@ public final class TwintComponent: PaymentComponent, PresentableComponent, Payme
         guard let appConfiguration else { return }
         
         startLoading()
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleRedirect),
-            name: TwintComponent.RedirectNotification,
-            object: nil
-        )
         
         Twint.pay(
             withCode: code,

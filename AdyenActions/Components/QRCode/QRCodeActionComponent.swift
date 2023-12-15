@@ -21,7 +21,6 @@ internal enum QRCodeComponentError: LocalizedError {
 public final class QRCodeActionComponent: ActionComponent, Cancellable, ShareableComponent {
     
     /// The context object for this component.
-    @_spi(AdyenInternal)
     public let context: AdyenContext
     
     /// Delegates `PresentableComponent`'s presentation.

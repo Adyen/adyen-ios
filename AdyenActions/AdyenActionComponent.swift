@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,6 +8,9 @@
 import Adyen3DS2
 import Foundation
 import UIKit
+// #if canImport(AdyenTwint)
+//    import AdyenTwint
+// #endif
 
 /**
   An action handler component to perform any supported action out of the box.
@@ -41,6 +44,8 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         
         /// Three DS configurations
         public var threeDS: ThreeDS = .init()
+        
+        // TODO: Do we need a Twint configuration here?
         
         /// Three DS configurations
         public struct ThreeDS {
@@ -176,6 +181,8 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         switch sdkAction {
         case let .weChatPay(weChatPaySDKAction):
             handle(weChatPaySDKAction)
+        case let .twint(twintAction):
+            handle(twintAction)
         }
     }
     
@@ -240,4 +247,17 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         component.handle(action)
         currentActionComponent = component
     }
+    
+    #if canImport(AdyenTwint)
+    private func handle(_ action: TwintSDKAction) {
+        
+        let component = TwintSDKActionComponent(context: context)
+        component._isDropIn = _isDropIn
+        component.delegate = delegate
+        component.presentationDelegate = presentationDelegate
+        component.handle(action)
+
+        currentActionComponent = component
+    }
+    #endif
 }

@@ -4,14 +4,37 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
-import TwintSDK
 
-public final class TwintActionComponent: ActionComponent {
+@_spi(AdyenInternal) import Adyen
+#if canImport(TwintSDK)
+    import TwintSDK
+#endif
+
+public final class TwintSDKActionComponent: ActionComponent {
     
-    public var delegate: Adyen.ActionComponentDelegate?
+    public static let RedirectNotification: Notification.Name = Notification.Name("TwintSDKActionComponentRedirect")
     
-    public var context: Adyen.AdyenContext
+    public var delegate: ActionComponentDelegate?
+    
+    public var context: AdyenContext
+    
+    /// Delegates `PresentableComponent`'s presentation.
+    public weak var presentationDelegate: PresentationDelegate?
+    
+    public init(context: AdyenContext) {
+        self.context = context
+    }
+    
+    public func handle(_ action: TwintSDKAction) {
+        AdyenAssertion.assert(message: "presentationDelegate is nil", condition: presentationDelegate == nil)
+        
+        Twint.fetchInstalledAppConfigurations { [weak self] configurations in
+            self?.handleDidLoadTwintConfigurations(
+                configurations ?? [],
+                code: action.token
+            )
+        }
+    }
     
     private func handleDidLoadTwintConfigurations(
         _ configurations: [TWAppConfiguration],
@@ -39,10 +62,14 @@ public final class TwintActionComponent: ActionComponent {
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
         
-        guard let controller else { return }
+        guard let controller, let presentationDelegate else { return }
         
-        // TODO: How do we notify the TwintComponent?!
-//        self.viewController.present(controller, animated: true)
+        presentationDelegate.present(
+            component: PresentableComponentWrapper(
+                component: self,
+                viewController: controller
+            )
+        )
     }
     
     /// Invokes the pay method of the TwintSDK
@@ -55,7 +82,7 @@ public final class TwintActionComponent: ActionComponent {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handleRedirect),
-            name: TwintComponent.RedirectNotification,
+            name: Self.RedirectNotification,
             object: nil
         )
         
@@ -99,3 +126,4 @@ public final class TwintActionComponent: ActionComponent {
         delegate?.didFail(with: error, from: self)
     }
 }
+

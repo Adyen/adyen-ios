@@ -324,7 +324,7 @@ private struct CashAppPayPaymentMethodDecoder: PaymentMethodDecoder {
 
 private struct TwintPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
-        #if canImport(TwintSDK)
+        #if canImport(AdyenTwint)
 //            if isStored {
 //                return try .storedCashAppPay(StoredCashAppPayPaymentMethod(from: decoder))
 //            } else {

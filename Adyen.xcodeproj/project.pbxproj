@@ -156,6 +156,8 @@
 		813EF9F02A6551C300C65D15 /* ViewControllerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813EF9EF2A6551C300C65D15 /* ViewControllerPresenter.swift */; };
 		8140A3762A3327B500896403 /* AdyenComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9175E55259393E800D653BE /* AdyenComponents.framework */; };
 		814276622A7145F50081E896 /* AddressInputFormViewController+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814276612A7145F50081E896 /* AddressInputFormViewController+ViewModel.swift */; };
+		8145035D2B2C577C00745D0C /* TwintSDKActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CA016A2B28BE6500470F26 /* TwintSDKActionComponent.swift */; };
+		8145035F2B2C579E00745D0C /* TwintSDKAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8145035A2B2C553500745D0C /* TwintSDKAction.swift */; };
 		814713C32B27551E00D09CF1 /* TwintConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814713C22B27551E00D09CF1 /* TwintConfiguration.swift */; };
 		814713C52B27599900D09CF1 /* AnyTwintConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814713C42B27599900D09CF1 /* AnyTwintConfiguration.swift */; };
 		8169B9EC2A0506CC00AAC9F8 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
@@ -223,7 +225,6 @@
 		81CA01672B27681900470F26 /* TwintSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6602AF527C200CDE118 /* TwintSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		81CA01682B27681E00470F26 /* TwintSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6602AF527C200CDE118 /* TwintSDK.xcframework */; };
 		81CA01692B27681E00470F26 /* TwintSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6602AF527C200CDE118 /* TwintSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		81CA016B2B28BE6500470F26 /* TwintActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CA016A2B28BE6500470F26 /* TwintActionComponent.swift */; };
 		81D8E2E92A5C06AC00BC12FD /* KeyboardObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D8E2E82A5C06AC00BC12FD /* KeyboardObserverTests.swift */; };
 		81DC5A512A73C52500DBF2D1 /* AdyenContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DC5A502A73C52500DBF2D1 /* AdyenContextTests.swift */; };
 		81DC5A552A77ED0400DBF2D1 /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = 81DC5A542A77ED0400DBF2D1 /* Adyen3DS2 */; };
@@ -1457,6 +1458,7 @@
 		813EF9ED2A5FE8D900C65D15 /* FormPickerSearchViewController+Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormPickerSearchViewController+Style.swift"; sourceTree = "<group>"; };
 		813EF9EF2A6551C300C65D15 /* ViewControllerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerPresenter.swift; sourceTree = "<group>"; };
 		814276612A7145F50081E896 /* AddressInputFormViewController+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressInputFormViewController+ViewModel.swift"; sourceTree = "<group>"; };
+		8145035A2B2C553500745D0C /* TwintSDKAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TwintSDKAction.swift; path = AdyenActions/Actions/TwintSDKAction.swift; sourceTree = SOURCE_ROOT; };
 		814713C22B27551E00D09CF1 /* TwintConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintConfiguration.swift; sourceTree = "<group>"; };
 		814713C42B27599900D09CF1 /* AnyTwintConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyTwintConfiguration.swift; sourceTree = "<group>"; };
 		81825CB72AC59C3300F91912 /* UIView+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Search.swift"; sourceTree = "<group>"; };
@@ -1502,7 +1504,7 @@
 		81C4006F2A4347FD007EC51C /* FormErrorItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormErrorItemTests.swift; sourceTree = "<group>"; };
 		81C5D0CC2AC4170A002E918F /* IssuerListComponentExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerListComponentExample.swift; sourceTree = "<group>"; };
 		81C5D0CF2AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerListComponentAdvancedFlowExample.swift; sourceTree = "<group>"; };
-		81CA016A2B28BE6500470F26 /* TwintActionComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintActionComponent.swift; sourceTree = "<group>"; };
+		81CA016A2B28BE6500470F26 /* TwintSDKActionComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintSDKActionComponent.swift; sourceTree = "<group>"; };
 		81D8E2E82A5C06AC00BC12FD /* KeyboardObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardObserverTests.swift; sourceTree = "<group>"; };
 		81DC5A502A73C52500DBF2D1 /* AdyenContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenContextTests.swift; sourceTree = "<group>"; };
 		81DC5A582A79287400DBF2D1 /* AddressInputFormViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInputFormViewControllerTests.swift; sourceTree = "<group>"; };
@@ -2575,7 +2577,6 @@
 			children = (
 				00E5D6532AF4E99B00CDE118 /* AdyenTwint.h */,
 				00E5D65E2AF4EA2D00CDE118 /* TwintComponent.swift */,
-				81CA016A2B28BE6500470F26 /* TwintActionComponent.swift */,
 				814713C22B27551E00D09CF1 /* TwintConfiguration.swift */,
 				00FAE54D2B21CE1B0059A6F5 /* TwintDetails.swift */,
 				00E5D6542AF4E99B00CDE118 /* AdyenTwint.docc */,
@@ -2773,6 +2774,14 @@
 				813EF9EB2A5FE48A00C65D15 /* FormPickerSearchViewController+EmptyView+Style.swift */,
 			);
 			path = Picker;
+			sourceTree = "<group>";
+		};
+		8145035E2B2C578000745D0C /* Twint */ = {
+			isa = PBXGroup;
+			children = (
+				81CA016A2B28BE6500470F26 /* TwintSDKActionComponent.swift */,
+			);
+			path = Twint;
 			sourceTree = "<group>";
 		};
 		81A2E3BC2A5C452600CF5F9C /* Views */ = {
@@ -3400,6 +3409,7 @@
 				5A6456D5262592B2001824F0 /* QRCodeAction.swift */,
 				5A988B7A2653F1750007F4C0 /* BoletoVoucherAction.swift */,
 				F99D2F6F2664EDC900BB5B2F /* AnyVoucherAction.swift */,
+				8145035A2B2C553500745D0C /* TwintSDKAction.swift */,
 				A02AF3E9275A3A5100E1636C /* DocumentAction.swift */,
 			);
 			path = Actions;
@@ -4469,6 +4479,7 @@
 				E9AFF87F224BC3AA005A0D8D /* Redirect */,
 				F9639B1524DA90E50073F38A /* Await */,
 				E2345C00229BCC6B000F2C94 /* 3DS2 */,
+				8145035E2B2C578000745D0C /* Twint */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -6464,7 +6475,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81CA016B2B28BE6500470F26 /* TwintActionComponent.swift in Sources */,
 				00E5D6552AF4E99B00CDE118 /* AdyenTwint.docc in Sources */,
 				814713C32B27551E00D09CF1 /* TwintConfiguration.swift in Sources */,
 				00E5D65F2AF4EA2D00CDE118 /* TwintComponent.swift in Sources */,
@@ -7240,10 +7250,12 @@
 				F9175FE52594999C00D653BE /* PollingHandlerProvider.swift in Sources */,
 				F917613425A30B5700D653BE /* ThreeDS2Component.swift in Sources */,
 				F917617025A30B6A00D653BE /* ThreeDS2CoreActionHandler.swift in Sources */,
+				8145035F2B2C579E00745D0C /* TwintSDKAction.swift in Sources */,
 				F917615B25A30B6400D653BE /* AnyAuthenticationRequestParameters.swift in Sources */,
 				A02AF3EA275A3A5100E1636C /* DocumentAction.swift in Sources */,
 				F9237D3B28CB467D004F9929 /* ThreeDS2CompactActionHandler+Initializers.swift in Sources */,
 				A0113D9B2763887800AD395C /* ActionNavigationBar.swift in Sources */,
+				8145035D2B2C577C00745D0C /* TwintSDKActionComponent.swift in Sources */,
 				F91760632594A0E300D653BE /* ActionsBundleExtension.swift in Sources */,
 				F917614A25A30B5E00D653BE /* ThreeDS2FingerprintSubmitter.swift in Sources */,
 				5A988B7B2653F1750007F4C0 /* BoletoVoucherAction.swift in Sources */,

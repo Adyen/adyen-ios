@@ -9,9 +9,8 @@ import AdyenActions
 #if canImport(PayKit)
     import PayKit
 #endif
-#if canImport(TwintSDK)
+#if canImport(AdyenTwint)
     import AdyenTwint
-    import TwintSDK
 #endif
 import UIKit
 
@@ -41,7 +40,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     internal func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         var urlHandled = false
         
-        #if canImport(TwintSDK)
+        #if canImport(AdyenTwint)
             // TODO: Move it as a static func to the component
         
             urlHandled = Twint.handleOpen(url) { error in
