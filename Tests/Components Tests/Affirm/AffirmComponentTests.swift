@@ -307,7 +307,7 @@ class AffirmComponentTests: XCTestCase {
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
     }
 
-    private func testViewWillAppear_shouldSendTelemetryEvent() throws {
+    func testViewWillAppear_shouldSendTelemetryEvent() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)

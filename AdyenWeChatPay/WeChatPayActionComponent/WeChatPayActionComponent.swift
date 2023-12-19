@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -69,8 +69,9 @@ import Foundation
     
         private static func assertWeChatPayAppSchemeConfigured() {
             guard Bundle.main.adyen.isSchemeConfigured("weixin") else {
-                // swiftlint:disable:next line_length
-                return AdyenAssertion.assertionFailure(message: "weixin:// scheme must be added to Info.plist under LSApplicationQueriesSchemes key.")
+                return AdyenAssertion.assertionFailure(message: """
+                weixin:// scheme must be added to Info.plist under LSApplicationQueriesSchemes key.
+                """)
             }
         }
 

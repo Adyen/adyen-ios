@@ -615,8 +615,53 @@ class GiftCardComponentTests: XCTestCase {
         XCTAssertNotNil(expiryDateItemView, "expiry date should still be shown when security code item is hidden")
         XCTAssertNil(securityCodeItemView)
     }
+    
+    func testPartialConfirmationPaymentMethod() {
+        
+        let giftCard = GiftCardPaymentMethod(type: .giftcard, name: "Giftcard", brand: "giftcard")
+        
+        let paymentMethod = PartialConfirmationPaymentMethod(
+            paymentMethod: giftCard,
+            lastFour: "1234",
+            remainingAmount: .init(value: 1000, currencyCode: "USD")
+        )
+        
+        XCTAssertEqual(paymentMethod.type, giftCard.type)
+        
+        let displayInformation = paymentMethod.defaultDisplayInformation(using: nil)
+        
+        XCTAssertEqual(displayInformation.title, "•••• 1234")
+        XCTAssertEqual(displayInformation.logoName, giftCard.brand)
+        XCTAssertEqual(displayInformation.accessibilityLabel, "Giftcard, Last 4 digits: 1, 2, 3, 4, Remaining balance will be $10.00")
+    }
+    
+    func testPartialPaymentOrder() throws {
+        
+        let order = PartialPaymentOrder(
+            pspReference: "psp-reference",
+            orderData: "order-data",
+            reference: "reference",
+            amount: .init(value: 1000, currencyCode: "USD"),
+            remainingAmount: .init(value: 500, currencyCode: "USD"),
+            expiresAt: Date()
+        )
+        
+        let encodedOrder = try JSONEncoder().encode(order)
+        let decodedOrder = try JSONDecoder().decode(PartialPaymentOrder.self, from: encodedOrder)
+        
+        XCTAssertEqual(order.pspReference, decodedOrder.pspReference)
+        XCTAssertEqual(order.orderData, decodedOrder.orderData)
+        XCTAssertEqual(order.reference, decodedOrder.reference)
+        XCTAssertEqual(order.amount, decodedOrder.amount)
+        XCTAssertEqual(order.remainingAmount, decodedOrder.remainingAmount)
+        XCTAssertNil(decodedOrder.expiresAt)
+        XCTAssertEqual(order.compactOrder, decodedOrder.compactOrder)
+    }
+}
 
-    private func populate(cardNumber: String, pin: String) {
+private extension GiftCardComponentTests {
+    
+    func populate(cardNumber: String, pin: String) {
         populate(textItemView: numberItemView!, with: cardNumber)
         populate(textItemView: securityCodeItemView!, with: pin)
     }

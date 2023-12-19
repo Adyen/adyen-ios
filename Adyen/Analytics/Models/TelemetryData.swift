@@ -7,15 +7,45 @@
 import Foundation
 import UIKit
 
+/// The context in which the SDK operates
+///
+/// Used to e.g. override the version + platform from within the Flutter SDK
+@_spi(AdyenInternal)
+public struct TelemetryContext {
+    
+    internal let version: String
+    internal let platform: Platform
+    
+    public init(
+        version: String = adyenSdkVersion,
+        platform: Platform = .iOS
+    ) {
+        self.version = version
+        self.platform = platform
+    }
+}
+
+@_spi(AdyenInternal)
+public extension TelemetryContext {
+
+    enum Platform: String {
+        case iOS = "ios"
+        case reactNative = "react-native"
+        case flutter
+    }
+}
+
 internal struct TelemetryData: Encodable {
 
     // MARK: - Properties
 
-    internal let version: String = {
-        adyenSdkVersion
-    }()
+    /// The version of the SDK
+    internal let version: String
 
     internal let channel: String = "iOS"
+    
+    /// The platform the SDK is running on (e.g. ios, flutter, react-native)
+    internal let platform: String
 
     internal var locale: String {
         let languageCode = Locale.current.languageCode ?? ""
@@ -59,10 +89,15 @@ internal struct TelemetryData: Encodable {
 
     // MARK: - Initializers
 
-    internal init(flavor: TelemetryFlavor, additionalFields: AdditionalAnalyticsFields?) {
+    internal init(flavor: TelemetryFlavor,
+                  additionalFields: AdditionalAnalyticsFields?,
+                  context: TelemetryContext) {
         self.flavor = flavor.value
         self.amount = additionalFields?.amount
         self.sessionId = additionalFields?.sessionId
+        
+        self.version = context.version
+        self.platform = context.platform.rawValue
 
         switch flavor {
         case let .dropIn(type, paymentMethods):

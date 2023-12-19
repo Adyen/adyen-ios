@@ -17,6 +17,9 @@ public struct AnalyticsConfiguration {
 
     @_spi(AdyenInternal)
     public var isTelemetryEnabled = true
+    
+    @_spi(AdyenInternal)
+    public var context: TelemetryContext = .init()
 
     // MARK: - Initializers
     
@@ -87,7 +90,8 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
         if case .dropInComponent = flavor { return }
         
         let telemetryData = TelemetryData(flavor: flavor,
-                                          additionalFields: additionalFields)
+                                          additionalFields: additionalFields,
+                                          context: configuration.context)
 
         let checkoutAttemptIdRequest = CheckoutAttemptIdRequest(data: telemetryData)
 

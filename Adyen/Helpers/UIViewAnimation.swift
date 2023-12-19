@@ -7,7 +7,7 @@
 import UIKit
 
 private enum AssociatedKeys {
-    internal static var animations = "animations"
+    internal static var animations: Void?
 }
 
 @_spi(AdyenInternal)

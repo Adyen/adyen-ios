@@ -25,7 +25,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
 
@@ -34,4 +34,4 @@ jobs:
         xcodebuild -project Adyen.xcodeproj -scheme Adyen -destination 'generic/platform=iOS' SKIP_INSTALL=NO build | xcpretty --utf --color
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3

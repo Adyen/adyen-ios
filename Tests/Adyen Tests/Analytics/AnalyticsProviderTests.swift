@@ -12,25 +12,10 @@ import XCTest
 
 class AnalyticsProviderTests: XCTestCase {
 
-    var apiClient: APIClientMock!
-    var sut: AnalyticsProvider!
-
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        apiClient = APIClientMock()
-        sut = AnalyticsProvider(apiClient: apiClient, configuration: .init())
-    }
-
-    override func tearDownWithError() throws {
-        apiClient = nil
-        sut = nil
-        try super.tearDownWithError()
-    }
-
     func testAnalyticsProviderIsInitializedWithCorrectDefaultConfigurationValues() throws {
         // Given
         let analyticsConfiguration = AnalyticsConfiguration()
-        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
+        let sut = AnalyticsProvider(apiClient: APIClientMock(), configuration: analyticsConfiguration)
 
         // Then
         XCTAssertTrue(sut.configuration.isEnabled)
@@ -41,6 +26,10 @@ class AnalyticsProviderTests: XCTestCase {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = true
+
+        let apiClient = APIClientMock()
+        let sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
+
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
         let checkoutAttemptIdResponse = CheckoutAttemptIdResponse(identifier: expectedCheckoutAttemptId)
@@ -48,8 +37,6 @@ class AnalyticsProviderTests: XCTestCase {
         apiClient.mockedResults = [checkoutAttemptIdResult]
         
         let fetchCheckoutAttemptIdExpection = expectation(description: "checkoutAttemptId completion")
-        
-        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         // When
         sut.fetchCheckoutAttemptId(with: .components(type: .achDirectDebit), additionalFields: nil)
@@ -67,7 +54,8 @@ class AnalyticsProviderTests: XCTestCase {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = false
-        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
+        let apiClient = APIClientMock()
+        let sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         // When
         sut.fetchCheckoutAttemptId(with: .components(type: .affirm), additionalFields: nil)
@@ -79,6 +67,9 @@ class AnalyticsProviderTests: XCTestCase {
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = true
 
+        let apiClient = APIClientMock()
+        let sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
+
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
         let checkoutAttemptIdResponse = CheckoutAttemptIdResponse(identifier: expectedCheckoutAttemptId)
@@ -86,8 +77,6 @@ class AnalyticsProviderTests: XCTestCase {
         apiClient.mockedResults = [checkoutAttemptIdResult]
         
         let fetchCheckoutAttemptIdExpection = expectation(description: "checkoutAttemptId completion")
-        
-        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         // When
         sut.fetchCheckoutAttemptId(with: .components(type: .achDirectDebit), additionalFields: nil)
@@ -107,11 +96,12 @@ class AnalyticsProviderTests: XCTestCase {
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = true
 
+        let apiClient = APIClientMock()
+        let sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
+
         let error = NSError(domain: "", code: 500, userInfo: [NSLocalizedDescriptionKey: "Internal Server Error"])
         let checkoutAttemptIdResult: Result<Response, Error> = .failure(error)
         apiClient.mockedResults = [checkoutAttemptIdResult]
-        
-        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         // When
         sut.fetchCheckoutAttemptId(with: .dropInComponent, additionalFields: nil)
@@ -123,6 +113,9 @@ class AnalyticsProviderTests: XCTestCase {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = true
+        
+        let apiClient = APIClientMock()
+        let sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
@@ -131,8 +124,6 @@ class AnalyticsProviderTests: XCTestCase {
         apiClient.mockedResults = [checkoutAttemptIdResult]
         
         let fetchCheckoutAttemptIdExpection = expectation(description: "checkoutAttemptId completion")
-        
-        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         // When
         sut.fetchCheckoutAttemptId(with: .components(type: .atome), additionalFields: nil)
@@ -150,7 +141,9 @@ class AnalyticsProviderTests: XCTestCase {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = false
-        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
+        
+        let apiClient = APIClientMock()
+        let sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         let checkoutAttemptIdResponse = CheckoutAttemptIdResponse(identifier: checkoutAttemptIdMockValue)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
@@ -162,22 +155,24 @@ class AnalyticsProviderTests: XCTestCase {
         XCTAssertEqual(sut.checkoutAttemptId, "do-not-track")
     }
     
-    func testAdditionalFields() throws {
-     
+    func testTelemetryRequest() throws {
         // Given
         
-        let amount = Amount(value: 1, currencyCode: "EUR")
-        let checkoutAttemptId = self.checkoutAttemptIdMockValue
+        let checkoutAttemptId = checkoutAttemptIdMockValue
         
         let telemetryExpectation = expectation(description: "Telemetry request is triggered")
         
         let apiClient = APIClientMock()
         apiClient.mockedResults = [
-            .success(CheckoutAttemptIdResponse(identifier: checkoutAttemptId))
+            .success(CheckoutAttemptIdResponse(identifier: checkoutAttemptId)),
+            .success(TelemetryResponse())
         ]
         apiClient.onExecute = { request in
-            if let checkoutAttemptIdRequest = request as? CheckoutAttemptIdRequest {
-                XCTAssertEqual(checkoutAttemptIdRequest.amount, amount)
+            if let telemetryRequest = request as? TelemetryRequest {
+                XCTAssertNil(telemetryRequest.amount)
+                XCTAssertEqual(telemetryRequest.checkoutAttemptId, checkoutAttemptId)
+                XCTAssertEqual(telemetryRequest.version, adyenSdkVersion)
+                XCTAssertEqual(telemetryRequest.platform, "ios")
                 telemetryExpectation.fulfill()
             }
         }
@@ -188,10 +183,86 @@ class AnalyticsProviderTests: XCTestCase {
         )
         
         // When
+        
+        analyticsProvider.fetchCheckoutAttemptId(with: .components(type: .achDirectDebit), additionalFields: nil)
+        
+        wait(for: [telemetryExpectation], timeout: 1)
+    }
+    
+    func testAdditionalFields() throws {
+     
+        // Given
+        
+        let amount = Amount(value: 1, currencyCode: "EUR")
+        let checkoutAttemptId = checkoutAttemptIdMockValue
+        
+        let telemetryExpectation = expectation(description: "Telemetry request is triggered")
+        
+        let apiClient = APIClientMock()
+        apiClient.mockedResults = [
+            .success(CheckoutAttemptIdResponse(identifier: checkoutAttemptId))
+        ]
+        apiClient.onExecute = { request in
+            if let checkoutAttemptIdRequest = request as? CheckoutAttemptIdRequest {
+                XCTAssertEqual(checkoutAttemptIdRequest.amount, amount)
+                XCTAssertEqual(checkoutAttemptIdRequest.version, "version")
+                XCTAssertEqual(checkoutAttemptIdRequest.platform, "react-native")
+                telemetryExpectation.fulfill()
+            }
+        }
+        
+        var analyticsConfiguration = AnalyticsConfiguration()
+        analyticsConfiguration.context = .init(version: "version", platform: .reactNative)
+        
+        let analyticsProvider = AnalyticsProvider(
+            apiClient: apiClient,
+            configuration: analyticsConfiguration
+        )
+        
+        // When
         let additionalFields = AdditionalAnalyticsFields(amount: amount)
         analyticsProvider.fetchCheckoutAttemptId(with: .components(type: .achDirectDebit), additionalFields: additionalFields)
         
         wait(for: [telemetryExpectation], timeout: 1)
+    }
+    
+    func testTelemetryRequestEncoding() throws {
+        
+        let telemetryData = TelemetryData(flavor: .dropInComponent,
+                                          additionalFields: AdditionalAnalyticsFields(amount: .init(value: 1, currencyCode: "EUR")),
+                                          context: TelemetryContext(version: "version", platform: .flutter))
+        
+        let request = TelemetryRequest(
+            data: telemetryData,
+            checkoutAttemptId: checkoutAttemptIdMockValue
+        )
+        
+        let encodedRequest = try JSONEncoder().encode(request)
+        let decodedRequest = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedRequest) as? [String: Any])
+        
+        let expectedDecodedRequest = [
+            "locale": "en_US",
+            "paymentMethods": telemetryData.paymentMethods,
+            "platform": "flutter",
+            "component": "",
+            "flavor": "dropInComponent",
+            "channel": "iOS",
+            "systemVersion": telemetryData.systemVersion,
+            "screenWidth": telemetryData.screenWidth,
+            "referrer": telemetryData.referrer,
+            "deviceBrand": telemetryData.deviceBrand,
+            "amount": [
+                "currency": "EUR",
+                "value": 1
+            ] as [String: Any],
+            "checkoutAttemptId": checkoutAttemptIdMockValue,
+            "version": "version"
+        ] as [String: Any]
+        
+        XCTAssertEqual(
+            NSDictionary(dictionary: decodedRequest),
+            NSDictionary(dictionary: expectedDecodedRequest)
+        )
     }
 
     // MARK: - Private

@@ -32,7 +32,9 @@ internal struct CheckoutAttemptIdRequest: APIRequest {
 
     internal let method: HTTPMethod = .post
 
-    private var version: String
+    internal private(set) var version: String
+    internal private(set) var platform: String
+    
     private let channel: String
     private let locale: String
     private let flavor: String
@@ -52,6 +54,7 @@ internal struct CheckoutAttemptIdRequest: APIRequest {
 
     internal init(data: TelemetryData) {
         self.version = data.version
+        self.platform = data.platform
         self.channel = data.channel
         self.locale = data.locale
         self.flavor = data.flavor
@@ -70,6 +73,7 @@ internal struct CheckoutAttemptIdRequest: APIRequest {
 
     internal enum CodingKeys: CodingKey {
         case version
+        case platform
         case channel
         case locale
         case flavor
