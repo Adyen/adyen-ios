@@ -18,7 +18,7 @@ jobs:
         - version: '16.4'
           displayname: 'iPhone 14'
           os: 'macos-13-xl'
-          needs_custom_sim: false # Takes the shipped simulator that comes with Xcode 13
+          needs_custom_sim: false # Takes the shipped simulator that comes with Xcode 14
         
         - version: '15.0'
           runtime: 'iOS-15-0'
