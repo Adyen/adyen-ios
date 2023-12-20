@@ -38,7 +38,7 @@ extension XCTestCase {
     func wait(
         until expectation: () -> Bool,
         timeout: TimeInterval = 120,
-        retryInterval: DispatchTimeInterval = .milliseconds(10),
+        retryInterval: DispatchTimeInterval = .seconds(1),
         message: String? = nil
     ) {
         let thresholdDate = Date().addingTimeInterval(timeout)

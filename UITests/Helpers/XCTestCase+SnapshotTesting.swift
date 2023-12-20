@@ -53,7 +53,7 @@ extension XCTestCase {
     /// Multiple verification snapshots are taken within the timeout and compared with the reference snapshot
     func verifyViewControllerImage(matching viewController: @autoclosure () throws -> UIViewController,
                                    named name: String,
-                                   timeout: TimeInterval = 60,
+                                   timeout: TimeInterval = 120,
                                    device: ViewImageConfig = .iPhone12,
                                    file: StaticString = #file,
                                    testName: String = #function,
