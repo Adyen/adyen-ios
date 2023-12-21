@@ -44,7 +44,8 @@ jobs:
     - name: Pre-heat iPhone Simulator ${{ env.device }} ${{ env.runtime }}
       id: sets-simulator
       run: |
-        simulator_id=$(xcrun simctl create ${{ uuidgen }} com.apple.CoreSimulator.SimDeviceType.${{ env.device }} com.apple.CoreSimulator.SimRuntime.${{ env.runtime }})
+        simulator_name=$(uuidgen)
+        simulator_id=$(xcrun simctl create $simulator_name com.apple.CoreSimulator.SimDeviceType.${{ env.device }} com.apple.CoreSimulator.SimRuntime.${{ env.runtime }})
         xcrun simctl boot $simulator_id
         echo "id=$simulator_id" >> "$GITHUB_OUTPUT"
 
