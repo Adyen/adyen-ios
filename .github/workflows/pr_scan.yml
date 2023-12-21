@@ -15,7 +15,7 @@ jobs:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
       device: 'iPhone-14'
       runtime: 'iOS-17-0'
-    runs-on: macos-13-xlarge # Apple Silicon Runner
+    runs-on: macos-13-xl # Apple Silicon Runner
 
     steps:
     - uses: actions/checkout@v4
