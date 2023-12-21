@@ -1,8 +1,9 @@
 name: 📚 Library Evolution Compatibility
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+#  pull_request:
+#    types: [opened, synchronize, reopened]
+    
   push:
     branches:
       - develop
