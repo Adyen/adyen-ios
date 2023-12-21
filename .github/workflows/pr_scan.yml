@@ -13,7 +13,8 @@ jobs:
   build:
     env:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
-      device: 'iPhone 14'
+      device: 'iPhone-14'
+      runtime: 'iOS-16-4'
     runs-on: macos-13-xlarge # Apple Silicon Runner
 
     steps:
@@ -40,15 +41,13 @@ jobs:
       run: |
         Scripts/validate-Adyen-SDK-version.sh
 
-    - name: Pre-heat iPhone Simulator ${{ env.device }}
-        id: sets-simulator
-        run: |
-          xcrun simctl list
-          simulator_id=$(xcrun simctl list | grep -E '${{ env.device }}' | grep -Eo '[A-Z0-9-]{36}' | head -n 1)
-          xcrun simctl boot $simulator_id
-          open /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app/
-          echo "Simulator ID: $simulator_id"
-          echo "id=$simulator_id" >> "$GITHUB_OUTPUT"
+    - name: Pre-heat iPhone Simulator ${{ env.device }} ${{ env.runtime }}
+      id: sets-simulator
+      run: |
+        simulator_id=$(xcrun simctl create uuidgen com.apple.CoreSimulator.SimDeviceType.${{ env.device }} com.apple.CoreSimulator.SimRuntime.${{ env.runtime }})
+        xcrun simctl boot $simulator_id
+        open /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app/
+        echo "id=$simulator_id" >> "$GITHUB_OUTPUT"
 
     - name: Clean Build and Test
       run: |
