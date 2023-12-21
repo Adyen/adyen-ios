@@ -126,6 +126,4 @@ class TelemetryTrackerTests: XCTestCase {
     private var checkoutAttemptIdResponse: CheckoutAttemptIdResponse {
         .init(identifier: "cb3eef98-978e-4f6f-b299-937a4450be1f1648546838056be73d8f38ee8bcc3a65ec14e41b037a59f255dcd9e83afe8c06bd3e7abcad993")
     }
-
-    private let telemetryResponse = TelemetryResponse()
 }
