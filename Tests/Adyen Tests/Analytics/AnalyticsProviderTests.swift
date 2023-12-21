@@ -165,14 +165,12 @@ class AnalyticsProviderTests: XCTestCase {
         let apiClient = APIClientMock()
         apiClient.mockedResults = [
             .success(CheckoutAttemptIdResponse(identifier: checkoutAttemptId)),
-            .success(TelemetryResponse())
         ]
         apiClient.onExecute = { request in
-            if let telemetryRequest = request as? TelemetryRequest {
-                XCTAssertNil(telemetryRequest.amount)
-                XCTAssertEqual(telemetryRequest.checkoutAttemptId, checkoutAttemptId)
-                XCTAssertEqual(telemetryRequest.version, adyenSdkVersion)
-                XCTAssertEqual(telemetryRequest.platform, "ios")
+            if let checkoutAttemptIdRequest = request as? CheckoutAttemptIdRequest {
+                XCTAssertNil(checkoutAttemptIdRequest.amount)
+                XCTAssertEqual(checkoutAttemptIdRequest.version, adyenSdkVersion)
+                XCTAssertEqual(checkoutAttemptIdRequest.platform, "ios")
                 telemetryExpectation.fulfill()
             }
         }
@@ -232,10 +230,7 @@ class AnalyticsProviderTests: XCTestCase {
                                           additionalFields: AdditionalAnalyticsFields(amount: .init(value: 1, currencyCode: "EUR")),
                                           context: TelemetryContext(version: "version", platform: .flutter))
         
-        let request = TelemetryRequest(
-            data: telemetryData,
-            checkoutAttemptId: checkoutAttemptIdMockValue
-        )
+        let request = CheckoutAttemptIdRequest(data: telemetryData)
         
         let encodedRequest = try JSONEncoder().encode(request)
         let decodedRequest = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedRequest) as? [String: Any])
@@ -251,11 +246,11 @@ class AnalyticsProviderTests: XCTestCase {
             "screenWidth": telemetryData.screenWidth,
             "referrer": telemetryData.referrer,
             "deviceBrand": telemetryData.deviceBrand,
+            "deviceModel": telemetryData.deviceModel,
             "amount": [
                 "currency": "EUR",
                 "value": 1
             ] as [String: Any],
-            "checkoutAttemptId": checkoutAttemptIdMockValue,
             "version": "version"
         ] as [String: Any]
         
