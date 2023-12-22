@@ -24,7 +24,7 @@ jobs:
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '15.0.1'
+        xcode-version: '15.1'
 
     - name: Install Tools
       run: |
@@ -47,7 +47,7 @@ jobs:
         project: 'Adyen.xcodeproj'
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
         scheme: 'AdyenUIHost'
-        destination: 'name=iPhone 14,OS=17.0.1'
+        destination: 'name=iPhone 14,OS=17.2'
 
     - name: Code Coverage
       run: |
