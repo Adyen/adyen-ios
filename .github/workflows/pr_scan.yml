@@ -13,9 +13,7 @@ jobs:
   build:
     env:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
-      device: 'iPhone-14'
-      runtime: 'iOS-17-0'
-    runs-on: macos-13-xl # Apple Silicon Runner
+    runs-on: macos-13-xlarge # Apple Silicon Runner
 
     steps:
     - uses: actions/checkout@v4
@@ -41,22 +39,15 @@ jobs:
       run: |
         Scripts/validate-Adyen-SDK-version.sh
 
-    - name: Pre-heat iPhone Simulator ${{ env.device }} ${{ env.runtime }}
-      id: sets-simulator
-      run: |
-        simulator_name=$(uuidgen)
-        simulator_id=$(xcrun simctl create $simulator_name com.apple.CoreSimulator.SimDeviceType.${{ env.device }} com.apple.CoreSimulator.SimRuntime.${{ env.runtime }})
-        xcrun simctl boot $simulator_id
-        echo "id=$simulator_id" >> "$GITHUB_OUTPUT"
-
     - name: Clean Build and Test
       run: |
         xcodebuild -version
-        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "id=${{ steps.sets-simulator.outputs.id }}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
         scheme: 'AdyenUIHost'
+        destination: 'name=iPhone 14,OS=17.0.1'
 
     - name: Code Coverage
       run: |
