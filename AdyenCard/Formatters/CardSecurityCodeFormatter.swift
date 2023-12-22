@@ -26,6 +26,13 @@ public final class CardSecurityCodeFormatter: NumericFormatter {
         bind(publisher, to: self, at: \.cardType)
     }
     
+    /// Initiate new instance of CardSecurityCodeValidator with a fixed ``CardType``
+    /// - Parameter cardType: The card type to format the security code for
+    public init(cardType: CardType) {
+        super.init()
+        self.cardType = cardType
+    }
+    
     override public func formattedValue(for value: String) -> String {
         let value = super.formattedValue(for: value)
         
