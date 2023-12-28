@@ -7,8 +7,9 @@
 @_spi(AdyenInternal) import Adyen
 import TwintSDK
 
-public final class TwintComponent: PaymentComponent, PresentableComponent, PaymentAware {
+public final class TwintSDKComponent: PaymentComponent, PresentableComponent, PaymentAware {
     
+    public static let RedirectNotification: Notification.Name = .init("TwintSDKActionComponentRedirect")
     public static let RedirectNotificationErrorKey: String = "Error"
     
     struct TwintError: LocalizedError {
@@ -176,13 +177,33 @@ public final class TwintComponent: PaymentComponent, PresentableComponent, Payme
     }
 }
 
+extension TwintSDKComponent {
+    
+    public static func handleOpen(_ url: URL) -> Bool {
+        Twint.handleOpen(url) { error in
+            var userInfo = [String: Codable]()
+
+            // TODO: This is not that nice - maybe better let the TwintComponent generate the UserDefaults?
+            if let error {
+                userInfo[RedirectNotificationErrorKey] = error.localizedDescription
+            }
+
+            NotificationCenter.default.post(
+                name: RedirectNotification,
+                object: nil,
+                userInfo: userInfo
+            )
+        }
+    }
+}
+
 // MARK: - Telemetry
 
 @_spi(AdyenInternal)
-extension TwintComponent: TrackableComponent {}
+extension TwintSDKComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
-extension TwintComponent: ViewControllerDelegate {
+extension TwintSDKComponent: ViewControllerDelegate {
     // MARK: - ViewControllerDelegate
 
     public func viewWillAppear(viewController: UIViewController) {

@@ -4,15 +4,14 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-
 @_spi(AdyenInternal) import Adyen
-#if canImport(TwintSDK)
+
+#if canImport(AdyenTwint) && canImport(TwintSDK)
+    import AdyenTwint
     import TwintSDK
 #endif
 
 public final class TwintSDKActionComponent: ActionComponent {
-    
-    public static let RedirectNotification: Notification.Name = Notification.Name("TwintSDKActionComponentRedirect")
     
     public var delegate: ActionComponentDelegate?
     
@@ -79,51 +78,52 @@ public final class TwintSDKActionComponent: ActionComponent {
     ) {
         guard let appConfiguration else { return }
         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleRedirect),
-            name: Self.RedirectNotification,
-            object: nil
-        )
+        #if canImport(AdyenTwint)
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(handleRedirect),
+                name: TwintSDKComponent.RedirectNotification,
+                object: nil
+            )
+        #endif
         
-        Twint.pay(
-            withCode: code,
-            appConfiguration: appConfiguration,
-            callback: configuration.redirectURL.absoluteString
-        )
+//        Twint.pay(
+//            withCode: code,
+//            appConfiguration: appConfiguration,
+//            callback: configuration.redirectURL.absoluteString
+//        )
     }
     
     private func handleNoAppInstalled() {
         // TODO: Implement Correctly
-        let localizationParameters = configuration.localizationParameters
-        let alertController = UIAlertController(title: "Error",
-                                                message: "No Twint app installed",
-                                                preferredStyle: .alert)
-
-        let cancelAction = UIAlertAction(title: localizedString(.dismissButton, localizationParameters), style: .cancel) { [weak self] _ in
-            guard let self else { return }
-            // TODO: Use a different error as it might be shown after the component closed
-            self.delegate?.didFail(with: TwintError(errorDescription: "No app installed"), from: self)
-        }
-        alertController.addAction(cancelAction)
-        
-        self.viewController.presentViewController(alertController, animated: true)
+//        let localizationParameters: LocalizationParameters? = configuration.localizationParameters
+//        let alertController = UIAlertController(title: "Error",
+//                                                message: "No Twint app installed",
+//                                                preferredStyle: .alert)
+//
+//        let cancelAction = UIAlertAction(title: localizedString(.dismissButton, localizationParameters), style: .cancel) { [weak self] _ in
+//            guard let self else { return }
+//            // TODO: Use a different error as it might be shown after the component closed
+//            self.delegate?.didFail(with: TwintError(errorDescription: "No app installed"), from: self)
+//        }
+//        alertController.addAction(cancelAction)
+//
+//        self.viewController.presentViewController(alertController, animated: true)
     }
     
     @objc
     private func handleRedirect(notification: Notification) {
         NotificationCenter.default.removeObserver(self)
         
-        if let error = notification.userInfo?[TwintComponent.RedirectNotificationErrorKey] as? String {
-            handleError(TwintError(errorDescription: error))
-            return
-        }
-        
-        initiatePayment()
+//        if let error = notification.userInfo?[TwintComponent.RedirectNotificationErrorKey] as? String {
+//            handleError(TwintError(errorDescription: error))
+//            return
+//        }
+//
+//        initiatePayment()
     }
     
     private func handleError(_ error: Error) {
         delegate?.didFail(with: error, from: self)
     }
 }
-

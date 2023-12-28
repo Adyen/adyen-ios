@@ -64,7 +64,7 @@
 		00E5D6562AF4E99B00CDE118 /* AdyenTwint.h in Headers */ = {isa = PBXBuildFile; fileRef = 00E5D6532AF4E99B00CDE118 /* AdyenTwint.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		00E5D6592AF4E99B00CDE118 /* AdyenTwint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */; };
 		00E5D65A2AF4E99B00CDE118 /* AdyenTwint.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		00E5D65F2AF4EA2D00CDE118 /* TwintComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5D65E2AF4EA2D00CDE118 /* TwintComponent.swift */; };
+		00E5D65F2AF4EA2D00CDE118 /* TwintSDKComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5D65E2AF4EA2D00CDE118 /* TwintSDKComponent.swift */; };
 		00E5D6612AF527C200CDE118 /* TwintSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6602AF527C200CDE118 /* TwintSDK.xcframework */; };
 		00EA4ED4280412140053D938 /* DefaultAddressViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */; };
 		00EA4ED7280590050053D938 /* AtomeAddressViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */; };
@@ -1380,7 +1380,7 @@
 		00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenTwint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5D6532AF4E99B00CDE118 /* AdyenTwint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenTwint.h; sourceTree = "<group>"; };
 		00E5D6542AF4E99B00CDE118 /* AdyenTwint.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = AdyenTwint.docc; sourceTree = "<group>"; };
-		00E5D65E2AF4EA2D00CDE118 /* TwintComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintComponent.swift; sourceTree = "<group>"; };
+		00E5D65E2AF4EA2D00CDE118 /* TwintSDKComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintSDKComponent.swift; sourceTree = "<group>"; };
 		00E5D6602AF527C200CDE118 /* TwintSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TwintSDK.xcframework; path = XCFramework/Dynamic/TwintSDK.xcframework; sourceTree = "<group>"; };
 		00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAddressViewModelBuilder.swift; sourceTree = "<group>"; };
 		00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeAddressViewModelBuilder.swift; sourceTree = "<group>"; };
@@ -2576,7 +2576,7 @@
 			isa = PBXGroup;
 			children = (
 				00E5D6532AF4E99B00CDE118 /* AdyenTwint.h */,
-				00E5D65E2AF4EA2D00CDE118 /* TwintComponent.swift */,
+				00E5D65E2AF4EA2D00CDE118 /* TwintSDKComponent.swift */,
 				814713C22B27551E00D09CF1 /* TwintConfiguration.swift */,
 				00FAE54D2B21CE1B0059A6F5 /* TwintDetails.swift */,
 				00E5D6542AF4E99B00CDE118 /* AdyenTwint.docc */,
@@ -6477,7 +6477,7 @@
 			files = (
 				00E5D6552AF4E99B00CDE118 /* AdyenTwint.docc in Sources */,
 				814713C32B27551E00D09CF1 /* TwintConfiguration.swift in Sources */,
-				00E5D65F2AF4EA2D00CDE118 /* TwintComponent.swift in Sources */,
+				00E5D65F2AF4EA2D00CDE118 /* TwintSDKComponent.swift in Sources */,
 				00FAE54E2B21CE1B0059A6F5 /* TwintDetails.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

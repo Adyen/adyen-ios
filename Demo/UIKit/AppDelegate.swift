@@ -41,24 +41,7 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
         var urlHandled = false
         
         #if canImport(AdyenTwint)
-            // TODO: Move it as a static func to the component
-        
-            urlHandled = Twint.handleOpen(url) { error in
-                
-                var userInfo = [String: Codable]()
-                
-                // TODO: This is not that nice - maybe better let the TwintComponent generate the UserDefaults?
-                
-                if let error {
-                    userInfo[TwintComponent.RedirectNotificationErrorKey] = error.localizedDescription
-                }
-                
-                NotificationCenter.default.post(
-                    name: TwintComponent.RedirectNotification,
-                    object: nil,
-                    userInfo: userInfo
-                )
-            }
+            urlHandled = TwintSDKComponent.handleOpen(url)
         #endif
         
         if !urlHandled {

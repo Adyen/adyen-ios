@@ -45,7 +45,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         /// Three DS configurations
         public var threeDS: ThreeDS = .init()
         
-        // TODO: Do we need a Twint configuration here?
+        public var twint: Twint?
         
         /// Three DS configurations
         public struct ThreeDS {
@@ -67,6 +67,23 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
                 self.requestorAppURL = requestorAppURL
                 self.delegateAuthentication = delegateAuthentication
                 self.appearanceConfiguration = appearanceConfiguration
+            }
+        }
+        
+        /// Twint component configuration.
+        public struct Twint: AnyTwintConfiguration {
+            
+            /// The URL for Cash App to call in order to redirect back to your application.
+            public let redirectURL: URL
+            
+            /// Configuration of TwintComponent
+            ///
+            /// - Parameters:
+            ///   - redirectURL: The URL for Cash App to call in order to redirect back to your application.
+            public init(
+                redirectURL: URL
+            ) {
+                self.redirectURL = redirectURL
             }
         }
         
@@ -249,15 +266,15 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     }
     
     #if canImport(AdyenTwint)
-    private func handle(_ action: TwintSDKAction) {
+        private func handle(_ action: TwintSDKAction) {
         
-        let component = TwintSDKActionComponent(context: context)
-        component._isDropIn = _isDropIn
-        component.delegate = delegate
-        component.presentationDelegate = presentationDelegate
-        component.handle(action)
+            let component = TwintSDKActionComponent(context: context)
+            component._isDropIn = _isDropIn
+            component.delegate = delegate
+            component.presentationDelegate = presentationDelegate
+            component.handle(action)
 
-        currentActionComponent = component
-    }
+            currentActionComponent = component
+        }
     #endif
 }

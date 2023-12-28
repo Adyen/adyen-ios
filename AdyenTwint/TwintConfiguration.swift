@@ -7,7 +7,7 @@
 import Adyen
 import Foundation
 
-public extension TwintComponent {
+public extension TwintSDKComponent {
     
     struct Configuration: AnyTwintConfiguration {
         

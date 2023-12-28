@@ -204,11 +204,9 @@ extension ComponentManager: PaymentComponentBuilder {
         #endif
     }
     
-    #if canImport(AdyenTwint)
-        internal func build(paymentMethod: TwintPaymentMethod) -> PaymentComponent? {
-            createTwintComponent(paymentMethod)
-        }
-    #endif
+    internal func build(paymentMethod: TwintPaymentMethod) -> PaymentComponent? {
+        createTwintComponent(paymentMethod)
+    }
 }
 
 // MARK: - Convenience
@@ -336,24 +334,26 @@ private extension ComponentManager {
                                configuration: config)
     }
     
-    #if canImport(AdyenTwint)
-        func createTwintComponent(_ paymentMethod: TwintPaymentMethod) -> TwintComponent? {
-            guard let twintConfig = configuration.twint else {
-                AdyenAssertion.assertionFailure(message: "Twint configuration instance must not be nil in order to use TwintComponent")
+    func createTwintComponent(_ paymentMethod: TwintPaymentMethod) -> TwintSDKComponent? {
+        #if canImport(AdyenTwint)
+            guard let twintConfig = configuration.actionComponent.twint else {
+                AdyenAssertion.assertionFailure(message: "Twint configuration on the actionComponent must not be nil in order to use TwintComponent")
                 return nil
             }
-    
-            let config = TwintComponent.Configuration(
+        
+            let config = TwintSDKComponent.Configuration(
                 redirectURL: twintConfig.redirectURL,
                 style: configuration.style.formComponent,
                 localizationParameters: configuration.localizationParameters
             )
-            return TwintComponent(
+            return TwintSDKComponent(
                 paymentMethod: paymentMethod,
                 context: context,
                 configuration: config
             )
-        }
-    #endif
+        #else
+            return nil
+        #endif
+    }
 
 }
