@@ -7601,7 +7601,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenCashAppPay;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -7641,7 +7641,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenCashAppPay;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
@@ -7732,7 +7732,6 @@
 				MARKETING_VERSION = "";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				STRIP_STYLE = debugging;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -7793,7 +7792,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MARKETING_VERSION = "";
 				SDKROOT = iphoneos;
-				STRIP_STYLE = debugging;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
@@ -7829,7 +7827,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -7862,7 +7860,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -7931,7 +7929,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenCard;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_INCLUDE_PATHS = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -7959,7 +7957,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenCard;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_INCLUDE_PATHS = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -8042,7 +8040,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenDropIn;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -8072,7 +8070,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenDropIn;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -8104,7 +8102,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenComponents;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -8137,7 +8135,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenComponents;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -8170,7 +8168,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenActions;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -8203,7 +8201,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenActions;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -8236,7 +8234,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenEncryption;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -8269,7 +8267,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenEncryption;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -8302,7 +8300,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenSession;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -8337,7 +8335,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenSession;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -8379,7 +8377,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenDelegatedAuthentication;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -8421,7 +8419,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenDelegatedAuthentication;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -8454,7 +8452,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenSwiftUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -8486,7 +8484,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenSwiftUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -8633,7 +8631,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenWeChatPay;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -8677,7 +8675,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenWeChatPay;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = debugging;
+				STRIP_STYLE = all;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
