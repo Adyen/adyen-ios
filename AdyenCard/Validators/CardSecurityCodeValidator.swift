@@ -27,6 +27,14 @@ public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObser
         }
     }
     
+    /// Initiate new instance of CardSecurityCodeValidator with a fixed ``CardType``
+    /// - Parameter cardType: The card type to validate the security code for
+    public init(cardType: CardType) {
+        super.init(minimumLength: 3, maximumLength: 4)
+        
+        updateExpectedLength(from: cardType)
+    }
+    
     private func updateExpectedLength(from cardType: CardType?) {
         let length = cardType == .americanExpress ? 4 : 3
         maximumLength = length
