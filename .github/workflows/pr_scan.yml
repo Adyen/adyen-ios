@@ -13,7 +13,7 @@ jobs:
   build:
     env:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
-    runs-on: macos-13-xl # Apple Silicon Runner
+    runs-on: macos-13-xlarge # Apple Silicon Runner
 
     steps:
     - uses: actions/checkout@v4
