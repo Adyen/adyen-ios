@@ -25,7 +25,7 @@ public final class FormPhoneExtensionPickerItem: BaseFormPickerItem<PhoneExtensi
     ///
     /// - Parameter selectableValues: The list of values to select from.
     /// - Parameter style: The `FormPhoneExtensionPickerItem` UI style.
-    internal override init(preselectedValue: PhoneExtensionPickerItem,
+    override internal init(preselectedValue: PhoneExtensionPickerItem,
                            selectableValues: [PhoneExtensionPickerItem],
                            style: FormTextItemStyle) {
         assert(selectableValues.count > 0)
