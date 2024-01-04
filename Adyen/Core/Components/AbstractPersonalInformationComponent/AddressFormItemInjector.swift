@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -22,12 +22,13 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
     
     private weak var presenter: ViewControllerPresenter?
     
-    private let addressType: FormAddressPickerItem.AddressType // TODO: Maybe better move it somewhere reusable
+    private let addressType: FormAddressPickerItem.AddressType // TODO: Move it somewhere reusable
 
     internal lazy var item: FormAddressPickerItem = {
         FormAddressPickerItem(
             for: addressType,
             initialCountry: initialCountry,
+            supportedCountryCodes: nil, // TODO: Pass correct values
             prefillAddress: value,
             style: style,
             addressViewModelBuilder: addressViewModelBuilder,

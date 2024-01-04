@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -135,21 +135,25 @@ internal class CardViewController: FormViewController {
         
         // TODO: Move to Items
         
-//        switch configuration.billingAddress.mode {
-//        case .lookup, .full:
-//            guard let lookupBillingAddress = items.addressItem?.value else { return nil }
-//            address = lookupBillingAddress
-//            requiredFields = items.billingAddressPickerItem.addressViewModel.requiredFields
-//            
-//        case .postalCode:
-//            address = PostalAddress(postalCode: items.addressItem.value)
-//            requiredFields = [.postalCode]
-//            
-//        case .none:
-//            return nil
-//        }
-//        
-//        guard address.satisfies(requiredFields: requiredFields) else { return nil }
+        switch configuration.billingAddress.mode {
+        case .lookup, .full:
+            guard
+                let billingAddressItem = items.billingAddressPickerItem,
+                let lookupBillingAddress = billingAddressItem.value
+            else { return nil }
+            
+            address = lookupBillingAddress
+            requiredFields = billingAddressItem.addressViewModel.requiredFields
+            
+        case .postalCode:
+            address = PostalAddress(postalCode: items.postalCodeItem.value)
+            requiredFields = [.postalCode]
+            
+        case .none:
+            return nil
+        }
+        
+        guard address.satisfies(requiredFields: requiredFields) else { return nil }
         
         return address
     }
@@ -212,7 +216,7 @@ extension CardViewController {
         let isOptional = configuration.billingAddress.isOptional(for: brands.map(\.type))
         switch configuration.billingAddress.mode {
         case .lookup, .full:
-            items.billingAddressPickerItem.updateOptionalStatus(isOptional: isOptional)
+            items.billingAddressPickerItem?.updateOptionalStatus(isOptional: isOptional)
         case .postalCode:
             items.postalCodeItem.updateOptionalStatus(isOptional: isOptional)
         case .none:
@@ -280,7 +284,7 @@ extension CardViewController {
             append(FormSpacerItem())
         }
         
-        if let billingAddressItem = billingAddressItem(for: configuration.billingAddress.mode) {
+        if let billingAddressItem = items.billingAddressPickerItem {
             append(billingAddressItem)
         }
 
@@ -288,28 +292,12 @@ extension CardViewController {
         append(items.button)
         append(FormSpacerItem(numberOfSpaces: 2))
     }
-    
-    private func billingAddressItem(for billingAddressMode: CardComponent.AddressFormType) -> FormItem? {
-        switch billingAddressMode {
-        case let .lookup(provider):
-            return items.billingAddressPickerItem
-            
-        case .full:
-            return items.billingAddressPickerItem
-            
-        case .postalCode:
-            return items.postalCodeItem
-            
-        case .none:
-            return nil
-        }
-    }
 
     private func prefill() {
         guard let shopperInformation else { return }
 
         shopperInformation.billingAddress.map { billingAddress in
-            items.billingAddressPickerItem.value = billingAddress
+            items.billingAddressPickerItem?.value = billingAddress
             billingAddress.postalCode.map { items.postalCodeItem.value = $0 }
         }
         shopperInformation.card.map { items.holderNameItem.value = $0.holderName }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -59,15 +59,13 @@ extension CardViewController {
             self.addressMode = addressMode
         }
         
-        internal lazy var addressItem: FormItem? = {
+        internal lazy var billingAddressPickerItem: FormAddressPickerItem? = {
             switch addressMode {
-            case .lookup(let provider):
+            case let .lookup(provider):
                 return billingAddressPickerItem(with: provider)
             case .full:
                 return billingAddressPickerItem(with: nil)
-            case .postalCode:
-                return postalCodeItem
-            case .none:
+            default:
                 return nil
             }
         }()
@@ -76,9 +74,10 @@ extension CardViewController {
             let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "billingAddress")
             let prefillAddress = shopperInformation?.billingAddress
             
-            let item = FormAddressPickerItem(
-                for: .delivery,
+            return FormAddressPickerItem(
+                for: .billing,
                 initialCountry: initialCountry,
+                supportedCountryCodes: configuration.billingAddress.countryCodes,
                 prefillAddress: prefillAddress,
                 style: formStyle.addressStyle,
                 localizationParameters: localizationParameters,
@@ -87,14 +86,13 @@ extension CardViewController {
                 presenter: presenter,
                 lookupProvider: lookupProvider
             )
-            return item
         }
 
-        private var postalCodeItem: FormPostalCodeItem {
+        internal lazy var postalCodeItem: FormPostalCodeItem = {
             let zipCodeItem = FormPostalCodeItem(style: formStyle.textField, localizationParameters: localizationParameters)
             zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "postalCodeItem")
             return zipCodeItem
-        }
+        }()
 
         internal lazy var numberContainerItem: FormCardNumberContainerItem = {
             let item = FormCardNumberContainerItem(cardTypeLogos: cardLogos,

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -20,20 +20,14 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
     private var initialCountry: String
     private var context: AddressViewModelBuilderContext
     private let localizationParameters: LocalizationParameters?
-    
-    override public var selectionHandler: () -> Void {
-        didSet {
-            AdyenAssertion.assertionFailure(message: "Don't set the selectionHandler manually") // TODO: Better message
-        }
-    }
+    private let addressViewModelBuilder: AddressViewModelBuilder
+    private weak var presenter: ViewControllerPresenter?
     
     /// The view model to validate the address with
     @_spi(AdyenInternal)
     public var addressViewModel: AddressViewModel {
         addressViewModelBuilder.build(context: self.context)
     }
-    
-    private let addressViewModelBuilder: AddressViewModelBuilder
     
     override public var value: PostalAddress? {
         didSet {
@@ -42,8 +36,6 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
             updateFormattedValue()
         }
     }
-    
-    private weak var presenter: ViewControllerPresenter?
 
     /// Initializes the address lookup item.
     /// - Parameters:
@@ -57,6 +49,7 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
     public init(
         for addressType: AddressType,
         initialCountry: String,
+        supportedCountryCodes: [String]?,
         prefillAddress: PostalAddress?,
         style: AddressStyle, // TODO: Custom style that also takes the form style
         localizationParameters: LocalizationParameters? = nil,
@@ -82,14 +75,17 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
         updateValidationFailureMessage()
         updateFormattedValue()
         
-        selectionHandler = { [weak self] in
-            self?.didSelectAddressPicker(
+        selectionHandler = { [weak self, weak presenter] in
+            guard let self, let presenter else { return }
+            
+            self.didSelectAddressPicker(
                 for: addressType,
                 with: prefillAddress,
                 initialCountry: initialCountry,
-                supportedCountryCodes: nil,
-                lookupProvider: lookupProvider
-            ) { self?.value = $0 }
+                supportedCountryCodes: supportedCountryCodes,
+                lookupProvider: lookupProvider,
+                presenter: presenter
+            ) { [weak self] in self?.value = $0 }
         }
     }
     
@@ -146,6 +142,7 @@ extension FormAddressPickerItem {
         initialCountry: String,
         supportedCountryCodes: [String]?,
         lookupProvider: AddressLookupProvider?,
+        presenter: ViewControllerPresenter,
         completion: @escaping (PostalAddress?) -> Void
     ) {
         let securedViewController = SecuredViewController(
@@ -155,7 +152,7 @@ extension FormAddressPickerItem {
                 initialCountry: initialCountry,
                 supportedCountryCodes: supportedCountryCodes,
                 lookupProvider: lookupProvider,
-                completionHandler: { [weak self] address in
+                completionHandler: { [weak self, weak presenter] address in
                     guard let self else { return }
                     completion(address)
                     presenter?.dismissViewController(animated: true)
@@ -164,7 +161,7 @@ extension FormAddressPickerItem {
             style: style
         )
         
-        presenter?.presentViewController(securedViewController, animated: true)
+        presenter.presentViewController(securedViewController, animated: true)
     }
     
     private func addressPickerViewController(
