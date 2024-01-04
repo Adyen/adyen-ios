@@ -133,21 +133,23 @@ internal class CardViewController: FormViewController {
         let address: PostalAddress
         let requiredFields: Set<AddressField>
         
-        switch configuration.billingAddress.mode {
-        case .lookup, .full:
-            guard let lookupBillingAddress = items.addressItem?.value else { return nil }
-            address = lookupBillingAddress
-            requiredFields = items.billingAddressPickerItem.addressViewModel.requiredFields
-            
-        case .postalCode:
-            address = PostalAddress(postalCode: items.addressItem.value)
-            requiredFields = [.postalCode]
-            
-        case .none:
-            return nil
-        }
+        // TODO: Move to Items
         
-        guard address.satisfies(requiredFields: requiredFields) else { return nil }
+//        switch configuration.billingAddress.mode {
+//        case .lookup, .full:
+//            guard let lookupBillingAddress = items.addressItem?.value else { return nil }
+//            address = lookupBillingAddress
+//            requiredFields = items.billingAddressPickerItem.addressViewModel.requiredFields
+//            
+//        case .postalCode:
+//            address = PostalAddress(postalCode: items.addressItem.value)
+//            requiredFields = [.postalCode]
+//            
+//        case .none:
+//            return nil
+//        }
+//        
+//        guard address.satisfies(requiredFields: requiredFields) else { return nil }
         
         return address
     }
@@ -358,8 +360,6 @@ extension CardViewController {
 }
 
 internal protocol CardViewControllerDelegate: AnyObject {
-    
-    func didSelectAddressPicker(lookupProvider: AddressLookupProvider?)
     
     func didSelectSubmitButton()
 

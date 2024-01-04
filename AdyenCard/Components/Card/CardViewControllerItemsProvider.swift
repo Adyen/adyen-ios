@@ -56,11 +56,10 @@ extension CardViewController {
             self.localizationParameters = localizationParameters
             self.addressViewModelBuilder = addressViewModelBuilder
             self.presenter = .init(presenter)
-            self.lookupProvider = lookupProvider
             self.addressMode = addressMode
         }
         
-        internal lazy var addressItem: FormValueItem? = {
+        internal lazy var addressItem: FormItem? = {
             switch addressMode {
             case .lookup(let provider):
                 return billingAddressPickerItem(with: provider)
