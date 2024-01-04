@@ -28,16 +28,24 @@ extension CardViewController {
         private let initialCountry: String
         
         private let addressViewModelBuilder: AddressViewModelBuilder
+        
+        private let presenter: ViewControllerPresenting
+        
+        private let addressMode: CardComponent.AddressFormType
 
-        internal init(formStyle: FormComponentStyle,
-                      payment: Payment?,
-                      configuration: CardComponent.Configuration,
-                      shopperInformation: PrefilledShopperInformation?,
-                      cardLogos: [FormCardLogosItem.CardTypeLogo],
-                      scope: String,
-                      initialCountryCode: String,
-                      localizationParameters: LocalizationParameters?,
-                      addressViewModelBuilder: AddressViewModelBuilder) {
+        internal init(
+            formStyle: FormComponentStyle,
+            payment: Payment?,
+            configuration: CardComponent.Configuration,
+            shopperInformation: PrefilledShopperInformation?,
+            cardLogos: [FormCardLogosItem.CardTypeLogo],
+            scope: String,
+            initialCountryCode: String,
+            localizationParameters: LocalizationParameters?,
+            addressViewModelBuilder: AddressViewModelBuilder,
+            presenter: ViewControllerPresenter,
+            addressMode: CardComponent.AddressFormType
+        ) {
             self.formStyle = formStyle
             self.amount = payment?.amount
             self.configuration = configuration
@@ -47,9 +55,25 @@ extension CardViewController {
             self.initialCountry = initialCountryCode
             self.localizationParameters = localizationParameters
             self.addressViewModelBuilder = addressViewModelBuilder
+            self.presenter = .init(presenter)
+            self.lookupProvider = lookupProvider
+            self.addressMode = addressMode
         }
         
-        internal lazy var billingAddressPickerItem: FormAddressPickerItem = {
+        internal lazy var addressItem: FormValueItem? = {
+            switch addressMode {
+            case .lookup(let provider):
+                return billingAddressPickerItem(with: provider)
+            case .full:
+                return billingAddressPickerItem(with: nil)
+            case .postalCode:
+                return postalCodeItem
+            case .none:
+                return nil
+            }
+        }()
+        
+        private func billingAddressPickerItem(with lookupProvider: AddressLookupProvider?) -> FormAddressPickerItem {
             let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "billingAddress")
             let prefillAddress = shopperInformation?.billingAddress
             
@@ -60,16 +84,18 @@ extension CardViewController {
                 style: formStyle.addressStyle,
                 localizationParameters: localizationParameters,
                 identifier: identifier,
-                addressViewModelBuilder: addressViewModelBuilder
+                addressViewModelBuilder: addressViewModelBuilder,
+                presenter: presenter,
+                lookupProvider: lookupProvider
             )
             return item
-        }()
+        }
 
-        internal lazy var postalCodeItem: FormPostalCodeItem = {
+        private var postalCodeItem: FormPostalCodeItem {
             let zipCodeItem = FormPostalCodeItem(style: formStyle.textField, localizationParameters: localizationParameters)
             zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "postalCodeItem")
             return zipCodeItem
-        }()
+        }
 
         internal lazy var numberContainerItem: FormCardNumberContainerItem = {
             let item = FormCardNumberContainerItem(cardTypeLogos: cardLogos,
@@ -184,4 +210,21 @@ extension CardViewController {
 
     }
 
+}
+
+internal class ViewControllerPresenting: ViewControllerPresenter {
+    
+    private weak var presenter: ViewControllerPresenter?
+    
+    internal init(_ presenter: ViewControllerPresenter) {
+        self.presenter = presenter
+    }
+    
+    internal func presentViewController(_ viewController: UIViewController, animated: Bool) {
+        presenter?.presentViewController(viewController, animated: animated)
+    }
+    
+    internal func dismissViewController(animated: Bool) {
+        presenter?.dismissViewController(animated: animated)
+    }
 }

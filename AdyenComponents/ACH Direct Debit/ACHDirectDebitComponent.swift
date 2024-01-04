@@ -209,26 +209,30 @@ public final class ACHDirectDebitComponent: PaymentComponent,
         return storeDetailsItem
     }()
     
-    internal lazy var billingAddressItem: FormAddressItem = {
+    internal lazy var billingAddressItem: FormAddressPickerItem = {
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                      postfix: ViewIdentifier.billingAddressItem)
 
         var initialCountry = defaultCountryCode
-        if let prefillCountryCode = configuration.shopperInformation?.billingAddress?.country,
-           configuration.billingAddressCountryCodes.contains(prefillCountryCode) {
+        
+        if
+            let prefillCountryCode = configuration.shopperInformation?.billingAddress?.country,
+            configuration.billingAddressCountryCodes.contains(prefillCountryCode) {
             initialCountry = prefillCountryCode
         }
-        let item = FormAddressItem(initialCountry: initialCountry,
-                                   configuration: .init(
-                                       style: configuration.style.addressStyle,
-                                       localizationParameters: configuration.localizationParameters,
-                                       supportedCountryCodes: configuration.billingAddressCountryCodes
-                                   ),
-                                   identifier: identifier,
-                                   presenter: self,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
-        configuration.shopperInformation?.billingAddress.map { item.value = $0 }
-        item.style.backgroundColor = UIColor.Adyen.lightGray
+        
+        let prefillAddress = configuration.shopperInformation?.billingAddress
+        
+        let item = FormAddressPickerItem(
+            for: .billing,
+            initialCountry: initialCountry,
+            prefillAddress: prefillAddress,
+            style: configuration.style.addressStyle,
+            localizationParameters: configuration.localizationParameters,
+            identifier: identifier,
+            presenter: self
+        )
+        
         return item
     }()
     

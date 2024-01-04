@@ -15,7 +15,6 @@ class FormAddressPickerItemTests: XCTestCase {
             initialCountry: "NL",
             prefillAddress: nil,
             style: .init(),
-            addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
         XCTAssertNil(addressLookupItem.value)
@@ -32,7 +31,6 @@ class FormAddressPickerItemTests: XCTestCase {
             initialCountry: "NL",
             prefillAddress: PostalAddressMocks.singaporePostalAddress,
             style: .init(),
-            addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
         XCTAssertEqual(addressLookupItem.value, PostalAddressMocks.singaporePostalAddress)
@@ -45,7 +43,6 @@ class FormAddressPickerItemTests: XCTestCase {
             initialCountry: "NL",
             prefillAddress: nil,
             style: .init(),
-            addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
         XCTAssertEqual(addressLookupItem.validationFailureMessage, "Address required")
@@ -58,7 +55,6 @@ class FormAddressPickerItemTests: XCTestCase {
             initialCountry: "NL",
             prefillAddress: nil,
             style: .init(),
-            addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
         XCTAssertNil(addressLookupItem.formattedValue)

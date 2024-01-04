@@ -21,6 +21,12 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
     private var context: AddressViewModelBuilderContext
     private let localizationParameters: LocalizationParameters?
     
+    override public var selectionHandler: () -> Void {
+        didSet {
+            AdyenAssertion.assertionFailure(message: "Don't set the selectionHandler manually") // TODO: Better message
+        }
+    }
+    
     /// The view model to validate the address with
     @_spi(AdyenInternal)
     public var addressViewModel: AddressViewModel {
@@ -36,6 +42,8 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
             updateFormattedValue()
         }
     }
+    
+    private weak var presenter: ViewControllerPresenter?
 
     /// Initializes the address lookup item.
     /// - Parameters:
@@ -50,10 +58,12 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
         for addressType: AddressType,
         initialCountry: String,
         prefillAddress: PostalAddress?,
-        style: AddressStyle,
+        style: AddressStyle, // TODO: Custom style that also takes the form style
         localizationParameters: LocalizationParameters? = nil,
         identifier: String? = nil,
-        addressViewModelBuilder: AddressViewModelBuilder
+        addressViewModelBuilder: AddressViewModelBuilder = DefaultAddressViewModelBuilder(),
+        presenter: ViewControllerPresenter?,
+        lookupProvider: AddressLookupProvider? = nil
     ) {
         self.initialCountry = initialCountry
         self.addressViewModelBuilder = addressViewModelBuilder
@@ -71,6 +81,16 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
         
         updateValidationFailureMessage()
         updateFormattedValue()
+        
+        selectionHandler = { [weak self] in
+            self?.didSelectAddressPicker(
+                for: addressType,
+                with: prefillAddress,
+                initialCountry: initialCountry,
+                supportedCountryCodes: nil,
+                lookupProvider: lookupProvider
+            ) { self?.value = $0 }
+        }
     }
     
     public func updateOptionalStatus(isOptional: Bool) {
@@ -115,6 +135,82 @@ private extension FormAddressPickerItem {
         formattedValue = value?.formatted(using: localizationParameters)
     }
 }
+
+// MARK: - Picker Presentation
+
+extension FormAddressPickerItem {
+    
+    private func didSelectAddressPicker(
+        for addressType: FormAddressPickerItem.AddressType,
+        with prefillAddress: PostalAddress?,
+        initialCountry: String,
+        supportedCountryCodes: [String]?,
+        lookupProvider: AddressLookupProvider?,
+        completion: @escaping (PostalAddress?) -> Void
+    ) {
+        let securedViewController = SecuredViewController(
+            child: addressPickerViewController(
+                for: addressType,
+                with: prefillAddress,
+                initialCountry: initialCountry,
+                supportedCountryCodes: supportedCountryCodes,
+                lookupProvider: lookupProvider,
+                completionHandler: { [weak self] address in
+                    guard let self else { return }
+                    completion(address)
+                    presenter?.dismissViewController(animated: true)
+                }
+            ),
+            style: style
+        )
+        
+        presenter?.presentViewController(securedViewController, animated: true)
+    }
+    
+    private func addressPickerViewController(
+        for addressType: FormAddressPickerItem.AddressType,
+        with prefillAddress: PostalAddress?,
+        initialCountry: String,
+        supportedCountryCodes: [String]?,
+        lookupProvider: AddressLookupProvider?,
+        completionHandler: @escaping (PostalAddress?) -> Void
+    ) -> UIViewController {
+        
+        guard let lookupProvider else {
+        
+            let viewModel = AddressInputFormViewController.ViewModel(
+                for: addressType,
+                style: .init(), // style, // TODO: Provide correct style!
+                localizationParameters: localizationParameters,
+                initialCountry: initialCountry,
+                prefillAddress: prefillAddress,
+                supportedCountryCodes: supportedCountryCodes,
+                addressViewModelBuilder: addressViewModelBuilder,
+                handleShowSearch: nil,
+                completionHandler: completionHandler
+            )
+            
+            return UINavigationController(
+                rootViewController: AddressInputFormViewController(viewModel: viewModel)
+            )
+        }
+
+        let viewModel = AddressLookupViewController.ViewModel(
+            for: addressType,
+            style: .init(), // configuration.style, // TODO: Provide correct style!
+            localizationParameters: localizationParameters,
+            supportedCountryCodes: supportedCountryCodes,
+            initialCountry: initialCountry,
+            prefillAddress: prefillAddress,
+            lookupProvider: lookupProvider,
+            completionHandler: completionHandler
+        )
+
+        return AddressLookupViewController(viewModel: viewModel)
+    }
+}
+
+// MARK: - AddressType
 
 public extension FormAddressPickerItem.AddressType {
     

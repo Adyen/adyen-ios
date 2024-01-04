@@ -90,32 +90,8 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         case .phone:
             phoneItemInjector?.inject(into: formViewController)
         case .address:
-            let initialCountry = configuration.shopperInformation?.billingAddress?.country ?? defaultCountryCode
-            addressItemInjector?.item.selectionHandler = { [weak self] in
-                self?.didSelectAddressPicker(
-                    for: .billing,
-                    with: self?.addressItemInjector?.item.value,
-                    initialCountry: initialCountry,
-                    lookupProvider: nil,
-                    completion: { postalAddress in
-                        self?.addressItemInjector?.item.value = postalAddress
-                    }
-                )
-            }
             addressItemInjector?.inject(into: formViewController)
         case .deliveryAddress:
-            let initialCountry = configuration.shopperInformation?.deliveryAddress?.country ?? defaultCountryCode
-            deliveryAddressItemInjector?.item.selectionHandler = { [weak self] in
-                self?.didSelectAddressPicker(
-                    for: .delivery,
-                    with: self?.deliveryAddressItemInjector?.item.value,
-                    initialCountry: initialCountry,
-                    lookupProvider: nil,
-                    completion: { postalAddress in
-                        self?.deliveryAddressItemInjector?.item.value = postalAddress
-                    }
-                )
-            }
             deliveryAddressItemInjector?.inject(into: formViewController)
         case let .custom(injector):
             injector.inject(into: formViewController)
@@ -275,6 +251,7 @@ private extension AbstractPersonalInformationComponent {
         for addressType: FormAddressPickerItem.AddressType,
         with prefillAddress: PostalAddress?,
         initialCountry: String,
+        supportedCountryCodes: [String]?,
         lookupProvider: AddressLookupProvider?,
         completion: @escaping (PostalAddress?) -> Void
     ) {
@@ -283,6 +260,7 @@ private extension AbstractPersonalInformationComponent {
                 for: addressType,
                 with: prefillAddress,
                 initialCountry: initialCountry,
+                supportedCountryCodes: supportedCountryCodes,
                 lookupProvider: lookupProvider,
                 completion: completion
             ),
@@ -296,11 +274,10 @@ private extension AbstractPersonalInformationComponent {
         for addressType: FormAddressPickerItem.AddressType,
         with prefillAddress: PostalAddress?,
         initialCountry: String,
+        supportedCountryCodes: [String]?,
         lookupProvider: AddressLookupProvider?,
         completion: @escaping (PostalAddress?) -> Void
     ) -> UIViewController {
-        
-//        let initialCountry = configuration.shopperInformation?.billingAddress?.country ?? defaultCountryCode
         
         let completionHandler: (PostalAddress?) -> Void = { [weak self] address in
             guard let self else { return }
@@ -308,33 +285,37 @@ private extension AbstractPersonalInformationComponent {
             self.viewController.dismiss(animated: true)
         }
         
-//        guard let lookupProvider else {
+        guard let lookupProvider else {
         
-        let viewModel = AddressInputFormViewController.ViewModel(
+            let viewModel = AddressInputFormViewController.ViewModel(
+                for: addressType,
+                style: configuration.style,
+                localizationParameters: configuration.localizationParameters,
+                initialCountry: initialCountry,
+                prefillAddress: prefillAddress,
+                supportedCountryCodes: supportedCountryCodes,
+                addressViewModelBuilder: addressViewModelBuilder(),
+                handleShowSearch: nil,
+                completionHandler: completionHandler
+            )
+                
+            let addressInputForm = AddressInputFormViewController(viewModel: viewModel)
+            
+            return UINavigationController(rootViewController: addressInputForm)
+        }
+
+        let viewModel = AddressLookupViewController.ViewModel(
             for: addressType,
-            style: configuration.style,
+            style: .init(), // configuration.style, // TODO: Provide correct style!
             localizationParameters: configuration.localizationParameters,
+            supportedCountryCodes: supportedCountryCodes,
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,
-            supportedCountryCodes: nil,
-            addressViewModelBuilder: addressViewModelBuilder(),
-            handleShowSearch: nil,
+            lookupProvider: lookupProvider,
             completionHandler: completionHandler
         )
-            
-        let addressInputForm = AddressInputFormViewController(viewModel: viewModel)
-        
-        return UINavigationController(rootViewController: addressInputForm)
-//        }
-//
-//        let viewModel = configuration.addressLookupViewModel(
-//            with: initialCountry,
-//            prefillAddress: prefillAddress,
-//            lookupProvider: lookupProvider,
-//            completionHandler: completionHandler
-//        )
-//
-//        return AddressLookupViewController(viewModel: viewModel)
+
+        return AddressLookupViewController(viewModel: viewModel)
     }
 }
 

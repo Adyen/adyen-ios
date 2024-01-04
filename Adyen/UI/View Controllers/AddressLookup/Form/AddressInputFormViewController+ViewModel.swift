@@ -48,7 +48,7 @@ extension AddressInputFormViewController {
             prefillAddress: PostalAddress?,
             supportedCountryCodes: [String]?,
             addressViewModelBuilder: AddressViewModelBuilder = DefaultAddressViewModelBuilder(),
-            handleShowSearch: ShowSearchHandler?,
+            handleShowSearch: ShowSearchHandler? = nil,
             completionHandler: @escaping (PostalAddress?) -> Void
         ) {
             self.addressType = addressType

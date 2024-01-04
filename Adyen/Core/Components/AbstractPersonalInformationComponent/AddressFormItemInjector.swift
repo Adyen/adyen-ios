@@ -30,7 +30,9 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
             initialCountry: initialCountry,
             prefillAddress: value,
             style: style,
-            addressViewModelBuilder: addressViewModelBuilder
+            addressViewModelBuilder: addressViewModelBuilder,
+            presenter: self,
+            lookupProvider: nil
         )
     }()
     
@@ -56,4 +58,15 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
         formViewController.append(item)
     }
     
+}
+
+extension AddressFormItemInjector: ViewControllerPresenter {
+    
+    func presentViewController(_ viewController: UIViewController, animated: Bool) {
+        presenter?.presentViewController(viewController, animated: animated)
+    }
+    
+    func dismissViewController(animated: Bool) {
+        presenter?.dismissViewController(animated: animated)
+    }
 }

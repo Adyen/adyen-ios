@@ -46,7 +46,9 @@ internal class CardViewController: FormViewController {
             scope: scope,
             initialCountryCode: initialCountryCode,
             localizationParameters: localizationParameters,
-            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+            addressViewModelBuilder: DefaultAddressViewModelBuilder(),
+            presenter: self,
+            addressMode: configuration.billingAddress.mode
         )
     }()
 
@@ -133,12 +135,12 @@ internal class CardViewController: FormViewController {
         
         switch configuration.billingAddress.mode {
         case .lookup, .full:
-            guard let lookupBillingAddress = items.billingAddressPickerItem.value else { return nil }
+            guard let lookupBillingAddress = items.addressItem?.value else { return nil }
             address = lookupBillingAddress
             requiredFields = items.billingAddressPickerItem.addressViewModel.requiredFields
             
         case .postalCode:
-            address = PostalAddress(postalCode: items.postalCodeItem.value)
+            address = PostalAddress(postalCode: items.addressItem.value)
             requiredFields = [.postalCode]
             
         case .none:
@@ -288,19 +290,10 @@ extension CardViewController {
     private func billingAddressItem(for billingAddressMode: CardComponent.AddressFormType) -> FormItem? {
         switch billingAddressMode {
         case let .lookup(provider):
-            let item = items.billingAddressPickerItem
-            item.selectionHandler = { [weak cardDelegate, weak provider] in
-                guard let provider else { return }
-                cardDelegate?.didSelectAddressPicker(lookupProvider: provider)
-            }
-            return item
+            return items.billingAddressPickerItem
             
         case .full:
-            let item = items.billingAddressPickerItem
-            item.selectionHandler = { [weak cardDelegate] in
-                cardDelegate?.didSelectAddressPicker(lookupProvider: nil)
-            }
-            return item
+            return items.billingAddressPickerItem
             
         case .postalCode:
             return items.postalCodeItem
