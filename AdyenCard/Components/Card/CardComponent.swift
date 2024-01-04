@@ -290,6 +290,7 @@ private extension CardComponent.Configuration {
     ) -> AddressLookupViewController.ViewModel {
         
         .init(
+            for: .billing,
             localizationParameters: localizationParameters,
             supportedCountryCodes: billingAddress.countryCodes,
             initialCountry: initialCountry,
@@ -306,6 +307,7 @@ private extension CardComponent.Configuration {
     ) -> AddressInputFormViewController.ViewModel {
         
         .init(
+            for: .billing,
             style: style,
             localizationParameters: localizationParameters,
             initialCountry: initialCountry,

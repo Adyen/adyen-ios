@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -76,8 +76,10 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
     }
 
-    private func add(_ field: PersonalInformation,
-                     into formViewController: FormViewController) {
+    private func add(
+        _ field: PersonalInformation,
+        into formViewController: FormViewController
+    ) {
         switch field {
         case .email:
             emailItemInjector?.inject(into: formViewController)
@@ -88,8 +90,32 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         case .phone:
             phoneItemInjector?.inject(into: formViewController)
         case .address:
+            let initialCountry = configuration.shopperInformation?.billingAddress?.country ?? defaultCountryCode
+            addressItemInjector?.item.selectionHandler = { [weak self] in
+                self?.didSelectAddressPicker(
+                    for: .billing,
+                    with: self?.addressItemInjector?.item.value,
+                    initialCountry: initialCountry,
+                    lookupProvider: nil,
+                    completion: { postalAddress in
+                        self?.addressItemInjector?.item.value = postalAddress
+                    }
+                )
+            }
             addressItemInjector?.inject(into: formViewController)
         case .deliveryAddress:
+            let initialCountry = configuration.shopperInformation?.deliveryAddress?.country ?? defaultCountryCode
+            deliveryAddressItemInjector?.item.selectionHandler = { [weak self] in
+                self?.didSelectAddressPicker(
+                    for: .delivery,
+                    with: self?.deliveryAddressItemInjector?.item.value,
+                    initialCountry: initialCountry,
+                    lookupProvider: nil,
+                    completion: { postalAddress in
+                        self?.deliveryAddressItemInjector?.item.value = postalAddress
+                    }
+                )
+            }
             deliveryAddressItemInjector?.inject(into: formViewController)
         case let .custom(injector):
             injector.inject(into: formViewController)
@@ -148,11 +174,12 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
                                        identifier: identifier,
                                        style: configuration.style.addressStyle,
                                        presenter: self,
-                                       addressViewModelBuilder: addressViewModelBuilder())
+                                       addressViewModelBuilder: addressViewModelBuilder(),
+                                       addressType: .billing)
     }()
     
     @_spi(AdyenInternal)
-    public var addressItem: FormAddressItem? { addressItemInjector?.item }
+    public var addressItem: FormAddressPickerItem? { addressItemInjector?.item }
     
     internal lazy var deliveryAddressItemInjector: AddressFormItemInjector? = {
         guard fields.contains(.deliveryAddress) else { return nil }
@@ -163,11 +190,12 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
                                        identifier: identifier,
                                        style: configuration.style.addressStyle,
                                        presenter: self,
-                                       addressViewModelBuilder: addressViewModelBuilder())
+                                       addressViewModelBuilder: addressViewModelBuilder(),
+                                       addressType: .delivery)
     }()
     
     @_spi(AdyenInternal)
-    public var deliveryAddressItem: FormAddressItem? { deliveryAddressItemInjector?.item }
+    public var deliveryAddressItem: FormAddressPickerItem? { deliveryAddressItemInjector?.item }
 
     internal lazy var phoneItemInjector: PhoneFormItemInjector? = {
         guard fields.contains(.phone) else { return nil }
@@ -238,6 +266,75 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         shopperInformation.phoneNumber.map { phoneItem?.value = $0.value }
         shopperInformation.billingAddress.map { addressItem?.value = $0 }
         shopperInformation.deliveryAddress.map { deliveryAddressItem?.value = $0 }
+    }
+}
+
+private extension AbstractPersonalInformationComponent {
+    
+    private func didSelectAddressPicker(
+        for addressType: FormAddressPickerItem.AddressType,
+        with prefillAddress: PostalAddress?,
+        initialCountry: String,
+        lookupProvider: AddressLookupProvider?,
+        completion: @escaping (PostalAddress?) -> Void
+    ) {
+        let securedViewController = SecuredViewController(
+            child: addressPickerViewController(
+                for: addressType,
+                with: prefillAddress,
+                initialCountry: initialCountry,
+                lookupProvider: lookupProvider,
+                completion: completion
+            ),
+            style: configuration.style
+        )
+        
+        viewController.present(securedViewController, animated: true)
+    }
+    
+    private func addressPickerViewController(
+        for addressType: FormAddressPickerItem.AddressType,
+        with prefillAddress: PostalAddress?,
+        initialCountry: String,
+        lookupProvider: AddressLookupProvider?,
+        completion: @escaping (PostalAddress?) -> Void
+    ) -> UIViewController {
+        
+//        let initialCountry = configuration.shopperInformation?.billingAddress?.country ?? defaultCountryCode
+        
+        let completionHandler: (PostalAddress?) -> Void = { [weak self] address in
+            guard let self else { return }
+            completion(address)
+            self.viewController.dismiss(animated: true)
+        }
+        
+//        guard let lookupProvider else {
+        
+        let viewModel = AddressInputFormViewController.ViewModel(
+            for: addressType,
+            style: configuration.style,
+            localizationParameters: configuration.localizationParameters,
+            initialCountry: initialCountry,
+            prefillAddress: prefillAddress,
+            supportedCountryCodes: nil,
+            addressViewModelBuilder: addressViewModelBuilder(),
+            handleShowSearch: nil,
+            completionHandler: completionHandler
+        )
+            
+        let addressInputForm = AddressInputFormViewController(viewModel: viewModel)
+        
+        return UINavigationController(rootViewController: addressInputForm)
+//        }
+//
+//        let viewModel = configuration.addressLookupViewModel(
+//            with: initialCountry,
+//            prefillAddress: prefillAddress,
+//            lookupProvider: lookupProvider,
+//            completionHandler: completionHandler
+//        )
+//
+//        return AddressLookupViewController(viewModel: viewModel)
     }
 }
 

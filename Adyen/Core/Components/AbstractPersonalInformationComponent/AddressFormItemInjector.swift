@@ -21,32 +21,35 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
     internal let addressViewModelBuilder: AddressViewModelBuilder
     
     private weak var presenter: ViewControllerPresenter?
+    
+    private let addressType: FormAddressPickerItem.AddressType // TODO: Maybe better move it somewhere reusable
 
-    internal lazy var item: FormAddressItem = {
-        let addressItem = FormAddressItem(initialCountry: initialCountry,
-                                          configuration: .init(
-                                              style: style,
-                                              localizationParameters: localizationParameters
-                                          ),
-                                          identifier: identifier,
-                                          presenter: presenter,
-                                          addressViewModelBuilder: addressViewModelBuilder)
-        value.map { addressItem.value = $0 }
-        return addressItem
+    internal lazy var item: FormAddressPickerItem = {
+        FormAddressPickerItem(
+            for: addressType,
+            initialCountry: initialCountry,
+            prefillAddress: value,
+            style: style,
+            addressViewModelBuilder: addressViewModelBuilder
+        )
     }()
     
-    internal init(value: PostalAddress?,
-                  initialCountry: String,
-                  identifier: String,
-                  style: AddressStyle,
-                  presenter: ViewControllerPresenter?,
-                  addressViewModelBuilder: AddressViewModelBuilder) {
+    internal init(
+        value: PostalAddress?,
+        initialCountry: String,
+        identifier: String,
+        style: AddressStyle,
+        presenter: ViewControllerPresenter?,
+        addressViewModelBuilder: AddressViewModelBuilder,
+        addressType: FormAddressPickerItem.AddressType
+    ) {
         self.value = value
         self.initialCountry = initialCountry
         self.identifier = identifier
         self.style = style
         self.presenter = presenter
         self.addressViewModelBuilder = addressViewModelBuilder
+        self.addressType = addressType
     }
 
     internal func inject(into formViewController: FormViewController) {

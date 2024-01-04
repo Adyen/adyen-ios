@@ -54,6 +54,7 @@ extension CardViewController {
             let prefillAddress = shopperInformation?.billingAddress
             
             let item = FormAddressPickerItem(
+                for: .delivery,
                 initialCountry: initialCountry,
                 prefillAddress: prefillAddress,
                 style: formStyle.addressStyle,

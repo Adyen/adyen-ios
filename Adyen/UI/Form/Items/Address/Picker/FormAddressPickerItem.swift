@@ -8,7 +8,14 @@ import Foundation
 
 /// An address form item that allows picking an address on a separate screen.
 @_spi(AdyenInternal)
-public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?> {
+public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?>, Hidable {
+    
+    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    
+    public enum AddressType {
+        case billing
+        case delivery
+    }
     
     private var initialCountry: String
     private var context: AddressViewModelBuilderContext
@@ -32,6 +39,7 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
 
     /// Initializes the address lookup item.
     /// - Parameters:
+    ///   - addressType: The type of address to pick
     ///   - initialCountry: The items displayed side-by-side. Must be two.
     ///   - prefillAddress: The provided prefill address
     ///   - style: The `AddressStyle` UI style.
@@ -39,6 +47,7 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
     ///   - identifier: The item identifier
     ///   - addressViewModelBuilder: The builder to build the Address ViewModel
     public init(
+        for addressType: AddressType,
         initialCountry: String,
         prefillAddress: PostalAddress?,
         style: AddressStyle,
@@ -54,11 +63,11 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
         super.init(
             value: prefillAddress,
             style: style.textField,
-            placeholder: localizedString(.billingAddressPlaceholder, localizationParameters)
+            placeholder: addressType.placeholder(with: localizationParameters)
         )
         
         self.identifier = identifier
-        self.title = localizedString(.billingAddressSectionTitle, localizationParameters)
+        self.title = addressType.title(with: localizationParameters)
         
         updateValidationFailureMessage()
         updateFormattedValue()
@@ -104,5 +113,22 @@ private extension FormAddressPickerItem {
     
     func updateFormattedValue() {
         formattedValue = value?.formatted(using: localizationParameters)
+    }
+}
+
+public extension FormAddressPickerItem.AddressType {
+    
+    func placeholder(with localizationParameters: LocalizationParameters?) -> String {
+        switch self {
+        case .billing: return localizedString(.billingAddressPlaceholder, localizationParameters)
+        case .delivery: return "DELIVERY" // localizedString(.deliveryAddressPlaceholder, localizationParameters) // TODO: Get translations
+        }
+    }
+    
+    func title(with localizationParameters: LocalizationParameters?) -> String {
+        switch self {
+        case .billing: localizedString(.billingAddressSectionTitle, localizationParameters)
+        case .delivery: localizedString(.deliveryAddressSectionTitle, localizationParameters)
+        }
     }
 }

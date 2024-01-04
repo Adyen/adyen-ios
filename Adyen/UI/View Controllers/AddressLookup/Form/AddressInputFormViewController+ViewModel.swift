@@ -20,6 +20,11 @@ extension AddressInputFormViewController {
         internal let addressViewModelBuilder: AddressViewModelBuilder
         internal let localizationParameters: LocalizationParameters?
         
+        internal var title: String {
+            addressType.title(with: localizationParameters)
+        }
+        
+        private let addressType: FormAddressPickerItem.AddressType
         private let showSearchHandler: ShowSearchHandler?
         private let completionHandler: (PostalAddress?) -> Void
         
@@ -36,6 +41,7 @@ extension AddressInputFormViewController {
         ///   - completionHandler: A closure that takes an optional address.
         ///    It's the presenters responsibility to dismiss the viewController.
         public init(
+            for addressType: FormAddressPickerItem.AddressType,
             style: FormComponentStyle,
             localizationParameters: LocalizationParameters?,
             initialCountry: String,
@@ -45,6 +51,7 @@ extension AddressInputFormViewController {
             handleShowSearch: ShowSearchHandler?,
             completionHandler: @escaping (PostalAddress?) -> Void
         ) {
+            self.addressType = addressType
             self.style = style
             self.initialCountry = initialCountry
             self.prefillAddress = prefillAddress
