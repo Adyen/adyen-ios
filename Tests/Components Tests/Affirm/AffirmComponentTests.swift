@@ -133,8 +133,6 @@ class AffirmComponentTests: XCTestCase {
             didSubmitExpectation.fulfill()
         }
         
-        wait(for: .seconds(1))
-        
         let view: UIView = sut.viewController.view
         
         let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.firstName))
@@ -158,6 +156,13 @@ class AffirmComponentTests: XCTestCase {
 
         let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddress))
         fill(addressView: deliveryAddressView, with: expectedDeliveryAddress)
+        
+        wait(until: firstNameView, at: \.isValid, is: true)
+        wait(until: lastNameView, at: \.isValid, is: true)
+        wait(until: phoneNumberView, at: \.isValid, is: true)
+        wait(until: emailView, at: \.isValid, is: true)
+        wait(until: billingAddressView, at: \.isValid, is: true)
+        wait(until: deliveryAddressView, at: \.isValid, is: true)
         
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.payButton))
         submitButton.sendActions(for: .touchUpInside)

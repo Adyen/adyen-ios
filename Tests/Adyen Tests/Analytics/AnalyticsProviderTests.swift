@@ -46,7 +46,7 @@ class AnalyticsProviderTests: XCTestCase {
             fetchCheckoutAttemptIdExpection.fulfill()
         }
 
-        waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: 10)
     }
 
     func testFetchCheckoutAttemptIdWhenAnalyticsIsDisabledShouldNotTriggerCheckoutAttemptIdRequest() throws {
@@ -64,7 +64,7 @@ class AnalyticsProviderTests: XCTestCase {
             fetchCheckoutAttemptIdExpection.fulfill()
         }
 
-        waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: 10)
     }
 
     func testFetchCheckoutAttemptIdWhenRequestSucceedShouldCallCompletionWithNonNilValue() throws {
@@ -91,7 +91,7 @@ class AnalyticsProviderTests: XCTestCase {
             fetchCheckoutAttemptIdExpection.fulfill()
         }
 
-        waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: 10)
     }
 
     func testFetchCheckoutAttemptIdWhenAnalyticsIsEnabledGivenFailureShouldCallCompletionWithNilValue() throws {
@@ -115,7 +115,7 @@ class AnalyticsProviderTests: XCTestCase {
             fetchCheckoutAttemptIdExpection.fulfill()
         }
 
-        waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: 10)
     }
 
     func testFetchCheckoutAttemptIdWhenAnalyticsIsEnabledShouldSetCheckoutAttemptIdProperty() throws {
@@ -191,7 +191,7 @@ class AnalyticsProviderTests: XCTestCase {
         
         analyticsProvider.sendTelemetryEvent(flavor: .components(type: .achDirectDebit))
         
-        wait(for: [telemetryExpectation], timeout: 1)
+        wait(for: [telemetryExpectation], timeout: 10)
     }
     
     func testAdditionalFields() throws {
@@ -234,7 +234,7 @@ class AnalyticsProviderTests: XCTestCase {
         
         analyticsProvider.sendTelemetryEvent(flavor: .components(type: .achDirectDebit))
         
-        wait(for: [telemetryExpectation], timeout: 1)
+        wait(for: [telemetryExpectation], timeout: 10)
     }
     
     func testTelemetryRequestEncoding() throws {

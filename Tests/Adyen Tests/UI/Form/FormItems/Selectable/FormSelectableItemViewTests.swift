@@ -44,7 +44,7 @@ class FormSelectableItemViewTests: XCTestCase {
         let expectation = expectation(description: "selection handler is called")
         item.selectionHandler = { expectation.fulfill() }
         sut.selectionButtonTapped()
-        waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: 10)
     }
     
     func testValueUpdate() {

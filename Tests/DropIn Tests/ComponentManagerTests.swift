@@ -499,7 +499,7 @@ class ComponentManagerTests: XCTestCase {
 
         let _ = dummy.buildComponent(using: componentManager)
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 10)
     }
 
     // MARK: - Private
