@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -99,7 +99,31 @@ extension UIColor {
 
         public static let defaultBlue = color(hex: 0x007AFF)
 
-        public static let defaultRed = color(hex: 0xFF3B30)
+        public static var primaryAction: UIColor {
+            guard #available(iOS 13, *) else { return UIColor.Adyen.bentoBlack }
+                
+            return .init {
+                switch $0.userInterfaceStyle {
+                case .dark: return UIColor.white
+                default: return UIColor.Adyen.bentoBlack
+                }
+            }
+        }
+        
+        public static var primaryActionTitle: UIColor {
+            guard #available(iOS 13, *) else { return UIColor.white }
+                
+            return .init {
+                switch $0.userInterfaceStyle {
+                case .dark: return UIColor.Adyen.bentoBlack
+                default: return UIColor.white
+                }
+            }
+        }
+        
+        public static let bentoBlack = color(hex: 0x00112C)
+        
+        public static let defaultRed = color(hex: 0xE22D2D) // color(hex: 0xFF3B30)
 
         public static let errorRed = color(hex: 0xD10244)
 

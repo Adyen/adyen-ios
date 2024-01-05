@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -20,7 +20,7 @@ public struct DocumentComponentStyle {
     /// The done button style.
     public var doneButton = ButtonStyle(
         title: TextStyle(font: .preferredFont(forTextStyle: .headline),
-                         color: UIColor.Adyen.defaultBlue),
+                         color: UIColor.Adyen.primaryAction),
         cornerRounding: .none,
         background: UIColor.clear
     )
@@ -28,7 +28,7 @@ public struct DocumentComponentStyle {
     /// The main button style.
     public var mainButton = ButtonStyle(
         title: TextStyle(font: .preferredFont(forTextStyle: .headline),
-                         color: UIColor.Adyen.defaultBlue),
+                         color: UIColor.Adyen.primaryAction),
         cornerRounding: .none,
         background: .clear
     )

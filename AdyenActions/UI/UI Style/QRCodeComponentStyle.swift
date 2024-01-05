@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,14 +14,14 @@ public struct QRCodeComponentStyle: ViewStyle {
     public var copyCodeButton = ButtonStyle(
         title: TextStyle(font: .preferredFont(forTextStyle: .headline), color: .white),
         cornerRadius: 8,
-        background: UIColor.Adyen.defaultBlue
+        background: UIColor.Adyen.primaryAction
     )
 
     /// The save as image button style.
     public var saveAsImageButton = ButtonStyle(
         title: TextStyle(font: .preferredFont(forTextStyle: .headline), color: .white),
         cornerRadius: 8,
-        background: UIColor.Adyen.defaultBlue
+        background: UIColor.Adyen.primaryAction
     )
     
     /// The instruction label style.
@@ -32,7 +32,7 @@ public struct QRCodeComponentStyle: ViewStyle {
 
     /// The progress view style.
     public var progressView = ProgressViewStyle(
-        progressTintColor: UIColor.Adyen.defaultBlue,
+        progressTintColor: UIColor.Adyen.primaryAction,
         trackTintColor: UIColor.Adyen.lightGray
     )
     

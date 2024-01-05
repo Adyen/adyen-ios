@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -44,13 +44,13 @@ public struct VoucherComponentStyle: ViewStyle {
         title: TextStyle(font: .preferredFont(forTextStyle: .headline),
                          color: .white),
         cornerRadius: 8,
-        background: UIColor.Adyen.defaultBlue
+        background: UIColor.Adyen.primaryAction
     )
 
     /// The secondary button style.
     public var secondaryButton = ButtonStyle(
         title: TextStyle(font: .preferredFont(forTextStyle: .headline),
-                         color: UIColor.Adyen.defaultBlue),
+                         color: UIColor.Adyen.primaryAction),
         cornerRadius: 8,
         background: .clear
     )

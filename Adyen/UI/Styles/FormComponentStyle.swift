@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -40,12 +40,12 @@ public struct FormComponentStyle: TintableStyle {
     
     /// The main button style.
     public var mainButtonItem: FormButtonItemStyle = .main(font: .preferredFont(forTextStyle: .headline),
-                                                           textColor: .white,
-                                                           mainColor: UIColor.Adyen.defaultBlue)
+                                                           textColor: UIColor.Adyen.primaryActionTitle, // TODO: This potentially breaks existing customizations
+                                                           mainColor: UIColor.Adyen.primaryAction)
     
     /// The secondary button style.
     public var secondaryButtonItem: FormButtonItemStyle = .secondary(font: .preferredFont(forTextStyle: .body),
-                                                                     textColor: UIColor.Adyen.defaultBlue)
+                                                                     textColor: UIColor.Adyen.primaryAction)
 
     /// The  segmented control  style.
     public var segmentedControlStyle: SegmentedControlStyle = .init(
@@ -55,8 +55,13 @@ public struct FormComponentStyle: TintableStyle {
 
     /// The address style generated based on other field's value.
     public var addressStyle: AddressStyle {
-        .init(title: sectionHeader,
-              textField: textField)
+        var addressStyle = AddressStyle(
+            title: sectionHeader,
+            textField: textField
+        )
+        
+        addressStyle.tintColor = textField.tintColor
+        return addressStyle
     }
 
     /// The error message indicator style.

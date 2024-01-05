@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -25,7 +25,7 @@ public struct RedirectComponentStyle {
     /// - Parameter preferredControlTintColor: The preferred color to tint the control buttons on the navigation bar and toolbar.
     /// - Parameter modalPresentationStyle: The modal presentation style of the redirect component.
     public init(preferredBarTintColor: UIColor? = nil,
-                preferredControlTintColor: UIColor = .systemBlue,
+                preferredControlTintColor: UIColor = .Adyen.primaryAction,
                 modalPresentationStyle: UIModalPresentationStyle = .formSheet) {
         self.preferredBarTintColor = preferredBarTintColor
         self.preferredControlTintColor = preferredControlTintColor

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -60,7 +60,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     
     internal func didChangeEditingStatus() {
         guard showsSeparator else { return }
-        isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
+        isEditing ? highlightSeparatorView(color: item.style.tintColor ?? tintColor) : unhighlightSeparatorView()
     }
     
     // MARK: - Separator View

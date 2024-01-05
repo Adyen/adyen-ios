@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -79,7 +79,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         
         guard forced else {
             hideAlertLabel(true)
-            isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
+            isEditing ? highlightSeparatorView(color: item.style.validColor) : unhighlightSeparatorView()
             titleLabel.textColor = defaultTitleColor
             accessibilityLabelView?.accessibilityLabel = item.title
             return
@@ -87,8 +87,8 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         
         if item.isValid() {
             hideAlertLabel(true)
-            highlightSeparatorView(color: tintColor)
-            titleLabel.textColor = tintColor
+            highlightSeparatorView(color: item.style.validColor)
+            titleLabel.textColor = item.style.validColor
             accessibilityLabelView?.accessibilityLabel = item.title
         } else {
             hideAlertLabel(false)
