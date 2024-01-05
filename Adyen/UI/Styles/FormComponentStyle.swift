@@ -131,7 +131,9 @@ public struct FormComponentStyle: TintableStyle {
     }
     
     /// Initializes the form style with the default style.
-    public init() { /* public */ }
+    public init() {
+        setTintColor(.Adyen.primaryAction)
+    }
 
     private mutating func setTintColor(_ value: UIColor?) {
         guard let tintColor = value else { return }

@@ -23,7 +23,7 @@ public extension DropInComponent {
         public var listComponent = ListComponentStyle()
         
         /// Indicates any form component UI style.
-        public var formComponent = FormComponentStyle()
+        public var formComponent = FormComponentStyle(tintColor: .Adyen.primaryAction)
         
         /// Indicates the UI configuration of Action Components
         public var actionComponent = ActionComponentStyle()
@@ -42,9 +42,7 @@ public extension DropInComponent {
         }
         
         /// Initializes the instance of DropIn style with the default values.
-        public init() {
-            formComponent = FormComponentStyle(tintColor: .Adyen.primaryAction)
-        }
+        public init() {}
         
         /// Initializes the instance of DropIn style with the default values.
         public init(tintColor: UIColor) {
