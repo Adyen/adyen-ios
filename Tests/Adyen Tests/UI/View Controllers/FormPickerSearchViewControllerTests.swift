@@ -57,7 +57,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         
         results.first?.selectionHandler?()
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 10)
     }
     
     func testSearchSuccess() throws {

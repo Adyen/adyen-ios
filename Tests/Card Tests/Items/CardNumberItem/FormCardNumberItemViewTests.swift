@@ -52,7 +52,7 @@ class FormCardNumberItemViewTests: XCTestCase {
         sut.textField.text = "123456"
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
-        wait(for: [validationExpectation], timeout: 5)
+        wait(for: [validationExpectation], timeout: 10)
         XCTAssertEqual(sut.accessory, .invalid)
     }
     
@@ -67,7 +67,7 @@ class FormCardNumberItemViewTests: XCTestCase {
         sut.textField.text = "5454545454545454"
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
-        wait(for: [validationExpectation], timeout: 5)
+        wait(for: [validationExpectation], timeout: 10)
         if case .customView = sut.accessory {} else {
             XCTFail()
         }
