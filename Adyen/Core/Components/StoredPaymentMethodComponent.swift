@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -48,8 +48,22 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
             context: context.apiContext
         )
         sendTelemetryEvent()
-
+        
         let localizationParameters = configuration.localizationParameters
+
+        let view = UIView()
+        view.backgroundColor = .red
+        let storedPaymentMethodConfirmation = ADYViewController(
+            view: view,
+            title: localizedString(
+                .dropInStoredTitle,
+                localizationParameters,
+                storedPaymentMethod.name
+            )
+        )
+        
+        return storedPaymentMethodConfirmation
+        
         let displayInformation = storedPaymentMethod.displayInformation(using: localizationParameters)
         let alertController = UIAlertController(title: localizedString(.dropInStoredTitle,
                                                                        localizationParameters,

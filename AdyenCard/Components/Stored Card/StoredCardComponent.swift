@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -32,8 +32,78 @@ internal final class StoredCardComponent: PaymentComponent, PaymentAware, Presen
         self.context = context
     }
     
-    internal var viewController: UIViewController {
+    internal lazy var viewController: UIViewController = {
+        
+        let localizationParameters = localizationParameters
+
+        let topSpace = UIView()
+        topSpace.frame.size.height = 80
+        
+        let title = UILabel()
+        title.textAlignment = .center
+        title.font = .boldSystemFont(ofSize: 32)
+        title.text = localizedString(
+            .dropInStoredTitle,
+            localizationParameters,
+            storedCardPaymentMethod.name
+        )
+        
+        let inputField = UITextField()
+        inputField.placeholder = "Enter your security code"
+        
+        let submitButton = UIButton(style: .init(title: .init(font: .boldSystemFont(ofSize: 18), color: .white)))
+        submitButton.setTitle("Submit", for: .normal)
+        submitButton.addTarget(self, action: #selector(submitTapped), for: .touchUpInside)
+        
+        let bottomSpace = UIView()
+        bottomSpace.frame.size.height = 200
+        
+        let view = UIStackView(arrangedSubviews: [
+            topSpace,
+            title,
+            inputField,
+            submitButton,
+            bottomSpace
+        ])
+        view.axis = .vertical
+        view.backgroundColor = .white
+        let storedPaymentMethodConfirmation = ADYViewController(
+            view: view
+        )
+        
+        let navigationController = UINavigationController(rootViewController: storedPaymentMethodConfirmation)
+        
+        if #available(iOS 13.0, *) {
+            navigationController.isModalInPresentation = true
+            storedPaymentMethodConfirmation.navigationItem.rightBarButtonItem = .init(
+                barButtonSystemItem: .close,
+                target: self,
+                action: #selector(cancelTapped)
+            )
+        }
+        
+        DispatchQueue.main.async {
+            inputField.becomeFirstResponder()
+        }
+        
+        return navigationController
+        
         storedCardAlertManager.alertController
+    }()
+    
+    @objc
+    func cancelTapped() {
+        self.viewController.dismiss(animated: true)
+        self.delegate?.didFail(with: ComponentError.cancelled, from: self)
+    }
+    
+    @objc
+    func submitTapped() {
+        self.viewController.dismiss(animated: true)
+        // TODO: Implement correctly
+        self.submit(data: PaymentComponentData(paymentMethodDetails: StoredPaymentDetails(paymentMethod: storedCardPaymentMethod),
+                                               amount: self.payment?.amount,
+                                               order: self.order))
     }
     
     internal lazy var storedCardAlertManager: StoredCardAlertManager = {
