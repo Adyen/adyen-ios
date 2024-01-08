@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,5 +13,11 @@ public struct AddressLookupStyle: ViewStyle {
     public var search: AddressLookupSearchStyle = .init()
     public var form: FormComponentStyle = .init()
     
-    public init() {}
+    public init(
+        search: AddressLookupSearchStyle = .init(),
+        form: FormComponentStyle = .init()
+    ) {
+        self.search = search
+        self.form = form
+    }
 }

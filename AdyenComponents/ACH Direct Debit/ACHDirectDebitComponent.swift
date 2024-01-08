@@ -228,7 +228,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
             initialCountry: initialCountry,
             supportedCountryCodes: configuration.billingAddressCountryCodes,
             prefillAddress: prefillAddress,
-            style: configuration.style.addressStyle,
+            style: configuration.style,
             localizationParameters: configuration.localizationParameters,
             identifier: identifier,
             presenter: self

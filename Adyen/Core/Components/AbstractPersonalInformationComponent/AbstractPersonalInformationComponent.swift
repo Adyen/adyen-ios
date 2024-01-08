@@ -148,7 +148,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return AddressFormItemInjector(value: configuration.shopperInformation?.billingAddress,
                                        initialCountry: initialCountry,
                                        identifier: identifier,
-                                       style: configuration.style.addressStyle,
+                                       style: configuration.style,
                                        presenter: self,
                                        addressViewModelBuilder: addressViewModelBuilder(),
                                        addressType: .billing)
@@ -164,7 +164,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return AddressFormItemInjector(value: configuration.shopperInformation?.deliveryAddress,
                                        initialCountry: initialCountry,
                                        identifier: identifier,
-                                       style: configuration.style.addressStyle,
+                                       style: configuration.style,
                                        presenter: self,
                                        addressViewModelBuilder: addressViewModelBuilder(),
                                        addressType: .delivery)
@@ -242,80 +242,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         shopperInformation.phoneNumber.map { phoneItem?.value = $0.value }
         shopperInformation.billingAddress.map { addressItem?.value = $0 }
         shopperInformation.deliveryAddress.map { deliveryAddressItem?.value = $0 }
-    }
-}
-
-private extension AbstractPersonalInformationComponent {
-    
-    private func didSelectAddressPicker(
-        for addressType: FormAddressPickerItem.AddressType,
-        with prefillAddress: PostalAddress?,
-        initialCountry: String,
-        supportedCountryCodes: [String]?,
-        lookupProvider: AddressLookupProvider?,
-        completion: @escaping (PostalAddress?) -> Void
-    ) {
-        let securedViewController = SecuredViewController(
-            child: addressPickerViewController(
-                for: addressType,
-                with: prefillAddress,
-                initialCountry: initialCountry,
-                supportedCountryCodes: supportedCountryCodes,
-                lookupProvider: lookupProvider,
-                completion: completion
-            ),
-            style: configuration.style
-        )
-        
-        viewController.present(securedViewController, animated: true)
-    }
-    
-    private func addressPickerViewController(
-        for addressType: FormAddressPickerItem.AddressType,
-        with prefillAddress: PostalAddress?,
-        initialCountry: String,
-        supportedCountryCodes: [String]?,
-        lookupProvider: AddressLookupProvider?,
-        completion: @escaping (PostalAddress?) -> Void
-    ) -> UIViewController {
-        
-        let completionHandler: (PostalAddress?) -> Void = { [weak self] address in
-            guard let self else { return }
-            completion(address)
-            self.viewController.dismiss(animated: true)
-        }
-        
-        guard let lookupProvider else {
-        
-            let viewModel = AddressInputFormViewController.ViewModel(
-                for: addressType,
-                style: configuration.style,
-                localizationParameters: configuration.localizationParameters,
-                initialCountry: initialCountry,
-                prefillAddress: prefillAddress,
-                supportedCountryCodes: supportedCountryCodes,
-                addressViewModelBuilder: addressViewModelBuilder(),
-                handleShowSearch: nil,
-                completionHandler: completionHandler
-            )
-                
-            let addressInputForm = AddressInputFormViewController(viewModel: viewModel)
-            
-            return UINavigationController(rootViewController: addressInputForm)
-        }
-
-        let viewModel = AddressLookupViewController.ViewModel(
-            for: addressType,
-            style: .init(), // configuration.style, // TODO: Provide correct style!
-            localizationParameters: configuration.localizationParameters,
-            supportedCountryCodes: supportedCountryCodes,
-            initialCountry: initialCountry,
-            prefillAddress: prefillAddress,
-            lookupProvider: lookupProvider,
-            completionHandler: completionHandler
-        )
-
-        return AddressLookupViewController(viewModel: viewModel)
     }
 }
 

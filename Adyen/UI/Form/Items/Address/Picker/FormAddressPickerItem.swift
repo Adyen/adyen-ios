@@ -42,7 +42,7 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
     ///   - addressType: The type of address to pick
     ///   - initialCountry: The items displayed side-by-side. Must be two.
     ///   - prefillAddress: The provided prefill address
-    ///   - style: The `AddressStyle` UI style.
+    ///   - style: The `FormComponentStyle` UI style.
     ///   - localizationParameters: The localization parameters
     ///   - identifier: The item identifier
     ///   - addressViewModelBuilder: The builder to build the Address ViewModel
@@ -51,7 +51,7 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
         initialCountry: String,
         supportedCountryCodes: [String]?,
         prefillAddress: PostalAddress?,
-        style: AddressStyle, // TODO: Custom style that also takes the form style
+        style: FormComponentStyle,
         localizationParameters: LocalizationParameters? = nil,
         identifier: String? = nil,
         addressViewModelBuilder: AddressViewModelBuilder = DefaultAddressViewModelBuilder(),
@@ -65,7 +65,7 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
         
         super.init(
             value: prefillAddress,
-            style: style.textField,
+            style: style.addressStyle.textField,
             placeholder: addressType.placeholder(with: localizationParameters)
         )
         
@@ -84,7 +84,8 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
                 initialCountry: initialCountry,
                 supportedCountryCodes: supportedCountryCodes,
                 lookupProvider: lookupProvider,
-                presenter: presenter
+                presenter: presenter,
+                style: style
             ) { [weak self] in self?.value = $0 }
         }
     }
@@ -143,6 +144,7 @@ extension FormAddressPickerItem {
         supportedCountryCodes: [String]?,
         lookupProvider: AddressLookupProvider?,
         presenter: ViewControllerPresenter,
+        style: FormComponentStyle,
         completion: @escaping (PostalAddress?) -> Void
     ) {
         let securedViewController = SecuredViewController(
@@ -152,6 +154,7 @@ extension FormAddressPickerItem {
                 initialCountry: initialCountry,
                 supportedCountryCodes: supportedCountryCodes,
                 lookupProvider: lookupProvider,
+                style: style,
                 completionHandler: { [weak self, weak presenter] address in
                     guard let self else { return }
                     completion(address)
@@ -170,6 +173,7 @@ extension FormAddressPickerItem {
         initialCountry: String,
         supportedCountryCodes: [String]?,
         lookupProvider: AddressLookupProvider?,
+        style: FormComponentStyle,
         completionHandler: @escaping (PostalAddress?) -> Void
     ) -> UIViewController {
         
@@ -177,7 +181,7 @@ extension FormAddressPickerItem {
         
             let viewModel = AddressInputFormViewController.ViewModel(
                 for: addressType,
-                style: .init(), // style, // TODO: Provide correct style!
+                style: style,
                 localizationParameters: localizationParameters,
                 initialCountry: initialCountry,
                 prefillAddress: prefillAddress,
@@ -194,7 +198,7 @@ extension FormAddressPickerItem {
 
         let viewModel = AddressLookupViewController.ViewModel(
             for: addressType,
-            style: .init(), // configuration.style, // TODO: Provide correct style!
+            style: .init(form: style),
             localizationParameters: localizationParameters,
             supportedCountryCodes: supportedCountryCodes,
             initialCountry: initialCountry,

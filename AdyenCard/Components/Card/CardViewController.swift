@@ -133,8 +133,6 @@ internal class CardViewController: FormViewController {
         let address: PostalAddress
         let requiredFields: Set<AddressField>
         
-        // TODO: Move to Items
-        
         switch configuration.billingAddress.mode {
         case .lookup, .full:
             guard

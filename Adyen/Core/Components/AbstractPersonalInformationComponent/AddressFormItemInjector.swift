@@ -16,13 +16,13 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
 
     internal var identifier: String
 
-    internal let style: AddressStyle
+    internal let style: FormComponentStyle
 
     internal let addressViewModelBuilder: AddressViewModelBuilder
     
     private weak var presenter: ViewControllerPresenter?
     
-    private let addressType: FormAddressPickerItem.AddressType // TODO: Move it somewhere reusable
+    private let addressType: FormAddressPickerItem.AddressType
 
     internal lazy var item: FormAddressPickerItem = {
         FormAddressPickerItem(
@@ -41,7 +41,7 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
         value: PostalAddress?,
         initialCountry: String,
         identifier: String,
-        style: AddressStyle,
+        style: FormComponentStyle,
         presenter: ViewControllerPresenter?,
         addressViewModelBuilder: AddressViewModelBuilder,
         addressType: FormAddressPickerItem.AddressType
