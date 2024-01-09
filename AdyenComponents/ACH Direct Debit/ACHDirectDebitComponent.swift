@@ -223,7 +223,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
         
         let prefillAddress = configuration.shopperInformation?.billingAddress
         
-        let item = FormAddressPickerItem(
+        return FormAddressPickerItem(
             for: .billing,
             initialCountry: initialCountry,
             supportedCountryCodes: configuration.billingAddressCountryCodes,
@@ -233,8 +233,6 @@ public final class ACHDirectDebitComponent: PaymentComponent,
             identifier: identifier,
             presenter: self
         )
-        
-        return item
     }()
     
     internal lazy var payButton: FormButtonItem = {

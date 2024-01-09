@@ -109,13 +109,14 @@ public final class AffirmComponent: AbstractPersonalInformationComponent {
         }
         
         let shopperName = ShopperName(firstName: firstName, lastName: lastName)
-        let affirmDetails = AffirmDetails(paymentMethod: paymentMethod,
-                                          shopperName: shopperName,
-                                          telephoneNumber: telephoneNumber,
-                                          emailAddress: emailAddress,
-                                          billingAddress: billingAddress,
-                                          deliveryAddress: deliveryAddress)
-        return affirmDetails
+        return AffirmDetails(
+            paymentMethod: paymentMethod,
+            shopperName: shopperName,
+            telephoneNumber: telephoneNumber,
+            emailAddress: emailAddress,
+            billingAddress: billingAddress,
+            deliveryAddress: deliveryAddress
+        )
     }
     
     @_spi(AdyenInternal)

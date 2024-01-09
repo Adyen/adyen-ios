@@ -65,7 +65,7 @@ extension CardViewController {
                 return billingAddressPickerItem(with: provider)
             case .full:
                 return billingAddressPickerItem(with: nil)
-            default:
+            case .postalCode, .none:
                 return nil
             }
         }()
