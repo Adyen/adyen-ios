@@ -58,7 +58,7 @@ class AtomeComponentUITests: XCTestCase {
                                  context: context,
                                  configuration: config)
         
-        XCTAssertNotNil(sut.viewController.view.findView(by: "AdyenComponents.AtomeComponent.addressItem.title"))
+        XCTAssertNotNil(sut.viewController.view.findView(by: "AdyenComponents.AtomeComponent.addressItem"))
         
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }

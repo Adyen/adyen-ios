@@ -74,7 +74,6 @@ class AffirmComponentUITests: XCTestCase {
         submitButton.sendActions(for: .touchUpInside)
 
         XCTAssertNotNil(view.findView(by: "AdyenComponents.AffirmComponent.addressItem"))
-        XCTAssertNotNil(view.findView(by: "AdyenComponents.AffirmComponent.addressItem.title"))
 
         waitForExpectations(timeout: 10, handler: nil)
     }
@@ -153,9 +152,8 @@ class AffirmComponentUITests: XCTestCase {
 
         XCTAssertFalse(prefillSut.deliveryAddressToggleItem.value)
 
-        let expectedDeliveryAddress = PostalAddressMocks.emptyUSPostalAddress
-        let deliveryAddress = try XCTUnwrap(prefillSut.deliveryAddressItem?.value)
-        XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
+        let deliveryAddress = try XCTUnwrap(prefillSut.deliveryAddressItem)
+        XCTAssertNil(deliveryAddress.value)
 
         assertViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled")
     }
@@ -182,15 +180,13 @@ class AffirmComponentUITests: XCTestCase {
         let email = try XCTUnwrap(sut.emailItem?.value)
         XCTAssertTrue(email.isEmpty)
 
-        let expectedBillingAddress = PostalAddressMocks.emptyUSPostalAddress
-        let billingAddress = try XCTUnwrap(sut.addressItem?.value)
-        XCTAssertEqual(expectedBillingAddress, billingAddress)
+        let billingAddress = try XCTUnwrap(sut.addressItem)
+        XCTAssertNil(billingAddress.value)
 
         XCTAssertFalse(sut.deliveryAddressToggleItem.value)
 
-        let expectedDeliveryAddress = PostalAddressMocks.emptyUSPostalAddress
-        let deliveryAddress = try XCTUnwrap(sut.deliveryAddressItem?.value)
-        XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
+        let deliveryAddress = try XCTUnwrap(sut.deliveryAddressItem)
+        XCTAssertNil(deliveryAddress.value)
 
         assertViewControllerImage(matching: sut.viewController, named: "shopper-info-not-filled")
     }

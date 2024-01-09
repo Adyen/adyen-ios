@@ -109,6 +109,7 @@ public final class AffirmComponent: AbstractPersonalInformationComponent {
         }
         
         let shopperName = ShopperName(firstName: firstName, lastName: lastName)
+        
         return AffirmDetails(
             paymentMethod: paymentMethod,
             shopperName: shopperName,

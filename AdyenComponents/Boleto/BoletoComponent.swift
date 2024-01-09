@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -109,15 +109,15 @@ public final class BoletoComponent: PaymentComponent,
     /// Constructs the fields for the form based on the configuration
     private var formFields: [PersonalInformation] {
         var fields: [PersonalInformation] = [
-            .custom(CustomFormItemInjector(item: headerFormItem(key: .boletoPersonalDetails))),
             .firstName,
             .lastName,
             .custom(CustomFormItemInjector(item: socialSecurityNumberItem)),
-            .address
+            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 2))),
+            .address,
+            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1)))
         ]
 
         if configuration.showEmailAddress {
-            fields.append(.custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1))))
             fields.append(.custom(CustomFormItemInjector(item: sendCopyByEmailItem)))
             fields.append(.email)
             fields.append(.custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1))))
