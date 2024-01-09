@@ -25,12 +25,14 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
     private let addressType: FormAddressPickerItem.AddressType
 
     internal lazy var item: FormAddressPickerItem = {
-        FormAddressPickerItem(
+        .init(
             for: addressType,
             initialCountry: initialCountry,
-            supportedCountryCodes: nil, // TODO: Pass correct values
+            supportedCountryCodes: nil,
             prefillAddress: value,
             style: style,
+            localizationParameters: localizationParameters,
+            identifier: identifier,
             addressViewModelBuilder: addressViewModelBuilder,
             presenter: self,
             lookupProvider: nil

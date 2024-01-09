@@ -12,9 +12,12 @@ class FormAddressPickerItemTests: XCTestCase {
     func testEmptyPrefillAddress() {
         
         let addressLookupItem = FormAddressPickerItem(
+            for: .billing,
             initialCountry: "NL",
+            supportedCountryCodes: nil,
             prefillAddress: nil,
             style: .init(),
+            presenter: PresenterMock(present: { _, _ in }, dismiss: { _ in })
         )
         
         XCTAssertNil(addressLookupItem.value)
@@ -28,9 +31,12 @@ class FormAddressPickerItemTests: XCTestCase {
     func testPrefillAddress() {
         
         let addressLookupItem = FormAddressPickerItem(
+            for: .billing,
             initialCountry: "NL",
+            supportedCountryCodes: nil,
             prefillAddress: PostalAddressMocks.singaporePostalAddress,
             style: .init(),
+            presenter: PresenterMock(present: { _, _ in }, dismiss: { _ in })
         )
         
         XCTAssertEqual(addressLookupItem.value, PostalAddressMocks.singaporePostalAddress)
@@ -40,9 +46,12 @@ class FormAddressPickerItemTests: XCTestCase {
     func testValidationFailureMessage() {
         
         let addressLookupItem = FormAddressPickerItem(
+            for: .billing,
             initialCountry: "NL",
+            supportedCountryCodes: nil,
             prefillAddress: nil,
             style: .init(),
+            presenter: PresenterMock(present: { _, _ in }, dismiss: { _ in })
         )
         
         XCTAssertEqual(addressLookupItem.validationFailureMessage, "Address required")
@@ -52,9 +61,12 @@ class FormAddressPickerItemTests: XCTestCase {
     
     func testFormattedValue() {
         let addressLookupItem = FormAddressPickerItem(
+            for: .billing,
             initialCountry: "NL",
+            supportedCountryCodes: nil,
             prefillAddress: nil,
             style: .init(),
+            presenter: PresenterMock(present: { _, _ in }, dismiss: { _ in })
         )
         
         XCTAssertNil(addressLookupItem.formattedValue)

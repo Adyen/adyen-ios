@@ -282,13 +282,30 @@ extension CardViewController {
             append(FormSpacerItem())
         }
         
-        if let billingAddressItem = items.billingAddressPickerItem {
+        if let billingAddressItem {
             append(billingAddressItem)
         }
 
         append(FormSpacerItem())
         append(items.button)
         append(FormSpacerItem(numberOfSpaces: 2))
+    }
+    
+    private var billingAddressItem: FormItem? {
+        
+        switch configuration.billingAddress.mode {
+        case let .lookup(provider):
+            return items.billingAddressPickerItem
+            
+        case .full:
+            return items.billingAddressPickerItem
+            
+        case .postalCode:
+            return items.postalCodeItem
+            
+        case .none:
+            return nil
+        }
     }
 
     private func prefill() {

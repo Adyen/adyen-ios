@@ -46,6 +46,8 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
     ///   - localizationParameters: The localization parameters
     ///   - identifier: The item identifier
     ///   - addressViewModelBuilder: The builder to build the Address ViewModel
+    ///   - presenter: The presenter to handle view controller presentation
+    ///   - lookupProvider: The optional lookup provider
     public init(
         for addressType: AddressType,
         initialCountry: String,
@@ -55,7 +57,7 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
         localizationParameters: LocalizationParameters? = nil,
         identifier: String? = nil,
         addressViewModelBuilder: AddressViewModelBuilder = DefaultAddressViewModelBuilder(),
-        presenter: ViewControllerPresenter?,
+        presenter: ViewControllerPresenter,
         lookupProvider: AddressLookupProvider? = nil
     ) {
         self.initialCountry = initialCountry
