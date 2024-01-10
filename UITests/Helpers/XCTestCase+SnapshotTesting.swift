@@ -12,23 +12,23 @@ import XCTest
 
 extension XCTestCase {
     
-    static var shouldRecordSnapshots: Bool = false
+    static var shouldRecordSnapshots: Bool = true
     
     func assertViewControllerImage(matching viewController: @autoclosure () throws -> UIViewController,
                                    named name: String,
                                    device: ViewImageConfig = .iPhone12,
                                    file: StaticString = #file,
-                                   caller: String = #function,
-                                   line: UInt = #line,
-                                   record: Bool = XCTestCase.shouldRecordSnapshots) {
+                                   line: UInt = #line) {
         
-        try SnapshotTesting.assertSnapshot(matching: viewController(),
-                                           as: device.snapshotConfiguration,
-                                           named: name,
-                                           record: record,
-                                           file: file,
-                                           testName: device.testName(for: name),
-                                           line: line)
+        try SnapshotTesting.assertSnapshot(
+            matching: viewController(),
+            as: device.snapshotConfiguration,
+            named: name,
+            record: XCTestCase.shouldRecordSnapshots,
+            file: file,
+            testName: device.testName(for: name),
+            line: line
+        )
     }
     
     /// Verifies whether or not the snapshot of the view controller matches the previously recorded snapshot
@@ -39,20 +39,17 @@ extension XCTestCase {
                                    timeout: TimeInterval = 120,
                                    device: ViewImageConfig = .iPhone12,
                                    file: StaticString = #file,
-                                   caller: String = #function,
                                    line: UInt = #line) {
         
-        let record: Bool = true
-        
-        guard !XCTestCase.shouldRecordSnapshots else {
+        if XCTestCase.shouldRecordSnapshots {
             // We're recording so we assert immediately
             // to not wait until it finally throws an error on the code below
             try assertViewControllerImage(
                 matching: viewController(),
                 named: name,
                 device: device,
-                caller: caller,
-                record: true
+                file: file,
+                line: line
             )
             
             return
@@ -81,7 +78,9 @@ extension XCTestCase {
 extension ViewImageConfig {
     
     func testName(for testName: String) -> String {
-        "\(testName)-\(description)"
+        let name = "\(testName)-\(description)"
+        print("⚠️", name)
+        return name
     }
     
     var snapshotConfiguration: Snapshotting<UIViewController, UIImage> {
