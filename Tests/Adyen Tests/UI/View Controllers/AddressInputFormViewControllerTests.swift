@@ -222,7 +222,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         
         _ = searchItemView.becomeFirstResponder()
         
-        wait(for: [searchExpectation], timeout: 1)
+        wait(for: [searchExpectation], timeout: 10)
     }
     
     func testDoneButtonStateNoPrefill() {

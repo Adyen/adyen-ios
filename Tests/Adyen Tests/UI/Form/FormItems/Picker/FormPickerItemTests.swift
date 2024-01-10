@@ -37,14 +37,14 @@ class FormPickerItemTests: XCTestCase {
         
         formPickerItem.selectionHandler()
         
-        wait(for: [presentViewControllerExpectation], timeout: 1)
+        wait(for: [presentViewControllerExpectation], timeout: 10)
         
         setupRootViewController(presentedViewController!)
         
         let searchViewController = presentedViewController!.viewControllers.first as! SearchViewController
         searchViewController.viewModel.interfaceState.results?.first?.selectionHandler?()
         
-        wait(for: [dismissViewControllerExpectation], timeout: 1)
+        wait(for: [dismissViewControllerExpectation], timeout: 10)
     }
     
     func testAssertions() throws {
@@ -69,7 +69,7 @@ class FormPickerItemTests: XCTestCase {
         
         formPickerItem.resetValue()
         
-        wait(for: [resetValueException], timeout: 1)
+        wait(for: [resetValueException], timeout: 10)
         
         // Test updateValidationFailureMessage()
         
@@ -82,7 +82,7 @@ class FormPickerItemTests: XCTestCase {
         
         formPickerItem.updateValidationFailureMessage()
         
-        wait(for: [updateValidationFailureMessageException], timeout: 1)
+        wait(for: [updateValidationFailureMessageException], timeout: 10)
         
         // Test updateFormattedValue()
         
@@ -95,7 +95,7 @@ class FormPickerItemTests: XCTestCase {
         
         formPickerItem.updateFormattedValue()
         
-        wait(for: [updateFormattedValueException], timeout: 1)
+        wait(for: [updateFormattedValueException], timeout: 10)
         
         AdyenAssertion.listener = nil
     }

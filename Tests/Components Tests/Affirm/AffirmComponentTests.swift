@@ -161,6 +161,13 @@ class AffirmComponentTests: XCTestCase {
         let deliveryAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddress))
         deliveryAddressView.item.value = expectedDeliveryAddress
         
+        wait(until: firstNameView, at: \.isValid, is: true)
+        wait(until: lastNameView, at: \.isValid, is: true)
+        wait(until: phoneNumberView, at: \.isValid, is: true)
+        wait(until: emailView, at: \.isValid, is: true)
+        wait(until: billingAddressView, at: \.isValid, is: true)
+        wait(until: deliveryAddressView, at: \.isValid, is: true)
+        
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.payButton))
         submitButton.sendActions(for: .touchUpInside)
         

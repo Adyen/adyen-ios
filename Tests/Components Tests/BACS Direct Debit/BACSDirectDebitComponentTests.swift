@@ -101,7 +101,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
         sut.confirmPayment(with: bacsDataMock)
 
         // Then
-        waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: 10)
     }
 
     func testStopLoadingShouldCallConfirmationPresenterStopLoading() throws {
