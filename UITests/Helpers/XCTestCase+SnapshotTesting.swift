@@ -59,7 +59,7 @@ extension XCTestCase {
                                    testName: String = #function,
                                    line: UInt = #line) {
         
-        let record: Bool = true
+        let record: Bool = false
         
         let name = "\(testName)-\(device.description)"
         let snapshotting = Snapshotting.image(on: device, perceptualPrecision: 0.98)
