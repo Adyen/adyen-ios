@@ -67,8 +67,6 @@ extension XCTestCase {
     enum TestAnimationSpeed: Float {
         /// Pauses all animations
         case paused = 0
-        /// Very slow all animations
-        case slow = 0.1
         /// Default system animation speed
         case system = 1
         /// 10x speed

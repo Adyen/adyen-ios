@@ -74,9 +74,14 @@ final class BoletoComponentUITests: XCTestCase {
             background: .magenta
         )
 
-        let sut = BoletoComponent(paymentMethod: paymentMethod,
-                                  context: context,
-                                  configuration: Dummy.getConfiguration(showEmailAddress: true))
+        let sut = BoletoComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: Dummy.getConfiguration(
+                style: style,
+                showEmailAddress: true
+            )
+        )
 
         verifyViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
