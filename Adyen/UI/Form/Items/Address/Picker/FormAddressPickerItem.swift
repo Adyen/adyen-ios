@@ -157,8 +157,7 @@ extension FormAddressPickerItem {
                 supportedCountryCodes: supportedCountryCodes,
                 lookupProvider: lookupProvider,
                 style: style,
-                completionHandler: { [weak self, weak presenter] address in
-                    guard let self else { return }
+                completionHandler: { [weak presenter] address in
                     completion(address)
                     presenter?.dismissViewController(animated: true)
                 }
@@ -226,8 +225,8 @@ public extension FormAddressPickerItem.AddressType {
     
     func title(with localizationParameters: LocalizationParameters?) -> String {
         switch self {
-        case .billing: localizedString(.billingAddressSectionTitle, localizationParameters)
-        case .delivery: localizedString(.deliveryAddressSectionTitle, localizationParameters)
+        case .billing: return localizedString(.billingAddressSectionTitle, localizationParameters)
+        case .delivery: return localizedString(.deliveryAddressSectionTitle, localizationParameters)
         }
     }
 }
