@@ -11,27 +11,12 @@ import XCTest
 
 final class BLIKComponentUITests: XCTestCase {
 
-    private var paymentMethod: BLIKPaymentMethod!
-    private var context: AdyenContext!
-    private var style: FormComponentStyle!
-
-    override func setUpWithError() throws {
-        paymentMethod = BLIKPaymentMethod(type: .blik, name: "test_name")
-        let payment = Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
-        context = AdyenContext(apiContext: Dummy.apiContext, payment: payment)
-        style = FormComponentStyle()
-        UIApplication.shared.adyen.mainKeyWindow?.layer.speed = 1
-        try super.setUpWithError()
-    }
-
-    override func tearDownWithError() throws {
-        paymentMethod = nil
-        context = nil
-        style = nil
-    }
+    private let payment = Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
+    private var paymentMethod: BLIKPaymentMethod { BLIKPaymentMethod(type: .blik, name: "test_name") }
+    private var context: AdyenContext { AdyenContext(apiContext: Dummy.apiContext, payment: payment) }
 
     func testUIConfiguration() {
-        style = FormComponentStyle()
+        var style = FormComponentStyle()
 
         style.hintLabel.backgroundColor = .brown
         style.hintLabel.font = .systemFont(ofSize: 10)
@@ -66,7 +51,7 @@ final class BLIKComponentUITests: XCTestCase {
     }
 
     func testSubmitForm() throws {
-        let config = BLIKComponent.Configuration(style: style)
+        let config = BLIKComponent.Configuration(style: .init())
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
         let delegate = PaymentComponentDelegateMock()
@@ -103,25 +88,26 @@ final class BLIKComponentUITests: XCTestCase {
     }
 
     func testSubmitButtonLoading() throws {
-        let config = BLIKComponent.Configuration(style: style)
+        let config = BLIKComponent.Configuration(style: .init())
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
         setupRootViewController(sut.viewController)
         
-        // Disabling animation to assure the spinner is always in the same state when taking the snapshot
-        UIApplication.shared.adyen.mainKeyWindow?.layer.speed = 0
+        let submitButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button"))
         
-        let submitButton: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
-
+        endEditing(for: sut.viewController.view)
+        
+        // Pausing animation to assure the spinner is always in the same state when taking the snapshot
         try withAnimation(.paused) {
             // start loading
             submitButton.showsActivityIndicator = true
             wait(until: submitButton, at: \.showsActivityIndicator, is: true)
             assertViewControllerImage(matching: sut.viewController, named: "initial_state")
-
+            
             // stop loading
             sut.stopLoading()
             submitButton.showsActivityIndicator = false
+            
             wait(until: submitButton, at: \.showsActivityIndicator, is: false)
             assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
         }

@@ -65,9 +65,14 @@ extension DispatchTimeInterval {
 extension XCTestCase {
 
     enum TestAnimationSpeed: Float {
+        /// Pauses all animations
         case paused = 0
+        /// Very slow all animations
+        case slow = 0.1
+        /// Default system animation speed
         case system = 1
-        case fast = 100
+        /// 10x speed
+        case fast = 10
     }
 
     /// Executes a block with a specified animation speed

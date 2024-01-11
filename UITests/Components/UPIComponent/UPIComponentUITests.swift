@@ -115,14 +115,6 @@ class UPIComponentUITests: XCTestCase {
         assertViewControllerImage(matching: sut.viewController, named: "all_required_fields_exist")
     }
 
-    func testUPIComponentDetailsExists() {
-        // Given
-        let upiComponentDetails = UPIComponentDetails(type: "vpa", virtualPaymentAddress: "testvpa@icici")
-
-        // Assert
-        XCTAssertNotNil(upiComponentDetails)
-    }
-
     func testUPIComponentDetailsForUPICollectFlow() {
         // Given
         let config = UPIComponent.Configuration(style: style)

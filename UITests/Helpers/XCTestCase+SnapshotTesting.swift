@@ -12,12 +12,13 @@ import XCTest
 
 extension XCTestCase {
     
-    static var shouldRecordSnapshots: Bool = true
+    static var shouldRecordSnapshots: Bool = false
     
     func assertViewControllerImage(matching viewController: @autoclosure () throws -> UIViewController,
                                    named name: String,
                                    device: ViewImageConfig = .iPhone12,
                                    file: StaticString = #file,
+                                   caller: String = #function,
                                    line: UInt = #line) {
         
         try SnapshotTesting.assertSnapshot(
@@ -26,7 +27,7 @@ extension XCTestCase {
             named: name,
             record: XCTestCase.shouldRecordSnapshots,
             file: file,
-            testName: device.testName(for: name),
+            testName: device.testName(for: caller),
             line: line
         )
     }
@@ -39,6 +40,7 @@ extension XCTestCase {
                                    timeout: TimeInterval = 120,
                                    device: ViewImageConfig = .iPhone12,
                                    file: StaticString = #file,
+                                   caller: String = #function,
                                    line: UInt = #line) {
         
         if XCTestCase.shouldRecordSnapshots {
@@ -49,6 +51,7 @@ extension XCTestCase {
                 named: name,
                 device: device,
                 file: file,
+                caller: caller,
                 line: line
             )
             
@@ -63,7 +66,7 @@ extension XCTestCase {
                   named: name,
                   record: false,
                   file: file,
-                  testName: device.testName(for: name),
+                  testName: device.testName(for: caller),
                   line: line
                 )
                 return failure == nil
@@ -77,10 +80,8 @@ extension XCTestCase {
 
 extension ViewImageConfig {
     
-    func testName(for testName: String) -> String {
-        let name = "\(testName)-\(description)"
-        print("⚠️", name)
-        return name
+    func testName(for callingFunction: String) -> String {
+        "\(callingFunction)-\(description)"
     }
     
     var snapshotConfiguration: Snapshotting<UIViewController, UIImage> {
