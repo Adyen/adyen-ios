@@ -65,11 +65,11 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
 
 extension AddressFormItemInjector: ViewControllerPresenter {
     
-    func presentViewController(_ viewController: UIViewController, animated: Bool) {
+    internal func presentViewController(_ viewController: UIViewController, animated: Bool) {
         presenter?.presentViewController(viewController, animated: animated)
     }
     
-    func dismissViewController(animated: Bool) {
+    internal func dismissViewController(animated: Bool) {
         presenter?.dismissViewController(animated: animated)
     }
 }

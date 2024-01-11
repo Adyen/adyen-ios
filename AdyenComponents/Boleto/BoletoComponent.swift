@@ -67,17 +67,6 @@ public final class BoletoComponent: PaymentComponent,
         return sendCopyToEmailItem
     }()
     
-    private func headerFormItem(key: LocalizationKey) -> FormContainerItem {
-        FormLabelItem(
-            text: localizedString(key, configuration.localizationParameters),
-            style: configuration.style.sectionHeader,
-            identifier: ViewIdentifierBuilder.build(
-                scopeInstance: self,
-                postfix: localizedString(key, configuration.localizationParameters)
-            )
-        ).addingDefaultMargins()
-    }
-    
     private lazy var formComponent: FormComponent = {
         let configuration = AbstractPersonalInformationComponent.Configuration(style: configuration.style,
                                                                                shopperInformation: configuration.shopperInformation,
