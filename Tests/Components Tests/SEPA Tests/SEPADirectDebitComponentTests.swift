@@ -236,6 +236,8 @@ class SEPADirectDebitComponentTests: XCTestCase {
         self.populate(textItemView: nameItemView!, with: "A. Klaassen")
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
+        
+        wait(for: [expectation], timeout: 5)
     }
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {

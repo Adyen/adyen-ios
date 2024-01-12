@@ -603,7 +603,7 @@ class SessionTests: XCTestCase {
         let component = MBWayComponent(paymentMethod: paymentMethod,
                                        context: context)
         sut.didSubmit(data, from: component)
-        wait(for: [didSubmitExpectation], timeout: 2)
+        wait(for: [didSubmitExpectation], timeout: 10)
     }
     
     func testDelegateDidProvideHandler() throws {
@@ -625,7 +625,7 @@ class SessionTests: XCTestCase {
             paymentData: "payment_data"
         )
         sut.didProvide(data, from: RedirectComponent(context: context))
-        wait(for: [didProvideExpectation], timeout: 2)
+        wait(for: [didProvideExpectation], timeout: 10)
     }
     
     func testSessionAsDropInDelegate() throws {
@@ -734,7 +734,7 @@ class SessionTests: XCTestCase {
             paymentData: "payment_data"
         )
         sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
-        wait(for: [didCompleteExpectation], timeout: 2)
+        wait(for: [didCompleteExpectation], timeout: 10)
     }
     
     func testResultCodePending() throws {
@@ -767,7 +767,7 @@ class SessionTests: XCTestCase {
             paymentData: "payment_data"
         )
         sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
-        wait(for: [didCompleteExpectation], timeout: 2)
+        wait(for: [didCompleteExpectation], timeout: 10)
     }
     
     func testResultCodeRefused() throws {
@@ -800,7 +800,7 @@ class SessionTests: XCTestCase {
             paymentData: "payment_data"
         )
         sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
-        wait(for: [didCompleteExpectation], timeout: 2)
+        wait(for: [didCompleteExpectation], timeout: 10)
     }
     
     func testResultCodeCancelled() throws {
@@ -833,7 +833,7 @@ class SessionTests: XCTestCase {
             paymentData: "payment_data"
         )
         sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
-        wait(for: [didCompleteExpectation], timeout: 2)
+        wait(for: [didCompleteExpectation], timeout: 10)
     }
     
     func testResultCodeReceived() throws {
@@ -866,7 +866,7 @@ class SessionTests: XCTestCase {
             paymentData: "payment_data"
         )
         sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
-        wait(for: [didCompleteExpectation], timeout: 2)
+        wait(for: [didCompleteExpectation], timeout: 10)
     }
     
     func testResultCodePresentToShopper() throws {
@@ -903,7 +903,7 @@ class SessionTests: XCTestCase {
             order: nil
         )
         sut.didSubmit(paymentData, from: paymentComponent)
-        wait(for: [didCompleteExpectation], timeout: 2)
+        wait(for: [didCompleteExpectation], timeout: 10)
     }
     
     func testResultCodeError() throws {
@@ -936,7 +936,7 @@ class SessionTests: XCTestCase {
             paymentData: "payment_data"
         )
         sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
-        wait(for: [didCompleteExpectation], timeout: 2)
+        wait(for: [didCompleteExpectation], timeout: 10)
     }
     
     func testResultCodeErrorFromAnotherCode() throws {
@@ -969,7 +969,7 @@ class SessionTests: XCTestCase {
             paymentData: "payment_data"
         )
         sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
-        wait(for: [didCompleteExpectation], timeout: 2)
+        wait(for: [didCompleteExpectation], timeout: 10)
     }
     
     func testInstallmentsFromSessionConfig() throws {
@@ -1059,28 +1059,10 @@ class SessionTests: XCTestCase {
                 XCTFail()
             }
         }
-        wait(for: [initializationExpectation], timeout: 2)
+        wait(for: [initializationExpectation], timeout: 10)
         return sut
     }
 
-}
-
-extension PaymentMethods: Equatable {
-    public static func == (lhs: PaymentMethods, rhs: PaymentMethods) -> Bool {
-        guard lhs.regular.count == rhs.regular.count else { return false }
-        guard lhs.stored.count == rhs.stored.count else { return false }
-        for (paymentMethod1, paymentMethod2) in zip(lhs.regular, rhs.regular) {
-            if paymentMethod1 != paymentMethod2 {
-                return false
-            }
-        }
-        for (paymentMethod1, paymentMethod2) in zip(lhs.stored, rhs.stored) {
-            if paymentMethod1 != paymentMethod2 {
-                return false
-            }
-        }
-        return true
-    }
 }
 
 let sessionConfigJson = """

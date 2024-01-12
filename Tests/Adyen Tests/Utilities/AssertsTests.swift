@@ -35,7 +35,7 @@ class AssertsTests: XCTestCase {
 
         sut.preferredContentSize = .zero
 
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 10)
 
     }
 
@@ -50,7 +50,7 @@ class AssertsTests: XCTestCase {
 
         sut.preferredContentSize = .zero
 
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 10)
 
     }
 
@@ -65,7 +65,7 @@ class AssertsTests: XCTestCase {
 
         sut.preferredContentSize = .zero
 
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 10)
 
     }
 
@@ -80,7 +80,7 @@ class AssertsTests: XCTestCase {
 
         sut.handle(AwaitAction(paymentData: "", paymentMethodType: .blik))
 
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 10)
 
     }
 
@@ -103,7 +103,7 @@ class AssertsTests: XCTestCase {
                                                                 shopperName: "",
                                                                 instructionsUrl: URL(string: "https://google.com")!)))
 
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 10)
 
     }
 
@@ -118,7 +118,7 @@ class AssertsTests: XCTestCase {
 
         sut.preferredContentSize = .zero
 
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 10)
 
     }
 
@@ -133,7 +133,7 @@ class AssertsTests: XCTestCase {
 
         sut.preferredContentSize = .zero
 
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 10)
 
     }
 

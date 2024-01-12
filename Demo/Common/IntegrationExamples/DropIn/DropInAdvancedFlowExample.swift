@@ -80,7 +80,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
             } else if let order = response.order,
                       let remainingAmount = order.remainingAmount,
                       remainingAmount.value > 0 {
-                handle(order)
+                handle(order, newAmount: remainingAmount)
             } else {
                 finish(with: response)
             }
@@ -91,14 +91,14 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
 
     // MARK: - Payment response handling
 
-    private func handle(_ order: PartialPaymentOrder) {
-        requestPaymentMethods(order: order) { [weak self] response in
+    private func handle(_ order: PartialPaymentOrder, newAmount: Amount) {
+        requestPaymentMethods(order: order, amount: newAmount) { [weak self] response in
             switch response {
             case let .success(paymentMethods):
                 self?.handle(order, paymentMethods)
             case let .failure(error):
                 self?.presenter?.presentAlert(with: error, retryHandler: {
-                    self?.handle(order)
+                    self?.handle(order, newAmount: newAmount)
                 })
             }
         }

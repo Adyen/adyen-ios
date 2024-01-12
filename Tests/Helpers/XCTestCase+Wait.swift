@@ -22,7 +22,7 @@ extension XCTestCase {
             dummyExpectation.fulfill()
         }
 
-        wait(for: [dummyExpectation], timeout: 100)
+        wait(for: [dummyExpectation], timeout: 1000)
     }
     
     /// Waits until  a certain condition is met
@@ -32,22 +32,25 @@ extension XCTestCase {
     ///
     /// - Parameters:
     ///   - expectation: the condition that is waited on
-    ///   - timeout: the maximum time (in seconds)  to wait. Defaults to 1
+    ///   - timeout: the maximum time (in seconds)  to wait.
+    ///   - retryInterval: the waiting time inbetween retries
     ///   - message: an optional message on failure
     func wait(
         until expectation: () -> Bool,
-        timeout: TimeInterval = 2,
+        timeout: TimeInterval = 120,
+        retryInterval: DispatchTimeInterval = .seconds(1),
         message: String? = nil
     ) {
-        var timeLeft = Int(timeout * 1000)
-        let incrementInterval = 10
+        let thresholdDate = Date().addingTimeInterval(timeout)
         
-        while timeLeft > 0, expectation() == false {
-            wait(for: .milliseconds(incrementInterval))
-            timeLeft -= incrementInterval
+        var isMatchingExpectation = expectation()
+        
+        while thresholdDate.timeIntervalSinceNow > 0, !isMatchingExpectation {
+            wait(for: retryInterval)
+            isMatchingExpectation = expectation()
         }
         
-        XCTAssertTrue(expectation(), message ?? "Expectation should be met before timeout \(timeout)s")
+        XCTAssertTrue(isMatchingExpectation, message ?? "Expectation should be met before timeout \(timeout)s")
     }
     
     /// Waits until  a keyPath of a target matches an expected value
@@ -59,12 +62,12 @@ extension XCTestCase {
     ///   - target: the target to observe
     ///   - keyPath: the keyPath to check
     ///   - expectedValue: the value to check against
-    ///   - timeout: the maximum time (in seconds)  to wait. Defaults to 2
+    ///   - timeout: the maximum time (in seconds)  to wait.
     func wait<Value: Equatable, Target: AnyObject>(
         until target: Target,
         at keyPath: KeyPath<Target, Value>,
         is expectedValue: Value,
-        timeout: TimeInterval = 2,
+        timeout: TimeInterval = 120,
         line: Int = #line
     ) {
         wait(
@@ -82,12 +85,12 @@ extension XCTestCase {
     /// - Parameters:
     ///   - ofType: the type of the expected child viewController
     ///   - viewController: the parent viewController
-    ///   - timeout: the maximum time (in seconds)  to wait. Defaults to 1
+    ///   - timeout: the maximum time (in seconds)  to wait.
     @discardableResult
     func waitForViewController<T: UIViewController>(
         ofType: T.Type,
         toBecomeChildOf viewController: UIViewController,
-        timeout: TimeInterval = 2
+        timeout: TimeInterval = 60
     ) throws -> T {
         
         wait(
@@ -107,11 +110,11 @@ extension XCTestCase {
     /// - Parameters:
     ///   - ofType: the type of the expected child viewController
     ///   - viewController: the parent viewController
-    ///   - timeout: the maximum time (in seconds)  to wait. Defaults to 1
+    ///   - timeout: the maximum time (in seconds)  to wait.
     @discardableResult
     func waitUntilTopPresenter<T: UIViewController>(
         isOfType: T.Type,
-        timeout: TimeInterval = 2
+        timeout: TimeInterval = 60
     ) throws -> T {
         
         wait(

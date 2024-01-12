@@ -36,7 +36,7 @@ enum Dummy: Error {
                                         holder: nil)
 
     internal static let amexCard = Card(number: "3714 4963 5398 431",
-                                        securityCode: "737",
+                                        securityCode: "7373",
                                         expiryMonth: "03",
                                         expiryYear: "30",
                                         holder: nil)
@@ -85,7 +85,7 @@ enum Dummy: Error {
         PrefilledShopperInformation(
             shopperName: dummyName,
             emailAddress: dummyEmail,
-            telephoneNumber: nil,
+            phoneNumber: nil,
             billingAddress: dummyAddress,
             socialSecurityNumber: dummySocialSecurityNumber
         )

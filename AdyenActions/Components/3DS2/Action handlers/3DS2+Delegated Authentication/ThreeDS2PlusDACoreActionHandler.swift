@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -147,7 +147,6 @@
             } catch {
                 didFail(with: error, completionHandler: completionHandler)
             }
-        
         }
     
         private func createFingerPrintResult<R>(authenticationSDKOutput: String?,
@@ -322,7 +321,7 @@
                 return didFail(with: error, completionHandler: completionHandler)
             }
         }
-    
+        
         private func showDelegatedAuthenticationRegistration(sdkInput: String,
                                                              challengeResult: ThreeDSResult,
                                                              completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {

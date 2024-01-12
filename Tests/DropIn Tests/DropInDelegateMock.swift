@@ -11,6 +11,22 @@
 import AdyenDropIn
 
 class DropInDelegateMock: DropInComponentDelegate {
+    
+    internal init(
+        didSubmitHandler: ((PaymentComponentData, AnyDropInComponent) -> Void)? = nil,
+        didProvideHandler: ((ActionComponentData, AnyDropInComponent) -> Void)? = nil,
+        didCompleteHandler: ((AnyDropInComponent) -> Void)? = nil,
+        didFailHandler: ((Error, AnyDropInComponent) -> Void)? = nil,
+        didOpenExternalApplicationHandler: ((AnyDropInComponent) -> Void)? = nil,
+        didCancelHandler: ((PaymentComponent, AnyDropInComponent) -> Void)? = nil
+    ) {
+        self.didSubmitHandler = didSubmitHandler
+        self.didProvideHandler = didProvideHandler
+        self.didCompleteHandler = didCompleteHandler
+        self.didFailHandler = didFailHandler
+        self.didOpenExternalApplicationHandler = didOpenExternalApplicationHandler
+        self.didCancelHandler = didCancelHandler
+    }
 
     var didSubmitHandler: ((PaymentComponentData, AnyDropInComponent) -> Void)?
     var didProvideHandler: ((ActionComponentData, AnyDropInComponent) -> Void)?

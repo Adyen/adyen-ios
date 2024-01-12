@@ -47,7 +47,7 @@ let package = Package(
                 .product(name: \"AdyenWeChatPay\", package: \"Adyen\"),
                 .product(name: \"AdyenSwiftUI\", package: \"Adyen\"),
                 .product(name: \"AdyenCashAppPay\", package: \"Adyen\"),
-                .product(name: \"AdyenAuthentication\", package: \"AdyenAuthentication\")
+                .product(name: \"AdyenDelegatedAuthentication\", package: \"Adyen\")
             ]
         )
     ]

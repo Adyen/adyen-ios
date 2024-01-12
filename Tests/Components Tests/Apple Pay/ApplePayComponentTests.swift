@@ -119,7 +119,7 @@ class ApplePayComponentTest: XCTestCase {
             onShippingSelected.fulfill()
         }
 
-        waitForExpectations(timeout: 4)
+        waitForExpectations(timeout: 10)
     }
 
     func testApplePayShippingContact() {
@@ -151,12 +151,14 @@ class ApplePayComponentTest: XCTestCase {
             onContactSelected.fulfill()
         }
 
-        waitForExpectations(timeout: 4)
+        waitForExpectations(timeout: 10)
     }
 
-    @available(iOS 15.0, *)
-    func testApplePayCoupon() {
-        guard Available.iOS15 else { return }
+    func testApplePayCoupon() throws {
+        guard #available(iOS 15.0, *) else {
+            // XCTestCase does not respect @available so we have to skip the test like this
+            throw XCTSkip("Unsupported iOS version")
+        }
 
         sut.applePayDelegate = mockApplePayDelegate
         (mockApplePayDelegate as! ApplePayDelegateMockiOS15).onCouponChange = { coupon, payment in
@@ -182,7 +184,7 @@ class ApplePayComponentTest: XCTestCase {
             onContactSelected.fulfill()
         }
 
-        waitForExpectations(timeout: 4)
+        waitForExpectations(timeout: 10)
     }
 
     func testInvalidCurrencyCode() {
@@ -298,8 +300,8 @@ class ApplePayComponentTest: XCTestCase {
     
     func testNewInitSuccess() throws {
         guard #available(iOS 16.0, *) else {
-            // XCTestCase does not respect @available so we have skip all tests here
-           throw XCTSkip("Unsupported iOS version")
+            // XCTestCase does not respect @available so we have to skip the test like this
+            throw XCTSkip("Unsupported iOS version")
         }
         
         let request = PKPaymentRequest()

@@ -18,10 +18,12 @@ extension XCTestCase {
                              file: StaticString = #file,
                              testName: String = #function,
                              line: UInt = #line) {
+        
         for device in devices {
             try SnapshotTesting.assertSnapshot(matching: viewController(),
                                                as: .recursiveDescription(on: device),
                                                named: name,
+                                               record: false,
                                                file: file,
                                                testName: "\(testName)-\(device.description)",
                                                line: line)
@@ -34,6 +36,7 @@ extension XCTestCase {
                                    file: StaticString = #file,
                                    testName: String = #function,
                                    line: UInt = #line) {
+        
         for device in devices {
             try SnapshotTesting.assertSnapshot(matching: viewController(),
                                                as: .image(on: device, perceptualPrecision: 0.98),
@@ -42,8 +45,37 @@ extension XCTestCase {
                                                file: file,
                                                testName: "\(testName)-\(device.description)",
                                                line: line)
-            
         }
+    }
+    
+    /// Verifies whether or not the snapshot of the view controller matches the previously recorded snapshot
+    ///
+    /// Multiple verification snapshots are taken within the timeout and compared with the reference snapshot
+    func verifyViewControllerImage(matching viewController: @autoclosure () throws -> UIViewController,
+                                   named name: String,
+                                   timeout: TimeInterval = 120,
+                                   device: ViewImageConfig = .iPhone12,
+                                   file: StaticString = #file,
+                                   testName: String = #function,
+                                   line: UInt = #line) {
+        
+        wait(
+            until: {
+                let failure = try! verifySnapshot(
+                  of: viewController(),
+                  as: .image(on: device, perceptualPrecision: 0.98),
+                  named: name,
+                  record: false,
+                  file: file,
+                  testName: "\(testName)-\(device.description)",
+                  line: line
+                )
+                return failure == nil
+            },
+            timeout: timeout,
+            retryInterval: .seconds(1),
+            message: "Snapshot did not match reference (Timeout: \(timeout)s)"
+        )
     }
 }
 

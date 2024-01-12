@@ -172,7 +172,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     internal lazy var phoneItemInjector: PhoneFormItemInjector? = {
         guard fields.contains(.phone) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneNumberItem")
-        let injector = PhoneFormItemInjector(value: configuration.shopperInformation?.telephoneNumber,
+        let injector = PhoneFormItemInjector(value: configuration.shopperInformation?.phoneNumber,
                                              identifier: identifier,
                                              phoneExtensions: selectableValues,
                                              style: configuration.style.textField)
@@ -235,7 +235,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
             lastNameItem?.value = $0.lastName
         }
         shopperInformation.emailAddress.map { emailItem?.value = $0 }
-        shopperInformation.telephoneNumber.map { phoneItem?.value = $0 }
+        shopperInformation.phoneNumber.map { phoneItem?.value = $0.value }
         shopperInformation.billingAddress.map { addressItem?.value = $0 }
         shopperInformation.deliveryAddress.map { deliveryAddressItem?.value = $0 }
     }

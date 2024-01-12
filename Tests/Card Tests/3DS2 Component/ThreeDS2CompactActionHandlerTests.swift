@@ -98,7 +98,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
 
         let transaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
         transaction.onPerformChallenge = { params, completion in
-            XCTAssertEqual(params.threeDSRequestorAppURL, URL(string: "http://google.com"))
+            XCTAssertEqual(params.threeDSRequestorAppURL, URL(string: "https://google.com"))
             completion(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y"), nil)
         }
         service.mockedTransaction = transaction

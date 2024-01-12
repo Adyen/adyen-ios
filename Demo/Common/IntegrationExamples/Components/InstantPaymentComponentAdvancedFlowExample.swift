@@ -10,7 +10,7 @@ import Adyen
 import AdyenActions
 import AdyenComponents
 
-internal final class InstantPaymentComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
+internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlowProtocol {
 
     // MARK: - Properties
 
@@ -127,7 +127,7 @@ internal final class InstantPaymentComponentAdvancedFlowExample: InitialDataAdva
 
 }
 
-extension InstantPaymentComponentAdvancedFlowExample: PaymentComponentDelegate {
+extension InstantPaymentComponentAdvancedFlow: PaymentComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         presenter?.showLoadingIndicator()
@@ -144,7 +144,7 @@ extension InstantPaymentComponentAdvancedFlowExample: PaymentComponentDelegate {
 
 }
 
-extension InstantPaymentComponentAdvancedFlowExample: ActionComponentDelegate {
+extension InstantPaymentComponentAdvancedFlow: ActionComponentDelegate {
 
     internal func didFail(with error: Error, from component: ActionComponent) {
         finish(with: error)
@@ -167,14 +167,14 @@ extension InstantPaymentComponentAdvancedFlowExample: ActionComponentDelegate {
     }
 }
 
-extension InstantPaymentComponentAdvancedFlowExample: PresentationDelegate {
+extension InstantPaymentComponentAdvancedFlow: PresentationDelegate {
     internal func present(component: PresentableComponent) {
         let componentViewController = viewController(for: component)
         presenter?.present(viewController: componentViewController, completion: nil)
     }
 }
 
-private extension InstantPaymentComponentAdvancedFlowExample {
+private extension InstantPaymentComponentAdvancedFlow {
     
     private func viewController(for component: PresentableComponent) -> UIViewController {
         guard component.requiresModalPresentation else {

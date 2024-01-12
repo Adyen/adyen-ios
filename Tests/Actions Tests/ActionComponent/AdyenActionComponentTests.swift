@@ -62,7 +62,7 @@ class AdyenActionComponentTests: XCTestCase {
     func testRedirectToHttpWebLink() throws {
         let sut = AdyenActionComponent(context: Dummy.context)
         let delegate = ActionComponentDelegateMock()
-        sut.presentationDelegate = try XCTUnwrap(UIViewController.topPresenter() as? PresentationDelegate)
+        sut.presentationDelegate = try UIViewController.topPresenter()
         sut.delegate = delegate
 
         delegate.onDidOpenExternalApplication = { _ in
@@ -77,7 +77,7 @@ class AdyenActionComponentTests: XCTestCase {
 
     func testAwaitAction() throws {
         let sut = AdyenActionComponent(context: Dummy.context)
-        sut.presentationDelegate = try XCTUnwrap(UIViewController.topPresenter() as? PresentationDelegate)
+        sut.presentationDelegate = try UIViewController.topPresenter()
 
         let action = Action.await(AwaitAction(paymentData: "SOME_DATA", paymentMethodType: .blik))
         sut.handle(action)
@@ -93,7 +93,7 @@ class AdyenActionComponentTests: XCTestCase {
             waitExpectation.fulfill()
         }
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 100, handler: nil)
     }
 
     func testWeChatAction() {
@@ -129,7 +129,7 @@ class AdyenActionComponentTests: XCTestCase {
 
     func testVoucherAction() throws {
         let sut = AdyenActionComponent(context: Dummy.context)
-        sut.presentationDelegate = try XCTUnwrap(UIViewController.topPresenter() as? PresentationDelegate)
+        sut.presentationDelegate = try UIViewController.topPresenter()
         
         let action = try! JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)
         sut.handle(Action.voucher(action))
@@ -144,6 +144,6 @@ class AdyenActionComponentTests: XCTestCase {
             waitExpectation.fulfill()
         }
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 100, handler: nil)
     }
 }

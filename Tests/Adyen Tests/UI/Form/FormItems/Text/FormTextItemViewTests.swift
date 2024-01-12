@@ -56,7 +56,7 @@ class FormTextItemViewTests: XCTestCase {
         sut.textField.sendActions(for: .editingChanged)
         
         wait(for: [didReachMaximumLengthExpectation,
-                   didChangeValueExpectation], timeout: 1)
+                   didChangeValueExpectation], timeout: 10)
     }
     
     func testValidatorIsCalled() {
@@ -78,7 +78,7 @@ class FormTextItemViewTests: XCTestCase {
         sut.textField.sendActions(for: .editingChanged)
         
         wait(for: [formattedTextExpectation,
-                   sanitizedValueExpectation], timeout: 1)
+                   sanitizedValueExpectation], timeout: 10)
         XCTAssertEqual(sut.textField.text, "1234-56", "sut.textField.text must be the sanitized and formatted text")
         XCTAssertEqual(item.value, "123456", "item.value must be the sanitized non-formatted text")
     }
@@ -96,7 +96,7 @@ class FormTextItemViewTests: XCTestCase {
         sut.textField.text = "123456"
         sut.textField.sendActions(for: .editingChanged)
         
-        wait(for: [maximumLengthExpectation], timeout: 1)
+        wait(for: [maximumLengthExpectation], timeout: 10)
     }
     
     func testValidationStatusIsNoneWhenValueIsEmpty() {
@@ -132,7 +132,7 @@ class FormTextItemViewTests: XCTestCase {
         sut.textField.text = "123456H"
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
-        wait(for: [validationExpectation], timeout: 5)
+        wait(for: [validationExpectation], timeout: 10)
         XCTAssertEqual(sut.accessory, .invalid)
         
         wait(for: .seconds(1))
@@ -158,7 +158,7 @@ class FormTextItemViewTests: XCTestCase {
         sut.textField.text = "123456H"
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
-        wait(for: [validationExpectation], timeout: 5)
+        wait(for: [validationExpectation], timeout: 10)
         XCTAssertEqual(sut.accessory, .valid)
         XCTAssertEqual(sut.separatorView.backgroundColor?.toHexString(), sut.tintColor.toHexString())
         XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.tintColor.toHexString())

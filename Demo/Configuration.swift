@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -148,9 +148,11 @@ internal struct DemoAppSettings: Codable {
         }
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [2, 3, 4], includesRevolving: true)
         let visaInstallmentOptions = InstallmentOptions(monthValues: [3, 4, 6], includesRevolving: false)
-        return InstallmentConfiguration(cardBasedOptions: [.visa: visaInstallmentOptions],
-                                        defaultOptions: defaultInstallmentOptions,
-                                        showInstallmentAmount: cardSettings.showsInstallmentAmount)
+        return InstallmentConfiguration(
+            cardBasedOptions: [.visa: visaInstallmentOptions],
+            defaultOptions: defaultInstallmentOptions,
+            showInstallmentAmount: cardSettings.showsInstallmentAmount
+        )
     }
     
     internal static let defaultConfiguration = DemoAppSettings(

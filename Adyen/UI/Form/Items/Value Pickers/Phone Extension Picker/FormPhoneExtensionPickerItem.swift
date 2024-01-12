@@ -20,14 +20,15 @@ public typealias PhoneExtensionPickerItem = BasePickerElement<PhoneExtension>
 /// Describes a picker item.
 @_spi(AdyenInternal)
 public final class FormPhoneExtensionPickerItem: BaseFormPickerItem<PhoneExtension> {
-    
+
     /// Initializes the picker item.
     ///
     /// - Parameter selectableValues: The list of values to select from.
     /// - Parameter style: The `FormPhoneExtensionPickerItem` UI style.
-    internal init(selectableValues: [PhoneExtensionPickerItem], style: FormTextItemStyle) {
+    override internal init(preselectedValue: PhoneExtensionPickerItem,
+                           selectableValues: [PhoneExtensionPickerItem],
+                           style: FormTextItemStyle) {
         assert(selectableValues.count > 0)
-        let preselectedValue = selectableValues.first(where: { $0.identifier == Locale.current.regionCode }) ?? selectableValues[0]
         super.init(preselectedValue: preselectedValue, selectableValues: selectableValues, style: style)
     }
 

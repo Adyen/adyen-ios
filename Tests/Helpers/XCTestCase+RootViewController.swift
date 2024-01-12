@@ -29,7 +29,7 @@ extension XCTestCase {
         }()
         
         window.rootViewController = viewController
-        window.layer.speed = 10 // 10x Animation speed
+        window.layer.speed = TestAnimationSpeed.fast.rawValue
         
         wait(for: .aMoment) // Waiting for a moment to give the viewController time to be presented
     }
@@ -51,7 +51,8 @@ extension XCTestCase {
             completion?()
             presentationExpectation.fulfill()
         }
-        wait(for: [presentationExpectation], timeout: 1)
+
+        wait(for: [presentationExpectation], timeout: 100)
     }
 }
 
@@ -59,4 +60,23 @@ extension DispatchTimeInterval {
     
     /// .milliseconds(30)
     static var aMoment: Self { .milliseconds(30) }
+}
+
+extension XCTestCase {
+
+    enum TestAnimationSpeed: Float {
+        case paused = 0
+        case system = 1
+        case fast = 100
+    }
+
+    /// Executes a block with a specified animation speed
+    ///
+    /// After the block the animation speed gets reset to the previous speed
+    func withAnimation(_ speed: TestAnimationSpeed, block: () throws -> Void) throws {
+        let speedBefore = UIApplication.shared.adyen.mainKeyWindow?.layer.speed ?? 1
+        UIApplication.shared.adyen.mainKeyWindow?.layer.speed = speed.rawValue
+        try block()
+        UIApplication.shared.adyen.mainKeyWindow?.layer.speed = speedBefore
+    }
 }

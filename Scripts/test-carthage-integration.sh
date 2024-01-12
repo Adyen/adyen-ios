@@ -92,13 +92,16 @@ targets:
       - framework: Carthage/Build/AdyenWeChatPay.xcframework
         embed: true
         codeSign: true
-      - framework: Carthage/Build/AdyenAuthentication.xcframework
+      - framework: Carthage/Build/AdyenDelegatedAuthentication.xcframework
         embed: true
         codeSign: true
       - framework: Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/Adyen3DS2.xcframework
         embed: true
         codeSign: true
       - framework: Carthage/Build/AdyenNetworking.xcframework
+        embed: true
+        codeSign: true
+      - framework: Carthage/Build/AdyenAuthentication.xcframework
         embed: true
         codeSign: true
       - framework: Carthage/Build/AdyenSwiftUI.xcframework
@@ -126,14 +129,17 @@ cp "../Tests/DropIn Tests/DropInTests.swift" Tests/DropInTests.swift
 cp "../Tests/DropIn Tests/DropInDelegateMock.swift" Tests/DropInDelegateMock.swift
 cp "../Tests/Card Tests/Mocks/OpenExternalAppDetector+Mock.swift" Tests/OpenExternalAppDetector+Mock.swift
 cp "../Tests/Card Tests/3DS2 Component/ThreeDS2PlusDACoreActionHandlerTests.swift" Tests/ThreeDS2PlusDACoreActionHandlerTests.swift
+cp "../Tests/Card Tests/3DS2 Component/ThreeDS2PlusDACoreActionHandlerTests+Constants.swift" Tests/ThreeDS2PlusDACoreActionHandlerTests+Constants.swift
 cp "../Tests/Card Tests/3DS2 Component/AnyADYServiceMock.swift" Tests/AnyADYServiceMock.swift
 cp "../Tests/Card Tests/3DS2 Component/AuthenticationServiceMock.swift" Tests/AuthenticationServiceMock.swift
 cp "../Tests/Card Tests/3DS2 Component/ThreeDSResultExtension.swift" Tests/ThreeDSResultExtension.swift
 cp "../Tests/Helpers/XCTestCase+RootViewController.swift" Tests/XCTestCase+RootViewController.swift
 cp "../Tests/Helpers/XCTestCase+Wait.swift" Tests/XCTestCase+Wait.swift
 cp "../Tests/Helpers/UIViewController+Search.swift" Tests/UIViewController+Search.swift
+cp "../Tests/Helpers/PaymentMethods+Equatable.swift" Tests/PaymentMethods+Equatable.swift
 cp "../Tests/Adyen Tests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsProviderMock.swift
 cp "../Tests/DummyData/Dummy.swift" Tests/Dummy.swift
+cp "../Demo/Common/Utils/APIClientMock.swift" Tests/APIClientMock.swift
 cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/
 cp "../Demo/Configuration.swift" Source/Configuration.swift

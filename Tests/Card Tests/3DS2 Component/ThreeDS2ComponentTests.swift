@@ -302,7 +302,7 @@ class ThreeDS2ComponentTests: XCTestCase {
     }
     
     func testSettingRequestorAppURLWithInitializer() throws {
-        let configuration = ThreeDS2Component.Configuration(requestorAppURL: URL(string: "http://google.com"))
+        let configuration = ThreeDS2Component.Configuration(requestorAppURL: URL(string: "https://google.com"))
         let sut = ThreeDS2Component(context: Dummy.context,
                                     configuration: configuration,
                                     presentationDelegate: nil)
@@ -314,7 +314,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         let threeDS2CompactFlowHandler = AnyThreeDS2ActionHandlerMock()
         let threeDS2ClassicFlowHandler = AnyThreeDS2ActionHandlerMock()
         let redirectComponent = AnyRedirectComponentMock()
-        let configuration = ThreeDS2Component.Configuration(requestorAppURL: URL(string: "http://google.com"))
+        let configuration = ThreeDS2Component.Configuration(requestorAppURL: URL(string: "https://google.com"))
         let sut = ThreeDS2Component(context: Dummy.context,
                                     threeDS2CompactFlowHandler: threeDS2CompactFlowHandler,
                                     threeDS2ClassicFlowHandler: threeDS2ClassicFlowHandler,
