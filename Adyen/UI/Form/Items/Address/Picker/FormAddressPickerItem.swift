@@ -219,7 +219,7 @@ public extension FormAddressPickerItem.AddressType {
     func placeholder(with localizationParameters: LocalizationParameters?) -> String {
         switch self {
         case .billing: return localizedString(.billingAddressPlaceholder, localizationParameters)
-        case .delivery: return "DELIVERY" // localizedString(.deliveryAddressPlaceholder, localizationParameters) // TODO: Get translations
+        case .delivery: return localizedString(.deliveryAddressPlaceholder, localizationParameters)
         }
     }
     
