@@ -29,7 +29,7 @@ extension CardViewController {
         
         private let addressViewModelBuilder: AddressViewModelBuilder
         
-        private let presenter: ViewControllerPresenting
+        private let presenter: WeakReferenceViewControllerPresenter
         
         private let addressMode: CardComponent.AddressFormType
 
@@ -207,21 +207,4 @@ extension CardViewController {
 
     }
 
-}
-
-internal class ViewControllerPresenting: ViewControllerPresenter {
-    
-    private weak var presenter: ViewControllerPresenter?
-    
-    internal init(_ presenter: ViewControllerPresenter) {
-        self.presenter = presenter
-    }
-    
-    internal func presentViewController(_ viewController: UIViewController, animated: Bool) {
-        presenter?.presentViewController(viewController, animated: animated)
-    }
-    
-    internal func dismissViewController(animated: Bool) {
-        presenter?.dismissViewController(animated: animated)
-    }
 }
