@@ -432,7 +432,7 @@ class CardComponentTests: XCTestCase {
 
         wait(until: securityCodeItemView, at: \.titleLabel.textColor, is: titleColor)
         
-        focus(textItemView: securityCodeItemView)
+        try withAnimation(.none) { focus(textItemView: securityCodeItemView) }
         
         wait(until: securityCodeItemView, at: \.titleLabel.textColor, is: tintColor)
         wait(until: securityCodeItemView, at: \.separatorView.backgroundColor, is: tintColor)
