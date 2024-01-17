@@ -24,21 +24,21 @@ jobs:
           runtime: 'iOS-15-0'
           device: 'iPhone 13'
           displayname: 'iPhone-13'
-          os: 'macos-12-large'
+          os: 'macos-12-xl'
           needs_custom_sim: true
         
         - version: '14.2'
           device: 'iPhone 12'
           displayname: 'iPhone-12'
           runtime: 'iOS-14-2'
-          os: 'macos-12-large'
+          os: 'macos-12-xl'
           needs_custom_sim: true
           
         - version: '13.7'
           runtime: 'iOS-13-7'
           device: 'iPhone 11'
           displayname: 'iPhone-11'
-          os: 'macos-12-large'
+          os: 'macos-12-xl'
           needs_custom_sim: true
           
     steps:
