@@ -405,6 +405,9 @@ class CardComponentTests: XCTestCase {
     }
 
     func testTintColorCustomization() throws {
+        guard #available(iOS 17.0, *) else {
+            throw XCTSkip("This test is unfortunately very flaky on macos-12 runners that are needed to test on older iOS versions - so we skip it")
+        }
         
         var configuration = CardComponent.Configuration()
         
