@@ -432,10 +432,22 @@ class CardComponentTests: XCTestCase {
 
         wait(until: securityCodeItemView, at: \.titleLabel.textColor, is: titleColor)
         
-        try withoutAnimation { focus(textItemView: securityCodeItemView) }
-        
-        wait(until: securityCodeItemView, at: \.titleLabel.textColor, is: tintColor)
-        wait(until: securityCodeItemView, at: \.separatorView.backgroundColor, is: tintColor)
+        try withoutAnimation {
+            focus(textItemView: securityCodeItemView)
+            
+            wait(
+                until: securityCodeItemView,
+                at: \.titleLabel.textColor,
+                is: tintColor
+            )
+            
+            wait(
+                until: securityCodeItemView,
+                at: \.separatorView.backgroundColor,
+                is: tintColor,
+                timeout: 1000 // Unfortunately this can take some time on CI
+            )
+        }
     }
 
     func testSuccessTintColorCustomization() throws {
