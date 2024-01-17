@@ -80,9 +80,9 @@ extension XCTestCase {
         UIApplication.shared.adyen.mainKeyWindow?.layer.speed = previousLayerSpeed
     }
     
-    /// Executes a block with a specified animation speed
+    /// Executes a block with UIView animations disabled
     ///
-    /// After the block the animation speed gets reset to the previous speed
+    /// After the block the animation speed gets reset to the previous value
     func withoutAnimation(block: () throws -> Void) throws {
         let wereAnimationsEnabled = UIView.areAnimationsEnabled
         
