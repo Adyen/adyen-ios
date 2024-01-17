@@ -29,7 +29,7 @@ extension XCTestCase {
         }()
         
         window.rootViewController = viewController
-        window.layer.speed = TestAnimationSpeed.fast.rawValue
+        window.layer.speed = TestAnimationSpeed.fast.multiplier ?? 1
         
         wait(for: .aMoment) // Waiting for a moment to give the viewController time to be presented
     }
