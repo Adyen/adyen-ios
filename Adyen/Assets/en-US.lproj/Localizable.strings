@@ -198,8 +198,8 @@
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Cancel";
 "adyen.picker.search.empty.title" = "No results found";
 "adyen.picker.search.empty.subtitle" = "'%@' did not match with anything";
-"adyen.address.lookup.search.placeholder" = "Search your address";
-"adyen.address.lookup.search.empty.title" = "Can't search your address?";
+"adyen.address.lookup.search.placeholder" = "Search for your address";
+"adyen.address.lookup.search.empty.title" = "Can't search for your address?";
 "adyen.address.lookup.search.empty.subtitle" = "You can always #enter your address manually#";
 "adyen.address.lookup.search.empty.title.noResults" = "No results found";
 "adyen.address.lookup.search.empty.subtitle.noResults" = "'%@' did not match with anything, try again or use #manual address entry#";
