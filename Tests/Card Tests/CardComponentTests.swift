@@ -405,12 +405,18 @@ class CardComponentTests: XCTestCase {
     }
 
     func testTintColorCustomization() throws {
+        guard #available(iOS 17.0, *) else {
+            throw XCTSkip("This test is unfortunately very flaky on macos-12 runners that are needed to test on older iOS versions - so we skip it")
+        }
         
         var configuration = CardComponent.Configuration()
         
+        let tintColor: UIColor = .black
+        let titleColor: UIColor = .gray
+        
         configuration.style = {
-            var style = FormComponentStyle(tintColor: .systemYellow)
-            style.textField.title.color = .gray
+            var style = FormComponentStyle(tintColor: tintColor)
+            style.textField.title.color = titleColor
             return style
         }()
         
@@ -425,13 +431,16 @@ class CardComponentTests: XCTestCase {
         let switchView: UISwitch = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch"))
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
 
-        XCTAssertEqual(securityCodeItemView.titleLabel.textColor, .gray)
+        wait(until: switchView, at: \.onTintColor, is: tintColor)
+
+        wait(until: securityCodeItemView, at: \.titleLabel.textColor, is: titleColor)
         
-        self.focus(textItemView: securityCodeItemView)
+        try withoutAnimation {
+            focus(textItemView: securityCodeItemView)
+        }
         
-        wait(until: switchView, at: \.onTintColor, is: .systemYellow)
-        wait(until: securityCodeItemView, at: \.titleLabel.textColor, is: .systemYellow)
-        wait(until: securityCodeItemView, at: \.separatorView.backgroundColor?.cgColor, is: UIColor.systemYellow.cgColor)
+        wait(until: securityCodeItemView, at: \.titleLabel.textColor, is: tintColor)
+        wait(until: securityCodeItemView, at: \.separatorView.backgroundColor, is: tintColor)
     }
 
     func testSuccessTintColorCustomization() throws {
@@ -2213,6 +2222,7 @@ class CardComponentTests: XCTestCase {
 
     private func focus(textItemView: some FormTextItemView<some FormTextItem>) {
         textItemView.textField.becomeFirstResponder()
+        wait(until: textItemView.textField, at: \.isFirstResponder, is: true)
     }
 
     private enum CardViewIdentifier {

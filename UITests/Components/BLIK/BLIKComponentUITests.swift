@@ -97,8 +97,7 @@ final class BLIKComponentUITests: XCTestCase {
         
         endEditing(for: sut.viewController.view)
         
-        // Pausing animation to assure the spinner is always in the same state when taking the snapshot
-        try withAnimation(.paused) {
+        try withoutAnimation {
             // start loading
             submitButton.showsActivityIndicator = true
             wait(until: submitButton, at: \.showsActivityIndicator, is: true)
