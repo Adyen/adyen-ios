@@ -13,6 +13,10 @@ public struct AddressLookupStyle: ViewStyle {
     public var search: AddressLookupSearchStyle = .init()
     public var form: FormComponentStyle = .init()
     
+    /// Initializes the address lookup style.
+    ///
+    /// - Parameter search: The address lookup search style
+    /// - Parameter form: The form style
     public init(
         search: AddressLookupSearchStyle = .init(),
         form: FormComponentStyle = .init()
