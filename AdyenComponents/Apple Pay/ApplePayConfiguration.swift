@@ -99,6 +99,7 @@ extension ApplePayComponent {
                 throw ApplePayComponent.Error.emptyMerchantIdentifier
             }
             self.paymentRequest = paymentRequest
+            self.allowOnboarding = allowOnboarding
             
             self.merchantIdentifier = paymentRequest.merchantIdentifier
             self.applePayPayment = try ApplePayPayment(countryCode: paymentRequest.countryCode,
