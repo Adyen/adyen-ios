@@ -13,7 +13,7 @@ internal final class FormCardSecurityCodeItem: FormTextItem {
     internal var localizationParameters: LocalizationParameters?
     
     /// :nodoc:
-    @Observable(nil) internal var selectedCard: CardType?
+    @AdyenObservable(nil) internal var selectedCard: CardType?
     
     /// Initializes the form card number item.
     internal init(environment: Environment,

@@ -21,7 +21,7 @@ public extension Observer {
     /// - Returns: An observation, representing the created observation. Can be used to remove the observation later.
     @discardableResult
     func observe<T: EventPublisher>(_ eventPublisher: T, eventHandler: @escaping EventHandler<T.Event>) -> Observation {
-        return observationManager.observe(eventPublisher, eventHandler: eventHandler)
+        observationManager.observe(eventPublisher, eventHandler: eventHandler)
     }
     
     /// Binds the value of an observable to a key path.
@@ -33,7 +33,7 @@ public extension Observer {
     ///   - keyPath: The key path to set the new values.
     /// - Returns: An observation that represents the binding. Can be used to remove the binding later.
     @discardableResult
-    func bind<Value, Target: AnyObject>(_ observable: Observable<Value>, to target: Target, at keyPath: ReferenceWritableKeyPath<Target, Value>) -> Observation {
+    func bind<Value, Target: AnyObject>(_ observable: AdyenObservable<Value>, to target: Target, at keyPath: ReferenceWritableKeyPath<Target, Value>) -> Observation {
         // Set the initial value.
         target[keyPath: keyPath] = observable.wrappedValue
         
@@ -70,7 +70,7 @@ public extension Observer {
 }
 
 /// The keys used for associated objects.
-private struct AssociatedKeys {
+private enum AssociatedKeys {
     
     /// The observation manager associated with the object.
     public static var observationManager = "observationManager"

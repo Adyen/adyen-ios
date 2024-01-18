@@ -22,8 +22,8 @@ internal final class FormCardNumberItem: FormTextItem {
     
     /// The observable of the card's BIN value.
     /// The value contains up to 6 first digits of card' PAN.
-    @Observable("") internal var binValue: String
-    
+    @AdyenObservable("") internal var binValue: String
+
     /// :nodoc:
     private let localizationParameters: LocalizationParameters?
     
@@ -86,7 +86,7 @@ extension FormCardNumberItem {
         internal let url: URL
         
         /// Indicates if the card type logo should be hidden.
-        @Observable(false) internal var isHidden: Bool
+        @AdyenObservable(false) internal var isHidden: Bool
         
         /// Initializes the card type logo.
         ///
