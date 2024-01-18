@@ -113,7 +113,7 @@ final class BLIKComponentUITests: XCTestCase {
         
         let submitButton: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
 
-        try withAnimation(.paused) {
+        try withoutAnimation {
             // start loading
             submitButton.showsActivityIndicator = true
             wait(until: submitButton, at: \.showsActivityIndicator, is: true)
