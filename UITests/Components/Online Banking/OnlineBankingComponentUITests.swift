@@ -107,7 +107,7 @@ class OnlineBankingComponentUITests: XCTestCase {
             sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
         )
 
-        try withAnimation(.paused) {
+        try withoutAnimation {
             // start loading
             button.showsActivityIndicator = true
             wait(until: button, at: \.showsActivityIndicator, is: true)
