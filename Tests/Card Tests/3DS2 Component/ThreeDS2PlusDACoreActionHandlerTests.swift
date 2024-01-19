@@ -63,8 +63,8 @@ import XCTest
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
                                                       appearanceConfiguration: ADYAppearanceConfiguration(),
                                                       delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations, presentationDelegate: nil)
-            sut.threeDSRequestorAppURL = URL(string: "http://google.com")
-            XCTAssertEqual(sut.threeDSRequestorAppURL, URL(string: "http://google.com"))
+            sut.threeDSRequestorAppURL = URL(string: "https://google.com")
+            XCTAssertEqual(sut.threeDSRequestorAppURL, URL(string: "https://google.com"))
         }
         
         func testWrappedComponent() throws {
@@ -169,7 +169,7 @@ import XCTest
 
             let transaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
             transaction.onPerformChallenge = { params, completion in
-                XCTAssertEqual(params.threeDSRequestorAppURL, URL(string: "http://google.com"))
+                XCTAssertEqual(params.threeDSRequestorAppURL, URL(string: "https://google.com"))
                 completion(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y"), nil)
             }
             service.mockedTransaction = transaction
@@ -196,7 +196,7 @@ import XCTest
                                                       presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .register, showApprovalScreenReturnState: .fallback),
                                                       delegatedAuthenticationService: authenticationServiceMock,
                                                       deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true))
-            sut.threeDSRequestorAppURL = URL(string: "http://google.com")
+            sut.threeDSRequestorAppURL = URL(string: "https://google.com")
             sut.transaction = transaction
             sut.delegatedAuthenticationState.isDeviceRegistrationFlow = true
             sut.handle(challengeAction, event: analyticsEvent) { challengeResult in
@@ -554,7 +554,7 @@ import XCTest
 
             let transaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
             transaction.onPerformChallenge = { params, completion in
-                XCTAssertEqual(params.threeDSRequestorAppURL, URL(string: "http://google.com"))
+                XCTAssertEqual(params.threeDSRequestorAppURL, URL(string: "https://google.com"))
                 completion(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y"), nil)
             }
             service.mockedTransaction = transaction
@@ -577,7 +577,7 @@ import XCTest
                                                       presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
                                                       delegatedAuthenticationService: authenticationServiceMock,
                                                       deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true))
-            sut.threeDSRequestorAppURL = URL(string: "http://google.com")
+            sut.threeDSRequestorAppURL = URL(string: "https://google.com")
             sut.transaction = transaction
             sut.delegatedAuthenticationState.isDeviceRegistrationFlow = true
             sut.handle(challengeAction, event: analyticsEvent) { challengeResult in

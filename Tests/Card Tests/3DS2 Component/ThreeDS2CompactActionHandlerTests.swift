@@ -43,8 +43,8 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
     
     func testSettingThreeDSRequestorAppURL() {
         let sut = ThreeDS2CompactActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration(), presentationDelegate: nil)
-        sut.threeDSRequestorAppURL = URL(string: "http://google.com")
-        XCTAssertEqual(sut.coreActionHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
+        sut.threeDSRequestorAppURL = URL(string: "https://google.com")
+        XCTAssertEqual(sut.coreActionHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
     }
 
     func testWrappedComponent() {
@@ -105,7 +105,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         let sut = ThreeDS2CompactActionHandler(context: Dummy.context, service: service, presentationDelegate: nil)
-        sut.threeDSRequestorAppURL = URL(string: "http://google.com")
+        sut.threeDSRequestorAppURL = URL(string: "https://google.com")
         sut.transaction = transaction
         sut.handle(challengeAction) { challengeResult in
             switch challengeResult {

@@ -296,9 +296,9 @@ class ThreeDS2ComponentTests: XCTestCase {
     
     func testSettingRequestorAppURL() throws {
         let sut = ThreeDS2Component(context: Dummy.context, presentationDelegate: nil)
-        sut.configuration.requestorAppURL = URL(string: "http://google.com")
-        XCTAssertEqual(sut.threeDS2CompactFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
-        XCTAssertEqual(sut.threeDS2ClassicFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
+        sut.configuration.requestorAppURL = URL(string: "https://google.com")
+        XCTAssertEqual(sut.threeDS2CompactFlowHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
+        XCTAssertEqual(sut.threeDS2ClassicFlowHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
     }
     
     func testSettingRequestorAppURLWithInitializer() throws {
@@ -306,8 +306,8 @@ class ThreeDS2ComponentTests: XCTestCase {
         let sut = ThreeDS2Component(context: Dummy.context,
                                     configuration: configuration,
                                     presentationDelegate: nil)
-        XCTAssertEqual(sut.threeDS2CompactFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
-        XCTAssertEqual(sut.threeDS2ClassicFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
+        XCTAssertEqual(sut.threeDS2CompactFlowHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
+        XCTAssertEqual(sut.threeDS2ClassicFlowHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
     }
     
     func testSettingRequestorAppURLWithInitializerAndInjectedHandlers() throws {
@@ -321,8 +321,8 @@ class ThreeDS2ComponentTests: XCTestCase {
                                     redirectComponent: redirectComponent,
                                     configuration: configuration,
                                     presentationDelegate: nil)
-        XCTAssertEqual(sut.threeDS2CompactFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
-        XCTAssertEqual(sut.threeDS2ClassicFlowHandler.threeDSRequestorAppURL, URL(string: "http://google.com"))
+        XCTAssertEqual(sut.threeDS2CompactFlowHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
+        XCTAssertEqual(sut.threeDS2ClassicFlowHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
     }
 
     func testChallengeSuccess() throws {
