@@ -222,6 +222,8 @@
 		81FAFB442AAF715F00828999 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
 		A009837D279859DC007E68C4 /* ACHDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */; };
 		A009837F27986B50007E68C4 /* BankDetailsEncryptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */; };
+		A00F73A32B3DA38A00E9252B /* DisableStoredPaymentMethodRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00F73A22B3DA38A00E9252B /* DisableStoredPaymentMethodRequest.swift */; };
+		A00F73A52B3DB67B00E9252B /* AdyenSession+StoredPaymentMethodsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00F73A42B3DB67B00E9252B /* AdyenSession+StoredPaymentMethodsDelegate.swift */; };
 		A0113D9B2763887800AD395C /* ActionNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0113D9A2763887800AD395C /* ActionNavigationBar.swift */; };
 		A013F98126AFF72D00602633 /* BrazilSocialSecurityNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */; };
 		A018094826FDD345003A8DE3 /* FormCardNumberContainerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A018094726FDD345003A8DE3 /* FormCardNumberContainerItem.swift */; };
@@ -1459,6 +1461,8 @@
 		81EF2FE02AF3D75C001FE82F /* InstantPaymentComponentAdvancedFlowExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantPaymentComponentAdvancedFlowExample.swift; sourceTree = "<group>"; };
 		A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankDetailsEncryptorTests.swift; sourceTree = "<group>"; };
+		A00F73A22B3DA38A00E9252B /* DisableStoredPaymentMethodRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisableStoredPaymentMethodRequest.swift; sourceTree = "<group>"; };
+		A00F73A42B3DB67B00E9252B /* AdyenSession+StoredPaymentMethodsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AdyenSession+StoredPaymentMethodsDelegate.swift"; sourceTree = "<group>"; };
 		A0113D9A2763887800AD395C /* ActionNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionNavigationBar.swift; sourceTree = "<group>"; };
 		A018094726FDD345003A8DE3 /* FormCardNumberContainerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardNumberContainerItem.swift; sourceTree = "<group>"; };
 		A01D775529B250C10075BD70 /* CashAppPayDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPayDetails.swift; sourceTree = "<group>"; };
@@ -2800,6 +2804,14 @@
 				A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */,
 			);
 			path = "ACH Direct Debit";
+			sourceTree = "<group>";
+		};
+		A00F73A12B3D9FF900E9252B /* Disable Stored Payments */ = {
+			isa = PBXGroup;
+			children = (
+				A00F73A22B3DA38A00E9252B /* DisableStoredPaymentMethodRequest.swift */,
+			);
+			path = "Disable Stored Payments";
 			sourceTree = "<group>";
 		};
 		A020EC5829ED33CF0050B2FE /* Cash App Pay */ = {
@@ -4600,6 +4612,7 @@
 				F9B8AF5D27DA4EA400DC0894 /* AdyenSession+DropInComponentDelegate.swift */,
 				F92980C327CF558E000CA5CA /* AdyenSession+ActionComponentDelegate.swift */,
 				F92980C527CF563C000CA5CA /* AdyenSession+PartialPaymentDelegate.swift */,
+				A00F73A42B3DB67B00E9252B /* AdyenSession+StoredPaymentMethodsDelegate.swift */,
 				A0DDA6A62A6162F500EBD6AF /* AdyenSessionResult.swift */,
 			);
 			path = AdyenSession;
@@ -4845,6 +4858,7 @@
 				F967580727D10CE800A16FB6 /* Payments */,
 				F967580827D10CF700A16FB6 /* Payment Details */,
 				F967580627D10CB100A16FB6 /* Partial Payments API */,
+				A00F73A12B3D9FF900E9252B /* Disable Stored Payments */,
 				F967580D27D1253000A16FB6 /* SelfRetainingAPIClient.swift */,
 				A04E60CC27DFA2BD0051C72C /* SessionAPIClient.swift */,
 			);
@@ -7163,7 +7177,9 @@
 				F9B8AF5E27DA4EA400DC0894 /* AdyenSession+DropInComponentDelegate.swift in Sources */,
 				F92980B227CE2B55000CA5CA /* AdyenSession.swift in Sources */,
 				A0DDA6A72A6162F500EBD6AF /* AdyenSessionResult.swift in Sources */,
+				A00F73A52B3DB67B00E9252B /* AdyenSession+StoredPaymentMethodsDelegate.swift in Sources */,
 				F92980C427CF558E000CA5CA /* AdyenSession+ActionComponentDelegate.swift in Sources */,
+				A00F73A32B3DA38A00E9252B /* DisableStoredPaymentMethodRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

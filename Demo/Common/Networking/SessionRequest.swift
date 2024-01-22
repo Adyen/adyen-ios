@@ -55,6 +55,10 @@ internal struct SessionRequest: APIRequest {
             try container.encode("askForConsent", forKey: .storePaymentMethodMode)
             try container.encode("CardOnFile", forKey: .recurringProcessingModel)
         }
+        
+        if ConfigurationConstants.current.dropInSettings.allowDisablingStoredPaymentMethods {
+            try container.encode(true, forKey: .showRemovePaymentMethodButton)
+        }
     }
     
     internal enum CodingKeys: CodingKey {
@@ -74,6 +78,7 @@ internal struct SessionRequest: APIRequest {
         case storePaymentMethodMode
         case recurringProcessingModel
         case showInstallmentAmount
+        case showRemovePaymentMethodButton
     }
     
 }

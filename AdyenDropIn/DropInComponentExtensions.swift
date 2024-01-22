@@ -43,6 +43,7 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
             self?.reloadComponentManager()
         }
         storedPaymentMethodsDelegate?.disable(storedPaymentMethod: paymentMethod, completion: deletionCompletion)
+        storedPaymentMethodsDelegate?.disable(storedPaymentMethod: paymentMethod, dropInComponent: self, completion: deletionCompletion)
     }
 }
 

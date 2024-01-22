@@ -84,7 +84,19 @@ public protocol StoredPaymentMethodsDelegate: AnyObject {
     ///   - completion: The delegate need to call back this closure when the disabling is done,
     ///    with a boolean parameter that indicates success or failure.
     func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping Completion<Bool>)
-    
+        
+    /// Invoked when shopper wants to delete a stored payment method from the drop-in.
+    ///
+    /// - Parameters:
+    ///   - storedPaymentMethod: The stored payment method that the user wants to disable.
+    ///   - dropInComponent: The dropIn component containing the stored payment method list.
+    ///   - completion: The delegate need to call back this closure when the disabling is done,
+    ///    with a boolean parameter that indicates success or failure.
+    func disable(storedPaymentMethod: StoredPaymentMethod, dropInComponent: AnyDropInComponent?, completion: @escaping Completion<Bool>)
+}
+
+public extension StoredPaymentMethodsDelegate {
+    func disable(storedPaymentMethod: StoredPaymentMethod, dropInComponent: AnyDropInComponent?, completion: @escaping Completion<Bool>) {}
 }
 
 /// Provides default empty implementations for some of the `DropInComponentDelegate` functions.

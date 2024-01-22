@@ -11,3 +11,9 @@ import Foundation
 public protocol StorePaymentMethodFieldAware: AdyenSessionAware {
     var showStorePaymentMethodField: Bool? { get }
 }
+
+@_spi(AdyenInternal)
+/// Describles whether it is possible to allow removing stored payment methods.
+public protocol StoredPaymentMethodRemovable: AdyenSessionAware {
+    var showRemovePaymentMethodButton: Bool { get }
+}

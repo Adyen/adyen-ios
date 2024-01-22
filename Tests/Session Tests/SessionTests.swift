@@ -70,6 +70,7 @@ class SessionTests: XCTestCase {
                 XCTAssertEqual(session.sessionContext.paymentMethods, expectedPaymentMethods)
                 XCTAssertEqual(session.sessionContext.amount, .init(value: 220, currencyCode: "USD"))
                 XCTAssertFalse(session.sessionContext.configuration.enableStoreDetails)
+                XCTAssertFalse(session.sessionContext.configuration.showRemovePaymentMethodButton)
             }
             expectation.fulfill()
         }
@@ -302,7 +303,7 @@ class SessionTests: XCTestCase {
                                      paymentMethods: expectedPaymentMethods,
                                      amount: expectedAmount,
                                      sessionData: "session_data_xxx",
-                                     configuration: .init(installmentOptions: nil, enableStoreDetails: true))
+                                     configuration: .init(installmentOptions: nil, enableStoreDetails: true, showRemovePaymentMethodButton: true))
             )
         ]
         let apiCallsExpectation = expectation(description: "Expect two API calls to be made")
@@ -319,6 +320,7 @@ class SessionTests: XCTestCase {
         XCTAssertEqual(sut.sessionContext.data, "session_data_xxx")
         XCTAssertNil(sut.sessionContext.configuration.installmentOptions)
         XCTAssertTrue(sut.sessionContext.configuration.enableStoreDetails)
+        XCTAssertTrue(sut.sessionContext.configuration.showRemovePaymentMethodButton)
     }
     
     func testDidSubmitFailure() throws {

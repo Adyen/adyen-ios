@@ -36,7 +36,7 @@ public struct PrefilledShopperInformation: ShopperInformation {
     @available(*, deprecated, message:
         """
         This property is no longer supported.
-        Please use phone Number instead.
+        Please use phoneNumber instead.
         """)
     public var telephoneNumber: String?
 
