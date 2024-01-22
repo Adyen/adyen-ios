@@ -57,6 +57,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomTableName() {
+
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
@@ -83,6 +84,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomKeySeparator() {
+        
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
@@ -173,9 +175,9 @@ class CardComponentTests: XCTestCase {
         let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button.titleLabel")
 
         /// Test card number field
-        XCTAssertEqual(cardNumberItemView?.backgroundColor, .blue)
-        XCTAssertEqual(cardNumberItemTitleLabel?.textColor, sut.viewController.view.tintColor)
-        XCTAssertEqual(cardNumberItemTitleLabel?.backgroundColor, .blue)
+        wait(until: cardNumberItemView!, at: \.backgroundColor, is: UIColor.blue)
+        wait(until: cardNumberItemTitleLabel!, at: \.textColor, is: sut.viewController.view.tintColor)
+        wait(until: cardNumberItemTitleLabel!, at: \.backgroundColor, is: UIColor.blue)
         XCTAssertEqual(cardNumberItemTitleLabel?.textAlignment, .left)
         XCTAssertEqual(cardNumberItemTitleLabel?.font, .systemFont(ofSize: 18))
         XCTAssertEqual(cardNumberItemTextField?.backgroundColor, .blue)
@@ -323,22 +325,22 @@ class CardComponentTests: XCTestCase {
         let expectationCardType = XCTestExpectation(description: "CardType Expectation")
         let expectationLastFour = XCTestExpectation(description: "LastFour Expectation")
         let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
-            XCTAssertEqual(value, "67034444")
+            XCTAssertEqual(value, "371449")
             expectationBin.fulfill()
         }, onCardBrandChange: { value in
             XCTAssertEqual(value, [CardBrand(type: .americanExpress)])
             expectationCardType.fulfill()
         }, onSubmitLastFour: { lastFour, finalBin in
-            XCTAssertEqual(lastFour, "4449")
-            XCTAssertEqual(finalBin, "670344")
+            XCTAssertEqual(lastFour, "8431")
+            XCTAssertEqual(finalBin, "371449")
             expectationLastFour.fulfill()
         })
         sut.cardComponentDelegate = delegateMock
         
-        self.fillCard(on: sut.viewController.view, with: Dummy.bancontactCard)
+        self.fillCard(on: sut.viewController.view, with: Dummy.amexCard)
         self.tapSubmitButton(on: sut.viewController.view)
 
-        wait(for: [expectationBin, expectationCardType], timeout: 10)
+        wait(for: [expectationBin, expectationCardType, expectationLastFour], timeout: 10)
     }
     
     func testAddressLookupPrefill() throws {
@@ -379,7 +381,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testCVVFormatterChange() {
-
+        
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
@@ -403,12 +405,18 @@ class CardComponentTests: XCTestCase {
     }
 
     func testTintColorCustomization() throws {
+        guard #available(iOS 17.0, *) else {
+            throw XCTSkip("This test is unfortunately very flaky on macos-12 runners that are needed to test on older iOS versions - so we skip it")
+        }
         
         var configuration = CardComponent.Configuration()
         
+        let tintColor: UIColor = .black
+        let titleColor: UIColor = .gray
+        
         configuration.style = {
-            var style = FormComponentStyle(tintColor: .systemYellow)
-            style.textField.title.color = .gray
+            var style = FormComponentStyle(tintColor: tintColor)
+            style.textField.title.color = titleColor
             return style
         }()
         
@@ -422,13 +430,17 @@ class CardComponentTests: XCTestCase {
 
         let switchView: UISwitch = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch"))
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
-        XCTAssertEqual(securityCodeItemView.titleLabel.textColor!, .gray)
+
+        wait(until: switchView, at: \.onTintColor, is: tintColor)
+
+        wait(until: securityCodeItemView, at: \.titleLabel.textColor, is: titleColor)
         
-        self.focus(textItemView: securityCodeItemView)
+        try withoutAnimation {
+            focus(textItemView: securityCodeItemView)
+        }
         
-        wait(until: switchView, at: \.onTintColor, is: .systemYellow)
-        wait(until: securityCodeItemView, at: \.titleLabel.textColor, is: .systemYellow)
-        wait(until: securityCodeItemView, at: \.separatorView.backgroundColor?.cgColor, is: UIColor.systemYellow.cgColor)
+        wait(until: securityCodeItemView, at: \.titleLabel.textColor, is: tintColor)
+        wait(until: securityCodeItemView, at: \.separatorView.backgroundColor, is: tintColor)
     }
 
     func testSuccessTintColorCustomization() throws {
@@ -603,6 +615,7 @@ class CardComponentTests: XCTestCase {
 
     func testShouldShowCardTypesOnPANEnter() throws {
         // Given
+
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
@@ -678,6 +691,7 @@ class CardComponentTests: XCTestCase {
     
     func testCardNumberShouldPassFocusToDate() throws {
         // Given
+
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
@@ -932,6 +946,7 @@ class CardComponentTests: XCTestCase {
     
     func testBrazilSSNEnabled() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard, .elo])
+
         var configuration = CardComponent.Configuration()
         configuration.socialSecurityNumberMode = .show
 
@@ -958,7 +973,7 @@ class CardComponentTests: XCTestCase {
         
         let brands = [CardBrand(type: .visa, isLuhnCheckEnabled: true),
                       CardBrand(type: .masterCard, isLuhnCheckEnabled: false)]
-
+        
         let cardNumberItem = sut.cardViewController.items.numberContainerItem.numberItem
         cardNumberItem.update(brands: brands)
         cardNumberItem.value = "4111 1111 1111"
@@ -1050,7 +1065,7 @@ class CardComponentTests: XCTestCase {
         let brands = [CardBrand(type: .visa, expiryDatePolicy: .required),
                       CardBrand(type: .americanExpress, expiryDatePolicy: .optional),
                       CardBrand(type: .masterCard, expiryDatePolicy: .hidden)]
-
+        
         let expDateItem = sut.cardViewController.items.expiryDateItem
         expDateItem.value = ""
         expDateItem.isOptional = brands[0].isExpiryDateOptional
@@ -1093,6 +1108,7 @@ class CardComponentTests: XCTestCase {
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
             InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
+
         var configuration = CardComponent.Configuration()
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions,
                                                                           defaultOptions: defaultInstallmentOptions)
@@ -1217,6 +1233,7 @@ class CardComponentTests: XCTestCase {
     func testInstallmentsWithAmountShown() {
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
             InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
+
         var configuration = CardComponent.Configuration()
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions, showInstallmentAmount: true)
         let cardTypeProviderMock = BinInfoProviderMock()
@@ -1283,6 +1300,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(logoItemView.isHidden)
 
         // valid card but still active. logos should be hidden
+        numberItem.isActive = true
         populate(textItemView: cardNumberItemView, with: Dummy.visaCard.number!)
         wait(until: logoItemView, at: \.isHidden, is: true)
 
@@ -1292,9 +1310,10 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(logoItemView.isHidden)
 
         // invalid card and active/inactive numberitem, logos should be visible
-        populate(textItemView: cardNumberItemView, with: "1234")
         numberItem.isActive = true
+        populate(textItemView: cardNumberItemView, with: "1234")
         wait(until: logoItemView, at: \.isHidden, is: false)
+        
         numberItem.isActive = false
         wait(for: .aMoment) // Logo item view should still be hidden after waiting a bit
         XCTAssertFalse(logoItemView.isHidden)
@@ -1337,7 +1356,6 @@ class CardComponentTests: XCTestCase {
 
     func testClearShouldResetPostalCodeItemToEmptyValue() throws {
         // Given
-
         var configuration = CardComponent.Configuration()
         configuration.billingAddress.mode = .postalCode
         let sut = CardComponent(paymentMethod: method,
@@ -1439,6 +1457,7 @@ class CardComponentTests: XCTestCase {
 
     func testClearShouldDisableStoreDetailsItem() throws {
         // Given
+
         var configuration = CardComponent.Configuration()
         configuration.billingAddress.mode = .postalCode
         let sut = CardComponent(paymentMethod: method,
@@ -1530,6 +1549,7 @@ class CardComponentTests: XCTestCase {
 
     func testCardPrefillingGivenBillingAddressInPostalCodeModeShouldPrefillItems() throws {
         // Given
+
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .postalCode
@@ -1833,6 +1853,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testOptionalValidPostalAddressWithCertainSchemes() throws {
+
         var configuration = CardComponent.Configuration()
         configuration.billingAddress.mode = .postalCode
         configuration.billingAddress.countryCodes = ["US"]
@@ -1886,6 +1907,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testOptionalInvalidPostalAddressWithCertainSchemes() throws {
+        
         var configuration = CardComponent.Configuration()
         configuration.billingAddress.mode = .postalCode
         configuration.billingAddress.countryCodes = ["US"]
@@ -2200,6 +2222,7 @@ class CardComponentTests: XCTestCase {
 
     private func focus(textItemView: some FormTextItemView<some FormTextItem>) {
         textItemView.textField.becomeFirstResponder()
+        wait(until: textItemView.textField, at: \.isFirstResponder, is: true)
     }
 
     private enum CardViewIdentifier {

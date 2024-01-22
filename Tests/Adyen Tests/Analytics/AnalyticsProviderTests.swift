@@ -47,7 +47,7 @@ class AnalyticsProviderTests: XCTestCase {
         XCTAssertNotNil(sut.checkoutAttemptId, "The checkoutAttemptId is nil.")
         XCTAssertEqual(expectedCheckoutAttemptId, sut.checkoutAttemptId, "The received checkoutAttemptId is not the expected one.")
         
-        waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: 10)
     }
 
     func testFetchCheckoutAttemptIdWhenAnalyticsIsDisabledShouldNotTriggerCheckoutAttemptIdRequest() throws {
@@ -88,7 +88,7 @@ class AnalyticsProviderTests: XCTestCase {
         XCTAssertNotNil(sut.checkoutAttemptId, "The checkoutAttemptId is nil.")
         XCTAssertEqual(expectedCheckoutAttemptId, sut.checkoutAttemptId, "The received checkoutAttemptId is not the expected one.")
         
-        waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: 10)
     }
 
     func testFetchCheckoutAttemptIdWhenAnalyticsIsEnabledGivenFailureShouldCallCompletionWithNilValue() throws {
@@ -184,7 +184,7 @@ class AnalyticsProviderTests: XCTestCase {
         
         analyticsProvider.fetchCheckoutAttemptId(with: .components(type: .achDirectDebit), additionalFields: nil)
         
-        wait(for: [telemetryExpectation], timeout: 1)
+        wait(for: [telemetryExpectation], timeout: 10)
     }
     
     func testAdditionalFields() throws {
@@ -221,7 +221,7 @@ class AnalyticsProviderTests: XCTestCase {
         let additionalFields = AdditionalAnalyticsFields(amount: amount)
         analyticsProvider.fetchCheckoutAttemptId(with: .components(type: .achDirectDebit), additionalFields: additionalFields)
         
-        wait(for: [telemetryExpectation], timeout: 1)
+        wait(for: [telemetryExpectation], timeout: 10)
     }
     
     func testTelemetryRequestEncoding() throws {

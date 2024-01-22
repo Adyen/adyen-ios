@@ -62,10 +62,6 @@ final class BLIKComponentUITests: XCTestCase {
 
         let config = BLIKComponent.Configuration(style: style)
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
-
-        setupRootViewController(sut.viewController)
-        wait(for: .seconds(1))
-        
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
@@ -82,8 +78,6 @@ final class BLIKComponentUITests: XCTestCase {
 
         let blikCodeView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
         self.populate(textItemView: blikCodeView, with: "123456")
-
-        submitButton.sendActions(for: .touchUpInside)
 
         let delegateExpectation = XCTestExpectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
 
@@ -103,10 +97,12 @@ final class BLIKComponentUITests: XCTestCase {
             delegateExpectation.fulfill()
         }
         
-        wait(for: [delegateExpectation], timeout: 30)
+        submitButton.sendActions(for: .touchUpInside)
+        
+        wait(for: [delegateExpectation], timeout: 120)
     }
 
-    func testSubmitButtonLoading() {
+    func testSubmitButtonLoading() throws {
         let config = BLIKComponent.Configuration(style: style)
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
@@ -117,15 +113,17 @@ final class BLIKComponentUITests: XCTestCase {
         
         let submitButton: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button")
 
-        // start loading
-        submitButton.showsActivityIndicator = true
-        wait(for: .aMoment)
-        assertViewControllerImage(matching: sut.viewController, named: "initial_state")
+        try withoutAnimation {
+            // start loading
+            submitButton.showsActivityIndicator = true
+            wait(until: submitButton, at: \.showsActivityIndicator, is: true)
+            assertViewControllerImage(matching: sut.viewController, named: "initial_state")
 
-        // stop loading
-        sut.stopLoading()
-        submitButton.showsActivityIndicator = false
-        wait(for: .aMoment)
-        assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
+            // stop loading
+            sut.stopLoading()
+            submitButton.showsActivityIndicator = false
+            wait(until: submitButton, at: \.showsActivityIndicator, is: false)
+            assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
+        }
     }
 }

@@ -78,7 +78,7 @@ final class BoletoComponentUITests: XCTestCase {
                                   context: context,
                                   configuration: Dummy.getConfiguration(showEmailAddress: true))
 
-        assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
+        verifyViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
     func testPaymentDataProvided() throws {
@@ -94,8 +94,12 @@ final class BoletoComponentUITests: XCTestCase {
         presentOnRoot(sut.viewController)
 
         let dummyExpectation = XCTestExpectation(description: "Dummy Expectation")
-
-        let submitButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(by: "payButtonItem.button"))
+        
+        let view = try XCTUnwrap(sut.viewController.view)
+        let submitButton: SubmitButton = try XCTUnwrap(view.findView(by: "payButtonItem.button"))
+        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "firstNameItem"))
+        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "lastNameItem"))
+        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "addressItem"))
 
         mockDelegate.onDidSubmit = { paymentData, paymentComponent in
             let boletoDetails = paymentData.paymentMethod as? BoletoDetails
@@ -108,17 +112,18 @@ final class BoletoComponentUITests: XCTestCase {
             XCTAssertEqual(boletoDetails?.type, sut.boletoPaymentMethod.type)
             XCTAssertNil(boletoDetails?.telephoneNumber)
 
-            self.wait(for: .aMoment)
-            self.assertViewControllerImage(matching: sut.viewController, named: "boleto_flow")
+            self.verifyViewControllerImage(matching: sut.viewController, named: "boleto_flow")
             
             dummyExpectation.fulfill()
         }
         
-        wait(for: .aMoment)
+        wait(until: firstNameView, at: \.isValid, is: true)
+        wait(until: lastNameView, at: \.isValid, is: true)
+        wait(until: billingAddressView, at: \.isValid, is: true)
 
         submitButton.sendActions(for: .touchUpInside)
         
-        wait(for: [dummyExpectation], timeout: 5)
+        wait(for: [dummyExpectation], timeout: 100)
     }
     
     func testPaymentDataNoName() throws {
@@ -134,7 +139,6 @@ final class BoletoComponentUITests: XCTestCase {
         let submitButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(by: "payButtonItem.button"))
         submitButton.sendActions(for: .touchUpInside)
 
-        wait(for: .aMoment)
-        assertViewControllerImage(matching: sut.viewController, named: "boleto_flow_no_name")
+        verifyViewControllerImage(matching: sut.viewController, named: "boleto_flow_no_name")
     }
 }

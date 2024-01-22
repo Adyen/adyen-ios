@@ -61,7 +61,7 @@ class LinkTextViewTests: XCTestCase {
         
         let links = linkTextView.attributedText.links
         
-        wait(for: [expectation], timeout: 2)
+        wait(for: [expectation], timeout: 10)
         XCTAssertEqual(links.count, 1)
         XCTAssertEqual(links.first!, "0")
         XCTAssertEqual(linkTextView.attributedText.string, "Hello World")

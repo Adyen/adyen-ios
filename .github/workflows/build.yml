@@ -8,30 +8,38 @@ on:
     
 jobs:
   tests:
-    runs-on: macos-12
+    runs-on: ${{ matrix.os }}
     continue-on-error: false
     strategy:
       fail-fast: false
       matrix:
         include:
         
+        - version: '16.4'
+          displayname: 'iPhone 14'
+          os: 'macos-13-xl'
+          needs_custom_sim: false # Takes the shipped simulator that comes with Xcode 14
+        
         - version: '15.0'
-          device: 'iPhone 13'
           runtime: 'iOS-15-0'
+          device: 'iPhone 13'
           displayname: 'iPhone-13'
-          scheme: 'AdyenUIKitTests' # Only UnitTests as UI could differ between iOS versions
+          os: 'macos-12-xl'
+          needs_custom_sim: true
         
         - version: '14.2'
           device: 'iPhone 12'
           displayname: 'iPhone-12'
           runtime: 'iOS-14-2'
-          scheme: 'AdyenUIKitTests' # Only UnitTests as UI could differ between iOS versions
+          os: 'macos-12-xl'
+          needs_custom_sim: true
           
         - version: '13.7'
-          device: 'iPhone 11'
           runtime: 'iOS-13-7'
+          device: 'iPhone 11'
           displayname: 'iPhone-11'
-          scheme: 'AdyenUIKitTests' # Only UnitTests as UI could differ between iOS versions
+          os: 'macos-12-xl'
+          needs_custom_sim: true
           
     steps:
     - uses: actions/checkout@v4
@@ -43,7 +51,8 @@ jobs:
       run: |
         sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
 
-    - name: Prepare ${{ matrix.destination }}
+    - name: Prepare ${{ matrix.version }}
+      if: matrix.needs_custom_sim
       run: |
         xcversion simulators --install="iOS ${version}"
         xcrun simctl list devices ${version}
@@ -56,9 +65,10 @@ jobs:
 
     - name: Build and test
       run: |
-        xcodebuild build test -project ${project} -scheme "${scheme}" ${params} -destination ${destination} | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild build test -project ${project} -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
         params: "-skipPackagePluginValidation"
-        scheme: ${{ matrix.scheme }}
+        scheme: 'AdyenUIKitTests'
         destination: "OS=${{ matrix.version }},name=${{ matrix.displayname }}"
+

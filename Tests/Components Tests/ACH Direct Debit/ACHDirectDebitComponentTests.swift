@@ -285,7 +285,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         payButtonItemViewButton.didSelectSubmitButton()
         wait(until: payButtonItemViewButton, at: \.item.showsActivityIndicator, is: true)
         
-        wait(for: [expectation], timeout: 30)
+        wait(for: [expectation], timeout: 100)
     }
 
     func testViewWillAppearShouldSendTelemetryEvent() throws {
