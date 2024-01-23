@@ -282,7 +282,7 @@
 		A0D48FB827109B0200C0B82C /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */; };
 		A0DB48662AFD020400348C83 /* AdyenAnalyticsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB48652AFD020400348C83 /* AdyenAnalyticsRequest.swift */; };
 		A0DB48682AFD068400348C83 /* AdyenAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB48672AFD068400348C83 /* AdyenAnalytics.swift */; };
-		A0DB486A2AFD0BDC00348C83 /* AdyenAnalyticsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB48692AFD0BDC00348C83 /* AdyenAnalyticsEvent.swift */; };
+		A0DB486A2AFD0BDC00348C83 /* AdyenAnalyticsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB48692AFD0BDC00348C83 /* AdyenAnalyticsInfo.swift */; };
 		A0DB486C2AFD0BEE00348C83 /* AdyenAnalyticsLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB486B2AFD0BEE00348C83 /* AdyenAnalyticsLog.swift */; };
 		A0DB486E2AFD0BFC00348C83 /* AdyenAnalyticsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB486D2AFD0BFC00348C83 /* AdyenAnalyticsError.swift */; };
 		A0DDA6A72A6162F500EBD6AF /* AdyenSessionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DDA6A62A6162F500EBD6AF /* AdyenSessionResult.swift */; };
@@ -1521,7 +1521,7 @@
 		A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayHelpers.swift; sourceTree = "<group>"; };
 		A0DB48652AFD020400348C83 /* AdyenAnalyticsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenAnalyticsRequest.swift; sourceTree = "<group>"; };
 		A0DB48672AFD068400348C83 /* AdyenAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenAnalytics.swift; sourceTree = "<group>"; };
-		A0DB48692AFD0BDC00348C83 /* AdyenAnalyticsEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenAnalyticsEvent.swift; sourceTree = "<group>"; };
+		A0DB48692AFD0BDC00348C83 /* AdyenAnalyticsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenAnalyticsInfo.swift; sourceTree = "<group>"; };
 		A0DB486B2AFD0BEE00348C83 /* AdyenAnalyticsLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenAnalyticsLog.swift; sourceTree = "<group>"; };
 		A0DB486D2AFD0BFC00348C83 /* AdyenAnalyticsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenAnalyticsError.swift; sourceTree = "<group>"; };
 		A0DDA6A62A6162F500EBD6AF /* AdyenSessionResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSessionResult.swift; sourceTree = "<group>"; };
@@ -3130,7 +3130,7 @@
 			children = (
 				C9B6683627C8D7FB006950B9 /* TelemetryData.swift */,
 				A0DB48672AFD068400348C83 /* AdyenAnalytics.swift */,
-				A0DB48692AFD0BDC00348C83 /* AdyenAnalyticsEvent.swift */,
+				A0DB48692AFD0BDC00348C83 /* AdyenAnalyticsInfo.swift */,
 				A0DB486B2AFD0BEE00348C83 /* AdyenAnalyticsLog.swift */,
 				A0DB486D2AFD0BFC00348C83 /* AdyenAnalyticsError.swift */,
 			);
@@ -6662,7 +6662,7 @@
 				E2C0E096220B04F0008616F6 /* FormViewController.swift in Sources */,
 				F9FE25D62626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift in Sources */,
 				F99D4556262717A500880D72 /* FormErrorItemView.swift in Sources */,
-				A0DB486A2AFD0BDC00348C83 /* AdyenAnalyticsEvent.swift in Sources */,
+				A0DB486A2AFD0BDC00348C83 /* AdyenAnalyticsInfo.swift in Sources */,
 				F96286BD256BDEB000043FE3 /* CoreBundleExtension.swift in Sources */,
 				E7085D7D262EEF6200D0153B /* AllRegions.swift in Sources */,
 				F919DF9124E682480027976E /* ClientKeyResponse.swift in Sources */,

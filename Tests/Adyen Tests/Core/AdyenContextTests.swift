@@ -21,10 +21,8 @@ class AdyenContextTests: XCTestCase {
             payment: .init(amount: oneEUR, countryCode: "NL")
         )
         
-//        XCTAssertEqual(context.analyticsProvider.additionalFields?().amount, oneEUR)
-        
+        XCTAssertEqual(context.payment?.amount, oneEUR)
         context.update(payment: Payment(amount: twoEUR, countryCode: "NL"))
-        
-//        XCTAssertEqual(context.analyticsProvider.additionalFields?().amount, twoEUR)
+        XCTAssertEqual(context.payment?.amount, twoEUR)
     }
 }

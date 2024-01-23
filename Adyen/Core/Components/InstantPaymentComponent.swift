@@ -56,7 +56,8 @@ public final class InstantPaymentComponent: PaymentComponent {
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     public func initiatePayment() {
-        // we can attempt to fetch the checkoutAttemptId but it won't be ready for the payment
+        // We are not attempting to fetch the checkoutAttemptId as it won't be ready for the payment
+        // and we don't want to block it for an analytics call.
         submit(data: paymentData)
     }
 }

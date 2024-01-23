@@ -42,14 +42,10 @@ public struct AdditionalAnalyticsFields {
 }
 
 @_spi(AdyenInternal)
-public protocol InitialTelemetryProtocol {
+public protocol AnalyticsProviderProtocol {
     
     /// Sends the initial data and retrieves the checkout attempt id as a response.
-    func fetchCheckoutAttemptId(with flavor: TelemetryFlavor, additionalFields: AdditionalAnalyticsFields?)
-}
-
-@_spi(AdyenInternal)
-public protocol AnalyticsProviderProtocol: InitialTelemetryProtocol {
+    func sendInitialAnalytics(with flavor: TelemetryFlavor, additionalFields: AdditionalAnalyticsFields?)
     
     var checkoutAttemptId: String? { get }
 }
@@ -65,7 +61,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     
     private var batchTimer: Timer?
     
-    private var events: [AdyenAnalytics.Event] = []
+    private var infos: [AdyenAnalytics.Info] = []
     private var logs: [AdyenAnalytics.Log] = []
     private var errors: [AdyenAnalytics.Error] = []
 
@@ -82,7 +78,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
 
     // MARK: - Internal
 
-    internal func fetchCheckoutAttemptId(with flavor: TelemetryFlavor, additionalFields: AdditionalAnalyticsFields?) {
+    internal func sendInitialAnalytics(with flavor: TelemetryFlavor, additionalFields: AdditionalAnalyticsFields?) {
         guard configuration.isEnabled, configuration.isTelemetryEnabled else {
             checkoutAttemptId = "do-not-track"
             return
@@ -105,8 +101,8 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
         }
     }
     
-    internal func send(event: AdyenAnalytics.Event) {
-        events.append(event)
+    internal func send(info: AdyenAnalytics.Info) {
+        infos.append(info)
     }
     
     internal func send(log: AdyenAnalytics.Log) {
@@ -129,7 +125,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
               let checkoutAttemptId else { return }
         var request = AdyenAnalyticsRequest(checkoutAttemptId: checkoutAttemptId)
         
-        request.events = events
+        request.infos = infos
         request.logs = logs
         request.errors = errors
         
@@ -140,7 +136,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     }
     
     private func clearAll() {
-        events = []
+        infos = []
         logs = []
         errors = []
     }

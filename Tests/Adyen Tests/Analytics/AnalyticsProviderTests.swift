@@ -39,7 +39,7 @@ class AnalyticsProviderTests: XCTestCase {
         let fetchCheckoutAttemptIdExpection = expectation(description: "checkoutAttemptId completion")
 
         // When
-        sut.fetchCheckoutAttemptId(with: .components(type: .achDirectDebit), additionalFields: nil)
+        sut.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
         fetchCheckoutAttemptIdExpection.fulfill()
         
         wait(for: .milliseconds(200))
@@ -58,7 +58,7 @@ class AnalyticsProviderTests: XCTestCase {
         let sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         // When
-        sut.fetchCheckoutAttemptId(with: .components(type: .affirm), additionalFields: nil)
+        sut.sendInitialAnalytics(with: .components(type: .affirm), additionalFields: nil)
         XCTAssertEqual(sut.checkoutAttemptId, "do-not-track")
     }
 
@@ -79,7 +79,7 @@ class AnalyticsProviderTests: XCTestCase {
         let fetchCheckoutAttemptIdExpection = expectation(description: "checkoutAttemptId completion")
 
         // When
-        sut.fetchCheckoutAttemptId(with: .components(type: .achDirectDebit), additionalFields: nil)
+        sut.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
         fetchCheckoutAttemptIdExpection.fulfill()
         
         wait(for: .milliseconds(200))
@@ -104,7 +104,7 @@ class AnalyticsProviderTests: XCTestCase {
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
         // When
-        sut.fetchCheckoutAttemptId(with: .dropInComponent, additionalFields: nil)
+        sut.sendInitialAnalytics(with: .dropInComponent, additionalFields: nil)
         // Then
         XCTAssertNil(sut.checkoutAttemptId, "The checkoutAttemptId is not nil.")
     }
@@ -126,7 +126,7 @@ class AnalyticsProviderTests: XCTestCase {
         let fetchCheckoutAttemptIdExpection = expectation(description: "checkoutAttemptId completion")
 
         // When
-        sut.fetchCheckoutAttemptId(with: .components(type: .atome), additionalFields: nil)
+        sut.sendInitialAnalytics(with: .components(type: .atome), additionalFields: nil)
         fetchCheckoutAttemptIdExpection.fulfill()
         
         wait(for: .milliseconds(200))
@@ -150,7 +150,7 @@ class AnalyticsProviderTests: XCTestCase {
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
         // When
-        sut.fetchCheckoutAttemptId(with: .components(type: .affirm), additionalFields: nil)
+        sut.sendInitialAnalytics(with: .components(type: .affirm), additionalFields: nil)
         // Then
         XCTAssertEqual(sut.checkoutAttemptId, "do-not-track")
     }
@@ -182,7 +182,7 @@ class AnalyticsProviderTests: XCTestCase {
         
         // When
         
-        analyticsProvider.fetchCheckoutAttemptId(with: .components(type: .achDirectDebit), additionalFields: nil)
+        analyticsProvider.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
         
         wait(for: [telemetryExpectation], timeout: 10)
     }
@@ -219,7 +219,7 @@ class AnalyticsProviderTests: XCTestCase {
         
         // When
         let additionalFields = AdditionalAnalyticsFields(amount: amount)
-        analyticsProvider.fetchCheckoutAttemptId(with: .components(type: .achDirectDebit), additionalFields: additionalFields)
+        analyticsProvider.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: additionalFields)
         
         wait(for: [telemetryExpectation], timeout: 10)
     }

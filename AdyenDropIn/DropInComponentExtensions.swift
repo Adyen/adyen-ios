@@ -25,7 +25,7 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
         let flavor = TelemetryFlavor.dropIn(paymentMethods: paymentMethodTypes)
         let amount = context.payment?.amount
         let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AdyenAnalytics.sessionId)
-        context.analyticsProvider.fetchCheckoutAttemptId(with: flavor, additionalFields: additionalFields)
+        context.analyticsProvider.sendInitialAnalytics(with: flavor, additionalFields: additionalFields)
     }
     
     internal func didSelect(_ component: PaymentComponent,

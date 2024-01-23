@@ -25,7 +25,7 @@ internal struct AdyenAnalyticsRequest: APIRequest {
     
     internal var channel: String = "iOS"
     
-    internal var events: [AdyenAnalytics.Event] = []
+    internal var infos: [AdyenAnalytics.Info] = []
     
     internal var logs: [AdyenAnalytics.Log] = []
     
@@ -37,7 +37,7 @@ internal struct AdyenAnalyticsRequest: APIRequest {
     
     private enum CodingKeys: String, CodingKey {
         case channel
-        case events
+        case infos = "info"
         case logs
         case errors
         

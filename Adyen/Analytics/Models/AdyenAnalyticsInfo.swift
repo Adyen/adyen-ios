@@ -8,13 +8,13 @@ import Foundation
 
 extension AdyenAnalytics {
     
-    /// Represents an event in the analytics scheme that can occur 
+    /// Represents an info event  in the analytics scheme that can occur
     /// many times during the checkout flow, such as input field focus/unfocus etc.
-    internal struct Event: AdyenAnalyticsCommonFields {
+    internal struct Info: AdyenAnalyticsCommonFields {
         
         internal var commonFields: AdyenAnalytics.CommonFields
         
-        internal var type: EventType
+        internal var type: InfoType
         
         internal var target: String
         
@@ -27,7 +27,7 @@ extension AdyenAnalytics {
         internal var validationErrorMessage: String
     }
     
-    internal enum EventType: String, Encodable {
+    internal enum InfoType: String, Encodable {
         case selected = "Selected"
         case focus = "Focus"
         case unfocus = "Unfocus"

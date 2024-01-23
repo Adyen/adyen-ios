@@ -13,7 +13,7 @@ import XCTest
 class TelemetryTrackerTests: XCTestCase {
 
     var apiClient: APIClientMock!
-    var sut: InitialTelemetryProtocol!
+    var sut: AnalyticsProviderProtocol!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -31,7 +31,7 @@ class TelemetryTrackerTests: XCTestCase {
     }
     
     private func sendInitialTelemetry(flavor: TelemetryFlavor = .components(type: .achDirectDebit)) {
-        sut.fetchCheckoutAttemptId(with: flavor, additionalFields: nil)
+        sut.sendInitialAnalytics(with: flavor, additionalFields: nil)
     }
 
     func testSendTelemetryEventGivenAnalyticsIsDisabledAndTelemetryIsEnabledShouldNotSendAnyRequest() throws {
@@ -63,6 +63,7 @@ class TelemetryTrackerTests: XCTestCase {
 
         // Then
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "One or more telemetry requests were sent.")
+        XCTAssertEqual(sut.checkoutAttemptId, "do-not-track")
     }
 
     func testSendTelemetryEventGivenTelemetryIsEnabledAndFlavorIsDropInComponentShouldNotSendAnyRequest() throws {
@@ -79,6 +80,7 @@ class TelemetryTrackerTests: XCTestCase {
 
         // Then
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "One or more telemetry requests were sent.")
+        XCTAssertNil(sut.checkoutAttemptId)
     }
 
     func testSendTelemetryEventGivenTelemetryIsEnabledAndFlavorIsComponentsShouldSendTelemetryRequest() throws {
@@ -99,6 +101,7 @@ class TelemetryTrackerTests: XCTestCase {
         // Then
         wait(for: .milliseconds(1))
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "Invalid request number made.")
+        XCTAssertEqual(sut.checkoutAttemptId, "cb3eef98-978e-4f6f-b299-937a4450be1f1648546838056be73d8f38ee8bcc3a65ec14e41b037a59f255dcd9e83afe8c06bd3e7abcad993")
     }
 
     func testSendTelemetryEventGivenTelemetryIsEnabledAndFlavorIsDropInShouldSendTelemetryRequest() throws {

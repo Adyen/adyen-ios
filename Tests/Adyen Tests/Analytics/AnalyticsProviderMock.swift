@@ -15,7 +15,7 @@ class AnalyticsProviderMock: AnalyticsProviderProtocol {
 
     // MARK: - checkoutAttemptId
     
-    func fetchCheckoutAttemptId(with flavor: TelemetryFlavor, additionalFields: AdditionalAnalyticsFields?) {
+    func sendInitialAnalytics(with flavor: TelemetryFlavor, additionalFields: AdditionalAnalyticsFields?) {
         initialTelemetryEventCallsCount += 1
         checkoutAttemptId = _checkoutAttemptId
     }
