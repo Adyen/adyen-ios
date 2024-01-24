@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -51,7 +51,7 @@ open class BaseFormPickerItem<ElementType: CustomStringConvertible>: FormValueIt
     /// Initializes the picker item.
     ///
     /// - Parameter selectableValues: The list of values to select from.
-    /// - Parameter style: The `FormPhoneExtensionPickerItem` UI style.
+    /// - Parameter style: The `BaseFormPickerItem` UI style.
     public init(preselectedValue: BasePickerElement<ElementType>, selectableValues: [BasePickerElement<ElementType>], style: FormTextItemStyle) {
         assert(selectableValues.count > 0)
         super.init(value: preselectedValue, style: style)

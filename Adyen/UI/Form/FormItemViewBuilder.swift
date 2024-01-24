@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -30,8 +30,8 @@ public struct FormItemViewBuilder {
     
     /// Builds `FormPhoneExtensionPickerItemView` from `FormPhoneExtensionPickerItem`.
     @_spi(AdyenInternal)
-    public func build(with item: FormPhoneExtensionPickerItem) -> BaseFormPickerItemView<PhoneExtension> {
-        FormPhoneExtensionPickerItemView(item: item)
+    public func build(with item: FormPhoneCountryPrefixPickerItem) -> FormPickerItemView {
+        FormPickerItemView(item: item)
     }
 
     /// Builds `FormIssuerPickerItemView` from `FormIssuerPickerItem`.

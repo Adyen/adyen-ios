@@ -134,6 +134,7 @@
 		8109FF4F2AD84496000748C8 /* MapkitAddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA3B372AD040D800F5719D /* MapkitAddressLookupProvider.swift */; };
 		8109FF502AD84498000748C8 /* MapkitAddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA3B372AD040D800F5719D /* MapkitAddressLookupProvider.swift */; };
 		81129AE62A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81129AE52A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift */; };
+		812EA1402B595FD3004460CB /* FormPhoneCountryPrefixPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812EA13F2B595FD3004460CB /* FormPhoneCountryPrefixPickerItem.swift */; };
 		813BF1122B2365400096940E /* XCTestCase+FirstResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813BF1102B2364E00096940E /* XCTestCase+FirstResponder.swift */; };
 		813BF1132B2365400096940E /* XCTestCase+FirstResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813BF1102B2364E00096940E /* XCTestCase+FirstResponder.swift */; };
 		813EF9DE2A5DA0BC00C65D15 /* FormPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813EF9DD2A5DA0BC00C65D15 /* FormPickerItem.swift */; };
@@ -1402,6 +1403,7 @@
 		8109FF4B2AD5AD0C000748C8 /* OpenExternalAppDetector+DependencyKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenExternalAppDetector+DependencyKey.swift"; sourceTree = "<group>"; };
 		8109FF4D2AD6D8A9000748C8 /* MockAddressLookupProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAddressLookupProvider.swift; sourceTree = "<group>"; };
 		81129AE52A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchViewController+InterfaceState.swift"; sourceTree = "<group>"; };
+		812EA13F2B595FD3004460CB /* FormPhoneCountryPrefixPickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPhoneCountryPrefixPickerItem.swift; sourceTree = "<group>"; };
 		813BF1102B2364E00096940E /* XCTestCase+FirstResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FirstResponder.swift"; sourceTree = "<group>"; };
 		813EF9DD2A5DA0BC00C65D15 /* FormPickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItem.swift; sourceTree = "<group>"; };
 		813EF9E12A5DA2D400C65D15 /* FormPickerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItemView.swift; sourceTree = "<group>"; };
@@ -3713,6 +3715,7 @@
 				E7085B0E2628B29600D0153B /* FormPhoneExtensionPickerItemView.swift */,
 				E7085B0F2628B29600D0153B /* PhoneExtensionInputControl.swift */,
 				E7085B102628B29600D0153B /* FormPhoneExtensionPickerItem.swift */,
+				812EA13F2B595FD3004460CB /* FormPhoneCountryPrefixPickerItem.swift */,
 			);
 			path = "Phone Extension Picker";
 			sourceTree = "<group>";
@@ -6570,6 +6573,7 @@
 				E788A4FB2658034400089448 /* ShopperInformation.swift in Sources */,
 				E7085B172628B29600D0153B /* PhoneExtensionInputControl.swift in Sources */,
 				F926D52C23F59ABE00D058D3 /* QiwiWalletPaymentMethod.swift in Sources */,
+				812EA1402B595FD3004460CB /* FormPhoneCountryPrefixPickerItem.swift in Sources */,
 				A06B7AA72A274A83008FC09D /* ResultHelpers.swift in Sources */,
 				F97C857725C1D5BA00D7F85C /* UIViewHelpers.swift in Sources */,
 				E95E24C022C2593900973184 /* ApplePayPaymentMethod.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -32,6 +32,8 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     public var configuration: Configuration
     
     private let fields: [PersonalInformation]
+    
+    private weak var presenter: ViewControllerPresenter?
 
     internal lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
@@ -55,10 +57,12 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     /// - Parameter fields: The component's fields.
     /// - Parameter configuration: The Component's configuration.
     @_spi(AdyenInternal)
-    public init(paymentMethod: PaymentMethod,
-                context: AdyenContext,
-                fields: [PersonalInformation],
-                configuration: Configuration) {
+    public init(
+        paymentMethod: PaymentMethod,
+        context: AdyenContext,
+        fields: [PersonalInformation],
+        configuration: Configuration
+    ) {
         self.paymentMethod = paymentMethod
         self.context = context
         self.fields = fields
@@ -68,7 +72,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     // MARK: - Private
 
     private func build(_ formViewController: FormViewController) {
-        fields.forEach { field in
+        for field in fields {
             self.add(field, into: formViewController)
         }
         formViewController.append(FormSpacerItem())
@@ -172,20 +176,19 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     internal lazy var phoneItemInjector: PhoneFormItemInjector? = {
         guard fields.contains(.phone) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneNumberItem")
-        let injector = PhoneFormItemInjector(value: configuration.shopperInformation?.phoneNumber,
-                                             identifier: identifier,
-                                             phoneExtensions: selectableValues,
-                                             style: configuration.style.textField)
+        let injector = PhoneFormItemInjector(
+            value: configuration.shopperInformation?.phoneNumber,
+            identifier: identifier,
+            phoneExtensions: phoneExtensions(),
+            presenter: self,
+            style: configuration.style.textField
+        )
         injector.localizationParameters = configuration.localizationParameters
         return injector
     }()
 
     @_spi(AdyenInternal)
     public var phoneItem: FormPhoneNumberItem? { phoneItemInjector?.item }
-
-    private lazy var selectableValues: [PhoneExtensionPickerItem] = phoneExtensions().map {
-        PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0)
-    }
 
     /// The button item.
     internal lazy var button: FormButtonItem = {
