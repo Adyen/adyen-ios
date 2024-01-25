@@ -33,7 +33,7 @@ class BACSDirectDebitComponentTrackerTests: XCTestCase {
 
     func testSendTelemetryEventShouldCallAnalyticsProviderSendTelemetryEvent() throws {
         // When
-        sut.fetchCheckoutAttemptId()
+        sut.sendInitialAnalytics()
 
         // Then
         XCTAssertEqual(analyticsProvider.initialTelemetryEventCallsCount, 1)

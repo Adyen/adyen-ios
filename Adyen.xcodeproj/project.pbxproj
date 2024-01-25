@@ -435,7 +435,7 @@
 		E72375DD27AABF450020DCF9 /* AdyenWeChatPayInternal in Frameworks */ = {isa = PBXBuildFile; productRef = E72375DC27AABF450020DCF9 /* AdyenWeChatPayInternal */; };
 		E72521EE25517EB100533E35 /* BLIKComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72521ED25517EB100533E35 /* BLIKComponentTests.swift */; };
 		E7275BF9255012F600907CF9 /* FormLabelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7275BF8255012F600907CF9 /* FormLabelItem.swift */; };
-		E72D9BAA26A6E66800FBDA48 /* Dimentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72D9BA926A6E66800FBDA48 /* Dimentions.swift */; };
+		E72D9BAA26A6E66800FBDA48 /* Dimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72D9BA926A6E66800FBDA48 /* Dimensions.swift */; };
 		E72DA33F23E19DE300707638 /* PreselectedPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72DA33C23E19DE300707638 /* PreselectedPaymentMethodComponent.swift */; };
 		E72DA34123E1BE5300707638 /* DropInNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72DA34023E1BE5300707638 /* DropInNavigationController.swift */; };
 		E7388D8523DB1F9A008E62B8 /* DimmingPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7388D8423DB1F9A008E62B8 /* DimmingPresentationController.swift */; };
@@ -1699,7 +1699,7 @@
 		E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredBLIKPaymentMethod.swift; sourceTree = "<group>"; };
 		E72521ED25517EB100533E35 /* BLIKComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentTests.swift; sourceTree = "<group>"; };
 		E7275BF8255012F600907CF9 /* FormLabelItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabelItem.swift; sourceTree = "<group>"; };
-		E72D9BA926A6E66800FBDA48 /* Dimentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dimentions.swift; sourceTree = "<group>"; };
+		E72D9BA926A6E66800FBDA48 /* Dimensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dimensions.swift; sourceTree = "<group>"; };
 		E72DA33C23E19DE300707638 /* PreselectedPaymentMethodComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethodComponent.swift; sourceTree = "<group>"; };
 		E72DA34023E1BE5300707638 /* DropInNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropInNavigationController.swift; sourceTree = "<group>"; };
 		E736497E25277B6500AB76AE /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
@@ -3540,7 +3540,7 @@
 				E28098B9220DB9E70087928F /* List */,
 				E2C0E0BF220D7E53008616F6 /* Views */,
 				F9175F7625948EDF00D653BE /* View Controllers */,
-				E72D9BA926A6E66800FBDA48 /* Dimentions.swift */,
+				E72D9BA926A6E66800FBDA48 /* Dimensions.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -6478,7 +6478,7 @@
 				F96F44DD23BE487500871C1F /* LocalizationParameters.swift in Sources */,
 				E7085A8D2627132B00D0153B /* PostalAddress.swift in Sources */,
 				F9589D272601F19E00E4113F /* EmailFormItemInjector.swift in Sources */,
-				E72D9BAA26A6E66800FBDA48 /* Dimentions.swift in Sources */,
+				E72D9BAA26A6E66800FBDA48 /* Dimensions.swift in Sources */,
 				F9620DB323C75C19005209FC /* PaymentComponentBuilder.swift in Sources */,
 				F96757BF27CF690600A16FB6 /* PartialPaymentError.swift in Sources */,
 				E7085B122628B29600D0153B /* BasePickerInputControl.swift in Sources */,

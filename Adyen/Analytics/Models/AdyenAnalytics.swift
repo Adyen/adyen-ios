@@ -27,8 +27,3 @@ public final class AdyenAnalytics {
 internal protocol AdyenAnalyticsCommonFields: Encodable {
     var commonFields: AdyenAnalytics.CommonFields { get }
 }
-
-//@_spi(AdyenInternal)
-//public protocol AdyenAnalyticEvent {
-//    var commonFields: AdyenAnalytics.CommonFields { get }
-//}

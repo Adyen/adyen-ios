@@ -258,7 +258,7 @@ extension AbstractPersonalInformationComponent: ViewControllerDelegate {
     // MARK: - ViewControllerDelegate
 
     public func viewWillAppear(viewController: UIViewController) {
-        fetchCheckoutAttemptId()
+        sendInitialAnalytics()
         populateFields()
     }
 }

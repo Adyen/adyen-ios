@@ -16,7 +16,7 @@ class BACSDirectDebitComponentTrackerProtocolMock: BACSDirectDebitComponentTrack
 
     var initialTelemetryEventCallsCount = 0
     
-    func fetchCheckoutAttemptId() {
+    func sendInitialAnalytics() {
         initialTelemetryEventCallsCount += 1
     }
 }

@@ -30,7 +30,7 @@ class TelemetryTrackerTests: XCTestCase {
         try super.tearDownWithError()
     }
     
-    private func sendInitialTelemetry(flavor: TelemetryFlavor = .components(type: .achDirectDebit)) {
+    private func sendInitialAnalytics(flavor: TelemetryFlavor = .components(type: .achDirectDebit)) {
         sut.sendInitialAnalytics(with: flavor, additionalFields: nil)
     }
 
@@ -44,7 +44,7 @@ class TelemetryTrackerTests: XCTestCase {
         let expectedRequestCalls = 0
 
         // When
-        sendInitialTelemetry()
+        sendInitialAnalytics()
 
         // Then
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "One or more telemetry requests were sent.")
@@ -59,7 +59,7 @@ class TelemetryTrackerTests: XCTestCase {
         let expectedRequestCalls = 0
 
         // When
-        sendInitialTelemetry()
+        sendInitialAnalytics()
 
         // Then
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "One or more telemetry requests were sent.")
@@ -76,7 +76,7 @@ class TelemetryTrackerTests: XCTestCase {
         let expectedRequestCalls = 0
 
         // When
-        sendInitialTelemetry(flavor: flavor)
+        sendInitialAnalytics(flavor: flavor)
 
         // Then
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "One or more telemetry requests were sent.")
@@ -96,7 +96,7 @@ class TelemetryTrackerTests: XCTestCase {
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
         // When
-        sendInitialTelemetry(flavor: flavor)
+        sendInitialAnalytics(flavor: flavor)
 
         // Then
         wait(for: .milliseconds(1))
@@ -117,7 +117,7 @@ class TelemetryTrackerTests: XCTestCase {
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
         // When
-        sendInitialTelemetry(flavor: flavor)
+        sendInitialAnalytics(flavor: flavor)
 
         // Then
         wait(for: .milliseconds(1))

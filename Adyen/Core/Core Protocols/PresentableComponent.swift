@@ -63,13 +63,13 @@ public extension PresentableComponent {
 @_spi(AdyenInternal)
 public protocol TrackableComponent: Component {
     
-    func fetchCheckoutAttemptId()
+    func sendInitialAnalytics()
 }
 
 @_spi(AdyenInternal)
 extension TrackableComponent where Self: PaymentMethodAware {
     
-    public func fetchCheckoutAttemptId() {
+    public func sendInitialAnalytics() {
         let flavor: TelemetryFlavor = _isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
         let amount = context.payment?.amount
         let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AdyenAnalytics.sessionId)
@@ -82,6 +82,6 @@ extension TrackableComponent where Self: PaymentMethodAware {
 extension TrackableComponent where Self: ViewControllerDelegate {
     
     public func viewWillAppear(viewController: UIViewController) {
-        fetchCheckoutAttemptId()
+        sendInitialAnalytics()
     }
 }
