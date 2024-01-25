@@ -121,10 +121,16 @@ internal enum AnyPaymentMethodDecoder {
             return .none
         }
     }
+    
+    internal static func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod {
+        let paymentDecoder = decoders[paymentMethod.type] ?? defaultDecoder
+        return paymentDecoder.anyPaymentMethod(from: paymentMethod) ?? .instant(paymentMethod)
+    }
 }
 
 private protocol PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod?
 }
 
 private struct CardPaymentMethodDecoder: PaymentMethodDecoder {
@@ -134,6 +140,16 @@ private struct CardPaymentMethodDecoder: PaymentMethodDecoder {
         } else {
             return try .card(CardPaymentMethod(from: decoder))
         }
+    }
+    
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        if let method = paymentMethod as? StoredCardPaymentMethod {
+            return .storedCard(method)
+        }
+        if let method = paymentMethod as? CardPaymentMethod {
+            return .card(method)
+        }
+        return nil
     }
 }
 
@@ -145,11 +161,25 @@ private struct BCMCCardPaymentMethodDecoder: PaymentMethodDecoder {
             return try .card(BCMCPaymentMethod(from: decoder))
         }
     }
+    
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        if let method = paymentMethod as? StoredBCMCPaymentMethod {
+            return .storedBCMC(method)
+        }
+        if let method = paymentMethod as? BCMCPaymentMethod {
+            return .card(method)
+        }
+        return nil
+    }
 }
 
 private struct IssuerListPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .issuerList(IssuerListPaymentMethod(from: decoder))
+    }
+    
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? IssuerListPaymentMethod).map { .issuerList($0) }
     }
 }
 
@@ -157,11 +187,19 @@ private struct SEPADirectDebitPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .sepaDirectDebit(SEPADirectDebitPaymentMethod(from: decoder))
     }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? SEPADirectDebitPaymentMethod).map { .sepaDirectDebit($0) }
+    }
 }
 
 private struct BACSDirectDebitPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .bacsDirectDebit(BACSDirectDebitPaymentMethod(from: decoder))
+    }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? BACSDirectDebitPaymentMethod).map { .bacsDirectDebit($0) }
     }
 }
 
@@ -173,11 +211,25 @@ private struct ACHDirectDebitPaymentMethodDecoder: PaymentMethodDecoder {
             return try .achDirectDebit(ACHDirectDebitPaymentMethod(from: decoder))
         }
     }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        if let method = paymentMethod as? StoredACHDirectDebitPaymentMethod {
+            return .storedAchDirectDebit(method)
+        }
+        if let method = paymentMethod as? ACHDirectDebitPaymentMethod {
+            return .achDirectDebit(method)
+        }
+        return nil
+    }
 }
 
 private struct ApplePayPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .applePay(ApplePayPaymentMethod(from: decoder))
+    }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? ApplePayPaymentMethod).map { .applePay($0) }
     }
 }
 
@@ -189,6 +241,16 @@ private struct PayPalPaymentMethodDecoder: PaymentMethodDecoder {
             return try .instant(InstantPaymentMethod(from: decoder))
         }
     }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        if let method = paymentMethod as? StoredPayPalPaymentMethod {
+            return .storedPayPal(method)
+        }
+        if let method = paymentMethod as? InstantPaymentMethod {
+            return .instant(method)
+        }
+        return nil
+    }
 }
 
 private struct InstantPaymentMethodDecoder: PaymentMethodDecoder {
@@ -199,11 +261,25 @@ private struct InstantPaymentMethodDecoder: PaymentMethodDecoder {
             return try .instant(InstantPaymentMethod(from: decoder))
         }
     }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        if let method = paymentMethod as? StoredInstantPaymentMethod {
+            return .storedInstant(method)
+        }
+        if let method = paymentMethod as? InstantPaymentMethod {
+            return .instant(method)
+        }
+        return nil
+    }
 }
 
 private struct WeChatPayPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .weChatPay(WeChatPayPaymentMethod(from: decoder))
+    }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? WeChatPayPaymentMethod).map { .weChatPay($0) }
     }
 }
 
@@ -211,17 +287,29 @@ private struct UnsupportedPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         .none
     }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        nil
+    }
 }
 
 private struct QiwiWalletPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .qiwiWallet(QiwiWalletPaymentMethod(from: decoder))
     }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? QiwiWalletPaymentMethod).map { .qiwiWallet($0) }
+    }
 }
 
 private struct MBWayPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .mbWay(MBWayPaymentMethod(from: decoder))
+    }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? MBWayPaymentMethod).map { .mbWay($0) }
     }
 }
 
@@ -233,11 +321,25 @@ private struct BLIKPaymentMethodDecoder: PaymentMethodDecoder {
             return try .blik(BLIKPaymentMethod(from: decoder))
         }
     }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        if let method = paymentMethod as? StoredBLIKPaymentMethod {
+            return .storedBlik(method)
+        }
+        if let method = paymentMethod as? BLIKPaymentMethod {
+            return .blik(method)
+        }
+        return nil
+    }
 }
 
 private struct DokuPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .doku(DokuPaymentMethod(from: decoder))
+    }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? DokuPaymentMethod).map { .doku($0) }
     }
 }
 
@@ -245,11 +347,19 @@ private struct GiftCardPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .giftcard(GiftCardPaymentMethod(from: decoder))
     }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? GiftCardPaymentMethod).map { .giftcard($0) }
+    }
 }
 
 private struct MealVoucherPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .mealVoucher(MealVoucherPaymentMethod(from: decoder))
+    }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? MealVoucherPaymentMethod).map { .mealVoucher($0) }
     }
 }
 
@@ -257,11 +367,19 @@ private struct SevenElevenPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .sevenEleven(SevenElevenPaymentMethod(from: decoder))
     }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? SevenElevenPaymentMethod).map { .sevenEleven($0) }
+    }
 }
 
 private struct EContextStoresPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .econtextStores(EContextPaymentMethod(from: decoder))
+    }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? EContextPaymentMethod).map { .econtextStores($0) }
     }
 }
 
@@ -269,11 +387,19 @@ private struct EContextATMPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .econtextATM(EContextPaymentMethod(from: decoder))
     }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? EContextPaymentMethod).map { .econtextATM($0) }
+    }
 }
 
 private struct EContextOnlinePaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .econtextOnline(EContextPaymentMethod(from: decoder))
+    }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? EContextPaymentMethod).map { .econtextOnline($0) }
     }
 }
 
@@ -281,11 +407,19 @@ private struct BoletoPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .boleto(BoletoPaymentMethod(from: decoder))
     }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? BoletoPaymentMethod).map { .boleto($0) }
+    }
 }
 
 private struct AffirmPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .affirm(AffirmPaymentMethod(from: decoder))
+    }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? AffirmPaymentMethod).map { .affirm($0) }
     }
 }
 
@@ -293,17 +427,29 @@ private struct AtomePaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .atome(AtomePaymentMethod(from: decoder))
     }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? AtomePaymentMethod).map { .atome($0) }
+    }
 }
 
 private struct OnlineBankingPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .onlineBanking(OnlineBankingPaymentMethod(from: decoder))
     }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? OnlineBankingPaymentMethod).map { .onlineBanking($0) }
+    }
 }
 
 private struct UPIPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         try .upi(UPIPaymentMethod(from: decoder))
+    }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? UPIPaymentMethod).map { .upi($0) }
     }
 }
 
@@ -318,5 +464,18 @@ private struct CashAppPayPaymentMethodDecoder: PaymentMethodDecoder {
         #else
             return .none
         #endif
+    }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        #if canImport(PayKit)
+            if let method = paymentMethod as? StoredCashAppPayPaymentMethod {
+                return .storedCashAppPay(method)
+            }
+            if let method = paymentMethod as? CashAppPayPaymentMethod {
+                return .cashAppPay(method)
+            }
+        #endif
+        
+        return nil
     }
 }

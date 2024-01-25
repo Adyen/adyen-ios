@@ -475,6 +475,8 @@ class ComponentManagerTests: XCTestCase {
             
             init() {}
             init(from decoder: Decoder) throws {}
+            
+            enum CodingKeys: CodingKey {} // Satisfying Encoding requirement
         }
         
         let dummy = DummyPaymentMethod()
