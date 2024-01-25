@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -54,6 +54,10 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
     
     public init(from decoder: Decoder) throws {
         self.storedCardPaymentMethod = try StoredCardPaymentMethod(from: decoder)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        try storedCardPaymentMethod.encode(to: encoder)
     }
     
 }
