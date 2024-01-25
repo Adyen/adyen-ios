@@ -86,6 +86,7 @@
 "adyen.billingAddressSection.title" = "Διεύθυνση τιμολόγησης";
 "adyen.billingAddress.placeholder" = "Η διεύθυνση τιμολόγησής σας";
 "adyen.deliveryAddressSection.title" = "Διεύθυνση παράδοσης";
+"adyen.deliveryAddress.placeholder" = "Η διεύθυνση παράδοσής σας";
 "adyen.countryField.title" = "Χώρα";
 "adyen.countryField.placeholder" = "Χώρα";
 "adyen.countryField.invalid" = "Μη έγκυρη χώρα";
@@ -198,7 +199,7 @@
 "adyen.picker.search.empty.title" = "Δεν βρέθηκαν αποτελέσματα";
 "adyen.picker.search.empty.subtitle" = "Ο όρος '%@' δεν ταιριάζει με τίποτα";
 "adyen.address.lookup.search.placeholder" = "Αναζητήστε τη διεύθυνσή σας";
-"adyen.address.lookup.search.empty.title" = "Δεν μπορείτε να κάνετε αναζήτηση της διεύθυνσής σας;";
+"adyen.address.lookup.search.empty.title" = "Δεν μπορείτε να αναζητήσετε τη διεύθυνσή σας;";
 "adyen.address.lookup.search.empty.subtitle" = "Μπορείτε πάντα να #εισαγάγετε τη διεύθυνσή σας μη αυτόματα#";
 "adyen.address.lookup.search.empty.title.noResults" = "Δεν βρέθηκαν αποτελέσματα";
 "adyen.address.lookup.search.empty.subtitle.noResults" = "Το '%@' δεν ταιριάζει με τίποτα. Προσπαθήστε ξανά ή χρησιμοποιήστε #μη αυτόματη εισαγωγή διεύθυνσης#";

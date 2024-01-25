@@ -86,6 +86,7 @@
 "adyen.billingAddressSection.title" = "Adres rozliczeniowy";
 "adyen.billingAddress.placeholder" = "Twój adres rozliczeniowy";
 "adyen.deliveryAddressSection.title" = "Adres dostawy";
+"adyen.deliveryAddress.placeholder" = "Adres dostawy";
 "adyen.countryField.title" = "Kraj";
 "adyen.countryField.placeholder" = "Kraj";
 "adyen.countryField.invalid" = "Nieprawidłowy kraj";
@@ -197,7 +198,7 @@
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Anuluj";
 "adyen.picker.search.empty.title" = "Nie znaleziono żadnych wyników";
 "adyen.picker.search.empty.subtitle" = "Nie znaleziono żadnych dopasowań dla '%@'";
-"adyen.address.lookup.search.placeholder" = "Znajdź swój adres";
+"adyen.address.lookup.search.placeholder" = "Wyszukaj swój adres";
 "adyen.address.lookup.search.empty.title" = "Nie możesz znaleźć swojego adresu?";
 "adyen.address.lookup.search.empty.subtitle" = "Zawsze możesz #wprowadzić swój adres ręcznie#";
 "adyen.address.lookup.search.empty.title.noResults" = "Nie znaleziono żadnych wyników";

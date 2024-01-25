@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -46,7 +46,9 @@ internal class CardViewController: FormViewController {
             scope: scope,
             initialCountryCode: initialCountryCode,
             localizationParameters: localizationParameters,
-            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+            addressViewModelBuilder: DefaultAddressViewModelBuilder(),
+            presenter: self,
+            addressMode: configuration.billingAddress.mode
         )
     }()
 
@@ -133,9 +135,13 @@ internal class CardViewController: FormViewController {
         
         switch configuration.billingAddress.mode {
         case .lookup, .full:
-            guard let lookupBillingAddress = items.billingAddressPickerItem.value else { return nil }
+            guard
+                let billingAddressItem = items.billingAddressPickerItem,
+                let lookupBillingAddress = billingAddressItem.value
+            else { return nil }
+            
             address = lookupBillingAddress
-            requiredFields = items.billingAddressPickerItem.addressViewModel.requiredFields
+            requiredFields = billingAddressItem.addressViewModel.requiredFields
             
         case .postalCode:
             address = PostalAddress(postalCode: items.postalCodeItem.value)
@@ -208,7 +214,7 @@ extension CardViewController {
         let isOptional = configuration.billingAddress.isOptional(for: brands.map(\.type))
         switch configuration.billingAddress.mode {
         case .lookup, .full:
-            items.billingAddressPickerItem.updateOptionalStatus(isOptional: isOptional)
+            items.billingAddressPickerItem?.updateOptionalStatus(isOptional: isOptional)
         case .postalCode:
             items.postalCodeItem.updateOptionalStatus(isOptional: isOptional)
         case .none:
@@ -276,7 +282,7 @@ extension CardViewController {
             append(FormSpacerItem())
         }
         
-        if let billingAddressItem = billingAddressItem(for: configuration.billingAddress.mode) {
+        if let billingAddressItem {
             append(billingAddressItem)
         }
 
@@ -285,22 +291,14 @@ extension CardViewController {
         append(FormSpacerItem(numberOfSpaces: 2))
     }
     
-    private func billingAddressItem(for billingAddressMode: CardComponent.AddressFormType) -> FormItem? {
-        switch billingAddressMode {
+    private var billingAddressItem: FormItem? {
+        
+        switch configuration.billingAddress.mode {
         case let .lookup(provider):
-            let item = items.billingAddressPickerItem
-            item.selectionHandler = { [weak cardDelegate, weak provider] in
-                guard let provider else { return }
-                cardDelegate?.didSelectAddressPicker(lookupProvider: provider)
-            }
-            return item
+            return items.billingAddressPickerItem
             
         case .full:
-            let item = items.billingAddressPickerItem
-            item.selectionHandler = { [weak cardDelegate] in
-                cardDelegate?.didSelectAddressPicker(lookupProvider: nil)
-            }
-            return item
+            return items.billingAddressPickerItem
             
         case .postalCode:
             return items.postalCodeItem
@@ -314,7 +312,7 @@ extension CardViewController {
         guard let shopperInformation else { return }
 
         shopperInformation.billingAddress.map { billingAddress in
-            items.billingAddressPickerItem.value = billingAddress
+            items.billingAddressPickerItem?.value = billingAddress
             billingAddress.postalCode.map { items.postalCodeItem.value = $0 }
         }
         shopperInformation.card.map { items.holderNameItem.value = $0.holderName }
@@ -365,8 +363,6 @@ extension CardViewController {
 }
 
 internal protocol CardViewControllerDelegate: AnyObject {
-    
-    func didSelectAddressPicker(lookupProvider: AddressLookupProvider?)
     
     func didSelectSubmitButton()
 
