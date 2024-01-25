@@ -32,20 +32,21 @@ extension XCTestCase {
     
     func assertViewControllerImage(matching viewController: @autoclosure () throws -> UIViewController,
                                    named name: String,
-                                   devices: [ViewImageConfig] = [.iPhone12],
+                                   record: Bool = false,
+                                   device: ViewImageConfig = .iPhone12,
                                    file: StaticString = #file,
                                    testName: String = #function,
                                    line: UInt = #line) {
         
-        for device in devices {
-            try SnapshotTesting.assertSnapshot(matching: viewController(),
-                                               as: .image(on: device, perceptualPrecision: 0.98),
-                                               named: name,
-                                               record: false,
-                                               file: file,
-                                               testName: "\(testName)-\(device.description)",
-                                               line: line)
-        }
+        try SnapshotTesting.assertSnapshot(
+            matching: viewController(),
+            as: .image(drawHierarchyInKeyWindow: true, perceptualPrecision: 0.98),
+            named: name,
+            record: record,
+            file: file,
+            testName: "\(testName)-\(device.description)",
+            line: line
+        )
     }
     
     /// Verifies whether or not the snapshot of the view controller matches the previously recorded snapshot
@@ -53,17 +54,31 @@ extension XCTestCase {
     /// Multiple verification snapshots are taken within the timeout and compared with the reference snapshot
     func verifyViewControllerImage(matching viewController: @autoclosure () throws -> UIViewController,
                                    named name: String,
+                                   record: Bool = false,
                                    timeout: TimeInterval = 120,
                                    device: ViewImageConfig = .iPhone12,
                                    file: StaticString = #file,
                                    testName: String = #function,
                                    line: UInt = #line) {
         
+        if record {
+            try assertViewControllerImage(
+                matching: viewController(),
+                named: name,
+                record: true,
+                device: device,
+                file: file,
+                testName: testName,
+                line: line
+            )
+            return
+        }
+        
         wait(
             until: {
                 let failure = try! verifySnapshot(
                   of: viewController(),
-                  as: .image(on: device, perceptualPrecision: 0.98),
+                  as: .image(drawHierarchyInKeyWindow: true, perceptualPrecision: 0.98),
                   named: name,
                   record: false,
                   file: file,

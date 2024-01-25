@@ -151,6 +151,7 @@
 		81616BE52B271CF900D341FF /* FormVerticalStackItemView+IsValid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81616BE32B271C8D00D341FF /* FormVerticalStackItemView+IsValid.swift */; };
 		81616BE62B271CFB00D341FF /* FormVerticalStackItemView+IsValid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81616BE32B271C8D00D341FF /* FormVerticalStackItemView+IsValid.swift */; };
 		8169B9EC2A0506CC00AAC9F8 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
+		817F6D8C2B62A6110010D248 /* SecuredViewControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817F6D8B2B62A6110010D248 /* SecuredViewControllerUITests.swift */; };
 		81825CB82AC59C3300F91912 /* UIView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CB72AC59C3300F91912 /* UIView+Search.swift */; };
 		81825CB92AC59C3300F91912 /* UIView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CB72AC59C3300F91912 /* UIView+Search.swift */; };
 		81825CBB2AC59C4000F91912 /* UIViewController+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CBA2AC59C4000F91912 /* UIViewController+Search.swift */; };
@@ -1416,6 +1417,7 @@
 		814276612A7145F50081E896 /* AddressInputFormViewController+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressInputFormViewController+ViewModel.swift"; sourceTree = "<group>"; };
 		8149CCB52B0B855F007235E2 /* ThreeDS2PlusDACoreActionHandlerTests+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreeDS2PlusDACoreActionHandlerTests+Constants.swift"; sourceTree = "<group>"; };
 		81616BE32B271C8D00D341FF /* FormVerticalStackItemView+IsValid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormVerticalStackItemView+IsValid.swift"; sourceTree = "<group>"; };
+		817F6D8B2B62A6110010D248 /* SecuredViewControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuredViewControllerUITests.swift; sourceTree = "<group>"; };
 		81825CB72AC59C3300F91912 /* UIView+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Search.swift"; sourceTree = "<group>"; };
 		81825CBA2AC59C4000F91912 /* UIViewController+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Search.swift"; sourceTree = "<group>"; };
 		81825CC02AC59C6400F91912 /* XCTestCase+RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+RootViewController.swift"; sourceTree = "<group>"; };
@@ -2494,6 +2496,7 @@
 				00EACBD228855CF70082B360 /* Online Banking */,
 				E7975F97288040BF00A12C40 /* Atome */,
 				007D791D2823A83100382D31 /* Affirm */,
+				817F6D8B2B62A6110010D248 /* SecuredViewControllerUITests.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -7278,6 +7281,7 @@
 				F9CCA3C4296ECB9900AD643D /* AtomeComponentUITests.swift in Sources */,
 				813BF1132B2365400096940E /* XCTestCase+FirstResponder.swift in Sources */,
 				F9CCA3C9296ECB9900AD643D /* OnlineBankingComponentUITests.swift in Sources */,
+				817F6D8C2B62A6110010D248 /* SecuredViewControllerUITests.swift in Sources */,
 				0022095D29A4C67700B2BACD /* AnalyticsProviderMock.swift in Sources */,
 				F9CCA3D5296ECD3000AD643D /* AdyenCoder.swift in Sources */,
 				F9CCA3D6296ECD3C00AD643D /* PresentationDelegateMock.swift in Sources */,
