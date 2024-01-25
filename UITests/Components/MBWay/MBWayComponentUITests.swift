@@ -84,7 +84,7 @@ final class MBWayComponentUITests: XCTestCase {
             XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
             
-            self.assertViewControllerImage(matching: sut.viewController, named: "mbway_flow")
+            self.verifyViewControllerImage(matching: sut.viewController, named: "mbway_flow")
             delegateExpectation.fulfill()
         }
         

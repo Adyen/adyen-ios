@@ -1,4 +1,4 @@
-"adyen.submitButton" = "Zahlen";
+"adyen.submitButton" = "Zahle";
 "adyen.submitButton.formatted" = "%@ zahlen";
 "adyen.cancelButton" = "Abbrechen";
 "adyen.dismissButton" = "OK";
@@ -86,6 +86,7 @@
 "adyen.billingAddressSection.title" = "Rechnungsadresse";
 "adyen.billingAddress.placeholder" = "Ihre Rechnungsadresse";
 "adyen.deliveryAddressSection.title" = "Lieferadresse";
+"adyen.deliveryAddress.placeholder" = "Ihre Lieferadresse";
 "adyen.countryField.title" = "Land";
 "adyen.countryField.placeholder" = "Land";
 "adyen.countryField.invalid" = "Ungültiges Land";
@@ -197,8 +198,8 @@
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Abbrechen";
 "adyen.picker.search.empty.title" = "Keine Ergebnisse gefunden";
 "adyen.picker.search.empty.subtitle" = "'%@' stimmte mit nichts überein";
-"adyen.address.lookup.search.placeholder" = "Suchen Sie Ihre Adresse";
-"adyen.address.lookup.search.empty.title" = "Sie können Ihre Adresse nicht suchen?";
+"adyen.address.lookup.search.placeholder" = "Suchen Sie nach Ihrer Adresse";
+"adyen.address.lookup.search.empty.title" = "Sie können nicht nach Ihrer Adresse suchen?";
 "adyen.address.lookup.search.empty.subtitle" = "Sie können Ihre Adresse jederzeit manuell #eingeben#";
 "adyen.address.lookup.search.empty.title.noResults" = "Keine Ergebnisse gefunden";
 "adyen.address.lookup.search.empty.subtitle.noResults" = "'%@' stimmt nicht mit irgendetwas überein, versuchen Sie es erneut oder verwenden Sie #manual address entry#";

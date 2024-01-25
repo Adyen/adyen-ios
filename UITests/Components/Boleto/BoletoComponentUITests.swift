@@ -74,9 +74,14 @@ final class BoletoComponentUITests: XCTestCase {
             background: .magenta
         )
 
-        let sut = BoletoComponent(paymentMethod: paymentMethod,
-                                  context: context,
-                                  configuration: Dummy.getConfiguration(showEmailAddress: true))
+        let sut = BoletoComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: Dummy.getConfiguration(
+                style: style,
+                showEmailAddress: true
+            )
+        )
 
         verifyViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
@@ -99,7 +104,7 @@ final class BoletoComponentUITests: XCTestCase {
         let submitButton: SubmitButton = try XCTUnwrap(view.findView(by: "payButtonItem.button"))
         let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "firstNameItem"))
         let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "lastNameItem"))
-        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "addressItem"))
+        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: "addressItem"))
 
         mockDelegate.onDidSubmit = { paymentData, paymentComponent in
             let boletoDetails = paymentData.paymentMethod as? BoletoDetails

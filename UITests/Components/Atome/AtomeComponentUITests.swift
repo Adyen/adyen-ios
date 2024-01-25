@@ -58,7 +58,7 @@ class AtomeComponentUITests: XCTestCase {
                                  context: context,
                                  configuration: config)
         
-        XCTAssertNotNil(sut.viewController.view.findView(by: "AdyenComponents.AtomeComponent.addressItem.title"))
+        XCTAssertNotNil(sut.viewController.view.findView(by: "AdyenComponents.AtomeComponent.addressItem"))
         
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
@@ -105,7 +105,7 @@ class AtomeComponentUITests: XCTestCase {
         let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.lastName))
         let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.phone))
         
-        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.billingAddress))
+        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: AtomeViewIdentifier.billingAddress))
         
         wait(until: firstNameView, at: \.isValid, is: true)
         wait(until: lastNameView, at: \.isValid, is: true)

@@ -185,6 +185,8 @@ public struct LocalizationKey {
     public static let billingAddressPlaceholder = LocalizationKey(key: "adyen.billingAddress.placeholder")
     /// Delivery Address
     public static let deliveryAddressSectionTitle = LocalizationKey(key: "adyen.deliveryAddressSection.title")
+    /// Your delivery address
+    public static let deliveryAddressPlaceholder = LocalizationKey(key: "adyen.deliveryAddress.placeholder")
     /// Country
     public static let countryFieldTitle = LocalizationKey(key: "adyen.countryField.title")
     /// Country
@@ -407,9 +409,9 @@ public struct LocalizationKey {
     public static let pickerSearchEmptyTitle = LocalizationKey(key: "adyen.picker.search.empty.title")
     /// '%@' did not match with anything
     public static let pickerSearchEmptySubtitle = LocalizationKey(key: "adyen.picker.search.empty.subtitle")
-    /// Search your address
+    /// Search for your address
     public static let addressLookupSearchPlaceholder = LocalizationKey(key: "adyen.address.lookup.search.placeholder")
-    /// Can't search your address?
+    /// Can't search for your address?
     public static let addressLookupSearchEmptyTitle = LocalizationKey(key: "adyen.address.lookup.search.empty.title")
     /// You can always #enter your address manually#
     public static let addressLookupSearchEmptySubtitle = LocalizationKey(key: "adyen.address.lookup.search.empty.subtitle")
@@ -434,5 +436,4 @@ public struct LocalizationKey {
     }
 
 }
-
 // swiftlint:enable all

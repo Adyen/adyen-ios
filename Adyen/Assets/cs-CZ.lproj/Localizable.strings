@@ -86,6 +86,7 @@
 "adyen.billingAddressSection.title" = "Fakturační adresa";
 "adyen.billingAddress.placeholder" = "Vaše fakturační adresa";
 "adyen.deliveryAddressSection.title" = "Dodací adresa";
+"adyen.deliveryAddress.placeholder" = "Vaše doručovací adresa";
 "adyen.countryField.title" = "Země";
 "adyen.countryField.placeholder" = "Země";
 "adyen.countryField.invalid" = "Neplatná země";
@@ -197,8 +198,8 @@
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Zrušit";
 "adyen.picker.search.empty.title" = "Nebyly nalezeny žádné výsledky";
 "adyen.picker.search.empty.subtitle" = "„%@“ se s ničím neshoduje";
-"adyen.address.lookup.search.placeholder" = "Vyhledat vaši adresu";
-"adyen.address.lookup.search.empty.title" = "Nedaří se vám vyhledat vaši adresu?";
+"adyen.address.lookup.search.placeholder" = "Vyhledat svou adresu";
+"adyen.address.lookup.search.empty.title" = "Nemůžete najít svou adresu?";
 "adyen.address.lookup.search.empty.subtitle" = "Vždy můžete #zadat svou adresu ručně#";
 "adyen.address.lookup.search.empty.title.noResults" = "Nebyly nalezeny žádné výsledky";
 "adyen.address.lookup.search.empty.subtitle.noResults" = "„%@“ se s ničím neshoduje, zkuste to znovu nebo použijte #ruční zadání adresy#";

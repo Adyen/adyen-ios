@@ -12,40 +12,24 @@ import XCTest
 
 extension XCTestCase {
     
-    func assertViewHeirarchy(matching viewController: @autoclosure () throws -> UIViewController,
-                             named name: String,
-                             devices: [ViewImageConfig] = [.iPhone12],
-                             file: StaticString = #file,
-                             testName: String = #function,
-                             line: UInt = #line) {
-        
-        for device in devices {
-            try SnapshotTesting.assertSnapshot(matching: viewController(),
-                                               as: .recursiveDescription(on: device),
-                                               named: name,
-                                               record: false,
-                                               file: file,
-                                               testName: "\(testName)-\(device.description)",
-                                               line: line)
-        }
-    }
+    static var shouldRecordSnapshots: Bool = false
     
     func assertViewControllerImage(matching viewController: @autoclosure () throws -> UIViewController,
                                    named name: String,
-                                   devices: [ViewImageConfig] = [.iPhone12],
+                                   device: ViewImageConfig = .iPhone12,
                                    file: StaticString = #file,
-                                   testName: String = #function,
+                                   caller: String = #function,
                                    line: UInt = #line) {
         
-        for device in devices {
-            try SnapshotTesting.assertSnapshot(matching: viewController(),
-                                               as: .image(on: device, perceptualPrecision: 0.98),
-                                               named: name,
-                                               record: false,
-                                               file: file,
-                                               testName: "\(testName)-\(device.description)",
-                                               line: line)
-        }
+        try SnapshotTesting.assertSnapshot(
+            matching: viewController(),
+            as: device.snapshotConfiguration,
+            named: name,
+            record: XCTestCase.shouldRecordSnapshots,
+            file: file,
+            testName: device.testName(for: caller),
+            line: line
+        )
     }
     
     /// Verifies whether or not the snapshot of the view controller matches the previously recorded snapshot
@@ -56,18 +40,33 @@ extension XCTestCase {
                                    timeout: TimeInterval = 120,
                                    device: ViewImageConfig = .iPhone12,
                                    file: StaticString = #file,
-                                   testName: String = #function,
+                                   caller: String = #function,
                                    line: UInt = #line) {
+        
+        if XCTestCase.shouldRecordSnapshots {
+            // We're recording so we assert immediately
+            // to not wait until it finally throws an error on the code below
+            try assertViewControllerImage(
+                matching: viewController(),
+                named: name,
+                device: device,
+                file: file,
+                caller: caller,
+                line: line
+            )
+            
+            return
+        }
         
         wait(
             until: {
                 let failure = try! verifySnapshot(
                   of: viewController(),
-                  as: .image(on: device, perceptualPrecision: 0.98),
+                  as: device.snapshotConfiguration,
                   named: name,
                   record: false,
                   file: file,
-                  testName: "\(testName)-\(device.description)",
+                  testName: device.testName(for: caller),
                   line: line
                 )
                 return failure == nil
@@ -76,6 +75,17 @@ extension XCTestCase {
             retryInterval: .seconds(1),
             message: "Snapshot did not match reference (Timeout: \(timeout)s)"
         )
+    }
+}
+
+extension ViewImageConfig {
+    
+    func testName(for callingFunction: String) -> String {
+        "\(callingFunction)-\(description)"
+    }
+    
+    var snapshotConfiguration: Snapshotting<UIViewController, UIImage> {
+        .image(on: self, perceptualPrecision: 0.98)
     }
 }
 

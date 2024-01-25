@@ -211,51 +211,6 @@ extension CardComponent: CardViewControllerDelegate {
             self.cardComponentDelegate?.didChangeCardBrand(binInfo.brands ?? [], component: self)
         }
     }
-    
-    internal func didSelectAddressPicker(lookupProvider: AddressLookupProvider?) {
-        
-        let securedViewController = SecuredViewController(
-            child: addressPickerViewController(with: lookupProvider),
-            style: configuration.style
-        )
-        
-        viewController.present(securedViewController, animated: true)
-    }
-    
-    private func addressPickerViewController(
-        with lookupProvider: AddressLookupProvider?
-    ) -> UIViewController {
-        
-        let prefillAddress = cardViewController.items.billingAddressPickerItem.value
-        let initialCountry = initialCountryCode
-        let completionHandler: (PostalAddress?) -> Void = { [weak self] address in
-            guard let self else { return }
-            address.map { self.cardViewController.items.billingAddressPickerItem.value = $0 }
-            self.viewController.dismiss(animated: true)
-        }
-        
-        guard let lookupProvider else {
-            
-            let viewModel = configuration.addressInputFormViewModel(
-                with: initialCountry,
-                prefillAddress: prefillAddress,
-                completionHandler: completionHandler
-            )
-            
-            let addressInputForm = AddressInputFormViewController(viewModel: viewModel)
-            
-            return UINavigationController(rootViewController: addressInputForm)
-        }
-        
-        let viewModel = configuration.addressLookupViewModel(
-            with: initialCountry,
-            prefillAddress: prefillAddress,
-            lookupProvider: lookupProvider,
-            completionHandler: completionHandler
-        )
-        
-        return AddressLookupViewController(viewModel: viewModel)
-    }
 }
 
 @_spi(AdyenInternal)
@@ -290,6 +245,7 @@ private extension CardComponent.Configuration {
     ) -> AddressLookupViewController.ViewModel {
         
         .init(
+            for: .billing,
             localizationParameters: localizationParameters,
             supportedCountryCodes: billingAddress.countryCodes,
             initialCountry: initialCountry,
@@ -306,6 +262,7 @@ private extension CardComponent.Configuration {
     ) -> AddressInputFormViewController.ViewModel {
         
         .init(
+            for: .billing,
             style: style,
             localizationParameters: localizationParameters,
             initialCountry: initialCountry,

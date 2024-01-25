@@ -10,8 +10,8 @@ import XCTest
 extension XCTestCase {
     /// invokes endEditing on the view and waits until none of the subviews is first responder anymore
     func endEditing(for view: UIView) {
-        guard view.firstResponder != nil else { return }
-        view.endEditing(true)
+        guard let responder = view.firstResponder else { return }
+        responder.endEditing(true)
         wait(until: view, at: \.firstResponder, is: nil)
     }
 }

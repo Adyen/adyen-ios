@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,16 +39,16 @@ public final class AffirmComponent: AbstractPersonalInformationComponent {
         deliveryAddressToggleItem = FormToggleItem(style: configuration.style.toggle)
         
         let fields: [PersonalInformation] = [
-            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 2))),
-            .custom(CustomFormItemInjector(item: personalDetailsHeaderItem.addingDefaultMargins())),
             .firstName,
             .lastName,
             .email,
             .phone,
+            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 2))),
             .address,
+            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1))),
             .custom(CustomFormItemInjector(item: deliveryAddressToggleItem)),
             .deliveryAddress,
-            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1)))
+            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 2)))
         ]
         
         super.init(paymentMethod: paymentMethod,
@@ -98,23 +98,26 @@ public final class AffirmComponent: AbstractPersonalInformationComponent {
     
     @_spi(AdyenInternal)
     override public func createPaymentDetails() throws -> PaymentMethodDetails {
+        
         guard let firstName = firstNameItem?.value,
               let lastName = lastNameItem?.value,
               let emailAddress = emailItem?.value,
               let telephoneNumber = phoneItem?.phoneNumber,
               let billingAddress = addressItem?.value,
-              let deliveryAddress = deliveryAddressItem?.value else {
+              let deliveryAddress = deliveryAddressToggleItem.value ? deliveryAddressItem?.value : billingAddress else {
             throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
         
         let shopperName = ShopperName(firstName: firstName, lastName: lastName)
-        let affirmDetails = AffirmDetails(paymentMethod: paymentMethod,
-                                          shopperName: shopperName,
-                                          telephoneNumber: telephoneNumber,
-                                          emailAddress: emailAddress,
-                                          billingAddress: billingAddress,
-                                          deliveryAddress: deliveryAddressToggleItem.value ? deliveryAddress : billingAddress)
-        return affirmDetails
+        
+        return AffirmDetails(
+            paymentMethod: paymentMethod,
+            shopperName: shopperName,
+            telephoneNumber: telephoneNumber,
+            emailAddress: emailAddress,
+            billingAddress: billingAddress,
+            deliveryAddress: deliveryAddress
+        )
     }
     
     @_spi(AdyenInternal)
