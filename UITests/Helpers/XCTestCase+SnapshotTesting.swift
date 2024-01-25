@@ -17,13 +17,14 @@ extension XCTestCase {
     func assertViewControllerImage(matching viewController: @autoclosure () throws -> UIViewController,
                                    named name: String,
                                    device: ViewImageConfig = .iPhone12,
+                                   drawHierarchyInKeyWindow: Bool = false,
                                    file: StaticString = #file,
                                    caller: String = #function,
                                    line: UInt = #line) {
         
         try SnapshotTesting.assertSnapshot(
             matching: viewController(),
-            as: .image(drawHierarchyInKeyWindow: true, perceptualPrecision: 0.98),
+            as: device.snapshotConfiguration(drawHierarchyInKeyWindow: drawHierarchyInKeyWindow),
             named: name,
             record: XCTestCase.shouldRecordSnapshots,
             file: file,
@@ -40,6 +41,7 @@ extension XCTestCase {
                                    record: Bool = false,
                                    timeout: TimeInterval = 120,
                                    device: ViewImageConfig = .iPhone12,
+                                   drawHierarchyInKeyWindow: Bool = false,
                                    file: StaticString = #file,
                                    caller: String = #function,
                                    line: UInt = #line) {
@@ -51,6 +53,7 @@ extension XCTestCase {
                 matching: viewController(),
                 named: name,
                 device: device,
+                drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
                 file: file,
                 caller: caller,
                 line: line
@@ -63,9 +66,8 @@ extension XCTestCase {
             until: {
                 let failure = try! verifySnapshot(
                   of: viewController(),
-                  as: .image(drawHierarchyInKeyWindow: true, perceptualPrecision: 0.98),
+                  as: device.snapshotConfiguration(drawHierarchyInKeyWindow: drawHierarchyInKeyWindow),
                   named: name,
-                  record: false,
                   file: file,
                   testName: device.testName(for: caller),
                   line: line
@@ -77,12 +79,24 @@ extension XCTestCase {
             message: "Snapshot did not match reference (Timeout: \(timeout)s)"
         )
     }
+    
+    
 }
 
 extension ViewImageConfig {
     
     func testName(for callingFunction: String) -> String {
         "\(callingFunction)-\(description)"
+    }
+    
+    func snapshotConfiguration(drawHierarchyInKeyWindow: Bool) -> Snapshotting<UIViewController, UIImage> {
+        let precision: Float = 0.98
+        
+        if drawHierarchyInKeyWindow {
+            return .image(drawHierarchyInKeyWindow: true, perceptualPrecision: precision)
+        } else {
+            return .image(on: self, perceptualPrecision: precision)
+        }
     }
 }
 

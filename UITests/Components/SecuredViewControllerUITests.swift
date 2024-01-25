@@ -34,11 +34,19 @@ class SecuredViewControllerUITests: XCTestCase {
         try withoutAnimation {
             NotificationCenter.default.post(name: UIApplication.willResignActiveNotification, object: nil)
             wait { sut.view.subviews.contains(where: { $0 is UIVisualEffectView }) }
-            verifyViewControllerImage(matching: sut, named: "secured-view-controller-blurred")
+            verifyViewControllerImage(
+                matching: sut,
+                named: "secured-view-controller-blurred",
+                drawHierarchyInKeyWindow: true // Allows capturing the blur
+            )
             
             NotificationCenter.default.post(name: UIApplication.didBecomeActiveNotification, object: nil)
             wait { !sut.view.subviews.contains(where: { $0 is UIVisualEffectView }) }
-            verifyViewControllerImage(matching: sut, named: "secured-view-controller-unblurred")
+            verifyViewControllerImage(
+                matching: sut,
+                named: "secured-view-controller-unblurred",
+                drawHierarchyInKeyWindow: true // Allows capturing the blur
+            )
         }
     }
 }
