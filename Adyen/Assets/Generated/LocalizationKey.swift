@@ -436,4 +436,5 @@ public struct LocalizationKey {
     }
 
 }
+
 // swiftlint:enable all

@@ -65,12 +65,12 @@ extension XCTestCase {
         wait(
             until: {
                 let failure = try! verifySnapshot(
-                  of: viewController(),
-                  as: device.snapshotConfiguration(drawHierarchyInKeyWindow: drawHierarchyInKeyWindow),
-                  named: name,
-                  file: file,
-                  testName: device.testName(for: caller),
-                  line: line
+                    of: viewController(),
+                    as: device.snapshotConfiguration(drawHierarchyInKeyWindow: drawHierarchyInKeyWindow),
+                    named: name,
+                    file: file,
+                    testName: device.testName(for: caller),
+                    line: line
                 )
                 return failure == nil
             },
@@ -79,7 +79,6 @@ extension XCTestCase {
             message: "Snapshot did not match reference (Timeout: \(timeout)s)"
         )
     }
-    
     
 }
 

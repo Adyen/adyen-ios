@@ -8,8 +8,8 @@ import Foundation
 
 import XCTest
 @_spi(AdyenInternal) @testable import Adyen
-@testable import AdyenComponents
 @testable import AdyenCard
+@testable import AdyenComponents
 
 class SecuredViewControllerUITests: XCTestCase {
     

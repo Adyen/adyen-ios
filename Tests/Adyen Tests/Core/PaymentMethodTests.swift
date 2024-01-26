@@ -85,7 +85,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     private func getPaymentMethods() throws -> PaymentMethods {
-        return try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
+        try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
     }
     
     // MARK: - Payment Methods
