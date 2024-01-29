@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -25,6 +25,14 @@ public final class CardSecurityCodeValidator: NumericStringValidator, Observer {
         observe(publisher) { [weak self] cardType in
             self?.updateExpectedLength(from: cardType)
         }
+    }
+    
+    /// Initiate new instance of CardSecurityCodeValidator with a fixed ``CardType``
+    /// - Parameter cardType: The card type to validate the security code for
+    public init(cardType: CardType) {
+        super.init(minimumLength: 3, maximumLength: 4)
+
+        updateExpectedLength(from: cardType)
     }
     
     private func updateExpectedLength(from cardType: CardType?) {

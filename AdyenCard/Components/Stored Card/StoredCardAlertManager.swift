@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -29,20 +29,9 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIC
         
         self.publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
     }
-    
-    // MARK: - CVC length
-
-    private var cvvLength: Int {
-        switch CardType(rawValue: paymentMethod.brand) {
-        case .americanExpress:
-            return 4
-        default:
-            return 3
-        }
-    }
 
     // MARK: - Alert Controller
-    
+        
     internal private(set) lazy var alertController: UIAlertController = {
         let title = localizedString(.cardStoredTitle, localizationParameters)
         let displayInformation = paymentMethod.localizedDisplayInformation(using: localizationParameters)
@@ -50,12 +39,14 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIC
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addTextField(configurationHandler: { [weak self] textField in
+            guard let self else { return }
             textField.textAlignment = .center
             textField.keyboardType = .numberPad
-            textField.placeholder = localizedString(.cardCvcItemPlaceholder, self?.localizationParameters)
-            textField.accessibilityLabel = localizedString(.cardCvcItemTitle, self?.localizationParameters)
+            textField.placeholder = localizedString(.cardCvcItemPlaceholder, self.localizationParameters)
+            textField.accessibilityLabel = localizedString(.cardCvcItemTitle, self.localizationParameters)
             textField.accessibilityIdentifier = "AdyenCard.StoredCardAlertManager.textField"
             textField.delegate = self
+            textField.addTarget(self, action: #selector(self.textDidChange(textField:)), for: .editingChanged)
         })
         
         let cancelActionTitle = localizedString(.cancelButton, localizationParameters)
@@ -126,33 +117,16 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIC
     
     // MARK: - UITextFieldDelegate
     
-    internal func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard let textFieldText = textField.text else {
-            return false
-        }
+    @objc
+    private func textDidChange(textField: UITextField) {
+        guard var text = textField.text else { return }
         
-        let newString = (textFieldText as NSString).replacingCharacters(in: range, with: string)
-        if newString.count > cvvLength {
-            return false
-        }
+        let formatter = CardSecurityCodeFormatter(cardType: .init(rawValue: paymentMethod.brand))
+        let validator = CardSecurityCodeValidator(cardType: .init(rawValue: paymentMethod.brand))
         
-        defer {
-            let isValidLength = newString.count == cvvLength
-            submitAction.isEnabled = isValidLength
-        }
+        text = formatter.formattedValue(for: text)
         
-        let isDeleting = (string.count == 0 && range.length == 1)
-        if isDeleting {
-            return true
-        }
-        
-        let newCharacters = CharacterSet(charactersIn: string)
-        let isNumber = CharacterSet.decimalDigits.isSuperset(of: newCharacters)
-        if isNumber {
-            return true
-        }
-        
-        return false
+        textField.text = text
+        submitAction.isEnabled = validator.isValid(text)
     }
-    
 }

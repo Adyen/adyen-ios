@@ -219,29 +219,30 @@ class StoredCardComponentTests: XCTestCase {
 
         textField.insertText("a")
         textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 0, length: 1), replacementString: "a"), false)
+        XCTAssertEqual(textField.text, "")
 
-        textField.text = "1"
+        textField.insertText("1")
         textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 0, length: 1), replacementString: "1"), true)
+        XCTAssertEqual(textField.text, "1")
 
-        textField.text = "11"
+        textField.insertText("1")
         textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 1, length: 1), replacementString: "1"), true)
+        XCTAssertEqual(textField.text, "11")
 
-        textField.text = "111"
+        textField.insertText("1")
         textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 2, length: 1), replacementString: "1"), true)
+        XCTAssertEqual(textField.text, "111")
+        
         XCTAssertEqual(payAction.isEnabled, false)
 
-        textField.text = "1111"
+        textField.insertText("1")
         textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 3, length: 1), replacementString: "1"), true)
+        XCTAssertEqual(textField.text, "1111")
         XCTAssertEqual(payAction.isEnabled, true)
 
-        textField.text = "11111"
+        textField.insertText("1")
         textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 4, length: 1), replacementString: "1"), false)
+        XCTAssertEqual(textField.text, "1111")
 
         alertController.dismiss(animated: false, completion: nil)
     }
@@ -270,24 +271,22 @@ class StoredCardComponentTests: XCTestCase {
         let textField: UITextField! = alertController.textFields!.first
         let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
 
-        textField.text = "11"
+        textField.insertText("11")
         textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 1, length: 1), replacementString: "1"), true)
+        XCTAssertEqual(textField.text, "11")
+        
         XCTAssertEqual(payAction.isEnabled, false)
 
-        textField.text = "111"
+        textField.insertText("1")
         textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 2, length: 1), replacementString: "1"), true)
+        XCTAssertEqual(textField.text, "111")
+        
         XCTAssertEqual(payAction.isEnabled, true)
 
-        textField.text = "1111"
+        textField.insertText("1")
         textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 3, length: 1), replacementString: "1"), false)
+        XCTAssertEqual(textField.text, "111")
         XCTAssertEqual(payAction.isEnabled, true)
-
-        textField.text = "11111"
-        textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 4, length: 1), replacementString: "1"), false)
 
         alertController.dismiss(animated: false, completion: nil)
     }
@@ -316,19 +315,22 @@ class StoredCardComponentTests: XCTestCase {
         let textField: UITextField! = alertController.textFields!.first
         let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil) }!
 
-        textField.text = "11"
+        textField.insertText("11")
         textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 1, length: 1), replacementString: "1"), true)
+        XCTAssertEqual(textField.text, "11")
+        
         XCTAssertEqual(payAction.isEnabled, false)
 
-        textField.text = "111"
+        textField.insertText("1")
         textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 2, length: 1), replacementString: "1"), true)
+        XCTAssertEqual(textField.text, "111")
+        
         XCTAssertEqual(payAction.isEnabled, true)
 
-        textField.text = "1111"
+        textField.insertText("1")
         textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.delegate!.textField!(textField, shouldChangeCharactersIn: NSRange(location: 3, length: 1), replacementString: "1"), false)
+        XCTAssertEqual(textField.text, "111")
+        XCTAssertEqual(payAction.isEnabled, true)
 
         alertController.dismiss(animated: false, completion: nil)
     }
