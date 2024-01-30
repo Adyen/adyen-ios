@@ -37,5 +37,6 @@ internal struct DropInSettingsView: View {
             .navigationBarTitle("")
             .navigationBarHidden(true)
         }
+        .navigationViewStyle(.stack)
     }
 }

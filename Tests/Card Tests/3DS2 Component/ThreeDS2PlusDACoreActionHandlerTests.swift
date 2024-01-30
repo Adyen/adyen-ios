@@ -204,12 +204,14 @@ import XCTest
                     do {
                         let json = try XCTUnwrap(JSONSerialization.jsonObject(
                             with: result.payload.dataFromBase64URL(),
-                            options: []) as? [String: Any]
+                            options: []
+                        ) as? [String: Any]
                         )
                         
                         let expectedJson = try XCTUnwrap(JSONSerialization.jsonObject(
                             with: expectedResult.payload.dataFromBase64URL(),
-                            options: []) as? [String: Any]
+                            options: []
+                        ) as? [String: Any]
                         )
 
                         XCTAssertEqual(json["transStatus"] as? String, expectedJson["transStatus"] as? String)
@@ -217,12 +219,14 @@ import XCTest
                         
                         let delegatedAuthenticationSDKOutput = try XCTUnwrap(JSONSerialization.jsonObject(
                             with: XCTUnwrap(json["delegatedAuthenticationSDKOutput"] as? String).dataFromBase64URL(),
-                            options: []) as? [String: Any]
+                            options: []
+                        ) as? [String: Any]
                         )
 
                         let expectedDelegatedAuthenticationSDKOutput = try XCTUnwrap(JSONSerialization.jsonObject(
                             with: XCTUnwrap(expectedJson["delegatedAuthenticationSDKOutput"] as? String).dataFromBase64URL(),
-                            options: []) as? [String: Any]
+                            options: []
+                        ) as? [String: Any]
                         )
 
                         XCTAssertEqual(

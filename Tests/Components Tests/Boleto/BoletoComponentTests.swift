@@ -30,45 +30,21 @@ class BoletoComponentTests: XCTestCase {
         
         setupRootViewController(viewController)
         
-        let firstNameField: UITextField? = viewController.view.findView(by: "firstNameItem.textField") as? UITextField
-        let lastNameField: UITextField? = viewController.view.findView(by: "lastNameItem.textField") as? UITextField
-        let socialSecurityNumberField: UITextField? = viewController.view.findView(by: "socialSecurityNumberItem.textField") as? UITextField
-        let emailField: UITextField? = viewController.view.findView(by: "emailItem.textField") as? UITextField
-
-        let streetField = viewController.view.findView(by: "addressItem.street.textField") as? UITextField
-        let houseNumberField = viewController.view.findView(by: "addressItem.houseNumberOrName.textField") as? UITextField
-        let cityField = viewController.view.findView(by: "addressItem.city.textField") as? UITextField
-        let postalCodeField = viewController.view.findView(by: "addressItem.postalCode.textField") as? UITextField
-
-        XCTAssertNotNil(viewController.view.findView(by: "addressItem.title"))
+        let firstNameField: UITextField = try XCTUnwrap(viewController.view.findView(by: "firstNameItem.textField"))
+        let lastNameField: UITextField = try XCTUnwrap(viewController.view.findView(by: "lastNameItem.textField"))
+        let socialSecurityNumberField: UITextField = try XCTUnwrap(viewController.view.findView(by: "socialSecurityNumberItem.textField"))
+        let emailField: UITextField = try XCTUnwrap(viewController.view.findView(by: "emailItem.textField"))
+        let addressField: FormAddressPickerItemView = try XCTUnwrap(viewController.view.findView(by: "addressItem"))
         
-        XCTAssertNotNil(firstNameField)
-        XCTAssertEqual(firstNameField?.text, prefilledInformation.shopperName?.firstName)
-        
-        XCTAssertNotNil(lastNameField)
-        XCTAssertEqual(lastNameField?.text, prefilledInformation.shopperName?.lastName)
-
-        XCTAssertNotNil(socialSecurityNumberField)
+        XCTAssertEqual(firstNameField.text, prefilledInformation.shopperName?.firstName)
+        XCTAssertEqual(lastNameField.text, prefilledInformation.shopperName?.lastName)
         let formattedSocialSecurityNumber = brazilSocialSecurityNumberFormatter.formattedValue(for: prefilledInformation.socialSecurityNumber!)
-        XCTAssertEqual(socialSecurityNumberField?.text, formattedSocialSecurityNumber)
-        
-        XCTAssertNotNil(emailField)
-        XCTAssertEqual(emailField?.text, prefilledInformation.emailAddress)
-
-        XCTAssertNotNil(streetField)
-        XCTAssertEqual(streetField?.text, Dummy.dummyAddress.street)
-
-        XCTAssertNotNil(houseNumberField)
-        XCTAssertEqual(houseNumberField?.text, Dummy.dummyAddress.houseNumberOrName)
-
-        XCTAssertNotNil(cityField)
-        XCTAssertEqual(cityField?.text, Dummy.dummyAddress.city)
-
-        XCTAssertNotNil(postalCodeField)
-        XCTAssertEqual(postalCodeField?.text, Dummy.dummyAddress.postalCode)
+        XCTAssertEqual(socialSecurityNumberField.text, formattedSocialSecurityNumber)
+        XCTAssertEqual(emailField.text, prefilledInformation.emailAddress)
+        XCTAssertEqual(addressField.item.value, Dummy.dummyAddress)
     }
     
-    func testNoPrefilledInformation() {
+    func testNoPrefilledInformation() throws {
         
         let context = Dummy.context(with: AnalyticsProviderMock())
         
@@ -87,34 +63,8 @@ class BoletoComponentTests: XCTestCase {
         let socialSecurityNumberField: UITextField? = viewController.view.findView(by: "socialSecurityNumberItem.textField") as? UITextField
         let emailField: UITextField? = viewController.view.findView(by: "emailItem.textField") as? UITextField
 
-        let streetField = viewController.view.findView(by: "addressItem.street.textField") as? UITextField
-        let houseNumberField = viewController.view.findView(by: "addressItem.houseNumberOrName.textField") as? UITextField
-        let cityField = viewController.view.findView(by: "addressItem.city.textField") as? UITextField
-        let postalCodeField = viewController.view.findView(by: "addressItem.postalCode.textField") as? UITextField
-
-        XCTAssertNotNil(firstNameField)
-        XCTAssertNil(firstNameField?.text?.adyen.nilIfEmpty)
-        
-        XCTAssertNotNil(lastNameField)
-        XCTAssertNil(lastNameField?.text?.adyen.nilIfEmpty)
-        
-        XCTAssertNotNil(socialSecurityNumberField)
-        XCTAssertNil(socialSecurityNumberField?.text?.adyen.nilIfEmpty)
-        
-        XCTAssertNotNil(emailField)
-        XCTAssertNil(emailField?.text?.adyen.nilIfEmpty)
-
-        XCTAssertNotNil(streetField)
-        XCTAssertTrue(streetField?.text?.isEmpty ?? true)
-
-        XCTAssertNotNil(houseNumberField)
-        XCTAssertTrue(houseNumberField?.text?.isEmpty ?? true)
-
-        XCTAssertNotNil(cityField)
-        XCTAssertTrue(cityField?.text?.isEmpty ?? true)
-
-        XCTAssertNotNil(postalCodeField)
-        XCTAssertTrue(postalCodeField?.text?.isEmpty ?? true)
+        let addressField: FormAddressPickerItemView = try XCTUnwrap(viewController.view.findView(by: "addressItem"))
+        XCTAssertNil(addressField.item.value)
     }
     
     func testNoEmailSection() {

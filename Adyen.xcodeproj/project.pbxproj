@@ -145,12 +145,12 @@
 		813EF9EC2A5FE48A00C65D15 /* FormPickerSearchViewController+EmptyView+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813EF9EB2A5FE48A00C65D15 /* FormPickerSearchViewController+EmptyView+Style.swift */; };
 		813EF9EE2A5FE8D900C65D15 /* FormPickerSearchViewController+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813EF9ED2A5FE8D900C65D15 /* FormPickerSearchViewController+Style.swift */; };
 		813EF9F02A6551C300C65D15 /* ViewControllerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813EF9EF2A6551C300C65D15 /* ViewControllerPresenter.swift */; };
+		814044312B62BDBB00EB7FBA /* SecuredViewControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814044302B62BDBB00EB7FBA /* SecuredViewControllerUITests.swift */; };
 		8140A3762A3327B500896403 /* AdyenComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9175E55259393E800D653BE /* AdyenComponents.framework */; };
 		814276622A7145F50081E896 /* AddressInputFormViewController+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814276612A7145F50081E896 /* AddressInputFormViewController+ViewModel.swift */; };
 		8149CCB62B0B855F007235E2 /* ThreeDS2PlusDACoreActionHandlerTests+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149CCB52B0B855F007235E2 /* ThreeDS2PlusDACoreActionHandlerTests+Constants.swift */; };
-		81616BE52B271CF900D341FF /* FormVerticalStackItemView+IsValid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81616BE32B271C8D00D341FF /* FormVerticalStackItemView+IsValid.swift */; };
-		81616BE62B271CFB00D341FF /* FormVerticalStackItemView+IsValid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81616BE32B271C8D00D341FF /* FormVerticalStackItemView+IsValid.swift */; };
 		8169B9EC2A0506CC00AAC9F8 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
+		817F6D8C2B62A6110010D248 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		81825CB82AC59C3300F91912 /* UIView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CB72AC59C3300F91912 /* UIView+Search.swift */; };
 		81825CB92AC59C3300F91912 /* UIView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CB72AC59C3300F91912 /* UIView+Search.swift */; };
 		81825CBB2AC59C4000F91912 /* UIViewController+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CBA2AC59C4000F91912 /* UIViewController+Search.swift */; };
@@ -159,6 +159,7 @@
 		81825CC22AC59C6400F91912 /* XCTestCase+RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CC02AC59C6400F91912 /* XCTestCase+RootViewController.swift */; };
 		81825CC42AC59C6C00F91912 /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CC32AC59C6C00F91912 /* XCTestCase+Wait.swift */; };
 		81825CC52AC59C6C00F91912 /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CC32AC59C6C00F91912 /* XCTestCase+Wait.swift */; };
+		81881BCE2B1A0A510020E3F2 /* AnyPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81881BCD2B1A0A510020E3F2 /* AnyPaymentMethod.swift */; };
 		81896E852A4DB5F300C532CA /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81896E842A4DB5F300C532CA /* SearchViewControllerTests.swift */; };
 		8191838E2A53062F008EB61A /* FormAddressItem+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8191838D2A53062F008EB61A /* FormAddressItem+Configuration.swift */; };
 		819CC3342B14C53200D2EEE9 /* PaymentMethods+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819CC3332B14C53200D2EEE9 /* PaymentMethods+Equatable.swift */; };
@@ -223,6 +224,7 @@
 		81EF2FDF2AF3AAF1001FE82F /* InstantPaymentComponentExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EF2FDD2AF3AAF1001FE82F /* InstantPaymentComponentExample.swift */; };
 		81EF2FE12AF3D75C001FE82F /* InstantPaymentComponentAdvancedFlowExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EF2FE02AF3D75C001FE82F /* InstantPaymentComponentAdvancedFlowExample.swift */; };
 		81EF2FE22AF3D75C001FE82F /* InstantPaymentComponentAdvancedFlowExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EF2FE02AF3D75C001FE82F /* InstantPaymentComponentAdvancedFlowExample.swift */; };
+		81F177AE2B4C49B9009CAD96 /* PresenterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F177AD2B4C49B9009CAD96 /* PresenterMock.swift */; };
 		81F1EBA42AD97095002AA93F /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28098BF220DBF970087928F /* ListItem.swift */; };
 		81FAFB442AAF715F00828999 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
 		A009837D279859DC007E68C4 /* ACHDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */; };
@@ -1416,13 +1418,14 @@
 		813EF9EB2A5FE48A00C65D15 /* FormPickerSearchViewController+EmptyView+Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormPickerSearchViewController+EmptyView+Style.swift"; sourceTree = "<group>"; };
 		813EF9ED2A5FE8D900C65D15 /* FormPickerSearchViewController+Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormPickerSearchViewController+Style.swift"; sourceTree = "<group>"; };
 		813EF9EF2A6551C300C65D15 /* ViewControllerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerPresenter.swift; sourceTree = "<group>"; };
+		814044302B62BDBB00EB7FBA /* SecuredViewControllerUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecuredViewControllerUITests.swift; sourceTree = "<group>"; };
 		814276612A7145F50081E896 /* AddressInputFormViewController+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressInputFormViewController+ViewModel.swift"; sourceTree = "<group>"; };
 		8149CCB52B0B855F007235E2 /* ThreeDS2PlusDACoreActionHandlerTests+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreeDS2PlusDACoreActionHandlerTests+Constants.swift"; sourceTree = "<group>"; };
-		81616BE32B271C8D00D341FF /* FormVerticalStackItemView+IsValid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormVerticalStackItemView+IsValid.swift"; sourceTree = "<group>"; };
 		81825CB72AC59C3300F91912 /* UIView+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Search.swift"; sourceTree = "<group>"; };
 		81825CBA2AC59C4000F91912 /* UIViewController+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Search.swift"; sourceTree = "<group>"; };
 		81825CC02AC59C6400F91912 /* XCTestCase+RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+RootViewController.swift"; sourceTree = "<group>"; };
 		81825CC32AC59C6C00F91912 /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
+		81881BCD2B1A0A510020E3F2 /* AnyPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyPaymentMethod.swift; sourceTree = "<group>"; };
 		81896E842A4DB5F300C532CA /* SearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerTests.swift; sourceTree = "<group>"; };
 		8191838D2A53062F008EB61A /* FormAddressItem+Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormAddressItem+Configuration.swift"; sourceTree = "<group>"; };
 		819CC3332B14C53200D2EEE9 /* PaymentMethods+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaymentMethods+Equatable.swift"; sourceTree = "<group>"; };
@@ -1469,6 +1472,7 @@
 		81EA6C112A44836E0071A141 /* FormAddressItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAddressItemTests.swift; sourceTree = "<group>"; };
 		81EF2FDD2AF3AAF1001FE82F /* InstantPaymentComponentExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantPaymentComponentExample.swift; sourceTree = "<group>"; };
 		81EF2FE02AF3D75C001FE82F /* InstantPaymentComponentAdvancedFlowExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantPaymentComponentAdvancedFlowExample.swift; sourceTree = "<group>"; };
+		81F177AD2B4C49B9009CAD96 /* PresenterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterMock.swift; sourceTree = "<group>"; };
 		A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankDetailsEncryptorTests.swift; sourceTree = "<group>"; };
 		A0113D9A2763887800AD395C /* ActionNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionNavigationBar.swift; sourceTree = "<group>"; };
@@ -2490,6 +2494,7 @@
 		007D79142812EFD300382D31 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				814044302B62BDBB00EB7FBA /* SecuredViewControllerUITests.swift */,
 				0022096229A8C37500B2BACD /* Doku */,
 				0022095929A4C38A00B2BACD /* Boleto */,
 				00220956299E5AEC00B2BACD /* MBWay */,
@@ -2982,7 +2987,6 @@
 				813BF1102B2364E00096940E /* XCTestCase+FirstResponder.swift */,
 				81B505782A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift */,
 				819CC3332B14C53200D2EEE9 /* PaymentMethods+Equatable.swift */,
-				81616BE32B271C8D00D341FF /* FormVerticalStackItemView+IsValid.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -3809,6 +3813,7 @@
 		E746E67327B429DF0076BB71 /* Abstract */ = {
 			isa = PBXGroup;
 			children = (
+				81881BCD2B1A0A510020E3F2 /* AnyPaymentMethod.swift */,
 				F9D5751723799BB0009C18B5 /* AnyPaymentMethodDecoder.swift */,
 				F9D5753023828EBB009C18B5 /* AnyCardPaymentMethod.swift */,
 				E9B36C9C223FDE4F00EAA368 /* PaymentMethods.swift */,
@@ -3989,6 +3994,7 @@
 				F99F08592383EAC800EBB948 /* FormatterMock.swift */,
 				F9639B4824E28DC80073F38A /* IntervalCalculatorMock.swift */,
 				F9EDB795239663F800CFB3C9 /* PaymentComponentMock.swift */,
+				81F177AD2B4C49B9009CAD96 /* PresenterMock.swift */,
 				F96A25422371AB75007DBF0B /* PaymentComponentDelegateMock.swift */,
 				F9EDB793239663C200CFB3C9 /* PaymentMethodMock.swift */,
 				F9639B5124E29E340073F38A /* PresentationDelegateMock.swift */,
@@ -6541,6 +6547,7 @@
 				E278EB4322AA5EC800497FD5 /* IssuerListPaymentMethod.swift in Sources */,
 				F90FB7BC2446E8C8005BFE0E /* BrowserInfo.swift in Sources */,
 				A0414C1F278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift in Sources */,
+				81881BCE2B1A0A510020E3F2 /* AnyPaymentMethod.swift in Sources */,
 				E787C9D1246E948F00B401E0 /* CoreFonts.swift in Sources */,
 				F9589D032601EE7800E4113F /* FormItemInjector.swift in Sources */,
 				5A15D5A1264BE1E500A8E3C7 /* PrefilledShopperInformation.swift in Sources */,
@@ -6811,6 +6818,7 @@
 				E216D3C7221AF5650013CBCF /* IBANFormatterTests.swift in Sources */,
 				F9639B5024E29D2D0073F38A /* AwaitComponentTests.swift in Sources */,
 				F97C83F725BF0C2800D7F85C /* DokuComponentTests.swift in Sources */,
+				81F177AE2B4C49B9009CAD96 /* PresenterMock.swift in Sources */,
 				F924C072246BEEF0006DDAB8 /* CardDetailsTests.swift in Sources */,
 				F9FE39E32679E09200F02A9B /* LoadingViewTests.swift in Sources */,
 				F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */,
@@ -6836,7 +6844,6 @@
 				C9C21914276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift in Sources */,
 				E7085C1E2629FDD700D0153B /* RedirectListnerTests.swift in Sources */,
 				E74CE3DF26727EB1008231D2 /* DropInDelegateMock.swift in Sources */,
-				81616BE62B271CFB00D341FF /* FormVerticalStackItemView+IsValid.swift in Sources */,
 				A020EC5A29ED33F90050B2FE /* CashAppPayComponentTests.swift in Sources */,
 				F967581527D25B1600A16FB6 /* SelfRetainingAPIClientTests.swift in Sources */,
 				E262128D22A8FE6700F2B133 /* PaymentMethodTests.swift in Sources */,
@@ -7290,6 +7297,8 @@
 				F9CCA3C4296ECB9900AD643D /* AtomeComponentUITests.swift in Sources */,
 				813BF1132B2365400096940E /* XCTestCase+FirstResponder.swift in Sources */,
 				F9CCA3C9296ECB9900AD643D /* OnlineBankingComponentUITests.swift in Sources */,
+				814044312B62BDBB00EB7FBA /* SecuredViewControllerUITests.swift in Sources */,
+				817F6D8C2B62A6110010D248 /* (null) in Sources */,
 				0022095D29A4C67700B2BACD /* AnalyticsProviderMock.swift in Sources */,
 				F9CCA3D5296ECD3000AD643D /* AdyenCoder.swift in Sources */,
 				F9CCA3D6296ECD3C00AD643D /* PresentationDelegateMock.swift in Sources */,
@@ -7306,7 +7315,6 @@
 				0022095C29A4C65E00B2BACD /* BoletoComponentUITests.swift in Sources */,
 				F9CCA3D2296ECCFA00AD643D /* XCTestCaseExtension.swift in Sources */,
 				F9CCA3DE296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift in Sources */,
-				81616BE52B271CF900D341FF /* FormVerticalStackItemView+IsValid.swift in Sources */,
 				81825CBC2AC59C4000F91912 /* UIViewController+Search.swift in Sources */,
 				F9CCA3C6296ECB9900AD643D /* QRCodeActionComponentUITests.swift in Sources */,
 				81825CB92AC59C3300F91912 /* UIView+Search.swift in Sources */,
@@ -7589,11 +7597,11 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -7628,11 +7636,11 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -7665,7 +7673,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				MARKETING_VERSION = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 6;
@@ -7676,7 +7684,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				MARKETING_VERSION = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 6;
@@ -7718,7 +7726,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -7784,7 +7792,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -7815,11 +7823,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Adyen/Info.plist;
@@ -7847,11 +7855,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Adyen/Info.plist;
@@ -7877,7 +7885,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -7898,7 +7906,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -7917,11 +7925,11 @@
 		E2C0E065220982AE008616F6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenCard/Info.plist;
@@ -7944,11 +7952,11 @@
 		E2C0E066220982AE008616F6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenCard/Info.plist;
@@ -7976,7 +7984,7 @@
 				CODE_SIGN_ENTITLEMENTS = Demo/Shared.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Demo/UIKit/Info.plist;
@@ -8006,7 +8014,7 @@
 				CODE_SIGN_ENTITLEMENTS = Demo/Shared.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Demo/UIKit/Info.plist;
@@ -8032,11 +8040,11 @@
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenDropIn/Info.plist;
@@ -8061,11 +8069,11 @@
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenDropIn/Info.plist;
@@ -8089,11 +8097,11 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenComponents/Info.plist;
@@ -8121,11 +8129,11 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenComponents/Info.plist;
@@ -8153,11 +8161,11 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenActions/Info.plist;
@@ -8185,11 +8193,11 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenActions/Info.plist;
@@ -8217,11 +8225,11 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenEncryption/Info.plist;
@@ -8249,11 +8257,11 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenEncryption/Info.plist;
@@ -8281,11 +8289,11 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Adyen. All rights reserved.";
@@ -8315,11 +8323,11 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Adyen. All rights reserved.";
@@ -8350,11 +8358,11 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -8391,11 +8399,11 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -8429,11 +8437,11 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenSwiftUI/Info.plist;
@@ -8460,11 +8468,11 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenSwiftUI/Info.plist;
@@ -8494,7 +8502,7 @@
 				CODE_SIGN_ENTITLEMENTS = Demo/Shared.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "\"Demo/SwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				ENABLE_PREVIEWS = YES;
@@ -8523,7 +8531,7 @@
 				CODE_SIGN_ENTITLEMENTS = Demo/Shared.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "\"Demo/SwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				ENABLE_PREVIEWS = YES;
@@ -8548,7 +8556,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tests/AdyenSwiftUI Tests/Info.plist";
@@ -8573,7 +8581,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Tests/AdyenSwiftUI Tests/Info.plist";
@@ -8600,11 +8608,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "";
@@ -8643,11 +8651,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 14;
+				DYLIB_CURRENT_VERSION = 15;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "";
@@ -8685,7 +8693,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
@@ -8707,7 +8715,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
